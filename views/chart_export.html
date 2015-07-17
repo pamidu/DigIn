@@ -1,0 +1,28 @@
+<md-dialog   plumb-item >
+  <md-toolbar class="modal-header" md-theme="teal">  
+       <h1>Charts</h1>
+  </md-toolbar>
+         <md-content ng-controller="ExportCtrl">
+            <md-card class="lookupdashboard"  md-theme="teal" ng-repeat="widget in dashboard.widgets" >
+                   <md-content theme="teal"  layout="row" layout-margin>
+                    <div flex="80">
+                     <md-button class="md-raised" ng-click="export(widget)"> 
+
+                      <md-icon class="iconchart"  md-svg-src="bower_components/material-design-icons/editor/svg/production/ic_insert_chart_24px.svg">
+                      </md-icon>
+                            <Label>{{widget.chartConfig.title.text}}</Label>
+                      </md-button>
+                  </div>   
+                 </md-content>
+           </md-card>           
+        </md-content>
+  <div class="md-actions" md-theme="teal"  layout="row">    
+          <md-button style="width:200px"  ng-click="closeDialog()"  class="md-raised">
+           Ok
+         </md-button>
+          <md-button style="width:200px"  class="md-raised"   ng-click="closeDialog()" class=" md-default">
+            Cancel
+          </md-button>
+  </div>
+</md-dialog> 
+ 

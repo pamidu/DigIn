@@ -1,0 +1,70 @@
+<!-- <!DOCTYPE html>
+<html ng-app="digginPinterest">
+<head>
+	<title></title>
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/angular-animate/angular-animate.js"></script>
+	<script src="bower_components/angular-aria/angular-aria.js"></script>
+	<script src="bower_components/angular-material/angular-material.min.js"></script>
+	<script src="main.js"></script>
+	<link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css" />
+</head>
+<body ng-controller="PinterestCtrl"> -->
+			<div layout="column" ng-model="InstaDetails">
+					<div>
+							<md-card layout="column" >
+								<div layout="row" layout-align="center center" >
+											
+										   			<img src="img/{{widget.widData.profilepic}}" style="height:50px;width:50px;border-radius:50px;margin:2px;">
+										
+										        	<md-input-container >
+											          <label>Full Name</label>
+											          <input ng-model="{{widget.widData.firstName}}" style="font-weight:bold" ng-disabled="true">
+											        </md-input-container>
+										        	<md-input-container >
+											          <label>User Name</label>
+											          <input ng-model="{{widget.widData.username}}"
+											          style="font-weight:bold" ng-disabled="true">
+											        </md-input-container>
+											    <!--     <md-input-container>
+											        <md-button class="md-primary raised" ng-click="instaclick()">login</md-button>
+											        </md-input-container> -->
+								</div>
+							</md-card>
+					</div>
+					<div>
+							<md-card layout="column" style="">
+								<md-card layout="row" layout-align="space-around">
+									<div layout="column" layout-align="center center">
+
+									<div layout="column" layout-align="center center">
+										<div style="text-align:center;line-height:0.5">
+											<h2>{{widget.widData.likes}}</h2>
+											<h5>Likes</h5>
+										</div>
+									</div>
+
+									<div layout="column" layout-align="center center">
+										<div style="text-align:center;line-height:0.5">
+											<h2>{{widget.widData.followers}}</h2>
+											<h5>Followers</h5>
+										</div>
+									</div>
+
+									<div layout="column" layout-align="center center">
+										<div style="text-align:center;line-height:0.5">
+											<h2>{{widget.widData.follows}}</h2>
+											<h5>Following</h5>
+										</div>
+									</div>
+
+									
+								</md-card>
+								<md-card style="height:100px;background:#ececec">
+								</md-card>
+
+							</md-card>
+					</div>
+			</div>
+<!-- </body>
+</html> -->

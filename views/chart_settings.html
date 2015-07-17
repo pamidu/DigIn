@@ -1,0 +1,273 @@
+<md-dialog   plumb-item >
+   <md-toolbar class="modal-header" md-theme="white">
+      <h1>Widget Settings</h1>
+   </md-toolbar>
+   <md-content>
+      <div  class="tabsdemoStaticTabs sample" >
+         <md-tabs md-theme="teal" md-selected="datatab.selectedIndex">
+            <md-tab id="tab1" md-theme="teal" aria-controls="tab1-content">
+               CHART
+            </md-tab>
+            <md-tab id="tab2"  md-theme="teal" aria-controls="tab2-content">
+               SOURCE
+            </md-tab>
+            <md-tab id="tab3" md-theme="teal" aria-controls="tab3-content">
+               ADVANCED
+            </md-tab>
+            <md-tab id="tab4" md-theme="teal" aria-controls="tab4-content">
+               SERIES
+            </md-tab>
+            <md-tab id="tab5" md-theme="teal" aria-controls="tab5-content">
+               SOCIAL MEDIA
+            </md-tab>
+            <md-tab id="tab5" md-theme="teal" aria-controls="tab5-content">
+               PLUGINS
+            </md-tab>
+         </md-tabs>
+         <ng-switch on="datatab.selectedIndex" class="tabpanel-container">
+            <div md-theme="teal" role="tabpanel"
+               id="tab1-content"
+               aria-labelledby="tab1"
+               ng-switch-when="0"
+               md-swipe-left="next()"
+               md-swipe-right="previous()" style="overflow:hidden;" >
+               <form name="userForm">
+                  <md-input-container flex>
+                     <label>Title</label>
+                     <input name="sizeX" ng-model="widget.chartConfig.title.text">
+                  </md-input-container>
+                  <div layout layout-sm="column">
+                     <md-input-container flex>
+                        <label>Width</label>
+                        <input   ng-model="widget.chartConfig.size.width" name="sizeX" >
+                     </md-input-container>
+                     <md-input-container flex>
+                        <label>Height</label>
+                        <input  ng-model="widget.chartConfig.size.height" name="sizeY">
+                     </md-input-container>
+                  </div>
+                 <div  layout="row" layout-align='center start'>
+                     <md-input-container flex>
+                     <md-button class="md-raised"  ng-click="addSeries()">Add Series</md-button>
+                     </md-input-container>
+                     <md-select style="text-transform:capitalize"  md-theme="teal" placeholder="Chart type" ng-model="widget.chartConfig.options.chart.type"  flex >
+                        <md-option  ng-value="t.id" flex="49" ng-repeat="t in widget.chartTypes">{{ t.id }}</md-option>
+                     </md-select>
+                  </div>
+               </form>
+            </div>
+            <div md-theme="teal"  role="tabpanel"
+               id="tab2-content"
+               aria-labelledby="tab2"
+               ng-switch-when="1"
+               md-swipe-left="next()"
+               md-swipe-right="previous()">
+               <form name="userForm2" ng-controller="elasticController">
+                  <md-input-container flex>
+                     <label>URL/IP:</label>
+                     <input name="sizeX" placeholder="www.duosoftware.com/test" ng-model="widget.dataSourceURL">
+                  </md-input-container>
+                  <div  layout="row" layout-align='center start'>
+                     <md-select ng-model="datasource" placeholder="Object Store" flex="50">
+                        <md-option ng-value="opt" ng-repeat="opt in datasources">{{ opt }}</md-option>
+                     </md-select>
+                     <md-select  style="text-transform:capitalize" ng-change="getFields()" placeholder="Index" ng-model="ind"  flex="50">
+                        <md-option   style="text-transform:capitalize" ng-value="ind" ng-repeat=" ind in indexes">{{ ind }}</md-option>
+                     </md-select>
+                  </div>
+                  <div layout="row" layout-wrap  md-scroll-y flex>
+                     <md-checkbox flex='45'
+                        ng-repeat="field in selectedFields"
+                        layout="row"
+                        ng-click="toggleCheck(field)"
+                        style="text-transform:capitalize"
+                        aria-label={{field.name}}>
+                        {{field.name}}
+                     </md-checkbox>
+                  </div>
+                  <!--  <div  layout="row" layout-align='center start'>
+                     <md-input-container flex>
+                        <label>Take</label>
+                        <input   ng-model="widget.chartConfig.size.width" name="sizeX" >
+                     </md-input-container>  
+                     
+                     
+                     </div> -->
+                  <div  layout="row" layout-align='center start'>
+                     <md-input-container flex>
+                        <label>Series Field:</label>
+                        <input   ng-model="widget.seriesname" name="seriesName" >
+                     </md-input-container>
+                     <md-input-container flex>
+                        <label>Data Field:</label>
+                        <input  ng-model="widget.dataname" name="dataName">
+                     </md-input-container>
+                  </div>
+                  <div  layout="row" layout-align='center start'>
+                     <md-input-container flex="50">
+                        <md-button  ng-click="getData()" class="md-raised">Show Data</md-button>
+                     </md-input-container>
+                     <md-input-container flex="50">
+                        <md-button  ng-click="buildchart(widget)"  class="md-raised">Build Chart</md-button>
+                     </md-input-container>
+                  </div>
+               </form>
+            </div>
+            <div style="height:100%;" role="tabpanel"
+               id="tab3-content"
+               aria-labelledby="tab3"
+               ng-switch-when="2"
+               md-swipe-left="next()"
+               md-swipe-right="previous()">
+               <form  name="userForm4" ng-controller="elasticController">
+                  <div layout="row" layout-margin>
+                     <md-input-container flex>
+                        <label>Query</label>
+                        <input name="sizeX" ng-model="widget.query">
+                     </md-input-container>
+                  </div>
+                  <div layout="row" layout-margin>
+                     <md-input-container flex>
+                        <md-button class="md-raised"  ng-click="executeQuery(widget)">Execute</md-button>
+                     </md-input-container>
+                  </div>
+                  <md-toolbar class="demo-toolbar md-default-theme">
+                     <div class="md-toolbar-tools">
+                        <h3 class="ng-binding">Excel upload</h3>
+                        <span flex=""></span>
+                     </div>
+                  </md-toolbar>
+               <form action="http://127.0.0.1:3000/com.duosoftware.com/uploads/Book6.xlsx/" method="post" enctype="multipart/form-data">
+                  <div layout="row" layout-margin>
+                     <md-input-container flex>
+                        <label>Class</label>
+                        <input name="sizeX" ng-model="excelClass">
+                     </md-input-container>
+                  </div>
+                  <div style="padding-left: 10px;" layout="row" layout-align="center center" layout-margin>
+                     <input type="file" ng-model="excelFile" id="upload-file">
+                  </div>
+                  <div layout="row" layout-margin>
+                     <md-input-container flex>
+                        <md-button class="md-raised"  ng-click="alert(excelFile);">Upload</md-button>
+                     </md-input-container>
+                  </div>
+               </form>
+            </div>
+            <div role="tabpanel"
+               md-theme="teal" 
+               id="tab4-content"
+               aria-labelledby="tab4"
+               ng-switch-when="3"
+               md-swipe-left="next()"
+               md-swipe-right="previous()"  >
+               <form name="userForm3" ng-repeat="ser in widget.chartSeries">
+                  <div layout="row" layout-margin>
+                     <div flex flex-order="1">
+                        <md-input-container flex>  
+                           <label>Title</label>
+                           <input   ng-model="ser.name" name="title" >
+                        </md-input-container>
+                     </div>
+                     <div flex flex-order="2">
+                        <md-input-container flex> 
+                           <label>Color</label>
+                           <input   ng-model="ser.color" name="color" >
+                        </md-input-container>
+                     </div>
+                     <div flex flex-order="3">
+                        <md-input-container flex>  
+                           <label>Dash style</label>
+                           <input   ng-model="ser.dashstyle" name="dashstyle" >
+                        </md-input-container>
+                     </div>
+                     <div flex flex-order="4">
+                        <md-input-container flex>
+                           <md-button class="md-raised"  ng-click="removeSeries($index)">Delete</md-button>
+                        </md-input-container>
+                     </div>
+                  </div>
+               </form>
+            </div>
+            <div  role="tabpanel"
+               md-theme="teal" 
+               id="tab5-content"
+               aria-labelledby="tab5"
+               ng-switch-when="4"
+               md-swipe-left="next()"
+               md-swipe-right="previous()"  >
+               <form ng-controller="SocialMediaCtrl" name="userForm3">
+<!--                   <div layout layout-sm="row" layout-margin>
+                     <md-select placeholder="Account Type" ng-change="changeAccount()" ng-model="type" flex>
+                        <md-optgroup label="Title">
+                        <md-option ng-value="k" data-ng-repeat="(k,v) in analytics">{{ k }}</md-option>
+                     </md-select>
+                  </div> -->
+                  <div layout="row" layout-align='center start' layout-margin>
+                     <md-select placeholder="Account Owner" ng-model="userAccountName" flex>
+                        <md-optgroup label="Account Owner">
+                        <md-option ng-repeat="acc in accounts">{{acc}}</md-option>
+                     </md-select>
+                     <md-input-container flex>
+                        <md-button class="md-raised" ng-click="addAccount()">{{connectBtnLabel}}</md-button>
+                     </md-input-container>
+                  </div>
+                  <div layout ng-hidden="false" layout-sm="row" layout-margin>
+                     <md-select placeholder="Pages" ng-model="fbPageModel" ng-change="changePage(widget)" flex>
+                        <md-optgroup label="Pages">
+                        <md-option ng-repeat="item in fbPages" value="{{item.id}}">{{item.name}}</md-option>
+                     </md-select>
+                  </div>
+                  <!-- <div layout="row" layout-align='center start'>
+                     <md-input-container flex="48">
+                     <md-button class="md-raised" ng-click="addSeries()">Vizualize</md-button>
+                     </md-input-container flex>
+                  </div> -->
+               </form>
+            </div>
+            <div  role="tabpanel"
+               md-theme="teal" 
+               id="tab6-content"
+               aria-labelledby="tab6"
+               ng-switch-when="5"
+               md-swipe-left="next()"
+               md-swipe-right="previous()"  >
+               <form    name="userForm5" >
+                  <div layout="row" layout-margin>
+                     <md-input-container flex>  
+                        <label>URL of the Plugin:</label>
+                        <input name="sizeX" ng-model="widget.d3plugin">
+                     </md-input-container>
+                  </div>
+                  <div layout="row" layout-margin>
+                     <div flex flex-order="2">
+                        <md-input-container flex>
+                           <md-button ng-click="openD3()"  class="md-raised">D3 PLUGINS</md-button>
+                        </md-input-container>
+                     </div>
+                  </div>
+               </form>
+            </div>
+            <div role="tabpanel"
+               md-theme="teal" 
+               id="tab7-content"
+               aria-labelledby="tab7"
+               ng-switch-when="6"
+               md-swipe-left="next()"
+               md-swipe-right="previous()"  >
+               <form action="http://127.0.0.1:3000/{{excelNamespace}}/{{excelClass}}/Book6.xlsx/" method="post" enctype="multipart/form-data">
+                  <md-subheader class="md-primary">Upload an excel file</md-subheader>
+               </form>
+            </div>
+         </ng-switch>
+      </div>
+   </md-content>
+   <div class="md-actions" md-theme="indigo"  layout="row">
+      <md-button style="width:200px" ng-click="closeDialog()"   class="md-raised md-primary">
+         Ok
+      </md-button>
+      <md-button style="width:200px"  class="md-raised"   ng-click="closeDialog()" class=" md-default md-primary">
+         Cancel
+      </md-button>
+   </div>
+</md-dialog>

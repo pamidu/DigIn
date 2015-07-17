@@ -1,0 +1,58 @@
+<md-dialog style="min-width:400px;">
+    <form   >
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <div flex="10">
+                    <md-icon class="md-avatar" md-svg-src="bower_components/material-design-icons/action/svg/production/ic_perm_data_setting_24px.svg" style="color:#fff !important;" style="color:#fff !important;float:left;border-radius:100%;"></md-icon>
+                </div>
+                <div flex="80">
+                    <h3>Configuration</h3>
+                </div>
+                <div flex="10">
+                    <span> 
+                                <md-button    >
+                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg" style="color:#fff !important;" ng-click="cancel()"></md-icon>
+                                   </md-button>
+                              </span>
+                </div>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-input-container flex>
+                <label>URL/IP:</label>
+                <input name="sizeX" placeholder="www.duosoftware.com/test" ng-model="widget.chartConfig.title.text">
+            </md-input-container>
+            <div layout="row" layout-align='center start'>
+                <md-select ng-model="datasource" placeholder="Object Store" flex="50">
+                    <md-option ng-value="opt" ng-repeat="opt in datasources">{{ opt }}</md-option>
+                </md-select>
+                <md-select style="text-transform:capitalize" ng-change="getFields()" placeholder="Index" ng-model="ind" flex="50">
+                    <md-option style="text-transform:capitalize" ng-value="ind" ng-repeat=" ind in indexes">{{ ind }}</md-option>
+                </md-select>
+            </div>
+            <div layout="row" layout-wrap md-scroll-y flex>
+                <md-checkbox flex='20' ng-repeat="field in selectedFields" layout="row" ng-click="toggleCheck(field)" style="text-transform:capitalize" aria-label={{field.name}}>
+                    {{field.name}}
+                </md-checkbox>
+            </div>
+                <div layout="row" layout-align='center start'>
+                <md-input-container flex>
+                    <label>Series Field:</label>
+                    <input ng-model="widget.seriesname" name="seriesName">
+                </md-input-container>
+                <md-input-container flex>
+                    <label>Data Field:</label>
+                    <input ng-model="widget.dataname" name="dataName">
+                </md-input-container>
+            </div>
+            <div layout="row" layout-align='center start'>
+                <md-input-container flex="50">
+                    <md-button ng-click="getData()" class="md-raised">Show Data</md-button>
+                </md-input-container>
+                <md-input-container flex="50">
+                    <md-button ng-click="buildchart(widget)" class="md-raised">Build Chart</md-button>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

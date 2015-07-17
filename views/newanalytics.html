@@ -1,0 +1,27 @@
+ <md-dialog  id="dialogAnalytics"  plumb-item >
+    <md-toolbar  scroll-shrink layout="row" md-theme="teal">
+                      <div class="md-toolbar-tools">
+                          <div flex="95">
+                          <h3>
+                          <span>New Analytics</span>
+                         </h3>
+                         </div>
+                          
+                           <div  flex="5">
+                             <span>
+                                 <md-button class="md-primary md-raised" ng-click="closeDialog()"  aria-label="Close">
+                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
+                                 </md-button>
+                             </span>
+                          </div>
+                        </div>
+     </md-toolbar>
+     <md-content>
+      
+        <div class="a_iframe">
+       <iframe frameborder='0' ng-src="{{trustSrc(analyticsurl)}}" ng-init="applyCSS()"   frameborder="0" allowfullscreen></iframe>
+         </div>
+             
+     </md-content>
+
+</md-dialog  >

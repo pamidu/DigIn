@@ -1,0 +1,29 @@
+<md-dialog   plumb-item >
+  <md-toolbar class="modal-header" md-theme="teal">  
+       <h1>Success!</h1>
+  </md-toolbar>
+         <md-content>
+          <div layout="row" layout-margin>
+                      <div flex="10">
+                              <md-button class="md-fab md-raised"> 
+                                <md-icon md-svg-src="bower_components/material-design-icons/action/svg/production/ic_thumb_up_24px.svg"></md-icon>
+                              </md-button>
+                      </div>  
+                      <div flex="80">                 
+                               <h4>File has has been successfully uploaded!</h4>
+                     </div>
+               </div>
+              
+               
+        </md-content>
+  <div class="md-actions" md-theme="teal"  layout="row">    
+          <md-button style="width:200px"  ng-click="closeDialog()"  class="md-raised">
+           Ok
+         </md-button>
+          <md-button style="width:200px"  class="md-raised"   ng-click="closeDialog()" class=" md-default">
+            Cancel
+          </md-button>
+  </div>
+</md-dialog> 
+ 
+ 

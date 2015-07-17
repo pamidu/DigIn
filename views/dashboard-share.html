@@ -1,0 +1,78 @@
+
+<md-dialog   plumb-item>
+
+   <md-toolbar md-theme="teal" scroll-shrink layout="row">
+                      <div class="md-toolbar-tools">
+                          <div flex="90">
+                              <h3>
+                                 <span> Share </span>
+                              </h3>
+                         </div>                           
+                           <div  flex="10">
+                             <span>
+                                 <md-button  class="md-primary md-raised" ng-click="closeDialog()"  aria-label="Close">
+                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
+                                 </md-button>
+                             </span>
+                          </div>
+                        </div>
+   </md-toolbar>      
+ 
+         <md-content>
+        
+              <md-button class="btnshare"> 
+                     <md-icon class="iconshare"  href="#"
+                  socialshare
+                  socialshare-provider="facebook"
+                  socialshare-text="Share this dashboard"
+                  socialshare-url="#" class="iconshare" md-svg-src="styles/css/images/facebook56.svg">
+                     
+                 </md-icon>                    
+               </md-button>
+             
+               <md-button class="btnshare"> 
+                     <md-icon class="iconshare" href="#" socialshare socialshare-provider="google+" 
+                     socialshare-text="Share this dashboard" socialshare-url="#" 
+                     md-svg-src="styles/css/images/google120.svg">
+                     </md-icon>                    
+               </md-button>
+        
+               <md-button class="btnshare"> 
+                      <md-icon class="iconshare"  href="#" socialshare socialshare-provider="twitter"
+                      socialshare-text="Share this dashboard" socialshare-url="#" 
+                      md-svg-src="styles/css/images/twitter47.svg">
+                      </md-icon>                     
+               </md-button>
+            
+               <md-button class="btnshare"> 
+                     <md-icon class="iconshare" md-svg-src="styles/css/images/linkedin24.svg">
+                     </md-icon>                    
+               </md-button>
+
+               <md-button class="btnshare"> 
+                     <md-icon class="iconshare" md-svg-src="styles/css/images/pinterest33.svg">
+                     </md-icon>                     
+               </md-button>
+
+               <md-button class="btnshare"> 
+                     <md-icon class="iconshare" md-svg-src="styles/css/images/tumblr22.svg">
+                     </md-icon>     
+               </md-button>
+
+               <md-button class="btnshare" ng-click="openEmail()"> 
+                     <md-icon style="padding-top:5px;padding-left:5px" class="iconshare"  md-svg-src="styles/css/images/email.svg">
+                     </md-icon>                    
+               </md-button>
+               <div id="test"></div>
+
+
+         </md-content>
+  </md-dialog> 
+
+  <!-- ;window.open('views/loginEmail.html', '_blank', 'location=yes,height=600,width=800,scrollbars=yes,status=yes'); 
+
+onclick="window.open('views/loginEmail.html', '_blank', 'location=yes,height=600,width=800,scrollbars=yes,status=yes');"
+  -->
+  
+ 
+ 

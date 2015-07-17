@@ -1,0 +1,51 @@
+ <md-dialog   plumb-item >
+    <md-toolbar  scroll-shrink layout="row" md-theme="teal">
+                      <div class="md-toolbar-tools">
+                          <div flex="90">
+                          <h3>
+                          <span>Change theme</span>
+                         </h3>
+                         </div>
+                          
+                           <div  flex="5">
+                            
+                                 <md-button class="md-secondary" ng-click="closeDialog()"  aria-label="Close">
+                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
+                                 </md-button>
+                            
+                          </div>
+                        </div>
+     </md-toolbar>
+      <md-content style="overflow:hidden">
+        <div layout="row" layout-margin>
+           <div flex flex-order="1">
+                     
+                          <md-button id="indiButton" ng-click="applyIndigoCSS()"   class="md-raised" > 
+                     <md-icon id="indiIcon" md-svg-src="bower_components/material-design-icons/image/svg/production/ic_brush_24px.svg"></md-icon>
+                     
+                  </md-button>
+                      
+                  </div>  
+                  <div flex flex-order="2"> 
+                    
+                        <md-button id="minimalButton" class="md-raised" ng-click="applyMinimalCSS()"   > 
+                    <md-icon id="miniIcon" md-svg-src="bower_components/material-design-icons/image/svg/production/ic_brush_24px.svg"></md-icon>
+                     
+                 </md-button>
+                   
+                  </div>
+                 <div flex flex-order="3">  
+                   
+                         <md-button id="violetButton" class="md-raised" ng-click="applyVioletCSS()" > 
+                     <md-icon id="violetIcon"   md-svg-src="bower_components/material-design-icons/image/svg/production/ic_brush_24px.svg"></md-icon>
+                      
+                </md-button>
+               
+                </div>  
+        
+       
+       
+             </div>
+     </md-content>
+
+</md-dialog  >

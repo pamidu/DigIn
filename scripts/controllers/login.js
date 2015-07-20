@@ -56,8 +56,8 @@ app.controller("LoginCtrl", ['$scope', '$http', '$templateCache', '$rootScope', 
             $scope.txtPwd = '';
             $http({
                 method: 'POST',
+              //  url: 'http://104.236.192.147:8281/pentaho/j_spring_security_check?j_username='+$localStorage.uname+'&j_password='+$localStorage.pwd+"'",
                 url: 'http://104.236.192.147:8281/pentaho/j_spring_security_check?j_username=admin&j_password=password',
-                //url: 'http://104.236.192.147:8080/pentaho/j_spring_security_check?j_username=admin&j_password=password',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',

@@ -1,8 +1,8 @@
-<md-content style="max-height:360px;">
+<md-content style="height:300px;">
   <div layout="column" ng-repeat="post in widget.widData.posts track by $index">
     <div layout="column">
       <md-toolbar>
-        <h4 style="text-align:center;">{{post.authorName}}</h4>
+        <h5 style="text-align:center;">{{post.authorName}}</h5>
       </md-toolbar>
       <md-list-item class="md-3-line">
         <img class="md-avatar" src="{{post.picURL}}"/>

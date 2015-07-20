@@ -4,6 +4,9 @@ var fbInterface = new function(){
 	this.state = "";
 
 	this.getFbLoginState = function(scope){
+		//alert(scope);
+		//setLoginButtonValue("response.status");
+		//scope.actIndicator = "false";
         FB.getLoginStatus(function(response) {
             fbInterface.setLoginButtonValue(response.status,scope);
             fbInterface.getUserPages(scope);
@@ -116,7 +119,7 @@ var fbInterface = new function(){
             }
         );
 	};
-
+	
 	this.getPageLikesInsight = function(pageId, dateObj, callback){
 		var boundaryStamp = getBoundaryTimestamps(dateObj.range,dateObj.until);
 		var tes = "/"+pageId+"/insights/page_fan_adds?debug=all&method=get&pretty=0&suppress_http_code=1&since="+boundaryStamp.sinceStamp+"&until="+boundaryStamp.untilStamp+"&limit=10";

@@ -7,7 +7,8 @@
 |      #elastic settings  : elasticInit                    | 
 |      #wordpress settings: wordpressInit                  |
 |      #instagram settings: instaInit                      | 
-|      #d3plugin settings : d3Init                         |     
+|      #d3plugin settings : d3Init                         |  
+|      #sltskillwisecall settings :sltskillInit            |
 ------------------------------------------------------------
 */
 /*summary-
@@ -35,7 +36,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
     };
 
     
-    scope.chartConf = {"options":{"chart":{"type":"area"},"plotOptions":{"series":{"stacking":""}}},"series":[{"name":"Like Count","data":[],"id":"series-0","type":"area","dashStyle":"ShortDashDot","connectNulls":false}],"title":{"text":"Page Likes"},"credits":{"enabled":false},"loading":false,"xAxis":{"type":"datetime","currentMin":0},"yAxis":{"min":0}};
+    scope.chartConf = {"options":{"chart":{"type":"area"},"plotOptions":{"series":{"stacking":""}}},"series":[{"name":"Like Count","data":[],"id":"series-0","type":"line","dashStyle":"ShortDashDot","connectNulls":false}],"title":{"text":"Page Likes"},"credits":{"enabled":false},"loading":false,"xAxis":{"type":"datetime","currentMin":0},"yAxis":{"min":0}};
     scope.chartConfView
  = {"options":{"chart":{"type":"area"},"plotOptions":{"series":{"stacking":""}}},"series":[{"name":"View Count","data":[],"id":"series-0","type":"area","dashStyle":"ShortDashDot","connectNulls":false,"color":"#FF5722"}],"title":{"text":"Page Views"},"credits":{"enabled":false},"loading":false,"xAxis":{"type":"datetime","currentMin":0},"yAxis":{"min":0}};
 
@@ -81,7 +82,6 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
         };   
         $rootScope.dashboard.widgets[objIndex].widData = obj; 
         });
-
         
 
         $mdDialog.hide();
@@ -100,7 +100,27 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
         });
     };
 };
+function SLTInit($scope,$http, widId,$rootScope, $mdDialog)
+{
+  $scope.visualz = ['Calls in IVR', 'Calls in Queue', 'Calls in Agent','Calls Dropped',
+            'Skill Wise Summary'];
 
+   $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+    $scope.ok = function() {
+
+        var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+
+        var visualizeType = $scope.datasource;
+
+        $rootScope.dashboard.widgets[objIndex].widData = visualizeType;
+        $mdDialog.hide();
+    };
+  
+  
+
+}
 /*summary-
   linkedinInterface : (scripts/custom/linkedinInterface.js)
 */
@@ -127,7 +147,6 @@ function linkedInit(scope, $mdDialog, widId, $rootScope) {
     //complete config  
     scope.finish = function() {
         linkedinInterface.getUserAccountOverview(scope, function(data) {
-            console.log(JSON.stringify(data));
             var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
             $rootScope.dashboard.widgets[objIndex].widData = data;
         });
@@ -329,7 +348,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         client.getSelected(parameter);
     }
 };
-function InitConfigD3($scope, $mdDialog, widId, $rootScope) {
+function InitConfigD3($scope, $mdDialog, widId, $rootScope,$sce) {
 
     $scope.activitylist = [];
 
@@ -338,6 +357,13 @@ function InitConfigD3($scope, $mdDialog, widId, $rootScope) {
         Description: "Population Pyramid",
         icon: "styles/css/images/icons/d3/Population_Pyramid.png",
         link: "http://bl.ocks.org/mbostock/raw/4062085/"
+    });
+    
+    $scope.activitylist.push({
+        Name: "Aster Plot",
+        Description: "Aster Plot",
+        icon: "styles/css/images/icons/d3/Aster_Plot.png",
+        link: "http://bl.ocks.org/bbest/raw/2de0e25d4840c68f2db1/"
     });
     $scope.activitylist.push({
         Name: "The JellyFish",
@@ -430,12 +456,6 @@ function InitConfigD3($scope, $mdDialog, widId, $rootScope) {
         link: "http://bl.ocks.org/mbostock/raw/4348373/"
     });
 
-    $scope.activitylist.push({
-        Name: "Aster Plot",
-        Description: "Aster Plot",
-        icon: "styles/css/images/icons/d3/Aster_Plot.png",
-        link: "http://bl.ocks.org/bbest/raw/2de0e25d4840c68f2db1/"
-    });
 
     $scope.activitylist.push({
         Name: "Google maps",
@@ -443,12 +463,25 @@ function InitConfigD3($scope, $mdDialog, widId, $rootScope) {
         icon: "styles/css/images/icons/d3/sunburst.png",
         link: "http://bl.ocks.org/mbostock/raw/899711/"
     });
+    
+    $scope.trustSrc = function(src) {
+       return $sce.trustAsResourceUrl(src);
+    }
+    $scope.setPlugin = function(wid){
 
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+     $rootScope.dashboard.widgets[objIndex].d3plugin =  wid.link;
+     $rootScope.dashboard.widgets[objIndex].chartConfig.title.text =  wid.Name;
+     $rootScope.dashboard.widgets[objIndex].externalDataURL = wid.Data;
+           $mdDialog.hide();
+    } 
     $scope.cancel = function() {
         $mdDialog.hide();
     };
 
 };
+
+
 
 function wordpressInit ($scope, $http, $mdDialog, widId, $rootScope){
 

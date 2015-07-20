@@ -1,26 +1,33 @@
 <!DOCTYPE html>
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>DuoDigin - For BigData Analytics</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">    
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="shortcut icon" href="http://duosoftware.atlassian.net/s/en_US-xr35dg/64005/22/_/favicon.ico">
+
+
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
-    <link rel="stylesheet" href="bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
     <link href="styles/css/material-wfont.css" rel="stylesheet">
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
-    <link rel="shortcut icon" href="http://duosoftware.atlassian.net/s/en_US-xr35dg/64005/22/_/favicon.ico">
+    
     <link rel="stylesheet" href="styles/css/pivot.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet"type="text/css" href="styles/css/directive_library.css">
     <link rel="stylsheet" type="text/css" href="styles/css/pivot.css" />
     <link rel="stylesheet" type="text/css" href="styles/css/style.css">
     <link rel="stylesheet" type="text/css" href="styles/css/admin1.css">
     <link rel="stylesheet"type="text/css" href="styles/css/wordpress.css">
+    <link rel="stylesheet"type="text/css" href="styles/css/Weather-style.css">
+    <link rel="stylesheet"type="text/css" href="styles/css/accordion.css">
     <link rel="apple-touch-icon" href="../../assets/globals/img/icons/apple-touch-icon.png">
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
     api_key: 75 mu4z7y428pty
@@ -36,11 +43,12 @@
 
 <body plumb-item ng-controller="NavCtrl" ng-app="DuoDiginRt" style="overflow:auto !important">
     <script type="text/javascript" src="scripts/fbSDK.js"></script>
+    <script type="text/javascript" src="scripts/fbSDK.js"></script>
     <div id="fb-root"></div>
 
     <div ng-init="GetReportDetails()" class="nav-menu">
     
-    <img ng-src="styles/css/images/logo3.png" class="md-avatar" alt="appLogo" style="padding-top:5px; margin-left:4px">
+    <img ng-src="styles/css/images/logo2.png" class="md-avatar" alt="appLogo" style="padding-top:5px; margin-left:4px">
     <md-divider style="padding-top:2px; "></md-divider>
     <div style="margin-top:55px;">
         <md-item ng-repeat="item in menu">
@@ -236,15 +244,13 @@
     <script type="text/javascript" src="scripts/vendor/jquery.jsPlumb-1.4.1-all-min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
     <script src="scripts/vendor/highcharts-ng.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
     <script type="text/javascript" src="scripts/vendor/highcharts.js"></script>
     <script type="text/javascript" src="scripts/config.js"></script>
     <script src="bower_components/angular-material/angular-material.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-aria/angular-aria.js"></script>
-
-
-
     <script src=" bower_components/hammerjs/hammer.js"></script>
     <script type="text/javascript" src="scripts/vendor/oauth.js"></script>
     <script src="bower_components/d3/d3.js"></script>
@@ -263,6 +269,7 @@
     <script src="bower_components/ngStorage/ngStorage.js"></script>
     <script type="text/javascript" src="scripts/vendor/pivot.js"></script>
 
+    <!-- html2canvas -->
     <script type="text/javascript" src="build/html2canvas.js"></script>
 
     <script type="text/javascript" src="scripts/custom/utility.js"></script>
@@ -276,12 +283,14 @@
     <script type="text/javascript" src="scripts/controllers/DashboardCtrl.js"></script>
     <script type="text/javascript" src="scripts/directives/plumbItem.js"></script>
     <script type="text/javascript" src="scripts/directives/postRender.js"></script>
+    <script type="text/javascript" src="scripts/directives/accordion.js"></script>
     <script type="text/javascript" src="scripts/controllers/chartSettingsCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/elasticController.js"></script>
     <script type="text/javascript" src="scripts/directives/resizeable.js"></script>
     <script type="text/javascript" src="scripts/directives/droppable.js"></script>
     <script type="text/javascript" src="scripts/directives/draggable.js"></script>
     <script type="text/javascript" src="scripts/directives/validNumber.js"></script>
+    <script type="text/javascript" src="scripts/directives/directivelibrary.js"></script>
     <script type="text/javascript" src="scripts/controllers/ReportCtrl.js"></script>
     <script type="text/javascript" src="scripts/services/ReportService.js"></script>
     <script type="text/javascript" src="scripts/controllers/ExportCtrl.js"></script>
@@ -291,32 +300,34 @@
     <script type="text/javascript" src="scripts/controllers/successCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/errorCtrl.js"></script>
     <script type="text/javascript" src="scripts/services/Dashboard.js"></script>
+      <script type="text/javascript" src="scripts/factories/d3Data.js"></script>
     <script type="text/javascript" src="scripts/controllers/newWidgetCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/ShowTableCtrl.js"></script>
     <script type="text/javascript" src="scripts/services/RealTimeService.js"></script>
     <script type="text/javascript" src="scripts/services/AnalyticsService.js"></script>
- 
+     <script type="text/javascript" src="scripts/controllers/emailCtrl.js"></script>  
+    <script type="text/javascript" src="scripts/controllers/ThemeCtrl.js"></script> 
     <script type="text/javascript" src="scripts/custom/fbInterface.js"></script>
     <script type="text/javascript" src="scripts/custom/linkedinInterface.js"></script>
     <script type="text/javascript" src="scripts/vendor/uimicrokernel.js"></script>
     <script type="text/javascript" src="scripts/controllers/WeatherCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/widgetCtrl.js"></script>
-    <script type="text/javascript" src="scripts/controllers/emailCtrl.js"></script>  
-
+    <script type="text/javascript" src="scripts/controllers/settingsCtrl.js"></script>
     <!-- Material Icons -->
     <script src="//cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"></script>
-  
+    
+
     <!-- svg to canvas -->
     <script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script> 
     <script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
     <script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script> 
 
+        <script type="text/javascript" src="scripts/controllers/ThemeCtrl.js"></script>
     <script>
     $(document).ready(function() {
         Layout.init();
     });
     </script>
-
 </body>
 
 </html>

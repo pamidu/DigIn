@@ -65,32 +65,7 @@ routerApp.controller('GridBottomSheetCtrl', function($scope, $mdBottomSheet,$mdD
     $mdBottomSheet.hide(clickedItem);
   };
 });
-routerApp.controller('ThemeCtrl', function($scope, $mdBottomSheet,$mdDialog,cssInjector) {
-  
-   $scope.applyIndigoCSS = function() {
-     cssInjector.removeAll();
-        cssInjector.add("/Duodigin/styles/css/style1.css");
-       
-      }
-
-       $scope.applyMinimalCSS = function() {
-        cssInjector.removeAll();
-        cssInjector.add("/Duodigin/styles/css/style3.css");
-       
-      }
- $scope.closeDialog = function() {
-      // Easily hides most recent dialog shown...
-      // no specific instance reference is needed.
-      $mdDialog.hide();
-    };
-      $scope.applyVioletCSS = function() {
-        cssInjector.removeAll();
-        cssInjector.add("/Duodigin/styles/css/style.css");
-         
-      }
-
-
-  });
+ 
 
 routerApp.controller('HelpCtrl', function($scope, $mdBottomSheet,$mdDialog,cssInjector) {
   

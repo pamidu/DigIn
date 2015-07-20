@@ -82,7 +82,7 @@
   "credits": {
     "enabled": false
   },
-  "loading": true,
+  "loading": false,
   "xAxis": {
     "type": "datetime",
     "currentMin": 0 
@@ -107,7 +107,7 @@
             "Description": "Plus Ones, Circled By",
             "initTemplate": "fbInitConfig",
             "initController": "fbInit",
-            "widView": "views/chartview.html"
+            "widView": "views/WidgetGooglePlus.html"
         }, {
 
             "title": "LinkedIn",
@@ -176,6 +176,16 @@
             "initTemplate": "fbInitConfig",
             "initController": "fbInit",
             "widView": "views/chartview.html"
+        } ,
+          {
+
+            "title": "Skill wise calls",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Sri Lanka Telecom",
+            "Description": "Analyze the calls for each skills",
+            "initTemplate": "InitSLT",
+            "initController": "SLTInit",
+            "widView": "views/ViewSLT.html"
         } 
 
     ]

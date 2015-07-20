@@ -1,40 +1,40 @@
-                   <div plumb-item    ng-repeat="widget in dashboard.widgets" ng-style="{ 'left':widget.left, 'top':widget.top, 'width':widget.width  }"
-        data-identifier="{{widget}}" resizeable>
-
-                        <p ng-if="widget.divider">{{widget.chartConfig.title.text}}</p>
-                        <md-card   ng-dblclick="widget.expanded = !widget.expanded" ng-mouseover="hover = true" ng-mouseout="hover = false">
-                            <md-item layout="row">                                
-                                <div class="collapsed-row" layout="row" layout-align="start center" flex> 
-                                   <div class="md-toolbar-tools">
-                           <div flex="80">
-                          <h3>
+<div plumb-item ng-repeat="widget in dashboard.widgets" ng-style="{ 'left':widget.left, 'top':widget.top, 'width':widget.width  }" data-identifier="{{widget}}" resizeable>
+    <p ng-if="widget.divider">{{widget.chartConfig.title.text}}</p>
+    <md-card ng-dblclick="widget.expanded = !widget.expanded" ng-mouseover="hover = true" ng-mouseout="hover = false">
+        <md-item layout="row">
+            <div class="collapsed-row" layout="row" layout-align="start center" flex>
+                <div class="md-toolbar-tools">
+                    <div flex="70">
+                        <h4>
                           <span>{{widget.chartConfig.title.text}}</span>
-                         </h3>
-                         </div>
-                          <div  flex="10">
-                              <span> 
+                         </h4>
+                    </div>
+                    <div flex="10">
+                        <span> 
                                 <md-button  ng-click="showAdvanced($event,widget)"  aria-label="Settings">
                                    <md-icon md-svg-src="bower_components/material-design-icons/action/svg/production/ic_settings_24px.svg"></md-icon>
                                    </md-button>
                               </span>
-                           </div>
-                           <div  flex="10">
-                             <span>
+                    </div>
+                    <div flex="10">
+                        <span>
+                                 <md-button  ng-click="showData(widget)"    aria-label="Close">
+                                   <md-icon md-svg-src="bower_components/material-design-icons/action/svg/production/ic_assignment_24px.svg"></md-icon>
+                                 </md-button>
+                             </span>
+                    </div>
+                    <div flex="10">
+                        <span>
                                  <md-button  ng-click="remove(widget)"  aria-label="Close">
                                    <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
                                  </md-button>
                              </span>
-                          </div>
-                        </div> 
-                                </div>
-                            </md-item>
-                        </md-card>
-                        <md-card  style="height:100%"  md-ink-ripple  ng-if="widget.expanded && !widget.divider" ng-dblclick="widget.expanded = !widget.expanded">
-                          
-                                  <div  style="height:100%"   ng-include src="widget.widView" ></div>
-                            
-                        </md-card>
-                        
                     </div>
-              
-   
+                </div>
+            </div>
+        </md-item>
+    </md-card>
+    <md-card style="height:90%"   ng-if="widget.expanded && !widget.divider" ng-dblclick="widget.expanded = !widget.expanded">
+        <div style="height:100%" ng-include src="widget.widView"></div>
+    </md-card>
+</div>

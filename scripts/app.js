@@ -8,6 +8,7 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial', 'uiMicrokernel', "hi
     'FBAngular',
     'ngStorage',
     'configuration',
+    'directivelibrary',
     'ngMdIcons'
 ])
 
@@ -15,6 +16,7 @@ routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider",functio
     $httpProvider.defaults.headers.post['Content-Type'] = 'multipart/form-data';
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    $httpProvider.defaults.headers.common["Content-Type"] = "application/x-www-form-urlencoded";
     $stateProvider
         .state('Dashboards', {
             url: "/Dashboards",
@@ -83,6 +85,12 @@ routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider",functio
             url: '/AnalyzerViewer:param' ,
             controller: 'AnalyzerViewerControl',
             templateUrl: "views/Analyzer_viewer.html" 
+             
+        })
+             .state('Settings', {
+            url: '/settings' ,
+            controller: 'settingsCtrl',
+            templateUrl: "views/settings.html" 
              
         })
 }]);

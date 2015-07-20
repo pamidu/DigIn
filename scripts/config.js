@@ -6,6 +6,6 @@ angular.module('configuration', [])
     .constant('Digin_AnalyzerViewer',' http://104.236.192.147:8281/pentaho/api/repos/%3Ahome%') 
     .constant('Digin_ReportViewer','http://104.236.192.147:8281/pentaho/api/repos/%3Ahome%')
     .constant('Digin_DashboardViewer','http://104.236.192.147:8281/pentaho/api/repos/%3Ahome%')
-    .constant('Digin_Base_URL','http://localhost/git/jul7/cloudcharge-duodigin/')
+    .constant('Digin_Base_URL','http://localhost/digin/')
 
 

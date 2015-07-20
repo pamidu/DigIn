@@ -8,14 +8,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
         //     $window.location.href = Digin_Base_URL + 'home.html';
         // };
 
-        // html2canvas(document.body, {
-        //                 onrendered: function(canvas) {
-                            
-        //                     $rootScope.a = canvas;
-                                               
-        //                     alert("Snapshot Taken");
-        //                 }
-        // });
+
 
 
         $rootScope.indexes = [];
@@ -26,7 +19,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
         $rootScope.username =  $localStorage.uname;
         if ($rootScope.username == null) 
         {
-             $rootScope.username = "sajeetharan@duosoftware.com";
+             $rootScope.username = "admin";
         }
         
         var mm = today.getMonth() + 1; //January is 0!
@@ -120,7 +113,7 @@ alert('test');
  
         $rootScope.dashboard.widgets[objIndex].widData.viewData =  $scope.chartConf; 
             });
-        };
+        };        
         
         function DashboardCtrl($scope) {
 
@@ -161,6 +154,8 @@ alert('test');
                     selectedMenu[0].style.display = 'none';
                     $scope.saveDashboard();
                 }
+
+               
                 
                 if (name == "Data summary") {
                     var selectedMenu = document.getElementsByClassName("menu-layer");
@@ -328,9 +323,9 @@ alert('test');
 
             $http({
             method: 'GET',
-            url: 'http://104.236.192.147:8080/pentaho/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
+            url: 'http://104.236.192.147:8281/pentaho/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
 
-                  // http://104.236.192.147:8080/pentaho/api/repo/files/%3Ahome%3Asajeetharan%40duosoftware.com%3AReports/children?showHidden=false&filter=*|FILES&_=1434614109291
+                  // http://104.236.192.147:8281/pentaho/api/repo/files/%3Ahome%3Asajeetharan%40duosoftware.com%3AReports/children?showHidden=false&filter=*|FILES&_=1434614109291
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -375,7 +370,7 @@ alert('test');
            
             $http({
             method: 'GET',
-            url: 'http://104.236.192.147:8080/pentaho/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
+            url: 'http://104.236.192.147:8281/pentaho/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
             // cache: $templateCache,
             headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -419,7 +414,7 @@ alert('test');
            
             $http({
             method: 'GET',
-            url: 'http://104.236.192.147:8080/pentaho/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
+            url: 'http://104.236.192.147:8281/pentaho/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
             // cache: $templateCache,
             headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -454,10 +449,7 @@ alert('test');
           
 
         };
-
-
-
-        $scope.Share = function(ev) {
+         $scope.Share = function(ev) {
 
             canvg();
 
@@ -486,6 +478,8 @@ alert('test');
            },500);
 
         }
+
+
 
         $scope.Export = function(ev) {
             $mdDialog.show({
@@ -606,8 +600,12 @@ alert('test');
             if (routeName == "Save") {
                var selectedMenu = document.getElementsByClassName("menu-layer");
                     selectedMenu[0].style.display = 'none';
-                    $scope.savePentaho();
+                    //$scope.savePentaho();
+                    $scope.saveDashboard();
             }
+             if (routeName == "Settings") {
+                    $state.go('Settings');
+                }
             if (routeName == "TV Mode") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'none';
@@ -643,9 +641,22 @@ alert('test');
             $scope.$apply();
         }, 1700);
 
+        var featureObj = localStorage.getItem("featureObject");
+
         getJSONData($http,'menu',function(data){
-     $scope.menu =data;
-    });
+            
+            if(featureObj === null) $scope.menu = data;
+            else {
+                var featureArray = JSON.parse(featureObj);
+                var orignArray = [];
+                for(i=0;i<featureArray.length;i++){
+                    if(featureArray[i].state==true)
+                        orignArray.push(featureArray[i]);
+                }
+                $scope.menu = orignArray.concat(data);
+            }
+             
+        });
         
     }
 ]);

@@ -3,16 +3,17 @@ routerApp.directive('resizeable', function() {
         restrict: 'A',
 
         link: function(scope, element, attrs) {
-
+              var dataJ = JSON.parse(attrs.identifier);
+           var widgetPlugin = dataJ.uniqueType;
+   var widgetId = dataJ.id;
             $(element).resizable({
                 resize: function(event, ui) {
 
                   
                     if (widgetPlugin == "ElasticSearch") {    
-                          var dataJ = JSON.parse(attrs.identifier);
-                    var widgetId = dataJ.id;
-                    var widgetPlugin = dataJ.uniqueType;
-
+                        
+                     
+                   
                         var index = $('#' + widgetId).data('highchartsChart');
                         var chart = Highcharts.charts[index];
                         height = ui.size.height - 100;
@@ -20,12 +21,14 @@ routerApp.directive('resizeable', function() {
                         chart.setSize(width, height, doAnimation = true);
                         jsPlumb.repaint(ui.helper);
                     }
+
+
                        if (widgetPlugin != "ElasticSearch") {    
-                        
-                        height = ui.size.height - 100;
-                        width = ui.size.width - 40;
-                        $(".widgetresize").css("height", height);
-                         $(".widgetresize").css("width",  width);
+                       
+                        height = ui.size.height - 80;
+                        width = ui.size.width - 20;
+                         angular.element("#mdView").css("height", height);
+                         angular.element("#mdView").css("width",  width);
                      
                     }
                 },

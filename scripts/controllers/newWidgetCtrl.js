@@ -62,6 +62,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
     uniqueType: widget.title,
     expanded: true,
     seriesname :"",
+    externalDataURL: "",
     dataname:"",
     d3plugin:"",
      divider: false,    

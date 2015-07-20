@@ -1,0 +1,27 @@
+{
+  "nodes": [
+    {"skill": "Handled", "size": 10},
+    {"skill": "AbandonCalls", "size": 10} ,
+    {"skill": "CallWaiting", "size": 5},
+    {"skill": "English", "size": 25},
+    {"skill": "Handled", "size": 16},
+    {"skill": "AbandonCalls", "size": 29} ,
+    {"skill": "CallWaiting", "size": 3},
+     {"skill": "Tamil", "size": 48},
+      {"skill": "Handled", "size": 19},
+    {"skill": "AbandonCalls", "size": 28} ,
+    {"skill": "CallWaiting", "size": 4},
+     {"skill": "Sinhala", "size": 57}
+  ],
+  "links": [
+    {"source": 3, "target": 0,  "bond": 1},
+    {"source": 3, "target": 1,  "bond": 1},
+    {"source": 3, "target": 2,  "bond": 1},
+    {"source": 7, "target": 4,  "bond": 1},
+    {"source": 7, "target": 5,  "bond": 1},
+    {"source": 7, "target": 6,  "bond": 1},
+   {"source": 11, "target": 8,  "bond": 1},
+    {"source": 11, "target": 9,  "bond": 1},
+    {"source": 11, "target": 10,  "bond": 1}
+  ]
+}

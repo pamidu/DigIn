@@ -1,17 +1,28 @@
 routerApp.controller('settingsCtrl', ['$scope','$rootScope', '$http', '$state','$mdDialog','Digin_Base_URL',function($scope,$rootScope,$http,$state,$mdDialog,Digin_Base_URL) {
+    var featureObj = localStorage.getItem("featureObject");
     getJSONData($http,'features',function(data){
       $scope.featureOrigin = data;
-      var featureObj = localStorage.getItem("featureObject");
-      if(featureObj === null) 
+      var obj = JSON.parse(featureObj);      
+      if(featureObj === null){ 
         $scope.features =data;
-      else $scope.features = JSON.parse(featureObj);
+        $scope.selected = [];
+      }
+      else {
+        $scope.selected = [];
+        for(i=0;i<obj.length;i++){
+          if(obj[i].stateStr === "Enabled")
+            $scope.selected.push(obj[i]);
+        }
+        $scope.features = obj;
+        
+      }
     });
 
 
-    $scope.selected = [];
+    
 
 		  $scope.toggle = function (item, list) {
-        //alert('test');
+    
 		    var idx = list.indexOf(item);
 		    if (idx > -1) {
           list.splice(idx, 1);
@@ -26,7 +37,7 @@ routerApp.controller('settingsCtrl', ['$scope','$rootScope', '$http', '$state','
 		  };
 
       $scope.test = function (item) {
-        alert($scope.selected.length);
+       
         return false;
       };
 

@@ -8,25 +8,25 @@
         }, {
 
             "title": "Reports",
-            "icon": "bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg",
+            "icon": "ion-ios-list",
             "state": false,
             "stateStr": "Disabled"
         }, {
 
             "title": "Analytics",
-            "icon": "bower_components/material-design-icons/device/svg/production/ic_nfc_24px.svg",
+            "icon": "ion-ios-pie",
             "state": false,
             "stateStr": "Disabled"
         }, {
 
             "title": "RealTime",
-            "icon": "bower_components/material-design-icons/action/svg/production/ic_explore_24px.svg",
+            "icon": "ion-ios-pulse",
             "state": false,
             "stateStr": "Disabled"
         }, {
 
             "title": "Digin P Stack",
-            "icon": "bower_components/material-design-icons/action/svg/production/ic_extension_24px.svg",
+            "icon": "ion-ios-albums",
             "state": false,
             "stateStr": "Disabled"
         }

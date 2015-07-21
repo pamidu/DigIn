@@ -8277,6 +8277,7 @@ overflow: hidden;
   width: 30px;
   height: 30px;
   border-radius: 100%;
+
 }
 
  
@@ -9497,7 +9498,7 @@ margin: 4px !important;
   background: #323232;
 }
 .overlay .starting-point span {
-  background-color: #4B77BE;
+  background-color: rgb(172, 36, 48) !important;
 }
 .layer-container .menu-layer li.open > a,
 .layer-container .menu-layer li:hover > a {

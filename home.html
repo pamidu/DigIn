@@ -16,7 +16,7 @@
 
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
     <link href="styles/css/material-wfont.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     
     <link rel="stylesheet" href="styles/css/pivot.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
@@ -47,13 +47,14 @@
     <div id="fb-root"></div>
 
     <div ng-init="GetReportDetails()" class="nav-menu">
-    
-    <img ng-src="styles/css/images/logo2.png" class="md-avatar" alt="appLogo" style="padding-top:5px; margin-left:4px">
+    <div style="width:inherit; background-color: rgb(172, 36, 48);">
+    <img ng-src="styles/css/images/logo2.png" class="md-avatar" id="digin-logo" alt="appLogo" style="width:inherit">
+    </div>
     <md-divider style="padding-top:2px; "></md-divider>
     <div style="margin-top:55px;">
         <md-item ng-repeat="item in menu">
-            <md-button style="min-width:0px;" md-ink-ripple ng-click="$parent.navigate(item.title)" layout="row" layout-align="start center">
-                <md-icon md-svg-src="{{item.icon}}"></md-icon>
+            <md-button style="min-width:0px; font-size:26px;" md-ink-ripple ng-click="$parent.navigate(item.title)" layout="row" layout-align="start center">
+                <md-icon style="height:100%;" class="{{item.icon}}"></md-icon>
                 <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
             </md-button>
             <md-divider></md-divider>
@@ -79,7 +80,7 @@
     </div>
     <div class="overlay-secondary"></div>
     <div class="nav-search">
-        <span class="search"></span>
+        <md-icon class="ion-search search"></md-icon>
          <md-divider style="margin-top:8px;"></md-divider>
     </div>
     <div class="search-layer">
@@ -301,7 +302,7 @@
     <script type="text/javascript" src="scripts/controllers/errorCtrl.js"></script>
     <script type="text/javascript" src="scripts/services/Dashboard.js"></script>
       <script type="text/javascript" src="scripts/factories/d3Data.js"></script>
-      <script type="text/javascript" src="scripts/factories/Dashboard.js"></script>
+	  <script type="text/javascript" src="scripts/factories/Dashboard.js"></script>
     <script type="text/javascript" src="scripts/controllers/newWidgetCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/ShowTableCtrl.js"></script>
     <script type="text/javascript" src="scripts/services/RealTimeService.js"></script>
@@ -328,6 +329,7 @@
     $(document).ready(function() {
         Layout.init();
     });
+        
     </script>
 </body>
 

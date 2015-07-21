@@ -1232,3 +1232,13 @@ md-dialog {
 .data-table-b {
 
 }
+
+#digin-logo:hover {
+  animation-name: diginLogo;
+    animation-duration: 2s;
+}
+
+@keyframes diginLogo {
+    from {transform:rotateY(0deg);}
+    to {transform:rotateY(360deg);}
+}

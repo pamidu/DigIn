@@ -1,7 +1,8 @@
 {
     "d": [{
             "title": "Dashboards",
-            "icon": "bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg",
+            "icon1": "bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg",
+            "icon": "ion-easel",
             "state": false,
             "stateStr": "Disabled"
         }, {

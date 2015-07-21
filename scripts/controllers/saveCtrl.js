@@ -1,8 +1,8 @@
 
 
-routerApp.controller('saveCtrl', ['$scope', '$http','$objectstore','$mdDialog','$rootScope','ObjectStoreService', 
+routerApp.controller('saveCtrl', ['$scope', '$http','$objectstore','$mdDialog','$rootScope','ObjectStoreService', 'DashboardService',
 
-function ($scope, $http,$objectstore,$mdDialog,$rootScope,ObjectStoreService) {   
+function ($scope, $http,$objectstore,$mdDialog,$rootScope,ObjectStoreService,DashboardService) {   
  alert('test');
        $scope.closeDialog = function() {
             // Easily hides most recent dialog shown...
@@ -44,6 +44,7 @@ function ($scope, $http,$objectstore,$mdDialog,$rootScope,ObjectStoreService) {
         }
     })
         }else{
+          DashboardService.getDashboards(dashboardObj);
           $mdDialog.hide();
             $mdDialog.show({
             controller: 'successCtrl',  

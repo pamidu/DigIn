@@ -23,10 +23,18 @@ routerApp.service('ObjectStoreService',['$objectstore', function($objectstore){
                 callback : function which request data}
     returns {}*/
     this.getAll = function(client,callback) {
+        client.getByFiltering("*");
     	client.onGetMany(function(data){
     		callback(data);
     	});
-    	client.getByFiltering("*");
+    	
+    };
+
+    this.getSingle = function(client,key,callback){
+        client.onGetOne(function(data){
+            callback(data);
+        });
+        client.getByKey(key);        
     };
 
     /*Summary 

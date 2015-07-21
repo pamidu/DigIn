@@ -86,4 +86,15 @@ function getDateDifference(until,since){
     else
     return Math.round(Math.abs((until.getTime() - since.getTime())/(oneDay)));
 };
- 
+
+
+function containsObject(obj, list) {
+    var x;
+    for (x in list) {
+        if (list.hasOwnProperty(x) && list[x] === obj) {
+            return true;
+        }
+    }
+
+    return false;
+}

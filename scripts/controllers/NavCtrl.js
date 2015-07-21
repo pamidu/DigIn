@@ -1,6 +1,6 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
-    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen','$http','Digin_ReportViewer','$localStorage','$window','ObjectStoreService','Digin_Base_URL',
-    function($scope, $mdBottomSheet, $mdSidenav, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen,$http,Digin_ReportViewer,$localStorage,$window,ObjectStoreService,Digin_Base_URL)  
+    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen','$http','Digin_ReportViewer','$localStorage','$window','ObjectStoreService','Digin_Base_URL','DashboardService',
+    function($scope, $mdBottomSheet, $mdSidenav, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen,$http,Digin_ReportViewer,$localStorage,$window,ObjectStoreService,Digin_Base_URL,DashboardService)  
     {
 
 
@@ -300,26 +300,7 @@ alert('test');
         // }
 
          $scope.GetDashboardDetails = function() {
-            var client = ObjectStoreService.initialize("duodigin_dashboard");
-
-            ObjectStoreService.getAll(client, function(data){
-                if (data) $rootScope.dashboardsObj = data;
-                else $rootScope.dashboardsObj = [];
-
-                var duoDashboards = $rootScope.dashboardsObj;
-
-                for(var i=0; i<duoDashboards.length; i++)
-                   {
-                      var obj1=duoDashboards[i];
-
-                      if(obj1.name.length>20){
-                        obj1.splitName = obj1.name.substring(0,21)+'...';
-                      }
-                      else obj1.splitName = obj1.name;
-                      $scope.dashboards.push(obj1);
-                   }
-
-            });    
+            $scope.dashboards = DashboardService.getDashboards();
 
             $http({
             method: 'GET',

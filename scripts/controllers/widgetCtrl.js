@@ -553,6 +553,15 @@ function weatherInit(widId, $scope, $http, $rootScope, $mdDialog){
     };
 
 }
+
+function googlePlusInit ($scope, $http, $mdDialog, widId, $rootScope){
+
+   
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+    
+    }
  
 
 function instaInit($scope,$http,$window){

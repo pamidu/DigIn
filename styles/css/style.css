@@ -228,10 +228,17 @@ max-width: 45px;
 {
 background-color:#065798;
 }
-md-icon
+/*md-icon
 {
-   color:#323232 !important;
+   color:#000 !important;
+}*/
+.sidebaricons{
+    color:#000;
 }
+.sidebaricons-active{
+    color:#fff;
+}
+
  md-tooltip {
   position: absolute;
   font-size: 14px;
@@ -319,7 +326,7 @@ height:50px;
 }
 md-toolbar.md-default-theme
 {
-  background-color:#4B77BE;
+  background-color:#6E0404;
 }
 /*.display-animation .material-animate {
   -webkit-transform: scale(0);

@@ -7975,6 +7975,7 @@ left: -18px;
   width: 12px;
   -webkit-transition: 0.5s all cubic-bezier(0.17, 0.67, 0.6, 1.3);
           transition: 0.5s all cubic-bezier(0.17, 0.67, 0.6, 1.3);
+
 }
 .nav-search:active .search {
   -webkit-transform: scale(0.8);
@@ -9485,20 +9486,20 @@ margin: 4px !important;
   background: #fff;
 }
 .nav-search .search:before {
-  border-color: #323232;
+  border-color: #000;
 }
 .nav-search .search:after {
-  background: #323232;
+  background: #000;
 }
 .nav-search.active .search:before {
-  background: #323232;
+  background: #fff;
   border: none;
 }
 .nav-search.active .search:after {
-  background: #323232;
+  background: #fff;
 }
 .overlay .starting-point span {
-  background-color: rgb(172, 36, 48) !important;
+  background-image:url(images/layer.jpg);
 }
 .layer-container .menu-layer li.open > a,
 .layer-container .menu-layer li:hover > a {

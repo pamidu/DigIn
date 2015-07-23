@@ -48,14 +48,14 @@
     <div id="fb-root"></div>
 
     <div ng-init="GetReportDetails()" class="nav-menu">
-    <div style="width:inherit; background-color: rgb(172, 36, 48);">
+    <div style="width:inherit; background-color: rgb(110, 4, 4);">
     <img ng-src="styles/css/images/logo2.png" class="md-avatar" id="digin-logo" alt="appLogo" style="width:inherit">
     </div>
     <md-divider style="padding-top:2px; "></md-divider>
-    <div style="margin-top:55px;">
+    <div class="sidebar-btn-container" style="margin-top:55px;">
         <md-item ng-repeat="item in menu">
             <md-button style="min-width:0px; font-size:26px;" md-ink-ripple ng-click="$parent.navigate(item.title)" layout="row" layout-align="start center">
-                <md-icon style="height:100%;" class="{{item.icon}}"></md-icon>
+                <md-icon style="height:100%;" class="{{item.icon}} sidebaricons"></md-icon>
                 <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
             </md-button>
             <md-divider></md-divider>
@@ -81,7 +81,7 @@
     </div>
     <div class="overlay-secondary"></div>
     <div class="nav-search">
-        <md-icon class="ion-search search"></md-icon>
+        <md-icon class="ion-search search sidebaricons"></md-icon>
          <md-divider style="margin-top:8px;"></md-divider>
     </div>
     <div class="search-layer">
@@ -89,7 +89,10 @@
             <form >
                 <div class="form-group" layout="row">
                     <input ng-model="searchText" type="text" id="input-search" class="form-control" placeholder="type something">
-                    <button type="submit" class="btn btn-default "><i class="ion-search"></i></button>
+                    <button type="submit" class="btn btn-default ">
+                    <!-- <i class="ion-search"></i> -->
+                    <img style="width:35px;height:35px;margin-top:-8px; "    src='bower_components/material-design-icons/action/svg/production/ic_search_white_24px.svg'/>
+                    </button>
                 </div>
             </form>
         </div>
@@ -108,7 +111,7 @@
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
                                         <div class="list-action-left" style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
-                                            <img style="width:35px;height:35px;"  src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg" class="face-radius" alt="">
+                                            <img style="width:35px;height:35px;background-color:#fff"  src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg" class="face-radius" alt="">
                                             <span ng-click="goDashboard(x)" class="title">{{x.splitName}}</span>
                                         </div>
                                     </a>

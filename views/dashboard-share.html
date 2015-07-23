@@ -1,16 +1,19 @@
 
-<md-dialog   plumb-item>
+<md-dialog  plumb-item style="min-width:500px">
 
-   <md-toolbar md-theme="teal" scroll-shrink layout="row">
+   <md-toolbar scroll-shrink layout="row">
                       <div class="md-toolbar-tools">
-                          <div flex="90">
+                          <div flex="10">
+                            <md-icon class="ion-share"></md-icon>
+                          </div> 
+                          <div flex="80">
                               <h3>
                                  <span> Share </span>
                               </h3>
                          </div>                           
-                           <div  flex="10">
+                           <div flex="10">
                              <span>
-                                 <md-button  class="md-primary md-raised" ng-click="closeDialog()"  aria-label="Close">
+                                 <md-button ng-click="closeDialog()"  aria-label="Close">
                                    <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
                                  </md-button>
                              </span>
@@ -18,7 +21,7 @@
                         </div>
    </md-toolbar>      
  
-         <md-content>
+         <md-content layout-align="center center" layout-wrap>
         
               <md-button class="btnshare"> 
                      <md-icon class="iconshare"  href="#"
@@ -68,11 +71,5 @@
 
          </md-content>
   </md-dialog> 
-
-  <!-- ;window.open('views/loginEmail.html', '_blank', 'location=yes,height=600,width=800,scrollbars=yes,status=yes'); 
-
-onclick="window.open('views/loginEmail.html', '_blank', 'location=yes,height=600,width=800,scrollbars=yes,status=yes');"
-  -->
-  
  
  

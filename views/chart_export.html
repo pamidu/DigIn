@@ -1,7 +1,20 @@
 <md-dialog   plumb-item >
-  <md-toolbar class="modal-header" md-theme="teal">  
-       <h1>Charts</h1>
-  </md-toolbar>
+  <md-toolbar scroll-shrink layout="row">
+                      <div class="md-toolbar-tools">
+                          <div flex="90">
+                              <h3>
+                                 <span> Charts </span>
+                              </h3>
+                         </div>                           
+                           <div flex="10">
+                             <span>
+                                 <md-button ng-click="closeDialog()"  aria-label="Close">
+                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
+                                 </md-button>
+                             </span>
+                          </div>
+                        </div>
+   </md-toolbar>    
          <md-content ng-controller="ExportCtrl">
             <md-card class="lookupdashboard"  md-theme="teal" ng-repeat="widget in dashboard.widgets" >
                    <md-content theme="teal"  layout="row" layout-margin>
@@ -16,13 +29,13 @@
                  </md-content>
            </md-card>           
         </md-content>
-  <div class="md-actions" md-theme="teal"  layout="row">    
-          <md-button style="width:200px"  ng-click="closeDialog()"  class="md-raised">
-           Ok
-         </md-button>
-          <md-button style="width:200px"  class="md-raised"   ng-click="closeDialog()" class=" md-default">
+  <div class="md-actions" layout="row">    
+          <md-button ng-click="closeDialog()">
             Cancel
           </md-button>
+          <md-button ng-click="closeDialog()">
+           Ok
+         </md-button>
   </div>
 </md-dialog> 
  

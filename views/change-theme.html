@@ -1,114 +1,58 @@
- <md-dialog style="width:420px">
 
-    <md-toolbar layout="row" style="display:block;min-height:250px;margin: auto;">
-
-      <div class="md-toolbar-tools" style="margin-left:50px;">
-      <md-label style="margin: 10px;">Area</md-label>
-      <md-select ng-model="panel" placeholder="Select Area" style="margin: 10px;line-height:20px;">
-        <md-option ng-repeat="panel in panels" value="{{panel}}" style="line-height:20px;">{{panel}}</md-option>
-      </md-select>
-      </div>
-    </md-toolbar>
-    <md-toolbar style="display:block;min-height:250px;margin: auto;">
-      <div class="md-toolbar-tools" style="display:block;">
-        <md-tabs md-stretch-tabs class="md-primary" md-selected="data.selectedIndex" style="width:100%;display:inline">
-          <md-tab id="tab1" aria-controls="tab1-content">
-            Color Picker
-          </md-tab>
-          <md-tab id="tab2" aria-controls="tab2-content">
-            Selected Colors
-          </md-tab>
-        </md-tabs>
-      </div>
-    </md-toolbar>
-
-      
-      <md-content flex md-scroll-y>
-       
-            <ng-switch on="data.selectedIndex" class="tabpanel-container">
-              <div role="tabpanel"
-                   id="tab1-content"
-                   aria-labelledby="tab1"
-                   ng-switch-when="0"
-                   md-swipe-left="next()"
-                   md-swipe-right="previous()"
-                   layout="row" layout-align="center center">
-                  <md-card flex-gt-sm="90" flex-gt-md="100">
-                    <md-card-content style="margin:0 auto;">
-                      <h2 style="margin:0 auto;">Color Picker</h2>
-                      <img src="styles/css/images/color_picker.png">
-                    </md-card-content>
-                  </md-card>
-              </div>
-              <div role="tabpanel"
-                   id="tab2-content"
-                   aria-labelledby="tab2"
-                   ng-switch-when="1"
-                   md-swipe-left="next()"
-                   md-swipe-right="previous()" 
-                   layout="row" layout-align="center center">
-                  <md-card flex-gt-sm="90" flex-gt-md="100">
-                    <md-card-content style="margin:0 auto;">
-                      <h2 style="margin:0 auto;">Selected Colors</h2>
-                      <img src="styles/css/images/color_pallete.png">
-                    </md-card-content>
-                  </md-card>
-              </div>
-              
-          </ng-switch>
-
-        </md-content>
-
+ <md-dialog plumb-item style="min-width:500px" ng-init="generateSnapshot()">
     
-
-      <!-- *********************************  -->
-    <!-- <md-toolbar  scroll-shrink layout="row" md-theme="teal">
-                      <div class="md-toolbar-tools">
-                          <div flex="90">
-                          <h3>
-                          <span>Change theme</span>
-                         </h3>
-                         </div>
-                          
-                           <div  flex="5">
-                            
-                                 <md-button class="md-secondary" ng-click="closeDialog()"  aria-label="Close">
+    <md-toolbar scroll-shrink>
+                    <div class="md-toolbar-tools"  flex  layout="row">
+                      <div flex="10">
+                        <md-icon class="ion-paintbrush"></md-icon>
+                      </div>   
+                      <div flex="80">
+                              <h3>
+                                 <span> Theme Change </span>
+                              </h3>
+                      </div>                           
+                      <div  flex="10">
+                             <span>
+                                 <md-button ng-click="closeDialog()"  aria-label="Close" >
                                    <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
                                  </md-button>
-                            
-                          </div>
-                        </div>
-     </md-toolbar>
-      <md-content style="overflow:hidden">
-        <div layout="row" layout-margin>
-           <div flex flex-order="1">
-                     
-                        <md-button id="indiButton" ng-click="applyIndigoCSS()"   class="md-raised" > 
-                     <md-icon id="indiIcon" md-svg-src="bower_components/material-design-icons/image/svg/production/ic_brush_24px.svg"></md-icon>
-                     
-                  </md-button>
-                      
-                  </div>  
-                  <div flex flex-order="2"> 
+                             </span>
+                      </div>
+
+                    </div>
                     
-                        <md-button id="minimalButton" class="md-raised" ng-click="applyMinimalCSS()"   > 
-                    <md-icon id="miniIcon" md-svg-src="bower_components/material-design-icons/image/svg/production/ic_brush_24px.svg"></md-icon>
-                     
-                 </md-button>
-                   
-                  </div>
-                 <div flex flex-order="3">  
-                   
-                         <md-button id="violetButton" class="md-raised" ng-click="applyVioletCSS()" > 
-                     <md-icon id="violetIcon"   md-svg-src="bower_components/material-design-icons/image/svg/production/ic_brush_24px.svg"></md-icon>
-                      
-                </md-button>
-               
-                </div>  
-        
-       
-       
-             </div>
-     </md-content> -->
+   </md-toolbar>
+  <md-content layout-margin>
+   
+      <md-tabs md-dynamic-height md-border-bottom>
+              
+          <md-tab id="tab1" label="Side Panel">
+            <md-content class="md-padding">
+              <h1 class="md-display-1">Side Panel</h1>
+              <div layout="row" flex  layout-align="space-around center">
+              <ng-md-icon icon="format_paint" style="fill:red" size="50"></ng-md-icon>
+               <ng-md-icon icon="format_paint" style="fill:yellow" size="50"></ng-md-icon>
+               <ng-md-icon icon="format_paint" style="fill:green" size="50"></ng-md-icon>
+               <ng-md-icon icon="format_paint" style="fill:blue" size="50"></ng-md-icon>
+               <ng-md-icon icon="format_paint" style="fill:brown" size="50"></ng-md-icon>
+              </div>
+            </md-content>
+        </md-tab>
+                    
+        <md-tab id="tab2" label="Background">
+            <md-content class="md-padding">
+              <h1 class="md-display-1">Background</h1>
+              <div layout="row" flex  layout-align="space-around center">
+              <ng-md-icon icon="format_paint" style="fill:red" size="50"></ng-md-icon>
+               <ng-md-icon icon="format_paint" style="fill:yellow" size="50"></ng-md-icon>
+               <ng-md-icon icon="format_paint" style="fill:green" size="50"></ng-md-icon>
+               <ng-md-icon icon="format_paint" style="fill:blue" size="50"></ng-md-icon>
+               <ng-md-icon icon="format_paint" style="fill:brown" size="50"></ng-md-icon>
+              </div>
+            </md-content>
+        </md-tab>
+      </md-tabs>
+            
+</md-content>
 
 </md-dialog  >

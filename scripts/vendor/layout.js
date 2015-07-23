@@ -68,8 +68,9 @@ var Layout = {
 	},
 
 	listenForMenuLayer: function () {
-		$('.nav-menu').on('click', function() {
 
+
+		$('.nav-menu').on('click', function() {
 			// Define neccessary elements
 			var $this = $(this),
 					$startingPoint = $('.starting-point'),
@@ -94,7 +95,7 @@ var Layout = {
 
 				setTimeout(function () {
 					$body.addClass('disable-scroll');
-					$overlay.addClass('overlay-nav active');
+					// $overlay.addClass('overlay-nav active');
 					$this.addClass('active');
 					$menu.addClass('active');
 					$overlaySecondary.addClass('fade-in');
@@ -131,7 +132,7 @@ var Layout = {
 						duration: 500,
 						easing: [.42, 0, .58, 1],
 						complete: function () {
-							$overlay.removeClass('active overlay-nav');
+							// $overlay.removeClass('active overlay-nav');
 							$this.removeClass('active rotating');
 							$menu.removeClass('activating');
 							$body.removeClass('disable-scroll');
@@ -152,7 +153,10 @@ var Layout = {
 
 	listenForSearchLayer: function () {
 		$('.nav-search').on('click', function(){
-
+			// start pulathisi 7/23/2015
+			// when nav search is clicked change sidebar icon class, this changes icon colors
+			$(".sidebaricons").removeClass("sidebaricons").addClass( "sidebaricons-active" );
+			// end pulathisi 7/23/2015
 			// Define neccessary elements
 			var $this = $(this),
 					$startingPoint = $('.starting-point'),
@@ -192,6 +196,11 @@ var Layout = {
 
 			} else {
 			// If Search Layer is active
+				// start pulathisi 7/23/2015
+				// when active nav search is clicked change sidebar icon class, this changes icon colors back to previous
+				$(".sidebaricons-active").removeClass("sidebaricons-active").addClass( "sidebaricons" );
+				// end pulathisi 7/23/2015
+
 				$searchLayer.find('input').blur();
 				$searchLayer.removeClass('active');
 				$this.addClass('rotating');

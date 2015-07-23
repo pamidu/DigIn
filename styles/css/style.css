@@ -228,10 +228,25 @@ max-width: 45px;
 {
 background-color:#065798;
 }
-md-icon
+/*start pulathisi 7/23/2015*/
+
+/*md-icon
 {
-   color:#323232 !important;
+   color:#000 !important;
+}*/
+
+.sidebaricons{
+    color:#000;
 }
+.sidebaricons-active{
+    color:#fff;
+}
+
+.darkredtheme{
+  color:#6E0404;
+}
+
+/*end pulathisi 7/23/2015*/
  md-tooltip {
   position: absolute;
   font-size: 14px;
@@ -319,7 +334,8 @@ height:50px;
 }
 md-toolbar.md-default-theme
 {
-  background-color:#4B77BE;
+  /*pulathisi 7/23/2015*/
+  background-color:#6E0404;
 }
 /*.display-animation .material-animate {
   -webkit-transform: scale(0);

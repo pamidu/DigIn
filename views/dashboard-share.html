@@ -1,5 +1,5 @@
 
-<md-dialog  plumb-item>
+<md-dialog  plumb-item style="min-width:500px">
 
    <md-toolbar scroll-shrink layout="row">
                       <div class="md-toolbar-tools">
@@ -8,9 +8,9 @@
                                  <span> Share </span>
                               </h3>
                          </div>                           
-                           <div  flex="10">
+                           <div flex="10">
                              <span>
-                                 <md-button  class="md-primary md-raised" ng-click="closeDialog()"  aria-label="Close">
+                                 <md-button ng-click="closeDialog()"  aria-label="Close">
                                    <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
                                  </md-button>
                              </span>
@@ -18,7 +18,7 @@
                         </div>
    </md-toolbar>      
  
-         <md-content>
+         <md-content layout-align="center center" layout-wrap>
         
               <md-button class="btnshare"> 
                      <md-icon class="iconshare"  href="#"

@@ -9484,7 +9484,7 @@ margin: 4px !important;
 }
 .nav-menu.active .patty {
   background: #fff;
-}
+}/*start pulathisi 7/23/2015*/
 .nav-search .search:before {
   border-color: #000;
 }
@@ -9497,7 +9497,7 @@ margin: 4px !important;
 }
 .nav-search.active .search:after {
   background: #fff;
-}
+}/*end pulathisi 7/23/2015*/
 .overlay .starting-point span {
   background-image:url(images/layer.jpg);
 }
@@ -9525,7 +9525,9 @@ margin: 4px !important;
   background: rgba(62, 80, 180, 0.1);
 }
 .layer-container .menu-layer.active {
-  background: #3A539B;
+  /*pulathisi 7/23/2015*/
+  background: #6E0404;
+  /*background: #3A539B;*/
 }
 .layer-container .search-layer.active {
   background: #3A539B;

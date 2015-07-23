@@ -3,17 +3,17 @@
     
     <md-toolbar scroll-shrink>
                     <div class="md-toolbar-tools"  flex  layout="row">
-                      <div flex="5" flex-sm="10">
+                      <div flex="10">
                         <md-icon class="ion-paintbrush" style="fill:black"></md-icon>
                       </div>   
-                      <div flex="90" flex-sm="80">
+                      <div flex="80">
                               <h3>
                                  <span> Theme Change </span>
                               </h3>
                       </div>                           
-                      <div  flex="5" flex-sm="10">
+                      <div  flex="10">
                              <span>
-                                 <md-button  class="md-primary" ng-click="closeDialog()"  aria-label="Close" >
+                                 <md-button ng-click="closeDialog()"  aria-label="Close" >
                                    <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
                                  </md-button>
                              </span>
@@ -26,7 +26,7 @@
    
       <md-tabs md-dynamic-height md-border-bottom>
               
-          <md-tab id="tab1" label="Color picker">
+          <md-tab id="tab1" label="Side Panel">
             <md-content class="md-padding">
               <h1 class="md-display-1">Side Panel</h1>
               <div layout="row" flex  layout-align="space-around center">
@@ -39,10 +39,16 @@
             </md-content>
         </md-tab>
                     
-        <md-tab id="tab2" label="Selected Colors">
+        <md-tab id="tab2" label="Background">
             <md-content class="md-padding">
               <h1 class="md-display-1">Background</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.</p>
+              <div layout="row" flex  layout-align="space-around center">
+              <ng-md-icon icon="format_paint" style="fill:red" size="50"></ng-md-icon>
+               <ng-md-icon icon="format_paint" style="fill:yellow" size="50"></ng-md-icon>
+               <ng-md-icon icon="format_paint" style="fill:green" size="50"></ng-md-icon>
+               <ng-md-icon icon="format_paint" style="fill:blue" size="50"></ng-md-icon>
+               <ng-md-icon icon="format_paint" style="fill:brown" size="50"></ng-md-icon>
+              </div>
             </md-content>
         </md-tab>
       </md-tabs>

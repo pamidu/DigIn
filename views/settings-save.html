@@ -1,20 +1,25 @@
 <md-dialog   plumb-item >
-  <md-toolbar class="modal-header" md-theme="teal">  
-       <h1>Save Settings</h1>
-  </md-toolbar>
-         <md-content>
+  <md-toolbar scroll-shrink>
+                    <div class="md-toolbar-tools"  flex  layout="row">
+                              <h3>
+                                 <span> Save Settings </span>
+                              </h3>
+                    </div>
+                    
+   </md-toolbar>
+          <md-content layout-margin>
                <form name="userForm">        
                  <span style="margin:10px;font-weight:bold;">Are you sure you want to change the settings configurations?</span>
                </form>
-        </md-content>
-          <div class="md-actions" md-theme="indigo"  layout="row">    
-          <md-button style="width:200px"  ng-click="saveSettingsDetails()"  class="md-raised">
-           Yes
-         </md-button>
-          <md-button style="width:200px"  class="md-raised"   ng-click="closeDialog()" class=" md-default">
-            No
-          </md-button>
-  </div>
+          </md-content>
+          <div class="md-actions"  layout="row">    
+            <md-button style="width:200px"  ng-click="saveSettingsDetails()" >
+             Yes
+            </md-button>
+            <md-button style="width:200px"   ng-click="closeDialog()" class=" md-default">
+              No
+            </md-button>
+          </div>
 </md-dialog> 
  
  

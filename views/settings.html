@@ -25,7 +25,7 @@
             <div layout="column" layout-wrap>
                 <form>
                     <div ng-repeat="item in features">
-                        <md-switch class="md-primary" md-no-ink aria-label="Switch No Ink" ng-model="item.state" ng-change="toggle(item, selected)">
+                        <md-switch md-no-ink aria-label="Switch No Ink" ng-model="item.state" ng-change="toggle(item, selected)">
             {{ item.title }} : {{ item.stateStr }}
           </md-switch>
                         <!-- <md-checkbox ng-checked="exists(item, selected)" ng-click="toggle(item, selected)">
@@ -36,7 +36,7 @@
             </md-content>
             <div class="md-actions" layout="row">
                 <span flex></span>
-                <md-button ng-click="finish()" class="md-primary">
+                <md-button ng-click="finish()">
                 Save Changes
             </md-button>
             </div>

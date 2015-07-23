@@ -1,8 +1,21 @@
 <md-dialog   plumb-item >
-  <md-toolbar class="modal-header" md-theme="teal">  
-       <h1>Save Dashboard</h1>
-  </md-toolbar>
-         <md-content>
+  <md-toolbar scroll-shrink layout="row">
+                      <div class="md-toolbar-tools">
+                          <div flex="90">
+                              <h3>
+                                 <span> Save Dashboard </span>
+                              </h3>
+                         </div>                           
+                           <div flex="10">
+                             <span>
+                                 <md-button ng-click="closeDialog()"  aria-label="Close">
+                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
+                                 </md-button>
+                             </span>
+                          </div>
+                        </div>
+   </md-toolbar>    
+         <md-content layout-margin layout-align="center center">
                <form name="userForm">        
                  <div class="dashcontent" >
                      <div md-theme="teal" layout layout-sm="column">

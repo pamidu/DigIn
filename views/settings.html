@@ -5,9 +5,7 @@
                 <h2>Current User</h2>
             </div>
         </md-toolbar>
-        <md-card-content>
-            <md-card style="width:50%;">
-                <md-card-content>
+        <md-content layout-margin>
                 <md-list-item class="md-2-line">
                   <img alt="manuel" style="height:60px;width:60px;" ng-src="styles/css/images/person.png" class="md-avatar" />
                     <div class="md-list-item-text">
@@ -15,9 +13,7 @@
                         <p>Developer</p>
                     </div>
                   </md-list-item>
-                </md-card-content>
-            </md-card>
-        </md-card-content>            
+        </md-content>            
     </md-card>
     <md-card style="width:70%;">
         <md-toolbar>
@@ -25,8 +21,8 @@
                 <h2>Change Features</h2>
             </div>
         </md-toolbar>
-        <md-card-content>
-            <div layout="column" layout-wrap="">
+        <md-content layout-margin>
+            <div layout="column" layout-wrap>
                 <form>
                     <div ng-repeat="item in features">
                         <md-switch class="md-primary" md-no-ink aria-label="Switch No Ink" ng-model="item.state" ng-change="toggle(item, selected)">
@@ -37,7 +33,7 @@
           </md-checkbox> -->
                     </div>
                 </form>
-            </md-card-content>
+            </md-content>
             <div class="md-actions" layout="row">
                 <span flex></span>
                 <md-button ng-click="finish()" class="md-primary">

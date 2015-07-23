@@ -68,8 +68,9 @@ var Layout = {
 	},
 
 	listenForMenuLayer: function () {
-		$('.nav-menu').on('click', function() {
 
+
+		$('.nav-menu').on('click', function() {
 			// Define neccessary elements
 			var $this = $(this),
 					$startingPoint = $('.starting-point'),
@@ -152,6 +153,9 @@ var Layout = {
 
 	listenForSearchLayer: function () {
 		$('.nav-search').on('click', function(){
+			console.log("hit listenForSearchLayer");
+			// when nav search is clicked change sidebar icon class, this changes icon colors
+			$(".sidebaricons").removeClass("sidebaricons").addClass( "sidebaricons-active" );
 
 			// Define neccessary elements
 			var $this = $(this),
@@ -192,6 +196,9 @@ var Layout = {
 
 			} else {
 			// If Search Layer is active
+				// when active nav search is clicked change sidebar icon class, this changes icon colors back to previous
+				$(".sidebaricons-active").removeClass("sidebaricons-active").addClass( "sidebaricons" );
+
 				$searchLayer.find('input').blur();
 				$searchLayer.removeClass('active');
 				$this.addClass('rotating');

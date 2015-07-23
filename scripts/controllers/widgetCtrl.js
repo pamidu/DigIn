@@ -7,7 +7,7 @@
 |      #elastic settings  : elasticInit                    | 
 |      #wordpress settings: wordpressInit                  |
 |      #instagram settings: instaInit                      | 
-|      #d3plugin settings : d3Init                         |  
+|      #d3plugin settings : d3Init                         |
 |      #sltskillwisecall  : sltskillInit                   |
 |      #sltivr settings   : sltivrInit                     |
 ------------------------------------------------------------
@@ -126,15 +126,14 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
             scope.chartConf.series[0].pointStart = Date.UTC(likeHistory.start.getUTCFullYear(), likeHistory.start.getUTCMonth(), likeHistory.start.getUTCDate());;
             scope.chartConf.series[0].pointInterval = likeHistory.interval;
 
-            var obj = {
+             var obj = {
                 pgData: scope.pageData,
                 likeData: scope.chartConf
             };
             $rootScope.dashboard.widgets[objIndex].widData = obj;
         });
 
-        //getting page views insights
-        fbInterface.getPageViewsInsight(scope.fbPageModel, dateObj, function(data) {
+         fbInterface.getPageViewsInsight(scope.fbPageModel, dateObj, function(data) {
             console.log("**************************************");
             console.log("View history:" + JSON.stringify(data));
             var viewHistory = fbInterface.getPageLikesObj(data);
@@ -142,13 +141,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
             scope.chartConfView.series[0].pointStart = Date.UTC(viewHistory.start.getUTCFullYear(), viewHistory.start.getUTCMonth(), viewHistory.start.getUTCDate());;
             scope.chartConfView.series[0].pointInterval = viewHistory.interval;
 
-            var obj = {
-                pgData: scope.pageData,
-                likeData: scope.chartConf,
-                viewData: scope.chartConfView
-            };
-            $rootScope.dashboard.widgets[objIndex].widData = obj;
-        });
+    
 
 
         $mdDialog.hide();
@@ -161,6 +154,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
     //selecting pages  
     scope.changePage = function() {
         //get page data on change
+ 
         fbInterface.getPageData(scope, function(data) {
             scope.pageData = data;
             // $rootScope.dashboard.widgets[objIndex].widData = data;
@@ -169,16 +163,12 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
 };
 
 
-function SLTInit($scope, $http, widId, $rootScope, $mdDialog) {
-        $scope.visualz = ['Calls in IVR', 'Calls in Queue', 'Calls in Agent', 'Calls Dropped',
-            'Skill Wise Summary'
-        ];
+ 
 
         $scope.cancel = function() {
             $mdDialog.hide();
         };
-        $scope.ok = function() {
-
+      };
             var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
             var visualizeType = $scope.datasource;
@@ -223,6 +213,7 @@ function linkedInit(scope, $mdDialog, widId, $rootScope) {
     };
 };
 
+
 function YoutubeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) {
     $scope.search = function() {
         this.listResults = function(data) {
@@ -243,6 +234,7 @@ function YoutubeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             }
             return results;
         }
+ 
         $http.get('https://www.googleapis.com/youtube/v3/search', {
                 params: {
                     key: 'AIzaSyAzf5VkNxCc-emzb5rujUSc9wSxoDla6AM',
@@ -262,6 +254,7 @@ function YoutubeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             });
     }
 
+ 
     $scope.tabulate = function(state) {
         $scope.playlist = state;
     }
@@ -290,11 +283,12 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
     });
 
     $scope.alert = function() {
+  
             $mdDialog.show({
                 controller: 'successCtrl',
                 templateUrl: 'views/file-success.html',
                 resolve: {
-
+ 
                 }
             })
         }
@@ -411,13 +405,14 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 });
                 widget.chartSeries = [];
                 widget.chartSeries = widget.chartConfig.series;
-
+ 
             }
-
+ 
         });
         client.getSelected(parameter);
     }
 };
+ 
 
 function InitConfigD3($scope, $mdDialog, widId, $rootScope, $sce) {
 
@@ -534,18 +529,14 @@ function InitConfigD3($scope, $mdDialog, widId, $rootScope, $sce) {
         icon: "styles/css/images/icons/d3/sunburst.png",
         link: "http://bl.ocks.org/mbostock/raw/899711/"
     });
+  
 
     $scope.trustSrc = function(src) {
-        return $sce.trustAsResourceUrl(src);
+ 
     }
-    $scope.setPlugin = function(wid) {
+ 
 
-        var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-        $rootScope.dashboard.widgets[objIndex].d3plugin = wid.link;
-        $rootScope.dashboard.widgets[objIndex].chartConfig.title.text = wid.Name;
-        $rootScope.dashboard.widgets[objIndex].externalDataURL = wid.Data;
-        $mdDialog.hide();
-    }
+ 
     $scope.cancel = function() {
         $mdDialog.hide();
     };
@@ -554,6 +545,7 @@ function InitConfigD3($scope, $mdDialog, widId, $rootScope, $sce) {
 
 
 
+ 
 function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     //cancel config
@@ -566,14 +558,17 @@ function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
         var wpapi = "http://public-api.wordpress.com/rest/v1/sites/";
         var choice = "/posts";
         var callbackString = '/?callback=JSON_CALLBACK';
+  
         var message = $http.jsonp(wpapi + $scope.wpdomain + choice + callbackString).
         success(function(data, status) {
             var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
             //console.log(JSON.stringify(data));
             var posts = data.posts;
+ 
 
             var trimmedPosts = [];
             var tempTitle = "";
+ 
             for (i = 0; i < posts.length; i++) {
                 var obj = {
                     picURL: "",
@@ -586,7 +581,7 @@ function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
                 obj.authorName = posts[i].author.name;
                 obj.title = posts[i].title;
                 obj.comments = posts[i].comment_count;
-                obj.likes = posts[i].like_count;
+                
                 trimmedPosts.push(obj);
             }
             var trimmedObj = {};
@@ -595,6 +590,7 @@ function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
             //$rootScope.dashboard.widgets[objIndex].widData = data;
         }).
         error(function(data, status) {
+    
             console.log(message);
         });
         $mdDialog.hide();
@@ -604,6 +600,7 @@ function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 
 // todo...
+ 
 function weatherInit(widId, $scope, $http, $rootScope, $mdDialog) {
     //cancel config
     $scope.cancel = function() {
@@ -613,49 +610,28 @@ function weatherInit(widId, $scope, $http, $rootScope, $mdDialog) {
     //complete config  
     $scope.finish = function() {
         $http.get('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22' + $scope.locZip + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
-            .success(function(data) {
-                //alert(JSON.stringify(data));
-                console.log(JSON.stringify(data));
-                var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-                $rootScope.dashboard.widgets[objIndex].widData = data.query;
-                $mdDialog.hide();
-            })
-            .error(function(err) {
-                console.log('Error retrieving markets');
-            });
+ 
     };
 
 }
-
-
+ 
+ 
 function instaInit($scope, $http, $window) {
 
     var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
     var redirectUrl = 'http://duoworld.duoweb.info/DuoDiggin_pinterest/'
-    var baseUrl =
-        'https://instagram.com/oauth/authorize/?client_id=' + clientId + '&redirect_uri=' + redirectUrl + '&response_type=token';
-
+    
+ 
     if ($window.location.href.indexOf("access_token") == -1) {
         $window.location.href = baseUrl;
+ 
     } else {
         var access_token = $window.location.hash.substring(14);
-        var baseUrl = "https://api.instagram.com/v1/users/self/?access_token=" + access_token + "&format=jsonp&callback=JSON_CALLBACK"
-        $http.jsonp(baseUrl).success(function(data) {
+                    console.log(data);
+ 
 
-            $scope.followers = data.data.counts.followed_by;
-            $scope.follows = data.data.counts.follows;
-            $scope.profilepic = data.data.profile_picture;
-            $scope.username = data.data.username;
-            $scope.firstName = data.data.full_name;
-            var likeUrl = "https://api.instagram.com/v1/users/self/media/liked?access_token=" + access_token + "&format=jsonp&callback=JSON_CALLBACK";
-            console.log(data);
-            $http.jsonp(likeUrl).success(function(data) {
+         })
 
-                $scope.likes = data.data.length;
-                console.log(data.data.length);
-            }).error(function(data) {
-
-            })
 
         }).error(function(data) {
 

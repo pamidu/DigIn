@@ -2,15 +2,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen','$http','Digin_ReportViewer','$localStorage','$window','ObjectStoreService','Digin_Base_URL','DashboardService',
     function($scope, $mdBottomSheet, $mdSidenav, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen,$http,Digin_ReportViewer,$localStorage,$window,ObjectStoreService,Digin_Base_URL,DashboardService)  
     {
-
-
         // $scope.refreshHome = function(){
         //     $window.location.href = Digin_Base_URL + 'home.html';
         // };
-
-
-
-
         $rootScope.indexes = [];
         $scope.toggle = true;
         var today = new Date();
@@ -225,6 +219,10 @@ alert('test');
         }
         $scope.goDashboard = function(dashboard){
             //closing the overlay
+            // start pulathisi 7/23/2015
+            // when saved dashboard is clicked change sidebar icon class, this changes icon colors
+            $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
+            // end pulathisi 7/23/2015
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
             $(".search-layer").removeClass("activating active"); 
@@ -300,6 +298,8 @@ alert('test');
         // }
 
          $scope.GetDashboardDetails = function() {
+
+            
             $scope.dashboards = DashboardService.getDashboards();
 
             $http({
@@ -316,6 +316,7 @@ alert('test');
                 }
             }).
             success(function(data, status) {
+
                 
              for(var i=0; i<data.repositoryFileDto.length; i++)
                    {
@@ -499,6 +500,17 @@ alert('test');
             })
         }
            $scope.navigate = function(routeName) {
+
+            // start pulathisi 7/23/2015
+            
+                if($('.ion-settings').hasClass('sidebaricons')){
+                    $(".sidebaricons").removeClass("sidebaricons").addClass("sidebaricons-active");
+                }else{
+                   $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
+                }
+               
+            // end pulathisi 7/23/2015
+            // }
             if (routeName == "Dashboards") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';

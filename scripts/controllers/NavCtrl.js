@@ -122,6 +122,14 @@ alert('test');
             }, {
                 title: 'Dashboard'
             }];
+
+            $('#btnNavSearch').click(function(){
+                if($('.overlay').hasClass('overlay-nav')){
+                    $('.overlay').removeClass('overlay-nav');
+                }
+            });
+
+
             $scope.doFunction = function(name) {
                 if (name == "Add Widget") {
 
@@ -502,7 +510,7 @@ alert('test');
            $scope.navigate = function(routeName) {
 
             // start pulathisi 7/23/2015
-            
+                alert("navigate");
                 if($('.ion-settings').hasClass('sidebaricons')){
                     $(".sidebaricons").removeClass("sidebaricons").addClass("sidebaricons-active");
                 }else{

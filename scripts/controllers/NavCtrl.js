@@ -19,7 +19,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
         $rootScope.username =  $localStorage.uname;
         if ($rootScope.username == null) 
         {
-             $rootScope.username = "admin";
+             $rootScope.username = "sajeetharan@duosoftware.com";
         }
         
         var mm = today.getMonth() + 1; //January is 0!
@@ -304,9 +304,9 @@ alert('test');
 
             $http({
             method: 'GET',
-            url: 'http://104.236.192.147:8281/pentaho/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
+            url: 'http://104.236.212.233:8080/pentaho/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
 
-                  // http://104.236.192.147:8281/pentaho/api/repo/files/%3Ahome%3Asajeetharan%40duosoftware.com%3AReports/children?showHidden=false&filter=*|FILES&_=1434614109291
+                  // http://104.236.212.233:8080/pentaho/api/repo/files/%3Ahome%3Asajeetharan%40duosoftware.com%3AReports/children?showHidden=false&filter=*|FILES&_=1434614109291
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -351,7 +351,7 @@ alert('test');
            
             $http({
             method: 'GET',
-            url: 'http://104.236.192.147:8281/pentaho/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
+            url: 'http://104.236.212.233:8080/pentaho/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
             // cache: $templateCache,
             headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -395,7 +395,7 @@ alert('test');
            
             $http({
             method: 'GET',
-            url: 'http://104.236.192.147:8281/pentaho/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
+            url: 'http://104.236.212.233:8080/pentaho/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
             // cache: $templateCache,
             headers: {
                     'Access-Control-Allow-Origin': '*',

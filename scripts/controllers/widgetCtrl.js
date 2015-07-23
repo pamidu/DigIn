@@ -8,7 +8,8 @@
 |      #wordpress settings: wordpressInit                  |
 |      #instagram settings: instaInit                      | 
 |      #d3plugin settings : d3Init                         |  
-|      #sltskillwisecall settings :sltskillInit            |
+|      #sltskillwisecall  : sltskillInit                   |
+|      #sltivr settings   : sltivrInit                     |
 ------------------------------------------------------------
 */
 /*summary-
@@ -35,10 +36,76 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
         $mdDialog.hide();
     };
 
-    
-    scope.chartConf = {"options":{"chart":{"type":"area"},"plotOptions":{"series":{"stacking":""}}},"series":[{"name":"Like Count","data":[],"id":"series-0","type":"line","dashStyle":"ShortDashDot","connectNulls":false}],"title":{"text":"Page Likes"},"credits":{"enabled":false},"loading":false,"xAxis":{"type":"datetime","currentMin":0},"yAxis":{"min":0}};
-    scope.chartConfView
- = {"options":{"chart":{"type":"area"},"plotOptions":{"series":{"stacking":""}}},"series":[{"name":"View Count","data":[],"id":"series-0","type":"area","dashStyle":"ShortDashDot","connectNulls":false,"color":"#FF5722"}],"title":{"text":"Page Views"},"credits":{"enabled":false},"loading":false,"xAxis":{"type":"datetime","currentMin":0},"yAxis":{"min":0}};
+
+    scope.chartConf = {
+        "options": {
+            "chart": {
+                "type": "area"
+            },
+            "plotOptions": {
+                "series": {
+                    "stacking": ""
+                }
+            }
+        },
+        "series": [{
+            "name": "Like Count",
+            "data": [],
+            "id": "series-0",
+            "type": "line",
+            "dashStyle": "ShortDashDot",
+            "connectNulls": false
+        }],
+        "title": {
+            "text": "Page Likes"
+        },
+        "credits": {
+            "enabled": false
+        },
+        "loading": false,
+        "xAxis": {
+            "type": "datetime",
+            "currentMin": 0
+        },
+        "yAxis": {
+            "min": 0
+        }
+    };
+    scope.chartConfView = {
+        "options": {
+            "chart": {
+                "type": "area"
+            },
+            "plotOptions": {
+                "series": {
+                    "stacking": ""
+                }
+            }
+        },
+        "series": [{
+            "name": "View Count",
+            "data": [],
+            "id": "series-0",
+            "type": "area",
+            "dashStyle": "ShortDashDot",
+            "connectNulls": false,
+            "color": "#FF5722"
+        }],
+        "title": {
+            "text": "Page Views"
+        },
+        "credits": {
+            "enabled": false
+        },
+        "loading": false,
+        "xAxis": {
+            "type": "datetime",
+            "currentMin": 0
+        },
+        "yAxis": {
+            "min": 0
+        }
+    };
 
 
     //complete config  
@@ -51,79 +118,81 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
         }
 
         //getting page likes insights
-        fbInterface.getPageLikesInsight(scope.fbPageModel,dateObj, function(data) {
-        console.log("**************************************");
-        console.log("Like history:"+JSON.stringify(data));
-        var likeHistory = fbInterface.getPageLikesObj(data);
-        scope.chartConf.series[0].data = likeHistory.likeArr;
-        scope.chartConf.series[0].pointStart = Date.UTC(likeHistory.start.getUTCFullYear(),likeHistory.start.getUTCMonth(),likeHistory.start.getUTCDate());;
-        scope.chartConf.series[0].pointInterval = likeHistory.interval;
+        fbInterface.getPageLikesInsight(scope.fbPageModel, dateObj, function(data) {
+            console.log("**************************************");
+            console.log("Like history:" + JSON.stringify(data));
+            var likeHistory = fbInterface.getPageLikesObj(data);
+            scope.chartConf.series[0].data = likeHistory.likeArr;
+            scope.chartConf.series[0].pointStart = Date.UTC(likeHistory.start.getUTCFullYear(), likeHistory.start.getUTCMonth(), likeHistory.start.getUTCDate());;
+            scope.chartConf.series[0].pointInterval = likeHistory.interval;
 
-        var obj = {
-            pgData : scope.pageData,
-            likeData : scope.chartConf
-        };   
-        $rootScope.dashboard.widgets[objIndex].widData = obj; 
+            var obj = {
+                pgData: scope.pageData,
+                likeData: scope.chartConf
+            };
+            $rootScope.dashboard.widgets[objIndex].widData = obj;
         });
 
         //getting page views insights
-        fbInterface.getPageViewsInsight(scope.fbPageModel,dateObj, function(data) {
-        console.log("**************************************");
-        console.log("View history:"+JSON.stringify(data));
-        var viewHistory = fbInterface.getPageLikesObj(data);
-         scope.chartConfView.series[0].data = viewHistory.likeArr;
-         scope.chartConfView.series[0].pointStart = Date.UTC(viewHistory.start.getUTCFullYear(),viewHistory.start.getUTCMonth(),viewHistory.start.getUTCDate());;
-         scope.chartConfView.series[0].pointInterval = viewHistory.interval;
+        fbInterface.getPageViewsInsight(scope.fbPageModel, dateObj, function(data) {
+            console.log("**************************************");
+            console.log("View history:" + JSON.stringify(data));
+            var viewHistory = fbInterface.getPageLikesObj(data);
+            scope.chartConfView.series[0].data = viewHistory.likeArr;
+            scope.chartConfView.series[0].pointStart = Date.UTC(viewHistory.start.getUTCFullYear(), viewHistory.start.getUTCMonth(), viewHistory.start.getUTCDate());;
+            scope.chartConfView.series[0].pointInterval = viewHistory.interval;
 
-        var obj = {
-            pgData : scope.pageData,
-            likeData : scope.chartConf,
-            viewData : scope.chartConfView
-        };   
-        $rootScope.dashboard.widgets[objIndex].widData = obj; 
+            var obj = {
+                pgData: scope.pageData,
+                likeData: scope.chartConf,
+                viewData: scope.chartConfView
+            };
+            $rootScope.dashboard.widgets[objIndex].widData = obj;
         });
-        
+
 
         $mdDialog.hide();
     };
 
     scope.pageData = {};
 
-    
+
 
     //selecting pages  
     scope.changePage = function() {
         //get page data on change
-        fbInterface.getPageData(scope, function(data) {  
-        scope.pageData = data;          
-           // $rootScope.dashboard.widgets[objIndex].widData = data;
+        fbInterface.getPageData(scope, function(data) {
+            scope.pageData = data;
+            // $rootScope.dashboard.widgets[objIndex].widData = data;
         });
     };
 };
-function SLTInit($scope,$http, widId,$rootScope, $mdDialog)
-{
-  $scope.visualz = ['Calls in IVR', 'Calls in Queue', 'Calls in Agent','Calls Dropped',
-            'Skill Wise Summary'];
 
-   $scope.cancel = function() {
-        $mdDialog.hide();
-    };
-    $scope.ok = function() {
 
-        var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+function SLTInit($scope, $http, widId, $rootScope, $mdDialog) {
+        $scope.visualz = ['Calls in IVR', 'Calls in Queue', 'Calls in Agent', 'Calls Dropped',
+            'Skill Wise Summary'
+        ];
 
-        var visualizeType = $scope.datasource;
+        $scope.cancel = function() {
+            $mdDialog.hide();
+        };
+        $scope.ok = function() {
 
-        $rootScope.dashboard.widgets[objIndex].widData = visualizeType;
-        $mdDialog.hide();
-    };
-  
-  
+            var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
-}
-/*summary-
-  linkedinInterface : (scripts/custom/linkedinInterface.js)
-*/
+            var visualizeType = $scope.datasource;
+
+            $rootScope.dashboard.widgets[objIndex].widData = visualizeType;
+            $mdDialog.hide();
+        };
+
+
+
+    }
+    /*summary-
+      linkedinInterface : (scripts/custom/linkedinInterface.js)
+    */
 function linkedInit(scope, $mdDialog, widId, $rootScope) {
 
     scope.accounts = [];
@@ -153,49 +222,50 @@ function linkedInit(scope, $mdDialog, widId, $rootScope) {
         $mdDialog.hide();
     };
 };
-function YoutubeInit($scope,$http,$objectstore,$mdDialog,$rootScope,widId){
-  $scope.search = function () {
-     this.listResults = function (data) {
-    results.length = 0;
-    for (var i = data.items.length - 1; i >= 0; i--) {
-      results.push({
-        id: data.items[i].id.videoId, 
-        title: data.items[i].snippet.title,
-        description: data.items[i].snippet.description,
-        datetimee: data.items[i].snippet.publishedAt,
-        lbc: data.items[i].snippet.liveBroadcastContent,
-        ciid: data.items[i].snippet.channelId,
-        kidd: data.items[i].id.kind,
-        thumbnail: data.items[i].snippet.thumbnails.default.url,
-        author: data.items[i].snippet.channelTitle
-        
-      });
-    }
-    return results;
-  }
-      $http.get('https://www.googleapis.com/youtube/v3/search', {
-        params: {
-          key: 'AIzaSyAzf5VkNxCc-emzb5rujUSc9wSxoDla6AM',
-          type: 'video',
-          maxResults: '50',
-          part: 'id,snippet',
-          fields: 'items/id,items/snippet/title,items/snippet/description,items/snippet/thumbnails/default,items/snippet/channelTitle,items/snippet/publishedAt,items/snippet/liveBroadcastContent,items/snippet/channelId,items/id/kind,items/id/videoId',
-          q: this.query
+
+function YoutubeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) {
+    $scope.search = function() {
+        this.listResults = function(data) {
+            results.length = 0;
+            for (var i = data.items.length - 1; i >= 0; i--) {
+                results.push({
+                    id: data.items[i].id.videoId,
+                    title: data.items[i].snippet.title,
+                    description: data.items[i].snippet.description,
+                    datetimee: data.items[i].snippet.publishedAt,
+                    lbc: data.items[i].snippet.liveBroadcastContent,
+                    ciid: data.items[i].snippet.channelId,
+                    kidd: data.items[i].id.kind,
+                    thumbnail: data.items[i].snippet.thumbnails.default.url,
+                    author: data.items[i].snippet.channelTitle
+
+                });
+            }
+            return results;
         }
-      })
-      .success( function (data) {
-        VideosService.listResults(data);
-        $log.info(data);
-      })
-      .error( function () {
-        $log.info('Search error');
-      });
+        $http.get('https://www.googleapis.com/youtube/v3/search', {
+                params: {
+                    key: 'AIzaSyAzf5VkNxCc-emzb5rujUSc9wSxoDla6AM',
+                    type: 'video',
+                    maxResults: '50',
+                    part: 'id,snippet',
+                    fields: 'items/id,items/snippet/title,items/snippet/description,items/snippet/thumbnails/default,items/snippet/channelTitle,items/snippet/publishedAt,items/snippet/liveBroadcastContent,items/snippet/channelId,items/id/kind,items/id/videoId',
+                    q: this.query
+                }
+            })
+            .success(function(data) {
+                VideosService.listResults(data);
+                $log.info(data);
+            })
+            .error(function() {
+                $log.info('Search error');
+            });
     }
 
-    $scope.tabulate = function (state) {
-      $scope.playlist = state;
+    $scope.tabulate = function(state) {
+        $scope.playlist = state;
     }
-    
+
 }
 
 
@@ -220,15 +290,15 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
     });
 
     $scope.alert = function() {
-        $mdDialog.show({
-            controller: 'successCtrl',
-            templateUrl: 'views/file-success.html',
-            resolve: {
+            $mdDialog.show({
+                controller: 'successCtrl',
+                templateUrl: 'views/file-success.html',
+                resolve: {
 
-            }
-        })
-    }
- //cancel config
+                }
+            })
+        }
+        //cancel config
     $scope.cancel = function() {
         $mdDialog.hide();
     };
@@ -341,14 +411,15 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 });
                 widget.chartSeries = [];
                 widget.chartSeries = widget.chartConfig.series;
-        
+
             }
-            
+
         });
         client.getSelected(parameter);
     }
 };
-function InitConfigD3($scope, $mdDialog, widId, $rootScope,$sce) {
+
+function InitConfigD3($scope, $mdDialog, widId, $rootScope, $sce) {
 
     $scope.activitylist = [];
 
@@ -358,7 +429,7 @@ function InitConfigD3($scope, $mdDialog, widId, $rootScope,$sce) {
         icon: "styles/css/images/icons/d3/Population_Pyramid.png",
         link: "http://bl.ocks.org/mbostock/raw/4062085/"
     });
-    
+
     $scope.activitylist.push({
         Name: "Aster Plot",
         Description: "Aster Plot",
@@ -463,18 +534,18 @@ function InitConfigD3($scope, $mdDialog, widId, $rootScope,$sce) {
         icon: "styles/css/images/icons/d3/sunburst.png",
         link: "http://bl.ocks.org/mbostock/raw/899711/"
     });
-    
-    $scope.trustSrc = function(src) {
-       return $sce.trustAsResourceUrl(src);
-    }
-    $scope.setPlugin = function(wid){
 
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-     $rootScope.dashboard.widgets[objIndex].d3plugin =  wid.link;
-     $rootScope.dashboard.widgets[objIndex].chartConfig.title.text =  wid.Name;
-     $rootScope.dashboard.widgets[objIndex].externalDataURL = wid.Data;
-           $mdDialog.hide();
-    } 
+    $scope.trustSrc = function(src) {
+        return $sce.trustAsResourceUrl(src);
+    }
+    $scope.setPlugin = function(wid) {
+
+        var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+        $rootScope.dashboard.widgets[objIndex].d3plugin = wid.link;
+        $rootScope.dashboard.widgets[objIndex].chartConfig.title.text = wid.Name;
+        $rootScope.dashboard.widgets[objIndex].externalDataURL = wid.Data;
+        $mdDialog.hide();
+    }
     $scope.cancel = function() {
         $mdDialog.hide();
     };
@@ -483,7 +554,7 @@ function InitConfigD3($scope, $mdDialog, widId, $rootScope,$sce) {
 
 
 
-function wordpressInit ($scope, $http, $mdDialog, widId, $rootScope){
+function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     //cancel config
     $scope.cancel = function() {
@@ -495,26 +566,28 @@ function wordpressInit ($scope, $http, $mdDialog, widId, $rootScope){
         var wpapi = "http://public-api.wordpress.com/rest/v1/sites/";
         var choice = "/posts";
         var callbackString = '/?callback=JSON_CALLBACK';
-        var message = $http.jsonp(wpapi+$scope.wpdomain+choice+callbackString).
+        var message = $http.jsonp(wpapi + $scope.wpdomain + choice + callbackString).
         success(function(data, status) {
             var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
             //console.log(JSON.stringify(data));
             var posts = data.posts;
-            
+
             var trimmedPosts = [];
             var tempTitle = "";
-            for(i=0;i<posts.length;i++){
-                var obj = {picURL: "",
-                   authorName: "",
-                   title: "",
-                   comments: "",
-                   likes: ""};
+            for (i = 0; i < posts.length; i++) {
+                var obj = {
+                    picURL: "",
+                    authorName: "",
+                    title: "",
+                    comments: "",
+                    likes: ""
+                };
                 obj.picURL = posts[i].author.avatar_URL;
                 obj.authorName = posts[i].author.name;
                 obj.title = posts[i].title;
                 obj.comments = posts[i].comment_count;
                 obj.likes = posts[i].like_count;
-                trimmedPosts.push(obj);                
+                trimmedPosts.push(obj);
             }
             var trimmedObj = {};
             trimmedObj.posts = trimmedPosts;
@@ -522,7 +595,7 @@ function wordpressInit ($scope, $http, $mdDialog, widId, $rootScope){
             //$rootScope.dashboard.widgets[objIndex].widData = data;
         }).
         error(function(data, status) {
-              console.log(message);
+            console.log(message);
         });
         $mdDialog.hide();
     };
@@ -531,8 +604,8 @@ function wordpressInit ($scope, $http, $mdDialog, widId, $rootScope){
 
 
 // todo...
-function weatherInit(widId, $scope, $http, $rootScope, $mdDialog){
-  //cancel config
+function weatherInit(widId, $scope, $http, $rootScope, $mdDialog) {
+    //cancel config
     $scope.cancel = function() {
         $mdDialog.hide();
     };
@@ -540,52 +613,52 @@ function weatherInit(widId, $scope, $http, $rootScope, $mdDialog){
     //complete config  
     $scope.finish = function() {
         $http.get('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22' + $scope.locZip + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
-      .success(function(data){
-        //alert(JSON.stringify(data));
-        console.log(JSON.stringify(data));
-        var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-        $rootScope.dashboard.widgets[objIndex].widData = data.query;
-        $mdDialog.hide();
-      })
-      .error(function(err){
-        console.log('Error retrieving markets');
-      });
+            .success(function(data) {
+                //alert(JSON.stringify(data));
+                console.log(JSON.stringify(data));
+                var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+                $rootScope.dashboard.widgets[objIndex].widData = data.query;
+                $mdDialog.hide();
+            })
+            .error(function(err) {
+                console.log('Error retrieving markets');
+            });
     };
 
 }
- 
 
-function instaInit($scope,$http,$window){
+
+function instaInit($scope, $http, $window) {
 
     var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
     var redirectUrl = 'http://duoworld.duoweb.info/DuoDiggin_pinterest/'
-    var baseUrl = 
-        'https://instagram.com/oauth/authorize/?client_id='+clientId+'&redirect_uri='+redirectUrl+'&response_type=token';
+    var baseUrl =
+        'https://instagram.com/oauth/authorize/?client_id=' + clientId + '&redirect_uri=' + redirectUrl + '&response_type=token';
 
-    if($window.location.href.indexOf("access_token") == -1){
+    if ($window.location.href.indexOf("access_token") == -1) {
         $window.location.href = baseUrl;
-    }else{
+    } else {
         var access_token = $window.location.hash.substring(14);
-        var baseUrl = "https://api.instagram.com/v1/users/self/?access_token="+access_token+"&format=jsonp&callback=JSON_CALLBACK"
-        $http.jsonp(baseUrl).success(function(data){
-            
-            $scope.followers=data.data.counts.followed_by;
-            $scope.follows=data.data.counts.follows;
-            $scope.profilepic=data.data.profile_picture;
-            $scope.username=data.data.username;
-            $scope.firstName=data.data.full_name;
-            var likeUrl="https://api.instagram.com/v1/users/self/media/liked?access_token="+access_token+"&format=jsonp&callback=JSON_CALLBACK";
+        var baseUrl = "https://api.instagram.com/v1/users/self/?access_token=" + access_token + "&format=jsonp&callback=JSON_CALLBACK"
+        $http.jsonp(baseUrl).success(function(data) {
+
+            $scope.followers = data.data.counts.followed_by;
+            $scope.follows = data.data.counts.follows;
+            $scope.profilepic = data.data.profile_picture;
+            $scope.username = data.data.username;
+            $scope.firstName = data.data.full_name;
+            var likeUrl = "https://api.instagram.com/v1/users/self/media/liked?access_token=" + access_token + "&format=jsonp&callback=JSON_CALLBACK";
             console.log(data);
-             $http.jsonp(likeUrl).success(function(data){
+            $http.jsonp(likeUrl).success(function(data) {
 
-                    $scope.likes=data.data.length;
-                    console.log(data.data.length); 
-             }).error(function(data){
+                $scope.likes = data.data.length;
+                console.log(data.data.length);
+            }).error(function(data) {
 
-             })
+            })
 
-        }).error(function(data){
-            
+        }).error(function(data) {
+
             console.log(data)
         })
 
@@ -593,4 +666,15 @@ function instaInit($scope,$http,$window){
 
 
 }
+
+routerApp.controller('sltivrInit', function($scope, $mdDialog, $rootScope) {
+     $scope.countTo = 349;
+    $scope.countFrom = 0;
+
+    $scope.reCount = function () {
+        $scope.countFrom = Math.ceil(Math.random() * 300);
+        $scope.countTo = Math.ceil(Math.random() * 7000) - Math.ceil(Math.random() * 600);
+    };
+}
+ );
  

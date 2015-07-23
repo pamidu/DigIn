@@ -69,7 +69,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
     chartSeries : $scope.chartSeries,
     query:"select * from testJay where Name!= 'Beast Master'",
     id: "chart" + Math.floor(Math.random()*(100-10+1)+10),
-    type:"All",
+    type:widget.type,
     width : '350px',
     left :  $scope.leftPosition +'px',
     top :  $scope.topPosition +'px',
@@ -147,10 +147,11 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
 
          $rootScope.dashboard.widgets.push($scope.currWidget);
          
-
-         //opening initial widget config dialog
-         $scope.openInitialConfig(ev, $scope.currWidget.id);
-
+         if($scope.currWidget.type != "Sri Lanka Telecom")
+         {
+             //opening initial widget config dialog
+            $scope.openInitialConfig(ev, $scope.currWidget.id);
+         }
     });
 
 

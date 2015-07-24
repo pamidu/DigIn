@@ -28,7 +28,7 @@ var linkedinInterface = new function(){
 	};
 
 	this.getUserOverview = function(scope){
-		var url = '/people/~:(id,first-name,last-name,num-connections,picture-url,headline)?format=json';
+		var url = '/people/~:(id,first-name,last-name,num-connections,picture-url,headline,current-share,email-address,public-profile-url)?format=json';
         IN.API.Raw().url(url).method('GET').body().result(function(res){
             console.log(JSON.stringify(res));
             var username = res.firstName + ' ' + res.lastName;
@@ -39,7 +39,7 @@ var linkedinInterface = new function(){
 	};
 
     this.getUserAccountOverview = function(scope,callback){
-        var url = '/people/~:(id,first-name,last-name,num-connections,picture-url,headline)?format=json';
+        var url = '/people/~:(id,first-name,last-name,num-connections,picture-url,headline,current-share,num-connections-capped,email-address,positions)?format=json';
         IN.API.Raw().url(url).method('GET').body().result(function(res){
             callback(res);
         });

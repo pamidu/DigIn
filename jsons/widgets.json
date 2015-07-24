@@ -38,7 +38,8 @@
             "initController": "InitConfigD3",
             "widView": "views/ViewD3.html"
 
-        },   {
+        },
+           {
 
             "title": "Google AdSense",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",

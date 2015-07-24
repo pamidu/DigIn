@@ -9502,8 +9502,8 @@ margin: 4px !important;
   background: #fff;
 }/*end pulathisi 7/23/2015*/
 .overlay .starting-point span {
- /* background-image:url(images/layer.jpg);*/
- background-color: #3A539B;
+ background-image:url(images/layer2.jpg);
+ /*background-color: #3A539B;*/
 }
 .layer-container .menu-layer li.open > a,
 .layer-container .menu-layer li:hover > a {

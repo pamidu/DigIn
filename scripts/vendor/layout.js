@@ -69,9 +69,13 @@ var Layout = {
 
 	listenForMenuLayer: function () {
 
+		$('#diginlogo').bind('click', function(event) {
+    		alert("test");
+		});
+
 
 		$('.nav-menu').on('click', function() {
-			alert("listenFor");
+
 			// Define neccessary elements
 			var $this = $(this),
 					$startingPoint = $('.starting-point'),
@@ -164,7 +168,6 @@ var Layout = {
 		// Close menu by clicking overlay
 		$('.overlay').on('click', function () {
 			$('.nav-menu').trigger('click');
-
 		});
 	},
 

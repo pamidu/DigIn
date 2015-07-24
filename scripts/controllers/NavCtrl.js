@@ -88,7 +88,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
 
         //change dates in views
         $scope.changeViewedDatesRange = function(widId, sinceDay, untilDay){
-alert('test');
+
             var diffDays = getDateDifference(untilDay,sinceDay);
 
             var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
@@ -124,6 +124,12 @@ alert('test');
             }];
 
             $('#btnNavSearch').click(function(){
+                if($('.overlay').hasClass('overlay-nav')){
+                    $('.overlay').removeClass('overlay-nav');
+                }
+            });
+
+            $('#diginlogo').click(function(){
                 if($('.overlay').hasClass('overlay-nav')){
                     $('.overlay').removeClass('overlay-nav');
                 }
@@ -481,9 +487,6 @@ alert('test');
 
             })
 
-
-
-
         }
         $scope.openTheme = function(ev) {
             $mdDialog.show({
@@ -510,7 +513,6 @@ alert('test');
            $scope.navigate = function(routeName) {
 
             // start pulathisi 7/23/2015
-                alert("navigate");
                 if($('.ion-settings').hasClass('sidebaricons')){
                     $(".sidebaricons").removeClass("sidebaricons").addClass("sidebaricons-active");
                 }else{

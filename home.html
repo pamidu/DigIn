@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 
 <head>
     <title>DuoDigin - For BigData Analytics</title>
@@ -85,15 +86,15 @@
     </div>
     <div class="search-layer">
         <div class="search" >
-            <form >
-                <div class="form-group" layout="row">
+           
+                <div   layout="row">
                     <input ng-model="searchText" type="text" id="input-search" class="form-control" placeholder="type something">
                     <button type="submit" class="btn btn-default ">
                     <!-- <i class="ion-search"></i> -->
                     <img style="width:35px;height:35px;margin-top:-8px; "    src='bower_components/material-design-icons/action/svg/production/ic_search_white_24px.svg'/>
                     </button>
                 </div>
-            </form>
+             
         </div>
          <div class="results">
             <div class="row">
@@ -110,7 +111,7 @@
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
                                         <div class="list-action-left" style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
-                                            <img style="width:35px;height:35px;background-color:#fff"  src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg" class="face-radius" alt="">
+                                            <img style="width:35px;height:35px"  src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg" class="face-radius" alt="">
                                             <span ng-click="goDashboard(x)" class="title">{{x.splitName}}</span>
                                         </div>
                                     </a>
@@ -176,7 +177,7 @@
                              <img    style="width:35px;height:35px;margin-top:-8px"   src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg'/>
                              <h4  class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites <small>({{favoriteAnalyzers.length}})</small></h4>
                         <ul class="list-material">
-                            <li class="has-action-left" ng-repeat="x in favoriteAnalyzers |filter:searchText">
+                            <li class="has-action-left" ng-repeat="x in favoriteAnalyzers track by chosen.id|filter:searchText">
                                 <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                 <a href="#" class="visible">
                                     <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
@@ -242,7 +243,7 @@
         </div>
 
     </div>
-    
+    <tts tts-text="Hello world" tts-lang="en" ></tts>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="scripts/vendor/jquery-ui-1.9.2-min.js"></script>
     <script type="text/javascript" src="scripts/vendor/jquery.jsPlumb-1.4.1-all-min.js"></script>
@@ -302,8 +303,8 @@
     <script type="text/javascript" src="scripts/controllers/successCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/errorCtrl.js"></script>
     <script type="text/javascript" src="scripts/services/Dashboard.js"></script>
-      <script type="text/javascript" src="scripts/factories/d3Data.js"></script>
-	  <script type="text/javascript" src="scripts/factories/Dashboard.js"></script>
+    <script type="text/javascript" src="scripts/factories/d3Data.js"></script>
+	<script type="text/javascript" src="scripts/factories/Dashboard.js"></script>
     <script type="text/javascript" src="scripts/controllers/newWidgetCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/ShowTableCtrl.js"></script>
     <script type="text/javascript" src="scripts/services/RealTimeService.js"></script>
@@ -316,6 +317,8 @@
     <script type="text/javascript" src="scripts/controllers/WeatherCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/widgetCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/settingsCtrl.js"></script>
+    <script type="text/javascript" src="scripts/vendor/pjTextToSpeech.js"></script>
+    
     <!-- Material Icons -->
     <script src="//cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"></script>
        <script type="text/javascript" src="scripts/vendor/angular-count-to.min.js"></script>

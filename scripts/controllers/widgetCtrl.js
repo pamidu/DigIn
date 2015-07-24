@@ -15,6 +15,9 @@
 /*summary-
   fbInterface : (scripts/custom/fbInterface.js)
 */
+ 
+
+
 function fbInit(scope, $mdDialog, widId, $rootScope) {
 
     scope.accounts = [];
@@ -36,76 +39,10 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
         $mdDialog.hide();
     };
 
-
-    scope.chartConf = {
-        "options": {
-            "chart": {
-                "type": "area"
-            },
-            "plotOptions": {
-                "series": {
-                    "stacking": ""
-                }
-            }
-        },
-        "series": [{
-            "name": "Like Count",
-            "data": [],
-            "id": "series-0",
-            "type": "line",
-            "dashStyle": "ShortDashDot",
-            "connectNulls": false
-        }],
-        "title": {
-            "text": "Page Likes"
-        },
-        "credits": {
-            "enabled": false
-        },
-        "loading": false,
-        "xAxis": {
-            "type": "datetime",
-            "currentMin": 0
-        },
-        "yAxis": {
-            "min": 0
-        }
-    };
-    scope.chartConfView = {
-        "options": {
-            "chart": {
-                "type": "area"
-            },
-            "plotOptions": {
-                "series": {
-                    "stacking": ""
-                }
-            }
-        },
-        "series": [{
-            "name": "View Count",
-            "data": [],
-            "id": "series-0",
-            "type": "area",
-            "dashStyle": "ShortDashDot",
-            "connectNulls": false,
-            "color": "#FF5722"
-        }],
-        "title": {
-            "text": "Page Views"
-        },
-        "credits": {
-            "enabled": false
-        },
-        "loading": false,
-        "xAxis": {
-            "type": "datetime",
-            "currentMin": 0
-        },
-        "yAxis": {
-            "min": 0
-        }
-    };
+    
+    scope.chartConf = {"options":{"chart":{"type":"area"},"plotOptions":{"series":{"stacking":""}}},"series":[{"name":"Like Count","data":[],"id":"series-0","type":"line","dashStyle":"ShortDashDot","connectNulls":false}],"title":{"text":"Page Likes"},"credits":{"enabled":false},"loading":false,"xAxis":{"type":"datetime","currentMin":0},"yAxis":{"min":0}};
+    scope.chartConfView
+ = {"options":{"chart":{"type":"area"},"plotOptions":{"series":{"stacking":""}}},"series":[{"name":"View Count","data":[],"id":"series-0","type":"area","dashStyle":"ShortDashDot","connectNulls":false,"color":"#FF5722"}],"title":{"text":"Page Views"},"credits":{"enabled":false},"loading":false,"xAxis":{"type":"datetime","currentMin":0},"yAxis":{"min":0}};
 
 
     //complete config  
@@ -118,70 +55,58 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
         }
 
         //getting page likes insights
-        fbInterface.getPageLikesInsight(scope.fbPageModel, dateObj, function(data) {
-            console.log("**************************************");
-            console.log("Like history:" + JSON.stringify(data));
-            var likeHistory = fbInterface.getPageLikesObj(data);
-            scope.chartConf.series[0].data = likeHistory.likeArr;
-            scope.chartConf.series[0].pointStart = Date.UTC(likeHistory.start.getUTCFullYear(), likeHistory.start.getUTCMonth(), likeHistory.start.getUTCDate());;
-            scope.chartConf.series[0].pointInterval = likeHistory.interval;
+        fbInterface.getPageLikesInsight(scope.fbPageModel,dateObj, function(data) {
+        console.log("**************************************");
+        console.log("Like history:"+JSON.stringify(data));
+        var likeHistory = fbInterface.getPageLikesObj(data);
+        scope.chartConf.series[0].data = likeHistory.likeArr;
+        scope.chartConf.series[0].pointStart = Date.UTC(likeHistory.start.getUTCFullYear(),likeHistory.start.getUTCMonth(),likeHistory.start.getUTCDate());;
+        scope.chartConf.series[0].pointInterval = likeHistory.interval;
 
-             var obj = {
-                pgData: scope.pageData,
-                likeData: scope.chartConf
-            };
-            $rootScope.dashboard.widgets[objIndex].widData = obj;
+        var obj = {
+            pgData : scope.pageData,
+            likeData : scope.chartConf
+        };   
+        $rootScope.dashboard.widgets[objIndex].widData = obj; 
         });
 
-         fbInterface.getPageViewsInsight(scope.fbPageModel, dateObj, function(data) {
-            console.log("**************************************");
-            console.log("View history:" + JSON.stringify(data));
-            var viewHistory = fbInterface.getPageLikesObj(data);
-            scope.chartConfView.series[0].data = viewHistory.likeArr;
-            scope.chartConfView.series[0].pointStart = Date.UTC(viewHistory.start.getUTCFullYear(), viewHistory.start.getUTCMonth(), viewHistory.start.getUTCDate());;
-            scope.chartConfView.series[0].pointInterval = viewHistory.interval;
+        //getting page views insights
+        fbInterface.getPageViewsInsight(scope.fbPageModel,dateObj, function(data) {
+        console.log("**************************************");
+        console.log("View history:"+JSON.stringify(data));
+        var viewHistory = fbInterface.getPageLikesObj(data);
+         scope.chartConfView.series[0].data = viewHistory.likeArr;
+         scope.chartConfView.series[0].pointStart = Date.UTC(viewHistory.start.getUTCFullYear(),viewHistory.start.getUTCMonth(),viewHistory.start.getUTCDate());;
+         scope.chartConfView.series[0].pointInterval = viewHistory.interval;
 
-    
-
+        var obj = {
+            pgData : scope.pageData,
+            likeData : scope.chartConf,
+            viewData : scope.chartConfView
+        };   
+        $rootScope.dashboard.widgets[objIndex].widData = obj; 
+        });
+        
 
         $mdDialog.hide();
     };
 
     scope.pageData = {};
 
-
+    
 
     //selecting pages  
     scope.changePage = function() {
         //get page data on change
- 
-        fbInterface.getPageData(scope, function(data) {
-            scope.pageData = data;
-            // $rootScope.dashboard.widgets[objIndex].widData = data;
+        fbInterface.getPageData(scope, function(data) {  
+        scope.pageData = data;          
+           // $rootScope.dashboard.widgets[objIndex].widData = data;
         });
     };
 };
 
-
- 
-
-        $scope.cancel = function() {
-            $mdDialog.hide();
-        };
-      };
-            var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-
-            var visualizeType = $scope.datasource;
-
-            $rootScope.dashboard.widgets[objIndex].widData = visualizeType;
-            $mdDialog.hide();
-        };
-
-
-
-    }
-    /*summary-
-      linkedinInterface : (scripts/custom/linkedinInterface.js)
+/*summary-
+  linkedinInterface : (scripts/custom/linkedinInterface.js)
     */
 function linkedInit(scope, $mdDialog, widId, $rootScope) {
 
@@ -627,17 +552,9 @@ function instaInit($scope, $http, $window) {
  
     } else {
         var access_token = $window.location.hash.substring(14);
-                    console.log(data);
+                    console.log(data);       
+
  
-
-         })
-
-
-        }).error(function(data) {
-
-            console.log(data)
-        })
-
     }
 
 

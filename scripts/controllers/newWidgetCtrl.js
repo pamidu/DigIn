@@ -1,5 +1,5 @@
-routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialog','$sce','$http','$objectstore','dashboard',
-  function($scope, $timeout, $rootScope, $mdDialog,$sce,$http,$objectstore,dashboard) {
+routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialog','$sce','$http','$objectstore','dashboard','$log', 'TTSConfig', 'TTSAudio', 'TTS_EVENTS',
+  function($scope, $timeout, $rootScope, $mdDialog,$sce,$http,$objectstore,dashboard,$log, TTSConfig, TTSAudio, TTS_EVENTS) {
     //$scope.dashboard = dashboard;
     $rootScope.dashboard = dashboard;
 
@@ -48,7 +48,9 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
 
     console.log('type of selected widget:'+widget.title);
     $mdDialog.hide();
-
+    TTSConfig.url = 'http://tts.peterjurkovic.com/tts-backend/index.php';
+    var tts = new TTSAudio();
+   
     getJSONDataByIndex($http,'widgetPositions',$rootScope.dashboard.widgets.length,function(data){
        $scope.leftPosition = data.leftPosition;
        $scope.topPosition = data.topPosition;
@@ -144,7 +146,26 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
   }
     
   }
+    tts.speak({
+        text : 'Jay you are adding' +widget.title+ ' widget' ,
+        lang : 'en'
+        // you can add additional params which will send to server
+    });
 
+    // triggered after speaking
+    $scope.$on(TTS_EVENTS.SUCCESS, function(){
+        $log.info('Successfully done!')
+    });
+
+    // triggered in case error
+    $scope.$on(TTS_EVENTS.ERROR, function(){
+        $log.info('An unexpected error has occurred');
+    });
+
+    // before loading and speaking
+    $scope.$on(TTS_EVENTS.PENDING, function(text){
+        $log.info('Speaking: ' + text);
+    });
          $rootScope.dashboard.widgets.push($scope.currWidget);
          
          if($scope.currWidget.type != "Sri Lanka Telecom")

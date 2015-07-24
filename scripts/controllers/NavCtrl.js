@@ -1,15 +1,36 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
-    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen','$http','Digin_ReportViewer','$localStorage','$window','ObjectStoreService','Digin_Base_URL','DashboardService',
-    function($scope, $mdBottomSheet, $mdSidenav, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen,$http,Digin_ReportViewer,$localStorage,$window,ObjectStoreService,Digin_Base_URL,DashboardService)  
+    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen','$http','Digin_ReportViewer','$localStorage','$window','ObjectStoreService','Digin_Base_URL','DashboardService','$log', 'TTSConfig', 'TTSAudio', 'TTS_EVENTS',
+    function($scope, $mdBottomSheet, $mdSidenav, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen,$http,Digin_ReportViewer,$localStorage,$window,ObjectStoreService,Digin_Base_URL,DashboardService, $log, TTSConfig, TTSAudio, TTS_EVENTS)  
     {
 
+     TTSConfig.url = 'http://tts.peterjurkovic.com/tts-backend/index.php';
+     var tts = new TTSAudio();
+    tts.speak({
+        text : 'Hi Jay welcome to duo diggin',
+        lang : 'en'
+        // you can add additional params which will send to server
+    });
 
+    // triggered after speaking
+    $scope.$on(TTS_EVENTS.SUCCESS, function(){
+        $log.info('Successfully done!')
+    });
+
+    // triggered in case error
+    $scope.$on(TTS_EVENTS.ERROR, function(){
+        $log.info('An unexpected error has occurred');
+    });
+
+    // before loading and speaking
+    $scope.$on(TTS_EVENTS.PENDING, function(text){
+        $log.info('Speaking: ' + text);
+    });
         // $scope.refreshHome = function(){
         //     $window.location.href = Digin_Base_URL + 'home.html';
         // };
 
 
-
+    
 
         $rootScope.indexes = [];
         $scope.toggle = true;
@@ -377,9 +398,9 @@ alert('test');
                    console.log($scope.reports);
               
                     $scope.favoriteReports.push($scope.reports[2]) ;
-                     $scope.favoriteReports.push($scope.reports[5]) ;
+                 
                      $scope.favoriteReports.push($scope.reports[3]) ;
-                     $scope.favoriteReports.push($scope.reports[7]) ;
+                   
 
 
             }).
@@ -418,8 +439,8 @@ alert('test');
                       $scope.analyzers.push(obj1);
                    } 
 
-                       $scope.favoriteAnalyzers.push($scope.analyzers[3]);
-                 $scope.favoriteAnalyzers.push($scope.analyzers[4]);
+                       $scope.favoriteAnalyzers.push($scope.analyzers[1]);
+                 $scope.favoriteAnalyzers.push($scope.analyzers[0]);
 
 
 

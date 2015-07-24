@@ -10,7 +10,8 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial', 'uiMicrokernel', "hi
     'configuration',
     'directivelibrary',
     'ngMdIcons',
-    'countTo'
+    'countTo',
+    'pjTts'
 ])
 
 routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider",function($locationProvider, $httpProvider, $stateProvider) {

@@ -4,10 +4,17 @@
         <md-item layout="row">
             <div class="collapsed-row" layout="row" layout-align="start center" flex>
                 <div class="md-toolbar-tools">
-                    <div flex="70">
+                    <div flex="60">
                         <h4>
                           <span>{{widget.chartConfig.title.text}}</span>
                          </h4>
+                    </div>
+                     <div flex="10">
+                        <span>
+                                 <md-button  ng-click="commentary(widget)"  aria-label="Close">
+                                   <md-icon md-svg-src="bower_components/material-design-icons/av/svg/production/ic_surround_sound_48px.svg"></md-icon>
+                                 </md-button>
+                             </span>
                     </div>
                     <div flex="10">
                         <span> 
@@ -35,6 +42,6 @@
         </md-item>
     </md-card>
     <md-card    ng-if="widget.expanded && !widget.divider" ng-dblclick="widget.expanded = !widget.expanded">
-        <div  ng-include src="widget.widView"></div>
+        <div   ng-include src="widget.widView"></div>
     </md-card>
 </div>

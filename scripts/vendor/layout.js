@@ -69,8 +69,13 @@ var Layout = {
 
 	listenForMenuLayer: function () {
 
+		$('#diginlogo').bind('click', function(event) {
+    		alert("test");
+		});
+
 
 		$('.nav-menu').on('click', function() {
+
 			// Define neccessary elements
 			var $this = $(this),
 					$startingPoint = $('.starting-point'),
@@ -87,6 +92,14 @@ var Layout = {
 			// If Menu Layer is not active
 			if( !$this.hasClass('active') ) {
 
+				// start pulathisi 7/23/2015
+            
+                
+                    $(".sidebaricons").removeClass("sidebaricons").addClass("sidebaricons-active");
+                
+               
+            	// end pulathisi 7/23/2015
+
 				if( !Pleasure.checkTouchScreen() && !Layout.settings.improvePerformance ) // If screen is desktop, add scaled effect
 					$content.addClass('scaled');
 
@@ -95,7 +108,7 @@ var Layout = {
 
 				setTimeout(function () {
 					$body.addClass('disable-scroll');
-					// $overlay.addClass('overlay-nav active');
+					$overlay.addClass('overlay-nav active');
 					$this.addClass('active');
 					$menu.addClass('active');
 					$overlaySecondary.addClass('fade-in');
@@ -117,6 +130,13 @@ var Layout = {
 
 			} else {
 			// If Menu Layer is active
+
+			// start pulathisi 7/23/2015
+            
+                    $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
+               
+            // end pulathisi 7/23/2015
+
 				$this.addClass('rotating');
 
 				$overlaySecondary.removeClass('fade-in');
@@ -132,7 +152,7 @@ var Layout = {
 						duration: 500,
 						easing: [.42, 0, .58, 1],
 						complete: function () {
-							// $overlay.removeClass('active overlay-nav');
+							$overlay.removeClass('active overlay-nav');
 							$this.removeClass('active rotating');
 							$menu.removeClass('activating');
 							$body.removeClass('disable-scroll');
@@ -146,7 +166,7 @@ var Layout = {
 		});
 
 		// Close menu by clicking overlay
-		$('.overlay-secondary').on('click', function () {
+		$('.overlay').on('click', function () {
 			$('.nav-menu').trigger('click');
 		});
 	},

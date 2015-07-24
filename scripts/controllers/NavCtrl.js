@@ -1,7 +1,21 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
-    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen','$http','Digin_ReportViewer','$localStorage','$window','ObjectStoreService','Digin_Base_URL','DashboardService',
-    function($scope, $mdBottomSheet, $mdSidenav, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen,$http,Digin_ReportViewer,$localStorage,$window,ObjectStoreService,Digin_Base_URL,DashboardService)  
+    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen','$http','Digin_ReportViewer','$localStorage','$window','ObjectStoreService','Digin_Base_URL','DashboardService','$log', 'TTSConfig', 'TTSAudio', 'TTS_EVENTS',
+  function($scope, $mdBottomSheet, $mdSidenav, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen,$http,Digin_ReportViewer,$localStorage,$window,ObjectStoreService,Digin_Base_URL,DashboardService, $log, TTSConfig, TTSAudio, TTS_EVENTS)  
     {
+    // triggered after speaking
+    $scope.$on(TTS_EVENTS.SUCCESS, function(){
+        $log.info('Successfully done!')
+    });
+
+    // triggered in case error
+    $scope.$on(TTS_EVENTS.ERROR, function(){
+        $log.info('An unexpected error has occurred');
+    });
+
+    // before loading and speaking
+    $scope.$on(TTS_EVENTS.PENDING, function(text){
+        $log.info('Speaking: ' + text);
+    });
         // $scope.refreshHome = function(){
         //     $window.location.href = Digin_Base_URL + 'home.html';
         // };
@@ -13,7 +27,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
         $rootScope.username =  $localStorage.uname;
         if ($rootScope.username == null) 
         {
-             $rootScope.username = "admin";
+           
+             $rootScope.username = "sajeetharan%40duosoftware.com";
         }
         
         var mm = today.getMonth() + 1; //January is 0!
@@ -88,7 +103,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
 
         //change dates in views
         $scope.changeViewedDatesRange = function(widId, sinceDay, untilDay){
-alert('test');
+
             var diffDays = getDateDifference(untilDay,sinceDay);
 
             var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
@@ -122,6 +137,20 @@ alert('test');
             }, {
                 title: 'Dashboard'
             }];
+
+            $('#btnNavSearch').click(function(){
+                if($('.overlay').hasClass('overlay-nav')){
+                    $('.overlay').removeClass('overlay-nav');
+                }
+            });
+
+            $('#diginlogo').click(function(){
+                if($('.overlay').hasClass('overlay-nav')){
+                    $('.overlay').removeClass('overlay-nav');
+                }
+            });
+
+
             $scope.doFunction = function(name) {
                 if (name == "Add Widget") {
 
@@ -304,9 +333,9 @@ alert('test');
 
             $http({
             method: 'GET',
-            url: 'http://104.236.192.147:8281/pentaho/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
+             url: 'http://104.236.212.233:8080/DuoDigin/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
 
-                  // http://104.236.192.147:8281/pentaho/api/repo/files/%3Ahome%3Asajeetharan%40duosoftware.com%3AReports/children?showHidden=false&filter=*|FILES&_=1434614109291
+                  // http://104.236.212.233:8080/pentaho/api/repo/files/%3Ahome%3Asajeetharan%40duosoftware.com%3AReports/children?showHidden=false&filter=*|FILES&_=1434614109291
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -352,7 +381,7 @@ alert('test');
            
             $http({
             method: 'GET',
-            url: 'http://104.236.192.147:8281/pentaho/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
+             url: 'http://104.236.212.233:8080/DuoDigin/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
             // cache: $templateCache,
             headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -378,9 +407,9 @@ alert('test');
                    console.log($scope.reports);
               
                     $scope.favoriteReports.push($scope.reports[2]) ;
-                     $scope.favoriteReports.push($scope.reports[5]) ;
+                 
                      $scope.favoriteReports.push($scope.reports[3]) ;
-                     $scope.favoriteReports.push($scope.reports[7]) ;
+                   
 
 
             }).
@@ -396,7 +425,7 @@ alert('test');
            
             $http({
             method: 'GET',
-            url: 'http://104.236.192.147:8281/pentaho/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
+            url: 'http://104.236.212.233:8080/DuoDigin/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
             // cache: $templateCache,
             headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -419,8 +448,9 @@ alert('test');
                       $scope.analyzers.push(obj1);
                    } 
 
-                       $scope.favoriteAnalyzers.push($scope.analyzers[3]);
-                 $scope.favoriteAnalyzers.push($scope.analyzers[4]);
+             
+                       $scope.favoriteAnalyzers.push($scope.analyzers[1]);
+                 $scope.favoriteAnalyzers.push($scope.analyzers[0]);
 
 
 
@@ -473,9 +503,6 @@ alert('test');
 
             })
 
-
-
-
         }
         $scope.openTheme = function(ev) {
             $mdDialog.show({
@@ -502,7 +529,6 @@ alert('test');
            $scope.navigate = function(routeName) {
 
             // start pulathisi 7/23/2015
-            
                 if($('.ion-settings').hasClass('sidebaricons')){
                     $(".sidebaricons").removeClass("sidebaricons").addClass("sidebaricons-active");
                 }else{

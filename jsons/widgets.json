@@ -191,13 +191,53 @@
         } ,
           {
 
-            "title": "Skill wise calls",
+            "title": "Skill wise summary",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Sri Lanka Telecom",
             "Description": "Analyze the calls for each skills",
             "initTemplate": "InitSLT",
             "initController": "SLTInit",
-            "widView": "views/ViewSLT.html"
+            "widView": "views/ViewSLTSkill.html"
+        } ,
+        {
+
+            "title": "Calls in IVR",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Sri Lanka Telecom",
+            "Description": "Check how many calls are in the Interactive Voice Response",
+            "initTemplate": "InitSLTIvr",
+            "initController": "sltivrInit",
+            "widView": "views/ViewSLTIvr.html"
+        } ,
+        {
+
+            "title": "Calls in Queue",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Sri Lanka Telecom",
+            "Description": "Check how many calls are in the Queue",
+            "initTemplate": "InitS4LT",
+            "initController": "SLTInit",
+            "widView": "views/ViewSLTQueue.html"
+        } ,
+        {
+
+            "title": "Calls at Agent",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Sri Lanka Telecom",
+            "Description": "Check who is handling calls",
+            "initTemplate": "InitSLT",
+            "initController": "SLTInit",
+            "widView": "views/ViewSLTAgent.html"
+        } ,
+        {
+
+            "title": "Calls Dropped",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Sri Lanka Telecom",
+            "Description": "See the calls which has not been responded",
+            "initTemplate": "InitSLT",
+            "initController": "SLTInit",
+            "widView": "views/ViewSLTDropped.html"
         } 
 
     ]

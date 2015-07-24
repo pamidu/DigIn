@@ -3,8 +3,7 @@
 routerApp.controller('saveCtrl', ['$scope', '$http','$objectstore','$mdDialog','$rootScope','ObjectStoreService', 'DashboardService',
 
 function ($scope, $http,$objectstore,$mdDialog,$rootScope,ObjectStoreService,DashboardService) {   
- alert('test');
-       $scope.closeDialog = function() {
+        $scope.closeDialog = function() {
             // Easily hides most recent dialog shown...
            // no specific instance reference is needed.
             $mdDialog.hide();

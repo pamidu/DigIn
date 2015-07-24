@@ -27,8 +27,7 @@ routerApp.directive('resizeable', function() {
                        
                         height = ui.size.height - 80;
                         width = ui.size.width - 20;
-                         angular.element("#mdView").css("height", height);
-                         angular.element("#mdView").css("width",  width);
+                       
                      
                     }
                 },

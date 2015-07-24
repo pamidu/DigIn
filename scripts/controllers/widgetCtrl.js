@@ -524,6 +524,70 @@ function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
 };
 
 
+function rssInit ($scope, $http, $mdDialog, widId, $rootScope){
+
+    //cancel config
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+    //complete config  
+    $scope.finish = function(rssAddress) {
+        $rootScope.entryArray = [];
+        google.load("feeds", "1");
+        var feed = new google.feeds.Feed(rssAddress);
+        feed.setNumEntries(100);
+       
+        feed.load(function(result) {
+
+
+        if (!result.error) {
+         
+          for (var i = 0; i < result.feed.entries.length; i++) {
+
+            var entry = result.feed.entries[i];
+
+            $scope.entryContent = entry.content;
+            $rootScope.entryArray.push(entry);
+            
+            $rootScope.$apply();
+          }
+          
+            console.log($rootScope.entryArray);
+        }
+      });
+      $mdDialog.hide();
+
+    };
+};
+
+
+  //     $scope.callRss = function(rssdomain){
+
+  //       $scope.entryArray = [];
+  //       google.load("feeds", "1");
+  //       var feed = new google.feeds.Feed(rssdomain);
+  //       feed.setNumEntries(100);
+       
+  //       feed.load(function(result) {
+  //       if (!result.error) {
+         
+  //         for (var i = 0; i < result.feed.entries.length; i++) {
+
+  //           var entry = result.feed.entries[i];
+
+  //           $scope.entryContent = entry.content;
+  //           $scope.entryArray.push(entry);
+            
+  //           $scope.$apply();
+  //         }
+  //       }
+  //     });
+
+  //       $mdDialog.hide();
+  // };
+  
+   
 // todo...
  
 function weatherInit(widId, $scope, $http, $rootScope, $mdDialog) {

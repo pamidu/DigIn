@@ -1,16 +1,7 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen','$http','Digin_ReportViewer','$localStorage','$window','ObjectStoreService','Digin_Base_URL','DashboardService','$log', 'TTSConfig', 'TTSAudio', 'TTS_EVENTS',
-    function($scope, $mdBottomSheet, $mdSidenav, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen,$http,Digin_ReportViewer,$localStorage,$window,ObjectStoreService,Digin_Base_URL,DashboardService, $log, TTSConfig, TTSAudio, TTS_EVENTS)  
+  function($scope, $mdBottomSheet, $mdSidenav, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen,$http,Digin_ReportViewer,$localStorage,$window,ObjectStoreService,Digin_Base_URL,DashboardService, $log, TTSConfig, TTSAudio, TTS_EVENTS)  
     {
-
-     TTSConfig.url = 'http://tts.peterjurkovic.com/tts-backend/index.php';
-     var tts = new TTSAudio();
-    tts.speak({
-        text : 'Hi Jay welcome to duo diggin',
-        lang : 'en'
-        // you can add additional params which will send to server
-    });
-
     // triggered after speaking
     $scope.$on(TTS_EVENTS.SUCCESS, function(){
         $log.info('Successfully done!')
@@ -28,10 +19,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
         // $scope.refreshHome = function(){
         //     $window.location.href = Digin_Base_URL + 'home.html';
         // };
-
-
-    
-
         $rootScope.indexes = [];
         $scope.toggle = true;
         var today = new Date();
@@ -40,6 +27,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
         $rootScope.username =  $localStorage.uname;
         if ($rootScope.username == null) 
         {
+           
              $rootScope.username = "sajeetharan%40duosoftware.com";
         }
         
@@ -149,6 +137,14 @@ alert('test');
             }, {
                 title: 'Dashboard'
             }];
+
+            $('#btnNavSearch').click(function(){
+                if($('.overlay').hasClass('overlay-nav')){
+                    $('.overlay').removeClass('overlay-nav');
+                }
+            });
+
+
             $scope.doFunction = function(name) {
                 if (name == "Add Widget") {
 
@@ -246,6 +242,10 @@ alert('test');
         }
         $scope.goDashboard = function(dashboard){
             //closing the overlay
+            // start pulathisi 7/23/2015
+            // when saved dashboard is clicked change sidebar icon class, this changes icon colors
+            $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
+            // end pulathisi 7/23/2015
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
             $(".search-layer").removeClass("activating active"); 
@@ -321,11 +321,13 @@ alert('test');
         // }
 
          $scope.GetDashboardDetails = function() {
+
+            
             $scope.dashboards = DashboardService.getDashboards();
 
             $http({
             method: 'GET',
-            url: 'http://104.236.212.233:8080/DuoDigin/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
+             url: 'http://104.236.212.233:8080/DuoDigin/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
 
                   // http://104.236.212.233:8080/pentaho/api/repo/files/%3Ahome%3Asajeetharan%40duosoftware.com%3AReports/children?showHidden=false&filter=*|FILES&_=1434614109291
                 // cache: $templateCache,
@@ -337,6 +339,7 @@ alert('test');
                 }
             }).
             success(function(data, status) {
+
                 
              for(var i=0; i<data.repositoryFileDto.length; i++)
                    {
@@ -372,7 +375,7 @@ alert('test');
            
             $http({
             method: 'GET',
-            url: 'http://104.236.212.233:8080/DuoDigin/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
+             url: 'http://104.236.212.233:8080/DuoDigin/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
             // cache: $templateCache,
             headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -439,6 +442,7 @@ alert('test');
                       $scope.analyzers.push(obj1);
                    } 
 
+             
                        $scope.favoriteAnalyzers.push($scope.analyzers[1]);
                  $scope.favoriteAnalyzers.push($scope.analyzers[0]);
 
@@ -520,6 +524,17 @@ alert('test');
             })
         }
            $scope.navigate = function(routeName) {
+
+            // start pulathisi 7/23/2015
+                alert("navigate");
+                if($('.ion-settings').hasClass('sidebaricons')){
+                    $(".sidebaricons").removeClass("sidebaricons").addClass("sidebaricons-active");
+                }else{
+                   $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
+                }
+               
+            // end pulathisi 7/23/2015
+            // }
             if (routeName == "Dashboards") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';

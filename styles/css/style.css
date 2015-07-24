@@ -242,10 +242,6 @@ background-color:#065798;
     color:#fff;
 }
 
-.darkredtheme{
-  color:#6E0404;
-}
-
 /*end pulathisi 7/23/2015*/
  md-tooltip {
   position: absolute;
@@ -335,7 +331,10 @@ height:50px;
 md-toolbar.md-default-theme
 {
   /*pulathisi 7/23/2015*/
-  background-color:#6E0404;
+  /*darkred*/
+  /*background-color:#6E0404;*/
+  /*blue*/
+  background-color:#3A539B;
 }
 /*.display-animation .material-animate {
   -webkit-transform: scale(0);

@@ -35,6 +35,7 @@
     authorize: true
     scope: r_basicprofile r_emailaddress
     </script>
+
     <style type="text/css">
 .ui-resizable{
   position: absolute !important;
@@ -48,11 +49,13 @@
     <div id="fb-root"></div>
 
     <div ng-init="GetReportDetails()" class="nav-menu">
-    <div style="width:inherit; background-color: rgb(110, 4, 4);">
+ 
+    <div style="width:inherit; background-color: #3A539B;">
     <img ng-src="styles/css/images/logo2.png" class="md-avatar" id="digin-logo" alt="appLogo" style="width:inherit">
     </div>
     <md-divider style="padding-top:2px; "></md-divider>
-    <div style="margin-top:55px;">
+ 
+    <div class="sidebar-btn-container" style="margin-top:55px;">
         <md-item ng-repeat="item in menu">
             <md-button style="min-width:0px; font-size:26px;" md-ink-ripple ng-click="$parent.navigate(item.title)" layout="row" layout-align="start center">
                 <md-icon style="height:100%;" class="{{item.icon}} sidebaricons"></md-icon>
@@ -81,7 +84,8 @@
     </div>
     <div class="overlay-secondary"></div>
     <div class="nav-search">
-        <md-icon class="ion-search search sidebaricons"></md-icon>
+ 
+        <md-icon id="btnNavSearch" class="ion-search search sidebaricons"></md-icon>
          <md-divider style="margin-top:8px;"></md-divider>
     </div>
     <div class="search-layer">
@@ -111,6 +115,7 @@
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
                                         <div class="list-action-left" style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
+                                           
                                             <img style="width:35px;height:35px"  src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg" class="face-radius" alt="">
                                             <span ng-click="goDashboard(x)" class="title">{{x.splitName}}</span>
                                         </div>
@@ -177,6 +182,7 @@
                              <img    style="width:35px;height:35px;margin-top:-8px"   src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg'/>
                              <h4  class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites <small>({{favoriteAnalyzers.length}})</small></h4>
                         <ul class="list-material">
+                           
                             <li class="has-action-left" ng-repeat="x in favoriteAnalyzers track by chosen.id|filter:searchText">
                                 <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                 <a href="#" class="visible">
@@ -244,7 +250,7 @@
 
     </div>
     <tts tts-text="Hello world" tts-lang="en" ></tts>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
     <script type="text/javascript" src="scripts/vendor/jquery-ui-1.9.2-min.js"></script>
     <script type="text/javascript" src="scripts/vendor/jquery.jsPlumb-1.4.1-all-min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
@@ -264,8 +270,7 @@
     <script type="text/javascript" src="scripts/vendor/pleasure.js"></script>
     <script type="text/javascript" src="scripts/vendor/layout.js"></script>
     <script type="text/javascript" src="scripts/vendor/respond.js"></script>
-    <script type="text/javascript" src="scripts/vendor/Gauge.js"></script>
-    <script type="text/javascript" src="scripts/vendor/touch.js"></script> 
+ 
  
     <script type="text/javascript" src="scripts/vendor/angular-socialshare.min.js"></script>
     <script type="text/javascript" src="scripts/vendor/angular-css-injector.js">    </script>
@@ -303,6 +308,7 @@
     <script type="text/javascript" src="scripts/controllers/successCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/errorCtrl.js"></script>
     <script type="text/javascript" src="scripts/services/Dashboard.js"></script>
+ 
     <script type="text/javascript" src="scripts/factories/d3Data.js"></script>
 	<script type="text/javascript" src="scripts/factories/Dashboard.js"></script>
     <script type="text/javascript" src="scripts/controllers/newWidgetCtrl.js"></script>
@@ -317,18 +323,19 @@
     <script type="text/javascript" src="scripts/controllers/WeatherCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/widgetCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/settingsCtrl.js"></script>
-    <script type="text/javascript" src="scripts/vendor/pjTextToSpeech.js"></script>
-    
     <!-- Material Icons -->
     <script src="//cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"></script>
-       <script type="text/javascript" src="scripts/vendor/angular-count-to.min.js"></script>
-
     <!-- svg to canvas -->
     <script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script> 
     <script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
     <script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script> 
 
         <script type="text/javascript" src="scripts/controllers/ThemeCtrl.js"></script>
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+     <script type="text/javascript">
+          google.load("feeds", "1");
+        </script>
     <script>
     $(document).ready(function() {
         Layout.init();

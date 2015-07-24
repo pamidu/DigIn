@@ -107,7 +107,7 @@
             "Description": "Plus Ones, Circled By",
             "initTemplate": "InitConfigGoogleplus",
             "initController": "googlePlusInit",
-            "widView": "views/WidgetGooglePlus.html"
+            "widView": "views/ViewGoogleplus.html"
         }, {
 
             "title": "LinkedIn",
@@ -167,6 +167,17 @@
             "initController": "wordpressInit",
             "widView": "views/ViewWordpress.html"
         },   
+        {
+
+            "title": "RssFeeds",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Blogging",
+            "Description": "Feeds, News",
+            "initTemplate": "InitConfigRss",
+            "initController": "rssInit",
+            "widView": "views/ViewRss.html"
+        },   
+
          {
 
             "title": "Google Analytics (Real Time)",

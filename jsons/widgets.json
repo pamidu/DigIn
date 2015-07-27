@@ -230,13 +230,13 @@
         } ,
         {
 
-            "title": "Calls Dropped",
+            "title": "Queue Details",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Sri Lanka Telecom",
             "Description": "See the calls which has not been responded",
             "initTemplate": "InitSLT",
             "initController": "SLTInit",
-            "widView": "views/ViewSLTDropped.html"
+            "widView": "views/ViewSLTQueueDetails.html"
         } 
 
     ]

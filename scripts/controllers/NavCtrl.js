@@ -144,16 +144,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                 }
             });
 
-            $('#diginlogo').click(function(){
-                if($('.overlay').hasClass('overlay-nav')){
-                    $('.overlay').removeClass('overlay-nav');
-                }
-            });
-
-
             $scope.doFunction = function(name) {
                 if (name == "Add Widget") {
-
+                   
                     var selectedMenu = document.getElementsByClassName("menu-layer");
                     selectedMenu[0].style.display = 'none';
                     $mdDialog.show({

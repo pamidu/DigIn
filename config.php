@@ -4,5 +4,5 @@
 	$authURI="http://duoworld.duoweb.info:3048/";
 	$objURI="http://duoworld.duoweb.info:3000/";
 	$pentURI="http://104.236.212.233:8080/";
-	$homeURI="git/june8th/cloudcharge-duodigin/home.html"
+	$homeURI="/duodigin/home.html"
 ?>

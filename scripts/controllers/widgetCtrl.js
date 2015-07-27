@@ -15,8 +15,11 @@
 /*summary-
   fbInterface : (scripts/custom/fbInterface.js)
 */
+<<<<<<< HEAD
+=======
  
 
+>>>>>>> fbf01a5bfc10bcebfc10e9da403f548aff0d3e09
 
 function fbInit(scope, $mdDialog, widId, $rootScope) {
 
@@ -138,6 +141,36 @@ function linkedInit(scope, $mdDialog, widId, $rootScope) {
     };
 };
 
+<<<<<<< HEAD
+function YoutubeInit($scope,$http,$objectstore,$mdDialog,$rootScope,widId){
+  $scope.search = function () {
+     this.listResults = function (data) {
+    results.length = 0;
+    for (var i = data.items.length - 1; i >= 0; i--) {
+      results.push({
+        id: data.items[i].id.videoId, 
+        title: data.items[i].snippet.title,
+        description: data.items[i].snippet.description,
+        datetimee: data.items[i].snippet.publishedAt,
+        lbc: data.items[i].snippet.liveBroadcastContent,
+        ciid: data.items[i].snippet.channelId,
+        kidd: data.items[i].id.kind,
+        thumbnail: data.items[i].snippet.thumbnails.default.url,
+        author: data.items[i].snippet.channelTitle
+        
+      });
+    }
+    return results;
+  }
+      $http.get('https://www.googleapis.com/youtube/v3/search', {
+        params: {
+          key: 'AIzaSyAzf5VkNxCc-emzb5rujUSc9wSxoDla6AM',
+          type: 'video',
+          maxResults: '50',
+          part: 'id,snippet',
+          fields: 'items/id,items/snippet/title,items/snippet/description,items/snippet/thumbnails/default,items/snippet/channelTitle,items/snippet/publishedAt,items/snippet/liveBroadcastContent,items/snippet/channelId,items/id/kind,items/id/videoId',
+          q: this.query
+=======
 
 function YoutubeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) {
     $scope.search = function() {
@@ -158,6 +191,7 @@ function YoutubeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 });
             }
             return results;
+>>>>>>> fbf01a5bfc10bcebfc10e9da403f548aff0d3e09
         }
  
         $http.get('https://www.googleapis.com/youtube/v3/search', {
@@ -561,32 +595,6 @@ function rssInit ($scope, $http, $mdDialog, widId, $rootScope){
     };
 };
 
-
-  //     $scope.callRss = function(rssdomain){
-
-  //       $scope.entryArray = [];
-  //       google.load("feeds", "1");
-  //       var feed = new google.feeds.Feed(rssdomain);
-  //       feed.setNumEntries(100);
-       
-  //       feed.load(function(result) {
-  //       if (!result.error) {
-         
-  //         for (var i = 0; i < result.feed.entries.length; i++) {
-
-  //           var entry = result.feed.entries[i];
-
-  //           $scope.entryContent = entry.content;
-  //           $scope.entryArray.push(entry);
-            
-  //           $scope.$apply();
-  //         }
-  //       }
-  //     });
-
-  //       $mdDialog.hide();
-  // };
-  
    
 // todo...
  
@@ -603,6 +611,24 @@ function weatherInit(widId, $scope, $http, $rootScope, $mdDialog) {
     };
 
 }
+<<<<<<< HEAD
+
+function googlePlusInit ($scope, $http, $mdDialog, widId, $rootScope){
+
+   
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.finish = function() {
+       
+      $mdDialog.hide();
+
+    };
+    
+    }
+=======
+>>>>>>> fbf01a5bfc10bcebfc10e9da403f548aff0d3e09
  
  
 function instaInit($scope, $http, $window) {

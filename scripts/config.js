@@ -8,7 +8,7 @@ angular.module('configuration', [])
     .constant('Digin_AnalyzerViewer',' http://104.236.212.233:8080/DuoDigin/api/repos/%3Ahome%') 
     .constant('Digin_ReportViewer','http://104.236.212.233:8080/DuoDigin/api/repos/%3Ahome%')
     .constant('Digin_DashboardViewer','http://104.236.212.233:8080/DuoDigin/api/repos/%3Ahome%')
-
+    .constant('Digin_Base_URL','http://localhost/duodigin/')
  
 
 

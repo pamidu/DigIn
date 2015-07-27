@@ -465,6 +465,7 @@ function InitConfigD3($scope, $mdDialog, widId, $rootScope, $sce) {
     }
  
 
+ 
     $scope.cancel = function() {
         $mdDialog.hide();
     };

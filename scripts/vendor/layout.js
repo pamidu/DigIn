@@ -69,9 +69,8 @@ var Layout = {
 
 	listenForMenuLayer: function () {
 
-		$('#diginlogo').bind('click', function(event) {
-    		alert("test");
-		});
+		
+		var testElement = $('.nav-menu').not('');
 
 
 		$('.nav-menu').on('click', function() {
@@ -81,23 +80,19 @@ var Layout = {
 					$startingPoint = $('.starting-point'),
 					$overlay = $('.overlay'),
 					$menu = $('.menu-layer'),
-					$overlaySecondary = $('.overlay-secondary'),
+					// $overlaySecondary = $('.overlay-secondary'),
 					$content = $('.content'),
 					$body = $('body'),
 					$scrollableTabs = $('.scrollable-tabs');
 
 			// Add "open" class to active menu
-			$menu.find('[data-open-after="true"]').addClass('open');
+			// $menu.find('[data-open-after="true"]').addClass('open');
 
 			// If Menu Layer is not active
 			if( !$this.hasClass('active') ) {
 
-				// start pulathisi 7/23/2015
-            
-                
-                    $(".sidebaricons").removeClass("sidebaricons").addClass("sidebaricons-active");
-                
-               
+				// start pulathisi 7/23/2015                
+                    $(".sidebaricons").removeClass("sidebaricons").addClass("sidebaricons-active");               
             	// end pulathisi 7/23/2015
 
 				if( !Pleasure.checkTouchScreen() && !Layout.settings.improvePerformance ) // If screen is desktop, add scaled effect
@@ -111,7 +106,7 @@ var Layout = {
 					$overlay.addClass('overlay-nav active');
 					$this.addClass('active');
 					$menu.addClass('active');
-					$overlaySecondary.addClass('fade-in');
+					// $overlaySecondary.addClass('fade-in');
 
 					$menu.find('[data-open-after="true"]').parents('li').addClass('open animate');
 
@@ -132,14 +127,12 @@ var Layout = {
 			// If Menu Layer is active
 
 			// start pulathisi 7/23/2015
-            
                     $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
-               
             // end pulathisi 7/23/2015
 
 				$this.addClass('rotating');
 
-				$overlaySecondary.removeClass('fade-in');
+				// $overlaySecondary.removeClass('fade-in');
 				$content.removeClass('scaled');
 
 				setTimeout(function() {

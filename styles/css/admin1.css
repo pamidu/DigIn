@@ -4893,6 +4893,20 @@ MIT License: https://github.com/driftyco/ionicons
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.ion-volume:before {
+  font-size:28px;
+  display: inline-block;
+  font-family: "Ionicons";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-rendering: auto;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 .ion-alert:before {
   content: "\f101";
 }
@@ -7092,6 +7106,10 @@ MIT License: https://github.com/driftyco/ionicons
 .ion-xbox:before {
   content: "\f30c";
 }
+.ion-volume:before {
+  content: "\f259";
+}
+
 /* 1.4 - Weather Icons */
 /*!
  *  Weather Icons 1.3
@@ -8418,7 +8436,7 @@ overflow: hidden;
   position: relative;
   z-index: 1;
   padding: 8px 25px;
-  color: #ffffff;
+  color: #000;
   text-decoration: none;
   display: block;
 }
@@ -9502,22 +9520,23 @@ margin: 4px !important;
   background: #fff;
 }/*end pulathisi 7/23/2015*/
 .overlay .starting-point span {
- background-image:url(images/layer2.jpg);
- /*background-color: #3A539B;*/
+ /*background-image:url(images/layer.jpg);*/
+ background-color: #4B77BE;
 }
 .layer-container .menu-layer li.open > a,
 .layer-container .menu-layer li:hover > a {
-  color: #4B77BE;
+  color: #fff;
 }
 .layer-container .menu-layer li.open:before,
 .layer-container .menu-layer li:hover:before {
-  color: #4B77BE;
+  color: #fff;
 }
 .layer-container .menu-layer li .child-menu li a {
-  color: #4B77BE;
+   color: #757575;
 }
 .layer-container .menu-layer li .child-menu li.has-child:before {
-  color: #4B77BE;
+  /*color: #4B77BE;*/
+  color: #757575;
 }
 .layer-container .menu-layer li .child-menu li.has-child.open {
   background: rgba(62, 80, 180, 0.05);
@@ -9533,10 +9552,10 @@ margin: 4px !important;
   /*darkred*/
   /*background: #6E0404;*/
   /*blue*/
-  background: #3A539B;
+  background: #4B77BE;
 }
 .layer-container .search-layer.active {
-  background: #3A539B;
+  background: #4B77BE;
 }
 .layer-container .user-layer .nav > li > a {
   color: #3e50b4;

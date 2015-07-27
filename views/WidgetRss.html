@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>RSS Widget</title>
+     
+        <!-- <link rel="stylesheet" href="css/rss.css"> -->
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+       <!-- <script type="text/javascript">
+          google.load("feeds", "1");
+        </script>!-->
+    
+  </head>
+
+  <body>
+
+    <html lang="en" ng-app="rssWidget">
+  <head>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/0.8.3/angular-material.min.css">
+  </head>
+  <body layout="row" ng-controller="AppCtrl">
+    <div layout="column" class="relative" layout-fill role="main">
+     
+      <md-toolbar ng-show="!showSearch">
+        <div class="md-toolbar-tools" layout="row">
+       
+          <p style="font-size:1em;margin-left:auto;margin-right:auto;">  
+            RSS Widget
+          </p>
+           
+          <md-button id="searchArea" aria-label="Search" ng-click="showSearch = !showSearch">
+            <ng-md-icon icon="search" style="fill:black"></ng-md-icon>
+          </md-button>
+        </div>
+        <md-tabs class="md-primary" md-selected="data.selectedIndex">
+          <md-tab id="tab1" aria-controls="tab1-content">
+            <p>Recent Posts</p>
+          </md-tab>
+        </md-tabs>
+      </md-toolbar>
+      <!-- MD Toolbar show search -->
+      <md-toolbar class="md-hue-1" ng-show="showSearch">
+        <div class="md-toolbar-tools">
+        <!-- back button -->
+          <md-button class="searchButton" ng-click="showSearch = !showSearch" aria-label="Back">
+            <ng-md-icon icon="arrow_back"></ng-md-icon>
+          </md-button>
+          <!-- <h3 flex="10">
+            Back
+          </h3> -->
+           <!-- input rss feed -->
+          <md-input-container><label id="postdomain">RSS feed</label><input id="inputrssdomain" type="text" 
+          ng-model="rssdomain"/>
+          </md-input-container>
+          <md-button id="doneButton" ng-click="callRss(rssdomain)" aria-label="Done"><ng-md-icon icon="search"></ng-md-icon></md-button>
+         <!--  <h3 flex="10">
+            Done
+          </h3> -->
+          <span flex></span>
+        </div>   
+      </md-toolbar>
+
+      <md-content md-scroll-y>
+        <ui-view layout="column" layout-fill layout-padding>
+          <div class="inset" hide-sm></div>
+            <ng-switch on="data.selectedIndex" class="tabpanel-container">
+              <div role="tabpanel"
+                   id="tab1-content"
+                   aria-labelledby="tab1"
+                   ng-switch-when="0"
+                   md-swipe-left="next()"
+                   md-swipe-right="previous()"
+                   layout="row" layout-align="center center">
+                  <md-card flex-gt-sm="90" flex-gt-md="80">
+                    <md-card-content>
+                      <!-- <p>Feeds</p> -->
+                      <md-list> 
+                        <md-item ng-repeat="entry in entryArray">
+                          <md-item-content>
+                            <div class="md-tile-content">
+                              <h2>{{entry.title}}</h2>
+                              <h3>{{entry.publishedDate}}</h3>
+                              <h4 ng-bind-html="entryContent"></h4>
+                              <h5>{{entry.link}}</h5>
+                            </div>
+                          </md-item-content>
+                          <md-divider hide-sm ng-if="!$last"></md-divider>
+                          <md-divider hide-gt-sm ng-if="!$last"></md-divider>
+                        </md-item>
+                        <md-divider></md-divider>
+                      </md-list>
+                    </md-card-content>
+                  </md-card>
+              </div>
+          </ng-switch> 
+        </ui-view>
+      </md-content>
+    </div>
+    <!-- Angular Material Dependencies -->
+   <!--  // <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.min.js"></script>
+    // <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-animate.min.js"></script>
+    // <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-aria.min.js"></script>
+
+    // <script src="//ajax.googleapis.com/ajax/libs/angular_material/0.8.3/angular-material.min.js"></script>
+    // <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-sanitize.min.js"></script>
+    // <script src="//cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"></script>  -->
+  </body>
+</html>
+    
+        <script src="../scripts/controllers/Rssctrl.js"></script>
+
+    
+    
+    
+  </body>
+</html>

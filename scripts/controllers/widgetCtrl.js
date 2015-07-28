@@ -610,21 +610,36 @@ function googlePlusInit ($scope, $http, $mdDialog, widId, $rootScope){
  
  
  
-function instaInit($scope, $http, $window) {
+// function instaInit($scope, $http, $window) {
 
-    var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
-    var redirectUrl = 'http://duoworld.duoweb.info/DuoDiggin_pinterest/'
+//     var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
+//     var redirectUrl = 'http://duoworld.duoweb.info/DuoDiggin_pinterest/'
     
  
-    if ($window.location.href.indexOf("access_token") == -1) {
-        $window.location.href = baseUrl;
+//     if ($window.location.href.indexOf("access_token") == -1) {
+//         $window.location.href = baseUrl;
  
-    } else {
-        var access_token = $window.location.hash.substring(14);
-                    console.log(data);       
+//     } else {
+//         var access_token = $window.location.hash.substring(14);
+//                     console.log(data);       
 
             
-    }
+//     }
+
+
+// }
+
+function instaInitt($scope, $http, $window) {
+
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.finish = function() {
+       
+      $mdDialog.hide();
+
+    };
 
 
 }

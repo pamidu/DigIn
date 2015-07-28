@@ -97,9 +97,9 @@
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Social Media",
             "Description": "Likes, Followers, Following",
-            "initTemplate": "InitConfigInstagram",
-            "initController": "instaInit",
-            "widView": "views/ViewInstagram.html"
+            "initTemplate": "InitConfigInsta",
+            "initController": "instaInitt",
+            "widView": "views/ViewInsta.html"
         }, {
 
             "title": "Google+",

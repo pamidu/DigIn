@@ -302,6 +302,11 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
 
     $scope.buildchart = function(widget) {
 
+        var w = new Worker("scripts/webworkers/elasticWorker.js");
+    
+    
+    w.postMessage("abcd");
+
         var parameter = "";
         $scope.QueriedData = [];
         $scope.chartSeries = [];
@@ -315,17 +320,15 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             });
         }
 
-        var client = $objectstore.getClient("com.duosoftware.com", $scope.ind);
-        client.onGetMany(function(datai) {
-            if (datai) {
-
-                $rootScope.DashboardData = [];
-                $rootScope.DashboardData = datai;
+        w.addEventListener('message', function(event){
+    console.log('Receiving from Worker: '+event.data);
+    var res = JSON.parse(event.data);
+    if (res) {
+ $rootScope.DashboardData = [];
+                $rootScope.DashboardData = res;
                 widget.chartConfig.series = [];
-
+                var _fieldData = [];
                 widget.chartConfig.series = $rootScope.DashboardData.map(function(elm) {
-                    var _fieldData = [];
-
                     _fieldData.push(parseInt(elm[widget.dataname]))
                     return {
                         name: elm[widget.seriesname],
@@ -336,9 +339,16 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 widget.chartSeries = widget.chartConfig.series;
         
             }
+            //w.terminate();
+});
+
+
+        // var client = $objectstore.getClient("com.duosoftware.com", $scope.ind);
+        // client.onGetMany(function(datai) {
             
-        });
-        client.getSelected(parameter);
+            
+        // });
+        // client.getSelected(parameter);
     }
 };
  

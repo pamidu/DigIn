@@ -1,4 +1,4 @@
-<div style="min-width:280px; min-height:100px;" plumb-item ng-repeat="widget in dashboard.widgets" ng-style="{ 'left':widget.left, 'top':widget.top, 'width':widget.width  }" data-identifier="{{widget}}" resizeable>
+<div plumb-item ng-repeat="widget in dashboard.widgets" ng-style="{ 'left':widget.left, 'top':widget.top, 'width':widget.width  }" data-identifier="{{widget}}" resizeable>
     <p ng-if="widget.divider">{{widget.chartConfig.title.text}}</p>
     <md-card ng-dblclick="widget.expanded = !widget.expanded" ng-mouseover="hover = true" ng-mouseout="hover = false">
         <md-item layout="row">
@@ -41,7 +41,7 @@
             </div>
         </md-item>
     </md-card>
-    <md-card    ng-if="widget.expanded && !widget.divider" ng-dblclick="widget.expanded = !widget.expanded">
-        <div   ng-include src="widget.widView"></div>
+    <md-card  style="height:80%" ng-if="widget.expanded && !widget.divider" ng-dblclick="widget.expanded = !widget.expanded">
+        <div  style="overflow: scroll;height:80%" ng-include src="widget.widView"></div>
     </md-card>
 </div>

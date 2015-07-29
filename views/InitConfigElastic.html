@@ -1,7 +1,6 @@
-<md-dialog style="min-width:400px;">
-    <form   >
-        <md-toolbar>
-            <div class="md-toolbar-tools">
+<md-dialog plumb-item style="min-width:400px">
+    <md-toolbar scroll-shrink>
+            <div class="md-toolbar-tools" flex layout="row">
                 <div flex="10">
                     <md-icon class="md-avatar" md-svg-src="bower_components/material-design-icons/action/svg/production/ic_perm_data_setting_24px.svg" style="color:#fff !important;" style="color:#fff !important;float:left;border-radius:100%;"></md-icon>
                 </div>
@@ -16,8 +15,9 @@
                               </span>
                 </div>
             </div>
-        </md-toolbar>
-        <md-dialog-content>
+    </md-toolbar>
+    <md-dialog-content>
+    <form>
             <md-input-container flex>
                 <label>URL/IP:</label>
                 <input name="sizeX" placeholder="www.duosoftware.com/test" ng-model="widget.chartConfig.title.text">
@@ -53,6 +53,7 @@
                     <md-button ng-click="buildchart(widget)" class="md-raised">Build Chart</md-button>
                 </md-input-container>
             </div>
-        </md-dialog-content>
+        
     </form>
+    </md-dialog-content>
 </md-dialog>

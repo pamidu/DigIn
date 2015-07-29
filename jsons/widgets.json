@@ -7,6 +7,10 @@
             "initTemplate": "spreadInitConfig",
             "initController": "spreadInit",
             "widView": "views/Viewspread.html"
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"0",
+            "col":"0"
         }, {
 
             "title": "Image",
@@ -16,6 +20,10 @@
             "initTemplate": "imageConfig",
             "initController": "imInit",
             "widView": "views/Disimage.html"
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"0",
+            "col":"1"
         },{
 
             "title": "Weather",
@@ -24,7 +32,11 @@
             "Description": "Image",
             "initTemplate": "InitConfigWeather",
             "initController": "weatherInit",
-            "widView": "views/ViewWeather.html"
+            "widView": "views/ViewWeather.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"0",
+            "col":"2"
         },  
 
         {
@@ -36,7 +48,12 @@
             "Description": "Build your dream Visualization",
             "initTemplate": "InitConfigD3",
             "initController": "InitConfigD3",
-            "widView": "views/ViewD3.html"
+
+            "widView": "views/ViewD3.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"1",
+            "col":"0"
 
         },
            {
@@ -47,7 +64,12 @@
             "Description": "Earnings, Pageviews, Clicks",
             "initTemplate": "InitConfigFacebook",
             "initController": "fbInit",
-            "widView": "views/chartview.html"
+    
+            "widView": "views/chartview.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"1",
+            "col":"1"
         }, {
 
             "title": "Facebook Pages",
@@ -57,6 +79,10 @@
             "initTemplate": "InitConfigFacebook",
             "initController": "fbInit",
             "widView": "views/ViewFacebook.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"1",
+            "col":"2",
             "widConfig": {"options": {
     "chart": {
       "type": "area"
@@ -99,7 +125,11 @@
             "Description": "Likes, Followers, Following",
             "initTemplate": "InitConfigInstagram",
             "initController": "instaInit",
-            "widView": "views/ViewInstagram.html"
+            "widView": "views/ViewInstagram.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"0",
+            "col":"0"
         }, {
 
             "title": "Google+",
@@ -108,7 +138,12 @@
             "Description": "Plus Ones, Circled By",
             "initTemplate": "InitConfigGoogleplus",
             "initController": "googlePlusInit",
-            "widView": "views/ViewGoogleplus.html"
+     
+            "widView": "views/ViewGoogleplus.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"0",
+            "col":"1"
         }, {
 
             "title": "LinkedIn",
@@ -117,7 +152,11 @@
             "Description": "Connections, Network Updates",
             "initTemplate": "InitConfigLinkedin",
             "initController": "linkedInit",
-            "widView": "views/ViewLinkedIn.html"
+            "widView": "views/ViewLinkedIn.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"0",
+            "col":"2"
         }, {
 
             "title": "Pinterest",
@@ -126,7 +165,12 @@
             "Description": "Boards, Pins, Likes, Followers, Following",
             "initTemplate": "fbInitConfig",
             "initController": "fbInit",
-            "widView": "views/chartview.html"
+    
+            "widView": "views/chartview.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"0",
+            "col":"3"
 
         },
 
@@ -137,7 +181,12 @@
             "Description": "Line, Area, Bar, Pie, Table",
             "initTemplate": "InitConfigElastic",
             "initController": "elasticInit",
-            "widView": "views/ViewElasticSearch.html"
+      
+            "widView": "views/ViewElasticSearch.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"1",
+            "col":"0"
 
         }, {
 
@@ -147,7 +196,12 @@
             "Description": "Line, Area, Bar, Pie, Table",
             "initTemplate": "fbInitConfig",
             "initController": "fbInit",
-            "widView": "views/chartview.html"
+        
+            "widView": "views/chartview.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"1",
+            "col":"1"
 
         }, {
 
@@ -157,7 +211,12 @@
             "Description": "Likes, Clicks, Active Users, Pageviews",
             "initTemplate": "InitConfigYoutube",
             "initController": "YoutubeInit",
-            "widView": "views/ViewYoutube.html"
+   
+            "widView": "views/ViewYoutube.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"1",
+            "col":"2"
         }, {
 
             "title": "WordPress",
@@ -166,7 +225,12 @@
             "Description": "Users, Posts, Comments",
             "initTemplate": "InitConfigWordpress",
             "initController": "wordpressInit",
-            "widView": "views/ViewWordpress.html"
+      
+            "widView": "views/ViewWordpress.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"1",
+            "col":"3"
         },   
         {
 
@@ -176,7 +240,12 @@
             "Description": "Feeds, News",
             "initTemplate": "InitConfigRss",
             "initController": "rssInit",
-            "widView": "views/ViewRss.html"
+    
+            "widView": "views/ViewRss.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"2",
+            "col":"0"
         },   
 
         {
@@ -198,7 +267,12 @@
             "Description": "Audience, Traffic, Content, Conversions",
             "initTemplate": "fbInitConfig",
             "initController": "fbInit",
-            "widView": "views/chartview.html"
+     
+            "widView": "views/chartview.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"2",
+            "col":"1"
         } ,
           {
 
@@ -208,7 +282,12 @@
             "Description": "Analyze the calls for each skills",
             "initTemplate": "InitSLT",
             "initController": "SLTInit",
-            "widView": "views/ViewSLTSkill.html"
+         
+            "widView": "views/ViewSLTSkill.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"2",
+            "col":"2"
         } ,
         {
 
@@ -218,7 +297,12 @@
             "Description": "Check how many calls are in the Interactive Voice Response",
             "initTemplate": "InitSLTIvr",
             "initController": "sltivrInit",
-            "widView": "views/ViewSLTIvr.html"
+          
+            "widView": "views/ViewSLTIvr.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"2",
+            "col":"3"
         } ,
         {
 
@@ -228,7 +312,12 @@
             "Description": "Check how many calls are in the Queue",
             "initTemplate": "InitS4LT",
             "initController": "SLTInit",
-            "widView": "views/ViewSLTQueue.html"
+
+            "widView": "views/ViewSLTQueue.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"3",
+            "col":"0"
         } ,
         {
 
@@ -238,7 +327,12 @@
             "Description": "Check who is handling calls",
             "initTemplate": "InitSLT",
             "initController": "SLTInit",
-            "widView": "views/ViewSLTAgent.html"
+  
+            "widView": "views/ViewSLTAgent.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"3",
+            "col":"1"
         } ,
         {
 
@@ -248,7 +342,12 @@
             "Description": "See the calls which has not been responded",
             "initTemplate": "InitSLT",
             "initController": "SLTInit",
-            "widView": "views/ViewSLTQueueDetails.html"
+     
+            "widView": "views/ViewSLTQueueDetails.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"3",
+            "col":"2"
         } 
 
     ]

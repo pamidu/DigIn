@@ -194,6 +194,12 @@ function YoutubeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
 
 //elastic controller
 function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) {
+    $scope.elasticStep = "views/InitConfigElastic-chart.html";
+
+    $scope.loadNext = function(temlpate){
+        $scope.elasticStep = "views/"+temlpate;
+    };
+
     $scope.indexes = [];
     $scope.datasources = ['Object Store', 'Elastic search', 'CouchDB'];
     $scope.checkedFields = [];
@@ -302,6 +308,11 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
 
     $scope.buildchart = function(widget) {
 
+        var w = new Worker("scripts/webworkers/elasticWorker.js");
+    
+    
+    
+
         var parameter = "";
         $scope.QueriedData = [];
         $scope.chartSeries = [];
@@ -314,31 +325,48 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 field: $scope.checkedFields[param].name
             });
         }
-
-        var client = $objectstore.getClient("com.duosoftware.com", $scope.ind);
-        client.onGetMany(function(datai) {
-            if (datai) {
-
-                $rootScope.DashboardData = [];
-                $rootScope.DashboardData = datai;
+        w.postMessage($scope.ind+","+parameter);
+        w.addEventListener('message', function(event){
+    console.log('Receiving from Worker: '+event.data);
+    var res = JSON.parse(event.data);
+    if (res) {
+ $rootScope.DashboardData = [];
+                $rootScope.DashboardData = res;
                 widget.chartConfig.series = [];
-
+                var _fieldData = [];
+                var currentdate = new Date();
+                console.log("starting time:"+currentdate);
+                
                 widget.chartConfig.series = $rootScope.DashboardData.map(function(elm) {
-                    var _fieldData = [];
-
-                    _fieldData.push(parseInt(elm[widget.dataname]))
+                    _fieldData.push(parseInt(elm[widget.dataname]));
                     return {
                         name: elm[widget.seriesname],
                         data: _fieldData
                     };
                 });
+               
                 widget.chartSeries = [];
-                widget.chartSeries = widget.chartConfig.series;
+                for(i=0;i<widget.chartConfig.series.length;i++){
+                    for(j=0;j<20 || j<widget.chartConfig.series.length;j++){
+                        widget.chartSeries.push(widget.chartConfig.series[j]);
+                        i = j;
+                    }
+                }
+               // widget.chartSeries = widget.chartConfig.series;
+                 var currentdate1 = new Date();
+                console.log("ending time:"+currentdate1);
         
             }
+            //w.terminate();
+});
+
+
+        // var client = $objectstore.getClient("com.duosoftware.com", $scope.ind);
+        // client.onGetMany(function(datai) {
             
-        });
-        client.getSelected(parameter);
+            
+        // });
+        // client.getSelected(parameter);
     }
 };
  

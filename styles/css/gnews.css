@@ -1,0 +1,8 @@
+#gnews-div a {
+    font-weight: bold;
+}
+
+#gnews-div {
+    border: 2px solid;
+    width: 200px;
+}

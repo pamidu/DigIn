@@ -628,6 +628,18 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                     Fullscreen.all();
 
             }
+            if(routeName =="Grid"){
+            
+                var selectedMenu = document.getElementsByClassName("menu-layer");
+                selectedMenu[0].style.display = 'block';
+                $scope.currentView = "Grid";
+                $(".menu-layer").css("top", "120px");
+                $("starting-point").css("top", "120px");
+
+
+                $state.go(routeName)
+            
+           }
 
         };
 

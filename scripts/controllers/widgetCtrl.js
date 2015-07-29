@@ -194,6 +194,12 @@ function YoutubeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
 
 //elastic controller
 function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) {
+    $scope.elasticStep = "views/InitConfigElastic-chart.html";
+
+    $scope.loadNext = function(temlpate){
+        $scope.elasticStep = "views/"+temlpate;
+    };
+
     $scope.indexes = [];
     $scope.datasources = ['Object Store', 'Elastic search', 'CouchDB'];
     $scope.checkedFields = [];
@@ -305,7 +311,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         var w = new Worker("scripts/webworkers/elasticWorker.js");
     
     
-    w.postMessage("abcd");
+    
 
         var parameter = "";
         $scope.QueriedData = [];
@@ -319,7 +325,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 field: $scope.checkedFields[param].name
             });
         }
-
+        w.postMessage($scope.ind+","+parameter);
         w.addEventListener('message', function(event){
     console.log('Receiving from Worker: '+event.data);
     var res = JSON.parse(event.data);
@@ -328,15 +334,27 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 $rootScope.DashboardData = res;
                 widget.chartConfig.series = [];
                 var _fieldData = [];
+                var currentdate = new Date();
+                console.log("starting time:"+currentdate);
+                
                 widget.chartConfig.series = $rootScope.DashboardData.map(function(elm) {
-                    _fieldData.push(parseInt(elm[widget.dataname]))
+                    _fieldData.push(parseInt(elm[widget.dataname]));
                     return {
                         name: elm[widget.seriesname],
                         data: _fieldData
                     };
                 });
+               
                 widget.chartSeries = [];
-                widget.chartSeries = widget.chartConfig.series;
+                for(i=0;i<widget.chartConfig.series.length;i++){
+                    for(j=0;j<20 || j<widget.chartConfig.series.length;j++){
+                        widget.chartSeries.push(widget.chartConfig.series[j]);
+                        i = j;
+                    }
+                }
+               // widget.chartSeries = widget.chartConfig.series;
+                 var currentdate1 = new Date();
+                console.log("ending time:"+currentdate1);
         
             }
             //w.terminate();

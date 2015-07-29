@@ -1,6 +1,9 @@
+var parentData = [];
+
 onmessage = function(e) {
 	console.log("parent says:"+e.data);
-
+	parentData = e.data.split(",");
+	timedCount(parentData);
 }
 var i = 0;
 
@@ -24,17 +27,18 @@ function timedCount() {
         xhr.ontimeout = function (){
             console.error("request timedout: ", xhr);
         }
-        xhr.open("post", "http://104.236.68.121:3000/com.duosoftware.com/Inventory1", /*async*/ true);
+        xhr.open("post", "http://104.236.68.121:3000/com.duosoftware.com/"+parentData[0], /*async*/ true);
          
    // xhr.setRequestHeader("Access-Control-Allow-Headers", "securityToken,log,Content-Type");
     //xhr.setRequestHeader("Access-Control-Allow-Credentials","true");
     //xhr.setRequestHeader("Access-Control-Allow-Methods ","GET,POST,PUT,DELETE");
     xhr.setRequestHeader("securityToken", "securityToken");
-    var params = '{"Special":{"Type":"getSelected","Parameters":" Store Count"}}';
+    var params = '{"Special":{"Type":"getSelected","Parameters":"'+parentData[1]+'"}}';
+    console.log("test"+params);
     //xhr.setRequestHeader("log", "log");
     //xhr.setRequestHeader();
         // xhr.responseType = "text";
         xhr.send(params);
 }
 
-timedCount();
+

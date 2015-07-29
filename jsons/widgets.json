@@ -4,18 +4,18 @@
             "icon": "styles/css/images/icons/ic_insert_chart_24px.svg",
             "type": "Visualization",
             "Description": "Line, Area, Bar, Pie, Table",
-            "initTemplate": "fbInitConfig",
-            "initController": "fbInit",
-            "widView": "views/chartview.html"
+            "initTemplate": "spreadInitConfig",
+            "initController": "spreadInit",
+            "widView": "views/Viewspread.html"
         }, {
 
             "title": "Image",
             "icon": "styles/css/images/icons/ic_assignment_24px.svg",
             "type": "Custom",
             "Description": "Image",
-            "initTemplate": "fbInitConfig",
-            "initController": "fbInit",
-            "widView": "views/chartview.html"
+            "initTemplate": "imageConfig",
+            "initController": "imInit",
+            "widView": "views/Disimage.html"
         },{
 
             "title": "Weather",
@@ -97,9 +97,9 @@
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Social Media",
             "Description": "Likes, Followers, Following",
-            "initTemplate": "InitConfigInsta",
-            "initController": "instaInitt",
-            "widView": "views/ViewInsta.html"
+            "initTemplate": "InitConfigInstagram",
+            "initController": "instaInit",
+            "widView": "views/ViewInstagram.html"
         }, {
 
             "title": "Google+",
@@ -177,6 +177,17 @@
             "initTemplate": "InitConfigRss",
             "initController": "rssInit",
             "widView": "views/ViewRss.html"
+        },   
+
+        {
+
+            "title": "Gnews",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Blogging",
+            "Description": "Google news",
+            "initTemplate": "InitConfiggnews",
+            "initController": "gnewsInit",
+            "widView": "views/ViewGnews.html"
         },   
 
          {

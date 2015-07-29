@@ -565,6 +565,133 @@ function rssInit ($scope, $http, $mdDialog, widId, $rootScope){
     };
 };
 
+function spreadInit ($scope, $http, $mdDialog, widId, $rootScope){
+
+    //cancel config
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+    //complete config  
+    $scope.finish = function(rssAddress) {
+      $mdDialog.hide();
+
+    };
+
+    
+};
+
+function gnewsInit ($scope, $http, $mdDialog, widId, $rootScope){
+
+    //cancel config
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+     $scope.finish = function() {
+       
+      $mdDialog.hide();
+
+    };
+
+};
+
+
+
+function imageInit(widId, $scope, $http, $rootScope, $mdDialog) {
+  //cancel config
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+    //complete config  
+    $scope.finish = function() {
+        
+        $mdDialog.hide();
+ 
+    };
+$scope.disimage= function(){
+        console.log("running");
+    //Check File API support
+    if(window.File && window.FileList && window.FileReader)
+    {
+        var filesInput = document.getElementById("files");
+        console.log(filesInput);
+        filesInput.addEventListener("change", function(event){
+            
+            var files = event.target.files; //FileList object
+            var output = document.getElementById("result");
+            console.log(files);
+            for(var i = 0; i< files.length; i++)
+            {
+                var file = files[i];
+                
+                //Only pics
+                if(!file.type.match('image'))
+                  continue;
+                
+                var picReader = new FileReader();
+                
+                picReader.addEventListener("load",function(event){
+                    console.log("hari");
+                    var picFile = event.target;
+                    
+                    var div = document.createElement("div");
+                    
+                    div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "'" +
+                            "title='" + picFile.name + "'/>";
+                    
+                    output.insertBefore(div,null);            
+                
+                });
+                
+                 //Read the image
+                picReader.readAsDataURL(file);
+            }                               
+           
+        });
+    }
+    else
+    {
+        console.log("Your browser does not support File API");
+    }
+}
+
+
+
+}
+
+function imInit($scope, $http, $rootScope, $mdDialog) {
+
+ $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+    //complete config  
+    $scope.finish = function() {
+        
+        $mdDialog.hide();
+ 
+    };
+
+$scope.readURL = function(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#blah')
+                        .attr('src', e.target.result);
+                        
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+    }
+
+
+    
    
 // todo...
  
@@ -600,39 +727,73 @@ function googlePlusInit ($scope, $http, $mdDialog, widId, $rootScope){
  
  
  
-// function instaInit($scope, $http, $window) {
+function instaInit($scope, $http, $window) {
 
-//     var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
-//     var redirectUrl = 'http://duoworld.duoweb.info/DuoDiggin_pinterest/'
+    // var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
+    // var redirectUrl = 'http://duoworld.duoweb.info/DuoDiggin_pinterest/'
     
  
-//     if ($window.location.href.indexOf("access_token") == -1) {
-//         $window.location.href = baseUrl;
+    // if ($window.location.href.indexOf("access_token") == -1) {
+    //     $window.location.href = baseUrl;
  
-//     } else {
-//         var access_token = $window.location.hash.substring(14);
-//                     console.log(data);       
+    // } else {
+    //     var access_token = $window.location.hash.substring(14);
+    //                 console.log(data);       
 
             
-//     }
+    // }
 
+    var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
+    var redirectUrl = 'http://localhost/duodigin/views/ViewInstagram.html'
+    var baseUrl = 
+        'https://instagram.com/oauth/authorize/?client_id='+clientId+'&redirect_uri='+redirectUrl+'&response_type=token';
 
-// }
+    if($window.location.href.indexOf("access_token") == -1){
+        $window.location.href = baseUrl;
+    }else{
+        var access_token = $window.location.hash.substring(14);
+        var baseUrl = "https://api.instagram.com/v1/users/self/?access_token="+access_token+"&format=jsonp&callback=JSON_CALLBACK"
+        $http.jsonp(baseUrl).success(function(data){
+            
+            $scope.followers=data.data.counts.followed_by;
+            $scope.follows=data.data.counts.follows;
+            $scope.profilepic=data.data.profile_picture;
+            $scope.username=data.data.username;
+            $scope.firstName=data.data.full_name;
+            var likeUrl="https://api.instagram.com/v1/users/self/media/liked?access_token="+access_token+"&format=jsonp&callback=JSON_CALLBACK";
+            console.log(data);
+             $http.jsonp(likeUrl).success(function(data){
 
-function instaInitt($scope, $http, $window) {
+                    $scope.likes=data.data.length;
+                    console.log(data.data.length); 
+             }).error(function(data){
 
-    $scope.cancel = function() {
-        $mdDialog.hide();
-    };
+             })
 
-    $scope.finish = function() {
-       
-      $mdDialog.hide();
+        }).error(function(data){
+            console.log(data)
+        })
 
-    };
+    }
+
 
 
 }
+
+// function instaInitt($scope, $http, $window) {
+
+//     $scope.cancel = function() {
+//         $mdDialog.hide();
+//     };
+
+//     $scope.finish = function() {
+       
+//       $mdDialog.hide();
+
+//     };
+
+
+// }
 
 routerApp.controller('sltivrInit', function($scope, $mdDialog, $rootScope) {
             

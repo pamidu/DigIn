@@ -593,21 +593,21 @@ function rssInit ($scope, $http, $mdDialog, widId, $rootScope){
     };
 };
 
-function spreadInit ($scope, $http, $mdDialog, widId, $rootScope){
+// function spreadInit ($scope, $http, $mdDialog, widId, $rootScope){
+    
+//     //cancel config
+//     $scope.cancel = function() {
+//         $mdDialog.hide();
+//     };
 
-    //cancel config
-    $scope.cancel = function() {
-        $mdDialog.hide();
-    };
+//     //complete config  
+//     $scope.finish = function(rssAddress) {
+//       $mdDialog.hide();
 
-    //complete config  
-    $scope.finish = function(rssAddress) {
-      $mdDialog.hide();
-
-    };
+//     };
 
     
-};
+// };
 
 function gnewsInit ($scope, $http, $mdDialog, widId, $rootScope){
 

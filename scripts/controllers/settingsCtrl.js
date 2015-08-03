@@ -18,9 +18,6 @@ routerApp.controller('settingsCtrl', ['$scope','$rootScope', '$http', '$state','
       }
     });
 
-
-    
-
 		  $scope.toggle = function (item, list) {
     
 		    var idx = list.indexOf(item);

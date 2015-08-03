@@ -1,47 +1,40 @@
-<div plumb-item ng-repeat="widget in dashboard.widgets" ng-style="{ 'left':widget.left, 'top':widget.top, 'width':widget.width  }" data-identifier="{{widget}}" resizeable>
+<div plumb-item ng-repeat="widget in dashboard.widgets" ng-style="{ 'left':widget.left, 'top':widget.top, 'width':widget.width  }" data-identifier="{{widget}}" style="min-width:300px;min-height:300px" resizeable> 
     <p ng-if="widget.divider">{{widget.chartConfig.title.text}}</p>
     <md-card ng-dblclick="widget.expanded = !widget.expanded" ng-mouseover="hover = true" ng-mouseout="hover = false">
-        <md-item layout="row">
-            <div class="collapsed-row" layout="row" layout-align="start center" flex>
-                <div class="md-toolbar-tools">
-                    <div flex="60">
-                        <h4>
-                          <span>{{widget.chartConfig.title.text}}</span>
-                         </h4>
+                <div layout-wrap layout="row" layout-align"start center" layout-wrap>
+                    <div flex="50">
+                        <h4 layout-padding>
+                          {{widget.chartConfig.title.text}}
+                         </h4>               
                     </div>
-                     <div flex="10">
-                        <span>
-                                 <md-button  ng-click="commentary(widget)"  aria-label="Close">
+                    <div flex="50" layout="row" layout-align="top end">
+                    <div flex>                       
+                            <md-button  ng-click="commentary(widget)"  aria-label="Close" layout-wrap>
                                    <md-icon class="ion-volume"></md-icon>
-                                 </md-button>
-                             </span>
+                            </md-button>
+                            
                     </div>
-                    <div flex="10">
-                        <span> 
-                                <md-button  ng-click="showAdvanced($event,widget)"  aria-label="Settings">
+                    <div flex>       
+                            <md-button  ng-click="showAdvanced($event,widget)"  aria-label="Settings" layout-wrap>
                                    <md-icon md-svg-src="bower_components/material-design-icons/action/svg/production/ic_settings_24px.svg"></md-icon>
-                                   </md-button>
-                              </span>
+                            </md-button>              
                     </div>
-                    <div flex="10">
-                        <span>
-                                 <md-button  ng-click="showData(widget)"    aria-label="Close">
+                    <div flex>  
+                            <md-button  ng-click="showData(widget)"    aria-label="Close" layout-wrap>
                                    <md-icon md-svg-src="bower_components/material-design-icons/action/svg/production/ic_assignment_24px.svg"></md-icon>
-                                 </md-button>
-                             </span>
+                            </md-button>       
                     </div>
-                    <div flex="10">
-                        <span>
-                                 <md-button  ng-click="remove(widget)"  aria-label="Close">
+                    <div flex>     
+                            <md-button  ng-click="remove(widget)"  aria-label="Close" layout-wrap>
                                    <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
-                                 </md-button>
-                             </span>
+                            </md-button>         
+                    </div>
                     </div>
                 </div>
-            </div>
-        </md-item>
+            
     </md-card>
-    <md-card  style="height:80%" ng-if="widget.expanded && !widget.divider" ng-dblclick="widget.expanded = !widget.expanded">
-        <div  style="overflow: scroll;height:80%" ng-include src="widget.widView"></div>
+    <md-card style="height:70%" ng-if="widget.expanded && !widget.divider" ng-dblclick="widget.expanded = !widget.expanded">
+        <div style="height:100%" ng-include src="widget.widView"></div>
     </md-card>
+
 </div>

@@ -1,6 +1,7 @@
-<div plumb-item ng-repeat="widget in dashboard.widgets" ng-style="{ 'left':widget.left, 'top':widget.top, 'width':widget.width  }" data-identifier="{{widget}}" resizeable>
+<div plumb-item gridster="gridsterOpts" style="width:100%;height:100%;">
+<div gridster-item="widget" ng-repeat="widget in dashboard.widgets"  data-identifier="{{widget}}" layout-margin>
     <p ng-if="widget.divider">{{widget.chartConfig.title.text}}</p>
-    <md-card ng-dblclick="widget.expanded = !widget.expanded" ng-mouseover="hover = true" ng-mouseout="hover = false">
+    <md-card ng-dblclick="widget.expanded = !widget.expanded" ng-mouseover="hover = true" ng-mouseout="hover = false" layout-margin>
         <md-item layout="row">
             <div class="collapsed-row" layout="row" layout-align="start center" flex>
                 <div class="md-toolbar-tools">
@@ -20,7 +21,7 @@
                         <span> 
                                 <md-button  ng-click="showAdvanced($event,widget)"  aria-label="Settings">
                                    <md-icon md-svg-src="bower_components/material-design-icons/action/svg/production/ic_settings_24px.svg"></md-icon>
-                                   </md-button>
+                                </md-button>
                               </span>
                     </div>
                     <div flex="10">
@@ -41,7 +42,8 @@
             </div>
         </md-item>
     </md-card>
-    <md-card  style="height:80%" ng-if="widget.expanded && !widget.divider" ng-dblclick="widget.expanded = !widget.expanded">
-        <div  style="overflow: scroll;height:80%" ng-include src="widget.widView"></div>
+    <md-card style="height:80%" ng-dblclick="widget.expanded = !widget.expanded" ng-mouseover="hover = true" ng-mouseout="hover = false" layout-margin>
+        <div style="overflow: scroll;height:100%" ng-include src="widget.widView" flex layout-margin></div>
     </md-card>
+</div>
 </div>

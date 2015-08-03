@@ -52,10 +52,31 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
     var tts = new TTSAudio();
    
     getJSONDataByIndex($http,'widgetPositions',$rootScope.dashboard.widgets.length,function(data){
+
+      $scope.gridsterOpts = {
+        margins: [10, 10],
+        outerMargin: true,
+        pushing: true,
+        floating: true,
+        draggable: {
+            enabled: true
+        },
+        resizable: {
+            enabled: true,
+            handles: ['n', 'e', 's', 'w', 'se', 'sw']
+        }
+        }; 
+
        $scope.leftPosition = data.leftPosition;
        $scope.topPosition = data.topPosition;
        $scope.ChartType = data.ChartType;
        $scope.currWidget = {
+
+        sizeX: widget.sizeX,
+        sizeY: widget.sizeY,
+        row: widget.row,
+        col: widget.col,
+  
         widData:{},
         widChart: widget.widConfig,
         widView:widget.widView,
@@ -72,10 +93,10 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
     query:"select * from testJay where Name!= 'Beast Master'",
     id: "chart" + Math.floor(Math.random()*(100-10+1)+10),
     type:widget.type,
-    width : '350px',
-    left :  $scope.leftPosition +'px',
+    width : '370px',
+    left :  $scope.leftPosition + 'px',
     top :  $scope.topPosition +'px',
-    height : '270px',
+    height : '250px',
     chartTypes:[
   {"id": "line", "title": "Line"},
   {"id": "spline", "title": "Smooth line"},

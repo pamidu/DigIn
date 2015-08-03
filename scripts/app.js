@@ -12,7 +12,8 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial', 'uiMicrokernel', "hi
     'ngMdIcons',
     'countTo',
     'pjTts',
-    'nvd3'
+    'nvd3',
+    'gridster'
 ])
 
 routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider",function($locationProvider, $httpProvider, $stateProvider) {
@@ -94,6 +95,12 @@ routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider",functio
             url: '/settings' ,
             controller: 'settingsCtrl',
             templateUrl: "views/settings.html" 
+             
+        })
+             .state('Grid', {
+            url: '/Grid' ,
+            controller: 'DashboardCtrl',
+            templateUrl: "views/chartsGridster.html" 
              
         })
 }]);

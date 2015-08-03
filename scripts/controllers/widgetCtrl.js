@@ -677,8 +677,140 @@ function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
     };
 };
 
+function spreadInit($scope, $http, $mdDialog, widId, $rootScope) {
 
-// todo...
+    //cancel config
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+    //complete config  
+    $scope.finish = function(rssAddress) {
+        $mdDialog.hide();
+
+    };
+
+
+};
+
+function gnewsInit($scope, $http, $mdDialog, widId, $rootScope) {
+
+    //cancel config
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.finish = function() {
+
+        $mdDialog.hide();
+
+    };
+
+
+    google.load('search', '1');
+
+    var newsSearch;
+
+    $scope.searchComplete = function() {
+
+        var container = document.getElementById('gnews-div');
+        container.innerHTML = '';
+
+        if (newsSearch.results && newsSearch.results.length > 0) {
+            for (var i = 0; i < newsSearch.results.length; i++) {
+
+                // Create HTML elements for search results
+                var p = document.createElement('p');
+                var gimg = document.createElement('gimg');
+                var gtitle = document.createElement('gtitle');
+                var gcontent = document.createElement('gcontent');
+                var gpubdate = document.createElement('gpubdate');
+                var gpub = document.createElement('gpub');
+                var gloc = document.createElement('gloc');
+                var gurl = document.createElement('gurl');
+                var glang = document.createElement('glang');
+
+
+                gimg.innerHTML = '<img style="width:60px;height:60px;" src=\"' + newsSearch.results[i].image.url + '\">'
+                gtitle.innerHTML = "<h2>" + newsSearch.results[i].title; + "</h2>"
+                gcontent.innerHTML = "<p>" + newsSearch.results[i].content; + "</p>"
+                gpubdate.innerHTML = "<p>Published on: " + newsSearch.results[i].publishedDate; + "</p>"
+                gpub.innerHTML = "<p>Published by: " + newsSearch.results[i].publisher; + "</p>"
+                gloc.innerHTML = "<p>Location: " + newsSearch.results[i].location; + "</p>"
+                gurl.innerHTML = "<p>Visit: " + newsSearch.results[i].signedRedirectUrl; + "</p>"
+                glang.innerHTML = "<p>Published language: " + newsSearch.results[i].language; + "</p>"
+
+
+
+
+                // Append search results to the HTML nodes
+                p.appendChild(gimg);
+                p.appendChild(gtitle);
+                p.appendChild(gcontent);
+                p.appendChild(gpubdate);
+                p.appendChild(gpub);
+                p.appendChild(gloc);
+                p.appendChild(gurl);
+                p.appendChild(glang);
+                container.appendChild(p);
+            }
+        }
+    }
+
+    $scope.gnewsextract = function(text) {
+        var gnewsfeed = document.getElementById('gnewsrequest').value;
+        // Create a News Search instance.
+        newsSearch = new google.search.NewsSearch();
+
+        // Set searchComplete as the callback function when a search is 
+        // complete.  The newsSearch object will have results in it.
+        newsSearch.setSearchCompleteCallback(this, searchComplete, null);
+
+        // Specify search quer(ies)
+        newsSearch.execute(gnewsfeed);
+
+        // Include the required Google branding
+        google.search.Search.getBranding('branding');
+    }
+
+    // Set a callback to call your code when the page loads
+    google.setOnLoadCallback(gnewsextract);
+
+}
+
+
+function imInit($scope, $http, $rootScope, $mdDialog) {
+
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+    //complete config  
+    $scope.finish = function() {
+
+        $mdDialog.hide();
+    };
+
+    $scope.readURL = function(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#blah')
+                    .attr('src', e.target.result);
+
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+}
+
+
+
+
+
 
 function weatherInit(widId, $scope, $http, $rootScope, $mdDialog) {
     //cancel config
@@ -708,11 +840,250 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     };
 
+    var auth2 = {};
+    var helper = (function() {
+        return {
+            onSignInCallback: function(authResult) {
+                $('#authResult').html('Auth Result:<br/>');
+                for (var field in authResult) {
+                    $('#authResult').append(' ' + field + ': ' +
+                        authResult[field] + '<br/>');
+                }
+                if (authResult.isSignedIn.get()) {
+                    $('#authOps').show('slow');
+                    $('#gConnect').hide();
+                    helper.profile();
+                    helper.people();
+                    helper.peoplee();
+                    helper.peopless();
+                    helper.activities();
+                    helper.organizationsu();
+                    helper.placestofind();
+                    helper.followings();
+                    helper.makeGoogleApiCalls();
+                } else if (authResult['error'] ||
+                    authResult.currentUser.get().getAuthResponse() == null) {
+                    console.log('There was an error: ' + authResult['error']);
+                    $('#authResult').append('Logged out');
+                    $('#authOps').hide('slow');
+                    $('#gConnect').show();
+                }
+
+                console.log('authResult', authResult);
+            },
+
+            /**
+             * Calls the OAuth2 endpoint to disconnect the app for the user.
+             */
+            disconnect: function() {
+                // Revoke the access token.
+                auth2.disconnect();
+            },
+
+            /**
+             * Gets and renders the list of people visible to this app.
+             */
+            people: function() {
+                gapi.client.plus.people.list({
+                    'userId': 'me',
+                    'collection': 'visible'
+                }).then(function(res) {
+                    var people = res.result;
+                    $('#visiblePeople').empty();
+                    $('#visiblePeople').append('<h6>' +
+                        people.totalItems + '</h6>');
+                    for (var personIndex in people.items) {
+                        person = people.items[personIndex];
+                        $('#visiblePeople').append('<p>' + '<h6>Name:</h6>' + person.displayName + '</br>' + '<img style="width:50px;height:50px;" src="' + person.image.url + '">' + '</p><br/>');
+                    }
+                });
+            },
+
+            peoplee: function() {
+                gapi.client.plus.people.list({
+                    'userId': 'me',
+                    'collection': 'visible'
+                }).then(function(res) {
+                    var people1 = res.result;
+                    $('#followerss').empty();
+                    $('#followerss').append('<h6>' +
+                        people1.totalItems + '</h6><br/>');
+                    for (var personIndex in people1.items) {
+                        person1 = people1.items[personIndex];
+                        $('#followerss').append('');
+                    }
+                });
+            },
+
+            peopless: function() {
+                gapi.client.plus.people.list({
+                    'userId': 'me',
+                    'collection': 'connected'
+                }).then(function(res) {
+                    var peoplee = res.result;
+                    $('#connectedPeople').empty();
+                    $('#connectedPeople').append('<h6>' +
+                        peoplee.totalItems + '</h6><br/>');
+                    for (var personIndex in peoplee.items) {
+                        personn = peoplee.items[personIndex];
+                        $('#connectedPeople').append('<img src="' + person.image.url + '">');
+                    }
+                });
+            },
+
+            /**
+             * Gets and renders the list of activities visible to this app.
+             */
+
+            activities: function() {
+                gapi.client.plus.activities.list({
+                    'userId': 'me',
+                    'collection': 'public'
+                }).then(function(res) {
+
+                    var activitiess = res.result;
+                    $('#activitylist').empty();
+                    for (var activityIndex in activitiess.items) {
+                        activityy = activitiess.items[activityIndex];
+                        $('#activitylist').append('<h6>Post Title: ' +
+                            activityy.title + '</h6>' + '<h6> No of replies: ' + activityy.object.replies.totalItems + '</br> No of plusoners: ' + activityy.object.plusoners.totalItems + '</br> No of resharers: ' + activityy.object.resharers.totalItems + '</h6></h6><br/>');
+                    }
+                });
+            },
+
+
+            organizationsu: function() {
+                gapi.client.plus.people.get({
+                    'userId': 'me',
+
+                }).then(function(res) {
+
+                    var org = res.result;
+                    $('#orglist').empty();
+                    for (var orgIndex in org.organizations) {
+                        orgs = org.organizations[orgIndex];
+                        $('#orglist').append('<h6>User organizations:</h6>' + '<p>' + orgs.name + '</p><br/>');
+                    }
+                });
+            },
+
+            placestofind: function() {
+                gapi.client.plus.people.get({
+                    'userId': 'me',
+
+                }).then(function(res) {
+
+                    var places = res.result;
+                    $('#placelist').empty();
+                    for (var placeIndex in places.placesLived) {
+                        placess = places.placesLived[placeIndex];
+                        $('#placelist').append('<h6>User contact:</h6>' + '<p>' + placess.value + '</p><br/>');
+                    }
+                });
+            },
+
+
+            followings: function() {
+                gapi.client.plus.people.get({
+                    'userId': 'me',
+
+                }).then(function(res) {
+
+                    var following = res.result;
+                    $('#followinglist').empty();
+                    $('#followinglist').append(
+                        $('<h6>' +
+                            following.circledByCount + '</h6><br/>'));
+                    for (var folowingIndex in following.circledByCount) {
+                        follow = following.circledByCount[folowingIndex];
+                        $('#followinglist').append('<p>' + '</br> Name:' + follow.displayName + '</br>' + '<img src="' + follow.image.url + '">' + '</p><br/>');
+                    }
+                });
+            },
+
+
+            /**
+             * Gets and renders the currently signed in user's profile data.
+             */
+
+            profile: function() {
+                gapi.client.plus.people.get({
+                    'userId': 'me'
+                }).then(function(res) {
+                    var profile = res.result;
+                    console.log(profile);
+                    $('#profile').empty();
+                    $('#profile').append(
+                        $('<p><img style="width:50px;height:50px;" src=\"' + profile.image.url + '\"></p><br/>'));
+                    $('#profile').append(
+                        $('<h6>Profile Name:</h6>' + '<p>' + profile.displayName + '</p><br/>' + '<h6>Family Name:</h6>' + '<p>' + profile.name.familyName + '</p><br/>' + '<h6>Profile ID:</h6>' + '<p>' + profile.id + '</p><br/>' + '<h6>Tagline:</h6> ' + '<p>' +
+                            profile.tagline + '</p><br/>' + '<h6>About me:</h6>' + '<p>' + profile.aboutMe + '</p><br/>' + '<h6>Google category:</h6>' + '<p>' + profile.kind + '</p><br/>' + '<h6>User type:</h6>' + '<p>' + profile.objectType + '</p><br/>' + '<h6>Gender:</h6>' + '<p>' + profile.gender + '</p><br/>' + '<h6>Studied at:</h6>' + '<p>' + profile.braggingRights + '</p><br/>' + '<h6>Occupation:</h6>' + '<p>' + profile.occupation + '</p><br/>' + '<h6>Other names:</h6>' + '<p>' + profile.name.givenName + '</p><br/>' + '<h6>Google+ account validity:</h6>' + '<p>' + profile.isPlusUser + '</p><br/>' + '</h6><br/>'));
+
+                    if (profile.emails) {
+                        for (var i = 0; i < profile.emails.length; i++) {
+                            $('#profile').append(
+                                $('<p></br> Emails: ' + profile.emails[i].value + '<p><br/>'));
+                        }
+                        $('#profile').append('');
+                    }
+                    if (profile.cover && profile.coverPhoto) {
+                        $('#profile').append(
+                            $('<p><img src=\"' + profile.cover.coverPhoto.url + '\"></p>'));
+                    }
+                }, function(err) {
+                    var error = err.result;
+                    $('#profile').empty();
+                    $('#profile').append(error.message);
+                });
+            }
+        };
+    })();
+
+    /**
+     * Handler for when the sign-in state changes.
+     *
+     * @param {boolean} isSignedIn The new signed in state.
+     */
+    var updateSignIn = function() {
+        console.log('update sign in state');
+        if (auth2.isSignedIn.get()) {
+            console.log('signed in');
+            helper.onSignInCallback(gapi.auth2.getAuthInstance());
+        } else {
+            console.log('signed out');
+            helper.onSignInCallback(gapi.auth2.getAuthInstance());
+        }
+    }
+
+    /**
+     * This method sets up the sign-in listener after the client library loads.
+     */
+    function startApp() {
+        gapi.load('auth2', function() {
+            gapi.client.load('plus', 'v1').then(function() {
+                gapi.signin2.render('signin-button', {
+                    scope: 'https://www.googleapis.com/auth/plus.login',
+                    fetch_basic_profile: false
+                });
+                gapi.auth2.init({
+                    fetch_basic_profile: false,
+                    scope: 'https://www.googleapis.com/auth/plus.login'
+                }).then(
+                    function() {
+                        console.log('init');
+                        auth2 = gapi.auth2.getAuthInstance();
+                        auth2.isSignedIn.listen(updateSignIn);
+                        auth2.then(updateSignIn());
+                    });
+            });
+        });
+    }
+
 }
 
 
 
-// function instaInit($scope, $http, $window) {
+function instaInit($scope, $http, $window) {
 
 //     var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
 //     var redirectUrl = 'http://duoworld.duoweb.info/DuoDiggin_pinterest/'
@@ -728,23 +1099,126 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 //     }
 
+    var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
+    var redirectUrl = 'http://localhost/duodigin/views/ViewInstagram.html'
+    var baseUrl =
+        'https://instagram.com/oauth/authorize/?client_id=' + clientId + '&redirect_uri=' + redirectUrl + '&response_type=token';
 
-// }
+    if ($window.location.href.indexOf("access_token") == -1) {
+        $window.location.href = baseUrl;
+    } else {
+        var access_token = $window.location.hash.substring(14);
+        var baseUrl = "https://api.instagram.com/v1/users/self/?access_token=" + access_token + "&format=jsonp&callback=JSON_CALLBACK"
+        $http.jsonp(baseUrl).success(function(data) {
 
-function instaInitt($scope, $http, $window) {
+            $scope.followers = data.data.counts.followed_by;
+            $scope.follows = data.data.counts.follows;
+            $scope.profilepic = data.data.profile_picture;
+            $scope.username = data.data.username;
+            $scope.firstName = data.data.full_name;
+            var likeUrl = "https://api.instagram.com/v1/users/self/media/liked?access_token=" + access_token + "&format=jsonp&callback=JSON_CALLBACK";
+            console.log(data);
+            $http.jsonp(likeUrl).success(function(data) {
 
-    $scope.cancel = function() {
-        $mdDialog.hide();
-    };
+                $scope.likes = data.data.length;
+                console.log(data.data.length);
+            }).error(function(data) {
 
-    $scope.finish = function() {
+            })
 
-        $mdDialog.hide();
-
-    };
-
-
+        }).error(function(data) {
+            console.log(data)
+        })
+    }
 }
+
+
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+            $('#blah')
+                .attr('src', e.target.result);
+
+    };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+
+google.load('search', '1');
+
+var newsSearch;
+
+function searchComplete() {
+
+    var container = document.getElementById('gnews-div');
+    container.innerHTML = '';
+
+    if (newsSearch.results && newsSearch.results.length > 0) {
+        for (var i = 0; i < newsSearch.results.length; i++) {
+
+            // Create HTML elements for search results
+            var p = document.createElement('p');
+            var gimg = document.createElement('gimg');
+            var gtitle = document.createElement('gtitle');
+            var gcontent = document.createElement('gcontent');
+            var gpubdate = document.createElement('gpubdate');
+            var gpub = document.createElement('gpub');
+            var gloc = document.createElement('gloc');
+            var gurl = document.createElement('gurl');
+            var glang = document.createElement('glang');
+
+
+            gimg.innerHTML = '<img style="width:60px;height:60px;" src=\"' + newsSearch.results[i].image.url + '\">'
+            gtitle.innerHTML = "<h2>" + newsSearch.results[i].title; + "</h2>"
+            gcontent.innerHTML = "<p>" + newsSearch.results[i].content; + "</p>"
+            gpubdate.innerHTML = "<p>Published on: " + newsSearch.results[i].publishedDate; + "</p>"
+            gpub.innerHTML = "<p>Published by: " + newsSearch.results[i].publisher; + "</p>"
+            gloc.innerHTML = "<p>Location: " + newsSearch.results[i].location; + "</p>"
+            gurl.innerHTML = "<p>Visit: " + newsSearch.results[i].signedRedirectUrl; + "</p>"
+            glang.innerHTML = "<p>Published language: " + newsSearch.results[i].language; + "</p>"
+
+
+
+
+            // Append search results to the HTML nodes
+            p.appendChild(gimg);
+            p.appendChild(gtitle);
+            p.appendChild(gcontent);
+            p.appendChild(gpubdate);
+            p.appendChild(gpub);
+            p.appendChild(gloc);
+            p.appendChild(gurl);
+            p.appendChild(glang);
+            container.appendChild(p);
+}
+    }
+}
+
+function gnewsextract(text) {
+    var gnewsfeed = document.getElementById('gnewsrequest').value;
+    // Create a News Search instance.
+    newsSearch = new google.search.NewsSearch();
+
+    // Set searchComplete as the callback function when a search is 
+    // complete.  The newsSearch object will have results in it.
+    newsSearch.setSearchCompleteCallback(this, searchComplete, null);
+
+    // Specify search quer(ies)
+    newsSearch.execute(gnewsfeed);
+
+    // Include the required Google branding
+    google.search.Search.getBranding('branding');
+}
+
+// Set a callback to call your code when the page loads
+google.setOnLoadCallback(gnewsextract);
+
+
 
 routerApp.controller('sltivrInit', function($scope, $mdDialog, $rootScope) {
 

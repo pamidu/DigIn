@@ -35,15 +35,12 @@
                     {{field.name}}
                 </md-checkbox>
             </div>
-                <div layout="row" layout-align='center start'>
-                <md-input-container flex>
-                    <label>Series Field:</label>
-                    <input ng-model="widget.seriesname" name="seriesName">
-                </md-input-container>
-                <md-input-container flex>
-                    <label>Data Field:</label>
-                    <input ng-model="widget.dataname" name="dataName">
-                </md-input-container>
+            <div layout="row" flex>
+                <md-select ng-model="uniqueType" placeholder="Select a chart type" flex>
+                <md-optgroup label="Chart type">
+                  <md-option ng-value="chartType" ng-repeat="chartType in chartTypes">{{chartType}}</md-option>
+                  </md-optgroup>
+                  </md-select>
             </div>
             <div layout="row" layout-align='center start'>
                 <md-input-container flex="50">

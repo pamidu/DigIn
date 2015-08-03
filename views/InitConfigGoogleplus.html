@@ -18,23 +18,22 @@
             </div>
         </md-toolbar>
         <md-dialog-content>
-            <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
-            <meta name="google-signin-client_id" content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com"></meta>
+             <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
             <md-content>
                 <div id="gConnect">
-                    <div id="signin-button"></div>
-                </div>
-                <div id="authOps" style="display:none;">
-                    <button id="disconnect" style="width:90px;height:37px;color: black; background-color: #FFFFFF; font-face: 'Comic Sans MS'; font-size: smaller;">Signout</button>
+                     <md-button id="signin-button" class="md-primary">
+                    Sign In
+                </md-button>
                 </div>
             </md-content>
-            <script type="text/javascript" src="../duodigin/scripts/controllers/Googleplus.js"></script>
         </md-dialog-content>
         <div class="md-actions" layout="row">
             <span flex></span>
-            <md-button ng-click="finish()" class="md-primary">
-                Finish
-            </md-button>
+            <div id="authOps">
+                <md-button id="disconnect" ng-click="finish()" class="md-primary">
+                    Finish
+                </md-button>
+            </div>
             <md-button ng-click="cancel()" class="md-primary">
                 Cancel
             </md-button>

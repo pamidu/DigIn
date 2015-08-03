@@ -6,7 +6,7 @@
             "Description": "Line, Area, Bar, Pie, Table",
             "initTemplate": "InitConfigspread",
             "initController": "spreadInit",
-            "widView": "views/Viewgspread.html",
+            "widView": "views/Viewspread.html",
             "sizeX":"2",
             "sizeY":"2",
             "row":"0",

@@ -1149,9 +1149,7 @@ function readURL(input) {
 }
 
 
-google.load('search', '1');
-
-var newsSearch;
+ 
 
 function searchComplete() {
 
@@ -1215,8 +1213,6 @@ function gnewsextract(text) {
     google.search.Search.getBranding('branding');
 }
 
-// Set a callback to call your code when the page loads
-google.setOnLoadCallback(gnewsextract);
 
 
 

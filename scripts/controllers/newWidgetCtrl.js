@@ -80,6 +80,8 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
         widData:{},
         widChart: widget.widConfig,
         widView:widget.widView,
+        dataView: widget.dataView,
+        dataCtrl: widget.dataCtrl,
         initTemplate: widget.initTemplate,
         initCtrl: widget.initController,
     uniqueType: widget.title,

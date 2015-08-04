@@ -258,7 +258,31 @@ function YoutubeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
 function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) {
     $scope.elasticStep = "views/InitConfigElastic-chart.html";
 
-     $scope.chartTypes = ["area","line","bar"];
+     $scope.chartTypes = [{
+        name:"Area",
+        type:"area"
+        },{
+        name:"Smooth area",
+        type:"areaspline"
+        },{
+        name:"Line",
+        type:"line"
+        },{
+        name:"Smooth line",
+        type:"spline"
+        },{
+        name:"Column",
+        type:"column"
+        },{
+        name:"Bar",
+        type:"bar"
+        },{
+        name:"Pie",
+        type:"pie"
+        },{
+        name:"Scatter",
+        type:"scatter"
+        }];
      $scope.uniqueType = "";
 
     $scope.loadNext = function(temlpate) {
@@ -268,6 +292,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
     $scope.indexes = [];
     $scope.datasources = ['Object Store', 'Elastic search', 'CouchDB'];
     $scope.checkedFields = [];
+    $scope.checkedCategories = [];
+    $scope.categoryVal = "";
     $scope.excelNamespace = "";
     $scope.excelClass = "";
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
@@ -303,6 +329,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             $scope.checkedFields.splice($scope.checkedFields.indexOf(index), 1);
         }
     };
+    
     client.getClasses("com.duosoftware.com");
     $scope.getFields = function() {
         $scope.selectedFields = [];
@@ -341,11 +368,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 $rootScope.DashboardData = data;
                 $mdDialog.show({
                     controller: 'ShowTableCtrl',
-                    templateUrl: 'views/data-explorer.html',
-
-
+                    templateUrl: 'views/data-explorer.html'
                 })
-
             }
         });
         client.getSelected(parameter);
@@ -379,11 +403,10 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         $rootScope.header = [];
         for (param in $scope.checkedFields) {
             parameter += " " + $scope.checkedFields[param].name;
-            $rootScope.header.push({
-                name: $scope.checkedFields[param].name,
-                field: $scope.checkedFields[param].name
-            });
         }
+        
+        parameter += " " + $scope.categoryVal;
+
         w.postMessage($scope.ind + "," + parameter);
         w.addEventListener('message', function(event) {
             var res = JSON.parse(event.data);
@@ -391,29 +414,28 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 $rootScope.DashboardData = [];
                 $rootScope.DashboardData = res;
                 widget.chartConfig.series = [];
+                widget.chartConfig.xAxis = {};
+                widget.chartConfig.xAxis.categories = [];
                 var _fieldData = [];
-                var currentdate = new Date();
-                console.log("starting time:" + currentdate);
 
                 var series = [];
-                var trimmedPar = parameter.trim();
-                var seriesArr = trimmedPar.split(' ');
+
                 //creating dynamic object attributes
-                for (i = 0; i < seriesArr.length; i++) {
-                    series[seriesArr[i]] = {
-                        name: seriesArr[i],
+                for (i = 0; i < $scope.checkedFields.length; i++) {
+                    series[$scope.checkedFields[i].name] = {
+                        name: $scope.checkedFields[i].name,
                         data: []
                     };
                 }
 
-                console.log(JSON.stringify(series) + " " + series.length);
                 for (i = 0; i < res.length; i++) {
                     for (var key in series) {
                         if (series.hasOwnProperty(key)) {
                             series[key].data.push(parseInt(res[i][key]));
                         }
-
                     }
+                    $scope.checkedCategories.push(res[i][$scope.categoryVal]);
+
                 }
 
                 console.log('Mapped series' + JSON.stringify(series));
@@ -435,22 +457,10 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                     };
                 });
 
-                console.log('Wid chart series' + JSON.stringify(series));
-                console.log('widget series' + JSON.stringify(widget.chartSeries));
-                var currentdate1 = new Date();
-                console.log("ending time:" + currentdate1);              
-
+                widget.chartConfig.xAxis.categories = $scope.checkedCategories;
             }
             //w.terminate();
         });
-
-
-        // var client = $objectstore.getClient("com.duosoftware.com", $scope.ind);
-        // client.onGetMany(function(datai) {
-
-
-        // });
-        // client.getSelected(parameter);
     }
 };
 

@@ -7,18 +7,20 @@ routerApp.controller('DashboardCtrl', ['$scope',
 
         $('#pagePreLoader').hide();
 
-        $scope.showData = function(widget) {
-            $mdDialog.show({
-                    controller: 'DashboardCtrl',
-                    templateUrl: 'views/D3Plugin/DataPreview.html',
-
-
-                }
-
-
-            )
-
-        }
+        $scope.showData = function(widget,ev) {
+                 $mdDialog.show({
+      controller: eval(widget.dataCtrl),
+      templateUrl: 'views/'+widget.dataView+'.html',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      locals: {wid : widget}
+    })
+    .then(function() {
+      //$mdDialog.hide();
+    }, function() {
+      //$mdDialog.hide();
+    });
+   };
 
         $scope.convertCSVtoJson = function(src) {
             AsTorPlotItems.then(function(data) {
@@ -128,4 +130,8 @@ routerApp.controller('DashboardCtrl', ['$scope',
         $scope.selectedDashboardId = '1';
 
     }
-])
+]);
+
+function elasticDataCtrl(){
+    alert('test');
+};

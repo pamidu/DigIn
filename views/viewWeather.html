@@ -1,34 +1,35 @@
-           <md-content layout-margin>    
-                 <div layout="column">
-                  <div flex layout="row" layout-margin><!-- location deatails start -->
-                        <div>{{ widget.widData.results.channel.location.city }}</div>
-                        <div layout="row">
-                        <div layout="row">
-                          <div flex="50"><img class="img-thumbnail forecast-img" src="http://l.yimg.com/a/i/us/we/52/{{widget.widData.results.channel.item.condition.code}}.gif" />
-                          </div>
-                          <div flex="50"><font class="tem"><h5 id="count">{{widget.widData.results.channel.item.condition.temp}}{{widget.widData.results.channel.units.temperature}}</h5></font>
-                          </div>
-                          
-                        </div> 
-                        <div>{{ widget.widData.results.channel.item.condition.text }}</div>
+           <md-content layout-margin layout="column">    
+                
+                  <div flex layout="column" layout-margin ><!-- location deatails start -->
+                        <div layout="row" layout-padding layout-align="center center">
+                          <h3> {{widget.widData.results.channel.location.country}} , {{ widget.widData.results.channel.location.city }}</h3>
                         </div>
-                        <div>{{ widget.widData.results.channel.item.condition.date }} {{widget.widData.results.channel.location.country}}</div>
+                        <div layout="row" layout-margin layout-align="center center">
+                          
+                          <img class="img-thumbnail forecast-img" src="http://l.yimg.com/a/i/us/we/52/{{widget.widData.results.channel.item.condition.code}}.gif" />
+                          <h3 id="count">{{widget.widData.results.channel.item.condition.temp}}{{widget.widData.results.channel.units.temperature}} , {{ widget.widData.results.channel.item.condition.text }}</h3>
+                          
+                        </div>
+                        <div layout="row" layout-margin layout-align="center center">
+                          <h3>{{ widget.widData.results.channel.item.condition.date }}</h3>
+                         </div>
+                        
                   
                   </div><!-- location deatails finish -->
-                  <div flex layout="row">
+                  <div layout="row" layout-align="center end" layout-margin>
                       
-                        <div flex>
+                        <div flex="50" layout-margin style="text-align: -webkit-center">
                           <h4><img style="height:25px;width:25px;" src="styles/css/images/Shining_sun_32 (2).png" />Sunrise {{widget.widData.results.channel.astronomy.sunrise}}</h4>
                           <h4><img style="height:25px;width:25px;" src="styles/css/images/raindroRain_drop_32p2.png" /> Humidity {{widget.widData.results.channel.atmosphere.humidity}}%</h4>
                           <h4><img style="height:25px;width:25px;" src="styles/css/images/Wind_sleeve_pointing_left_32 (2).png" />Wind Speed {{widget.widData.results.channel.wind.speed}}{{widget.widData.results.channel.units.speed}}</h4>
                         </div>
-                        <div flex>
+                        <div flex="50" layout-margin style="text-align: -webkit-center">
                           <h4><img style="height:25px;width:25px;" src="styles/css/images/sun42.png" /> Sunset {{widget.widData.results.channel.astronomy.sunset}}</h4>
                           <h4> <img style="height:25px;width:25px;" src="styles/css/images/Hot_thermometer_32 (2).png" />Pressure {{widget.widData.results.channel.atmosphere.pressure}} {{widget.widData.results.channel.units.pressure}}</h4>
                           <h4><img style="height:25px;width:25px;" src="styles/css/images/Big_Compass_32 (1).png" />Wind Direction {{widget.widData.results.channel.wind.direction}}</h4>
                         </div>
                       
                     </div>
-                </div>  
+                
           </md-content>
               

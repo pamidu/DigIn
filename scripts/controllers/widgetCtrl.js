@@ -411,6 +411,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         w.addEventListener('message', function(event) {
             var res = JSON.parse(event.data);
             if (res) {
+                try{
                 $rootScope.DashboardData = [];
                 $rootScope.DashboardData = res;
                 widget.chartConfig.series = [];
@@ -457,7 +458,16 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                     };
                 });
 
-                widget.chartConfig.xAxis.categories = $scope.checkedCategories;
+                widget.chartConfig.xAxis.categories = $scope.checkedCategories;    
+                }
+                catch(e){
+                    alert('An error has occurred: '+e.message)
+                }
+
+
+
+
+
             }
             //w.terminate();
         });

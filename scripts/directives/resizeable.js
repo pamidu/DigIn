@@ -25,8 +25,8 @@ routerApp.directive('resizeable', function() {
 
                        if (widgetPlugin != "ElasticSearch") {    
                        
-                        height = ui.size.height - 80;
-                        width = ui.size.width - 20;
+                        height = ui.size.height;
+                        width = ui.size.width;
                        
                      
                     }

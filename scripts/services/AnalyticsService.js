@@ -39,3 +39,23 @@ routerApp.service('ExtendedAnalyticsService', ['$q', function($q) {
       }
   };
 }]);
+
+routerApp.service('d3Service', ['$q', function($q) {
+  var analytics = [{
+      name: 'd3',
+      iconurl: 'bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg',
+      imgurl: 'http://104.236.68.121/d3master/',
+      content: ' '
+  } 
+
+
+   ];
+
+  // Promise-based API
+  return {
+      loadAll: function() {
+    
+          return $q.when(analytics);
+      }
+  };
+}]);

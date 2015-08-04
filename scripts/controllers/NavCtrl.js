@@ -539,6 +539,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
 
                 $state.go(routeName)
             }
+             if (routeName == "D3plugins") {
+                var selectedMenu = document.getElementsByClassName("menu-layer");
+                selectedMenu[0].style.display = 'block';
+                $scope.currentView = "D3plugins";
+                $(".menu-layer").css("top", "120px");
+                $("starting-point").css("top", "120px");
+
+                $state.go(routeName)
+            }
             if (routeName == "Reports") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';

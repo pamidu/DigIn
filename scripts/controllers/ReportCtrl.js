@@ -37,3 +37,5 @@ $log,cssInjector) {
     $scope.toggleSidenav('left');
   }
 }])
+
+ 

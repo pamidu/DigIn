@@ -29,6 +29,13 @@
             "icon": "ion-ios-albums",
             "state": false,
             "stateStr": "Disabled"
+        },
+        {
+
+            "title": "D3plugins",
+            "icon": "ion-disc",
+            "state": false,
+            "stateStr": "Disabled"
         }
     ]
 }

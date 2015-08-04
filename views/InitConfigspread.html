@@ -1,5 +1,5 @@
 <md-dialog style="min-width:400px;">
-    <form data-ng-submit="search()">
+    <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <div flex="10">
@@ -18,20 +18,17 @@
             </div>
         </md-toolbar>
         <md-dialog-content>
-            <div layout="row" layout-margin>
-                <md-input-container flex>
-                    <label id="postdomain">Domain URL:</label>
-                    <input type='text' name="q" data-ng-model="query" id="inputwpdomain">
-                </md-input-container>
-                    <!-- <md-button aria-label="Search" ng-click="search()">Search
-            <ng-md-icon icon="search"></ng-md-icon>
-          </md-button> -->
-            </div>
-   
+  <!--           // <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script> -->
+        <!--     <meta name="google-signin-client_id" content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com"></meta> -->
+            <md-content>
+              
+            
+            </md-content>
+           <!--  // <script type="text/javascript" src="../duodigin/scripts/controllers/Googleplus.js"></script> -->
         </md-dialog-content>
         <div class="md-actions" layout="row">
             <span flex></span>
-            <md-button ng-click="finish();search();" class="md-primary">
+            <md-button ng-click="finish()" class="md-primary">
                 Finish
             </md-button>
             <md-button ng-click="cancel()" class="md-primary">
@@ -40,5 +37,3 @@
         </div>
     </form>
 </md-dialog>
-
- 

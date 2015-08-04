@@ -1,6 +1,13 @@
-var app = angular.module('YouTubeData', []);
+var app = angular.module('YouTubeData', ['ngMaterial', 'ngMdIcons']);
+
+var channelName = 'AngularJS';
+var vidWidth = 1350;
+var vidHeight = 400;
+var vidResults = 1;
+
 
 // Run
+
 
 app.run(function () {
   var tag = document.createElement('script');
@@ -180,12 +187,34 @@ app.controller('VideosController', function ($scope, $http, $log, VideosService)
 
     init();
 
-  
+    function init() {
+      $scope.youtube = VideosService.getYoutube();
+      $scope.results = VideosService.getResults();
+      $scope.upcoming = VideosService.getUpcoming();
+      $scope.history = VideosService.getHistory();
+      $scope.playlist = true;
+    }
 
 
-    
+    $scope.launch = function (id, title) {
+      VideosService.launchPlayer(id, title);
+      VideosService.archiveVideo(id, title);
+      VideosService.deleteVideo($scope.upcoming, id);
+      $log.info('Launched id:' + id + ' and title:' + title);
+    };
+
+    $scope.queue = function (id, title) {
+      VideosService.queueVideo(id, title);
+      VideosService.deleteVideo($scope.history, id);
+      $log.info('Queued id:' + id + ' and title:' + title);
+    };
+
+    $scope.delete = function (list, id) {
+      VideosService.deleteVideo(list, id);
+    };
 
     $scope.search = function () {
+      alert("hii");
       $http.get('https://www.googleapis.com/youtube/v3/search', {
         params: {
           key: 'AIzaSyAzf5VkNxCc-emzb5rujUSc9wSxoDla6AM',
@@ -195,6 +224,8 @@ app.controller('VideosController', function ($scope, $http, $log, VideosService)
           fields: 'items/id,items/snippet/title,items/snippet/description,items/snippet/thumbnails/default,items/snippet/channelTitle,items/snippet/publishedAt,items/snippet/liveBroadcastContent,items/snippet/channelId,items/id/kind,items/id/videoId',
           q: this.query
         }
+
+
       })
       .success( function (data) {
         VideosService.listResults(data);
@@ -203,10 +234,39 @@ app.controller('VideosController', function ($scope, $http, $log, VideosService)
       .error( function () {
         $log.info('Search error');
       });
+
     }
 
     $scope.tabulate = function (state) {
       $scope.playlist = state;
     }
-    
+  
 });
+
+app.config(function($mdThemingProvider) {
+  var customBlueMap =     $mdThemingProvider.extendPalette('grey', {
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': ['50'],
+    '50': 'ffffff'
+  });
+  $mdThemingProvider.definePalette('customBlue', customBlueMap);
+  $mdThemingProvider.theme('default')
+    .primaryPalette('customBlue', {
+      'default': '500',
+      'hue-1': '50'
+    })
+    .accentPalette('pink');
+  $mdThemingProvider.theme('input', 'default')
+        .primaryPalette('grey')
+});
+
+
+
+
+
+
+
+
+
+
+

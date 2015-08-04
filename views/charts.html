@@ -1,13 +1,14 @@
-<div plumb-item ng-repeat="widget in dashboard.widgets" ng-style="{ 'left':widget.left, 'top':widget.top, 'width':widget.width  }" data-identifier="{{widget}}" style="min-width:300px;min-height:300px" resizeable> 
-    <p ng-if="widget.divider">{{widget.chartConfig.title.text}}</p>
-    <md-card ng-dblclick="widget.expanded = !widget.expanded" ng-mouseover="hover = true" ng-mouseout="hover = false">
+<div plumb-item ng-repeat="widget in dashboard.widgets" ng-style="{ 'left':widget.left, 'top':widget.top }" data-identifier="{{widget}}" 
+style="min-width:320px;display:block" resizeable layout-wrap layout="column"> 
+    <!-- <p ng-if="widget.divider">{{widget.chartConfig.title.text}}</p> -->
+    <md-toolbar  ng-dblclick="widget.expanded = !widget.expanded" ng-mouseover="hover = true" ng-mouseout="hover = false" flex="10">
                 <div layout-wrap layout="row" layout-align"start center" layout-wrap>
-                    <div flex="50">
-                        <h4 layout-padding>
+                    <div flex layout-margin>
+                        <h3>
                           {{widget.chartConfig.title.text}}
-                         </h4>               
+                        </h3>               
                     </div>
-                    <div flex="50" layout="row" layout-align="top end">
+                    <div layout="row" layout-align="top end" flex style="max-width:150px">
                     <div flex>                       
                             <md-button  ng-click="commentary(widget)"  aria-label="Close" layout-wrap>
                                    <md-icon class="ion-volume"></md-icon>
@@ -32,9 +33,9 @@
                     </div>
                 </div>
             
-    </md-card>
-    <md-card style="height:70%" ng-if="widget.expanded && !widget.divider" ng-dblclick="widget.expanded = !widget.expanded">
+    </md-toolbar>
+    <md-content style="border: 1px solid;height:100%" ng-if="widget.expanded && !widget.divider" ng-dblclick="widget.expanded = !widget.expanded" flex="90">
         <div style="height:100%" ng-include src="widget.widView"></div>
-    </md-card>
+    </md-content>
 
 </div>

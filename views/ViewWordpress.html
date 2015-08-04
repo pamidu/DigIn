@@ -1,10 +1,9 @@
-<md-content style="height:300px;">
-  <div layout="column" ng-repeat="post in widget.widData.posts track by $index">
-    <div layout="column">
-      <md-toolbar>
-        <h5 style="text-align:center;">{{post.authorName}}</h5>
+<md-content flex style="height:300px">
+  <div ng-repeat="post in widget.widData.posts track by $index" flex>
+      <md-toolbar layout-align="center center" flex>
+        <h4 >{{post.authorName}}</h4>
       </md-toolbar>
-      <md-list-item class="md-3-line">
+      <md-list-item class="md-3-line" layout-margin flex>
         <img class="md-avatar" src="{{post.picURL}}"/>
         <div class="md-list-item-text">
           <h3>{{post.title}}</h3>
@@ -13,7 +12,6 @@
         </div>
       </md-list-item>
        <md-divider ></md-divider>
-    </div>
   </div>
 </md-content>
 

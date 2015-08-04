@@ -15,9 +15,6 @@
 /*summary-
   fbInterface : (scripts/custom/fbInterface.js)
 */
-
-
-
 function fbInit(scope, $mdDialog, widId, $rootScope) {
 
     scope.accounts = [];
@@ -210,9 +207,9 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope) {
       $scope.cancel = function() {
         $mdDialog.hide();
     };
-
-    $scope.finish = function() {
+$scope.finish = function() {
         $mdDialog.hide();
+    };
 
     };
 
@@ -315,7 +312,7 @@ app.service('VideosService', ['$window', '$rootScope', '$log', function ($window
     {id: '8Zh0tY2NfLs', title: 'N.E.R.D. ft. Nelly Furtado - Hot N\' Fun (Boys Noize Remix) HQ'},
     {id: 'zwJPcRtbzDk', title: 'Daft Punk - Human After All (SebastiAn Remix)'},
     {id: 'sEwM6ERq0gc', title: 'HAIM - Forever (Official Music Video)'},
-    {id: 'fTK4XTvZWmk', title: 'Housse De Racket â˜â˜€â˜ Apocalypso'}
+    {id: 'fTK4XTvZWmk', title: 'Housse De Racket ☁☀☁ Apocalypso'}
   ];
   var history = [
     {id: 'XKa7Ywiv734', title: '[OFFICIAL HD] Daft Punk - Give Life Back To Music (feat. Nile Rodgers)'}
@@ -602,6 +599,33 @@ app.config(function($mdThemingProvider) {
 function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) {
     $scope.elasticStep = "views/InitConfigElastic-chart.html";
 
+     $scope.chartTypes = [{
+        name:"Area",
+        type:"area"
+        },{
+        name:"Smooth area",
+        type:"areaspline"
+        },{
+        name:"Line",
+        type:"line"
+        },{
+        name:"Smooth line",
+        type:"spline"
+        },{
+        name:"Column",
+        type:"column"
+        },{
+        name:"Bar",
+        type:"bar"
+        },{
+        name:"Pie",
+        type:"pie"
+        },{
+        name:"Scatter",
+        type:"scatter"
+        }];
+     $scope.uniqueType = "";
+
     $scope.loadNext = function(temlpate) {
         $scope.elasticStep = "views/" + temlpate;
     };
@@ -609,6 +633,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
     $scope.indexes = [];
     $scope.datasources = ['Object Store', 'Elastic search', 'CouchDB'];
     $scope.checkedFields = [];
+    $scope.checkedCategories = [];
+    $scope.categoryVal = "";
     $scope.excelNamespace = "";
     $scope.excelClass = "";
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
@@ -644,6 +670,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             $scope.checkedFields.splice($scope.checkedFields.indexOf(index), 1);
         }
     };
+    
     client.getClasses("com.duosoftware.com");
     $scope.getFields = function() {
         $scope.selectedFields = [];
@@ -682,11 +709,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 $rootScope.DashboardData = data;
                 $mdDialog.show({
                     controller: 'ShowTableCtrl',
-                    templateUrl: 'views/data-explorer.html',
-
-
+                    templateUrl: 'views/data-explorer.html'
                 })
-
             }
         });
         client.getSelected(parameter);
@@ -713,66 +737,81 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
     }
 
     $scope.buildchart = function(widget) {
-
         var w = new Worker("scripts/webworkers/elasticWorker.js");
-
-
-
-
         var parameter = "";
         $scope.QueriedData = [];
         $scope.chartSeries = [];
         $rootScope.header = [];
         for (param in $scope.checkedFields) {
-
             parameter += " " + $scope.checkedFields[param].name;
-            $rootScope.header.push({
-                name: $scope.checkedFields[param].name,
-                field: $scope.checkedFields[param].name
-            });
         }
+        
+        parameter += " " + $scope.categoryVal;
+
         w.postMessage($scope.ind + "," + parameter);
         w.addEventListener('message', function(event) {
-            console.log('Receiving from Worker: ' + event.data);
             var res = JSON.parse(event.data);
             if (res) {
+                try{
                 $rootScope.DashboardData = [];
                 $rootScope.DashboardData = res;
                 widget.chartConfig.series = [];
+                widget.chartConfig.xAxis = {};
+                widget.chartConfig.xAxis.categories = [];
                 var _fieldData = [];
-                var currentdate = new Date();
-                console.log("starting time:" + currentdate);
 
-                widget.chartConfig.series = $rootScope.DashboardData.map(function(elm) {
-                    _fieldData.push(parseInt(elm[widget.dataname]));
-                    return {
-                        name: elm[widget.seriesname],
-                        data: _fieldData
+                var series = [];
+
+                //creating dynamic object attributes
+                for (i = 0; i < $scope.checkedFields.length; i++) {
+                    series[$scope.checkedFields[i].name] = {
+                        name: $scope.checkedFields[i].name,
+                        data: []
                     };
-                });
+                }
 
-                widget.chartSeries = [];
-                for (i = 0; i < widget.chartConfig.series.length; i++) {
-                    for (j = 0; j < 20 || j < widget.chartConfig.series.length; j++) {
-                        widget.chartSeries.push(widget.chartConfig.series[j]);
-                        i = j;
+                for (i = 0; i < res.length; i++) {
+                    for (var key in series) {
+                        if (series.hasOwnProperty(key)) {
+                            series[key].data.push(parseInt(res[i][key]));
                     }
                 }
-                // widget.chartSeries = widget.chartConfig.series;
-                var currentdate1 = new Date();
-                console.log("ending time:" + currentdate1);
+                    $scope.checkedCategories.push(res[i][$scope.categoryVal]);
 
             }
-            //w.terminate();
+
+                console.log('Mapped series' + JSON.stringify(series));
+
+                var arrayedSeries = [];
+                for (var key in series) {
+                    if (series.hasOwnProperty(key)) {
+                        arrayedSeries.push(series[key]);
+                    }
+                }
+
+                if($scope.uniqueType == "")widget.chartConfig.options.chart.type = "area";
+                else widget.chartConfig.options.chart.type = $scope.uniqueType;
+                widget.chartSeries = [];
+                widget.chartConfig.series = arrayedSeries.map(function(elm) {
+                    return {
+                        name: elm.name,
+                        data: elm.data
+                    };
         });
 
+                widget.chartConfig.xAxis.categories = $scope.checkedCategories;    
+                }
+                catch(e){
+                    alert('An error has occurred: '+e.message)
+                }
 
-        // var client = $objectstore.getClient("com.duosoftware.com", $scope.ind);
-        // client.onGetMany(function(datai) {
 
 
-        // });
-        // client.getSelected(parameter);
+
+
+    }
+            //w.terminate();
+        });
     }
 };
 
@@ -1404,19 +1443,19 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 function instaInit($scope, $http, $window) {
 
-    // var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
-    // var redirectUrl = 'http://duoworld.duoweb.info/DuoDiggin_pinterest/'
+//     var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
+//     var redirectUrl = 'http://duoworld.duoweb.info/DuoDiggin_pinterest/'
 
 
-    // if ($window.location.href.indexOf("access_token") == -1) {
-    //     $window.location.href = baseUrl;
+//     if ($window.location.href.indexOf("access_token") == -1) {
+//         $window.location.href = baseUrl;
 
-    // } else {
-    //     var access_token = $window.location.hash.substring(14);
-    //                 console.log(data);       
+//     } else {
+//         var access_token = $window.location.hash.substring(14);
+//                     console.log(data);       
 
 
-    // }
+//     }
 
     var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
     var redirectUrl = 'http://localhost/duodigin/views/ViewInstagram.html'

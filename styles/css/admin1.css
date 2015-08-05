@@ -4895,7 +4895,7 @@ MIT License: https://github.com/driftyco/ionicons
 }
 /* start pulathisi these css changes are for each widget's toolbar's ion icons*/
 .ion-volume:before {
-  font-size:28px;
+  font-size:20px;
   display: inline-block;
   font-family: "Ionicons";
   speak: none;
@@ -4909,7 +4909,7 @@ MIT License: https://github.com/driftyco/ionicons
   -moz-osx-font-smoothing: grayscale;
 }
 .ion-close:before {
-  font-size:28px;
+  font-size:20px;
   display: inline-block;
   font-family: "Ionicons";
   speak: none;
@@ -4923,7 +4923,7 @@ MIT License: https://github.com/driftyco/ionicons
   -moz-osx-font-smoothing: grayscale;
 }
 .ion-close:before {
-  font-size:28px;
+  font-size:20px;
   display: inline-block;
   font-family: "Ionicons";
   speak: none;
@@ -4937,7 +4937,7 @@ MIT License: https://github.com/driftyco/ionicons
   -moz-osx-font-smoothing: grayscale;
 }
 .ion-clipboard:before {
-  font-size:28px;
+  font-size:20px;
   display: inline-block;
   font-family: "Ionicons";
   speak: none;
@@ -4951,7 +4951,7 @@ MIT License: https://github.com/driftyco/ionicons
   -moz-osx-font-smoothing: grayscale;
 }
 .ion-gear-b:before {
-  font-size:28px;
+  font-size:20px;
   display: inline-block;
   font-family: "Ionicons";
   speak: none;

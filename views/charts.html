@@ -1,12 +1,12 @@
 <div plumb-item ng-repeat="widget in dashboard.widgets" ng-style="{ 'left':widget.left, 'top':widget.top }" data-identifier="{{widget}}" 
 style="min-width:320px;display:block" resizeable layout-wrap layout="column"> 
     <!-- <p ng-if="widget.divider">{{widget.chartConfig.title.text}}</p> -->
-    <md-toolbar  ng-dblclick="widget.expanded = !widget.expanded" ng-mouseover="hover = true" ng-mouseout="hover = false" flex="10">
+    <md-toolbar  style="border-top: 1px solid;border-right: 1px solid;border-left: 1px solid;border-color:rgb(188, 188, 188);" ng-dblclick="widget.expanded = !widget.expanded" ng-mouseover="hover = true" ng-mouseout="hover = false" flex="10">
                 <div layout-wrap layout="row" layout-align"start center" layout-wrap>
-                    <div flex layout-margin>
-                        <h3>
+                    <div flex layout-margin style="margin-top: 12px;">
+                        <h4>
                           {{widget.chartConfig.title.text}}
-                        </h3>               
+                        </h4>               
                     </div>
                     <div layout="row" layout-align="top end" flex style="max-width:150px">
                     <div flex>                       

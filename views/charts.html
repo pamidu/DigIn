@@ -34,11 +34,9 @@ style="height:300px;min-width:320px;display:block" resizeable layout-wrap layout
                       <!--just to keep a space between ion icons and border right-->             
                     </div>
                     </div>
-                </div>
-            
+                </div>           
     </md-toolbar>
     <md-content style="border: 1px solid;border-color:rgb(188, 188, 188);height:100%" ng-if="widget.expanded && !widget.divider" ng-dblclick="widget.expanded = !widget.expanded" flex="90">
         <div style="height:100%" ng-include src="widget.widView"></div>
     </md-content>
-
 </div>

@@ -17,20 +17,28 @@
                 </div>
             </div>
         </md-toolbar>
+
         <md-dialog-content>
-  <!--           // <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script> -->
-        <!--     <meta name="google-signin-client_id" content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com"></meta> -->
             <md-content>
+
+              <!-- <div>
+              <a href="javascript:;" lk-google-picker on-picked="onPicked" on-loaded="onLoaded" on-cancel="onCancel" class="btn btn-2 btn-2c btn-blue">
+                <span>Authorize</span>
+              </a>
+            </div> -->
               
-            
-            </md-content>
-           <!--  // <script type="text/javascript" src="../duodigin/scripts/controllers/Googleplus.js"></script> -->
+        </md-content>
         </md-dialog-content>
         <div class="md-actions" layout="row">
             <span flex></span>
-            <md-button ng-click="finish()" class="md-primary">
+            <div>
+              <a href="javascript:;" lk-google-picker on-picked="onPicked" on-loaded="onLoaded" on-cancel="onCancel" class="btn btn-2 btn-2c btn-blue">
+                <span>Authorize</span>
+              </a>
+            </div>
+           <!--  <md-button ng-click="finish()" class="md-primary">
                 Finish
-            </md-button>
+            </md-button> -->
             <md-button ng-click="cancel()" class="md-primary">
                 Cancel
             </md-button>

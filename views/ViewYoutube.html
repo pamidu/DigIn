@@ -1,29 +1,37 @@
-<md-content layout-margin flex>
-        <link rel="stylesheet" type="text/css" href="../duodigin/styles/css/youtube.css">
-          <div id="results1">
-        <div class="video1">
-        <img class="video-image" src="../duodigin/styles/css/images/cod.jpg" style="width:120px; height:90px;">
-                <label class="tagg" title="Description:">Title: </label><p class="video-title">GTA 5 Mod Showcase : Call of Duty AC130 Mod</p>
-                <label class="tagg" title="Description:">Author: </label><p class="video-author">Olli43</p>
-                <label class="tagg" title="Description:">Description: </label><p class="video-description">GTA 5 PC mods! AC130 Gameplay for Grand Theft Auto 5! ▻ Help Me Reach 500000 Subscribers! Click to Subscribe! ▻ http://bit.ly/SubtoOlli43 In this gta 5 pc ...</p>
-                <label class="tagg" title="Description:">Uploaded Date and Time: </label><p class="video-description">2015-06-27T19:00:00.000Z</p> 
-                <label class="tagg" title="Description:">Broadcast Content: </label><p class="video-description">none</p>
-                <label class="tagg" title="Description:">Channel ID: </label><p class="video-description">UCH91ivVTdIPZkhWi6oqeQPQ</p>
-                <label class="tagg" title="Description:">Kind: </label><p class="video-description">youtube#video</p> 
-                <label class="tagg" title="Description:">Video ID: </label><p class="video-description">4BjYC5E8H3A</p> 
-        </div>
-        </div>
-        <div id="results">
-                <div class="video" data-ng-repeat="video in results" data-ng-click="queue(video.id, video.title)">
-                <img class="video-image" data-ng-src="{{ video.thumbnail }}">
-                <label class="tagg" title="Description:">Title: </label><p class="video-title">{{ video.title }}</p>
-                <label class="tagg" title="Description:">Author: </label><p class="video-author">{{ video.author }}</p>
-                <label class="tagg" title="Description:">Description: </label><p class="video-description">{{ video.description }}</p>
-                <label class="tagg" title="Description:">Uploaded Date and Time: </label><p class="video-description">{{ video.datetimee }}</p> 
-                <label class="tagg" title="Description:">Broadcast Content: </label><p class="video-description">{{ video.lbc }}</p>
-                <label class="tagg" title="Description:">Channel ID: </label><p class="video-description">{{ video.ciid }}</p>
-                <label class="tagg" title="Description:">Kind: </label><p class="video-description">{{ video.kidd }}</p> 
-                <label class="tagg" title="Description:">Video ID: </label><p class="video-description">{{ video.id }}</p> 
-              </div>
-            </div>  
+<md-content>
+
+<link rel="stylesheet" type="text/css" href="../duodigin/styles/css/youtube.css">
+
+<div id="results1">
+<div class="video1">
+<img class="video-image" src="../duodigin/styles/css/images/cod.jpg" style="width:120px; height:90px;">
+        <label class="tagg" title="Description:">Title: </label><p class="video-title">GTA 5 Mod Showcase : Call of Duty AC130 Mod</p>
+        <label class="tagg" title="Description:">Author: </label><p class="video-author">Olli43</p>
+        <label class="tagg" title="Description:">Description: </label><p class="video-description">GTA 5 PC mods! AC130 Gameplay for Grand Theft Auto 5! ▻ Help Me Reach 500000 Subscribers! Click to Subscribe! ▻ http://bit.ly/SubtoOlli43 In this gta 5 pc ...</p>
+        <label class="tagg" title="Description:">Uploaded Date and Time: </label><p class="video-description">2015-06-27T19:00:00.000Z</p> 
+        <label class="tagg" title="Description:">Broadcast Content: </label><p class="video-description">none</p>
+        <label class="tagg" title="Description:">Channel ID: </label><p class="video-description">UCH91ivVTdIPZkhWi6oqeQPQ</p>
+        <label class="tagg" title="Description:">Kind: </label><p class="video-description">youtube#video</p> 
+        <label class="tagg" title="Description:">Video ID: </label><p class="video-description">4BjYC5E8H3A</p> 
+</div>
+</div>
+
+    <div id="results">
+      <div class="video" data-ng-repeat="video in widget.widData.items" data-ng-click="queue(video.id.videoID, video.snippet.title)">
+        <img class="video-image" data-ng-src="{{ video.snippet.thumbnails.default.url }}">
+        <label class="tagg" title="Description:">Title: </label><p class="video-title">{{ video.snippet.title }}</p>
+        <label class="tagg" title="Description:">Author: </label><p class="video-author">{{ video.snippet.channelTitle }}</p>
+        <label class="tagg" title="Description:">Description: </label><p class="video-description">{{ video.snippet.description }}</p>
+        <label class="tagg" title="Description:">Uploaded Date and Time: </label><p class="video-description">{{ video.snippet.publishedAt }}</p> 
+        <label class="tagg" title="Description:">Broadcast Content: </label><p class="video-description">{{ video.liveBroadcastContent }}</p>
+        <label class="tagg" title="Description:">Channel ID: </label><p class="video-description">{{ video.snippet.channelId }}</p>
+        <label class="tagg" title="Description:">Kind: </label><p class="video-description">{{ video.id.kind }}</p> 
+        <label class="tagg" title="Description:">Video ID: </label><p class="video-description">{{ video.id.videoId }}</p> 
+
+
+
+      </div>
+    </div>
+
+
 </md-content>

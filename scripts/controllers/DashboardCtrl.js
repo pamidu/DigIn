@@ -28,16 +28,32 @@ routerApp.controller('DashboardCtrl', ['$scope',
             });
         }
         $scope.showAdvanced = function(ev, widget) {
-            $mdDialog.show({
-                controller: 'chartSettingsCtrl',
-                templateUrl: 'views/chart_settings.html',
-                targetEvent: ev,
-                resolve: {
-                    widget: function() {
-                        return widget;
-                    }
-                }
-            })
+            // $mdDialog.show({
+            //     controller: 'chartSettingsCtrl',
+            //     templateUrl: 'views/chart_settings.html',
+            //     targetEvent: ev,
+            //     resolve: {
+            //         widget: function() {
+            //             return widget;
+            //         }
+            //     }
+            // })
+
+
+             $mdDialog.show({
+      controller: eval(widget.initCtrl),
+      templateUrl: 'views/'+widget.initTemplate+'.html',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      locals: {widId : widget.id}
+    })
+    .then(function() {
+      //$mdDialog.hide();
+    }, function() {
+      //$mdDialog.hide();
+    });
+
+
 
         };
         $scope.trustSrc = function(src) {
@@ -62,40 +78,84 @@ routerApp.controller('DashboardCtrl', ['$scope',
         $scope.commentary = function(widget) {
             var comment = "";
              var chunks = [];
-            widget.chartSeries.forEach(function(entry) {
+             TTSConfig.url = 'http://tts.peterjurkovic.com/tts-backend/index.php';
+    var tts = new TTSAudio();
+    tts.speak({
+        text : 'Hello',
+        lang : 'en'
+    });
+
+    // triggered after speaking
+    $scope.$on(TTS_EVENTS.SUCCESS, function(){
+        $log.info('Successfully done!')
+    });
+
+    $scope.$on(TTS_EVENTS.ERROR, function(){
+        $log.info('An unexpected error has occurred');
+    });
+
+    // triggered before speaking
+    $scope.$on(TTS_EVENTS.PENDING, function(text){
+        $log.info('Speaking: ' + text);
+    });
+            // if(widget.uniqueType === "ElasticSearch")
+            // {
+            //     $scope.dataSeries = widget.chartConfig.series;
+            //     $scope.dataCategories = widget.chartConfig.xAxis.categories;
+
+            //      TTSConfig.url = 'http://tts.peterjurkovic.com/tts-backend/index.php';
+              
+            //     var comment = "";
+
+            //    // for(i=0;i< $scope.dataSeries.length;i++){
+            //         //for(j=0; j< $scope.dataCategories.length;j++){
+            //             // comment = $scope.dataCategories[0] + " " + $scope.dataSeries[0].name + " " + $scope.dataSeries[0].data[0];
+            //             // comment =  comment.substring(0,130);
+            //          tts.speak({
+            //         text: 'Jay you are adding  widget',
+            //         lang: 'en'
+            //             // you can add additional params which will send to server
+            //     });
+            //        // }
+            //    // }
+            // } 
+            // else{
+            // widget.chartSeries.forEach(function(entry) {
            
 
-                  comment += "Your sales for the year "+ entry.name + " is"+ " " + entry.data[0] + " " + "dollars";
-                  comment +=" ";
-            });
-            for (var i = 0, charsLength = comment.length; i < charsLength; i += 130) {
-                     chunks.push(comment.substring(i, i + 130));
-            }
+            //       comment += "Your sales for the year "+ entry.name + " is"+ " " + entry.data[0] + " " + "dollars";
+            //       comment +=" ";
+            // });
+            // for (var i = 0, charsLength = comment.length; i < charsLength; i += 130) {
+            //          chunks.push(comment.substring(i, i + 130));
+            // }
       
-             comment =  comment.substring(0,130)
-             TTSConfig.url = 'http://tts.peterjurkovic.com/tts-backend/index.php';
-                var tts = new TTSAudio();
+            //  comment =  comment.substring(0,130)
+            //  TTSConfig.url = 'http://tts.peterjurkovic.com/tts-backend/index.php';
+            //     var tts = new TTSAudio();
 
-                tts.speak({
-                    text:   comment,
-                    lang: 'en'
-                        // you can add additional params which will send to server
-                });
+            //     tts.speak({
+            //         text:   comment,
+            //         lang: 'en'
+            //             // you can add additional params which will send to server
+            //     });
 
-                // triggered after speaking
-                $scope.$on(TTS_EVENTS.SUCCESS, function() {
-                    $log.info('Successfully done!')
-                });
+            // }
 
-                // triggered in case error
-                $scope.$on(TTS_EVENTS.ERROR, function() {
-                    $log.info('An unexpected error has occurred');
-                });
+            //     // triggered after speaking
+            //     $scope.$on(TTS_EVENTS.SUCCESS, function() {
+            //         $log.info('Successfully done!')
+            //     });
 
-                // before loading and speaking
-                $scope.$on(TTS_EVENTS.PENDING, function(text) {
-                    $log.info('Speaking: ' + text);
-                });
+            //     // triggered in case error
+            //     $scope.$on(TTS_EVENTS.ERROR, function() {
+            //         $log.info('An unexpected error has occurred');
+            //     });
+
+            //     // before loading and speaking
+            //     $scope.$on(TTS_EVENTS.PENDING, function(text) {
+            //         $log.info('Speaking: ' + text);
+            //     });
 
         }
         $scope.closeDialog = function() {
@@ -132,6 +192,27 @@ routerApp.controller('DashboardCtrl', ['$scope',
     }
 ]);
 
-function elasticDataCtrl(){
-    alert('test');
+function elasticDataCtrl($scope,$mdDialog,wid){
+    //alert('test');
+    $scope.closeDialog = function() {
+            $mdDialog.hide();
+        };
+
+    $scope.series = wid.chartConfig.series;
+    $scope.categories = wid.chartConfig.xAxis.categories;
+    $scope.mappedSeries = [];
+    for(i=0;i<$scope.series.length;i++){
+        var seriesObj = {name: $scope.series[i].name,
+                         data : []}; 
+        for(j=0;j<$scope.series[i].data.length;j++){
+            var dataObj = {val : $scope.series[i].data[j],
+                           cat : $scope.categories[j]};
+            seriesObj.data.push(dataObj);
+        }       
+        $scope.mappedSeries.push(seriesObj);
+    }
+    
+    //alert(JSON.stringify(wid.chartConfig.series));
+
+
 };

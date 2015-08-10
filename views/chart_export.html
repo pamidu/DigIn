@@ -1,22 +1,26 @@
-<md-dialog   plumb-item >
-  <md-toolbar scroll-shrink layout="row">
-                      <div class="md-toolbar-tools">
-                          <div flex="90">
+<md-dialog  plumb-item style="width:400px">
+  <md-toolbar scroll-shrink>
+                      <div class="md-toolbar-tools"  flex  layout="row">
+                      <div flex="10">
+                        <md-icon class=""></md-icon>
+                      </div>   
+                      <div flex="80">
                               <h3>
                                  <span> Charts </span>
                               </h3>
-                         </div>                           
-                           <div flex="10">
+                      </div>                           
+                      <div  flex="10">
                              <span>
-                                 <md-button ng-click="closeDialog()"  aria-label="Close">
+                                 <md-button ng-click="closeDialog()"  aria-label="Close" >
                                    <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
                                  </md-button>
                              </span>
-                          </div>
-                        </div>
+                      </div>
+
+                    </div>
    </md-toolbar>    
-         <md-content ng-controller="ExportCtrl">
-            <md-card class="lookupdashboard"  md-theme="teal" ng-repeat="widget in dashboard.widgets" >
+  <md-content ng-controller="ExportCtrl">
+        <div class="lookupdashboard"  md-theme="teal" ng-repeat="widget in dashboard.widgets" >
                    <md-content theme="teal"  layout="row" layout-margin>
                     <div flex="80">
                      <md-button class="md-raised" ng-click="export(widget)"> 
@@ -27,15 +31,16 @@
                       </md-button>
                   </div>   
                  </md-content>
-           </md-card>           
-        </md-content>
-  <div class="md-actions" layout="row">    
-          <md-button ng-click="closeDialog()">
-            Cancel
-          </md-button>
-          <md-button ng-click="closeDialog()">
-           Ok
-         </md-button>
-  </div>
+        </div>           
+  
+        <div class="md-actions" layout="row">    
+            <md-button ng-click="closeDialog()">
+              Cancel
+            </md-button>
+            <md-button ng-click="closeDialog()">
+              Ok
+            </md-button>
+        </div>
+  </md-content>
 </md-dialog> 
  

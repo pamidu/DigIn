@@ -202,263 +202,28 @@ function linkedInit(scope, $mdDialog, widId, $rootScope) {
 };
 
 
-function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope) {
+
+
+function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosService) {
+
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
       $scope.cancel = function() {
         $mdDialog.hide();
     };
-$scope.finish = function() {
+       $scope.finish = function() {
+        init();
         $mdDialog.hide();
     };
-
-    };
-
-
-    
- $scope.search = function() {
-        this.listResults = function(data) {
-            results.length = 0;
-            for (var i = data.items.length - 1; i >= 0; i--) {
-                results.push({
-                    id: data.items[i].id.videoId,
-                    title: data.items[i].snippet.title,
-                    description: data.items[i].snippet.description,
-                    datetimee: data.items[i].snippet.publishedAt,
-                    lbc: data.items[i].snippet.liveBroadcastContent,
-                    ciid: data.items[i].snippet.channelId,
-                    kidd: data.items[i].id.kind,
-                    thumbnail: data.items[i].snippet.thumbnails.default.url,
-                    author: data.items[i].snippet.channelTitle
-
-                });
-            }
-            return results;
-
-        }
-
-        $http.get('https://www.googleapis.com/youtube/v3/search', {
-                params: {
-                    key: 'AIzaSyAzf5VkNxCc-emzb5rujUSc9wSxoDla6AM',
-                    type: 'video',
-                    maxResults: '50',
-                    part: 'id,snippet',
-                    fields: 'items/id,items/snippet/title,items/snippet/description,items/snippet/thumbnails/default,items/snippet/channelTitle,items/snippet/publishedAt,items/snippet/liveBroadcastContent,items/snippet/channelId,items/id/kind,items/id/videoId',
-                    q: this.query
-                }
-            })
-            .success(function(data) {
-                VideosService.listResults(data);
-                $log.info(data);
-            })
-            .error(function() {
-                $log.info('Search error');
-            });
-    }
-
-    $scope.tabulate = function(state) {
-        $scope.playlist = state;
-    }
-
-}
-
-
-//test start
-
-var app = angular.module('YouTubeData', ['ngMaterial', 'ngMdIcons']);
-
-var channelName = 'AngularJS';
-var vidWidth = 1350;
-var vidHeight = 400;
-var vidResults = 1;
-
-
-// Run
-
-
-app.run(function () {
-  var tag = document.createElement('script');
-  tag.src = "http://www.youtube.com/iframe_api";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-});
-
-// Config
-
-app.config( function ($httpProvider) {
-  delete $httpProvider.defaults.headers.common['X-Requested-With'];
-});
-
-// Service
-
-app.service('VideosService', ['$window', '$rootScope', '$log', function ($window, $rootScope, $log) {
-
-  var service = this;
-
-  var youtube = {
-    ready: false,
-    player: null,
-    playerId: null,
-    videoId: null,
-    videoTitle: null,
-    playerHeight: '480',
-    playerWidth: '640',
-    state: ''
-  };
-  var results = [];
-  var upcoming = [
-    {id: 'kRJuY6ZDLPo', title: 'La Roux - In for the Kill (Twelves Remix)'},
-    {id: '45YSGFctLws', title: 'Shout Out Louds - Illusions'},
-    {id: 'ktoaj1IpTbw', title: 'CHVRCHES - Gun'},
-    {id: '8Zh0tY2NfLs', title: 'N.E.R.D. ft. Nelly Furtado - Hot N\' Fun (Boys Noize Remix) HQ'},
-    {id: 'zwJPcRtbzDk', title: 'Daft Punk - Human After All (SebastiAn Remix)'},
-    {id: 'sEwM6ERq0gc', title: 'HAIM - Forever (Official Music Video)'},
-    {id: 'fTK4XTvZWmk', title: 'Housse De Racket ☁☀☁ Apocalypso'}
-  ];
-  var history = [
-    {id: 'XKa7Ywiv734', title: '[OFFICIAL HD] Daft Punk - Give Life Back To Music (feat. Nile Rodgers)'}
-  ];
-
-  $window.onYouTubeIframeAPIReady = function () {
-    $log.info('Youtube API is ready');
-    youtube.ready = true;
-    service.bindPlayer('placeholder');
-    service.loadPlayer();
-    $rootScope.$apply();
-  };
-
-  function onYoutubeReady (event) {
-    $log.info('YouTube Player is ready');
-    youtube.player.cueVideoById(history[0].id);
-    youtube.videoId = history[0].id;
-    youtube.videoTitle = history[0].title;
-  }
-
-  function onYoutubeStateChange (event) {
-    if (event.data == YT.PlayerState.PLAYING) {
-      youtube.state = 'playing';
-    } else if (event.data == YT.PlayerState.PAUSED) {
-      youtube.state = 'paused';
-    } else if (event.data == YT.PlayerState.ENDED) {
-      youtube.state = 'ended';
-      service.launchPlayer(upcoming[0].id, upcoming[0].title);
-      service.archiveVideo(upcoming[0].id, upcoming[0].title);
-      service.deleteVideo(upcoming, upcoming[0].id);
-    }
-    $rootScope.$apply();
-  }
-
-  this.bindPlayer = function (elementId) {
-    $log.info('Binding to ' + elementId);
-    youtube.playerId = elementId;
-  };
-
-  this.createPlayer = function () {
-    $log.info('Creating a new Youtube player for DOM id ' + youtube.playerId + ' and video ' + youtube.videoId);
-    return new YT.Player(youtube.playerId, {
-      height: youtube.playerHeight,
-      width: youtube.playerWidth,
-      playerVars: {
-        rel: 0,
-        showinfo: 0
-      },
-      events: {
-        'onReady': onYoutubeReady,
-        'onStateChange': onYoutubeStateChange
-      }
-    });
-  };
-
-  this.loadPlayer = function () {
-    if (youtube.ready && youtube.playerId) {
-      if (youtube.player) {
-        youtube.player.destroy();
-      }
-      youtube.player = service.createPlayer();
-    }
-  };
-
-  this.launchPlayer = function (id, title) {
-    youtube.player.loadVideoById(id);
-    youtube.videoId = id;
-    youtube.videoTitle = title;
-    return youtube;
-  }
-
-  this.listResults = function (data) {
-    results.length = 0;
-    for (var i = data.items.length - 1; i >= 0; i--) {
-      results.push({
-        id: data.items[i].id.videoId, 
-        title: data.items[i].snippet.title,
-        description: data.items[i].snippet.description,
-        datetimee: data.items[i].snippet.publishedAt,
-        lbc: data.items[i].snippet.liveBroadcastContent,
-        ciid: data.items[i].snippet.channelId,
-        kidd: data.items[i].id.kind,
-        thumbnail: data.items[i].snippet.thumbnails.default.url,
-        author: data.items[i].snippet.channelTitle
-        
-      });
-    }
-    return results;
-  }
-
-  this.queueVideo = function (id, title) {
-    upcoming.push({
-      id: id,
-      title: title
-    });
-    return upcoming;
-  };
-
-  this.archiveVideo = function (id, title) {
-    history.unshift({
-      id: id,
-      title: title
-    });
-    return history;
-  };
-
-  this.deleteVideo = function (list, id) {
-    for (var i = list.length - 1; i >= 0; i--) {
-      if (list[i].id === id) {
-        list.splice(i, 1);
-        break;
-      }
-    }
-  };
-
-  this.getYoutube = function () {
-    return youtube;
-  };
-
-  this.getResults = function () {
-    return results;
-  };
-
-  this.getUpcoming = function () {
-    return upcoming;
-  };
-
-  this.getHistory = function () {
-    return history;
-  };
-
-}]);
-
-
-// Controller
-
-app.controller('VideosController', function ($scope, $http, $log, VideosService) {
-
-    init();
-
+     
     function init() {
       $scope.youtube = VideosService.getYoutube();
       $scope.results = VideosService.getResults();
       $scope.upcoming = VideosService.getUpcoming();
       $scope.history = VideosService.getHistory();
       $scope.playlist = true;
+
+      
     }
 
 
@@ -480,7 +245,8 @@ app.controller('VideosController', function ($scope, $http, $log, VideosService)
     };
 
     $scope.search = function () {
-      alert("hii");
+      //alert("Hello you hit the search function");
+
       $http.get('https://www.googleapis.com/youtube/v3/search', {
         params: {
           key: 'AIzaSyAzf5VkNxCc-emzb5rujUSc9wSxoDla6AM',
@@ -491,11 +257,13 @@ app.controller('VideosController', function ($scope, $http, $log, VideosService)
           q: this.query
         }
 
-
       })
       .success( function (data) {
         VideosService.listResults(data);
-        $log.info(data);
+        $rootScope.dashboard.widgets[objIndex].widData = data;
+        $mdDialog.hide();
+      console.log(JSON.stringify(data));
+        //`$log.info(data);
       })
       .error( function () {
         $log.info('Search error');
@@ -506,93 +274,8 @@ app.controller('VideosController', function ($scope, $http, $log, VideosService)
     $scope.tabulate = function (state) {
       $scope.playlist = state;
     }
-  
-});
-
-app.config(function($mdThemingProvider) {
-  var customBlueMap =     $mdThemingProvider.extendPalette('grey', {
-    'contrastDefaultColor': 'light',
-    'contrastDarkColors': ['50'],
-    '50': 'ffffff'
-  });
-  $mdThemingProvider.definePalette('customBlue', customBlueMap);
-  $mdThemingProvider.theme('default')
-    .primaryPalette('customBlue', {
-      'default': '500',
-      'hue-1': '50'
-    })
-    .accentPalette('pink');
-  $mdThemingProvider.theme('input', 'default')
-        .primaryPalette('grey')
-});
-
-
-
-// // $.get(
-
-// //     "https://www.googleapis.com/youtube/v3/channels",{
-
-// //       part: 'contentDetails', 
-// //       forUsername: channelName,
-// //       key: 'AIzaSyDXjOXIqjTbiL-5NxMBzQnmgRvu6gujhYQ'},
-
-// //       function(data){
-
-// //         $.each(data.items, function(i, item){
-
-// //           console.log(item);
-
-// //           pid = item.contentDetails.relatedPlaylists.uploads; 
-// //           getVids(pid);
-
-
-// //         });
-
-// //       }
-
-    
-// //   );
-
-// //   function getVids(pid){
-
-// //     $.get(
-
-// //     "https://www.googleapis.com/youtube/v3/playlistItems",{
-
-// //       part: 'snippet',
-// //       maxResults: vidResults,
-// //       playlistId: pid,
-// //       key: 'AIzaSyDXjOXIqjTbiL-5NxMBzQnmgRvu6gujhYQ'},
-
-// //       function(data){
-
-// //         var output;
-
-// //         $.each(data.items, function(i, item){
-
-// //           console.log(item);
-// //           videTitle = item.snippet.title;
-// //           videoId = item.snippet.resourceId.videoId;
-
-// //           output = '<li><iframe style="width:100%;" height="'+vidHeight+'" src=\"//www.youtube.com/embed/'+videoId+'\"></iframe></li>';
-
-// //           $('#resultss').append(output);
-
-
-// //         });
-
-// //       }
-
-    
-// //   );
-
-
-// //   }
-
-
-//test end
-
-
+   // console.log(q);
+};
 
 
 //elastic controller
@@ -752,7 +435,6 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         w.addEventListener('message', function(event) {
             var res = JSON.parse(event.data);
             if (res) {
-                try{
                 $rootScope.DashboardData = [];
                 $rootScope.DashboardData = res;
                 widget.chartConfig.series = [];
@@ -774,11 +456,11 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                     for (var key in series) {
                         if (series.hasOwnProperty(key)) {
                             series[key].data.push(parseInt(res[i][key]));
+                        }
                     }
-                }
                     $scope.checkedCategories.push(res[i][$scope.categoryVal]);
 
-            }
+                }
 
                 console.log('Mapped series' + JSON.stringify(series));
 
@@ -797,19 +479,10 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                         name: elm.name,
                         data: elm.data
                     };
-        });
+                });
 
-                widget.chartConfig.xAxis.categories = $scope.checkedCategories;    
-                }
-                catch(e){
-                    alert('An error has occurred: '+e.message)
-                }
-
-
-
-
-
-    }
+                widget.chartConfig.xAxis.categories = $scope.checkedCategories;
+            }
             //w.terminate();
         });
     }
@@ -1003,6 +676,8 @@ function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
 
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+
     //cancel config
     $scope.cancel = function() {
         $mdDialog.hide();
@@ -1010,35 +685,42 @@ function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     //complete config  
     $scope.finish = function(rssAddress) {
-        $rootScope.entryArray = [];
+
+
+         $scope.entryArray = [];
         google.load("feeds", "1");
         var feed = new google.feeds.Feed(rssAddress);
         feed.setNumEntries(100);
-
+       
         feed.load(function(result) {
+        if (!result.error) {
+         
+          for (var i = 0; i < result.feed.entries.length; i++) {
 
+            var entry = result.feed.entries[i];
 
-            if (!result.error) {
+            $scope.entryContent = entry.content;
+            $scope.entryArray.push(entry);
+           
+            $scope.$apply();
+          }
 
-                for (var i = 0; i < result.feed.entries.length; i++) {
+             $rootScope.dashboard.widgets[objIndex].widData = $scope.entryArray;
+             // $mdDialog.hide();
+             console.log(JSON.stringify($scope.entryArray));
 
-                    var entry = result.feed.entries[i];
+           //console.log(entry);
+        }
+      });
 
-                    $scope.entryContent = entry.content;
-                    $rootScope.entryArray.push(entry);
-
-                    $rootScope.$apply();
-                }
-
-                console.log($rootScope.entryArray);
-            }
-        });
         $mdDialog.hide();
-
-    };
+  };
+       
 };
 
-function spreadInit($scope, $http, $mdDialog, widId, $rootScope) {
+function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSettings) {
+
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
     //cancel config
     $scope.cancel = function() {
@@ -1046,11 +728,33 @@ function spreadInit($scope, $http, $mdDialog, widId, $rootScope) {
     };
 
     //complete config  
-    $scope.finish = function(rssAddress) {
+    $scope.finish = function() {
         $mdDialog.hide();
-
+        console.log($rootScope.files);
     };
 
+    $rootScope.files     = [];
+    $rootScope.show = "hello";
+
+  // Callback triggered after Picker is shown
+  $scope.onLoaded = function () {
+    console.log('Google Picker loaded!');
+  }
+
+  // Callback triggered after selecting files
+  $scope.onPicked = function (docs) {
+    angular.forEach(docs, function (file, index) {
+      // alert('You have selected: ' + file.id);
+      $rootScope.dashboard.widgets[objIndex].widData = file;
+             $mdDialog.hide();
+     console.log(JSON.stringify(file));
+    });
+  }
+
+  // Callback triggered after clicking on cancel
+  $scope.onCancel = function () {
+    console.log('Google picker close/cancel!');
+  }
 
 };
 
@@ -1067,76 +771,75 @@ function gnewsInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     };
 
+
     google.load('search', '1');
 
     var newsSearch;
 
-    function searchComplete() {
+    $scope.searchComplete = function() {
 
-        // var container = document.getElementById('gnews-div');
-        // container.innerHTML = '';
+        var container = document.getElementById('gnews-div');
+        container.innerHTML = '';
 
-        // if (newsSearch.results && newsSearch.results.length > 0) {
-        //     for (var i = 0; i < newsSearch.results.length; i++) {
+        if (newsSearch.results && newsSearch.results.length > 0) {
+            for (var i = 0; i < newsSearch.results.length; i++) {
 
-        //         // Create HTML elements for search results
-        //         var p = document.createElement('p');
-        //         var gimg = document.createElement('gimg');
-        //         var gtitle = document.createElement('gtitle');
-        //         var gcontent = document.createElement('gcontent');
-        //         var gpubdate = document.createElement('gpubdate');
-        //         var gpub = document.createElement('gpub');
-        //         var gloc = document.createElement('gloc');
-        //         var gurl = document.createElement('gurl');
-        //         var glang = document.createElement('glang');
-
-
-        //         gimg.innerHTML = '<img style="width:60px;height:60px;" src=\"' + newsSearch.results[i].image.url + '\">'
-        //         gtitle.innerHTML = "<h2>" + newsSearch.results[i].title; + "</h2>"
-        //         gcontent.innerHTML = "<p>" + newsSearch.results[i].content; + "</p>"
-        //         gpubdate.innerHTML = "<p>Published on: " + newsSearch.results[i].publishedDate; + "</p>"
-        //         gpub.innerHTML = "<p>Published by: " + newsSearch.results[i].publisher; + "</p>"
-        //         gloc.innerHTML = "<p>Location: " + newsSearch.results[i].location; + "</p>"
-        //         gurl.innerHTML = "<p>Visit: " + newsSearch.results[i].signedRedirectUrl; + "</p>"
-        //         glang.innerHTML = "<p>Published language: " + newsSearch.results[i].language; + "</p>"
+                // Create HTML elements for search results
+                var p = document.createElement('p');
+                var gimg = document.createElement('gimg');
+                var gtitle = document.createElement('gtitle');
+                var gcontent = document.createElement('gcontent');
+                var gpubdate = document.createElement('gpubdate');
+                var gpub = document.createElement('gpub');
+                var gloc = document.createElement('gloc');
+                var gurl = document.createElement('gurl');
+                var glang = document.createElement('glang');
 
 
+                gimg.innerHTML = '<img style="width:60px;height:60px;" src=\"' + newsSearch.results[i].image.url + '\">'
+                gtitle.innerHTML = "<h2>" + newsSearch.results[i].title; + "</h2>"
+                gcontent.innerHTML = "<p>" + newsSearch.results[i].content; + "</p>"
+                gpubdate.innerHTML = "<p>Published on: " + newsSearch.results[i].publishedDate; + "</p>"
+                gpub.innerHTML = "<p>Published by: " + newsSearch.results[i].publisher; + "</p>"
+                gloc.innerHTML = "<p>Location: " + newsSearch.results[i].location; + "</p>"
+                gurl.innerHTML = "<p>Visit: " + newsSearch.results[i].signedRedirectUrl; + "</p>"
+                glang.innerHTML = "<p>Published language: " + newsSearch.results[i].language; + "</p>"
 
 
-        //         // Append search results to the HTML nodes
-        //         p.appendChild(gimg);
-        //         p.appendChild(gtitle);
-        //         p.appendChild(gcontent);
-        //         p.appendChild(gpubdate);
-        //         p.appendChild(gpub);
-        //         p.appendChild(gloc);
-        //         p.appendChild(gurl);
-        //         p.appendChild(glang);
-        //         container.appendChild(p);
-        //     }
-        // }
+
+
+                // Append search results to the HTML nodes
+                p.appendChild(gimg);
+                p.appendChild(gtitle);
+                p.appendChild(gcontent);
+                p.appendChild(gpubdate);
+                p.appendChild(gpub);
+                p.appendChild(gloc);
+                p.appendChild(gurl);
+                p.appendChild(glang);
+                container.appendChild(p);
+            }
+        }
     }
 
-    function gnewsextract(text) {
-    //     var gnewsfeed = document.getElementById('gnewsrequest').value;
-    //     // Create a News Search instance.
-    //     newsSearch = new google.search.NewsSearch();
+    $scope.gnewsextract = function(text) {
+        var gnewsfeed = document.getElementById('gnewsrequest').value;
+        // Create a News Search instance.
+        newsSearch = new google.search.NewsSearch();
 
-    //     // Set searchComplete as the callback function when a search is 
-    //     // complete.  The newsSearch object will have results in it.
-    //     newsSearch.setSearchCompleteCallback(this, searchComplete, null);
+        // Set searchComplete as the callback function when a search is 
+        // complete.  The newsSearch object will have results in it.
+        newsSearch.setSearchCompleteCallback(this, searchComplete, null);
 
-    //     // Specify search quer(ies)
-    //     newsSearch.execute(gnewsfeed);
+        // Specify search quer(ies)
+        newsSearch.execute(gnewsfeed);
 
-    //     // Include the required Google branding
-    //     google.search.Search.getBranding('branding');
-    
-
-    // // Set a callback to call your code when the page loads
-    // google.setOnLoadCallback(gnewsextract);
-
+        // Include the required Google branding
+        google.search.Search.getBranding('branding');
     }
+
+    // Set a callback to call your code when the page loads
+    google.setOnLoadCallback(gnewsextract);
 
 }
 
@@ -1168,6 +871,10 @@ function imInit($scope, $http, $rootScope, $mdDialog) {
     }
 
 }
+
+
+
+
 
 
 function weatherInit(widId, $scope, $http, $rootScope, $mdDialog) {
@@ -1500,11 +1207,78 @@ function readURL(input) {
             $('#blah')
                 .attr('src', e.target.result);
 
-        };
+    };
 
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+
+ 
+
+function searchComplete() {
+
+    var container = document.getElementById('gnews-div');
+    container.innerHTML = '';
+
+    if (newsSearch.results && newsSearch.results.length > 0) {
+        for (var i = 0; i < newsSearch.results.length; i++) {
+
+            // Create HTML elements for search results
+            var p = document.createElement('p');
+            var gimg = document.createElement('gimg');
+            var gtitle = document.createElement('gtitle');
+            var gcontent = document.createElement('gcontent');
+            var gpubdate = document.createElement('gpubdate');
+            var gpub = document.createElement('gpub');
+            var gloc = document.createElement('gloc');
+            var gurl = document.createElement('gurl');
+            var glang = document.createElement('glang');
+
+
+            gimg.innerHTML = '<img style="width:60px;height:60px;" src=\"' + newsSearch.results[i].image.url + '\">'
+            gtitle.innerHTML = "<h2>" + newsSearch.results[i].title; + "</h2>"
+            gcontent.innerHTML = "<p>" + newsSearch.results[i].content; + "</p>"
+            gpubdate.innerHTML = "<p>Published on: " + newsSearch.results[i].publishedDate; + "</p>"
+            gpub.innerHTML = "<p>Published by: " + newsSearch.results[i].publisher; + "</p>"
+            gloc.innerHTML = "<p>Location: " + newsSearch.results[i].location; + "</p>"
+            gurl.innerHTML = "<p>Visit: " + newsSearch.results[i].signedRedirectUrl; + "</p>"
+            glang.innerHTML = "<p>Published language: " + newsSearch.results[i].language; + "</p>"
+
+
+
+
+            // Append search results to the HTML nodes
+            p.appendChild(gimg);
+            p.appendChild(gtitle);
+            p.appendChild(gcontent);
+            p.appendChild(gpubdate);
+            p.appendChild(gpub);
+            p.appendChild(gloc);
+            p.appendChild(gurl);
+            p.appendChild(glang);
+            container.appendChild(p);
+}
+    }
+}
+
+function gnewsextract(text) {
+    var gnewsfeed = document.getElementById('gnewsrequest').value;
+    // Create a News Search instance.
+    newsSearch = new google.search.NewsSearch();
+
+    // Set searchComplete as the callback function when a search is 
+    // complete.  The newsSearch object will have results in it.
+    newsSearch.setSearchCompleteCallback(this, searchComplete, null);
+
+    // Specify search quer(ies)
+    newsSearch.execute(gnewsfeed);
+
+    // Include the required Google branding
+    google.search.Search.getBranding('branding');
+}
+
+
 
 
 routerApp.controller('sltivrInit', function($scope, $mdDialog, $rootScope) {
@@ -1538,6 +1312,12 @@ routerApp.controller('sltqueueInit', function($scope, $mdDialog, $rootScope) {
             showLabels: true,
 
             pie: {
+                margin: {
+                    top: -330,
+                    right: 0,
+                    bottom: 5,
+                    left: 0
+                },
                 startAngle: function(d) {
                     return d.startAngle / 2 - Math.PI / 2
                 },
@@ -1548,8 +1328,8 @@ routerApp.controller('sltqueueInit', function($scope, $mdDialog, $rootScope) {
             transitionDuration: 500,
             legend: {
                 margin: {
-                    top: 5,
-                    right: 70,
+                    top: 80,
+                    right: 0,
                     bottom: 5,
                     left: 0
                 }
@@ -1573,6 +1353,7 @@ routerApp.controller('sltqueueInit', function($scope, $mdDialog, $rootScope) {
         key: "Queued > 5 minutes",
         y: 4
     }];
+
 });
 routerApp.controller('sltqueuedetailsInit', function($scope, $mdDialog, $rootScope) {
     $scope.options = {
@@ -1970,13 +1751,21 @@ routerApp.controller('sltagentInit', function($scope, $mdDialog, $rootScope) {
             y: function(d) {
                 return d.y;
             },
+            pie : {
+                margin: {
+                    top: -450,
+                    right: 0,
+                    bottom: 5,
+                    left: 50
+                }
+            },
             showLabels: true,
             transitionDuration: 500,
             labelThreshold: 0.01,
             legend: {
                 margin: {
-                    top: 5,
-                    right: 35,
+                    top: 150,
+                    right: 0,
                     bottom: 5,
                     left: 0
                 }

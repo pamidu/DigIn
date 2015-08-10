@@ -42,7 +42,7 @@ var Layout = {
 			scaleX: 0,
 			scaleY: 0,
 			translateZ: 0,
-		}, 50).velocity({
+		}, 10).velocity({
 			height: diameterValue+'px',
 			width: diameterValue+'px',
 			top: -(diameterValue/2)+'px',
@@ -69,13 +69,12 @@ var Layout = {
 
 	listenForMenuLayer: function () {
 
-		$('#diginlogo').bind('click', function(event) {
-    		alert("test");
-		});
 
 
 		$('.nav-menu').on('click', function() {
 
+			$(".search-layer").removeClass("activating active");
+			$(".nav-search").removeClass("activating active");
 			// Define neccessary elements
 			var $this = $(this),
 					$startingPoint = $('.starting-point'),

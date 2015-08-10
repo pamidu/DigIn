@@ -1,27 +1,28 @@
 
-<md-dialog  plumb-item style="min-width:500px">
+<md-dialog  plumb-item>
 
-   <md-toolbar scroll-shrink layout="row">
-                      <div class="md-toolbar-tools">
-                          <div flex="10">
-                            <md-icon class="ion-share"></md-icon>
-                          </div> 
-                          <div flex="80">
+   <md-toolbar scroll-shrink>
+                    
+                      <div class="md-toolbar-tools"  flex  layout="row">
+                      <div flex="10">
+                        <md-icon class="ion-share"></md-icon>
+                      </div>   
+                      <div flex="80">
                               <h3>
                                  <span> Share </span>
                               </h3>
-                         </div>                           
-                           <div flex="10">
+                      </div>                           
+                      <div flex="10">
                              <span>
-                                 <md-button ng-click="closeDialog()"  aria-label="Close">
+                                 <md-button ng-click="closeDialog()"  aria-label="Close" >
                                    <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
                                  </md-button>
                              </span>
-                          </div>
-                        </div>
-   </md-toolbar>      
+                      </div>
+                    </div>
+   </md-toolbar>
  
-         <md-content layout-align="center center" layout-wrap>
+    <md-content layout-align="center center" layout-wrap flex>
         
               <md-button class="btnshare"> 
                      <md-icon class="iconshare"  href="#"
@@ -68,8 +69,8 @@
                </md-button>
                <div id="test"></div>
 
+    </md-content>
 
-         </md-content>
-  </md-dialog> 
+</md-dialog> 
  
  

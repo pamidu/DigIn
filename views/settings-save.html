@@ -1,25 +1,38 @@
 <md-dialog   plumb-item >
   <md-toolbar scroll-shrink>
                     <div class="md-toolbar-tools"  flex  layout="row">
+                      <div flex="10">
+                        <md-icon class="ion-archive"></md-icon>
+                      </div>   
+                      <div flex="80">
                               <h3>
                                  <span> Save Settings </span>
                               </h3>
+                      </div>                           
+                      <div  flex="10">
+                             <span>
+                                 <md-button ng-click="closeDialog()"  aria-label="Close" >
+                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
+                                 </md-button>
+                             </span>
+                      </div>
+
                     </div>
                     
    </md-toolbar>
-          <md-content layout-margin>
-               <form name="userForm">        
-                 <span style="margin:10px;font-weight:bold;">Are you sure you want to change the settings configurations?</span>
-               </form>
-          </md-content>
-          <div class="md-actions"  layout="row">    
+   <md-content layout-margin layout="column">
+      <div flex>                
+                 <h4>Are you sure you want to change the settings configurations?</h4>
+      </div>
+      <div class="md-actions"  layout="row" flex>    
             <md-button ng-click="closeDialog()">
               No
             </md-button>
-             <md-button ng-click="saveSettingsDetails()" >
+             <md-button ng-click="saveSettingsDetails()">
              Yes
             </md-button>
-          </div>
+      </div>
+    </md-content>
 </md-dialog> 
  
  

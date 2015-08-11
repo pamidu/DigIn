@@ -1,22 +1,20 @@
-<md-dialog   draggable>
-  <md-toolbar scroll-shrink layout="row">
-                      <div class="md-toolbar-tools">
-                          <div flex="10">
-                            <md-icon class="ion-compose"></md-icon>
-                          </div> 
-                          <div flex="80">
+<md-dialog  plumb-item>
+  <md-toolbar scroll-shrink>
+                     <div class="md-toolbar-tools"  flex  layout="row">
+                      <div flex="10">
+                        <md-icon class="ion-archive"></md-icon>
+                      </div>   
+                      <div flex="80">
                               <h3>
-                                 <span> Save Dashboard </span>
+                                 <span> Save </span>
                               </h3>
-                         </div>                           
-                           <div flex="10">
-                             <span>
-                                 <md-button ng-click="closeDialog()" aria-label="Close">
-                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
-                                 </md-button>
-                             </span>
-                          </div>
-                        </div>
+                      </div>                           
+                      <div flex="10">
+                             <md-button  ng-click="hideDialog()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                            </md-button>
+                      </div>
+                    </div>
    </md-toolbar>    
          <md-content layout-margin layout-align="center center">
                <form name="userForm">        

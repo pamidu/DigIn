@@ -204,78 +204,54 @@ function linkedInit(scope, $mdDialog, widId, $rootScope) {
 
 
 
-function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosService) {
+function YoutubeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) {
+    $scope.search = function() {
+        this.listResults = function(data) {
+            results.length = 0;
+            for (var i = data.items.length - 1; i >= 0; i--) {
+                results.push({
+                    id: data.items[i].id.videoId,
+                    title: data.items[i].snippet.title,
+                    description: data.items[i].snippet.description,
+                    datetimee: data.items[i].snippet.publishedAt,
+                    lbc: data.items[i].snippet.liveBroadcastContent,
+                    ciid: data.items[i].snippet.channelId,
+                    kidd: data.items[i].id.kind,
+                    thumbnail: data.items[i].snippet.thumbnails.default.url,
+                    author: data.items[i].snippet.channelTitle
 
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+                });
+            }
+            return results;
 
-      $scope.cancel = function() {
-        $mdDialog.hide();
-    };
-       $scope.finish = function() {
-        init();
-        $mdDialog.hide();
-    };
-     
-    function init() {
-      $scope.youtube = VideosService.getYoutube();
-      $scope.results = VideosService.getResults();
-      $scope.upcoming = VideosService.getUpcoming();
-      $scope.history = VideosService.getHistory();
-      $scope.playlist = true;
-
-      
-    }
-
-
-    $scope.launch = function (id, title) {
-      VideosService.launchPlayer(id, title);
-      VideosService.archiveVideo(id, title);
-      VideosService.deleteVideo($scope.upcoming, id);
-      $log.info('Launched id:' + id + ' and title:' + title);
-    };
-
-    $scope.queue = function (id, title) {
-      VideosService.queueVideo(id, title);
-      VideosService.deleteVideo($scope.history, id);
-      $log.info('Queued id:' + id + ' and title:' + title);
-    };
-
-    $scope.delete = function (list, id) {
-      VideosService.deleteVideo(list, id);
-    };
-
-    $scope.search = function () {
-      //alert("Hello you hit the search function");
-
-      $http.get('https://www.googleapis.com/youtube/v3/search', {
-        params: {
-          key: 'AIzaSyAzf5VkNxCc-emzb5rujUSc9wSxoDla6AM',
-          type: 'video',
-          maxResults: '50',
-          part: 'id,snippet',
-          fields: 'items/id,items/snippet/title,items/snippet/description,items/snippet/thumbnails/default,items/snippet/channelTitle,items/snippet/publishedAt,items/snippet/liveBroadcastContent,items/snippet/channelId,items/id/kind,items/id/videoId',
-          q: this.query
         }
 
-      })
-      .success( function (data) {
-        VideosService.listResults(data);
-        $rootScope.dashboard.widgets[objIndex].widData = data;
-        $mdDialog.hide();
-      console.log(JSON.stringify(data));
-        //`$log.info(data);
-      })
-      .error( function () {
-        $log.info('Search error');
-      });
-
+        $http.get('https://www.googleapis.com/youtube/v3/search', {
+                params: {
+                    key: 'AIzaSyAzf5VkNxCc-emzb5rujUSc9wSxoDla6AM',
+                    type: 'video',
+                    maxResults: '50',
+                    part: 'id,snippet',
+                    fields: 'items/id,items/snippet/title,items/snippet/description,items/snippet/thumbnails/default,items/snippet/channelTitle,items/snippet/publishedAt,items/snippet/liveBroadcastContent,items/snippet/channelId,items/id/kind,items/id/videoId',
+                    q: this.query
+                }
+            })
+            .success(function(data) {
+                VideosService.listResults(data);
+                $log.info(data);
+            })
+            .error(function() {
+                $log.info('Search error');
+            });
     }
 
-    $scope.tabulate = function (state) {
-      $scope.playlist = state;
+
+    $scope.tabulate = function(state) {
+        $scope.playlist = state;
     }
-   // console.log(q);
-};
+
+}
+
 
 
 //elastic controller
@@ -676,7 +652,42 @@ function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
 
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+    //cancel config
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+    //complete config  
+    $scope.finish = function(rssAddress) {
+        $rootScope.entryArray = [];
+        google.load("feeds", "1");
+        var feed = new google.feeds.Feed(rssAddress);
+        feed.setNumEntries(100);
+
+        feed.load(function(result) {
+
+
+            if (!result.error) {
+
+                for (var i = 0; i < result.feed.entries.length; i++) {
+
+                    var entry = result.feed.entries[i];
+
+                    $scope.entryContent = entry.content;
+                    $rootScope.entryArray.push(entry);
+
+                    $rootScope.$apply();
+                }
+
+                console.log($rootScope.entryArray);
+            }
+        });
+        $mdDialog.hide();
+
+    };
+};
+
+function spreadInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     //cancel config
     $scope.cancel = function() {
@@ -685,76 +696,10 @@ function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     //complete config  
     $scope.finish = function(rssAddress) {
-
-
-         $scope.entryArray = [];
-        google.load("feeds", "1");
-        var feed = new google.feeds.Feed(rssAddress);
-        feed.setNumEntries(100);
-       
-        feed.load(function(result) {
-        if (!result.error) {
-         
-          for (var i = 0; i < result.feed.entries.length; i++) {
-
-            var entry = result.feed.entries[i];
-
-            $scope.entryContent = entry.content;
-            $scope.entryArray.push(entry);
-           
-            $scope.$apply();
-          }
-
-             $rootScope.dashboard.widgets[objIndex].widData = $scope.entryArray;
-             // $mdDialog.hide();
-             console.log(JSON.stringify($scope.entryArray));
-
-           //console.log(entry);
-        }
-      });
-
         $mdDialog.hide();
-  };
-       
-};
 
-function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSettings) {
-
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-
-    //cancel config
-    $scope.cancel = function() {
-        $mdDialog.hide();
     };
 
-    //complete config  
-    $scope.finish = function() {
-        $mdDialog.hide();
-        console.log($rootScope.files);
-    };
-
-    $rootScope.files     = [];
-    $rootScope.show = "hello";
-
-  // Callback triggered after Picker is shown
-  $scope.onLoaded = function () {
-    console.log('Google Picker loaded!');
-  }
-
-  // Callback triggered after selecting files
-  $scope.onPicked = function (docs) {
-    angular.forEach(docs, function (file, index) {
-      // alert('You have selected: ' + file.id);
-      $rootScope.dashboard.widgets[objIndex].widData = file;
-             $mdDialog.hide();
-     console.log(JSON.stringify(file));
-    });
-  }
-
-  // Callback triggered after clicking on cancel
-  $scope.onCancel = function () {
-    console.log('Google picker close/cancel!');
-  }
 
 };
 

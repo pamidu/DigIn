@@ -1,13 +1,12 @@
-<md-content>
-    <div layout="column" ng-repeat="entry in widget.widData">
+<md-content layout-margin flex>
+    <div layout="column" ng-repeat="entry in $root.entryArray">
         <div layout="column">
             <md-toolbar>
                 <h5 style="text-align:center;">{{entry.title}}</h5>
             </md-toolbar>
             <md-list-item class="md-3-line">
                 <div class="md-list-item-text">
-                   <!--  <img ng-src="{{ entry.mediaGroups.contents.thumbnails.url }}" style="width:40px;height:40px;"> -->
-                    <h5>Published Date: </h5>
+                <h5>Published Date: </h5>
                     <p>{{entry.publishedDate}}</p><br/>
                     <h5>Summary: </h5>
                     <p>{{entry.contentSnippet}}</p><br/>

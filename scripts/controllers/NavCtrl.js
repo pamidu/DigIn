@@ -519,6 +519,16 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                 }
             })
         }
+        $scope.help = function(ev, dashboard) {
+            $mdDialog.show({
+                    controller: 'HelpCtrl',
+                    templateUrl: 'views/help.html',
+                    resolve: {
+
+                    }
+                });
+        }
+
            $scope.navigate = function(routeName) {
 
             // start pulathisi 7/23/2015
@@ -610,13 +620,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
             }
             if (routeName == "Help") {
 
-                $mdDialog.show({
-                    controller: 'HelpCtrl',
-                    templateUrl: 'Views/help.html',
-                    resolve: {
+                var selectedMenu = document.getElementsByClassName("menu-layer");
+                selectedMenu[0].style.display = 'none';
 
-                    }
-                });
+                $scope.help();
+
             }
             if (routeName == "Save") {
                var selectedMenu = document.getElementsByClassName("menu-layer");

@@ -1,7 +1,7 @@
 
 //var app = angular.module('emailApp', ['ngMaterial', 'ngMdIcons']);
 
-routerApp.controller('emailCtrl', ['$scope','$rootScope', function( $scope, $rootScope){
+routerApp.controller('emailCtrl', ['$scope','$rootScope','$mdDialog', function( $scope, $rootScope, $mdDialog){
   console.log("$rootScope");
   console.log($rootScope.a);
 
@@ -15,6 +15,10 @@ routerApp.controller('emailCtrl', ['$scope','$rootScope', function( $scope, $roo
 	$scope.sendMail = function(wpdomain){
 	   
 	};
+
+  $scope.closeDialog = function() {    
+      $mdDialog.hide();
+  };
 
   /*html2canvas($rootScope, {
             onrendered: function(canvas) {

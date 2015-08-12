@@ -1,5 +1,5 @@
 <md-dialog plumb-item style="min-width:400px;">
-        <md-toolbar scroll-shrink>
+        <md-toolbar>
                 <div class="md-toolbar-tools"  flex  layout="row">
                       <div flex="10">
                         <md-icon class="ion-wrench"></md-icon>
@@ -28,14 +28,14 @@
         
             <div class="md-actions" layout="row">
                 <span flex></span>
+                <md-button ng-click="cancel()">
+                    Cancel
+                </md-button>
                 <div id="authOps">
-                    <md-button id="disconnect" ng-click="finish()" class="md-primary">
+                    <md-button id="disconnect" ng-click="finish()">
                         Finish
                     </md-button>
                 </div>
-                <md-button ng-click="cancel()" class="md-primary">
-                    Cancel
-                </md-button>
             </div>
         </md-content>
 </md-dialog>

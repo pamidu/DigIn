@@ -9,10 +9,10 @@
                 </div>
                 <div flex="10">
                     <span> 
-                                <md-button    >
-                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg" style="color:#fff !important;" ng-click="cancel()"></md-icon>
-                                   </md-button>
-                              </span>
+                      <md-button>
+                          <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg" style="color:#fff !important;" ng-click="cancel()"></md-icon>
+                      </md-button>
+                    </span>
                 </div>
             </div>
         </md-toolbar>
@@ -42,11 +42,11 @@
    
   <div class="md-actions" layout="row">
     <span flex></span>
-    <md-button ng-click="setPlugin()" class="md-primary">
-     Finish
-    </md-button>
-    <md-button ng-click="cancel()" class="md-primary">
+    <md-button ng-click="cancel()">
      Cancel
+    </md-button>
+    <md-button ng-click="setPlugin()">
+     Finish
     </md-button>
   </div>
 </md-dialog>

@@ -7,8 +7,8 @@
             "initTemplate": "InitConfigspread",
             "initController": "spreadInit",
             "widView": "views/Viewspread.html",
-            "sizeX":"1",
-            "sizeY":"1",
+            "sizeX":"2",
+            "sizeY":"2",
             "row":"0",
             "col":"0"
         }, {
@@ -20,8 +20,8 @@
             "initTemplate": "imageConfig",
             "initController": "imInit",
             "widView": "views/Viewimage.html",
-            "sizeX":"1",
-            "sizeY":"1",
+            "sizeX":"2",
+            "sizeY":"2",
             "row":"0",
             "col":"1"
         },{
@@ -33,8 +33,8 @@
             "initTemplate": "InitConfigWeather",
             "initController": "weatherInit",
             "widView": "views/ViewWeather.html",
-            "sizeX":"1",
-            "sizeY":"1",
+            "sizeX":"2",
+            "sizeY":"2",
             "row":"0",
             "col":"2"
         },  
@@ -49,8 +49,8 @@
             "initTemplate": "InitConfigD3",
             "initController": "InitConfigD3",
             "widView": "views/ViewD3.html",
-            "sizeX":"1",
-            "sizeY":"1",
+            "sizeX":"2",
+            "sizeY":"2",
             "row":"1",
             "col":"0"
 
@@ -64,8 +64,8 @@
             "initTemplate": "InitConfigFacebook",
             "initController": "fbInit",
             "widView": "views/chartview.html",
-            "sizeX":"1",
-            "sizeY":"1",
+            "sizeX":"2",
+            "sizeY":"2",
             "row":"1",
             "col":"1"
         }, {
@@ -77,8 +77,8 @@
             "initTemplate": "InitConfigFacebook",
             "initController": "fbInit",
             "widView": "views/ViewFacebook.html",
-            "sizeX":"1",
-            "sizeY":"1",
+            "sizeX":"2",
+            "sizeY":"2",
             "row":"1",
             "col":"2",
             "widConfig": {"options": {
@@ -124,9 +124,9 @@
             "initTemplate": "InitConfigInstagram",
             "initController": "instaInit",
             "widView": "views/ViewInstagram.html",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"2",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"0",
             "col":"0"
         }, {
 
@@ -137,9 +137,9 @@
             "initTemplate": "InitConfigGoogleplus",
             "initController": "googlePlusInit",
             "widView": "views/ViewGoogleplus.html",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"2",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"0",
             "col":"1"
         }, {
 
@@ -150,9 +150,9 @@
             "initTemplate": "InitConfigLinkedin",
             "initController": "linkedInit",
             "widView": "views/ViewLinkedIn.html",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"2",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"0",
             "col":"2"
         }, {
 
@@ -163,10 +163,10 @@
             "initTemplate": "fbInitConfig",
             "initController": "fbInit",
             "widView": "views/chartview.html",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"3",
-            "col":"0"
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"0",
+            "col":"3"
 
         },
 
@@ -180,10 +180,10 @@
             "widView": "views/ViewElasticSearch.html",
             "dataView": "ViewElasticData",
             "dataCtrl": "elasticDataCtrl",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"3",
-            "col":"1"
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"1",
+            "col":"0"
 
         }, {
 
@@ -194,10 +194,10 @@
             "initTemplate": "fbInitConfig",
             "initController": "fbInit",
             "widView": "views/chartview.html",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"3",
-            "col":"2"
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"1",
+            "col":"1"
 
         }, {
 
@@ -205,13 +205,13 @@
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Social Media",
             "Description": "Likes, Clicks, Active Users, Pageviews",
-            "initTemplate": "InitConfigYoutube",
+            "initTemplate": "InitConfigyoutube",
             "initController": "YoutubeInit",
-            "widView": "views/ViewYoutube.html",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"4",
-            "col":"0"
+            "widView": "views/Viewyoutube.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"1",
+            "col":"2"
         }, {
 
             "title": "WordPress",
@@ -221,10 +221,10 @@
             "initTemplate": "InitConfigWordpress",
             "initController": "wordpressInit",
             "widView": "views/ViewWordpress.html",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"4",
-            "col":"1"
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"1",
+            "col":"3"
         },   
         {
 
@@ -235,10 +235,10 @@
             "initTemplate": "InitConfigRss",
             "initController": "rssInit",
             "widView": "views/ViewRss.html",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"4",
-            "col":"2"
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"2",
+            "col":"0"
         }, 
 
         {
@@ -250,9 +250,9 @@
             "initTemplate": "InitConfiggnews",
             "initController": "gnewsInit",
             "widView": "views/ViewGnews.html",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"5",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"2",
             "col":"0"
 
         },     
@@ -263,12 +263,12 @@
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Web Analytics",
             "Description": "Audience, Traffic, Content, Conversions",
-            "initTemplate": "fbInitConfig",
-            "initController": "fbInit",
-            "widView": "views/chartview.html",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"5",
+            "initTemplate": "analyticsInitConfig",
+            "initController": "analyticsInit",
+            "widView": "views/ViewAnalytics.html",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"2",
             "col":"1"
         } ,
           {
@@ -280,9 +280,9 @@
             "initTemplate": "InitSLT",
             "initController": "SLTInit",
             "widView": "views/ViewSLTSkill.html",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"5",
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"2",
             "col":"2"
         } ,
         {
@@ -294,10 +294,10 @@
             "initTemplate": "InitSLTIvr",
             "initController": "sltivrInit",
             "widView": "views/ViewSLTIvr.html",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"6",
-            "col":"0"
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"2",
+            "col":"3"
         } ,
         {
 
@@ -308,10 +308,10 @@
             "initTemplate": "InitS4LT",
             "initController": "SLTInit",
             "widView": "views/ViewSLTQueue.html",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"6",
-            "col":"1"
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"3",
+            "col":"0"
         } ,
         {
 
@@ -322,10 +322,10 @@
             "initTemplate": "InitSLT",
             "initController": "SLTInit",
             "widView": "views/ViewSLTAgent.html",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"6",
-            "col":"2"
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"3",
+            "col":"1"
         },
         {
 
@@ -336,10 +336,10 @@
             "initTemplate": "InitSLT",
             "initController": "SLTInit",
             "widView": "views/ViewSLTQueueDetails.html",
-            "sizeX":"1",
-            "sizeY":"1",
-            "row":"7",
-            "col":"0"
+            "sizeX":"2",
+            "sizeY":"2",
+            "row":"3",
+            "col":"2"
         } 
 
     ]

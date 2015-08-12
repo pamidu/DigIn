@@ -787,7 +787,9 @@ function gnewsInit($scope, $http, $mdDialog, widId, $rootScope) {
 }
 
 
-function imInit($scope, $http, $rootScope, $mdDialog) {
+function imInit($scope, $http, $rootScope, $mdDialog, widId) {
+
+    // var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
     $scope.cancel = function() {
         $mdDialog.hide();
@@ -795,29 +797,13 @@ function imInit($scope, $http, $rootScope, $mdDialog) {
 
     //complete config  
     $scope.finish = function() {
-
+        $rootScope.image = $scope.image;
+        // $rootScope.dashboard.widgets[objIndex].widData = $scope.image;
+        // console.log(JSON.stringify($scope.image));
         $mdDialog.hide();
     };
-
-    $scope.readURL = function(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function(e) {
-                $('#blah')
-                    .attr('src', e.target.result);
-
-            };
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-}
-
-
-
-
+  
+};
 
 
 function weatherInit(widId, $scope, $http, $rootScope, $mdDialog) {
@@ -1140,24 +1126,6 @@ function instaInit($scope, $http, $window) {
     }
 }
 
-
-
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function(e) {
-            $('#blah')
-                .attr('src', e.target.result);
-
-    };
-
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
-
- 
 
 function searchComplete() {
 

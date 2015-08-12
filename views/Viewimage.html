@@ -4,7 +4,8 @@
     </md-toolbar>
     <div>
         <div>
-            <img id="blah" src="#" alt="your image" />
+           <!--  <img id="blah" src="#" alt="your image" /> -->
+            <img ng-if="image" src="{{$root.image}}" alt="">
         </div>
     </div>
 </md-content>

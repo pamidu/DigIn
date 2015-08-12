@@ -1,20 +1,19 @@
-<md-dialog style="min-width:400px;">
-    <form>
+<md-dialog plumb-item style="min-width:400px;">
         <md-toolbar>
-            <div class="md-toolbar-tools">
-                <div flex="10">
-                    <md-icon class="md-avatar" md-svg-src="bower_components/material-design-icons/hardware/svg/production/ic_keyboard_24px.svg" style="color:#fff !important;float:left;border-radius:100%;"></md-icon>
-                </div>
-                <div flex="80">
-                    <h3>Browse for Image</h3>
-                </div>
-                <div flex="10">
-                    <span> 
-                                <md-button>
-                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg" style="color:#fff !important;" ng-click="cancel()"></md-icon>
-                                   </md-button>
-                              </span>
-                </div>
+            <div class="md-toolbar-tools"  flex  layout="row">
+                      <div flex="10">
+                        <md-icon class="ion-wrench"></md-icon>
+                      </div>   
+                      <div flex="80">
+                              <h3>
+                                 <span> Configuration </span>
+                              </h3>
+                      </div>                           
+                      <div flex="10">
+                             <md-button ng-click="cancel()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                            </md-button>
+                      </div>
             </div>
         </md-toolbar>
         <md-dialog-content>
@@ -34,5 +33,4 @@
                 Cancel
             </md-button>
         </div>
-    </form>
 </md-dialog>

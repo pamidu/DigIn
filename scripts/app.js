@@ -16,7 +16,7 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial', 'uiMicrokernel', "hi
     'gridster', 'ngSanitize'
 ])
 
-routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider",function($locationProvider, $httpProvider, $stateProvider ) {
+routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider",function($locationProvider, $httpProvider, $stateProvider) {
     $httpProvider.defaults.headers.post['Content-Type'] = 'multipart/form-data';
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];

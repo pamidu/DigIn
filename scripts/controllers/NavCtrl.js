@@ -2,6 +2,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen','$http','Digin_ReportViewer','$localStorage','$window','ObjectStoreService','Digin_Base_URL','DashboardService','$log', 'TTSConfig', 'TTSAudio', 'TTS_EVENTS',
   function($scope, $mdBottomSheet, $mdSidenav, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen,$http,Digin_ReportViewer,$localStorage,$window,ObjectStoreService,Digin_Base_URL,DashboardService, $log, TTSConfig, TTSAudio, TTS_EVENTS)  
     {
+
+    $scope.init = function(){
+        var uname = localStorage.getItem('username');
+        if(uname==null){
+            window.location = "index.html";
+        }
+    };
+    $scope.init();
     // triggered after speaking
     $scope.$on(TTS_EVENTS.SUCCESS, function(){
         $log.info('Successfully done!')

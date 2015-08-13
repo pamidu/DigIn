@@ -13,10 +13,10 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial', 'uiMicrokernel', "hi
     'countTo',
     'pjTts',
     'nvd3',
-    'gridster','lk-google-picker', 'ngSanitize', 'ngAnalytics'
+    'gridster', 'ngSanitize'
 ])
 
-routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider",function($locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider) {
+routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider",function($locationProvider, $httpProvider, $stateProvider) {
     $httpProvider.defaults.headers.post['Content-Type'] = 'multipart/form-data';
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -104,11 +104,11 @@ routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider", "lkGoo
              
         })
 
-             lkGoogleSettingsProvider.configure({
-    apiKey   : 'AIzaSyA9fv9lYQdt1XV6wooFtItxYlMF8Y9t1ao',
-    clientId : '468951747947-jb7obcgd91m7379q4nn7vroid8g37ds0.apps.googleusercontent.com',
-    scope : ['https://www.googleapis.com/auth/drive']
-  })
+  //            lkGoogleSettingsProvider.configure({
+  //   apiKey   : 'AIzaSyA9fv9lYQdt1XV6wooFtItxYlMF8Y9t1ao',
+  //   clientId : '468951747947-jb7obcgd91m7379q4nn7vroid8g37ds0.apps.googleusercontent.com',
+  //   scope : ['https://www.googleapis.com/auth/drive']
+  // })
 
 }]);
 
@@ -157,14 +157,12 @@ routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider", "lkGoo
     ]);
 
 
-routerApp.run(['$rootScope', 'ngAnalyticsService', function($rootScope, ngAnalyticsService) {
+routerApp.run(['$rootScope', function($rootScope) {
 
   var tag = document.createElement('script');
   tag.src = "http://www.youtube.com/iframe_api";
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-  ngAnalyticsService.setClientId('692244578573-vei7vts4m5n8kr0umqvlhmobflgb6ehq.apps.googleusercontent.com');
 
 
 }]);

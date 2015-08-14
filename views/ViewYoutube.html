@@ -1,4 +1,7 @@
-<md-content style="min-height:300px;min-width:80px;">
+<md-content>
+
+<link rel="stylesheet" type="text/css" href="../duodigin/styles/css/youtube.css">
+
 <div id="results1">
 <div class="video1">
 <img class="video-image" src="../duodigin/styles/css/images/cod.jpg" style="width:120px; height:90px;"><br/><br/>
@@ -20,7 +23,7 @@
         <label class="tagg" title="Description:">Author: </label><p class="video-author">{{ video.snippet.channelTitle }}</p>
         <label class="tagg" title="Description:">Description: </label><p class="video-description">{{ video.snippet.description }}</p>
         <label class="tagg" title="Description:">Uploaded Date and Time: </label><p class="video-description">{{ video.snippet.publishedAt }}</p> 
-        <label class="tagg" title="Description:">Broadcast Content: </label><p class="video-description">{{ video.liveBroadcastContent }}</p>
+        <label class="tagg" title="Description:">Broadcast Content: </label><p class="video-description">{{ video.snippet.liveBroadcastContent }}</p>
         <label class="tagg" title="Description:">Channel ID: </label><p class="video-description">{{ video.snippet.channelId }}</p>
         <label class="tagg" title="Description:">Kind: </label><p class="video-description">{{ video.id.kind }}</p> 
         <label class="tagg" title="Description:">Video ID: </label><p class="video-description">{{ video.id.videoId }}</p> 

@@ -204,27 +204,46 @@ function linkedInit(scope, $mdDialog, widId, $rootScope) {
 
 
 
-function YoutubeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) {
+function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosService) {
+
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+    $scope.finish = function() {
+        init();
+        $mdDialog.hide();
+    };
+
+    function init() {
+        $scope.youtube = VideosService.getYoutube();
+        $scope.results = VideosService.getResults();
+        $scope.upcoming = VideosService.getUpcoming();
+        $scope.history = VideosService.getHistory();
+        $scope.playlist = true;
+
+    }
+
+    $scope.launch = function(id, title) {
+        VideosService.launchPlayer(id, title);
+        VideosService.archiveVideo(id, title);
+        VideosService.deleteVideo($scope.upcoming, id);
+        $log.info('Launched id:' + id + ' and title:' + title);
+    };
+
+    $scope.queue = function(id, title) {
+        VideosService.queueVideo(id, title);
+        VideosService.deleteVideo($scope.history, id);
+        $log.info('Queued id:' + id + ' and title:' + title);
+    };
+
+    $scope.delete = function(list, id) {
+        VideosService.deleteVideo(list, id);
+    };
+
     $scope.search = function() {
-        this.listResults = function(data) {
-            results.length = 0;
-            for (var i = data.items.length - 1; i >= 0; i--) {
-                results.push({
-                    id: data.items[i].id.videoId,
-                    title: data.items[i].snippet.title,
-                    description: data.items[i].snippet.description,
-                    datetimee: data.items[i].snippet.publishedAt,
-                    lbc: data.items[i].snippet.liveBroadcastContent,
-                    ciid: data.items[i].snippet.channelId,
-                    kidd: data.items[i].id.kind,
-                    thumbnail: data.items[i].snippet.thumbnails.default.url,
-                    author: data.items[i].snippet.channelTitle
-
-                });
-            }
-            return results;
-
-        }
+        //alert("Hello you hit the search function");
 
         $http.get('https://www.googleapis.com/youtube/v3/search', {
                 params: {
@@ -235,22 +254,27 @@ function YoutubeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                     fields: 'items/id,items/snippet/title,items/snippet/description,items/snippet/thumbnails/default,items/snippet/channelTitle,items/snippet/publishedAt,items/snippet/liveBroadcastContent,items/snippet/channelId,items/id/kind,items/id/videoId',
                     q: this.query
                 }
+
             })
             .success(function(data) {
                 VideosService.listResults(data);
-                $log.info(data);
+                $rootScope.dashboard.widgets[objIndex].widData = data;
+                $mdDialog.hide();
+                console.log(JSON.stringify(data));
+                //`$log.info(data);
             })
             .error(function() {
                 $log.info('Search error');
             });
-    }
 
+    }
 
     $scope.tabulate = function(state) {
-        $scope.playlist = state;
-    }
+            $scope.playlist = state;
+        }
+        // console.log(q);
+};
 
-}
 
 
 
@@ -258,32 +282,32 @@ function YoutubeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
 function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) {
     $scope.elasticStep = "views/InitConfigElastic-chart.html";
 
-     $scope.chartTypes = [{
-        name:"Area",
-        type:"area"
-        },{
-        name:"Smooth area",
-        type:"areaspline"
-        },{
-        name:"Line",
-        type:"line"
-        },{
-        name:"Smooth line",
-        type:"spline"
-        },{
-        name:"Column",
-        type:"column"
-        },{
-        name:"Bar",
-        type:"bar"
-        },{
-        name:"Pie",
-        type:"pie"
-        },{
-        name:"Scatter",
-        type:"scatter"
-        }];
-     $scope.uniqueType = "";
+    $scope.chartTypes = [{
+        name: "Area",
+        type: "area"
+    }, {
+        name: "Smooth area",
+        type: "areaspline"
+    }, {
+        name: "Line",
+        type: "line"
+    }, {
+        name: "Smooth line",
+        type: "spline"
+    }, {
+        name: "Column",
+        type: "column"
+    }, {
+        name: "Bar",
+        type: "bar"
+    }, {
+        name: "Pie",
+        type: "pie"
+    }, {
+        name: "Scatter",
+        type: "scatter"
+    }];
+    $scope.uniqueType = "";
 
     $scope.loadNext = function(temlpate) {
         $scope.elasticStep = "views/" + temlpate;
@@ -329,7 +353,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             $scope.checkedFields.splice($scope.checkedFields.indexOf(index), 1);
         }
     };
-    
+
     client.getClasses("com.duosoftware.com");
     $scope.getFields = function() {
         $scope.selectedFields = [];
@@ -404,7 +428,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         for (param in $scope.checkedFields) {
             parameter += " " + $scope.checkedFields[param].name;
         }
-        
+
         parameter += " " + $scope.categoryVal;
 
         w.postMessage($scope.ind + "," + parameter);
@@ -447,7 +471,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                     }
                 }
 
-                if($scope.uniqueType == "")widget.chartConfig.options.chart.type = "area";
+                if ($scope.uniqueType == "") widget.chartConfig.options.chart.type = "area";
                 else widget.chartConfig.options.chart.type = $scope.uniqueType;
                 widget.chartSeries = [];
                 widget.chartConfig.series = arrayedSeries.map(function(elm) {
@@ -650,6 +674,8 @@ function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
 
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+
     //cancel config
     $scope.cancel = function() {
         $mdDialog.hide();
@@ -657,14 +683,14 @@ function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     //complete config  
     $scope.finish = function(rssAddress) {
-        $rootScope.entryArray = [];
+
+
+        $scope.entryArray = [];
         google.load("feeds", "1");
         var feed = new google.feeds.Feed(rssAddress);
         feed.setNumEntries(100);
 
         feed.load(function(result) {
-
-
             if (!result.error) {
 
                 for (var i = 0; i < result.feed.entries.length; i++) {
@@ -672,20 +698,28 @@ function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
                     var entry = result.feed.entries[i];
 
                     $scope.entryContent = entry.content;
-                    $rootScope.entryArray.push(entry);
+                    $scope.entryArray.push(entry);
 
-                    $rootScope.$apply();
+                    $scope.$apply();
                 }
 
-                console.log($rootScope.entryArray);
+                $rootScope.dashboard.widgets[objIndex].widData = $scope.entryArray;
+                // $mdDialog.hide();
+                console.log(JSON.stringify($scope.entryArray));
+
+                //console.log(entry);
             }
         });
-        $mdDialog.hide();
 
+        $mdDialog.hide();
     };
+
 };
 
-function spreadInit($scope, $http, $mdDialog, widId, $rootScope) {
+
+function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSettings) {
+
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
     //cancel config
     $scope.cancel = function() {
@@ -693,13 +727,36 @@ function spreadInit($scope, $http, $mdDialog, widId, $rootScope) {
     };
 
     //complete config  
-    $scope.finish = function(rssAddress) {
+    $scope.finish = function() {
         $mdDialog.hide();
-
+        console.log($rootScope.files);
     };
 
+    $rootScope.files = [];
+    $rootScope.show = "hello";
+
+    // Callback triggered after Picker is shown
+    $scope.onLoaded = function() {
+        console.log('Google Picker loaded!');
+    }
+
+    // Callback triggered after selecting files
+    $scope.onPicked = function(docs) {
+        angular.forEach(docs, function(file, index) {
+            // alert('You have selected: ' + file.id);
+            $rootScope.dashboard.widgets[objIndex].widData = file;
+            $mdDialog.hide();
+            console.log(JSON.stringify(file));
+        });
+    }
+
+    // Callback triggered after clicking on cancel
+    $scope.onCancel = function() {
+        console.log('Google picker close/cancel!');
+    }
 
 };
+
 
 function gnewsInit($scope, $http, $mdDialog, widId, $rootScope) {
 
@@ -789,7 +846,7 @@ function gnewsInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 function imInit($scope, $http, $rootScope, $mdDialog, widId) {
 
-    // var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
     $scope.cancel = function() {
         $mdDialog.hide();
@@ -798,11 +855,35 @@ function imInit($scope, $http, $rootScope, $mdDialog, widId) {
     //complete config  
     $scope.finish = function() {
         $rootScope.image = $scope.image;
-        // $rootScope.dashboard.widgets[objIndex].widData = $scope.image;
+        $rootScope.dashboard.widgets[objIndex].widData = $scope.image;
         // console.log(JSON.stringify($scope.image));
         $mdDialog.hide();
     };
-  
+};
+
+function csvInit($scope, $http, $mdDialog, widId, $rootScope) {
+
+
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+
+    $rootScope.myData = [58.13, 53.98, 67.00, 89.70, 99.00, 13.28, 66.70, 34.98];
+
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.finish = function(file) {
+
+        $rootScope.csvFile = file;
+        // $rootScope.myData = file;
+        //console.log($rootScope.csvFile);
+        $rootScope.dashboard.widgets[objIndex].widData = $rootScope.csvFile;
+        console.log(JSON.stringify($rootScope.csvFile));
+        $mdDialog.hide();
+
+
+    };
+
 };
 
 
@@ -1079,19 +1160,19 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 function instaInit($scope, $http, $window) {
 
-//     var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
-//     var redirectUrl = 'http://duoworld.duoweb.info/DuoDiggin_pinterest/'
+    //     var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
+    //     var redirectUrl = 'http://duoworld.duoweb.info/DuoDiggin_pinterest/'
 
 
-//     if ($window.location.href.indexOf("access_token") == -1) {
-//         $window.location.href = baseUrl;
+    //     if ($window.location.href.indexOf("access_token") == -1) {
+    //         $window.location.href = baseUrl;
 
-//     } else {
-//         var access_token = $window.location.hash.substring(14);
-//                     console.log(data);       
+    //     } else {
+    //         var access_token = $window.location.hash.substring(14);
+    //                     console.log(data);       
 
 
-//     }
+    //     }
 
     var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
     var redirectUrl = 'http://localhost/duodigin/views/ViewInstagram.html'
@@ -1169,7 +1250,7 @@ function searchComplete() {
             p.appendChild(gurl);
             p.appendChild(glang);
             container.appendChild(p);
-}
+        }
     }
 }
 
@@ -1662,7 +1743,7 @@ routerApp.controller('sltagentInit', function($scope, $mdDialog, $rootScope) {
             y: function(d) {
                 return d.y;
             },
-            pie : {
+            pie: {
                 margin: {
                     top: -450,
                     right: 0,

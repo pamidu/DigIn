@@ -1,39 +1,38 @@
- <md-dialog   plumb-item >
-  <md-toolbar class="modal-header" md-theme="teal">  
+<md-dialog plumb-item style="width:400px">
+  <md-toolbar>  
        <h1>Data Explorer</h1>
-</md-toolbar>
-
-   <md-content>
-<!-- md-table jade template-->
-<div id="md-table-template"  >
-  <table   class="md-table data-table-b">
-    <thead>
-      <tr class="md-table-headers-row">
-        <th ng-repeat="h in header" style="text-transform:capitalize"  class="md-table-header"><a href="#" ng-if="handleSort(h.field)" ng-click="reverse=!reverse;order(h.field,reverse)">{{h.name}} <i ng-show="reverse &amp;&amp; h.field == predicate" class="ion-android-arrow-dropup"></i><i ng-show="!reverse &amp;&amp; h.field == predicate" class="ion-android-arrow-dropdown"></i></a><span ng-if="!handleSort(h.field)">{{h.name}}</span></th>
-        <th class="md-table-header"></th>
-      </tr>
-    </thead>
-       <tbody>
-                  <tr ng-repeat="row in dataTobeShowed">
-                      <td ng-repeat="cell in row">
-                            {{cell}}
-                      </td>
-                    </tr>
-       </tbody>
-  </table>
-  <div layout="row" class="md-table-footer"><span class="md-table-count-info">Rows per page : <a href="#" ng-click="goToPage(0); count=10">10</a>,<a href="#" ng-click="goToPage(0); count=25">25</a>,<a href="#" ng-click="goToPage(0); count=50">50</a>,<a href="#" ng-click="goToPage(0); count=100">100</a>(current is {{count}})</span><span flex="flex"></span><span ng-show="nbOfPages() &gt; 1">
-      <md-button ng-disabled="tablePage==0" ng-click="tablePage=tablePage-1" aria-label="Previous Page" class="md-primary md-hue-2"><i style="font-size:16px;" class="ion-chevron-left"></i></md-button><a href="#" ng-repeat="i in getNumber(nbOfPages()) track by $index">
-        <md-button ng-click="goToPage($index)" class="md-primary md-hue-2 md-table-footer-item"><span ng-class="{ 'md-table-active-page': tablePage==$index}">{{$index+1}}</span></md-button></a>
-      <md-button ng-disabled="tablePage==nbOfPages()-1" ng-click="tablePage=tablePage+1" aria-label="Next Page" class="md-primary md-hue-2"><i style="font-size:16px;" class="ion-chevron-right"></i></md-button></span></div>
-</div>
-</md-content>
-<div class="md-actions" md-theme="indigo"  layout="row">
-    
-    <md-button style="width:200px" ng-click="closeDialog()"   class="md-raised">
-      Ok
-    </md-button>
-    <md-button style="width:200px"  class="md-raised"   ng-click="closeDialog()" class=" md-default">
-      Cancel
-    </md-button>
-  </div>
-</md-dialog  >
+  </md-toolbar>
+  <md-content layout-margin>
+    <!-- md-table jade template-->
+    <div id="md-table-template" layout-margin>
+        <table   class="md-table data-table-b">
+          <thead>
+            <tr class="md-table-headers-row">
+              <th ng-repeat="h in header" style="text-transform:capitalize"  class="md-table-header"><a href="#" ng-if="handleSort(h.field)" ng-click="reverse=!reverse;order(h.field,reverse)">{{h.name}} <i ng-show="reverse &amp;&amp; h.field == predicate" class="ion-android-arrow-dropup"></i><i ng-show="!reverse &amp;&amp; h.field == predicate" class="ion-android-arrow-dropdown"></i></a><span ng-if="!handleSort(h.field)">{{h.name}}</span></th>
+              <th class="md-table-header"></th>
+            </tr>
+          </thead>
+          <tbody>
+                        <tr ng-repeat="row in dataTobeShowed">
+                            <td ng-repeat="cell in row">
+                                  {{cell}}
+                            </td>
+                          </tr>
+          </tbody>
+        </table>
+        <div layout="row" class="md-table-footer" layout-margin><span class="md-table-count-info">Rows per page : <a href="#" ng-click="goToPage(0); count=10">10</a>,<a href="#" ng-click="goToPage(0); count=25">25</a>,<a href="#" ng-click="goToPage(0); count=50">50</a>,<a href="#" ng-click="goToPage(0); count=100">100</a>(current is {{count}})</span><span flex="flex"></span><span ng-show="nbOfPages() &gt; 1">
+          <md-button ng-disabled="tablePage==0" ng-click="tablePage=tablePage-1" aria-label="Previous Page" class="md-primary md-hue-2"><i style="font-size:16px;" class="ion-chevron-left"></i></md-button><a href="#" ng-repeat="i in getNumber(nbOfPages()) track by $index">
+            <md-button ng-click="goToPage($index)" class="md-primary md-hue-2 md-table-footer-item"><span ng-class="{ 'md-table-active-page': tablePage==$index}">{{$index+1}}</span></md-button></a>
+          <md-button ng-disabled="tablePage==nbOfPages()-1" ng-click="tablePage=tablePage+1" aria-label="Next Page" class="md-primary md-hue-2"><i style="font-size:16px;" class="ion-chevron-right"></i></md-button></span>
+        </div>
+    </div>
+    <div class="md-actions" layout="row" layout-margin>
+        <md-button ng-click="closeDialog()" flex="50">
+          Cancel
+        </md-button>
+        <md-button ng-click="closeDialog()" flex="50">
+          Ok
+        </md-button>
+    </div>
+  </md-content>
+</md-dialog>

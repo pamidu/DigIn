@@ -1,58 +1,54 @@
-<md-dialog plumb-item style="min-width:400px">
+<md-dialog plumb-item style="width:600px">
     <md-toolbar>
             <div class="md-toolbar-tools" flex layout="row">
-                <div flex="10">
+                <div flex="5" flex-sm="10">
                     <md-icon class="ion-wrench"></md-icon>
                 </div>
-                <div flex="80">
+                <div flex="90" flex-sm="80">
                     <h3>Configuration</h3>
                 </div>
-                <div flex="10"> 
+                <div flex="5" flex-sm="10"> 
                         <md-button  ng-click="cancel()"  aria-label="Close" layout-wrap>
                                    <md-icon class="ion-close"></md-icon>
                         </md-button> 
                 </div>
             </div>
     </md-toolbar>
-    <md-dialog-content>
-            <md-input-container flex>
+    <md-content layout-margin>         
+            <div layout-margin>
                 <label>Widget Name:</label>
                 <input name="sizeX" placeholder="www.duosoftware.com/test" ng-model="widget.chartConfig.title.text">
-            </md-input-container>
-            <div layout="row" layout-align='center start'>
+            </div>
+            <div layout="row" layout-margin>
                 <md-select ng-model="datasource" placeholder="Object Store" flex="50">
                     <md-option ng-value="opt" ng-repeat="opt in datasources">{{ opt }}</md-option>
                 </md-select>
                 <md-select style="text-transform:capitalize" ng-change="getFields()" placeholder="Index" ng-model="ind" flex="50">
                     <md-option style="text-transform:capitalize" ng-value="ind" ng-repeat=" ind in indexes">{{ ind }}</md-option>
                 </md-select>
-            </div>
-            <md-subheader class="md-primary">Select Series</md-subheader>
-            <div layout="row" layout-wrap md-scroll-y flex>
+            </div>           
+            <div layout="row" layout-wrap md-scroll-y flex layout-margin>
+                <md-subheader class="md-primary">Select Series</md-subheader>
                 <md-checkbox flex='20' ng-repeat="field in selectedFields" layout="row" ng-click="toggleCheck(field)" style="text-transform:capitalize" aria-label={{field.name}}>
                     {{field.name}}
                 </md-checkbox>
-            </div>
-            <md-subheader class="md-primary">Select Category Data</md-subheader>
-            <div layout="row" layout-wrap md-scroll-y flex>
+            </div>           
+            <div layout="row" layout-wrap md-scroll-y flex layout-margin>
+                <md-subheader class="md-primary">Select Category Data</md-subheader>
                 <md-radio-group ng-model="categoryVal">
                     <md-radio-button value="{{field.name}}" flex='20' ng-repeat="field in selectedFields" layout="row" style="text-transform:capitalize" aria-label={{field.name}}>{{field.name}}</md-radio-button>
                 </md-radio-group>
             </div>
-            <div layout="row" flex>
+            <div layout="row" layout-margin>
                 <md-select ng-model="uniqueType" placeholder="Select a chart type" flex>
                 <md-optgroup label="Chart type">
                   <md-option ng-value="chartType.type" ng-repeat="chartType in chartTypes">{{chartType.name}}</md-option>
                   </md-optgroup>
                   </md-select>
             </div>
-            <div layout="row" layout-align='center start'>
-                <md-input-container flex="50">
-                    <md-button ng-click="getData()">Show Data</md-button>
-                </md-input-container>
-                <md-input-container flex="50">
-                    <md-button ng-click="buildchart(widget)">Build Chart</md-button>
-                </md-input-container>
-            </div>
-    </md-dialog-content>
+            <div layout="row" layout-margin>                
+                    <md-button ng-click="getData()" flex="50">Show Data</md-button>            
+                    <md-button ng-click="buildchart(widget)" flex="50">Build Chart</md-button>
+            </div>     
+    </md-content>
 </md-dialog>

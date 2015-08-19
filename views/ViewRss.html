@@ -1,21 +1,19 @@
-<md-content>
+<md-content layout-margin flex>
     <div layout="column" ng-repeat="entry in widget.widData">
-        <div layout="column">
-            <md-toolbar>
-                <h5 style="text-align:center;">{{entry.title}}</h5>
+            <md-toolbar layout-align="center center" flex layout-padding>
+                <h5>{{entry.title}}</h5>
             </md-toolbar>
-            <md-list-item class="md-3-line">
+            <md-list-item class="md-3-line" layout-margin flex>
                 <div class="md-list-item-text">
                    <!--  <img ng-src="{{ entry.mediaGroups.contents.thumbnails.url }}" style="width:40px;height:40px;"> -->
-                    <h5>Published Date: </h5>
+                    <h4>Published Date: </h4>
                     <p>{{entry.publishedDate}}</p><br/>
-                    <h5>Summary: </h5>
+                    <h4>Summary: </h4>
                     <p>{{entry.contentSnippet}}</p><br/>
-                    <h5>URL: </h5>
+                    <h4>URL: </h4>
                     <p>{{entry.link}}</p>
                 </div>
             </md-list-item>
-            <md-divider></md-divider>
-        </div>
+            <md-divider></md-divider>   
     </div>
 </md-content>

@@ -1,10 +1,8 @@
-<md-content>
-    <md-toolbar>
+<md-content layout-margin flex style="overflow: hidden">
+    <md-toolbar layout-align="center center" flex layout-padding>
         <h5 style="text-align:center;">Your selected image</h5>
     </md-toolbar>
-    <div>
-        <div>
-            <img ng-if="widget.widData" ng-src="{{widget.widData}}" alt="">
-        </div>
+    <div layout-margin flex layout-align="center center">        
+        <img ng-if="widget.widData" ng-src="{{widget.widData}}" alt="">
     </div>
 </md-content>

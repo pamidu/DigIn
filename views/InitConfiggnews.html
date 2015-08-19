@@ -1,4 +1,4 @@
-<md-dialog plumb-item style="min-width:400px;">
+<md-dialog plumb-item style="width:400px;">
         <md-toolbar>
             <div class="md-toolbar-tools"  flex  layout="row">
                       <div flex="10">
@@ -17,15 +17,18 @@
             </div>
         </md-toolbar>
         <md-content layout-margin>
-            <div>                
+            <div layout="row" layout-margin>
+                <md-input-container flex>
                     <label id="postdomain">Criteria:</label>
                     <input id="gnewsrequest" name="gnewsrequest" type="text"/>
-                   <!--  <button type="submit" onclick="gnewsextract()">Submit</button> -->              
+                </md-input-container>
             </div>
             <div class="md-actions" layout="row">
-            <span flex></span>
-                <button type="submit" onclick="gnewsextract()" style="background-color:white;color:darkblue;height:37px;font-weight: bold;">Submit</button>
-                <md-button ng-click="cancel()" class="md-primary">
+                <span flex></span>
+                <md-button ng-click="gnewsextract()">
+                    Finish
+                </md-button>
+                <md-button ng-click="cancel()">
                     Cancel
                 </md-button>
             </div>

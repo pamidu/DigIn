@@ -59,7 +59,7 @@ $mdDialog,$rootScope){
         $('#pagePreLoader').show();
          var parameter = "";
          $scope.QueriedData = [];
-          for (param in $scope.checkedFields )
+          for (param in $scope.checkedFields)
             {
              
                parameter += " " + $scope.checkedFields[param].name;

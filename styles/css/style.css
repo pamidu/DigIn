@@ -1257,3 +1257,7 @@ md-dialog {
     from {transform:rotateY(0deg);}
     to {transform:rotateY(360deg);}
 }
+
+.ui-resizable-handle{
+  z-index: 0 !important;
+}

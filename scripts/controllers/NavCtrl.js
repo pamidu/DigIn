@@ -3,13 +3,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
   function($scope, $mdBottomSheet, $mdSidenav, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen,$http,Digin_ReportViewer,$localStorage,$window,ObjectStoreService,Digin_Base_URL,DashboardService, $log, TTSConfig, TTSAudio, TTS_EVENTS)  
     {
 
-    $scope.init = function(){
+    /*$scope.init = function(){
         var uname = localStorage.getItem('username');
         if(uname==null){
             window.location = "index.html";
         }
     };
-    $scope.init();
+    $scope.init();*/
     // triggered after speaking
     $scope.$on(TTS_EVENTS.SUCCESS, function(){
         $log.info('Successfully done!')
@@ -464,9 +464,16 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
         };
          $scope.Share = function(ev) {
 
-            canvg();
+            document.getElementsByClassName("nav-search")[0].style.display = "none";
 
-            html2canvas(document.body, {
+            setTimeout(function(){
+                canvg();
+            },1000);
+           
+            setTimeout(function(){     
+                //console.log(document.getElementsByClassName("md-ripple-container"));
+                //document.getElementsByClassName("md-ripple-container")[0].style.display = "none";
+                html2canvas(document.body, {
                         background : '#E0E0E0', 
                         useCORS : true,
                         allowTaint : true,
@@ -475,24 +482,29 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                         onrendered: function(canvas) {
                     
                             $rootScope.a = canvas;
-                            
-                        },
-                        
-            });
-          
-           setTimeout(function(){
-                $mdDialog.show({
-                    controller: 'shareCtrl',
-                    templateUrl: 'views/dashboard-share.html',
-                    resolve: {
+                            setTimeout(function(){
+                            // document.getElementsByClassName("md-ripple-container")[3].style.display = "block";
+                            //alert("changed ripple container back to previous state");
+                            },1000);
 
-                    }
-            });
-           },500);
+                            setTimeout(function(){
+                                document.getElementsByClassName("nav-search")[0].style.display = "block";
+                            },1000);
+                
+                            $mdDialog.show({
+                                controller: 'shareCtrl',
+                                templateUrl: 'views/dashboard-share.html',
+                                resolve: {
+
+                                }
+                            });
+                                    },
+                                    
+                            });
+               
+           },1000); 
 
         }
-
-
 
         $scope.Export = function(ev) {
             $mdDialog.show({

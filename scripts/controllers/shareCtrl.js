@@ -38,7 +38,7 @@ $scope.openEmail = function () {
 
                 }
             })
-};
+  };
 
 }]);
 

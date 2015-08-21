@@ -474,3 +474,30 @@ routerApp.directive('barsChart', function($parse) {
     };
     return directiveDefinitionObject;
 });
+
+routerApp.factory('instagram', ['$http', function($http){
+
+    return {
+        fetchPopular: function(callback){
+            
+            var endPoint = "https://api.instagram.com/v1/media/popular?client_id=f22d4c5be733496c88c0e97f3f7f66c7&callback=JSON_CALLBACK";
+            
+            $http.jsonp(endPoint).success(function(response){
+                callback(response.data);
+            });
+        }
+    }
+
+}]);
+
+routerApp.filter('fromTo', function() {
+        return function(input, from, total, lessThan) {
+            from = parseInt(from);
+            total = parseInt(total);
+            for (var i = from; i < from + total && i < lessThan; i++) {
+                input.push(i);
+            }
+            return input;
+        }
+    });
+

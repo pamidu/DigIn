@@ -1158,54 +1158,41 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 
 
-function instaInit($scope, $http, $window) {
+function instaInit($scope, $http, $window, instagram, widId, $rootScope, $mdDialog, $interval) {
 
-    //     var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
-    //     var redirectUrl = 'http://duoworld.duoweb.info/DuoDiggin_pinterest/'
+    $rootScope.pics = [];
+      $rootScope.have = [];
+      $rootScope.orderBy = "-likes.count";
+var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
+$scope.cancel = function() {
+    $mdDialog.hide();
+};
 
-    //     if ($window.location.href.indexOf("access_token") == -1) {
-    //         $window.location.href = baseUrl;
+$scope.finish = function() {
 
-    //     } else {
-    //         var access_token = $window.location.hash.substring(14);
-    //                     console.log(data);       
+    $rootScope.getMore = function() {
+        instagram.fetchPopular(function(data) {
+            for(var i=0; i<data.length; i++) {
+              if (typeof $rootScope.have[data[i].id]==="undefined") {
+                $rootScope.pics.push(data[i]) ;
+                $rootScope.have[data[i].id] = "1";
+              }
+            }
+            $rootScope.dashboard.widgets[objIndex].widData = $rootScope.pics;
+            console.log(JSON.stringify($rootScope.pics));
+        });
+      };
+      $rootScope.getMore();
+      
+        $rootScope.tags = [
+            'Bootstrap', 'AngularJS', 'Instagram', 'Factory'
+        ]
 
+  $mdDialog.hide();
+};
 
-    //     }
-
-    var clientId = 'f22d4c5be733496c88c0e97f3f7f66c7';
-    var redirectUrl = 'http://localhost/duodigin/views/ViewInstagram.html'
-    var baseUrl =
-        'https://instagram.com/oauth/authorize/?client_id=' + clientId + '&redirect_uri=' + redirectUrl + '&response_type=token';
-
-    if ($window.location.href.indexOf("access_token") == -1) {
-        $window.location.href = baseUrl;
-    } else {
-        var access_token = $window.location.hash.substring(14);
-        var baseUrl = "https://api.instagram.com/v1/users/self/?access_token=" + access_token + "&format=jsonp&callback=JSON_CALLBACK"
-        $http.jsonp(baseUrl).success(function(data) {
-
-            $scope.followers = data.data.counts.followed_by;
-            $scope.follows = data.data.counts.follows;
-            $scope.profilepic = data.data.profile_picture;
-            $scope.username = data.data.username;
-            $scope.firstName = data.data.full_name;
-            var likeUrl = "https://api.instagram.com/v1/users/self/media/liked?access_token=" + access_token + "&format=jsonp&callback=JSON_CALLBACK";
-            console.log(data);
-            $http.jsonp(likeUrl).success(function(data) {
-
-                $scope.likes = data.data.length;
-                console.log(data.data.length);
-            }).error(function(data) {
-
-            })
-
-        }).error(function(data) {
-            console.log(data)
-        })
-    }
-}
+};
 
 
 function searchComplete() {

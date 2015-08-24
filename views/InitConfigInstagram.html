@@ -16,20 +16,17 @@
                 </div>
             </div>                   
     </md-toolbar>  
-    <md-content>
+    <md-content layout-margin>
             <div layout="row" layout-margin>
                 <md-input-container flex>
-                    <label id="postdomain">Username:</label>
-                    <input name="sizeX" id="inputrssdomain" type="text">
-                </md-input-container>
-                <md-input-container flex>
-                    <label id="postdomainn">Password:</label>
-                    <input name="sizeX1" id="inputrssdomainn" type="text">
-                </md-input-container>
+                    <label id="postdomain">Domain:</label>
+                    <input name="tag-input" id="inputinstadomain" type="text" ng-model="formData.tagInput" required autofocus>
+                  </md-input-container>
             </div>
+            <label id="dislab">Please enter a tag name to get data from instagram, ex: Vehicles</label>
             <div class="md-actions" layout="row">
                 <span flex></span>
-                <md-button ng-click="finish()">
+                <md-button ng-click="submitForm();finish();">
                     Finish
                 </md-button>
                 <md-button ng-click="cancel()">

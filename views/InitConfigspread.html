@@ -17,26 +17,21 @@
                 </div>
             </div>
         </md-toolbar>
-
         <md-dialog-content>
             <md-content>
-
-              <!-- <div>
-              <a href="javascript:;" lk-google-picker on-picked="onPicked" on-loaded="onLoaded" on-cancel="onCancel" class="btn btn-2 btn-2c btn-blue">
-                <span>Authorize</span>
-              </a>
-            </div> -->
-              
-        </md-content>
+                <md-input-container flex>
+                    <label id="postdomain">Authorize to ur google drive to get spreadsheets</label>
+                </md-input-container>
+            </md-content>
         </md-dialog-content>
         <div class="md-actions" layout="row">
             <span flex></span>
             <div>
-              <a href="javascript:;" lk-google-picker on-picked="onPicked" on-loaded="onLoaded" on-cancel="onCancel" class="btn btn-2 btn-2c btn-blue">
-                <span>Authorize</span>
-              </a>
+                <a href="javascript:;" lk-google-picker on-picked="onPicked" on-loaded="onLoaded" on-cancel="onCancel" class="btn btn-2 btn-2c btn-blue">
+                    <span>Authorize</span>
+                </a>
             </div>
-           <!--  <md-button ng-click="finish()" class="md-primary">
+            <!--  <md-button ng-click="finish()" class="md-primary">
                 Finish
             </md-button> -->
             <md-button ng-click="cancel()" class="md-primary">

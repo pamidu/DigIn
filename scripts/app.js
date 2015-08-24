@@ -501,3 +501,10 @@ routerApp.filter('fromTo', function() {
         }
     });
 
+routerApp.filter('getExtension', function () {
+  return function (url) {
+    return url.split('.').pop();
+  };
+});
+
+

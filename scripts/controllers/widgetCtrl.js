@@ -654,6 +654,7 @@ function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
                 obj.authorName = posts[i].author.name;
                 obj.title = posts[i].title;
                 obj.comments = posts[i].comment_count;
+                obj.date = posts[i].date
 
                 trimmedPosts.push(obj);
             }

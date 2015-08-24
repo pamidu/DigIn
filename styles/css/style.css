@@ -1261,3 +1261,24 @@ md-dialog {
 .ui-resizable-handle{
   z-index: 0 !important;
 }
+
+.nav-search .sidebaricons-active:before {
+    border-color: #fff !important;
+}
+
+.nav-search .sidebaricons-active:after {
+    background: #fff !important;
+}
+
+.nav-search .sidebaricons:before {
+    border-color: #000 !important;
+}
+
+.nav-search .sidebaricons:after {
+    background: #000 !important;
+}
+/* wordpress widget image size */
+md-list-item > .md-avatar:first-child, md-list-item .md-list-item-inner > .md-avatar:first-child {
+    width: 100px;
+    height: 100px;
+}

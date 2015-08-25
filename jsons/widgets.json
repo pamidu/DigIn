@@ -26,6 +26,19 @@
             "col": "1"
         }, {
 
+            "title": "Converter",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "type": "Custom",
+            "Description": "Encrypt, Decrypt",
+            "initTemplate": "InitConfigconv",
+            "initController": "convInit",
+            "widView": "views/Viewconv.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "1"
+        }, {
+
             "title": "Weather",
             "icon": "styles/css/images/icons/ic_assignment_24px.svg",
             "type": "Custom",

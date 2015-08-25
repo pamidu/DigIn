@@ -1,0 +1,22 @@
+<md-content layout-margin flex>
+ <md-tabs md-border-bottom>
+        <md-tab label="Encrypted Message">
+            <md-content class="md-padding">
+                <div layout="column">
+                    <h6>Encrypted Data:</h6>
+                    <p>{{widget.widData}}</p>
+                </div>
+            </md-content>
+        </md-tab>
+        <md-tab label="Decrypted Message">
+            <md-content class="md-padding">
+                <div layout="column">
+                    <h6>Decrypted Data:</h6>
+                    <p>{{widget.widData.decryption}}</p>
+                </div>
+            </md-content>
+        </md-tab>
+        </md-tabs>      
+</md-content>
+
+

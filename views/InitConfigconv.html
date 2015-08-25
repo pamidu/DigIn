@@ -16,13 +16,14 @@
                 </div>
             </div>                   
     </md-toolbar>  
-    <md-content>
+    <md-content layout-margin>
             <div layout="row" layout-margin>
                 <md-input-container flex>
                     <label id="postdomains">Domain:</label>
                     <input type="text" ng-model="toencrypt">
                 </md-input-container>
             </div>
+            <label id="dislab">Please enter the any content you prefer based on any language, ex : This is test, இந்த சோதனை ஆகிறது, इस परीक्षा में है</label>
             <div class="md-actions" layout="row">
                 <span flex></span>
                 <md-button ng-click="finish()">

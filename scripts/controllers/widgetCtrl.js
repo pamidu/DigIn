@@ -870,6 +870,8 @@ function csvInit($scope, $http, $mdDialog, widId, $rootScope) {
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
     $rootScope.myData = [58.13, 53.98, 67.00, 89.70, 99.00, 13.28, 66.70, 34.98];
+    $rootScope.dashboard.widgets[objIndex].widDataa = $rootScope.myData;
+    console.log(JSON.stringify($rootScope.myData));
 
     $scope.cancel = function() {
         $mdDialog.hide();
@@ -1286,7 +1288,7 @@ $scope.finish = function() {
     console.log(splitEncryption);
         $rootScope.decryption = CryptoJS.AES.decrypt(splitEncryption, "Secret Passphrase", { format: JsonFormatter }).toString(CryptoJS.enc.Utf8);
 
-    $rootScope.dashboard.widgets[objIndex].widData = $rootScope.decryption;
+    $rootScope.dashboard.widgets[objIndex].widDatas = $rootScope.decryption;
     console.log(JSON.stringify($rootScope.decryption));
 
         // $mdDialog.hide();

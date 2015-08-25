@@ -1,23 +1,22 @@
 <md-content layout-margin flex>
-
-<link rel="stylesheet" type="text/css" href="../duodigin/styles/css/youtube.css">
-
-    <div id="results">
-      <div class="video" data-ng-repeat="video in widget.widData.items" data-ng-click="queue(video.id.videoID, video.snippet.title)">
-        <img class="video-image" data-ng-src="{{ video.snippet.thumbnails.default.url }}"><br/><br/>
-        <label class="tagg" title="Description:">Title: </label><p class="video-title">{{ video.snippet.title }}</p>
-        <label class="tagg" title="Description:">Author: </label><p class="video-author">{{ video.snippet.channelTitle }}</p>
-        <label class="tagg" title="Description:">Description: </label><p class="video-description">{{ video.snippet.description }}</p>
-        <label class="tagg" title="Description:">Uploaded Date and Time: </label><p class="video-description">{{ video.snippet.publishedAt }}</p> 
-        <label class="tagg" title="Description:">Broadcast Content: </label><p class="video-description">{{ video.snippet.liveBroadcastContent }}</p>
-        <label class="tagg" title="Description:">Channel ID: </label><p class="video-description">{{ video.snippet.channelId }}</p>
-        <label class="tagg" title="Description:">Kind: </label><p class="video-description">{{ video.id.kind }}</p> 
-        <label class="tagg" title="Description:">Video ID: </label><p class="video-description">{{ video.id.videoId }}</p> 
-
-
-
-      </div>
+    <div ng-repeat="video in widget.widData.items" id="results" flex layout-margin>  
+    <md-card layout-margin flex layout="column" style="border: 1px solid #D8D8D8;box-shadow: 2px 2px 2px rgba(188, 188, 188);background-color: rgb(238, 238, 238);
+    border-radius: 5px;">
+        <div class="video" layout-margin>
+        <h4 layout-margin>{{ video.snippet.title }}</h4>
+        <md-list-item class="md-3-line" layout-margin flex layout="column">
+        <img ng-src="{{ video.snippet.thumbnails.default.url }}" style="width:100px" layout-margin>
+        <div class="md-list-item-text">
+        <h3 style="line-height: 1.0em;">Author: {{ video.snippet.channelTitle }}</h3>
+        <!-- <h3 style="line-height: 1.0em;">Description: {{ video.snippet.description }}</h3> -->
+        <h3 style="line-height: 1.0em;">Uploaded Date and Time: {{ video.snippet.publishedAt }}</h3>
+        <h3 style="line-height: 1.0em;">Broadcast Content: {{ video.snippet.liveBroadcastContent }}</h3>
+        <h3 style="line-height: 1.0em;">Channel ID: {{ video.snippet.channelId }}</h3>
+        <h3 style="line-height: 1.0em;">Kind: {{ video.id.kind }}</h3>
+        <h3 style="line-height: 1.0em;">Video ID: {{ video.id.videoId }}</h3>
+        </div>
+        </md-list-item> 
+        </div>
+    </md-card>
     </div>
-
-
 </md-content>

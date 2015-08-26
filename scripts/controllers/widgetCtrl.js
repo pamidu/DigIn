@@ -943,8 +943,8 @@ function imInit($scope, $http, $rootScope, $mdDialog, widId) {
     //complete config  
     $scope.finish = function() {
         $rootScope.image = $scope.image;
-        $rootScope.dashboard.widgets[objIndex].widData = $scope.image;
-        // console.log(JSON.stringify($scope.image));
+        $rootScope.dashboard.widgets[objIndex].widIm = $rootScope.image;
+        // console.log(JSON.stringify($rootScope.image));
         $mdDialog.hide();
     };
 };
@@ -955,7 +955,7 @@ function csvInit($scope, $http, $mdDialog, widId, $rootScope) {
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
     $rootScope.myData = [58.13, 53.98, 67.00, 89.70, 99.00, 13.28, 66.70, 34.98];
-    $rootScope.dashboard.widgets[objIndex].widDataa = $rootScope.myData;
+    $rootScope.dashboard.widgets[objIndex].widCsc = $rootScope.myData;
     console.log(JSON.stringify($rootScope.myData));
 
     $scope.cancel = function() {
@@ -967,7 +967,7 @@ function csvInit($scope, $http, $mdDialog, widId, $rootScope) {
         $rootScope.csvFile = file;
         // $rootScope.myData = file;
         //console.log($rootScope.csvFile);
-        $rootScope.dashboard.widgets[objIndex].widData = $rootScope.csvFile;
+        $rootScope.dashboard.widgets[objIndex].widCsv = $rootScope.csvFile;
         console.log(JSON.stringify($rootScope.csvFile));
         $mdDialog.hide();
 
@@ -1355,7 +1355,7 @@ $scope.finish = function() {
     $rootScope.todecrypt = $rootScope.todecrypt.ct +'&'+ $rootScope.todecrypt.iv +'&'+ $rootScope.todecrypt.s;
 
 
-    $rootScope.dashboard.widgets[objIndex].widData = $rootScope.todecrypt;
+    $rootScope.dashboard.widgets[objIndex].widEnc = $rootScope.todecrypt;
     console.log(JSON.stringify($rootScope.todecrypt));
 
     // $mdDialog.hide();
@@ -1373,7 +1373,7 @@ $scope.finish = function() {
     console.log(splitEncryption);
         $rootScope.decryption = CryptoJS.AES.decrypt(splitEncryption, "Secret Passphrase", { format: JsonFormatter }).toString(CryptoJS.enc.Utf8);
 
-    $rootScope.dashboard.widgets[objIndex].widDatas = $rootScope.decryption;
+    $rootScope.dashboard.widgets[objIndex].widDec = $rootScope.decryption;
     console.log(JSON.stringify($rootScope.decryption));
 
         // $mdDialog.hide();

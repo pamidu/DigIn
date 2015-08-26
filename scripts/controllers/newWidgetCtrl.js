@@ -76,7 +76,16 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
         sizeY: widget.sizeY,
         row: widget.row,
         col: widget.col,
-  
+
+
+        widCsv:{},
+        widCsc:{},
+        widEnc:{},
+        widDec:{},
+        widAna:{},
+        widAque:{},
+        widAexc:{},
+        widIm:{},
         widData:{},
         widChart: widget.widConfig,
         widView:widget.widView,

@@ -201,6 +201,96 @@ function linkedInit(scope, $mdDialog, widId, $rootScope) {
     };
 };
 
+function analyticsInit($scope, $http, $mdDialog, widId, $rootScope) {
+
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+    $scope.finish = function() {
+        $mdDialog.hide();
+    };
+
+    $rootScope.charts = [{
+                    reportType: 'ga',
+                    query: {
+                        metrics: 'ga:sessions',
+                        dimensions: 'ga:date',
+                        'start-date': '30daysAgo',
+                        'end-date': 'yesterday'
+                    },
+                    chart: {
+                        container: 'chart-container-1',
+                        type: 'LINE',
+                        options: {
+                            width: '100%'
+                        }
+                    }
+
+                    // $rootScope.dashboard.widgets[objIndex].widData = $rootScope.charts;
+                }, 
+
+                {
+                    reportType: 'ga',
+                    query: {
+                        metrics: 'ga:sessions',
+                        dimensions: 'ga:browser',
+                        'start-date': '30daysAgo',
+                        'end-date': 'yesterday'
+                    },
+                    chart: {
+                        container: 'chart-container-2',
+                        type: 'PIE',
+                        options: {
+                            width: '100%',
+                            is3D: true,
+                            title: 'Browser Usage'
+                        }
+                    }
+                    // $rootScope.dashboard.widgets[objIndex].widData = $rootScope.charts;
+                }];
+
+                $rootScope.extraChart = {
+                    reportType: 'ga',
+                    query: {
+                        metrics: 'ga:sessions',
+                        dimensions: 'ga:date',
+                        'start-date': '30daysAgo',
+                        'end-date': 'yesterday',
+                        ids: 'ga: ' // put your viewID here
+                    },
+                    chart: {
+                        container: 'chart-container-3',
+                        type: 'LINE',
+                        options: {
+                            width: '100%'
+                        }
+                    }
+                };
+
+                $rootScope.queries = [{
+                    query: {
+                        ids: 'ga: ',  // put your viewID here ga:81197147, 106493238
+                        metrics: 'ga:sessions',
+                        dimensions: 'ga:city'
+                    }
+                }];
+
+                // if a report is ready
+                $rootScope.$on('$gaReportSuccess', function (e, report, element) {
+                    console.log(report, element);
+                });
+
+
+ $rootScope.dashboard.widgets[objIndex].widData = $rootScope.charts;
+ console.log(JSON.stringify($rootScope.charts));
+
+ // console.log("hii");
+ // console.log($rootScope.extraChart);
+ // console.log($rootScope.queries);
+
+};
 
 
 
@@ -763,89 +853,84 @@ function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSetting
 
 function gnewsInit($scope, $http, $mdDialog, widId, $rootScope) {
 
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+
+    google.load('search', '1');
     //cancel config
     $scope.cancel = function() {
         $mdDialog.hide();
-    };
-
-    $scope.finish = function() {
-
-        $mdDialog.hide();
-
-    };
-
-
-    google.load('search', '1');
+    };   
 
     var newsSearch;
 
-    $scope.searchComplete = function() {
+      $scope.finish = function(text) {
 
-        var container = document.getElementById('gnews-div');
-        container.innerHTML = '';
+        
+          var gnewsfeed = document.getElementById('gnewsrequest').value;
+          // Create a News Search instance.
+          
+          newsSearch = new google.search.NewsSearch();
 
-        if (newsSearch.results && newsSearch.results.length > 0) {
-            for (var i = 0; i < newsSearch.results.length; i++) {
+          function searchComplete() {
 
-                // Create HTML elements for search results
-                var p = document.createElement('p');
-                var gimg = document.createElement('gimg');
-                var gtitle = document.createElement('gtitle');
-                var gcontent = document.createElement('gcontent');
-                var gpubdate = document.createElement('gpubdate');
-                var gpub = document.createElement('gpub');
-                var gloc = document.createElement('gloc');
-                var gurl = document.createElement('gurl');
-                var glang = document.createElement('glang');
+            var container = document.getElementById('gnews-div');
+            container.innerHTML = '';
 
+            if (newsSearch.results && newsSearch.results.length > 0) {
+                      for (var i = 0; i < newsSearch.results.length; i++) {
 
-                gimg.innerHTML = '<img style="width:60px;height:60px;" src=\"' + newsSearch.results[i].image.url + '\">'
-                gtitle.innerHTML = "<h2>" + newsSearch.results[i].title; + "</h2>"
-                gcontent.innerHTML = "<p>" + newsSearch.results[i].content; + "</p>"
-                gpubdate.innerHTML = "<p>Published on: " + newsSearch.results[i].publishedDate; + "</p>"
-                gpub.innerHTML = "<p>Published by: " + newsSearch.results[i].publisher; + "</p>"
-                gloc.innerHTML = "<p>Location: " + newsSearch.results[i].location; + "</p>"
-                gurl.innerHTML = "<p>Visit: " + newsSearch.results[i].signedRedirectUrl; + "</p>"
-                glang.innerHTML = "<p>Published language: " + newsSearch.results[i].language; + "</p>"
+                          // Create HTML elements for search results
+                          var p = document.createElement('p');
+                          var gimg = document.createElement('gimg');
+                          var gtitle = document.createElement('gtitle');
+                          var gcontent = document.createElement('gcontent');
+                          var gpubdate = document.createElement('gpubdate');
+                          var gpub = document.createElement('gpub');
+                          var gloc = document.createElement('gloc');
+                          var gurl = document.createElement('gurl');
+                          var glang = document.createElement('glang');
 
 
+                          gimg.innerHTML = '<img style="width:60px;height:60px;" src=\"' + newsSearch.results[i].image.url + '\">'
+                          gtitle.innerHTML = "<h2>" + newsSearch.results[i].title; + "</h2>"
+                          gcontent.innerHTML = "<p>" + newsSearch.results[i].content; + "</p>"
+                          gpubdate.innerHTML = "<p>Published on: " + newsSearch.results[i].publishedDate; + "</p>"
+                          gpub.innerHTML = "<p>Published by: " + newsSearch.results[i].publisher; + "</p>"
+                          gloc.innerHTML = "<p>Location: " + newsSearch.results[i].location; + "</p>"
+                          gurl.innerHTML = "<p>Visit: " + newsSearch.results[i].signedRedirectUrl; + "</p>"
+                          glang.innerHTML = "<p>Published language: " + newsSearch.results[i].language; + "</p>"
 
 
-                // Append search results to the HTML nodes
-                p.appendChild(gimg);
-                p.appendChild(gtitle);
-                p.appendChild(gcontent);
-                p.appendChild(gpubdate);
-                p.appendChild(gpub);
-                p.appendChild(gloc);
-                p.appendChild(gurl);
-                p.appendChild(glang);
-                container.appendChild(p);
+
+
+                          // Append search results to the HTML nodes
+                          p.appendChild(gimg);
+                          p.appendChild(gtitle);
+                          p.appendChild(gcontent);
+                          p.appendChild(gpubdate);
+                          p.appendChild(gpub);
+                          p.appendChild(gloc);
+                          p.appendChild(gurl);
+                          p.appendChild(glang);
+                          container.appendChild(p);
+                      }
+                  }
             }
-        }
-    }
 
-    $scope.gnewsextract = function(text) {
-        var gnewsfeed = document.getElementById('gnewsrequest').value;
-        // Create a News Search instance.
-        newsSearch = new google.search.NewsSearch();
+          // Set searchComplete as the callback function when a search is 
+          // complete.  The newsSearch object will have results in it.
+          newsSearch.setSearchCompleteCallback(this, searchComplete, null);
 
-        // Set searchComplete as the callback function when a search is 
-        // complete.  The newsSearch object will have results in it.
-        newsSearch.setSearchCompleteCallback(this, searchComplete, null);
+          // Specify search quer(ies)
+          newsSearch.execute(gnewsfeed);
 
-        // Specify search quer(ies)
-        newsSearch.execute(gnewsfeed);
+          // Include the required Google branding
+          /*google.search.Search.getBranding('branding');*/
 
-        // Include the required Google branding
-        google.search.Search.getBranding('branding');
-    }
+         $mdDialog.hide();
 
-    // Set a callback to call your code when the page loads
-    google.setOnLoadCallback(gnewsextract);
-
-}
-
+      }
+};
 
 function imInit($scope, $http, $rootScope, $mdDialog, widId) {
 
@@ -1296,71 +1381,6 @@ $scope.finish = function() {
 
       
 };
-
-
-function searchComplete() {
-
-    var container = document.getElementById('gnews-div');
-    container.innerHTML = '';
-
-    if (newsSearch.results && newsSearch.results.length > 0) {
-        for (var i = 0; i < newsSearch.results.length; i++) {
-
-            // Create HTML elements for search results
-            var p = document.createElement('p');
-            var gimg = document.createElement('gimg');
-            var gtitle = document.createElement('gtitle');
-            var gcontent = document.createElement('gcontent');
-            var gpubdate = document.createElement('gpubdate');
-            var gpub = document.createElement('gpub');
-            var gloc = document.createElement('gloc');
-            var gurl = document.createElement('gurl');
-            var glang = document.createElement('glang');
-
-
-            gimg.innerHTML = '<img style="width:60px;height:60px;" src=\"' + newsSearch.results[i].image.url + '\">'
-            gtitle.innerHTML = "<h2>" + newsSearch.results[i].title; + "</h2>"
-            gcontent.innerHTML = "<p>" + newsSearch.results[i].content; + "</p>"
-            gpubdate.innerHTML = "<p>Published on: " + newsSearch.results[i].publishedDate; + "</p>"
-            gpub.innerHTML = "<p>Published by: " + newsSearch.results[i].publisher; + "</p>"
-            gloc.innerHTML = "<p>Location: " + newsSearch.results[i].location; + "</p>"
-            gurl.innerHTML = "<p>Visit: " + newsSearch.results[i].signedRedirectUrl; + "</p>"
-            glang.innerHTML = "<p>Published language: " + newsSearch.results[i].language; + "</p>"
-
-
-
-
-            // Append search results to the HTML nodes
-            p.appendChild(gimg);
-            p.appendChild(gtitle);
-            p.appendChild(gcontent);
-            p.appendChild(gpubdate);
-            p.appendChild(gpub);
-            p.appendChild(gloc);
-            p.appendChild(gurl);
-            p.appendChild(glang);
-            container.appendChild(p);
-        }
-    }
-}
-
-function gnewsextract(text) {
-    var gnewsfeed = document.getElementById('gnewsrequest').value;
-    // Create a News Search instance.
-    newsSearch = new google.search.NewsSearch();
-
-    // Set searchComplete as the callback function when a search is 
-    // complete.  The newsSearch object will have results in it.
-    newsSearch.setSearchCompleteCallback(this, searchComplete, null);
-
-    // Specify search quer(ies)
-    newsSearch.execute(gnewsfeed);
-
-    // Include the required Google branding
-    google.search.Search.getBranding('branding');
-}
-
-
 
 
 routerApp.controller('sltivrInit', function($scope, $mdDialog, $rootScope) {

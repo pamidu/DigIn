@@ -13,7 +13,7 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial', 'uiMicrokernel', "hi
     'countTo',
     'pjTts',
     'nvd3',
-    'gridster', 'lk-google-picker', 'ngSanitize'
+    'gridster', 'lk-google-picker', 'ngSanitize', 'ngAnalytics'
 ])
 
 routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", function($locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider) {
@@ -157,12 +157,14 @@ routerApp.controller('AnalyzerViewerControl', ['$scope', '$rootScope', '$statePa
 ]);
 
 
-routerApp.run(['$rootScope', function($rootScope) {
+routerApp.run(['$rootScope', 'ngAnalyticsService', function($rootScope, ngAnalyticsService) {
 
     var tag = document.createElement('script');
     tag.src = "http://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    ngAnalyticsService.setClientId('692244578573-vei7vts4m5n8kr0umqvlhmobflgb6ehq.apps.googleusercontent.com');
 
 
 }]);

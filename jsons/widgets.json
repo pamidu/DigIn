@@ -50,6 +50,19 @@
             "sizeY": "2",
             "row": "0",
             "col": "2"
+        }, {
+
+            "title": "Google Calendar",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "type": "Custom",
+            "Description": "Upcoming events",
+            "initTemplate": "InitConfigCalendar",
+            "initController": "calendarInit",
+            "widView": "views/ViewCalendar.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "2"
         },
 
         {
@@ -132,10 +145,10 @@
             }
         }, {
 
-            "title": "Instagram",
+            "title": "Instagram Search",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Social Media",
-            "Description": "Likes, Followers, Following",
+            "Description": "Hashtags, Popular, Recent",
             "initTemplate": "InitConfigInstagram",
             "initController": "instaInit",
             "widView": "views/ViewInstagram.html",

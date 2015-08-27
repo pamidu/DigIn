@@ -1000,6 +1000,18 @@ function weatherInit(widId, $scope, $http, $rootScope, $mdDialog) {
 
 }
 
+function calendarInit(widId, $scope, $http, $rootScope, $mdDialog) {
+
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.finish = function() {
+        $mdDialog.hide();
+    };
+}
+
+
 
 function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
 

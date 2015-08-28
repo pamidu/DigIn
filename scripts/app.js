@@ -63,6 +63,11 @@ routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider", "lkGoo
             controller: 'ExtendedDashboardCtrl',
             templateUrl: "views/extended-dashboard.html"
         })
+        .state('D3plugins', {
+            url: "/D3plugins",
+            controller: 'd3PluginCtrl',
+            templateUrl: "views/D3Plugin/d3View.html"
+        })
         .state('PivotTable', {
             url: "/PivotTable",
             controller: 'summarizeCtrl',

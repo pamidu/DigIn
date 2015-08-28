@@ -201,6 +201,80 @@ function linkedInit(scope, $mdDialog, widId, $rootScope) {
     };
 };
 
+function TwitterInit($scope, $http, $mdDialog, widId, $rootScope, $q, twitterService) {
+
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+    $scope.finish = function() {
+
+        // twitterService.initialize();
+        $mdDialog.hide();
+
+    };
+
+   $rootScope.tweets=[]; //array of tweets
+
+    twitterService.initialize();
+
+    //using the OAuth authorization result get the latest 20 tweets from twitter for the user
+    $scope.refreshTimeline = function(maxId) {
+        twitterService.getLatestTweets(maxId).then(function(data) {
+            $rootScope.tweets = $rootScope.tweets.concat(data);
+        },function(){
+            $scope.rateLimitError = true;
+        });
+
+        $rootScope.dashboard.widgets[objIndex].widData = $rootScope.tweets;
+    console.log(JSON.stringify($rootScope.tweets));
+    }
+
+    //when the user clicks the connect twitter button, the popup authorization window opens
+    $scope.connectButton = function() {
+        twitterService.connectTwitter().then(function() {
+            if (twitterService.isReady()) {
+                //if the authorization is successful, hide the connect button and display the tweets
+                $('#connectButton').fadeOut(function(){
+                    $('#getTimelineButton, #signOut').fadeIn();
+                    $scope.refreshTimeline();
+                              $scope.connectedTwitter = true;
+                });
+            } else {
+
+                     }
+        });
+    }
+
+    //sign out clears the OAuth cache, the user will have to reauthenticate when returning
+    $scope.signOut = function() {
+        twitterService.clearCache();
+        $rootScope.tweets.length = 0;
+        $('#getTimelineButton, #signOut').fadeOut(function(){
+            $('#connectButton').fadeIn();
+            $scope.$apply(function(){$scope.connectedTwitter=false})
+        });
+        $scope.rateLimitError = false;    
+    }
+
+    //if the user is a returning user, hide the sign in button and display the tweets
+    if (twitterService.isReady()) {
+        $('#connectButton').hide();
+        $('#getTimelineButton, #signOut').show();
+            $scope.connectedTwitter = true;
+        $scope.refreshTimeline();
+    }
+
+    console.log("hii");
+    console.log($rootScope.tweets);
+
+    // $rootScope.dashboard.widgets[objIndex].widData = $rootScope.tweets;
+    // console.log(JSON.stringify($rootScope.tweets));
+
+
+};
+
 function analyticsInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
@@ -283,8 +357,12 @@ function analyticsInit($scope, $http, $mdDialog, widId, $rootScope) {
                 });
 
 
- $rootScope.dashboard.widgets[objIndex].widData = $rootScope.charts;
+ $rootScope.dashboard.widgets[objIndex].widAna = $rootScope.charts;
  console.log(JSON.stringify($rootScope.charts));
+
+ $rootScope.dashboard.widgets[objIndex].widAque = $rootScope.queries;
+
+ $rootScope.dashboard.widgets[objIndex].widAexc = $rootScope.extraChart;
 
  // console.log("hii");
  // console.log($rootScope.extraChart);

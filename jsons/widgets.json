@@ -26,6 +26,19 @@
             "col": "1"
         }, {
 
+            "title": "Converter",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "type": "Custom",
+            "Description": "Encrypt, Decrypt",
+            "initTemplate": "InitConfigconv",
+            "initController": "convInit",
+            "widView": "views/Viewconv.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "1"
+        }, {
+
             "title": "Weather",
             "icon": "styles/css/images/icons/ic_assignment_24px.svg",
             "type": "Custom",
@@ -37,10 +50,20 @@
             "sizeY": "2",
             "row": "0",
             "col": "2"
-        },
+        },  {
 
-        {
-
+            "title": "Google Calendar",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "type": "Custom",
+            "Description": "Upcoming events",
+            "initTemplate": "InitConfigCalendar",
+            "initController": "calendarInit",
+            "widView": "views/ViewCalendar.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "2"
+        }, {
 
             "title": "Data Driven Document(D3) Plugin",
             "icon": "styles/css/images/icons/ic_assignment_24px.svg",
@@ -145,6 +168,19 @@
             "col": "1"
         }, {
 
+            "title": "Twitter",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Social Media",
+            "Description": "Timeline, Tags, Other data",
+            "initTemplate": "InitConfigTwitter",
+            "initController": "TwitterInit",
+            "widView": "views/ViewTwitter.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "1"
+        },{
+
             "title": "LinkedIn",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Social Media",
@@ -170,9 +206,7 @@
             "row": "0",
             "col": "3"
 
-        },
-
-        {
+        }, {
             "title": "ElasticSearch",
             "icon": "styles/css/images/icons/ic_av_timer_24px.svg",
             "type": "Visualization",
@@ -240,9 +274,7 @@
             "sizeY": "2",
             "row": "2",
             "col": "0"
-        },
-
-        {
+        }, {
 
             "title": "Gnews",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
@@ -256,15 +288,13 @@
             "row": "2",
             "col": "0"
 
-        },
+        }, {
 
-        {
-
-            "title": "Google Analytics (Real Time)",
+            "title": "Google Analytics",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Web Analytics",
-            "Description": "Audience, Traffic, Content, Conversions",
-            "initTemplate": "analyticsInitConfig",
+            "Description": "Reports, Charts, Content, Queries",
+            "initTemplate": "InitConfiganalytics",
             "initController": "analyticsInit",
             "widView": "views/ViewAnalytics.html",
             "sizeX": "2",
@@ -353,3 +383,5 @@
 
     ]
 }
+
+        

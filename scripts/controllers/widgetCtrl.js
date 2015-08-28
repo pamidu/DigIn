@@ -370,48 +370,37 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
 
 //elastic controller
 function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) {
-    $scope.elasticStep = "views/InitConfigElastic-chart.html";
-
-    $scope.chartTypes = [{
-        name: "Area",
-        type: "area"
-    }, {
-        name: "Smooth area",
-        type: "areaspline"
-    }, {
-        name: "Line",
-        type: "line"
-    }, {
-        name: "Smooth line",
-        type: "spline"
-    }, {
-        name: "Column",
-        type: "column"
-    }, {
-        name: "Bar",
-        type: "bar"
-    }, {
-        name: "Pie",
-        type: "pie"
-    }, {
-        name: "Scatter",
-        type: "scatter"
-    }];
-    $scope.uniqueType = "";
-
-    $scope.loadNext = function(temlpate) {
-        $scope.elasticStep = "views/" + temlpate;
-    };
-
+    /*Variable Initialization*/
+    $scope.query = {};
+    $scope.query.state = false;
+    $scope.chartTypes = [{name:"Area",type:"area"},{name:"Smooth area",type:"areaspline"},{name:"Line",type:"line"},{name:"Smooth line",type:"spline"},{name:"Column",type:"column"},{name:"Bar",type:"bar"},{name:"Pie",type:"pie"},{name:"Scatter",type:"scatter" }];
     $scope.indexes = [];
     $scope.datasources = ['Object Store', 'Elastic search', 'CouchDB'];
     $scope.checkedFields = [];
-    $scope.checkedCategories = [];
     $scope.categoryVal = "";
-    $scope.excelNamespace = "";
-    $scope.excelClass = "";
+    $scope.mappedArray = {};
+    $scope.arrayAttributes = [];
+    $scope.seriesArray = [{name: 'series1',serName: '',type: 'area',color: ''}];
+    $scope.selectedTabIndex = 0;
+    $scope.dataTab = true;
+    $scope.chartTab = true;
+
+    //getting the widget object
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
     $scope.widget = $rootScope.dashboard.widgets[objIndex];
+
+    //setting the previous configurations
+    if(typeof $scope.widget.widConfig != 'undefined')
+    {
+        $scope.ind = $scope.widget.widConfig.index;
+        //$scope.selectedFields = $scope.widget.widConfig.fields;
+        $scope.dataQuery = $scope.widget.widConfig.query;
+        $scope.chartCategory = $scope.widget.widConfig.category;
+        $scope.seriesArray = $scope.widget.widConfig.series;
+    }
+
+    /* #start index retrieval
+    getting all the indexes for now its only from objectstore */
     var client = $objectstore.getClient("com.duosoftware.com", " ");
     client.onGetMany(function(data) {
         if (data) {
@@ -419,33 +408,14 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         }
     });
     client.onError(function(data) {
-
+        console.log('Error getting index values');
     });
+    /* #end index retrieval */
 
-    $scope.alert = function() {
-
-            $mdDialog.show({
-                controller: 'successCtrl',
-                templateUrl: 'views/file-success.html',
-                resolve: {
-
-                }
-            })
-        }
-        //cancel config
-    $scope.cancel = function() {
-        $mdDialog.hide();
-    };
-    $scope.toggleCheck = function(index) {
-        if ($scope.checkedFields.indexOf(index) === -1) {
-            $scope.checkedFields.push(index);
-        } else {
-            $scope.checkedFields.splice($scope.checkedFields.indexOf(index), 1);
-        }
-    };
-
+    //gets all the fields of the selected index
     client.getClasses("com.duosoftware.com");
     $scope.getFields = function() {
+        
         $scope.selectedFields = [];
         var client = $objectstore.getClient("com.duosoftware.com", $scope.ind);
         client.onGetMany(function(data) {
@@ -455,126 +425,139 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                         name: entry,
                         checked: false
                     });
-
                 });
             }
         });
-
         client.getFields("com.duosoftware.com", $scope.ind);
     }
 
-    $scope.getData = function() {
-        var parameter = "";
-        $scope.QueriedData = [];
-        for (param in $scope.checkedFields) {
-
-            parameter += " " + $scope.checkedFields[param].name;
-            $rootScope.header = [];
-            $rootScope.header.push({
-                name: $scope.checkedFields[param].name,
-                field: $scope.checkedFields[param].name
-            });
+    //selects fields for non-queried data retrieval
+    $scope.toggleCheck = function(index) {
+        if ($scope.checkedFields.indexOf(index) === -1) {
+            $scope.checkedFields.push(index);
+        } else {
+            $scope.checkedFields.splice($scope.checkedFields.indexOf(index), 1);
         }
-        var client = $objectstore.getClient("com.duosoftware.com", "");
-        client.onGetMany(function(data) {
-            if (data) {
-                $rootScope.DashboardData = [];
-                $rootScope.DashboardData = data;
-                $mdDialog.show({
-                    controller: 'ShowTableCtrl',
-                    templateUrl: 'views/data-explorer.html'
-                })
-            }
-        });
-        client.getSelected(parameter);
-    }
+    };
 
-
-    $scope.executeQuery = function(widget) {
-
-        var client = $objectstore.getClient("com.duosoftware.com", "testJay");
-        client.onGetMany(function(data) {
-            if (data) {
-                $rootScope.DashboardData = [];
-                $rootScope.DashboardData = data;
-                $mdDialog.show({
-                    controller: 'ShowTableCtrl',
-                    templateUrl: 'views/data-explorer.html',
-
-
-                })
-
-            }
-        });
-        client.getByFiltering(widget.query);
-    }
-
-    $scope.buildchart = function(widget) {
+    //retrieve data using a web worker
+    $scope.getData = function() {
         var w = new Worker("scripts/webworkers/elasticWorker.js");
         var parameter = "";
-        $scope.QueriedData = [];
-        $scope.chartSeries = [];
-        $rootScope.header = [];
-        for (param in $scope.checkedFields) {
-            parameter += " " + $scope.checkedFields[param].name;
-        }
 
-        parameter += " " + $scope.categoryVal;
+        if($scope.checkedFields.length!= 0 || $scope.dataQuery != ""){
+            if ($scope.query.state) {
+                parameter = $scope.query.value;
+            } else {
+                for (param in $scope.checkedFields) {
+                    parameter += " " + $scope.checkedFields[param].name;
+                }
+                parameter += " " + $scope.categoryVal;
+            }
 
-        w.postMessage($scope.ind + "," + parameter);
-        w.addEventListener('message', function(event) {
-            var res = JSON.parse(event.data);
-            if (res) {
-                $rootScope.DashboardData = [];
-                $rootScope.DashboardData = res;
-                widget.chartConfig.series = [];
-                widget.chartConfig.xAxis = {};
-                widget.chartConfig.xAxis.categories = [];
-                var _fieldData = [];
 
-                var series = [];
+            w.postMessage($scope.ind + "," + parameter + "," + $scope.query.state);
+            w.addEventListener('message', function(event) {
 
-                //creating dynamic object attributes
-                for (i = 0; i < $scope.checkedFields.length; i++) {
-                    series[$scope.checkedFields[i].name] = {
-                        name: $scope.checkedFields[i].name,
-                        data: []
-                    };
+                var obj = JSON.parse(event.data);
+
+                //creating the array to map dynamically
+                for (var key in obj[0]) {
+                    if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
+                        var val = obj[0][key];
+                        console.log(key);
+                        $scope.mappedArray[key] = {
+                            name: key,
+                            data: []
+                        };
+                        $scope.arrayAttributes.push(key);
+                    }
                 }
 
-                for (i = 0; i < res.length; i++) {
-                    for (var key in series) {
-                        if (series.hasOwnProperty(key)) {
-                            series[key].data.push(parseInt(res[i][key]));
+                //mapping the dynamically created array
+                for (i = 0; i < obj.length; i++) {
+                    for (var key in obj[i]) {
+                        if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
+                            var val = obj[i][key];
+                            $scope.mappedArray[key].data.push(parseFloat(val));
                         }
                     }
-                    $scope.checkedCategories.push(res[i][$scope.categoryVal]);
-
                 }
+            });
+            
+            $scope.chartTab = false;
+            $scope.selectedTabIndex = 2;
+        }
+    }
 
-                console.log('Mapped series' + JSON.stringify(series));
+    //adds new series to the chart
+    $scope.addSeries = function() {
+        $scope.seriesArray.push({
+            name: 'series1',
+            serName: '',
+            type: 'area',
+            color: ''
+        });
+    }
 
-                var arrayedSeries = [];
-                for (var key in series) {
-                    if (series.hasOwnProperty(key)) {
-                        arrayedSeries.push(series[key]);
+    //removes the clicked series
+    $scope.removeSeries = function(ind){
+        $scope.seriesArray.splice(ind,1);
+    }
+
+    //builds the chart
+    $scope.buildchart = function(widget) {
+        widget.chartSeries = [];
+        widget.chartConfig.xAxis = {};
+        widget.chartSeries = [];
+        if($scope.seriesArray.serName != "" && typeof $scope.chartCategory!='undefined'){
+            widget.chartConfig.series = $scope.seriesArray.map(function(elm) {
+                console.log(eval('$scope.mappedArray.' + elm.serName + '.data'));
+                return {
+                    name: elm.name,
+                    type: elm.type,
+                    color: elm.color,
+                    data: eval('$scope.mappedArray.' + elm.serName + '.data')
+                };
+            });
+            console.log($scope.mappedArray.ID.data);
+            console.log($scope.chartCategory);
+            widget.chartConfig.xAxis.categories = eval('$scope.mappedArray.' + $scope.chartCategory + '.data');
+            $mdDialog.hide();
+
+            //set the widget configurations
+            widget.widConfig = {
+                index: $scope.ind,
+                fields: $scope.selectedFields,
+                query: $scope.dataQuery,
+                category: $scope.chartCategory,
+                series: $scope.seriesArray
+            };
+        }
+    }
+
+    //changes the tab
+    $scope.toggleTab = function(ind){
+        if(typeof $scope.selectedFields != 'undefined'){
+            $scope.dataTab = false;
+            $scope.selectedTabIndex = 1;
+
+            if(typeof $scope.widget.widConfig != 'undefined')
+            {
+                for(i=0;i<$scope.selectedFields.length;i++){
+                    for (x in $scope.widget.widConfig.fields) {
+                        if ($scope.widget.widConfig.fields.hasOwnProperty(x) && $scope.widget.widConfig.fields[x] === $scope.selectedFields[i]) {
+                           $scope.selectedFields[i].checked = true;
+                        }
                     }
                 }
-
-                if ($scope.uniqueType == "") widget.chartConfig.options.chart.type = "area";
-                else widget.chartConfig.options.chart.type = $scope.uniqueType;
-                widget.chartSeries = [];
-                widget.chartConfig.series = arrayedSeries.map(function(elm) {
-                    return {
-                        name: elm.name,
-                        data: elm.data
-                    };
-                });
-
-                widget.chartConfig.xAxis.categories = $scope.checkedCategories;
             }
-            //w.terminate();
-        });
+        }
+    }
+
+    //close the config
+    $scope.cancel = function(){
+        $mdDialog.hide();
     }
 };
 

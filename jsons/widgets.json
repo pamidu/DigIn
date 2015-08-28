@@ -26,19 +26,6 @@
             "col": "1"
         }, {
 
-            "title": "Converter",
-            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
-            "type": "Custom",
-            "Description": "Encrypt, Decrypt",
-            "initTemplate": "InitConfigconv",
-            "initController": "convInit",
-            "widView": "views/Viewconv.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "0",
-            "col": "1"
-        }, {
-
             "title": "Weather",
             "icon": "styles/css/images/icons/ic_assignment_24px.svg",
             "type": "Custom",
@@ -46,19 +33,6 @@
             "initTemplate": "InitConfigWeather",
             "initController": "weatherInit",
             "widView": "views/ViewWeather.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "0",
-            "col": "2"
-        }, {
-
-            "title": "Google Calendar",
-            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
-            "type": "Custom",
-            "Description": "Upcoming events",
-            "initTemplate": "InitConfigCalendar",
-            "initController": "calendarInit",
-            "widView": "views/ViewCalendar.html",
             "sizeX": "2",
             "sizeY": "2",
             "row": "0",
@@ -145,10 +119,10 @@
             }
         }, {
 
-            "title": "Instagram Search",
+            "title": "Instagram",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Social Media",
-            "Description": "Hashtags, Popular, Recent",
+            "Description": "Likes, Followers, Following",
             "initTemplate": "InitConfigInstagram",
             "initController": "instaInit",
             "widView": "views/ViewInstagram.html",
@@ -286,7 +260,7 @@
 
         {
 
-            "title": "Google Analytics",
+            "title": "Google Analytics (Real Time)",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Web Analytics",
             "Description": "Audience, Traffic, Content, Conversions",
@@ -362,6 +336,19 @@
             "sizeY": "2",
             "row": "3",
             "col": "2"
+        }, {
+
+            "title": "Google Maps",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "type": "Custom",
+            "Description": "Google Maps",
+            "initTemplate": "InitConfigGoogleMaps",
+            "initController": "googleMapsInit",
+            "widView": "views/ViewGoogleMaps.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "4",
+            "col": "0"
         }
 
     ]

@@ -264,6 +264,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                 $scope.dashboard.widgets = dashboard.data;
                 $rootScope.clickedDash = dashboard.data;
             }
+            
         }
          
         $scope.goAnalyzer = function(report){

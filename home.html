@@ -54,7 +54,8 @@
             <img ng-src="styles/css/images/logo2.png" class="md-avatar" id="digin-logo" alt="appLogo" style="width:inherit">
         </div>
         <md-divider style="padding-top:2px; "></md-divider>
-        <div class="sidebar-btn-container" style="margin-top:55px;">
+        <div class="sidebar-btn-container" style="margin-top:45px;">
+            <md-divider></md-divider>
             <md-item ng-repeat="item in menu">
                 <md-button style="min-width:0px; font-size:26px;" md-ink-ripple ng-click="$parent.navigate(item.title)" layout="row" layout-align="start center">
                     <md-icon style="height:100%;" class="{{item.icon}} sidebaricons"></md-icon>
@@ -85,7 +86,6 @@
     <!-- end pulathisi 7/24/2015 -->
     <div class="nav-search">
         <md-icon id="btnNavSearch" class="ion-search search sidebaricons"></md-icon>
-        <md-divider style="margin-top:8px;"></md-divider>
     </div>
     <div class="search-layer">
         <div class="search">
@@ -253,6 +253,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
     <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>-->
     <script type="text/javascript" src="scripts/vendor/jquery.jsPlumb-1.4.1-all-min.js"></script>
+    <script type="text/javascript" src="scripts/vendor/twitteroauth.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
 
      <script type="text/javascript" src="scripts/vendor/google-picker.min.js"></script>
@@ -260,6 +261,8 @@
       <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
 
      <script type="text/javascript" src="scripts/vendor/converter.js"></script>
+
+     <script type="text/javascript" src="scripts/vendor/twitterservice.js"></script>
 
     <script type="text/javascript" src="scripts/vendor/ng-analytics.js"></script>
     <script type="text/javascript" src="scripts/vendor/ng-analytics.min.js"></script>
@@ -344,6 +347,7 @@
     <script type="text/javascript" src="scripts/controllers/widgetCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/settingsCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/gridBottomSheetCtrl.js"></script>
+    <script type="text/javascript" src="scripts/controllers/ExcelCtrl.js"></script>
     <!-- Material Icons -->
     <script src="//cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"></script>
     <!-- svg to canvas -->
@@ -354,6 +358,14 @@
     <script type="text/javascript" src="scripts/vendor/angular-nvd3.js"></script>
     <script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script>
     <script type="text/javascript" src="scripts/controllers/ThemeCtrl.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+    <!-- excel directive -->
+    <script type="text/javascript" src="scripts/controllers/jszip.js"></script>
+    <script type="text/javascript" src="scripts/controllers/xlsx.js"></script>
+    <script type="text/javascript" src="scripts/controllers/xlsx-reader.js"></script>
+    <script type="text/javascript" src="scripts/controllers/excel.js"></script>
+    <script type="text/javascript" src="scripts/controllers/angular-touch.js"></script>
+    
     <!-- angular gridster -->
     <script src="scripts/angular-gridster.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -364,11 +376,15 @@
     <script type="text/javascript">
     google.load("feeds", "1");
     </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ=API_KEY&callback=finish">
+    </script>
     <script>
     $(document).ready(function() {
         Layout.init();
     });
     </script>
+
 </body>
 
 </html>

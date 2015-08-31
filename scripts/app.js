@@ -13,7 +13,7 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial', 'uiMicrokernel', "hi
     'countTo',
     'pjTts',
     'nvd3',
-    'gridster', 'lk-google-picker', 'ngSanitize', 'ngAnalytics','ngCsv'
+     'gridster','lk-google-picker', 'ngSanitize', 'ngAnalytics', 'servicess','ngCsv'
 ])
 
 routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", function($locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider) {
@@ -62,6 +62,11 @@ routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider", "lkGoo
             url: "/Dashboard",
             controller: 'ExtendedDashboardCtrl',
             templateUrl: "views/extended-dashboard.html"
+        })
+        .state('D3plugins', {
+            url: "/D3plugins",
+            controller: 'd3PluginCtrl',
+            templateUrl: "views/D3Plugin/d3View.html"
         })
         .state('PivotTable', {
             url: "/PivotTable",

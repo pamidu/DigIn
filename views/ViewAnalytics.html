@@ -1,11 +1,10 @@
 <md-content layout-margin flex>
     <div>
-        <!-- <ng-analytics-auth label="Hello:&nbsp;" hide-on-auth="true" auth-container="embed-api-auth-container"></ng-analytics-auth>
-        <ng-analytics-view view-selector-container="view-selector-container" auth-container="embed-api-auth-container"></ng-analytics-view> -->
+        <!-- <ng-analytics-view view-selector-container="view-selector-container" auth-container="embed-api-auth-container"></ng-analytics-view> -->
         <ng-analytics-view view-selector-container="view-selector-container" auth-container="embed-api-auth-container"></ng-analytics-view>
-        <ng-analytics-report queries="$root.queries" auth-container="embed-api-auth-container"></ng-analytics-report>
-        <ng-analytics-report queries="$root.queries" auth-container="embed-api-auth-container" view-selector-container="view-selector-container"></ng-analytics-report>
-        <ng-analytics-chart chart="$root.extraChart" auth-container="embed-api-auth-container"></ng-analytics-chart>
-        <ng-analytics-chart ng-repeat="chart in widget.widData" chart="chart" view-selector-container="view-selector-container" auth-container="embed-api-auth-container"></ng-analytics-chart>
+        <ng-analytics-report queries="widget.widAque" auth-container="embed-api-auth-container"></ng-analytics-report>
+        <ng-analytics-report queries="widget.widAque" auth-container="embed-api-auth-container" view-selector-container="view-selector-container"></ng-analytics-report>
+        <ng-analytics-chart chart="widget.widAexc" auth-container="embed-api-auth-container"></ng-analytics-chart>
+        <ng-analytics-chart ng-repeat="chart in widget.widAna" chart="chart" view-selector-container="view-selector-container" auth-container="embed-api-auth-container"></ng-analytics-chart>
     </div>
 </md-content>

@@ -178,12 +178,12 @@ function elasticDataCtrl($scope,$mdDialog,wid){
         currChar = 'a';
         for(j=0;j<$scope.series.length;j++){
             currChar = nextChar(currChar);
-            $scope.dataObj[currChar] = $scope.series[j].data[i];
-            $scope.dataArray.push($scope.dataObj);
-        }        
+            $scope.dataObj[currChar] = $scope.series[j].data[i];            
+        }
+        $scope.dataArray.push($scope.dataObj);        
     }
 
-    $scope.fileName = wid.name;
+    $scope.fileName = wid.uniqueType;
 
     console.log(JSON.stringify($scope.dataArray));
 };

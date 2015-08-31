@@ -520,7 +520,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                     data: eval('$scope.mappedArray.' + elm.serName + '.data')
                 };
             });
-            console.log($scope.mappedArray.ID.data);
+            //console.log($scope.mappedArray.ID.data);
             console.log($scope.chartCategory);
             widget.chartConfig.xAxis.categories = eval('$scope.mappedArray.' + $scope.chartCategory + '.data');
             $mdDialog.hide();

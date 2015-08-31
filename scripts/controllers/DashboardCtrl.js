@@ -98,64 +98,7 @@ routerApp.controller('DashboardCtrl', ['$scope',
     $scope.$on(TTS_EVENTS.PENDING, function(text){
         $log.info('Speaking: ' + text);
     });
-            // if(widget.uniqueType === "ElasticSearch")
-            // {
-            //     $scope.dataSeries = widget.chartConfig.series;
-            //     $scope.dataCategories = widget.chartConfig.xAxis.categories;
 
-            //      TTSConfig.url = 'http://tts.peterjurkovic.com/tts-backend/index.php';
-              
-            //     var comment = "";
-
-            //    // for(i=0;i< $scope.dataSeries.length;i++){
-            //         //for(j=0; j< $scope.dataCategories.length;j++){
-            //             // comment = $scope.dataCategories[0] + " " + $scope.dataSeries[0].name + " " + $scope.dataSeries[0].data[0];
-            //             // comment =  comment.substring(0,130);
-            //          tts.speak({
-            //         text: 'Jay you are adding  widget',
-            //         lang: 'en'
-            //             // you can add additional params which will send to server
-            //     });
-            //        // }
-            //    // }
-            // } 
-            // else{
-            // widget.chartSeries.forEach(function(entry) {
-           
-
-            //       comment += "Your sales for the year "+ entry.name + " is"+ " " + entry.data[0] + " " + "dollars";
-            //       comment +=" ";
-            // });
-            // for (var i = 0, charsLength = comment.length; i < charsLength; i += 130) {
-            //          chunks.push(comment.substring(i, i + 130));
-            // }
-      
-            //  comment =  comment.substring(0,130)
-            //  TTSConfig.url = 'http://tts.peterjurkovic.com/tts-backend/index.php';
-            //     var tts = new TTSAudio();
-
-            //     tts.speak({
-            //         text:   comment,
-            //         lang: 'en'
-            //             // you can add additional params which will send to server
-            //     });
-
-            // }
-
-            //     // triggered after speaking
-            //     $scope.$on(TTS_EVENTS.SUCCESS, function() {
-            //         $log.info('Successfully done!')
-            //     });
-
-            //     // triggered in case error
-            //     $scope.$on(TTS_EVENTS.ERROR, function() {
-            //         $log.info('An unexpected error has occurred');
-            //     });
-
-            //     // before loading and speaking
-            //     $scope.$on(TTS_EVENTS.PENDING, function(text) {
-            //         $log.info('Speaking: ' + text);
-            //     });
 
         }
         $scope.closeDialog = function() {
@@ -193,13 +136,15 @@ routerApp.controller('DashboardCtrl', ['$scope',
 ]);
 
 function elasticDataCtrl($scope,$mdDialog,wid){
-    //alert('test');
+
     $scope.closeDialog = function() {
             $mdDialog.hide();
         };
 
     $scope.series = wid.chartConfig.series;
     $scope.categories = wid.chartConfig.xAxis.categories;
+    console.log('series:'+ JSON.stringify($scope.series));
+    console.log('categories:'+ $scope.categories);
     $scope.mappedSeries = [];
     for(i=0;i<$scope.series.length;i++){
         var seriesObj = {name: $scope.series[i].name,
@@ -212,7 +157,33 @@ function elasticDataCtrl($scope,$mdDialog,wid){
         $scope.mappedSeries.push(seriesObj);
     }
     
-    //alert(JSON.stringify(wid.chartConfig.series));
+    //map data to eport to excel
+    console.log('mapped:'+ JSON.stringify($scope.mappedSeries));
+    //start dynamically creating the object array
+    $scope.dataArray = [];
+    $scope.dataObj = {};
+    $scope.dataObj['a'] = "Category";
+    var currChar = "a";
+    for(i=0;i<$scope.series.length;i++){
+        currChar = nextChar(currChar);
+        $scope.dataObj[currChar] = $scope.series[i].name;
+    }
+    console.log(JSON.stringify($scope.dataObj));
 
+    $scope.dataArray.push($scope.dataObj);
 
+    for(i=0;i<$scope.categories.length;i++){
+        $scope.dataObj = {};
+        $scope.dataObj['a'] = $scope.categories[i];
+        currChar = 'a';
+        for(j=0;j<$scope.series.length;j++){
+            currChar = nextChar(currChar);
+            $scope.dataObj[currChar] = $scope.series[j].data[i];
+            $scope.dataArray.push($scope.dataObj);
+        }        
+    }
+
+    $scope.fileName = wid.name;
+
+    console.log(JSON.stringify($scope.dataArray));
 };

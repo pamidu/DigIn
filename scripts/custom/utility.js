@@ -98,3 +98,13 @@ function containsObject(obj, list) {
 
     return false;
 }
+
+/*Summary
+    Returns the next character (basically do a character increment)
+
+    @c      string     previous letter  
+    returns string     next letter
+*/
+function nextChar(c) {
+    return String.fromCharCode(c.charCodeAt(0) + 1);
+}

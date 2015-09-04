@@ -473,7 +473,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
     if(typeof $scope.widget.widConfig != 'undefined')
     {
         $scope.ind = $scope.widget.widConfig.index;
-        //$scope.selectedFields = $scope.widget.widConfig.fields;
+        $scope.selectedFields = $scope.widget.widConfig.fields;
         $scope.dataQuery = $scope.widget.widConfig.query;
         $scope.chartCategory = $scope.widget.widConfig.category;
         $scope.seriesArray = $scope.widget.widConfig.series;

@@ -462,6 +462,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
     $scope.selectedTabIndex = 0;
     $scope.dataTab = true;
     $scope.chartTab = true;
+    $scope.storeIndex = "com.duosoftware.com";
 
     //getting the widget object
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
@@ -479,7 +480,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
 
     /* #start index retrieval
     getting all the indexes for now its only from objectstore */
-    var client = $objectstore.getClient("com.duosoftware.com", " ");
+    var client = $objectstore.getClient($scope.storeIndex, " ");
     client.onGetMany(function(data) {
         if (data) {
             $scope.indexes = data;
@@ -491,11 +492,11 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
     /* #end index retrieval */
 
     //gets all the fields of the selected index
-    client.getClasses("com.duosoftware.com");
+    client.getClasses($scope.storeIndex);
     $scope.getFields = function() {
         
         $scope.selectedFields = [];
-        var client = $objectstore.getClient("com.duosoftware.com", $scope.ind);
+        var client = $objectstore.getClient($scope.storeIndex, $scope.ind);
         client.onGetMany(function(data) {
             if (data) {
                 data.forEach(function(entry) {
@@ -506,7 +507,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 });
             }
         });
-        client.getFields("com.duosoftware.com", $scope.ind);
+        client.getFields($scope.storeIndex, $scope.ind);
     }
 
     //selects fields for non-queried data retrieval
@@ -552,15 +553,21 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                     }
                 }
 
+                console.log('arrayAttributes-'+JSON.stringify($scope.arrayAttributes));
+
                 //mapping the dynamically created array
                 for (i = 0; i < obj.length; i++) {
                     for (var key in obj[i]) {
                         if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
                             var val = obj[i][key];
-                            $scope.mappedArray[key].data.push(parseFloat(val));
+                            var parsedVal = parseFloat(val);
+                            if(!isNaN(parsedVal))$scope.mappedArray[key].data.push(parsedVal);
+                            else $scope.mappedArray[key].data.push(val);                            
                         }
                     }
                 }
+
+                console.log('mappedArray-'+JSON.stringify($scope.mappedArray));
             });
             
             $scope.chartTab = false;
@@ -589,29 +596,89 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         widget.chartConfig.xAxis = {};
         widget.chartSeries = [];
         if($scope.seriesArray.serName != "" && typeof $scope.chartCategory!='undefined'){
-            widget.chartConfig.series = $scope.seriesArray.map(function(elm) {
-                console.log(eval('$scope.mappedArray.' + elm.serName + '.data'));
-                return {
-                    name: elm.name,
-                    type: elm.type,
-                    color: elm.color,
-                    data: eval('$scope.mappedArray.' + elm.serName + '.data')
-                };
-            });
-            //console.log($scope.mappedArray.ID.data);
+            // widget.chartConfig.series = $scope.seriesArray.map(function(elm) {
+            //     console.log(eval('$scope.mappedArray.' + elm.serName + '.data'));
+            //     return {
+            //         name: elm.name,
+            //         type: elm.type,
+            //         color: elm.color,
+            //         data: eval('$scope.mappedArray.' + elm.serName + '.data')
+            //     };
+            // });
+            var orderedConfig = $scope.orderByCat();
+            widget.chartConfig.series =orderedConfig.config;
+            console.log('test:'+eval('$scope.mappedArray.' + $scope.chartCategory + '.data'));
             console.log($scope.chartCategory);
-            widget.chartConfig.xAxis.categories = eval('$scope.mappedArray.' + $scope.chartCategory + '.data');
+            console.log(JSON.stringify($scope.mappedArray));
+            //widget.chartConfig.xAxis.categories = eval('$scope.mappedArray.' + $scope.chartCategory + '.data');
+            widget.chartConfig.xAxis.categories = orderedConfig.categories;
             $mdDialog.hide();
+
+            
 
             //set the widget configurations
             widget.widConfig = {
                 index: $scope.ind,
                 fields: $scope.selectedFields,
                 query: $scope.dataQuery,
-                category: $scope.chartCategory,
+                xAxis:{category: $scope.chartCategory},
                 series: $scope.seriesArray
             };
+            console.log(JSON.stringify($scope.chartCategory));
+            console.log(JSON.stringify($scope.seriesArray));
         }
+    }
+
+    //order by category
+    $scope.orderByCat = function(){
+        var cat = uniqueArray(eval('$scope.mappedArray.' + $scope.chartCategory + '.data'));
+        var orderedObjArray = [];
+        
+        
+        console.log('orderedObj:'+JSON.stringify(orderedObj));
+        console.log(JSON.stringify(cat));
+        
+        for(i=0;i<$scope.seriesArray.length;i++){
+            var serMappedData = eval('$scope.mappedArray.' + $scope.seriesArray[i].serName + '.data');
+            var catMappedData = eval('$scope.mappedArray.' + $scope.chartCategory + '.data');
+
+            var orderedArrayObj = {};
+            var orderedObj = {};
+            var data = [];
+            for(k=0;k<cat.length;k++){
+                orderedObj[cat[k]] = 0;
+            }
+
+            for(j=0;j<serMappedData.length;j++){
+                orderedObj[catMappedData[j]] += serMappedData[j];
+            }
+
+            for (var key in orderedObj) {
+                if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
+                    data.push(orderedObj[key]);
+                }
+            }
+
+            orderedArrayObj["data"] = data;
+            orderedArrayObj["name"] = $scope.seriesArray[i].name;
+            orderedArrayObj["color"] = $scope.seriesArray[i].color;
+            orderedArrayObj["type"] = $scope.seriesArray[i].type;
+            orderedObjArray.push(orderedArrayObj);
+        }
+
+        console.log('orderedObj:'+JSON.stringify(orderedObj));
+        console.log('ordredObjArray:'+JSON.stringify(orderedObjArray));
+        return {"config" : orderedObjArray, "categories" : cat};
+
+        // widget.chartConfig.series = $scope.seriesArray.map(function(elm) {
+        //     console.log(eval('$scope.mappedArray.' + elm.serName + '.data'));
+        //     return {
+        //         name: elm.name,
+        //         type: elm.type,
+        //         color: elm.color,
+        //         data: eval('$scope.mappedArray.' + elm.serName + '.data')
+        //     };
+        // });
     }
 
     //changes the tab
@@ -637,6 +704,9 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
     $scope.cancel = function(){
         $mdDialog.hide();
     }
+
+    //filtering
+
 };
 
 

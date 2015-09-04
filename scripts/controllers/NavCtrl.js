@@ -630,7 +630,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
 
             setTimeout(function(){
                 canvg();
-            },1000);
+            },500);
            
             setTimeout(function(){     
                 //console.log(document.getElementsByClassName("md-ripple-container"));
@@ -647,11 +647,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                             setTimeout(function(){
                             // document.getElementsByClassName("md-ripple-container")[3].style.display = "block";
                             //alert("changed ripple container back to previous state");
-                            },1000);
+                            },500);
 
                             setTimeout(function(){
                                 document.getElementsByClassName("nav-search")[0].style.display = "block";
-                            },1000);
+                            },500);
                 
                             $mdDialog.show({
                                 controller: 'shareCtrl',
@@ -664,7 +664,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                                     
                             });
                
-           },1000); 
+           },500); 
 
         }
 
@@ -728,6 +728,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
             // end pulathisi 7/23/2015
             // }
             if (routeName == "Dashboards") {
+                $('.menu-layer').addClass('active');
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $scope.currentView = "Dashboard";

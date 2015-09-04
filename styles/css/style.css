@@ -1282,3 +1282,13 @@ md-list-item > .md-avatar:first-child, md-list-item .md-list-item-inner > .md-av
     width: 100px;
     height: 100px;
 }
+
+@media screen and (min-width: 600px) {
+    md-tooltip .md-content {
+        height: 30px !important;
+        line-height: 30px !important;
+        padding-left: 8px !important;
+        padding-right: 8px !important; } }
+
+md-tooltip {
+  font-size: 15px !important; }

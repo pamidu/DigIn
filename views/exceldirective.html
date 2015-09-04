@@ -11,18 +11,18 @@
                         <input type="checkbox" ng-model="showPreview" ng-change="showPreviewChanged();">Show preview of excel file
                     </label>
                 </div>
-                <div class="checkbox">
+                <!-- <div class="checkbox">
                     <label>
                         <input type="checkbox" ng-model="showJSONPreview">Show JSON preview of selected sheet
                     </label>
-                </div>
+                </div> -->
                 <div ng-show="isProcessing">
                     <span>Processing ...</span>
                 </div>
 
                 <div class='form-group'>
                     <label for='sheet_name'>Sheet Name</label>
-                    <select id="sheet_name" class="form-control" ng-change="updateJSONString()" ng-model="selectedSheetName" required="true" ng-required="true" ng-options="sheetName as sheetName for (sheetName, sheetData) in sheets">
+                    <select id="sheet_name" ng-change="updateJSONString()" ng-model="selectedSheetName" required="true" ng-required="true" ng-options="sheetName as sheetName for (sheetName, sheetData) in sheets">
                         <option value="">---- Select a sheet ----</option>
                     </select>
                 </div>
@@ -31,13 +31,13 @@
 
                 <!--input type="submit" value="Submit"-->
 
-                <div ng-show="showJSONPreview">
+                <!-- <div ng-show="showJSONPreview">
                     <h4>JSON Preview of selected sheet</h4>
                     <pre class="langauge-javascript">
                         <code>{{ json_string }}</code>
                     </pre>
-                </div>
-                <div ng-show="showPreview">
+                </div> -->
+                <!-- <div ng-show="showPreview">
                     <table class="table table-bordered" ng-repeat="(sheetName, sheetData) in sheets" ng-show="sheetName == selectedSheetName">
                         <thead>
                             <tr>
@@ -48,7 +48,7 @@
                             <td ng-repeat="col in row" ng-bind="col"></td>
                         </tr>
                     </table>
-                </div>
+                </div> -->
             </form>
 			
         </div>

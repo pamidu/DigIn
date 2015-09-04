@@ -3,6 +3,163 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
   function($scope, $mdBottomSheet, $mdSidenav, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen,$http,Digin_ReportViewer,$localStorage,$window,ObjectStoreService,Digin_Base_URL,DashboardService, $log, TTSConfig, TTSAudio, TTS_EVENTS)  
     {
 
+     $scope.changeMap = function() {
+        
+        $mdDialog.hide();
+
+        document.getElementById('map').innerHTML = "";
+
+        var array = JSON.parse($rootScope.json_string);
+
+        console.log("$rootScope.json_string");
+        console.log($rootScope.json_string);
+
+        $scope.locationData = [];
+
+        var k,j,temparray,chunk = 8;
+        for (k=0,j=array.length; k<j; k+=chunk) {
+            temparray = array.slice(k,k+chunk);
+
+            console.log("temparray");
+            console.log(temparray);
+
+            var i;
+            for(i=0;i < temparray.length ; i++){
+                
+
+                console.log("temparray[i] PLACE_OF_ACCIDENT");
+                console.log(temparray[i].PLACE_OF_ACCIDENT);
+
+                Geocode(temparray[i].PLACE_OF_ACCIDENT);   
+            }
+        
+        }
+    
+        
+        setTimeout(function(){ googleMap(); }, 5000);
+                  
+
+    };
+    function Geocode(address) {
+        var obj = {};
+        var geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({'address': address}, function(results, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        obj = {
+                            lat : results[0].geometry.location.G,
+                            lng : results[0].geometry.location.K
+                        };
+
+                        setTimeout(function(){ $scope.locationData.push(obj); }, 100);
+                                             
+                    }
+                    else if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {    
+                        setTimeout(function() {
+                        Geocode(address);
+                        }, 100); 
+                    }
+                    else if (status === google.maps.GeocoderStatus.ZERO_LIMIT) {    
+                        setTimeout(function() {
+                        Geocode(address);
+                        }, 100); 
+                    }
+                    else {
+
+                      alert('Geocode was not successful for the following reason: ' + status);
+                    }
+                    // console.log("JSON.stringify($scope.locationData)");
+                    // console.log(JSON.stringify($scope.locationData));
+                    console.log(address);
+        });     
+    }
+
+   function googleMap() {
+
+        console.log("locationData googleMap");
+        console.log($scope.locationData);
+
+        var dataStore = $scope.locationData;
+
+        var array = JSON.parse($rootScope.json_string);
+
+         var map = new google.maps.Map(document.getElementById('map'),{
+            center: {lat: 7.85, lng: 80.65},
+            zoom: 6 });
+
+        var pinImageGreen = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/green-dot.png");
+        var pinImageBlue = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/blue-dot.png");
+        var marker = [];
+
+        var k;
+
+        for(k=0; k < array.length; k++){
+
+            // if(array[k].state == "High"){
+
+                    marker[k] = new google.maps.Marker({
+                    position: {lat: dataStore[k].lat, lng: dataStore[k].lng},
+                    map: map,
+                    title: array[k].PLACE_OF_ACCIDENT,
+                    icon: pinImageGreen,
+                    VEHICLE_TYPE: array[k].VEHICLE_TYPE,
+                    VEHICLE_USAGE: array[k].VEHICLE_USAGE,
+                    // modal: array[k].modal,
+                    VEHICLE_CLASS: array[k].VEHICLE_CLASS
+                    });
+                    
+                    marker[k].addListener('click', function(data) {
+
+                        var j;
+                        for(j=0;j<array.length;j++){
+                            
+                            if((dataStore[j].lat == data.latLng.G)  && (dataStore[j].lng == data.latLng.K )){
+                                
+                               /* document.getElementById("details").innerHTML = 
+                                array[j].PLACE_OF_ACCIDENT + "</br>" +
+                                array[j].VEHICLE_TYPE + "</br>" +
+                                array[j].VEHICLE_USAGE + "</br>" +*/
+                                /*array[j].VEHICLE_CLASS+ "</br>" +*/
+                                /*array[j].VEHICLE_CLASS + "</br>" ;*/
+                            }  
+                        }    
+                    });
+            // }
+            /*if(array[k].state == "Low"){
+
+                    marker[k] = new google.maps.Marker({
+                   position: {lat: dataStore[k].lat, lng: dataStore[k].lng},
+                    map: map,
+                    title: array[k].city,
+                    icon: pinImageBlue,
+                    state: array[k].state,
+                    type: array[k].type,
+                    modal: array[k].modal,
+                    year: array[k].year
+                    });
+
+                    marker[k].addListener('click', function(data) {
+
+                        var j;
+                        for(j=0;j<array.length;j++){
+
+                            if((dataStore[j].lat == data.latLng.G)  && (dataStore[j].lng == data.latLng.K )){
+        
+                                document.getElementById("details").innerHTML = 
+                                array[j].city + "</br>" +
+                                array[j].state + "</br>" +
+                                array[j].type + "</br>" +
+                                array[j].modal + "</br>" +
+                                array[j].year + "</br>" ;
+                            }  
+
+                        }
+                    });
+                }*/
+            }
+            
+    }   
+
     /*$scope.init = function(){
         var uname = localStorage.getItem('username');
         if(uname==null){
@@ -84,7 +241,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
         $scope.dashboard.widgets = $rootScope.dashboard["1"].widgets;
 
 
-        $scope.menuPanels = [DashboardCtrl];
+        $scope.menuPanels = [DashboardCtrl];   
 
         //change dates range in likes
         $scope.changeDatesRange = function(widId, sinceDay, untilDay){
@@ -130,7 +287,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
  
         $rootScope.dashboard.widgets[objIndex].widData.viewData =  $scope.chartConf; 
             });
-        };        
+        };
+
+    //     $scope.test = function() {
+    //     alert("test");
+    // };        
         
         function DashboardCtrl($scope) {
 
@@ -550,7 +711,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                 });
         }
 
-           $scope.navigate = function(routeName) {
+        $scope.test = function() {
+
+            document.getElementById("filter").innerHTML = "clicked button";
+        };
+
+        $scope.navigate = function(routeName) {
 
             // start pulathisi 7/23/2015
                 if($('.ion-settings').hasClass('sidebaricons')){

@@ -6,6 +6,10 @@ routerApp.controller('DashboardCtrl', ['$scope',
 
 
         $('#pagePreLoader').hide();
+    $scope.test = function() {
+        alert("test");
+    };
+
 
         $scope.showData = function(widget,ev) {
                  $mdDialog.show({
@@ -187,3 +191,5 @@ function elasticDataCtrl($scope,$mdDialog,wid){
 
     console.log(JSON.stringify($scope.dataArray));
 };
+
+

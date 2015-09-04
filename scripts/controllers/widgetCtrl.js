@@ -2039,64 +2039,10 @@ routerApp.controller('sltagentInit', function($scope, $mdDialog, $rootScope) {
 function googleMapsInit(widId, $scope, $http, $rootScope, $mdDialog) {
    
     $scope.finish = function() {
-
-        var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-        var longitude = $scope.longitude;
-        var lattitude = $scope.lattitude;
         
-        $mdDialog.hide();
+        $mdDialog.hide();                  
 
-        document.getElementById('map').innerHTML = "";
-
-        /*console.log("$scope.json_string");
-        console.log($rootScope.json_string);*/
-
-        var array = JSON.parse($rootScope.json_string);
-        console.log("array.length");
-        console.log(array.length);
-
-        var i;
-
-        for(i=0; i < array.length; i++) {
-            console.log(array[i]);
-        }
-
-        setTimeout(function(){
-                     
-            var map = new google.maps.Map(document.getElementById('map'),{
-            center: {lat: 7.85, lng: 80.65},
-            zoom: 8 });
-
-            var pinImageGreen = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/green-dot.png");
-            var pinImageBlue = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/blue-dot.png");
-            for(i=0; i < array.length; i++){
-                if(array[i].state == "High"){
-
-                    console.log("High marker green");
-                    new google.maps.Marker({
-                    position: {lat: array[i].lat, lng: array[i].lng},
-                    map: map,
-                    title: array[i].city,
-                    icon: pinImageGreen
-                    });
-                }
-                if(array[i].state == "Low"){
-
-                    console.log("Low marker blue");
-                    new google.maps.Marker({
-                    position: {lat: array[i].lat, lng: array[i].lng},
-                    map: map,
-                    title: array[i].city,
-                    icon: pinImageBlue
-                    });
-                }
-            }
-        },0);
-
-        $rootScope.longitude = longitude;
-        $rootScope.lattitude = lattitude;
-
-    };
+    };    
 
     $scope.cancel = function() {
         $mdDialog.hide();

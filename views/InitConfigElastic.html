@@ -70,6 +70,10 @@
       </md-tab>
       <md-tab label="Mapping" ng-disabled="chartTab">
         <md-content class="md-padding">
+            <div ng-show="dataIndicator" layout="row" layout-sm="column" layout-align="center center" style="z-index:10;position:absolute;height:100%;width:100%;">
+              <md-progress-circular md-mode="indeterminate" style"z-index:11"></md-progress-circular>
+              <span>Please wait...</span>
+            </div>
             <div layout="column">
                 <md-select ng-model="chartCategory" placeholder="Select a category">
                     <md-option value="{{cat}}" ng-repeat="cat in arrayAttributes">{{ cat }}</md-option>

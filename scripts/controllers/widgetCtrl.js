@@ -463,6 +463,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
     $scope.dataTab = true;
     $scope.chartTab = true;
     $scope.storeIndex = "com.duosoftware.com";
+    $scope.dataIndicator = false;
 
     //getting the widget object
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
@@ -534,12 +535,12 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 parameter += " " + $scope.categoryVal;
             }
 
-
+            $scope.dataIndicator = true;
             w.postMessage($scope.ind + "," + parameter + "," + $scope.query.state);
             w.addEventListener('message', function(event) {
 
                 var obj = JSON.parse(event.data);
-
+                $scope.dataIndicator = false;
                 //creating the array to map dynamically
                 for (var key in obj[0]) {
                     if (Object.prototype.hasOwnProperty.call(obj[0], key)) {

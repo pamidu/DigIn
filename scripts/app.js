@@ -13,7 +13,7 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial', 'uiMicrokernel', "hi
     'countTo',
     'pjTts',
     'nvd3',
-     'gridster','lk-google-picker', 'ngSanitize', 'ngAnalytics', 'servicess'
+     'gridster','lk-google-picker', 'ngSanitize', 'ngAnalytics', 'servicess','ngCsv'
 ])
 
 routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", function($locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider) {

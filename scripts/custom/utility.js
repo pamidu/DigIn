@@ -98,3 +98,29 @@ function containsObject(obj, list) {
 
     return false;
 }
+
+/*Summary
+    Returns the next character (basically do a character increment)
+
+    @c      string     previous letter  
+    returns string     next letter
+*/
+function nextChar(c) {
+    return String.fromCharCode(c.charCodeAt(0) + 1);
+}
+
+/*Summary
+    Returns only the unique values of the passed array
+
+    @data      array     array with duplicate values in it
+    returns array     array with unique values
+*/
+function uniqueArray(data){
+    var uniqueNames = [];
+    for(i = 0; i< data.length; i++){    
+        if(uniqueNames.indexOf(data[i]) === -1){
+            uniqueNames.push(data[i]);        
+        }        
+    }
+    return uniqueNames;
+}

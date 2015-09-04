@@ -3,6 +3,7 @@
     <h1>Data Explorer</h1>
   </md-toolbar>
   <md-content style="margin-top:15px;margin-left:15px;">
+  <md-button class="md-raised" ng-csv="dataArray" filename="{{fileName}}.csv" field-separator=",">Export to CSV</md-button>
   <div layout="column"> 
       <div layout="column" ng-repeat="s in mappedSeries">
         <div layout="row">

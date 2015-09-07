@@ -104,7 +104,7 @@ if (isset($_POST['userName']) && isset($_POST['password'])) {
 			<div ng-message="required">This is required.</div>
 		</div> -->
 	</md-input-container>
-	<md-button class="md-raised md-primary" style="width:100%;margin-left: 0px; margin-right: 0px;" type="submit"><span class="loginBtnLabel">Login</span></md-button>
+	<md-button class="md-raised md-primary" style="width:100%;margin-left: 0px; margin-right: 0px;" type="submit"><span class="loginBtnLabel" ng-click="login()">Login</span></md-button>
 	<br/>
 	 <md-divider md-inset></md-divider>
 	New to Duodigin? <a href="http://duoworld.sossgrid.com/signup/">Signup</a>

@@ -2,6 +2,7 @@ var app = angular.module("diginLogin", ['ngMaterial']);
 
 app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', function($scope, $http, $mdToast, $animate) {
     $scope.login = function() {
+        
         //$scope.txtUname = "";
         //$scope.txtPwd = "";
         $http({

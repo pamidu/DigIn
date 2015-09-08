@@ -93,7 +93,6 @@ var Layout = {
 
 				// start pulathisi 7/23/2015
             
-                
                     $(".sidebaricons").removeClass("sidebaricons").addClass("sidebaricons-active");
                 
                
@@ -109,7 +108,7 @@ var Layout = {
 					$body.addClass('disable-scroll');
 					$overlay.addClass('overlay-nav active');
 					$this.addClass('active');
-					$menu.addClass('active');
+					//$menu.addClass('active');
 					$overlaySecondary.addClass('fade-in');
 
 					$menu.find('[data-open-after="true"]').parents('li').addClass('open animate');
@@ -197,6 +196,7 @@ var Layout = {
 				setTimeout(function () {
 					$body.addClass('disable-scroll');
 					$overlay.addClass('overlay-search active');
+					$overlay.removeClass('overlay-nav');
 					$this.addClass('active');
 					$searchLayer.addClass('active');
 					$.Velocity.animate($startingPoint.children('span'), {

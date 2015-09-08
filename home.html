@@ -74,6 +74,11 @@
             </div>
         </div>
     </div>
+    <div class="dashboard-widgets-close">
+        <md-button id="dashboardwidgetsclose" class="md-fab" ng-click="closeAllWidgets()" aria-label="Close">
+        <md-icon class="ion-close"></md-icon>
+        </md-button>
+    </div>
     <div class="nav-bar-border">
     </div>
     <div class="overlay">
@@ -91,11 +96,15 @@
         <div class="search">
             <form >
                 <div class="form-group" layout="row">
-                <input ng-model="searchText" type="text" id="input-search" class="form-control" placeholder="type something">
-                <button type="submit" class="btn btn-default ">
+                <md-input-container flex style="padding-bottom:0px">
+                    <label id="postdomain" style="top: 20px"><img style="width:35px;height:35px;margin-top:-8px;" src='styles/css/images/ic_search_white_24px.svg' /></label>
+                    <input ng-model="searchText" type="text" id="input-search" style="background-color: #89A4D1;height:50px;font-size: 30px;">
+                </md-input-container>
+                
+                <!-- <button type="submit" class="btn btn-default "> -->
                     <!-- <i class="ion-search"></i> -->
-                    <img style="width:35px;height:35px;margin-top:-8px;" src='styles/css/images/ic_search_white_24px.svg' />
-                </button>
+                    <!-- <img style="width:35px;height:35px;margin-top:-8px;" src='styles/css/images/ic_search_white_24px.svg' /> -->
+                <!-- </button> -->
             </div>
             </form>
         </div>

@@ -376,6 +376,17 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
         // console.log(q);
 };
 
+function hnbInit($scope, $http, $mdDialog, widId, $rootScope){
+
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+    $scope.finish = function() {
+        $mdDialog.hide();
+    };
+
+}
+
 
 
 

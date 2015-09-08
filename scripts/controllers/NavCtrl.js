@@ -190,11 +190,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
         var dd = today.getDate();
 
         $rootScope.username =  $localStorage.uname;
-        if ($rootScope.username == null) 
+        /*if ($rootScope.username == null) 
         {
            
              $rootScope.username = "sajeetharan%40duosoftware.com";
-        }
+        }*/
         
         var mm = today.getMonth() + 1; //January is 0!
         var yyyy = today.getFullYear();
@@ -289,9 +289,16 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
             });
         };
 
-    //     $scope.test = function() {
-    //     alert("test");
-    // };        
+        $scope.closeAllWidgets = function() {
+            var length = document.getElementsByClassName("ion-close").length;
+
+            var i;
+            for(i=0; i<length; i++){
+                document.getElementsByClassName("ion-close")[0].click();
+            }
+
+            $(".dashboard-widgets-close").removeClass("active");            
+        };        
         
         function DashboardCtrl($scope) {
 
@@ -418,12 +425,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
             $(".nav-search").removeClass("active");
             $(".search-layer").removeClass("activating active"); 
 
-            if(typeof dashboard.customDuoDash === "undefined")
+            if(typeof dashboard.customDuoDash === "undefined"){
                 $state.go('DashboardViewer', { param:dashboard.name });
+            }
             else {
                 $state.go('CustomDashboardViewer', { param:dashboard.name });
                 $scope.dashboard.widgets = dashboard.data;
                 $rootScope.clickedDash = dashboard.data;
+                $(".dashboard-widgets-close").addClass("active");
             }
             
         }
@@ -496,7 +505,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
 
             $http({
             method: 'GET',
-             url: 'http://104.236.212.233:8080/DuoDigin/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
+             url: 'http://104.236.192.147:8080/DuoDigin/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
 
                   // http://104.236.212.233:8080/pentaho/api/repo/files/%3Ahome%3Asajeetharan%40duosoftware.com%3AReports/children?showHidden=false&filter=*|FILES&_=1434614109291
                 // cache: $templateCache,
@@ -509,6 +518,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
             }).
             success(function(data, status) {
 
+                console.log("dashbaord data");
+                console.log(data);
                 
              for(var i=0; i<data.repositoryFileDto.length; i++)
                    {
@@ -544,7 +555,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
            
             $http({
             method: 'GET',
-             url: 'http://104.236.212.233:8080/DuoDigin/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
+             url: 'http://104.236.192.147:8080/DuoDigin/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
             // cache: $templateCache,
             headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -555,6 +566,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
             }).
             success(function(data, status) {
                 
+
+             console.log("reports data");
+                console.log(data);   
              for(var i=0; i<data.repositoryFileDto.length; i++)
                    {
                       var obj1={};
@@ -588,7 +602,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
            
             $http({
             method: 'GET',
-            url: 'http://104.236.212.233:8080/DuoDigin/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
+            url: 'http://104.236.192.147:8080/DuoDigin/api/repo/files/%3Ahome%3A'+  $rootScope.username  + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
             // cache: $templateCache,
             headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -599,6 +613,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
             }).
             success(function(data, status) {
                 
+
+                console.log("analyser data");
+                console.log(data);
+
              for(var i=0; i<data.repositoryFileDto.length; i++)
                    {
                       var obj1={};
@@ -630,7 +648,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
 
             setTimeout(function(){
                 canvg();
-            },1000);
+            },500);
            
             setTimeout(function(){     
                 //console.log(document.getElementsByClassName("md-ripple-container"));
@@ -647,11 +665,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                             setTimeout(function(){
                             // document.getElementsByClassName("md-ripple-container")[3].style.display = "block";
                             //alert("changed ripple container back to previous state");
-                            },1000);
+                            },500);
 
                             setTimeout(function(){
                                 document.getElementsByClassName("nav-search")[0].style.display = "block";
-                            },1000);
+                            },500);
                 
                             $mdDialog.show({
                                 controller: 'shareCtrl',
@@ -664,7 +682,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                                     
                             });
                
-           },1000); 
+           },500); 
 
         }
 
@@ -711,11 +729,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                 });
         }
 
-        $scope.test = function() {
-
-            document.getElementById("filter").innerHTML = "clicked button";
-        };
-
         $scope.navigate = function(routeName) {
 
             // start pulathisi 7/23/2015
@@ -728,6 +741,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
             // end pulathisi 7/23/2015
             // }
             if (routeName == "Dashboards") {
+                $('.menu-layer').addClass('active');
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $scope.currentView = "Dashboard";

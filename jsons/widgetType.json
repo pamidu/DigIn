@@ -26,5 +26,10 @@
 
         "title": "Sri Lanka Telecom",
         "icon": "styles/css/images/icons/point-up.svg"
-    }]
+    },{
+
+        "title": "HNB Assuarance",
+        "icon": "styles/css/images/icons/ic_dashboard_24px.svg"
+
+      }]
 }

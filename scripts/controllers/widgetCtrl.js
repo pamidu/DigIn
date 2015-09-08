@@ -37,75 +37,8 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
     };
 
 
-    scope.chartConf = {
-        "options": {
-            "chart": {
-                "type": "area"
-            },
-            "plotOptions": {
-                "series": {
-                    "stacking": ""
-                }
-            }
-        },
-        "series": [{
-            "name": "Like Count",
-            "data": [],
-            "id": "series-0",
-            "type": "line",
-            "dashStyle": "ShortDashDot",
-            "connectNulls": false
-        }],
-        "title": {
-            "text": "Page Likes"
-        },
-        "credits": {
-            "enabled": false
-        },
-        "loading": false,
-        "xAxis": {
-            "type": "datetime",
-            "currentMin": 0
-        },
-        "yAxis": {
-            "min": 0
-        }
-    };
-    scope.chartConfView = {
-        "options": {
-            "chart": {
-                "type": "area"
-            },
-            "plotOptions": {
-                "series": {
-                    "stacking": ""
-                }
-            }
-        },
-        "series": [{
-            "name": "View Count",
-            "data": [],
-            "id": "series-0",
-            "type": "area",
-            "dashStyle": "ShortDashDot",
-            "connectNulls": false,
-            "color": "#FF5722"
-        }],
-        "title": {
-            "text": "Page Views"
-        },
-        "credits": {
-            "enabled": false
-        },
-        "loading": false,
-        "xAxis": {
-            "type": "datetime",
-            "currentMin": 0
-        },
-        "yAxis": {
-            "min": 0
-        }
-    };
+    scope.chartConf = {"options":{"chart":{"type":"area"},"plotOptions":{"series":{"stacking":""}}},"series":[{"name":"Like Count","data":[],"id":"series-0","type":"line","dashStyle":"ShortDashDot","connectNulls":false}],"title":{"text":"Page Likes"},"credits":{"enabled":false},"loading":false,"xAxis":{"type":"datetime","currentMin":0},"yAxis":{"min":0}};
+    scope.chartConfView = {"options":{"chart":{"type":"area"},"plotOptions":{"series":{"stacking":""}}},"series":[{"name":"View Count","data":[],"id":"series-0","type":"area","dashStyle":"ShortDashDot","connectNulls":false,"color":"#FF5722"}],"title":{"text":"Page Views"},"credits":{"enabled":false},"loading":false,"xAxis":{"type":"datetime","currentMin":0},"yAxis":{"min":0}};
 
 
     //complete config  
@@ -464,6 +397,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
     $scope.chartTab = true;
     $scope.storeIndex = "com.duosoftware.com";
     $scope.dataIndicator = false;
+    $scope.filterAttributes = ['Sum','Average','Percentage','Count'];
 
     //getting the widget object
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
@@ -608,11 +542,11 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             // });
             var orderedConfig = $scope.orderByCat();
             widget.chartConfig.series =orderedConfig.config;
-            console.log('test:'+eval('$scope.mappedArray.' + $scope.chartCategory + '.data'));
+            console.log('test:'+ eval('$scope.mappedArray.' + $scope.chartCategory + '.data'));
             console.log($scope.chartCategory);
             console.log(JSON.stringify($scope.mappedArray));
             //widget.chartConfig.xAxis.categories = eval('$scope.mappedArray.' + $scope.chartCategory + '.data');
-            widget.chartConfig.xAxis.categories = orderedConfig.categories;
+            widget.chartConfig.xAxis.categories = true;
             $mdDialog.hide();
 
             
@@ -656,7 +590,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
 
             for (var key in orderedObj) {
                 if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
-                    data.push(orderedObj[key]);
+                    data.push({name: key,
+                               y: orderedObj[key]});
                 }
             }
 

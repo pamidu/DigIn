@@ -78,6 +78,9 @@
                 <md-select ng-model="chartCategory" placeholder="Select a category">
                     <md-option value="{{cat}}" ng-repeat="cat in arrayAttributes">{{ cat }}</md-option>
                 </md-select>
+                <md-select ng-model="chartFilter" placeholder="Select a filter">
+                    <md-option value="{{fil}}" ng-repeat="fil in filterAttributes">{{ fil }}</md-option>
+                </md-select>
                 <div layout="column" ng-repeat="ser in seriesArray">
                       <accordion>                                                   
                         <accordion-panel title="{{ser.name}}">

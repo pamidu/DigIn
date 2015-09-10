@@ -278,14 +278,15 @@
     <script>
     document.write('<base href="' + document.location + '" />');
     </script>
-    <script data-require="angular.js@1.2.x" src="https://code.angularjs.org/1.2.25/angular.js" data-semver="1.2.25"></script>
+    
     <script data-require="jquery@*" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js">
     </script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="scripts/vendor/highcharts-ng.js"></script>
-    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="https://rawgit.com/barendb/highcharts-ng/master/src/highcharts-ng.js"></script>
+    <script src="http://code.highcharts.com/modules/drilldown.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
-    <script type="text/javascript" src="scripts/vendor/highcharts.js"></script>
+    
     <script type="text/javascript" src="scripts/config.js"></script>
     <script src="bower_components/angular-material/angular-material.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
@@ -302,7 +303,6 @@
     <script type="text/javascript" src="scripts/vendor/angular-socialshare.min.js"></script>
     <script type="text/javascript" src="scripts/vendor/angular-css-injector.js">
     </script>
-    <script src="http://code.highcharts.com/stock/modules/exporting.js"></script>
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/98887/angular-fullscreen.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
     <script src="bower_components/ngstorage/ngStorage.js"></script>
@@ -394,6 +394,10 @@
         Layout.init();
     });
     </script>
+
+   
+    <!-- linq for quering in elastic widget -->
+    <script type="text/javascript" src="scripts/vendor/linq/linq.js"></script>
 
 </body>
 

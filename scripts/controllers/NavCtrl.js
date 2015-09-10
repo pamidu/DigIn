@@ -189,7 +189,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
         var today = new Date();
         var dd = today.getDate();
 
-        $rootScope.username =  $localStorage.uname;
+        $rootScope.username =  localStorage.getItem('username');
         /*if ($rootScope.username == null) 
         {
            
@@ -291,7 +291,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
 
         $scope.closeAllWidgets = function() {
             var length = document.getElementsByClassName("ion-close").length;
-
+            //$rootScope.dashboard.widgets = [];
             var i;
             for(i=0; i<length; i++){
                 document.getElementsByClassName("ion-close")[0].click();

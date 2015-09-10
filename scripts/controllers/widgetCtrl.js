@@ -409,6 +409,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
     $scope.storeIndex = "com.duosoftware.com";
     $scope.dataIndicator = false;
     $scope.filterAttributes = ['Sum','Average','Percentage','Count'];
+    $scope.serSelected = true;
+    $scope.chartCategory = {groupField:'',drilledField:'',drilledArray:[]};
 
     //getting the widget object
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
@@ -420,7 +422,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         $scope.ind = $scope.widget.widConfig.index;
         $scope.selectedFields = $scope.widget.widConfig.fields;
         $scope.dataQuery = $scope.widget.widConfig.query;
-        $scope.chartCategory = $scope.widget.widConfig.category;
+        $scope.chartCategory.groupField = $scope.widget.widConfig.category;
         $scope.seriesArray = $scope.widget.widConfig.series;
     }
 
@@ -465,6 +467,23 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         }
     };
 
+    $scope.selectSer = function(ser){
+        if(ser != '') $scope.serSelected = false;
+    };
+
+    $scope.getDrillArray = function(){
+        //console.log(JSON.stringify(drill));
+        //drill['drilledArray'] = [];
+        var uniqueScore = eval('$scope.mappedArray.'+$scope.chartCategory.groupField+'.unique');
+        for (var key in $scope.mappedArray) {
+                    if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
+                        console.log($scope.mappedArray[key].unique);
+                       if($scope.mappedArray[key].unique > uniqueScore && $scope.mappedArray[key].unique !=0) 
+                        $scope.chartCategory.drilledArray.push($scope.mappedArray[key].name);
+                    }
+                }
+    };
+
     //retrieve data using a web worker
     $scope.getData = function() {
         var w = new Worker("scripts/webworkers/elasticWorker.js");
@@ -493,7 +512,9 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                         console.log(key);
                         $scope.mappedArray[key] = {
                             name: key,
-                            data: []
+                            data: [],
+                            unique: 0,
+                            isNaN: true
                         };
                         $scope.arrayAttributes.push(key);
                     }
@@ -507,11 +528,29 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                         if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
                             var val = obj[i][key];
                             var parsedVal = parseFloat(val);
-                            if(!isNaN(parsedVal))$scope.mappedArray[key].data.push(parsedVal);
-                            else $scope.mappedArray[key].data.push(val);                            
+                            if(!isNaN(parsedVal)){
+                                $scope.mappedArray[key].data.push(parsedVal);
+                                $scope.mappedArray[key].isNaN = false; 
+                            }
+                            else{
+                                $scope.mappedArray[key].data.push(val);
+                                
+                                //$scope.mappedArray[key].unique = Enumerable.From().Select().Distinct().ToArray().length;
+                            }
+
                         }
                     }
                 }
+
+                //getting the unique score to determine the hierarchy
+                for(var key in $scope.mappedArray){
+                    if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
+                        if($scope.mappedArray[key].isNaN){
+                            $scope.mappedArray[key].unique = Enumerable.From($scope.mappedArray[key].data).Select().Distinct().ToArray().length;
+                        }
+                     }
+                }
+
 
                 console.log('mappedArray-'+JSON.stringify($scope.mappedArray));
             });
@@ -527,7 +566,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             name: 'series1',
             serName: '',
             type: 'area',
-            color: ''
+            color: '',
+            drilled: false
         });
     }
 
@@ -540,8 +580,11 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
     $scope.buildchart = function(widget) {
         widget.chartSeries = [];
         widget.chartConfig.xAxis = {};
+        widget.chartConfig.drilldown = {};
         widget.chartSeries = [];
-        if($scope.seriesArray.serName != "" && typeof $scope.chartCategory!='undefined'){
+
+
+        if($scope.seriesArray.serName != "" && typeof $scope.chartCategory.groupField!='undefined'){
             // widget.chartConfig.series = $scope.seriesArray.map(function(elm) {
             //     console.log(eval('$scope.mappedArray.' + elm.serName + '.data'));
             //     return {
@@ -552,12 +595,44 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             //     };
             // });
             var orderedConfig = $scope.orderByCat();
-            widget.chartConfig.series =orderedConfig.config;
-            console.log('test:'+ eval('$scope.mappedArray.' + $scope.chartCategory + '.data'));
-            console.log($scope.chartCategory);
-            console.log(JSON.stringify($scope.mappedArray));
+           // widget.chartConfig.drilldown.series = orderedConfig.drilledSeries;
+           // widget.chartConfig.series = orderedConfig.config;
+            console.log('final drilled:'+ JSON.stringify(orderedConfig.drilledSeries));
+            
+           // console.log('test:'+ eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data'));
+           // console.log(JSON.stringify($scope.mappedArray));
             //widget.chartConfig.xAxis.categories = eval('$scope.mappedArray.' + $scope.chartCategory + '.data');
-            widget.chartConfig.xAxis.categories = true;
+            //widget.chartConfig.xAxis.categories = true;
+
+            widget.chartConfig = {
+        options: {
+            drilldown: {
+            series: orderedConfig.drilledSeries,
+            plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                }
+            }
+        },
+        }
+        },
+        title: {
+            text: 'Basic drilldown'
+        },
+        xAxis: {
+            type: 'category'
+        },
+
+        legend: {
+            enabled: false
+        },
+        series:orderedConfig.config
+         };
+
+            console.log('widget config:'+JSON.stringify( widget.chartConfig));
+
             $mdDialog.hide();
 
             
@@ -567,45 +642,98 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 index: $scope.ind,
                 fields: $scope.selectedFields,
                 query: $scope.dataQuery,
-                xAxis:{category: $scope.chartCategory},
+                xAxis:{category: $scope.chartCategory.groupField},
                 series: $scope.seriesArray
             };
-            console.log(JSON.stringify($scope.chartCategory));
+            console.log(JSON.stringify($scope.chartCategory.groupField));
             console.log(JSON.stringify($scope.seriesArray));
         }
     }
 
     //order by category
     $scope.orderByCat = function(){
-        var cat = uniqueArray(eval('$scope.mappedArray.' + $scope.chartCategory + '.data'));
+        var drilledSeries = [];
+        var cat = Enumerable
+        .From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data'))
+        .Select()
+        .Distinct()
+        .ToArray();
         var orderedObjArray = [];
+        console.log('test chartCategory:'+ $scope.chartCategory.drilledField);
+        var drilledCat = Enumerable
+        .From(eval('$scope.mappedArray.' + $scope.chartCategory.drilledField + '.data'))
+        .Select()
+        .Distinct()
+        .ToArray();
+
+       // var someArray = [{'name':"VAN"}, {'name':"MOTOR CAR"}, {'name':"PRIME MOVER"}, {'name':"THREE WHEELER"}, {'name':"PASSENGER CARRYING BUS"}];
+       // var result = Enumerable
+       //  .From(eval('$scope.mappedArray.' + $scope.chartCategory + '.data'))
+       //  .Select()
+       //  .Distinct()
+       //  .ToArray();
+       // alert(result);
         
         
-        console.log('orderedObj:'+JSON.stringify(orderedObj));
+        
         console.log(JSON.stringify(cat));
         
         for(i=0;i<$scope.seriesArray.length;i++){
             var serMappedData = eval('$scope.mappedArray.' + $scope.seriesArray[i].serName + '.data');
-            var catMappedData = eval('$scope.mappedArray.' + $scope.chartCategory + '.data');
+            var catMappedData = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data');
+            var drillData = eval('$scope.mappedArray.' + $scope.chartCategory.drilledField + '.data');
 
             var orderedArrayObj = {};
             var orderedObj = {};
+            var drilledObj = {};
             var data = [];
+            
+            
+
             for(k=0;k<cat.length;k++){
-                orderedObj[cat[k]] = 0;
+                orderedObj[cat[k]] = {val:0,arr:[]};
             }
 
-            for(j=0;j<serMappedData.length;j++){
-                orderedObj[catMappedData[j]] += serMappedData[j];
+            for(k=0;k<drilledCat.length;k++){
+                drilledObj[drilledCat[k]] = 0;
             }
+
+            //console.log('test:'+JSON.stringify($scope.mappedArray));
+
+            for(j=0;j<serMappedData.length;j++){
+                orderedObj[catMappedData[j]].val += serMappedData[j];
+                orderedObj[catMappedData[j]].arr.push({val: serMappedData[j], drill: drillData[j]});
+            }
+            console.log('orderedObj:'+JSON.stringify(orderedObj));
+            console.log(JSON.stringify(orderedObj));
 
             for (var key in orderedObj) {
                 if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
+                    var drilledArray = $scope.groupDrilledItems(drilledObj,orderedObj[key].arr);
+
+                    console.log('drilled array:'+ JSON.stringify(drilledArray));
+                    var drilledSeriesObj = [];
+                    for(var key1 in drilledArray){
+                        if(Object.prototype.hasOwnProperty.call(drilledArray, key1)){
+                            if(drilledArray[key1] > 0)
+                            drilledSeriesObj.push([key1, drilledArray[key1]]);
+                        }
+                    }
+
+                    var test = {id:'',data:[]};
+                    test.id = key;
+                    test.data = drilledSeriesObj;
+
+                    drilledSeries.push(test);
+
+                    console.log('Drilled series:'+ JSON.stringify(drilledSeries));
+
                     data.push({name: key,
-                               y: orderedObj[key]});
+                               y: orderedObj[key].val,
+                               drilldown: key});
                 }
             }
-
+//------------------------------------------------------------------------------------------------------------------------------------
             orderedArrayObj["data"] = data;
             orderedArrayObj["name"] = $scope.seriesArray[i].name;
             orderedArrayObj["color"] = $scope.seriesArray[i].color;
@@ -615,7 +743,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
 
         console.log('orderedObj:'+JSON.stringify(orderedObj));
         console.log('ordredObjArray:'+JSON.stringify(orderedObjArray));
-        return {"config" : orderedObjArray, "categories" : cat};
+        return {"config" : orderedObjArray, "categories" : cat, "drilledSeries": drilledSeries};
 
         // widget.chartConfig.series = $scope.seriesArray.map(function(elm) {
         //     console.log(eval('$scope.mappedArray.' + elm.serName + '.data'));
@@ -627,6 +755,13 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         //     };
         // });
     }
+
+    $scope.groupDrilledItems = function(uniqueArray, objArray){
+        for(j=0;j<objArray.length;j++){
+                uniqueArray[objArray[j].drill] += objArray[j].val;
+            }
+        return uniqueArray;
+    };
 
     //changes the tab
     $scope.toggleTab = function(ind){

@@ -75,12 +75,16 @@
               <span>Please wait...</span>
             </div>
             <div layout="column">
-                <md-select ng-model="chartCategory" placeholder="Select a category">
+                <md-select ng-model="chartCategory.groupField" ng-change="selectSer(chartCategory.groupField)" placeholder="Select a category">
                     <md-option value="{{cat}}" ng-repeat="cat in arrayAttributes">{{ cat }}</md-option>
                 </md-select>
-                <md-select ng-model="chartFilter" placeholder="Select a filter">
-                    <md-option value="{{fil}}" ng-repeat="fil in filterAttributes">{{ fil }}</md-option>
+                <md-switch ng-disabled="serSelected" ng-change="getDrillArray()" ng-model="query.drilled" aria-label="Switch 1">
+                    Drilled: {{ query.drilled }}
+                </md-switch>
+                <md-select ng-model="chartCategory.drilledField" placeholder="Select a series">
+                    <md-option value="{{item}}" ng-repeat="item in chartCategory.drilledArray">{{ item }}</md-option>
                 </md-select>
+               
                 <div layout="column" ng-repeat="ser in seriesArray">
                       <accordion>                                                   
                         <accordion-panel title="{{ser.name}}">
@@ -90,6 +94,9 @@
                             </md-input-container>
                             <md-select ng-model="ser.serName" placeholder="Select a series">
                                 <md-option value="{{cat}}" ng-repeat="cat in arrayAttributes">{{ cat }}</md-option>
+                            </md-select>
+                             <md-select ng-model="chartFilter" placeholder="Select a filter">
+                                <md-option value="{{fil}}" ng-repeat="fil in filterAttributes">{{ fil }}</md-option>
                             </md-select>
                             <md-select ng-model="ser.type" placeholder="Select a chart type" flex>
                               <md-optgroup label="Chart type">

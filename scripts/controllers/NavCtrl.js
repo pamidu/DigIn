@@ -11,8 +11,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
 
         var array = JSON.parse($rootScope.json_string);
 
-        console.log("$rootScope.json_string");
-        console.log($rootScope.json_string);
+        //console.log("$rootScope.json_string");
+        //console.log($rootScope.json_string);
 
         $scope.locationData = [];
 
@@ -20,49 +20,97 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
         for (k=0,j=array.length; k<j; k+=chunk) {
             temparray = array.slice(k,k+chunk);
 
-            console.log("temparray");
-            console.log(temparray);
+            // console.log("temparray");
+            // console.log(temparray);
 
-            var i;
-            for(i=0;i < temparray.length ; i++){
+            
+            for(var i=0;i < temparray.length ; i++){
                 
+                // console.log("temparray length");
+                // console.log(temparray.length);
+                // console.log("temparray[i] PLACE_OF_ACCIDENT");
+                // console.log(temparray[i].PLACE_OF_ACCIDENT);
 
-                console.log("temparray[i] PLACE_OF_ACCIDENT");
-                console.log(temparray[i].PLACE_OF_ACCIDENT);
-
-                Geocode(temparray[i].PLACE_OF_ACCIDENT);   
+                if(temparray[i].PLACE_OF_ACCIDENT != null){
+                    //console.log(temparray[i].PLACE_OF_ACCIDENT);
+                    //console.log(temparray[i].ID);
+                    Geocode(temparray[i].PLACE_OF_ACCIDENT,temparray[i].ID);   
+                }
             }
         
         }
-    
         
-        setTimeout(function(){ googleMap(); }, 5000);
-                  
-
+        setTimeout(function(){ arrangeArray();googleMap(); 
+        }, 5000);
+                
     };
-    function Geocode(address) {
+    function arrangeArray(){
+
+        var dataStore = $scope.locationData;
+        console.log("dataStore");
+        console.log(dataStore);
+        $scope.locationData = [];
+        console.log("$scope.locationData");
+        console.log($scope.locationData);
+
+        var i=0;
+        for(i = 0; i< dataStore.length; i++) {
+          console.log(dataStore[i].id);  
+          if(dataStore[i].id == undefined) {
+            console.log("inside if");
+            console.log(dataStore[i].id);
+              dataStore.splice(i, 1);
+              i--;
+          }
+        }
+
+        console.log("removed undefined");
+        console.log(dataStore);
+
+        var ArrangedById = dataStore.slice(0);
+        ArrangedById.sort(function(a, b) {
+            console.log("a.id b.id comparison");
+            console.log(a.id);
+            console.log(b.id);
+            return a.id - b.id;
+        });
+        console.log('ArrangedById:');
+        console.log(ArrangedById);
+
+        $scope.locationData = ArrangedById;
+    }
+
+    function Geocode(address,id) {
         var obj = {};
         var geocoder = new google.maps.Geocoder();
+
+        console.log("address id");
+        console.log(address);
+        console.log(id);
 
         geocoder.geocode({'address': address}, function(results, status) {
                     if (status === google.maps.GeocoderStatus.OK) {
                         obj = {
                             lat : results[0].geometry.location.G,
-                            lng : results[0].geometry.location.K
+                            lng : results[0].geometry.location.K,
+                            id : id,
+                            address : address
                         };
 
                         setTimeout(function(){ $scope.locationData.push(obj); }, 100);
                                              
                     }
-                    else if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {    
+                    if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {    
                         setTimeout(function() {
                         Geocode(address);
                         }, 100); 
                     }
-                    else if (status === google.maps.GeocoderStatus.ZERO_LIMIT) {    
-                        setTimeout(function() {
-                        Geocode(address);
-                        }, 100); 
+                    if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {    
+                        
+                        //Geocode(address);
+                        console.log("zero result for");
+                        console.log(address);
+                        
                     }
                     else {
 
@@ -123,39 +171,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                                 /*array[j].VEHICLE_CLASS + "</br>" ;*/
                             }  
                         }    
-                    });
-            // }
-            /*if(array[k].state == "Low"){
-
-                    marker[k] = new google.maps.Marker({
-                   position: {lat: dataStore[k].lat, lng: dataStore[k].lng},
-                    map: map,
-                    title: array[k].city,
-                    icon: pinImageBlue,
-                    state: array[k].state,
-                    type: array[k].type,
-                    modal: array[k].modal,
-                    year: array[k].year
-                    });
-
-                    marker[k].addListener('click', function(data) {
-
-                        var j;
-                        for(j=0;j<array.length;j++){
-
-                            if((dataStore[j].lat == data.latLng.G)  && (dataStore[j].lng == data.latLng.K )){
-        
-                                document.getElementById("details").innerHTML = 
-                                array[j].city + "</br>" +
-                                array[j].state + "</br>" +
-                                array[j].type + "</br>" +
-                                array[j].modal + "</br>" +
-                                array[j].year + "</br>" ;
-                            }  
-
-                        }
-                    });
-                }*/
+                    });            
             }
             
     }   

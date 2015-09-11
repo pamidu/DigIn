@@ -22,7 +22,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
     //get fb initial login state
     //scope.actIndicator = "false";
     fbInterface.getFbLoginState(scope);
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+    var objIndex = getRottsotObjectById(widId, $rootScope.dashboard.widgets);
     //add or remove account from the scope
     scope.addAccount = function() {
         if (fbInterface.state != 'connected')
@@ -35,6 +35,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
     scope.cancel = function() {
         $mdDialog.hide();
     };
+
 
 
     scope.chartConf = {"options":{"chart":{"type":"area"},"plotOptions":{"series":{"stacking":""}}},"series":[{"name":"Like Count","data":[],"id":"series-0","type":"line","dashStyle":"ShortDashDot","connectNulls":false}],"title":{"text":"Page Likes"},"credits":{"enabled":false},"loading":false,"xAxis":{"type":"datetime","currentMin":0},"yAxis":{"min":0}};
@@ -376,23 +377,16 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
         // console.log(q);
 };
 
-function hnbInit($scope, $http, $mdDialog, widId, $rootScope){
-
-    $scope.cancel = function() {
-        $mdDialog.hide();
-    };
-    $scope.finish = function() {
-        $mdDialog.hide();
-    };
-
-}
-
-
 
 
 //elastic controller
+ 
 function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) {
     /*Variable Initialization*/
+ 
+ //creating inline database
+ 
+
     $scope.query = {};
     $scope.query.state = false;
     $scope.chartTypes = [{name:"Area",type:"area"},{name:"Smooth area",type:"areaspline"},{name:"Line",type:"line"},{name:"Smooth line",type:"spline"},{name:"Column",type:"column"},{name:"Bar",type:"bar"},{name:"Pie",type:"pie"},{name:"Scatter",type:"scatter" }];
@@ -422,6 +416,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         $scope.ind = $scope.widget.widConfig.index;
         $scope.selectedFields = $scope.widget.widConfig.fields;
         $scope.dataQuery = $scope.widget.widConfig.query;
+  
         $scope.chartCategory.groupField = $scope.widget.widConfig.category;
         $scope.seriesArray = $scope.widget.widConfig.series;
     }
@@ -502,7 +497,10 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             $scope.dataIndicator = true;
             w.postMessage($scope.ind + "," + parameter + "," + $scope.query.state);
             w.addEventListener('message', function(event) {
-
+              
+                 // db.post({
+                 //           sample: event.data
+                 //          });
                 var obj = JSON.parse(event.data);
                 $scope.dataIndicator = false;
                 //creating the array to map dynamically
@@ -512,6 +510,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                         console.log(key);
                         $scope.mappedArray[key] = {
                             name: key,
+                        
                             data: [],
                             unique: 0,
                             isNaN: true
@@ -519,7 +518,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                         $scope.arrayAttributes.push(key);
                     }
                 }
-
+              
                 console.log('arrayAttributes-'+JSON.stringify($scope.arrayAttributes));
 
                 //mapping the dynamically created array
@@ -528,6 +527,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                         if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
                             var val = obj[i][key];
                             var parsedVal = parseFloat(val);
+                                            
                             if(!isNaN(parsedVal)){
                                 $scope.mappedArray[key].data.push(parsedVal);
                                 $scope.mappedArray[key].isNaN = false; 
@@ -566,6 +566,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             name: 'series1',
             serName: '',
             type: 'area',
+          
             color: '',
             drilled: false
         });
@@ -595,6 +596,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             //     };
             // });
             var orderedConfig = $scope.orderByCat();
+           
            // widget.chartConfig.drilldown.series = orderedConfig.drilledSeries;
            // widget.chartConfig.series = orderedConfig.config;
             console.log('final drilled:'+ JSON.stringify(orderedConfig.drilledSeries));
@@ -602,6 +604,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
            // console.log('test:'+ eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data'));
            // console.log(JSON.stringify($scope.mappedArray));
             //widget.chartConfig.xAxis.categories = eval('$scope.mappedArray.' + $scope.chartCategory + '.data');
+         
             //widget.chartConfig.xAxis.categories = true;
 
             widget.chartConfig = {
@@ -642,9 +645,11 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 index: $scope.ind,
                 fields: $scope.selectedFields,
                 query: $scope.dataQuery,
+            
                 xAxis:{category: $scope.chartCategory.groupField},
                 series: $scope.seriesArray
             };
+          
             console.log(JSON.stringify($scope.chartCategory.groupField));
             console.log(JSON.stringify($scope.seriesArray));
         }
@@ -652,6 +657,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
 
     //order by category
     $scope.orderByCat = function(){
+  
         var drilledSeries = [];
         var cat = Enumerable
         .From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data'))
@@ -691,6 +697,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             
 
             for(k=0;k<cat.length;k++){
+               
                 orderedObj[cat[k]] = {val:0,arr:[]};
             }
 
@@ -701,6 +708,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             //console.log('test:'+JSON.stringify($scope.mappedArray));
 
             for(j=0;j<serMappedData.length;j++){
+               
                 orderedObj[catMappedData[j]].val += serMappedData[j];
                 orderedObj[catMappedData[j]].arr.push({val: serMappedData[j], drill: drillData[j]});
             }
@@ -709,6 +717,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
 
             for (var key in orderedObj) {
                 if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
+                   
                     var drilledArray = $scope.groupDrilledItems(drilledObj,orderedObj[key].arr);
 
                     console.log('drilled array:'+ JSON.stringify(drilledArray));
@@ -741,8 +750,10 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             orderedObjArray.push(orderedArrayObj);
         }
 
-        console.log('orderedObj:'+JSON.stringify(orderedObj));
-        console.log('ordredObjArray:'+JSON.stringify(orderedObjArray));
+     
+ 
+       
+   
         return {"config" : orderedObjArray, "categories" : cat, "drilledSeries": drilledSeries};
 
         // widget.chartConfig.series = $scope.seriesArray.map(function(elm) {
@@ -2130,3 +2141,13 @@ function googleMapsInit(widId, $scope, $http, $rootScope, $mdDialog) {
     };
 
 }
+function hnbInit($scope, $http, $mdDialog, widId, $rootScope){
+
+ 
+ 
+
+
+
+}
+
+

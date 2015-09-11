@@ -276,19 +276,6 @@
             "col": "0"
         }, {
 
-            "title": "HNB Chart",
-            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "HNB Assuarance",
-            "Description": "Data comparison",
-            "initTemplate": "InitConfighnb",
-            "initController": "hnbInit",
-            "widView": "views/ViewHnbData.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "3",
-            "col": "0"
-        }, {
-
             "title": "Gnews",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Blogging",
@@ -392,7 +379,35 @@
             "sizeY": "2",
             "row": "4",
             "col": "0"
+        }, {
+
+            "title": "Number of claims per vehicle type",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "HNB Assuarance",
+            "Description": "Force directive layout to show number of claims vehicle type",
+            "initTemplate": "InitConfighnb",
+            "initController": "hnbInit",
+            "widView": "views/ViewHnbData.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "3",
+            "col": "0"
+        },
+        {
+
+            "title": "Distributed claims",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "HNB Assuarance",
+            "Description": "Sunburst directive layout to show the data of claims",
+            "initTemplate": "InitConfighnb",
+            "initController": "hnbInit",
+            "widView": "views/ViewHnbMonth.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "3",
+            "col": "0"
         }
+
 
     ]
 }

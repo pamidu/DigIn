@@ -391,7 +391,8 @@ function hnbInit($scope, $http, $mdDialog, widId, $rootScope){
 
 
 //elastic controller
-function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) {
+function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast) {
+   
     /*Variable Initialization*/
     $scope.query = {};
     $scope.query.state = false;
@@ -411,6 +412,9 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
     $scope.filterAttributes = ['Sum','Average','Percentage','Count'];
     $scope.serSelected = true;
     $scope.chartCategory = {groupField:'',drilledField:'',drilledArray:[]};
+    $scope.isReady = false;         // chart is ready to build
+    $scope.dataQuery = "";
+    $scope.validationMessage = '';
 
     //getting the widget object
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
@@ -490,6 +494,9 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         var parameter = "";
 
         if($scope.checkedFields.length!= 0 || $scope.dataQuery != ""){
+
+            $scope.isReady = true;              //chart is ready to build
+
             if ($scope.query.state) {
                 parameter = $scope.query.value;
             } else {
@@ -558,6 +565,9 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             $scope.chartTab = false;
             $scope.selectedTabIndex = 2;
         }
+        else{
+            alert('Select the fields or add a query to retrieve data');
+        }
     }
 
     //adds new series to the chart
@@ -584,69 +594,77 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         widget.chartSeries = [];
 
 
-        if($scope.seriesArray.serName != "" && typeof $scope.chartCategory.groupField!='undefined'){
-            // widget.chartConfig.series = $scope.seriesArray.map(function(elm) {
-            //     console.log(eval('$scope.mappedArray.' + elm.serName + '.data'));
-            //     return {
-            //         name: elm.name,
-            //         type: elm.type,
-            //         color: elm.color,
-            //         data: eval('$scope.mappedArray.' + elm.serName + '.data')
-            //     };
-            // });
-            var orderedConfig = $scope.orderByCat();
-           // widget.chartConfig.drilldown.series = orderedConfig.drilledSeries;
-           // widget.chartConfig.series = orderedConfig.config;
-            console.log('final drilled:'+ JSON.stringify(orderedConfig.drilledSeries));
-            
-           // console.log('test:'+ eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data'));
-           // console.log(JSON.stringify($scope.mappedArray));
-            //widget.chartConfig.xAxis.categories = eval('$scope.mappedArray.' + $scope.chartCategory + '.data');
-            //widget.chartConfig.xAxis.categories = true;
+        if($scope.isReady){
+            if($scope.seriesArray[0].serName != '' && $scope.chartCategory.groupField!= ''){
+                // widget.chartConfig.series = $scope.seriesArray.map(function(elm) {
+                //     console.log(eval('$scope.mappedArray.' + elm.serName + '.data'));
+                //     return {
+                //         name: elm.name,
+                //         type: elm.type,
+                //         color: elm.color,
+                //         data: eval('$scope.mappedArray.' + elm.serName + '.data')
+                //     };
+                // });
+                var orderedConfig = $scope.orderByCat();
+               // widget.chartConfig.drilldown.series = orderedConfig.drilledSeries;
+               // widget.chartConfig.series = orderedConfig.config;
+                console.log('final drilled:'+ JSON.stringify(orderedConfig.drilledSeries));
+                
+               // console.log('test:'+ eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data'));
+               // console.log(JSON.stringify($scope.mappedArray));
+                //widget.chartConfig.xAxis.categories = eval('$scope.mappedArray.' + $scope.chartCategory + '.data');
+                //widget.chartConfig.xAxis.categories = true;
 
-            widget.chartConfig = {
-        options: {
-            drilldown: {
-            series: orderedConfig.drilledSeries,
-            plotOptions: {
-            series: {
-                borderWidth: 0,
-                dataLabels: {
-                    enabled: true,
+                widget.chartConfig = {
+            options: {
+                drilldown: {
+                series: orderedConfig.drilledSeries,
+                plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                    }
                 }
+            },
             }
-        },
+            },
+            title: {
+                text: widget.uniqueType
+            },
+            xAxis: {
+                type: 'category'
+            },
+
+            legend: {
+                enabled: false
+            },
+            series:orderedConfig.config
+             };
+
+                console.log('widget config:'+JSON.stringify( widget.chartConfig));
+
+                $mdDialog.hide();
+
+                
+
+                //set the widget configurations
+                widget.widConfig = {
+                    index: $scope.ind,
+                    fields: $scope.selectedFields,
+                    query: $scope.dataQuery,
+                    xAxis:{category: $scope.chartCategory.groupField},
+                    series: $scope.seriesArray
+                };
+                console.log(JSON.stringify($scope.chartCategory.groupField));
+                console.log(JSON.stringify($scope.seriesArray));
+            }else{
+                alert('select a category and a series');
+            }
+
         }
-        },
-        title: {
-            text: 'Basic drilldown'
-        },
-        xAxis: {
-            type: 'category'
-        },
-
-        legend: {
-            enabled: false
-        },
-        series:orderedConfig.config
-         };
-
-            console.log('widget config:'+JSON.stringify( widget.chartConfig));
-
-            $mdDialog.hide();
-
-            
-
-            //set the widget configurations
-            widget.widConfig = {
-                index: $scope.ind,
-                fields: $scope.selectedFields,
-                query: $scope.dataQuery,
-                xAxis:{category: $scope.chartCategory.groupField},
-                series: $scope.seriesArray
-            };
-            console.log(JSON.stringify($scope.chartCategory.groupField));
-            console.log(JSON.stringify($scope.seriesArray));
+        else{
+            alert('Incomplete configuration');
         }
     }
 
@@ -666,16 +684,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         .Distinct()
         .ToArray();
 
-       // var someArray = [{'name':"VAN"}, {'name':"MOTOR CAR"}, {'name':"PRIME MOVER"}, {'name':"THREE WHEELER"}, {'name':"PASSENGER CARRYING BUS"}];
-       // var result = Enumerable
-       //  .From(eval('$scope.mappedArray.' + $scope.chartCategory + '.data'))
-       //  .Select()
-       //  .Distinct()
-       //  .ToArray();
-       // alert(result);
-        
-        
-        
+ 
         console.log(JSON.stringify(cat));
         
         for(i=0;i<$scope.seriesArray.length;i++){
@@ -733,7 +742,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                                drilldown: key});
                 }
             }
-//------------------------------------------------------------------------------------------------------------------------------------
+
             orderedArrayObj["data"] = data;
             orderedArrayObj["name"] = $scope.seriesArray[i].name;
             orderedArrayObj["color"] = $scope.seriesArray[i].color;
@@ -780,6 +789,9 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 }
             }
         }
+        else{
+            validate('Please select an index',$mdToast, $scope);
+        }
     }
 
     //close the config
@@ -787,7 +799,6 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         $mdDialog.hide();
     }
 
-    //filtering
 
 };
 

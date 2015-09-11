@@ -124,3 +124,14 @@ function uniqueArray(data){
     }
     return uniqueNames;
 }
+
+
+function validate(msg, mdToast, scope){
+
+    mdToast.show(
+      mdToast.simple()
+        .content(msg)
+        .position('top right')
+        .hideDelay(3000)
+    );
+}

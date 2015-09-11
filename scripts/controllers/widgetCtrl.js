@@ -380,8 +380,8 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
 
 
 //elastic controller
- 
-function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) {
+function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast) {
+   
     /*Variable Initialization*/
  
  //creating inline database
@@ -405,6 +405,9 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
     $scope.filterAttributes = ['Sum','Average','Percentage','Count'];
     $scope.serSelected = true;
     $scope.chartCategory = {groupField:'',drilledField:'',drilledArray:[]};
+    $scope.isReady = false;         // chart is ready to build
+    $scope.dataQuery = "";
+    $scope.validationMessage = '';
 
     //getting the widget object
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
@@ -485,6 +488,9 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         var parameter = "";
 
         if($scope.checkedFields.length!= 0 || $scope.dataQuery != ""){
+
+            $scope.isReady = true;              //chart is ready to build
+
             if ($scope.query.state) {
                 parameter = $scope.query.value;
             } else {
@@ -558,6 +564,9 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
             $scope.chartTab = false;
             $scope.selectedTabIndex = 2;
         }
+        else{
+            alert('Select the fields or add a query to retrieve data');
+    }
     }
 
     //adds new series to the chart
@@ -585,7 +594,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         widget.chartSeries = [];
 
 
-        if($scope.seriesArray.serName != "" && typeof $scope.chartCategory.groupField!='undefined'){
+        if($scope.isReady){
+            if($scope.seriesArray[0].serName != '' && $scope.chartCategory.groupField!= ''){
             // widget.chartConfig.series = $scope.seriesArray.map(function(elm) {
             //     console.log(eval('$scope.mappedArray.' + elm.serName + '.data'));
             //     return {
@@ -622,7 +632,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         }
         },
         title: {
-            text: 'Basic drilldown'
+                text: widget.uniqueType
         },
         xAxis: {
             type: 'category'
@@ -652,6 +662,13 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
           
             console.log(JSON.stringify($scope.chartCategory.groupField));
             console.log(JSON.stringify($scope.seriesArray));
+            }else{
+                alert('select a category and a series');
+        }
+
+    }
+        else{
+            alert('Incomplete configuration');
         }
     }
 
@@ -672,15 +689,6 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         .Distinct()
         .ToArray();
 
-       // var someArray = [{'name':"VAN"}, {'name':"MOTOR CAR"}, {'name':"PRIME MOVER"}, {'name':"THREE WHEELER"}, {'name':"PASSENGER CARRYING BUS"}];
-       // var result = Enumerable
-       //  .From(eval('$scope.mappedArray.' + $scope.chartCategory + '.data'))
-       //  .Select()
-       //  .Distinct()
-       //  .ToArray();
-       // alert(result);
-        
-        
         
         console.log(JSON.stringify(cat));
         
@@ -742,7 +750,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                                drilldown: key});
                 }
             }
-//------------------------------------------------------------------------------------------------------------------------------------
+
             orderedArrayObj["data"] = data;
             orderedArrayObj["name"] = $scope.seriesArray[i].name;
             orderedArrayObj["color"] = $scope.seriesArray[i].color;
@@ -791,6 +799,9 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
                 }
             }
         }
+        else{
+            validate('Please select an index',$mdToast, $scope);
+    }
     }
 
     //close the config
@@ -798,7 +809,6 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId) 
         $mdDialog.hide();
     }
 
-    //filtering
 
 };
 

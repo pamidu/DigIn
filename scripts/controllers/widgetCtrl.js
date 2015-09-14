@@ -2113,7 +2113,15 @@ function googleMapsInit(widId, $scope, $http, $rootScope, $mdDialog) {
 function hnbInit($scope, $http, $mdDialog, widId, $rootScope){
 
  
- 
+ $scope.finish = function() {
+        
+        $mdDialog.hide();                  
+
+    };    
+
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
 
 
 

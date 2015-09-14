@@ -12,31 +12,20 @@ function googleMapsLoad(widId, $scope, $http, $rootScope, $mdDialog) {
 
         var array = JSON.parse($rootScope.json_string);
 
-        console.log("$rootScope.json_string");
-        console.log($rootScope.json_string);
-
         $scope.locationData = [];
 
         var k,j,temparray,chunk = 8;
         for (k=0,j=array.length; k<j; k+=chunk) {
             temparray = array.slice(k,k+chunk);
 
-            console.log("temparray");
-            console.log(temparray);
-
             var i;
             for(i=0;i < temparray.length ; i++){
-                
-
-                console.log("temparray[i] PLACE_OF_ACCIDENT");
-                console.log(temparray[i].PLACE_OF_ACCIDENT);
 
                 Geocode(temparray[i].PLACE_OF_ACCIDENT);   
             }
         
         }
-    
-        
+
         setTimeout(function(){ googleMap(); }, 5000);
                   
         $rootScope.longitude = longitude;
@@ -71,16 +60,11 @@ function googleMapsLoad(widId, $scope, $http, $rootScope, $mdDialog) {
 
                       alert('Geocode was not successful for the following reason: ' + status);
                     }
-                    // console.log("JSON.stringify($scope.locationData)");
-                    // console.log(JSON.stringify($scope.locationData));
-                    console.log(address);
+
         });     
     }
 
    function googleMap() {
-
-        console.log("locationData googleMap");
-        console.log($scope.locationData);
 
         var dataStore = $scope.locationData;
 
@@ -126,43 +110,11 @@ function googleMapsLoad(widId, $scope, $http, $rootScope, $mdDialog) {
                             }  
                         }    
                     });
-            // }
-            /*if(array[k].state == "Low"){
-
-                    marker[k] = new google.maps.Marker({
-                   position: {lat: dataStore[k].lat, lng: dataStore[k].lng},
-                    map: map,
-                    title: array[k].city,
-                    icon: pinImageBlue,
-                    state: array[k].state,
-                    type: array[k].type,
-                    modal: array[k].modal,
-                    year: array[k].year
-                    });
-
-                    marker[k].addListener('click', function(data) {
-
-                        var j;
-                        for(j=0;j<array.length;j++){
-
-                            if((dataStore[j].lat == data.latLng.G)  && (dataStore[j].lng == data.latLng.K )){
-        
-                                document.getElementById("details").innerHTML = 
-                                array[j].city + "</br>" +
-                                array[j].state + "</br>" +
-                                array[j].type + "</br>" +
-                                array[j].modal + "</br>" +
-                                array[j].year + "</br>" ;
-                            }  
-
-                        }
-                    });
-                }*/
+   
             }
             
     }
 
-    
 
     $scope.cancel = function() {
         $mdDialog.hide();

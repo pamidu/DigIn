@@ -53,8 +53,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
 
         //getting page likes insights
         fbInterface.getPageLikesInsight(scope.fbPageModel, dateObj, function(data) {
-            console.log("**************************************");
-            console.log("Like history:" + JSON.stringify(data));
+           
             var likeHistory = fbInterface.getPageLikesObj(data);
             scope.chartConf.series[0].data = likeHistory.likeArr;
             scope.chartConf.series[0].pointStart = Date.UTC(likeHistory.start.getUTCFullYear(), likeHistory.start.getUTCMonth(), likeHistory.start.getUTCDate());;
@@ -69,8 +68,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
 
         //getting page views insights
         fbInterface.getPageViewsInsight(scope.fbPageModel, dateObj, function(data) {
-            console.log("**************************************");
-            console.log("View history:" + JSON.stringify(data));
+           
             var viewHistory = fbInterface.getPageLikesObj(data);
             scope.chartConfView.series[0].data = viewHistory.likeArr;
             scope.chartConfView.series[0].pointStart = Date.UTC(viewHistory.start.getUTCFullYear(), viewHistory.start.getUTCMonth(), viewHistory.start.getUTCDate());;
@@ -162,7 +160,7 @@ function TwitterInit($scope, $http, $mdDialog, widId, $rootScope, $q, twitterSer
         });
 
         $rootScope.dashboard.widgets[objIndex].widData = $rootScope.tweets;
-    console.log(JSON.stringify($rootScope.tweets));
+    
     }
 
     //when the user clicks the connect twitter button, the popup authorization window opens
@@ -199,13 +197,6 @@ function TwitterInit($scope, $http, $mdDialog, widId, $rootScope, $q, twitterSer
             $scope.connectedTwitter = true;
         $scope.refreshTimeline();
     }
-
-    console.log("hii");
-    console.log($rootScope.tweets);
-
-    // $rootScope.dashboard.widgets[objIndex].widData = $rootScope.tweets;
-    // console.log(JSON.stringify($rootScope.tweets));
-
 
 };
 
@@ -287,20 +278,15 @@ function analyticsInit($scope, $http, $mdDialog, widId, $rootScope) {
 
                 // if a report is ready
                 $rootScope.$on('$gaReportSuccess', function (e, report, element) {
-                    console.log(report, element);
+                    
                 });
 
 
  $rootScope.dashboard.widgets[objIndex].widAna = $rootScope.charts;
- console.log(JSON.stringify($rootScope.charts));
 
  $rootScope.dashboard.widgets[objIndex].widAque = $rootScope.queries;
 
  $rootScope.dashboard.widgets[objIndex].widAexc = $rootScope.extraChart;
-
- // console.log("hii");
- // console.log($rootScope.extraChart);
- // console.log($rootScope.queries);
 
 };
 
@@ -362,8 +348,7 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
                 VideosService.listResults(data);
                 $rootScope.dashboard.widgets[objIndex].widData = data;
                 $mdDialog.hide();
-                console.log(JSON.stringify(data));
-                //`$log.info(data);
+                
             })
             .error(function() {
                 $log.info('Search error');
@@ -374,7 +359,7 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
     $scope.tabulate = function(state) {
             $scope.playlist = state;
         }
-        // console.log(q);
+      
 };
 
 
@@ -470,12 +455,10 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
 
     $scope.getDrillArray = function(){
-        //console.log(JSON.stringify(drill));
-        //drill['drilledArray'] = [];
+       
         var uniqueScore = eval('$scope.mappedArray.'+$scope.chartCategory.groupField+'.unique');
         for (var key in $scope.mappedArray) {
                     if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
-                        console.log($scope.mappedArray[key].unique);
                        if($scope.mappedArray[key].unique > uniqueScore && $scope.mappedArray[key].unique !=0) 
                         $scope.chartCategory.drilledArray.push($scope.mappedArray[key].name);
                     }
@@ -513,7 +496,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 for (var key in obj[0]) {
                     if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
                         var val = obj[0][key];
-                        console.log(key);
+                
                         $scope.mappedArray[key] = {
                             name: key,
                         
@@ -525,8 +508,6 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                     }
                 }
               
-                console.log('arrayAttributes-'+JSON.stringify($scope.arrayAttributes));
-
                 //mapping the dynamically created array
                 for (i = 0; i < obj.length; i++) {
                     for (var key in obj[i]) {
@@ -557,8 +538,6 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                      }
                 }
 
-
-                console.log('mappedArray-'+JSON.stringify($scope.mappedArray));
             });
             
             $scope.chartTab = false;
@@ -609,7 +588,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
            
            // widget.chartConfig.drilldown.series = orderedConfig.drilledSeries;
            // widget.chartConfig.series = orderedConfig.config;
-            console.log('final drilled:'+ JSON.stringify(orderedConfig.drilledSeries));
+            // console.log('final drilled:'+ JSON.stringify(orderedConfig.drilledSeries));
             
            // console.log('test:'+ eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data'));
            // console.log(JSON.stringify($scope.mappedArray));
@@ -644,11 +623,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         series:orderedConfig.config
          };
 
-            console.log('widget config:'+JSON.stringify( widget.chartConfig));
-
             $mdDialog.hide();
-
-            
 
             //set the widget configurations
             widget.widConfig = {
@@ -660,8 +635,6 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 series: $scope.seriesArray
             };
           
-            console.log(JSON.stringify($scope.chartCategory.groupField));
-            console.log(JSON.stringify($scope.seriesArray));
             }else{
                 alert('select a category and a series');
         }
@@ -682,16 +655,14 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         .Distinct()
         .ToArray();
         var orderedObjArray = [];
-        console.log('test chartCategory:'+ $scope.chartCategory.drilledField);
+       
         var drilledCat = Enumerable
         .From(eval('$scope.mappedArray.' + $scope.chartCategory.drilledField + '.data'))
         .Select()
         .Distinct()
         .ToArray();
 
-        
-        console.log(JSON.stringify(cat));
-        
+       
         for(i=0;i<$scope.seriesArray.length;i++){
             var serMappedData = eval('$scope.mappedArray.' + $scope.seriesArray[i].serName + '.data');
             var catMappedData = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data');
@@ -713,22 +684,19 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 drilledObj[drilledCat[k]] = 0;
             }
 
-            //console.log('test:'+JSON.stringify($scope.mappedArray));
 
             for(j=0;j<serMappedData.length;j++){
                
                 orderedObj[catMappedData[j]].val += serMappedData[j];
                 orderedObj[catMappedData[j]].arr.push({val: serMappedData[j], drill: drillData[j]});
             }
-            console.log('orderedObj:'+JSON.stringify(orderedObj));
-            console.log(JSON.stringify(orderedObj));
 
             for (var key in orderedObj) {
                 if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
                    
                     var drilledArray = $scope.groupDrilledItems(drilledObj,orderedObj[key].arr);
 
-                    console.log('drilled array:'+ JSON.stringify(drilledArray));
+                   
                     var drilledSeriesObj = [];
                     for(var key1 in drilledArray){
                         if(Object.prototype.hasOwnProperty.call(drilledArray, key1)){
@@ -742,8 +710,6 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                     test.data = drilledSeriesObj;
 
                     drilledSeries.push(test);
-
-                    console.log('Drilled series:'+ JSON.stringify(drilledSeries));
 
                     data.push({name: key,
                                y: orderedObj[key].val,
@@ -1029,10 +995,7 @@ function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
                 }
 
                 $rootScope.dashboard.widgets[objIndex].widData = $scope.entryArray;
-                // $mdDialog.hide();
-                console.log(JSON.stringify($scope.entryArray));
 
-                //console.log(entry);
             }
         });
 
@@ -1054,7 +1017,6 @@ function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSetting
     //complete config  
     $scope.finish = function() {
         $mdDialog.hide();
-        console.log($rootScope.files);
     };
 
     $rootScope.files = [];
@@ -1062,7 +1024,7 @@ function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSetting
 
     // Callback triggered after Picker is shown
     $scope.onLoaded = function() {
-        console.log('Google Picker loaded!');
+        //console.log('Google Picker loaded!');
     }
 
     // Callback triggered after selecting files
@@ -1072,14 +1034,13 @@ function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSetting
             $rootScope.files.push(file);
             $rootScope.dashboard.widgets[objIndex].widData = $rootScope.files;
             $mdDialog.hide();
-            console.log("hii");
-            console.log(JSON.stringify($rootScope.files));
+            
         });
     }
 
     // Callback triggered after clicking on cancel
     $scope.onCancel = function() {
-        console.log('Google picker close/cancel!');
+        //console.log('Google picker close/cancel!');
     }
 
 };
@@ -1190,7 +1151,6 @@ function csvInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     $rootScope.myData = [58.13, 53.98, 67.00, 89.70, 99.00, 13.28, 66.70, 34.98];
     $rootScope.dashboard.widgets[objIndex].widCsc = $rootScope.myData;
-    console.log(JSON.stringify($rootScope.myData));
 
     $scope.cancel = function() {
         $mdDialog.hide();
@@ -1202,7 +1162,7 @@ function csvInit($scope, $http, $mdDialog, widId, $rootScope) {
         // $rootScope.myData = file;
         //console.log($rootScope.csvFile);
         $rootScope.dashboard.widgets[objIndex].widCsv = $rootScope.csvFile;
-        console.log(JSON.stringify($rootScope.csvFile));
+    
         $mdDialog.hide();
 
 
@@ -1221,8 +1181,7 @@ function weatherInit(widId, $scope, $http, $rootScope, $mdDialog) {
     $scope.finish = function() {
         $http.get('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22' + $scope.locZip + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
       .success(function(data){
-        //alert(JSON.stringify(data));
-        console.log(JSON.stringify(data));
+        
         var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
         $rootScope.dashboard.widgets[objIndex].widData = data.query;
         $mdDialog.hide();
@@ -1289,7 +1248,7 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
                     $('#gConnect').show();
                 }
 
-                console.log('authResult', authResult);
+               
             },
 
             /**
@@ -1431,7 +1390,7 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
                     'userId': 'me'
                 }).then(function(res) {
                     var profile = res.result;
-                    console.log(profile);
+                    // console.log(profile);
                     $('#profile').empty();
                     $('#profile').append(
                         $('<p><img style="width:50px;height:50px;" src=\"' + profile.image.url + '\"></p><br/>'));
@@ -1465,12 +1424,12 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
      * @param {boolean} isSignedIn The new signed in state.
      */
     var updateSignIn = function() {
-        console.log('update sign in state');
+        // console.log('update sign in state');
         if (auth2.isSignedIn.get()) {
-            console.log('signed in');
+            // console.log('signed in');
             helper.onSignInCallback(gapi.auth2.getAuthInstance());
         } else {
-            console.log('signed out');
+            // console.log('signed out');
             helper.onSignInCallback(gapi.auth2.getAuthInstance());
         }
     }
@@ -1490,7 +1449,7 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
                     scope: 'https://www.googleapis.com/auth/plus.login'
                 }).then(
                     function() {
-                        console.log('init');
+                        // console.log('init');
                         auth2 = gapi.auth2.getAuthInstance();
                         auth2.isSignedIn.listen(updateSignIn);
                         auth2.then(updateSignIn());
@@ -1538,10 +1497,10 @@ $scope.message = null;
                     var resultData = results.data;
                     if (dataLength > 0) {
                         $rootScope.instaImages = resultData;
-                        console.log("hiii");
+                        
                          // console.log( resultData );
                          $rootScope.dashboard.widgets[objIndex].widData = $rootScope.instaImages;
-                         console.log(JSON.stringify($rootScope.instaImages));
+                         // console.log(JSON.stringify($rootScope.instaImages));
                         $scope.message = "We found " + dataLength + " results for " + tag;
                     } else {
                         $scope.message = "No results.";
@@ -1556,15 +1515,15 @@ $scope.message = null;
         $scope.formData = {};
 
         $scope.submitForm = function () {
-            console.log( 'submit' );
-            console.log( $scope.formData.tagInput );
+            // console.log( 'submit' );
+            // console.log( $scope.formData.tagInput );
             var tag = $scope.formData.tagInput;
             searchByTag( tag );
             $scope.message = "Searching Instagram for photos tagged with " + tag;
         };
 
         $scope.clear = function () {
-            console.log( 'clear' );
+            // console.log( 'clear' );
             $scope.formData = {};
             $scope.instaImage = {};
             $scope.message = null;
@@ -1602,7 +1561,7 @@ $scope.finish = function() {
 
 
     $rootScope.dashboard.widgets[objIndex].widEnc = $rootScope.todecrypt;
-    console.log(JSON.stringify($rootScope.todecrypt));
+   
 
     // $mdDialog.hide();
     };
@@ -1614,13 +1573,13 @@ $scope.finish = function() {
       iv: splitEncryption[1],
       s: splitEncryption[2]
     }
-    console.log(splitEncryption);
+    
     splitEncryption = JSON.stringify(splitEncryption);
-    console.log(splitEncryption);
+    
         $rootScope.decryption = CryptoJS.AES.decrypt(splitEncryption, "Secret Passphrase", { format: JsonFormatter }).toString(CryptoJS.enc.Utf8);
 
     $rootScope.dashboard.widgets[objIndex].widDec = $rootScope.decryption;
-    console.log(JSON.stringify($rootScope.decryption));
+   
 
         // $mdDialog.hide();
     };

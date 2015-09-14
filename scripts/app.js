@@ -63,21 +63,10 @@ routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider", "lkGoo
             controller: 'ExtendedDashboardCtrl',
             templateUrl: "views/extended-dashboard.html"
         })
-        .state('D3plugins', {
-            url: "/D3plugins",
-            controller: 'd3PluginCtrl',
-            templateUrl: "views/D3Plugin/d3View.html"
-        })
         .state('PivotTable', {
             url: "/PivotTable",
             controller: 'summarizeCtrl',
             templateUrl: "views/pivottable.html"
-        })
-        .state('ReportViewer', {
-            url: '/ReportViewer:param',
-            controller: 'ReportViewerControl',
-            templateUrl: "views/Report_viewer.html"
-
         })
         .state('DashboardViewer', {
             url: '/DashboardViewer:param',
@@ -89,12 +78,6 @@ routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider", "lkGoo
             url: "/CustomDashboard:param",
             controller: 'DashboardCtrl',
             templateUrl: "views/charts.html"
-        })
-        .state('AnalyzerViewer', {
-            url: '/AnalyzerViewer:param',
-            controller: 'AnalyzerViewerControl',
-            templateUrl: "views/Analyzer_viewer.html"
-
         })
         .state('Settings', {
             url: '/settings',

@@ -3,7 +3,7 @@
       replace: true,
       controller: 'mainController',
       link: function (scope, element, attrs) {
-        console.log("Add plumbing for the 'item' element");
+        //console.log("Add plumbing for the 'item' element");
 
         jsPlumb.makeTarget(element, {
           endpoint:"Blank",
@@ -14,7 +14,7 @@
         });
         jsPlumb.draggable(element, {
            stop:function(event,ui) {
-                          console.log("Check if its printing")
+                          //console.log("Check if its printing")
                           event.stopPropagation();
                                 },
           containment: 'parent'

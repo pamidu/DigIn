@@ -11,29 +11,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
 
         var array = JSON.parse($rootScope.json_string);
 
-        //console.log("$rootScope.json_string");
-        //console.log($rootScope.json_string);
-
         $scope.locationData = [];
 
         var k,j,temparray,chunk = 8;
         for (k=0,j=array.length; k<j; k+=chunk) {
             temparray = array.slice(k,k+chunk);
-
-            // console.log("temparray");
-            // console.log(temparray);
-
             
             for(var i=0;i < temparray.length ; i++){
-                
-                // console.log("temparray length");
-                // console.log(temparray.length);
-                // console.log("temparray[i] PLACE_OF_ACCIDENT");
-                // console.log(temparray[i].PLACE_OF_ACCIDENT);
 
                 if(temparray[i].PLACE_OF_ACCIDENT != null){
-                    //console.log(temparray[i].PLACE_OF_ACCIDENT);
-                    //console.log(temparray[i].ID);
                     Geocode(temparray[i].PLACE_OF_ACCIDENT,temparray[i].ID);   
                 }
             }
@@ -47,35 +33,21 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
     function arrangeArray(){
 
         var dataStore = $scope.locationData;
-        console.log("dataStore");
-        console.log(dataStore);
         $scope.locationData = [];
-        console.log("$scope.locationData");
-        console.log($scope.locationData);
 
         var i=0;
         for(i = 0; i< dataStore.length; i++) {
-          console.log(dataStore[i].id);  
+
           if(dataStore[i].id == undefined) {
-            console.log("inside if");
-            console.log(dataStore[i].id);
               dataStore.splice(i, 1);
               i--;
           }
         }
 
-        console.log("removed undefined");
-        console.log(dataStore);
-
         var ArrangedById = dataStore.slice(0);
         ArrangedById.sort(function(a, b) {
-            console.log("a.id b.id comparison");
-            console.log(a.id);
-            console.log(b.id);
             return a.id - b.id;
         });
-        console.log('ArrangedById:');
-        console.log(ArrangedById);
 
         $scope.locationData = ArrangedById;
     }
@@ -83,10 +55,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
     function Geocode(address,id) {
         var obj = {};
         var geocoder = new google.maps.Geocoder();
-
-        console.log("address id");
-        console.log(address);
-        console.log(id);
 
         geocoder.geocode({'address': address}, function(results, status) {
                     if (status === google.maps.GeocoderStatus.OK) {
@@ -107,25 +75,16 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                     }
                     if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {    
                         
-                        //Geocode(address);
-                        console.log("zero result for");
-                        console.log(address);
-                        
                     }
                     else {
 
                       alert('Geocode was not successful for the following reason: ' + status);
                     }
-                    // console.log("JSON.stringify($scope.locationData)");
-                    // console.log(JSON.stringify($scope.locationData));
-                    console.log(address);
+
         });     
     }
 
    function googleMap() {
-
-        console.log("locationData googleMap");
-        console.log($scope.locationData);
 
         var dataStore = $scope.locationData;
 
@@ -502,17 +461,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
        $scope.favoriteDashboards= [];
        $scope.dashboards = [];
        $scope.favoriteAnalyzers =[];
-        // $scope.GetDshboardDetails = function() {
-        //     var client = $objectstore.getClient("com.duosoftware.com", "duodigin_dashboard");
-        //     client.onGetMany(function(data) {
-        //         if (data) {
-        //             //alert("success");
-        //             //$rootScope.ExistingDashboardDetails =data;
-        //             $scope.ExistingDashboardDetails = data;
-        //         }
-        //     });
-        //     client.getByFiltering("*");
-        // }
+       
 
          $scope.GetDashboardDetails = function() {
 
@@ -533,9 +482,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                 }
             }).
             success(function(data, status) {
-
-                console.log("dashbaord data");
-                console.log(data);
                 
              for(var i=0; i<data.repositoryFileDto.length; i++)
                    {
@@ -549,8 +495,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                       obj1.title= data.repositoryFileDto[i].title;
                       $scope.dashboards.push(obj1);
                    } 
-
-                   console.log($scope.dashboards);
               
                    $scope.favoriteDashboards.push($scope.dashboards[2]);
                    $scope.favoriteDashboards.push($scope.dashboards[0]);
@@ -582,9 +526,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
             }).
             success(function(data, status) {
                 
-
-             console.log("reports data");
-                console.log(data);   
              for(var i=0; i<data.repositoryFileDto.length; i++)
                    {
                       var obj1={};
@@ -597,12 +538,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                       $scope.reports.push(obj1);
                    } 
 
-                   console.log($scope.reports);
-              
                     $scope.favoriteReports.push($scope.reports[2]) ;
                  
                      $scope.favoriteReports.push($scope.reports[3]) ;
-                   
 
 
             }).
@@ -628,10 +566,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
             }
             }).
             success(function(data, status) {
-                
-
-                console.log("analyser data");
-                console.log(data);
 
              for(var i=0; i<data.repositoryFileDto.length; i++)
                    {
@@ -667,8 +601,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
             },500);
            
             setTimeout(function(){     
-                //console.log(document.getElementsByClassName("md-ripple-container"));
-                //document.getElementsByClassName("md-ripple-container")[0].style.display = "none";
+          
                 html2canvas(document.body, {
                         background : '#E0E0E0', 
                         useCORS : true,
@@ -679,8 +612,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                     
                             $rootScope.a = canvas;
                             setTimeout(function(){
-                            // document.getElementsByClassName("md-ripple-container")[3].style.display = "block";
-                            //alert("changed ripple container back to previous state");
+                           
                             },500);
 
                             setTimeout(function(){

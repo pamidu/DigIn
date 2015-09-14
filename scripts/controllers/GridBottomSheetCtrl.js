@@ -10,7 +10,7 @@ routerApp.controller('GridBottomSheetCtrl', function($scope, $mdBottomSheet,$mdD
   ];
   $scope.listItemClick = function($index) {
     var clickedItem = $scope.items[$index];
-    console.log(clickedItem);
+    
     if(clickedItem.name=="Share")
     {
             $mdDialog.show({

@@ -3,8 +3,6 @@ var app = angular.module("diginLogin", ['ngMaterial']);
 app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', function($scope, $http, $mdToast, $animate) {
     $scope.login = function() {
         
-        //$scope.txtUname = "";
-        //$scope.txtPwd = "";
         $http({
             method: 'POST',
             url: 'http://104.236.192.147:8080/pentaho/j_spring_security_check',
@@ -19,7 +17,6 @@ app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', function
 
         }).
         success(function(data, status) {
-            // console.log(headers('Location'));
             localStorage.setItem('username', $scope.txtUname);
             if (data.match(/Pentaho User Console - Login/g) == null)
                 window.location = "home.html";

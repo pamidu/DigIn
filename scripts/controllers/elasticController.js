@@ -137,11 +137,10 @@ $mdDialog,$rootScope){
                                });             
                 widget.chartSeries = [];
                 widget.chartSeries =widget.chartConfig.series;
-                console.log(JSON.stringify(widget.chartConfig.series));
                
                  $('#pagePreLoader').hide();
           }
-            console.log(widget.chartSeries);
+          
       }); 
       client.getSelected(parameter);    
       }  

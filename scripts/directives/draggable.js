@@ -9,7 +9,7 @@ routerApp.directive('draggable', function() {
           element.draggable({
 
                  stop:function(event,ui) {
-                          console.log("Check if its printing")
+                          //console.log("Check if its printing")
                           event.stopPropagation();
                                 }                 
               });

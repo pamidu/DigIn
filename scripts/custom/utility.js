@@ -7,7 +7,7 @@
     returns {JSON data as a single object}*/
  function getJSONData(http,file,callback){
     http.get('jsons/'+file+'.json').success(function(data) {
-      console.log('reading json file:'+file+'.json');
+      // console.log('reading json file:'+file+'.json');
      // alert(JSON.stringify(data.d));
       callback(data.d);
     });
@@ -21,7 +21,7 @@
     returns {JSON data as a single object}*/
  function getJSONDataByIndex(http,file,index,callback){
     http.get('jsons/'+file+'.json').success(function(data) {
-      console.log('reading json file:'+file+'.json @ index'+ index);
+      // console.log('reading json file:'+file+'.json @ index'+ index);
       callback(data.d[index]);
     });
  };

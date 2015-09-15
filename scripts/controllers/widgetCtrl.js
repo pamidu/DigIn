@@ -1532,62 +1532,6 @@ $scope.message = null;
 
 };
 
-function convInit($scope, $http, $window, instagram, widId, $rootScope, $mdDialog) {
-
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-
-    $scope.toencrypt = '';
-    $rootScope.todecrypt = '';
-    $rootScope.decryption = '';
-
-    $scope.cancel = function() {
-    $mdDialog.hide();
-};
-
-$scope.finish = function() {
-    $mdDialog.hide();    
-};
-
-
-        $scope.encryptMessage = function(){
-        if (!$scope.toencrypt.length) {
-            $rootScope.todecrypt = 'ENTER TEXT TO ENCRYPT';
-            return
-        }
-        $rootScope.todecrypt = CryptoJS.AES.encrypt($scope.toencrypt, "Secret Passphrase", { format: JsonFormatter }).toString();
-
-    $rootScope.todecrypt = JSON.parse($rootScope.todecrypt);
-    $rootScope.todecrypt = $rootScope.todecrypt.ct +'&'+ $rootScope.todecrypt.iv +'&'+ $rootScope.todecrypt.s;
-
-
-    $rootScope.dashboard.widgets[objIndex].widEnc = $rootScope.todecrypt;
-   
-
-    // $mdDialog.hide();
-    };
-
-    $scope.decryptMessage = function(){
-    var splitEncryption = $rootScope.todecrypt.split('&');
-    splitEncryption = {
-      ct: splitEncryption[0],
-      iv: splitEncryption[1],
-      s: splitEncryption[2]
-    }
-    
-    splitEncryption = JSON.stringify(splitEncryption);
-    
-        $rootScope.decryption = CryptoJS.AES.decrypt(splitEncryption, "Secret Passphrase", { format: JsonFormatter }).toString(CryptoJS.enc.Utf8);
-
-    $rootScope.dashboard.widgets[objIndex].widDec = $rootScope.decryption;
-   
-
-        // $mdDialog.hide();
-    };
-
-      
-};
-
-
 routerApp.controller('sltivrInit', function($scope, $mdDialog, $rootScope) {
 
     $scope.countTo = 349;

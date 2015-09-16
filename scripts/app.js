@@ -13,7 +13,7 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial', 'uiMicrokernel', "hi
     'countTo',
     'pjTts',
     'nvd3',
-     'gridster','lk-google-picker', 'ngSanitize', 'ngAnalytics', 'servicess','ngCsv'
+     'gridster','lk-google-picker', 'ngSanitize', 'ngAnalytics', 'servicess','ngCsv','angularUtils.directives.dirPagination'
 ])
 
 routerApp.config(["$mdThemingProvider","$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", function($mdThemingProvider,$locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider) {
@@ -514,5 +514,8 @@ routerApp.filter('getExtension', function () {
     return url.split('.').pop();
   };
 });
+
+
+
 
 

@@ -16,7 +16,7 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial', 'uiMicrokernel', "hi
      'gridster','lk-google-picker', 'ngSanitize', 'ngAnalytics', 'servicess','ngCsv'
 ])
 
-routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", function($locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider) {
+routerApp.config(["$mdThemingProvider","$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", function($mdThemingProvider,$locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider) {
     $httpProvider.defaults.headers.post['Content-Type'] = 'multipart/form-data';
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -97,6 +97,24 @@ routerApp.config(["$locationProvider", "$httpProvider", "$stateProvider", "lkGoo
         clientId: '468951747947-jb7obcgd91m7379q4nn7vroid8g37ds0.apps.googleusercontent.com',
         scope: ['https://www.googleapis.com/auth/drive']
     })
+
+    $mdThemingProvider.theme('alt')
+    .primaryPalette('indigo')
+    .accentPalette('blue');
+
+  $mdThemingProvider.theme('alt1')
+    .primaryPalette('deep-purple')
+    .accentPalette('red');
+
+  $mdThemingProvider.theme('alt2')
+    .primaryPalette('green')
+    .accentPalette('amber');
+
+  $mdThemingProvider.theme('alt3')
+    .primaryPalette('blue-grey')
+    .accentPalette('teal');
+
+  $mdThemingProvider.alwaysWatchTheme(true);
 
 }]);
 

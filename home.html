@@ -45,6 +45,7 @@
 </head>
 
 <body plumb-item ng-controller="NavCtrl" ng-app="DuoDiginRt" style="overflow:auto !important">
+  <div md-theme="{{ dynamicTheme }}" md-theme-watch>
     <script type="text/javascript" src="scripts/fbSDK.js"></script>
     <script type="text/javascript" src="scripts/fbSDK.js"></script>
     <div id="fb-root"></div>
@@ -385,7 +386,7 @@
    
     <!-- linq for quering in elastic widget -->
     <script type="text/javascript" src="scripts/vendor/linq/linq.js"></script>
-
+  </div>
 </body>
 
 </html>

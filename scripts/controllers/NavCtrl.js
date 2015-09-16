@@ -3,6 +3,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
   function($scope, $mdBottomSheet, $mdSidenav, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen,$http,Digin_ReportViewer,$localStorage,$window,ObjectStoreService,Digin_Base_URL,DashboardService, $log, TTSConfig, TTSAudio, TTS_EVENTS)  
     {
 
+      $scope.currentPage = 1;
+      $scope.pageSize = 5;
+
      $scope.changeMap = function() {
         
         $mdDialog.hide();
@@ -850,3 +853,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
         
     }
 ]);
+
+
+
+

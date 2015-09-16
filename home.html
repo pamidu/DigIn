@@ -29,6 +29,7 @@
     <!-- angular gridster -->
     <link rel="stylesheet" href="styles/angular-gridster.min.css" />
     <link rel="apple-touch-icon" href="../../assets/globals/img/icons/apple-touch-icon.png">
+
     <script type="text/javascript" src="scripts/vendor/calendar.js"></script>
 
     <!-- <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script> -->
@@ -122,13 +123,14 @@
                                         </div>
                                     </a>
                                 </li>
-                            </ul>
+                            </ul> 
+
                         </div>
                         <div class="row">
                             <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
                             <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More <small>({{dashboards.length}})</small></h4>
-                            <ul class="list-material">
-                                <li class="has-action-left" ng-repeat="x in dashboards | filter:searchText">
+                            <ul class="list-material" style="height:150px">
+                                <li class="has-action-left" ng-repeat="x in dashboards | filter:searchText | itemsPerPage: pageSize" current-page="currentPage">
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
                                         <div class="list-action-left" style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
@@ -138,6 +140,14 @@
                                     </a>
                                 </li>
                             </ul>
+                            <ul style="display:none">
+                                <li dir-paginate="dashboard in dashboards |  itemsPerPage: pageSize" current-page="currentPage">{{ dashboard.splitName }}</li>
+                            </ul>
+                            <div class="other-controller">
+                              <div>
+                              <dir-pagination-controls boundary-links="true" on-page-change="" ></dir-pagination-controls>
+                              </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -158,12 +168,13 @@
                                     </a>
                                 </li>
                             </ul>
+                            
                         </div>
                         <div class="row">
                             <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
                             <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More <small>({{reports.length}})</small></h4>
                             <ul class="list-material">
-                                <li class="has-action-left" ng-repeat="x in reports |filter:searchText">
+                                <li class="has-action-left" ng-repeat="x in reports |filter:searchText | itemsPerPage: pageSize">
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
                                         <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
@@ -173,6 +184,14 @@
                                     </a>
                                 </li>
                             </ul>
+                            <ul style="display:none">
+                                <li dir-paginate="report in reports |  itemsPerPage: pageSize" current-page="currentPage">{{ favoriteReport.splitName }}</li>
+                            </ul>
+                            <div class="other-controller">
+                              <div>
+                              <dir-pagination-controls boundary-links="true" on-page-change="" ></dir-pagination-controls>
+                              </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -382,9 +401,11 @@
     });
     </script>
 
-   
     <!-- linq for quering in elastic widget -->
     <script type="text/javascript" src="scripts/vendor/linq/linq.js"></script>
+
+    <!-- angular paging -->
+    <script type="text/javascript" src="bower_components/angular-utils-pagination/dirPagination.js"></script>
 
 </body>
 

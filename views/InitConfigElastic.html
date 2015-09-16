@@ -15,7 +15,7 @@
         </div>
     </md-toolbar>
     <md-dialog-content>
-    {{validationMessage}}
+
     <md-tabs md-dynamic-height md-border-bottom md-selected="selectedTabIndex">
       <md-tab label="Source">
         <md-content class="md-padding">
@@ -27,12 +27,12 @@
                 <md-select ng-model="datasource" placeholder="Object Store" flex="50">
                     <md-option ng-value="opt" ng-repeat="opt in datasources">{{ opt }}</md-option>
                 </md-select>
-                <md-select style="text-transform:capitalize" ng-change="getFields()" placeholder="Index" ng-model="ind" flex="50">
-                    <md-option style="text-transform:capitalize" ng-value="ind" ng-repeat=" ind in indexes">{{ ind }}</md-option>
+                <md-select style="text-transform:capitalize" placeholder="Index" ng-model="selectedClass" flex="50">
+                    <md-option style="text-transform:capitalize" ng-value="ind" ng-repeat=" ind in objClasses">{{ ind }}</md-option>
                 </md-select>
             </div>
             <div layout="row" layout-align="end center">
-                <md-button  ng-click="toggleTab(selectedTabIndex)"  aria-label="Close" layout-wrap>
+                <md-button  ng-click="getFields()"  aria-label="Close" layout-wrap>
                     <span>next</span><md-icon class="ion-arrow-right-a" style="margin-bottom: 12px;"></md-icon>
                 </md-button>
             </div>            
@@ -88,7 +88,7 @@
                
                 <div layout="column" ng-repeat="ser in seriesArray">
                       <accordion>                                                   
-                        <accordion-panel title="{{ser.name}}">
+                        <accordion-panel title="{{ser.name}}" itemind= "{{$index}}" callback-fn="removeSeries(arg1)">
                             <md-input-container>
                               <label>Name</label>
                               <input ng-model="ser.name">
@@ -109,9 +109,6 @@
                               <input ng-model="ser.color">
                             </md-input-container>
                         </accordion-panel>
-                        <md-button  ng-click="removeSeries($index)"  aria-label="Close" layout-wrap>
-                                   <md-icon class="ion-close"></md-icon>
-                        </md-button>
                        </accordion>                   
                 </div>
                 <div layout="row">
@@ -122,10 +119,12 @@
         </md-content>
       </md-tab>     
     </md-tabs>           
-        <div layout="row">
+        <div layout="column">
             <md-input-container flex>
                 <md-button class="md-raised" ng-click="buildchart(widget)">Build Chart</md-button>
             </md-input-container>
+            <span class="{{widgetValidity}}" layout-align="center center" id="elasticVal" style="color: #D8000C;background-color: #FFBABA;padding:5px;text-align:center;" flex>{{validationMessage}}</span>
+
         </div>
     </md-dialog-content>
 </md-dialog>

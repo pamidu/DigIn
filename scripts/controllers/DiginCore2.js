@@ -181,10 +181,60 @@ $objectstore,$mdDialog,$rootScope) {
 
 }]);
  
-routerApp.controller('ThemeCtrl', ['$scope','$rootScope','$objectstore','$mdDialog','cssInjector', function ($scope,$rootScope,
-$objectstore,$mdDialog,cssInjector) {
+routerApp.controller('ThemeCtrl', ['$scope','$rootScope','$objectstore','$mdDialog', function ($scope,$rootScope,
+$objectstore,$mdDialog) {
 
   $scope.panels = ["Side Panel","Background"];
+
+  $scope.changeTheme = function(theme){
+    $rootScope.dynamicTheme = theme;
+
+    switch(theme){
+      case 'alt':
+        $(".nav-menu").css('background-color', '#3F51B5');
+        break;
+      case 'alt1':
+        $(".nav-menu").css('background-color', '#673AB7');
+        break;
+      case 'alt2':
+        $(".nav-menu").css('background-color', '#4CAF50');
+        break;
+      case 'alt3':
+        $(".nav-menu").css('background-color', '#CFD8DC');
+        $(".overlay .starting-point span").css('background-color', '#607D8B');
+        break;
+    }
+
+  };
+
+  
+
+//   .nav-search .search::after{
+//   background-color: #00796B !important;
+// }
+// .nav-search .search::before{
+//   border-color: #00796B !important;
+// }
+
+// .nav-search.active .search::before{
+//   background-color:#00796B !important; 
+// }
+
+// nav menu
+// /*.nav-menu{
+//   background-color:#B2DFDB !important; 
+// }*/
+
+// /*menu layer*/
+// .menu-layer li a{
+//   background-color: #00796B;
+//   color: #fff;
+// }
+
+// .overlay .starting-point span{
+//   background-color: #80cfb3 !important;
+
+// }
 
   $scope.closeDialog = function() {
             // Easily hides most recent dialog shown...

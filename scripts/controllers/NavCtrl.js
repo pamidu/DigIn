@@ -539,6 +539,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                       else obj1.splitName = obj1.name;
                       obj1.title= data.repositoryFileDto[i].title;
                       $scope.reports.push(obj1);
+        
                    } 
 
                     $scope.favoriteReports.push($scope.reports[2]) ;

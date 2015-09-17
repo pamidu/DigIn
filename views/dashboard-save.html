@@ -1,5 +1,5 @@
-<md-dialog  plumb-item>
-  <md-toolbar>
+<md-dialog  plumb-item style="width:800px;">
+    <md-toolbar>
                      <div class="md-toolbar-tools" flex layout="row">
                       <div flex="10">
                         <md-icon class="ion-archive"></md-icon>
@@ -15,41 +15,58 @@
                             </md-button>
                       </div>
                     </div>
-   </md-toolbar>    
-         <md-content layout-margin layout-align="center center">
-               <form name="userForm">        
-                 <div class="dashcontent" >
-                     <div layout layout-sm="column">
+    </md-toolbar>    
+    <md-content layout-margin layout-align="center center">
+
+                 <!-- <div class="dashcontent" > -->
+                  <div layout layout-sm="column">
                             <md-input-container flex>
                                  <label>Dashboard Name:</label>
                                  <input ng-model="dashboardName" name="dashboardName" >
                            </md-input-container>
                            <md-input-container flex>
+                                 <!-- <label>Dashboard Culture:</label>
+                                 <input ng-model="dashboardCulture" name="dashboardCulture"> -->
                                  <label>Dashboard Culture:</label>
-                                 <input ng-model="dashboardCulture" name="dashboardCulture">
+                                  <md-select ng-model="dashboardCulture" name="dashboardCulture" ng-change="">
+                                    <md-option value="ENGLISH">ENGLISH</md-option>
+                                    <md-option value="SINHALA">SINHALA</md-option>
+                                    <md-option value="TAMIL">TAMIL</md-option>
+                                    <md-option value="FRENCH">FRENCH</md-option>
+                                    <md-option value="SPANISH">SPANISH</md-option>
+                                  </md-select>
                             </md-input-container>
-                     </div>
-                        <div  layout layout-sm="column">
+
+                  </div>
+                  <div  layout layout-sm="column">
                             <md-input-container flex>
+                                 <!-- <label>Dashboard Type:</label>
+                                 <input ng-model="dashboardType" name="dashboardType" > -->
                                  <label>Dashboard Type:</label>
-                                 <input ng-model="dashboardType" name="dashboardType" >
+                                  <md-select ng-model="dashboardType" name="dashboardType" ng-change="" style="color:black">
+                                    <md-option value="SYSTEM">SYSTEM</md-option>
+                                    <md-option value="TYPE1">TYPE1</md-option>
+                                    <md-option value="TYPE2">TYPE2</md-option>
+                                    <md-option value="TYPE3">TYPE3</md-option>
+                                  </md-select>
                            </md-input-container>
                            <md-input-container flex>
-                                 <label>Create Date:</label>
-                                 <input ng-model="dashboardDate" name="dashboardDate">
-                            </md-input-container>
-                     </div>
+                           <datepicker>
+                              <input ng-model="dashboardDate" type="text" style="padding-top:26px;width:400px;" class="angular-datepicker-input"/>
+                           </datepicker>
+                           </md-input-container>
+                  </div>
+                  <div class="md-actions" layout="row">    
+                      <md-button ng-click="closeDialog()">
+                        Cancel
+                      </md-button>
+                      <md-button ng-click="saveDashboardDetails()">
+                       Ok
+                      </md-button>
+                  </div>
                           
-               </form>
-        </md-content>
-        <div class="md-actions" layout="row">    
-          <md-button ng-click="closeDialog()">
-            Cancel
-          </md-button>
-          <md-button ng-click="saveDashboardDetails()">
-           Ok
-          </md-button>
-        </div>
+  </md-content>
+        
 </md-dialog> 
  
  

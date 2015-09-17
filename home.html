@@ -31,6 +31,8 @@
     <link rel="apple-touch-icon" href="../../assets/globals/img/icons/apple-touch-icon.png">
 
     <script type="text/javascript" src="scripts/vendor/calendar.js"></script>
+    <!-- angular datepicker  -->
+    <link rel="stylesheet" href="styles/css/angular-datepicker.css"/>
 
     <!-- <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script> -->
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
@@ -131,7 +133,7 @@
                             <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
                             <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More <small>({{dashboards.length}})</small></h4>
                             <ul class="list-material" style="height:150px">
-                                <li class="has-action-left" ng-repeat="x in dashboards | filter:searchText | itemsPerPage: pageSize" current-page="currentPage">
+                                <li class="has-action-left" dir-paginate="x in dashboards | filter:searchText | itemsPerPage: pageSize" current-page="currentPage" pagination-id="list1">
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
                                         <div class="list-action-left" style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
@@ -141,15 +143,13 @@
                                     </a>
                                 </li>
                             </ul>
-                            <ul style="display:none">
-                                <li dir-paginate="dashboard in dashboards |  itemsPerPage: pageSize" current-page="currentPage">{{ dashboard.splitName }}</li>
-                            </ul>
+                            
                             <div class="other-controller">
                               <div>
-                              <dir-pagination-controls boundary-links="true" on-page-change="" ></dir-pagination-controls>
+                              <dir-pagination-controls boundary-links="true" on-page-change="" pagination-id="list1"></dir-pagination-controls>
+                              </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -174,8 +174,8 @@
                         <div class="row">
                             <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
                             <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More <small>({{reports.length}})</small></h4>
-                            <ul class="list-material">
-                                <li class="has-action-left" ng-repeat="x in reports |filter:searchText | itemsPerPage: pageSize">
+                            <ul class="list-material" style="height:150px">
+                                <li class="has-action-left" dir-paginate="x in reports |filter:searchText | itemsPerPage: pageSize" current-page="currentPage" pagination-id="list2">
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
                                         <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
@@ -185,15 +185,13 @@
                                     </a>
                                 </li>
                             </ul>
-                            <ul style="display:none">
-                                <li dir-paginate="report in reports |  itemsPerPage: pageSize" current-page="currentPage">{{ favoriteReport.splitName }}</li>
-                            </ul>
+                            
                             <div class="other-controller">
                               <div>
-                              <dir-pagination-controls boundary-links="true" on-page-change="" ></dir-pagination-controls>
+                              <dir-pagination-controls boundary-links="true" on-page-change="" pagination-id="list2"></dir-pagination-controls>
+                              </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -292,7 +290,7 @@
     <script>
     document.write('<base href="' + document.location + '" />');
     </script>
- 
+    
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
     <script src="https://rawgit.com/barendb/highcharts-ng/master/src/highcharts-ng.js"></script>
@@ -391,6 +389,10 @@
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ=API_KEY&callback=finish">
     </script>
+
+    <!-- angular datepicker -->
+    <script src="scripts/controllers/angular-datepicker.js"></script>
+    
     <script>
     $(document).ready(function() {
         Layout.init();

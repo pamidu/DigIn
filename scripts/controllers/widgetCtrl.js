@@ -276,7 +276,6 @@ function TwitterInit($scope, $http, $mdDialog, widId, $rootScope, $q, twitterSer
     }
 
 };
-
 function analyticsInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
@@ -289,87 +288,83 @@ function analyticsInit($scope, $http, $mdDialog, widId, $rootScope) {
     };
 
     $rootScope.charts = [{
-                
-            reportType: 'ga',
-            query: {
-                metrics: 'ga:sessions',
-                dimensions: 'ga:date',
-                'start-date': '30daysAgo',
-                'end-date': 'yesterday'
-            },
-            chart: {
-                container: 'chart-container-1',
-                type: 'LINE',
-                options: {
-                    width: '100%'
-                }
-            }
+                    reportType: 'ga',
+                    query: {
+                        metrics: 'ga:sessions',
+                        dimensions: 'ga:date',
+                        'start-date': '30daysAgo',
+                        'end-date': 'yesterday'
+                    },
+                    chart: {
+                        container: 'chart-container-1',
+                        type: 'LINE',
+                        options: {
+                            width: '100%'
+                        }
+                    }
 
-         
+                    // $rootScope.dashboard.widgets[objIndex].widData = $rootScope.charts;
+                }, 
 
-              
-        {
-            reportType: 'ga',
-            query: {
-                metrics: 'ga:sessions',
-                dimensions: 'ga:browser',
-                'start-date': '30daysAgo',
-                'end-date': 'yesterday'
-            },
-            chart: {
-                container: 'chart-container-2',
-                type: 'PIE',
-                options: {
-                    width: '100%',
-                    is3D: true,
-                    title: 'Browser Usage'
-                }
-            }
-            // $rootScope.dashboard.widgets[objIndex].widData = $rootScope.charts;
-        }
-    ];
+                {
+                    reportType: 'ga',
+                    query: {
+                        metrics: 'ga:sessions',
+                        dimensions: 'ga:browser',
+                        'start-date': '30daysAgo',
+                        'end-date': 'yesterday'
+                    },
+                    chart: {
+                        container: 'chart-container-2',
+                        type: 'PIE',
+                        options: {
+                            width: '100%',
+                            is3D: true,
+                            title: 'Browser Usage'
+                        }
+                    }
+                    // $rootScope.dashboard.widgets[objIndex].widData = $rootScope.charts;
+                }];
 
-      
-    $rootScope.extraChart = {
-        reportType: 'ga',
-        query: {
-            metrics: 'ga:sessions',
-            dimensions: 'ga:date',
-            'start-date': '30daysAgo',
-            'end-date': 'yesterday',
-            ids: 'ga: ' // put your viewID here
-        },
-        chart: {
-            container: 'chart-container-3',
-            type: 'LINE',
-            options: {
-                width: '100%'
-            }
-        }
-    };
+                $rootScope.extraChart = {
+                    reportType: 'ga',
+                    query: {
+                        metrics: 'ga:sessions',
+                        dimensions: 'ga:date',
+                        'start-date': '30daysAgo',
+                        'end-date': 'yesterday',
+                        ids: 'ga: ' // put your viewID here
+                    },
+                    chart: {
+                        container: 'chart-container-3',
+                        type: 'LINE',
+                        options: {
+                            width: '100%'
+                        }
+                    }
+                };
 
-           
-    $rootScope.queries = [{
-        query: {
-            ids: 'ga: ', // put your viewID here ga:81197147, 106493238
-            metrics: 'ga:sessions',
-            dimensions: 'ga:city'
-        }
-    }];
+                $rootScope.queries = [{
+                    query: {
+                        ids: 'ga: ',  // put your viewID here ga:81197147, 106493238
+                        metrics: 'ga:sessions',
+                        dimensions: 'ga:city'
+                    }
+                }];
 
-    // if a report is ready
-    $rootScope.$on('$gaReportSuccess', function(e, report, element) {
+                // if a report is ready
+                $rootScope.$on('$gaReportSuccess', function (e, report, element) {
+                    
+                });
 
-    });
 
-    $rootScope.dashboard.widgets[objIndex].widAna = $rootScope.charts;
+ $rootScope.dashboard.widgets[objIndex].widAna = $rootScope.charts;
 
-    $rootScope.dashboard.widgets[objIndex].widAque = $rootScope.queries;
+ $rootScope.dashboard.widgets[objIndex].widAque = $rootScope.queries;
 
-    $rootScope.dashboard.widgets[objIndex].widAexc = $rootScope.extraChart;
+ $rootScope.dashboard.widgets[objIndex].widAexc = $rootScope.extraChart;
 
 };
-
 
 
 function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosService) {
@@ -2152,19 +2147,19 @@ function csvInit($scope, $http, $mdDialog, widId, $rootScope) {
 
         $mdDialog.hide();
         $scope.excelData = $rootScope.json_string;
-
+        var newStr = tmpStr.substring(1, rootScope.json_string.length-1);
         console.log($rootScope.json_string);
-        for (i in $rootScope.json_string) {
-            var key = i;
-            var val = $rootScope.json_string[i];
-            for(j in val)
-            {
-                var sub_key = j;
-                var sub_val = val.j;
-                console.log(sub_key);
-            }
-        };
-
+        // for (i in $rootScope.json_string) {
+        //     var key = i;
+        //     var val = $rootScope.json_string[i];
+        //     for(j in val)
+        //     {
+        //         var sub_key = j;
+        //         var sub_val = val.j;
+        //         console.log(sub_key);
+        //     }
+        // };
+        console.log(Object.keys(newStr));
         buildHierarchy($rootScope.json_string);
     };
         $scope.chartTypes = [{

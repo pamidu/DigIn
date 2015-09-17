@@ -52,6 +52,58 @@
             "col": "2"
         }, {
 
+            "title": "Clock",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "type": "General",
+            "Description": "Time, Manage day to day work",
+            "initTemplate": "InitConfigClock",
+            "initController": "clockInit",
+            "widView": "views/ViewClock.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "2"
+        }, {
+
+            "title": "Calendar",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "type": "General",
+            "Description": "Date, Schedule day to day work",
+            "initTemplate": "InitConfigCal",
+            "initController": "calInit",
+            "widView": "views/ViewCal.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "2"
+        },  {
+
+            "title": "Weather",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "type": "General",
+            "Description": "Current weather and city",
+            "initTemplate": "InitConfigWeatherc",
+            "initController": "weathercInit",
+            "widView": "views/ViewWeatherc.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "2"
+        }, {
+
+            "title": "Profile",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "type": "General",
+            "Description": "Current user profile",
+            "initTemplate": "InitConfigProfile",
+            "initController": "profileInit",
+            "widView": "views/ViewProfile.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "2"
+        }, {
+
             "title": "Data Driven Document(D3) Plugin",
             "icon": "styles/css/images/icons/ic_assignment_24px.svg",
             "type": "Visualization",

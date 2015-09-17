@@ -227,6 +227,344 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
     }
 ]);
 
+routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
+        var dateFormat = function ($scope) {
+            var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
+                timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
+                timezoneClip = /[^-+\dA-Z]/g,
+                pad = function (val, len) {
+                    val = String(val);
+                    len = len || 2;
+                    while (val.length < len) val = "0" + val;
+                    return val;
+                };
+
+            // Regexes and supporting functions are cached through closure
+            return function (date, mask, utc) {
+                var dF = dateFormat;
+
+                // You can't provide utc if you skip other args (use the "UTC:" mask prefix)
+                if (arguments.length == 1 && Object.prototype.toString.call(date) == "[object String]" && !/\d/.test(date)) {
+                    mask = date;
+                    date = undefined;
+                }
+
+                // Passing date through Date applies Date.parse, if necessary
+                date = date ? new Date(date) : new Date;
+                if (isNaN(date)) throw SyntaxError("invalid date");
+
+                mask = String(dF.masks[mask] || mask || dF.masks["default"]);
+
+                // Allow setting the utc argument via the mask
+                if (mask.slice(0, 4) == "UTC:") {
+                    mask = mask.slice(4);
+                    utc = true;
+                }
+
+                var _ = utc ? "getUTC" : "get",
+                    d = date[_ + "Date"](),
+                    D = date[_ + "Day"](),
+                    m = date[_ + "Month"](),
+                    y = date[_ + "FullYear"](),
+                    H = date[_ + "Hours"](),
+                    M = date[_ + "Minutes"](),
+                    s = date[_ + "Seconds"](),
+                    L = date[_ + "Milliseconds"](),
+                    o = utc ? 0 : date.getTimezoneOffset(),
+                    flags = {
+                        d: d,
+                        dd: pad(d),
+                        ddd: dF.i18n.dayNames[D],
+                        dddd: dF.i18n.dayNames[D + 7],
+                        m: m + 1,
+                        mm: pad(m + 1),
+                        mmm: dF.i18n.monthNames[m],
+                        mmmm: dF.i18n.monthNames[m + 12],
+                        yy: String(y).slice(2),
+                        yyyy: y,
+                        h: H % 12 || 12,
+                        hh: pad(H % 12 || 12),
+                        H: H,
+                        HH: pad(H),
+                        M: M,
+                        MM: pad(M),
+                        s: s,
+                        ss: pad(s),
+                        l: pad(L, 3),
+                        L: pad(L > 99 ? Math.round(L / 10) : L),
+                        t: H < 12 ? "a" : "p",
+                        tt: H < 12 ? "am" : "pm",
+                        T: H < 12 ? "A" : "P",
+                        TT: H < 12 ? "AM" : "PM",
+                        Z: utc ? "UTC" : (String(date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
+                        o: (o > 0 ? "-" : "+") + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
+                        S: ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
+                    };
+
+                return mask.replace(token, function ($0) {
+                    return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
+                });
+            };
+        }();
+
+        // Some common format strings
+        dateFormat.masks = {
+            "default": "ddd mmm dd yyyy HH:MM:ss",
+            shortDate: "m/d/yy",
+            mediumDate: "mmm d, yyyy",
+            longDate: "mmmm d, yyyy",
+            fullDate: "dddd, mmmm d, yyyy",
+            shortTime: "h:MM TT",
+            mediumTime: "h:MM:ss TT",
+            longTime: "h:MM:ss TT Z",
+            isoDate: "yyyy-mm-dd",
+            isoTime: "HH:MM:ss",
+            isoDateTime: "yyyy-mm-dd'T'HH:MM:ss",
+            isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
+        };
+
+        // Internationalization strings
+        dateFormat.i18n = {
+            dayNames: [
+        "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
+        "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+    ],
+            monthNames: [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+        "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+    ]
+        };
+
+        // For convenience...
+        Date.prototype.format = function (mask, utc) {
+            return dateFormat(this, mask, utc);
+        };
+
+
+        // Clock Widget's date and time... 
+        var monthDay = dateFormat('mmmm d,yyyy');
+        console.log(monthDay);
+        $('#clockmonthDay').append(monthDay);
+
+        var year = dateFormat('yyyy');
+        console.log(year);
+        $('#clockyear').append(year);
+
+
+        // Clock Widget's Rotation 
+        $(function () {
+
+            setInterval(function () {
+                var seconds = new Date().getSeconds();
+                var sdegree = seconds * 6;
+                var srotate = "rotate(" + sdegree + "deg)";
+
+                $("#clocksec").css({
+                    "transform": srotate
+                });
+
+            }, 1000);
+
+            setInterval(function () {
+                var hours = new Date().getHours();
+                $('#clockHours').text(hours);
+                var mins = new Date().getMinutes();
+                $('#clockMins').text(mins);
+                var hdegree = hours * 30 + (mins / 2);
+                var hrotate = "rotate(" + hdegree + "deg)";
+
+                $("#clockhour").css({
+                    "transform": hrotate
+                });
+
+            }, 1000);
+
+
+            setInterval(function () {
+                var mins = new Date().getMinutes();
+                //$scope.clockComponentMins = mins;
+                //console.log(mins);
+                var mdegree = mins * 6;
+                var mrotate = "rotate(" + mdegree + "deg)";
+
+                $("#clockmin").css({
+                    "transform": mrotate
+                });
+
+            }, 1000);
+
+        });
+
+        $scope.clockComponentSelectformat = function (ev) {
+            $mdDialog.show({
+                    controller: clockComponentformatController,
+                    templateUrl: 'templates/clockComponentformat.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                })
+                .then(function (answer) {
+                    var monthDay = dateFormat(answer);
+                    $('#clockmonthDay').text(monthDay);
+
+                }, function () {
+
+                });
+        };
+
+        function clockComponentformatController($scope, $mdDialog) {
+            $scope.formats = [{
+                    name: "default",
+                    format: "ddd mmm dd yyyy HH:MM:ss"
+                },
+                {
+                    name: "shortDate",
+                    format: "m/d/yy"
+                },
+                {
+                    name: "longDate",
+                    format: "mmmm d, yyyy"
+                },
+                {
+                    name: "fullDate",
+                    format: "dddd, mmmm d, yyyy"
+                },
+                {
+                    name: "shortTime",
+                    format: "h:MM TT"
+                },
+                {
+                    name: "mediumTime",
+                    format: "h:MM:ss TT"
+                },
+                {
+                    name: "longTime",
+                    format: "h:MM:ss TT Z"
+                },
+                {
+                    name: "isoDate",
+                    format: "yyyy-mm-dd"
+                },
+                {
+                    name: "isoTime",
+                    format: "HH:MM:ss"
+                },
+                {
+                    name: "isoDateTime",
+                    format: "yyyy-mm-dd'T'HH:MM:ss"
+                },
+                {
+                    name: "isoUtcDateTime",
+                    format: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
+                }];
+
+            $scope.clockComponentformatChange = function (data) {
+                $mdDialog.hide(data);
+            };
+            $scope.closeWidgetOptions = function () {
+                $mdDialog.cancel();
+            };
+        };
+
+}])
+
+routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
+        (function () {}.call(this));
+
+}])
+
+ routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog', function ($scope, $http, $mdDialog) {
+        $scope.loadWeather = function (data) {
+            $scope.weatherComponentCity = data;
+            //complete config  
+            //            function () {
+            $http.get('http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22' + data + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
+                .success(function (data) {
+                    console.log(data);
+
+                    if (data.query.results.channel.item.condition == undefined) {
+                        $scope.weatherComponentError = true;
+                        $scope.weatherComponentCity = "Oops.. Weather details regarding this location is not available";
+                        $scope.weatherComponentWeather = [];
+                    } else {
+                        $scope.weatherComponentError = false;
+                        $scope.weatherComponentWeather = data.query.results.channel.item.condition;
+                        if ($scope.weatherComponentWeather.text == 'Sunny') {
+                            $scope.weatherComponentIcon = 'sun';
+                            $scope.weatherComponentBg = "styles/css/images/weatherComponentBg.jpg";
+                        } else if ($scope.weatherComponentWeather.text == 'Mostly Cloudy' || $scope.weatherComponentWeather.text == 'Cloudy') {
+                            $scope.weatherComponentIcon = 'cloud';
+                            $scope.weatherComponentBg = "styles/css/images/weatherComponentBg2.jpg";
+                        } else if ($scope.weatherComponentWeather.text == 'Partly Cloudy') {
+                            $scope.weatherComponentIcon = 'partialyCloud';
+                            $scope.weatherComponentBg = "styles/css/images/weatherComponentBg.jpg";
+                        } else if ($scope.weatherComponentWeather.text == 'Heavy Rain' || $scope.weatherComponentWeather.text == 'Light Shower' || $scope.weatherComponentWeather.text == 'Drizzling' || $scope.weatherComponentWeather.text == 'Rain Shower') {
+                            $scope.weatherComponentIcon = 'rainy';
+                            $scope.weatherComponentBg = "styles/css/images/weatherComponentBg2.jpg";
+                        } else if ($scope.weatherComponentWeather.text == 'Light Rain') {
+                            $scope.weatherComponentIcon = 'rainy';
+                            $scope.weatherComponentBg = "styles/css/images/weatherComponentBg2.jpg";
+                        } else {
+                            $scope.weatherComponentIcon = 'sun';
+                            $scope.weatherComponentBg = "styles/css/images/weatherComponentBg.jpg";
+                        };
+                    }
+
+                })
+                .error(function (err) {
+                    console.log('Error retrieving markets');
+                });
+            //            };
+            //$scope.finish();
+
+        };
+        $scope.locZip = "colombo";
+        $scope.weatherComponentError = false;
+        $scope.loadWeather($scope.locZip);
+
+        $scope.weatherComponentSelectCity = function (ev) {
+            $mdDialog.show({
+                    controller: weatherComponentCitySelectorController,
+                    templateUrl: 'templates/weatherComponentCitySelector.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                })
+                .then(function (answer) {
+                    $scope.loadWeather(answer);
+                }, function () {
+
+                });
+        };
+
+        function weatherComponentCitySelectorController($scope, $mdDialog) {
+            $scope.cities = ['colombo', 'galle', 'kandy'];
+            $scope.weatherComponentCitySelectorChange = function (city) {
+                $mdDialog.hide(city);
+            };
+            $scope.closeWidgetOptions = function () {
+                $mdDialog.cancel();
+            };
+        };
+
+
+}])
+
+routerApp.controller('userprofileWidgetController', ['$scope', function ($scope) {
+        (function () {
+            var menu_trigger = $("[data-card-menu]");
+            var back_trigger = $("[data-card-back]");
+
+            menu_trigger.click(function () {
+                $(".card, body").toggleClass("show-menu");
+            });
+
+            back_trigger.click(function () {
+                $(".card, body").toggleClass("show-menu");
+            });
+        })();
+}])
+
 
 routerApp.service('VideosService', ['$window', '$rootScope', '$log', function($window, $rootScope, $log) {
 
@@ -514,6 +852,248 @@ routerApp.filter('getExtension', function () {
     return url.split('.').pop();
   };
 });
+
+routerApp.directive('clockComponent', function () {
+        return {
+            restrict: 'E',
+            controller: 'clockWidgetController',
+            template: " <div class='clockmain widget-card'><md-button style='min-width: 10px;' ng-click='clockComponentSelectformat($event);'><img src='http://imgh.us/dots_1.svg' width='5' height='23'/></md-button><ul id='clockclock'><li id='clockhour'></li><li id='clockmin'></li><li id='clocksec'></li></ul><div id='clockdate'><p style='font-family: lato,sans-serif;font-size:xx-large;color:#00172F;margin: 10px;'><span id='clockHours'></span> : <span id='clockMins'></span> </p><span id='clockmonthDay'></span></div></div>"
+        };
+    });
+
+routerApp.directive('calenderComponent', function () {
+    return {
+        restrict: 'E',
+        controller: 'calenderWidgetController',
+        template: "<div class='widget-card'><section class='calendar'>\
+  <h1>September 2015</h1>\
+  <form action='#'>\
+    <label class='weekday'>Mo</label>\
+    <label class='weekday'>Tu</label>\
+    <label class='weekday'>We</label>\
+    <label class='weekday'>Th</label>\
+    <label class='weekday'>Fr</label>\
+    <label class='weekday'>Sa</label>\
+    <label class='weekday'>Su</label>\
+    <label class='day invalid' data-day='0'>\
+      <input class='appointment' date-day='-4' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>-4</span>\
+      <em></em>\
+    </label>\
+    <label class='day invalid' data-day='1'>\
+      <input class='appointment' date-day='-3' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>-3</span>\
+      <em></em>\
+    </label>\
+    <label class='day invalid' data-day='2'>\
+      <input class='appointment' date-day='-2' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>-2</span>\
+      <em></em>\
+    </label>\
+    <label class='day invalid' data-day='3'>\
+      <input class='appointment' date-day='-1' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>-1</span>\
+      <em></em>\
+    </label>\
+    <label class='day invalid' data-day='4'>\
+      <input class='appointment' date-day='0' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>0</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='5'>\
+      <input class='appointment' date-day='1' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>1</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='6'>\
+      <input class='appointment' date-day='2' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>2</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='7'>\
+      <input class='appointment' date-day='3' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>3</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='8'>\
+      <input class='appointment' date-day='4' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>4</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='9'>\
+      <input class='appointment' date-day='5' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>5</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='10'>\
+      <input class='appointment' date-day='6' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>6</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='11'>\
+      <input class='appointment' date-day='7' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>7</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='12'>\
+      <input class='appointment' date-day='8' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>8</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='13'>\
+      <input class='appointment' date-day='9' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>9</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='14'>\
+      <input class='appointment' date-day='10' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>10</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='15'>\
+      <input class='appointment' date-day='11' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>11</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='16'>\
+      <input class='appointment' date-day='12' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>12</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='17'>\
+      <input class='appointment' date-day='13' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>13</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='18'>\
+      <input class='appointment' date-day='14' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>14</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='19'>\
+      <input class='appointment' date-day='15' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>15</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='20'>\
+      <input class='appointment' date-day='16' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>16</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='21'>\
+      <input class='appointment' date-day='17' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>17</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='22'>\
+      <input class='appointment' date-day='18' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>18</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='23'>\
+      <input class='appointment' date-day='19' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>19</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='24'>\
+      <input class='appointment' date-day='20' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>20</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='25'>\
+      <input class='appointment' date-day='21' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>21</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='26'>\
+      <input class='appointment' date-day='22' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>22</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='27'>\
+      <input class='appointment' date-day='23' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>23</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='28'>\
+      <input class='appointment' date-day='24' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>24</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='29'>\
+      <input class='appointment' date-day='25' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>25</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='30'>\
+      <input class='appointment' date-day='26' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>26</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='31'>\
+      <input class='appointment' date-day='27' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>27</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='32'>\
+      <input class='appointment' date-day='28' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>28</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='33'>\
+      <input class='appointment' date-day='29' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>29</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='34'>\
+      <input class='appointment' date-day='30' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>30</span>\
+      <em></em>\
+    </label>\
+    <label class='day' data-day='35'>\
+      <input class='appointment' date-day='31' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>31</span>\
+      <em></em>\
+    </label>\
+    <div class='clearfix'></div>\
+  </form>\
+</section></div>"
+    };
+});
+
+routerApp.directive('weatherComponent', function () {
+        return {
+            restrict: 'E',
+            controller: 'weatherWidgetController',
+            template: ' <div class="weather-wrapper" layout="row" style="height: 100%;width: 100%;overflow: hidden;">\
+    <div  class="weather widget-card " style="    background-image: url({{weatherComponentBg}});background-size: cover;">\
+ <md-button style="min-width: 10px;" ng-click="weatherComponentSelectCity($event);"><img src="http://imgh.us/dots_1.svg" width="5" height="23" draggable="false"/></md-button>\
+   <div ng-if="!weatherComponentError" class="weather-icon {{weatherComponentIcon}}"></div>\
+        <h1 ng-if="!weatherComponentError" class="weather-card-title">{{weatherComponentWeather.temp}} F</h1>\
+        <p  class="weather-card-title2">{{weatherComponentCity}} <br><span style="font-size: medium;"> {{weatherComponentWeather.text}}<span></p>\
+    </div>\
+</div>'
+        };
+    });
+
+routerApp.directive('userprofileComponent', function () {
+        return {
+            restrict: 'E',
+            controller: 'userprofileWidgetController',
+            template: '<div class=" widget-card "><!-- Face 2 -->\
+  <div class=" card-face face-2"><!-- Back trigger -->\
+    <button data-card-back="data-card-back" class="card-face__back-button"><img src="http://imgh.us/arrow_1.svg" width="19" height="19" draggable="false"/></button><img src="http://imgh.us/Likes.png" width="100" height="100" draggable="false" class="card-face__stats"/><img src="http://imgh.us/Followers.png" width="100" height="100" draggable="false" class="card-face__stats"/><img src="http://imgh.us/Views.png" width="100" height="100" draggable="false" class="card-face__stats"/><!-- Settings Button --><img src="http://imgh.us/cog.svg" width="17" height="17" draggable="false" class="card-face__settings-button"/>\
+  </div><!-- Face 1 -->\
+  <div class="card-face face-1"><!-- Menu trigger -->\
+<div style="background-image:url(images/userprofileComponentBg.jpg);background-size:cover;width: 100%;height: 45%;position: absolute;"></div>\
+    <button data-card-menu="data-card-menu" class="card-face__menu-button"><img src="http://imgh.us/dots_1.svg" width="5" height="23" draggable="false"/></button><!-- Avatar -->\
+    <div class="card-face__avatar"><!-- Bullet notification --><span class="card-face__bullet">2</span><!-- User avatar --><img src="http://i.imgur.com/gGdWosb.png" width="110" height="110" draggable="false"/></div><!-- Name -->\
+    <h2 class="card-face__name">Mattia Astorino</h2><!-- Title --><span class="card-face__title">Graphic & Web Designer</span><!-- Cart Footer -->\
+    <div class="card-face-footer"><a href="#" target="_blank" class="card-face__social"><img src="http://imgh.us/dribbble.svg" width="36" height="36" draggable="false"/></a><a href="#"_blank" class="card-face__social"><img src="http://imgh.us/beh.svg" width="36" height="36" draggable="false"/></a><a href="#" target="_blank" class="card-face__social"><img src="http://imgh.us/plus_5.svg" width="36" height="36" draggable="false"/></a></div>\
+  </div>\
+</div>'
+        };
+    });
 
 
 

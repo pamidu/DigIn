@@ -86,7 +86,7 @@ if (isset($_POST['userName']) && isset($_POST['password'])) {
 	<div id="viewContainer" layout="row" layout-align="center center" >
 		<md-whiteframe id="loginFrame" ng-class="md-whiteframe-z2 " layout="column" layout-align="start center">
 		<div id="fw-login-bannerArea" layout="row" layout-align="center center">
-			<img ng-src="styles/css/images/loginLogo.png" width="400" height="122">
+			<img ng-src="styles/css/images/initiallog.png" width="400" height="190">
 		</div>
 		<md-content class="fullWidth">
 		<form name="loginForm" style="padding:16px;" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">

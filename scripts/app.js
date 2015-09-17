@@ -1085,7 +1085,7 @@ routerApp.directive('userprofileComponent', function () {
     <button data-card-back="data-card-back" class="card-face__back-button"><img src="http://imgh.us/arrow_1.svg" width="19" height="19" draggable="false"/></button><img src="http://imgh.us/Likes.png" width="100" height="100" draggable="false" class="card-face__stats"/><img src="http://imgh.us/Followers.png" width="100" height="100" draggable="false" class="card-face__stats"/><img src="http://imgh.us/Views.png" width="100" height="100" draggable="false" class="card-face__stats"/><!-- Settings Button --><img src="http://imgh.us/cog.svg" width="17" height="17" draggable="false" class="card-face__settings-button"/>\
   </div><!-- Face 1 -->\
   <div class="card-face face-1"><!-- Menu trigger -->\
-<div style="background-image:url(images/userprofileComponentBg.jpg);background-size:cover;width: 100%;height: 45%;position: absolute;"></div>\
+<div style="background-image:url(styles/css/images/userprofileComponentBg.jpg);background-size:cover;width: 100%;height: 45%;position: absolute;"></div>\
     <button data-card-menu="data-card-menu" class="card-face__menu-button"><img src="http://imgh.us/dots_1.svg" width="5" height="23" draggable="false"/></button><!-- Avatar -->\
     <div class="card-face__avatar"><!-- Bullet notification --><span class="card-face__bullet">2</span><!-- User avatar --><img src="http://i.imgur.com/gGdWosb.png" width="110" height="110" draggable="false"/></div><!-- Name -->\
     <h2 class="card-face__name">Mattia Astorino</h2><!-- Title --><span class="card-face__title">Graphic & Web Designer</span><!-- Cart Footer -->\

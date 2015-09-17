@@ -1065,7 +1065,7 @@ routerApp.directive('weatherComponent', function () {
         return {
             restrict: 'E',
             controller: 'weatherWidgetController',
-            template: ' <div class="weather-wrapper" layout="row" style="height: 100%;width: 100%;overflow: hidden;">\
+            template: ' <div class="weather-wrapper" layout="row" style="height:100%;width:100%;overflow:hidden;">\
     <div  class="weather widget-card " style="    background-image: url({{weatherComponentBg}});background-size: cover;">\
  <md-button style="min-width: 10px;" ng-click="weatherComponentSelectCity($event);"><img src="http://imgh.us/dots_1.svg" width="5" height="23" draggable="false"/></md-button>\
    <div ng-if="!weatherComponentError" class="weather-icon {{weatherComponentIcon}}"></div>\

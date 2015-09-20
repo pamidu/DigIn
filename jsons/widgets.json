@@ -1,17 +1,5 @@
 {
-    "d": [{
-            "title": "Google SpreadSheets",
-            "icon": "styles/css/images/icons/ic_insert_chart_24px.svg",
-            "type": "Visualization",
-            "Description": "Line, Area, Bar, Pie, Table",
-            "initTemplate": "InitConfigspread",
-            "initController": "spreadInit",
-            "widView": "views/Viewspread.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "0",
-            "col": "0"
-        }, {
+    "d": [  {
 
             "title": "Image",
             "icon": "styles/css/images/icons/ic_assignment_24px.svg",
@@ -116,20 +104,7 @@
             "row": "1",
             "col": "0"
 
-        }, {
-
-            "title": "Google AdSense",
-            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Advertising",
-            "Description": "Earnings, Pageviews, Clicks",
-            "initTemplate": "InitConfigFacebook",
-            "initController": "fbInit",
-            "widView": "views/chartview.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "1",
-            "col": "1"
-        }, {
+        },  {
 
             "title": "Facebook Pages",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
@@ -246,10 +221,10 @@
             "col": "3"
 
         }, {
-            "title": "ElasticSearch",
+            "title": "Dynamic vis",
             "icon": "styles/css/images/icons/ic_av_timer_24px.svg",
             "type": "Visualization",
-            "Description": "Line, Area, Bar, Pie, Table",
+            "Description": " Build your dream visualization from any datasource",
             "initTemplate": "InitConfigElastic",
             "initController": "elasticInit",
             "widView": "views/ViewElasticSearch.html",
@@ -260,21 +235,8 @@
             "row": "1",
             "col": "0"
 
-        }, {
-
-            "title": "CSV File",
-            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Visualization",
-            "Description": "Line, Area, Bar, Pie, Table",
-            "initTemplate": "InitConfigcsv",
-            "initController": "csvInit",
-            "widView": "views/Viewcsv.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "1",
-            "col": "1"
-
-        }, {
+        }, 
+         {
 
             "title": "Youtube",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",

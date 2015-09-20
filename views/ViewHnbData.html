@@ -1,15 +1,26 @@
-
+<md-content layout-margin flex> 
     <style>
     circle.node {
         cursor: pointer;
         stroke: #3182bd;
         stroke-width: 1px;
     }
-    
+    #tt-name{
+   
+              color:#fff;
+        background:#333;
+          border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, .7);
+    -webkit-box-shadow: -0px 0px 6px rgba(0, 0, 0, .7);
+}
+ 
     path.link {
         fill: none;
         stroke: #666;
-        stroke-width: 1px;
+        stroke
+        -width: 1px;
     }
     
     .simpleDiv {
@@ -70,6 +81,19 @@
 
     var force, vis;
     var LoadData = true;
+    var tooltip = d3.select("#chart")
+    .append("div")
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("visibility", "hidden");
+     
+     tooltip.append("div")
+        .attr("id", "tt-name")
+        .text("simple");
+
+         
+
+
     loadImage();
     function update() {
         if (force) force.stop();
@@ -93,12 +117,24 @@
         node = vis.selectAll(".node");
         node = node.data(force.nodes());
         node.exit().remove();
+
+     
+       
+    
         node.enter().append("g")
             .attr("class", "node")
-            .on("click", click)
+            .on("click", click).on("mouseover", function(d){
+             tooltip.select("#tt-name").text(d.size +" "+  d.name)
+           
 
-             
-    
+                return tooltip.style("visibility", "visible") 
+                
+                 ;})
+.on("mousemove", function(){return tooltip.style("top",
+    (d3.event.pageY - 130)+"px").style("left",(d3.event.pageX - 130 )+"px");})
+.on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+
+          
         node.append("foreignObject")
             .attr("class", "simpleDiv")
             .attr("width", function(d) {
@@ -178,7 +214,14 @@
                     htmlString += "<div class='userImage' style='border-color:" + color(d) + "'><image src='" + threewheelerImage + "'  width='30' height='30'></image></div>";
                      
                     htmlString += "<div style='clear:both;'></div>";
-                } else if (d.type == 'DOUBLE CAB') {
+                } 
+
+                else if (d.type == 'SINGLE CAB') {
+
+                    htmlString += "<div class='userImage' style='border-color:" + color(d) + "'><image src='" + cabImage + "'  width='30' height='30'></image></div>";
+                     
+                    htmlString += "<div style='clear:both;'></div>";
+                }else if (d.type == 'DOUBLE CAB') {
 
                     htmlString += "<div class='userImage' style='border-color:" + color(d) + "'><image src='" + DoubleCabImage + "'  width='30' height='30'></image></div>";
                      
@@ -367,6 +410,10 @@
             d._children = null;
         }
         update();
+          var msg = new SpeechSynthesisUtterance('Total claims for ' + d.name + 'is' + d.size);
+   
+    window.speechSynthesis.speak(msg);
+ 
     }
 
     var findNode = function(node) {
@@ -852,14 +899,16 @@
                 .size([w, h]);
 
             vis = d3.select("#chart").append("svg:svg")
-          		  .attr("viewBox", "0 0 550 600 ")
-             	  .attr("width", '100%')
-      			  .attr("height", '100%');
+                  .attr("viewBox", "0 0 550 600 ")
+                  .attr("width", '100%')
+                  .attr("height", '100%');
+
             update();
             LoadData = false;
         }
 
     }
     </script>
+</md-content> 
 
 

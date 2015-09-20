@@ -1,6 +1,6 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
-    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen','$http','Digin_ReportViewer','$localStorage','$window','ObjectStoreService','Digin_Base_URL','DashboardService','$log', 'TTSConfig', 'TTSAudio', 'TTS_EVENTS',
-  function($scope, $mdBottomSheet, $mdSidenav, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen,$http,Digin_ReportViewer,$localStorage,$window,ObjectStoreService,Digin_Base_URL,DashboardService, $log, TTSConfig, TTSAudio, TTS_EVENTS)  
+    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen','$http','Digin_ReportViewer','$localStorage','$window','ObjectStoreService','Digin_Base_URL','DashboardService','$log', 
+  function($scope, $mdBottomSheet, $mdSidenav, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen,$http,Digin_ReportViewer,$localStorage,$window,ObjectStoreService,Digin_Base_URL,DashboardService, $log)  
     {
 
       $scope.currentPage = 1;
@@ -138,27 +138,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
             
     }   
 
-    /*$scope.init = function(){
-        var uname = localStorage.getItem('username');
-        if(uname==null){
-            window.location = "index.html";
-        }
-    };
-    $scope.init();*/
-    // triggered after speaking
-    $scope.$on(TTS_EVENTS.SUCCESS, function(){
-        $log.info('Successfully done!')
-    });
-
-    // triggered in case error
-    $scope.$on(TTS_EVENTS.ERROR, function(){
-        $log.info('An unexpected error has occurred');
-    });
-
-    // before loading and speaking
-    $scope.$on(TTS_EVENTS.PENDING, function(text){
-        $log.info('Speaking: ' + text);
-    });
+    
         // $scope.refreshHome = function(){
         //     $window.location.href = Digin_Base_URL + 'home.html';
         // };

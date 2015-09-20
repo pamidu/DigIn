@@ -2,7 +2,8 @@ $(window).load(function() {
     $('#pagePreLoader').hide();
 });
 
-var routerApp = angular.module('DuoDiginRt', ['ngMaterial', 'uiMicrokernel', "highcharts-ng", 'angular.css.injector',
+var routerApp = angular.module('DuoDiginRt', ['ngMaterial', 
+    'uiMicrokernel', "highcharts-ng", 'angular.css.injector',
     'ui.router',
     '720kb.socialshare',
     'FBAngular',
@@ -10,10 +11,8 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial', 'uiMicrokernel', "hi
     'configuration',
     'directivelibrary',
     'ngMdIcons',
-    'countTo',
-    'pjTts',
-    'nvd3',
-     'gridster','lk-google-picker', 'ngSanitize', 'ngAnalytics', 'servicess','ngCsv','angularUtils.directives.dirPagination','720kb.datepicker'
+     'nvd3',
+     'gridster','lk-google-picker', 'servicess','angularUtils.directives.dirPagination','720kb.datepicker'
 ])
 
 routerApp.config(["$mdThemingProvider","$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", function($mdThemingProvider,$locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider) {
@@ -63,10 +62,21 @@ routerApp.config(["$mdThemingProvider","$locationProvider", "$httpProvider", "$s
             controller: 'ExtendedDashboardCtrl',
             templateUrl: "views/extended-dashboard.html"
         })
+        .state('D3plugins', {
+            url: "/D3plugins",
+            controller: 'd3PluginCtrl',
+            templateUrl: "views/D3Plugin/d3View.html"
+        })
         .state('PivotTable', {
             url: "/PivotTable",
             controller: 'summarizeCtrl',
             templateUrl: "views/pivottable.html"
+        })
+        .state('ReportViewer', {
+            url: '/ReportViewer:param',
+            controller: 'ReportViewerControl',
+            templateUrl: "views/Report_viewer.html"
+
         })
         .state('DashboardViewer', {
             url: '/DashboardViewer:param',
@@ -78,6 +88,12 @@ routerApp.config(["$mdThemingProvider","$locationProvider", "$httpProvider", "$s
             url: "/CustomDashboard:param",
             controller: 'DashboardCtrl',
             templateUrl: "views/charts.html"
+        })
+        .state('AnalyzerViewer', {
+            url: '/AnalyzerViewer:param',
+            controller: 'AnalyzerViewerControl',
+            templateUrl: "views/Analyzer_viewer.html"
+
         })
         .state('Settings', {
             url: '/settings',
@@ -91,6 +107,7 @@ routerApp.config(["$mdThemingProvider","$locationProvider", "$httpProvider", "$s
             templateUrl: "views/chartsGridster.html"
 
         })
+
 
     lkGoogleSettingsProvider.configure({
         apiKey: 'AIzaSyA9fv9lYQdt1XV6wooFtItxYlMF8Y9t1ao',
@@ -162,18 +179,6 @@ routerApp.controller('AnalyzerViewerControl', ['$scope', '$rootScope', '$statePa
     }
 ]);
 
-
-routerApp.run(['$rootScope', 'ngAnalyticsService', function($rootScope, ngAnalyticsService) {
-
-    var tag = document.createElement('script');
-    tag.src = "http://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    ngAnalyticsService.setClientId('692244578573-vei7vts4m5n8kr0umqvlhmobflgb6ehq.apps.googleusercontent.com');
-
-
-}]);
 
 
 routerApp.controller('mainController', ['$scope', '$http', function(scope, http) {}]);

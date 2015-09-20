@@ -15,8 +15,8 @@
 
 routerApp.controller('DashboardCtrl', ['$scope',
 
-    '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems','$log', 'TTSConfig', 'TTSAudio', 'TTS_EVENTS',
-    function($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems,$log, TTSConfig, TTSAudio, TTS_EVENTS) {
+    '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems','$log',
+    function($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems,$log) {
 
 
 
@@ -97,27 +97,8 @@ routerApp.controller('DashboardCtrl', ['$scope',
         $scope.commentary = function(widget) {
             var comment = "";
              var chunks = [];
-             TTSConfig.url = 'http://tts.peterjurkovic.com/tts-backend/index.php';
-    var tts = new TTSAudio();
-    tts.speak({
-        text : 'Hello',
-        lang : 'en'
-    });
-
-    // triggered after speaking
-    $scope.$on(TTS_EVENTS.SUCCESS, function(){
-        $log.info('Successfully done!')
-    });
-
-    $scope.$on(TTS_EVENTS.ERROR, function(){
-        $log.info('An unexpected error has occurred');
-    });
-
-    // triggered before speaking
-    $scope.$on(TTS_EVENTS.PENDING, function(text){
-        $log.info('Speaking: ' + text);
-    });
-
+           
+     
 
         }
         $scope.closeDialog = function() {
@@ -160,8 +141,8 @@ function elasticDataCtrl($scope,$mdDialog,wid){
             $mdDialog.hide();
         };
 
-    $scope.series = wid.chartConfig.series;
-    $scope.categories = wid.chartConfig.xAxis.categories;
+    $scope.series = wid.highchartsNG.series;
+    $scope.categories = wid.highchartsNG.xAxis.categories;
     $scope.mappedSeries = [];
     for(i=0;i<$scope.series.length;i++){
         var seriesObj = {name: $scope.series[i].name,

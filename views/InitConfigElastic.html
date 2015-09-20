@@ -21,20 +21,28 @@
         <md-content class="md-padding">
             <md-input-container flex>
                 <label>Widget Name:</label>
-                <input name="sizeX" placeholder="www.duosoftware.com/test" ng-model="widget.chartConfig.title.text">
+                <input name="sizeX" placeholder="www.duosoftware.com/test" ng-model="widget.highchartsNG.title.text">
             </md-input-container>
             <div layout="row" layout-align='center start'>
-                <md-select ng-model="datasource" placeholder="Object Store" flex="50">
+                <md-select ng-model="datasource" placeholder="DuoStore" flex="50">
                     <md-option ng-value="opt" ng-repeat="opt in datasources">{{ opt }}</md-option>
                 </md-select>
-                <md-select style="text-transform:capitalize" placeholder="Index" ng-model="selectedClass" flex="50">
+
+                <md-select ng-show="datasource =='DuoStore'" style="text-transform:capitalize" placeholder="Index" ng-model="selectedClass" flex="50">
                     <md-option style="text-transform:capitalize" ng-value="ind" ng-repeat=" ind in objClasses">{{ ind }}</md-option>
                 </md-select>
+                 <div ng-show="datasource =='CSV/Excel'" style="text-transform:capitalize" placeholder="Index" ng-model="selectedClass" flex="50">
+                       <excel-loader/>
+                </div>
+                <md-button  ng-show="datasource =='SpreadSheet'"    aria-label="Close" layout-wrap>
+                    <span>Authorize</span><md-icon class="ion-arrow-right-a" style="margin-bottom: 12px;"></md-icon>
+                </md-button>
             </div>
             <div layout="row" layout-align="end center">
                 <md-button  ng-click="getFields()"  aria-label="Close" layout-wrap>
                     <span>next</span><md-icon class="ion-arrow-right-a" style="margin-bottom: 12px;"></md-icon>
                 </md-button>
+               
             </div>            
         </md-content>
       </md-tab>

@@ -341,8 +341,8 @@ $objectstore,$mdDialog) {
 
 }]);
 
-routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialog','$sce','$http','$objectstore','dashboard','$log', 'TTSConfig', 'TTSAudio', 'TTS_EVENTS',
-  function($scope, $timeout, $rootScope, $mdDialog,$sce,$http,$objectstore,dashboard,$log, TTSConfig, TTSAudio, TTS_EVENTS) {
+routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialog','$sce','$http','$objectstore','dashboard','$log',
+  function($scope, $timeout, $rootScope, $mdDialog,$sce,$http,$objectstore,dashboard,$log) {
     //$scope.dashboard = dashboard;
     $rootScope.dashboard = dashboard;
 
@@ -390,8 +390,8 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
    $scope.addAllinOne = function(widget,ev) {
 
     $mdDialog.hide();
-    TTSConfig.url = 'http://tts.peterjurkovic.com/tts-backend/index.php';
-    var tts = new TTSAudio();
+ 
+  
    
     getJSONDataByIndex($http,'widgetPositions',$rootScope.dashboard.widgets.length,function(data){
 
@@ -479,7 +479,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
   {"id": "normal", "title": "Normal"},
   {"id": "percent", "title": "Percent"}
   ],
-    chartConfig : {
+    highchartsNG : {
        exporting: {
          enabled: false
 },
@@ -520,34 +520,29 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
   }
     
   }
-    tts.speak({
-        text : 'Jay you are adding' +widget.title+ ' widget' ,
-        lang : 'en'
-        // you can add additional params which will send to server
-    });
-
-    // triggered after speaking
-    $scope.$on(TTS_EVENTS.SUCCESS, function(){
-        $log.info('Successfully done!')
-    });
-
-    // triggered in case error
-    $scope.$on(TTS_EVENTS.ERROR, function(){
-        $log.info('An unexpected error has occurred');
-    });
-
-    // before loading and speaking
-    $scope.$on(TTS_EVENTS.PENDING, function(text){
-        $log.info('Speaking: ' + text);
-    });
+    
+if($rootScope.username == undefined || $rootScope.username == null )
+{
+   $rootScope.username = "DemoUser";
+}
+   var msg = new SpeechSynthesisUtterance(+   $rootScope.username +' you are adding' +widget.title+ ' widget');
+   
+    window.speechSynthesis.speak(msg);
+ 
          $rootScope.dashboard.widgets.push($scope.currWidget);
          
-         if($scope.currWidget.type != "Sri Lanka Telecom")
+         // if($scope.currWidget.type != "Sri Lanka Telecom"  )
+         // {
+         //     //opening initial widget config dialog
+         //    $scope.openInitialConfig(ev, $scope.currWidget.id);
+         // }
+         // else
+          if ($scope.currWidget.type != "HNB Assuarance"  )
          {
-             //opening initial widget config dialog
             $scope.openInitialConfig(ev, $scope.currWidget.id);
          }
     });
+
 
 
     //save the type of the widget for the purpose of the socialMediaCtrl

@@ -763,7 +763,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                         $scope.widgetValidity = 'fade-in';
                     }
                 } else {
-                    var orderedConfig = $scope.orderByCat(widget);
+                    $scope.orderByCat(widget);
                     $mdDialog.hide();
                     $scope.widgetValidity = 'fade-out';
                 }
@@ -809,8 +809,31 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             orderedArrayObj["type"] = $scope.seriesArray[i].type;
             orderedObjArray.push(orderedArrayObj);
         }
-        widget.highchartsNG.series =orderedObjArray;
-        widget.highchartsNG.xAxis.categories = cat;
+        widget.chartConfig = {
+        options: {
+            drilldown: {
+            series: [],
+            plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                }
+            }
+        }
+        }
+        },
+        xAxis: {
+            type: 'category'
+        },
+        credits: {
+          enabled: false        
+        },
+        legend: {
+            enabled: false
+        },
+        series: orderedObjArray
+         };
     }
 
     //order by category (drilled)

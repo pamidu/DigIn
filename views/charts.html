@@ -1,45 +1,35 @@
-<div plumb-item ng-repeat="widget in dashboard.widgets" ng-style="{ 'left':widget.left, 'top':widget.top, 'width':widget.width }" data-identifier="{{widget}}" 
-style="height:300px;min-width:320px;display:block" resizeable layout-wrap layout="column"> 
-    <!-- <p ng-if="widget.divider">{{widget.highchartsNG.title.text}}</p> -->
-    <md-toolbar style="border-top: 1px solid;border-right: 1px solid;border-left: 1px solid;border-color:rgb(188, 188, 188);border-radius: 5px 5px 0px 0px;" ng-mouseover="hover = true" ng-mouseout="hover = false" flex="10">
-                <div layout-wrap layout="row" layout-align"start center" layout-wrap>
-                    <div flex layout-margin>
-                        <h4 style="margin-top:5px">
-                          {{widget.highchartsNG.title.text}}
-                        </h4>               
-                    </div>
-                    <div layout="row" layout-align="top end" flex style="max-width:150px">
-                    <div flex="10">     
-                      <!--just to keep a space between ion icons and border right-->             
-                    </div>
-                    <div flex="20">                       
-                            <md-button  ng-click="commentary(widget)"  aria-label="Close" layout-wrap>
-                                   <md-icon class="ion-volume"></md-icon>
-                            </md-button>
-                            
-                    </div>
-                    <div flex="20">       
-                            <md-button  ng-click="showAdvanced($event,widget)"  aria-label="Settings" layout-wrap>
-                                   <md-icon class="ion-gear-b"></md-icon>
-                            </md-button>              
-                    </div>
-                    <div flex="20">  
-                            <md-button  ng-click="showData(widget,$event)"    aria-label="Close" layout-wrap>
-                                   <md-icon class="ion-clipboard"></md-icon>
-                            </md-button>       
-                    </div>
-                    <div flex="20">     
-                            <md-button  ng-click="remove(widget)"  aria-label="Close" layout-wrap>
-                                   <md-icon class="ion-close"></md-icon>
-                            </md-button>         
-                    </div>
-                    <div flex="10">     
-                      <!--just to keep a space between ion icons and border right-->             
-                    </div>
-                    </div>
-                </div>           
-    </md-toolbar>
-    <md-content style="border: 1px solid;border-color:rgb(188, 188, 188);height:100%;border-radius: 0px 0px 5px 5px;" ng-if="widget.expanded && !widget.divider" flex="90">
-        <div style="height:100%" ng-include src="widget.widView"></div>
-    </md-content>
-</div>
+<md-card resizable plumb-item on-stop="getPosition($evt, $ui, widget)" ng-repeat="widget in dashboard.widgets" on-resize="resize($evt, $ui, widget)" widget="widget" ng-style="{'height':widget.height,'width':widget.width,'min-height':h,'min-width':w,'left':widget.left, 'top':widget.top}" class="digin-widget digin-widget-card">
+  <md-card-content class="digin-widget-card-content">
+    <main class='md-padding' ng-style="{height:widget.mheight}" style="overflow:auto;" layout="row" flex>
+        <div ng-include src="widget.widView"></div>
+    </main>
+    <md-toolbar class="digin-widget-toolbar">
+        <div class="md-toolbar-tools">
+          <h2>
+            <span>{{widget.chartConfig.title.text}}</span>
+          </h2>
+          <span flex></span>
+                      
+            <md-button  ng-click="commentary(widget)"  aria-label="Close" layout-wrap>
+                   <md-icon class="ion-volume digin-widget-toolbar-icon"></md-icon>
+            </md-button>
+            
+
+
+            <md-button  ng-click="showAdvanced($event,widget)"  aria-label="Settings" layout-wrap>
+                   <md-icon class="ion-gear-b digin-widget-toolbar-icon"></md-icon>
+            </md-button>              
+
+
+            <md-button  ng-click="showData(widget,$event)"    aria-label="Close" layout-wrap>
+                   <md-icon class="ion-clipboard digin-widget-toolbar-icon"></md-icon>
+            </md-button>       
+
+            <md-button  ng-click="remove(widget)"  aria-label="Close" layout-wrap>
+                   <md-icon class="ion-close digin-widget-toolbar-icon"></md-icon>
+            </md-button>         
+
+      </div>
+      </md-toolbar>
+  </md-card-content>
+</md-card>

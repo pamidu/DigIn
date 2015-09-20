@@ -377,7 +377,7 @@ position: absolute;
 width: 100%;
 height: 100%;
 background-size: 100% 100%;
-background: url("../css/images/grid.png");
+background-color: #ECECEC;
 background-size: 30px 30px;
 overflow: auto;
 }
@@ -1292,3 +1292,42 @@ md-list-item > .md-avatar:first-child, md-list-item .md-list-item-inner > .md-av
 
 md-tooltip {
   font-size: 15px !important; }
+
+  .digin-widget{
+  border-radius:0px;
+}
+
+.digin-widget:hover{
+  box-shadow: 2px 5px 3px 0px rgba(0, 0, 0, 0.14), 2px 4px 4px 2px rgba(0, 0, 0, 0.098), 2px 3px 7px 2px rgba(0, 0, 0, 0.084);
+}
+
+main {
+  min-height: calc(300px - 50px);
+}
+
+.digin-widget-card{
+  margin-bottom: 0px;
+}
+
+.digin-widget-card-content{
+  padding: 0px;
+}
+
+.digin-widget-toolbar{
+  height: 50px !important;
+  min-height: 50px !important;
+  background-color: #fff !important;
+  border-top: 1px solid #000;
+    border-color:#E1E1E1;
+  color:#000;
+}
+
+.digin-widget-toolbar-icon{
+  color: #6C6C6C; 
+}
+
+
+
+.ui-icon, .ui-widget-content .ui-icon{
+  background-image: none !important;
+}

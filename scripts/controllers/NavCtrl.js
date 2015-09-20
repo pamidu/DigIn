@@ -6,6 +6,19 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
       $scope.currentPage = 1;
       $scope.pageSize = 5;
 
+       $scope.w = '320px';
+      $scope.h = '300px';
+      $scope.mh = '250px';
+
+     $scope.resize = function(evt,ui,widget) {
+      var width = ui.size.width;
+      var height = ui.size.height;
+      var mHeight = height - 50;
+      widget.width = width+'px';
+      widget.height = height+'px';
+      widget.mheight = mHeight+'px';
+    }
+
      $scope.changeMap = function() {
         
         $mdDialog.hide();

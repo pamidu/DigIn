@@ -484,6 +484,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     $scope.widgetValidity = 'elasticValidation'; //validation message visibility                                             
     $scope.query = {};
     $scope.query.state = false;
+    $scope.query.drilled = false;
     $scope.checkedFields = [];
     $scope.dataIndicator = false;
     $scope.categoryVal = "";
@@ -779,7 +780,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
     //order by category
     $scope.orderByCat = function(widget) {
-         var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
+                  var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
         var orderedObjArray = [];
         
         for(i=0;i<$scope.seriesArray.length;i++){
@@ -809,31 +810,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             orderedArrayObj["type"] = $scope.seriesArray[i].type;
             orderedObjArray.push(orderedArrayObj);
         }
-        widget.chartConfig = {
-        options: {
-            drilldown: {
-            series: [],
-            plotOptions: {
-            series: {
-                borderWidth: 0,
-                dataLabels: {
-                    enabled: true,
-                }
-            }
-        }
-        }
-        },
-        xAxis: {
-            type: 'category'
-        },
-        credits: {
-          enabled: false        
-        },
-        legend: {
-            enabled: false
-        },
-        series: orderedObjArray
-         };
+        widget.highchartsNG.series =orderedObjArray;
+        widget.highchartsNG.xAxis.categories = cat;
     }
 
     //order by category (drilled)

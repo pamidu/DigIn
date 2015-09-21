@@ -90,7 +90,7 @@
                 <md-switch ng-disabled="serSelected" ng-change="getDrillArray()" ng-model="query.drilled" aria-label="Switch 1">
                     Drilled: {{ query.drilled }}
                 </md-switch>
-                <md-select ng-model="chartCategory.drilledField" placeholder="Select a series">
+                <md-select ng-show="query.drilled" ng-model="chartCategory.drilledField" placeholder="Select a series">
                     <md-option value="{{item}}" ng-repeat="item in chartCategory.drilledArray">{{ item }}</md-option>
                 </md-select>
                

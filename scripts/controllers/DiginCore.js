@@ -135,6 +135,23 @@ routerApp.controller('DashboardCtrl', ['$scope',
     }
 ]);
 
+
+function hnbClaimsCtrl($scope,$mdDialog,wid,$http){
+    $scope.arr  = [];
+     $scope.closeDialog = function() {
+            $mdDialog.hide();
+     };
+
+    
+    $http.get('jsons/hnbForceData.json').success(function(data) { 
+    
+        $scope.arr = data;
+        console.log($scope.arr);
+    });    
+
+     
+};
+
 function elasticDataCtrl($scope,$mdDialog,wid){
 
     $scope.closeDialog = function() {

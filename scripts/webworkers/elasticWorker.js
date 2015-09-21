@@ -27,7 +27,7 @@ function getQueried(parentData){
     xhr.ontimeout = function (){
             console.error("request timedout: ", xhr);
         }
-    xhr.open("post", "http://45.55.83.253:3000/com.duosoftware.com/"+parentData[0]+"?take=20", /*async*/ true);
+    xhr.open("post", "http://45.55.83.253:3000/com.duosoftware.com/"+parentData[0]+"?take=20000", /*async*/ true);
     
     xhr.setRequestHeader("securityToken", "securityToken");
     var params = '{"Query" : {"Type" : "Query", "Parameters": '+ JSON.stringify(parentData[1]) +'}}';
@@ -56,7 +56,7 @@ function getNonQueried(parentData) {
         xhr.ontimeout = function (){
             console.error("request timedout: ", xhr);
         }
-        xhr.open("post", "http://45.55.83.253:3000/com.duosoftware.com/"+parentData[0]+"?take=20", /*async*/ true);
+        xhr.open("post", "http://45.55.83.253:3000/com.duosoftware.com/"+parentData[0]+"?take=20000", /*async*/ true);
          
    // xhr.setRequestHeader("Access-Control-Allow-Headers", "securityToken,log,Content-Type");
     //xhr.setRequestHeader("Access-Control-Allow-Credentials","true");

@@ -22,7 +22,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
     //get fb initial login state
     //scope.actIndicator = "false";
     fbInterface.getFbLoginState(scope);
-    var objIndex = getRottsotObjectById(widId, $rootScope.dashboard.widgets);
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
     //add or remove account from the scope
     scope.addAccount = function() {
         if (fbInterface.state != 'connected')

@@ -52,7 +52,7 @@ var g = svg.selectAll("g")
     .data(partition.nodes(root))
     .enter().append("g");
 
-var path = g.append("path")
+var path2 = g.append("path")
     .attr("id", "pathhnb")
     .attr("d", arc)
     .style("fill", function(d) {
@@ -105,6 +105,7 @@ function click(d) {
     };
     text.transition().attr("opacity", 0);
 
+ 
     path.transition()
         .duration(750)
         .attrTween("d", arcTween(d))

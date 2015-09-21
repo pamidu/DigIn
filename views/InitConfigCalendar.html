@@ -19,16 +19,29 @@
     <md-content layout-margin>
     <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
 
-            <div>
+      <!--   <div>
+            <md-input-container flex>
+                <div id="authorize-div" style="display: none">
+                    <button id="authorize-button" onclick="handleAuthClick(event)">
+                    Authorize
+                   </button>
+                </div>
+            </md-input-container>
+        </div> -->
+        <div id="authorize-div" style="display: none">
+            <div layout="row" layout-align='center start' layout-margin>
+                <md-select placeholder="Account Owner" ng-model="userAccountName" flex>
+                    <md-optgroup label="Account Owner">
+                        <md-option ng-repeat="acc in accounts">{{acc}}</md-option>
+                </md-select>
                 <md-input-container flex>
-                    <div id="authorize-div" style="display: none">
-     
-      <button id="authorize-button" onclick="handleAuthClick(event)">
-        Authorize
-      </button>
-    </div>
+                    <button id="authorize-button" onclick="handleAuthClick(event)">
+                    Add account
+                   </button>
                 </md-input-container>
             </div>
+        </div> 
+
             <label id="dislab"></label>
             <div class="md-actions" layout="row">
                 <span flex></span>

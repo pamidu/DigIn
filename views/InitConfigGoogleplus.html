@@ -20,9 +20,17 @@
              <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
             <div>
                 <div id="gConnect">
-                     <md-button id="signin-button" class="md-primary">
-                    Sign In
-                </md-button>
+                <!-- <div id="signin-button"></div> -->
+                 <div layout="row" layout-align='center start' layout-margin>
+                <md-select placeholder="Account Owner" ng-model="userAccountName" flex>
+                    <md-optgroup label="Account Owner">
+                        <md-option ng-repeat="acc in accounts">{{acc}}</md-option>
+                </md-select>
+                <md-input-container flex>
+                    <div id="signin-button"></div>
+                </md-input-container>
+                </div>
+                    
                 </div>
             </div>
         

@@ -449,7 +449,8 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
     width : '370px',
     left :  $scope.leftPosition + 'px',
     top :  $scope.topPosition +'px',
-    height : '250px',
+    height : '300px',
+    mheight: '250px',
     chartTypes:[
   {"id": "line", "title": "Line"},
   {"id": "spline", "title": "Smooth line"},

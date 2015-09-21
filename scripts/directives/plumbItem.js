@@ -1,7 +1,6 @@
   routerApp.directive('plumbItem', function() {
     return {
-      replace: true,
-      controller: 'mainController',
+      restrict: 'A',       
       link: function (scope, element, attrs) {
         //console.log("Add plumbing for the 'item' element");
 
@@ -12,15 +11,15 @@
           [ "Arrow", { width:30, length:30, location:1, id:"arrow" } ]
           ]
         });
-        jsPlumb.draggable(element, {
-           stop:function(event,ui) {
-                          //console.log("Check if its printing")
-                          event.stopPropagation();
-                                },
-          containment: 'parent'
-
-
+        jsPlumb.draggable(element, {            
+          containment: 'parent',
+          stop: function (evt, ui) {
+             var pos = $(this).offset();
+             scope.widget.top = pos.top+'px';
+             scope.widget.left = pos.left+'px';
+            }
         });
+
       }
     };
   });

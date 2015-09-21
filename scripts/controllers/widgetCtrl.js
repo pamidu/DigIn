@@ -749,7 +749,6 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     //builds the chart
     $scope.buildchart = function(widget) {
         widget.chartSeries = [];
-        widget.highchartsNG.xAxis = {};
 
         if ($scope.chartCategory.groupField != '') {
             $scope.widgetValidity = 'fade-out';
@@ -779,8 +778,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     }
 
     //order by category
-    $scope.orderByCat = function(widget) {
-                  var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
+    $scope.orderByCat = function(widget){
+        var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
         var orderedObjArray = [];
         
         for(i=0;i<$scope.seriesArray.length;i++){
@@ -800,7 +799,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
             for (var key in orderedObj) {
                 if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
-                    data.push(orderedObj[key]);
+                    data.push({name:key,y:orderedObj[key]});
                 }
             }
 
@@ -810,8 +809,32 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             orderedArrayObj["type"] = $scope.seriesArray[i].type;
             orderedObjArray.push(orderedArrayObj);
         }
-        widget.highchartsNG.series =orderedObjArray;
-        widget.highchartsNG.xAxis.categories = cat;
+
+        widget.highchartsNG = {
+        options: {
+            drilldown: {
+            series: [],
+            plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                }
+            }
+        }
+        }
+        },
+        xAxis: {
+            type: 'category'
+        },
+        credits: {
+          enabled: false        
+        },
+        legend: {
+            enabled: false
+        },
+        series: orderedObjArray
+         };
     }
 
     //order by category (drilled)
@@ -1003,6 +1026,50 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     $scope.cancel = function() {
         $mdDialog.hide();
     }
+
+    $scope.filterData = function(c){
+        console.log(c);
+    };
+
+    /* Strategy1 begin */
+    var Filtering = function() {
+        this.filter = "";
+    };
+
+    Filtering.prototype = {
+        setFilter: function(filter) {
+            this.filter = filter;
+        },
+     
+        calculate: function() {
+            return this.filter.calculate();
+        }
+    };
+
+    var SUM = function() {
+        this.calculate = function() {
+            console.log("calculations... for the sum filter");
+        }
+    };
+
+    var AVERAGE = function() {
+        this.calculate = function() {
+            console.log("calculations... for the average filter");
+        }
+    };
+
+    var PERCENTAGE = function() {
+        this.calculate = function() {
+            console.log("calculations... for the prcentage filter");
+        }
+    };
+
+    var COUNT = function() {
+        this.calculate = function() {
+            console.log("calculations... for the count filter");
+        }
+    };
+/* Strategy1 end */
 
 };
 

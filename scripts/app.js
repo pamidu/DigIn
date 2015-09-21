@@ -474,7 +474,73 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function (
 }])
 
 routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
-        (function () {}.call(this));
+        (function () {
+            $scope.days = [];
+            $scope.month = 01;
+            createCal();
+
+            function createCal() {
+                $scope.days = [];
+                for (m = 1; m < 13; m++) {
+                    var firstDay = new Date(m + '.01.2015').getDay();
+                    //console.log(firstDay);
+                    if (firstDay == 0) {
+                        firstDay = 7;
+                    };
+                    for (i = 0; i < 40; i++) {
+
+                        if (i + 1 < firstDay) {
+                            var obj = {
+                                class: 'day invalid',
+                                date: '',
+                                month: m
+                            };
+                            $scope.days.push(obj);
+                        } else {
+                            if (new Date(m + '.' + parseInt(i + 2 - firstDay) + '.2015') == 'Invalid Date') {
+                                // console.log('invlid date found');
+                            } else {
+                                if (m == 2 && parseInt(i + 2 - firstDay) > 28) {
+                                    //console.log('feb escape');
+                                } else {
+                                    //console.log(m, parseInt(i + 2 - firstDay), new Date(m + '.' + parseInt(i + 2 - firstDay) + '.2015'));
+                                    var obj = {
+                                        class: 'day',
+                                        date: parseInt(i + 2 - firstDay),
+                                        month: m,
+                                        task: '',
+                                    };
+                                    $scope.days.push(obj);
+                                };
+                            };
+                        };
+                    };
+                    //console.log($scope.days);
+                };
+            };
+
+            $scope.previousMonth = function () {
+                if ($scope.month == 1) {
+                    $scope.month = 12;
+                } else {
+                    $scope.month = $scope.month - 1;
+
+                };
+                //createCal();
+            };
+
+            $scope.nextMonth = function () {
+                if ($scope.month == 12) {
+                    $scope.month = 1;
+
+                } else {
+                    $scope.month = $scope.month + 1;
+                };
+                //createCal();
+            };
+
+            $scope.monthNames = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        }.call(this));
 
 }])
 
@@ -867,11 +933,13 @@ routerApp.directive('clockComponent', function () {
     });
 
 routerApp.directive('calenderComponent', function () {
-    return {
-        restrict: 'E',
-        controller: 'calenderWidgetController',
-        template: "<div class='widget-card'><section class='calendar'>\
-  <h1>September 2015</h1>\
+        return {
+            restrict: 'E',
+            controller: 'calenderWidgetController',
+            template: "<div class='widget-card'><section class='calendar'>\
+<ng-md-icon style='position: absolute;left: 40px;min-width: 5px;top: 25px;fill:white;' ng-click='previousMonth();' icon='navigate_before'>p</ng-md-icon>\
+  <h1>{{monthNames[month]}} 2015</h1>\
+<ng-md-icon style='position: absolute;right: 40px;min-width: 5px;top: 25px;fill:white' ng-click='nextMonth();' icon='navigate_next'>p</ng-md-icon>\
   <form action='#'>\
     <label class='weekday'>Mo</label>\
     <label class='weekday'>Tu</label>\
@@ -880,191 +948,16 @@ routerApp.directive('calenderComponent', function () {
     <label class='weekday'>Fr</label>\
     <label class='weekday'>Sa</label>\
     <label class='weekday'>Su</label>\
-    <label class='day invalid' data-day='0'>\
-      <input class='appointment' date-day='-4' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>-4</span>\
+    <label class='day' data-day='{{day.day}}' ng-repeat='day in days' ng-if='day.month == month'>\
+      <input class='appointment' date-day='{{day.day}}' ng-model='day.task' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>{{day.date}}</span>\
       <em></em>\
     </label>\
-    <label class='day invalid' data-day='1'>\
-      <input class='appointment' date-day='-3' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>-3</span>\
-      <em></em>\
-    </label>\
-    <label class='day invalid' data-day='2'>\
-      <input class='appointment' date-day='-2' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>-2</span>\
-      <em></em>\
-    </label>\
-    <label class='day invalid' data-day='3'>\
-      <input class='appointment' date-day='-1' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>-1</span>\
-      <em></em>\
-    </label>\
-    <label class='day invalid' data-day='4'>\
-      <input class='appointment' date-day='0' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>0</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='5'>\
-      <input class='appointment' date-day='1' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>1</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='6'>\
-      <input class='appointment' date-day='2' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>2</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='7'>\
-      <input class='appointment' date-day='3' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>3</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='8'>\
-      <input class='appointment' date-day='4' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>4</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='9'>\
-      <input class='appointment' date-day='5' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>5</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='10'>\
-      <input class='appointment' date-day='6' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>6</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='11'>\
-      <input class='appointment' date-day='7' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>7</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='12'>\
-      <input class='appointment' date-day='8' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>8</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='13'>\
-      <input class='appointment' date-day='9' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>9</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='14'>\
-      <input class='appointment' date-day='10' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>10</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='15'>\
-      <input class='appointment' date-day='11' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>11</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='16'>\
-      <input class='appointment' date-day='12' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>12</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='17'>\
-      <input class='appointment' date-day='13' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>13</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='18'>\
-      <input class='appointment' date-day='14' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>14</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='19'>\
-      <input class='appointment' date-day='15' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>15</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='20'>\
-      <input class='appointment' date-day='16' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>16</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='21'>\
-      <input class='appointment' date-day='17' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>17</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='22'>\
-      <input class='appointment' date-day='18' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>18</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='23'>\
-      <input class='appointment' date-day='19' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>19</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='24'>\
-      <input class='appointment' date-day='20' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>20</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='25'>\
-      <input class='appointment' date-day='21' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>21</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='26'>\
-      <input class='appointment' date-day='22' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>22</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='27'>\
-      <input class='appointment' date-day='23' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>23</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='28'>\
-      <input class='appointment' date-day='24' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>24</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='29'>\
-      <input class='appointment' date-day='25' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>25</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='30'>\
-      <input class='appointment' date-day='26' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>26</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='31'>\
-      <input class='appointment' date-day='27' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>27</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='32'>\
-      <input class='appointment' date-day='28' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>28</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='33'>\
-      <input class='appointment' date-day='29' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>29</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='34'>\
-      <input class='appointment' date-day='30' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>30</span>\
-      <em></em>\
-    </label>\
-    <label class='day' data-day='35'>\
-      <input class='appointment' date-day='31' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>31</span>\
-      <em></em>\
-    </label>\
-    <div class='clearfix'></div>\
+ <div class='clearfix'></div>\
   </form>\
 </section></div>"
-    };
-});
+        };
+    })
 
 routerApp.directive('weatherComponent', function () {
         return {

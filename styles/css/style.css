@@ -1326,6 +1326,9 @@ main {
   color: #6C6C6C; 
 }
 
+.logo-background{
+  background-color: #fff;
+}
 
 
 .ui-icon, .ui-widget-content .ui-icon{

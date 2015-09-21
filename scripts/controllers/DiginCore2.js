@@ -186,24 +186,41 @@ $objectstore,$mdDialog) {
 
   $scope.panels = ["Side Panel","Background"];
 
-  $scope.changeTheme = function(theme){
+  $scope.themeArr = [{name:'alt',primary:'#3F51B5',lightPrimary:'#C5CAE9',darkPrimary:'#303F9F',accent:'#448AFF'},
+                     {name:'alt1',primary:'#673AB7',lightPrimary:'#D1C4E9',darkPrimary:'#512DA8',accent:'#FF5252'},
+                     {name:'alt2',primary:'#4CAF50',lightPrimary:'#C8E6C9',darkPrimary:'#388E3C',accent:'#FFC107'},
+                     {name:'alt3',primary:'#607D8B',lightPrimary:'#CFD8DC',darkPrimary:'#455A64',accent:'#009688'}];
+
+  $scope.changeTheme = function(theme,themeId){
     $rootScope.dynamicTheme = theme;
 
-    switch(theme){
-      case 'alt':
-        $(".nav-menu").css('background-color', '#3F51B5');
-        break;
-      case 'alt1':
-        $(".nav-menu").css('background-color', '#673AB7');
-        break;
-      case 'alt2':
-        $(".nav-menu").css('background-color', '#4CAF50');
-        break;
-      case 'alt3':
-        $(".nav-menu").css('background-color', '#CFD8DC');
-        $(".overlay .starting-point span").css('background-color', '#607D8B');
-        break;
+    //common styles
+    $(".sidebaricons").css('color', '#000','important');
+
+    if(themeId != -1){
+      $(".nav-menu").css('background-color', $scope.themeArr[themeId].lightPrimary);
+      $(".nav-menu-active").css('background-color', $scope.themeArr[themeId].darkPrimary);
+      $(".logo-background").css('background-color', $scope.themeArr[themeId].lightPrimary);
+    }else{
+      $(".nav-menu").css('background-color', '#fff');
+      $(".logo-background").css('background-color', '#fff');
     }
+
+    // switch(theme){
+    //   case 'alt':
+    //     $(".nav-menu").css('background-color', '#3F51B5');
+    //     break;
+    //   case 'alt1':
+    //     $(".nav-menu").css('background-color', '#673AB7');
+    //     break;
+    //   case 'alt2':
+    //     $(".nav-menu").css('background-color', '#4CAF50');
+    //     break;
+    //   case 'alt3':
+    //     $(".nav-menu").css('background-color', '#CFD8DC');
+    //     $(".overlay .starting-point span").css('background-color', '#607D8B');
+    //     break;
+    // }
 
   };
 

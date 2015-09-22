@@ -7,27 +7,38 @@
         <div layout="column">
             <table>
                 <tr>
-                    <th>ID</th>
+                    <!-- <th>ID</th> -->
+                    <th>Month</th>
                     <th>Vehicle Type</th>
                     <th>Vehicle Usage</th>
                     <th>Total</th>
                 </tr>
-                <tr ng-repeat='(key,val) in arr.children'>
+                <tr ng-repeat='item in arr.children'>
                     <td>
-                        {{key}}
+                        {{item.name}}
                     </td>
-                    <td>
+                    <!-- <td>
                         {{val.name}}
+                    </td> -->
+                    <td>
+                        <div ng-repeat='child in item.children'>
+                            {{child.name}}
+                        </div>
+                    </td>
+                        
+                    <td>
+                        <div ng-repeat='usage in child.children'>
+                            {{usage.name}}
+                        </div>
+                        
                     </td>
                     <td>
-                        <div ng-repeat='(nestedKey,nestedVal) in val.children'>
-                            {{nestedVal.name}}
-                        </div>
-                        <td>
-                            {{val.size}}
-                        </td>
-                        <!--<td ng-repeat='(nestedKey,nestedVal) in val'> {{nestedVal}}-->
-                    </td> 
+                        {{item.size}}
+                    </td>
+                    
+                    
+                    
+                    <!--<td ng-repeat='(nestedKey,nestedVal) in val'> {{nestedVal}}-->
                 </tr>
             </table>
         </div>

@@ -1,0 +1,59 @@
+{
+    "name": "HNB BOX DATA",
+    "children": [
+        {
+            "category": "JEEP",
+            "Observation": "920475.33, 797069.05, 848, 895, 965"
+        }, {
+            "category": "THREE WHEELER",
+            "Observation": "8295353.11, 8582384.79, 939, 980, 1080"
+        }, {
+            "category": "DOUBLE CAB",
+            "Observation": "3271792.79, 1273731.12, 817, 870, 918"
+        }, {
+            "category": "BACHOE",
+            "Observation": "74100, 1273731.12, 806, 871, 950"
+        }, {
+            "category": "SINGLE CAB",
+            "Observation": "3542015.29, 1273731.12, 864, 882, 910"
+        }, {
+            "category": "PASSENGER CARRYING BUS",
+            "Observation": "957582.53, 1273731.121, 939, 980, 1080"
+        }, {
+            "category": "BOWSER",
+            "Observation": "50975, 762, 817, 870, 918"
+        }, {
+            "category": "4WD TRACTOR",
+            "Observation": "55258.75, 802, 806, 871, 950"
+        }, {
+            "category": "BULLDOZER",
+            "Observation": "39475, 853, 939, 980, 1080"
+        }, {
+            "category": "PRIME MOVER",
+            "Observation": "526952, 762, 817, 870, 918"
+        }, {
+            "category": "ROUTE BUS",
+            "Observation": "566512.5, 802, 806, 871, 950"
+        }, {
+            "category": "CREW CAB",
+            "Observation": "333160, 762, 817, 870, 918"
+        }, {
+            "category": "TRADE PLATE",
+            "Observation": "170436.62, 802, 806, 871, 950"
+        }, {
+            "category": "VAN",
+            "Observation": "8290077.54, 762, 817, 870, 918"
+        }, {
+            "category": "MOTOR CAR",
+            "Observation": "58203021.79, 802, 806, 871, 950"
+        }, {
+            "category": "MOTOR CYCLE",
+            "Observation": "862222.76, 802, 806, 871, 950"
+        }, {
+            "category": "MOTOR LORRY",
+            "Observation": "8719502.07, 802, 806, 871, 950"
+        }
+
+    ]
+
+}

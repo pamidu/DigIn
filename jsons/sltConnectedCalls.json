@@ -1,0 +1,23 @@
+{
+    "name": "TOTAL CONNECTED CALLS",
+    "children": [
+        {
+            "key": "Currently connected",
+            "y": 12
+        }, {
+            "key": "connected < 1 min",
+            "y": 2
+        }, {
+            "key": "connected < 3 minutes",
+            "y": 1
+        }, {
+            "key": "Queconnectedued < 5 minutes",
+            "y": 0
+        }, {
+            "key": "connected > 5 minutes",
+            "y": 4
+        }
+
+    ]
+
+}

@@ -290,7 +290,6 @@
             "col": "0"
 
         }, {
-
             "title": "Skill wise summary",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Sri Lanka Telecom",
@@ -324,6 +323,8 @@
             "initTemplate": "InitS4LT",
             "initController": "SLTInit",
             "widView": "views/ViewSLTQueue.html",
+            "dataView": "ViewQueuedSLTdata",
+            "dataCtrl": "sltQueuedCtrl",
             "sizeX": "2",
             "sizeY": "2",
             "row": "3",
@@ -337,6 +338,8 @@
             "initTemplate": "InitSLT",
             "initController": "SLTInit",
             "widView": "views/ViewSLTAgent.html",
+            "dataView": "ViewConnectedSLTdata",
+            "dataCtrl": "sltConnectedCtrl",
             "sizeX": "2",
             "sizeY": "2",
             "row": "3",
@@ -350,6 +353,8 @@
             "initTemplate": "InitSLT",
             "initController": "SLTInit",
             "widView": "views/ViewSLTQueueDetails.html",
+            "dataView": "ViewQueueDetailsSLTdata",
+            "dataCtrl": "sltQueueDetailsCtrl",
             "sizeX": "2",
             "sizeY": "2",
             "row": "3",
@@ -363,6 +368,8 @@
             "initTemplate": "InitConfigGoogleMaps",
             "initController": "googleMapsInit",
             "widView": "views/ViewGoogleMaps.html",
+            "dataView": "ViewDataGoogleMaps",
+            "dataCtrl": "googleMapsCtrl",
             "sizeX": "2",
             "sizeY": "2",
             "row": "4",
@@ -407,6 +414,8 @@
             "initTemplate": "InitConfighnb",
             "initController": "hnbInit",
             "widView": "views/ViewHnbBox.html",
+            "dataView": "ViewDataHnbBox",
+            "dataCtrl": "hnbBoxCtrl",
             "sizeX": "2",
             "sizeY": "2",
             "row": "3",

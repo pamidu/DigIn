@@ -28,6 +28,7 @@
     <!-- angular gridster -->
     <link rel="stylesheet" href="styles/angular-gridster.min.css" />
     <link rel="apple-touch-icon" href="../../assets/globals/img/icons/apple-touch-icon.png">
+
     <script type="text/javascript" src="scripts/vendor/calendar.js"></script>
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
     api_key: 75 mu4z7y428pty
@@ -359,7 +360,30 @@
     <!-- linq for quering in elastic widget -->
     <script type="text/javascript" src="scripts/vendor/linq/linq.js"></script>
   </div>
+
   <script type="text/javascript" src="bower_components/angular-utils-pagination/dirPagination.js"></script>
+  <script>
+      var script = '<script type="text/javascript" src="src/markerclusterer';
+      if (document.location.search.indexOf('compiled') !== -1) {
+        script += '_compiled';
+      }
+      script += '.js"><' + '/script>';
+      document.write(script);
+    </script>
+
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-12846745-20']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  <script src="jsons/data.json"></script>
+
 
 </body>
 

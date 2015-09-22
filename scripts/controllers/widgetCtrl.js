@@ -769,10 +769,10 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 orderedObj[cat[k]] = 0;
             }
 
-            //$scope.filtering.calculate(orderedObj,catMappedData,serMappedData);
-            for(j=0;j<serMappedData.length;j++){
-                orderedObj[catMappedData[j]] += serMappedData[j];
-            }
+            $scope.filtering.calculate(orderedObj,catMappedData,serMappedData);
+            // for(j=0;j<serMappedData.length;j++){
+            //     orderedObj[catMappedData[j]] += serMappedData[j];
+            // }
 
             for (var key in orderedObj) {
                 if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
@@ -845,21 +845,20 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 drilledObj[drilledCat[k]] = 0;
             }
 
+            $scope.filtering.calculate(orderedObj,catMappedData,serMappedData,drillData);
+            // for (j = 0; j < serMappedData.length; j++) {
 
-            for (j = 0; j < serMappedData.length; j++) {
-
-                orderedObj[catMappedData[j]].val += serMappedData[j];
-                orderedObj[catMappedData[j]].arr.push({
-                    val: serMappedData[j],
-                    drill: drillData[j]
-                });
-            }
+            //     orderedObj[catMappedData[j]].val += serMappedData[j];
+            //     orderedObj[catMappedData[j]].arr.push({
+            //         val: serMappedData[j],
+            //         drill: drillData[j]
+            //     });
+            // }
 
             for (var key in orderedObj) {
                 if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
 
-                    var drilledArray = $scope.groupDrilledItems(drilledObj, orderedObj[key].arr);
-
+                    var drilledArray = $scope.filtering.calculate(orderedObj[key].arr,drilledObj,null,null);
 
                     var drilledSeriesObj = [];
                     for (var key1 in drilledArray) {
@@ -1029,8 +1028,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             this.filter = filter;
         },
      
-        calculate: function() {
-            return this.filter.calculate();
+        calculate: function(orderedObj,catMappedData,serMappedData,drillData) {
+            return this.filter.calculate(orderedObj,catMappedData,serMappedData,drillData);
         },
 
         filterFields: function(){
@@ -1039,12 +1038,26 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
 
     var SUM = function() {
-        this.calculate = function(orderedObj,catMappedData,serMappedData) {
+        this.calculate = function(orderedObj,catMappedData,serMappedData,drillData) {
             console.log("calculations... for the sum filter");
-            for(j=0;j<serMappedData.length;j++){
-                orderedObj[catMappedData[j]] += serMappedData[j];
+            if(typeof drillData == 'undefined'){
+                for(j=0;j<serMappedData.length;j++){
+                    orderedObj[catMappedData[j]] += serMappedData[j];
+                }
+            }else if(serMappedData == null){
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill] += orderedObj[j].val;
+                }
+                return catMappedData;
+            }else{
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
             }
-           // return orderedObj;
         }
 
         this.filterFields = function(){            

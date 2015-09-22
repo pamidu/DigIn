@@ -30,6 +30,45 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
       }
     }
 
+    $scope.initialize = function() {
+        // alert("initialize");
+        var center = new google.maps.LatLng(7.2964, 80.6350);
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 3,
+          center: center,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        var markers = [];
+        for (var i = 0; i < 31; i++) {
+          var accident = data.accidents[i];
+          var latLng = new google.maps.LatLng(accident.latitude,
+              accident.longitude);
+          var title = accident.title;
+          var photo_url = accident.photo_url;
+          var marker = new google.maps.Marker({
+            position: latLng,
+            title: title
+          });
+
+          // var contentString = photo_url;
+
+          var marker = new google.maps.Marker({map: map, position: latLng, clickable: true});
+
+          var infowindow = new google.maps.InfoWindow({
+              // content: '<img src="'+"../Digin/images/m1.png"+'" alt="Smiley face" height="42" width="42">'
+              content: 'test'
+          });
+
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map, this);
+          });
+          markers.push(marker);
+        }
+        var markerCluster = new MarkerClusterer(map, markers);
+      }
+
      $scope.changeMap = function() {
         
         $mdDialog.hide();

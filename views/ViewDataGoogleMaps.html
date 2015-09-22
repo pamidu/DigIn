@@ -8,26 +8,27 @@
             <table>
                 <tr>
                     <th>ID</th>
-                    <th>Vehicle Type</th>
-                    <th>Vehicle Usage</th>
-                    <th>Total</th>
+                    <th>City</th>
+                    <th>latitude</th>
+                    <th>longitude</th>
+                    <th>Photo URL</th>
                 </tr>
-                <tr ng-repeat='(key,val) in arr.children'>
-                    <td>
-                        {{key}}
+                <tr ng-repeat='item in arr.accidents'>
+                    <td style="width:40px;">
+                        {{item.id}}
                     </td>
-                    <td>
-                        {{val.name}}
+                    <td style="width:80px;">
+                        {{item.title}}
                     </td>
-                    <td>
-                        <div ng-repeat='(nestedKey,nestedVal) in val.children'>
-                            {{nestedVal.name}}
-                        </div>
-                        <td>
-                            {{val.size}}
-                        </td>
-                        <!--<td ng-repeat='(nestedKey,nestedVal) in val'> {{nestedVal}}-->
-                    </td> 
+                    <td style="width:100px;">
+                        {{item.latitude}}
+                    </td>
+                     <td style="width:100px;">
+                        {{item.longitude}}
+                    </td>
+                    <td style="width:40px;">
+                        {{item.photo_url}}
+                    </td>
                 </tr>
             </table>
         </div>

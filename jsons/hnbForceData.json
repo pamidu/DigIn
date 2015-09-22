@@ -1,0 +1,453 @@
+{     
+            "name": "TOTAL",
+            "imageURL": "",
+            "type": "Total",
+            "children": [
+                {
+                    "name": "MOTOR CAR",
+                    "imageURL": "",
+                    "type": "MOTOR CAR",
+                    "children": [
+                        {
+                            "name": "Private",
+                            "imageURL": "",
+                            "type": "Private",
+                            "size": 9221
+                        },
+                        {
+                            "imageURL": "",
+                            "type": "Hiring",
+                            "name": "Hiring",
+                            "size": 1058
+                        },
+                        {
+                            "imageURL": "",
+                            "type": "Rent",
+                            "name": "Rent",
+                            "size": 114
+                        }
+                    ],
+                    "size": 10393
+                },
+                {
+                    "name": "COMBINE HARVESTER",
+                    "imageURL": "",
+                    "type": "COMBINE HARVESTER",
+                    "children": [
+                        {
+                            "imageURL": "",
+                            "type": "Agricultural Usage",
+                            "name": "Agricultural Usage",
+                            "size": 1
+                        }
+                    ],
+                    "size": 1
+                },
+                {
+                    "name": "JEEP",
+                    "imageURL": "",
+                    "type": "JEEP",
+                    "children": [
+                        {
+                            "imageURL": "",
+                            "type": "Private",
+                            "name": "Private",
+                            "size": 101
+                        },
+                        {
+                            "imageURL": "",
+                            "type": "Rent",
+                            "name": "Rent",
+                            "size": 5
+                        }
+                    ],
+                    "size": 1
+                },
+                {
+                    "name": "THREE WHEELER",
+                    "imageURL": "",
+                    "type": "THREE WHEELER",
+                    "children": [
+                        {
+                            "imageURL": "",
+                            "type": "Private",
+                            "name": "Private",
+                            "size": 110
+                        },
+                        {
+                            "imageURL": "",
+                            "type": "Hiring",
+                            "name": "Hiring",
+                            "size": 3817
+                        },
+                        {
+                            "name": "Rent",
+                            "size": 5,
+                            "imageURL": "",
+                            "type": "Rent"
+                        }
+                    ],
+                    "size": 3927
+                },
+                {
+                    "name": "DOUBLE CAB",
+                    "imageURL": "",
+                    "type": "DOUBLE CAB",
+                    "children": [
+                        {
+                            "name": "Private",
+                            "size": 172,
+                            "imageURL": "",
+                            "type": "Private"
+                        },
+                        {
+                            "name": "Hiring",
+                            "size": 34,
+                            "imageURL": "",
+                            "type": "Hiring"
+                        },
+                        {
+                            "name": "Rent",
+                            "size": 2,
+                            "imageURL": "",
+                            "type": "Rent"
+                        }
+                    ],
+                    "size": 208
+                },
+                {
+                    "name": "BACHOE",
+                    "imageURL": "",
+                    "type": "BACHOE",
+                    "children": [
+                        {
+                            "name": "Private",
+                            "size": 3,
+                            "imageURL": "",
+                            "type": "Private"
+                        },
+                        {
+                            "name": "Hiring",
+                            "size": 20,
+                            "imageURL": "",
+                            "type": "Hiring"
+                        },
+                        {
+                            "name": "Agricultural Usage",
+                            "size": 1,
+                            "imageURL": "",
+                            "type": "Agricultural Usage"
+                        }
+                    ],
+                    "size": 24
+                },
+                {
+                    "name": "AMBULANCE",
+                    "imageURL": "",
+                    "type": "AMBULANCE",
+                    "children": [
+                        {
+                            "name": "Private",
+                            "size": 1,
+                            "imageURL": "",
+                            "type": "Private"
+                        },
+                        {
+                            "name": "Hiring",
+                            "size": 2,
+                            "imageURL": "",
+                            "type": "Hiring"
+                        }
+                    ],
+                    "size": 3
+                },
+                {
+                    "name": "SINGLE CAB",
+                    "imageURL": "",
+                    "type": "SINGLE CAB",
+                    "children": [
+                        {
+                            "name": "Private",
+                            "size": 222,
+                            "imageURL": "",
+                            "type": "Private"
+                        },
+                        {
+                            "name": "Hiring",
+                            "size": 145,
+                            "imageURL": "",
+                            "type": "Hiring"
+                        },
+                        {
+                            "name": "Rent",
+                            "size": 6,
+                            "imageURL": "",
+                            "type": "Rent"
+                        }
+                    ],
+                    "size": 373
+                },
+                {
+                    "name": "FORK LIFTER",
+                    "imageURL": "",
+                    "type": "FORK LIFTER",
+                    "children": [
+                        {
+                            "name": "Private",
+                            "size": 2,
+                            "imageURL": "",
+                            "type": "Private"
+                        }
+                    ],
+                    "size": 2
+                },
+                {
+                    "name": "PASSENGER CARRYING BUS",
+                    "imageURL": "",
+                    "type": "PASSENGER CARRYING BUS",
+                    "children": [
+                        {
+                            "name": "Private",
+                            "size": 12,
+                            "imageURL": "",
+                            "type": "Private"
+                        },
+                        {
+                            "name": "Route",
+                            "size": 62,
+                            "imageURL": "",
+                            "type": "Route"
+                        },
+                        {
+                            "name": "Hiring",
+                            "size": 121,
+                            "imageURL": "",
+                            "type": "Hiring"
+                        },
+                        {
+                            "name": "Rent",
+                            "size": 2,
+                            "imageURL": "",
+                            "type": "Rent"
+                        }
+                    ],
+                    "size": 197
+                },
+                {
+                    "name": "BOWSER",
+                    "imageURL": "",
+                    "type": "BOWSER",
+                    "children": [
+                        {
+                            "name": "Hiring",
+                            "size": 10,
+                            "imageURL": "",
+                            "type": "Hiring"
+                        }
+                    ],
+                    "size": 10
+                },
+                {
+                    "name": "4WD TRACTOR",
+                    "imageURL": "",
+                    "type": "4WD TRACTOR",
+                    "children": [
+                        {
+                            "name": "Private",
+                            "size": 1,
+                            "imageURL": "",
+                            "type": "Private"
+                        },
+                        {
+                            "name": "Hiring",
+                            "size": 3,
+                            "imageURL": "",
+                            "type": "Hiring"
+                        },
+                        {
+                            "name": "Agricultural Usage",
+                            "size": 11,
+                            "imageURL": "",
+                            "type": "Agricultural Usage"
+                        }
+                    ],
+                    "size": 15
+                },
+                {
+                    "name": "BULLDOZER",
+                    "imageURL": "",
+                    "type": "BULLDOZER",
+                    "children": [
+                        {
+                            "name": "Hiring",
+                            "size": 1,
+                            "imageURL": "",
+                            "type": "Hiring"
+                        },
+                        {
+                            "name": "Agricultural Usage",
+                            "size": 4,
+                            "imageURL": "",
+                            "type": "Agricultural Usage"
+                        }
+                    ],
+                    "size": 5
+                },
+                {
+                    "name": "PRIME MOVER",
+                    "imageURL": "",
+                    "type": "PRIME MOVER",
+                    "children": [
+                        {
+                            "name": "Private",
+                            "size": 5,
+                            "imageURL": "",
+                            "type": "user"
+                        },
+                        {
+                            "name": "Hiring",
+                            "size": 48,
+                            "imageURL": "",
+                            "type": "Hiring"
+                        }
+                    ],
+                    "size": 53
+                },
+                {
+                    "name": "ROUTE BUS",
+                    "imageURL": "",
+                    "type": "ROUTE BUS",
+                    "children": [
+                        {
+                            "name": "Route",
+                            "size": 119,
+                            "imageURL": "",
+                            "type": "Route"
+                        }
+                    ],
+                    "size": 119
+                },
+                {
+                    "name": "CATTEPILLER",
+                    "imageURL": "",
+                    "type": "CATTEPILLER",
+                    "children": [
+                        {
+                            "name": "Private",
+                            "size": 43,
+                            "imageURL": "",
+                            "type": "Private"
+                        },
+                        {
+                            "name": "Hiring",
+                            "size": 13,
+                            "imageURL": "",
+                            "type": "Hiring"
+                        }
+                    ],
+                    "size": 56
+                },
+                {
+                    "name": "TRADE PLATE",
+                    "imageURL": "",
+                    "type": "TRADE PLATE",
+                    "children": [
+                        {
+                            "name": "Private",
+                            "size": 30,
+                            "imageURL": "",
+                            "type": "Private"
+                        },
+                        {
+                            "name": "Hiring",
+                            "size": 13,
+                            "imageURL": "",
+                            "type": "Hiring"
+                        }
+                    ],
+                    "size": 30
+                },
+                {
+                    "name": "2WD TRACTOR",
+                    "imageURL": "",
+                    "type": "2WD TRACTOR",
+                    "children": [
+                        {
+                            "name": "Private",
+                            "size": 30,
+                            "imageURL": "",
+                            "type": "Private"
+                        },
+                        {
+                            "name": "Hiring",
+                            "size": 1,
+                            "imageURL": "",
+                            "type": "Hiring"
+                        },
+                        {
+                            "name": "Agricultural Usage",
+                            "size": 17,
+                            "imageURL": "",
+                            "type": "Agricultural Usage"
+                        }
+                    ],
+                    "size": 17
+                },
+                {
+                    "name": "MOTOR CYCLE",
+                    "imageURL": "",
+                    "type": "MOTOR CYCLE",
+                    "children": [
+                        {
+                            "name": "Private",
+                            "size": 359,
+                            "imageURL": "",
+                            "type": "Private"
+                        }
+                    ],
+                    "size": 359
+                },
+                {
+                    "name": "TRAILER",
+                    "imageURL": "",
+                    "type": "TRAILER",
+                    "children": [
+                        {
+                            "name": "Hiring",
+                            "size": 5,
+                            "imageURL": "",
+                            "type": "Hiring"
+                        }
+                    ],
+                    "size": 5
+                },
+                {
+                    "name": "MOTOR LORRY",
+                    "imageURL": "",
+                    "type": "MOTOR LORRY",
+                    "children": [
+                        {
+                            "name": "Private",
+                            "imageURL": "",
+                            "type": "Private",
+                            "size": 319
+                        },
+                        {
+                            "name": "Hiring",
+                            "size": 422,
+                            "imageURL": "",
+                            "type": "Hiring"
+                        },
+                        {
+                            "name": "Rent",
+                            "size": 1,
+                            "imageURL": "",
+                            "type": "Rent"
+                        }
+                    ],
+                    "size": 742
+                }
+            ],
+            "size": 18150
+        }
+     

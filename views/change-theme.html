@@ -18,14 +18,21 @@
    </md-toolbar>
    <md-content layout-margin>
       <div layout="row">
-         <md-button class="md-raised" style="background-color:indigo;border-radius:0px;padding-left:0px;">
-            <span style="background-color:blue;float:left;">&nbsp;&nbsp;</span>
+         <md-button style="background-color:#3F51B5" ng-click="changeTheme('alt',0)" class="md-raised md-fab md-mini" aria-label="Use Android">
+          <md-icon class="ion-waterdrop" style="font-size:30px;margin-bottom:8px;padding-right:3px;color:#448AFF"></md-icon>
          </md-button>
-         <md-button ng-click="changeTheme('default')" class="md-raised">Default</md-button>
-         <md-button ng-click="changeTheme('alt')" class="md-raised">Button</md-button>
-         <md-button ng-click="changeTheme('alt1')" class="md-raised md-primary">Primary</md-button>
-         <md-button ng-click="changeTheme('alt2')" class="md-raised md-primary">Disabled</md-button>
-         <md-button ng-click="changeTheme('alt3')" class="md-raised md-warn">Warn</md-button>
+         <md-button style="background-color:#673AB7" ng-click="changeTheme('alt1',1)" class="md-raised md-fab md-mini" aria-label="Use Android">
+          <md-icon class="ion-waterdrop" style="font-size:30px;margin-bottom:8px;padding-right:3px;color:#FF5252"></md-icon>
+         </md-button>
+         <md-button style="background-color:#4CAF50" ng-click="changeTheme('alt2',2)" class="md-raised md-fab md-mini" aria-label="Use Android">
+          <md-icon class="ion-waterdrop" style="font-size:30px;margin-bottom:8px;padding-right:3px;color:#FFC107"></md-icon>
+         </md-button>
+         <md-button style="background-color:#607D8B" ng-click="changeTheme('alt3',3)" class="md-raised md-fab md-mini" aria-label="Use Android">
+          <md-icon class="ion-waterdrop" style="font-size:30px;margin-bottom:8px;padding-right:3px;color:#009688"></md-icon>
+         </md-button>
+         <md-button style="background-color:#3F51B5" ng-click="changeTheme('default',-1)" class="md-raised md-fab md-mini" aria-label="Use Android">
+          <md-icon class="ion-waterdrop" style="font-size:30px;margin-bottom:8px;padding-right:3px;color:#E91E63"></md-icon>
+         </md-button>
       </div>
    </md-content>
 </md-dialog  >

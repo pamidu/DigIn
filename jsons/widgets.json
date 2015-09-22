@@ -221,7 +221,7 @@
             "col": "3"
 
         }, {
-            "title": "Dynamic vis",
+            "title": "Dynamic visualization",
             "icon": "styles/css/images/icons/ic_av_timer_24px.svg",
             "type": "Visualization",
             "Description": " Build your dream visualization from any datasource",
@@ -289,19 +289,6 @@
             "row": "2",
             "col": "0"
 
-        }, {
-
-            "title": "Google Analytics",
-            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Web Analytics",
-            "Description": "Reports, Charts, Content, Queries",
-            "initTemplate": "InitConfiganalytics",
-            "initController": "analyticsInit",
-            "widView": "views/ViewAnalytics.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "2",
-            "col": "1"
         }, {
 
             "title": "Skill wise summary",
@@ -389,6 +376,8 @@
             "initTemplate": "InitConfighnb",
             "initController": "hnbInit",
             "widView": "views/ViewHnbData.html",
+            "dataView": "ViewDataHnbClaims",
+            "dataCtrl": "hnbClaimsCtrl",
             "sizeX": "2",
             "sizeY": "2",
             "row": "3",
@@ -403,6 +392,8 @@
             "initTemplate": "InitConfighnb",
             "initController": "hnbInit",
             "widView": "views/ViewHnbMonth.html",
+            "dataView": "ViewDataDistributedClaims",
+            "dataCtrl": "hnbDistributedCtrl",
             "sizeX": "2",
             "sizeY": "2",
             "row": "3",

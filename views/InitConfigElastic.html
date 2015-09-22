@@ -101,12 +101,12 @@
                               <label>Name</label>
                               <input ng-model="ser.name">
                             </md-input-container>
-                            <md-select ng-model="ser.serName" placeholder="Select a series">
-                                <md-option value="{{cat}}" ng-repeat="cat in arrayAttributes">{{ cat }}</md-option>
-                            </md-select>
-                             <md-select ng-model="chartFilter" placeholder="Select a filter" ng-change="filterData(chartFilter)">
+                            <md-select ng-model="chartFilter" placeholder="Select a filter" ng-change="filterData(chartFilter)">
                                 <md-option value="{{fil}}" ng-repeat="fil in filterAttributes">{{ fil }}</md-option>
                             </md-select>
+                            <md-select ng-model="ser.serName" placeholder="Select a series" ng-click="checkSeriesAvailability()">
+                                <md-option value="{{cat}}" ng-repeat="cat in seriesAttributes">{{ cat }}</md-option>
+                            </md-select>                            
                             <md-select ng-model="ser.type" placeholder="Select a chart type" flex>
                               <md-optgroup label="Chart type">
                                 <md-option ng-value="chartType.type" ng-repeat="chartType in chartTypes">{{chartType.name}}</md-option>

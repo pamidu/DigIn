@@ -489,31 +489,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     $scope.dataIndicator = false;
     $scope.categoryVal = "";
     $scope.mappedArray = {};
-    $scope.chartTypes = [{
-        name: "Area",
-        type: "area"
-    }, {
-        name: "Smooth area",
-        type: "areaspline"
-    }, {
-        name: "Line",
-        type: "line"
-    }, {
-        name: "Smooth line",
-        type: "spline"
-    }, {
-        name: "Column",
-        type: "column"
-    }, {
-        name: "Bar",
-        type: "bar"
-    }, {
-        name: "Pie",
-        type: "pie"
-    }, {
-        name: "Scatter",
-        type: "scatter"
-    }];
+    $scope.chartTypes = [{name:"Area",type:"area"},{name:"Smooth area",type:"areaspline"},{name:"Line",type:"line"},{name:"Smooth line",type:"spline"},{name:"Column",type:"column"},{name:"Bar",type:"bar"},{name:"Pie",type:"pie"},{name:"Scatter",type:"scatter" }];
     $scope.seriesArray = [{
         name: 'series1',
         serName: '',
@@ -527,7 +503,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
     $scope.dataTab = true;
     $scope.chartTab = true;
-    //$scope.arrayAttributes = [];
+    $scope.seriesAttributes = [];
 
     //getting the widget object
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
@@ -793,6 +769,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 orderedObj[cat[k]] = 0;
             }
 
+            //$scope.filtering.calculate(orderedObj,catMappedData,serMappedData);
             for(j=0;j<serMappedData.length;j++){
                 orderedObj[catMappedData[j]] += serMappedData[j];
             }
@@ -833,9 +810,11 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         legend: {
             enabled: false
         },
-        series: orderedObjArray
+        series: orderedObjArray,
+        title:{text:''},
+        size: {width:300,height:220}
          };
-    }
+        };
 
     //order by category (drilled)
     $scope.orderByDrilledCat = function(widget) {
@@ -945,14 +924,10 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         series: orderedObjArray,
           drilldown: {
             series: drilledSeries,
-         }
-
-        
-
-     }
-        console.log("series is" + JSON.stringify(orderedObjArray));
-
-         console.log("drilled series is"  + JSON.stringify(drilledSeries));        
+         },
+        title:{text:''},
+        size: {width:300,height:220}
+     }      
     };
 
 
@@ -962,6 +937,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         }
         return uniqueArray;
     };
+
+    //$scope.
 
     $scope.getDrillArray = function() {
         var uniqueScore = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.unique');
@@ -1018,7 +995,6 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 $scope.selectedTabIndex = 2;
                 break;
         }
-
     };
 
     //close the config
@@ -1028,8 +1004,20 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     }
 
     $scope.filterData = function(c){
-        console.log(c);
+        var filter = eval('new '+c.toUpperCase()+'();');
+        $scope.filtering = new Filtering();
+        $scope.filtering.setFilter(filter);
+        $scope.seriesAttributes = $scope.filtering.filterFields();
+        $scope.widgetValidity = 'fade-out';
     };
+
+    $scope.checkSeriesAvailability = function(){
+        if($scope.seriesAttributes.length==0){
+            $scope.validationMessage = "Please check the filter you select";
+            $scope.widgetValidity = 'fade-in';
+        }
+    };
+
 
     /* Strategy1 begin */
     var Filtering = function() {
@@ -1043,12 +1031,24 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
      
         calculate: function() {
             return this.filter.calculate();
+        },
+
+        filterFields: function(){
+            return this.filter.filterFields();
         }
     };
 
     var SUM = function() {
-        this.calculate = function() {
+        this.calculate = function(orderedObj,catMappedData,serMappedData) {
             console.log("calculations... for the sum filter");
+            for(j=0;j<serMappedData.length;j++){
+                orderedObj[catMappedData[j]] += serMappedData[j];
+            }
+           // return orderedObj;
+        }
+
+        this.filterFields = function(){            
+            return getFilteredFields(false);
         }
     };
 
@@ -1056,11 +1056,19 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         this.calculate = function() {
             console.log("calculations... for the average filter");
         }
+
+        this.filterFields = function(){
+            return getFilteredFields(false);
+        }
     };
 
     var PERCENTAGE = function() {
         this.calculate = function() {
             console.log("calculations... for the prcentage filter");
+        }
+
+        this.filterFields = function(){
+            return getFilteredFields(false);
         }
     };
 
@@ -1068,7 +1076,24 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         this.calculate = function() {
             console.log("calculations... for the count filter");
         }
+
+        this.filterFields = function(){
+            return getFilteredFields(true);
+        }
     };
+
+    //returns the series array according to the filter selected
+    function getFilteredFields(isNaN){
+        var objArr = [];
+        for (var key in $scope.mappedArray) {
+            if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
+                isNaN == $scope.mappedArray[key].isNaN && objArr.push($scope.mappedArray[key].name);
+            }
+        }
+        return objArr;
+    };
+
+
 /* Strategy1 end */
 
 };

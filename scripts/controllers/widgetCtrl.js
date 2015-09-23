@@ -9,7 +9,8 @@
 |      #instagram settings: instaInit                      | 
 |      #d3plugin settings : d3Init                         |
 |      #sltskillwisecall  : sltskillInit                   |
-|      #sltivr settings   : sltivrInit                     |
+|      #sltivr settings   : sltivrInit
+|      #adsense settings  : adsenseInit                     |
 ------------------------------------------------------------
 */
 /*summary-
@@ -1595,7 +1596,7 @@ function csvInit($scope, $http, $mdDialog, widId, $rootScope) {
 };
 
 
-function weatherInit(widId, $scope, $http, $rootScope, $mdDialog) {
+function weatherInit(widId, $scope, $http, $rootscope, $mdDialog) {
     //cancel config
     $scope.cancel = function() {
         $mdDialog.hide();
@@ -1618,6 +1619,19 @@ function weatherInit(widId, $scope, $http, $rootScope, $mdDialog) {
 
 }
 
+function adsenseInit(widId, $scope, $http, $rootScope, $mdDialog){
+    $scope.cancel = function(){
+        $mdDialog.hide();
+    }
+    
+    $scope.finish = function(){
+        $mdDialog.hide();
+    }
+    $scope.signIn = function(){
+        
+    }
+    
+}
 function calendarInit(widId, $scope, $http, $rootScope, $mdDialog) {
 
     $scope.cancel = function() {

@@ -1,7 +1,14 @@
 var data = { "count": 4,
+<<<<<<< HEAD
  "accidents": [{"id": 1, "title": "Colombo", "latitude": 6.927079, "longitude": 79.861243, "photoUrl": "styles/css/images/hnb/threeWheel.png", "width": 500, "height": 375}
 ,
 {"id": 2, "title": "Kandy", "latitude": 7.290572, "longitude": 80.633726, "photoUrl": "styles/css/images/hnb/forklift.png", "width": 500, "height": 375}
+=======
+
+ "accidents": [{"id": 1, "title": "Colombo", "latitude": 6.927079, "longitude": 79.861243, "photo_url": "http://www.panoramio.com/photo/27932", "width": 500, "height": 375},
+
+{"id": 2, "title": "Kandy", "latitude": 7.290572, "longitude": 80.633726, "photo_url": "http://www.panoramio.com/photo/27932", "width": 500, "height": 375}
+>>>>>>> 16ae224bfec2d733ba929cc7eaee1c52d73c0fb4
 ,
 {"id": 3, "title": "Wattala", "latitude": 7.002513, "longitude": 79.909893, "photoUrl": "styles/css/images/hnb/JEEP.png", "width": 500, "height": 375}
 ,

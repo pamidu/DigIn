@@ -11,12 +11,23 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
       $scope.mh = '250px';
 
      $scope.resize = function(evt,ui,widget) {
+
       var width = ui.size.width;
       var height = ui.size.height;
       var mHeight = height - 50;
-      widget.width = width+'px';
-      widget.height = height+'px';
-      widget.mheight = mHeight+'px';
+      
+      if(widget.initCtrl=="elasticInit"){
+        console.log('elastic');
+        widget.highchartsNG.size.width = width - 30;
+        widget.highchartsNG.size.height = mHeight-30;
+        widget.width = (width+10)+'px';
+        widget.height = (height+10)+'px';
+        widget.mheight = (mHeight+10)+'px';
+      }else{
+        widget.width = width+'px';
+        widget.height = height+'px';
+        widget.mheight = mHeight+'px'; 
+      }
     }
 
     $scope.initialize = function() {

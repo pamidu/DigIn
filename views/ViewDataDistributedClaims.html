@@ -5,40 +5,51 @@
     <md-content style="margin-top:15px;margin-left:15px;">
         <md-button class="md-raised" ng-csv="dataArray" filename="{{fileName}}.csv" field-separator=",">Export to CSV</md-button>
         <div layout="column">
+       <!--  <div style="width:100px;">{{item.name}}</div>
+        <div ng-repeat='child in item.children'>
+
+        <div layout="column">
+
+        <p>{{child.name}}</p>
+
+        <div layout="column" ng-repeat='usage in child.children'>
+            
+            <div layout="row">
+                <span>{{usage.name}}</span>
+                <span>{{usage.size}}</span>
+            </div>
+        </div>
+            
+        </div>
+
+        </div> -->
             <table>
                 <tr>
-                    <!-- <th>ID</th> -->
+                    
                     <th>Month</th>
                     <th>Vehicle Type</th>
-                    <th>Vehicle Usage</th>
-                    <th>Total</th>
+                    <th>Total of the month</th>
                 </tr>
                 <tr ng-repeat='item in arr.children'>
                     <td>
-                        {{item.name}}
+                        <h6>{{item.name}}</h6>
                     </td>
-                    <!-- <td>
-                        {{val.name}}
-                    </td> -->
                     <td>
                         <div ng-repeat='child in item.children'>
-                            {{child.name}}
+                        <div layout="column">
+                            <h6>{{child.name}}</h6>
+                            <div layout="column" ng-repeat='usage in child.children'>
+                            <div layout="row"><br/>
+                                <span>{{usage.name}}</span>&nbsp;&nbsp;
+                                <span>{{usage.size}}</span>
+                            </div><br/>
+                            </div>
+                        </div>
                         </div>
                     </td>
-                        
                     <td>
-                        <div ng-repeat='usage in child.children'>
-                            {{usage.name}}
-                        </div>
-                        
+                        <h6>{{item.size}}</h6>
                     </td>
-                    <td>
-                        {{item.size}}
-                    </td>
-                    
-                    
-                    
-                    <!--<td ng-repeat='(nestedKey,nestedVal) in val'> {{nestedVal}}-->
                 </tr>
             </table>
         </div>

@@ -164,9 +164,77 @@ function hnbDistributedCtrl($scope,$mdDialog,wid,$http){
         console.log(JSON.stringify(data));
         $scope.arr = data;
         console.log($scope.arr);
-    });    
+    });     
+};
 
-     
+function sltQueuedCtrl($scope,$mdDialog,wid,$http){
+    $scope.arr  = [];
+     $scope.closeDialog = function() {
+            $mdDialog.hide();
+     };
+
+    
+    $http.get('jsons/sltTotalqueued.json').success(function(data) { 
+        console.log(JSON.stringify(data));
+        $scope.arr = data;
+    });    
+    
+};
+
+function sltConnectedCtrl($scope,$mdDialog,wid,$http){
+    $scope.arr  = [];
+     $scope.closeDialog = function() {
+            $mdDialog.hide();
+     };
+
+    
+    $http.get('jsons/sltConnectedCalls.json').success(function(data) { 
+        console.log(JSON.stringify(data));
+        $scope.arr = data;
+        
+    });    
+};
+
+function hnbBoxCtrl($scope,$mdDialog,wid,$http){
+    $scope.arr  = [];
+     $scope.closeDialog = function() {
+            $mdDialog.hide();
+     };
+
+    
+    $http.get('jsons/hnbBoxData.json').success(function(data) { 
+        console.log(JSON.stringify(data));
+        $scope.arr = data;
+        
+    });    
+};
+
+function sltQueueDetailsCtrl($scope,$mdDialog,wid,$http){
+    $scope.arr  = [];
+     $scope.closeDialog = function() {
+            $mdDialog.hide();
+     };
+
+    
+    $http.get('jsons/sltQueueDetails.json').success(function(data) { 
+        console.log(JSON.stringify(data));
+        $scope.arr = data;
+        
+    });    
+};
+
+function googleMapsCtrl($scope,$mdDialog,wid,$http){
+    $scope.arr  = [];
+     $scope.closeDialog = function() {
+            $mdDialog.hide();
+     };
+
+    
+    $http.get('jsons/googleData.json').success(function(data) { 
+        console.log(JSON.stringify(data));
+        $scope.arr = data;
+        
+    });    
 };
 
 function elasticDataCtrl($scope,$mdDialog,wid){

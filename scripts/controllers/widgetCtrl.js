@@ -489,31 +489,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     $scope.dataIndicator = false;
     $scope.categoryVal = "";
     $scope.mappedArray = {};
-    $scope.chartTypes = [{
-        name: "Area",
-        type: "area"
-    }, {
-        name: "Smooth area",
-        type: "areaspline"
-    }, {
-        name: "Line",
-        type: "line"
-    }, {
-        name: "Smooth line",
-        type: "spline"
-    }, {
-        name: "Column",
-        type: "column"
-    }, {
-        name: "Bar",
-        type: "bar"
-    }, {
-        name: "Pie",
-        type: "pie"
-    }, {
-        name: "Scatter",
-        type: "scatter"
-    }];
+    $scope.chartTypes = [{name:"Area",type:"area"},{name:"Smooth area",type:"areaspline"},{name:"Line",type:"line"},{name:"Smooth line",type:"spline"},{name:"Column",type:"column"},{name:"Bar",type:"bar"},{name:"Pie",type:"pie"},{name:"Scatter",type:"scatter" }];
     $scope.seriesArray = [{
         name: 'series1',
         serName: '',
@@ -527,7 +503,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
     $scope.dataTab = true;
     $scope.chartTab = true;
-    //$scope.arrayAttributes = [];
+    $scope.seriesAttributes = [];
 
     //getting the widget object
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
@@ -790,16 +766,17 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             var orderedObj = {};
             var data = [];
             for(k=0;k<cat.length;k++){
-                orderedObj[cat[k]] = 0;
+                orderedObj[cat[k]] = {val:0,count:0};
             }
 
-            for(j=0;j<serMappedData.length;j++){
-                orderedObj[catMappedData[j]] += serMappedData[j];
-            }
+            $scope.filtering.calculate(orderedObj,catMappedData,serMappedData);
+            // for(j=0;j<serMappedData.length;j++){
+            //     orderedObj[catMappedData[j]] += serMappedData[j];
+            // }
 
             for (var key in orderedObj) {
                 if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
-                    data.push({name:key,y:orderedObj[key]});
+                    data.push({name:key,y:orderedObj[key].val});
                 }
             }
 
@@ -833,9 +810,11 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         legend: {
             enabled: false
         },
-        series: orderedObjArray
+        series: orderedObjArray,
+        title:{text:''},
+        size: {width:300,height:220}
          };
-    }
+        };
 
     //order by category (drilled)
     $scope.orderByDrilledCat = function(widget) {
@@ -863,30 +842,21 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             }
 
             for (k = 0; k < drilledCat.length; k++) {
-                drilledObj[drilledCat[k]] = 0;
+                drilledObj[drilledCat[k]] = {val:0,count:0};
             }
 
-
-            for (j = 0; j < serMappedData.length; j++) {
-
-                orderedObj[catMappedData[j]].val += serMappedData[j];
-                orderedObj[catMappedData[j]].arr.push({
-                    val: serMappedData[j],
-                    drill: drillData[j]
-                });
-            }
+            $scope.filtering.calculate(orderedObj,catMappedData,serMappedData,drillData);
 
             for (var key in orderedObj) {
                 if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
 
-                    var drilledArray = $scope.groupDrilledItems(drilledObj, orderedObj[key].arr);
-
+                    var drilledArray = $scope.filtering.calculate(orderedObj[key].arr,drilledObj,null,null);
 
                     var drilledSeriesObj = [];
                     for (var key1 in drilledArray) {
                         if (Object.prototype.hasOwnProperty.call(drilledArray, key1)) {
-                            if (drilledArray[key1] > 0)
-                                drilledSeriesObj.push([key1, drilledArray[key1]]);
+                            if (drilledArray[key1].val > 0)
+                                drilledSeriesObj.push([key1, drilledArray[key1].val]);
                         }
                     }
 
@@ -945,14 +915,10 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         series: orderedObjArray,
           drilldown: {
             series: drilledSeries,
-         }
-
-        
-
-     }
-        console.log("series is" + JSON.stringify(orderedObjArray));
-
-         console.log("drilled series is"  + JSON.stringify(drilledSeries));        
+         },
+        title:{text:''},
+        size: {width:300,height:220}
+     }      
     };
 
 
@@ -962,6 +928,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         }
         return uniqueArray;
     };
+
+    //$scope.
 
     $scope.getDrillArray = function() {
         var uniqueScore = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.unique');
@@ -1018,7 +986,6 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 $scope.selectedTabIndex = 2;
                 break;
         }
-
     };
 
     //close the config
@@ -1028,8 +995,20 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     }
 
     $scope.filterData = function(c){
-        console.log(c);
+        var filter = eval('new '+c.toUpperCase()+'();');
+        $scope.filtering = new Filtering();
+        $scope.filtering.setFilter(filter);
+        $scope.seriesAttributes = $scope.filtering.filterFields();
+        $scope.widgetValidity = 'fade-out';
     };
+
+    $scope.checkSeriesAvailability = function(){
+        if($scope.seriesAttributes.length==0){
+            $scope.validationMessage = "Please check the filter you select";
+            $scope.widgetValidity = 'fade-in';
+        }
+    };
+
 
     /* Strategy1 begin */
     var Filtering = function() {
@@ -1041,34 +1020,179 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             this.filter = filter;
         },
      
-        calculate: function() {
-            return this.filter.calculate();
+        calculate: function(orderedObj,catMappedData,serMappedData,drillData) {
+            return this.filter.calculate(orderedObj,catMappedData,serMappedData,drillData);
+        },
+
+        filterFields: function(){
+            return this.filter.filterFields();
         }
     };
 
     var SUM = function() {
-        this.calculate = function() {
+        this.calculate = function(orderedObj,catMappedData,serMappedData,drillData) {
             console.log("calculations... for the sum filter");
+            if(typeof drillData == 'undefined'){
+                for(j=0;j<serMappedData.length;j++){
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                }
+            }else if(serMappedData == null){
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill].val += orderedObj[j].val;
+                }
+                return catMappedData;
+            }else{
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
+            }
+        }
+
+        this.filterFields = function(){            
+            return getFilteredFields(false);
         }
     };
 
     var AVERAGE = function() {
-        this.calculate = function() {
+        this.calculate = function(orderedObj,catMappedData,serMappedData,drillData) {
             console.log("calculations... for the average filter");
+            if(typeof drillData == 'undefined'){
+                for(j=0;j<serMappedData.length;j++){
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    orderedObj[catMappedData[j]].count += 1;
+                }
+                for(attr in orderedObj){
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number((orderedObj[attr].val/orderedObj[attr].count).toFixed(2));
+                    }
+                }
+            }else if(serMappedData == null){
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill].val += orderedObj[j].val;
+                    catMappedData[orderedObj[j].drill].count += 1;
+                }
+                for(attr in catMappedData){
+                    if (Object.prototype.hasOwnProperty.call(catMappedData, attr)) {
+                        catMappedData[attr].val = Number((catMappedData[attr].val/catMappedData[attr].count).toFixed(2));
+                    }
+                }
+                return catMappedData;
+            }else{
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
+                for(attr in orderedObj){
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number((orderedObj[attr].val/orderedObj[attr].arr.length).toFixed(2));
+                    }
+                }
+            }
+        }
+
+        this.filterFields = function(){
+            return getFilteredFields(false);
         }
     };
 
     var PERCENTAGE = function() {
-        this.calculate = function() {
+        this.calculate = function(orderedObj,catMappedData,serMappedData,drillData) {
             console.log("calculations... for the prcentage filter");
+            var total;
+            if(typeof drillData == 'undefined'){
+                total = 0;
+                for(j=0;j<serMappedData.length;j++){
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    total += serMappedData[j];
+                }
+                for(attr in orderedObj){
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number(((orderedObj[attr].val/total)*100).toFixed(2));
+                    }
+                }
+            }else if(serMappedData == null){
+                total = 0;
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill].val += orderedObj[j].val;
+                    total += orderedObj[j].val;
+                }
+                for(attr in catMappedData){
+                    if (Object.prototype.hasOwnProperty.call(catMappedData, attr)) {
+                        catMappedData[attr].val = Number(((catMappedData[attr].val/total)*100).toFixed(2));
+                    }
+                }
+                return catMappedData;
+            }else{
+                total = 0;
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    total += serMappedData[j];
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
+                for(attr in orderedObj){
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number(((orderedObj[attr].val/total)*100).toFixed(2));
+                    }
+                }
+            }
+        }
+
+        this.filterFields = function(){
+            return getFilteredFields(false);
         }
     };
 
     var COUNT = function() {
-        this.calculate = function() {
+        this.calculate = function(orderedObj,catMappedData,serMappedData,drillData) {
             console.log("calculations... for the count filter");
+            if(typeof drillData == 'undefined'){
+                for(j=0;j<serMappedData.length;j++){
+                    orderedObj[catMappedData[j]].val += 1;
+                }
+            }else if(serMappedData == null){
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill].val += 1;
+                }
+                return catMappedData;
+            }else{
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += 1;
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
+            }
+        }
+
+        this.filterFields = function(){
+            return getFilteredFields(true);
         }
     };
+
+    //returns the series array according to the filter selected
+    function getFilteredFields(isNaN){
+        var objArr = [];
+        for (var key in $scope.mappedArray) {
+            if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
+                if(!isNaN) !$scope.mappedArray[key].isNaN && objArr.push($scope.mappedArray[key].name);
+                else objArr.push($scope.mappedArray[key].name);
+            }
+        }
+        return objArr;
+    };
+
+
 /* Strategy1 end */
 
 };

@@ -48,6 +48,10 @@
       </md-tab>
        <md-tab label="Selection" ng-disabled="dataTab">
         <md-content class="md-padding">
+            <div ng-show="dataIndicator" layout="row" layout-sm="column" layout-align="center center" style="z-index:10;position:absolute;height:100%;width:100%;">
+              <md-progress-circular md-mode="indeterminate" style"z-index:11"></md-progress-circular>
+              <span>Please wait...</span>
+            </div>
             <div layout="row" layout-align="center center">
                 <md-switch ng-model="query.state" aria-label="Switch 1">
                     Queried: {{ query.state }}
@@ -79,10 +83,6 @@
       </md-tab>
       <md-tab label="Mapping" ng-disabled="chartTab">
         <md-content class="md-padding">
-            <div ng-show="dataIndicator" layout="row" layout-sm="column" layout-align="center center" style="z-index:10;position:absolute;height:100%;width:100%;">
-              <md-progress-circular md-mode="indeterminate" style"z-index:11"></md-progress-circular>
-              <span>Please wait...</span>
-            </div>
             <div layout="column">
                 <md-select ng-model="chartCategory.groupField" ng-change="selectSer(chartCategory.groupField)" placeholder="Select a category">
                     <md-option value="{{cat}}" ng-repeat="cat in arrayAttributes">{{ cat }}</md-option>
@@ -101,12 +101,12 @@
                               <label>Name</label>
                               <input ng-model="ser.name">
                             </md-input-container>
-                            <md-select ng-model="ser.serName" placeholder="Select a series">
-                                <md-option value="{{cat}}" ng-repeat="cat in arrayAttributes">{{ cat }}</md-option>
-                            </md-select>
-                             <md-select ng-model="chartFilter" placeholder="Select a filter" ng-change="filterData(chartFilter)">
+                            <md-select ng-model="chartFilter" placeholder="Select a filter" ng-change="filterData(chartFilter)">
                                 <md-option value="{{fil}}" ng-repeat="fil in filterAttributes">{{ fil }}</md-option>
                             </md-select>
+                            <md-select ng-model="ser.serName" placeholder="Select a series" ng-click="checkSeriesAvailability()">
+                                <md-option value="{{cat}}" ng-repeat="cat in seriesAttributes">{{ cat }}</md-option>
+                            </md-select>                            
                             <md-select ng-model="ser.type" placeholder="Select a chart type" flex>
                               <md-optgroup label="Chart type">
                                 <md-option ng-value="chartType.type" ng-repeat="chartType in chartTypes">{{chartType.name}}</md-option>

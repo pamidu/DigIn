@@ -766,7 +766,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             var orderedObj = {};
             var data = [];
             for(k=0;k<cat.length;k++){
-                orderedObj[cat[k]] = 0;
+                orderedObj[cat[k]] = {val:0,count:0};
             }
 
             $scope.filtering.calculate(orderedObj,catMappedData,serMappedData);
@@ -776,7 +776,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
             for (var key in orderedObj) {
                 if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
-                    data.push({name:key,y:orderedObj[key]});
+                    data.push({name:key,y:orderedObj[key].val});
                 }
             }
 
@@ -842,18 +842,10 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             }
 
             for (k = 0; k < drilledCat.length; k++) {
-                drilledObj[drilledCat[k]] = 0;
+                drilledObj[drilledCat[k]] = {val:0,count:0};
             }
 
             $scope.filtering.calculate(orderedObj,catMappedData,serMappedData,drillData);
-            // for (j = 0; j < serMappedData.length; j++) {
-
-            //     orderedObj[catMappedData[j]].val += serMappedData[j];
-            //     orderedObj[catMappedData[j]].arr.push({
-            //         val: serMappedData[j],
-            //         drill: drillData[j]
-            //     });
-            // }
 
             for (var key in orderedObj) {
                 if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
@@ -863,8 +855,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                     var drilledSeriesObj = [];
                     for (var key1 in drilledArray) {
                         if (Object.prototype.hasOwnProperty.call(drilledArray, key1)) {
-                            if (drilledArray[key1] > 0)
-                                drilledSeriesObj.push([key1, drilledArray[key1]]);
+                            if (drilledArray[key1].val > 0)
+                                drilledSeriesObj.push([key1, drilledArray[key1].val]);
                         }
                     }
 
@@ -1042,11 +1034,11 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             console.log("calculations... for the sum filter");
             if(typeof drillData == 'undefined'){
                 for(j=0;j<serMappedData.length;j++){
-                    orderedObj[catMappedData[j]] += serMappedData[j];
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
                 }
             }else if(serMappedData == null){
                 for (j = 0; j < orderedObj.length; j++) {
-                    catMappedData[orderedObj[j].drill] += orderedObj[j].val;
+                    catMappedData[orderedObj[j].drill].val += orderedObj[j].val;
                 }
                 return catMappedData;
             }else{
@@ -1066,8 +1058,43 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
 
     var AVERAGE = function() {
-        this.calculate = function() {
+        this.calculate = function(orderedObj,catMappedData,serMappedData,drillData) {
             console.log("calculations... for the average filter");
+            if(typeof drillData == 'undefined'){
+                for(j=0;j<serMappedData.length;j++){
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    orderedObj[catMappedData[j]].count += 1;
+                }
+                for(attr in orderedObj){
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number((orderedObj[attr].val/orderedObj[attr].count).toFixed(2));
+                    }
+                }
+            }else if(serMappedData == null){
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill].val += orderedObj[j].val;
+                    catMappedData[orderedObj[j].drill].count += 1;
+                }
+                for(attr in catMappedData){
+                    if (Object.prototype.hasOwnProperty.call(catMappedData, attr)) {
+                        catMappedData[attr].val = Number((catMappedData[attr].val/catMappedData[attr].count).toFixed(2));
+                    }
+                }
+                return catMappedData;
+            }else{
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
+                for(attr in orderedObj){
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number((orderedObj[attr].val/orderedObj[attr].arr.length).toFixed(2));
+                    }
+                }
+            }
         }
 
         this.filterFields = function(){
@@ -1076,8 +1103,48 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
 
     var PERCENTAGE = function() {
-        this.calculate = function() {
+        this.calculate = function(orderedObj,catMappedData,serMappedData,drillData) {
             console.log("calculations... for the prcentage filter");
+            var total;
+            if(typeof drillData == 'undefined'){
+                total = 0;
+                for(j=0;j<serMappedData.length;j++){
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    total += serMappedData[j];
+                }
+                for(attr in orderedObj){
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number(((orderedObj[attr].val/total)*100).toFixed(2));
+                    }
+                }
+            }else if(serMappedData == null){
+                total = 0;
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill].val += orderedObj[j].val;
+                    total += orderedObj[j].val;
+                }
+                for(attr in catMappedData){
+                    if (Object.prototype.hasOwnProperty.call(catMappedData, attr)) {
+                        catMappedData[attr].val = Number(((catMappedData[attr].val/total)*100).toFixed(2));
+                    }
+                }
+                return catMappedData;
+            }else{
+                total = 0;
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    total += serMappedData[j];
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
+                for(attr in orderedObj){
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number(((orderedObj[attr].val/total)*100).toFixed(2));
+                    }
+                }
+            }
         }
 
         this.filterFields = function(){
@@ -1086,8 +1153,26 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
 
     var COUNT = function() {
-        this.calculate = function() {
+        this.calculate = function(orderedObj,catMappedData,serMappedData,drillData) {
             console.log("calculations... for the count filter");
+            if(typeof drillData == 'undefined'){
+                for(j=0;j<serMappedData.length;j++){
+                    orderedObj[catMappedData[j]].val += 1;
+                }
+            }else if(serMappedData == null){
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill].val += 1;
+                }
+                return catMappedData;
+            }else{
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += 1;
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
+            }
         }
 
         this.filterFields = function(){
@@ -1100,7 +1185,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         var objArr = [];
         for (var key in $scope.mappedArray) {
             if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
-                isNaN == $scope.mappedArray[key].isNaN && objArr.push($scope.mappedArray[key].name);
+                if(!isNaN) !$scope.mappedArray[key].isNaN && objArr.push($scope.mappedArray[key].name);
+                else objArr.push($scope.mappedArray[key].name);
             }
         }
         return objArr;

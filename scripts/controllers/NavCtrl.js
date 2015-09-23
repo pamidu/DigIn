@@ -40,32 +40,57 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
           mapTypeId: google.maps.MapTypeId.ROADMAP
         });
 
+        $scope.accident = [];
+
         var markers = [];
+        
+
         for (var i = 0; i < 31; i++) {
           var accident = data.accidents[i];
           var latLng = new google.maps.LatLng(accident.latitude,
               accident.longitude);
           var title = accident.title;
-          var photo_url = accident.photo_url;
-          var marker = new google.maps.Marker({
-            position: latLng,
-            title: title
-          });
+          // var photo_url = accident.photo_url;
+          // var marker = new google.maps.Marker({
+          //   position: latLng,
+          //   title: title
+          // });
+
+          $scope.accident.push(accident);
 
           // var contentString = photo_url;
 
-          var marker = new google.maps.Marker({map: map, position: latLng, clickable: true});
+          var marker = new google.maps.Marker({title: title, map: map, position: latLng, clickable: true});
 
-          var infowindow = new google.maps.InfoWindow({
-              // content: '<img src="'+"../Digin/images/m1.png"+'" alt="Smiley face" height="42" width="42">'
-              content: 'test'
+
+          var infowindow = new google.maps.InfoWindow({ 
+                          //content: '<img src="'+photo_url+'" style="width:200px; height:100px">'
+                          content: "test"
           });
 
-          google.maps.event.addListener(marker, 'click', function() {
-            infowindow.open(map, this);
+          google.maps.event.addListener(marker, 'click', function(data) {
+                console.log(data);
+                
+                for(var i=0;i<$scope.accident.length;i++){
+
+                    console.log(Math.floor(data.latLng.H * 1000000) / 1000000);
+                            
+                    if((Math.floor(data.latLng.H * 10000) / 10000 == Math.floor($scope.accident[i].latitude * 10000) / 10000)  && (Math.floor(data.latLng.L * 10000) / 10000 == Math.floor($scope.accident[i].longitude * 10000) / 10000 )){
+                                
+                             console.log($scope.accident[i].title);
+                             infowindow.setContent('<img src="'+$scope.accident[i].photoUrl+'" style="width:200px; height:200px">');
+                             infowindow.open(map, this);
+                    }  
+
+
+                }    
+
+                
           });
+          
           markers.push(marker);
         }
+
         var markerCluster = new MarkerClusterer(map, markers);
       }
 

@@ -30,6 +30,13 @@
                 </md-input-container>
             </div>
             <label id="dislab"></label>
+            <div>
+                <md-input-container flex>
+                    <label>Hashtag:</label>
+                    <input name="hashtag" id="hashtag" type="text" ng-model="twitterHashtag">
+                </md-input-container>
+               
+        </div>
             <div class="md-actions" layout="row">
                 <span flex></span>
                 <md-button ng-click="connectButton()" id="connectButton" type="button" class="btn btn-primary">Sign In</md-button>
@@ -39,6 +46,9 @@
                 </md-button>
                 <md-button ng-click="cancel()">
                     Cancel
+                </md-button>
+                <md-button ng-click="fetch()">
+                    Fetch
                 </md-button>
             </div>
     </md-content>

@@ -106,6 +106,19 @@
 
         },  {
 
+            "title": "Google AdSense",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Advertising",
+            "Description": "Earnings, Pageviews, Clicks",
+            "initTemplate": "InitConfigAdsense",
+            "initController": "adsenseInit",
+            "widView": "views/ViewAdsense.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "1"
+        },  {
+
             "title": "Facebook Pages",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Social Media",

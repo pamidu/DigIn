@@ -1,0 +1,23 @@
+{
+    "name": "TOTAL QUEUED CALLS",
+    "children": [
+        {
+            "key": "Currently in queue",
+            "y": 34
+        }, {
+            "key": "Queued < 1 min",
+            "y": 2
+        }, {
+            "key": "Queued < 3 minutes",
+            "y": 9
+        }, {
+            "key": "Queued < 5 minutes",
+            "y": 7
+        }, {
+            "key": "Queued > 5 minutes",
+            "y": 4
+        }
+
+    ]
+
+}

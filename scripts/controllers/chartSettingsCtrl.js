@@ -63,7 +63,7 @@
          };
 
          $scope.addPoints = function() {
-             var seriesArray = widget.chartConfig.series;
+             var seriesArray = widget.highchartsNG.series;
              var rndIdx = Math.floor(Math.random() * seriesArray.length);
              seriesArray[rndIdx].data = seriesArray[rndIdx].data.concat([1, 10, 20])
          };
@@ -73,24 +73,24 @@
              for (var i = 0; i < 10; i++) {
                  rnd.push(Math.floor(Math.random() * 20) + 1)
              }
-             widget.chartConfig.series.push({
+             widget.highchartsNG.series.push({
                  data: rnd
              })
          }
 
          $scope.removeRandomSeries = function() {
-             var seriesArray = widget.chartConfig.series;
+             var seriesArray = widget.highchartsNG.series;
              var rndIdx = Math.floor(Math.random() * seriesArray.length);
              seriesArray.splice(rndIdx, 1)
          }
 
          $scope.removeSeries = function(id) {
-             var seriesArray = widget.chartConfig.series;
+             var seriesArray = widget.highchartsNG.series;
              seriesArray.splice(id, 1)
          }
 
          $scope.toggleHighCharts = function() {
-             this.chartConfig.useHighStocks = !this.chartConfig.useHighStocks
+             this.highchartsNG.useHighStocks = !this.highchartsNG.useHighStocks
          }
 
          $scope.replaceAllSeries = function() {
@@ -104,7 +104,7 @@
                  name: "third",
                  data: [13]
              }];
-             widget.chartConfig.series = data;
+             widget.highchartsNG.series = data;
          };
 
          $scope.reflow = function() {
@@ -257,7 +257,7 @@
 
          $scope.setPlugin = function(plugin) {
              widget.d3plugin = plugin.link.toString();
-             widget.chartConfig.title.text = plugin.Name;
+             widget.highchartsNG.title.text = plugin.Name;
          };
 
      }

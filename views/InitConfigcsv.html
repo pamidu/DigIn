@@ -1,0 +1,46 @@
+<md-dialog plumb-item style="min-width:400px">
+    <md-toolbar>
+        <div class="md-toolbar-tools" flex layout="row">
+            <div flex="10">
+                <md-icon class="ion-wrench"></md-icon>
+            </div>
+            <div flex="80">
+                <h3>Configuration</h3>
+            </div>
+            <div flex="10"> 
+                <md-button  ng-click="cancel()"  aria-label="Close" layout-wrap>
+                   <md-icon class="ion-close"></md-icon>
+                </md-button> 
+            </div>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+   
+    <md-tabs md-dynamic-height md-border-bottom md-selected="selectedTabIndex">
+      <md-tab label="Upload File">
+        <md-content class="md-padding">
+                  <div layout-margin>
+                <excel-loader/>
+            </div>
+        </md-content>
+      </md-tab>
+       <md-tab label="Visualization" ng-disabled="dataTab">
+        <md-content class="md-padding">
+           <md-select ng-model="ser.type" placeholder="Select a chart type" flex>
+                              <md-optgroup label="Chart type">
+                                <md-option ng-value="chartType.type" ng-repeat="chartType in chartTypes">{{chartType.name}}</md-option>
+                              </md-optgroup>
+                            </md-select>
+        </md-content>
+      </md-tab>
+        
+    </md-tabs>           
+        <div layout="row">
+            <md-input-container flex>
+                <md-button class="md-raised" ng-click="finish()">Build Chart</md-button>
+            </md-input-container>
+        </div>
+    </md-dialog-content>
+</md-dialog>
+
+ 

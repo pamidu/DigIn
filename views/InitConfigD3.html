@@ -1,22 +1,21 @@
-<md-dialog  >
+<md-dialog plumb-item style="min-width:400px;">
        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <div flex="10">
-                    <md-icon class="md-avatar" md-svg-src="bower_components/material-design-icons/image/svg/production/ic_grain_24px.svg" style="color:#fff !important;" style="color:#fff !important;float:left;border-radius:100%;"></md-icon>
-                </div>
-                <div flex="80">
-                    <h3>Pick your favorite visualization</h3>
-                </div>
-                <div flex="10">
-                    <span> 
-                                <md-button    >
-                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg" style="color:#fff !important;" ng-click="cancel()"></md-icon>
-                                   </md-button>
-                              </span>
-                </div>
+            <div class="md-toolbar-tools" flex layout="row">
+                      <div flex="10">
+                        <md-icon class="ion-wrench"></md-icon>
+                      </div>   
+                      <div flex="80">
+                              <h3>
+                                 <span> Configuration </span>
+                              </h3>
+                      </div>                           
+                      <div flex="10">
+                             <md-button ng-click="cancel()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                            </md-button>
+                      </div>
             </div>
         </md-toolbar>
-
     <md-content>
         <div layout="row" layout-align="center start" style="padding:15px;">
             <div flex>
@@ -42,11 +41,11 @@
    
   <div class="md-actions" layout="row">
     <span flex></span>
-    <md-button ng-click="setPlugin()" class="md-primary">
-     Finish
-    </md-button>
-    <md-button ng-click="cancel()" class="md-primary">
+    <md-button ng-click="cancel()">
      Cancel
+    </md-button>
+    <md-button ng-click="setPlugin()">
+     Finish
     </md-button>
   </div>
 </md-dialog>

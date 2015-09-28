@@ -1,25 +1,57 @@
-     
-            <div layout="row">
-                <div flex="40">
-                    <img src="{{widget.widData.pictureUrl}}"/>
-                </div>
-                <div layout="column" flex="60">
+<md-content layout-margin flex>
+    <md-tabs md-border-bottom>
+        <md-tab label="Basic Profile">
+            <md-content class="md-padding">
+                <div layout="column">
                     <div>
-                        <h3>{{widget.widData.firstName}}&nbsp;{{widget.widData.lastName}}</h3>
+                        <h6>Profile Information</h6>
+                        <p><img style="width:50px;height:50px;" src="{{widget.widData.pictureUrl}}" /></p>
                     </div>
-                    <div>
-                        <h5>{{widget.widData.headline}}</h5>
+                    <h6>Username</h6>
+                    <div>{{widget.widData.firstName}}&nbsp;{{widget.widData.lastName}}</div>
+                    <br/>
+                    <h6>User ID</h6>
+                    <div>{{widget.widData.id}}</div>
+                    <br/>
+                    <h6>Email</h6>
+                    <div>{{widget.widData.emailAddress}}</div>
+                    <br/>
+                    <h6>Headline</h6>
+                    <div>{{widget.widData.headline}}</div>
+                    <br/>
+                </div>
+                </div>
+            </md-content>
+        </md-tab>
+        <md-tab label="Overview">
+            <md-content class="md-padding">
+                <div id="metric0" style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
+                    <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
+                        <span class="ctotals_inner">{{widget.widData.numConnections}}</span>
                     </div>
-                    <div layout="row">
-                        <div>
-                            <span>{{widget.widData.numConnections}}</span>
-                        </div>
-                        <div>
-                            <span>&nbsp;connections</span>
-                        </div>
+                    <div style="font-size:10px;text-transform:uppercase;">
+                        <div class="widget_legend" style="background:#ff5252;"></div>Connections
                     </div>
                 </div>
-            </div>
-       
- 
- 
+                <div id="metric1" style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
+                    <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
+                        <span class="ctotals_inner">{{widget.widData.current-share}}</span>
+                    </div>
+                    <div style="font-size:10px;text-transform:uppercase;">
+                        <div class="widget_legend" style="background:#c7b700;"></div>Shares
+                    </div>
+                </div>
+                  <div id="metric1" style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
+                    <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
+                        <span class="ctotals_inner">{{widget.widData.numConnectionsCapped}}</span>
+                    </div>
+                    <div style="font-size:10px;text-transform:uppercase;">
+                        <div class="widget_legend" style="background:#c7b700;"></div>Connection capped
+                    </div>
+                </div>
+            </md-content>
+        </md-tab>
+    </md-tabs>
+</md-content>
+</div>
+</md-content>

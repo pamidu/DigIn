@@ -1,44 +1,39 @@
-<md-dialog style="min-width:400px;">
-    <form   >
+<md-dialog plumb-item style="min-width:400px;">
         <md-toolbar>
-            <div class="md-toolbar-tools">
-                <div flex="10">
-                    <md-icon class="md-avatar" md-svg-src="bower_components/material-design-icons/action/svg/production/ic_perm_data_setting_24px.svg" style="color:#fff !important;" style="color:#fff !important;float:left;border-radius:100%;"></md-icon>
+                <div class="md-toolbar-tools"  flex  layout="row">
+                      <div flex="10">
+                        <md-icon class="ion-wrench"></md-icon>
+                      </div>   
+                      <div flex="80">
+                              <h3>
+                                 <span> Configuration </span>
+                              </h3>
+                      </div>                           
+                      <div flex="10">
+                             <md-button ng-click="cancel()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                            </md-button>
+                      </div>
                 </div>
-                <div flex="80">
-                    <h3>Visualization</h3>
-                </div>
-                <div flex="10">
-                    <span> 
-                                <md-button    >
-                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg" style="color:#fff !important;" ng-click="cancel()"></md-icon>
-                                   </md-button>
-                              </span>
-                </div>
-            </div>
         </md-toolbar>
-        <md-dialog-content>
+        <md-content>
             <md-input-container flex>
                 <label>Name of the visualization</label>
-                <input name="sizeX" placeholder="www.duosoftware.com/test" ng-model="widget.chartConfig.title.text">
+                <input name="sizeX" placeholder="www.duosoftware.com/test" ng-model="widget.highchartsNG.title.text">
             </md-input-container>
             <div layout="row"  >
                 <md-select ng-model="datasource" placeholder="Metrics type" flex="100">
                     <md-option ng-value="opt" ng-repeat="opt in visualz">{{ opt }}</md-option>
-                </md-select>
-           
+                </md-select>         
+            </div>    
+            <div class="md-actions" layout="row">
+                <span flex></span>
+                <md-button ng-click="ok()" class="md-primary">
+                 Ok
+                </md-button>
+                <md-button ng-click="cancel()" class="md-primary">
+                 Cancel
+                </md-button>
             </div>
-            
-            
-        </md-dialog-content>
-        <div class="md-actions" layout="row">
-    <span flex></span>
-    <md-button ng-click="ok()" class="md-primary">
-     Ok
-    </md-button>
-    <md-button ng-click="cancel()" class="md-primary">
-     Cancel
-    </md-button>
-  </div>
-    </form>
+        </md-content>
 </md-dialog>

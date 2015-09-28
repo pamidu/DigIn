@@ -1,48 +1,30 @@
-
-<md-dialog id="emailTest" style="width:1600px;height:1200px">
-  <md-content layout="row" ng-controller="emailCtrl" ng-init="html2canvas()">
-    <div layout="column" class="relative" layout-fill role="main">
-      <!--  MD Toolbar not show search-->
-      <md-toolbar ng-show="!showSearch">
-        <div class="md-toolbar-tools" layout="row">
-          <!-- logo -->
-          <image src="styles/css/images/email-logo30x30.png"/>
-          <!--  Header -->
-          <p style="font-size:1em;margin-left:auto;margin-right:auto;">  
-            Email Share
-          </p>
-           <!-- Search Button -->
-          <md-button id="searchArea" aria-label="Search" ng-click="showSearch = !showSearch">
-            <ng-md-icon icon="search" style="fill:black"></ng-md-icon>
-          </md-button>
-        </div>
-       
+<md-dialog plumb-item style="min-width:400px">
+      <md-toolbar>
+                <div class="md-toolbar-tools"  flex  layout="row">
+                      <div flex="10">
+                        <md-icon class="ion-email"></md-icon>
+                      </div>   
+                      <div flex="80">
+                              <h3>
+                                 <span> Email Share </span>
+                              </h3>
+                      </div>                           
+                      <div flex="10">
+                             <md-button ng-click="closeDialog()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                            </md-button>
+                      </div>
+                </div>
       </md-toolbar>
-      <!-- MD Toolbar show search -->
-      <md-toolbar class="md-hue-1" ng-show="showSearch">
-        <div class="md-toolbar-tools">
-        <!-- back button -->
-          <md-button class="searchButton" ng-click="showSearch = !showSearch" aria-label="Back">
-            <ng-md-icon icon="arrow_back"></ng-md-icon>
-          </md-button>
-          
-           <!-- input senders mail -->
-          <md-input-container><label id="postdomain">Senders Mail</label><input id="inputsendersmail" type="text" 
-          ng-model="sendersmail"/>
-          </md-input-container>
-          <md-button id="doneButton" ng-click="sendMail()" aria-label="Done"><ng-md-icon icon="done">Show Snapshot</ng-md-icon></md-button>
-          <span flex></span>
-        </div>   
-      </md-toolbar>
-            <md-card>
-                <md-card-content>
-                     <md-button id="testButton" 
-                        ng-click="generateSnapshot()" aria-label="Done"><ng-md-icon icon="done"></ng-md-icon></md-button>
-                      <div  id="canvasTest"></div>
-                </md-card-content>
-            </md-card>
-    </div>
-</md-content>
+      <md-content ng-init="html2canvas()" layout-margin>              
+                    <md-button id="testButton" 
+                        ng-click="generateSnapshot()" aria-label="Done">Add Image</md-button>
+                    <div  id="canvasTest"></div>              
+      </md-content>
+      <md-content class="md-actions" layout="row" layout-margin>    
+          <md-button ng-click="sendMail()"> SEND</md-button> 
+      </md-content>
+    
 </md-dialog>
 
 

@@ -1,48 +1,37 @@
-<md-dialog style="min-width:400px;">
-  <form>
-  <md-toolbar>
-    <div class="md-toolbar-tools">
-    <div flex="10">
-    <md-icon class="md-avatar" md-svg-src="styles/css/images/facebook56.svg" style="color:#fff !important;float:left;border-radius:100%;"></md-icon>
-    </div>
-    <div flex="80">
-    <h3>Configuration</h3>
-    </div>
-    <div flex="10">
-     <span> 
-                                <md-button    >
-                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg" style="color:#fff !important;" ng-click="cancel()"></md-icon>
-                                   </md-button>
-                              </span>
-    </div>
-    </div>
-  </md-toolbar>
-  <md-dialog-content ng-init="showFrame=false">
-    <div layout="row" layout-align='center start' layout-margin>
-  <!--      <md-select placeholder="Account Owner" ng-model="userAccountName" flex>
-          <md-optgroup label="Account Owner">
-          <md-option ng-repeat="acc in accounts">{{acc}}</md-option>
-       </md-select> -->
-       <md-input-container flex>
-          <md-button class="md-raised" aria-label="Add Account" ng-click="instaAuth()">Add Instagram Account</md-button>
-       </md-input-container>
-    </div>
- <!--    <div layout ng-hidden="false" layout-sm="row" layout-margin>
-       <md-select placeholder="Pages" ng-model="fbPageModel" ng-change="changePage()" flex>
-          <md-optgroup label="Pages">
-          <md-option ng-repeat="item in fbPages" value="{{item.id}}">{{item.name}}</md-option>
-       </md-select>
-    </div> -->
-
-  </md-dialog-content>
-  <div class="md-actions" layout="row">
-    <span flex></span>
-    <md-button ng-click="finish()" class="md-primary">
-     Finish
-    </md-button>
-    <md-button ng-click="cancel()" class="md-primary">
-     Cancel
-    </md-button>
-  </div>
-  </form>
+<md-dialog plumb-item style="width:400px;">
+       <md-toolbar>
+            <div class="md-toolbar-tools" flex layout="row">
+                <div flex="10">
+                        <md-icon class="ion-wrench"></md-icon>
+                </div>   
+                <div flex="80">
+                              <h3>
+                                 <span> Configuration </span>
+                              </h3>
+                </div>                           
+                <div flex="10">
+                        <md-button  ng-click="cancel()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                        </md-button> 
+                </div>
+            </div>                   
+    </md-toolbar>  
+    <md-content layout-margin>
+            <div layout="row" layout-margin>
+                <md-input-container flex>
+                    <label id="postdomain">Domain:</label>
+                    <input name="tag-input" id="inputinstadomain" type="text" ng-model="formData.tagInput" required autofocus>
+                  </md-input-container>
+            </div>
+            <label id="dislab">Please enter a tag name to get data from instagram, ex: Vehicles</label>
+            <div class="md-actions" layout="row">
+                <span flex></span>
+                <md-button ng-click="submitForm();finish();">
+                    Finish
+                </md-button>
+                <md-button ng-click="cancel()">
+                    Cancel
+                </md-button>
+            </div>
+    </md-content>
 </md-dialog>

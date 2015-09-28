@@ -1,70 +1,18 @@
-<!-- <!DOCTYPE html>
-<html ng-app="digginPinterest">
-<head>
-	<title></title>
-	<script src="bower_components/angular/angular.js"></script>
-	<script src="bower_components/angular-animate/angular-animate.js"></script>
-	<script src="bower_components/angular-aria/angular-aria.js"></script>
-	<script src="bower_components/angular-material/angular-material.min.js"></script>
-	<script src="main.js"></script>
-	<link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css" />
-</head>
-<body ng-controller="PinterestCtrl"> -->
-			<div layout="column" ng-model="InstaDetails">
-					<div>
-							<md-card layout="column" >
-								<div layout="row" layout-align="center center" >
-											
-										   			<img src="img/{{widget.widData.profilepic}}" style="height:50px;width:50px;border-radius:50px;margin:2px;">
-										
-										        	<md-input-container >
-											          <label>Full Name</label>
-											          <input ng-model="{{widget.widData.firstName}}" style="font-weight:bold" ng-disabled="true">
-											        </md-input-container>
-										        	<md-input-container >
-											          <label>User Name</label>
-											          <input ng-model="{{widget.widData.username}}"
-											          style="font-weight:bold" ng-disabled="true">
-											        </md-input-container>
-											    <!--     <md-input-container>
-											        <md-button class="md-primary raised" ng-click="instaclick()">login</md-button>
-											        </md-input-container> -->
-								</div>
-							</md-card>
-					</div>
-					<div>
-							<md-card layout="column" style="">
-								<md-card layout="row" layout-align="space-around">
-									<div layout="column" layout-align="center center">
-
-									<div layout="column" layout-align="center center">
-										<div style="text-align:center;line-height:0.5">
-											<h2>{{widget.widData.likes}}</h2>
-											<h5>Likes</h5>
-										</div>
-									</div>
-
-									<div layout="column" layout-align="center center">
-										<div style="text-align:center;line-height:0.5">
-											<h2>{{widget.widData.followers}}</h2>
-											<h5>Followers</h5>
-										</div>
-									</div>
-
-									<div layout="column" layout-align="center center">
-										<div style="text-align:center;line-height:0.5">
-											<h2>{{widget.widData.follows}}</h2>
-											<h5>Following</h5>
-										</div>
-									</div>
-
-									
-								</md-card>
-								<md-card style="height:100px;background:#ececec">
-								</md-card>
-
-							</md-card>
-					</div>
-			</div>
-<!-- </body>
-</html> -->
+<md-content layout-margin flex>
+    <div layout="column" ng-repeat="instaImage in widget.widData">
+            <md-card layout-margin flex layout="column" style="border: 1px solid #D8D8D8;box-shadow: 2px 2px 2px rgba(188, 188, 188);background-color: rgb(238, 238, 238);
+    border-radius: 5px;"> 
+                <h4 layout-margin>{{instaImage.user.full_name}}</a></h4>
+            <md-list-item class="md-3-line" layout-margin flex>
+                <div class="md-list-item-text">
+                <a href="{{instaImage.link}}" target="_blank"><img ng-src="{{instaImage.images.thumbnail.url}}" class="img-circle" /></a>
+                <p style="line-height: 1.0em;">Username: {{instaImage.user.username}}</p>
+                <p style="line-height: 1.0em;">Date: {{instaImage.created_time * 1000 | date:'MMM d, y HH:mm:ss'}}</p>
+                <p style="line-height: 1.0em;">Likes: {{instaImage.likes.count}}</p>
+                <p style="line-height: 1.0em;">Commnets count: {{instaImage.comments.count}}</p>
+                <!-- <p style="line-height: 1.0em;">Caption: {{instaImage.caption.text}}</p> -->
+                </div>
+            </md-list-item>
+            </md-card>  
+    </div>
+</md-content>

@@ -1,52 +1,56 @@
-<!-- index.html -->
-
 <!DOCTYPE html>
-<html>
+<html ng-app="diginLogin" ng-controller="LoginCtrl">
 <head>
-  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">  
-  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-  <!--link rel="stylesheet" type="text/css" href="styles/css/style.css"-->
-  <link rel="stylesheet" type="text/css" href="styles/css/custom_login.css">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="styles/css/commonstyle.css">
 </head>
-
-<!-- apply our angular app to our site -->
-<body ng-app="diginLogin" ng-controller="LoginCtrl">
-<div class="test">
-  <div class="overlay"></div>
-      <div class="content main-container" layout="row" layout-align="center center" layout-fill>
-        <md-whiteframe class="md-whiteframe-z1" layout layout-align="center center" style="min-width:320px;">
-           <div layout="column" style="width:100%;">              
-                <div>                  
-                  <img src="styles/css/images/digin.png" alt="app logo">
-                </div>
-              <md-divider></md-divider>
-              <div layout="column" style="padding:20px;" >
-                  <md-input-container flex>
-                    <label><span class="fa fa-user"></span>&nbsp;&nbsp;Username</label>
-                    <input ng-model="currentUser">
-                  </md-input-container>
-                  <md-input-container flex>
-                    <label><span class="fa fa-lock"></span>&nbsp;&nbsp;Password</label>
-                    <input type="password" ng-model="password">
-                  </md-input-container>
-                  <md-button class="md-raised md-primary" ng-click="login()">Login</md-button>
-                  <md-button class="md-raised md-primary" ng-click="login1()">Pentaho</md-button>                  
-              </div>
-              <md-toolbar class="md-warn" md-scroll-shrink ng-hide="errorDiv">
-                <div class="md-toolbar-tools">
-                  <h4>
-                      <span>{{errorMsg}}</span>
-                  </h4>                  
-                  </div>
-              </md-toolbar>
-          </div>
-        </md-whiteframe>
+<body  ng-cloak>
+<div id="gradient"/>
+  <div id="viewContainer" layout="row" layout-align="center center" >
+    <md-whiteframe id="loginFrame" ng-class="md-whiteframe-z2 " layout="column" layout-align="start center">
+    <div id="fw-login-bannerArea" layout="row" layout-align="center center">
+      <img ng-src="styles/css/images/initiallog.png" width="400" height="190">
     </div>
+    <md-content class="fullWidth">
+    <form name="loginForm" style="padding:16px;">
+      <md-input-container>
+          <label><span class="ion-person"></span>&nbsp;User Name</label>
+      <input required id="userName" name="userName" ng-model="txtUname">
+      <!-- <div ng-messages="loginForm.userName.$error">
+        <div ng-message="required">This is required.</div>
+      </div> -->
+    </md-input-container>
+    <md-input-container>
+    <label><span class="ion-key"></span>&nbsp;Password</label>
+    <input type="password" required id="password" name="password" ng-model="txtPwd">
+    <!-- <div ng-messages="loginForm.password.$error">
+      <div ng-message="required">This is required.</div>
+    </div> -->
+  </md-input-container>
+  <md-button class="md-raised md-primary" style="width:100%;margin-left: 0px; margin-right: 0px;" type="submit"><span class="loginBtnLabel" ng-click="login()">Login</span></md-button>
+  <br/>
+  New to Duodigin? <a href="http://duoworld.duoweb.info/signup/">Signup</a>
+</form>
+</md-content>
+</md-whiteframe>
+<div id="companyCygilScroll" class=""></div>
 </div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular-route.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-messages.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.15.0/TweenMax.min.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>  
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-aria/angular-aria.js"></script>
+<script src="bower_components/hammerjs/hammer.js"></script>
+<script src="scripts/vendor/uimicrokernel.js"></script>
+<script type="text/javascript" src="scripts/controllers/login.js"></script> 
+<script type="text/javascript" src="scripts/loginBackground.js"></script> 
 </body>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
-    <script src="bower_components/angular-material/angular-material.js"></script>  
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-aria/angular-aria.js"></script>
-    <script type="text/javascript" src="scripts/controllers/login.js"></script>
 </html>
+
+
+

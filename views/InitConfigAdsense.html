@@ -1,0 +1,46 @@
+<md-dialog plumb-item style="width:400px;">
+   <!-- <div id="actIndicator" layout="row" layout-sm="column" layout-align="center center" style="z-index:10;position:absolute;height:100%;width:100%;">
+      <md-progress-circular md-mode="indeterminate" style"z-index:11"></md-progress-circular>
+      <span>Please wait...</span>
+    </div> -->
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <div flex="10">
+                <md-icon class="ion-wrench"></md-icon>
+            </div>
+            <div flex="80">
+             <h3>Configuration</h3>
+            </div>
+            <div flex="10">
+            <span> 
+                  <md-button  ng-click="cancel()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                  </md-button> 
+            </span>
+            </div>
+          </div>
+    </md-toolbar>
+    <md-dialog-content>
+  
+    <div layout="row" layout-align='center start' layout-margin>
+       <md-select placeholder="Account Owner" ng-model="userAccountName" flex>
+          <md-optgroup label="Account Owner">
+          <md-option ng-repeat="acc in accounts">{{acc}}</md-option>
+       </md-select>
+       <md-input-container flex>
+          <md-button class="md-raised" aria-label="Add Account" ng-click="addAccount()">Add Account</md-button>
+       </md-input-container>
+    </div>
+
+    </md-dialog-content>
+        <div class="md-actions" layout="row">
+        <span flex></span>
+        <md-button ng-click="cancel()">
+         Cancel
+        </md-button>
+        <md-button ng-click="finish()">
+         Finish
+        </md-button>
+        </div>
+ 
+</md-dialog>

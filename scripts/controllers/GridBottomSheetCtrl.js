@@ -10,7 +10,7 @@ routerApp.controller('GridBottomSheetCtrl', function($scope, $mdBottomSheet,$mdD
   ];
   $scope.listItemClick = function($index) {
     var clickedItem = $scope.items[$index];
-    console.log(clickedItem);
+    
     if(clickedItem.name=="Share")
     {
             $mdDialog.show({
@@ -69,10 +69,7 @@ routerApp.controller('GridBottomSheetCtrl', function($scope, $mdBottomSheet,$mdD
 
 routerApp.controller('HelpCtrl', function($scope, $mdBottomSheet,$mdDialog,cssInjector) {
   
- 
- $scope.closeDialog = function() {
-      // Easily hides most recent dialog shown...
-      // no specific instance reference is needed.
+    $scope.closeDialog = function() {
       $mdDialog.hide();
     };
     

@@ -1,0 +1,36 @@
+<md-dialog style="min-width:400px;">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <div flex="10">
+                    <md-icon class="md-avatar" md-svg-src="bower_components/material-design-icons/hardware/svg/production/ic_keyboard_24px.svg" style="color:#fff !important;float:left;border-radius:100%;"></md-icon>
+                </div>
+                <div flex="80">
+                    <h3>Configuration</h3>
+                </div>
+                <div flex="10">
+                    <span> 
+                                <md-button>
+                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg" style="color:#fff !important;" ng-click="cancel()"></md-icon>
+                                   </md-button>
+                              </span>
+                </div>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-content>
+            
+            </md-content>
+            
+        </md-dialog-content>
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button ng-click="cancel()">
+                Cancel
+            </md-button>
+            <md-button ng-click="finish()">
+                Finish
+            </md-button>
+        </div>
+    </form>
+</md-dialog>

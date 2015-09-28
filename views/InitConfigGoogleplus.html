@@ -1,0 +1,49 @@
+<md-dialog plumb-item style="min-width:400px;">
+        <md-toolbar>
+                <div class="md-toolbar-tools"  flex  layout="row">
+                      <div flex="10">
+                        <md-icon class="ion-wrench"></md-icon>
+                      </div>   
+                      <div flex="80">
+                              <h3>
+                                 <span> Configuration </span>
+                              </h3>
+                      </div>                           
+                      <div flex="10">
+                             <md-button ng-click="cancel()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                            </md-button>
+                      </div>
+            </div>
+        </md-toolbar>
+        <md-content>
+             <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
+            <div>
+                <div id="gConnect">
+                <!-- <div id="signin-button"></div> -->
+                 <div layout="row" layout-align='center start' layout-margin>
+                <md-select placeholder="Account Owner" ng-model="userAccountName" flex>
+                    <md-optgroup label="Account Owner">
+                        <md-option ng-repeat="acc in accounts">{{acc}}</md-option>
+                </md-select>
+                <md-input-container flex>
+                    <div id="signin-button"></div>
+                </md-input-container>
+                </div>
+                    
+                </div>
+            </div>
+        
+            <div class="md-actions" layout="row">
+                <span flex></span>
+                <md-button ng-click="cancel()">
+                    Cancel
+                </md-button>
+                <div id="authOps">
+                    <md-button id="disconnect" ng-click="finish()">
+                        Finish
+                    </md-button>
+                </div>
+            </div>
+        </md-content>
+</md-dialog>

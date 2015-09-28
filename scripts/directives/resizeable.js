@@ -1,40 +1,23 @@
-routerApp.directive('resizeable', function() {
+routerApp.directive('resizable', function () {
+
     return {
         restrict: 'A',
-
-        link: function(scope, element, attrs) {
-              var dataJ = JSON.parse(attrs.identifier);
-           var widgetPlugin = dataJ.uniqueType;
-   var widgetId = dataJ.id;
-            $(element).resizable({
-                resize: function(event, ui) {
-
-                  
-                    if (widgetPlugin == "ElasticSearch") {    
-                        
-                     
-                   
-                        var index = $('#' + widgetId).data('highchartsChart');
-                        var chart = Highcharts.charts[index];
-                        height = ui.size.height - 100;
-                        width = ui.size.width - 40;
-                        chart.setSize(width, height, doAnimation = true);
-                        jsPlumb.repaint(ui.helper);
-                    }
-
-
-                       if (widgetPlugin != "ElasticSearch") {    
-                       
-                        height = ui.size.height - 80;
-                        width = ui.size.width - 20;
-                         angular.element("#mdView").css("height", height);
-                         angular.element("#mdView").css("width",  width);
-                     
-                    }
-                },
-                handles: "all"
-
+        scope: {
+            callback: '&onResize',
+            widget:'='
+        },
+        link: function postLink(scope, elem, attrs) {
+            elem.resizable({
+                minHeight: 300,
+                minWidth: 320
+            });
+            elem.on('resize', function (evt, ui) {
+              scope.$apply(function() {
+                if (scope.callback) { 
+                  scope.callback({$evt: evt, $ui: ui }); 
+                }                
+              })
             });
         }
     };
-});
+  });

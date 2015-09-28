@@ -1,0 +1,100 @@
+md-content.md-default-theme {
+  background-color: #eee;
+}
+
+md-card {
+  background-color: #fff;
+}
+md-card h2:first-of-type {
+  margin-top: 0;
+}
+
+md-toolbar .md-button.md-default-theme {
+  border-radius: 99%;
+}
+
+h3 {
+  font-weight: 400;
+  margin : 0px;
+}
+
+.md-toolbar-tools-bottom {
+  font-size: small;
+}
+.md-toolbar-tools-bottom :last-child {
+  opacity: 0.8;
+}
+
+md-toolbar:not(.md-hue-1),
+.md-fab {
+  fill: #fff;
+}
+
+md-sidenav {
+  fill: #737373;
+}
+md-sidenav ng-md-icon {
+  position: relative;
+  top: 5px;
+}
+
+.user-avatar {
+  border-radius: 99%;
+}
+
+md-tabs {
+  height : 0px;
+}
+
+md-input-container {
+  width : 80%;
+}
+
+input {
+  width : 100%;
+}
+
+.md-toolbar-tools {
+  height : 200px;
+  min-width: 300px;
+}
+
+#searchArea {
+  margin-right : 0px;
+}
+
+p {
+  display : inline;
+}
+
+md-card md-card-content {
+  min-width: 300px;
+}
+
+md-card {
+  display: block;
+}
+
+/*div [class="md-toolbar-tools"] {
+
+    margin : 10px;
+}*/
+
+md-toolbar.md-default-theme {
+  background-color: rgb(255,255,255);
+  color: rgb(0,0,0);
+}
+
+label {
+  display : inline;
+}
+
+md-list {
+  width : inherit;
+}
+
+md-toolbar {
+  padding : 0px;
+  min-height: 200px;
+}
+

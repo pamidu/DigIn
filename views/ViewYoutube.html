@@ -1,18 +1,22 @@
-<md-content style="max-height:360px;">
-  <div layout="column" ng-repeat="post in widget.widData.posts track by $index">
-    <div layout="column">
-      <md-toolbar>
-        <h4 style="text-align:center;">{{post.authorName}}</h4>
-      </md-toolbar>
-      <md-list-item class="md-3-line">
-        <img class="md-avatar" src="{{post.picURL}}"/>
+<md-content layout-margin flex>
+    <div ng-repeat="video in widget.widData.items" id="results" flex layout-margin>  
+    <md-card layout-margin flex layout="column" style="border: 1px solid #D8D8D8;box-shadow: 2px 2px 2px rgba(188, 188, 188);background-color: rgb(238, 238, 238);
+    border-radius: 5px;">
+        <div class="video" layout-margin>
+        <h4 layout-margin>{{ video.snippet.title }}</h4>
+        <md-list-item class="md-3-line" layout-margin flex layout="column">
+        <img ng-src="{{ video.snippet.thumbnails.default.url }}" style="width:100px" layout-margin>
         <div class="md-list-item-text">
-          <h3>{{post.title}}</h3>
-          <h4>comments : {{post.comments}}</h4>
-          <p>likes : {{post.likes}}</p>
+        <h3 style="line-height: 1.0em;">Author: {{ video.snippet.channelTitle }}</h3>
+        <!-- <h3 style="line-height: 1.0em;">Description: {{ video.snippet.description }}</h3> -->
+        <h3 style="line-height: 1.0em;">Uploaded Date and Time: {{ video.snippet.publishedAt }}</h3>
+        <h3 style="line-height: 1.0em;">Broadcast Content: {{ video.snippet.liveBroadcastContent }}</h3>
+        <h3 style="line-height: 1.0em;">Channel ID: {{ video.snippet.channelId }}</h3>
+        <h3 style="line-height: 1.0em;">Kind: {{ video.id.kind }}</h3>
+        <h3 style="line-height: 1.0em;">Video ID: {{ video.id.videoId }}</h3>
         </div>
-      </md-list-item>
-       <md-divider ></md-divider>
+        </md-list-item> 
+        </div>
+    </md-card>
     </div>
-  </div>
 </md-content>

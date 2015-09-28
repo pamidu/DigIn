@@ -1,0 +1,22 @@
+<md-content>
+<link rel="stylesheet" type="text/css" href="../duodigin/styles/css/csvchart.css">
+     <md-tabs md-border-bottom>
+        <md-tab label="Uploaded CSV data">
+            <md-content class="md-padding">
+                <div layout="column">
+                    <h6>CSV Data</h6>
+                    <span>{{widget.widCsv}}</span>
+                </div>
+            </md-content>
+        </md-tab>
+        <md-tab label="Generated Chart">
+            <md-content class="md-padding">
+                <div layout="column">
+                    <h6>CSV Chart:</h6>
+                    <bars-chart chart-data="widget.widCsc"></bars-chart>
+                </div>
+            </md-content>
+        </md-tab>
+        </md-tabs>
+</md-content>
+

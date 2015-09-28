@@ -34,23 +34,23 @@
                <form name="userForm">
                   <md-input-container flex>
                      <label>Title</label>
-                     <input name="sizeX" ng-model="widget.chartConfig.title.text">
+                     <input name="sizeX" ng-model="widget.highchartsNG.title.text">
                   </md-input-container>
                   <div layout layout-sm="column">
                      <md-input-container flex>
                         <label>Width</label>
-                        <input   ng-model="widget.chartConfig.size.width" name="sizeX" >
+                        <input   ng-model="widget.highchartsNG.size.width" name="sizeX" >
                      </md-input-container>
                      <md-input-container flex>
                         <label>Height</label>
-                        <input  ng-model="widget.chartConfig.size.height" name="sizeY">
+                        <input  ng-model="widget.highchartsNG.size.height" name="sizeY">
                      </md-input-container>
                   </div>
                  <div  layout="row" layout-align='center start'>
                      <md-input-container flex>
                      <md-button class="md-raised"  ng-click="addSeries()">Add Series</md-button>
                      </md-input-container>
-                     <md-select style="text-transform:capitalize"  md-theme="teal" placeholder="Chart type" ng-model="widget.chartConfig.options.chart.type"  flex >
+                     <md-select style="text-transform:capitalize"  md-theme="teal" placeholder="Chart type" ng-model="widget.highchartsNG.options.chart.type"  flex >
                         <md-option  ng-value="t.id" flex="49" ng-repeat="t in widget.chartTypes">{{ t.id }}</md-option>
                      </md-select>
                   </div>
@@ -88,7 +88,7 @@
                   <!--  <div  layout="row" layout-align='center start'>
                      <md-input-container flex>
                         <label>Take</label>
-                        <input   ng-model="widget.chartConfig.size.width" name="sizeX" >
+                        <input   ng-model="widget.highchartsNG.size.width" name="sizeX" >
                      </md-input-container>  
                      
                      

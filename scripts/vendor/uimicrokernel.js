@@ -1798,7 +1798,7 @@ microKernelModule.factory('$v6urls', function() {
    
 	var urls={
 		auth:"http://192.168.1.201:3048",
-		objectStore:"http://104.236.68.121:3000",
+		objectStore:"http://45.55.83.253:3000",
 		fws:"http://192.168.1.201:4000",
 		processDispatcher: "http://192.168.1.201:5000"
 	};

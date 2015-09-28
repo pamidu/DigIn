@@ -1,0 +1,49 @@
+<md-dialog plumb-item style="width:400px;">   
+   <md-toolbar>
+    <div class="md-toolbar-tools" flex layout="row">
+        <div flex="10">
+            <md-icon class="ion-wrench"></md-icon>
+        </div>
+        <div flex="80">
+            <h3>
+                                 <span> Configuration </span>
+                              </h3>
+        </div>
+        <div flex="10">
+            <md-button ng-click="cancel()" aria-label="Close" layout-wrap>
+                <md-icon class="ion-close"></md-icon>
+            </md-button>
+        </div>
+    </div>
+</md-toolbar>
+
+    <md-content layout-margin>
+            <!-- <div layout="row" layout-margin>
+
+                <md-input-container flex>
+                    <label id="postdomain">Lattitude : </label>
+                    <input type="text" ng-model="lattitude">
+                    
+                </md-input-container>
+                <md-input-container flex>
+                    <label id="postdomain">Longitude : </label>
+                    <input type="text" ng-model="longitude">
+                    
+                </md-input-container>
+
+            </div> -->
+            <div layout-margin>
+                <excel-loader/>
+            </div>
+            <!-- <label id="dislab">Please enter lattitude and longitude, e.g. Colombo Lattitude: 6.9344 Longitude: 79.8428 </label> -->
+            <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button ng-click="finish()">
+                Finish
+            </md-button>
+            <md-button ng-click="cancel()">
+                Cancel
+            </md-button>
+            </div>
+    </md-content>
+</md-dialog>

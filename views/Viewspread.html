@@ -1,0 +1,37 @@
+<!-- <link rel="stylesheet" href="../duodigin/styles/css/spread.css"> -->
+<md-content layout-margin flex>
+    <div layout="column">
+            <md-card layout-margin flex layout="column" style="border: 1px solid #D8D8D8;box-shadow: 2px 2px 2px rgba(188, 188, 188);background-color: rgb(238, 238, 238);
+    border-radius: 5px;"> 
+                <h4 layout-margin></h4>
+            <md-list-item class="md-3-line" layout-margin flex>
+                <div class="md-list-item-text">
+                       <div layout="column">
+        <md-list-item class="md-3-line" layout-margin flex>
+            <div class="row dashed-border" ng-switch="widget.widData.length > 0">
+                <div class="text-center" ng-switch-when="false">
+                    <div class="none">No files selected yet</div>
+                </div>
+                <div ng-switch-when="true">
+                    <div class="col-sm-4 item item-test" ng-repeat="file in widget.widData">
+                        <a href="{{ file.url }}" target="_blank">
+                            <div class="icon">
+                                <div class="document">
+                                    <span class="ng-binding">
+                        {{ file.name | getExtension }}
+                      </span>
+                                </div>
+                            </div>
+                            <span>{{ file.name | limitTo:20 }}</span><span ng-if="file.name.length >= 20">...</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </md-list-item>
+        <md-divider></md-divider>
+    </div>
+                </div>
+            </md-list-item>
+            </md-card>  
+    </div>
+</md-content>

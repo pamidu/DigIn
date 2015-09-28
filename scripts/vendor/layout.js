@@ -42,7 +42,7 @@ var Layout = {
 			scaleX: 0,
 			scaleY: 0,
 			translateZ: 0,
-		}, 50).velocity({
+		}, 10).velocity({
 			height: diameterValue+'px',
 			width: diameterValue+'px',
 			top: -(diameterValue/2)+'px',
@@ -68,8 +68,13 @@ var Layout = {
 	},
 
 	listenForMenuLayer: function () {
+
+
+
 		$('.nav-menu').on('click', function() {
 
+			$(".search-layer").removeClass("activating active");
+			$(".nav-search").removeClass("activating active");
 			// Define neccessary elements
 			var $this = $(this),
 					$startingPoint = $('.starting-point'),
@@ -86,6 +91,13 @@ var Layout = {
 			// If Menu Layer is not active
 			if( !$this.hasClass('active') ) {
 
+				// start pulathisi 7/23/2015
+            
+                    $(".sidebaricons").removeClass("sidebaricons").addClass("sidebaricons-active");
+                
+               
+            	// end pulathisi 7/23/2015
+
 				if( !Pleasure.checkTouchScreen() && !Layout.settings.improvePerformance ) // If screen is desktop, add scaled effect
 					$content.addClass('scaled');
 
@@ -96,7 +108,7 @@ var Layout = {
 					$body.addClass('disable-scroll');
 					$overlay.addClass('overlay-nav active');
 					$this.addClass('active');
-					$menu.addClass('active');
+					//$menu.addClass('active');
 					$overlaySecondary.addClass('fade-in');
 
 					$menu.find('[data-open-after="true"]').parents('li').addClass('open animate');
@@ -116,6 +128,13 @@ var Layout = {
 
 			} else {
 			// If Menu Layer is active
+
+			// start pulathisi 7/23/2015
+            
+                    $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
+               
+            // end pulathisi 7/23/2015
+
 				$this.addClass('rotating');
 
 				$overlaySecondary.removeClass('fade-in');
@@ -145,14 +164,17 @@ var Layout = {
 		});
 
 		// Close menu by clicking overlay
-		$('.overlay-secondary').on('click', function () {
+		$('.overlay').on('click', function () {
 			$('.nav-menu').trigger('click');
 		});
 	},
 
 	listenForSearchLayer: function () {
 		$('.nav-search').on('click', function(){
-
+			// start pulathisi 7/23/2015
+			// when nav search is clicked change sidebar icon class, this changes icon colors
+			$(".sidebaricons").removeClass("sidebaricons").addClass( "sidebaricons-active" );
+			// end pulathisi 7/23/2015
 			// Define neccessary elements
 			var $this = $(this),
 					$startingPoint = $('.starting-point'),
@@ -174,6 +196,7 @@ var Layout = {
 				setTimeout(function () {
 					$body.addClass('disable-scroll');
 					$overlay.addClass('overlay-search active');
+					$overlay.removeClass('overlay-nav');
 					$this.addClass('active');
 					$searchLayer.addClass('active');
 					$.Velocity.animate($startingPoint.children('span'), {
@@ -192,6 +215,11 @@ var Layout = {
 
 			} else {
 			// If Search Layer is active
+				// start pulathisi 7/23/2015
+				// when active nav search is clicked change sidebar icon class, this changes icon colors back to previous
+				$(".sidebaricons-active").removeClass("sidebaricons-active").addClass( "sidebaricons" );
+				// end pulathisi 7/23/2015
+
 				$searchLayer.find('input').blur();
 				$searchLayer.removeClass('active');
 				$this.addClass('rotating');

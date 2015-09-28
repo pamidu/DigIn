@@ -7,7 +7,7 @@
     returns {JSON data as a single object}*/
  function getJSONData(http,file,callback){
     http.get('jsons/'+file+'.json').success(function(data) {
-      console.log('reading json file:'+file+'.json');
+      // console.log('reading json file:'+file+'.json');
      // alert(JSON.stringify(data.d));
       callback(data.d);
     });
@@ -21,7 +21,7 @@
     returns {JSON data as a single object}*/
  function getJSONDataByIndex(http,file,index,callback){
     http.get('jsons/'+file+'.json').success(function(data) {
-      console.log('reading json file:'+file+'.json @ index'+ index);
+      // console.log('reading json file:'+file+'.json @ index'+ index);
       callback(data.d[index]);
     });
  };
@@ -97,4 +97,41 @@ function containsObject(obj, list) {
     }
 
     return false;
+}
+
+/*Summary
+    Returns the next character (basically do a character increment)
+
+    @c      string     previous letter  
+    returns string     next letter
+*/
+function nextChar(c) {
+    return String.fromCharCode(c.charCodeAt(0) + 1);
+}
+
+/*Summary
+    Returns only the unique values of the passed array
+
+    @data      array     array with duplicate values in it
+    returns array     array with unique values
+*/
+function uniqueArray(data){
+    var uniqueNames = [];
+    for(i = 0; i< data.length; i++){    
+        if(uniqueNames.indexOf(data[i]) === -1){
+            uniqueNames.push(data[i]);        
+        }        
+    }
+    return uniqueNames;
+}
+
+
+function validate(msg, mdToast, scope){
+
+    mdToast.show(
+      mdToast.simple()
+        .content(msg)
+        .position('top right')
+        .hideDelay(3000)
+    );
 }

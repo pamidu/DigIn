@@ -1,78 +1,76 @@
-
-<md-dialog   plumb-item>
-
-   <md-toolbar md-theme="teal" scroll-shrink layout="row">
-                      <div class="md-toolbar-tools">
-                          <div flex="90">
+<md-dialog style="min-width:50vw; max-width:70vw;">
+    <!--
+  <md-toolbar>                 
+              <div class="md-toolbar-tools"  flex  layout="row">
+                      <div flex="5" flex-sm="10">
+                        <md-icon class="ion-share"></md-icon>
+                      </div>   
+                      <div flex="90" flex-sm="80">
                               <h3>
                                  <span> Share </span>
                               </h3>
-                         </div>                           
-                           <div  flex="10">
-                             <span>
-                                 <md-button  class="md-primary md-raised" ng-click="closeDialog()"  aria-label="Close">
-                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
-                                 </md-button>
-                             </span>
-                          </div>
-                        </div>
-   </md-toolbar>      
- 
-         <md-content>
-        
-              <md-button class="btnshare"> 
-                     <md-icon class="iconshare"  href="#"
-                  socialshare
-                  socialshare-provider="facebook"
-                  socialshare-text="Share this dashboard"
-                  socialshare-url="#" class="iconshare" md-svg-src="styles/css/images/facebook56.svg">
-                     
-                 </md-icon>                    
-               </md-button>
-             
-               <md-button class="btnshare"> 
-                     <md-icon class="iconshare" href="#" socialshare socialshare-provider="google+" 
-                     socialshare-text="Share this dashboard" socialshare-url="#" 
-                     md-svg-src="styles/css/images/google120.svg">
-                     </md-icon>                    
-               </md-button>
-        
-               <md-button class="btnshare"> 
-                      <md-icon class="iconshare"  href="#" socialshare socialshare-provider="twitter"
-                      socialshare-text="Share this dashboard" socialshare-url="#" 
-                      md-svg-src="styles/css/images/twitter47.svg">
-                      </md-icon>                     
-               </md-button>
-            
-               <md-button class="btnshare"> 
-                     <md-icon class="iconshare" md-svg-src="styles/css/images/linkedin24.svg">
-                     </md-icon>                    
-               </md-button>
+                      </div>                           
+                      <div flex="5" flex-sm="10">
+                             <md-button ng-click="closeDialog()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                            </md-button>
+                      </div>
+              </div>
+  </md-toolbar>
+-->
+    <md-content layout="column" layout-align="center center" layout-wrap flex style="display:flex">
+        <div class="md-toolbar-tools" flex layout="row" layout-align="end center">
+            <p style="color:lightgrey;">SHARE</p>
+        </div>
+        <div layout="row" layout-sm="column" layout-align="center center" layout-wrap flex>
+            <div ng-repeat="item in shareOptions" flex="20" flex-sm="100" layout="row" layout-padding layout-margin style="background-color:{{item.color}};border-radius:10px;">
+                <md-button>
+                    <md-icon class="iconshare" href="#" socialshare socialshare-provider="{{item.provider}}" socialshare-text="Share this dashboard" socialshare-url="#" md-svg-src="styles/css/images/{{item.icon}}.svg">
 
-               <md-button class="btnshare"> 
-                     <md-icon class="iconshare" md-svg-src="styles/css/images/pinterest33.svg">
-                     </md-icon>                     
-               </md-button>
+                    </md-icon>
+                </md-button>
+                <p style="color: whitesmoke;
+    font-size: large;
+    margin: 20px 0px;">{{item.provider}}</p>
+            </div>
 
-               <md-button class="btnshare"> 
-                     <md-icon class="iconshare" md-svg-src="styles/css/images/tumblr22.svg">
-                     </md-icon>     
-               </md-button>
+            <!--
+<md-button class="btnshare">
+    <md-icon class="iconshare" href="#" socialshare socialshare-provider="google+" socialshare-text="Share this dashboard" socialshare-url="#" md-svg-src="styles/css/images/google120.svg">
+    </md-icon>
+</md-button>
 
-               <md-button class="btnshare" ng-click="openEmail()"> 
-                     <md-icon style="padding-top:5px;padding-left:5px" class="iconshare"  md-svg-src="styles/css/images/email.svg">
-                     </md-icon>                    
-               </md-button>
-               <div id="test"></div>
+<md-button class="btnshare">
+    <md-icon class="iconshare" href="#" socialshare socialshare-provider="twitter" socialshare-text="Share this dashboard" socialshare-url="#" md-svg-src="styles/css/images/twitter47.svg">
+    </md-icon>
+</md-button>
 
+<md-button class="btnshare">
+    <md-icon class="iconshare" href="#" socialshare socialshare-provider="linkedin" socialshare-text="Share this dashboard" socialshare-url="#" md-svg-src="styles/css/images/linkedin24.svg">
+    </md-icon>
+</md-button>
 
-         </md-content>
-  </md-dialog> 
+<md-button class="btnshare">
+    <md-icon class="iconshare" href="#" socialshare socialshare-provider="pinterest" socialshare-text="Share this dashboard" socialshare-url="#" md-svg-src="styles/css/images/pinterest33.svg">
+    </md-icon>
+</md-button>
 
-  <!-- ;window.open('views/loginEmail.html', '_blank', 'location=yes,height=600,width=800,scrollbars=yes,status=yes'); 
+<md-button class="btnshare">
+    <md-icon class="iconshare" href="#" socialshare socialshare-provider="tumblr" socialshare-text="Share this dashboard" socialshare-url="#" md-svg-src="styles/css/images/tumblr22.svg">
+    </md-icon>
+</md-button>
+-->
+            <div flex="20" flex-sm="100" layout="row" layout-padding layout-margin style="background-color:limegreen;border-radius:10px;">
+                <md-button ng-click="openEmail()">
+                    <!--                    <md-icon class="iconshare" md-svg-src="styles/css/images/email.svg">-->
+                    <img src="styles/css/images/email.png" class="iconshare">
+                    </md-icon>
+                </md-button>
+                <p style="color: whitesmoke;
+    font-size: large;
+    margin: 20px 0px;">e-mail</p>
+            </div>
 
-onclick="window.open('views/loginEmail.html', '_blank', 'location=yes,height=600,width=800,scrollbars=yes,status=yes');"
-  -->
-  
- 
- 
+        </div>
+    </md-content>
+</md-dialog>

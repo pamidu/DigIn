@@ -1,0 +1,55 @@
+<md-dialog plumb-item style="width:400px;">
+       <md-toolbar>
+            <div class="md-toolbar-tools" flex layout="row">
+                <div flex="10">
+                        <md-icon class="ion-wrench"></md-icon>
+                </div>   
+                <div flex="80">
+                              <h3>
+                                 <span> Configuration </span>
+                              </h3>
+                </div>                           
+                <div flex="10">
+                        <md-button  ng-click="cancel()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                        </md-button> 
+                </div>
+            </div>                   
+    </md-toolbar>  
+    <md-content layout-margin>
+            <div>
+
+                <md-input-container>
+
+                 <div ng-show="rateLimitError">
+                  You are making too many requests, Twitter server and api stoped working
+                </div>
+
+                <md-button ng-click="refreshTimeline()" id="getTimelineButton" type="button" class="btn btn-info" style="display:none;">Refersh</md-button>
+
+                </md-input-container>
+            </div>
+            <label id="dislab"></label>
+            <div>
+                <md-input-container flex>
+                    <label>Hashtag:</label>
+                    <input name="hashtag" id="hashtag" type="text" ng-model="twitterHashtag">
+                </md-input-container>
+               
+        </div>
+            <div class="md-actions" layout="row">
+                <span flex></span>
+                <md-button ng-click="connectButton()" id="connectButton" type="button" class="btn btn-primary">Sign In</md-button>
+                <md-button ng-click="signOut()" id="signOut" type="button" style="display:none;">Sign Out</md-button>
+                <md-button id="load-more" ng-click="refreshTimeline(tweets[tweets.length-1].id);finish();" ng-show="connectedTwitter">
+                    Finish
+                </md-button>
+                <md-button ng-click="cancel()">
+                    Cancel
+                </md-button>
+                <md-button ng-click="fetch()">
+                    Fetch
+                </md-button>
+            </div>
+    </md-content>
+</md-dialog>

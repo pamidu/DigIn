@@ -1,28 +1,47 @@
-<md-dialog   plumb-item >
-  <md-toolbar class="modal-header" md-theme="teal">  
-       <h1>Charts</h1>
-  </md-toolbar>
-         <md-content ng-controller="ExportCtrl">
-            <md-card class="lookupdashboard"  md-theme="teal" ng-repeat="widget in dashboard.widgets" >
-                   <md-content theme="teal"  layout="row" layout-margin>
-                    <div flex="80">
-                     <md-button class="md-raised" ng-click="export(widget)"> 
+<md-dialog plumb-item style="width:400px">
+    <!--
+  <md-toolbar>
+                      <div class="md-toolbar-tools" flex layout="row">
+                      <div flex="10">
+                        <md-icon class="ion-paper-airplane"></md-icon>
+                      </div>   
+                      <div flex="80">
+                              <h3>
+                                 <span> Export </span>
+                              </h3>
+                      </div>                           
+                      <div  flex="10">
+                             <md-button ng-click="closeDialog()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                            </md-button>
+                      </div>
 
-                      <md-icon class="iconchart"  md-svg-src="bower_components/material-design-icons/editor/svg/production/ic_insert_chart_24px.svg">
-                      </md-icon>
-                            <Label>{{widget.chartConfig.title.text}}</Label>
-                      </md-button>
-                  </div>   
-                 </md-content>
-           </md-card>           
-        </md-content>
-  <div class="md-actions" md-theme="teal"  layout="row">    
-          <md-button style="width:200px"  ng-click="closeDialog()"  class="md-raised">
-           Ok
-         </md-button>
-          <md-button style="width:200px"  class="md-raised"   ng-click="closeDialog()" class=" md-default">
-            Cancel
-          </md-button>
-  </div>
-</md-dialog> 
- 
+                    </div>
+   </md-toolbar>    
+-->
+    <md-content ng-controller="ExportCtrl" layout-padding>
+        <div class="md-toolbar-tools" flex layout="row" layout-align="end center">
+            <p style="color:lightgrey;">EXPORT</p>
+        </div>
+        <div class="lookupdashboard" md-theme="teal" ng-repeat="widget in dashboard.widgets">
+            <md-content theme="teal" layout="row" layout-margin>
+                <div flex="80">
+                    <md-button class="md-raised" ng-click="export(widget)">
+
+                        <md-icon class="iconchart" md-svg-src="bower_components/material-design-icons/editor/svg/production/ic_insert_chart_24px.svg">
+                        </md-icon>
+                        <Label>{{widget.highchartsNG.title.text}}</Label>
+                    </md-button>
+                </div>
+            </md-content>
+        </div>
+        <div class="md-actions" layout="row">
+            <md-button class="md-fab md-mini" styl="background-color: #D33F3F;" ng-click="closeDialog()">
+                <ng-md-icon icon="close" style="fill:whitesmoke"></ng-md-icon>
+            </md-button>
+            <md-button class="md-fab md-mini md-primary" ng-click="closeDialog()">
+                <ng-md-icon icon="done" style="fill:whitesmoke"></ng-md-icon>
+            </md-button>
+        </div>
+    </md-content>
+</md-dialog>

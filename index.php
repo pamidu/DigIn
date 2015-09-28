@@ -73,60 +73,77 @@ if (isset($_POST['userName']) && isset($_POST['password'])) {
 }
 
 ?>
-<!DOCTYPE html>
-<html ng-app="diginLogin" ng-controller="LoginCtrl">
-<head>
-	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-	<link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
-	<link rel="stylesheet" href="bower_components/ionicons/css/ionicons.css">
-	<link rel="stylesheet" href="styles/css/commonstyle.css">
-</head>
-<body  ng-cloak>
-<div id="gradient"/>
-	<div id="viewContainer" layout="row" layout-align="center center" >
-		<md-whiteframe id="loginFrame" ng-class="md-whiteframe-z2 " layout="column" layout-align="start center">
-		<div id="fw-login-bannerArea" layout="row" layout-align="center center">
-			<img ng-src="styles/css/images/loginLogo.png" width="400" height="122">
-		</div>
-		<md-content class="fullWidth">
-		<form name="loginForm" style="padding:16px;" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
-			<md-input-container>
-			<label>User Name</label>
-			<input required id="userName" name="userName" model="txtUname">
-			<!-- <div ng-messages="loginForm.userName.$error">
+    <!DOCTYPE html>
+    <html ng-app="diginLogin" ng-controller="LoginCtrl">
+
+    <head>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+        <link rel="stylesheet" href="bower_components/ionicons/css/ionicons.css">
+        <link rel="stylesheet" href="styles/css/commonstyle.css">
+    </head>
+
+    <body ng-cloak style="background-color:white;">
+        <div id="gradient" style="height:50vh;" />
+        <div layout="row" layout-align="center center" style="padding:100px;">
+            <img ng-src="styles/css/images/initiallog.png" style="width:100px;" height="60px">
+        </div>
+        <div id="viewContainer" layout="column" layout-align="center center">
+            <md-card id="loginFrame" class="md-whiteframe-z4" layout="column" layout-align="start center" style="min-width:525px;background-color:#fafafa;">
+
+                <form name="loginForm" style="padding:10px 36px;width:100%;" action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]);?>" method="POST" flex>
+                    <div layout="row">
+                        <ng-md-icon icon="account_circle" style="fill: darkgrey;
+    padding: 25px 10px;"></ng-md-icon>
+                        <md-input-container flex>
+                            <label>User Name</label>
+                            <input required id="userName" name="userName" model="txtUname">
+                            <!-- <div ng-messages="loginForm.userName.$error">
 				<div ng-message="required">This is required.</div>
 			</div> -->
-		</md-input-container>
-		<md-input-container>
-		<label>Password</label>
-		<input type="password" required id="password" name="password" model="txtPwd">
-		<!-- <div ng-messages="loginForm.password.$error">
+                        </md-input-container flex>
+                    </div>
+                    <div layout="row">
+                        <ng-md-icon icon="vpn_key" style="fill: darkgrey;
+    padding: 25px 10px;"></ng-md-icon>
+                        <md-input-container flex>
+                            <label>Password</label>
+                            <input type="password" required id="password" name="password" model="txtPwd">
+                            <!-- <div ng-messages="loginForm.password.$error">
 			<div ng-message="required">This is required.</div>
 		</div> -->
-	</md-input-container>
-	<md-button class="md-raised md-primary" style="width:100%;margin-left: 0px; margin-right: 0px;" type="submit"><span class="loginBtnLabel">Login</span></md-button>
-	<br/>
-	 <md-divider md-inset></md-divider>
-	New to Duodigin? <a href="http://duoworld.sossgrid.com/signup/">Signup</a>
-</form>
-</md-content>
-</md-whiteframe>
-<div id="companyCygilScroll" class=""></div>
-</div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular-route.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-messages.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.15.0/TweenMax.min.js"></script>
-<script src="bower_components/angular-material/angular-material.js"></script>  
-<script src="bower_components/angular-animate/angular-animate.js"></script>
-<script src="bower_components/angular-aria/angular-aria.js"></script>
-<script src="bower_components/hammerjs/hammer.js"></script>
-<script src="bower_components/ngStorage/ngStorage.js"></script>
-<script src="scripts/vendor/uimicrokernel.js"></script>
-<script type="text/javascript" src="scripts/controllers/login.js"></script>	
-<script type="text/javascript" src="scripts/loginBackground.js"></script>	
-</body>
-</html>
+                        </md-input-container>
+                    </div>
+                    <p style="font-size:small;color:darkgrey;">New to Duodigin? <a href="http://duoworld.sossgrid.com/signup/">Signup</a></p>
+                </form>
+                <md-button class="md-fab  md-primary" type="submit" ng-click="login()" style="top: 50%;
+    margin-top: -25px;
+    position: absolute;
+    margin-left: 500px;">
+                    <ng-md-icon icon="arrow_forward" style="fill: darkgrey;
+    line-height: 70px;"></ng-md-icon>
+                </md-button>
+            </md-card>
 
+            <div id="companyCygilScroll" class=""></div>
+        </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular-route.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-messages.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.15.0/TweenMax.min.js"></script>
+        <script src="bower_components/angular-material/angular-material.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.js"></script>
+        <script src="bower_components/angular-aria/angular-aria.js"></script>
+        <script src="bower_components/hammerjs/hammer.js"></script>
+        <script src="bower_components/ngStorage/ngStorage.js"></script>
+        <script src="scripts/vendor/uimicrokernel.js"></script>
+        <!--ng-md-icon script-->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/SVG-Morpheus/0.1.8/svg-morpheus.js"></script>
 
+        <script type="text/javascript" src="scripts/controllers/login.js"></script>
+        <script type="text/javascript" src="scripts/loginBackground.js"></script>
+    </body>
+
+    </html>

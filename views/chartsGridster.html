@@ -1,0 +1,44 @@
+<div plumb-item gridster="gridsterOpts" style="width:100%;height:300px;">
+<div gridster-item="widget" ng-repeat="widget in dashboard.widgets"  data-identifier="{{widget}}" layout-margin>
+    <p ng-if="widget.divider">{{widget.highchartsNG.title.text}}</p>
+    <md-toolbar  style="border-top: 1px solid;border-right: 1px solid;border-left: 1px solid;border-color:rgb(188, 188, 188);margin:0px" ng-dblclick="widget.expanded = !widget.expanded" ng-mouseover="hover = true" ng-mouseout="hover = false" flex="10">
+                <div layout-wrap layout="row" layout-align"start center" layout-wrap>
+                    <div flex layout-margin style="margin-top: 12px;">
+                        <h4>
+                          {{widget.highchartsNG.title.text}}
+                        </h4>               
+                    </div>
+                    <div layout="row" layout-align="top end" flex style="max-width:150px">
+                    <div flex>                       
+                            <md-button  ng-click="commentary(widget)"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-volume"></md-icon>
+                            </md-button>
+                            
+                    </div>
+                    <div flex>       
+                            <md-button  ng-click="showAdvanced($event,widget)"  aria-label="Settings" layout-wrap>
+                                   <md-icon class="ion-gear-b"></md-icon>
+                            </md-button>              
+                    </div>
+                    <div flex>  
+                            <md-button  ng-click="showData(widget,$event)"    aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-clipboard"></md-icon>
+                            </md-button>       
+                    </div>
+                    <div flex>     
+                            <md-button  ng-click="remove(widget)"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                            </md-button>         
+                    </div>
+                    <div flex="10">     
+                      <!--just to keep a space between ion icons and border right-->             
+                    </div>
+                    </div>
+                </div>
+            
+    </md-toolbar>
+    <md-content style="border: 1px solid;border-color:rgb(188, 188, 188);height:100%;margin:0px" ng-if="widget.expanded && !widget.divider" ng-dblclick="widget.expanded = !widget.expanded" flex="90">
+        <div style="height:100%" ng-include src="widget.widView"></div>
+    </md-content>
+</div>
+</div>

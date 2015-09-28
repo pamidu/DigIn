@@ -1,41 +1,62 @@
-<md-dialog   plumb-item >
-  <md-toolbar class="modal-header" md-theme="teal">  
-       <h1>Save Dashboard</h1>
-  </md-toolbar>
-         <md-content>
-               <form name="userForm">        
-                 <div class="dashcontent" >
-                     <div md-theme="teal" layout layout-sm="column">
-                            <md-input-container flex>
-                                 <label>Dashboard Name:</label>
-                                 <input   ng-model="dashboardName" name="dashboardName" >
-                           </md-input-container>
-                           <md-input-container flex>
-                                 <label>Dashboard Culture:</label>
-                                 <input  ng-model="dashboardCulture" name="dashboardCulture">
-                            </md-input-container>
-                     </div>
-                        <div  md-theme="teal" layout layout-sm="column">
-                            <md-input-container flex>
-                                 <label>Dashboard Type:</label>
-                                 <input   ng-model="dashboardType" name="dashboardType" >
-                           </md-input-container>
-                           <md-input-container flex>
-                                 <label>Create Date:</label>
-                                 <input  ng-model="dashboardDate" name="dashboardDate">
-                            </md-input-container>
-                     </div>
-                          
-               </form>
-        </md-content>
-          <div class="md-actions" md-theme="indigo"  layout="row">    
-          <md-button style="width:200px"  ng-click="saveDashboardDetails()"  class="md-raised">
-           Ok
-         </md-button>
-          <md-button style="width:200px"  class="md-raised"   ng-click="closeDialog()" class=" md-default">
-            Cancel
-          </md-button>
-  </div>
-</md-dialog> 
- 
- 
+<md-dialog style="min-width:50vw;">
+    <md-content layout-align="center center" layout-padding>
+        <div class="md-toolbar-tools" flex layout="row" layout-align="end center">
+            <p style="color:lightgrey;">SAVE</p>
+
+        </div>
+        <!-- <div class="dashcontent" > -->
+        <div layout="row" layout-wrap>
+            <div layout="row" layout-align="start start" flex="30" style="padding:20px;">
+                <img src="styles/css/images/icons/material alperbert/avatar_tile_d_28.png" style="border-radius:100%;">
+                <p style="margin: 5px 20px; color:darkgrey;">Dashboard</p>
+            </div>
+            <div layout="row" flex layout-wrap>
+                <md-input-container flex="50">
+                    <label>Name</label>
+                    <input ng-model="dashboardName" name="dashboardName">
+                </md-input-container>
+                <md-input-container flex="50">
+                    <!-- <label>Dashboard Culture:</label>
+                                 <input ng-model="dashboardCulture" name="dashboardCulture"> -->
+                    <label>Culture</label>
+                    <md-select ng-model="dashboardCulture" name="dashboardCulture" ng-change="">
+                        <md-option value="ENGLISH">ENGLISH</md-option>
+                        <md-option value="SINHALA">SINHALA</md-option>
+                        <md-option value="TAMIL">TAMIL</md-option>
+                        <md-option value="FRENCH">FRENCH</md-option>
+                        <md-option value="SPANISH">SPANISH</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex="50">
+                    <!-- <label>Dashboard Type:</label>
+                                 <input ng-model="dashboardType" name="dashboardType" > -->
+                    <label>Type</label>
+                    <md-select ng-model="dashboardType" name="dashboardType" ng-change="" style="color:black">
+                        <md-option value="SYSTEM">SYSTEM</md-option>
+                        <md-option value="TYPE1">TYPE1</md-option>
+                        <md-option value="TYPE2">TYPE2</md-option>
+                        <md-option value="TYPE3">TYPE3</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex="50">
+                    <input ng-model="dashboardDate" type="date">
+                    <!--this shows  a huge mess on the ui
+                    <datepicker>
+                        <input ng-model="dashboardDate" type="text" style="padding-top:26px;width:400px;" class="angular-datepicker-input" />
+                    </datepicker>
+-->
+                </md-input-container>
+            </div>
+        </div>
+        <div class="md-actions" layout="row">
+            <md-button class="md-fab md-mini" styl="background-color: #D33F3F;" ng-click="closeDialog()">
+                <ng-md-icon icon="close" style="fill:whitesmoke"></ng-md-icon>
+            </md-button>
+            <md-button class="md-fab md-mini md-primary" ng-click="saveDashboardDetails()">
+                <ng-md-icon icon="arrow_forward" style="fill:whitesmoke"></ng-md-icon>
+            </md-button>
+        </div>
+
+    </md-content>
+
+</md-dialog>

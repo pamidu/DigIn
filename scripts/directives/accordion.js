@@ -19,7 +19,7 @@
                                         this.activePanel.icon='bower_components/material-design-icons/navigation/svg/production/ic_expand_more_18px.svg';
                                         this.activePanel=panel;
                                         this.activePanel.active=true;
-                                        panel.icon='bower_components/material-design-icons/navigation/svg/production/ic_expand_less_18px.svg';	
+                                        panel.icon='bower_components/material-design-icons/navigation/svg/production/ic_expand_less_18px.svg';  
                                     }
                                 }else{
                                     this.activePanel=panel;
@@ -36,21 +36,24 @@
                 }])
             
             routerApp.directive('accordionPanel', [function () {
+                //console.log('acc test:'+closeFunc);
                     return {
                         require: '^accordion',
                         restrict: 'E',
                         transclude:true,
                         replace:true,
                         scope:{
-                            title:'@'
+                            title:'@',
+                            itemind:'@',
+                            someCtrlFn: '&callbackFn'
                         },
                         template:'<section class="accordion-panel">'+
-                                    '<md-button ng-click="toggle();">'+
+                                    '<div layout="row"><md-button flex="80" ng-click="toggle();">'+
                                     '<div flex="" layout="row">'+
                                     '<span class="accordion-panel-title">{{title}}</span>'+
                                     '<span flex=""></span>'+
-                                    '<span ng-if="childNodes > 0"><md-icon md-svg-src="{{icon}}"></md-icon></span></div>'+
-                                    '</md-button>'+
+                                    '<span layout-align="row" ng-if="childNodes > 0"><md-icon md-svg-src="{{icon}}"></md-icon></span></div>'+
+                                    '</md-button><md-button flex="" ng-if="itemind >= 0" ng-click="someCtrlFn(itemind);"><md-icon class="ion-close"></md-icon></md-button></div>'+
                                     '<md-content class="md-padding animate-show" ng-show="active" ng-transclude></md-content>'+
                                 '</section>',
                         link: function (scope, element, attrs, accordionCtrl) {
@@ -62,6 +65,7 @@
                             scope.icon='bower_components/material-design-icons/navigation/svg/production/ic_expand_more_18px.svg';
                             scope.active=false;
                             scope.title=scope.title;
+                            scope.itemind = scope.itemind;
 
                             scope.toggle=function(){
                                 accordionCtrl.openPanel(scope);

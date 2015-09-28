@@ -9,7 +9,8 @@
 |      ExtendedanalyticsCtrl                               | 
 |      ExtendedReportCtrl                                  |
 |      ExtendedDashboardCtrl                               |
-|      summarizeCtrl                                       |
+|      summarizeCtrl                                       | 
+|      settingsCtrl                                        |
 ------------------------------------------------------------
 */
 
@@ -661,6 +662,24 @@ routerApp.controller('settingsCtrl', ['$scope','$rootScope', '$http', '$state','
       $scope.closeDialog = function(){
         $mdDialog.hide();
       };
+
+      $scope.createUser = function(){
+        //alert('test');
+        $http({
+            method: 'PUT',
+            url: 'http://52.0.234.95:8080/pentaho/api/userroledao/createUser',
+            headers:{'Content-Type': 'application/json'},
+            data: {"userName": "jay", "password": "jay"}
+
+        }).
+        success(function(data, status) {
+        }).
+        error(function(data, status) {
+            alert("Request failed");
+
+        });
+      };
+
     }
     ]);
    

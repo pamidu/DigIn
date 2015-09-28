@@ -259,7 +259,7 @@ function elasticDataCtrl($scope,$mdDialog,wid){
     
     //map data to eport to excel
     //start dynamically creating the object array
-    $scope.dataArray = [];
+      $scope.dataArray = [];
     $scope.dataObj = {};
     $scope.dataObj['a'] = "Category";
     var currChar = "a";

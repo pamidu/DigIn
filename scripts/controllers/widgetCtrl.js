@@ -492,7 +492,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     $scope.mappedArray = {};
     $scope.chartTypes = [{name:"Area",type:"area"},{name:"Smooth area",type:"areaspline"},{name:"Line",type:"line"},{name:"Smooth line",type:"spline"},{name:"Column",type:"column"},{name:"Bar",type:"bar"},{name:"Pie",type:"pie"},{name:"Scatter",type:"scatter" }];
     $scope.seriesArray = [{
-        name: 'series1',
+        name: 'DataSeries',
         serName: '',
         type: 'area',
         color: ''
@@ -724,31 +724,33 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
 
     //builds the chart
-    $scope.buildchart = function(widget) {
+   $scope.buildchart = function(widget) {
         widget.chartSeries = [];
+        widget.highchartsNG.xAxis = {};
 
-        if ($scope.chartCategory.groupField != '') {
+        if($scope.chartCategory.groupField!=''){
             $scope.widgetValidity = 'fade-out';
-            if ($scope.seriesArray[0].serName != '') {
-                if ($scope.query.drilled) {
-                    if ($scope.chartCategory.drilledField != '') {
-                        $scope.orderByDrilledCat(widget);
-                        $mdDialog.hide();
-                        $scope.widgetValidity = 'fade-out';
-                    } else {
-                        $scope.validationMessage = "Please select the category to drill-down from";
-                        $scope.widgetValidity = 'fade-in';
-                    }
-                } else {
-                    $scope.orderByCat(widget);
+            if($scope.seriesArray[0].serName != ''){
+               if($scope.query.drilled){
+                  if($scope.chartCategory.drilledField != ''){
+                    $scope.orderByDrilledCat(widget);
                     $mdDialog.hide();
                     $scope.widgetValidity = 'fade-out';
+                  }else{
+                    $scope.validationMessage = "Please select the category to drill-down from";
+                    $scope.widgetValidity = 'fade-in';
+                  }                  
+                }else{
+                  var orderedConfig = $scope.orderByCat(widget);                 
+                  $mdDialog.hide();
+                  $scope.widgetValidity = 'fade-out';
                 }
-            } else {
+            }
+            else{
                 $scope.validationMessage = "Please select a series";
                 $scope.widgetValidity = 'fade-in';
-            }
-        } else {
+            }          
+        }else{
             $scope.validationMessage = "Please select a category";
             $scope.widgetValidity = 'fade-in';
         }
@@ -767,17 +769,16 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             var orderedObj = {};
             var data = [];
             for(k=0;k<cat.length;k++){
-                orderedObj[cat[k]] = {val:0,count:0};
+                orderedObj[cat[k]] = 0;
             }
 
-            $scope.filtering.calculate(orderedObj,catMappedData,serMappedData);
-            // for(j=0;j<serMappedData.length;j++){
-            //     orderedObj[catMappedData[j]] += serMappedData[j];
-            // }
+            for(j=0;j<serMappedData.length;j++){
+                orderedObj[catMappedData[j]] += serMappedData[j];
+            }
 
             for (var key in orderedObj) {
                 if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
-                    data.push({name:key,y:orderedObj[key].val});
+                    data.push(orderedObj[key]);
                 }
             }
 
@@ -815,16 +816,19 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         title:{text:''},
         size: {width:300,height:220}
          };
-        };
+
+        widget.highchartsNG.series =orderedObjArray;
+        widget.highchartsNG.xAxis.categories = cat;
+    }
 
     //order by category (drilled)
-    $scope.orderByDrilledCat = function(widget) {
+    $scope.orderByDrilledCat = function(widget){
         var drilledSeries = [];
         var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
-        var orderedObjArray = [];
+        var orderedObjArray = [];       
         var drilledCat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.drilledField + '.data')).Select().Distinct().ToArray();
-
-        for (i = 0; i < $scope.seriesArray.length; i++) {
+        
+        for(i=0;i<$scope.seriesArray.length;i++){
             var serMappedData = eval('$scope.mappedArray.' + $scope.seriesArray[i].serName + '.data');
             var catMappedData = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data');
             var drillData = eval('$scope.mappedArray.' + $scope.chartCategory.drilledField + '.data');
@@ -832,54 +836,48 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             var orderedArrayObj = {};
             var orderedObj = {};
             var drilledObj = {};
-            var data = [];
+            var data = [];           
 
-            for (k = 0; k < cat.length; k++) {
-
-                orderedObj[cat[k]] = {
-                    val: 0,
-                    arr: []
-                };
+            for(k=0;k<cat.length;k++){
+               
+                orderedObj[cat[k]] = {val:0,arr:[]};
             }
 
-            for (k = 0; k < drilledCat.length; k++) {
-                drilledObj[drilledCat[k]] = {val:0,count:0};
+            for(k=0;k<drilledCat.length;k++){
+                drilledObj[drilledCat[k]] = 0;
             }
 
-            $scope.filtering.calculate(orderedObj,catMappedData,serMappedData,drillData);
+
+            for(j=0;j<serMappedData.length;j++){
+               
+                orderedObj[catMappedData[j]].val += serMappedData[j];
+                orderedObj[catMappedData[j]].arr.push({val: serMappedData[j], drill: drillData[j]});
+            }
 
             for (var key in orderedObj) {
                 if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
+                   
+                    var drilledArray = $scope.groupDrilledItems(drilledObj,orderedObj[key].arr);
 
-                    var drilledArray = $scope.filtering.calculate(orderedObj[key].arr,drilledObj,null,null);
-
+                   
                     var drilledSeriesObj = [];
-                    for (var key1 in drilledArray) {
-                        if (Object.prototype.hasOwnProperty.call(drilledArray, key1)) {
-                            if (drilledArray[key1].val > 0)
-                                drilledSeriesObj.push([key1, drilledArray[key1].val]);
+                    for(var key1 in drilledArray){
+                        if(Object.prototype.hasOwnProperty.call(drilledArray, key1)){
+                            if(drilledArray[key1] > 0)
+                            drilledSeriesObj.push([key1, drilledArray[key1]]);
                         }
                     }
 
-                    var test = {
-                        id: '',
-                        data: []
-                    };
+                    var test = {id:'',data:[]};
                     test.id = key;
                     test.data = drilledSeriesObj;
 
                     drilledSeries.push(test);
-                        
-                    data.push({
-                        name: key,
-                        y: orderedObj[key].val,
-                        //changed by sajee 9/19/2015
-                        drilldown: key
-                    });
+
+                    data.push({name: key, y: orderedObj[key].val, drilldown: key});
                 }
             }
-            console.log("Drilled series is");
-            console.log(drilledSeries);
+
             orderedArrayObj["data"] = data;
             orderedArrayObj["name"] = $scope.seriesArray[i].name;
             orderedArrayObj["color"] = $scope.seriesArray[i].color;
@@ -888,10 +886,14 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         }
 
           widget.highchartsNG = {
-          chart: {
+
+            chart: {
                 type: 'column'
             },
-            
+
+          options: {
+            drilldown: {
+            series: drilledSeries,
             plotOptions: {
             series: {
                 borderWidth: 0,
@@ -900,7 +902,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 }
             }
         },
-       
+        }
+        },
         title: {
                 text: widget.uniqueType
         },
@@ -913,13 +916,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         legend: {
             enabled: false
         },
-        series: orderedObjArray,
-          drilldown: {
-            series: drilledSeries,
-         },
-        title:{text:''},
-        size: {width:300,height:220}
-     }      
+        series: orderedObjArray
+         };
     };
 
 
@@ -946,7 +944,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     //adds new series to the chart
     $scope.addSeries = function() {
         $scope.seriesArray.push({
-            name: 'series1',
+            name: 'DataSeries',
             serName: '',
             type: 'area',
             color: '',

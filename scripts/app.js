@@ -2,7 +2,7 @@ $(window).load(function () {
     $('#pagePreLoader').hide();
     $('.nav-menu').show();
     $('.main-headbar').show();      
-     
+    $('.md-tabs-wrapper').hide(); 
 });
 
 var routerApp = angular.module('DuoDiginRt', ['ngMaterial',

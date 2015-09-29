@@ -492,7 +492,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     $scope.mappedArray = {};
     $scope.chartTypes = [{name:"Area",type:"area"},{name:"Smooth area",type:"areaspline"},{name:"Line",type:"line"},{name:"Smooth line",type:"spline"},{name:"Column",type:"column"},{name:"Bar",type:"bar"},{name:"Pie",type:"pie"},{name:"Scatter",type:"scatter" }];
     $scope.seriesArray = [{
-        name: 'DataSeries',
+        name: 'Selected series',
         serName: '',
         type: 'area',
         color: ''
@@ -727,6 +727,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
    $scope.buildchart = function(widget) {
         widget.chartSeries = [];
         widget.highchartsNG.xAxis = {};
+        widget.highchartsNG.yAxis = {};
 
         if($scope.chartCategory.groupField!=''){
             $scope.widgetValidity = 'fade-out';
@@ -817,7 +818,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         size: {width:300,height:220}
          };
 
-        widget.highchartsNG.series =orderedObjArray;
+        widget.highchartsNG.series = orderedObjArray;
         widget.highchartsNG.xAxis.categories = cat;
     }
 
@@ -874,7 +875,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
                     drilledSeries.push(test);
 
-                    data.push({name: key, y: orderedObj[key].val, drilldown: key});
+                    // data.push({name: key, y: orderedObj[key].val, drilldown: key});
+                    data.push(orderedObj[key].val);
                 }
             }
 
@@ -917,26 +919,65 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             enabled: false
         },
         series: orderedObjArray
+        // title:{text:''},
+        // size: {width:300,height:220}
          };
+
+
+     //          widget.highchartsNG = {
+     //      chart: {
+     //            type: 'column'
+     //        },
+            
+     //        plotOptions: {
+     //        series: {
+     //            borderWidth: 0,
+     //            dataLabels: {
+     //                enabled: true,
+     //            }
+     //        }
+     //    },
+       
+     //    title: {
+     //            text: widget.uniqueType
+     //    },
+     //    xAxis: {
+     //        type: 'category'
+     //    },
+     //    credits: {
+     //      enabled: false        
+     //    },
+     //    legend: {
+     //        enabled: false
+     //    },
+     //    series: orderedObjArray,
+     //      drilldown: {
+     //        series: drilledSeries,
+     //     },
+     //    title:{text:''},
+     //    size: {width:300,height:220}
+     // }   
+
+        widget.highchartsNG.series = orderedObjArray;
+        widget.highchartsNG.xAxis.categories = cat;
+
     };
 
 
-    $scope.groupDrilledItems = function(uniqueArray, objArray) {
-        for (j = 0; j < objArray.length; j++) {
-            uniqueArray[objArray[j].drill] += objArray[j].val;
-        }
+    $scope.groupDrilledItems = function(uniqueArray, objArray){
+        for(j=0;j<objArray.length;j++){
+                uniqueArray[objArray[j].drill] += objArray[j].val;
+            }
         return uniqueArray;
     };
 
-    //$scope.
-
-    $scope.getDrillArray = function() {
-        var uniqueScore = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.unique');
-        console.log('unique score:' + uniqueScore);
+    $scope.getDrillArray = function(){       
+        var uniqueScore = eval('$scope.mappedArray.'+$scope.chartCategory.groupField+'.unique');
+        console.log('unique score:'+uniqueScore);
         for (var key in $scope.mappedArray) {
             if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
-                if ($scope.mappedArray[key].unique > uniqueScore && $scope.mappedArray[key].unique != 0)
-                    $scope.chartCategory.drilledArray.push($scope.mappedArray[key].name);
+               if($scope.mappedArray[key].unique > uniqueScore && $scope.mappedArray[key].unique !=0) 
+                $scope.chartCategory.drilledArray.push($scope.mappedArray[key].name);
             }
         }
     };
@@ -944,7 +985,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     //adds new series to the chart
     $scope.addSeries = function() {
         $scope.seriesArray.push({
-            name: 'DataSeries',
+            name: 'Selected series',
             serName: '',
             type: 'area',
             color: '',

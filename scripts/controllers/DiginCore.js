@@ -244,7 +244,7 @@ function elasticDataCtrl($scope,$mdDialog,wid){
             $mdDialog.hide();
         };
 
-    $scope.series = wid.highchartsNG.series;
+   $scope.series = wid.highchartsNG.series;
     $scope.categories = wid.highchartsNG.xAxis.categories;
     $scope.mappedSeries = [];
     for(i=0;i<$scope.series.length;i++){

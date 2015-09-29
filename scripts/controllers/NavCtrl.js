@@ -60,6 +60,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 widget.width = width + 'px';
                 widget.height = height + 'px';
                 widget.mheight = mHeight + 'px';
+    
             }
         }
 
@@ -970,10 +971,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         ];
 
             $scope.tabs = $rootScope.Dashboards;
+            $rootScope.dashboard = $rootScope.Dashboards[0];
             $scope.selectedIndex = 1;
             $scope.$watch('selectedIndex', function (current, old) {
                 //previous = selected;
-                selected = tabs[current];
+                selected = $rootScope.Dashboards[current];
                 if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
                 if (current + 1) $log.debug('Hello ' + selected.title + '!');
             });

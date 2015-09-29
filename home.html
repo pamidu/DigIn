@@ -105,7 +105,7 @@
         </div>
 
         <md-tabs id="footerBar" md-selected="selectedIndex" md-border-bottom md-autoselect md-align-tabs="bottom" style="min-height:100vh; width:calc(100vw - 48px);float:right;">
-            <md-tab ng-repeat="tab in tabs" label="{{tab.title}}">
+            <md-tab ng-repeat="tab in tabs" label="{{tab.title}}" md-on-select="$root.selectCurrentDashboard(tab);">
                 <div class="demo-tab tab{{$index%4}}">
                     <!--                    <div ng-bind="tab.content"></div>-->
                     <div style="position: fixed;width: 100%;top: 0px;z-index:1;" layout="row" layout-align="end center">

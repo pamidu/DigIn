@@ -1,5 +1,8 @@
 $(window).load(function () {
     $('#pagePreLoader').hide();
+    $('.nav-menu').show();
+    $('.main-headbar').show();
+
 });
 
 var routerApp = angular.module('DuoDiginRt', ['ngMaterial',

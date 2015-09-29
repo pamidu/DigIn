@@ -49,11 +49,16 @@
             </div>
         </div>
         <div class="md-actions" layout="row">
-            <md-button class="md-fab md-mini" styl="background-color: #D33F3F;" ng-click="closeDialog()">
+            <md-button style="background-color: #D33F3F;" ng-click="closeDialog()">
                 <ng-md-icon icon="close" style="fill:whitesmoke"></ng-md-icon>
             </md-button>
-            <md-button class="md-fab md-mini md-primary" ng-click="saveDashboardDetails()">
-                <ng-md-icon icon="arrow_forward" style="fill:whitesmoke"></ng-md-icon>
+            <md-button class=" md-primary" ng-click="saveDashboardDetails()">
+                <!--                <ng-md-icon icon="arrow_forward" style="fill:whitesmoke"></ng-md-icon>-->
+                save only the selected page
+            </md-button>
+            <md-button class=" md-primary" ng-click="saveDashboardDetails()">
+                <!--                <ng-md-icon icon="arrow_forward" style="fill:whitesmoke"></ng-md-icon>-->
+                save the whole storyboard
             </md-button>
         </div>
 

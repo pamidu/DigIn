@@ -101,7 +101,7 @@ if (isset($_POST['userName']) && isset($_POST['password'])) {
                             <!-- <div ng-messages="loginForm.userName.$error">
 				<div ng-message="required">This is required.</div>
 			</div> -->
-                        </md-input-container flex>
+                        </md-input-container>
                     </div>
                     <div layout="row">
                         <ng-md-icon icon="vpn_key" style="fill: darkgrey;

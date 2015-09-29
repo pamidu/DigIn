@@ -15,20 +15,6 @@
             "color": "#2196F3"
         }, {
 
-            "title": "Weather",
-            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
-            "type": "Custom",
-            "Description": "Image",
-            "initTemplate": "InitConfigWeather",
-            "initController": "weatherInit",
-            "widView": "views/ViewWeather.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "0",
-            "col": "2",
-            "color": "#8BC34A"
-        }, {
-
             "title": "Google Calendar",
             "icon": "styles/css/images/icons/ic_assignment_24px.svg",
             "type": "Custom",
@@ -112,21 +98,7 @@
             "col": "0",
             "color": "#00BCD4"
 
-        }, {
-
-            "title": "Google AdSense",
-            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Advertising",
-            "Description": "Earnings, Pageviews, Clicks",
-            "initTemplate": "InitConfigAdsense",
-            "initController": "adsenseInit",
-            "widView": "views/ViewAdsense.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "1",
-            "col": "1",
-            "color": "#673AB7"
-        }, {
+        } , {
 
             "title": "Facebook Pages",
             "icon": "styles/css/images/icons/facebook.svg",
@@ -249,7 +221,7 @@
             "color": "#FFC107"
 
         }, {
-            "title": "Dynamic visualization",
+            "title": "Dynamic visuals",
             "icon": "styles/css/images/icons/ic_av_timer_24px.svg",
             "type": "Visualization",
             "Description": " Build your dream visualization from any datasource",

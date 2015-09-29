@@ -27,7 +27,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         function showProfileController($scope, $mdDialog) {
             $scope.user = {
                 fname: "Sajeetharan",
-                lname: "Dev",
+                lname: "",
                 email: "sajee@duo.com",
                 location: "colombo",
                 mobile: "077123123123",
@@ -710,7 +710,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $http({
                 method: 'GET',
-                url: 'http://104.236.192.147:8080/DuoDigin/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://52.0.234.95:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -751,7 +751,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $http({
                 method: 'GET',
-                url: 'http://104.236.192.147:8080/DuoDigin/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://52.0.234.95:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -791,7 +791,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $http({
                 method: 'GET',
-                url: 'http://104.236.192.147:8080/DuoDigin/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://52.0.234.95:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',

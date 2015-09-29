@@ -2,34 +2,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast',
   function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast)
     {
-        //main navigation bar locked or not handler
-        $scope.mainNavBarLocked = false;
-        $scope.toggleLeft = buildToggler('left');
-        $scope.toggleRight = buildToggler('right');
+
         /**
          * Build handler to open/close a SideNav; when animation finishes
          * report completion in console
          */
-        $scope.navBarIcon = 'menu';
-        //nav bar open or close icon changer
-        $scope.toggleNavBarIcon = function () {
-            if ($scope.navBarIcon == 'menu') {
-                $scope.navBarIcon = 'arrow_back';
-            } else {
-                $scope.navBarIcon = 'menu';
-            };
-        };
-
-        function buildToggler(navID) {
-            var debounceFn = $mdUtil.debounce(function () {
-                $mdSidenav(navID)
-                    .toggle()
-                    .then(function () {
-                        $log.debug("toggle " + navID + " is done");
-                    });
-            }, 200);
-            return debounceFn;
-        }
 
         //shows user profile in a dialog box
         $scope.showUserProfile = function (ev) {
@@ -605,6 +582,25 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
         }
         $scope.goDashboard = function (dashboard) {
+
+            $rootScope.Dashboards = [{
+                culture: dashboard.culture,
+                date: dashboard.date,
+                title: dashboard.name,
+                type: dashboard.type,
+                widgets: dashboard.data,
+                dashboardId: 112233
+            }];
+
+            $scope.tabs = $rootScope.Dashboards;
+            $scope.selectedIndex = 1;
+            $scope.$watch('selectedIndex', function (current, old) {
+                //previous = selected;
+                selected = tabs[current];
+                if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
+                if (current + 1) $log.debug('Hello ' + selected.title + '!');
+            });
+            console.log(dashboard);
             //closing the overlay
             // start pulathisi 7/23/2015
             // when saved dashboard is clicked change sidebar icon class, this changes icon colors
@@ -687,12 +683,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $scope.dashboards = DashboardService.getDashboards();
 
+
+
             $http({
                 method: 'GET',
                 url: 'http://104.236.192.147:8080/DuoDigin/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
-
-                // http://104.236.212.233:8080/pentaho/api/repo/files/%3Ahome%3Asajeetharan%40duosoftware.com%3AReports/children?showHidden=false&filter=*|FILES&_=1434614109291
-                // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -717,16 +712,17 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.favoriteDashboards.push($scope.dashboards[0]);
                 $scope.favoriteDashboards.push($scope.dashboards[1]);
 
-
+                console.log($scope.dashboards);
 
             }).
             error(function (data, status) {
-
+                console.log(data);
             });
 
 
 
         };
+
 
         $scope.GetReportDetails = function () {
 
@@ -920,12 +916,19 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 });
         };
 
+        $scope.createuuid = function () {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        };
+
         function addToDashboards(obj) {
             var tempObj = {
-                dashboardCulture: "English",
-                dashboardDate: new Date(),
-                dashboardName: obj.title,
-                dashboardType: obj.type,
+                dashboardId: $scope.createuuid(),
+                culture: "English",
+                date: new Date(),
+                title: obj.title,
+                type: obj.type,
                 widgets: []
             };
 
@@ -933,22 +936,51 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $scope.addTab(obj.title, "abcd");
             showToast(obj.title + " created!");
         };
-        var tabs = [{
-            title: "abc1",
-            content: "hello"
-                    }, {
-            title: "abc2",
-            content: "hi"
-            }];
 
-        $scope.tabs = tabs;
-        $scope.selectedIndex = 2;
-        $scope.$watch('selectedIndex', function (current, old) {
-            //previous = selected;
-            selected = tabs[current];
-            if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
-            if (current + 1) $log.debug('Hello ' + selected.title + '!');
-        });
+        $rootScope.selectCurrentDashboard = function (tab) {
+            console.log($rootScope.dashboard, $rootScope.Dashboards);
+
+            for (a = 0; a < $rootScope.Dashboards.length; a++) {
+                if ($rootScope.dashboardId == $rootScope.Dashboards[a].dashboardId) {
+                    $rootScope.Dashboards[a] = $rootScope.dashboard;
+                };
+            };
+
+            for (a = 0; a < $rootScope.Dashboards.length; a++) {
+                if (tab.dashboardId == $rootScope.Dashboards[a].dashboardId) {
+                    $rootScope.dashboard = $rootScope.Dashboards[a];
+                    //$rootScope.globalDashboardIndex = a;
+                };
+
+            };
+            console.log($rootScope.dashboard, $rootScope.Dashboards);
+        }
+
+        function createDashboards() {
+
+            $rootScope.Dashboards = [
+                {
+                    culture: "English",
+                    date: "09/25/2015",
+                    title: "Default",
+                    type: "System",
+                    widgets: [],
+                    dashboardId: $scope.createuuid()
+            }
+        ];
+
+            $scope.tabs = $rootScope.Dashboards;
+            $scope.selectedIndex = 1;
+            $scope.$watch('selectedIndex', function (current, old) {
+                //previous = selected;
+                selected = tabs[current];
+                if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
+                if (current + 1) $log.debug('Hello ' + selected.title + '!');
+            });
+
+        };
+
+        createDashboards();
 
         $scope.addTab = function (title, view) {
             view = view || title + " Content View";
@@ -959,24 +991,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
         };
         $scope.removeTab = function (tab) {
+            console.log(tab);
+            var index1 = $rootScope.Dashboards.indexOf(tab);
+            $rootScope.Dashboards.splice(index1, 1);
             var index = tabs.indexOf(tab);
             tabs.splice(index, 1);
+
         };
-        $rootScope.Dashboards = [
-            {
-                dashboardCulture: "English",
-                dashboardDate: "09/25/2015",
-                dashboardName: "dashboard one",
-                dashboardType: "System",
-                widgets: []
-            }, {
-                dashboardCulture: "English",
-                dashboardDate: "09/25/2015",
-                dashboardName: "dashboard two",
-                dashboardType: "System",
-                widgets: []
-            }
-        ];
+
 
         function addNewDashboardController($scope, $mdDialog) {
             console.log($rootScope.dashboard);
@@ -1220,5 +1242,5 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         });
 
-                }
-                ]);
+                    }
+                    ]);

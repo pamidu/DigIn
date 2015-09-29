@@ -109,11 +109,11 @@ routerApp.controller('DashboardCtrl', ['$scope',
             $mdDialog.hide();
         };
         $scope.clear = function () {
-            $scope.dashboard.widgets = [];
+            $rootScope.dashboard.widgets = [];
         };
 
         $scope.remove = function (widget) {
-            $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
+            $rootScope.dashboard.widgets.splice($rootScope.dashboard.widgets.indexOf(widget), 1);
         };
 
 
@@ -603,8 +603,8 @@ routerApp.controller('summarizeCtrl', ['$scope', '$http', '$objectstore', '$mdDi
         }
 }]);
 
-routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state', '$mdDialog', 'Digin_Base_URL','$objectstore','$mdToast', 
-    function ($scope, $rootScope, $http, $state, $mdDialog, Digin_Base_URL,$objectstore,$mdToast) {
+routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state', '$mdDialog', 'Digin_Base_URL', '$objectstore', '$mdToast',
+    function ($scope, $rootScope, $http, $state, $mdDialog, Digin_Base_URL, $objectstore, $mdToast) {
         var featureObj = localStorage.getItem("featureObject");
         $scope.User_Name = "";
         $scope.User_Email = "";
@@ -690,7 +690,7 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
             $mdDialog.hide();
         };
 
-        $scope.addUser = function(){
+        $scope.addUser = function () {
 
             if ($scope.user.password == $scope.user.confirmPassword) {
                 var SignUpBtn = document.getElementById("mySignup").disabled = true;
@@ -713,80 +713,84 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
                     }
 
                 }).success(function (data, status, headers, config) {
-                $scope.User_Name = data.Name;
-                $scope.User_Email = data.EmailAddress;
-                //setting the name of the profile
-                var userDetails = {
-                    name: fullname,
-                    phone: '',
-                    email: $scope.user.EmailAddress,
-                    company: "",
-                    country: "",
-                    zipcode: "",
-                    bannerPicture: 'fromObjectStore',
-                    id: "admin@duosoftware.com"
-                };
+                    $scope.User_Name = data.Name;
+                    $scope.User_Email = data.EmailAddress;
+                    //setting the name of the profile
+                    var userDetails = {
+                        name: fullname,
+                        phone: '',
+                        email: $scope.user.EmailAddress,
+                        company: "",
+                        country: "",
+                        zipcode: "",
+                        bannerPicture: 'fromObjectStore',
+                        id: "admin@duosoftware.com"
+                    };
 
-                if (!data.Active) {
+                    if (!data.Active) {
 
-                    //setting the userdetails
-                    var client = $objectstore.getClient("duosoftware.com", "profile", true);
-                    client.onError(function (data) {
-                        $mdToast.show({
-                            position: "bottom right",
-                            template: "<md-toast>Successfully created your profile,Please check your Email for verification!</md-toast>"
-                        });
-                    });
-                    client.onComplete(function (data) {
-                        // $mdToast.show({
-                        //     position: "bottom right",
-                        //     template: "<md-toast>Successfully created your profile,Please check your Email for verification!</md-toast>"
-                        // });
-                        $http({
-                            method: 'PUT',
-                            url: 'http://52.0.234.95:8080/pentaho/api/userroledao/createUser',
-                            headers:{'Content-Type': 'application/json'},
-                            data: {"userName": pentUserName, "password": pentPassword}
-
-                        }).
-                        success(function(data, status) {
+                        //setting the userdetails
+                        var client = $objectstore.getClient("duosoftware.com", "profile", true);
+                        client.onError(function (data) {
                             $mdToast.show({
                                 position: "bottom right",
                                 template: "<md-toast>Successfully created your profile,Please check your Email for verification!</md-toast>"
                             });
-                            var SignUpBtn = document.getElementById("mySignup").disabled = false;
-                        }).
-                        error(function(data, status) {
-                            alert("Request failed");
-
                         });
-                    });
-                    client.update(userDetails, {
-                        KeyProperty: "email"
-                    });
-                 }
-            else {
+                        client.onComplete(function (data) {
+                            // $mdToast.show({
+                            //     position: "bottom right",
+                            //     template: "<md-toast>Successfully created your profile,Please check your Email for verification!</md-toast>"
+                            // });
+                            $http({
+                                method: 'PUT',
+                                url: 'http://52.0.234.95:8080/pentaho/api/userroledao/createUser',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                data: {
+                                    "userName": pentUserName,
+                                    "password": pentPassword
+                                }
+
+                            }).
+                            success(function (data, status) {
+                                $mdToast.show({
+                                    position: "bottom right",
+                                    template: "<md-toast>Successfully created your profile,Please check your Email for verification!</md-toast>"
+                                });
+                                var SignUpBtn = document.getElementById("mySignup").disabled = false;
+                            }).
+                            error(function (data, status) {
+                                alert("Request failed");
+
+                            });
+                        });
+                        client.update(userDetails, {
+                            KeyProperty: "email"
+                        });
+                    } else {
+
+                        $mdToast.show({
+                            position: "bottom right",
+                            template: "<md-toast>There is a problem in registering or you have already been registered!!</md-toast>"
+                        });
+
+
+                    }
+
+
+                }).error(function (data, status, headers, config) {
 
                     $mdToast.show({
                         position: "bottom right",
-                        template: "<md-toast>There is a problem in registering or you have already been registered!!</md-toast>"
+                        template: "<md-toast>Please Try again !!</md-toast>"
                     });
-
-
-                }
-
-
-            }).error(function (data, status, headers, config) {
-
+                });
+            } else {
                 $mdToast.show({
                     position: "bottom right",
-                    template: "<md-toast>Please Try again !!</md-toast>"
-                });
-                });
-            }else{
-                $mdToast.show({
-                        position: "bottom right",
-                        template: "<md-toast>Mismatched passwords</md-toast>"
+                    template: "<md-toast>Mismatched passwords</md-toast>"
                 });
             }
         };

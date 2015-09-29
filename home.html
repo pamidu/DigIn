@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html>
@@ -32,7 +31,7 @@
     <link rel="stylesheet" href="styles/angular-gridster.min.css" />
     <link rel="apple-touch-icon" href="../../assets/globals/img/icons/apple-touch-icon.png">
 
-    
+
     <script type="text/javascript" src="scripts/vendor/calendar.js"></script>
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
         api_key: 75 mu4z7y428pty
@@ -51,11 +50,11 @@
 
 <body plumb-item ng-controller="NavCtrl" ng-app="DuoDiginRt" style="overflow:auto !important">
     <div class="pre-loader-parent" id="pagePreLoader" layout="column" layout-align="center center" style="background-color:white">
-                            <div class="pre-loader-child" layout="column" layout-align="center center">
-                                <img src="styles/css/images/preloaders/Preloader_7/Preloader_7.gif" alt="Washed Out">
-                                <span><b>Getting your environment ready..</b></span>
-                                <md-progress-linear class="md-primary"></md-progress-linear>
-                            </div>
+        <div class="pre-loader-child" layout="column" layout-align="center center">
+            <img src="styles/css/images/preloaders/Preloader_7/Preloader_7.gif" alt="Washed Out">
+            <span><b>Getting your environment ready..</b></span>
+            <md-progress-linear class="md-primary"></md-progress-linear>
+        </div>
     </div>
     <div md-theme="{{ dynamicTheme }}" md-theme-watch>
         <script type="text/javascript" src="scripts/fbSDK.js"></script>
@@ -88,7 +87,7 @@
     background-color: rgba(255, 255, 255, 0.46);
     height: 35px;
     margin: 10px;" layout="row" layout-align="center center">
-                    <img ng-src="styles/css/images/innerlogo.png" class="md-avatar" id="digin-logo"  style="width:80%;">
+                    <img ng-src="styles/css/images/innerlogo.png" class="md-avatar" id="digin-logo" style="width:80%;">
                 </div>
                 <div class="nav-search">
                     <md-icon id="btnNavSearch" class="ion-search search sidebaricons"></md-icon>
@@ -105,32 +104,6 @@
             </div>
         </div>
 
-        <!--        left side navigation which contains the menu options-->
-        <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="right" style="min-width: 200px;
-    height: 100%;
-    position: fixed;display:none" md-is-locked-open="{{mainNavBarLocked}}">
-            <md-toolbar class="md-theme-light" layout="row" layout-align="space-between center">
-                <div style="width:50px;">
-                    <img ng-src="styles/css/images/innerlogo.png" class="md-avatar" id="digin-logo" alt="appLogo" style="width:40px;">
-                </div>
-                <p>Duo Digin</p>
-                <md-button class="md-primary" ng-click="toggleRight()">
-                    <ng-md-icon icon="arrow_back" style="fill:whitesmoke;"></ng-md-icon>
-                </md-button>
-            </md-toolbar>
-            <md-content ng-controller="RightCtrl" style="overflow:hidden;">
-                <md-list>
-                    <div ng-repeat="item in menu" layout="row" layout-align="start center" style="margin:5px;" ng-click="$parent.navigate(item.title,$event)">
-                        <div style="max-width:20px;margin:10px">
-                           <!--  <ng-md-icon icon="{{item.icon2}}" style="fill:darkgrey" size="20"></ng-md-icon> -->
-                        </div>
-                        <p style="margin:0px;"> {{item.title}} <span class="md-secondary" style="bottom:8px;" ng-if="item.title == 'Dashboards'">+</span> </p>
-                    </div>
-                </md-list>
-            </md-content>
-        </md-sidenav>
-        <!--        end of erangas work-->
-
         <md-tabs id="footerBar" md-selected="selectedIndex" md-border-bottom md-autoselect md-align-tabs="bottom" style="min-height:100vh; width:calc(100vw - 48px);float:right;">
             <md-tab ng-repeat="tab in tabs" label="{{tab.title}}">
                 <div class="demo-tab tab{{$index%4}}">
@@ -142,7 +115,7 @@
                     </div>
 
                     <div ui-view layout="column" id="content1">
-                        
+
                     </div>
 
                 </div>
@@ -200,7 +173,7 @@
                                 <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
                                 <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:18px;">More <small>({{dashboards.length}})</small></h4>
                                 <ul class="list-material" style="height:150px">
-                                    <li class="has-action-left" dir-paginate="x in dashboards | filter:searchText | itemsPerPage: pageSize" current-page="currentPage" pagination-id="list1">
+                                    <li class="has-action-left" ng-repeat="x in dashboards | filter:searchText">
                                         <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                         <a href="#" class="visible">
                                             <div class="list-action-left" style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
@@ -432,7 +405,7 @@
     </script>
     <!-- angular datepicker -->
     <script src="scripts/controllers/angular-datepicker.js"></script>
-    
+
     <!-- linq for quering in elastic widget -->
     <script type="text/javascript" src="scripts/vendor/linq/linq.js"></script>
     </div>
@@ -464,19 +437,24 @@
 
     </script>
     <script src="jsons/data.json"></script>
-      
-    
-            
-            
+
+
+
+
     <script>
         $(document).ready(function() {
 
             Layout.init();
-            $('.main-headbar').hide();      
+            $('.main-headbar').hide();
             $('.nav-menu').hide();
+<<<<<<< HEAD
             $('.md-tabs-wrapper').hide();
             
 });
+=======
+
+        });
+>>>>>>> 5dcb0ced89f6e5ef511050691744205bc3d5bcf2
 
     </script>
 </body>

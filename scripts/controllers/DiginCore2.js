@@ -409,8 +409,8 @@ routerApp.controller('successCtrl', ['$scope', '$objectstore', '$mdDialog', func
 routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDialog', '$sce', '$http', '$objectstore', 'dashboard', '$log',
   function ($scope, $timeout, $rootScope, $mdDialog, $sce, $http, $objectstore, dashboard, $log) {
         //$scope.dashboard = dashboard;
-        $rootScope.dashboard = dashboard;
-
+        //$rootScope.dashboard = dashboard;
+        console.log(dashboard);
         getJSONData($http, 'widgetType', function (data) {
             $scope.WidgetTypes = data;
         });
@@ -457,7 +457,10 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
 
             $mdDialog.hide();
 
-
+            console.log("dashboard details: ");
+            console.log($rootScope.dashboard);
+            console.log("Global dashboard details: ");
+            console.log($rootScope.Dashboards);
 
             getJSONDataByIndex($http, 'widgetPositions', $rootScope.dashboard.widgets.length, function (data) {
 

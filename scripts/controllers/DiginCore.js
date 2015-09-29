@@ -19,7 +19,6 @@ routerApp.controller('DashboardCtrl', ['$scope',
     function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log) {
 
 
-
         $('#pagePreLoader').hide();
         $scope.test = function () {
             alert("test");

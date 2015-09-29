@@ -28,7 +28,7 @@ function ($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService
         $scope.dashboardCulture = $rootScope.dashboard.dashboardCulture;
         $scope.dashboardDate = $rootScope.dashboard.dashboardDate;
 
-        $scope.saveDashboardDetails = function () {
+        $scope.saveDashboardDetails = function (type) {
 
             $rootScope.dashboard.dashboardName = $scope.dashboardName;
 
@@ -39,10 +39,17 @@ function ($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService
                 culture: $scope.dashboardCulture,
                 date: $scope.dashboardDate,
                 customDuoDash: true, //will be useful when filtering these dashboards with pentaho dashboards
-                data: $rootScope.dashboard.widgets
+                data: $rootScope.dashboard.widgets,
+                storyboard: false,
             };
 
+            if (type == "saveAll") {
+                console.log("saving the whole story board");
+                dashboardObj.data = $rootScope.Dashboards;
+                dashboardObj.storyboard = true;
+            };
 
+            console.log(dashboardObj);
 
             var client = ObjectStoreService.initialize("duodigin_dashboard");
 

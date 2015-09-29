@@ -52,16 +52,14 @@
             <md-button style="background-color: #D33F3F;" ng-click="closeDialog()">
                 <ng-md-icon icon="close" style="fill:whitesmoke"></ng-md-icon>
             </md-button>
-            <md-button class=" md-primary" ng-click="saveDashboardDetails()">
+            <md-button class=" md-primary" ng-click="saveDashboardDetails('savePageOnly')">
                 <!--                <ng-md-icon icon="arrow_forward" style="fill:whitesmoke"></ng-md-icon>-->
                 save only the selected page
             </md-button>
-            <md-button class=" md-primary" ng-click="saveDashboardDetails()">
+            <md-button class=" md-primary" ng-click="saveDashboardDetails('saveAll')">
                 <!--                <ng-md-icon icon="arrow_forward" style="fill:whitesmoke"></ng-md-icon>-->
                 save the whole storyboard
             </md-button>
         </div>
-
     </md-content>
-
 </md-dialog>

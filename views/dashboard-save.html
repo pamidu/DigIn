@@ -1,14 +1,17 @@
 <md-dialog style="min-width:50vw;">
     <md-content layout-align="center center" layout-padding>
         <div class="md-toolbar-tools" flex layout="row" layout-align="end center">
-            <p style="color:lightgrey;">SAVE</p>
+            <p style="color:lightgrey;margin:0px;">SAVE</p>
+            <md-button ng-click="closeDialog()">
+                <md-icon style="color:whitesmoke;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
+            </md-button>
 
         </div>
         <!-- <div class="dashcontent" > -->
         <div layout="row" layout-wrap>
             <div layout="row" layout-align="start start" flex="30" style="padding:20px;">
                 <img src="styles/css/images/icons/material alperbert/avatar_tile_d_28.png" style="border-radius:100%;">
-                <p style="margin: 5px 20px; color:darkgrey;">Dashboard</p>
+                <p style="margin: 5px 20px; color:black;font-size:large;">Dashboard</p>
             </div>
             <div layout="row" flex layout-wrap>
                 <md-input-container flex="50">
@@ -49,9 +52,6 @@
             </div>
         </div>
         <div class="md-actions" layout="row">
-            <md-button style="background-color: #D33F3F;" ng-click="closeDialog()">
-                <ng-md-icon icon="close" style="fill:whitesmoke"></ng-md-icon>
-            </md-button>
             <md-button class=" md-primary" ng-click="saveDashboardDetails('savePageOnly')">
                 <!--                <ng-md-icon icon="arrow_forward" style="fill:whitesmoke"></ng-md-icon>-->
                 save only the selected page

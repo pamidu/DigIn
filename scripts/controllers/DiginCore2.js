@@ -459,6 +459,9 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                 });
         };
 
+        $scope.closeDialog = function () {
+            $mdDialog.cancel();
+        };
 
         $scope.addAllinOne = function (widget, ev) {
 

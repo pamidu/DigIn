@@ -241,58 +241,53 @@ function googleMapsCtrl($scope, $mdDialog, wid, $http) {
     });
 };
 
-function elasticDataCtrl($scope, $mdDialog, wid) {
+function elasticDataCtrl($scope,$mdDialog,wid){
 
-    $scope.closeDialog = function () {
-        $mdDialog.hide();
-    };
+    $scope.closeDialog = function() {
+            $mdDialog.hide();
+        };
 
-    $scope.series = wid.highchartsNG.series;
+   $scope.series = wid.highchartsNG.series;
     $scope.categories = wid.highchartsNG.xAxis.categories;
     $scope.mappedSeries = [];
-    for (i = 0; i < $scope.series.length; i++) {
-        var seriesObj = {
-            name: $scope.series[i].name,
-            data: []
-        };
-        for (j = 0; j < $scope.series[i].data.length; j++) {
-            var dataObj = {
-                val: $scope.series[i].data[j],
-                cat: $scope.categories[j]
-            };
+    for(i=0;i<$scope.series.length;i++){
+        var seriesObj = {name: $scope.series[i].name,
+                         data : []}; 
+        for(j=0;j<$scope.series[i].data.length;j++){
+            var dataObj = {val : $scope.series[i].data[j],
+                           cat : $scope.categories[j]};
             seriesObj.data.push(dataObj);
-        }
+        }       
         $scope.mappedSeries.push(seriesObj);
     }
-
+    
     //map data to eport to excel
     //start dynamically creating the object array
-    $scope.dataArray = [];
+      $scope.dataArray = [];
     $scope.dataObj = {};
     $scope.dataObj['a'] = "Category";
     var currChar = "a";
-    for (i = 0; i < $scope.series.length; i++) {
+    for(i=0;i<$scope.series.length;i++){
         currChar = nextChar(currChar);
         $scope.dataObj[currChar] = $scope.series[i].name;
     }
 
     $scope.dataArray.push($scope.dataObj);
 
-    for (i = 0; i < $scope.categories.length; i++) {
+    for(i=0;i<$scope.categories.length;i++){
         $scope.dataObj = {};
         $scope.dataObj['a'] = $scope.categories[i];
         currChar = 'a';
-        for (j = 0; j < $scope.series.length; j++) {
+        for(j=0;j<$scope.series.length;j++){
             currChar = nextChar(currChar);
-            $scope.dataObj[currChar] = $scope.series[j].data[i];
+            $scope.dataObj[currChar] = $scope.series[j].data[i];            
         }
-        $scope.dataArray.push($scope.dataObj);
+        $scope.dataArray.push($scope.dataObj);        
     }
 
     $scope.fileName = wid.uniqueType;
 
 };
-
 
 routerApp.controller('ReportCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportService',
 '$timeout', '$log', 'cssInjector',

@@ -85,11 +85,12 @@ if (isset($_POST['userName']) && isset($_POST['password'])) {
 
     <body ng-cloak style="background-color:white;">
         <div id="gradient" style="height:50vh;" />
-        <div layout="row" layout-align="center center" style="padding:100px;">
-            <img ng-src="styles/css/images/initiallog.png" style="width:100px;" height="60px">
-        </div>
+
         <div id="viewContainer" layout="column" layout-align="center center">
             <md-card id="loginFrame" class="md-whiteframe-z4" layout="column" layout-align="start center" style="min-width:525px;background-color:#fafafa;">
+                <div layout="row" layout-align="center center" style="padding:10px;">
+                    <img ng-src="styles/css/images/initiallog.png" style="width:100px;" height="60px">
+                </div>
 
                 <form name="loginForm" style="padding:10px 36px;width:100%;" action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]);?>" method="POST" flex>
                     <div layout="row">

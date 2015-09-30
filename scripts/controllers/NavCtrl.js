@@ -27,7 +27,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         function showProfileController($scope, $mdDialog) {
             $scope.user = {
                 fname: "Sajeetharan",
-                lname: "Dev",
+                lname: "",
                 email: "sajee@duo.com",
                 location: "colombo",
                 mobile: "077123123123",
@@ -60,7 +60,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 widget.width = width + 'px';
                 widget.height = height + 'px';
                 widget.mheight = mHeight + 'px';
-    
+
             }
         }
 
@@ -572,21 +572,43 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
         }
         $scope.goDashboard = function (dashboard) {
-
-            $rootScope.Dashboards = [{
-                culture: dashboard.culture,
-                date: dashboard.date,
-                title: dashboard.name,
-                type: dashboard.type,
-                widgets: dashboard.data,
-                dashboardId: 112233
+            console.log(dashboard);
+            if (dashboard.storyboard == undefined) {
+                if (dashboard.data.title == undefined) {
+                    console.log("i got undefined");
+                    $rootScope.Dashboards = [{
+                        culture: dashboard.culture,
+                        date: dashboard.date,
+                        title: dashboard.name,
+                        type: dashboard.type,
+                        widgets: dashboard.data,
+                        dashboardId: dashboard.dashboardId
             }];
+                } else {
+                    $rootScope.Dashboards = dashboard.data;
+                };
+            } else
+            if (dashboard.storyboard == false) {
+                console.log("im a single page");
+                $rootScope.Dashboards = [{
+                    culture: dashboard.culture,
+                    date: dashboard.date,
+                    title: dashboard.name,
+                    type: dashboard.type,
+                    widgets: dashboard.data,
+                    dashboardId: dashboard.dashboardId
+            }];
+            } else {
+                console.log("im a storyboard");
+                $rootScope.Dashboards = dashboard.data;
+            };
 
             $scope.tabs = $rootScope.Dashboards;
+            $rootScope.dashboard = $rootScope.Dashboards[0];
             $scope.selectedIndex = 1;
             $scope.$watch('selectedIndex', function (current, old) {
                 //previous = selected;
-                selected = tabs[current];
+                selected = $rootScope.Dashboards[current];
                 if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
                 if (current + 1) $log.debug('Hello ' + selected.title + '!');
             });
@@ -677,7 +699,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $http({
                 method: 'GET',
-                url: 'http://104.236.192.147:8080/DuoDigin/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://52.0.234.95:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -718,7 +740,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $http({
                 method: 'GET',
-                url: 'http://104.236.192.147:8080/DuoDigin/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://52.0.234.95:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -758,7 +780,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $http({
                 method: 'GET',
-                url: 'http://104.236.192.147:8080/DuoDigin/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://52.0.234.95:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',

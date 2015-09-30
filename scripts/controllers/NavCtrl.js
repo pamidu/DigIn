@@ -454,17 +454,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
         };
 
-        $scope.closeAllWidgets = function () {
-            var length = document.getElementsByClassName("ion-close").length;
-            //$rootScope.dashboard.widgets = [];
-            var i;
-            for (i = 0; i < length; i++) {
-                document.getElementsByClassName("ion-close")[0].click();
-            }
-
-            $(".dashboard-widgets-close").removeClass("active");
-        };
-
         function DashboardCtrl($scope) {
 
             $scope.dashboardmenu = [{
@@ -1091,7 +1080,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
             if (routeName == "Add Widgets") {
                 $scope.showAddNewWidgets(ev);
-                $state.go("Dashboards")
+                $state.go("Dashboards");
+                $('md-tabs-wrapper').css("display","block");
             }
             if (routeName == "D3plugins") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
@@ -1099,6 +1089,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.currentView = "D3plugins";
                 $(".menu-layer").css("top", "120px");
                 $("starting-point").css("top", "120px");
+                $('md-tabs-wrapper').css("display","none");
 
                 $state.go(routeName)
             }
@@ -1108,6 +1099,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.currentView = "Reports";
                 $(".menu-layer").css("top", "120px");
                 $("starting-point").css("top", "120px");
+                $('md-tabs-wrapper').css("display","none");
 
 
                 $state.go(routeName)
@@ -1117,6 +1109,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 selectedMenu[0].style.display = 'block';
                 $(".menu-layer").css("top", "160px");
                 $("starting-point").css("top", "160px");
+                $('md-tabs-wrapper').css("display","none");
                 $scope.currentView = "Analytics";
             }
             if (routeName == "RealTime") {
@@ -1125,6 +1118,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.currentView = "RealTime";
                 $(".menu-layer").css("top", "200px");
                 $("starting-point").css("top", "200px");
+                $('md-tabs-wrapper').css("display","none");
 
                 $state.go(routeName)
             }
@@ -1133,6 +1127,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 selectedMenu[0].style.display = 'block';
                 $(".menu-layer").css("top", "240px");
                 $("starting-point").css("top", "240px");
+                $('md-tabs-wrapper').css("display","none");
 
                 $scope.currentView = "Digin P Stack";
 

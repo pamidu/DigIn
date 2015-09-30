@@ -108,7 +108,7 @@
             <md-tab ng-repeat="tab in tabs" label="{{tab.title}}" md-on-select="$root.selectCurrentDashboard(tab);">
                 <div class="demo-tab tab{{$index%4}}">
                     <!--                    <div ng-bind="tab.content"></div>-->
-                    <div style="position: fixed;width: 100%;top: 0px;z-index:1;" layout="row" layout-align="end center">
+                    <div style="position: fixed;width: 100%;top: 0px;" layout="row" layout-align="end center">
                         <md-button ng-click="removeTabConfirmation( tab,$event )" ng-disabled="tabs.length <= 1" style="border-radius: 100%;">
                             <ng-md-icon icon="close" style="fill:lightgrey"></ng-md-icon>
                         </md-button>
@@ -122,11 +122,6 @@
             </md-tab>
         </md-tabs>
 
-        <div class="dashboard-widgets-close">
-            <md-button id="dashboardwidgetsclose" class="md-fab" ng-click="closeAllWidgets()" aria-label="Close">
-                <md-icon class="ion-close"></md-icon>
-            </md-button>
-        </div>
         <div class="overlay">
             <div class="starting-point">
                 <span></span>

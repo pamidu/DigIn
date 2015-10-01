@@ -1,15 +1,14 @@
 <md-card resizable plumb-item on-stop="getPosition($evt, $ui, widget)" ng-repeat="widget in $root.dashboard.widgets" on-resize="resize($evt, $ui, widget)" widget="widget" ng-style="{'height':widget.height,'width':widget.width,'min-height':h,'min-width':w,'left':widget.left, 'top':widget.top}">
 
-<<<<<<< HEAD
     <md-content class='md-padding' ng-style="{'height':widget.mheight}" style="overflow:auto;" layout="row" flex>
         <!--
         <div>
             <md-icon style="color:whitesmoke;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/settings.svg"></md-icon>
         </div>
 -->
-=======
+
     <md-content ng-style="{'height':widget.mheight}" style="overflow:auto;" layout="row" flex>
->>>>>>> 940a970b5c0eb756bba42035d203bafd27bc6cb2
+
         <div style="height:100%;width:100%" ng-include src="widget.widView"></div>
     </md-content>
     <md-toolbar class="digin-widget-toolbar">

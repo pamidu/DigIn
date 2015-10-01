@@ -47,11 +47,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.h = '300px';
         $scope.mh = '250px';
 
-        $scope.resize = function (evt, ui, widget) {
-
+        $scope.resize = function (evt, ui, pos, widget) {
+            //alert(JSON.stringify(pos));
             var width = ui.size.width;
             var height = ui.size.height;
             var mHeight = height - 50;
+            widget.top = pos.top+'px';
+            widget.left = pos.left+'px';
 
             if (widget.initCtrl == "elasticInit") {
                 console.log('elastic');

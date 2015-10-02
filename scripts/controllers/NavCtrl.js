@@ -7,7 +7,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
           $auth.checkSession();
         }else{
             var sessionInfo = $helpers.getCookie('securityToken');
-            if(sessionInfo==null) location.href = 'index.php';
+           // if(sessionInfo==null) location.href = 'index.php';
         }
 
         /**

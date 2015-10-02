@@ -1,6 +1,5 @@
 <style type="text/css">
-  
- * {
+* {
   box-sizing: border-box;
 }
 
@@ -24,6 +23,8 @@ body {
 
 .view {
   position: relative;
+  height: 640px;
+  width: 384px;
   background: #fcfcfc;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   overflow-y: scroll;
@@ -397,8 +398,8 @@ Cards.init();
             <md-button ng-click="showData(widget,$event)" aria-label="Close" layout-wrap>
                 <md-icon class="ion-clipboard digin-widget-toolbar-icon"></md-icon>
             </md-button> -->
-<md-dialog plumb-item>
-<div class="view" flex>
+
+<div class="view">
   <div class="card__full">
     <div class="card__full-top">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -442,7 +443,7 @@ Cards.init();
     </li>
   </ul>
 </div>
-<md-dialog>
+
 <!-- </md-content> -->
 
 

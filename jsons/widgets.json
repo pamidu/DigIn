@@ -434,6 +434,17 @@
             "row": "3",
             "col": "0",
             "color": "#303F9F"
+        },
+        {
+
+            "title": "Widget Settings",
+            "initController": "widgetSettingsCtrl",
+            "widView": "views/ViewWidgetSettings.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "3",
+            "color": "#B6B6B6"
         }
 
 

@@ -4958,7 +4958,34 @@ MIT License: https://github.com/driftyco/ionicons
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
+.ion-settings:before {
+    font-size: 20px;
+    display: inline-block;
+    font-family: "Ionicons";
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    text-rendering: auto;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.ion-settings:before {
+    font-size: 20px;
+    display: inline-block;
+    font-family: "Ionicons";
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    text-rendering: auto;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 /* end pulathisi */
 .ion-alert:before {
     content: "\f101";

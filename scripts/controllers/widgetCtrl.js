@@ -2575,3 +2575,22 @@ function hnbInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 
 }
+
+function clockInit($scope, $http, $mdDialog, widId, $rootScope) {
+
+
+    $scope.finish = function () {
+
+        $mdDialog.hide();
+
+    };
+
+    $scope.cancel = function () {
+        $mdDialog.hide();
+    };
+
+
+
+}
+
+

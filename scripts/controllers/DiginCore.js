@@ -25,6 +25,21 @@ routerApp.controller('DashboardCtrl', ['$scope',
             alert("test");
         };
 
+        $scope.widgetSettings = function (widget){
+
+            $mdDialog.show({
+                controller: 'widgetSettingsCtrl',
+                templateUrl: 'views/ViewWidgetSettings.html',
+                clickOutsideToClose: true,
+                resolve: {
+
+                }
+            });
+
+            $rootScope.widget = widget;
+
+        };
+
 
         $scope.showData = function (widget, ev) {
             $mdDialog.show({
@@ -138,6 +153,25 @@ routerApp.controller('DashboardCtrl', ['$scope',
 
     }
 ]);
+
+function widgetSettingsCtrl($scope, $mdDialog, wid, $http){
+    $scope.showData = function (widget, ev) {
+            $mdDialog.show({
+                    controller: eval(widget.dataCtrl),
+                    templateUrl: 'views/' + widget.dataView + '.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    locals: {
+                        wid: widget
+                    }
+                })
+                .then(function () {
+                    //$mdDialog.hide();
+                }, function () {
+                    //$mdDialog.hide();
+                });
+        };
+}
 
 
 function hnbClaimsCtrl($scope, $mdDialog, wid, $http) {

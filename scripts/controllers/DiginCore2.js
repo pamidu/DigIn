@@ -13,7 +13,144 @@
 |      widgetCtrl                                          |
 ------------------------------------------------------------
 */
+routerApp.controller('widgetSettingsCtrl', ['$scope',
 
+    '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log',
+    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log) {
+
+
+        $('#pagePreLoader').hide();
+        $scope.test = function () {
+            alert("test");
+        };
+
+        $scope.widgetSettings = function (widget){
+
+            $mdDialog.show({
+                controller: 'widgetSettingsCtrl',
+                templateUrl: 'views/ViewWidgetSettings.html',
+                clickOutsideToClose: true,
+                resolve: {
+
+                }
+            });
+        };
+
+
+        $scope.showData = function () {
+            $mdDialog.show({
+                    controller: eval($scope.widget.dataCtrl),
+                    templateUrl: 'views/' + $scope.widget.dataView + '.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    locals: {
+                        wid: $scope.widget
+                    }
+                })
+                .then(function () {
+                    //$mdDialog.hide();
+                }, function () {
+                    //$mdDialog.hide();
+                });
+        };
+
+        $scope.convertCSVtoJson = function (src) {
+            AsTorPlotItems.then(function (data) {
+                $scope.items = data;
+            });
+        }
+        $scope.showAdvanced = function (ev, widget) {
+
+            // $mdDialog.show({
+            //     controller: 'chartSettingsCtrl',
+            //     templateUrl: 'views/chart_settings.html',
+            //     targetEvent: ev,
+            //     resolve: {
+            //         widget: function() {
+            //             return widget;
+            //         }
+            //     }
+            // })
+            console.log("$scope.widget");
+            console.log($rootScope.widget);
+
+            $mdDialog.show({
+                    controller: eval($rootScope.widget.initCtrl),
+                    templateUrl: 'views/' + $rootScope.widget.initTemplate + '.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    locals: {
+                        widId: $rootScope.widget.id
+                    }
+                })
+                .then(function () {
+                    //$mdDialog.hide();
+                }, function () {
+                    //$mdDialog.hide();
+                });
+
+
+
+        };
+        $scope.trustSrc = function (src) {
+            return $sce.trustAsResourceUrl(src);
+        }
+        $scope.getIndexes = function () {
+            var client = $objectstore.getClient("com.duosoftware.com");
+            client.onGetMany(function (data) {
+                data.forEach(function (entry) {
+
+                    $rootScope.indexes.push({
+                        value: entry,
+                        display: entry
+                    });
+
+                });
+
+
+            });
+            client.getClasses("com.duosoftware.com");
+        }
+        $scope.commentary = function (widget) {
+            var comment = "";
+            var chunks = [];
+
+
+
+        }
+        $scope.closeDialog = function () {
+            $mdDialog.hide();
+        };
+        $scope.clear = function () {
+            $rootScope.dashboard.widgets = [];
+        };
+
+        $scope.remove = function (widget) {
+            $rootScope.dashboard.widgets.splice($rootScope.dashboard.widgets.indexOf(widget), 1);
+        };
+
+
+        $scope.alert = '';
+
+
+        $scope.config = {}; // use defaults
+        $scope.model = {};
+
+
+
+        //   $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
+        //   if (newVal !== oldVal) {
+        //     $scope.dashboard = $scope.dashboard[newVal];
+        //   } else {
+        //     $scope.dashboard = $scope.dashboard[1];
+        //   }
+        // });
+
+        // init dashboard
+        $scope.selectedDashboardId = '1';
+
+    }
+]);
 routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService',
 
 function ($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService) {

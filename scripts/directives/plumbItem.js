@@ -14,9 +14,10 @@
         jsPlumb.draggable(element, {            
           containment: 'parent',
           stop: function (evt, ui) {
+            
              var pos = $(this).offset();
-             scope.widget.top = pos.top+'px';
-             scope.widget.left = pos.left+'px';
+             //scope.widget.top = pos.top+'px';
+             //scope.widget.left = pos.left+'px';
             }
         });
 

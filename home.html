@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="google-signin-client_id" content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com"></meta>
+    <meta name="google-signin-client_id" content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com">
     <link rel="shortcut icon" href="styles/css/images/innerlogo.ico">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
     <link href="styles/css/material-wfont.css" rel="stylesheet">
@@ -94,34 +94,61 @@
                 </div>
                 <!--                <p style="font-size: large;margin: 0px 10px 0px 0px;color:whitesmoke;">Duo Digin</p>-->
             </div>
-
-            <div layout="row" ng-click="showUserProfile($event);">
-                <p style="color: whitesmoke;font-size: large;margin: 10px;"> Sajeetharan</p>
-                <img class="md-avatar" style="width: 30px;
+            <div layout="row" layout-align="center center">
+                <div layout="row" ng-click="showUserProfile($event);">
+                    <p style="color: whitesmoke;font-size: large;margin: 10px;"> Sajeetharan</p>
+                    <img class="md-avatar" style="width: 30px;
     height: 30px;
     border-radius: 100%;
     margin: 5px;" src="styles/css/images/person.jpg">
+                </div>
+
             </div>
         </div>
+
 
         <md-tabs id="footerBar" md-selected="selectedIndex" md-border-bottom md-autoselect md-align-tabs="bottom" style="min-height:100vh; width:calc(100vw - 48px);float:right;">
             <md-tab ng-repeat="tab in tabs" label="{{tab.title}}" md-on-select="$root.selectCurrentDashboard(tab);">
                 <div class="demo-tab tab{{$index%4}}">
+
+                    <div style="background-color: #ECECEC;
+    border-top-left-radius: 10px;">
+
                     <!--                    <div ng-bind="tab.content"></div>-->
                     <div style="position: fixed;width: 100%;top: 0px;" layout="row" layout-align="end center">
+
                         <md-button ng-click="removeTabConfirmation( tab,$event )" ng-disabled="tabs.length <= 1" style="border-radius: 100%;">
-                            <ng-md-icon icon="close" style="fill:lightgrey"></ng-md-icon>
+                            <md-icon style="color:darkgrey;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
                         </md-button>
                     </div>
 
-                    <div ui-view layout="column" id="content1">
+                        <!--                    tab closing button-->
+<!--
+                       <div style="position: fixed;width: 100%;top: 0px;" layout="row" layout-align="end center">
+
+    <md-button ng-click="removeTabConfirmation( tab,$event )" ng-disabled="tabs.length <= 1" style="border-radius: 100%;">
+        <md-icon style="color:darkgrey;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
+    </md-button>
+</div>
+-->
+                        <!--                        end of tab closing button-->
+
+                        <div ui-view layout="column" id="content1">
+
+                        </div>
 
                     </div>
-
                 </div>
             </md-tab>
         </md-tabs>
 
+        <div class="dashboard-widgets-close">
+            <md-button id="dashboardwidgetsclose" class="md-fab" ng-click="closeAllWidgets()" aria-label="Close">
+                <md-icon class="ion-close"></md-icon>
+            </md-button>
+        </div>
+        <div class="overlay" style="z-index: 10;
+    opacity: 0.8;">
         <div class="overlay">
             <div class="starting-point">
                 <span></span>
@@ -444,10 +471,11 @@
             $('.nav-menu').hide();
 
             $('.md-tabs-wrapper').hide();
-            
+
         });
 
     </script>
 </body>
 
 </html>
+s

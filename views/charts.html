@@ -1,4 +1,10 @@
-<md-card resizable plumb-item on-stop="getPosition($evt, $ui, widget)" ng-repeat="widget in $root.dashboard.widgets" on-resize="resize($evt, $ui, widget)" widget="widget" ng-style="{'height':widget.height,'width':widget.width,'min-height':h,'min-width':w,'left':widget.left, 'top':widget.top}">
+<md-card resizable plumb-item on-stop="getPosition($evt, $ui, widget)" ng-repeat="widget in $root.dashboard.widgets" on-resize="resize($evt, $ui, $pos, widget)" widget="widget" ng-style="{'height':widget.height,'width':widget.width,'min-height':h,'min-width':w,'left':widget.left, 'top':widget.top}">
+
+        <!--
+        <div>
+            <md-icon style="color:whitesmoke;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/settings.svg"></md-icon>
+        </div>
+-->
 
     <md-content ng-style="{'height':widget.mheight}" style="overflow:auto;" layout="row" flex>
         <div style="height:100%;width:100%" ng-include src="widget.widView"> 
@@ -6,9 +12,9 @@
     </md-content>
     <md-toolbar class="digin-widget-toolbar">
         <div class="md-toolbar-tools">
-            <h2>
-            <span>{{widget.uniqueType}}</span>
-          </h2>
+
+            <p style="font-size:medium;margin:0px;">{{widget.uniqueType}}</p>
+
             <span flex></span>
 
             <!-- <md-button ng-click="commentary(widget)" aria-label="Close" layout-wrap>
@@ -17,19 +23,19 @@
 
 
 
-            <md-button ng-click="showAdvanced($event,widget)" aria-label="Settings" layout-wrap>
+            <md-button ng-click="showAdvanced($event,widget)" aria-label="Settings" layout-wrap style="margin:0px !important">
                 <md-icon class="ion-gear-b digin-widget-toolbar-icon"></md-icon>
             </md-button>
 
 
-            <md-button ng-click="showData(widget,$event)" aria-label="Close" layout-wrap>
+            <md-button ng-click="showData(widget,$event)" aria-label="Close" layout-wrap style="margin:0px !important">
                 <md-icon class="ion-clipboard digin-widget-toolbar-icon"></md-icon>
             </md-button> -->
             <md-button ng-click="widgetSettings(widget)" aria-label="Close" layout-wrap>
                 <md-icon class="ion-settings digin-widget-toolbar-icon"></md-icon>
             </md-button>
 
-            <md-button ng-click="remove(widget)" aria-label="Close" layout-wrap>
+            <md-button ng-click="remove(widget)" aria-label="Close" layout-wrap style="margin:0px !important">
                 <md-icon class="ion-close digin-widget-toolbar-icon"></md-icon>
             </md-button>
 

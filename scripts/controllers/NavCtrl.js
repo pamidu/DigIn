@@ -1,7 +1,14 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
-    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast',
-  function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast)
+    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast','DevStudio','$auth','$helpers',
+  function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio,$auth,$helpers)
     {
+
+        if(DevStudio){
+          $auth.checkSession();
+        }else{
+            var sessionInfo = $helpers.getCookie('securityToken');
+            if(sessionInfo==null) location.href = 'index.php';
+        }
 
         /**
          * Build handler to open/close a SideNav; when animation finishes
@@ -34,6 +41,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 profile_pic: "styles/css/images/person.jpg"
             };
 
+            $scope.close = function () {
+                $mdDialog.cancel();
+            };
+
         };
 
         $scope.currentPage = 1;
@@ -43,11 +54,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.h = '300px';
         $scope.mh = '250px';
 
-        $scope.resize = function (evt, ui, widget) {
-
+        $scope.resize = function (evt, ui, pos, widget) {
+            //alert(JSON.stringify(pos));
             var width = ui.size.width;
             var height = ui.size.height;
             var mHeight = height - 50;
+            widget.top = pos.top+'px';
+            widget.left = pos.left+'px';
 
             if (widget.initCtrl == "elasticInit") {
                 console.log('elastic');
@@ -935,6 +948,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         function addToDashboards(obj) {
+            console.log("creating new dashboard");
             var tempObj = {
                 dashboardId: $scope.createuuid(),
                 culture: "English",
@@ -945,12 +959,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             };
 
             $rootScope.Dashboards.push(tempObj);
-            $scope.addTab(obj.title, "abcd");
             showToast(obj.title + " created!");
         };
 
         $rootScope.selectCurrentDashboard = function (tab) {
-            console.log($rootScope.dashboard, $rootScope.Dashboards);
+            console.log("you selected :");
+            console.log(tab);
 
             for (a = 0; a < $rootScope.Dashboards.length; a++) {
                 if ($rootScope.dashboardId == $rootScope.Dashboards[a].dashboardId) {
@@ -965,9 +979,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 };
 
             };
-            console.log($rootScope.dashboard, $rootScope.Dashboards);
         }
 
+        //initial creation of default dashboard
         function createDashboards() {
 
             $rootScope.Dashboards = [
@@ -987,8 +1001,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $scope.$watch('selectedIndex', function (current, old) {
                 //previous = selected;
                 selected = $rootScope.Dashboards[current];
-                if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
-                if (current + 1) $log.debug('Hello ' + selected.title + '!');
+                //                if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
+                //                if (current + 1) $log.debug('Hello ' + selected.title + '!');
             });
 
         };
@@ -1003,18 +1017,18 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 disabled: false
             });
         };
+
         $scope.removeTab = function (tab) {
+            console.log("removing tab : ");
             console.log(tab);
             var index1 = $rootScope.Dashboards.indexOf(tab);
             $rootScope.Dashboards.splice(index1, 1);
-            var index = tabs.indexOf(tab);
-            tabs.splice(index, 1);
 
         };
 
 
         function addNewDashboardController($scope, $mdDialog) {
-            console.log($rootScope.dashboard);
+            //console.log($rootScope.dashboard);
             $scope.numOfDashboards = $rootScope.dashboard.length;
             $scope.createNewDashboard = function () {
                 var obj = {
@@ -1035,6 +1049,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 .position("bottom right")
                 .hideDelay(3000)
             );
+        };
+
+        $scope.clickTabRemoveConfirmation = function () {
+            document.getElementById("TabRemoveConfirmation").click();
         };
 
         $scope.removeTabConfirmation = function (tab, ev) {

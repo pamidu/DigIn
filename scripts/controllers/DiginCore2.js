@@ -24,42 +24,48 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
             alert("test");
         };
 
-        $scope.widgetSettings = function (widget){
-
-            $mdDialog.show({
-                controller: 'widgetSettingsCtrl',
-                templateUrl: 'views/ViewWidgetSettings.html',
-                clickOutsideToClose: true,
-                resolve: {
-
-                }
-            });
-        };
-
+        // $scope.widget = $rootScope.widget.dataView + '.html';
+        
 
         $scope.showData = function () {
-            $mdDialog.show({
-                    controller: eval($scope.widget.dataCtrl),
-                    templateUrl: 'views/' + $scope.widget.dataView + '.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    locals: {
-                        wid: $scope.widget
-                    }
-                })
-                .then(function () {
-                    //$mdDialog.hide();
-                }, function () {
-                    //$mdDialog.hide();
-                });
+
+            $scope.dataViewPath = 'views/'+$rootScope.widget.dataView + '.html';
+
+            console.log("showData");
+            console.log( $scope.dataViewPath);
+            
+            // $mdDialog.show({
+            //         controller: eval($rootScope.widget.dataCtrl),
+            //         templateUrl: 'views/' + $rootScope.widget.dataView + '.html',
+            //         parent: angular.element(document.body),
+            //         locals: {
+            //             wid: $rootScope.widget
+            //         }
+            //     })
+            //     .then(function () {
+            //         //$mdDialog.hide();
+            //     }, function () {
+            //         //$mdDialog.hide();
+            //     });
+        };
+
+        $scope.exportToCSV = function ($http) {
+            alert("testing export to csv");
+
+
         };
 
         $scope.convertCSVtoJson = function (src) {
             AsTorPlotItems.then(function (data) {
                 $scope.items = data;
             });
-        }
+        };
         $scope.showAdvanced = function (ev, widget) {
+
+            $scope.dataViewPath = 'views/'+$rootScope.widget.initTemplate + '.html';
+
+            console.log("showAdvanced");
+            console.log( $scope.dataViewPath);
 
             // $mdDialog.show({
             //     controller: 'chartSettingsCtrl',
@@ -71,30 +77,26 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
             //         }
             //     }
             // })
-            console.log("$scope.widget");
-            console.log($rootScope.widget);
-
-            $mdDialog.show({
-                    controller: eval($rootScope.widget.initCtrl),
-                    templateUrl: 'views/' + $rootScope.widget.initTemplate + '.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    locals: {
-                        widId: $rootScope.widget.id
-                    }
-                })
-                .then(function () {
-                    //$mdDialog.hide();
-                }, function () {
-                    //$mdDialog.hide();
-                });
-
-
+            
+            // $mdDialog.show({
+            //         controller: eval($rootScope.widget.initCtrl),
+            //         templateUrl: 'views/' + $rootScope.widget.initTemplate + '.html',
+            //         parent: angular.element(document.body),
+            //         targetEvent: ev,
+            //         locals: {
+            //             widId: $rootScope.widget.id
+            //         }
+            //     })
+            //     .then(function () {
+            //         //$mdDialog.hide();
+            //     }, function () {
+            //         //$mdDialog.hide();
+            //     });
 
         };
         $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
-        }
+        };
         $scope.getIndexes = function () {
             var client = $objectstore.getClient("com.duosoftware.com");
             client.onGetMany(function (data) {
@@ -110,15 +112,17 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
 
             });
             client.getClasses("com.duosoftware.com");
-        }
+        };
         $scope.commentary = function (widget) {
+            
             var comment = "";
             var chunks = [];
 
 
 
-        }
+        };
         $scope.closeDialog = function () {
+            alert("close testing");
             $mdDialog.hide();
         };
         $scope.clear = function () {

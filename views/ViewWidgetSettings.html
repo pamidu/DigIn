@@ -9,7 +9,7 @@ ul {
   list-style-type: none;
 }
 
-body {
+/*body {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,19 +19,21 @@ body {
   background: #f2f2f2;
   color: #404040;
   overflow: hidden;
-}
+}*/
 
 .view {
   position: relative;
-  height: 640px;
-  width: 384px;
+  /*height: 380px;
+  width: 320px;*/
   background: #fcfcfc;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  overflow-y: scroll;
+  /*overflow-y: scroll;*/
 }
 
 .card__list {
   padding: 0.75rem;
+  
+  /*width:300px;*/
 }
 
 .card__item {
@@ -155,7 +157,7 @@ body {
   margin: 0 0.75rem 0 0;
   text-align: center;
   background: silver;
-  border-radius: 50%;
+  /*border-radius: 50%;*/
   font-size: 36px;
   color: white;
   overflow: hidden;
@@ -184,7 +186,7 @@ body {
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 384px;
+  width: 640px;
   height: 640px;
   z-index: 2;
   visibility: hidden;
@@ -204,9 +206,12 @@ body {
   opacity: 1;
 }
 
-.card__full-top,
+.card__full-top{
+  height:20%;
+}
 .card__full-bottom {
-  flex: 1;
+  /*flex: 1;*/
+  height:80%;
 }
 
 .card__full-bottom {
@@ -251,7 +256,7 @@ body {
 
 .card__full-num {
   color: white;
-  font-size: 140px;
+  font-size: 50px;
 }
 
 .card__full-handle {
@@ -300,23 +305,21 @@ body {
   var cardnum = cardfulltop.find('.card__full-num');
   var cardhandle = cardfull.find('.card__full-handle');
   var cardinfo = cardfull.find('.card__full-info');
+
   var w     = $(window);
   
   var data = [
     {
-      num: 9,
-      handle: '@tonyromo',
-      info: 'This is some info about the player and sports.'
+      num: 'Commentary',
+      info: 'You are now listening to commentary.'
     },
     {
-      num: 18,
-      handle: '@tombrady',
-      info: 'This is some info about the player and sports.'
+      num: 'Configuration',
+      info: 'Settings info goes here.'
     },
     {
-      num: 12,
-      handle: '@aaronrogers',
-      info: 'This is some info about the player and sports.'
+      num: 'Data',
+      info: 'Data for the widget goes here.'
     }
     
   ];
@@ -362,7 +365,7 @@ body {
   var updateData = function(index) {
     cardnum.text(data[index].num);
     
-    cardinfo.text(data[index].info);
+    //cardinfo.text(data[index].info);
   };
   
   var bindActions = function() {
@@ -399,9 +402,9 @@ Cards.init();
                 <md-icon class="ion-clipboard digin-widget-toolbar-icon"></md-icon>
             </md-button> -->
 
-<div class="view">
+<div class="view" plumb-item>
   <div class="card__full">
-    <div class="card__full-top">
+    <div class="card__full-top" >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path d="M16.59 8.59l-4.59 4.58-4.59-4.58-1.41 1.41 6 6 6-6z"/>
           <path d="M0 0h24v24h-24z" fill="none"/>
@@ -410,35 +413,37 @@ Cards.init();
     </div>
     <div class="card__full-bottom">
       <p class="card__full-handle"></p>
-      <p class="card__full-info"></p>
+      <!-- <div ng-include src="'views/ViewDataHnbClaims.html'" ></div> -->
+      <div ng-include src="dataViewPath" ></div>
+      
     </div>
   </div>
   <ul class="card__list">
-    <li class="card__item card__item--blue">
+    <li class="card__item card__item--blue" ng-click="commentary(widget)">
       <div class="card__info">
         <div class="info-player">
-          <p class="info-player__num">9</p>
-          <p class="info-player__name"><small>Tony</small><br>Romo</p>
+          <p class="info-player__num"><md-icon class="ion-volume digin-widget-toolbar-icon" style="height:48px;width:48px"></md-icon></p>
+          <div class="info-player__name">Commentary</div>
         </div>
-        <div class="info-place">1<sup>st</sup></div>
+        
       </div>
     </li>
-    <li class="card__item card__item--purple">
+    <li class="card__item card__item--purple" ng-click="showAdvanced($event,widget)">
       <div class="card__info">
         <div class="info-player">
-          <p class="info-player__num">18</p>
-          <p class="info-player__name"><small>Tom</small><br>Brady</p>
+          <p class="info-player__num"><md-icon class="ion-gear-b digin-widget-toolbar-icon" style="height:48px;width:48px"></p>
+          <div class="info-player__name">Configuration</div>
         </div>
-        <div class="info-place">2<sup>nd</sup></div>
+       
       </div>
     </li>
-    <li class="card__item card__item--green">
+    <li class="card__item card__item--green" ng-click="showData(widget,$event)">
       <div class="card__info">
         <div class="info-player">
-          <p class="info-player__num">12</p>
-          <p class="info-player__name"><small>Aaron</small><br>Rogers</p>
+          <p class="info-player__num"><md-icon class="ion-clipboard digin-widget-toolbar-icon" style="height:48px;width:48px"></p>
+          <div class="info-player__name">Data</div>
         </div>
-        <div class="info-place">3<sup>rd</sup></div>
+        
       </div>
     </li>
   </ul>

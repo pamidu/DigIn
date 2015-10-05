@@ -154,26 +154,6 @@ routerApp.controller('DashboardCtrl', ['$scope',
     }
 ]);
 
-function widgetSettingsCtrl($scope, $mdDialog, wid, $http){
-    $scope.showData = function (widget, ev) {
-            $mdDialog.show({
-                    controller: eval(widget.dataCtrl),
-                    templateUrl: 'views/' + widget.dataView + '.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    locals: {
-                        wid: widget
-                    }
-                })
-                .then(function () {
-                    //$mdDialog.hide();
-                }, function () {
-                    //$mdDialog.hide();
-                });
-        };
-}
-
-
 function hnbClaimsCtrl($scope, $mdDialog, wid, $http) {
     $scope.arr = [];
     $scope.closeDialog = function () {
@@ -184,6 +164,8 @@ function hnbClaimsCtrl($scope, $mdDialog, wid, $http) {
     $http.get('jsons/hnbForceData.json').success(function (data) {
 
         $scope.arr = data;
+
+        console.log("hnb distributed claims json");
         console.log($scope.arr);
     });
 
@@ -194,13 +176,14 @@ function hnbClaimsCtrl($scope, $mdDialog, wid, $http) {
 function hnbDistributedCtrl($scope, $mdDialog, wid, $http) {
     $scope.arr = [];
     $scope.closeDialog = function () {
+        alert("close Dialog");
         $mdDialog.hide();
     };
-
 
     $http.get('jsons/hnbDistributedclaims.json').success(function (data) {
         console.log(JSON.stringify(data));
         $scope.arr = data;
+
         console.log($scope.arr);
     });
 };

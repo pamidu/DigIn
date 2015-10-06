@@ -16,7 +16,7 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
     'directivelibrary',
     'ngMdIcons',
      'nvd3',
-     'gridster', 'lk-google-picker', 'servicess'
+     'gridster', 'lk-google-picker', 'servicess','ngSanitize','ngCsv'
 ])
 
 routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider) {

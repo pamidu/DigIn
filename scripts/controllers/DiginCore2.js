@@ -15,9 +15,66 @@
 */
 routerApp.controller('widgetSettingsCtrl', ['$scope',
 
-    '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log',
-    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log) {
+    '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log','$http',
+    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http) {
 
+        $http.get('jsons/hnbDistributedclaims.json').success(function (data) {
+            console.log('['+JSON.stringify(data)+']');
+            $scope.arr = data;
+
+            console.log($scope.arr);
+        });
+
+    //     $scope.json2csv = [{
+    //   id: 1,
+    //   primerNombre: 'Juan',
+    //   segundoNombre: 'Mario',
+    //   primerApellido: 'Perez',
+    //   segundoApellido: 'Maldonado',
+    //   fechaNacimiento: '23-12-1985'
+    // }, {
+    //   id: 2,
+    //   primerNombre: 'Jorge',
+    //   segundoNombre: 'Alfonzo',
+    //   primerApellido: 'Quinto',
+    //   segundoApellido: 'Marroquin',
+    //   fechaNacimiento: '15-01-1988'
+    // }, {
+    //   id: 3,
+    //   primerNombre: 'Carlos',
+    //   segundoNombre: 'Alberto',
+    //   primerApellido: 'Vargas',
+    //   segundoApellido: 'Martinez',
+    //   fechaNacimiento: '09-03-1990'
+    // }, {
+    //   id: 4,
+    //   primerNombre: 'Mario',
+    //   segundoNombre: 'Alvaro',
+    //   primerApellido: 'Hernadez',
+    //   segundoApellido: 'Morales',
+    //   fechaNacimiento: '23-02-1984'
+    // }, {
+    //   id: 5,
+    //   primerNombre: 'Marlon',
+    //   segundoNombre: 'Federico',
+    //   primerApellido: 'Lopez',
+    //   segundoApellido: 'Padilla',
+    //   fechaNacimiento: '01-03-1976'
+    // }, {
+    //   id: 6,
+    //   primerNombre: 'Daniel',
+    //   segundoNombre: 'Francisco',
+    //   primerApellido: 'Herrera',
+    //   segundoApellido: 'Perdomo',
+    //   fechaNacimiento: '22-03-1989'
+    // }, {
+    //   id: 7,
+    //   primerNombre: 'Cesar',
+    //   segundoNombre: 'Jaime',
+    //   primerApellido: 'Arroche',
+    //   segundoApellido: 'Pedrosa',
+    //   fechaNacimiento: '18-02-1987'
+    // }];
 
         $('#pagePreLoader').hide();
         $scope.test = function () {
@@ -33,6 +90,8 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
 
             console.log("showData");
             console.log( $scope.dataViewPath);
+
+            JSON2CSV();
             
             // $mdDialog.show({
             //         controller: eval($rootScope.widget.dataCtrl),
@@ -49,9 +108,90 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
             //     });
         };
 
+
+        function JSON2CSV() {
+
+            alert("json 2 csv");
+
+            var str = '';
+            var jsonArray = [];
+
+            console.log("$scope.arr");
+            console.log($scope.arr);
+
+            console.log("$scope.arr.children.length");
+            console.log($scope.arr.children.length);
+
+            
+
+            for(var i=0; i< $scope.arr.children.length; i++){
+
+                var obj = {};
+                obj['data1'] = "";
+                obj['data2'] = "";
+                obj['data3'] = "";
+                console.log("child level 1");
+                console.log($scope.arr.children[i].name);
+                //str += $scope.arr.children[i].name;
+                
+                for(var j=0; j< $scope.arr.children[i].children.length; j++){
+                    
+                    console.log("child level 2");
+                    console.log($scope.arr.children[i].children[j].name);
+                    str += $scope.arr.children[i].name + ',' + $scope.arr.children[i].children[j].name;
+                    obj['data1'] = $scope.arr.children[i].name;
+                    obj['data2'] = $scope.arr.children[i].children[j].name;
+                    if( $scope.arr.children[i].children[j].children != undefined){
+                        for(var k=0; k< $scope.arr.children[i].children[j].children.length; k++){
+
+                            console.log("child level 3");
+                            console.log($scope.arr.children[i].children[j].children[k].name);
+                            str += ',' + $scope.arr.children[i].children[j].children[k].name;
+                            obj['data3'] = $scope.arr.children[i].children[j].children[k].name;
+                        }
+                        str += '\n';
+                    }
+                    else{
+                        str += '\n';
+                    }
+                    jsonArray.push(obj);
+                    var obj = {};
+                    obj['data1'] = "";
+                    obj['data2'] = "";
+                    obj['data3'] = "";
+                    
+                }
+                
+                
+            }
+
+            console.log("str");
+            console.log(str);
+            console.log("jsonArray");
+            console.log(jsonArray);
+            
+            $scope.json2csv = jsonArray;
+    
+        }
+        
+// $("#convert").click(function() {
+//     var json = $.parseJSON($("#json").val());
+//     var csv = JSON2CSV(json);
+//     $("#csv").val(csv);
+// });
+    
+// $("#download").click(function() {
+//     var json = $.parseJSON($("#json").val());
+//     var csv = JSON2CSV(json);
+//     window.open("data:text/csv;charset=utf-8," + escape(csv))
+// });
+
         $scope.exportToCSV = function ($http) {
             alert("testing export to csv");
 
+            JSON2CSV();
+            console.log("$scope.json2csv");
+            console.log($scope.json2csv);
 
         };
 

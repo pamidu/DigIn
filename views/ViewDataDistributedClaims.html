@@ -2,7 +2,7 @@
     <md-toolbar class="modal-header" md-theme="teal">
         <h1>Data Explorer</h1>
     </md-toolbar>
-    <md-content style="margin-top:15px;margin-left:15px;">
+    <md-content style="width:400px;height:400px">
         <div layout="column">
        <!--  <div style="width:100px;">{{item.name}}</div>
         <div ng-repeat='child in item.children'>
@@ -57,6 +57,7 @@
         <md-button style="width:200px" ng-click="closeDialog()" class="md-raised">Ok</md-button>
         <md-button style="width:200px" class="md-raised" ng-click="closeDialog()" class=" md-default">Cancel</md-button>
         <!-- <md-button class="md-raised" ng-csv="dataArray" filename="{{fileName}}.csv" field-separator="," ng-click="exportToCSV">Export to CSV</md-button> -->
-        <md-button style="width:200px" class="md-raised" ng-click="exportToCSV()">Export to CSV</md-button>
+        <!-- <md-button style="width:200px" class="md-raised" ng-click="exportToCSV()">Export to CSV</md-button> -->
+        <button type="button" class="btn btn-default" ng-csv="json2csv" filename="Data.csv" charset="utf-8"><span class="glyphicon glyphicon-download-alt">&nbsp;</span>Download CSV</button>
     </div>
 

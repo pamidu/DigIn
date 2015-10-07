@@ -9,8 +9,9 @@
 |      #instagram settings: instaInit                      | 
 |      #d3plugin settings : d3Init                         |
 |      #sltskillwisecall  : sltskillInit                   |
-|      #sltivr settings   : sltivrInit
-|      #adsense settings  : adsenseInit                     |
+|      #sltivr settings   : sltivrInit                     | 
+|      #adsense settings  : adsenseInit                    |
+|      #google cal settings  : calendarInit                |
 ------------------------------------------------------------
 */
 /*summary-
@@ -1670,16 +1671,128 @@ function adsenseInit(widId, $scope, $http, $rootScope, $mdDialog) {
 
 }
 
-function calendarInit(widId, $scope, $http, $rootScope, $mdDialog) {
+function calendarInit(widId, $scope, $http, $rootScope, $mdDialog, $compile, $timeout, uiCalendarConfig) {
+
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+
+    var date = new Date();
+    var d = date.getDate();
+    var m = date.getMonth();
+    var y = date.getFullYear();
+
+    $scope.uiConfig = {
+          calendar:{
+            height: 500,
+            editable: true,
+            header:{
+              left: 'title',
+              center: '',
+              right: 'today prev,next'
+            },
+            eventClick: $scope.alertOnEventClick,
+            eventRender: $scope.eventRender
+          }
+        };
+    $scope.events = [];
+    $rootScope.dashboard.widgets[objIndex].widData = [];
+
+         /* alert on eventClick */
+    $scope.alertOnEventClick = function( date, jsEvent, view){
+        $scope.alertMessage = (date.title + ' was clicked ');
+    };
+   
+    /* Change View */
+    $scope.renderCalender = function(calendar) {
+      $timeout(function() {
+        if(uiCalendarConfig.calendars[calendar]){
+          uiCalendarConfig.calendars[calendar].fullCalendar('render');
+        }
+      });
+    };
+
+    /* Change View */
+    $scope.changeView = function(view,calendar) {
+      uiCalendarConfig.calendars[calendar].fullCalendar('changeView',view);
+    };
+    /* Change View */
+    $scope.renderCalender = function(calendar) {
+      $timeout(function() {
+        if(uiCalendarConfig.calendars[calendar]){
+          uiCalendarConfig.calendars[calendar].fullCalendar('render');
+        }
+      });
+    };
+
+     /* Render Tooltip */
+    $scope.eventRender = function( event, element, view ) {
+        element.attr({'tooltip': event.title,
+                      'tooltip-append-to-body': true});
+        $compile(element)($scope);
+    };
+
+    $scope.authorize = function() {
+        var config = {
+          'client_id': '774419948210-c4k8kdkf235pldvp6g8h8a6mnb58qpfm.apps.googleusercontent.com',
+          'scope': 'https://www.googleapis.com/auth/calendar'
+        };
+        gapi.auth.authorize(config, function() {
+          console.log('login complete');
+          console.log(gapi.auth.getToken());
+        });
+    }
 
     $scope.cancel = function () {
         $mdDialog.hide();
+
     };
 
     $scope.finish = function () {
+        gapi.client.load('calendar', 'v3', listUpcomingEvents);
         $mdDialog.hide();
     };
+
+    function listUpcomingEvents() {
+        var request = gapi.client.calendar.events.list({
+          'calendarId': 'primary',
+          'showDeleted': false,
+          'singleEvents': true,
+          'orderBy': 'startTime'
+        });
+
+        request.execute(function(resp) {
+            var events = resp.items;
+
+            
+            var evObj = [];
+            if (events.length > 0) {
+            for (i = 0; i < events.length; i++) {
+                var obj = {};
+              var event = events[i];
+              var when = event.start.dateTime;
+              if (!when) {
+                when = event.start.date;
+              }
+
+
+              if(typeof event.summary != 'undefined'){
+                obj['title'] = event.summary;
+                obj['start'] = when;
+                evObj.push(obj);
+              }
+              
+            }
+            $rootScope.dashboard.widgets[objIndex].widData.push({events: evObj});
+          } else {
+            
+          }
+         console.log("Calender object retrieved:"+JSON.stringify(evObj));
+        });
 }
+
+
+
+};
+
 
 
 

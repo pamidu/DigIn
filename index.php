@@ -83,7 +83,7 @@
     <head>
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
         <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
-        <link rel="stylesheet" href="bower_components/ionicons/css/ionicons.css">
+        <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
         <link rel="stylesheet" href="styles/css/commonstyle.css">
     </head>
     <body ng-cloak style="background-color:white;">
@@ -95,7 +95,7 @@
                     <img ng-src="styles/css/images/initiallog.png" style="width:100px;" height="60px">
                 </div>
 
-                <form name="loginForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" flex>
+                <form name="loginForm" style="padding:10px 36px;width:100%;" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" flex>
                     <div layout="row">
                         <ng-md-icon icon="account_circle" style="fill: darkgrey;
     padding: 25px 10px;"></ng-md-icon>
@@ -123,9 +123,8 @@
                 <md-button class="md-fab  md-primary" type="submit" style="top: 50%;
     margin-top: -25px;
     position: absolute;
-    margin-left: 500px;">
-                    <ng-md-icon icon="arrow_forward" style="fill: darkgrey;
-    line-height: 70px;"></ng-md-icon>
+    margin-left: 462px;">
+                    <md-icon class="ion-android-arrow-forward" style="fill: darkgrey;margin-bottom:30px;font-size:30px;"></md-icon>
                 </md-button>
                 </form>
             </md-card>

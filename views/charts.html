@@ -6,11 +6,14 @@
         </div>
 -->
 
-    <md-content ng-style="{'height':widget.mheight}" style="overflow:auto;" layout="row" flex>
+    <!-- <md-content ng-style="{'height':widget.mheight}" style="overflow:auto;" layout="row" flex>
         <div style="width: 400px;
     height: 400px;
     overflow: scroll" ng-include src="widget.widView"> 
         </div>
+    </md-content> -->
+    <md-content ng-style="{'height':widget.mheight}" style="overflow:auto;" layout="row" flex>
+        <div style="height:100%;width:100%" ng-include src="widget.widView"></div>
     </md-content>
     <md-toolbar class="digin-widget-toolbar">
         <div class="md-toolbar-tools">

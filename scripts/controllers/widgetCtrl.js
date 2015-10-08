@@ -1682,7 +1682,6 @@ function calendarInit(widId, $scope, $http, $rootScope, $mdDialog, $compile, $ti
 
     $scope.uiConfig = {
           calendar:{
-            height: 500,
             editable: true,
             header:{
               left: 'title',
@@ -1712,6 +1711,7 @@ function calendarInit(widId, $scope, $http, $rootScope, $mdDialog, $compile, $ti
 
     /* Change View */
     $scope.changeView = function(view,calendar) {
+        alert('tset');
       uiCalendarConfig.calendars[calendar].fullCalendar('changeView',view);
     };
     /* Change View */

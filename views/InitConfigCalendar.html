@@ -18,12 +18,8 @@
     </md-toolbar>  
     <md-content layout-margin>
             <div layout="row" layout-align='center start' layout-margin>
-                <md-select placeholder="Account Owner" ng-model="userAccountName" flex>
-                    <md-optgroup label="Account Owner">
-                        <md-option ng-repeat="acc in accounts">{{acc}}</md-option>
-                </md-select>
                 <md-input-container flex>
-                    <md-button class="md-raised" ng-click="authorize()">Button</md-button>
+                    <md-button class="md-raised" ng-click="authorize()">Add Account</md-button>
                 </md-input-container>
             </div>
             <div class="md-actions" layout="row">

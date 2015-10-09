@@ -401,7 +401,7 @@ https://github.com/google/material-design-icons
 }
 .h_iframe {
     position: relative;
-    left: 48px;
+    /*left: 48px;*/
 }
 .h_iframe .ratio {
     display: block;

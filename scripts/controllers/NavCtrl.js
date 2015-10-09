@@ -602,6 +602,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 };
             } else
             if (dashboard.storyboard == false) {
+                $('md-tabs-wrapper').css("display","block");
                 console.log("im a single page");
                 $rootScope.Dashboards = [{
                     culture: dashboard.culture,
@@ -1129,7 +1130,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.currentView = "D3plugins";
                 $(".menu-layer").css("top", "120px");
                 $("starting-point").css("top", "120px");
-                $('md-tabs-wrapper').css("display","none");
+                $('md-tabs-wrapper').css("display","hidden");
 
                 $state.go(routeName)
             }

@@ -78,6 +78,7 @@
 
         </div>
         <!--        main headbar-->
+        <div >
         <div class="main-headbar md-theme-light" layout="row" layout-align="space-between center">
             <div layout="row" layout-align="start center">
                 <!--
@@ -85,8 +86,6 @@
     <ng-md-icon icon="{{navBarIcon}}" style="fill:whitesmoke;"></ng-md-icon>
 </md-button>
 -->
-
-
                 <div style="    width: 35px;
     border-radius: 100%;
     background-color: rgba(255, 255, 255, 0.46);
@@ -109,6 +108,7 @@
                 </div>
 
             </div>
+        </div>
         </div>
 
 
@@ -159,6 +159,7 @@
                 <span></span>
             </div>
         </div>
+        </div>
         <!-- start pulathisi 7/24/2015 -->
         <!-- <div class="overlay-secondary"></div> -->
         <!-- end pulathisi 7/24/2015 -->
@@ -173,134 +174,132 @@
                     </div>
                 </form>
             </div>
-            <div class="results">
-                <div class="row">
-                    <div class="col-md-4" layout="column" layout-align="center center" layout-padding flex="30">
-                        <!--button type="submit" class="btn btn-default" ng-click="GetDshboardDetails()"><i class="ion-search"></i></button---->
-                        <div class="result result-users">
+  <div class="results">
+            <div class="row">
+                <div class="col-md-4" layout="column" layout-align="center center" layout-padding flex="30">
+                    <!--button type="submit" class="btn btn-default" ng-click="GetDshboardDetails()"><i class="ion-search"></i></button---->
+                    <div class="result result-users">
+                        
+                        <h3 style="font-family:inherit;font-weight:300;font-size:23px;">DASHBOARDS <small>({{dashboards.length}})</small></h3>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg' />
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites <small>({{favoriteDashboards.length}})</small></h4>
+                            <ul class="list-material">
+                                <li class="has-action-left" ng-repeat="x in favoriteDashboards | filter:searchText">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left" style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
+                                            <img style="width:35px;height:35px;"  src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg" class="face-radius" alt="">
+                                            <span ng-click="goDashboard(x)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
 
-                            <h3 style="font-family:inherit;font-weight:300;font-size:20px;">DASHBOARDS <small>({{dashboards.length}})</small></h3>
-                            <div class="row">
-                                <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg' />
-                                <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:18px;">Favourites <small>({{favoriteDashboards.length}})</small></h4>
-                                <ul class="list-material">
-                                    <li class="has-action-left" ng-repeat="x in favoriteDashboards | filter:searchText">
-                                        <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
-                                        <a href="#" class="visible">
-                                            <div class="list-action-left" style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
-                                                <img style="width:35px;height:35px;" src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg" class="face-radius" alt="">
-                                                <span ng-click="goDashboard(x)" class="title">{{x.splitName}}</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                            </div>
-                            <div class="row">
-                                <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
-                                <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:18px;">More <small>({{dashboards.length}})</small></h4>
-                                <ul class="list-material" style="height:150px">
-                                    <li class="has-action-left" dir-paginate="x in dashboards | filter:searchText | itemsPerPage: pageSize">
-                                        <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
-                                        <a href="#" class="visible">
-                                            <div class="list-action-left" style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
-                                                <img style="width:35px;height:35px;" src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg" class="face-radius" alt="">
-                                                <span ng-click="goDashboard(x)" class="title">{{x.splitName}}</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <div class="other-controller">
-                                    <div>
-                                        <dir-pagination-controls boundary-links="true" on-page-change="" pagination-id="list1"></dir-pagination-controls>
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More <small>({{dashboards.length}})</small></h4>
+                            <ul class="list-material" style="height:150px">
+                                <li class="has-action-left" dir-paginate="x in dashboards | filter:searchText | itemsPerPage: pageSize" current-page="currentPage" pagination-id="list1">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left" style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
+                                            <img style="width:35px;height:35px;" src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg" class="face-radius" alt="">
+                                            <span ng-click="goDashboard(x)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            
+                            <div class="other-controller">
+                              <div>
+                              <dir-pagination-controls boundary-links="true" on-page-change="" pagination-id="list1"></dir-pagination-controls>
+                              </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4" layout="column" layout-align="center center" layout-padding flex="30">
-                        <div class="result result-posts">
-                            <h3 style="font-family:inherit;font-weight:300;font-size:20px;">REPORTS <small>({{reports.length}})</small></h3>
-                            <div class="row">
-                                <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg' />
-                                <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:18px;">Favourites <small>({{favoriteReports.length}})</small></h4>
-                                <ul class="list-material">
-                                    <li class="has-action-left" ng-repeat="x in favoriteReports |filter:searchText">
-                                        <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
-                                        <a href="#" class="visible">
-                                            <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
-                                                <img style="width:35px;height:35px;" src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg" class="img-radius" alt="">
-                                                <span ng-click="goReport(x.name)" class="title">{{x.splitName}}</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                            </div>
-                            <div class="row">
-                                <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
-                                <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:18px;">More <small>({{reports.length}})</small></h4>
-                                <ul class="list-material" style="height:150px">
-                                    <li class="has-action-left" dir-paginate="x in reports |filter:searchText | itemsPerPage: pageSize" current-page="currentPage" pagination-id="list2">
-                                        <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
-                                        <a href="#" class="visible">
-                                            <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
-                                                <img style="width:35px;height:35px;" src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg" class="img-radius" alt="">
-                                                <span ng-click="goReport(x.name)" class="title">{{x.splitName}}</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <div class="other-controller">
-                                    <div>
-                                        <dir-pagination-controls boundary-links="true" on-page-change="" pagination-id="list2"></dir-pagination-controls>
-                                    </div>
-                                </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="result result-posts">
+                        <h3 style="font-family:inherit;font-weight:300;font-size:23px;">REPORTS <small>({{reports.length}})</small></h3>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg' />
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites <small>({{favoriteReports.length}})</small></h4>
+                            <ul class="list-material">
+                                <li class="has-action-left" ng-repeat="x in favoriteReports |filter:searchText">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
+                                            <img style="width:35px;height:35px;" src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg" class="img-radius" alt="">
+                                            <span ng-click="goReport(x.name)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            
+                        </div>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More <small>({{reports.length}})</small></h4>
+                            <ul class="list-material" style="height:150px">
+                                <li class="has-action-left" dir-paginate="x in reports |filter:searchText | itemsPerPage: pageSize" current-page="currentPage" pagination-id="list2">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
+                                            <img style="width:35px;height:35px;" src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg" class="img-radius" alt="">
+                                            <span ng-click="goReport(x.name)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            
+                            <div class="other-controller">
+                              <div>
+                              <dir-pagination-controls boundary-links="true" on-page-change="" pagination-id="list2"></dir-pagination-controls>
+                              </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4" layout="column" layout-align="center center" layout-padding flex="30">
-                        <div class="result result-posts">
-                            <h3 style="font-family:inherit;font-weight:300;font-size:20px; ">ANALYZER <small>({{analyzers.length}})</small></h3>
-                            <div class="row">
-                                <img style="width:35px;height:35px;margin-top:-8px" src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg' />
-                                <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:18px;">Favourites <small>({{favoriteAnalyzers.length}})</small></h4>
-                                <ul class="list-material">
-                                    <li class="has-action-left" ng-repeat="x in favoriteAnalyzers |filter:searchText">
-                                        <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
-                                        <a href="#" class="visible">
-                                            <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
-                                                <img style="width:35px;height:35px;" src="bower_components/material-design-icons/navigation/svg/production/ic_apps_24px.svg" class="img-radius" alt="">
-                                                <span ng-click="goAnalyzer(x.name)" class="title">{{x.splitName}}</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="row">
-                                <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
-
-                                <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:18px;">More <small>({{analyzers.length}})</small></h4>
-                                <ul class="list-material">
-                                    <li class="has-action-left" ng-repeat="x in analyzers |filter:searchText">
-                                        <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
-                                        <a href="#" class="visible">
-                                            <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
-                                                <img style="width:35px;height:35px;" src="bower_components/material-design-icons/navigation/svg/production/ic_apps_24px.svg" class="img-radius" alt="">
-                                                <span ng-click="goAnalyzer(x.name)" class="title">{{x.splitName}}</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="result result-posts">
+                        <h3 style="font-family:inherit;font-weight:300;font-size:23px; ">ANALYZER <small>({{analyzers.length}})</small></h3>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px" src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg' />
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites <small>({{favoriteAnalyzers.length}})</small></h4>
+                            <ul class="list-material">
+                            <li class="has-action-left" ng-repeat="x in favoriteAnalyzers |filter:searchText">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
+                                            <img style="width:35px;height:35px;" src="bower_components/material-design-icons/navigation/svg/production/ic_apps_24px.svg" class="img-radius" alt="">
+                                            <span ng-click="goAnalyzer(x.name)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
+                        
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More <small>({{analyzers.length}})</small></h4>
+                            <ul class="list-material">
+                            <li class="has-action-left" ng-repeat="x in analyzers |filter:searchText">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
+                                            <img style="width:35px;height:35px;" src="bower_components/material-design-icons/navigation/svg/production/ic_apps_24px.svg" class="img-radius" alt="">
+                                            <span ng-click="goAnalyzer(x.name)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     <div class="layer-container">
         <div ng-repeat="pannel in menuPanels" ng-controller="pannel" class="menu-layer">
             <div ng-if="currentView=='Dashboard' ">

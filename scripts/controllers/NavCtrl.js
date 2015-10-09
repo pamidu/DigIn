@@ -10,6 +10,16 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
            // if(sessionInfo==null) location.href = 'index.php';
         }
 
+        $scope.show_sidebar = function()
+        {
+            document.getElementsByClassName('main-headbar')[0].style.visibility="visible";
+        };
+
+        $scope.hide_sidebar = function()
+        {
+            document.getElementsByClassName('main-headbar')[0].style.visibility="hidden";
+        };
+
         /**
          * Build handler to open/close a SideNav; when animation finishes
          * report completion in console

@@ -1240,7 +1240,9 @@ main {
     background-color: #4285F4;
     position: fixed;
     max-height: 45px;
+    
 }
 md-tabs[md-border-bottom] md-tabs-wrapper {
     background-color: rgba(0, 0, 0, 0.14);
 }
+

@@ -65,7 +65,7 @@
         <script type="text/javascript" src="scripts/fbSDK.js"></script>
         <script type="text/javascript" src="scripts/fbSDK.js"></script>
         <div id="fb-root"></div>
-        <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" style="display:none">
+        <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" style="display:none" ng-mouseover="hide_sidebar()">
             <div class="sidebar-btn-container" style="margin-top:45px;">
                 <md-list>
                     <div ng-click="$parent.navigate(item.title)" ng-repeat="item in menu" style="min-height:30px;height:40px;padding: 0px 10px !important;margin:5px;">
@@ -78,7 +78,7 @@
 
         </div>
         <!--        main headbar-->
-        <div >
+        <div id="mainHeadbar" style="height: 45px; width: 100%;">
         <div class="main-headbar md-theme-light" layout="row" layout-align="space-between center">
             <div layout="row" layout-align="start center">
                 <!--
@@ -98,6 +98,7 @@
                 </div>
                 <!--                <p style="font-size: large;margin: 0px 10px 0px 0px;color:whitesmoke;">Duo Digin</p>-->
             </div>
+            <span ng-click=""></span>
             <div layout="row" layout-align="center center">
                 <div layout="row" ng-click="showUserProfile($event);">
                     <p style="color: whitesmoke;font-size: large;margin: 10px;"> Sajeetharan</p>
@@ -138,7 +139,7 @@
 -->
                         <!--                        end of tab closing button-->
 
-                        <div ui-view layout="column" id="content1">
+                        <div ui-view layout="column" id="content1" ng-mouseleave="show_sidebar()" ng-mouseover="hide_sidebar()">
 
                         </div>
 

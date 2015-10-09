@@ -10,14 +10,22 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
            // if(sessionInfo==null) location.href = 'index.php';
         }
 
+        $( "md-tabs-wrapper").mouseover(function() {
+            document.getElementsByClassName('main-headbar')[0].style.visibility="hidden";
+        });
+
         $scope.show_sidebar = function()
         {
             document.getElementsByClassName('main-headbar')[0].style.visibility="visible";
+            // document.getElementsByClassName('main-headbar')[0].style.height= '45px';
+            // document.getElementsByClassName('main-headbar')[0].style.background = '#4285F4';
+            //document.getElementsByClassName('main-headbar')[0].style.webkit-transition = 'width 2s, height 2s -webkit-transform 2s';
+            // document.getElementsByClassName('main-headbar')[0].style.transition = 'width 2s, height 2s, transform 2s';
         };
 
         $scope.hide_sidebar = function()
         {
-            document.getElementsByClassName('main-headbar')[0].style.visibility="hidden";
+            document.getElementsByClassName('main-headbar')[0].style.visibility="visible";
         };
 
         /**

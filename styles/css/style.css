@@ -1254,3 +1254,10 @@ md-tabs[md-border-bottom] md-tabs-wrapper {
 md-tabs-content-wrapper{
     top:0px !important;
 }
+#footerBar {
+    margin-top: -30px !important;
+}
+md-tab-content{
+    overflow:hidden !important;
+}
+

@@ -111,8 +111,6 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
 
         function JSON2CSV() {
 
-            alert("json 2 csv");
-
             var str = '';
             var jsonArray = [];
 

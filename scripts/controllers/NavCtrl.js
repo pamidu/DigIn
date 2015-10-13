@@ -14,6 +14,17 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             document.getElementsByClassName('main-headbar')[0].style.visibility="hidden";
         });
 
+        $scope.closeAllWidgets = function() {
+            var length = document.getElementsByClassName("ion-close").length;
+            //$rootScope.dashboard.widgets = [];
+            var i;
+            for(i=0; i<length; i++){
+                document.getElementsByClassName("ion-close")[0].click();
+            }
+
+            //$(".dashboard-widgets-close").removeClass("active");            
+        };     
+
         $scope.show_sidebar = function()
         {
             document.getElementsByClassName('main-headbar')[0].style.visibility="visible";
@@ -1090,8 +1101,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         $scope.showAddNewWidgets = function (ev) {
-            //            var selectedMenu = document.getElementsByClassName("menu-layer");
-            //            selectedMenu[0].style.display = 'none';
+            //  var selectedMenu = document.getElementsByClassName("menu-layer");
+            //  selectedMenu[0].style.display = 'none';
             $mdDialog.show({
                 controller: 'WidgetCtrl',
                 templateUrl: 'views/newWidget.html',

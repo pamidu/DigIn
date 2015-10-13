@@ -24,7 +24,7 @@ routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $httpProvider.defaults.headers.common["Content-Type"] = "application/x-www-form-urlencoded";
-    $stateProvider
+    $stateProvider        
         .state('Dashboards', {
             url: "/Dashboards",
             controller: 'DashboardCtrl',

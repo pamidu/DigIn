@@ -1,38 +1,52 @@
 <md-dialog plumb-item style="width:400px">
-   <md-toolbar>
-      <div class="md-toolbar-tools" flex layout="row">
-         <div flex="10">
-            <md-icon class="ion-paintbrush"></md-icon>
-         </div>
-         <div flex="80">
-            <h3>
-               <span> Theme Change </span>
-            </h3>
-         </div>
-         <div flex="10">
-            <md-button ng-click="closeDialog()" aria-label="Close" layout-wrap>
-               <md-icon class="ion-close"></md-icon>
+    <md-content layout="column" layout-padding>
+        <div class="md-toolbar-tools" flex layout="row" layout-align="end center">
+            <p style="color:lightgrey;margin:0px;">Theme Changer</p>
+            <md-button ng-click="closeDialog()">
+                <md-icon style="color:whitesmoke;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
             </md-button>
-         </div>
-      </div>
-   </md-toolbar>
-   <md-content layout-margin>
-      <div layout="row">
-         <md-button style="background-color:#3F51B5" ng-click="changeTheme('alt',0)" class="md-raised md-fab md-mini" aria-label="Use Android">
-          <md-icon class="ion-waterdrop" style="font-size:30px;margin-bottom:8px;padding-right:3px;color:#448AFF"></md-icon>
-         </md-button>
-         <md-button style="background-color:#673AB7" ng-click="changeTheme('alt1',1)" class="md-raised md-fab md-mini" aria-label="Use Android">
-          <md-icon class="ion-waterdrop" style="font-size:30px;margin-bottom:8px;padding-right:3px;color:#FF5252"></md-icon>
-         </md-button>
-         <md-button style="background-color:#4CAF50" ng-click="changeTheme('alt2',2)" class="md-raised md-fab md-mini" aria-label="Use Android">
-          <md-icon class="ion-waterdrop" style="font-size:30px;margin-bottom:8px;padding-right:3px;color:#FFC107"></md-icon>
-         </md-button>
-         <md-button style="background-color:#607D8B" ng-click="changeTheme('alt3',3)" class="md-raised md-fab md-mini" aria-label="Use Android">
-          <md-icon class="ion-waterdrop" style="font-size:30px;margin-bottom:8px;padding-right:3px;color:#009688"></md-icon>
-         </md-button>
-         <md-button style="background-color:#3F51B5" ng-click="changeTheme('default',-1)" class="md-raised md-fab md-mini" aria-label="Use Android">
-          <md-icon class="ion-waterdrop" style="font-size:30px;margin-bottom:8px;padding-right:3px;color:#E91E63"></md-icon>
-         </md-button>
-      </div>
-   </md-content>
-</md-dialog  >
+        </div>
+        <div layout="row" layout-align="center center" layout-wrap>
+            <div flex="30" layout="row" layout-align="center center" style="background-color: #3F51B5;
+    margin: 5px;
+    border-radius: 5px;color:lightgrey;" layout-padding>
+                <md-button style="background-color:rgba(1, 1, 1, 0.16)" ng-click="changeTheme('alt',0)" class="md-fab md-mini" aria-label="Use Android">
+                    <md-icon class="ion-waterdrop" style="font-size:30px;margin-bottom:8px;padding-right:3px;color:#448AFF"></md-icon>
+                </md-button>
+                <p>Primary</p>
+            </div>
+            <div flex="30" layout="row" layout-align="center center" style="background-color: #673AB7;
+    margin: 5px;
+    border-radius: 5px;color:lightgrey;" layout-padding>
+                <md-button style="background-color:rgba(1, 1, 1, 0.16)" ng-click="changeTheme('alt1',1)" class=" md-fab md-mini" aria-label="Use Android">
+                    <md-icon class="ion-waterdrop" style="font-size:30px;margin-bottom:8px;padding-right:3px;color:#FF5252"></md-icon>
+                </md-button>
+                <p>Ambience</p>
+            </div>
+            <div flex="30" layout="row" layout-align="center center" style="background-color: #4CAF50;
+    margin: 5px;
+    border-radius: 5px;color:lightgrey;" layout-padding>
+                <md-button style="background-color:rgba(1, 1, 1, 0.16)" ng-click="changeTheme('alt2',2)" class=" md-fab md-mini" aria-label="Use Android">
+                    <md-icon class="ion-waterdrop" style="font-size:30px;margin-bottom:8px;padding-right:3px;color:#FFC107"></md-icon>
+                </md-button>
+                <p>Greenery</p>
+            </div>
+            <div flex="30" layout="row" layout-align="center center" style="background-color: #607D8B;
+    margin: 5px;
+    border-radius: 5px;color:lightgrey;" layout-padding>
+                <md-button style="background-color:rgba(1, 1, 1, 0.16)" ng-click="changeTheme('alt3',3)" class=" md-fab md-mini" aria-label="Use Android">
+                    <md-icon class="ion-waterdrop" style="font-size:30px;margin-bottom:8px;padding-right:3px;color:#009688"></md-icon>
+                </md-button>
+                <p>Dark</p>
+            </div>
+            <div flex="30" layout="row" layout-align="center center" style="background-color: #3F51B5;
+    margin: 5px;
+    border-radius: 5px;color:lightgrey;" layout-padding>
+                <md-button style="background-color:rgba(1, 1, 1, 0.16)" ng-click="changeTheme('default',-1)" class=" md-fab md-mini" aria-label="Use Android">
+                    <md-icon class="ion-waterdrop" style="font-size:30px;margin-bottom:8px;padding-right:3px;color:#E91E63"></md-icon>
+                </md-button>
+                <p>Prestige</p>
+            </div>
+        </div>
+    </md-content>
+</md-dialog>

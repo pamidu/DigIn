@@ -1,22 +1,27 @@
 var app = angular.module("diginLogin", ['ngMaterial']);
 
-app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', function($scope, $http, $mdToast, $animate) {
-    $scope.login = function() {
-        
+app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', function ($scope, $http, $mdToast, $animate) {
+    $scope.login = function () {
+
         $http({
             method: 'POST',
             url: 'http://104.236.192.147:8080/pentaho/j_spring_security_check',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    transformRequest: function(obj) {
-                        var str = [];
-                        for(var p in obj)
-                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                        return str.join("&");
-                    },
-            data: {j_username: $scope.txtUname, j_password: $scope.txtPwd}
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            transformRequest: function (obj) {
+                var str = [];
+                for (var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            },
+            data: {
+                j_username: $scope.txtUname,
+                j_password: $scope.txtPwd
+            }
 
         }).
-        success(function(data, status) {
+        success(function (data, status) {
             localStorage.setItem('username', $scope.txtUname);
             if (data.match(/Pentaho User Console - Login/g) == null)
                 window.location = "home.html";
@@ -37,7 +42,7 @@ app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', function
                 });
             }
         }).
-        error(function(data, status) {
+        error(function (data, status) {
             alert("Request failed");
 
         });
@@ -47,7 +52,7 @@ app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', function
     };
 }]);
 
-app.config(function($mdThemingProvider, $httpProvider) {
+app.config(function ($mdThemingProvider, $httpProvider) {
     $mdThemingProvider.theme('default')
         .primaryPalette('indigo')
         .accentPalette('orange');

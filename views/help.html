@@ -1,28 +1,17 @@
-<md-dialog plumb-item>
-  <md-toolbar>
-                     <div class="md-toolbar-tools" flex layout="row">
-                      <div flex="5">
-                        <md-icon class="ion-help"></md-icon>
-                      </div>   
-                      <div flex="85">
-                              <h3>
-                                 <span> About DuoDigin </span>
-                              </h3>
-                      </div>                           
-                      <div flex="10">
-                             <md-button  ng-click="closeDialog()"  aria-label="Close" layout-wrap>
-                                   <md-icon class="ion-close"></md-icon>
-                            </md-button>
-                      </div>
-                    </div>
-   </md-toolbar>  
-   <md-content layout-margin>
-      <p> 
-        All-in-one business dashboard solution. Developed and maintained by Duodigin Team</p>
-      </p>
-   
-      <p>
-        For more information visit <a href="http://www.duosoftware.com/">Duosoftware pvt Ltd</a>
-      </p>
-   </md-content>  
-</md-dialog> 
+<md-dialog style="max-width:50vw;">
+    <md-content layout-padding>
+        <div class="md-toolbar-tools" flex layout="row" layout-align="end center">
+            <p style="color:lightgrey;margin:0px;">HELP</p>
+            <md-button ng-click="closeDialog()">
+                <md-icon style="color:whitesmoke;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
+            </md-button>
+        </div>
+        <p>
+            All-in-one business dashboard solution. Developed and maintained by Duodigin Team</p>
+        </p>
+        <br>
+        <p>
+            For more information visit <a href="http://www.duosoftware.com/">Duosoftware pvt Ltd</a>
+        </p>
+    </md-content>
+</md-dialog>

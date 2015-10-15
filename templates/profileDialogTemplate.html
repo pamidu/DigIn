@@ -1,0 +1,47 @@
+<md-dialog style="width:50vw;">
+    <md-content style="height:inherit; overflow:hidden;" layout="z">
+        <!--image + user's name and cover-->
+        <div flex="50" layout="column" layout-align="center center" style="background-image:url({{user.profile_pic}}); background-size:cover; " width="100%" height="100%">
+
+        </div>
+        <!-- user's details-->
+        <div flex="50" layout-wrap>
+            <div class="md-toolbar-tools" flex layout="row" layout-align="end center" style="background-color:#1976D2;">
+                <p style="color:lightgrey;margin:0px;">PROFILE</p>
+                <md-button ng-click="close()">
+                    <md-icon style="color:whitesmoke;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
+                </md-button>
+            </div>
+            <md-list style="background-color:#1976D2;">
+                <md-list-item class="md-2-line">
+                    <!--                    <ng-md-icon style="margin: 10px 0px 10px 10px;fill: #FFFFFF;" icon="person"></ng-md-icon>-->
+                    <md-icon style="color:white;" md-svg-src="styles/css/images/icons/user.svg"></md-icon>
+                    <div style="margin-left: 26px;border-bottom: #B6B6B6 1px solid;color: #727272;" class="md-list-item-text" ng-class="{'md-offset': $index != 0 }">
+                        <h3 style="color: #FFFFFF">{{user.fname}} {{user.lname}} </h3>
+                    </div>
+                </md-list-item>
+                <md-list-item class="md-2-line">
+                    <md-icon md-svg-src="styles/css/images/icons/home.svg"></md-icon>
+                    <div style="margin-left: 26px;border-bottom: #B6B6B6 1px solid;color: #727272;" class="md-list-item-text" ng-class="{'md-offset': $index != 0 }">
+                        <h3 style="color: #FFFFFF">{{user.location}}</h3>
+                        <p style="color:#B6B6B6">Hometown</p>
+                    </div>
+                </md-list-item>
+                <md-list-item class="md-2-line">
+                    <md-icon md-svg-src="styles/css/images/icons/envelope.svg"></md-icon>
+                    <div style="margin-left: 26px;border-bottom: #B6B6B6 1px solid;color: #727272;" class="md-list-item-text" ng-class="{'md-offset': $index != 0 }">
+                        <h3 style="color: #FFFFFF">{{user.email}}</h3>
+                        <p style="color:#B6B6B6"> e-mail </p>
+                    </div>
+                </md-list-item>
+                <md-list-item class="md-2-line">
+                    <md-icon md-svg-src="styles/css/images/icons/phone.svg"></md-icon>
+                    <div style="margin-left: 26px;border-bottom: #B6B6B6 1px solid;color: #727272;" class="md-list-item-text" ng-class="{'md-offset': $index != 0 }">
+                        <h3 style="color: #FFFFFF"> {{user.mobile}}</h3>
+                        <p style="color:#B6B6B6">mobile</p>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </div>
+    </md-content>
+</md-dialog>

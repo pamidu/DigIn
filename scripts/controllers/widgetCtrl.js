@@ -9,8 +9,9 @@
 |      #instagram settings: instaInit                      | 
 |      #d3plugin settings : d3Init                         |
 |      #sltskillwisecall  : sltskillInit                   |
-|      #sltivr settings   : sltivrInit
-|      #adsense settings  : adsenseInit                     |
+|      #sltivr settings   : sltivrInit                     | 
+|      #adsense settings  : adsenseInit                    |
+|      #google cal settings  : calendarInit                |
 ------------------------------------------------------------
 */
 /*summary-
@@ -25,7 +26,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
     fbInterface.getFbLoginState(scope);
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
     //add or remove account from the scope
-    scope.addAccount = function() {
+    scope.addAccount = function () {
         if (fbInterface.state != 'connected')
             fbInterface.loginToFb(scope);
         else
@@ -33,7 +34,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
     };
 
     //cancel config
-    scope.cancel = function() {
+    scope.cancel = function () {
         $mdDialog.hide();
     };
 
@@ -146,7 +147,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
 
 
     //complete config  
-    scope.finish = function() {
+    scope.finish = function () {
         var likeCountArray = [];
         var startingDayStr;
         var dateObj = {
@@ -155,7 +156,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
         }
 
         //getting page likes insights
-        fbInterface.getPageLikesInsight(scope.fbPageModel, dateObj, function(data) {
+        fbInterface.getPageLikesInsight(scope.fbPageModel, dateObj, function (data) {
 
             var likeHistory = fbInterface.getPageLikesObj(data);
             scope.chartConf.series[0].data = likeHistory.likeArr;
@@ -170,7 +171,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
         });
 
         //getting page views insights
-        fbInterface.getPageViewsInsight(scope.fbPageModel, dateObj, function(data) {
+        fbInterface.getPageViewsInsight(scope.fbPageModel, dateObj, function (data) {
 
             var viewHistory = fbInterface.getPageLikesObj(data);
             scope.chartConfView.series[0].data = viewHistory.likeArr;
@@ -194,9 +195,9 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
 
 
     //selecting pages  
-    scope.changePage = function() {
+    scope.changePage = function () {
         //get page data on change
-        fbInterface.getPageData(scope, function(data) {
+        fbInterface.getPageData(scope, function (data) {
             scope.pageData = data;
             // $rootScope.dashboard.widgets[objIndex].widData = data;
         });
@@ -214,7 +215,7 @@ function linkedInit(scope, $mdDialog, widId, $rootScope) {
     linkedinInterface.getLinkedinState(scope);
 
     //add or remove account from the scope
-    scope.addAccount = function() {
+    scope.addAccount = function () {
         if (!linkedinInterface.state)
             linkedinInterface.loginToLinkedin(scope);
         else
@@ -222,13 +223,13 @@ function linkedInit(scope, $mdDialog, widId, $rootScope) {
     };
 
     //cancel config
-    scope.cancel = function() {
+    scope.cancel = function () {
         $mdDialog.hide();
     };
 
     //complete config  
-    scope.finish = function() {
-        linkedinInterface.getUserAccountOverview(scope, function(data) {
+    scope.finish = function () {
+        linkedinInterface.getUserAccountOverview(scope, function (data) {
             var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
             $rootScope.dashboard.widgets[objIndex].widData = data;
         });
@@ -240,10 +241,10 @@ function TwitterInit($scope, $http, $mdDialog, widId, $rootScope, $q, twitterSer
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     };
-    $scope.finish = function() {
+    $scope.finish = function () {
 
         // twitterService.initialize();
         $mdDialog.hide();
@@ -255,11 +256,11 @@ function TwitterInit($scope, $http, $mdDialog, widId, $rootScope, $q, twitterSer
     twitterService.initialize();
 
     //using the OAuth authorization result get the latest 20 tweets from twitter for the user
-    $scope.refreshTimeline = function(maxId) {
-        twitterService.getLatestTweets(maxId).then(function(data) {
+    $scope.refreshTimeline = function (maxId) {
+        twitterService.getLatestTweets(maxId).then(function (data) {
             $rootScope.tweets = $rootScope.tweets.concat(data);
 
-        }, function() {
+        }, function () {
             $scope.rateLimitError = true;
         });
 
@@ -268,12 +269,12 @@ function TwitterInit($scope, $http, $mdDialog, widId, $rootScope, $q, twitterSer
     }
 
     //when the user clicks the connect twitter button, the popup authorization window opens
-    $scope.connectButton = function() {
-        twitterService.connectTwitter().then(function() {
+    $scope.connectButton = function () {
+        twitterService.connectTwitter().then(function () {
             if (twitterService.isReady()) {
                 //if the authorization is successful, hide the connect button and display the tweets
 
-                $('#connectButton').fadeOut(function() {
+                $('#connectButton').fadeOut(function () {
                     $('#getTimelineButton, #signOut').fadeIn();
 
                     $scope.connectedTwitter = true;
@@ -286,14 +287,14 @@ function TwitterInit($scope, $http, $mdDialog, widId, $rootScope, $q, twitterSer
     }
 
     //sign out clears the OAuth cache, the user will have to reauthenticate when returning
-    $scope.signOut = function() {
+    $scope.signOut = function () {
         twitterService.clearCache();
         $rootScope.tweets.length = 0;
 
-        $('#getTimelineButton, #signOut').fadeOut(function() {
+        $('#getTimelineButton, #signOut').fadeOut(function () {
             $('#connectButton').fadeIn();
 
-            $scope.$apply(function() {
+            $scope.$apply(function () {
                 $scope.connectedTwitter = false
             })
         });
@@ -316,10 +317,10 @@ function analyticsInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     };
-    $scope.finish = function() {
+    $scope.finish = function () {
         $mdDialog.hide();
     };
 
@@ -390,7 +391,7 @@ function analyticsInit($scope, $http, $mdDialog, widId, $rootScope) {
     }];
 
     // if a report is ready
-    $rootScope.$on('$gaReportSuccess', function(e, report, element) {
+    $rootScope.$on('$gaReportSuccess', function (e, report, element) {
 
     });
 
@@ -408,10 +409,10 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     };
-    $scope.finish = function() {
+    $scope.finish = function () {
         init();
         $mdDialog.hide();
     };
@@ -425,24 +426,24 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
 
     }
 
-    $scope.launch = function(id, title) {
+    $scope.launch = function (id, title) {
         VideosService.launchPlayer(id, title);
         VideosService.archiveVideo(id, title);
         VideosService.deleteVideo($scope.upcoming, id);
         $log.info('Launched id:' + id + ' and title:' + title);
     };
 
-    $scope.queue = function(id, title) {
+    $scope.queue = function (id, title) {
         VideosService.queueVideo(id, title);
         VideosService.deleteVideo($scope.history, id);
         $log.info('Queued id:' + id + ' and title:' + title);
     };
 
-    $scope.delete = function(list, id) {
+    $scope.delete = function (list, id) {
         VideosService.deleteVideo(list, id);
     };
 
-    $scope.search = function() {
+    $scope.search = function () {
         //alert("Hello you hit the search function");
 
         $http.get('https://www.googleapis.com/youtube/v3/search', {
@@ -456,19 +457,19 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
                 }
 
             })
-            .success(function(data) {
+            .success(function (data) {
                 VideosService.listResults(data);
                 $rootScope.dashboard.widgets[objIndex].widData = data;
                 $mdDialog.hide();
 
             })
-            .error(function() {
+            .error(function () {
                 $log.info('Search error');
             });
 
     }
 
-    $scope.tabulate = function(state) {
+    $scope.tabulate = function (state) {
 
         $scope.playlist = state;
     }
@@ -478,9 +479,9 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
 //new elastic controller
 function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout) {
 
-    $scope.filterAttributes = ['Sum','Average','Percentage','Count'];
+    $scope.filterAttributes = ['Sum', 'Average', 'Percentage', 'Count'];
 
-    $scope.datasources = ['DuoStore', 'CSV/Excel', 'Rest/SOAP Service','SpreadSheet']; //temporary
+    $scope.datasources = ['DuoStore', 'CSV/Excel', 'Rest/SOAP Service', 'SpreadSheet']; //temporary
     $scope.storeIndex = 'com.duosoftware.com';
     $scope.widgetValidity = 'elasticValidation'; //validation message visibility                                             
     $scope.query = {};
@@ -490,9 +491,33 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     $scope.dataIndicator = false;
     $scope.categoryVal = "";
     $scope.mappedArray = {};
-    $scope.chartTypes = [{name:"Area",type:"area"},{name:"Smooth area",type:"areaspline"},{name:"Line",type:"line"},{name:"Smooth line",type:"spline"},{name:"Column",type:"column"},{name:"Bar",type:"bar"},{name:"Pie",type:"pie"},{name:"Scatter",type:"scatter" }];
+    $scope.chartTypes = [{
+        name: "Area",
+        type: "area"
+    }, {
+        name: "Smooth area",
+        type: "areaspline"
+    }, {
+        name: "Line",
+        type: "line"
+    }, {
+        name: "Smooth line",
+        type: "spline"
+    }, {
+        name: "Column",
+        type: "column"
+    }, {
+        name: "Bar",
+        type: "bar"
+    }, {
+        name: "Pie",
+        type: "pie"
+    }, {
+        name: "Scatter",
+        type: "scatter"
+    }];
     $scope.seriesArray = [{
-        name: 'Selected series',
+        name: 'series1',
         serName: '',
         type: 'area',
         color: ''
@@ -515,18 +540,18 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     client.getClasses($scope.storeIndex);
 
     //classes retrieved
-    client.onGetMany(function(data) {
+    client.onGetMany(function (data) {
         if (data.length > 0) $scope.objClasses = data;
         else console.log('There are no classes present');
     });
 
     //error getting classes from the index
-    client.onError(function(data) {
+    client.onError(function (data) {
         console.log('Error getting classes');
     });
 
     //check for selected classes
-    $scope.getFields = function() {
+    $scope.getFields = function () {
         $scope.selectedFields = [];
         if ($scope.datasource == "DuoStore") {
             if ($scope.selectedClass != null) {
@@ -535,9 +560,9 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 client1.getFields($scope.storeIndex, $scope.indexType);
 
                 //class's fields retrieved
-                client1.onGetMany(function(data) {
+                client1.onGetMany(function (data) {
                     if (data.length > 0) {
-                        data.forEach(function(entry) {
+                        data.forEach(function (entry) {
                             $scope.selectedFields.push({
                                 name: entry,
                                 checked: false
@@ -551,7 +576,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 });
 
                 //error getting fields from the class
-                client1.onError(function(data) {
+                client1.onError(function (data) {
                     console.log('Error getting fields');
                 });
             } else {
@@ -566,10 +591,10 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
             var obj = jsonArray[0];
             for (var j in obj) {
-                 $scope.selectedFields.push({
-                                name: j,
-                                checked: false
-                            });
+                $scope.selectedFields.push({
+                    name: j,
+                    checked: false
+                });
             }
 
             $scope.toggleTab(1);
@@ -578,7 +603,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
 
     //selects fields for non-queried data retrieval
-    $scope.toggleCheck = function(index) {
+    $scope.toggleCheck = function (index) {
         if ($scope.checkedFields.indexOf(index) === -1) {
             $scope.checkedFields.push(index);
         } else {
@@ -586,7 +611,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         }
     };
 
-    $scope.getData = function() {
+    $scope.getData = function () {
         var w = new Worker("scripts/webworkers/elasticWorker.js");
         var parameter = '';
 
@@ -604,11 +629,61 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             }
 
             $scope.dataIndicator = true;
-            if($scope.datasource == "DuoStore")
-            {
-            w.postMessage($scope.indexType + "," + parameter + "," + $scope.query.state);
-            w.addEventListener('message', function(event) {
-                var obj = JSON.parse(event.data);
+            if ($scope.datasource == "DuoStore") {
+                w.postMessage($scope.indexType + "," + parameter + "," + $scope.query.state);
+                w.addEventListener('message', function (event) {
+                    var obj = JSON.parse(event.data);
+                    console.log(JSON.stringify(obj));
+                    $scope.dataIndicator = false;
+
+                    //creating the array to map dynamically
+                    $scope.arrayAttributes = [];
+                    for (var key in obj[0]) {
+                        if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
+                            var val = obj[0][key];
+                            console.log(key);
+                            $scope.mappedArray[key] = {
+                                name: key,
+                                data: [],
+                                unique: 0,
+                                isNaN: true
+                            };
+                            $scope.arrayAttributes.push(key);
+                        }
+                    }
+
+                    //mapping the dynamically created array
+                    for (i = 0; i < obj.length; i++) {
+                        for (var key in obj[i]) {
+                            if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
+                                var val = obj[i][key];
+                                var parsedVal = parseFloat(val);
+                                if (!isNaN(parsedVal)) {
+                                    $scope.mappedArray[key].data.push(parsedVal);
+                                    $scope.mappedArray[key].isNaN = false;
+                                } else {
+                                    $scope.mappedArray[key].data.push(val);
+                                }
+                            }
+                        }
+                    }
+
+                    //getting the unique score to determine the hierarchy
+                    for (var key in $scope.mappedArray) {
+                        if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
+                            if ($scope.mappedArray[key].isNaN) {
+                                $scope.mappedArray[key].unique = Enumerable.From($scope.mappedArray[key].data).Select().Distinct().ToArray().length;
+                            }
+                        }
+                    }
+
+                    $scope.toggleTab(2);
+
+                });
+
+                $scope.widgetValidity = 'fade-out';
+            } else if ($scope.datasource == "CSV/Excel") {
+                var obj = JSON.parse($rootScope.json_string);
                 console.log(JSON.stringify(obj));
                 $scope.dataIndicator = false;
 
@@ -638,64 +713,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                                 $scope.mappedArray[key].data.push(parsedVal);
                                 $scope.mappedArray[key].isNaN = false;
                             } else {
-                                $scope.mappedArray[key].data.push(val);
-                            }
-                        }
-                    }
-                }
-
-                //getting the unique score to determine the hierarchy
-                for (var key in $scope.mappedArray) {
-                    if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
-                        if ($scope.mappedArray[key].isNaN) {
-                            $scope.mappedArray[key].unique = Enumerable.From($scope.mappedArray[key].data).Select().Distinct().ToArray().length;
-                        }
-                    }
-                }
-
-                $scope.toggleTab(2);
-
-            });
-
-            $scope.widgetValidity = 'fade-out';
-        }
-       else if ($scope.datasource == "CSV/Excel") {
-               var obj = JSON.parse($rootScope.json_string);
-                console.log(JSON.stringify(obj));
-                $scope.dataIndicator = false;
-
-                //creating the array to map dynamically
-                $scope.arrayAttributes = [];
-                for (var key in obj[0]) {
-                    if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
-                        var val = obj[0][key];
-                        console.log(key);
-                        $scope.mappedArray[key] = {
-                            name: key,
-                            data: [],
-                            unique: 0,
-                            isNaN: true
-                        };
-                        $scope.arrayAttributes.push(key);
-                    }
-                }
-
-                //mapping the dynamically created array
-                for (i = 0; i < obj.length; i++) {
-                    for (var key in obj[i]) {
-                        if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
-                            var val = obj[i][key];
-                            var parsedVal = parseFloat(val);
-                            if (!isNaN(parsedVal)) 
-                            {
-                                $scope.mappedArray[key].data.push(parsedVal);
-                                $scope.mappedArray[key].isNaN = false;
-                            } 
-                            else 
-                            {
-                                if(typeof $scope.mappedArray[key] != 'undefined')
-                                {
-                                     $scope.mappedArray[key].data.push(val);
+                                if (typeof $scope.mappedArray[key] != 'undefined') {
+                                    $scope.mappedArray[key].data.push(val);
                                 }
                             }
                         }
@@ -713,7 +732,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
                 $scope.toggleTab(2);
 
-        }
+            }
 
         } else {
             if ($scope.query.state) $scope.validationMessage = "Please add a query for data retrieval";
@@ -724,62 +743,66 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
 
     //builds the chart
-   $scope.buildchart = function(widget) {
+    $scope.buildchart = function (widget) {
         widget.chartSeries = [];
-        widget.highchartsNG.xAxis = {};
-        widget.highchartsNG.yAxis = {};
 
-        if($scope.chartCategory.groupField!=''){
+        if ($scope.chartCategory.groupField != '') {
             $scope.widgetValidity = 'fade-out';
-            if($scope.seriesArray[0].serName != ''){
-               if($scope.query.drilled){
-                  if($scope.chartCategory.drilledField != ''){
-                    $scope.orderByDrilledCat(widget);
+            if ($scope.seriesArray[0].serName != '') {
+                if ($scope.query.drilled) {
+                    if ($scope.chartCategory.drilledField != '') {
+                        $scope.orderByDrilledCat(widget);
+                        $mdDialog.hide();
+                        $scope.widgetValidity = 'fade-out';
+                    } else {
+                        $scope.validationMessage = "Please select the category to drill-down from";
+                        $scope.widgetValidity = 'fade-in';
+                    }
+                } else {
+                    $scope.orderByCat(widget);
                     $mdDialog.hide();
                     $scope.widgetValidity = 'fade-out';
-                  }else{
-                    $scope.validationMessage = "Please select the category to drill-down from";
-                    $scope.widgetValidity = 'fade-in';
-                  }                  
-                }else{
-                  var orderedConfig = $scope.orderByCat(widget);                 
-                  $mdDialog.hide();
-                  $scope.widgetValidity = 'fade-out';
                 }
-            }
-            else{
+            } else {
                 $scope.validationMessage = "Please select a series";
                 $scope.widgetValidity = 'fade-in';
-            }          
-        }else{
+            }
+        } else {
             $scope.validationMessage = "Please select a category";
             $scope.widgetValidity = 'fade-in';
         }
     }
 
     //order by category
-    $scope.orderByCat = function(widget){
+    $scope.orderByCat = function (widget) {
         var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
         var orderedObjArray = [];
-        
-        for(i=0;i<$scope.seriesArray.length;i++){
+
+        for (i = 0; i < $scope.seriesArray.length; i++) {
             var serMappedData = eval('$scope.mappedArray.' + $scope.seriesArray[i].serName + '.data');
             var catMappedData = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data');
 
             var orderedArrayObj = {};
             var orderedObj = {};
             var data = [];
-            for(k=0;k<cat.length;k++){
-                orderedObj[cat[k]] = 0;
+            for (k = 0; k < cat.length; k++) {
+                orderedObj[cat[k]] = {
+                    val: 0,
+                    count: 0
+                };
             }
 
-            for(j=0;j<serMappedData.length;j++){
-                orderedObj[catMappedData[j]] += serMappedData[j];
-            }
+            $scope.filtering.calculate(orderedObj, catMappedData, serMappedData);
+            // for(j=0;j<serMappedData.length;j++){
+            //     orderedObj[catMappedData[j]] += serMappedData[j];
+            // }
 
             for (var key in orderedObj) {
                 if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
-                    data.push(orderedObj[key]);
+                    data.push({
+                        name: key,
+                        y: orderedObj[key].val
+                    });
                 }
             }
 
@@ -791,45 +814,47 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         }
 
         widget.highchartsNG = {
-        options: {
-            drilldown: {
-            series: [],
-            plotOptions: {
-            series: {
-                borderWidth: 0,
-                dataLabels: {
-                    enabled: true,
+            options: {
+                drilldown: {
+                    series: [],
+                    plotOptions: {
+                        series: {
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true,
+                            }
+                        }
+                    }
                 }
+            },
+            xAxis: {
+                type: 'category'
+            },
+            credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: false
+            },
+            series: orderedObjArray,
+            title: {
+                text: ''
+            },
+            size: {
+                width: 300,
+                height: 220
             }
-        }
-        }
-        },
-        xAxis: {
-            type: 'category'
-        },
-        credits: {
-          enabled: false        
-        },
-        legend: {
-            enabled: false
-        },
-        series: orderedObjArray,
-        title:{text:''},
-        size: {width:300,height:220}
-         };
-
-        widget.highchartsNG.series = orderedObjArray;
-        widget.highchartsNG.xAxis.categories = cat;
-    }
+        };
+    };
 
     //order by category (drilled)
-    $scope.orderByDrilledCat = function(widget){
+    $scope.orderByDrilledCat = function (widget) {
         var drilledSeries = [];
         var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
-        var orderedObjArray = [];       
+        var orderedObjArray = [];
         var drilledCat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.drilledField + '.data')).Select().Distinct().ToArray();
-        
-        for(i=0;i<$scope.seriesArray.length;i++){
+
+        for (i = 0; i < $scope.seriesArray.length; i++) {
             var serMappedData = eval('$scope.mappedArray.' + $scope.seriesArray[i].serName + '.data');
             var catMappedData = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data');
             var drillData = eval('$scope.mappedArray.' + $scope.chartCategory.drilledField + '.data');
@@ -837,49 +862,57 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             var orderedArrayObj = {};
             var orderedObj = {};
             var drilledObj = {};
-            var data = [];           
+            var data = [];
 
-            for(k=0;k<cat.length;k++){
-               
-                orderedObj[cat[k]] = {val:0,arr:[]};
+            for (k = 0; k < cat.length; k++) {
+
+                orderedObj[cat[k]] = {
+                    val: 0,
+                    arr: []
+                };
             }
 
-            for(k=0;k<drilledCat.length;k++){
-                drilledObj[drilledCat[k]] = 0;
+            for (k = 0; k < drilledCat.length; k++) {
+                drilledObj[drilledCat[k]] = {
+                    val: 0,
+                    count: 0
+                };
             }
 
-
-            for(j=0;j<serMappedData.length;j++){
-               
-                orderedObj[catMappedData[j]].val += serMappedData[j];
-                orderedObj[catMappedData[j]].arr.push({val: serMappedData[j], drill: drillData[j]});
-            }
+            $scope.filtering.calculate(orderedObj, catMappedData, serMappedData, drillData);
 
             for (var key in orderedObj) {
                 if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
-                   
-                    var drilledArray = $scope.groupDrilledItems(drilledObj,orderedObj[key].arr);
 
-                   
+                    var drilledArray = $scope.filtering.calculate(orderedObj[key].arr, drilledObj, null, null);
+
                     var drilledSeriesObj = [];
-                    for(var key1 in drilledArray){
-                        if(Object.prototype.hasOwnProperty.call(drilledArray, key1)){
-                            if(drilledArray[key1] > 0)
-                            drilledSeriesObj.push([key1, drilledArray[key1]]);
+                    for (var key1 in drilledArray) {
+                        if (Object.prototype.hasOwnProperty.call(drilledArray, key1)) {
+                            if (drilledArray[key1].val > 0)
+                                drilledSeriesObj.push([key1, drilledArray[key1].val]);
                         }
                     }
 
-                    var test = {id:'',data:[]};
+                    var test = {
+                        id: '',
+                        data: []
+                    };
                     test.id = key;
                     test.data = drilledSeriesObj;
 
                     drilledSeries.push(test);
 
-                    // data.push({name: key, y: orderedObj[key].val, drilldown: key});
-                    data.push(orderedObj[key].val);
+                    data.push({
+                        name: key,
+                        y: orderedObj[key].val,
+                        //changed by sajee 9/19/2015
+                        drilldown: key
+                    });
                 }
             }
-
+            console.log("Drilled series is");
+            console.log(drilledSeries);
             orderedArrayObj["data"] = data;
             orderedArrayObj["name"] = $scope.seriesArray[i].name;
             orderedArrayObj["color"] = $scope.seriesArray[i].color;
@@ -887,105 +920,71 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             orderedObjArray.push(orderedArrayObj);
         }
 
-          widget.highchartsNG = {
-
+        widget.highchartsNG = {
             chart: {
                 type: 'column'
             },
 
-          options: {
-            drilldown: {
-            series: drilledSeries,
             plotOptions: {
-            series: {
-                borderWidth: 0,
-                dataLabels: {
-                    enabled: true,
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                    }
                 }
-            }
-        },
-        }
-        },
-        title: {
+            },
+
+            title: {
                 text: widget.uniqueType
-        },
-        xAxis: {
-            type: 'category'
-        },
-        credits: {
-          enabled: false        
-        },
-        legend: {
-            enabled: false
-        },
-        series: orderedObjArray
-        // title:{text:''},
-        // size: {width:300,height:220}
-         };
-
-
-     //          widget.highchartsNG = {
-     //      chart: {
-     //            type: 'column'
-     //        },
-            
-     //        plotOptions: {
-     //        series: {
-     //            borderWidth: 0,
-     //            dataLabels: {
-     //                enabled: true,
-     //            }
-     //        }
-     //    },
-       
-     //    title: {
-     //            text: widget.uniqueType
-     //    },
-     //    xAxis: {
-     //        type: 'category'
-     //    },
-     //    credits: {
-     //      enabled: false        
-     //    },
-     //    legend: {
-     //        enabled: false
-     //    },
-     //    series: orderedObjArray,
-     //      drilldown: {
-     //        series: drilledSeries,
-     //     },
-     //    title:{text:''},
-     //    size: {width:300,height:220}
-     // }   
-
-        widget.highchartsNG.series = orderedObjArray;
-        widget.highchartsNG.xAxis.categories = cat;
-
+            },
+            xAxis: {
+                type: 'category'
+            },
+            credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: false
+            },
+            series: orderedObjArray,
+            drilldown: {
+                series: drilledSeries,
+            },
+            title: {
+                text: ''
+            },
+            size: {
+                width: 300,
+                height: 220
+            }
+        }
     };
 
 
-    $scope.groupDrilledItems = function(uniqueArray, objArray){
-        for(j=0;j<objArray.length;j++){
-                uniqueArray[objArray[j].drill] += objArray[j].val;
-            }
+    $scope.groupDrilledItems = function (uniqueArray, objArray) {
+        for (j = 0; j < objArray.length; j++) {
+            uniqueArray[objArray[j].drill] += objArray[j].val;
+        }
         return uniqueArray;
     };
 
-    $scope.getDrillArray = function(){       
-        var uniqueScore = eval('$scope.mappedArray.'+$scope.chartCategory.groupField+'.unique');
-        console.log('unique score:'+uniqueScore);
+    //$scope.
+
+    $scope.getDrillArray = function () {
+        var uniqueScore = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.unique');
+        console.log('unique score:' + uniqueScore);
         for (var key in $scope.mappedArray) {
             if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
-               if($scope.mappedArray[key].unique > uniqueScore && $scope.mappedArray[key].unique !=0) 
-                $scope.chartCategory.drilledArray.push($scope.mappedArray[key].name);
+                if ($scope.mappedArray[key].unique > uniqueScore && $scope.mappedArray[key].unique != 0)
+                    $scope.chartCategory.drilledArray.push($scope.mappedArray[key].name);
             }
         }
     };
 
     //adds new series to the chart
-    $scope.addSeries = function() {
+    $scope.addSeries = function () {
         $scope.seriesArray.push({
-            name: 'Selected series',
+            name: 'series1',
             serName: '',
             type: 'area',
             color: '',
@@ -995,11 +994,11 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
 
     //removes the clicked series
-    $scope.removeSeries = function(ind) {
+    $scope.removeSeries = function (ind) {
         $scope.seriesArray.splice(ind, 1);
     }
 
-    $scope.toggleTab = function(ind) {
+    $scope.toggleTab = function (ind) {
         var tabIndex = '';
         if (typeof ind === 'undefined') tabIndex = $scope.selectedTabIndex;
         else tabIndex = ind;
@@ -1030,20 +1029,20 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
     //close the config
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     }
 
-    $scope.filterData = function(c){
-        var filter = eval('new '+c.toUpperCase()+'();');
+    $scope.filterData = function (c) {
+        var filter = eval('new ' + c.toUpperCase() + '();');
         $scope.filtering = new Filtering();
         $scope.filtering.setFilter(filter);
         $scope.seriesAttributes = $scope.filtering.filterFields();
         $scope.widgetValidity = 'fade-out';
     };
 
-    $scope.checkSeriesAvailability = function(){
-        if($scope.seriesAttributes.length==0){
+    $scope.checkSeriesAvailability = function () {
+        if ($scope.seriesAttributes.length == 0) {
             $scope.validationMessage = "Please check the filter you select";
             $scope.widgetValidity = 'fade-in';
         }
@@ -1051,37 +1050,37 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
 
     /* Strategy1 begin */
-    var Filtering = function() {
+    var Filtering = function () {
         this.filter = "";
     };
 
     Filtering.prototype = {
-        setFilter: function(filter) {
+        setFilter: function (filter) {
             this.filter = filter;
         },
-     
-        calculate: function(orderedObj,catMappedData,serMappedData,drillData) {
-            return this.filter.calculate(orderedObj,catMappedData,serMappedData,drillData);
+
+        calculate: function (orderedObj, catMappedData, serMappedData, drillData) {
+            return this.filter.calculate(orderedObj, catMappedData, serMappedData, drillData);
         },
 
-        filterFields: function(){
+        filterFields: function () {
             return this.filter.filterFields();
         }
     };
 
-    var SUM = function() {
-        this.calculate = function(orderedObj,catMappedData,serMappedData,drillData) {
+    var SUM = function () {
+        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
             console.log("calculations... for the sum filter");
-            if(typeof drillData == 'undefined'){
-                for(j=0;j<serMappedData.length;j++){
+            if (typeof drillData == 'undefined') {
+                for (j = 0; j < serMappedData.length; j++) {
                     orderedObj[catMappedData[j]].val += serMappedData[j];
                 }
-            }else if(serMappedData == null){
+            } else if (serMappedData == null) {
                 for (j = 0; j < orderedObj.length; j++) {
                     catMappedData[orderedObj[j].drill].val += orderedObj[j].val;
                 }
                 return catMappedData;
-            }else{
+            } else {
                 for (j = 0; j < serMappedData.length; j++) {
                     orderedObj[catMappedData[j]].val += serMappedData[j];
                     orderedObj[catMappedData[j]].arr.push({
@@ -1092,36 +1091,36 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             }
         }
 
-        this.filterFields = function(){            
+        this.filterFields = function () {
             return getFilteredFields(false);
         }
     };
 
-    var AVERAGE = function() {
-        this.calculate = function(orderedObj,catMappedData,serMappedData,drillData) {
+    var AVERAGE = function () {
+        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
             console.log("calculations... for the average filter");
-            if(typeof drillData == 'undefined'){
-                for(j=0;j<serMappedData.length;j++){
+            if (typeof drillData == 'undefined') {
+                for (j = 0; j < serMappedData.length; j++) {
                     orderedObj[catMappedData[j]].val += serMappedData[j];
                     orderedObj[catMappedData[j]].count += 1;
                 }
-                for(attr in orderedObj){
+                for (attr in orderedObj) {
                     if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
-                        orderedObj[attr].val = Number((orderedObj[attr].val/orderedObj[attr].count).toFixed(2));
+                        orderedObj[attr].val = Number((orderedObj[attr].val / orderedObj[attr].count).toFixed(2));
                     }
                 }
-            }else if(serMappedData == null){
+            } else if (serMappedData == null) {
                 for (j = 0; j < orderedObj.length; j++) {
                     catMappedData[orderedObj[j].drill].val += orderedObj[j].val;
                     catMappedData[orderedObj[j].drill].count += 1;
                 }
-                for(attr in catMappedData){
+                for (attr in catMappedData) {
                     if (Object.prototype.hasOwnProperty.call(catMappedData, attr)) {
-                        catMappedData[attr].val = Number((catMappedData[attr].val/catMappedData[attr].count).toFixed(2));
+                        catMappedData[attr].val = Number((catMappedData[attr].val / catMappedData[attr].count).toFixed(2));
                     }
                 }
                 return catMappedData;
-            }else{
+            } else {
                 for (j = 0; j < serMappedData.length; j++) {
                     orderedObj[catMappedData[j]].val += serMappedData[j];
                     orderedObj[catMappedData[j]].arr.push({
@@ -1129,47 +1128,47 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                         drill: drillData[j]
                     });
                 }
-                for(attr in orderedObj){
+                for (attr in orderedObj) {
                     if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
-                        orderedObj[attr].val = Number((orderedObj[attr].val/orderedObj[attr].arr.length).toFixed(2));
+                        orderedObj[attr].val = Number((orderedObj[attr].val / orderedObj[attr].arr.length).toFixed(2));
                     }
                 }
             }
         }
 
-        this.filterFields = function(){
+        this.filterFields = function () {
             return getFilteredFields(false);
         }
     };
 
-    var PERCENTAGE = function() {
-        this.calculate = function(orderedObj,catMappedData,serMappedData,drillData) {
+    var PERCENTAGE = function () {
+        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
             console.log("calculations... for the prcentage filter");
             var total;
-            if(typeof drillData == 'undefined'){
+            if (typeof drillData == 'undefined') {
                 total = 0;
-                for(j=0;j<serMappedData.length;j++){
+                for (j = 0; j < serMappedData.length; j++) {
                     orderedObj[catMappedData[j]].val += serMappedData[j];
                     total += serMappedData[j];
                 }
-                for(attr in orderedObj){
+                for (attr in orderedObj) {
                     if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
-                        orderedObj[attr].val = Number(((orderedObj[attr].val/total)*100).toFixed(2));
+                        orderedObj[attr].val = Number(((orderedObj[attr].val / total) * 100).toFixed(2));
                     }
                 }
-            }else if(serMappedData == null){
+            } else if (serMappedData == null) {
                 total = 0;
                 for (j = 0; j < orderedObj.length; j++) {
                     catMappedData[orderedObj[j].drill].val += orderedObj[j].val;
                     total += orderedObj[j].val;
                 }
-                for(attr in catMappedData){
+                for (attr in catMappedData) {
                     if (Object.prototype.hasOwnProperty.call(catMappedData, attr)) {
-                        catMappedData[attr].val = Number(((catMappedData[attr].val/total)*100).toFixed(2));
+                        catMappedData[attr].val = Number(((catMappedData[attr].val / total) * 100).toFixed(2));
                     }
                 }
                 return catMappedData;
-            }else{
+            } else {
                 total = 0;
                 for (j = 0; j < serMappedData.length; j++) {
                     orderedObj[catMappedData[j]].val += serMappedData[j];
@@ -1179,32 +1178,32 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                         drill: drillData[j]
                     });
                 }
-                for(attr in orderedObj){
+                for (attr in orderedObj) {
                     if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
-                        orderedObj[attr].val = Number(((orderedObj[attr].val/total)*100).toFixed(2));
+                        orderedObj[attr].val = Number(((orderedObj[attr].val / total) * 100).toFixed(2));
                     }
                 }
             }
         }
 
-        this.filterFields = function(){
+        this.filterFields = function () {
             return getFilteredFields(false);
         }
     };
 
-    var COUNT = function() {
-        this.calculate = function(orderedObj,catMappedData,serMappedData,drillData) {
+    var COUNT = function () {
+        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
             console.log("calculations... for the count filter");
-            if(typeof drillData == 'undefined'){
-                for(j=0;j<serMappedData.length;j++){
+            if (typeof drillData == 'undefined') {
+                for (j = 0; j < serMappedData.length; j++) {
                     orderedObj[catMappedData[j]].val += 1;
                 }
-            }else if(serMappedData == null){
+            } else if (serMappedData == null) {
                 for (j = 0; j < orderedObj.length; j++) {
                     catMappedData[orderedObj[j].drill].val += 1;
                 }
                 return catMappedData;
-            }else{
+            } else {
                 for (j = 0; j < serMappedData.length; j++) {
                     orderedObj[catMappedData[j]].val += 1;
                     orderedObj[catMappedData[j]].arr.push({
@@ -1215,17 +1214,17 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             }
         }
 
-        this.filterFields = function(){
+        this.filterFields = function () {
             return getFilteredFields(true);
         }
     };
 
     //returns the series array according to the filter selected
-    function getFilteredFields(isNaN){
+    function getFilteredFields(isNaN) {
         var objArr = [];
         for (var key in $scope.mappedArray) {
             if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
-                if(!isNaN) !$scope.mappedArray[key].isNaN && objArr.push($scope.mappedArray[key].name);
+                if (!isNaN) !$scope.mappedArray[key].isNaN && objArr.push($scope.mappedArray[key].name);
                 else objArr.push($scope.mappedArray[key].name);
             }
         }
@@ -1233,7 +1232,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
 
 
-/* Strategy1 end */
+    /* Strategy1 end */
 
 };
 
@@ -1355,11 +1354,11 @@ function InitConfigD3($scope, $mdDialog, widId, $rootScope, $sce) {
     });
 
 
-    $scope.trustSrc = function(src) {
+    $scope.trustSrc = function (src) {
 
     }
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     };
 
@@ -1371,18 +1370,18 @@ function InitConfigD3($scope, $mdDialog, widId, $rootScope, $sce) {
 function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     //cancel config
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     };
 
     //complete config  
-    $scope.finish = function() {
+    $scope.finish = function () {
         var wpapi = "http://public-api.wordpress.com/rest/v1/sites/";
         var choice = "/posts";
         var callbackString = '/?callback=JSON_CALLBACK';
 
         var message = $http.jsonp(wpapi + $scope.wpdomain + choice + callbackString).
-        success(function(data, status) {
+        success(function (data, status) {
             var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
             //console.log(JSON.stringify(data));
             var posts = data.posts;
@@ -1412,7 +1411,7 @@ function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
             $rootScope.dashboard.widgets[objIndex].widData = trimmedObj;
             //$rootScope.dashboard.widgets[objIndex].widData = data;
         }).
-        error(function(data, status) {
+        error(function (data, status) {
 
             console.log(message);
         });
@@ -1427,12 +1426,12 @@ function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
     //cancel config
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     };
 
     //complete config  
-    $scope.finish = function(rssAddress) {
+    $scope.finish = function (rssAddress) {
 
 
         $scope.entryArray = [];
@@ -1440,7 +1439,7 @@ function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
         var feed = new google.feeds.Feed(rssAddress);
         feed.setNumEntries(100);
 
-        feed.load(function(result) {
+        feed.load(function (result) {
             if (!result.error) {
 
                 for (var i = 0; i < result.feed.entries.length; i++) {
@@ -1469,12 +1468,12 @@ function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSetting
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
     //cancel config
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     };
 
     //complete config  
-    $scope.finish = function() {
+    $scope.finish = function () {
         $mdDialog.hide();
     };
 
@@ -1482,13 +1481,13 @@ function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSetting
     $rootScope.show = "hello";
 
     // Callback triggered after Picker is shown
-    $scope.onLoaded = function() {
+    $scope.onLoaded = function () {
         //console.log('Google Picker loaded!');
     }
 
     // Callback triggered after selecting files
-    $scope.onPicked = function(docs) {
-        angular.forEach(docs, function(file, index) {
+    $scope.onPicked = function (docs) {
+        angular.forEach(docs, function (file, index) {
             // alert('You have selected: ' + file.id);
             $rootScope.files.push(file);
             $rootScope.dashboard.widgets[objIndex].widData = $rootScope.files;
@@ -1498,7 +1497,7 @@ function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSetting
     }
 
     // Callback triggered after clicking on cancel
-    $scope.onCancel = function() {
+    $scope.onCancel = function () {
         //console.log('Google picker close/cancel!');
     }
 
@@ -1511,7 +1510,7 @@ function gnewsInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     google.load('search', '1');
     //cancel config
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
 
     };
@@ -1519,7 +1518,7 @@ function gnewsInit($scope, $http, $mdDialog, widId, $rootScope) {
     var newsSearch;
 
 
-    $scope.finish = function(text) {
+    $scope.finish = function (text) {
 
 
         var gnewsfeed = document.getElementById('gnewsrequest').value;
@@ -1595,12 +1594,12 @@ function imInit($scope, $http, $rootScope, $mdDialog, widId) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     };
 
     //complete config  
-    $scope.finish = function() {
+    $scope.finish = function () {
         $rootScope.image = $scope.image;
         $rootScope.dashboard.widgets[objIndex].widIm = $rootScope.image;
         // console.log(JSON.stringify($rootScope.image));
@@ -1616,11 +1615,11 @@ function csvInit($scope, $http, $mdDialog, widId, $rootScope) {
     $rootScope.myData = [58.13, 53.98, 67.00, 89.70, 99.00, 13.28, 66.70, 34.98];
     $rootScope.dashboard.widgets[objIndex].widCsc = $rootScope.myData;
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     };
 
-    $scope.finish = function(file) {
+    $scope.finish = function (file) {
 
         $rootScope.csvFile = file;
         // $rootScope.myData = file;
@@ -1637,70 +1636,183 @@ function csvInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 function weatherInit(widId, $scope, $http, $rootscope, $mdDialog) {
     //cancel config
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     };
 
     //complete config  
-    $scope.finish = function() {
+    $scope.finish = function () {
         $http.get('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22' + $scope.locZip + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
 
-        .success(function(data) {
+        .success(function (data) {
 
                 var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
                 $rootScope.dashboard.widgets[objIndex].widData = data.query;
                 $mdDialog.hide();
             })
-            .error(function(err) {
+            .error(function (err) {
                 console.log('Error retrieving markets');
             });
     };
 
 }
 
-function adsenseInit(widId, $scope, $http, $rootScope, $mdDialog){
-    $scope.cancel = function(){
+function adsenseInit(widId, $scope, $http, $rootScope, $mdDialog) {
+    $scope.cancel = function () {
         $mdDialog.hide();
     }
-    
-    $scope.finish = function(){
-        $mdDialog.hide();
-    }
-    $scope.signIn = function(){
-        
-    }
-    
-}
-function calendarInit(widId, $scope, $http, $rootScope, $mdDialog) {
 
-    $scope.cancel = function() {
+    $scope.finish = function () {
+        $mdDialog.hide();
+    }
+    $scope.signIn = function () {
+
+    }
+
+}
+
+function calendarInit(widId, $scope, $http, $rootScope, $mdDialog, $compile, $timeout, uiCalendarConfig) {
+
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+
+    var date = new Date();
+    var d = date.getDate();
+    var m = date.getMonth();
+    var y = date.getFullYear();
+
+    $scope.uiConfig = {
+          calendar:{
+            editable: true,
+            header:{
+              left: 'title',
+              center: '',
+              right: 'today prev,next'
+            },
+            eventClick: $scope.alertOnEventClick,
+            eventRender: $scope.eventRender
+          }
+        };
+    $scope.events = [];
+    $rootScope.dashboard.widgets[objIndex].widData = [];
+
+         /* alert on eventClick */
+    $scope.alertOnEventClick = function( date, jsEvent, view){
+        $scope.alertMessage = (date.title + ' was clicked ');
+    };
+   
+    /* Change View */
+    $scope.renderCalender = function(calendar) {
+      $timeout(function() {
+        if(uiCalendarConfig.calendars[calendar]){
+          uiCalendarConfig.calendars[calendar].fullCalendar('render');
+        }
+      });
+    };
+
+    /* Change View */
+    $scope.changeView = function(view,calendar) {
+        alert('tset');
+      uiCalendarConfig.calendars[calendar].fullCalendar('changeView',view);
+    };
+    /* Change View */
+    $scope.renderCalender = function(calendar) {
+      $timeout(function() {
+        if(uiCalendarConfig.calendars[calendar]){
+          uiCalendarConfig.calendars[calendar].fullCalendar('render');
+        }
+      });
+    };
+
+     /* Render Tooltip */
+    $scope.eventRender = function( event, element, view ) {
+        element.attr({'tooltip': event.title,
+                      'tooltip-append-to-body': true});
+        $compile(element)($scope);
+    };
+
+    $scope.authorize = function() {
+        var config = {
+          'client_id': '774419948210-c4k8kdkf235pldvp6g8h8a6mnb58qpfm.apps.googleusercontent.com',
+          'scope': 'https://www.googleapis.com/auth/calendar'
+        };
+        gapi.auth.authorize(config, function() {
+          console.log('login complete');
+          console.log(gapi.auth.getToken());
+        });
+    }
+
+    $scope.cancel = function () {
+        $mdDialog.hide();
+
+    };
+
+    $scope.finish = function () {
+        gapi.client.load('calendar', 'v3', listUpcomingEvents);
         $mdDialog.hide();
     };
 
-    $scope.finish = function() {
-        $mdDialog.hide();
-    };
+    function listUpcomingEvents() {
+        var request = gapi.client.calendar.events.list({
+          'calendarId': 'primary',
+          'showDeleted': false,
+          'singleEvents': true,
+          'orderBy': 'startTime'
+        });
+
+        request.execute(function(resp) {
+            var events = resp.items;
+
+            
+            var evObj = [];
+            if (events.length > 0) {
+            for (i = 0; i < events.length; i++) {
+                var obj = {};
+              var event = events[i];
+              var when = event.start.dateTime;
+              if (!when) {
+                when = event.start.date;
+              }
+
+
+              if(typeof event.summary != 'undefined'){
+                obj['title'] = event.summary;
+                obj['start'] = when;
+                evObj.push(obj);
+              }
+              
+            }
+            $rootScope.dashboard.widgets[objIndex].widData.push({events: evObj});
+          } else {
+            
+          }
+         console.log("Calender object retrieved:"+JSON.stringify(evObj));
+        });
 }
+
+
+
+};
+
 
 
 
 function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     };
 
-    $scope.finish = function() {
+    $scope.finish = function () {
 
         $mdDialog.hide();
 
     };
 
     var auth2 = {};
-    var helper = (function() {
+    var helper = (function () {
         return {
-            onSignInCallback: function(authResult) {
+            onSignInCallback: function (authResult) {
                 $('#authResult').html('Auth Result:<br/>');
                 for (var field in authResult) {
                     $('#authResult').append(' ' + field + ': ' +
@@ -1732,7 +1844,7 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
             /**
              * Calls the OAuth2 endpoint to disconnect the app for the user.
              */
-            disconnect: function() {
+            disconnect: function () {
                 // Revoke the access token.
                 auth2.disconnect();
             },
@@ -1740,11 +1852,11 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
             /**
              * Gets and renders the list of people visible to this app.
              */
-            people: function() {
+            people: function () {
                 gapi.client.plus.people.list({
                     'userId': 'me',
                     'collection': 'visible'
-                }).then(function(res) {
+                }).then(function (res) {
                     var people = res.result;
                     $('#visiblePeople').empty();
                     $('#visiblePeople').append('<h6>' +
@@ -1756,11 +1868,11 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
                 });
             },
 
-            peoplee: function() {
+            peoplee: function () {
                 gapi.client.plus.people.list({
                     'userId': 'me',
                     'collection': 'visible'
-                }).then(function(res) {
+                }).then(function (res) {
                     var people1 = res.result;
                     $('#followerss').empty();
                     $('#followerss').append('<h6>' +
@@ -1772,11 +1884,11 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
                 });
             },
 
-            peopless: function() {
+            peopless: function () {
                 gapi.client.plus.people.list({
                     'userId': 'me',
                     'collection': 'connected'
-                }).then(function(res) {
+                }).then(function (res) {
                     var peoplee = res.result;
                     $('#connectedPeople').empty();
                     $('#connectedPeople').append('<h6>' +
@@ -1792,11 +1904,11 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
              * Gets and renders the list of activities visible to this app.
              */
 
-            activities: function() {
+            activities: function () {
                 gapi.client.plus.activities.list({
                     'userId': 'me',
                     'collection': 'public'
-                }).then(function(res) {
+                }).then(function (res) {
 
                     var activitiess = res.result;
                     $('#activitylist').empty();
@@ -1809,11 +1921,11 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
             },
 
 
-            organizationsu: function() {
+            organizationsu: function () {
                 gapi.client.plus.people.get({
                     'userId': 'me',
 
-                }).then(function(res) {
+                }).then(function (res) {
 
                     var org = res.result;
                     $('#orglist').empty();
@@ -1824,11 +1936,11 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
                 });
             },
 
-            placestofind: function() {
+            placestofind: function () {
                 gapi.client.plus.people.get({
                     'userId': 'me',
 
-                }).then(function(res) {
+                }).then(function (res) {
 
                     var places = res.result;
                     $('#placelist').empty();
@@ -1840,11 +1952,11 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
             },
 
 
-            followings: function() {
+            followings: function () {
                 gapi.client.plus.people.get({
                     'userId': 'me',
 
-                }).then(function(res) {
+                }).then(function (res) {
 
                     var following = res.result;
                     $('#followinglist').empty();
@@ -1863,10 +1975,10 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
              * Gets and renders the currently signed in user's profile data.
              */
 
-            profile: function() {
+            profile: function () {
                 gapi.client.plus.people.get({
                     'userId': 'me'
-                }).then(function(res) {
+                }).then(function (res) {
                     var profile = res.result;
                     // console.log(profile);
                     $('#profile').empty();
@@ -1887,7 +1999,7 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
                         $('#profile').append(
                             $('<p><img src=\"' + profile.cover.coverPhoto.url + '\"></p>'));
                     }
-                }, function(err) {
+                }, function (err) {
                     var error = err.result;
                     $('#profile').empty();
                     $('#profile').append(error.message);
@@ -1901,7 +2013,7 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
      *
      * @param {boolean} isSignedIn The new signed in state.
      */
-    var updateSignIn = function() {
+    var updateSignIn = function () {
         // console.log('update sign in state');
         if (auth2.isSignedIn.get()) {
             // console.log('signed in');
@@ -1916,8 +2028,8 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
      * This method sets up the sign-in listener after the client library loads.
      */
     function startApp() {
-        gapi.load('auth2', function() {
-            gapi.client.load('plus', 'v1').then(function() {
+        gapi.load('auth2', function () {
+            gapi.client.load('plus', 'v1').then(function () {
                 gapi.signin2.render('signin-button', {
                     scope: 'https://www.googleapis.com/auth/plus.login',
                     fetch_basic_profile: false
@@ -1926,7 +2038,7 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
                     fetch_basic_profile: false,
                     scope: 'https://www.googleapis.com/auth/plus.login'
                 }).then(
-                    function() {
+                    function () {
                         // console.log('init');
                         auth2 = gapi.auth2.getAuthInstance();
                         auth2.isSignedIn.listen(updateSignIn);
@@ -1946,19 +2058,19 @@ function instaInit($scope, $http, $window, instagram, widId, $rootScope, $mdDial
 
 
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     };
 
 
-    $scope.finish = function() {
+    $scope.finish = function () {
         $mdDialog.hide();
     };
 
 
     $scope.message = null;
 
-    var searchByTag = function(tag) {
+    var searchByTag = function (tag) {
 
         //config
         var url = 'https://api.instagram.com/v1/tags/' + tag + '/media/recent';
@@ -1972,7 +2084,7 @@ function instaInit($scope, $http, $window, instagram, widId, $rootScope, $mdDial
             }
             //console.log( 'json request' );
         $http.jsonp(url, config)
-            .success(function(results) {
+            .success(function (results) {
                 var dataLength = results.data.length;
                 var resultData = results.data;
                 if (dataLength > 0) {
@@ -1986,7 +2098,7 @@ function instaInit($scope, $http, $window, instagram, widId, $rootScope, $mdDial
                     $scope.message = "No results.";
                 }
             })
-            .error(function() {
+            .error(function () {
                 $scope.message = "Not found.";
             });
 
@@ -1994,7 +2106,7 @@ function instaInit($scope, $http, $window, instagram, widId, $rootScope, $mdDial
 
     $scope.formData = {};
 
-    $scope.submitForm = function() {
+    $scope.submitForm = function () {
         // console.log( 'submit' );
         // console.log( $scope.formData.tagInput );
         var tag = $scope.formData.tagInput;
@@ -2002,7 +2114,7 @@ function instaInit($scope, $http, $window, instagram, widId, $rootScope, $mdDial
         $scope.message = "Searching Instagram for photos tagged with " + tag;
     };
 
-    $scope.clear = function() {
+    $scope.clear = function () {
         // console.log( 'clear' );
         $scope.formData = {};
         $scope.instaImage = {};
@@ -2012,7 +2124,7 @@ function instaInit($scope, $http, $window, instagram, widId, $rootScope, $mdDial
 
 };
 
-routerApp.controller('sltivrInit', function($scope, $mdDialog, $rootScope) {
+routerApp.controller('sltivrInit', function ($scope, $mdDialog, $rootScope) {
 
     $scope.countTo = 349;
     $scope.countFrom = 0;
@@ -2022,7 +2134,7 @@ routerApp.controller('sltivrInit', function($scope, $mdDialog, $rootScope) {
 
 });
 
-routerApp.controller('sltqueueInit', function($scope, $mdDialog, $rootScope) {
+routerApp.controller('sltqueueInit', function ($scope, $mdDialog, $rootScope) {
 
     $scope.countTo = 234;
     $scope.countFrom = 0;
@@ -2034,10 +2146,10 @@ routerApp.controller('sltqueueInit', function($scope, $mdDialog, $rootScope) {
             type: 'pieChart',
             height: 450,
             donut: true,
-            x: function(d) {
+            x: function (d) {
                 return d.key;
             },
-            y: function(d) {
+            y: function (d) {
                 return d.y;
             },
             showLabels: true,
@@ -2049,10 +2161,10 @@ routerApp.controller('sltqueueInit', function($scope, $mdDialog, $rootScope) {
                     bottom: 5,
                     left: 0
                 },
-                startAngle: function(d) {
+                startAngle: function (d) {
                     return d.startAngle / 2 - Math.PI / 2
                 },
-                endAngle: function(d) {
+                endAngle: function (d) {
                     return d.endAngle / 2 - Math.PI / 2
                 }
             },
@@ -2086,7 +2198,7 @@ routerApp.controller('sltqueueInit', function($scope, $mdDialog, $rootScope) {
     }];
 
 });
-routerApp.controller('sltqueuedetailsInit', function($scope, $mdDialog, $rootScope) {
+routerApp.controller('sltqueuedetailsInit', function ($scope, $mdDialog, $rootScope) {
     $scope.options = {
         chart: {
             type: 'cumulativeLineChart',
@@ -2097,13 +2209,13 @@ routerApp.controller('sltqueuedetailsInit', function($scope, $mdDialog, $rootSco
                 bottom: 60,
                 left: 65
             },
-            x: function(d) {
+            x: function (d) {
                 return d[0];
             },
-            y: function(d) {
+            y: function (d) {
                 return d[1] / 100;
             },
-            average: function(d) {
+            average: function (d) {
                 return d.mean / 100;
             },
 
@@ -2114,7 +2226,7 @@ routerApp.controller('sltqueuedetailsInit', function($scope, $mdDialog, $rootSco
 
             xAxis: {
                 axisLabel: 'X Axis',
-                tickFormat: function(d) {
+                tickFormat: function (d) {
                     return d3.time.format('%m/%d/%y')(new Date(d))
                 },
                 showMaxMin: false,
@@ -2123,7 +2235,7 @@ routerApp.controller('sltqueuedetailsInit', function($scope, $mdDialog, $rootSco
 
             yAxis: {
                 axisLabel: 'Y Axis',
-                tickFormat: function(d) {
+                tickFormat: function (d) {
                     return d3.format('')(d);
                 },
                 axisLabelDistance: 20
@@ -2466,7 +2578,7 @@ routerApp.controller('sltqueuedetailsInit', function($scope, $mdDialog, $rootSco
 
 
 });
-routerApp.controller('sltagentInit', function($scope, $mdDialog, $rootScope) {
+routerApp.controller('sltagentInit', function ($scope, $mdDialog, $rootScope) {
 
     $scope.countTo = 134;
     $scope.countFrom = 0;
@@ -2476,10 +2588,10 @@ routerApp.controller('sltagentInit', function($scope, $mdDialog, $rootScope) {
         chart: {
             type: 'pieChart',
             height: 500,
-            x: function(d) {
+            x: function (d) {
                 return d.key;
             },
-            y: function(d) {
+            y: function (d) {
                 return d.y;
             },
             pie: {
@@ -2521,14 +2633,40 @@ routerApp.controller('sltagentInit', function($scope, $mdDialog, $rootScope) {
     }];
 });
 
+routerApp.directive('formSectionTitle', function () {
+    return {
+        restrict: 'E',
+        template: "<div id='newdiv' layout='row' style='width: 255px; margin-top:8px; margin-left:8px;' flex layout-sm='row'><div flex='25'>	<img src={{catogeryLetter}} style='margin-top:22px;border-radius:20px'/>	</div> <div flex style='margin-top:27px;'>	<label style='font-weight:700'>{{title}} {{catogeryLetter}}</label> </div></div>",
+        scope: {
+            title: '@',
+            catogeryLetter: '='
+        },
+        link: function (scope, element) {
+
+                if (scope.title == "" || scope.title == null) {
+
+                    element.find('#newdiv').attr('hide-sm', '');
+                    //console.log("one of the pic is empty");
+                } else {
+                    scope.catogeryLetter = "styles/css/images/icons/material alperbert/avatar_tile_" + scope.title.charAt(0).toLowerCase() + "_28.png";
+                    element.find('#newdiv').attr('new', '');
+                }
+
+
+
+
+            } //end of link
+    };
+});
+
 function googleMapsInit(widId, $scope, $http, $rootScope, $mdDialog) {
 
-    $scope.finish = function() {
+    $scope.finish = function () {
         $mdDialog.hide();
 
     };
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     };
 
@@ -2537,16 +2675,35 @@ function googleMapsInit(widId, $scope, $http, $rootScope, $mdDialog) {
 function hnbInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 
-    $scope.finish = function() {
+    $scope.finish = function () {
 
         $mdDialog.hide();
 
     };
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     };
 
 
 
 }
+
+function clockInit($scope, $http, $mdDialog, widId, $rootScope) {
+
+
+    $scope.finish = function () {
+
+        $mdDialog.hide();
+
+    };
+
+    $scope.cancel = function () {
+        $mdDialog.hide();
+    };
+
+
+
+}
+
+

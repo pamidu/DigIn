@@ -1,13 +1,17 @@
 <md-content layout-margin flex>
     <div layout="column">
-            <md-card layout-margin flex layout="column" style="border: 1px solid #D8D8D8;box-shadow: 2px 2px 2px rgba(188, 188, 188);background-color: rgb(238, 238, 238);
-    border-radius: 5px;"> 
-                <h4 layout-margin></h4>
-            <md-list-item class="md-3-line" layout-margin flex>
-                <div class="md-list-item-text">
-                   <p id="output"></p>
-                </div>
-            </md-list-item>
-            </md-card>  
+       <div class="span8">
+<md-button  ng-click="changeView('agendaDay', 'myCalendar')">
+                                   AgendaDay
+                        </md-button>
+                        <md-button  ng-click="changeView('agendaWeek', 'myCalendar')">
+                                   AgendaWeek
+                        </md-button> 
+                        <md-button  ng-click="changeView('month', 'myCalendar')">
+                                   Month
+                        </md-button>
+                            <div class="calendar" ng-model="widget.widData" calendar="myCalendar" ui-calendar="uiConfig.calendar"></div>
+
+                    </div>
     </div>
 </md-content>

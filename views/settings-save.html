@@ -1,4 +1,5 @@
 <md-dialog plumb-item>
+    <!--
   <md-toolbar>
                     <div class="md-toolbar-tools"  flex  layout="row">
                       <div flex="10">
@@ -18,19 +19,18 @@
                     </div>
                     
    </md-toolbar>
-   <md-content layout-margin layout="column">
-      <div flex>                
-                 <h4>Are you sure you want to change the settings configurations?</h4>
-      </div>
-      <div class="md-actions"  layout="row" flex>    
-            <md-button ng-click="closeDialog()">
-              No
+-->
+    <md-content layout-margin layout="column">
+        <div flex>
+            <p>Are you sure you want to change the settings configurations?</p>
+        </div>
+        <div class="md-actions" layout="row" flex>
+            <md-button class="md-fab md-mini" styl="background-color: #D33F3F;" ng-click="closeDialog()">
+                <ng-md-icon icon="close" style="fill:whitesmoke"></ng-md-icon>
             </md-button>
-             <md-button ng-click="saveSettingsDetails()">
-             Yes
+            <md-button class="md-fab md-mini md-primary" ng-click="saveSettingsDetails()">
+                <ng-md-icon icon="done" style="fill:whitesmoke"></ng-md-icon>
             </md-button>
-      </div>
+        </div>
     </md-content>
-</md-dialog> 
- 
- 
+</md-dialog>

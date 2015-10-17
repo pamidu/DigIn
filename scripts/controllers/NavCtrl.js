@@ -23,7 +23,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
 
             //$(".dashboard-widgets-close").removeClass("active");            
-        };     
+        };
+
+        //dashboard close widget
+        $scope.dashCloseWidgets = true;     
 
         $scope.show_sidebar = function()
         {
@@ -1130,9 +1133,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             if(dashboard){
                 $( "md-tabs.footer-bar > md-tabs-wrapper" ).children().show();
                 $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","rgba(0, 0, 0, 0.14)" );
+                $scope.dashCloseWidgets = false;
             }else{
                 $( "md-tabs.footer-bar > md-tabs-wrapper" ).children().hide();
                 $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","#ECECEC" );
+                $scope.dashCloseWidgets = true ;
             }
         };
 

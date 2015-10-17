@@ -3,6 +3,7 @@
 | Controllers listed below are here                        |
 ------------------------------------------------------------
 |      DashboardCtrl                                       |
+|      showWidgetCtrl                                      |
 |      ReportCtrl                                          |
 |      analyticsCtrl                                       | 
 |      d3PluginCtrl                                        |
@@ -13,7 +14,13 @@
 |      settingsCtrl                                        |
 ------------------------------------------------------------
 */
+routerApp.controller('showWidgetCtrl', function($scope,$mdDialog, widget){
+    $scope.widget = widget;
 
+    $scope.closeDialog = function () {
+            $mdDialog.hide();
+        };
+});
 routerApp.controller('DashboardCtrl', ['$scope',
 
     '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log',
@@ -21,9 +28,6 @@ routerApp.controller('DashboardCtrl', ['$scope',
 
 
         $('#pagePreLoader').hide();
-        $scope.test = function () {
-            alert("test");
-        };
 
         $scope.widgetSettings = function (widget){
 
@@ -40,6 +44,23 @@ routerApp.controller('DashboardCtrl', ['$scope',
 
         };
 
+        $scope.showWidget = function(ev,wid){
+            //alert(JSON.stringify(wid));
+            $mdDialog.show({
+                    controller: 'showWidgetCtrl',
+                    templateUrl: 'views/ViewShowWidget.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    locals: {
+                        widget: wid
+                    }
+                })
+                .then(function() {
+                    //$mdDialog.hide();
+                }, function() {
+                    //$mdDialog.hide();
+                });
+        };
 
         $scope.showData = function (widget, ev) {
             $mdDialog.show({

@@ -46,7 +46,7 @@ routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$
             templateUrl: "views/realtime.html"
         })
 
-    .state('Digin P Stack', {
+        .state('Digin P Stack', {
             url: "/Digin P Stack",
             controller: 'ExtendedanalyticsCtrl',
             templateUrl: "views/extended-analytics.html"

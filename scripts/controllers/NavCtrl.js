@@ -1195,12 +1195,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             if (routeName == "Digin P Stack") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
+                $scope.currentView = "Digin P Stack";
                 $(".menu-layer").css("top", "240px");
                 $("starting-point").css("top", "240px");
                 $('md-tabs-wrapper').css("display","none");
 
-                $scope.currentView = "Digin P Stack";
-
+                
+               
             }
             if (routeName == "Logout") {
 

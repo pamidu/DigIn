@@ -60,7 +60,7 @@
             <div ng-show="!query.state">
                 <md-subheader class="md-primary">Select Series</md-subheader>            
                 <div layout="row" layout-wrap md-scroll-y flex>
-                    <md-checkbox flex='20' ng-repeat="field in selectedFields" layout="row" ng-click="toggleCheck(field)" style="text-transform:capitalize" aria-label={{field.name}}>
+                    <md-checkbox flex='20' ng-checked="field.checked" ng-repeat="field in selectedFields" layout="row" ng-click="toggleCheck(field)" style="text-transform:capitalize" aria-label={{field.name}}>
                         {{field.name}}
                     </md-checkbox>
                 </div>

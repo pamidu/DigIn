@@ -7,17 +7,13 @@ routerApp.controller('DashboardCtrl', ['$scope',
 
         $('#pagePreLoader').hide();
 
+        
+
         $scope.showData = function(widget) {
             $mdDialog.show({
-                    controller: 'DashboardCtrl',
-                    templateUrl: 'views/D3Plugin/DataPreview.html',
-
-
-                }
-
-
-            )
-
+                controller: 'DashboardCtrl',
+                templateUrl: 'views/D3Plugin/DataPreview.html',
+            })
         }
 
         $scope.convertCSVtoJson = function(src) {
@@ -89,6 +85,7 @@ routerApp.controller('DashboardCtrl', ['$scope',
 
         // init dashboard
         $scope.selectedDashboardId = '1';
+
 
     }
 ])

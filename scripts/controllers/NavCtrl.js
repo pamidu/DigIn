@@ -373,7 +373,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $rootScope.dashboard.dashboardType = "System";
         $rootScope.dashboard.dashboardCulture = "English";
         $rootScope.indexes = [];
-        $scope.currentView = "";
+        $rootScope.currentView = "";
         $scope.ChartType = 'column';
         $scope.count = 0;
         $scope.incremenet = 0;
@@ -500,7 +500,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         function DashboardCtrl($scope) {
-
+$scope.test = 'test';
             $scope.dashboardmenu = [{
                 title: 'Add Widget'
             }];
@@ -1168,7 +1168,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             if (routeName == "D3plugins") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
-                $scope.currentView = "D3plugins";
+                $rootScope.currentView = "D3plugins";
                 $(".menu-layer").css("top", "120px");
                 $("starting-point").css("top", "120px");
                 $scope.manageTabs(false);
@@ -1177,7 +1177,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             if (routeName == "Reports") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
-                $scope.currentView = "Reports";
+                $rootScope.currentView = "Reports";
                 $(".menu-layer").css("top", "120px");
                 $("starting-point").css("top", "120px");                
                 $scope.manageTabs(false);
@@ -1189,12 +1189,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $(".menu-layer").css("top", "160px");
                 $("starting-point").css("top", "160px");
                 $scope.manageTabs(false);
-                $scope.currentView = "Analytics";
+                $rootScope.currentView = "Analytics";
             }
             if (routeName == "RealTime") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
-                $scope.currentView = "RealTime";
+                $rootScope.currentView = "RealTime";
                 $(".menu-layer").css("top", "200px");
                 $("starting-point").css("top", "200px");
                 $scope.manageTabs(false);
@@ -1207,8 +1207,16 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $(".menu-layer").css("top", "240px");
                 $("starting-point").css("top", "240px");
                 $scope.manageTabs(false);
-                $scope.currentView = "Digin P Stack";
-                $state.go(routeName);
+                $rootScope.currentView = "Digin P Stack";
+                $mdDialog.show({
+                controller: 'pStackCtrl',
+                templateUrl: 'views/pStackMenu.html',
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                resolve: {}
+                
+            })
+                //$state.go(routeName);
             }
             if (routeName == "Logout") {
 
@@ -1267,7 +1275,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
-                $scope.currentView = "Grid";
+                $rootScope.currentView = "Grid";
                 $(".menu-layer").css("top", "120px");
                 $("starting-point").css("top", "120px");
 

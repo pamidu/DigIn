@@ -1,0 +1,24 @@
+<md-dialog style="min-width:600px;max-width:70vw;">
+    <md-content>
+        <div class="md-toolbar-tools" flex layout="row" layout-align="end center">
+            <p style="color:lightgrey;margin:0px;">P Stack</p>
+            <md-button ng-click="closeDialog()">
+                <md-icon style="color:whitesmoke;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
+            </md-button>
+        </div>
+        <div>
+            <md-content flex layout="row" layout-wrap>
+                <div layout="row" class="animate-repeat" layout-align="start center" ng-repeat="item in Extendedmenu" style="background-color: {{item.color}};margin:10px;border-radius: 10px;" flex="30" ng-click="doFunction(item.title)">
+                        <div style="background-color: rgba(255, 246, 246, 0.68);
+    border-radius: 100%;
+    "  layout-margin>
+                            <img ng-src="{{item.icon}}" alt="{{item.title}}" style="color:white;width: 100%;padding: 10px;"></md-icon>
+                        </div>
+                        <div layout="column" flex>
+                            <p style="color:whitesmoke;font-size:large;">{{ item.title }}</p>
+                        </div>
+                    </div>
+            </md-content>
+        </div>
+    </md-content>
+</md-dialog>

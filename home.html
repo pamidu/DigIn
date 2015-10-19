@@ -294,7 +294,8 @@
             </div>
         </div>
     <div class="layer-container">
-        <div ng-repeat="pannel in menuPanels" ng-controller="NavCtrl" class="menu-layer">
+        <div ng-repeat="pannel in menuPanels" ng-controller="DashboardCtrl" class="menu-layer">
+        {{test}}
             <div ng-if="currentView=='Dashboard' ">
                 <ul ng-repeat="item in dashboardmenu">
                     <li ng-click="doFunction(item.title)">
@@ -319,8 +320,8 @@
             </div>
            
             <div ng-if="currentView=='Digin P Stack'">
-                <ul ng-repeat="item in Extendedmenu">
-                    <li ng-click="doFunction(item.title)">
+                <ul>
+                    <li ng-repeat="item in Extendedmenu" ng-click="doFunction(item.title)">
                         <a>{{item.title}} </a>
                     </li>
                 </ul>

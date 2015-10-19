@@ -12,6 +12,7 @@
 |      ExtendedDashboardCtrl                               |
 |      summarizeCtrl                                       | 
 |      settingsCtrl                                        |
+|      pStackCtrl                                          | 
 ------------------------------------------------------------
 */
 routerApp.controller('showWidgetCtrl', function($scope,$mdDialog, widget){
@@ -790,3 +791,32 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
         };
     }
     ]);
+
+routerApp.controller('pStackCtrl',function($scope,$mdDialog,$state){
+
+    //p stack menus
+    $scope.Extendedmenu = [{
+            title: 'Analysis Report',
+            color:'#2196F3',
+            icon:'styles/css/images/icons/ic_assignment_24px.svg'
+        }, {
+            title: 'Interactive Report',
+            color:'#FF9800',
+            icon:'styles/css/images/icons/ic_assignment_24px.svg'
+        }, {
+            title: 'Dashboard',
+            color:'#CDDC39',
+            icon:'styles/css/images/icons/ic_assignment_24px.svg'
+        }];
+
+    $scope.closeDialog = function(){
+        $mdDialog.hide();
+    };
+
+    $scope.doFunction = function(name){
+        $state.go(name);
+        $mdDialog.hide();
+    };
+    
+
+});

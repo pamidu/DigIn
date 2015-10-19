@@ -132,8 +132,9 @@
                      </md-button>
                      </div>
                      -->
+                    <!--  ng-mouseleave="show_sidebar()" ng-mouseover="hide_sidebar()" id="content1" -->
                   <!--                        end of tab closing button-->
-                  <div ui-view layout="column" id="content1" ng-mouseleave="show_sidebar()" ng-mouseover="hide_sidebar()">
+                  <div ui-view layout="column" style="width:100%;height:100%;" >
                   </div>
                </div>
             </div>
@@ -141,9 +142,9 @@
       </md-tabs>
 
         <div class="dashboard-widgets-close" style="margin-top: -50px">
-            <md-button ng-disabled="dashCloseWidgets" id="dashboardwidgetsclose" class="md-fab" ng-click="closeAllWidgets()" aria-label="Close">
+           <!--  <md-button ng-disabled="dashCloseWidgets" id="dashboardwidgetsclose" class="md-fab" ng-click="closeAllWidgets()" aria-label="Close">
                 <md-icon class="ion-close" style="margin-top: -40px;"></md-icon>
-            </md-button>
+            </md-button> -->
         </div>
         <div class="overlay" style="z-index: 10;
     opacity: 0.8;">

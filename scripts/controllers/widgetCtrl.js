@@ -516,12 +516,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         name: "Scatter",
         type: "scatter"
     }];
-    $scope.seriesArray = [{
-        name: 'series1',
-        serName: '',
-        type: 'area',
-        color: ''
-    }];
+    
     $scope.chartCategory = {
         groupField: '',
         drilledField: '',
@@ -550,6 +545,15 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         client.onError(function (data) {
             console.log('Error getting classes');
         });
+
+        $scope.seriesArray = [{
+            name: 'series1',
+            serName: '',
+            filter: '',
+            type: 'area',
+            color: ''
+        }];
+
     } else{
         //source tab config
         $scope.objClasses = $scope.widget.widConfig.classArray;
@@ -563,12 +567,14 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
         //mapping tab config 
         $scope.chartTab = false;
+        $scope.mappedArray = $scope.widget.widConfig.mappedData;
+        $scope.chartCategory = $scope.widget.widConfig.chartCat;
         $scope.arrayAttributes = $scope.widget.widConfig.attributes;
         $scope.classFields = $scope.widget.widConfig.claFields;
         $scope.indexType = $scope.widget.widConfig.indType;
         $scope.query = $scope.widget.widConfig.query;
-        console.log(JSON.stringify($scope.widget.widConfig.series));
         $scope.seriesArray = $scope.widget.widConfig.series;
+        $scope.seriesAttributes = $scope.widget.widConfig.serAttributes;
     }
 
     //check for selected classes
@@ -818,6 +824,9 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 };
             }
 
+            if(typeof $scope.filtering == 'undefined'){
+                $scope.filterData($scope.seriesArray[i].filter);
+            }
             $scope.filtering.calculate(orderedObj, catMappedData, serMappedData);
             // for(j=0;j<serMappedData.length;j++){
             //     orderedObj[catMappedData[j]] += serMappedData[j];
@@ -879,10 +888,14 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             fields: $scope.selectedFields,
             selFields: $scope.checkedFields,
             claFields: $scope.classFields,
+            chartCat: $scope.chartCategory,
             attributes: $scope.arrayAttributes,
             indType: $scope.indexType,
             query: $scope.query,
-            series: $scope.seriesArray
+            series: $scope.seriesArray,
+            serAttributes: $scope.seriesAttributes,
+            mappedData: $scope.mappedArray
+
         };
     };
 
@@ -916,6 +929,10 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                     val: 0,
                     count: 0
                 };
+            }
+
+            if(typeof $scope.filtering == 'undefined'){
+                $scope.filterData($scope.seriesArray[i].filter);
             }
 
             $scope.filtering.calculate(orderedObj, catMappedData, serMappedData, drillData);
@@ -996,7 +1013,25 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 width: 300,
                 height: 220
             }
-        }
+        };
+
+        widget['widConfig'] = {
+            source : $scope.datasource,
+            classArray: $scope.objClasses,
+            selectedClass: $scope.selectedClass,
+            fields: $scope.selectedFields,
+            selFields: $scope.checkedFields,
+            claFields: $scope.classFields,
+            chartCat: $scope.chartCategory,
+            attributes: $scope.arrayAttributes,
+            indType: $scope.indexType,
+            query: $scope.query,
+            series: $scope.seriesArray,
+            serAttributes: $scope.seriesAttributes,
+            mappedData: $scope.mappedArray
+
+        };
+
     };
 
 
@@ -1025,6 +1060,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         $scope.seriesArray.push({
             name: 'series1',
             serName: '',
+            filter: '',
             type: 'area',
             color: '',
             drilled: false

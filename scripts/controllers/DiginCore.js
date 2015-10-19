@@ -3,6 +3,7 @@
 | Controllers listed below are here                        |
 ------------------------------------------------------------
 |      DashboardCtrl                                       |
+|      showWidgetCtrl                                      |
 |      ReportCtrl                                          |
 |      analyticsCtrl                                       | 
 |      d3PluginCtrl                                        |
@@ -11,9 +12,16 @@
 |      ExtendedDashboardCtrl                               |
 |      summarizeCtrl                                       | 
 |      settingsCtrl                                        |
+|      pStackCtrl                                          | 
 ------------------------------------------------------------
 */
+routerApp.controller('showWidgetCtrl', function($scope,$mdDialog, widget){
+    $scope.widget = widget;
 
+    $scope.closeDialog = function () {
+            $mdDialog.hide();
+        };
+});
 routerApp.controller('DashboardCtrl', ['$scope',
 
     '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log',
@@ -21,9 +29,6 @@ routerApp.controller('DashboardCtrl', ['$scope',
 
 
         $('#pagePreLoader').hide();
-        $scope.test = function () {
-            alert("test");
-        };
 
         localStorage.setItem('username', "admin");
 
@@ -42,6 +47,23 @@ routerApp.controller('DashboardCtrl', ['$scope',
 
         };
 
+        $scope.showWidget = function(ev,wid){
+            //alert(JSON.stringify(wid));
+            $mdDialog.show({
+                    controller: 'showWidgetCtrl',
+                    templateUrl: 'views/ViewShowWidget.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    locals: {
+                        widget: wid
+                    }
+                })
+                .then(function() {
+                    //$mdDialog.hide();
+                }, function() {
+                    //$mdDialog.hide();
+                });
+        };
 
         $scope.showData = function (widget, ev) {
             $mdDialog.show({
@@ -385,46 +407,7 @@ routerApp.controller('analyticsCtrl', ['$scope', '$sce', 'AnalyticsService',
 
  
 
-routerApp.controller('ExtendedanalyticsCtrl', ['$scope', '$mdSidenav', '$sce', 'ExtendedAnalyticsService',
-'$timeout', '$log', 'cssInjector',
-    function ($scope, $mdSidenav, $sce, ExtendedAnalyticsService, $timeout,
-        $log, cssInjector) {
-        var allMuppets = [];
-        $scope.selected = null;
-        $scope.muppets = allMuppets;
-        $scope.selectMuppet = selectMuppet;
-
-        loadMuppets();
-        $scope.trustSrc = function (src) {
-            return $sce.trustAsResourceUrl(src);
-        }
-        $scope.applyCSS = function () {
-                cssInjector.add("/styles/css/style1.css");
-                console.log("loaded css dynamically");
-            }
-            //*******************
-            // Internal Methods
-            //*******************
-        function loadMuppets() {
-            ExtendedAnalyticsService.loadAll()
-                .then(function (muppets) {
-                    allMuppets = muppets;
-                    $scope.muppets = [].concat(muppets);
-                    $scope.selected = $scope.muppets[0];
-                })
-        }
-
-        function toggleSidenav(name) {
-            $mdSidenav(name).toggle();
-        }
-
-
-        function selectMuppet(muppet) {
-            $scope.selected = angular.isNumber(muppet) ? $scope.muppets[muppet] : muppet;
-
-            $scope.toggleSidenav('left');
-        }
-}])
+ 
 
 routerApp.controller('RealTimeController', ['$scope', '$sce', 'RealTimeService',
 '$timeout', '$log', '$mdDialog',
@@ -725,7 +708,7 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
                             // });
                             $http({
                                 method: 'PUT',
-                                url: 'http://52.0.234.95:8080/pentaho/api/userroledao/createUser',
+                                url: 'http://104.131.48.155:8080/pentaho/api/userroledao/createUser',
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },
@@ -777,3 +760,32 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
         };
     }
     ]);
+
+routerApp.controller('pStackCtrl',function($scope,$mdDialog,$state){
+
+    //p stack menus
+    $scope.Extendedmenu = [{
+            title: 'Analysis Report',
+            color:'#2196F3',
+            icon:'styles/css/images/icons/ic_assignment_24px.svg'
+        }, {
+            title: 'Interactive Report',
+            color:'#FF9800',
+            icon:'styles/css/images/icons/ic_assignment_24px.svg'
+        }, {
+            title: 'Dashboard',
+            color:'#CDDC39',
+            icon:'styles/css/images/icons/ic_assignment_24px.svg'
+        }];
+
+    $scope.closeDialog = function(){
+        $mdDialog.hide();
+    };
+
+    $scope.doFunction = function(name){
+        $state.go(name);
+        $mdDialog.hide();
+    };
+    
+
+});

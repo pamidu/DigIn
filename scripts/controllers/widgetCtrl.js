@@ -481,7 +481,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
     $scope.filterAttributes = ['Sum', 'Average', 'Percentage', 'Count'];
 
-    $scope.datasources = ['DuoStore', 'CSV/Excel', 'Rest/SOAP Service', 'SpreadSheet']; //temporary
+    $scope.datasources = ['DuoStore', 'BigQuery', 'CSV/Excel', 'Rest/SOAP Service', 'SpreadSheet']; //temporary
     $scope.storeIndex = 'com.duosoftware.com';
     $scope.widgetValidity = 'elasticValidation'; //validation message visibility                                             
     $scope.query = {};
@@ -516,12 +516,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         name: "Scatter",
         type: "scatter"
     }];
-    $scope.seriesArray = [{
-        name: 'series1',
-        serName: '',
-        type: 'area',
-        color: ''
-    }];
+    
     $scope.chartCategory = {
         groupField: '',
         drilledField: '',
@@ -535,20 +530,52 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
     $scope.widget = $rootScope.dashboard.widgets[objIndex];
 
-    var client = $objectstore.getClient($scope.storeIndex, " ");
+    if(typeof $scope.widget.widConfig == 'undefined'){
+        var client = $objectstore.getClient($scope.storeIndex, " ");
 
-    client.getClasses($scope.storeIndex);
+        client.getClasses($scope.storeIndex);
 
-    //classes retrieved
-    client.onGetMany(function (data) {
-        if (data.length > 0) $scope.objClasses = data;
-        else console.log('There are no classes present');
-    });
+        //classes retrieved
+        client.onGetMany(function (data) {
+            if (data.length > 0) $scope.objClasses = data;
+            else console.log('There are no classes present');
+        });
 
-    //error getting classes from the index
-    client.onError(function (data) {
-        console.log('Error getting classes');
-    });
+        //error getting classes from the index
+        client.onError(function (data) {
+            console.log('Error getting classes');
+        });
+
+        $scope.seriesArray = [{
+            name: 'series1',
+            serName: '',
+            filter: '',
+            type: 'area',
+            color: ''
+        }];
+
+    } else{
+        //source tab config
+        $scope.objClasses = $scope.widget.widConfig.classArray;
+        $scope.datasource = $scope.widget.widConfig.source;
+        $scope.selectedClass = $scope.widget.widConfig.selectedClass;
+
+        //selection tab config
+        $scope.dataTab = false;
+        $scope.selectedFields = $scope.widget.widConfig.fields;
+        $scope.checkedFields = $scope.widget.widConfig.selFields;
+
+        //mapping tab config 
+        $scope.chartTab = false;
+        $scope.mappedArray = $scope.widget.widConfig.mappedData;
+        $scope.chartCategory = $scope.widget.widConfig.chartCat;
+        $scope.arrayAttributes = $scope.widget.widConfig.attributes;
+        $scope.classFields = $scope.widget.widConfig.claFields;
+        $scope.indexType = $scope.widget.widConfig.indType;
+        $scope.query = $scope.widget.widConfig.query;
+        $scope.seriesArray = $scope.widget.widConfig.series;
+        $scope.seriesAttributes = $scope.widget.widConfig.serAttributes;
+    }
 
     //check for selected classes
     $scope.getFields = function () {
@@ -583,6 +610,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 $scope.widgetValidity = 'fade-in';
                 $scope.validationMessage = "Please select a class";
             }
+        } else if ($scope.datasource == "BigQuery") {
+
         } else if ($scope.datasource == "CSV/Excel") {
             var jsonArray = JSON.parse($rootScope.json_string);
             $scope.selectedFields = [];
@@ -599,11 +628,14 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
             $scope.toggleTab(1);
             $scope.widgetValidity = 'fade-out';
+        } else if ($scope.datasource == "BigQuery") {
+            // get the fields of the selected big query
         }
     };
 
     //selects fields for non-queried data retrieval
     $scope.toggleCheck = function (index) {
+        index.checked = !index.checked;
         if ($scope.checkedFields.indexOf(index) === -1) {
             $scope.checkedFields.push(index);
         } else {
@@ -672,7 +704,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                     for (var key in $scope.mappedArray) {
                         if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
                             if ($scope.mappedArray[key].isNaN) {
-                                $scope.mappedArray[key].unique = Enumerable.From($scope.mappedArray[key].data).Select().Distinct().ToArray().length;
+                                $scope.mappedArray[key].unique =                                                                                                                     Enumerable.From($scope.mappedArray[key].data).Select().Distinct().ToArray().length;
                             }
                         }
                     }
@@ -792,6 +824,9 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 };
             }
 
+            if(typeof $scope.filtering == 'undefined'){
+                $scope.filterData($scope.seriesArray[i].filter);
+            }
             $scope.filtering.calculate(orderedObj, catMappedData, serMappedData);
             // for(j=0;j<serMappedData.length;j++){
             //     orderedObj[catMappedData[j]] += serMappedData[j];
@@ -845,6 +880,23 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 height: 220
             }
         };
+
+        widget['widConfig'] = {
+            source : $scope.datasource,
+            classArray: $scope.objClasses,
+            selectedClass: $scope.selectedClass,
+            fields: $scope.selectedFields,
+            selFields: $scope.checkedFields,
+            claFields: $scope.classFields,
+            chartCat: $scope.chartCategory,
+            attributes: $scope.arrayAttributes,
+            indType: $scope.indexType,
+            query: $scope.query,
+            series: $scope.seriesArray,
+            serAttributes: $scope.seriesAttributes,
+            mappedData: $scope.mappedArray
+
+        };
     };
 
     //order by category (drilled)
@@ -877,6 +929,10 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                     val: 0,
                     count: 0
                 };
+            }
+
+            if(typeof $scope.filtering == 'undefined'){
+                $scope.filterData($scope.seriesArray[i].filter);
             }
 
             $scope.filtering.calculate(orderedObj, catMappedData, serMappedData, drillData);
@@ -957,7 +1013,25 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 width: 300,
                 height: 220
             }
-        }
+        };
+
+        widget['widConfig'] = {
+            source : $scope.datasource,
+            classArray: $scope.objClasses,
+            selectedClass: $scope.selectedClass,
+            fields: $scope.selectedFields,
+            selFields: $scope.checkedFields,
+            claFields: $scope.classFields,
+            chartCat: $scope.chartCategory,
+            attributes: $scope.arrayAttributes,
+            indType: $scope.indexType,
+            query: $scope.query,
+            series: $scope.seriesArray,
+            serAttributes: $scope.seriesAttributes,
+            mappedData: $scope.mappedArray
+
+        };
+
     };
 
 
@@ -986,6 +1060,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         $scope.seriesArray.push({
             name: 'series1',
             serName: '',
+            filter: '',
             type: 'area',
             color: '',
             drilled: false
@@ -1005,25 +1080,25 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
         //manually switching between tabs
         switch (tabIndex) {
-            case 0:
-                break;
-            case 1:
-                $scope.indexType != $scope.selectedClass && $scope.getFields();
-                $scope.dataTab = false;
-                $scope.selectedTabIndex = 1;
-                break;
-            case 2:
-                var classFields = $scope.checkedFields;
-                var classQuery = $scope.query.value;
-                if ($scope.query.state) {
-                    $scope.classQuery != $scope.query.value && $scope.getData();
-                } else {
-                    $scope.classFields != $scope.checkedFields && $scope.getData();
-                }
+        case 0:
+            break;
+        case 1:
+            $scope.indexType != $scope.selectedClass && $scope.getFields();
+            $scope.dataTab = false;
+            $scope.selectedTabIndex = 1;
+            break;
+        case 2:
+            var classFields = $scope.checkedFields;
+            var classQuery = $scope.query.value;
+            if ($scope.query.state) {
+                $scope.classQuery != $scope.query.value && $scope.getData();
+            } else {
+                $scope.classFields != $scope.checkedFields && $scope.getData();
+            }
 
-                $scope.chartTab = false;
-                $scope.selectedTabIndex = 2;
-                break;
+            $scope.chartTab = false;
+            $scope.selectedTabIndex = 2;
+            break;
         }
     };
 
@@ -1565,63 +1640,65 @@ function calendarInit(widId, $scope, $http, $rootScope, $mdDialog, $compile, $ti
     var y = date.getFullYear();
 
     $scope.uiConfig = {
-          calendar:{
+        calendar: {
             editable: true,
-            header:{
-              left: 'title',
-              center: '',
-              right: 'today prev,next'
+            header: {
+                left: 'title',
+                center: '',
+                right: 'today prev,next'
             },
             eventClick: $scope.alertOnEventClick,
             eventRender: $scope.eventRender
-          }
-        };
+        }
+    };
     $scope.events = [];
     $rootScope.dashboard.widgets[objIndex].widData = [];
 
-         /* alert on eventClick */
-    $scope.alertOnEventClick = function( date, jsEvent, view){
+    /* alert on eventClick */
+    $scope.alertOnEventClick = function (date, jsEvent, view) {
         $scope.alertMessage = (date.title + ' was clicked ');
     };
-   
+
     /* Change View */
-    $scope.renderCalender = function(calendar) {
-      $timeout(function() {
-        if(uiCalendarConfig.calendars[calendar]){
-          uiCalendarConfig.calendars[calendar].fullCalendar('render');
-        }
-      });
+    $scope.renderCalender = function (calendar) {
+        $timeout(function () {
+            if (uiCalendarConfig.calendars[calendar]) {
+                uiCalendarConfig.calendars[calendar].fullCalendar('render');
+            }
+        });
     };
 
     /* Change View */
-    $scope.changeView = function(view,calendar) {
+    $scope.changeView = function (view, calendar) {
         alert('tset');
-      uiCalendarConfig.calendars[calendar].fullCalendar('changeView',view);
+        uiCalendarConfig.calendars[calendar].fullCalendar('changeView', view);
     };
     /* Change View */
-    $scope.renderCalender = function(calendar) {
-      $timeout(function() {
-        if(uiCalendarConfig.calendars[calendar]){
-          uiCalendarConfig.calendars[calendar].fullCalendar('render');
-        }
-      });
+    $scope.renderCalender = function (calendar) {
+        $timeout(function () {
+            if (uiCalendarConfig.calendars[calendar]) {
+                uiCalendarConfig.calendars[calendar].fullCalendar('render');
+            }
+        });
     };
 
-     /* Render Tooltip */
-    $scope.eventRender = function( event, element, view ) {
-        element.attr({'tooltip': event.title,
-                      'tooltip-append-to-body': true});
+    /* Render Tooltip */
+    $scope.eventRender = function (event, element, view) {
+        element.attr({
+            'tooltip': event.title,
+            'tooltip-append-to-body': true
+        });
         $compile(element)($scope);
     };
 
-    $scope.authorize = function() {
+    $scope.authorize = function () {
         var config = {
-          'client_id': '774419948210-c4k8kdkf235pldvp6g8h8a6mnb58qpfm.apps.googleusercontent.com',
-          'scope': 'https://www.googleapis.com/auth/calendar'
+            'client_id': '774419948210-c4k8kdkf235pldvp6g8h8a6mnb58qpfm.apps.googleusercontent.com',
+            'scope': 'https://www.googleapis.com/auth/calendar'
         };
-        gapi.auth.authorize(config, function() {
-          console.log('login complete');
-          console.log(gapi.auth.getToken());
+        gapi.auth.authorize(config, function () {
+            console.log('login complete');
+            console.log(gapi.auth.getToken());
         });
     }
 
@@ -1637,41 +1714,43 @@ function calendarInit(widId, $scope, $http, $rootScope, $mdDialog, $compile, $ti
 
     function listUpcomingEvents() {
         var request = gapi.client.calendar.events.list({
-          'calendarId': 'primary',
-          'showDeleted': false,
-          'singleEvents': true,
-          'orderBy': 'startTime'
+            'calendarId': 'primary',
+            'showDeleted': false,
+            'singleEvents': true,
+            'orderBy': 'startTime'
         });
 
-        request.execute(function(resp) {
+        request.execute(function (resp) {
             var events = resp.items;
 
-            
+
             var evObj = [];
             if (events.length > 0) {
-            for (i = 0; i < events.length; i++) {
-                var obj = {};
-              var event = events[i];
-              var when = event.start.dateTime;
-              if (!when) {
-                when = event.start.date;
-              }
+                for (i = 0; i < events.length; i++) {
+                    var obj = {};
+                    var event = events[i];
+                    var when = event.start.dateTime;
+                    if (!when) {
+                        when = event.start.date;
+                    }
 
 
-              if(typeof event.summary != 'undefined'){
-                obj['title'] = event.summary;
-                obj['start'] = when;
-                evObj.push(obj);
-              }
-              
+                    if (typeof event.summary != 'undefined') {
+                        obj['title'] = event.summary;
+                        obj['start'] = when;
+                        evObj.push(obj);
+                    }
+
+                }
+                $rootScope.dashboard.widgets[objIndex].widData.push({
+                    events: evObj
+                });
+            } else {
+
             }
-            $rootScope.dashboard.widgets[objIndex].widData.push({events: evObj});
-          } else {
-            
-          }
-         console.log("Calender object retrieved:"+JSON.stringify(evObj));
+            console.log("Calender object retrieved:" + JSON.stringify(evObj));
         });
-}
+    }
 
 
 
@@ -2589,5 +2668,3 @@ function clockInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 
 }
-
-

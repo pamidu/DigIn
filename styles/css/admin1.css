@@ -1,6 +1,6 @@
 @import url("http://fonts.googleapis.com/css?family=RobotoDraft:300,400,500");
 .md-button {
-    min-width: 0px !important;
+   /* min-width: 0px !important;*/
 }
 .nav > li > a:hover,
 .nav > li > a:focus {
@@ -10578,4 +10578,26 @@ md-icon {}
     -webkit-animation-duration: 2s;
     -moz-animation-duration: 2s;
     animation-duration: 2s;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgb(169, 169, 169); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(255,0,0,0.4); 
 }

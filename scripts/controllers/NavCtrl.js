@@ -10,35 +10,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
            // if(sessionInfo==null) location.href = 'index.php';
         }
 
-        $( "md-tabs-wrapper").mouseover(function() {
-            document.getElementsByClassName('main-headbar')[0].style.visibility="hidden";
-        });
-
-        $scope.closeAllWidgets = function() {
-            var length = document.getElementsByClassName("ion-close").length;
-            //$rootScope.dashboard.widgets = [];
-            var i;
-            for(i=0; i<length; i++){
-                document.getElementsByClassName("ion-close")[0].click();
-            }
-
-            //$(".dashboard-widgets-close").removeClass("active");            
-        };     
-
-        $scope.show_sidebar = function()
-        {
-            document.getElementsByClassName('main-headbar')[0].style.visibility="visible";
-            // document.getElementsByClassName('main-headbar')[0].style.height= '45px';
-            // document.getElementsByClassName('main-headbar')[0].style.background = '#4285F4';
-            //document.getElementsByClassName('main-headbar')[0].style.webkit-transition = 'width 2s, height 2s -webkit-transform 2s';
-            // document.getElementsByClassName('main-headbar')[0].style.transition = 'width 2s, height 2s, transform 2s';
-        };
-
-        $scope.hide_sidebar = function()
-        {
-            document.getElementsByClassName('main-headbar')[0].style.visibility="visible";
-        };
-
         /**
          * Build handler to open/close a SideNav; when animation finishes
          * report completion in console
@@ -631,7 +602,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 };
             } else
             if (dashboard.storyboard == false) {
-                $('md-tabs-wrapper').css("display","block");
+                // $('md-tabs-wrapper').css("display","block");
                 console.log("im a single page");
                 $rootScope.Dashboards = [{
                     culture: dashboard.culture,
@@ -1101,8 +1072,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         $scope.showAddNewWidgets = function (ev) {
-            //  var selectedMenu = document.getElementsByClassName("menu-layer");
-            //  selectedMenu[0].style.display = 'none';
+            //            var selectedMenu = document.getElementsByClassName("menu-layer");
+            //            selectedMenu[0].style.display = 'none';
             $mdDialog.show({
                 controller: 'WidgetCtrl',
                 templateUrl: 'views/newWidget.html',

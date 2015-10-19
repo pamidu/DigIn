@@ -25,6 +25,8 @@ routerApp.controller('DashboardCtrl', ['$scope',
             alert("test");
         };
 
+        localStorage.setItem('username', "admin");
+
         $scope.widgetSettings = function (widget){
 
             $mdDialog.show({
@@ -381,40 +383,7 @@ routerApp.controller('analyticsCtrl', ['$scope', '$sce', 'AnalyticsService',
 
 }])
 
-routerApp.controller('d3PluginCtrl', ['$scope', '$sce', 'd3Service',
-'$timeout', '$log',
-    function ($scope, $sce, d3Service, $timeout, $log) {
-
-        $scope.products = [];
-        var allMuppets = [];
-        $scope.selected = null;
-        $scope.muppets = allMuppets;
-        $scope.selectMuppet = selectMuppet;
-
-        loadMuppets();
-        $scope.trustSrc = function (src) {
-            return $sce.trustAsResourceUrl(src);
-        }
-
-        function selectMuppet(muppet) {
-            $scope.selected = angular.isNumber(muppet) ? $scope.muppets[muppet] : muppet;
-
-            $scope.toggleSidenav('left');
-        }
-
-        function loadMuppets() {
-            d3Service.loadAll()
-                .then(function (muppets) {
-                    allMuppets = muppets;
-                    $scope.muppets = [].concat(muppets);
-                    $scope.selected = $scope.muppets[0];
-                })
-        }
-
-
-
-
-}])
+ 
 
 routerApp.controller('ExtendedanalyticsCtrl', ['$scope', '$mdSidenav', '$sce', 'ExtendedAnalyticsService',
 '$timeout', '$log', 'cssInjector',

@@ -1,30 +1,4 @@
-        <md-tabs id="footerBar" md-selected="selectedIndex" md-border-bottom md-autoselect md-align-tabs="bottom" style="min-height:100vh; width:calc(100vw - 48px);float:right;">
-            <md-tab ng-repeat="tab in tabs" label="{{tab.title}}" md-on-select="$root.selectCurrentDashboard(tab);">
-                <div class="demo-tab tab{{$index%4}}">
-
-                    <div style="background-color: #ECECEC;
-    border-top-left-radius: 10px;">
-
-                    <!--                    <div ng-bind="tab.content"></div>-->
-                    <div style="position: fixed;width: 100%;top: 0px;" layout="row" layout-align="end center">
-
-                        <md-button ng-click="removeTabConfirmation( tab,$event )" ng-disabled="tabs.length <= 1" style="border-radius: 100%;">
-                            <md-icon style="color:darkgrey;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
-                        </md-button>
-                    </div>
-
-                        <!--                    tab closing button-->
-<!--
-                       <div style="position: fixed;width: 100%;top: 0px;" layout="row" layout-align="end center">
-
-    <md-button ng-click="removeTabConfirmation( tab,$event )" ng-disabled="tabs.length <= 1" style="border-radius: 100%;">
-        <md-icon style="color:darkgrey;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
-    </md-button>
-</div>
--->
-                        <!--                        end of tab closing button-->
-
-                        <md-card resizable plumb-item on-stop="getPosition($evt, $ui, widget)" ng-repeat="widget in $root.dashboard.widgets" on-resize="resize($evt, $ui, $pos, widget)" widget="widget" ng-style="{'height':widget.height,'width':widget.width,'min-height':h,'min-width':w,'left':widget.left, 'top':widget.top}">
+<md-card resizable plumb-item on-stop="getPosition($evt, $ui, widget)" ng-repeat="widget in $root.dashboard.widgets" on-resize="resize($evt, $ui, $pos, widget)" widget="widget" ng-style="{'height':widget.height,'width':widget.width,'min-height':h,'min-width':w,'left':widget.left, 'top':widget.top}">
 
         <!--
         <div>
@@ -38,7 +12,7 @@
     overflow: scroll" ng-include src="widget.widView"> 
         </div>
     </md-content> -->
-    <md-content ng-style="{'height':widget.mheight}" style="overflow:hidden;" layout="row" flex>
+    <md-content ng-style="{'height':widget.mheight}" style="overflow:auto;" layout="row" flex>
         <div style="height:100%;width:100%" ng-include src="widget.widView"></div>
     </md-content>
     <md-toolbar class="digin-widget-toolbar">
@@ -73,13 +47,3 @@
         </div>
     </md-toolbar>
 </md-card>
-
-
-                    </div>
-                </div>
-            </md-tab>
-        </md-tabs>
-
-
-
-

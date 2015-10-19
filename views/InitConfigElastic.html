@@ -101,7 +101,7 @@
                               <label>Name</label>
                               <input ng-model="ser.name">
                             </md-input-container>
-                            <md-select ng-model="chartFilter" placeholder="Select a filter" ng-change="filterData(chartFilter)">
+                            <md-select ng-model="ser.filter" placeholder="Select a filter" ng-change="filterData(ser.filter)">
                                 <md-option value="{{fil}}" ng-repeat="fil in filterAttributes">{{ fil }}</md-option>
                             </md-select>
                             <md-select ng-model="ser.serName" placeholder="Select a series" ng-click="checkSeriesAvailability()">

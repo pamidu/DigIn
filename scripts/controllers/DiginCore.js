@@ -739,7 +739,7 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
                             // });
                             $http({
                                 method: 'PUT',
-                                url: 'http://52.0.234.95:8080/pentaho/api/userroledao/createUser',
+                                url: 'http://104.131.48.155:8080/pentaho/api/userroledao/createUser',
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },

@@ -745,7 +745,7 @@ $scope.test = 'test';
 
             $http({
                 method: 'GET',
-                url: 'http://52.0.234.95:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://104.131.48.155:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -786,7 +786,7 @@ $scope.test = 'test';
 
             $http({
                 method: 'GET',
-                url: 'http://52.0.234.95:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://104.131.48.155:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -826,7 +826,7 @@ $scope.test = 'test';
 
             $http({
                 method: 'GET',
-                url: 'http://52.0.234.95:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://104.131.48.155:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',

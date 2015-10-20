@@ -3,6 +3,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
   function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio,$auth,$helpers)
     {
 
+        $scope.username = "admin";
+
         if(DevStudio){
           $auth.checkSession();
         }else{
@@ -312,6 +314,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         var dd = today.getDate();
 
         $rootScope.username = localStorage.getItem('username');
+
         /*if ($rootScope.username == null) 
         {
            

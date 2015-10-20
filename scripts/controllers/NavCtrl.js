@@ -10,10 +10,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
            // if(sessionInfo==null) location.href = 'index.php';
         }
 
-        $( "md-tabs-wrapper").mouseover(function() {
-            document.getElementsByClassName('main-headbar')[0].style.visibility="hidden";
-        });
-
         $scope.closeAllWidgets = function() {
             var length = document.getElementsByClassName("ion-close").length;
             //$rootScope.dashboard.widgets = [];
@@ -23,24 +19,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
 
             //$(".dashboard-widgets-close").removeClass("active");            
-        };
-
-        //dashboard close widget
-        $scope.dashCloseWidgets = true;     
-
-        $scope.show_sidebar = function()
-        {
-            document.getElementsByClassName('main-headbar')[0].style.visibility="visible";
-            // document.getElementsByClassName('main-headbar')[0].style.height= '45px';
-            // document.getElementsByClassName('main-headbar')[0].style.background = '#4285F4';
-            //document.getElementsByClassName('main-headbar')[0].style.webkit-transition = 'width 2s, height 2s -webkit-transform 2s';
-            // document.getElementsByClassName('main-headbar')[0].style.transition = 'width 2s, height 2s, transform 2s';
-        };
-
-        $scope.hide_sidebar = function()
-        {
-            document.getElementsByClassName('main-headbar')[0].style.visibility="visible";
-        };
+        };  
 
         /**
          * Build handler to open/close a SideNav; when animation finishes
@@ -634,7 +613,7 @@ $scope.test = 'test';
                 };
             } else
             if (dashboard.storyboard == false) {
-                $('md-tabs-wrapper').css("display","block");
+                // $('md-tabs-wrapper').css("display","block");
                 console.log("im a single page");
                 $rootScope.Dashboards = [{
                     culture: dashboard.culture,
@@ -745,7 +724,7 @@ $scope.test = 'test';
 
             $http({
                 method: 'GET',
-                url: 'http://52.0.234.95:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://104.131.48.155:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -786,7 +765,7 @@ $scope.test = 'test';
 
             $http({
                 method: 'GET',
-                url: 'http://52.0.234.95:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://104.131.48.155:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -826,7 +805,7 @@ $scope.test = 'test';
 
             $http({
                 method: 'GET',
-                url: 'http://52.0.234.95:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://104.131.48.155:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -1104,8 +1083,8 @@ $scope.test = 'test';
         };
 
         $scope.showAddNewWidgets = function (ev) {
-            //  var selectedMenu = document.getElementsByClassName("menu-layer");
-            //  selectedMenu[0].style.display = 'none';
+            //            var selectedMenu = document.getElementsByClassName("menu-layer");
+            //            selectedMenu[0].style.display = 'none';
             $mdDialog.show({
                 controller: 'WidgetCtrl',
                 templateUrl: 'views/newWidget.html',

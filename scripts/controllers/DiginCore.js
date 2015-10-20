@@ -41,6 +41,8 @@ routerApp.controller('DashboardCtrl', ['$scope',
 
         $('#pagePreLoader').hide();
 
+        localStorage.setItem('username', "admin");
+
         $scope.widgetSettings = function (widget){
 
             $mdDialog.show({
@@ -420,40 +422,7 @@ routerApp.controller('analyticsCtrl', ['$scope', '$sce', 'AnalyticsService',
 
 }])
 
-routerApp.controller('d3PluginCtrl', ['$scope', '$sce', 'd3Service',
-'$timeout', '$log',
-    function ($scope, $sce, d3Service, $timeout, $log) {
-
-        $scope.products = [];
-        var allMuppets = [];
-        $scope.selected = null;
-        $scope.muppets = allMuppets;
-        $scope.selectMuppet = selectMuppet;
-
-        loadMuppets();
-        $scope.trustSrc = function (src) {
-            return $sce.trustAsResourceUrl(src);
-        }
-
-        function selectMuppet(muppet) {
-            $scope.selected = angular.isNumber(muppet) ? $scope.muppets[muppet] : muppet;
-
-            $scope.toggleSidenav('left');
-        }
-
-        function loadMuppets() {
-            d3Service.loadAll()
-                .then(function (muppets) {
-                    allMuppets = muppets;
-                    $scope.muppets = [].concat(muppets);
-                    $scope.selected = $scope.muppets[0];
-                })
-        }
-
-
-
-
-}])
+ 
 
  
 
@@ -756,7 +725,7 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
                             // });
                             $http({
                                 method: 'PUT',
-                                url: 'http://52.0.234.95:8080/pentaho/api/userroledao/createUser',
+                                url: 'http://104.131.48.155:8080/pentaho/api/userroledao/createUser',
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },

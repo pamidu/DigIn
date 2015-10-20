@@ -9,18 +9,6 @@ ul {
   list-style-type: none;
 }
 
-/*body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  line-height: 1.5;
-  font-family: 'Roboto';
-  background: #f2f2f2;
-  color: #404040;
-  overflow: hidden;
-}*/
-
 .view {
   position: relative;
   /*height: 380px;
@@ -212,6 +200,7 @@ ul {
 .card__full-bottom {
   /*flex: 1;*/
   height:80%;
+  overflow:scroll;
 }
 
 .card__full-bottom {
@@ -233,8 +222,8 @@ ul {
 
 .card__full-top svg {
   position: absolute;
-  top: 1.5rem;
-  left: 1.5rem;
+  top: 0.5rem;
+  right: 2rem;
   fill: rgba(0, 0, 0, 0.4);
   width: 32px;
   cursor: pointer;
@@ -403,21 +392,33 @@ Cards.init();
             </md-button> -->
 
 <div class="view" plumb-item>
+  <div>
+    
+    <md-button ng-click="closeDialog()" aria-label="Close" layout-wrap style="margin:0px !important">
+                  <md-icon class="ion-close digin-widget-toolbar-icon"></md-icon>
+    </md-button>
+    
+  </div>
   <div class="card__full">
-    <div class="card__full-top" >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <div class="card__full-top" flex>
+
+      <span class="card__full-num" flex="50"></span>
+      <button id="downloadButton" type="button" class="btn btn-default" ng-csv="json2csv" filename="Data.csv" charset="utf-8" flex="30" style="display:none;border: solid; color: #fff"><span class="glyphicon glyphicon-download-alt">&nbsp;</span>Download CSV</button>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" flex="20">
           <path d="M16.59 8.59l-4.59 4.58-4.59-4.58-1.41 1.41 6 6 6-6z"/>
           <path d="M0 0h24v24h-24z" fill="none"/>
       </svg>
-      <span class="card__full-num"></span>
+
+      
     </div>
     <div class="card__full-bottom">
       <p class="card__full-handle"></p>
       <!-- <div ng-include src="'views/ViewDataHnbClaims.html'" ></div> -->
-      <div ng-include src="dataViewPath" ></div>      
+      <div ng-include src="dataViewPath"></div>      
     </div>
   </div>
   <ul class="card__list">
+        
     <li class="card__item card__item--blue" ng-click="commentary(widget)">
       <div class="card__info">
         <div class="info-player">

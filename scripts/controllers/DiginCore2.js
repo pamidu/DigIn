@@ -84,28 +84,25 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         // $scope.widget = $rootScope.widget.dataView + '.html';
 
 
-        $scope.showData = function() {
+       $scope.showData = function () {
 
-            $scope.dataViewPath = 'views/' + $rootScope.widget.dataView + '.html';
+            $('#downloadButton').css("display","block");
+
+            console.log("$rootScope.widget");
+            console.log($rootScope.widget);
+
+            $scope.dataViewPath = 'views/'+ $rootScope.widget.dataView + '.html';
 
             console.log("showData");
-            console.log($scope.dataViewPath);
+            console.log( $scope.dataViewPath);
 
-            JSON2CSV();
-
-            // $mdDialog.show({
-            //         controller: eval($rootScope.widget.dataCtrl),
-            //         templateUrl: 'views/' + $rootScope.widget.dataView + '.html',
-            //         parent: angular.element(document.body),
-            //         locals: {
-            //             wid: $rootScope.widget
-            //         }
-            //     })
-            //     .then(function () {
-            //         //$mdDialog.hide();
-            //     }, function () {
-            //         //$mdDialog.hide();
-            //     });
+            if( $rootScope.widget.dataJson == 'hnbBoxData' ){
+                JSON2CSV2();
+            }
+            else{
+                JSON2CSV();
+            }
+            
         };
 
 
@@ -254,16 +251,17 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
             });
             client.getClasses("com.duosoftware.com");
         };
-        $scope.commentary = function(widget) {
+        $scope.commentary = function (widget) {
 
+            $('#downloadButton').css("display","none");
+            
             var comment = "";
             var chunks = [];
 
-
+            $scope.dataViewPath = '';
 
         };
         $scope.closeDialog = function() {
-            alert("close testing");
             $mdDialog.hide();
         };
         $scope.clear = function() {

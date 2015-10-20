@@ -10,6 +10,17 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
            // if(sessionInfo==null) location.href = 'index.php';
         }
 
+        $scope.closeAllWidgets = function() {
+            var length = document.getElementsByClassName("ion-close").length;
+            //$rootScope.dashboard.widgets = [];
+            var i;
+            for(i=0; i<length; i++){
+                document.getElementsByClassName("ion-close")[0].click();
+            }
+
+            //$(".dashboard-widgets-close").removeClass("active");            
+        };  
+
         /**
          * Build handler to open/close a SideNav; when animation finishes
          * report completion in console

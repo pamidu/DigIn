@@ -152,17 +152,18 @@
                         <div ui-view layout="column" id="content1" ng-mouseleave="show_sidebar()" ng-mouseover="hide_sidebar()">
 
                         </div>
+                        <div class="dashboard-widgets-close">
+                             <md-button ng-disabled="dashCloseWidgets" id="dashboardwidgetsclose" class="md-fab" ng-click="closeAllWidgets()" aria-label="Close">
+                                <md-icon class="ion-close" style="margin-top: -40px;"></md-icon>
+                            </md-button>
+                        </div> 
 
                     </div>
                 </div>
             </md-tab>
         </md-tabs>
 
-        <!-- <div class="dashboard-widgets-close" style="margin-top: -50px">
-           <!--  <md-button ng-disabled="dashCloseWidgets" id="dashboardwidgetsclose" class="md-fab" ng-click="closeAllWidgets()" aria-label="Close">
-                <md-icon class="ion-close" style="margin-top: -40px;"></md-icon>
-            </md-button> -->
-        </div> -->
+        
         <div class="overlay" style="z-index: 10;
     opacity: 0.8;">
         <div class="overlay">

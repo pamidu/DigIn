@@ -1,6 +1,6 @@
 @import url("http://fonts.googleapis.com/css?family=RobotoDraft:300,400,500");
 .md-button {
-   /* min-width: 0px !important;*/
+   min-width: 0px !important;
 }
 .nav > li > a:hover,
 .nav > li > a:focus {

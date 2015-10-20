@@ -30,8 +30,6 @@ routerApp.controller('DashboardCtrl', ['$scope',
 
         $('#pagePreLoader').hide();
 
-        localStorage.setItem('username', "admin");
-
         $scope.widgetSettings = function (widget){
 
             $mdDialog.show({

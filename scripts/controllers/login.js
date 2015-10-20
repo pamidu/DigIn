@@ -23,6 +23,7 @@ app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', function
         }).
         success(function (data, status) {
             localStorage.setItem('username', $scope.txtUname);
+                        
             if (data.match(/Pentaho User Console - Login/g) == null)
                 window.location = "home.html";
             else {

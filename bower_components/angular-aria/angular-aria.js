@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.4.7
+ * @license AngularJS v1.4.3
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -57,16 +57,6 @@
 var ngAriaModule = angular.module('ngAria', ['ng']).
                         provider('$aria', $AriaProvider);
 
-/**
-* Internal Utilities
-*/
-var nodeBlackList = ['BUTTON', 'A', 'INPUT', 'TEXTAREA', 'SELECT', 'DETAILS', 'SUMMARY'];
-
-var isNodeOneOf = function(elem, nodeTypeArray) {
-  if (nodeTypeArray.indexOf(elem[0].nodeName) !== -1) {
-    return true;
-  }
-};
 /**
  * @ngdoc provider
  * @name $ariaProvider
@@ -128,10 +118,10 @@ function $AriaProvider() {
     config = angular.extend(config, newConfig);
   };
 
-  function watchExpr(attrName, ariaAttr, nodeBlackList, negate) {
+  function watchExpr(attrName, ariaAttr, negate) {
     return function(scope, elem, attr) {
       var ariaCamelName = attr.$normalize(ariaAttr);
-      if (config[ariaCamelName] && !isNodeOneOf(elem, nodeBlackList) && !attr[ariaCamelName]) {
+      if (config[ariaCamelName] && !attr[ariaCamelName]) {
         scope.$watch(attr[attrName], function(boolVal) {
           // ensure boolean value
           boolVal = negate ? !boolVal : !!boolVal;
@@ -140,6 +130,7 @@ function $AriaProvider() {
       }
     };
   }
+
   /**
    * @ngdoc service
    * @name $aria
@@ -198,10 +189,10 @@ function $AriaProvider() {
 
 
 ngAriaModule.directive('ngShow', ['$aria', function($aria) {
-  return $aria.$$watchExpr('ngShow', 'aria-hidden', [], true);
+  return $aria.$$watchExpr('ngShow', 'aria-hidden', true);
 }])
 .directive('ngHide', ['$aria', function($aria) {
-  return $aria.$$watchExpr('ngHide', 'aria-hidden', [], false);
+  return $aria.$$watchExpr('ngHide', 'aria-hidden', false);
 }])
 .directive('ngModel', ['$aria', function($aria) {
 
@@ -275,9 +266,6 @@ ngAriaModule.directive('ngShow', ['$aria', function($aria) {
                 scope.$watch(ngAriaWatchModelValue, shape === 'radio' ?
                     getRadioReaction() : ngAriaCheckboxReaction);
               }
-              if (needsTabIndex) {
-                elem.attr('tabindex', 0);
-              }
               break;
             case 'range':
               if (shouldAttachRole(shape, elem)) {
@@ -306,15 +294,16 @@ ngAriaModule.directive('ngShow', ['$aria', function($aria) {
                   });
                 }
               }
-              if (needsTabIndex) {
-                elem.attr('tabindex', 0);
-              }
               break;
             case 'multiline':
               if (shouldAttachAttr('aria-multiline', 'ariaMultiline', elem)) {
                 elem.attr('aria-multiline', true);
               }
               break;
+          }
+
+          if (needsTabIndex) {
+            elem.attr('tabindex', 0);
           }
 
           if (ngModel.$validators.required && shouldAttachAttr('aria-required', 'ariaRequired', elem)) {
@@ -338,7 +327,7 @@ ngAriaModule.directive('ngShow', ['$aria', function($aria) {
   };
 }])
 .directive('ngDisabled', ['$aria', function($aria) {
-  return $aria.$$watchExpr('ngDisabled', 'aria-disabled', []);
+  return $aria.$$watchExpr('ngDisabled', 'aria-disabled');
 }])
 .directive('ngMessages', function() {
   return {
@@ -358,28 +347,35 @@ ngAriaModule.directive('ngShow', ['$aria', function($aria) {
       var fn = $parse(attr.ngClick, /* interceptorFn */ null, /* expensiveChecks */ true);
       return function(scope, elem, attr) {
 
-        if (!isNodeOneOf(elem, nodeBlackList)) {
+        var nodeBlackList = ['BUTTON', 'A', 'INPUT', 'TEXTAREA'];
 
-          if ($aria.config('bindRoleForClick') && !elem.attr('role')) {
-            elem.attr('role', 'button');
+        function isNodeOneOf(elem, nodeTypeArray) {
+          if (nodeTypeArray.indexOf(elem[0].nodeName) !== -1) {
+            return true;
           }
+        }
 
-          if ($aria.config('tabindex') && !elem.attr('tabindex')) {
-            elem.attr('tabindex', 0);
-          }
+        if ($aria.config('bindRoleForClick')
+            && !elem.attr('role')
+              && !isNodeOneOf(elem, nodeBlackList)) {
+          elem.attr('role', 'button');
+        }
 
-          if ($aria.config('bindKeypress') && !attr.ngKeypress) {
-            elem.on('keypress', function(event) {
-              var keyCode = event.which || event.keyCode;
-              if (keyCode === 32 || keyCode === 13) {
-                scope.$apply(callback);
-              }
+        if ($aria.config('tabindex') && !elem.attr('tabindex')) {
+          elem.attr('tabindex', 0);
+        }
 
-              function callback() {
-                fn(scope, { $event: event });
-              }
-            });
-          }
+        if ($aria.config('bindKeypress') && !attr.ngKeypress && !isNodeOneOf(elem, nodeBlackList)) {
+          elem.on('keypress', function(event) {
+            var keyCode = event.which || event.keyCode;
+            if (keyCode === 32 || keyCode === 13) {
+              scope.$apply(callback);
+            }
+
+            function callback() {
+              fn(scope, { $event: event });
+            }
+          });
         }
       };
     }
@@ -387,7 +383,7 @@ ngAriaModule.directive('ngShow', ['$aria', function($aria) {
 }])
 .directive('ngDblclick', ['$aria', function($aria) {
   return function(scope, elem, attr) {
-    if ($aria.config('tabindex') && !elem.attr('tabindex') && !isNodeOneOf(elem, nodeBlackList)) {
+    if ($aria.config('tabindex') && !elem.attr('tabindex')) {
       elem.attr('tabindex', 0);
     }
   };

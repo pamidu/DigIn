@@ -82,7 +82,7 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         };
 
         // $scope.widget = $rootScope.widget.dataView + '.html';
-
+       
 
        $scope.showData = function () {
 

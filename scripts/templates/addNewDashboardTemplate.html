@@ -1,0 +1,39 @@
+<md-dialog style="min-width:40vw;">
+    <md-content layout="column" layout-padding>
+        <div class="md-toolbar-tools" flex layout="row" layout-align="end center">
+            <p style="color:lightgrey;margin:0px;">DASHBOARDS</p>
+            <md-button ng-click="close()">
+                <md-icon style="color:whitesmoke;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
+            </md-button>
+        </div>
+        <p style="font-size:large;margin:0px 10px;">you have {{numOfDashboards}} dashboards</p>
+        <div layout="row" layout-wrap>
+            <div ng-repeat="item in $root.Dashboards" layout="column" style="margin:10px;">
+                <!--                <ng-md-icon icon="dashboard" style="fill:gold"></ng-md-icon>-->
+                <md-icon md-svg-src="styles/css/images/icons/ic_dashboard_24px.svg" style="width:50px;height:50px;"></md-icon>
+                <p style="font-size:small;color:darkgrey">{{item.title}}</p>
+            </div>
+
+        </div>
+        <md-divider></md-divider>
+        <p style="font-size:large;margin:10px 10px;">+ Add a new</p>
+        <div layout="row" style="padding:0px 30px;">
+            <md-input-container flex>
+                <label>Title</label>
+                <input ng-model="dashboard.title">
+            </md-input-container>
+            <md-input-container flex>
+                <label>Type</label>
+                <input ng-model="dashboard.type">
+            </md-input-container>
+        </div>
+        <div class="md-actions" layout="row">
+            <md-button class="md-fab md-mini" styl="background-color: #D33F3F;" ng-click="close();">
+                <ng-md-icon icon="close" style="fill:whitesmoke"></ng-md-icon>
+            </md-button>
+            <md-button class="md-fab md-mini md-primary" ng-click="createNewDashboard();">
+                <ng-md-icon icon="arrow_forward" style="fill:whitesmoke"></ng-md-icon>
+            </md-button>
+        </div>
+    </md-content>
+</md-dialog>

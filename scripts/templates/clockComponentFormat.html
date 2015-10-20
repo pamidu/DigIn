@@ -1,0 +1,34 @@
+<md-dialog plumb-item style="width:400px;">
+       <md-toolbar>
+            <div class="md-toolbar-tools" flex layout="row">
+                <div flex="10">
+                        <md-icon class="ion-wrench"></md-icon>
+                </div>   
+                <div flex="80">
+                              <h3>
+                                 <span> Change Date Format </span>
+                              </h3>
+                </div>                           
+                <div flex="10">
+                        <md-button  ng-click="cancel()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                        </md-button> 
+                </div>
+            </div>                   
+    </md-toolbar>  
+    <md-content layout-margin>
+            <div>
+                <md-input-container flex>
+                    <label>Date Format</label>
+            <md-select ng-model="format">
+                <md-option ng-repeat="format in formats" value="{{format.format}}">{{format.name}}</md-option>
+            </md-select
+                </md-input-container>
+            </div>
+            <div class="md-actions" layout="row">
+            <md-button class="md-primary" ng-click="clockComponentformatChange(format);">Change</md-button>
+            <md-button ng-click="closeWidgetOptions();">Cancel</md-button>
+        </div>
+    </md-content>
+</md-dialog>
+

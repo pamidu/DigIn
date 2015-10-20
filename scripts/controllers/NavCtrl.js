@@ -10,10 +10,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
            // if(sessionInfo==null) location.href = 'index.php';
         }
 
-        $( "md-tabs-wrapper").mouseover(function() {
-            document.getElementsByClassName('main-headbar')[0].style.visibility="hidden";
-        });
-
         $scope.closeAllWidgets = function() {
             var length = document.getElementsByClassName("ion-close").length;
             //$rootScope.dashboard.widgets = [];
@@ -23,21 +19,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
 
             //$(".dashboard-widgets-close").removeClass("active");            
-        };     
-
-        $scope.show_sidebar = function()
-        {
-            document.getElementsByClassName('main-headbar')[0].style.visibility="visible";
-            // document.getElementsByClassName('main-headbar')[0].style.height= '45px';
-            // document.getElementsByClassName('main-headbar')[0].style.background = '#4285F4';
-            //document.getElementsByClassName('main-headbar')[0].style.webkit-transition = 'width 2s, height 2s -webkit-transform 2s';
-            // document.getElementsByClassName('main-headbar')[0].style.transition = 'width 2s, height 2s, transform 2s';
-        };
-
-        $scope.hide_sidebar = function()
-        {
-            document.getElementsByClassName('main-headbar')[0].style.visibility="visible";
-        };
+        };  
 
         /**
          * Build handler to open/close a SideNav; when animation finishes
@@ -370,7 +352,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $rootScope.dashboard.dashboardType = "System";
         $rootScope.dashboard.dashboardCulture = "English";
         $rootScope.indexes = [];
-        $scope.currentView = "";
+        $rootScope.currentView = "";
         $scope.ChartType = 'column';
         $scope.count = 0;
         $scope.incremenet = 0;
@@ -497,7 +479,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         function DashboardCtrl($scope) {
-
+$scope.test = 'test';
             $scope.dashboardmenu = [{
                 title: 'Add Widget'
             }];
@@ -631,7 +613,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 };
             } else
             if (dashboard.storyboard == false) {
-                $('md-tabs-wrapper').css("display","block");
+                // $('md-tabs-wrapper').css("display","block");
                 console.log("im a single page");
                 $rootScope.Dashboards = [{
                     culture: dashboard.culture,
@@ -742,7 +724,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $http({
                 method: 'GET',
-                url: 'http://52.0.234.95:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://104.131.48.155:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -783,7 +765,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $http({
                 method: 'GET',
-                url: 'http://52.0.234.95:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://104.131.48.155:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -823,7 +805,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $http({
                 method: 'GET',
-                url: 'http://52.0.234.95:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://104.131.48.155:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -1101,8 +1083,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         $scope.showAddNewWidgets = function (ev) {
-            //  var selectedMenu = document.getElementsByClassName("menu-layer");
-            //  selectedMenu[0].style.display = 'none';
+            //            var selectedMenu = document.getElementsByClassName("menu-layer");
+            //            selectedMenu[0].style.display = 'none';
             $mdDialog.show({
                 controller: 'WidgetCtrl',
                 templateUrl: 'views/newWidget.html',
@@ -1125,6 +1107,19 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
         //end of erangas space
 
+         // hides and shows the dashboard tabs 
+        $scope.manageTabs = function(dashboard){
+            if(dashboard){
+                $( "md-tabs.footer-bar > md-tabs-wrapper" ).children().show();
+                $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","rgba(0, 0, 0, 0.14)" );
+                $scope.dashCloseWidgets = false;
+            }else{
+                $( "md-tabs.footer-bar > md-tabs-wrapper" ).children().hide();
+                $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","#ECECEC" );
+                $scope.dashCloseWidgets = true ;
+            }
+        };
+
         $scope.navigate = function (routeName, ev) {
 
             // start pulathisi 7/23/2015
@@ -1138,40 +1133,33 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             // }
             if (routeName == "Dashboards") {
 
-                //                $('.menu-layer').addClass('active');
-                //                var selectedMenu = document.getElementsByClassName("menu-layer");
-                //                selectedMenu[0].style.display = 'block';
-                //                $scope.currentView = "Dashboard";
-                //                $(".menu-layer").css("top", "110px");
-                //                $("starting-point").css("top", "110px");
-
                 $scope.showAddNewDashboard(ev);
+                $scope.manageTabs(true);
                 $state.go(routeName)
             }
             if (routeName == "Add Widgets") {
                 $scope.showAddNewWidgets(ev);
+                $scope.manageTabs(true);
                 $state.go("Dashboards");
-                $('md-tabs-wrapper').css("display","block");
+                
+                //$('md-tabs-wrapper').css("display","block");
             }
             if (routeName == "D3plugins") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
-                $scope.currentView = "D3plugins";
+                $rootScope.currentView = "D3plugins";
                 $(".menu-layer").css("top", "120px");
                 $("starting-point").css("top", "120px");
-                $('md-tabs-wrapper').css("display","hidden");
-
+                $scope.manageTabs(false);
                 $state.go(routeName)
             }
             if (routeName == "Reports") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
-                $scope.currentView = "Reports";
+                $rootScope.currentView = "Reports";
                 $(".menu-layer").css("top", "120px");
-                $("starting-point").css("top", "120px");
-                $('md-tabs-wrapper').css("display","none");
-
-
+                $("starting-point").css("top", "120px");                
+                $scope.manageTabs(false);
                 $state.go(routeName)
             }
             if (routeName == "Analytics") {
@@ -1179,28 +1167,35 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 selectedMenu[0].style.display = 'block';
                 $(".menu-layer").css("top", "160px");
                 $("starting-point").css("top", "160px");
-                $('md-tabs-wrapper').css("display","none");
-                $scope.currentView = "Analytics";
+                $scope.manageTabs(false);
+                $rootScope.currentView = "Analytics";
             }
             if (routeName == "RealTime") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
-                $scope.currentView = "RealTime";
+                $rootScope.currentView = "RealTime";
                 $(".menu-layer").css("top", "200px");
                 $("starting-point").css("top", "200px");
-                $('md-tabs-wrapper').css("display","none");
+                $scope.manageTabs(false);
 
-                $state.go(routeName)
+                $state.go(routeName);
             }
             if (routeName == "Digin P Stack") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $(".menu-layer").css("top", "240px");
                 $("starting-point").css("top", "240px");
-                $('md-tabs-wrapper').css("display","none");
-
-                $scope.currentView = "Digin P Stack";
-
+                $scope.manageTabs(false);
+                $rootScope.currentView = "Digin P Stack";
+                $mdDialog.show({
+                controller: 'pStackCtrl',
+                templateUrl: 'views/pStackMenu.html',
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                resolve: {}
+                
+            })
+                //$state.go(routeName);
             }
             if (routeName == "Logout") {
 
@@ -1259,7 +1254,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
-                $scope.currentView = "Grid";
+                $rootScope.currentView = "Grid";
                 $(".menu-layer").css("top", "120px");
                 $("starting-point").css("top", "120px");
 

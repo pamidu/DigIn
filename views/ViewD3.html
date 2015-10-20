@@ -1,4 +1,7 @@
- 
-	      <iframe  style="height:100%"  id="mdView"  frameborder='0' ng-src="{{trustSrc(widget.d3plugin)}}"    frameborder="0" allowfullscreen></iframe>            
- 
- 
+<div class="col-lg-9" ng-controller="DiginD3Ctrl">
+    <div class="chart-resize">
+        <div id="chart" chart></div>
+    </div>
+    <h4><span ng-bind-html="model.instruction()"></span></h4>
+</div>
+</div>

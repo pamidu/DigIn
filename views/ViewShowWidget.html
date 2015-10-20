@@ -1,14 +1,9 @@
-<md-card  widget="widget" ng-style="{'height':widget.height,'width':widget.width,'min-height':h,'min-width':w,'left':widget.left, 'top':widget.top}">
-    <md-content ng-style="{'height':widget.mheight}" style="overflow:auto;" layout="row" flex>
-        <div style="height:100%;width:100%" ng-include src="widget.widView"></div>
+<md-dialog style="width:70%;height:80%;">
+    <md-content>
+        <md-card  widget="widget" style="height:100%;width:100%">
+            <md-content style="height:100%;width:100%" style="overflow:auto;" layout="row" flex>
+                <div get-width callback-fn="returnWidth(width, height)" style="height:100%;width:100%" ng-include src="widget.widView"></div>
+            </md-content>
+        </md-card>
     </md-content>
-    <md-toolbar class="digin-widget-toolbar">
-        <div class="md-toolbar-tools">
-            <p style="font-size:medium;margin:0px;">{{widget.uniqueType}}</p>
-            <span flex></span>
-            <md-button ng-click="closeDialog()" aria-label="Close" layout-wrap style="margin:0px !important">
-                <md-icon class="ion-close digin-widget-toolbar-icon"></md-icon>
-            </md-button>
-        </div>
-    </md-toolbar>
-</md-card>
+</md-dialog>

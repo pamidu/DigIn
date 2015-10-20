@@ -530,21 +530,36 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
     $scope.widget = $rootScope.dashboard.widgets[objIndex];
 
+    $scope.getTables = function(){
+        alert('test');
+        if($scope.datasource == "DuoStore"){
+            var client = $objectstore.getClient($scope.storeIndex, " ");
+
+            client.getClasses($scope.storeIndex);
+
+            //classes retrieved
+            client.onGetMany(function (data) {
+                if (data.length > 0) $scope.objClasses = data;
+                else console.log('There are no classes present');
+            });
+
+            //error getting classes from the index
+            client.onError(function (data) {
+                console.log('Error getting classes');
+            });
+        }else if($scope.datasource == "BigQuery"){
+            $http({
+                method: 'JSONP',
+                url: 'http://localhost:8080/GetTables?dataSetID=samples',
+                }).
+            success(function (data, status) {
+                console.log('big query data:'+JSON.stringify(data));
+            }).
+            error(function (data, status) {});
+        }
+    };
+
     if(typeof $scope.widget.widConfig == 'undefined'){
-        var client = $objectstore.getClient($scope.storeIndex, " ");
-
-        client.getClasses($scope.storeIndex);
-
-        //classes retrieved
-        client.onGetMany(function (data) {
-            if (data.length > 0) $scope.objClasses = data;
-            else console.log('There are no classes present');
-        });
-
-        //error getting classes from the index
-        client.onError(function (data) {
-            console.log('Error getting classes');
-        });
 
         $scope.seriesArray = [{
             name: 'series1',

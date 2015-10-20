@@ -2,8 +2,8 @@
 ----------------------Summary-------------------------------
 | Controllers listed below are here                        |
 ------------------------------------------------------------
-|      DashboardCtrl                                       |
 |      showWidgetCtrl                                      |
+|      DashboardCtrl                                       |
 |      ReportCtrl                                          |
 |      analyticsCtrl                                       | 
 |      d3PluginCtrl                                        |
@@ -16,17 +16,28 @@
 ------------------------------------------------------------
 */
 routerApp.controller('showWidgetCtrl', function($scope,$mdDialog, widget){
-    $scope.widget = widget;
+
+    $scope.widget = angular.copy(widget);
+    $scope.dHeight = $scope.widget.height + 100;
+
+    $scope.returnWidth = function(width,height) {
+        console.log("width here",width,height);
+        if ($scope.widget.initCtrl == "elasticInit") {
+            console.log('elastic');
+            $scope.widget.highchartsNG.size.width =parseInt(width);
+            $scope.widget.highchartsNG.size.height = parseInt(height);
+        } 
+      };
+     
 
     $scope.closeDialog = function () {
-            $mdDialog.hide();
-        };
+        $mdDialog.hide();
+    };
 });
 routerApp.controller('DashboardCtrl', ['$scope',
 
     '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log',
     function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log) {
-
 
         $('#pagePreLoader').hide();
 
@@ -47,6 +58,8 @@ routerApp.controller('DashboardCtrl', ['$scope',
 
         $scope.showWidget = function(ev,wid){
             //alert(JSON.stringify(wid));
+            $scope.tempWidth = wid.highchartsNG.size.width;
+            $scope.tempHeight = wid.highchartsNG.size.height;
             $mdDialog.show({
                     controller: 'showWidgetCtrl',
                     templateUrl: 'views/ViewShowWidget.html',
@@ -57,8 +70,12 @@ routerApp.controller('DashboardCtrl', ['$scope',
                     }
                 })
                 .then(function() {
+                    $scope.widget.highchartsNG.size.width = $scope.tempWidth;
+                    $scope.widget.highchartsNG.size.height = $scope.tempHeight;
                     //$mdDialog.hide();
                 }, function() {
+                    $scope.widget.highchartsNG.size.width = $scope.tempWidth;
+                    $scope.widget.highchartsNG.size.height = $scope.tempHeight;
                     //$mdDialog.hide();
                 });
         };

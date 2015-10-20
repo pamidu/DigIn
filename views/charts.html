@@ -1,4 +1,4 @@
-<md-card resizable plumb-item on-stop="getPosition($evt, $ui, widget)" ng-repeat="widget in $root.dashboard.widgets" on-resize="resize($evt, $ui, $pos, widget)" widget="widget" ng-style="{'height':widget.height,'width':widget.width,'min-height':h,'min-width':w,'left':widget.left, 'top':widget.top}">
+<md-card class="widgetCard" resizable plumb-item on-stop="getPosition($evt, $ui, widget)" ng-repeat="widget in $root.dashboard.widgets" on-resize="resize($evt, $ui, $pos, widget)" widget="widget" ng-style="{'height':widget.height,'width':widget.width,'min-height':h,'min-width':w,'left':widget.left, 'top':widget.top}">
     <md-content ng-style="{'height':widget.mheight}" style="overflow:auto;" layout="row" flex>
         <div style="height:100%;width:100%" ng-include src="widget.widView"></div>
     </md-content>

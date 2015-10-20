@@ -24,13 +24,18 @@
                 <input name="sizeX" placeholder="www.duosoftware.com/test" ng-model="widget.uniqueType">
             </md-input-container>
             <div layout="row" layout-align='center start'>
-                <md-select ng-model="datasource" placeholder="DuoStore" flex="50">
+                <md-select ng-model="datasource" placeholder="DuoStore" ng-change="getTables()" flex="50">
                     <md-option ng-value="opt" ng-repeat="opt in datasources">{{ opt }}</md-option>
                 </md-select>
 
                 <md-select ng-show="datasource =='DuoStore'" style="text-transform:capitalize" placeholder="Index" ng-model="selectedClass" flex="50">
                     <md-option style="text-transform:capitalize" ng-value="ind" ng-repeat=" ind in objClasses">{{ ind }}</md-option>
                 </md-select>
+
+                <md-select ng-show="datasource =='BigQuery'" style="text-transform:capitalize" placeholder="Index" ng-model="selectedClass" flex="50">
+                    <md-option style="text-transform:capitalize" ng-value="ind" ng-repeat=" ind in objClasses">{{ ind }}</md-option>
+                </md-select>
+
                  <div ng-show="datasource =='CSV/Excel'" style="text-transform:capitalize" placeholder="Index" ng-model="selectedClass" flex="50">
                        <excel-loader/>
                 </div>

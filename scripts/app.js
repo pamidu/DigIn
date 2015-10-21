@@ -31,8 +31,7 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
     'servicess',
     'angularUtils.directives.dirPagination',
     'ngSanitize',
-    'ngCsv',
-    'angularUtils.directives.dirPagination' 
+    'ngCsv'
 ])
 
 routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider) {

@@ -515,7 +515,7 @@ $scope.test = 'test';
                     })
                 }
                 if (name == "Analysis Report") {
-                                        
+                    var selectedMenu = document.getElementsByClassName("menu-layer");                    
                     selectedMenu[0].style.display = 'none';
                     $state.go('Analysis Report');
                 }

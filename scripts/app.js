@@ -29,6 +29,7 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
      'ui',
     'lk-google-picker',
     'servicess',
+    'angularUtils.directives.dirPagination',
     'ngSanitize',
     'ngCsv',
     'angularUtils.directives.dirPagination' 

@@ -1,8 +1,9 @@
 $(window).load(function () {
     $('#pagePreLoader').hide();
     $('.nav-menu').show();
-
-    $('.main-headbar').show();      
+ 
+    $('.main-headbar').css("visibility","visible");
+    $('#footerBar').css("visibility","visible");    
 
 });
 
@@ -29,7 +30,8 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
     'lk-google-picker',
     'servicess',
     'ngSanitize',
-    'ngCsv' 
+    'ngCsv',
+    'angularUtils.directives.dirPagination' 
 ])
 
 routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider) {

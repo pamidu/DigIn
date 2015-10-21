@@ -499,6 +499,7 @@ $scope.test = 'test';
             });
 
             $scope.doFunction = function (name) {
+
                 if (name == "Add Widget") {
 
                     var selectedMenu = document.getElementsByClassName("menu-layer");
@@ -514,10 +515,9 @@ $scope.test = 'test';
                     })
                 }
                 if (name == "Analysis Report") {
-                    var selectedMenu = document.getElementsByClassName("menu-layer");
+                                        
                     selectedMenu[0].style.display = 'none';
                     $state.go('Analysis Report');
-
                 }
                 if (name == "Save") {
                     var selectedMenu = document.getElementsByClassName("menu-layer");
@@ -525,14 +525,14 @@ $scope.test = 'test';
                     $scope.saveDashboard();
                 }
 
-
-
                 if (name == "Data summary") {
+
                     var selectedMenu = document.getElementsByClassName("menu-layer");
                     selectedMenu[0].style.display = 'none';
                     $state.go('PivotTable');
                 }
                 if (name == "Dashboard") {
+
                     var selectedMenu = document.getElementsByClassName("menu-layer");
                     selectedMenu[0].style.display = 'none';
 
@@ -540,6 +540,7 @@ $scope.test = 'test';
                     $state.go(name);
                 }
                 if (name == "New Analytics") {
+
                     var selectedMenu = document.getElementsByClassName("menu-layer");
                     selectedMenu[0].style.display = 'none';
                     $state.go('Analytics');
@@ -1138,6 +1139,11 @@ $scope.test = 'test';
                 $state.go(routeName)
             }
             if (routeName == "Add Widgets") {
+
+                $('.dashboard-widgets-close').css("visibility","visible");
+                $('md-tabs-wrapper').css("visibility","visible");
+
+
                 $scope.showAddNewWidgets(ev);
                 $scope.manageTabs(true);
                 $state.go("Dashboards");
@@ -1163,12 +1169,14 @@ $scope.test = 'test';
                 $state.go(routeName)
             }
             if (routeName == "Analytics") {
+                                    
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $(".menu-layer").css("top", "160px");
                 $("starting-point").css("top", "160px");
                 $scope.manageTabs(false);
                 $rootScope.currentView = "Analytics";
+
             }
             if (routeName == "RealTime") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
@@ -1181,6 +1189,7 @@ $scope.test = 'test';
                 $state.go(routeName);
             }
             if (routeName == "Digin P Stack") {
+
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $(".menu-layer").css("top", "240px");

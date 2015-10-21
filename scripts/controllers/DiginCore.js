@@ -800,6 +800,10 @@ routerApp.controller('pStackCtrl',function($scope,$mdDialog,$state){
     };
 
     $scope.doFunction = function(name){
+
+        $('.dashboard-widgets-close').css("visibility","hidden");
+        $('md-tabs-wrapper').css("visibility","hidden");
+
         $state.go(name);
         $mdDialog.hide();
     };

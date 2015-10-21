@@ -88,7 +88,7 @@
 
         </div>
         <!--        main headbar-->
-        <div id="mainHeadbar" style="height: 45px; width: 100%;">
+        <div id="mainHeadbar" style="height: 45px; width: 100%;visibility:hidden;">
         <div class="main-headbar md-theme-light" layout="row" layout-align="space-between center">
             <div layout="row" layout-align="start center">
                 <!--
@@ -123,7 +123,7 @@
         </div>
 
         
-        <md-tabs id="footerBar" md-selected="selectedIndex" md-border-bottom md-autoselect md-align-tabs="bottom" style="min-height:100vh; width:calc(100vw - 48px);float:right;">
+        <md-tabs id="footerBar" md-selected="selectedIndex" md-border-bottom md-autoselect md-align-tabs="bottom" style="min-height:100vh; width:calc(100vw - 48px);float:right;visibility:hidden">
          <md-tab ng-repeat="tab in tabs" label="{{tab.title}}" md-on-select="$root.selectCurrentDashboard(tab);">
             <div class="demo-tab tab{{$index%4}}">
 
@@ -547,10 +547,8 @@
         $(document).ready(function() {
 
             Layout.init();
-            $('.main-headbar').hide();
+            
             $('.nav-menu').hide();
-
-            $('.md-tabs-wrapper').hide();
 
         });
 

@@ -530,21 +530,50 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
     $scope.widget = $rootScope.dashboard.widgets[objIndex];
 
+    $scope.getTables = function(){
+        
+        if($scope.datasource == "DuoStore"){
+            var client = $objectstore.getClient($scope.storeIndex, " ");
+
+            client.getClasses($scope.storeIndex);
+
+            //classes retrieved
+            client.onGetMany(function (data) {
+                if (data.length > 0) $scope.objClasses = data;
+                else console.log('There are no classes present');
+            });
+
+            //error getting classes from the index
+            client.onError(function (data) {
+                console.log('Error getting classes');
+            });
+        }else if($scope.datasource == "BigQuery"){
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function(e){
+                    console.log(this);
+                    if (xhr.readyState === 4){
+                        if (xhr.status === 200){
+                            console.log('query response:'+ JSON.parse(xhr.response));
+                            var res = JSON.parse(xhr.response);
+                            var tableArray = [];
+                            $scope.objClasses = res;
+                            console.log(res.length);
+                        } else {
+                            console.error("XHR didn't work: ", xhr.status);
+                        }
+                    }
+                }
+            xhr.ontimeout = function (){
+                    console.error("request timedout: ", xhr);
+                }
+            xhr.open("get", "http://104.131.48.155:8080/GetTables?dataSetID=digin_hnb", /*async*/ true);
+            xhr.send();
+        }
+    };
+
     if(typeof $scope.widget.widConfig == 'undefined'){
-        var client = $objectstore.getClient($scope.storeIndex, " ");
-
-        client.getClasses($scope.storeIndex);
-
-        //classes retrieved
-        client.onGetMany(function (data) {
-            if (data.length > 0) $scope.objClasses = data;
-            else console.log('There are no classes present');
-        });
-
-        //error getting classes from the index
-        client.onError(function (data) {
-            console.log('Error getting classes');
-        });
 
         $scope.seriesArray = [{
             name: 'series1',
@@ -581,6 +610,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     $scope.getFields = function () {
         $scope.selectedFields = [];
         if ($scope.datasource == "DuoStore") {
+            $scope.dataIndicator1 = true;
             if ($scope.selectedClass != null) {
                 $scope.indexType = $scope.selectedClass;
                 var client1 = $objectstore.getClient($scope.storeIndex, $scope.indexType);
@@ -600,6 +630,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                         $scope.toggleTab(1);
                         $scope.widgetValidity = 'fade-out';
                     } else console.log('There are no fields present in the class');
+                    $scope.dataIndicator = false;
                 });
 
                 //error getting fields from the class
@@ -611,6 +642,39 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 $scope.validationMessage = "Please select a class";
             }
         } else if ($scope.datasource == "BigQuery") {
+            if ($scope.selectedClass != null) {
+                $scope.indexType = $scope.selectedClass;
+                var fieldData = ($scope.selectedClass.split(':')[1]).split('.');
+                $scope.bigQueryFieldDetails = fieldData;
+                $scope.dataIndicator1 = true;
+                
+                $http({
+                    method: 'GET',
+                    url: 'http://104.131.48.155:8080/GetFields?datasetName='+fieldData[0]+'&&tableName='+fieldData[1],
+                }).
+                success(function (data, status) {
+                    if (data.length > 0) {
+                        data.forEach(function (entry) {
+                            $scope.selectedFields.push({
+                                name: entry,
+                                checked: false
+                            });
+                        });
+
+                        //change the tab
+                        $scope.toggleTab(1);
+                        $scope.widgetValidity = 'fade-out';
+                    } else console.log('There are no fields present in the class');
+                    $scope.dataIndicator1 = false;
+                }).
+                error(function (data, status) {
+                    alert("Request failed");
+
+                });
+            } else {
+                $scope.widgetValidity = 'fade-in';
+                $scope.validationMessage = "Please select a class";
+            }
 
         } else if ($scope.datasource == "CSV/Excel") {
             var jsonArray = JSON.parse($rootScope.json_string);
@@ -645,6 +709,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
     $scope.getData = function () {
         var w = new Worker("scripts/webworkers/elasticWorker.js");
+        var w1 = new Worker("scripts/webworkers/bigQueryWorker.js");
         var parameter = '';
 
         if ($scope.checkedFields.length != 0 || typeof $scope.query.value != "undefined") {
@@ -661,9 +726,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             }
 
             $scope.dataIndicator = true;
-            if ($scope.datasource == "DuoStore") {
-                w.postMessage($scope.indexType + "," + parameter + "," + $scope.query.state);
-                w.addEventListener('message', function (event) {
+
+            function mapRetrieved(event){
                     var obj = JSON.parse(event.data);
                     console.log(JSON.stringify(obj));
                     $scope.dataIndicator = false;
@@ -704,16 +768,31 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                     for (var key in $scope.mappedArray) {
                         if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
                             if ($scope.mappedArray[key].isNaN) {
-                                $scope.mappedArray[key].unique =                                                                                                                     Enumerable.From($scope.mappedArray[key].data).Select().Distinct().ToArray().length;
+                                $scope.mappedArray[key].unique = Enumerable.From($scope.mappedArray[key].data).Select().Distinct().ToArray().length;
                             }
                         }
                     }
 
                     $scope.toggleTab(2);
+            };
 
-                });
+            if ($scope.datasource == "DuoStore" || $scope.datasource == "BigQuery") {
+                if($scope.datasource == "BigQuery"){
+                    w1.postMessage(parameter + "," + $scope.bigQueryFieldDetails.toString()+ "," + $scope.query.state);
+                    w1.addEventListener('message', function (event) {
+                        mapRetrieved(event);
+                    });
 
-                $scope.widgetValidity = 'fade-out';
+                    $scope.widgetValidity = 'fade-out';
+                }else{
+                    w.postMessage($scope.indexType + "," + parameter + "," + $scope.query.state);
+                    w.addEventListener('message', function (event) {
+                        mapRetrieved(event);
+                    });
+
+                    $scope.widgetValidity = 'fade-out';
+                }
+                
             } else if ($scope.datasource == "CSV/Excel") {
                 var obj = JSON.parse($rootScope.json_string);
                 console.log(JSON.stringify(obj));
@@ -1310,7 +1389,6 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     /* Strategy1 end */
 
 };
-
 
 function InitConfigD3($scope, $mdDialog, widId, $rootScope, $sce, d3Service, $timeout) {
 

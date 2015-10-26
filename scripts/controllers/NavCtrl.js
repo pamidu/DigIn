@@ -10,15 +10,53 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
            // if(sessionInfo==null) location.href = 'index.php';
         }
 
-        $scope.closeAllWidgets = function() {
-            var length = document.getElementsByClassName("ion-close").length;
-            //$rootScope.dashboard.widgets = [];
-            var i;
-            for(i=0; i<length; i++){
-                document.getElementsByClassName("ion-close")[0].click();
-            }
+        //initially hiding the tabs
+       $( "md-tabs.footer-bar > md-tabs-wrapper" ).children().hide();
+       $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","#ECECEC" );
+       $scope.dashCloseWidgets = false ;
 
-            //$(".dashboard-widgets-close").removeClass("active");            
+       //make the close button draggable
+       $(function() {
+            $( "#draggableCloseButton" ).draggable();
+          });
+
+        getJSONData($http, 'features', function (data) {
+            $scope.featureOrigin = data;
+            
+            var obj = JSON.parse(featureObj);
+            if (featureObj === null) {
+                $scope.features = data;
+                $scope.selected = [];
+            } else {
+                $scope.selected = [];
+                for (i = 0; i < obj.length; i++) {
+                    if (obj[i].stateStr === "Enabled")
+                        $scope.selected.push(obj[i]);
+                }
+                $scope.features = obj;
+
+            }
+        });
+
+        localStorage.setItem("featureObject", JSON.stringify($scope.featureOrigin));
+
+        getJSONData($http, 'menu', function (data) {
+
+                var orignArray = [];
+                for (i = 0; i < $scope.featureOrigin.length; i++) {
+                    if ($scope.featureOrigin[i].state == true)
+                        orignArray.push($scope.featureOrigin[i]);
+                }
+                $scope.menu = orignArray.concat(data);
+
+        });
+
+
+
+        $scope.closeAllWidgets = function() {
+            $rootScope.dashboardWidgetsCopy = angular.copy($rootScope.dashboard.widgets);
+            $rootScope.dashboard.widgets = [];
+            $state.go("/");
         };  
 
         /**
@@ -312,7 +350,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         var dd = today.getDate();
 
         $rootScope.username = localStorage.getItem('username');
-
         /*if ($rootScope.username == null) 
         {
            
@@ -500,8 +537,8 @@ $scope.test = 'test';
             });
 
             $scope.doFunction = function (name) {
-                if (name == "Add Widget") {
 
+                if (name == "Add Widget") {
                     var selectedMenu = document.getElementsByClassName("menu-layer");
                     selectedMenu[0].style.display = 'none';
                     $mdDialog.show({
@@ -515,18 +552,15 @@ $scope.test = 'test';
                     })
                 }
                 if (name == "Analysis Report") {
-                    var selectedMenu = document.getElementsByClassName("menu-layer");
+                    var selectedMenu = document.getElementsByClassName("menu-layer");                    
                     selectedMenu[0].style.display = 'none';
                     $state.go('Analysis Report');
-
                 }
                 if (name == "Save") {
                     var selectedMenu = document.getElementsByClassName("menu-layer");
                     selectedMenu[0].style.display = 'none';
                     $scope.saveDashboard();
                 }
-
-
 
                 if (name == "Data summary") {
                     var selectedMenu = document.getElementsByClassName("menu-layer");
@@ -536,8 +570,6 @@ $scope.test = 'test';
                 if (name == "Dashboard") {
                     var selectedMenu = document.getElementsByClassName("menu-layer");
                     selectedMenu[0].style.display = 'none';
-
-
                     $state.go(name);
                 }
                 if (name == "New Analytics") {
@@ -587,6 +619,7 @@ $scope.test = 'test';
 
         }
         $scope.goReport = function (report) {
+            $scope.manageTabs(false);
             //closing the overlay
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
@@ -597,73 +630,95 @@ $scope.test = 'test';
             });
         }
         $scope.goDashboard = function (dashboard) {
+            console.log("hit dashboard");
             console.log(dashboard);
-            if (dashboard.storyboard == undefined) {
-                if (dashboard.data.title == undefined) {
-                    console.log("i got undefined");
-                    $rootScope.Dashboards = [{
-                        culture: dashboard.culture,
-                        date: dashboard.date,
-                        title: dashboard.name,
-                        type: dashboard.type,
-                        widgets: dashboard.data,
-                        dashboardId: dashboard.dashboardId
-            }];
-                } else {
-                    $rootScope.Dashboards = dashboard.data;
-                };
-            } else
-            if (dashboard.storyboard == false) {
-                // $('md-tabs-wrapper').css("display","block");
-                console.log("im a single page");
-                $rootScope.Dashboards = [{
-                    culture: dashboard.culture,
-                    date: dashboard.date,
-                    title: dashboard.name,
-                    type: dashboard.type,
-                    widgets: dashboard.data,
-                    dashboardId: dashboard.dashboardId
-            }];
-            } else {
-                console.log("im a storyboard");
-                $rootScope.Dashboards = dashboard.data;
-            };
-
-            $scope.tabs = $rootScope.Dashboards;
-            $rootScope.dashboard = $rootScope.Dashboards[0];
-            $scope.selectedIndex = 1;
-            $scope.$watch('selectedIndex', function (current, old) {
-                //previous = selected;
-                selected = $rootScope.Dashboards[current];
-                if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
-                if (current + 1) $log.debug('Hello ' + selected.title + '!');
-            });
-            console.log(dashboard);
-            //closing the overlay
-            // start pulathisi 7/23/2015
-            // when saved dashboard is clicked change sidebar icon class, this changes icon colors
-            $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
-            // end pulathisi 7/23/2015
-            $(".overlay").removeClass("overlay-search active");
-            $(".nav-search").removeClass("active");
-            $(".search-layer").removeClass("activating active");
-
-            if (typeof dashboard.customDuoDash === "undefined") {
-                $state.go('DashboardViewer', {
-                    param: dashboard.name
-                });
-            } else {
-                $state.go('CustomDashboardViewer', {
-                    param: dashboard.name
-                });
-                $scope.dashboard.widgets = dashboard.data;
-                $rootScope.clickedDash = dashboard.data;
-                $(".dashboard-widgets-close").addClass("active");
-            }
-
+        if (typeof dashboard.customDuoDash === "undefined"){
+            $state.go('DashboardViewer', {
+                            param: dashboard.name
+                        });
+            $scope.manageTabs(false);
+        }else{
+            $scope.manageTabs(true);
+                if (dashboard.storyboard == undefined) {
+                    if (dashboard.data.title == undefined) {
+                        console.log("i got undefined");
+                        $rootScope.Dashboards = [{
+                            culture: dashboard.culture,
+                            date: dashboard.date,
+                            title: dashboard.name,
+                            type: dashboard.type,
+                            widgets: dashboard.data,
+                            dashboardId: dashboard.dashboardId
+                        }];
+                    } else {
+                        $rootScope.Dashboards = dashboard.data;
+                    }
+                }else{
+                    if (dashboard.storyboard == false) {
+                        // $('md-tabs-wrapper').css("display","block");
+                        console.log("im a single page");
+                        $rootScope.Dashboards = [{
+                            culture: dashboard.culture,
+                            date: dashboard.date,
+                            title: dashboard.name,
+                            type: dashboard.type,
+                            widgets: dashboard.data,
+                            dashboardId: dashboard.dashboardId
+                    }];
+                    } else {
+                        console.log("im a storyboard");
+                        $rootScope.Dashboards = dashboard.data;
+                    }
+                    $state.go('CustomDashboardViewer',{
+                        param: dashboard.name
+                    });
+                    $scope.dashboard.widgets = dashboard.data;
+                    $rootScope.clickedDash = dashboard.data;
+                    $(".dashboard-widgets-close").addClass("active");
+                }
         }
 
+                    $scope.tabs = $rootScope.Dashboards;
+                    $rootScope.dashboard = $rootScope.Dashboards[0];
+                    if($rootScope.dashboard.widgets.length==0)
+                        $rootScope.dashboard.widgets = $rootScope.dashboardWidgetsCopy;
+                    $scope.selectedIndex = 1;
+                    $scope.$watch('selectedIndex', function (current, old) {
+                        //previous = selected;
+                        // if($rootScope.Dashboards[current].widgets.length== 0)
+                        //     selected = $rootScope.dashboardWidgetsCopy; 
+                        // else
+                            selected = $rootScope.Dashboards[current];
+                        if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
+                        if (current + 1) $log.debug('Hello ' + selected.title + '!');
+                    });
+                    console.log(dashboard);
+                    //closing the overlay
+                    // start pulathisi 7/23/2015
+                    // when saved dashboard is clicked change sidebar icon class, this changes icon colors
+                    $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
+                    // end pulathisi 7/23/2015
+                    $(".overlay").removeClass("overlay-search active");
+                    $(".nav-search").removeClass("active");
+                    $(".search-layer").removeClass("activating active");
+
+                    // if (typeof dashboard.customDuoDash === "undefined") {
+                    //     $state.go('DashboardViewer', {
+                    //         param: dashboard.name
+                    //     });
+                    // } else {
+                    //     $state.go('CustomDashboardViewer', {
+                    //         param: dashboard.name
+                    //     });
+                    //     $scope.dashboard.widgets = dashboard.data;
+                    //     $rootScope.clickedDash = dashboard.data;
+                    //     $(".dashboard-widgets-close").addClass("active");
+                    // }
+
+                }
+
         $scope.goAnalyzer = function (report) {
+            $scope.manageTabs(false);
             //closing the overlay
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
@@ -725,7 +780,7 @@ $scope.test = 'test';
 
             $http({
                 method: 'GET',
-                url: 'http://104.131.48.155:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://localhost:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -746,7 +801,7 @@ $scope.test = 'test';
                     $scope.dashboards.push(obj1);
                 }
 
-                $scope.favoriteDashboards.push($scope.dashboards[2]);
+                
                 $scope.favoriteDashboards.push($scope.dashboards[0]);
                 $scope.favoriteDashboards.push($scope.dashboards[1]);
 
@@ -766,7 +821,7 @@ $scope.test = 'test';
 
             $http({
                 method: 'GET',
-                url: 'http://104.131.48.155:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://localhost:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -806,7 +861,7 @@ $scope.test = 'test';
 
             $http({
                 method: 'GET',
-                url: 'http://104.131.48.155:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://localhost:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -1117,7 +1172,7 @@ $scope.test = 'test';
             }else{
                 $( "md-tabs.footer-bar > md-tabs-wrapper" ).children().hide();
                 $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","#ECECEC" );
-                $scope.dashCloseWidgets = true ;
+                $scope.dashCloseWidgets = false ;
             }
         };
 
@@ -1139,6 +1194,11 @@ $scope.test = 'test';
                 $state.go(routeName)
             }
             if (routeName == "Add Widgets") {
+
+                $('.dashboard-widgets-close').css("visibility","visible");
+                $('md-tabs-wrapper').css("visibility","visible");
+
+
                 $scope.showAddNewWidgets(ev);
                 $scope.manageTabs(true);
                 $state.go("Dashboards");
@@ -1164,12 +1224,14 @@ $scope.test = 'test';
                 $state.go(routeName)
             }
             if (routeName == "Analytics") {
+                                    
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $(".menu-layer").css("top", "160px");
                 $("starting-point").css("top", "160px");
                 $scope.manageTabs(false);
                 $rootScope.currentView = "Analytics";
+
             }
             if (routeName == "RealTime") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
@@ -1182,6 +1244,7 @@ $scope.test = 'test';
                 $state.go(routeName);
             }
             if (routeName == "Digin P Stack") {
+
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $(".menu-layer").css("top", "240px");

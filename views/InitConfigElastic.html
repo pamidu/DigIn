@@ -19,18 +19,27 @@
     <md-tabs md-dynamic-height md-border-bottom md-selected="selectedTabIndex">
       <md-tab label="Source">
         <md-content class="md-padding">
+          <!--   <div ng-show="dataIndicator1" layout="row" layout-sm="column" layout-align="center center" style="z-index:10;position:absolute;height:100%;width:100%;">
+              <md-progress-circular md-mode="indeterminate" style"z-index:11"></md-progress-circular>
+              <span>Please wait...</span>
+            </div> -->
             <md-input-container flex>
                 <label>Widget Name:</label>
                 <input name="sizeX" placeholder="www.duosoftware.com/test" ng-model="widget.uniqueType">
             </md-input-container>
             <div layout="row" layout-align='center start'>
-                <md-select ng-model="datasource" placeholder="DuoStore" flex="50">
+                <md-select ng-model="datasource" placeholder="DuoStore" ng-change="getTables()" flex="50">
                     <md-option ng-value="opt" ng-repeat="opt in datasources">{{ opt }}</md-option>
                 </md-select>
 
                 <md-select ng-show="datasource =='DuoStore'" style="text-transform:capitalize" placeholder="Index" ng-model="selectedClass" flex="50">
                     <md-option style="text-transform:capitalize" ng-value="ind" ng-repeat=" ind in objClasses">{{ ind }}</md-option>
                 </md-select>
+
+                <md-select ng-show="datasource =='BigQuery'" style="text-transform:capitalize" placeholder="Index" ng-model="selectedClass" flex="50">
+                    <md-option style="text-transform:capitalize" ng-value="ind" ng-repeat=" ind in objClasses">{{ ind }}</md-option>
+                </md-select>
+
                  <div ng-show="datasource =='CSV/Excel'" style="text-transform:capitalize" placeholder="Index" ng-model="selectedClass" flex="50">
                        <excel-loader/>
                 </div>

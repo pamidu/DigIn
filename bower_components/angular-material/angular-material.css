@@ -6728,7 +6728,8 @@ md-tabs {
   md-tabs.ng-animate {
     transition: height 0.5s cubic-bezier(0.35, 0, 0.25, 1); }
   md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
-    min-height: 248px; }
+    /*min-height: 248px;*/
+    min-height: 100%; }
   md-tabs[md-align-tabs="bottom"] md-tabs-wrapper {
     position: absolute;
     bottom: 0;

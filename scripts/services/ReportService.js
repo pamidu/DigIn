@@ -3,7 +3,7 @@ routerApp.service('ReportService', ['$q', function($q) {
   var muppets = [{
       name: 'Products',
       iconurl: 'bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg',
-      imgurl: 'https://192.168.1.201/#/extension/templates',
+      imgurl: 'http://104.236.68.121:445/#/extension/templates',
       content: ' '
   } 
 

@@ -1,3 +1,4 @@
+
 <md-content layout-margin flex style="overflow:hidden"> 
     <style>
     circle.node {
@@ -70,7 +71,7 @@
     }
     </style>
 
-    <div id="chart"></div>
+    <div class="chart" id="chart"></div>
  
     <script type="text/javascript">
     var w = 550,
@@ -81,7 +82,13 @@
 
     var force, vis;
     var LoadData = true;
-    var tooltip = d3.select("#chart")
+
+    var tabs = document.getElementsByClassName("md-tab-content");
+    console.log("tabs.length");
+    console.log(tabs.length);
+
+
+    var tooltip = d3.select(".md-tab-content .chart")
     .append("div")
     .style("position", "absolute")
     .style("z-index", "10")
@@ -910,5 +917,6 @@
     }
     </script>
 </md-content> 
+
 
 

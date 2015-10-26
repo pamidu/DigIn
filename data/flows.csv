@@ -1,0 +1,233 @@
+;
+	TupleTableSlot *ecxt_outertuple;
+
+	/* Memory contexts for expression evaluation --- see notes above */
+	MemoryContext ecxt_per_query_memory;
+	MemoryContext ecxt_per_tuple_memory;
+
+	/* Values to substitute for Param nodes in expression */
+	ParamExecData *ecxt_param_exec_vals;		/* for PARAM_EXEC params */
+	ParamListInfo ecxt_param_list_info; /* for other param types */
+
+	/*
+	 * Values to substitute for Aggref nodes in the expressions of an Agg
+	 * node, or for WindowFunc nodes within a WindowAgg node.
+	 */
+	Datum	   *ecxt_aggvalues; /* precomputed values for aggs/windowfuncs */
+	bool	   *ecxt_aggnulls;	/* null flags for aggs/windowfuncs */
+
+	/* Value to substitute for CaseTestExpr nodes in expression */
+	Datum		caseValue_datum;
+	bool		caseValue_isNull;
+
+	/* Value to substitute for CoerceToDomainValue nodes in expression */
+	Datum		domainValue_datum;
+	bool		domainValue_isNull;
+
+	/* Link to containing EState (NULL if a standalone ExprContext) */
+	struct EState *ecxt_estate;
+
+	/* Functions to call back when ExprContext is shut down */
+	ExprContext_CB *ecxt_callbacks;
+} ExprContext;
+
+/*
+ * Set-result status returned by ExecEvalExpr()
+ */
+typedef enum
+{
+	ExprSingleResult,			/* expression does not return a set */
+	ExprMultipleResult,			/* this result is an element of a set */
+	ExprEndResult				/* there are no more elements in the set */
+} ExprDoneCond;
+
+/*
+ * Return modes for functions returning sets.  Note values must be chosen
+ * as separate bits so that a bitmask can be formed to indicate supported
+ * modes.  SFRM_Materialize_Random and SFRM_Materialize_Preferred are
+ * auxiliary flags about SFRM_Materialize mode, rather than separate modes.
+ */
+typedef enum
+{
+	SFRM_ValuePerCall = 0x01,	/* one value returned per call */
+	SFRM_Materialize = 0x02,	/* result set instantiated in Tuplestore */
+	SFRM_Materialize_Random = 0x04,		/* Tuplestore needs randomAccess */
+	SFRM_Materialize_Preferred = 0x08	/* caller prefers Tuplestore */
+} SetFunctionReturnMode;
+
+/*
+ * When calling a function that might return a set (multiple rows),
+ * a node of this type is passed as fcinfo->resultinfo to allow
+ * return status to be passed back.  A function returning set should
+ * raise an error if no such resultinfo is provided.
+ */
+typedef struct ReturnSetInfo
+{
+	NodeTag		type;
+	/* values set by caller: */
+	ExprContext *econtext;		/* context function is being called in */
+	TupleDesc	expectedDesc;	/* tuple descriptor expected by caller */
+	int			allowedModes;	/* bitmask: return modes caller can handle */
+	/* result status from function (but pre-initialized by caller): */
+	SetFunctionReturnMode returnMode;	/* actual return mode */
+	ExprDoneCond isDone;		/* status for ValuePerCall mode */
+	/* fields filled by function in Materialize return mode: */
+	Tuplestorestate *setResult; /* holds the complete returned tuple set */
+	TupleDesc	setDesc;		/* actual descriptor for returned tuples */
+} ReturnSetInfo;
+
+/* ----------------
+ *		ProjectionInfo node information
+ *
+ *		This is all the information needed to perform projections ---
+ *		that is, form new tuples by evaluation of targetlist expressions.
+ *		Nodes which need to do projections create one of these.
+ *
+ *		ExecProject() evaluates the tlist, forms a tuple, and stores it
+ *		in the given slot.	Note that the result will be a "virtual" tuple
+ *		unless ExecMaterializeSlot() is then called to force it to be
+ *		converted to a physical tuple.	The slot must have a tupledesc
+ *		that matches the output of the tlist!
+ *
+ *		The planner very often produces tlists that consist entirely of
+ *		simple Var references (lower levels of a plan tree almost always
+ *		look like that).  And top-level tlists are often mostly Vars too.
+ *		We therefore optimize execution of simple-Var tlist entries.
+ *		The pi_targetlist list actually contains only the tlist entries that
+ *		aren't simple Vars, while those that are Vars are processed using the
+ *		varSlotOffsets/varNumbers/varOutputCols arrays.
+ *
+ *		The lastXXXVar fields are used to optimize fetching of fields from
+ *		input tuples: they let us do a slot_getsomeattrs() call to ensure
+ *		that all needed attributes are extracted in one pass.
+ *
+ *		targetlist		target list for projection (non-Var expressions only)
+ *		exprContext		expression context in which to evaluate targetlist
+ *		slot			slot to place projection result in
+ *		itemIsDone		workspace array for ExecProject
+ *		directMap		true if varOutputCols[] is an identity map
+ *		numSimpleVars	number of simple Vars found in original tlist
+ *		varSlotOffsets	array indicating which slot each simple Var is from
+ *		varNumbers		array containing input attr numbers of simple Vars
+ *		varOutputCols	array containing output attr numbers of simple Vars
+ *		lastInnerVar	highest attnum from inner tuple slot (0 if none)
+ *		lastOuterVar	highest attnum from outer tuple slot (0 if none)
+ *		lastScanVar		highest attnum from scan tuple slot (0 if none)
+ * ----------------
+ */
+typedef struct ProjectionInfo
+{
+	NodeTag		type;
+	List	   *pi_targetlist;
+	ExprContext *pi_exprContext;
+	TupleTableSlot *pi_slot;
+	ExprDoneCond *pi_itemIsDone;
+	bool		pi_directMap;
+	int			pi_numSimpleVars;
+	int		   *pi_varSlotOffsets;
+	int		   *pi_varNumbers;
+	int		   *pi_varOutputCols;
+	int			pi_lastInnerVar;
+	int			pi_lastOuterVar;
+	int			pi_lastScanVar;
+} ProjectionInfo;
+
+/* ----------------
+ *	  JunkFilter
+ *
+ *	  This class is used to store information regarding junk attributes.
+ *	  A junk attribute is an attribute in a tuple that is needed only for
+ *	  storing intermediate information in the executor, and does not belong
+ *	  in emitted tuples.  For example, when we do an UPDATE query,
+ *	  the planner adds a "junk" entry to the targetlist so that the tuples
+ *	  returned to ExecutePlan() contain an extra attribute: the ctid of
+ *	  the tuple to be updated.	This is needed to do the update, but we
+ *	  don't want the ctid to be part of the stored new tuple!  So, we
+ *	  apply a "junk filter" to remove the junk attributes and form the
+ *	  real output tuple.  The junkfilter code also provides routines to
+ *	  extract the values of the junk attribute(s) from the input tuple.
+ *
+ *	  targetList:		the original target list (including junk attributes).
+ *	  cleanTupType:		the tuple descriptor for the "clean" tuple (with
+ *						junk attributes removed).
+ *	  cleanMap:			A map with the correspondence between the non-junk
+ *						attribute numbers of the "original" tuple and the
+ *						attribute numbers of the "clean" tuple.
+ *	  resultSlot:		tuple slot used to hold cleaned tuple.
+ *	  junkAttNo:		not used by junkfilter code.  Can be used by caller
+ *						to remember the attno of a specific junk attribute
+ *						(execMain.c stores the "ctid" attno here).
+ * ----------------
+ */
+typedef struct JunkFilter
+{
+	NodeTag		type;
+	List	   *jf_targetList;
+	TupleDesc	jf_cleanTupType;
+	AttrNumber *jf_cleanMap;
+	TupleTableSlot *jf_resultSlot;
+	AttrNumber	jf_junkAttNo;
+} JunkFilter;
+
+/* ----------------
+ *	  ResultRelInfo information
+ *
+ *		Whenever we update an existing relation, we have to
+ *		update indices on the relation, and perhaps also fire triggers.
+ *		The ResultRelInfo class is used to hold all the information needed
+ *		about a result relation, including indices.. -cim 10/15/89
+ *
+ *		RangeTableIndex			result relation's range table index
+ *		RelationDesc			relation descriptor for result relation
+ *		NumIndices				# of indices existing on result relation
+ *		IndexRelationDescs		array of relation descriptors for indices
+ *		IndexRelationInfo		array of key/attr info for indices
+ *		TrigDesc				triggers to be fired, if any
+ *		TrigFunctions			cached lookup info for trigger functions
+ *		TrigWhenExprs			array of trigger WHEN expr states
+ *		TrigInstrument			optional runtime measurements for triggers
+ *		ConstraintExprs			array of constraint-checking expr states
+ *		junkFilter				for removing junk attributes from tuples
+ *		projectReturning		for computing a RETURNING list
+ * ----------------
+ */
+typedef struct ResultRelInfo
+{
+	NodeTag		type;
+	Index		ri_RangeTableIndex;
+	Relation	ri_RelationDesc;
+	int			ri_NumIndices;
+	RelationPtr ri_IndexRelationDescs;
+	IndexInfo **ri_IndexRelationInfo;
+	TriggerDesc *ri_TrigDesc;
+	FmgrInfo   *ri_TrigFunctions;
+	List	  **ri_TrigWhenExprs;
+	struct Instrumentation *ri_TrigInstrument;
+	List	  **ri_ConstraintExprs;
+	JunkFilter *ri_junkFilter;
+	ProjectionInfo *ri_projectReturning;
+} ResultRelInfo;
+
+/* ----------------
+ *	  EState information
+ *
+ * Master working state for an Executor invocation
+ * ----------------
+ */
+typedef struct EState
+{
+	NodeTag		type;
+
+	/* Basic state for all query types: */
+	ScanDirection es_direction; /* current scan direction */
+	Snapshot	es_snapshot;	/* time qual to use */
+	Snapshot	es_crosscheck_snapshot; /* crosscheck time qual for RI */
+	List	   *es_range_table; /* List of RangeTblEntry */
+	PlannedStmt *es_plannedstmt;	/* link to top of plan tree */
+
+	JunkFilter *es_junkFilter;	/* top-level junk filter, if any */
+
+	/* If query can insert/delete tuples, the command ID to mark them with */
+	CommandId	es_output_cid;
+
+	/* Info about target table(s) for insert/update/delete querie

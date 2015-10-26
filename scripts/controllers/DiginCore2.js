@@ -82,27 +82,30 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         };
 
         // $scope.widget = $rootScope.widget.dataView + '.html';
-       
 
-       $scope.showData = function () {
 
-            $('#downloadButton').css("display","block");
+        $scope.showData = function() {
 
-            console.log("$rootScope.widget");
-            console.log($rootScope.widget);
-
-            $scope.dataViewPath = 'views/'+ $rootScope.widget.dataView + '.html';
+            $scope.dataViewPath = 'views/' + $rootScope.widget.dataView + '.html';
 
             console.log("showData");
-            console.log( $scope.dataViewPath);
+            console.log($scope.dataViewPath);
 
-            if( $rootScope.widget.dataJson == 'hnbBoxData' ){
-                JSON2CSV2();
-            }
-            else{
-                JSON2CSV();
-            }
-            
+            JSON2CSV();
+
+            // $mdDialog.show({
+            //         controller: eval($rootScope.widget.dataCtrl),
+            //         templateUrl: 'views/' + $rootScope.widget.dataView + '.html',
+            //         parent: angular.element(document.body),
+            //         locals: {
+            //             wid: $rootScope.widget
+            //         }
+            //     })
+            //     .then(function () {
+            //         //$mdDialog.hide();
+            //     }, function () {
+            //         //$mdDialog.hide();
+            //     });
         };
 
 
@@ -251,17 +254,16 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
             });
             client.getClasses("com.duosoftware.com");
         };
-        $scope.commentary = function (widget) {
+        $scope.commentary = function(widget) {
 
-            $('#downloadButton').css("display","none");
-            
             var comment = "";
             var chunks = [];
 
-            $scope.dataViewPath = '';
+
 
         };
         $scope.closeDialog = function() {
+            alert("close testing");
             $mdDialog.hide();
         };
         $scope.clear = function() {
@@ -873,7 +875,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                 //    $scope.openInitialConfig(ev, $scope.currWidget.id);
                 // }
                 // else
-                if ($scope.currWidget.type != "HNB Assuarance") {
+                if ($scope.currWidget.type != "Predefined Analytics") {
                     $scope.openInitialConfig(ev, $scope.currWidget.id);
                 }
             });

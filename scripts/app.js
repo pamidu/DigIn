@@ -1,7 +1,9 @@
 $(window).load(function () {
     $('#pagePreLoader').hide();
     $('.nav-menu').show();
-    $('.main-headbar').show();      
+ 
+    $('.main-headbar').css("visibility","visible");
+    $('#footerBar').css("visibility","visible");    
 
 });
 
@@ -27,8 +29,9 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
      'ui',
     'lk-google-picker',
     'servicess',
+    'angularUtils.directives.dirPagination',
     'ngSanitize',
-    'ngCsv' 
+    'ngCsv'
 ])
 
 routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider) {
@@ -36,7 +39,10 @@ routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $httpProvider.defaults.headers.common["Content-Type"] = "application/x-www-form-urlencoded";
-    $stateProvider        
+    $stateProvider
+        .state('/', {
+            url: "/"
+        })      
         .state('Dashboards', {
             url: "/Dashboards",
             controller: 'DashboardCtrl',

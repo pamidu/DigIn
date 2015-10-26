@@ -2,7 +2,7 @@
     "d": [{
 
             "title": "Image",
-            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "icon": "styles/css/images/icons/home_decorations.svg",
             "type": "Custom",
             "Description": "Image",
             "initTemplate": "InitConfigimage",
@@ -16,7 +16,7 @@
         }, {
 
             "title": "Google Calendar",
-            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "icon": "styles/css/images/icons/google.svg",
             "type": "Custom",
             "Description": "Upcoming events",
             "initTemplate": "InitConfigCalendar",
@@ -30,7 +30,7 @@
         }, {
 
             "title": "Clock",
-            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "icon": "styles/css/images/icons/dashboard.svg",
             "type": "General",
             "Description": "Time, Manage day to day work",
             "initTemplate": "InitConfigClock",
@@ -44,7 +44,7 @@
         }, {
 
             "title": "Calendar",
-            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "icon": "styles/css/images/icons/calendar.svg",
             "type": "General",
             "Description": "Date, Schedule day to day work",
             "initTemplate": "InitConfigCal",
@@ -58,7 +58,7 @@
         }, {
 
             "title": "Weather",
-            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "icon": "styles/css/images/icons/weather.svg",
             "type": "General",
             "Description": "Current weather and city",
             "initTemplate": "InitConfigWeatherc",
@@ -72,7 +72,7 @@
         }, {
 
             "title": "Profile",
-            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "icon": "styles/css/images/icons/motion_detector.svg",
             "type": "General",
             "Description": "Current user profile",
             "initTemplate": "InitConfigProfile",
@@ -152,7 +152,7 @@
         }, {
 
             "title": "Instagram search",
-            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "icon": "styles/css/images/icons/instagram.svg",
             "type": "Social Media",
             "Description": "Hash tags,Popular images,Followers, Other data",
             "initTemplate": "InitConfigInstagram",
@@ -194,7 +194,7 @@
         }, {
 
             "title": "LinkedIn",
-            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "icon": "styles/css/images/icons/linkedin.svg",
             "type": "Social Media",
             "Description": "Connections, Network Updates",
             "initTemplate": "InitConfigLinkedin",
@@ -208,7 +208,7 @@
         }, {
 
             "title": "Pinterest",
-            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "icon": "styles/css/images/icons/pinterest.svg",
             "type": "Social Media",
             "Description": "Boards, Pins, Likes, Followers, Following",
             "initTemplate": "fbInitConfig",
@@ -240,7 +240,7 @@
         {
 
             "title": "Youtube",
-            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "icon": "styles/css/images/icons/youtube.svg",
             "type": "Social Media",
             "Description": "Likes, Clicks, Active Users, Pageviews",
             "initTemplate": "InitConfigyoutube",
@@ -254,7 +254,7 @@
         }, {
 
             "title": "WordPress",
-            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "icon": "styles/css/images/icons/wordpress.svg",
             "type": "Blogging",
             "Description": "Users, Posts, Comments",
             "initTemplate": "InitConfigWordpress",
@@ -268,7 +268,7 @@
         }, {
 
             "title": "RssFeeds",
-            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "icon": "styles/css/images/icons/rss.svg",
             "type": "Blogging",
             "Description": "Feeds, News",
             "initTemplate": "InitConfigRss",
@@ -282,7 +282,7 @@
         }, {
 
             "title": "Gnews",
-            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "icon": "styles/css/images/icons/google.svg",
             "type": "Blogging",
             "Description": "Google news",
             "initTemplate": "InitConfiggnews",
@@ -297,7 +297,7 @@
         }, {
             "title": "Skill wise summary",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Sri Lanka Telecom",
+            "type": "Predefined Analytics",
             "Description": "Analyze the calls for each skills",
             "initTemplate": "InitSLT",
             "initController": "SLTInit",
@@ -311,7 +311,7 @@
 
             "title": "Calls in IVR",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Sri Lanka Telecom",
+            "type": "Predefined Analytics",
             "Description": "Check how many calls are in the Interactive Voice Response",
             "initTemplate": "InitSLTIvr",
             "initController": "sltivrInit",
@@ -325,7 +325,7 @@
 
             "title": "Calls in Queue",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Sri Lanka Telecom",
+            "type": "Predefined Analytics",
             "Description": "Check how many calls are in the Queue",
             "initTemplate": "InitS4LT",
             "initController": "SLTInit",
@@ -341,7 +341,7 @@
 
             "title": "Calls at Agent",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Sri Lanka Telecom",
+            "type": "Predefined Analytics",
             "Description": "Check who is handling calls",
             "initTemplate": "InitSLT",
             "initController": "SLTInit",
@@ -357,7 +357,7 @@
 
             "title": "Queue Details",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Sri Lanka Telecom",
+            "type": "Predefined Analytics",
             "Description": "See the calls which has not been responded",
             "initTemplate": "InitSLT",
             "initController": "SLTInit",
@@ -372,7 +372,7 @@
         }, {
 
             "title": "Google Maps",
-            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "icon": "styles/css/images/icons/google.svg",
             "type": "Custom",
             "Description": "Google Maps",
             "initTemplate": "InitConfigGoogleMaps",
@@ -389,7 +389,7 @@
 
             "title": "Number of claims per vehicle type",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "HNB Assuarance",
+            "type": "Predefined Analytics",
             "Description": "Force directive layout to show number of claims vehicle type",
             "initTemplate": "InitConfighnb",
             "initController": "hnbInit",
@@ -406,7 +406,7 @@
 
             "title": "Distributed claims",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "HNB Assuarance",
+            "type": "Predefined Analytics",
             "Description": "Sunburst directive layout to show the data of claims",
             "initTemplate": "InitConfighnb",
             "initController": "hnbInit",
@@ -422,7 +422,7 @@
         {
             "title": "Box plot for month wise",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "HNB Assuarance",
+            "type": "Predefined Analytics",
             "Description": "Box plot analysis to check month wise vehicle type claims",
             "initTemplate": "InitConfighnb",
             "initController": "hnbInit",

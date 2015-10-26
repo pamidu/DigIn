@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="styles/css/commonstyle.css">
 </head>
 
-<body ng-cloak>
-    <!--    <div id="gradient" style="height:50vh;" />-->
+<body ng-cloak style="background-color:white;">
+        <div id="gradient" style="height:50vh;" />
 
     <div id="viewContainer" layout="column" layout-align="center center">
         <md-card id="loginFrame" class="md-whiteframe-z4" layout="column" layout-align="start center" style="min-width:525px;background-color:#fafafa;">
@@ -17,13 +17,13 @@
                 <img ng-src="styles/css/images/initiallog.png" style="width:100px;" height="60px">
             </div>
 
-            <form name="loginForm" style="padding:10px 36px;width:100%;" method="POST" flex action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]);?>">
+            <form name="loginForm" style="padding:10px 36px;width:100%;" method="POST" flex >
                 <div layout="row">
                     <ng-md-icon icon="account_circle" style="fill: darkgrey;
     padding: 25px 10px;"></ng-md-icon>
                     <md-input-container flex>
                         <label>User Name</label>
-                        <input required id="userName" name="userName" model="txtUname">
+                        <input required id="userName" name="userName" ng-model="txtUname">
                         <!-- <div ng-messages="loginForm.userName.$error">
 				<div ng-message="required">This is required.</div>
 			</div> -->
@@ -34,23 +34,23 @@
     padding: 25px 10px;"></ng-md-icon>
                     <md-input-container flex>
                         <label>Password</label>
-                        <input type="password" required id="password" name="password" model="txtPwd">
+                        <input type="password" required id="password" name="password" ng-model="txtPwd">
                         <!-- <div ng-messages="loginForm.password.$error">
 			<div ng-message="required">This is required.</div>
 		</div> -->
                     </md-input-container>
                 </div>
                 <p style="font-size:small;color:darkgrey;">New to Duodigin? <a href="http://duoworld.sossgrid.com/signup/">Signup</a></p>
-            </form>
+            
             <md-button class="md-fab  md-primary" type="submit" ng-click="login()" style="top: 50%;
     margin-top: -25px;
     position: absolute;
-    margin-left: 500px;">
-                <ng-md-icon icon="arrow_forward" style="fill: darkgrey;
-    line-height: 70px;"></ng-md-icon>
+    margin-left: 460px;">
+                <md-icon class="ion-android-arrow-forward" style="fill: darkgrey;
+    line-height: 10px;font-size:25px;"></md-icon>
             </md-button>
         </md-card>
-
+        </form>
         <div id="companyCygilScroll" class=""></div>
     </div>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

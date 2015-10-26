@@ -1,32 +1,27 @@
 {
     "d": [{
         "title": "Visualization",
-        "icon": "styles/css/images/icons/ic_insert_chart_24px.svg"
+        "icon": "styles/css/images/icons/home_decorations.svg"
     }, {
 
         "title": "Blogging",
-        "icon": "styles/css/images/icons/ic_assignment_24px.svg"
+        "icon": "styles/css/images/icons/open_in_browser.svg"
     }, {
 
         "title": "Custom",
-        "icon": "styles/css/images/icons/ic_dashboard_24px.svg"
+        "icon": "styles/css/images/icons/shopping_basket.svg"
     }, {
 
         "title": "Social Media",
-        "icon": "styles/css/images/icons/ic_now_widgets_24px.svg"
+        "icon": "styles/css/images/icons/notebook.svg"
     }, {
 
-        "title": "Sri Lanka Telecom",
-        "icon": "styles/css/images/icons/compass.svg"
-    },{
-
-        "title": "HNB Assuarance",
-        "icon": "styles/css/images/icons/cloud.svg"
-
+        "title": "Predefined Analytics",
+        "icon": "styles/css/images/icons/phone_office.svg"
     },{
 
         "title": "General",
-        "icon": "styles/css/images/icons/ic_av_timer_24px.svg"
+        "icon": "styles/css/images/icons/shopping_cart.svg"
 
       }]
 }

@@ -1,10 +1,10 @@
 <md-dialog>
     <md-content layout="row" style="height:100%;overflow:hidden;">
         <div flex>
-            <img src="styles/css/images/person.jpg" style="height:100%;width:80%;">
+            <img ng-click="test()" src="styles/css/images/person.jpg" style="height:100%;width:80%;">
             <div class="md-list-item-text" style="background-color: #4285F4;
     height: 10vh;color:lightgrey" layout="column" layout-align="center center" layout-padding>
-                <p style="font-size:large;color:whitesmoke;margin:5px;">Sajeetharan Dev</p>
+                <p style="font-size:large;color:whitesmoke;margin:5px;" ng-model="username">{{username}}</p>
                 <p>Developer</p>
             </div>
         </div>

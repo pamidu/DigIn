@@ -386,38 +386,35 @@ ul {
 Cards.init();
 
 </script>
-<!-- <md-content layout-margin flex > -->
-            <!-- <md-button ng-click="commentary(widget)" aria-label="Close" layout-wrap>
-                <md-icon class="ion-volume digin-widget-toolbar-icon"></md-icon>
-            </md-button>
-
-
-
-            <md-button ng-click="showAdvanced($event,widget)" aria-label="Settings" layout-wrap>
-                <md-icon class="ion-gear-b digin-widget-toolbar-icon"></md-icon>
-            </md-button>
-
-
-            <md-button ng-click="showData(widget,$event)" aria-label="Close" layout-wrap>
-                <md-icon class="ion-clipboard digin-widget-toolbar-icon"></md-icon>
-            </md-button> -->
 
 <div class="view" plumb-item>
+  <div>
+    
+    <md-button ng-click="closeDialog()" aria-label="Close" layout-wrap style="margin:0px !important">
+                  <md-icon class="ion-close digin-widget-toolbar-icon"></md-icon>
+    </md-button>
+    
+  </div>
   <div class="card__full">
-    <div class="card__full-top" >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <div class="card__full-top" flex>
+
+      <span class="card__full-num" flex="50"></span>
+      <button id="downloadButton" type="button" class="btn btn-default" ng-csv="json2csv" filename="Data.csv" charset="utf-8" flex="30" style="display:none;color:white"><span class="glyphicon glyphicon-download-alt">&nbsp;</span>Download CSV</button>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" flex="20">
           <path d="M16.59 8.59l-4.59 4.58-4.59-4.58-1.41 1.41 6 6 6-6z"/>
           <path d="M0 0h24v24h-24z" fill="none"/>
       </svg>
-      <span class="card__full-num"></span>
+
+      
     </div>
     <div class="card__full-bottom">
       <p class="card__full-handle"></p>
       <!-- <div ng-include src="'views/ViewDataHnbClaims.html'" ></div> -->
-      <div ng-include src="dataViewPath" ></div>      
+      <div ng-include src="dataViewPath"></div>      
     </div>
   </div>
   <ul class="card__list">
+        
     <li class="card__item card__item--blue" ng-click="commentary(widget)">
       <div class="card__info">
         <div class="info-player">
@@ -446,7 +443,5 @@ Cards.init();
     
   </ul>
 </div>
-
-<!-- </md-content> -->
 
 

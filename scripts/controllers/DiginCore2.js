@@ -16,113 +16,49 @@
 routerApp.controller('widgetSettingsCtrl', ['$scope',
 
     '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', '$http',
-    function($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http) {
+     function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http) {
 
-        $http.get('jsons/hnbDistributedclaims.json').success(function(data) {
-            console.log('[' + JSON.stringify(data) + ']');
+        
+        $http.get('jsons/'+ $rootScope.widget.dataJson +'.json').success(function (data) {
+            console.log('['+JSON.stringify(data)+']');
             $scope.arr = data;
 
+            console.log("data json");
             console.log($scope.arr);
         });
 
-        //     $scope.json2csv = [{
-        //   id: 1,
-        //   primerNombre: 'Juan',
-        //   segundoNombre: 'Mario',
-        //   primerApellido: 'Perez',
-        //   segundoApellido: 'Maldonado',
-        //   fechaNacimiento: '23-12-1985'
-        // }, {
-        //   id: 2,
-        //   primerNombre: 'Jorge',
-        //   segundoNombre: 'Alfonzo',
-        //   primerApellido: 'Quinto',
-        //   segundoApellido: 'Marroquin',
-        //   fechaNacimiento: '15-01-1988'
-        // }, {
-        //   id: 3,
-        //   primerNombre: 'Carlos',
-        //   segundoNombre: 'Alberto',
-        //   primerApellido: 'Vargas',
-        //   segundoApellido: 'Martinez',
-        //   fechaNacimiento: '09-03-1990'
-        // }, {
-        //   id: 4,
-        //   primerNombre: 'Mario',
-        //   segundoNombre: 'Alvaro',
-        //   primerApellido: 'Hernadez',
-        //   segundoApellido: 'Morales',
-        //   fechaNacimiento: '23-02-1984'
-        // }, {
-        //   id: 5,
-        //   primerNombre: 'Marlon',
-        //   segundoNombre: 'Federico',
-        //   primerApellido: 'Lopez',
-        //   segundoApellido: 'Padilla',
-        //   fechaNacimiento: '01-03-1976'
-        // }, {
-        //   id: 6,
-        //   primerNombre: 'Daniel',
-        //   segundoNombre: 'Francisco',
-        //   primerApellido: 'Herrera',
-        //   segundoApellido: 'Perdomo',
-        //   fechaNacimiento: '22-03-1989'
-        // }, {
-        //   id: 7,
-        //   primerNombre: 'Cesar',
-        //   segundoNombre: 'Jaime',
-        //   primerApellido: 'Arroche',
-        //   segundoApellido: 'Pedrosa',
-        //   fechaNacimiento: '18-02-1987'
-        // }];
-
-        $('#pagePreLoader').hide();
-        $scope.test = function() {
+           $('#pagePreLoader').hide();
+        $scope.test = function () {
             alert("test");
-        };
+        };    
 
-        // $scope.widget = $rootScope.widget.dataView + '.html';
+        $scope.showData = function () {
 
+            $('#downloadButton').css("display","block");
 
-        $scope.showData = function() {
+            console.log("$rootScope.widget");
+            console.log($rootScope.widget);
 
-            $scope.dataViewPath = 'views/' + $rootScope.widget.dataView + '.html';
+            $scope.dataViewPath = 'views/'+ $rootScope.widget.dataView + '.html';
 
             console.log("showData");
-            console.log($scope.dataViewPath);
+            console.log( $scope.dataViewPath);
 
-            JSON2CSV();
-
-            // $mdDialog.show({
-            //         controller: eval($rootScope.widget.dataCtrl),
-            //         templateUrl: 'views/' + $rootScope.widget.dataView + '.html',
-            //         parent: angular.element(document.body),
-            //         locals: {
-            //             wid: $rootScope.widget
-            //         }
-            //     })
-            //     .then(function () {
-            //         //$mdDialog.hide();
-            //     }, function () {
-            //         //$mdDialog.hide();
-            //     });
+            if( $rootScope.widget.dataJson == 'hnbBoxData' ){
+                JSON2CSV2();
+            }
+            else{
+                JSON2CSV();
+            }
+            
         };
-
 
         function JSON2CSV() {
 
             var str = '';
             var jsonArray = [];
 
-            console.log("$scope.arr");
-            console.log($scope.arr);
-
-            console.log("$scope.arr.children.length");
-            console.log($scope.arr.children.length);
-
-
-
-            for (var i = 0; i < $scope.arr.children.length; i++) {
+            for(var i=0; i< $scope.arr.children.length; i++){
 
                 var obj = {};
                 obj['data1'] = "";
@@ -131,16 +67,16 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
                 console.log("child level 1");
                 console.log($scope.arr.children[i].name);
                 //str += $scope.arr.children[i].name;
-
-                for (var j = 0; j < $scope.arr.children[i].children.length; j++) {
-
+                if( $scope.arr.children[i].children != undefined){
+                for(var j=0; j< $scope.arr.children[i].children.length; j++){
+                    
                     console.log("child level 2");
                     console.log($scope.arr.children[i].children[j].name);
                     str += $scope.arr.children[i].name + ',' + $scope.arr.children[i].children[j].name;
                     obj['data1'] = $scope.arr.children[i].name;
                     obj['data2'] = $scope.arr.children[i].children[j].name;
-                    if ($scope.arr.children[i].children[j].children != undefined) {
-                        for (var k = 0; k < $scope.arr.children[i].children[j].children.length; k++) {
+                    if( $scope.arr.children[i].children[j].children != undefined){
+                        for(var k=0; k< $scope.arr.children[i].children[j].children.length; k++){
 
                             console.log("child level 3");
                             console.log($scope.arr.children[i].children[j].children[k].name);
@@ -148,7 +84,8 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
                             obj['data3'] = $scope.arr.children[i].children[j].children[k].name;
                         }
                         str += '\n';
-                    } else {
+                    }
+                    else{
                         str += '\n';
                     }
                     jsonArray.push(obj);
@@ -156,34 +93,62 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
                     obj['data1'] = "";
                     obj['data2'] = "";
                     obj['data3'] = "";
-
+                    
                 }
-
-
+                }
+                else{
+                        str += '\n';
+                        obj['data1'] = $scope.arr.children[i].name1;
+                        obj['data2'] = $scope.arr.children[i].name2;
+                }
+                
+                
             }
 
             console.log("str");
             console.log(str);
             console.log("jsonArray");
             console.log(jsonArray);
-
+            
             $scope.json2csv = jsonArray;
-
+    
         }
 
-        // $("#convert").click(function() {
-        //     var json = $.parseJSON($("#json").val());
-        //     var csv = JSON2CSV(json);
-        //     $("#csv").val(csv);
-        // });
+        function JSON2CSV2() {
 
-        // $("#download").click(function() {
-        //     var json = $.parseJSON($("#json").val());
-        //     var csv = JSON2CSV(json);
-        //     window.open("data:text/csv;charset=utf-8," + escape(csv))
-        // });
+            var str = '';
+            var jsonArray = [];
 
-        $scope.exportToCSV = function($http) {
+            for(var i=0; i< $scope.arr.children.length; i++){
+
+                var obj = {};
+                obj['data1'] = "";
+                obj['data2'] = "";
+                
+                console.log("child level 1");
+                //console.log($scope.arr.children[i].name);
+                //str += $scope.arr.children[i].name;
+                obj['data1'] = $scope.arr.children[i].category;
+                obj['data2'] = $scope.arr.children[i].Observation;
+       
+                jsonArray.push(obj);
+                    var obj = {};
+                    obj['data1'] = "";
+                    obj['data2'] = "";
+                
+                
+            }
+
+            console.log("str");
+            console.log(str);
+            console.log("jsonArray");
+            console.log(jsonArray);
+            
+            $scope.json2csv = jsonArray;
+    
+        }
+        
+        $scope.exportToCSV = function ($http) {
             alert("testing export to csv");
 
             JSON2CSV();
@@ -192,56 +157,54 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
 
         };
 
-        $scope.convertCSVtoJson = function(src) {
-            AsTorPlotItems.then(function(data) {
+        $scope.convertCSVtoJson = function (src) {
+            AsTorPlotItems.then(function (data) {
                 $scope.items = data;
             });
         };
-
         $scope.showAdvanced = function (ev, widget) {
 
-            // $scope.dataViewPath = 'views/'+$rootScope.widget.initTemplate + '.html';
+            $('#downloadButton').css("display","none");
 
-            // console.log("showAdvanced");
-            // console.log( $scope.dataViewPath);
-             document.getElementsByClassName("card__full")[0].style.visibility="hidden";
-        
+            $scope.dataViewPath = 'views/'+$rootScope.widget.initTemplate + '.html';
 
-            $mdDialog.show({
-                controller: 'chartSettingsCtrl',
-                templateUrl: 'views/chart_settings.html',
-                targetEvent: ev,
-                resolve: {
-                    widget: function() {
-                        return widget;
-                    }
-                }
-            })
+            console.log("showAdvanced");
+            console.log( $scope.dataViewPath);
+
+            // $mdDialog.show({
+            //     controller: 'chartSettingsCtrl',
+            //     templateUrl: 'views/chart_settings.html',
+            //     targetEvent: ev,
+            //     resolve: {
+            //         widget: function() {
+            //             return widget;
+            //         }
+            //     }
+            // })
             
-            $mdDialog.show({
-                    controller: eval($rootScope.widget.initCtrl),
-                    templateUrl: 'views/' + $rootScope.widget.initTemplate + '.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    locals: {
-                        widId: $rootScope.widget.id
-                    }
-                })
-                .then(function () {
-                    //$mdDialog.hide();
-                }, function () {
-                    //$mdDialog.hide();
-                });
+            // $mdDialog.show({
+            //         controller: eval($rootScope.widget.initCtrl),
+            //         templateUrl: 'views/' + $rootScope.widget.initTemplate + '.html',
+            //         parent: angular.element(document.body),
+            //         targetEvent: ev,
+            //         locals: {
+            //             widId: $rootScope.widget.id
+            //         }
+            //     })
+            //     .then(function () {
+            //         //$mdDialog.hide();
+            //     }, function () {
+            //         //$mdDialog.hide();
+            //     });
 
         };
-        
-        $scope.trustSrc = function(src) {
+        $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         };
-        $scope.getIndexes = function() {
+        $scope.getIndexes = function () {
             var client = $objectstore.getClient("com.duosoftware.com");
-            client.onGetMany(function(data) {
-                data.forEach(function(entry) {
+            client.onGetMany(function (data) {
+                data.forEach(function (entry) {
 
                     $rootScope.indexes.push({
                         value: entry,
@@ -254,23 +217,25 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
             });
             client.getClasses("com.duosoftware.com");
         };
-        $scope.commentary = function(widget) {
+        $scope.commentary = function (widget) {
 
+            $('#downloadButton').css("display","none");
+            
             var comment = "";
             var chunks = [];
 
-
+            $scope.dataViewPath = '';
 
         };
-        $scope.closeDialog = function() {
-            alert("close testing");
+        $scope.closeDialog = function () {
+            
             $mdDialog.hide();
         };
-        $scope.clear = function() {
+        $scope.clear = function () {
             $rootScope.dashboard.widgets = [];
         };
 
-        $scope.remove = function(widget) {
+        $scope.remove = function (widget) {
             $rootScope.dashboard.widgets.splice($rootScope.dashboard.widgets.indexOf(widget), 1);
         };
 
@@ -790,6 +755,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                     widView: widget.widView,
                     dataView: widget.dataView,
                     dataCtrl: widget.dataCtrl,
+                    dataJson: widget.dataJson,
                     initTemplate: widget.initTemplate,
                     initCtrl: widget.initController,
                     uniqueType: widget.title,

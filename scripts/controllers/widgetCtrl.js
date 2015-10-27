@@ -1389,7 +1389,812 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     /* Strategy1 end */
 
 };
+//new elastic controller
+function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout) {
 
+    $scope.filterAttributes = ['Sum', 'Average', 'Percentage', 'Count'];
+    $scope.metricCount = 0;
+    $scope.datasources = ['DuoStore', 'BigQuery', 'CSV/Excel', 'Rest/SOAP Service', 'SpreadSheet']; //temporary
+    $scope.storeIndex = 'com.duosoftware.com';
+    $scope.widgetValidity = 'elasticValidation'; //validation message visibility                                             
+    $scope.query = {};
+    $scope.query.state = false;
+    $scope.query.drilled = false;
+    $scope.checkedFields = [];
+    $scope.dataIndicator = false;
+    $scope.categoryVal = "";
+    $scope.mappedArray = {};    
+    
+    $scope.chartCategory = {
+        groupField: '',
+        drilledField: '',
+        drilledArray: []
+    };
+    $scope.dataTab = true;
+    $scope.chartTab = true;
+    $scope.seriesAttributes = [];
+
+    //getting the widget object
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+    $scope.widget = $rootScope.dashboard.widgets[objIndex];
+
+    $scope.getTables = function(){
+        
+        if($scope.datasource == "DuoStore"){
+            var client = $objectstore.getClient($scope.storeIndex, " ");
+
+            client.getClasses($scope.storeIndex);
+
+            //classes retrieved
+            client.onGetMany(function (data) {
+                if (data.length > 0) $scope.objClasses = data;
+                else console.log('There are no classes present');
+            });
+
+            //error getting classes from the index
+            client.onError(function (data) {
+                console.log('Error getting classes');
+            });
+        }else if($scope.datasource == "BigQuery"){
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function(e){
+                    console.log(this);
+                    if (xhr.readyState === 4){
+                        if (xhr.status === 200){
+                            console.log('query response:'+ JSON.parse(xhr.response));
+                            var res = JSON.parse(xhr.response);
+                            var tableArray = [];
+                            $scope.objClasses = res;
+                            console.log(res.length);
+                        } else {
+                            console.error("XHR didn't work: ", xhr.status);
+                        }
+                    }
+                }
+            xhr.ontimeout = function (){
+                    console.error("request timedout: ", xhr);
+                }
+            xhr.open("get", "http://104.131.48.155:8080/GetTables?dataSetID=digin_hnb", /*async*/ true);
+            xhr.send();
+        }
+    };
+
+    if(typeof $scope.widget.widConfig == 'undefined'){
+
+        $scope.seriesArray = [{
+            name: 'series1',
+            serName: '',
+            filter: '',
+            type: 'area',
+            color: ''
+        }];
+
+    } else{
+        //source tab config
+        $scope.objClasses = $scope.widget.widConfig.classArray;
+        $scope.datasource = $scope.widget.widConfig.source;
+        $scope.selectedClass = $scope.widget.widConfig.selectedClass;
+
+        //selection tab config
+        $scope.dataTab = false;
+        $scope.selectedFields = $scope.widget.widConfig.fields;
+        $scope.checkedFields = $scope.widget.widConfig.selFields;
+
+        //mapping tab config 
+        $scope.chartTab = false;
+        $scope.mappedArray = $scope.widget.widConfig.mappedData;
+        $scope.chartCategory = $scope.widget.widConfig.chartCat;
+        $scope.arrayAttributes = $scope.widget.widConfig.attributes;
+        $scope.classFields = $scope.widget.widConfig.claFields;
+        $scope.indexType = $scope.widget.widConfig.indType;
+        $scope.query = $scope.widget.widConfig.query;
+        $scope.seriesArray = $scope.widget.widConfig.series;
+        $scope.seriesAttributes = $scope.widget.widConfig.serAttributes;
+    }
+
+    //check for selected classes
+    $scope.getFields = function () {
+        $scope.selectedFields = [];
+        if ($scope.datasource == "DuoStore") {
+            $scope.dataIndicator1 = true;
+            if ($scope.selectedClass != null) {
+                $scope.indexType = $scope.selectedClass;
+                var client1 = $objectstore.getClient($scope.storeIndex, $scope.indexType);
+                client1.getFields($scope.storeIndex, $scope.indexType);
+
+                //class's fields retrieved
+                client1.onGetMany(function (data) {
+                    if (data.length > 0) {
+                        data.forEach(function (entry) {
+                            $scope.selectedFields.push({
+                                name: entry,
+                                checked: false
+                            });
+                        });
+
+                        //change the tab
+                        $scope.toggleTab(1);
+                        $scope.widgetValidity = 'fade-out';
+                    } else console.log('There are no fields present in the class');
+                    $scope.dataIndicator = false;
+                });
+
+                //error getting fields from the class
+                client1.onError(function (data) {
+                    console.log('Error getting fields');
+                });
+            } else {
+                $scope.widgetValidity = 'fade-in';
+                $scope.validationMessage = "Please select a class";
+            }
+        } else if ($scope.datasource == "BigQuery") {
+            if ($scope.selectedClass != null) {
+                $scope.indexType = $scope.selectedClass;
+                var fieldData = ($scope.selectedClass.split(':')[1]).split('.');
+                $scope.bigQueryFieldDetails = fieldData;
+                $scope.dataIndicator1 = true;
+                
+                $http({
+                    method: 'GET',
+                    url: 'http://104.131.48.155:8080/GetFields?datasetName='+fieldData[0]+'&&tableName='+fieldData[1],
+                }).
+                success(function (data, status) {
+                    if (data.length > 0) {
+                        data.forEach(function (entry) {
+                            $scope.selectedFields.push({
+                                name: entry,
+                                checked: false
+                            });
+                        });
+
+                        //change the tab
+                        $scope.toggleTab(1);
+                        $scope.widgetValidity = 'fade-out';
+                    } else console.log('There are no fields present in the class');
+                    $scope.dataIndicator1 = false;
+                }).
+                error(function (data, status) {
+                    alert("Request failed");
+
+                });
+            } else {
+                $scope.widgetValidity = 'fade-in';
+                $scope.validationMessage = "Please select a class";
+            }
+
+        } else if ($scope.datasource == "CSV/Excel") {
+            var jsonArray = JSON.parse($rootScope.json_string);
+            $scope.selectedFields = [];
+
+
+
+            var obj = jsonArray[0];
+            for (var j in obj) {
+                $scope.selectedFields.push({
+                    name: j,
+                    checked: false
+                });
+            }
+
+            $scope.toggleTab(1);
+            $scope.widgetValidity = 'fade-out';
+        } else if ($scope.datasource == "BigQuery") {
+            // get the fields of the selected big query
+        }
+    };
+
+    //selects fields for non-queried data retrieval
+    $scope.toggleCheck = function (index) {
+        index.checked = !index.checked;
+        if ($scope.checkedFields.indexOf(index) === -1) {
+            $scope.checkedFields.push(index);
+        } else {
+            $scope.checkedFields.splice($scope.checkedFields.indexOf(index), 1);
+        }
+    };
+
+    $scope.getData = function () {
+        var w = new Worker("scripts/webworkers/elasticWorker.js");
+        var w1 = new Worker("scripts/webworkers/bigQueryWorker.js");
+        var parameter = '';
+
+        if ($scope.checkedFields.length != 0 || typeof $scope.query.value != "undefined") {
+            $scope.classFields = $scope.checkedFields;
+            $scope.classQuery = $scope.query.value;
+
+            if ($scope.query.state) {
+                parameter = $scope.classQuery;
+            } else {
+                for (param in $scope.classFields) {
+                    parameter += " " + $scope.classFields[param].name;
+                }
+                parameter += " " + $scope.categoryVal;
+            }
+
+            $scope.dataIndicator = true;
+
+            function mapRetrieved(event){
+                    var obj = JSON.parse(event.data);
+                    console.log(JSON.stringify(obj));
+                    $scope.dataIndicator = false;
+
+                    //creating the array to map dynamically
+                    $scope.arrayAttributes = [];
+                    for (var key in obj[0]) {
+                        if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
+                            var val = obj[0][key];
+                            console.log(key);
+                            $scope.mappedArray[key] = {
+                                name: key,
+                                data: [],
+                                unique: 0,
+                                isNaN: true
+                            };
+                            $scope.arrayAttributes.push(key);
+                        }
+                    }
+
+                    //mapping the dynamically created array
+                    for (i = 0; i < obj.length; i++) {
+                        for (var key in obj[i]) {
+                            if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
+                                var val = obj[i][key];
+                                var parsedVal = parseFloat(val);
+                                if (!isNaN(parsedVal)) {
+                                    $scope.mappedArray[key].data.push(parsedVal);
+                                    $scope.mappedArray[key].isNaN = false;
+                                } else {
+                                    $scope.mappedArray[key].data.push(val);
+                                }
+                            }
+                        }
+                    }
+
+                    //getting the unique score to determine the hierarchy
+                    for (var key in $scope.mappedArray) {
+                        if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
+                            if ($scope.mappedArray[key].isNaN) {
+                                $scope.mappedArray[key].unique = Enumerable.From($scope.mappedArray[key].data).Select().Distinct().ToArray().length;
+                            }
+                        }
+                    }
+
+                    $scope.toggleTab(2);
+            };
+
+            if ($scope.datasource == "DuoStore" || $scope.datasource == "BigQuery") {
+                if($scope.datasource == "BigQuery"){
+                    w1.postMessage(parameter + "," + $scope.bigQueryFieldDetails.toString()+ "," + $scope.query.state);
+                    w1.addEventListener('message', function (event) {
+                        mapRetrieved(event);
+                    });
+
+                    $scope.widgetValidity = 'fade-out';
+                }else{
+                    w.postMessage($scope.indexType + "," + parameter + "," + $scope.query.state);
+                    w.addEventListener('message', function (event) {
+                        mapRetrieved(event);
+                    });
+
+                    $scope.widgetValidity = 'fade-out';
+                }
+                
+            } else if ($scope.datasource == "CSV/Excel") {
+                var obj = JSON.parse($rootScope.json_string);
+                console.log(JSON.stringify(obj));
+                $scope.dataIndicator = false;
+
+                //creating the array to map dynamically
+                $scope.arrayAttributes = [];
+                for (var key in obj[0]) {
+                    if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
+                        var val = obj[0][key];
+                        console.log(key);
+                        $scope.mappedArray[key] = {
+                            name: key,
+                            data: [],
+                            unique: 0,
+                            isNaN: true
+                        };
+                        $scope.arrayAttributes.push(key);
+                    }
+                }
+
+                //mapping the dynamically created array
+                for (i = 0; i < obj.length; i++) {
+                    for (var key in obj[i]) {
+                        if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
+                            var val = obj[i][key];
+                            var parsedVal = parseFloat(val);
+                            if (!isNaN(parsedVal)) {
+                                $scope.mappedArray[key].data.push(parsedVal);
+                                $scope.mappedArray[key].isNaN = false;
+                            } else {
+                                if (typeof $scope.mappedArray[key] != 'undefined') {
+                                    $scope.mappedArray[key].data.push(val);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //getting the unique score to determine the hierarchy
+                for (var key in $scope.mappedArray) {
+                    if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
+                        if ($scope.mappedArray[key].isNaN) {
+                            $scope.mappedArray[key].unique = Enumerable.From($scope.mappedArray[key].data).Select().Distinct().ToArray().length;
+                        }
+                    }
+                }
+
+                $scope.toggleTab(2);
+
+            }
+
+        } else {
+            if ($scope.query.state) $scope.validationMessage = "Please add a query for data retrieval";
+            else $scope.validationMessage = "Please select fields for data retrieval";
+            $scope.widgetValidity = 'fade-in';
+        }
+
+    };
+
+    //builds the chart
+    $scope.buildchart = function (widget) {
+      
+
+        
+    }
+
+    //order by category
+    $scope.orderByCat = function (widget) {
+        var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
+        var orderedObjArray = [];
+
+        for (i = 0; i < $scope.seriesArray.length; i++) {
+            var serMappedData = eval('$scope.mappedArray.' + $scope.seriesArray[i].serName + '.data');
+            var catMappedData = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data');
+
+            var orderedArrayObj = {};
+            var orderedObj = {};
+            var data = [];
+            for (k = 0; k < cat.length; k++) {
+                orderedObj[cat[k]] = {
+                    val: 0,
+                    count: 0
+                };
+            }
+
+            if(typeof $scope.filtering == 'undefined'){
+                $scope.filterData($scope.seriesArray[i].filter);
+            }
+            $scope.filtering.calculate(orderedObj, catMappedData, serMappedData);
+            // for(j=0;j<serMappedData.length;j++){
+            //     orderedObj[catMappedData[j]] += serMappedData[j];
+            // }
+
+            for (var key in orderedObj) {
+                if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
+                    data.push({
+                        name: key,
+                        y: orderedObj[key].val
+                    });
+                }
+            }
+
+            orderedArrayObj["data"] = data;
+            orderedArrayObj["name"] = $scope.seriesArray[i].name;
+            orderedArrayObj["color"] = $scope.seriesArray[i].color;
+            orderedArrayObj["type"] = $scope.seriesArray[i].type;
+            orderedObjArray.push(orderedArrayObj);
+        }
+
+        widget.highchartsNG = {
+            options: {
+                drilldown: {
+                    series: [],
+                    plotOptions: {
+                        series: {
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true,
+                            }
+                        }
+                    }
+                }
+            },
+            xAxis: {
+                type: 'category'
+            },
+            credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: false
+            },
+            series: orderedObjArray,
+            title: {
+                text: ''
+            },
+            size: {
+                width: 300,
+                height: 220
+            }
+        };
+
+       
+    };
+
+    //order by category (drilled)
+    $scope.orderByDrilledCat = function (widget) {
+        var drilledSeries = [];
+        var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
+        var orderedObjArray = [];
+        var drilledCat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.drilledField + '.data')).Select().Distinct().ToArray();
+
+        for (i = 0; i < $scope.seriesArray.length; i++) {
+            var serMappedData = eval('$scope.mappedArray.' + $scope.seriesArray[i].serName + '.data');
+            var catMappedData = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data');
+            var drillData = eval('$scope.mappedArray.' + $scope.chartCategory.drilledField + '.data');
+
+            var orderedArrayObj = {};
+            var orderedObj = {};
+            var drilledObj = {};
+            var data = [];
+
+            for (k = 0; k < cat.length; k++) {
+
+                orderedObj[cat[k]] = {
+                    val: 0,
+                    arr: []
+                };
+            }
+
+            for (k = 0; k < drilledCat.length; k++) {
+                drilledObj[drilledCat[k]] = {
+                    val: 0,
+                    count: 0
+                };
+            }
+
+            if(typeof $scope.filtering == 'undefined'){
+                $scope.filterData($scope.seriesArray[i].filter);
+            }
+
+            $scope.filtering.calculate(orderedObj, catMappedData, serMappedData, drillData);
+
+            for (var key in orderedObj) {
+                if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
+
+                    var drilledArray = $scope.filtering.calculate(orderedObj[key].arr, drilledObj, null, null);
+
+                    var drilledSeriesObj = [];
+                    for (var key1 in drilledArray) {
+                        if (Object.prototype.hasOwnProperty.call(drilledArray, key1)) {
+                            if (drilledArray[key1].val > 0)
+                                drilledSeriesObj.push([key1, drilledArray[key1].val]);
+                        }
+                    }
+
+                    var test = {
+                        id: '',
+                        data: []
+                    };
+                    test.id = key;
+                    test.data = drilledSeriesObj;
+
+                    drilledSeries.push(test);
+
+                    data.push({
+                        name: key,
+                        y: orderedObj[key].val,
+                        //changed by sajee 9/19/2015
+                        drilldown: key
+                    });
+                }
+            }
+            console.log("Drilled series is");
+            console.log(drilledSeries);
+            orderedArrayObj["data"] = data;
+            orderedArrayObj["name"] = $scope.seriesArray[i].name;
+            orderedArrayObj["color"] = $scope.seriesArray[i].color;
+            orderedArrayObj["type"] = $scope.seriesArray[i].type;
+            orderedObjArray.push(orderedArrayObj);
+        }
+
+       
+
+    };
+
+
+    $scope.groupDrilledItems = function (uniqueArray, objArray) {
+        for (j = 0; j < objArray.length; j++) {
+            uniqueArray[objArray[j].drill] += objArray[j].val;
+        }
+        return uniqueArray;
+    };
+
+    //$scope.
+
+    $scope.getDrillArray = function () {
+        var uniqueScore = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.unique');
+        console.log('unique score:' + uniqueScore);
+        for (var key in $scope.mappedArray) {
+            if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
+                if ($scope.mappedArray[key].unique > uniqueScore && $scope.mappedArray[key].unique != 0)
+                    $scope.chartCategory.drilledArray.push($scope.mappedArray[key].name);
+            }
+        }
+    };
+
+    //adds new series to the chart
+    $scope.addSeries = function () {
+        $scope.seriesArray.push({
+            name: 'series1',
+            serName: '',
+            filter: '',
+            type: 'area',
+            color: '',
+            drilled: false
+        });
+    }
+
+
+    //removes the clicked series
+    $scope.removeSeries = function (ind) {
+        $scope.seriesArray.splice(ind, 1);
+    }
+
+    $scope.toggleTab = function (ind) {
+        var tabIndex = '';
+        if (typeof ind === 'undefined') tabIndex = $scope.selectedTabIndex;
+        else tabIndex = ind;
+
+        //manually switching between tabs
+        switch (tabIndex) {
+        case 0:
+            break;
+        case 1:
+            $scope.indexType != $scope.selectedClass && $scope.getFields();
+            $scope.dataTab = false;
+            $scope.selectedTabIndex = 1;
+            break;
+        case 2:
+            var classFields = $scope.checkedFields;
+            var classQuery = $scope.query.value;
+            if ($scope.query.state) {
+                $scope.classQuery != $scope.query.value && $scope.getData();
+            } else {
+                $scope.classFields != $scope.checkedFields && $scope.getData();
+            }
+
+            $scope.chartTab = false;
+            $scope.selectedTabIndex = 2;
+            break;
+        }
+    };
+
+    //close the config
+
+    $scope.cancel = function () {
+        $mdDialog.hide();
+    }
+
+    $scope.filterData = function (c) {
+        var filter = eval('new ' + c.toUpperCase() + '();');
+        $scope.filtering = new Filtering();
+        $scope.filtering.setFilter(filter);
+        $scope.seriesAttributes = $scope.filtering.filterFields();
+        $scope.widgetValidity = 'fade-out';
+    };
+
+    $scope.checkSeriesAvailability = function () {
+        if ($scope.seriesAttributes.length == 0) {
+            $scope.validationMessage = "Please check the filter you select";
+            $scope.widgetValidity = 'fade-in';
+        }
+    };
+
+
+    /* Strategy1 begin */
+    var Filtering = function () {
+        this.filter = "";
+    };
+
+    Filtering.prototype = {
+        setFilter: function (filter) {
+            this.filter = filter;
+        },
+
+        calculate: function (orderedObj, catMappedData, serMappedData, drillData) {
+            return this.filter.calculate(orderedObj, catMappedData, serMappedData, drillData);
+        },
+
+        filterFields: function () {
+            return this.filter.filterFields();
+        }
+    };
+
+    var SUM = function () {
+        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
+            console.log("calculations... for the sum filter");
+            if (typeof drillData == 'undefined') {
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    $scope.metricCount =  orderedObj[catMappedData[j]].val ;
+                     
+                }
+            } else if (serMappedData == null) {
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill].val += orderedObj[j].val;
+
+                }
+                $scope.metricCount =catMappedData;
+                return catMappedData;
+            } else {
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                     $scope.metricCount = orderedObj[catMappedData[j]].val;
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
+            }
+        }
+
+        this.filterFields = function () {
+            return getFilteredFields(false);
+        }
+    };
+
+    var AVERAGE = function () {
+        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
+            console.log("calculations... for the average filter");
+            if (typeof drillData == 'undefined') {
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    orderedObj[catMappedData[j]].count += 1;
+                }
+                for (attr in orderedObj) {
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number((orderedObj[attr].val / orderedObj[attr].count).toFixed(2));
+                    }
+                }
+            } else if (serMappedData == null) {
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill].val += orderedObj[j].val;
+                    catMappedData[orderedObj[j].drill].count += 1;
+                }
+                for (attr in catMappedData) {
+                    if (Object.prototype.hasOwnProperty.call(catMappedData, attr)) {
+                        catMappedData[attr].val = Number((catMappedData[attr].val / catMappedData[attr].count).toFixed(2));
+                    }
+                }
+                return catMappedData;
+            } else {
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
+                for (attr in orderedObj) {
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number((orderedObj[attr].val / orderedObj[attr].arr.length).toFixed(2));
+                    }
+                }
+            }
+        }
+
+        this.filterFields = function () {
+            return getFilteredFields(false);
+        }
+    };
+
+    var PERCENTAGE = function () {
+        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
+            console.log("calculations... for the prcentage filter");
+            var total;
+            if (typeof drillData == 'undefined') {
+                total = 0;
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    total += serMappedData[j];
+                }
+                for (attr in orderedObj) {
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number(((orderedObj[attr].val / total) * 100).toFixed(2));
+                    }
+                }
+                $scope.metricCount = orderedObj[attr].val;
+            } else if (serMappedData == null) {
+                total = 0;
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill].val += orderedObj[j].val;
+                    total += orderedObj[j].val;
+                }
+                for (attr in catMappedData) {
+                    if (Object.prototype.hasOwnProperty.call(catMappedData, attr)) {
+                        catMappedData[attr].val = Number(((catMappedData[attr].val / total) * 100).toFixed(2));
+                    }
+                }
+                 $scope.metricCount =catMappedData;
+                return catMappedData;
+            } else {
+                total = 0;
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    total += serMappedData[j];
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
+                for (attr in orderedObj) {
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number(((orderedObj[attr].val / total) * 100).toFixed(2));
+                    }
+                }
+                $scope.metricCount =orderedObj[attr].val ;
+            }
+        }
+
+        this.filterFields = function () {
+            return getFilteredFields(false);
+        }
+    };
+
+    var COUNT = function () {
+        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
+            console.log("calculations... for the count filter");
+            if (typeof drillData == 'undefined') {
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += 1;
+                    $scope.metricCount =  orderedObj[catMappedData[j]].val;
+                }
+            } else if (serMappedData == null) {
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill].val += 1;
+                }
+                 $scope.metricCount =  catMappedData;
+                return catMappedData;
+            } else {
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += 1;
+                     $scope.metricCount =orderedObj[catMappedData[j]].val;
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
+            }
+        }
+
+        this.filterFields = function () {
+            return getFilteredFields(true);
+        }
+    };
+
+    //returns the series array according to the filter selected
+    function getFilteredFields(isNaN) {
+        var objArr = [];
+        for (var key in $scope.mappedArray) {
+            if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
+                if (!isNaN) !$scope.mappedArray[key].isNaN && objArr.push($scope.mappedArray[key].name);
+                else objArr.push($scope.mappedArray[key].name);
+            }
+        }
+        return objArr;
+    };
+
+
+    /* Strategy1 end */
+
+};
 function InitConfigD3($scope, $mdDialog, widId, $rootScope, $sce, d3Service, $timeout) {
 
      

@@ -8,8 +8,8 @@ routerApp.directive('resizable', function () {
         },
         link: function postLink(scope, elem, attrs) {
             elem.resizable({
-                minHeight: 300,
-                minWidth: 320
+                minHeight: 200,
+                minWidth: 220
             });
             elem.on('resize', function (evt, ui) {
               var pos = {top:elem.position().top, left:elem.position().left};  

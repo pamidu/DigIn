@@ -1,7 +1,6 @@
-<md-content layout-margin flex>
-  <div ng-repeat="post in widget.widData.posts track by $index" flex>
-      <md-card layout-margin flex layout="column" style="border: 1px solid #D8D8D8;box-shadow: 2px 2px 2px rgba(188, 188, 188);background-color: rgb(238, 238, 238);
-    border-radius: 5px;">
+<md-content flex>
+  <div ng-repeat="post in widget.widData.posts track by $index" flex style="border: 1px solid #D8D8D8;">
+      <!-- <md-card flex layout="column" style="margin:0px !important;border: 1px solid #D8D8D8;box-shadow: 2px 2px 2px rgba(188, 188, 188);background-color: rgb(238, 238, 238);"> -->
         <h4 layout-margin>{{post.title}}</h4>
         <md-list-item class="md-3-line" layout-margin flex>
           <img class="md-avatar" src="{{post.picURL}}"/>
@@ -11,7 +10,7 @@
             <h3 style="line-height: 1.0em;">date : {{post.date}}</h3>
           </div>
         </md-list-item>
-      </md-card>
+      <!-- </md-card> -->
   </div>
 </md-content>
 

@@ -785,7 +785,9 @@ md-bottom-sheet.md-teal-theme {
     width: 90px !important;
     height: 90px !important;
 }
-.highcharts-button {}
+.highcharts-button {
+    width: 500px !important;
+}
 .iconshare {
     width: 50px!important;
     height: 50px !important;

@@ -15,6 +15,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
        $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","#ECECEC" );
        $scope.dashCloseWidgets = false ;
 
+       //header menu
+       $( "#mainHeadbar" ).hover(function() {
+          
+        });
+
        //make the close button draggable
        $(function() {
             $( "#draggableCloseButton" ).draggable();

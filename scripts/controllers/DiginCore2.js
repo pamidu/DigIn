@@ -162,40 +162,41 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
                 $scope.items = data;
             });
         };
+        
         $scope.showAdvanced = function (ev, widget) {
 
-            $('#downloadButton').css("display","none");
+            // $scope.dataViewPath = 'views/'+$rootScope.widget.initTemplate + '.html';
 
-            $scope.dataViewPath = 'views/'+$rootScope.widget.initTemplate + '.html';
+            // console.log("showAdvanced");
+            // console.log( $scope.dataViewPath);
+             document.getElementsByClassName("card__full")[0].style.visibility="hidden";
+        
 
-            console.log("showAdvanced");
-            console.log( $scope.dataViewPath);
-
-            // $mdDialog.show({
-            //     controller: 'chartSettingsCtrl',
-            //     templateUrl: 'views/chart_settings.html',
-            //     targetEvent: ev,
-            //     resolve: {
-            //         widget: function() {
-            //             return widget;
-            //         }
-            //     }
-            // })
+            $mdDialog.show({
+                controller: 'chartSettingsCtrl',
+                templateUrl: 'views/chart_settings.html',
+                targetEvent: ev,
+                resolve: {
+                    widget: function() {
+                        return widget;
+                    }
+                }
+            })
             
-            // $mdDialog.show({
-            //         controller: eval($rootScope.widget.initCtrl),
-            //         templateUrl: 'views/' + $rootScope.widget.initTemplate + '.html',
-            //         parent: angular.element(document.body),
-            //         targetEvent: ev,
-            //         locals: {
-            //             widId: $rootScope.widget.id
-            //         }
-            //     })
-            //     .then(function () {
-            //         //$mdDialog.hide();
-            //     }, function () {
-            //         //$mdDialog.hide();
-            //     });
+            $mdDialog.show({
+                    controller: eval($rootScope.widget.initCtrl),
+                    templateUrl: 'views/' + $rootScope.widget.initTemplate + '.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    locals: {
+                        widId: $rootScope.widget.id
+                    }
+                })
+                .then(function () {
+                    //$mdDialog.hide();
+                }, function () {
+                    //$mdDialog.hide();
+                });
 
         };
         $scope.trustSrc = function (src) {
@@ -226,6 +227,10 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
 
             $scope.dataViewPath = '';
 
+        };
+        $scope.close = function () {
+            $(".view").css("display","none");
+            $('md-backdrop').css("display","none");
         };
         $scope.closeDialog = function () {
             

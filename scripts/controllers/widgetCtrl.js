@@ -3442,9 +3442,9 @@ routerApp.controller('sltagentInit', function ($scope, $mdDialog, $rootScope) {
             },
             pie: {
                 margin: {
-                    top: -450,
+                    top: -250,
                     right: 0,
-                    bottom: 5,
+                    bottom: 100,
                     left: 50
                 }
             },
@@ -3453,9 +3453,9 @@ routerApp.controller('sltagentInit', function ($scope, $mdDialog, $rootScope) {
             labelThreshold: 0.01,
             legend: {
                 margin: {
-                    top: 150,
+                    top: 200,
                     right: 0,
-                    bottom: 5,
+                    bottom: 0,
                     left: 0
                 }
             }

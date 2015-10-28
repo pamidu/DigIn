@@ -249,6 +249,7 @@ function sltQueuedCtrl($scope, $mdDialog, wid, $http) {
 function sltConnectedCtrl($scope, $mdDialog, wid, $http) {
     $scope.arr = [];
     $scope.closeDialog = function () {
+        alert("slt connecetd");
         $mdDialog.hide();
     };
 

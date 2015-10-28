@@ -52,7 +52,7 @@ var g = svg.selectAll("g")
     .data(partition.nodes(root))
     .enter().append("g");
 
-var path2 = g.append("path")
+var path = g.append("path")
     .attr("id", "pathhnb")
     .attr("d", arc)
     .style("fill", function(d) {
@@ -2065,55 +2065,7 @@ function getData() {
                     }
 
                 ]
-            },
-
-            {
-                "name": "September 2015",
-                "children": [{
-                        "name": "MOTOR CAR",
-                        "size": 2450
-                    }, {
-                        "name": "VAN",
-                        "size": 340
-                    }
-
-                ]
-            },
-
-            {
-                "name": "October 2015",
-                "children": [{
-                        "name": "MOTOR CAR",
-                        "size": 674
-                    }, {
-                        "name": "SINGLE CAB",
-                        "size": 435
-                    }
-
-                ]
-            }, {
-                "name": "November 2015",
-                "children": [{
-                        "name": "MOTOR CAR",
-                        "size": 500
-                    }, {
-                        "name": "4WD TRACTOR",
-                        "size": 450
-                    }
-
-                ]
-            }, {
-                "name": "December 2015",
-                "children": [{
-                        "name": "MOTOR CAR",
-                        "size": 550
-                    }, {
-                        "name": "BACHOE",
-                        "size": 490
-                    }
-
-                ]
-            }
+            } 
         ]
     }
 };

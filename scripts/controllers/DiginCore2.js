@@ -76,7 +76,7 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
                     obj['data1'] = $scope.arr.children[i].name;
                     obj['data2'] = $scope.arr.children[i].children[j].name;
                     if( $scope.arr.children[i].children[j].children != undefined){
-                        for(var k=0; k< $scope.arr.children[i].children[j].children.length; k++){
+                        for(var k=0; k< $scope.arr.children[i].czildren[j].children.length; k++){
 
                             console.log("child level 3");
                             console.log($scope.arr.children[i].children[j].children[k].name);

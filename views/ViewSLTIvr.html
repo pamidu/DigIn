@@ -1,9 +1,9 @@
 <md-content style="overflow:hidden" flex>
-    <div layout="row" flex>
+    <div ng-controller="sltivrInit" layout="row" flex>
         <div flex="50" layout-margin layout="column" layout-align="center center">
             
             <h4> Total calls</h4>
-            <h3 ng-controller="sltivrInit" count-to="{{countTo}}" value="{{countFrom}}" duration="2"></h3>
+            <h3  count-to="{{countTo}}" value="{{countFrom}}" duration="2"></h3>
              <div class="widget-container"
                     data-expected="100"
                     data-actual=".21" indicator-widget></div>
@@ -12,7 +12,7 @@
         <div flex="50" layout-margin layout="column" layout-align="center center">
             
             <h4> Current</h4>
-            <h3 ng-controller="sltivrInit" count-to="{{countToIvr}}" value="{{countFromIvr}}" duration="2"></h3>
+            <h3   count-to="{{countToIvr}}" value="{{countFromIvr}}" duration="2"></h3>
                    
                 <div class="widget-container"
                     data-expected="1000"
@@ -23,7 +23,7 @@
     <div layout-margin layout="column" layout-align="center center">
         <h4> Longest call</h4>
         <div layout="row" style="font-size:36px">
-        <span ng-controller="sltivrInit" count-to="{{countToIvr}}" value="{{countFromIvr}}" duration="2">
+        <span  count-to="{{countToIvr}}" value="{{countFromIvr}}" duration="2">
         </span>
         <span> seconds </span>
         </div>

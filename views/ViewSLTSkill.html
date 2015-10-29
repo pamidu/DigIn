@@ -2,6 +2,15 @@
     .link line {
         stroke: #696969;
     }
+   #tt-name {
+        color: #fff;
+        background: #333;
+        border-radius: 4px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        box-shadow: 0px 0px 6px rgba(0, 0, 0, .7);
+        -webkit-box-shadow: -0px 0px 6px rgba(0, 0, 0, .7);
+    }
     
     .link line.separator {
         stroke: #fff;
@@ -10,12 +19,13 @@
     
     .node circle {
         stroke: #000;
-        stroke-width: 1.5px;
+        stroke-width: 1.2px;
     }
     
     .node text {
-        font: 10px sans-serif;
+        font: 12px sans-serif;
         pointer-events: none;
+         margin-left: -30px
     }
 
 </style>
@@ -26,29 +36,39 @@
     </div>
 </md-content>
 <script>
-    var width = 460,
-        height = 300;
+    var width = 400,
+        height = 320;
     var color = d3.scale.category20();
     var radius = d3.scale.sqrt()
         .range([0, 3]);
     var svg = d3.select("#mdView").append("svg")
-        .attr("viewBox", "0 0 460 300 ")
+        .attr("viewBox", "0 0 490 320 ")
         .attr("width", '100%')
         .attr("height", '100%');
 
     var force = d3.layout.force()
         .size([width, height])
-        .charge(-300)
+        .charge(-200)
         .linkDistance(function(d) {
             return radius(d.source.size) + radius(d.target.size) + 20;
         });
-    d3.json("views/graph.json", function(error, graph) {
+       d3.json("https://api.myjson.com/bins/nkr4", function(error, graph) {
         if (error) throw error;
         force
             .nodes(graph.nodes)
             .links(graph.links)
             .on("tick", tick)
             .start();
+
+        var tooltip = d3.select("#chart")
+        .append("div")
+        .style("position", "absolute")
+        .style("z-index", "10")
+        .style("visibility", "hidden");
+
+        tooltip.append("div")
+        .attr("id", "tt-name")
+        .text("simple");
 
         var link = svg.selectAll(".link")
             .data(graph.links)
@@ -79,11 +99,14 @@
                 return color(d.skill);
             });
 
+      
+
         node.append("text")
-            .attr("dy", ".35em")
-            .attr("text-anchor", "middle")
+            .attr("dx", "1.2em")
+            .attr("dy", "1.8em")
+            .attr("text-anchor", "margin-left")
             .text(function(d) {
-                return d.skill;
+                return  d.size +" " + d.skill;
             });
 
         function tick() {

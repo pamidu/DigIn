@@ -63,7 +63,7 @@
             </div>
             <div layout="row" layout-align="center center">
                 <md-switch ng-model="query.state" aria-label="Switch 1">
-                    Queried: {{ query.state }}
+                    Query
                 </md-switch>
             </div>
             <div ng-show="!query.state">
@@ -97,7 +97,7 @@
                     <md-option value="{{cat}}" ng-repeat="cat in arrayAttributes">{{ cat }}</md-option>
                 </md-select>
                 <md-switch ng-disabled="serSelected" ng-change="getDrillArray()" ng-model="query.drilled" aria-label="Switch 1">
-                    Drilled: {{ query.drilled }}
+                    Drilled 
                 </md-switch>
                 <md-select ng-show="query.drilled" ng-model="chartCategory.drilledField" placeholder="Select a series">
                     <md-option value="{{item}}" ng-repeat="item in chartCategory.drilledArray">{{ item }}</md-option>

@@ -70,7 +70,7 @@
         padding: 0;
     }
     </style>
-    <div id="chart"></div>
+    <div id="hnbPlot"></div>
     <script type="text/javascript">
     var w = 550,
         h = 600,
@@ -80,10 +80,9 @@
 
     var force, vis;
     var LoadData = true;
-    var tooltip = d3.select("#chart")
+    var tooltip = d3.select("#hnbPlot")
         .append("div")
-        .style("position", "absolute")
-        .style("z-index", "10")
+        .style("position", "absolute")         
         .style("visibility", "hidden");
 
     tooltip.append("div")
@@ -132,7 +131,7 @@
                 ;
             })
             .on("mousemove", function() {
-                return tooltip.style("top", (d3.event.pageY - 130) + "px").style("left", (d3.event.pageX - 130) + "px");
+                return tooltip.style("top", (d3.event.pageY - 30) + "px").style("left", (d3.event.pageX - 130) + "px");
             })
             .on("mouseout", function() {
                 return tooltip.style("visibility", "hidden");
@@ -805,7 +804,7 @@
                 .on("tick", tick)
                 .size([w, h]);
 
-            vis = d3.select("#chart").append("svg:svg")
+            vis = d3.select("#hnbPlot").append("svg:svg")
                 .attr("viewBox", "0 0 550 600 ")
                 .attr("width", '100%')
                 .attr("height", '100%');

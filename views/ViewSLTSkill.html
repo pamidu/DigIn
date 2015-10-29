@@ -36,19 +36,19 @@
     </div>
 </md-content>
 <script>
-    var width = 460,
-        height = 300;
+    var width = 400,
+        height = 320;
     var color = d3.scale.category20();
     var radius = d3.scale.sqrt()
         .range([0, 3]);
     var svg = d3.select("#mdView").append("svg")
-        .attr("viewBox", "0 0 460 300 ")
+        .attr("viewBox", "0 0 490 320 ")
         .attr("width", '100%')
         .attr("height", '100%');
 
     var force = d3.layout.force()
         .size([width, height])
-        .charge(-300)
+        .charge(-200)
         .linkDistance(function(d) {
             return radius(d.source.size) + radius(d.target.size) + 20;
         });

@@ -18,7 +18,7 @@ var y = d3.scale.sqrt()
 
 var color = d3.scale.category10();
 
-var svg = d3.select("#SunBurstView").append("svg")
+var svg2 = d3.select("#SunBurstView").append("svg")
     .attr("viewBox", "0 0 450 500 ")
     .attr("width", '100%')
     .attr("height", '100%')
@@ -48,11 +48,11 @@ var arc = d3.svg.arc()
 //d3.json("/d/4063550/flare.json", function(error, root) {
 var root = getData();
 
-var g = svg.selectAll("g")
+var g = svg2.selectAll("g")
     .data(partition.nodes(root))
     .enter().append("g");
 
-var path = g.append("path")
+var path2 = g.append("path")
     .attr("id", "pathhnb")
     .attr("d", arc)
     .style("fill", function(d) {
@@ -106,7 +106,7 @@ function click(d) {
     text.transition().attr("opacity", 0);
 
  
-    path.transition()
+    path2.transition()
         .duration(750)
         .attrTween("d", arcTween(d))
         .each("end", function(e, i) {

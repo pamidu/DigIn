@@ -19,10 +19,12 @@
     <md-tabs md-dynamic-height md-border-bottom md-selected="selectedTabIndex">
       <md-tab label="Source">
         <md-content class="md-padding">
-          <!--   <div ng-show="dataIndicator1" layout="row" layout-sm="column" layout-align="center center" style="z-index:10;position:absolute;height:100%;width:100%;">
-              <md-progress-circular md-mode="indeterminate" style"z-index:11"></md-progress-circular>
-              <span>Please wait...</span>
-            </div> -->
+            <div ng-show="dataIndicator1" layout="row" layout-align="center center" layout-sm="column" layout-align="center center" style="z-index:10;position:absolute;height:100%;width:100%;">
+                <div layout="row" style="background-image:url(styles/css/images/transparent1.png);padding:7px;border-radius:5px;">
+                  <md-progress-circular md-mode="indeterminate" style"z-index:11" md-diameter="20"></md-progress-circular>
+                  <span style="margin-top:15px;"><b>Please wait...</b></span>
+                </div>
+            </div>
             <md-input-container flex>
                 <label>Widget Name:</label>
                 <input name="sizeX" placeholder="www.duosoftware.com/test" ng-model="widget.uniqueType">
@@ -57,9 +59,11 @@
       </md-tab>
        <md-tab label="Selection" ng-disabled="dataTab">
         <md-content class="md-padding">
-            <div ng-show="dataIndicator" layout="row" layout-sm="column" layout-align="center center" style="z-index:10;position:absolute;height:100%;width:100%;">
-              <md-progress-circular md-mode="indeterminate" style"z-index:11"></md-progress-circular>
-              <span>Please wait...</span>
+            <div ng-show="dataIndicator" layout="row" layout-align="center center" layout-sm="column" layout-align="center center" style="z-index:10;position:absolute;height:100%;width:100%;">
+                <div layout="row" style="background-image:url(styles/css/images/transparent1.png);padding:7px;border-radius:5px;">
+                  <md-progress-circular md-mode="indeterminate" style"z-index:11" md-diameter="20"></md-progress-circular>
+                  <span style="margin-top:15px;"><b>Please wait...</b></span>
+                </div>
             </div>
             <div layout="row" layout-align="center center">
                 <md-switch ng-model="query.state" aria-label="Switch 1">

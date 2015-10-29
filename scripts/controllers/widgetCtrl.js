@@ -490,6 +490,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     $scope.query.drilled = false;
     $scope.checkedFields = [];
     $scope.dataIndicator = false;
+    $scope.dataIndicator1 = false;
     $scope.categoryVal = "";
     $scope.mappedArray = {};
     $scope.chartTypes = [{
@@ -631,7 +632,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                         $scope.toggleTab(1);
                         $scope.widgetValidity = 'fade-out';
                     } else console.log('There are no fields present in the class');
-                    $scope.dataIndicator = false;
+                    $scope.dataIndicator1 = false;
                 });
 
                 //error getting fields from the class
@@ -1440,7 +1441,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 //metric controller
 function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout) {
 
-    $scope.filterAttributes = ['Sum', 'Average', 'Percentage', 'Count'];
+    $scope.filterAttributes = ['Sum', 'Average', 'Percentage', 'Count', 'Unique'];
     $scope.datasources = ['DuoStore', 'BigQuery', 'CSV/Excel', 'Rest/SOAP Service', 'SpreadSheet']; //temporary
     $scope.storeIndex = 'com.duosoftware.com';
     $scope.widgetValidity = 'elasticValidation'; //validation message visibility                                             
@@ -1904,6 +1905,17 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
         this.calculate = function (dataObject) {
             console.log("calculations... for the count filter");
             return dataObject.length;
+        }
+
+        this.filterFields = function () {
+            return getFilteredFields(true);
+        }
+    };
+
+    var UNIQUE = function () {
+        this.calculate = function (dataObject) {
+            console.log("calculations... for the unique filter");            
+            return Enumerable.From(dataObject).Select().Distinct().ToArray().length;;
         }
 
         this.filterFields = function () {

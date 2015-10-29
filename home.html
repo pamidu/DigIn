@@ -152,8 +152,8 @@
                   <div ui-view layout="column" id="content1" ng-mouseleave="show_sidebar()" ng-mouseover="hide_sidebar()">
 
                   </div>
-                        <div id="draggableCloseButton" style="z-index:200;" class="dashboard-widgets-close">
-                             <md-button ng-disabled="dashCloseWidgets" id="dashboardwidgetsclose" class="md-fab" ng-click="closeAllWidgets()" aria-label="Close">
+                        <div style="z-index:2147483647;" class="dashboard-widgets-close">
+                             <md-button ng-disabled="dashCloseWidgets" id="dashboardwidgetsclose" class="md-fab" ng-dblclick="closeAllWidgets()" aria-label="Close">
                                 <md-icon class="ion-close" style="margin-top: -40px;"></md-icon>
                             </md-button>
                         </div>

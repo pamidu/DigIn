@@ -2,17 +2,18 @@
 ----------------------Summary-------------------------------
 | all the individual widget settings controllers goes here |
 ------------------------------------------------------------
-|      #facebook settings : fbInit                         |
-|      #linkedIn settings : linkedInit                     |
-|      #elastic settings  : elasticInit                    | 
-|      #wordpress settings: wordpressInit                  |
-|      #instagram settings: instaInit                      | 
-|      #d3plugin settings : d3Init                         |
-|      #sltskillwisecall  : sltskillInit                   |
-|      #sltivr settings   : sltivrInit                     | 
-|      #adsense settings  : adsenseInit                    |
-|      #google cal settings  : calendarInit                |
-|      #matrix wid settings : metricInit                   |
+|      #facebook settings  : fbInit                        |
+|      #linkedIn settings  : linkedInit                    |
+|      #elastic settings   : elasticInit                   | 
+|      #wordpress settings : wordpressInit                 |
+|      #instagram settings : instaInit                     | 
+|      #d3plugin settings  : d3Init                        |
+|      #sltskillwisecall   : sltskillInit                  |
+|      #sltivr settings    : sltivrInit                    | 
+|      #adsense settings   : adsenseInit                   |
+|      #google cal settings: calendarInit                  |
+|      #matrix wid settings: metricInit                    |
+|      #real time settings : realtimeInit                  | 
 ------------------------------------------------------------
 */
 /*summary-
@@ -477,11 +478,33 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
 
 };
 
+//real time widget with python service
+function realtimeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout, DynamicVisualization){
+
+    // var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+    // if(typeof $rootScope.dashboard.widgets[objIndex].widData.sync != 'undefined'){
+    //     $scope.testRepeat();
+    // }
+
+    $scope.getData = function(){
+        var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+        $rootScope.dashboard.widgets[objIndex].widData.sync = 2000;
+        DynamicVisualization.testRepeat($rootScope.dashboard.widgets[objIndex]);        
+        //$scope.testRepeat();
+    };
+
+    $scope.testRepeat = function(widget){
+        console.log('test...');
+        alert(DynamicVisualization.testRepeat(widget));
+        // if(typeof $rootScope.dashboard.widgets[objIndex].widData.sync != 'undefined')        
+        // $timeout($scope.testRepeat, $rootScope.dashboard.widgets[objIndex].widData.sync);
+    };
+};
+
 //new elastic controller
 function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout) {
 
     $scope.filterAttributes = ['Sum', 'Average', 'Percentage', 'Count'];
-
     $scope.datasources = ['DuoStore', 'BigQuery', 'CSV/Excel', 'Rest/SOAP Service', 'SpreadSheet']; //temporary
     $scope.storeIndex = 'com.duosoftware.com';
     $scope.widgetValidity = 'elasticValidation'; //validation message visibility                                             

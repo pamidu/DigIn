@@ -236,6 +236,22 @@
             "col": "0",
             "color": "#CDDC39"
 
+        }, {
+            "title": "Real Time",
+            "icon": "styles/css/images/icons/ic_av_timer_24px.svg",
+            "type": "Visualization",
+            "Description": " Build your dream visualization from any datasource",
+            "initTemplate": "InitConfigRealTime",
+            "initController": "realtimeInit",
+            "widView": "views/ViewRealTime.html",
+            "dataView": "ViewElasticData",
+            "dataCtrl": "elasticDataCtrl",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "0",
+            "color": "#CDDC38"
+
         },
          {
             "title": "Metrics",

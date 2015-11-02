@@ -34,10 +34,8 @@ routerApp.controller('showWidgetCtrl', function($scope,$mdDialog, widget){
         $mdDialog.hide();
     };
 });
-routerApp.controller('DashboardCtrl', ['$scope',
-
-    '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log',
-    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log) {
+routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log','DynamicVisualization',
+    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log,DynamicVisualization) {
 
         $('#pagePreLoader').hide();
 
@@ -59,6 +57,11 @@ routerApp.controller('DashboardCtrl', ['$scope',
 
             $rootScope.widget = widget;
 
+        };
+
+        $scope.initiate = function(widget){
+            alert('test');
+            alert(DynamicVisualization.testRepeat(widget));
         };
 
         $scope.showWidget = function(ev,wid){

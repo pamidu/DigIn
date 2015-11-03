@@ -88,7 +88,7 @@
 
         </div>
         <!--        main headbar-->
-        <div id="mainHeadbar" style="height: 45px; width: 100%;visibility:hidden;">
+        <div id="mainHeadbar" style="height: 45px; width: 100%;z-index:1000;">
         <div class="main-headbar md-theme-light" layout="row" layout-align="space-between center">
             <div layout="row" layout-align="start center">
                 <!--
@@ -152,7 +152,7 @@
                   <div ui-view layout="column" id="content1" ng-mouseleave="show_sidebar()" ng-mouseover="hide_sidebar()">
 
                   </div>
-                        <div id="draggableCloseButton" style="z-index:200;" class="dashboard-widgets-close">
+                        <div style="z-index:2147483647;" class="dashboard-widgets-close">
                              <md-button ng-disabled="dashCloseWidgets" id="dashboardwidgetsclose" class="md-fab" ng-dblclick="closeAllWidgets()" aria-label="Close">
                                 <md-icon class="ion-close" style="margin-top: -40px;"></md-icon>
                             </md-button>
@@ -400,12 +400,16 @@
     <script type="text/javascript" src="scripts/vendor/pivot.js"></script>  
 
     <script type="text/javascript" src="bower_components/d3-plugins/sankey/sankey.js"></script>
-    <script type="text/javascript" src="bower_components/d3-plugins/hexbin/hexbin.js"></script> 
+    <script type="text/javascript" src="bower_components/d3-plugins/hexbin/hexbin.js"></script>
+
     <!-- html2canvas -->
     <script type="text/javascript" src="build/html2canvas.js"></script> 
     <script type="text/javascript" src="scripts/custom/utility.js"></script> 
-    <script type="text/javascript" src="scripts/app.js"></script> 
+    <script type="text/javascript" src="scripts/app.js"></script>
+    <!-- services -->
+    <script type="text/javascript" src="scripts/services/DynamicRealTimeVis.js"></script> 
     <script type="text/javascript" src="scripts/services/ObjectStoreService.js"></script> 
+    
     <script type="text/javascript" src="scripts/controllers/NavCtrl.js"></script> 
     <script type="text/javascript" src="scripts/controllers/DiginCore.js"></script> 
     <script type="text/javascript" src="scripts/controllers/DiginCore2.js"></script> 

@@ -2,17 +2,18 @@
 ----------------------Summary-------------------------------
 | all the individual widget settings controllers goes here |
 ------------------------------------------------------------
-|      #facebook settings : fbInit                         |
-|      #linkedIn settings : linkedInit                     |
-|      #elastic settings  : elasticInit                    | 
-|      #wordpress settings: wordpressInit                  |
-|      #instagram settings: instaInit                      | 
-|      #d3plugin settings : d3Init                         |
-|      #sltskillwisecall  : sltskillInit                   |
-|      #sltivr settings   : sltivrInit                     | 
-|      #adsense settings  : adsenseInit                    |
-|      #google cal settings  : calendarInit                |
-|      #matrix wid settings : metricInit                   |
+|      #facebook settings  : fbInit                        |
+|      #linkedIn settings  : linkedInit                    |
+|      #elastic settings   : elasticInit                   | 
+|      #wordpress settings : wordpressInit                 |
+|      #instagram settings : instaInit                     | 
+|      #d3plugin settings  : d3Init                        |
+|      #sltskillwisecall   : sltskillInit                  |
+|      #sltivr settings    : sltivrInit                    | 
+|      #adsense settings   : adsenseInit                   |
+|      #google cal settings: calendarInit                  |
+|      #matrix wid settings: metricInit                    |
+|      #real time settings : realtimeInit                  | 
 ------------------------------------------------------------
 */
 /*summary-
@@ -477,11 +478,33 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
 
 };
 
+//real time widget with python service
+function realtimeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout, DynamicVisualization){
+
+    // var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+    // if(typeof $rootScope.dashboard.widgets[objIndex].widData.sync != 'undefined'){
+    //     $scope.testRepeat();
+    // }
+
+    $scope.getData = function(){
+        var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+        $rootScope.dashboard.widgets[objIndex].widData.sync = 2000;
+        DynamicVisualization.testRepeat($rootScope.dashboard.widgets[objIndex]);        
+        //$scope.testRepeat();
+    };
+
+    $scope.testRepeat = function(widget){
+        console.log('test...');
+        alert(DynamicVisualization.testRepeat(widget));
+        // if(typeof $rootScope.dashboard.widgets[objIndex].widData.sync != 'undefined')        
+        // $timeout($scope.testRepeat, $rootScope.dashboard.widgets[objIndex].widData.sync);
+    };
+};
+
 //new elastic controller
 function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout) {
 
     $scope.filterAttributes = ['Sum', 'Average', 'Percentage', 'Count'];
-
     $scope.datasources = ['DuoStore', 'BigQuery', 'CSV/Excel', 'Rest/SOAP Service', 'SpreadSheet']; //temporary
     $scope.storeIndex = 'com.duosoftware.com';
     $scope.widgetValidity = 'elasticValidation'; //validation message visibility                                             
@@ -490,6 +513,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     $scope.query.drilled = false;
     $scope.checkedFields = [];
     $scope.dataIndicator = false;
+    $scope.dataIndicator1 = false;
     $scope.categoryVal = "";
     $scope.mappedArray = {};
     $scope.chartTypes = [{
@@ -631,7 +655,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                         $scope.toggleTab(1);
                         $scope.widgetValidity = 'fade-out';
                     } else console.log('There are no fields present in the class');
-                    $scope.dataIndicator = false;
+                    $scope.dataIndicator1 = false;
                 });
 
                 //error getting fields from the class
@@ -1913,6 +1937,17 @@ var UNIQUE = function () {
         this.calculate = function (dataObject) {
             console.log("calculations... for the count filter");
             return dataObject.length;
+        }
+
+        this.filterFields = function () {
+            return getFilteredFields(true);
+        }
+    };
+
+    var UNIQUE = function () {
+        this.calculate = function (dataObject) {
+            console.log("calculations... for the unique filter");            
+            return Enumerable.From(dataObject).Select().Distinct().ToArray().length;;
         }
 
         this.filterFields = function () {

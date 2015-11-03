@@ -1,0 +1,24 @@
+<md-dialog plumb-item style="min-width:400px">
+    <md-toolbar>
+        <div class="md-toolbar-tools" flex layout="row">
+            <div flex="10">
+                <md-icon class="ion-wrench"></md-icon>
+            </div>
+            <div flex="80">
+                <h3>Configuration</h3>
+            </div>
+            <div flex="10"> 
+                <md-button  ng-click="cancel()"  aria-label="Close" layout-wrap>
+                   <md-icon class="ion-close"></md-icon>
+                </md-button> 
+            </div>
+        </div>
+    </md-toolbar>
+    <md-dialog-content ng-init="testRepeat()">
+        <div layout="row" layout-align="end center">
+            <md-button  ng-click="getData()"  aria-label="Close" layout-wrap>
+                <span>Check</span><md-icon class="ion-arrow-right-a" style="margin-bottom: 12px;"></md-icon>
+            </md-button>
+        </div>
+    </md-dialog-content>
+</md-dialog>

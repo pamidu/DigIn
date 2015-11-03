@@ -51,7 +51,7 @@ h3 a {
   text-transform: none;
   letter-spacing: normal;
 }
- .ng-hide:not(.ng-hide-animate){
+.ng-hide:not(.ng-hide-animate){
   /*display: block !important;*/
  }
 

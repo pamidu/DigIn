@@ -18,7 +18,7 @@ var y = d3.scale.sqrt()
 
 var color = d3.scale.category10();
 
-var svg = d3.select("#SunBurstView").append("svg")
+var svg2 = d3.select("#SunBurstView").append("svg")
     .attr("viewBox", "0 0 450 500 ")
     .attr("width", '100%')
     .attr("height", '100%')
@@ -48,7 +48,7 @@ var arc = d3.svg.arc()
 //d3.json("/d/4063550/flare.json", function(error, root) {
 var root = getData();
 
-var g = svg.selectAll("g")
+var g = svg2.selectAll("g")
     .data(partition.nodes(root))
     .enter().append("g");
 
@@ -106,7 +106,7 @@ function click(d) {
     text.transition().attr("opacity", 0);
 
  
-    path.transition()
+    path2.transition()
         .duration(750)
         .attrTween("d", arcTween(d))
         .each("end", function(e, i) {
@@ -2065,55 +2065,7 @@ function getData() {
                     }
 
                 ]
-            },
-
-            {
-                "name": "September 2015",
-                "children": [{
-                        "name": "MOTOR CAR",
-                        "size": 2450
-                    }, {
-                        "name": "VAN",
-                        "size": 340
-                    }
-
-                ]
-            },
-
-            {
-                "name": "October 2015",
-                "children": [{
-                        "name": "MOTOR CAR",
-                        "size": 674
-                    }, {
-                        "name": "SINGLE CAB",
-                        "size": 435
-                    }
-
-                ]
-            }, {
-                "name": "November 2015",
-                "children": [{
-                        "name": "MOTOR CAR",
-                        "size": 500
-                    }, {
-                        "name": "4WD TRACTOR",
-                        "size": 450
-                    }
-
-                ]
-            }, {
-                "name": "December 2015",
-                "children": [{
-                        "name": "MOTOR CAR",
-                        "size": 550
-                    }, {
-                        "name": "BACHOE",
-                        "size": 490
-                    }
-
-                ]
-            }
+            } 
         ]
     }
 };

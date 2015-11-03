@@ -251,7 +251,7 @@
             "sizeY": "2",
             "row": "1",
             "col": "0",
-            "color": "#CDDC39"
+            "color": "#9C27B0"
 
         },
         {
@@ -441,10 +441,10 @@
             "color": "#E64A19"
         },
         {
-            "title": "Box plot for month wise",
+            "title": "Treeview for month wise",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Predefined Analytics",
-            "Description": "Box plot analysis to check month wise vehicle type claims",
+            "Description": "Tree view analysis to check month wise vehicle type claims",
             "initTemplate": "InitConfighnb",
             "initController": "hnbInit",
             "widView": "views/ViewHnbBox.html",

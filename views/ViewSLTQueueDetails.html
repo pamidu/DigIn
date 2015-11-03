@@ -1,4 +1,105 @@
-<md-content style="overflow:hidden" ng-controller="sltqueuedetailsInit" layout-margin flex>  
-          <nvd3 options="options" data="data"></nvd3>    
-</md-content>
-  
+ 
+<div id="md1View">
+ 
+  <script type="text/javascript">
+    var svg1 = dimple.newSvg("#md1View", 490, 300);
+
+    // The default data set for these examples has regular times
+    // and the point of this demo is to show the time axis
+    // functionality, therefore a small bespoke data set is used.
+    data = [
+      { "Skill":"Tamil","Date":"18 Oct 2015 10:00","Value":1000 },
+      { "Skill":"Tamil","Date":"19 Oct 2015 10:20","Value":1200 },
+      { "Skill":"Tamil","Date":"20 Oct 2015 10:40","Value":1600 },
+      { "Skill":"Tamil","Date":"8 Oct 2015 10:10","Value":1300 },
+      { "Skill":"Tamil","Date":"20 Oct 2015 11:00","Value":1900 },
+      { "Skill":"Tamil","Date":"7 Oct 2015 09:50","Value":1100 },
+      { "Skill":"Tamil","Date":"13 Oct 2015 10:10","Value":1000 },
+      { "Skill":"Tamil","Date":"1 Oct 2015 12:00","Value":2000 },
+      { "Skill":"Tamil","Date":"6 Oct 2015 10:10","Value":1900 },
+      { "Skill":"Tamil","Date":"19 Oct 2015 11:40","Value":1800 },
+      { "Skill":"Tamil","Date":"24 Oct 2015 10:30","Value":1200 },
+      { "Skill":"Tamil","Date":"3 Oct 2015 09:30","Value":1800 },
+      { "Skill":"Tamil","Date":"12 Oct 2015 10:50","Value":1800 },
+      { "Skill":"Sinhala","Date":"20 Oct 2015 10:10","Value":1900 },
+      { "Skill":"Sinhala","Date":"5 Oct 2015 10:50","Value":1600 },
+      { "Skill":"Sinhala","Date":"9 Oct 2015 12:20","Value":1700 },
+      { "Skill":"Sinhala","Date":"15 Oct 2015 10:10","Value":1400 },
+      { "Skill":"Sinhala","Date":"20 Oct 2015 10:00","Value":1200 },
+      { "Skill":"Sinhala","Date":"11 Oct 2015 16:00","Value":2400 },
+      { "Skill":"Sinhala","Date":"30 Oct 2015 17:30","Value":2000 },
+      { "Skill":"Sinhala","Date":"1 Oct 2015 15:40","Value":1600 },
+      { "Skill":"Sinhala","Date":"5 Oct 2015 13:10","Value":1700 },
+      { "Skill":"Sinhala","Date":"1 Oct 2015 15:00","Value":1900 },
+      { "Skill":"Sinhala","Date":"7 Oct 2015 15:50","Value":1100 },
+      { "Skill":"Sinhala","Date":"13 Oct 2015 14:10","Value":1500 },
+      { "Skill":"Sinhala","Date":"30 Oct 2015 13:00","Value":1000 },
+      { "Skill":"Sinhala","Date":"1 Oct 2015 15:50","Value":1800 },
+      { "Skill":"Sinhala","Date":"24 Oct 2015 15:10","Value":1900 },
+      { "Skill":"Sinhala","Date":"1 Oct 2015 15:50","Value":1600 },
+      { "Skill":"Sinhala","Date":"5 Oct 2015 15:20","Value":1700 },
+      { "Skill":"Sinhala","Date":"13 Oct 2015 15:10","Value":1400 },
+      { "Skill":"Sinhala","Date":"25 Oct 2015 15:00","Value":1200 }
+    ];
+
+    // Create Separate Date and Time, this allows us to draw them
+    // on separate axes.  Despite the time axis only displaying
+    // the time portion, the whole date is used so they need to
+    // have the same date allocated
+    data.forEach(function (d) {
+        d["Day"] = d["Date"].substring(0, d["Date"].length - 6);
+        d["Time of Day"] =
+            "2000-01-01 " + d["Date"].substring(d["Date"].length - 5);
+    }, this);
+
+    // Create the chart as usual
+    var myChart = new dimple.chart(svg1, data);
+    myChart.setBounds(70, 40, 490, 320)
+    
+    // Add the x axis reading dates in the format 01 Jan 2012
+    // and displaying them 01 Jan
+    var x = myChart.addTimeAxis("x", "Day", "%d %b %Y", "%d %b");
+
+    // Add the y axis reading dates and times but only outputting
+    // times.  
+    var y = myChart.addTimeAxis("y", "Time of Day",
+        "%Y-%m-%d %H:%M", "%H:%M");
+
+    // Size the bubbles by volume
+    var z = myChart.addMeasureAxis("z", "Value");
+    
+    // Setting min and max dates requires them to be set
+    // as actual javascript date objects
+    x.overrideMin = new Date("2015-10-01");
+    x.overrideMax = new Date("2015-10-30");
+    y.overrideMin = new Date("01/01/2000 9:00 am");
+    y.overrideMax = new Date("01/01/2000 6:00 pm");
+
+    // Show a label for every 4 weeks.
+    x.timePeriod = d3.time.Day;
+    x.timeInterval = 4;
+
+    // Control bubble sizes by setting the max and min values    
+    z.overrideMin = 900;
+    z.overrideMax = 3000;
+
+    // Add the bubble series for shift values first so that it is
+    // drawn behind the lines
+    myChart.addSeries("Skill", dimple.plot.bubble);
+
+    // Add the line series on top of the bubbles.  The bubbles
+    // and line points will naturally fall in the same places
+    var s = myChart.addSeries("Skill", dimple.plot.line);
+
+    // Add line markers to the line because it looks nice
+    s.lineMarkers = true;
+
+    // Show a legend
+    myChart.addLegend(180, 10, 360, 20, "right");
+
+    // Draw everything
+    myChart.draw();
+
+  </script>
+</div>
+ 

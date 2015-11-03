@@ -21,9 +21,25 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         });
 
        //make the close button draggable
-       $(function() {
-            $( "#draggableCloseButton" ).draggable();
-          });
+       // $(function() {
+       //      $( "#draggableCloseButton" ).draggable();
+       //    });
+
+        $(function() {
+            $('body').on('mousedown', '.dashboard-widgets-close', function() {
+                $(this).addClass('draggable').parents().on('mousemove', function(e) {
+                    $('.draggable').offset({
+                        top: e.pageY - $('.draggable').outerHeight() / 2,
+                        left: e.pageX - $('.draggable').outerWidth() / 2
+                    }).on('mouseup', function() {
+                        $(this).removeClass('draggable');
+                    });
+                });
+                e.preventDefault();
+            }).on('mouseup', function() {
+                $('.draggable').removeClass('draggable');
+            });
+        });
 
         getJSONData($http, 'features', function (data) {
             $scope.featureOrigin = data;

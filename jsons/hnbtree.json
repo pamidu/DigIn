@@ -1,0 +1,525 @@
+ {
+
+    "name": "Total claims",
+        "children": [ 
+           
+
+            {
+                "name": "July 2015",
+                "children": [{
+                        "name": "MOTOR CAR",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 236
+                        }, {
+                            "name": "Private",
+                            "size": 1672
+                        }, {
+                            "name": "Rent",
+                            "size": 20
+                        }]
+                    },
+
+                    {
+                        "name": "JEEP",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 0
+                        }, {
+                            "name": "Private",
+                            "size": 15
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "THREE WHEELER",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 649
+                        }, {
+                            "name": "Private",
+                            "size": 16
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "DOUBLE CAB",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 4
+                        }, {
+                            "name": "Private",
+                            "size": 26
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "BACHOE",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 4
+                        }, {
+                            "name": "Private",
+                            "size": 1
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "AMBULANCE",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 0
+                        }, {
+                            "name": "Private",
+                            "size": 1
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "SINGLE CAB",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 26
+                        }, {
+                            "name": "Private",
+                            "size": 32
+                        }, {
+                            "name": "Rent",
+                            "size": 1
+                        }]
+                    },
+
+                    {
+                        "name": "FORK LIFTER",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 0
+                        }, {
+                            "name": "Private",
+                            "size": 1
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "PASSENGER CARRYING BUS",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 21
+                        }, {
+                            "name": "Route",
+                            "size": 3
+                        }, {
+                            "name": "Rent",
+                            "size": 13
+                        }]
+                    },
+
+                    {
+                        "name": "BOWSER",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 3
+                        }]
+                    },
+
+                    {
+                        "name": "BULLDOZER",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 1
+                        }]
+                    },
+
+                    {
+                        "name": "PRIME MOVER",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 8
+                        }, {
+                            "name": "Private",
+                            "size": 0
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "ROUTE BUS",
+                        "children": [{
+                            "name": "Route",
+                            "size": 15
+                        }]
+                    },
+
+                    {
+                        "name": "CREW CAB",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 6
+                        }, {
+                            "name": "Private",
+                            "size": 5
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "TRADE PLATE",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 0
+                        }, {
+                            "name": "Private",
+                            "size": 2
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "VAN",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 120
+                        }, {
+                            "name": "Private",
+                            "size": 143
+                        }, {
+                            "name": "Rent",
+                            "size": 1
+                        }]
+                    },
+
+                    {
+                        "name": "2WD TRACTOR",
+                        "children": [{
+                            "name": "Agricultural usage",
+                            "size": 6
+                        }]
+                    },
+
+                    {
+                        "name": "MOTOR CYCLE",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 0
+                        }, {
+                            "name": "Private",
+                            "size": 64
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "TRAILER",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 1
+                        }, {
+                            "name": "Private",
+                            "size": 0
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "MOTOR LORRY",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 62
+                        }, {
+                            "name": "Private",
+                            "size": 58
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    }
+
+                ],
+                 "size": 3236
+            }, {
+                "name": "August 2015",
+                "children": [{
+                        "name": "MOTOR CYCLE",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 0
+                        }, {
+                            "name": "Private",
+                            "size": 44
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    }, {
+                        "name": "MOTOR CAR",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 146
+                        }, {
+                            "name": "Private",
+                            "size": 1062
+                        }, {
+                            "name": "Rent",
+                            "size": 16
+                        }]
+                    }, {
+                        "name": "THREE WHEELER",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 420
+                        }, {
+                            "name": "Private",
+                            "size": 15
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    }, {
+                        "name": "DOUBLE CAB",
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 33
+                        }, {
+                            "name": "Private",
+                            "size": 5
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    }, {
+                        "name": "BACHOE",                        
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 1
+                        }, {
+                            "name": "Agricultural usage",
+                            "size": 1
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "SINGLE CAB",                        
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 18
+                        }, {
+                            "name": "Private",
+                            "size": 27
+                        }, {
+                            "name": "Rent",
+                            "size": 2
+                        }]
+                    },
+
+                    {
+                        "name": "PASSENGER CARRYING BUS",                        
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 12
+                        }, {
+                            "name": "Route",
+                            "size": 6
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "BOWSER",                        
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 3
+                        }, {
+                            "name": "Private",
+                            "size": 0
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "4WD TRACTOR",                        
+                        "children": [{
+                            "name": "Agricultural usage",
+                            "size": 3
+                        }]
+                    },
+
+                    {
+                        "name": "BULLDOZER",                        
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 1
+                        }, {
+                            "name": "Private",
+                            "size": 1
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "PRIME MOVER",                        
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 8
+                        }, {
+                            "name": "Private",
+                            "size": 3
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "ROUTE BUS",                        
+                        "children": [{
+                            "name": "Route",
+                            "size": 11
+                        }]
+                    },
+
+                    {
+                        "name": "CREW CAB",                        
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 3
+                        }, {
+                            "name": "Private",
+                            "size": 7
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    }, {
+                        "name": "TRADE PLATE",                        
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 0
+                        }, {
+                            "name": "Private",
+                            "size": 4
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    },
+
+                    {
+                        "name": "VAN",                        
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 97
+                        }, {
+                            "name": "Private",
+                            "size": 97
+                        }, {
+                            "name": "Rent",
+                            "size": 1
+                        }]
+                    }, {
+                        "name": "MOTOR LORRY",                        
+                        "children": [{
+                            "name": "Hiring",
+                            "size": 66
+                        }, {
+                            "name": "Private",
+                            "size": 45
+                        }, {
+                            "name": "Rent",
+                            "size": 0
+                        }]
+                    }
+
+                ],
+                 "size": 2170
+            },
+
+            {
+                "name": "September 2015",
+                "children": [{
+                        "name": "MOTOR CAR",
+                        "size": 2450
+                    }, {
+                        "name": "VAN",
+                        "size": 340
+                    }
+
+                ],
+                 "size": 2790
+            },
+
+            {
+                "name": "October 2015",
+                "children": [{
+                        "name": "MOTOR CAR",
+                        "size": 674
+                    }, {
+                        "name": "SINGLE CAB",
+                        "size": 435
+                    }
+
+                ],
+                 "size": 1109
+            }, {
+                "name": "November 2015",
+                "children": [{
+                        "name": "MOTOR CAR",
+                        "size": 500
+                    }, {
+                        "name": "4WD TRACTOR",
+                        "size": 450
+                    }
+
+                ],
+                 "size": 950
+            }, {
+                "name": "December 2015",
+                "children": [{
+                        "name": "MOTOR CAR",
+                        "size": 550
+                    }, {
+                        "name": "BACHOE",
+                        "size": 490
+                    }
+
+                ],
+                 "size": 1040
+            }
+        ]
+    }

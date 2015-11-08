@@ -839,16 +839,14 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                 window.speechSynthesis.speak(msg);
 
                 $rootScope.dashboard.widgets.push($scope.currWidget);
-
+                $scope.openInitialConfig(ev, $scope.currWidget.id);
                 // if($scope.currWidget.type != "Sri Lanka Telecom"  )
                 // {
                 //     //opening initial widget config dialog
                 //    $scope.openInitialConfig(ev, $scope.currWidget.id);
                 // }
                 // else
-                if ($scope.currWidget.type != "Predefined Analytics") {
-                    $scope.openInitialConfig(ev, $scope.currWidget.id);
-                }
+               
             });
 
 

@@ -426,7 +426,7 @@
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Predefined Analytics",
             "Description": "Force directive layout to show number of claims vehicle type",
-            "initTemplate": "InitConfighnb",
+            "initTemplate": "initConfigForce",
             "initController": "hnbInit",
             "widView": "views/ViewHnbData.html",
             "dataView": "ViewDataHnbClaims",
@@ -439,12 +439,11 @@
             "color": "#E64A19"
         },
         {
-
             "title": "Distributed claims",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Predefined Analytics",
             "Description": "Sunburst directive layout to show the data of claims",
-            "initTemplate": "InitConfighnb",
+            "initTemplate": "initConfigForce",
             "initController": "hnbInit",
             "widView": "views/ViewHnbMonth.html",
             "dataView": "ViewDataDistributedClaims",

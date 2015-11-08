@@ -148,11 +148,11 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
          
          $rootScope.dashboard.widgets.push($scope.currWidget);
          
-         if($scope.currWidget.uniqueType != "Predefined Analytics") 
-         {
-         //opening initial widget config dialog
-         $scope.openInitialConfig(ev, $scope.currWidget.id);
-         }
+         // if($scope.currWidget.uniqueType != "Predefined Analytics") 
+         // {
+         // //opening initial widget config dialog
+         // $scope.openInitialConfig(ev, $scope.currWidget.id);
+         // }
 
     });
 

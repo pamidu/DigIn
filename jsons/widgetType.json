@@ -1,8 +1,6 @@
 {
-    "d": [{
-        "title": "Visualization",
-        "icon": "styles/css/images/icons/home_decorations.svg"
-    }, {
+    "d": [
+     {
 
         "title": "Blogging",
         "icon": "styles/css/images/icons/open_in_browser.svg"
@@ -23,5 +21,9 @@
         "title": "General",
         "icon": "styles/css/images/icons/shopping_cart.svg"
 
-      }]
+      },
+      {
+        "title": "Visualization",
+        "icon": "styles/css/images/icons/home_decorations.svg"
+    }]
 }

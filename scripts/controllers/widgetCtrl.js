@@ -28,7 +28,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
     fbInterface.getFbLoginState(scope);
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
     //add or remove account from the scope
-    scope.addAccount = function () {
+    scope.addAccount = function() {
         if (fbInterface.state != 'connected')
             fbInterface.loginToFb(scope);
         else
@@ -36,7 +36,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
     };
 
     //cancel config
-    scope.cancel = function () {
+    scope.cancel = function() {
         $mdDialog.hide();
     };
 
@@ -149,7 +149,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
 
 
     //complete config  
-    scope.finish = function () {
+    scope.finish = function() {
         var likeCountArray = [];
         var startingDayStr;
         var dateObj = {
@@ -158,7 +158,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
         }
 
         //getting page likes insights
-        fbInterface.getPageLikesInsight(scope.fbPageModel, dateObj, function (data) {
+        fbInterface.getPageLikesInsight(scope.fbPageModel, dateObj, function(data) {
 
             var likeHistory = fbInterface.getPageLikesObj(data);
             scope.chartConf.series[0].data = likeHistory.likeArr;
@@ -173,7 +173,7 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
         });
 
         //getting page views insights
-        fbInterface.getPageViewsInsight(scope.fbPageModel, dateObj, function (data) {
+        fbInterface.getPageViewsInsight(scope.fbPageModel, dateObj, function(data) {
 
             var viewHistory = fbInterface.getPageLikesObj(data);
             scope.chartConfView.series[0].data = viewHistory.likeArr;
@@ -197,9 +197,9 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
 
 
     //selecting pages  
-    scope.changePage = function () {
+    scope.changePage = function() {
         //get page data on change
-        fbInterface.getPageData(scope, function (data) {
+        fbInterface.getPageData(scope, function(data) {
             scope.pageData = data;
             // $rootScope.dashboard.widgets[objIndex].widData = data;
         });
@@ -217,7 +217,7 @@ function linkedInit(scope, $mdDialog, widId, $rootScope) {
     linkedinInterface.getLinkedinState(scope);
 
     //add or remove account from the scope
-    scope.addAccount = function () {
+    scope.addAccount = function() {
         if (!linkedinInterface.state)
             linkedinInterface.loginToLinkedin(scope);
         else
@@ -225,13 +225,13 @@ function linkedInit(scope, $mdDialog, widId, $rootScope) {
     };
 
     //cancel config
-    scope.cancel = function () {
+    scope.cancel = function() {
         $mdDialog.hide();
     };
 
     //complete config  
-    scope.finish = function () {
-        linkedinInterface.getUserAccountOverview(scope, function (data) {
+    scope.finish = function() {
+        linkedinInterface.getUserAccountOverview(scope, function(data) {
             var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
             $rootScope.dashboard.widgets[objIndex].widData = data;
         });
@@ -243,10 +243,10 @@ function TwitterInit($scope, $http, $mdDialog, widId, $rootScope, $q, twitterSer
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
-    $scope.finish = function () {
+    $scope.finish = function() {
 
         // twitterService.initialize();
         $mdDialog.hide();
@@ -258,11 +258,11 @@ function TwitterInit($scope, $http, $mdDialog, widId, $rootScope, $q, twitterSer
     twitterService.initialize();
 
     //using the OAuth authorization result get the latest 20 tweets from twitter for the user
-    $scope.refreshTimeline = function (maxId) {
-        twitterService.getLatestTweets(maxId).then(function (data) {
+    $scope.refreshTimeline = function(maxId) {
+        twitterService.getLatestTweets(maxId).then(function(data) {
             $rootScope.tweets = $rootScope.tweets.concat(data);
 
-        }, function () {
+        }, function() {
             $scope.rateLimitError = true;
         });
 
@@ -271,12 +271,12 @@ function TwitterInit($scope, $http, $mdDialog, widId, $rootScope, $q, twitterSer
     }
 
     //when the user clicks the connect twitter button, the popup authorization window opens
-    $scope.connectButton = function () {
-        twitterService.connectTwitter().then(function () {
+    $scope.connectButton = function() {
+        twitterService.connectTwitter().then(function() {
             if (twitterService.isReady()) {
                 //if the authorization is successful, hide the connect button and display the tweets
 
-                $('#connectButton').fadeOut(function () {
+                $('#connectButton').fadeOut(function() {
                     $('#getTimelineButton, #signOut').fadeIn();
 
                     $scope.connectedTwitter = true;
@@ -289,14 +289,14 @@ function TwitterInit($scope, $http, $mdDialog, widId, $rootScope, $q, twitterSer
     }
 
     //sign out clears the OAuth cache, the user will have to reauthenticate when returning
-    $scope.signOut = function () {
+    $scope.signOut = function() {
         twitterService.clearCache();
         $rootScope.tweets.length = 0;
 
-        $('#getTimelineButton, #signOut').fadeOut(function () {
+        $('#getTimelineButton, #signOut').fadeOut(function() {
             $('#connectButton').fadeIn();
 
-            $scope.$apply(function () {
+            $scope.$apply(function() {
                 $scope.connectedTwitter = false
             })
         });
@@ -319,10 +319,10 @@ function analyticsInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
-    $scope.finish = function () {
+    $scope.finish = function() {
         $mdDialog.hide();
     };
 
@@ -393,7 +393,7 @@ function analyticsInit($scope, $http, $mdDialog, widId, $rootScope) {
     }];
 
     // if a report is ready
-    $rootScope.$on('$gaReportSuccess', function (e, report, element) {
+    $rootScope.$on('$gaReportSuccess', function(e, report, element) {
 
     });
 
@@ -411,10 +411,10 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
-    $scope.finish = function () {
+    $scope.finish = function() {
         init();
         $mdDialog.hide();
     };
@@ -428,24 +428,24 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
 
     }
 
-    $scope.launch = function (id, title) {
+    $scope.launch = function(id, title) {
         VideosService.launchPlayer(id, title);
         VideosService.archiveVideo(id, title);
         VideosService.deleteVideo($scope.upcoming, id);
         $log.info('Launched id:' + id + ' and title:' + title);
     };
 
-    $scope.queue = function (id, title) {
+    $scope.queue = function(id, title) {
         VideosService.queueVideo(id, title);
         VideosService.deleteVideo($scope.history, id);
         $log.info('Queued id:' + id + ' and title:' + title);
     };
 
-    $scope.delete = function (list, id) {
+    $scope.delete = function(list, id) {
         VideosService.deleteVideo(list, id);
     };
 
-    $scope.search = function () {
+    $scope.search = function() {
         //alert("Hello you hit the search function");
 
         $http.get('https://www.googleapis.com/youtube/v3/search', {
@@ -459,19 +459,19 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
                 }
 
             })
-            .success(function (data) {
+            .success(function(data) {
                 VideosService.listResults(data);
                 $rootScope.dashboard.widgets[objIndex].widData = data;
                 $mdDialog.hide();
 
             })
-            .error(function () {
+            .error(function() {
                 $log.info('Search error');
             });
 
     }
 
-    $scope.tabulate = function (state) {
+    $scope.tabulate = function(state) {
 
         $scope.playlist = state;
     }
@@ -479,26 +479,9 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
 };
 
 //real time widget with python service
-function realtimeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout, DynamicVisualization){
+function realtimeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout, DynamicVisualization) {
 
-    // var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-    // if(typeof $rootScope.dashboard.widgets[objIndex].widData.sync != 'undefined'){
-    //     $scope.testRepeat();
-    // }
 
-    $scope.getData = function(){
-        var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-        $rootScope.dashboard.widgets[objIndex].widData.sync = 2000;
-        DynamicVisualization.testRepeat($rootScope.dashboard.widgets[objIndex]);        
-        //$scope.testRepeat();
-    };
-
-    $scope.testRepeat = function(widget){
-        console.log('test...');
-        alert(DynamicVisualization.testRepeat(widget));
-        // if(typeof $rootScope.dashboard.widgets[objIndex].widData.sync != 'undefined')        
-        // $timeout($scope.testRepeat, $rootScope.dashboard.widgets[objIndex].widData.sync);
-    };
 };
 
 //new elastic controller
@@ -541,7 +524,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         name: "Scatter",
         type: "scatter"
     }];
-    
+
     $scope.chartCategory = {
         groupField: '',
         drilledField: '',
@@ -555,50 +538,50 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
     $scope.widget = $rootScope.dashboard.widgets[objIndex];
 
-    $scope.getTables = function(){
-        
-        if($scope.datasource == "DuoStore"){
+    $scope.getTables = function() {
+
+        if ($scope.datasource == "DuoStore") {
             var client = $objectstore.getClient($scope.storeIndex, " ");
 
             client.getClasses($scope.storeIndex);
 
             //classes retrieved
-            client.onGetMany(function (data) {
+            client.onGetMany(function(data) {
                 if (data.length > 0) $scope.objClasses = data;
                 else console.log('There are no classes present');
             });
 
             //error getting classes from the index
-            client.onError(function (data) {
+            client.onError(function(data) {
                 console.log('Error getting classes');
             });
-        }else if($scope.datasource == "BigQuery"){
+        } else if ($scope.datasource == "BigQuery") {
 
             var xhr = new XMLHttpRequest();
 
-            xhr.onreadystatechange = function(e){
-                    console.log(this);
-                    if (xhr.readyState === 4){
-                        if (xhr.status === 200){
-                            console.log('query response:'+ JSON.parse(xhr.response));
-                            var res = JSON.parse(xhr.response);
-                            var tableArray = [];
-                            $scope.objClasses = res;
-                            console.log(res.length);
-                        } else {
-                            console.error("XHR didn't work: ", xhr.status);
-                        }
+            xhr.onreadystatechange = function(e) {
+                console.log(this);
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log('query response:' + JSON.parse(xhr.response));
+                        var res = JSON.parse(xhr.response);
+                        var tableArray = [];
+                        $scope.objClasses = res;
+                        console.log(res.length);
+                    } else {
+                        console.error("XHR didn't work: ", xhr.status);
                     }
                 }
-            xhr.ontimeout = function (){
-                    console.error("request timedout: ", xhr);
-                }
-            xhr.open("get", "http://104.131.48.155:8080/GetTables?dataSetID=digin_hnb", /*async*/ true);
+            }
+            xhr.ontimeout = function() {
+                console.error("request timedout: ", xhr);
+            }
+            xhr.open("get", Digin_Engine_API + "GetTables?dataSetID=digin_hnb", /*async*/ true);
             xhr.send();
         }
     };
 
-    if(typeof $scope.widget.widConfig == 'undefined'){
+    if (typeof $scope.widget.widConfig == 'undefined') {
 
         $scope.seriesArray = [{
             name: 'series1',
@@ -608,7 +591,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             color: ''
         }];
 
-    } else{
+    } else {
         //source tab config
         $scope.objClasses = $scope.widget.widConfig.classArray;
         $scope.datasource = $scope.widget.widConfig.source;
@@ -632,7 +615,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     }
 
     //check for selected classes
-    $scope.getFields = function () {
+    $scope.getFields = function() {
         $scope.selectedFields = [];
         if ($scope.datasource == "DuoStore") {
             $scope.dataIndicator1 = true;
@@ -642,9 +625,9 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 client1.getFields($scope.storeIndex, $scope.indexType);
 
                 //class's fields retrieved
-                client1.onGetMany(function (data) {
+                client1.onGetMany(function(data) {
                     if (data.length > 0) {
-                        data.forEach(function (entry) {
+                        data.forEach(function(entry) {
                             $scope.selectedFields.push({
                                 name: entry,
                                 checked: false
@@ -659,7 +642,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 });
 
                 //error getting fields from the class
-                client1.onError(function (data) {
+                client1.onError(function(data) {
                     console.log('Error getting fields');
                 });
             } else {
@@ -672,14 +655,14 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 var fieldData = ($scope.selectedClass.split(':')[1]).split('.');
                 $scope.bigQueryFieldDetails = fieldData;
                 $scope.dataIndicator1 = true;
-                
+
                 $http({
                     method: 'GET',
-                    url: 'http://104.131.48.155:8080/GetFields?datasetName='+fieldData[0]+'&&tableName='+fieldData[1],
+                    url: Digin_Engine_API + 'GetFields?datasetName=' + fieldData[0] + '&&tableName=' + fieldData[1],
                 }).
-                success(function (data, status) {
+                success(function(data, status) {
                     if (data.length > 0) {
-                        data.forEach(function (entry) {
+                        data.forEach(function(entry) {
                             $scope.selectedFields.push({
                                 name: entry,
                                 checked: false
@@ -692,7 +675,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                     } else console.log('There are no fields present in the class');
                     $scope.dataIndicator1 = false;
                 }).
-                error(function (data, status) {
+                error(function(data, status) {
                     alert("Request failed");
 
                 });
@@ -723,7 +706,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
 
     //selects fields for non-queried data retrieval
-    $scope.toggleCheck = function (index) {
+    $scope.toggleCheck = function(index) {
         index.checked = !index.checked;
         if ($scope.checkedFields.indexOf(index) === -1) {
             $scope.checkedFields.push(index);
@@ -732,7 +715,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         }
     };
 
-    $scope.getData = function () {
+    $scope.getData = function() {
         var w = new Worker("scripts/webworkers/elasticWorker.js");
         var w1 = new Worker("scripts/webworkers/bigQueryWorker.js");
         var parameter = '';
@@ -752,72 +735,72 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
             $scope.dataIndicator = true;
 
-            function mapRetrieved(event){
-                    var obj = JSON.parse(event.data);
-                    console.log(JSON.stringify(obj));
-                    $scope.dataIndicator = false;
+            function mapRetrieved(event) {
+                var obj = JSON.parse(event.data);
+                console.log(JSON.stringify(obj));
+                $scope.dataIndicator = false;
 
-                    //creating the array to map dynamically
-                    $scope.arrayAttributes = [];
-                    for (var key in obj[0]) {
-                        if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
-                            var val = obj[0][key];
-                            console.log(key);
-                            $scope.mappedArray[key] = {
-                                name: key,
-                                data: [],
-                                unique: 0,
-                                isNaN: true
-                            };
-                            $scope.arrayAttributes.push(key);
-                        }
+                //creating the array to map dynamically
+                $scope.arrayAttributes = [];
+                for (var key in obj[0]) {
+                    if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
+                        var val = obj[0][key];
+                        console.log(key);
+                        $scope.mappedArray[key] = {
+                            name: key,
+                            data: [],
+                            unique: 0,
+                            isNaN: true
+                        };
+                        $scope.arrayAttributes.push(key);
                     }
+                }
 
-                    //mapping the dynamically created array
-                    for (i = 0; i < obj.length; i++) {
-                        for (var key in obj[i]) {
-                            if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
-                                var val = obj[i][key];
-                                var parsedVal = parseFloat(val);
-                                if (!isNaN(parsedVal)) {
-                                    $scope.mappedArray[key].data.push(parsedVal);
-                                    $scope.mappedArray[key].isNaN = false;
-                                } else {
-                                    $scope.mappedArray[key].data.push(val);
-                                }
+                //mapping the dynamically created array
+                for (i = 0; i < obj.length; i++) {
+                    for (var key in obj[i]) {
+                        if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
+                            var val = obj[i][key];
+                            var parsedVal = parseFloat(val);
+                            if (!isNaN(parsedVal)) {
+                                $scope.mappedArray[key].data.push(parsedVal);
+                                $scope.mappedArray[key].isNaN = false;
+                            } else {
+                                $scope.mappedArray[key].data.push(val);
                             }
                         }
                     }
+                }
 
-                    //getting the unique score to determine the hierarchy
-                    for (var key in $scope.mappedArray) {
-                        if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
-                            if ($scope.mappedArray[key].isNaN) {
-                                $scope.mappedArray[key].unique = Enumerable.From($scope.mappedArray[key].data).Select().Distinct().ToArray().length;
-                            }
+                //getting the unique score to determine the hierarchy
+                for (var key in $scope.mappedArray) {
+                    if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
+                        if ($scope.mappedArray[key].isNaN) {
+                            $scope.mappedArray[key].unique = Enumerable.From($scope.mappedArray[key].data).Select().Distinct().ToArray().length;
                         }
                     }
+                }
 
-                    $scope.toggleTab(2);
+                $scope.toggleTab(2);
             };
 
             if ($scope.datasource == "DuoStore" || $scope.datasource == "BigQuery") {
-                if($scope.datasource == "BigQuery"){
-                    w1.postMessage(parameter + "," + $scope.bigQueryFieldDetails.toString()+ "," + $scope.query.state);
-                    w1.addEventListener('message', function (event) {
+                if ($scope.datasource == "BigQuery") {
+                    w1.postMessage(parameter + "," + $scope.bigQueryFieldDetails.toString() + "," + $scope.query.state);
+                    w1.addEventListener('message', function(event) {
                         mapRetrieved(event);
                     });
 
                     $scope.widgetValidity = 'fade-out';
-                }else{
+                } else {
                     w.postMessage($scope.indexType + "," + parameter + "," + $scope.query.state);
-                    w.addEventListener('message', function (event) {
+                    w.addEventListener('message', function(event) {
                         mapRetrieved(event);
                     });
 
                     $scope.widgetValidity = 'fade-out';
                 }
-                
+
             } else if ($scope.datasource == "CSV/Excel") {
                 var obj = JSON.parse($rootScope.json_string);
                 console.log(JSON.stringify(obj));
@@ -879,7 +862,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
 
     //builds the chart
-    $scope.buildchart = function (widget) {
+    $scope.buildchart = function(widget) {
         widget.chartSeries = [];
 
         if ($scope.chartCategory.groupField != '') {
@@ -910,7 +893,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     }
 
     //order by category
-    $scope.orderByCat = function (widget) {
+    $scope.orderByCat = function(widget) {
         var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
         var orderedObjArray = [];
 
@@ -928,7 +911,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 };
             }
 
-            if(typeof $scope.filtering == 'undefined'){
+            if (typeof $scope.filtering == 'undefined') {
                 $scope.filterData($scope.seriesArray[i].filter);
             }
             $scope.filtering.calculate(orderedObj, catMappedData, serMappedData);
@@ -955,7 +938,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         widget.highchartsNG = {
             options: {
                 drilldown: {
-                   drillUpButton: {
+                    drillUpButton: {
                         relativeTo: 'plotBox',
                         position: {
                             y: 0,
@@ -998,7 +981,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             legend: {
                 enabled: false
             },
-            
+
             series: orderedObjArray,
             title: {
                 text: ''
@@ -1010,7 +993,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         };
 
         widget['widConfig'] = {
-            source : $scope.datasource,
+            source: $scope.datasource,
             classArray: $scope.objClasses,
             selectedClass: $scope.selectedClass,
             fields: $scope.selectedFields,
@@ -1028,7 +1011,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
 
     //order by category (drilled)
-    $scope.orderByDrilledCat = function (widget) {
+    $scope.orderByDrilledCat = function(widget) {
         var drilledSeries = [];
         var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
         var orderedObjArray = [];
@@ -1059,7 +1042,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 };
             }
 
-            if(typeof $scope.filtering == 'undefined'){
+            if (typeof $scope.filtering == 'undefined') {
                 $scope.filterData($scope.seriesArray[i].filter);
             }
 
@@ -1131,31 +1114,31 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 enabled: false
             },
             series: orderedObjArray,
-            drilldown: {           
+            drilldown: {
                 series: drilledSeries,
                 drillUpButton: {
-                relativeTo: 'spacingBox',
-                position: {
-                    y: 0,
-                    x: 0
-                },
-                theme: {
-                    fill: 'white',
-                    'stroke-width': 1,
-                    stroke: 'silver',
-                    r: 0,
-                    states: {
-                        hover: {
-                            fill: '#bada55'
-                        },
-                        select: {
-                            stroke: '#039',
-                            fill: '#bada55'
+                    relativeTo: 'spacingBox',
+                    position: {
+                        y: 0,
+                        x: 0
+                    },
+                    theme: {
+                        fill: 'white',
+                        'stroke-width': 1,
+                        stroke: 'silver',
+                        r: 0,
+                        states: {
+                            hover: {
+                                fill: '#bada55'
+                            },
+                            select: {
+                                stroke: '#039',
+                                fill: '#bada55'
+                            }
                         }
                     }
-                }
 
-            }
+                }
             },
             title: {
                 text: ''
@@ -1167,7 +1150,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         };
 
         widget['widConfig'] = {
-            source : $scope.datasource,
+            source: $scope.datasource,
             classArray: $scope.objClasses,
             selectedClass: $scope.selectedClass,
             fields: $scope.selectedFields,
@@ -1186,7 +1169,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
 
 
-    $scope.groupDrilledItems = function (uniqueArray, objArray) {
+    $scope.groupDrilledItems = function(uniqueArray, objArray) {
         for (j = 0; j < objArray.length; j++) {
             uniqueArray[objArray[j].drill] += objArray[j].val;
         }
@@ -1195,7 +1178,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
     //$scope.
 
-    $scope.getDrillArray = function () {
+    $scope.getDrillArray = function() {
         var uniqueScore = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.unique');
         console.log('unique score:' + uniqueScore);
         for (var key in $scope.mappedArray) {
@@ -1207,7 +1190,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
 
     //adds new series to the chart
-    $scope.addSeries = function () {
+    $scope.addSeries = function() {
         $scope.seriesArray.push({
             name: 'series1',
             serName: '',
@@ -1220,46 +1203,46 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
 
     //removes the clicked series
-    $scope.removeSeries = function (ind) {
+    $scope.removeSeries = function(ind) {
         $scope.seriesArray.splice(ind, 1);
     }
 
-    $scope.toggleTab = function (ind) {
+    $scope.toggleTab = function(ind) {
         var tabIndex = '';
         if (typeof ind === 'undefined') tabIndex = $scope.selectedTabIndex;
         else tabIndex = ind;
 
         //manually switching between tabs
         switch (tabIndex) {
-        case 0:
-            break;
-        case 1:
-            $scope.indexType != $scope.selectedClass && $scope.getFields();
-            $scope.dataTab = false;
-            $scope.selectedTabIndex = 1;
-            break;
-        case 2:
-            var classFields = $scope.checkedFields;
-            var classQuery = $scope.query.value;
-            if ($scope.query.state) {
-                $scope.classQuery != $scope.query.value && $scope.getData();
-            } else {
-                $scope.classFields != $scope.checkedFields && $scope.getData();
-            }
+            case 0:
+                break;
+            case 1:
+                $scope.indexType != $scope.selectedClass && $scope.getFields();
+                $scope.dataTab = false;
+                $scope.selectedTabIndex = 1;
+                break;
+            case 2:
+                var classFields = $scope.checkedFields;
+                var classQuery = $scope.query.value;
+                if ($scope.query.state) {
+                    $scope.classQuery != $scope.query.value && $scope.getData();
+                } else {
+                    $scope.classFields != $scope.checkedFields && $scope.getData();
+                }
 
-            $scope.chartTab = false;
-            $scope.selectedTabIndex = 2;
-            break;
+                $scope.chartTab = false;
+                $scope.selectedTabIndex = 2;
+                break;
         }
     };
 
     //close the config
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     }
 
-    $scope.filterData = function (c) {
+    $scope.filterData = function(c) {
         var filter = eval('new ' + c.toUpperCase() + '();');
         $scope.filtering = new Filtering();
         $scope.filtering.setFilter(filter);
@@ -1267,7 +1250,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         $scope.widgetValidity = 'fade-out';
     };
 
-    $scope.checkSeriesAvailability = function () {
+    $scope.checkSeriesAvailability = function() {
         if ($scope.seriesAttributes.length == 0) {
             $scope.validationMessage = "Please check the filter you select";
             $scope.widgetValidity = 'fade-in';
@@ -1276,26 +1259,26 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
 
     /* Strategy1 begin */
-    var Filtering = function () {
+    var Filtering = function() {
         this.filter = "";
     };
 
     Filtering.prototype = {
-        setFilter: function (filter) {
+        setFilter: function(filter) {
             this.filter = filter;
         },
 
-        calculate: function (orderedObj, catMappedData, serMappedData, drillData) {
+        calculate: function(orderedObj, catMappedData, serMappedData, drillData) {
             return this.filter.calculate(orderedObj, catMappedData, serMappedData, drillData);
         },
 
-        filterFields: function () {
+        filterFields: function() {
             return this.filter.filterFields();
         }
     };
 
-    var SUM = function () {
-        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
+    var SUM = function() {
+        this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
             console.log("calculations... for the sum filter");
             if (typeof drillData == 'undefined') {
                 for (j = 0; j < serMappedData.length; j++) {
@@ -1317,13 +1300,13 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             }
         }
 
-        this.filterFields = function () {
+        this.filterFields = function() {
             return getFilteredFields(false);
         }
     };
 
-    var AVERAGE = function () {
-        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
+    var AVERAGE = function() {
+        this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
             console.log("calculations... for the average filter");
             if (typeof drillData == 'undefined') {
                 for (j = 0; j < serMappedData.length; j++) {
@@ -1362,13 +1345,13 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             }
         }
 
-        this.filterFields = function () {
+        this.filterFields = function() {
             return getFilteredFields(false);
         }
     };
 
-    var PERCENTAGE = function () {
-        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
+    var PERCENTAGE = function() {
+        this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
             console.log("calculations... for the prcentage filter");
             var total;
             if (typeof drillData == 'undefined') {
@@ -1412,13 +1395,13 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             }
         }
 
-        this.filterFields = function () {
+        this.filterFields = function() {
             return getFilteredFields(false);
         }
     };
 
-    var COUNT = function () {
-        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
+    var COUNT = function() {
+        this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
             console.log("calculations... for the count filter");
             if (typeof drillData == 'undefined') {
                 for (j = 0; j < serMappedData.length; j++) {
@@ -1440,7 +1423,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             }
         }
 
-        this.filterFields = function () {
+        this.filterFields = function() {
             return getFilteredFields(true);
         }
     };
@@ -1474,8 +1457,8 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
     $scope.checkedFields = [];
     $scope.dataIndicator = false;
     $scope.categoryVal = "";
-    $scope.mappedArray = {};    
-    
+    $scope.mappedArray = {};
+
     $scope.chartCategory = {
         groupField: '',
         drilledField: '',
@@ -1489,50 +1472,50 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
     $scope.widget = $rootScope.dashboard.widgets[objIndex];
 
-    $scope.getTables = function(){
-        
-        if($scope.datasource == "DuoStore"){
+    $scope.getTables = function() {
+
+        if ($scope.datasource == "DuoStore") {
             var client = $objectstore.getClient($scope.storeIndex, " ");
 
             client.getClasses($scope.storeIndex);
 
             //classes retrieved
-            client.onGetMany(function (data) {
+            client.onGetMany(function(data) {
                 if (data.length > 0) $scope.objClasses = data;
                 else console.log('There are no classes present');
             });
 
             //error getting classes from the index
-            client.onError(function (data) {
+            client.onError(function(data) {
                 console.log('Error getting classes');
             });
-        }else if($scope.datasource == "BigQuery"){
+        } else if ($scope.datasource == "BigQuery") {
 
             var xhr = new XMLHttpRequest();
 
-            xhr.onreadystatechange = function(e){
-                    console.log(this);
-                    if (xhr.readyState === 4){
-                        if (xhr.status === 200){
-                            console.log('query response:'+ JSON.parse(xhr.response));
-                            var res = JSON.parse(xhr.response);
-                            var tableArray = [];
-                            $scope.objClasses = res;
-                            console.log(res.length);
-                        } else {
-                            console.error("XHR didn't work: ", xhr.status);
-                        }
+            xhr.onreadystatechange = function(e) {
+                console.log(this);
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log('query response:' + JSON.parse(xhr.response));
+                        var res = JSON.parse(xhr.response);
+                        var tableArray = [];
+                        $scope.objClasses = res;
+                        console.log(res.length);
+                    } else {
+                        console.error("XHR didn't work: ", xhr.status);
                     }
                 }
-            xhr.ontimeout = function (){
-                    console.error("request timedout: ", xhr);
-                }
-            xhr.open("get", "http://104.131.48.155:8080/GetTables?dataSetID=digin_hnb", /*async*/ true);
+            }
+            xhr.ontimeout = function() {
+                console.error("request timedout: ", xhr);
+            }
+            xhr.open("get", Digin_Engine_API + "GetTables?dataSetID=digin_hnb", /*async*/ true);
             xhr.send();
         }
     };
 
-    if(typeof $scope.widget.widConfig == 'undefined'){
+    if (typeof $scope.widget.widConfig == 'undefined') {
 
         $scope.seriesArray = [{
             name: 'series1',
@@ -1542,7 +1525,7 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
             color: ''
         }];
 
-    } else{
+    } else {
         //source tab config
         $scope.objClasses = $scope.widget.widConfig.classArray;
         $scope.datasource = $scope.widget.widConfig.source;
@@ -1566,7 +1549,7 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
     }
 
     //check for selected classes
-    $scope.getFields = function () {
+    $scope.getFields = function() {
         $scope.selectedFields = [];
         if ($scope.datasource == "DuoStore") {
             $scope.dataIndicator1 = true;
@@ -1576,9 +1559,9 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
                 client1.getFields($scope.storeIndex, $scope.indexType);
 
                 //class's fields retrieved
-                client1.onGetMany(function (data) {
+                client1.onGetMany(function(data) {
                     if (data.length > 0) {
-                        data.forEach(function (entry) {
+                        data.forEach(function(entry) {
                             $scope.selectedFields.push({
                                 name: entry,
                                 checked: false
@@ -1593,7 +1576,7 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
                 });
 
                 //error getting fields from the class
-                client1.onError(function (data) {
+                client1.onError(function(data) {
                     console.log('Error getting fields');
                 });
             } else {
@@ -1606,14 +1589,16 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
                 var fieldData = ($scope.selectedClass.split(':')[1]).split('.');
                 $scope.bigQueryFieldDetails = fieldData;
                 $scope.dataIndicator1 = true;
-                
+
                 $http({
                     method: 'GET',
-                    url: 'http://104.131.48.155:8080/GetFields?datasetName='+fieldData[0]+'&&tableName='+fieldData[1],
+                    url: Digin_Engine_API + 'GetFields?datasetName=' + fieldData[0] + '&&tableName=' + fieldData[1],
+
+
                 }).
-                success(function (data, status) {
+                success(function(data, status) {
                     if (data.length > 0) {
-                        data.forEach(function (entry) {
+                        data.forEach(function(entry) {
                             $scope.selectedFields.push({
                                 name: entry,
                                 checked: false
@@ -1626,7 +1611,7 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
                     } else console.log('There are no fields present in the class');
                     $scope.dataIndicator1 = false;
                 }).
-                error(function (data, status) {
+                error(function(data, status) {
                     alert("Request failed");
 
                 });
@@ -1656,7 +1641,7 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
         }
     };
 
-    $scope.getData = function () {
+    $scope.getData = function() {
         var w = new Worker("scripts/webworkers/elasticWorker.js");
         var w1 = new Worker("scripts/webworkers/bigQueryWorker.js");
         var parameter = '';
@@ -1673,64 +1658,64 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
 
             $scope.dataIndicator = true;
 
-            function mapRetrieved(event){
-                    var obj = JSON.parse(event.data);
-                    console.log(JSON.stringify(obj));
-                    $scope.dataIndicator = false;
+            function mapRetrieved(event) {
+                var obj = JSON.parse(event.data);
+                console.log(JSON.stringify(obj));
+                $scope.dataIndicator = false;
 
-                    //creating the array to map dynamically
-                    $scope.arrayAttributes = [];
-                    for (var key in obj[0]) {
-                        if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
-                            var val = obj[0][key];
-                            console.log(key);
-                            $scope.mappedArray[key] = {
-                                name: key,
-                                data: [],
-                                isNaN: true
-                            };
-                            $scope.arrayAttributes.push(key);
-                        }
+                //creating the array to map dynamically
+                $scope.arrayAttributes = [];
+                for (var key in obj[0]) {
+                    if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
+                        var val = obj[0][key];
+                        console.log(key);
+                        $scope.mappedArray[key] = {
+                            name: key,
+                            data: [],
+                            isNaN: true
+                        };
+                        $scope.arrayAttributes.push(key);
                     }
+                }
 
-                    //mapping the dynamically created array
-                    for (i = 0; i < obj.length; i++) {
-                        for (var key in obj[i]) {
-                            if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
-                                var val = obj[i][key];
-                                var parsedVal = parseFloat(val);
-                                if (!isNaN(parsedVal)) {
-                                    $scope.mappedArray[key].data.push(parsedVal);
-                                    $scope.mappedArray[key].isNaN = false;
-                                } else {
-                                    $scope.mappedArray[key].data.push(val);
-                                }
-                                $scope.fieldRetrieved = $scope.mappedArray[key].name;
+                //mapping the dynamically created array
+                for (i = 0; i < obj.length; i++) {
+                    for (var key in obj[i]) {
+                        if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
+                            var val = obj[i][key];
+                            var parsedVal = parseFloat(val);
+                            if (!isNaN(parsedVal)) {
+                                $scope.mappedArray[key].data.push(parsedVal);
+                                $scope.mappedArray[key].isNaN = false;
+                            } else {
+                                $scope.mappedArray[key].data.push(val);
                             }
+                            $scope.fieldRetrieved = $scope.mappedArray[key].name;
                         }
                     }
+                }
 
-                    $scope.getFilters();
-                    $scope.toggleTab(2);
+                $scope.getFilters();
+                $scope.toggleTab(2);
             };
 
             if ($scope.datasource == "DuoStore" || $scope.datasource == "BigQuery") {
-                if($scope.datasource == "BigQuery"){
-                    w1.postMessage(parameter + "," + $scope.bigQueryFieldDetails.toString()+ "," + $scope.query.state);
-                    w1.addEventListener('message', function (event) {
+                if ($scope.datasource == "BigQuery") {
+                    w1.postMessage(parameter + "," + $scope.bigQueryFieldDetails.toString() + "," + $scope.query.state);
+                    w1.addEventListener('message', function(event) {
                         mapRetrieved(event);
                     });
 
                     $scope.widgetValidity = 'fade-out';
-                }else{
+                } else {
                     w.postMessage($scope.indexType + "," + parameter + "," + $scope.query.state);
-                    w.addEventListener('message', function (event) {
+                    w.addEventListener('message', function(event) {
                         mapRetrieved(event);
                     });
 
                     $scope.widgetValidity = 'fade-out';
                 }
-                
+
             } else if ($scope.datasource == "CSV/Excel") {
                 var obj = JSON.parse($rootScope.json_string);
                 console.log(JSON.stringify(obj));
@@ -1792,50 +1777,50 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
     };
 
     //builds the chart
-    $scope.buildchart = function (widget) {       
+    $scope.buildchart = function(widget) {
         $scope.filterData($scope.selectedFilter);
         var dataObject = $scope.mappedArray[$scope.fieldRetrieved].data;
-        widget.widData['value'] = Math.round($scope.filtering.calculate(dataObject) * 100) / 100 ;
+        widget.widData['value'] = Math.round($scope.filtering.calculate(dataObject) * 100) / 100;
         $mdDialog.hide();
     }
 
-    
-    $scope.toggleTab = function (ind) {
+
+    $scope.toggleTab = function(ind) {
         var tabIndex = '';
         if (typeof ind === 'undefined') tabIndex = $scope.selectedTabIndex;
         else tabIndex = ind;
 
         //manually switching between tabs
         switch (tabIndex) {
-        case 0:
-            break;
-        case 1:
-            $scope.indexType != $scope.selectedClass && $scope.getFields();
-            $scope.dataTab = false;
-            $scope.selectedTabIndex = 1;
-            break;
-        case 2:
-            var classField = $scope.selectedField;
-            var classQuery = $scope.query.value;
-            if ($scope.query.state) {
-                $scope.classQuery != $scope.query.value && $scope.getData();
-            } else {
-                $scope.classField != $scope.selectedField && $scope.getData();
-            }
+            case 0:
+                break;
+            case 1:
+                $scope.indexType != $scope.selectedClass && $scope.getFields();
+                $scope.dataTab = false;
+                $scope.selectedTabIndex = 1;
+                break;
+            case 2:
+                var classField = $scope.selectedField;
+                var classQuery = $scope.query.value;
+                if ($scope.query.state) {
+                    $scope.classQuery != $scope.query.value && $scope.getData();
+                } else {
+                    $scope.classField != $scope.selectedField && $scope.getData();
+                }
 
-            $scope.chartTab = false;
-            $scope.selectedTabIndex = 2;
-            break;
+                $scope.chartTab = false;
+                $scope.selectedTabIndex = 2;
+                break;
         }
     };
 
     //close the config
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     }
 
-    $scope.filterData = function (c) {
+    $scope.filterData = function(c) {
         var filter = eval('new ' + c.toUpperCase() + '();');
         $scope.filtering = new Filtering();
         $scope.filtering.setFilter(filter);
@@ -1843,7 +1828,7 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
         $scope.widgetValidity = 'fade-out';
     };
 
-    $scope.checkSeriesAvailability = function () {
+    $scope.checkSeriesAvailability = function() {
         if ($scope.seriesAttributes.length == 0) {
             $scope.validationMessage = "Please check the filter you select";
             $scope.widgetValidity = 'fade-in';
@@ -1853,7 +1838,7 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
     $scope.getFilters = function() {
         for (var key in $scope.mappedArray) {
             if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
-                if($scope.mappedArray[key].isNaN) $scope.filtersAvailable = ['Count'];
+                if ($scope.mappedArray[key].isNaN) $scope.filtersAvailable = ['Count'];
                 else $scope.filtersAvailable = $scope.filterAttributes;
             }
         }
@@ -1861,96 +1846,96 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
 
 
     /* Strategy1 begin */
-    var Filtering = function () {
+    var Filtering = function() {
         this.filter = "";
     };
 
     Filtering.prototype = {
-        setFilter: function (filter) {
+        setFilter: function(filter) {
             this.filter = filter;
         },
 
-        calculate: function (dataObject) {
+        calculate: function(dataObject) {
             return this.filter.calculate(dataObject);
         },
 
-        filterFields: function () {
+        filterFields: function() {
             return this.filter.filterFields();
         }
     };
 
-    var SUM = function () {
-        this.calculate = function (dataObject) {
+    var SUM = function() {
+        this.calculate = function(dataObject) {
             console.log("calculations... for the sum filter");
             var sum = 0;
-                for (j = 0; j < dataObject.length; j++) {
-                    sum += dataObject[j];
-                }
+            for (j = 0; j < dataObject.length; j++) {
+                sum += dataObject[j];
+            }
             return sum;
         }
 
-        this.filterFields = function () {
+        this.filterFields = function() {
             return getFilteredFields(false);
         }
     };
-    
-    var AVERAGE = function () {
-        this.calculate = function (dataObject) {
-            console.log("calculations... for the average filter");
-                var sum = 0;
-                for (j = 0; j < dataObject.length; j++) {
-                    sum += dataObject[j];
-                }
-                return sum/dataObject.length;                
-            }
 
-        this.filterFields = function () {
+    var AVERAGE = function() {
+        this.calculate = function(dataObject) {
+            console.log("calculations... for the average filter");
+            var sum = 0;
+            for (j = 0; j < dataObject.length; j++) {
+                sum += dataObject[j];
+            }
+            return sum / dataObject.length;
+        }
+
+        this.filterFields = function() {
             return getFilteredFields(false);
         }
     };
-var UNIQUE = function () {
-        this.calculate = function (dataObject) {
-            console.log("calculations... for the unique filter");            
+    var UNIQUE = function() {
+        this.calculate = function(dataObject) {
+            console.log("calculations... for the unique filter");
             return Enumerable.From(dataObject).Select().Distinct().ToArray().length;;
         }
 
-        this.filterFields = function () {
+        this.filterFields = function() {
             return getFilteredFields(true);
         }
     };
-    var PERCENTAGE = function () {
-        this.calculate = function (dataObject) {
+    var PERCENTAGE = function() {
+        this.calculate = function(dataObject) {
             console.log("calculations... for the prcentage filter");
             var sum = 0;
             for (j = 0; j < dataObject.length; j++) {
-                    sum += dataObject[j];
-                }
-            return (sum/dataObject.length)*100;            
+                sum += dataObject[j];
+            }
+            return (sum / dataObject.length) * 100;
         }
 
-        this.filterFields = function () {
+        this.filterFields = function() {
             return getFilteredFields(false);
         }
     };
 
-    var COUNT = function () {
-        this.calculate = function (dataObject) {
+    var COUNT = function() {
+        this.calculate = function(dataObject) {
             console.log("calculations... for the count filter");
             return dataObject.length;
         }
 
-        this.filterFields = function () {
+        this.filterFields = function() {
             return getFilteredFields(true);
         }
     };
 
-    var UNIQUE = function () {
-        this.calculate = function (dataObject) {
-            console.log("calculations... for the unique filter");            
+    var UNIQUE = function() {
+        this.calculate = function(dataObject) {
+            console.log("calculations... for the unique filter");
             return Enumerable.From(dataObject).Select().Distinct().ToArray().length;;
         }
 
-        this.filterFields = function () {
+        this.filterFields = function() {
             return getFilteredFields(true);
         }
     };
@@ -1973,10 +1958,10 @@ var UNIQUE = function () {
 
 function InitConfigD3($scope, $mdDialog, widId, $rootScope, $sce, d3Service, $timeout) {
 
-     
- 
 
-    $scope.cancel = function () {
+
+
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
 
@@ -1988,18 +1973,18 @@ function InitConfigD3($scope, $mdDialog, widId, $rootScope, $sce, d3Service, $ti
 function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     //cancel config
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
 
     //complete config  
-    $scope.finish = function () {
+    $scope.finish = function() {
         var wpapi = "http://public-api.wordpress.com/rest/v1/sites/";
         var choice = "/posts";
         var callbackString = '/?callback=JSON_CALLBACK';
 
         var message = $http.jsonp(wpapi + $scope.wpdomain + choice + callbackString).
-        success(function (data, status) {
+        success(function(data, status) {
             var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
             //console.log(JSON.stringify(data));
             var posts = data.posts;
@@ -2029,7 +2014,7 @@ function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
             $rootScope.dashboard.widgets[objIndex].widData = trimmedObj;
             //$rootScope.dashboard.widgets[objIndex].widData = data;
         }).
-        error(function (data, status) {
+        error(function(data, status) {
 
             console.log(message);
         });
@@ -2044,12 +2029,12 @@ function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
     //cancel config
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
 
     //complete config  
-    $scope.finish = function (rssAddress) {
+    $scope.finish = function(rssAddress) {
 
 
         $scope.entryArray = [];
@@ -2057,7 +2042,7 @@ function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
         var feed = new google.feeds.Feed(rssAddress);
         feed.setNumEntries(100);
 
-        feed.load(function (result) {
+        feed.load(function(result) {
             if (!result.error) {
 
                 for (var i = 0; i < result.feed.entries.length; i++) {
@@ -2086,12 +2071,12 @@ function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSetting
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
     //cancel config
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
 
     //complete config  
-    $scope.finish = function () {
+    $scope.finish = function() {
         $mdDialog.hide();
     };
 
@@ -2099,13 +2084,13 @@ function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSetting
     $rootScope.show = "hello";
 
     // Callback triggered after Picker is shown
-    $scope.onLoaded = function () {
+    $scope.onLoaded = function() {
         //console.log('Google Picker loaded!');
     }
 
     // Callback triggered after selecting files
-    $scope.onPicked = function (docs) {
-        angular.forEach(docs, function (file, index) {
+    $scope.onPicked = function(docs) {
+        angular.forEach(docs, function(file, index) {
             // alert('You have selected: ' + file.id);
             $rootScope.files.push(file);
             $rootScope.dashboard.widgets[objIndex].widData = $rootScope.files;
@@ -2115,7 +2100,7 @@ function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSetting
     }
 
     // Callback triggered after clicking on cancel
-    $scope.onCancel = function () {
+    $scope.onCancel = function() {
         //console.log('Google picker close/cancel!');
     }
 
@@ -2128,7 +2113,7 @@ function gnewsInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     google.load('search', '1');
     //cancel config
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
 
     };
@@ -2136,7 +2121,7 @@ function gnewsInit($scope, $http, $mdDialog, widId, $rootScope) {
     var newsSearch;
 
 
-    $scope.finish = function (text) {
+    $scope.finish = function(text) {
 
 
         var gnewsfeed = document.getElementById('gnewsrequest').value;
@@ -2212,12 +2197,12 @@ function imInit($scope, $http, $rootScope, $mdDialog, widId) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
 
     //complete config  
-    $scope.finish = function () {
+    $scope.finish = function() {
         $rootScope.image = $scope.image;
         $rootScope.dashboard.widgets[objIndex].widIm = $rootScope.image;
         // console.log(JSON.stringify($rootScope.image));
@@ -2233,11 +2218,11 @@ function csvInit($scope, $http, $mdDialog, widId, $rootScope) {
     $rootScope.myData = [58.13, 53.98, 67.00, 89.70, 99.00, 13.28, 66.70, 34.98];
     $rootScope.dashboard.widgets[objIndex].widCsc = $rootScope.myData;
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
 
-    $scope.finish = function (file) {
+    $scope.finish = function(file) {
 
         $rootScope.csvFile = file;
         // $rootScope.myData = file;
@@ -2254,21 +2239,21 @@ function csvInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 function weatherInit(widId, $scope, $http, $rootscope, $mdDialog) {
     //cancel config
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
 
     //complete config  
-    $scope.finish = function () {
+    $scope.finish = function() {
         $http.get('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22' + $scope.locZip + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
 
-        .success(function (data) {
+        .success(function(data) {
 
                 var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
                 $rootScope.dashboard.widgets[objIndex].widData = data.query;
                 $mdDialog.hide();
             })
-            .error(function (err) {
+            .error(function(err) {
                 console.log('Error retrieving markets');
             });
     };
@@ -2276,14 +2261,14 @@ function weatherInit(widId, $scope, $http, $rootscope, $mdDialog) {
 }
 
 function adsenseInit(widId, $scope, $http, $rootScope, $mdDialog) {
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     }
 
-    $scope.finish = function () {
+    $scope.finish = function() {
         $mdDialog.hide();
     }
-    $scope.signIn = function () {
+    $scope.signIn = function() {
 
     }
 
@@ -2314,13 +2299,13 @@ function calendarInit(widId, $scope, $http, $rootScope, $mdDialog, $compile, $ti
     $rootScope.dashboard.widgets[objIndex].widData = [];
 
     /* alert on eventClick */
-    $scope.alertOnEventClick = function (date, jsEvent, view) {
+    $scope.alertOnEventClick = function(date, jsEvent, view) {
         $scope.alertMessage = (date.title + ' was clicked ');
     };
 
     /* Change View */
-    $scope.renderCalender = function (calendar) {
-        $timeout(function () {
+    $scope.renderCalender = function(calendar) {
+        $timeout(function() {
             if (uiCalendarConfig.calendars[calendar]) {
                 uiCalendarConfig.calendars[calendar].fullCalendar('render');
             }
@@ -2328,13 +2313,13 @@ function calendarInit(widId, $scope, $http, $rootScope, $mdDialog, $compile, $ti
     };
 
     /* Change View */
-    $scope.changeView = function (view, calendar) {
+    $scope.changeView = function(view, calendar) {
         alert('tset');
         uiCalendarConfig.calendars[calendar].fullCalendar('changeView', view);
     };
     /* Change View */
-    $scope.renderCalender = function (calendar) {
-        $timeout(function () {
+    $scope.renderCalender = function(calendar) {
+        $timeout(function() {
             if (uiCalendarConfig.calendars[calendar]) {
                 uiCalendarConfig.calendars[calendar].fullCalendar('render');
             }
@@ -2342,7 +2327,7 @@ function calendarInit(widId, $scope, $http, $rootScope, $mdDialog, $compile, $ti
     };
 
     /* Render Tooltip */
-    $scope.eventRender = function (event, element, view) {
+    $scope.eventRender = function(event, element, view) {
         element.attr({
             'tooltip': event.title,
             'tooltip-append-to-body': true
@@ -2350,23 +2335,23 @@ function calendarInit(widId, $scope, $http, $rootScope, $mdDialog, $compile, $ti
         $compile(element)($scope);
     };
 
-    $scope.authorize = function () {
+    $scope.authorize = function() {
         var config = {
             'client_id': '774419948210-c4k8kdkf235pldvp6g8h8a6mnb58qpfm.apps.googleusercontent.com',
             'scope': 'https://www.googleapis.com/auth/calendar'
         };
-        gapi.auth.authorize(config, function () {
+        gapi.auth.authorize(config, function() {
             console.log('login complete');
             console.log(gapi.auth.getToken());
         });
     }
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
 
     };
 
-    $scope.finish = function () {
+    $scope.finish = function() {
         gapi.client.load('calendar', 'v3', listUpcomingEvents);
         $mdDialog.hide();
     };
@@ -2379,7 +2364,7 @@ function calendarInit(widId, $scope, $http, $rootScope, $mdDialog, $compile, $ti
             'orderBy': 'startTime'
         });
 
-        request.execute(function (resp) {
+        request.execute(function(resp) {
             var events = resp.items;
 
 
@@ -2421,20 +2406,20 @@ function calendarInit(widId, $scope, $http, $rootScope, $mdDialog, $compile, $ti
 function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
 
-    $scope.finish = function () {
+    $scope.finish = function() {
 
         $mdDialog.hide();
 
     };
 
     var auth2 = {};
-    var helper = (function () {
+    var helper = (function() {
         return {
-            onSignInCallback: function (authResult) {
+            onSignInCallback: function(authResult) {
                 $('#authResult').html('Auth Result:<br/>');
                 for (var field in authResult) {
                     $('#authResult').append(' ' + field + ': ' +
@@ -2466,7 +2451,7 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
             /**
              * Calls the OAuth2 endpoint to disconnect the app for the user.
              */
-            disconnect: function () {
+            disconnect: function() {
                 // Revoke the access token.
                 auth2.disconnect();
             },
@@ -2474,11 +2459,11 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
             /**
              * Gets and renders the list of people visible to this app.
              */
-            people: function () {
+            people: function() {
                 gapi.client.plus.people.list({
                     'userId': 'me',
                     'collection': 'visible'
-                }).then(function (res) {
+                }).then(function(res) {
                     var people = res.result;
                     $('#visiblePeople').empty();
                     $('#visiblePeople').append('<h6>' +
@@ -2490,11 +2475,11 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
                 });
             },
 
-            peoplee: function () {
+            peoplee: function() {
                 gapi.client.plus.people.list({
                     'userId': 'me',
                     'collection': 'visible'
-                }).then(function (res) {
+                }).then(function(res) {
                     var people1 = res.result;
                     $('#followerss').empty();
                     $('#followerss').append('<h6>' +
@@ -2506,11 +2491,11 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
                 });
             },
 
-            peopless: function () {
+            peopless: function() {
                 gapi.client.plus.people.list({
                     'userId': 'me',
                     'collection': 'connected'
-                }).then(function (res) {
+                }).then(function(res) {
                     var peoplee = res.result;
                     $('#connectedPeople').empty();
                     $('#connectedPeople').append('<h6>' +
@@ -2526,11 +2511,11 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
              * Gets and renders the list of activities visible to this app.
              */
 
-            activities: function () {
+            activities: function() {
                 gapi.client.plus.activities.list({
                     'userId': 'me',
                     'collection': 'public'
-                }).then(function (res) {
+                }).then(function(res) {
 
                     var activitiess = res.result;
                     $('#activitylist').empty();
@@ -2543,11 +2528,11 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
             },
 
 
-            organizationsu: function () {
+            organizationsu: function() {
                 gapi.client.plus.people.get({
                     'userId': 'me',
 
-                }).then(function (res) {
+                }).then(function(res) {
 
                     var org = res.result;
                     $('#orglist').empty();
@@ -2558,11 +2543,11 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
                 });
             },
 
-            placestofind: function () {
+            placestofind: function() {
                 gapi.client.plus.people.get({
                     'userId': 'me',
 
-                }).then(function (res) {
+                }).then(function(res) {
 
                     var places = res.result;
                     $('#placelist').empty();
@@ -2574,11 +2559,11 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
             },
 
 
-            followings: function () {
+            followings: function() {
                 gapi.client.plus.people.get({
                     'userId': 'me',
 
-                }).then(function (res) {
+                }).then(function(res) {
 
                     var following = res.result;
                     $('#followinglist').empty();
@@ -2597,10 +2582,10 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
              * Gets and renders the currently signed in user's profile data.
              */
 
-            profile: function () {
+            profile: function() {
                 gapi.client.plus.people.get({
                     'userId': 'me'
-                }).then(function (res) {
+                }).then(function(res) {
                     var profile = res.result;
                     // console.log(profile);
                     $('#profile').empty();
@@ -2621,7 +2606,7 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
                         $('#profile').append(
                             $('<p><img src=\"' + profile.cover.coverPhoto.url + '\"></p>'));
                     }
-                }, function (err) {
+                }, function(err) {
                     var error = err.result;
                     $('#profile').empty();
                     $('#profile').append(error.message);
@@ -2635,7 +2620,7 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
      *
      * @param {boolean} isSignedIn The new signed in state.
      */
-    var updateSignIn = function () {
+    var updateSignIn = function() {
         // console.log('update sign in state');
         if (auth2.isSignedIn.get()) {
             // console.log('signed in');
@@ -2650,8 +2635,8 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
      * This method sets up the sign-in listener after the client library loads.
      */
     function startApp() {
-        gapi.load('auth2', function () {
-            gapi.client.load('plus', 'v1').then(function () {
+        gapi.load('auth2', function() {
+            gapi.client.load('plus', 'v1').then(function() {
                 gapi.signin2.render('signin-button', {
                     scope: 'https://www.googleapis.com/auth/plus.login',
                     fetch_basic_profile: false
@@ -2660,7 +2645,7 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
                     fetch_basic_profile: false,
                     scope: 'https://www.googleapis.com/auth/plus.login'
                 }).then(
-                    function () {
+                    function() {
                         // console.log('init');
                         auth2 = gapi.auth2.getAuthInstance();
                         auth2.isSignedIn.listen(updateSignIn);
@@ -2680,19 +2665,19 @@ function instaInit($scope, $http, $window, instagram, widId, $rootScope, $mdDial
 
 
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
 
 
-    $scope.finish = function () {
+    $scope.finish = function() {
         $mdDialog.hide();
     };
 
 
     $scope.message = null;
 
-    var searchByTag = function (tag) {
+    var searchByTag = function(tag) {
 
         //config
         var url = 'https://api.instagram.com/v1/tags/' + tag + '/media/recent';
@@ -2706,7 +2691,7 @@ function instaInit($scope, $http, $window, instagram, widId, $rootScope, $mdDial
             }
             //console.log( 'json request' );
         $http.jsonp(url, config)
-            .success(function (results) {
+            .success(function(results) {
                 var dataLength = results.data.length;
                 var resultData = results.data;
                 if (dataLength > 0) {
@@ -2720,7 +2705,7 @@ function instaInit($scope, $http, $window, instagram, widId, $rootScope, $mdDial
                     $scope.message = "No results.";
                 }
             })
-            .error(function () {
+            .error(function() {
                 $scope.message = "Not found.";
             });
 
@@ -2728,7 +2713,7 @@ function instaInit($scope, $http, $window, instagram, widId, $rootScope, $mdDial
 
     $scope.formData = {};
 
-    $scope.submitForm = function () {
+    $scope.submitForm = function() {
         // console.log( 'submit' );
         // console.log( $scope.formData.tagInput );
         var tag = $scope.formData.tagInput;
@@ -2736,7 +2721,7 @@ function instaInit($scope, $http, $window, instagram, widId, $rootScope, $mdDial
         $scope.message = "Searching Instagram for photos tagged with " + tag;
     };
 
-    $scope.clear = function () {
+    $scope.clear = function() {
         // console.log( 'clear' );
         $scope.formData = {};
         $scope.instaImage = {};
@@ -2746,7 +2731,7 @@ function instaInit($scope, $http, $window, instagram, widId, $rootScope, $mdDial
 
 };
 
-routerApp.controller('sltivrInit', function ($scope, $mdDialog, $rootScope) {
+routerApp.controller('sltivrInit', function($scope, $mdDialog, $rootScope) {
 
     $scope.countTo = 349;
     $scope.countFrom = 0;
@@ -2756,7 +2741,7 @@ routerApp.controller('sltivrInit', function ($scope, $mdDialog, $rootScope) {
 
 });
 
-routerApp.controller('sltqueueInit', function ($scope, $mdDialog, $rootScope) {
+routerApp.controller('sltqueueInit', function($scope, $mdDialog, $rootScope) {
 
     $scope.countTo = 234;
     $scope.countFrom = 0;
@@ -2768,10 +2753,10 @@ routerApp.controller('sltqueueInit', function ($scope, $mdDialog, $rootScope) {
             type: 'pieChart',
             height: 450,
             donut: true,
-            x: function (d) {
+            x: function(d) {
                 return d.key;
             },
-            y: function (d) {
+            y: function(d) {
                 return d.y;
             },
             showLabels: true,
@@ -2783,10 +2768,10 @@ routerApp.controller('sltqueueInit', function ($scope, $mdDialog, $rootScope) {
                     bottom: 5,
                     left: 0
                 },
-                startAngle: function (d) {
+                startAngle: function(d) {
                     return d.startAngle / 2 - Math.PI / 2
                 },
-                endAngle: function (d) {
+                endAngle: function(d) {
                     return d.endAngle / 2 - Math.PI / 2
                 }
             },
@@ -2820,7 +2805,7 @@ routerApp.controller('sltqueueInit', function ($scope, $mdDialog, $rootScope) {
     }];
 
 });
-routerApp.controller('sltqueuedetailsInit', function ($scope, $mdDialog, $rootScope) {
+routerApp.controller('sltqueuedetailsInit', function($scope, $mdDialog, $rootScope) {
     $scope.options = {
         chart: {
             type: 'cumulativeLineChart',
@@ -2831,13 +2816,13 @@ routerApp.controller('sltqueuedetailsInit', function ($scope, $mdDialog, $rootSc
                 bottom: 60,
                 left: 65
             },
-            x: function (d) {
+            x: function(d) {
                 return d[0];
             },
-            y: function (d) {
+            y: function(d) {
                 return d[1] / 100;
             },
-            average: function (d) {
+            average: function(d) {
                 return d.mean / 100;
             },
 
@@ -2848,7 +2833,7 @@ routerApp.controller('sltqueuedetailsInit', function ($scope, $mdDialog, $rootSc
 
             xAxis: {
                 axisLabel: 'X Axis',
-                tickFormat: function (d) {
+                tickFormat: function(d) {
                     return d3.time.format('%m/%d/%y')(new Date(d))
                 },
                 showMaxMin: false,
@@ -2857,7 +2842,7 @@ routerApp.controller('sltqueuedetailsInit', function ($scope, $mdDialog, $rootSc
 
             yAxis: {
                 axisLabel: 'Y Axis',
-                tickFormat: function (d) {
+                tickFormat: function(d) {
                     return d3.format('')(d);
                 },
                 axisLabelDistance: 20
@@ -2918,7 +2903,7 @@ routerApp.controller('sltqueuedetailsInit', function ($scope, $mdDialog, $rootSc
 
 
 });
-routerApp.controller('sltagentInit', function ($scope, $mdDialog, $rootScope) {
+routerApp.controller('sltagentInit', function($scope, $mdDialog, $rootScope) {
 
     $scope.countTo = 134;
     $scope.countFrom = 0;
@@ -2928,10 +2913,10 @@ routerApp.controller('sltagentInit', function ($scope, $mdDialog, $rootScope) {
         chart: {
             type: 'pieChart',
             height: 500,
-            x: function (d) {
+            x: function(d) {
                 return d.key;
             },
-            y: function (d) {
+            y: function(d) {
                 return d.y;
             },
             pie: {
@@ -2973,15 +2958,15 @@ routerApp.controller('sltagentInit', function ($scope, $mdDialog, $rootScope) {
     }];
 });
 
-routerApp.directive('formSectionTitle', function () {
+routerApp.directive('formSectionTitle', function() {
     return {
         restrict: 'E',
-        template: "<div id='newdiv' layout='row' style='width: 255px; margin-top:8px; margin-left:8px;' flex layout-sm='row'><div flex='25'>	<img src={{catogeryLetter}} style='margin-top:22px;border-radius:20px'/>	</div> <div flex style='margin-top:27px;'>	<label style='font-weight:700'>{{title}} {{catogeryLetter}}</label> </div></div>",
+        template: "<div id='newdiv' layout='row' style='width: 255px; margin-top:8px; margin-left:8px;' flex layout-sm='row'><div flex='25'>    <img src={{catogeryLetter}} style='margin-top:22px;border-radius:20px'/>    </div> <div flex style='margin-top:27px;'>  <label style='font-weight:700'>{{title}} {{catogeryLetter}}</label> </div></div>",
         scope: {
             title: '@',
             catogeryLetter: '='
         },
-        link: function (scope, element) {
+        link: function(scope, element) {
 
                 if (scope.title == "" || scope.title == null) {
 
@@ -3001,29 +2986,228 @@ routerApp.directive('formSectionTitle', function () {
 
 function googleMapsInit(widId, $scope, $http, $rootScope, $mdDialog) {
 
-    $scope.finish = function () {
+    $scope.finish = function() {
         $mdDialog.hide();
 
     };
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
 
 }
 
-function hnbInit($scope, $http, $mdDialog, widId, $rootScope) {
+function hnbInit($scope, $http, $mdDialog, widId, $rootScope, Digin_Engine_API) {
+
+    $scope.datasources = ['BigQuery']; //temporary
+    $scope.widgetValidity = 'elasticValidation'; //validation message visibility                                             
+    $scope.query = {};
+    $scope.query.state = false;
+    $scope.query.drilled = false;
+    $scope.checkedFields = [];
+    $scope.dataIndicator = false;
+    $scope.dataIndicator1 = false;
+    $scope.categoryVal = "";
+    $scope.mappedArray = {};
+
+    $scope.dataTab = true;
+    $scope.chartTab = true;
+    $scope.seriesAttributes = [];
+
+    //getting the widget object
+    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+    $scope.widget = $rootScope.dashboard.widgets[objIndex];
+
+    $scope.getTables = function() {
+
+        if ($scope.datasource == "BigQuery") {
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function(e) {
+                console.log(this);
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log('query response:' + JSON.parse(xhr.response));
+                        var res = JSON.parse(xhr.response);
+                        var tableArray = [];
+                        $scope.objClasses = res;
+                        console.log(res.length);
+                    } else {
+                        console.error("XHR didn't work: ", xhr.status);
+                    }
+                }
+            }
+            xhr.ontimeout = function() {
+                console.error("request timedout: ", xhr);
+            }
+            xhr.open("get", Digin_Engine_API + "GetTables?dataSetID=digin_hnb", /*async*/ true);
+            xhr.send();
+        }
+    };
 
 
-    $scope.finish = function () {
+    //check for selected classes
+    $scope.getFields = function() {
+        $scope.selectedFields = [];
+        if ($scope.datasource == "BigQuery") {
+            if ($scope.selectedClass != null) {
+                $scope.indexType = $scope.selectedClass;
+                var fieldData = ($scope.selectedClass.split(':')[1]).split('.');
+                $scope.bigQueryFieldDetails = fieldData;
+                $scope.dataIndicator1 = true;
 
-        $mdDialog.hide();
+                $http({
+                    method: 'GET',
+                    url: Digin_Engine_API + 'GetFields?datasetName=' + fieldData[0] + '&&tableName=' + fieldData[1],
+                }).
+                success(function(data, status) {
+                    if (data.length > 0) {
+                        data.forEach(function(entry) {
+                            $scope.selectedFields.push({
+                                name: entry,
+                                checked: false
+                            });
+                        });
+                        $scope.toggleTab(1);
+
+                    } else console.log('There are no fields present in the class');
+                    $scope.dataIndicator1 = false;
+                }).
+                error(function(data, status) {
+                    alert("Request failed");
+
+                });
+            } else {
+                $scope.widgetValidity = 'fade-in';
+                $scope.validationMessage = "Please select a class";
+            }
+
+        }
+    };
+    $scope.toggleTab = function(ind) {
+        var tabIndex = '';
+        if (typeof ind === 'undefined') tabIndex = $scope.selectedTabIndex;
+        else tabIndex = ind;
+
+        //manually switching between tabs
+        switch (tabIndex) {
+            case 0:
+                break;
+            case 1:
+                $scope.indexType != $scope.selectedClass && $scope.getFields();
+                $scope.dataTab = false;
+                $scope.selectedTabIndex = 1;
+                break;
+            case 2:
+                var classFields = $scope.checkedFields;
+                var classQuery = $scope.query.value;
+                if ($scope.query.state) {
+                    $scope.classQuery != $scope.query.value && $scope.getData();
+                } else {
+                    $scope.classFields != $scope.checkedFields && $scope.getData();
+                }
+
+                $scope.chartTab = false;
+                $scope.selectedTabIndex = 2;
+                break;
+        }
+    };
+
+    //selects fields for non-queried data retrieval
+    $scope.toggleCheck = function(index) {
+        index.checked = !index.checked;
+        if ($scope.checkedFields.indexOf(index) === -1) {
+            $scope.checkedFields.push(index);
+        } else {
+            $scope.checkedFields.splice($scope.checkedFields.indexOf(index), 1);
+        }
+    };
+
+    $scope.getData = function() {
+        var w1 = new Worker("scripts/webworkers/bigQueryWorker.js");
+        var parameter = '';
+
+        if ($scope.checkedFields.length != 0 || typeof $scope.query.value != "undefined") {
+            $scope.classFields = $scope.checkedFields;
+            $scope.classQuery = $scope.query.value;
+
+            if ($scope.query.state) {
+                parameter = $scope.classQuery;
+            } else {
+                for (param in $scope.classFields) {
+                    parameter += " " + $scope.classFields[param].name;
+                }
+                parameter += " " + $scope.categoryVal;
+            }
+
+            $scope.dataIndicator = true;
+
+            function mapRetrieved(event) {
+                var obj = JSON.parse(event.data);
+                console.log(JSON.stringify(obj));
+                $scope.dataIndicator = false;
+
+                //creating the array to map dynamically
+                $scope.arrayAttributes = [];
+                for (var key in obj) {
+                    $scope.arrayAttributes.push(obj[key].value);
+                }
+
+
+
+                //getting the unique score to determine the hierarchy
+                for (var key in $scope.mappedArray) {
+                    if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
+                        if ($scope.mappedArray[key].isNaN) {
+                            $scope.mappedArray[key].unique = Enumerable.From($scope.mappedArray[key].data).Select().Distinct().ToArray().length;
+                        }
+                    }
+                }
+
+                $scope.toggleTab(2);
+            };
+
+            if ($scope.datasource == "DuoStore" || $scope.datasource == "BigQuery") {
+                if ($scope.datasource == "BigQuery") {
+                    w1.postMessage(parameter + "," + $scope.bigQueryFieldDetails.toString() + "," + $scope.query.state + "," + Digin_Engine_API);
+                    w1.addEventListener('message', function(event) {
+                        mapRetrieved(event);
+                    });
+
+                    $scope.widgetValidity = 'fade-out';
+                } else {
+                    w.postMessage($scope.indexType + "," + parameter + "," + $scope.query.state);
+                    w.addEventListener('message', function(event) {
+                        mapRetrieved(event);
+                    });
+
+                    $scope.widgetValidity = 'fade-out';
+                }
+
+            }
+        } else {
+            if ($scope.query.state) $scope.validationMessage = "Please add a query for data retrieval";
+            else $scope.validationMessage = "Please select fields for data retrieval";
+            $scope.widgetValidity = 'fade-in';
+        }
 
     };
 
-    $scope.cancel = function () {
+
+    //builds the chart
+    $scope.buildchart = function(widget) {
+
+    };
+
+
+
+    //close the config
+
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
+
 
 
 
@@ -3032,13 +3216,13 @@ function hnbInit($scope, $http, $mdDialog, widId, $rootScope) {
 function clockInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 
-    $scope.finish = function () {
+    $scope.finish = function() {
 
         $mdDialog.hide();
 
     };
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
 

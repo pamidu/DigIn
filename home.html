@@ -30,13 +30,14 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="styles/css/directive_library.css">
     <link rel="stylsheet" type="text/css" href="styles/css/pivot.css" />
+    <!-- angular gridster -->
+    <link rel="stylesheet" href="styles/angular-gridster.min.css" />
     <link rel="stylesheet" type="text/css" href="styles/css/style.css">
     <link rel="stylesheet" type="text/css" href="styles/css/admin1.css">
     <link rel="stylesheet" href="styles/css/nv.d3.css">
     <link rel="stylesheet" type="text/css" href="styles/css/accordion.css">
     <link rel="stylesheet" type="text/css" href="styles/css/indicator.css">
-    <!-- angular gridster -->
-    <link rel="stylesheet" href="styles/angular-gridster.min.css" />
+    
     <link rel="apple-touch-icon" href="../../assets/globals/img/icons/apple-touch-icon.png">
 
     <link rel="stylesheet" href="styles/css/DiginD3.css"/>
@@ -44,6 +45,8 @@
      <!-- event calendar -->
     <link rel="stylesheet" href="styles/css/fullcalendar.css" />
     <!-- event calendar -->
+    <!-- Add IntroJs styles -->
+    <link href="bower_components/intro.js/introjs.css" rel="stylesheet">
 
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
         api_key: 75 mu4z7y428pty
@@ -64,6 +67,8 @@
 </head>
 
 <body  style="background-color:#ECECEC;" ng-controller="NavCtrl" ng-app="DuoDiginRt">
+    <div ng-intro-options="IntroOptions" ng-intro-method="CallMe" ng-intro-oncomplete="CompletedEvent" ng-intro-onexit="ExitEvent" ng-intro-onchange="ChangeEvent" ng-intro-onbeforechange="BeforeChangeEvent" ng-intro-onafterchange="AfterChangeEvent"
+             ng-intro-autostart="ShouldAutoStart">
     <div class="pre-loader-parent" id="pagePreLoader" layout="column" layout-align="center center" style="background-color:white">
         <div class="pre-loader-child" layout="column" layout-align="center center">
             <img src="styles/css/images/preloaders/Preloader_7/Preloader_7.gif" alt="Washed Out">
@@ -75,20 +80,9 @@
         <script type="text/javascript" src="scripts/fbSDK.js"></script>
         <script type="text/javascript" src="scripts/fbSDK.js"></script>
         <div id="fb-root"></div>
-        <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" style="display:none" ng-mouseover="hide_sidebar()">
-            <div class="sidebar-btn-container" style="margin-top:45px;">
-                <md-list>
-                    <div ng-click="$parent.navigate(item.title)" ng-repeat="item in menu" style="min-height:30px;height:40px;padding: 0px 10px !important;margin:5px;">
-                        <!--                        <md-icon style="height:100%;margin-right:0px;" class="{{item.icon}}"></md-icon>-->
-                        <ng-md-icon icon="{{item.icon2}}" style="fill:darkgrey" size="20"></ng-md-icon>
-                        <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
-                    </div>
-                </md-list>
-            </div>
 
-        </div>
-        <!--        main headbar-->
-        <div id="mainHeadbar" style="height: 45px; width: 100%;z-index:1000;">
+          <!--        main headbar-->
+        <div id="mainHeadbar" style="height: 45px; width: 100%;z-index:1000;visibility:hidden">
         <div class="main-headbar md-theme-light" layout="row" layout-align="space-between center">
             <div layout="row" layout-align="start center">
                 <!--
@@ -122,8 +116,7 @@
         </div>
         </div>
 
-        
-        <md-tabs class="footer-bar" id="footerBar" md-selected="selectedIndex" md-border-bottom md-autoselect md-align-tabs="bottom" style="min-height:100vh; width:calc(100vw - 48px);float:right;visibility:hidden">
+         <md-tabs class="footer-bar" id="footerBar" md-selected="selectedIndex" md-border-bottom md-autoselect md-align-tabs="bottom" style="min-height:100vh; width:calc(100vw - 48px);float:right;visibility:hidden">
          <md-tab ng-repeat="tab in tabs" label="{{tab.title}}" md-on-select="$root.selectCurrentDashboard(tab);">
             <div class="demo-tab tab{{$index%4}}">
 
@@ -149,9 +142,11 @@
                      -->
                   <!--                        end of tab closing button-->
 
-                  <div ui-view layout="column" id="content1" ng-mouseleave="show_sidebar()" ng-mouseover="hide_sidebar()">
-
-                  </div>
+                  <ul ui-view layout="column" id="content1" ng-mouseleave="show_sidebar()" ng-mouseover="hide_sidebar()" style="height:100% !important" gridster>
+                        
+                     <a class="btn btn-large btn-success" style="width:100px" ng-click="CallMe();">Intro</a>       
+                        
+                  </ul>
                         <div style="z-index:2147483647;" class="dashboard-widgets-close">
                              <md-button ng-disabled="dashCloseWidgets" id="dashboardwidgetsclose" class="md-fab" ng-dblclick="closeAllWidgets()" aria-label="Close">
                                 <md-icon class="ion-close" style="margin-top: -40px;"></md-icon>
@@ -163,7 +158,19 @@
          </md-tab>
       </md-tabs>
 
-        
+      <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" style="display:none" ng-mouseover="hide_sidebar()" >
+            <div class="sidebar-btn-container" style="margin-top:45px;">
+                <md-list>
+                    <div ng-click="$parent.navigate(item.title)" ng-repeat="item in menu" style="min-height:30px;height:40px;padding: 0px 10px !important;margin:5px;">
+                        <!--                        <md-icon style="height:100%;margin-right:0px;" class="{{item.icon}}"></md-icon>-->
+                        <ng-md-icon icon="{{item.icon2}}" style="fill:darkgrey" size="20"></ng-md-icon>
+                        <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
+                    </div>
+                </md-list>
+            </div>
+
+        </div>
+       
         <div class="overlay" style="z-index: 10;
     opacity: 0.8;">
         <div class="overlay">
@@ -347,6 +354,7 @@
             </div>
         </div>
     </div>
+    </div>
     <script type="text/javascript" src="scripts/vendor/prefixfree.min.js"></script> 
     <script type="text/javascript" src='scripts/vendor/jquery.js'></script> 
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
@@ -461,6 +469,7 @@
 
       <!-- charts -->
       <script src="scripts/charts/treemap.js"></script>
+            <script src="scripts/charts/d3Force.js"></script>
       <script src="scripts/charts/streamgraph.js"></script>
       <script src="scripts/charts/scatterPlot.js"></script>
       <script src="scripts/charts/packing.js"></script>
@@ -481,83 +490,82 @@
       <script type="text/javascript" src="scripts/filters/filters.js"></script>
       <script type="text/javascript" src="scripts/directives/directives.js"></script>
 
-    <script type="text/javascript" src="scripts/angular-gridster.js"></script> 
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-sanitize.min.js"></script> <!-- $$$ -->
+      <script type="text/javascript" src="scripts/angular-gridster.js"></script> 
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-sanitize.min.js"></script> <!-- $$$ -->
+        <!-- intro -->
+      <script type="text/javascript" src="bower_components/intro.js/minified/intro.min.js"></script>
+      <script type="text/javascript" src="scripts/controllers/angular-intro.js"></script>
 
-    <script type="text/javascript" src="bower_components/codemirror/lib/codemirror.js"></script>
-    <script type="text/javascript" src="bower_components/codemirror/addon/display/placeholder.js"></script>
-    <!-- canvastoblob -->
-    <script type="text/javascript" src="bower_components/canvas-toBlob.js/canvas-toBlob.js"></script>
-    <!-- filesaver -->
-    <script type="text/javascript" src="bower_components/FileSaver/FileSaver.js"></script>
-    <!-- zeroclipboard -->
-        <script type="text/javascript" src="bower_components/angular-strap/dist/angular-strap.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-ui/build/angular-ui.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
-    <script type="text/javascript" src="bower_components/zeroclipboard/ZeroClipboard.min.js"></script>
+      <script type="text/javascript" src="bower_components/codemirror/lib/codemirror.js"></script>
+      <script type="text/javascript" src="bower_components/codemirror/addon/display/placeholder.js"></script>
+        <!-- canvastoblob -->
+      <script type="text/javascript" src="bower_components/canvas-toBlob.js/canvas-toBlob.js"></script>
+        <!-- filesaver -->
+      <script type="text/javascript" src="bower_components/FileSaver/FileSaver.js"></script>
+        <!-- zeroclipboard -->
+      <script type="text/javascript" src="bower_components/angular-strap/dist/angular-strap.min.js"></script>
+      <script type="text/javascript" src="bower_components/angular-ui/build/angular-ui.min.js"></script>
+      <script type="text/javascript" src="bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
+      <script type="text/javascript" src="bower_components/zeroclipboard/ZeroClipboard.min.js"></script>
 
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.3/ng-csv.min.js"></script> 
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript">
-        google.load('search', '1');
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.3/ng-csv.min.js"></script> 
+      <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+      <script type="text/javascript">
+            google.load('search', '1');
 
-    </script>
-    <script type="text/javascript">
-        google.load("feeds", "1");
+      </script>
+      <script type="text/javascript">
+            google.load("feeds", "1");
 
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ=API_KEY&callback=finish">
-
-
-    </script>
-    <!-- angular datepicker -->
-    // <script src="scripts/controllers/angular-datepicker.js"></script> 
-
-    <!-- linq for quering in elastic widget -->
-    <script type="text/javascript" src="scripts/vendor/linq/linq.js"></script> 
-    </div>
-
-    <script type="text/javascript" src="bower_components/angular-utils-pagination/dirPagination.js"></script> 
-    <script>
-        var script = '<script type="text/javascript" src="src/markerclusterer';
-        if (document.location.search.indexOf('compiled') !== -1) {
-            script += '_compiled';
-        }
-        script += '.js"><' + '/script>';
-        document.write(script);
-
-    </script>
-
-    <script>
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-12846745-20']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-
-    </script>
-    <script src="jsons/data.json"></script> 
+      </script>
+      <script async defer src="https://maps.googleapis.com/maps/api/js?AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ=API_KEY&callback=finish">
 
 
+      </script>
+        <!-- angular datepicker -->
+      <script src="scripts/controllers/angular-datepicker.js"></script> 
 
+        <!-- linq for quering in elastic widget -->
+      <script type="text/javascript" src="scripts/vendor/linq/linq.js"></script> 
+        </div>
 
-    <script>
-        $(document).ready(function() {
+      <script type="text/javascript" src="bower_components/angular-utils-pagination/dirPagination.js"></script> 
+      <script>
+            var script = '<script type="text/javascript" src="src/markerclusterer';
+            if (document.location.search.indexOf('compiled') !== -1) {
+                script += '_compiled';
+            }
+            script += '.js"><' + '/script>';
+            document.write(script);
 
-            Layout.init();
-            
-            $('.nav-menu').hide();
+      </script>
 
-        });
+      <script>
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-12846745-20']);
+            _gaq.push(['_trackPageview']);
 
-    </script>
+            (function() {
+                var ga = document.createElement('script');
+                ga.type = 'text/javascript';
+                ga.async = true;
+                ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(ga, s);
+            })();
+
+      </script>
+      <script src="jsons/data.json"></script> 
+      <script>
+            $(document).ready(function() {
+
+                Layout.init();
+                
+                $('.nav-menu').hide();
+
+            });
+
+      </script>
 </body>
 
 </html>

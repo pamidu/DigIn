@@ -311,7 +311,7 @@ button.md-fab.md-raised.md-primary.md-button.md-teal-theme {
     width: 100%;
     height: 100%;
     background-size: 100% 100%;
-    background-color: #ECECEC;
+    background-color: #fff;
     background-size: 30px 30px;
     overflow: auto;
 }
@@ -1263,4 +1263,23 @@ md-tabs-content-wrapper{
 md-tab-content{
     overflow:hidden !important;
 }
+.gridster .gridster-item {
+    margin-left: 0px !important;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    color: #004756;
+    background: #ffffff;
+}
+.gridster-loaded .gridster-item
+{
+  margin-left: 0px !important;
+}
+.introjs-helperLayer {
+    
+    background-color: transparent !important;
+    border: 10px solid rgba(255,255,255,.5) !important;
+    
+}
+
 

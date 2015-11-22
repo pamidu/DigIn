@@ -41,38 +41,31 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
         });
 
-        getJSONData($http, 'features', function (data) {
-            $scope.featureOrigin = data;
-            
-            var obj = JSON.parse(featureObj);
-            if (featureObj === null) {
-                $scope.features = data;
-                $scope.selected = [];
-            } else {
-                $scope.selected = [];
-                for (i = 0; i < obj.length; i++) {
-                    if (obj[i].stateStr === "Enabled")
-                        $scope.selected.push(obj[i]);
+
+        if(localStorage.getItem("featureObject") == undefined){
+            getJSONData($http, 'features', function (data) {
+                $scope.featureOrigin = data;
+                localStorage.setItem("featureObject", JSON.stringify($scope.featureOrigin));
+                // var featureObj = localStorage.getItem("featureObject");
+                
+                var obj = JSON.parse(JSON.stringify(data));
+                if (obj === null) {
+                    $scope.features = data;
+                    $scope.selected = [];
+                } else {
+                    $scope.selected = [];
+                    for (i = 0; i < obj.length; i++) {
+                        if (obj[i].stateStr === "Enabled")
+                            $scope.selected.push(obj[i]);
+                    }
+                    $scope.features = obj;
+
                 }
-                $scope.features = obj;
+            });
 
-            }
-        });
+        }
 
-        localStorage.setItem("featureObject", JSON.stringify($scope.featureOrigin));
-
-        getJSONData($http, 'menu', function (data) {
-
-                var orignArray = [];
-                for (i = 0; i < $scope.featureOrigin.length; i++) {
-                    if ($scope.featureOrigin[i].state == true)
-                        orignArray.push($scope.featureOrigin[i]);
-                }
-                $scope.menu = orignArray.concat(data);
-
-        });
-
-
+        
 
         $scope.closeAllWidgets = function() {
             $rootScope.dashboardWidgetsCopy = angular.copy($rootScope.dashboard.widgets);
@@ -1233,16 +1226,24 @@ $scope.test = 'test';
                 $(".menu-layer").css("top", "120px");
                 $("starting-point").css("top", "120px");
                 $scope.manageTabs(false);
-                $state.go(routeName)
+                $state.go(routeName);
+
+                setTimeout(function(){$('#content1').css("height","100%");},3000);
+
             }
             if (routeName == "Reports") {
+                
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $rootScope.currentView = "Reports";
                 $(".menu-layer").css("top", "120px");
-                $("starting-point").css("top", "120px");                
+                $("starting-point").css("top", "120px");  
+                $('#content1').css("height","100%");         
                 $scope.manageTabs(false);
-                $state.go(routeName)
+                $state.go(routeName);
+                
+                setTimeout(function(){$('#content1').css("height","100%");},3000);
+                
             }
             if (routeName == "Analytics") {
                                     
@@ -1259,10 +1260,12 @@ $scope.test = 'test';
                 selectedMenu[0].style.display = 'block';
                 $rootScope.currentView = "RealTime";
                 $(".menu-layer").css("top", "200px");
-                $("starting-point").css("top", "200px");
+                $("starting-point").css("top", "200px");  
                 $scope.manageTabs(false);
-
                 $state.go(routeName);
+
+                setTimeout(function(){$('#content1').css("height","100%");},3000);
+
             }
             if (routeName == "Digin P Stack") {
 
@@ -1279,8 +1282,11 @@ $scope.test = 'test';
                 clickOutsideToClose: true,
                 resolve: {}
                 
-            })
+                });
                 //$state.go(routeName);
+                
+                setTimeout(function(){$('#content1').css("height","100%");},3000);
+                
             }
             if (routeName == "Logout") {
 
@@ -1372,22 +1378,116 @@ $scope.test = 'test';
             $scope.$apply();
         }, 1700);
 
-        var featureObj = localStorage.getItem("featureObject");
+        setTimeout(function(){
+            var featureObj = localStorage.getItem("featureObject");
 
-        getJSONData($http, 'menu', function (data) {
+            getJSONData($http, 'menu', function (data) {
 
-            if (featureObj === null) $scope.menu = data;
-            else {
-                var featureArray = JSON.parse(featureObj);
-                var orignArray = [];
-                for (i = 0; i < featureArray.length; i++) {
-                    if (featureArray[i].state == true)
-                        orignArray.push(featureArray[i]);
+                if (featureObj === null) $scope.menu = data;
+                else {
+                    var featureArray = JSON.parse(featureObj);
+                    var orignArray = [];
+                    for (i = 0; i < featureArray.length; i++) {
+                        if (featureArray[i].state == true)
+                            orignArray.push(featureArray[i]);
+                    }
+                    $scope.menu = orignArray.concat(data);
                 }
-                $scope.menu = orignArray.concat(data);
-            }
 
-        });
+            });
+        },200);
+
+        
+
+
+       
+        setTimeout(function(){
+                     $scope.CompletedEvent = function (scope) {
+                console.log("Completed Event called");
+            };
+
+            $scope.ExitEvent = function (scope) {
+                console.log("Exit Event called");
+            };
+
+            $scope.ChangeEvent = function (targetElement, scope) {
+                console.log("Change Event called");
+                console.log(targetElement);  //The target element
+                console.log(this);  //The IntroJS object
+            };
+
+            $scope.BeforeChangeEvent = function (targetElement, scope) {
+                console.log("Before Change Event called");
+                console.log(targetElement);
+                
+            };
+
+            $scope.AfterChangeEvent = function (targetElement, scope) {
+                console.log("After Change Event called");
+                console.log(targetElement);
+            };
+
+                $scope.IntroOptions = {
+                    steps:[
+                    {
+                        element: document.querySelector('#getReport'),
+                        intro: "<strong>This is the side navigation panel<strong>",
+                        position: 'right'
+                    }
+                    ,
+                    {
+                        element: document.querySelectorAll('.main-headbar')[0],
+                        intro: "<strong> This is the main head bar area. Hover over to bring it down</strong>",
+                        position: 'bottom'
+                    }
+                    ,
+                    {
+                        element: document.querySelectorAll('md-list > div.ng-scope')[0],
+                        intro: '<strong>Use this to access reports</strong>',
+                        position: 'right'
+                    }
+                    ,
+                    {
+                        element: document.querySelectorAll('md-list > div.ng-scope')[1],
+                        intro: '</strong>Realtime tool is a handy tool for data analysis </strong>',
+                        position: 'right'
+                    }
+                    ,
+                    {
+                        element: document.querySelectorAll('md-list > div.ng-scope')[2],
+                        intro: '</strong>This is the Digin P Stack feature</strong>',
+                        position: 'right'
+                    }
+                    ,
+                    {
+                        element: document.querySelectorAll('md-list > div.ng-scope')[3],
+                        intro: '</strong>Use this to add widgets to your dashbaord</strong>',
+                        position: 'right'
+                    }
+                    
+                    //,
+                    // {
+                    //     element: '#step4',
+                    //     intro: "Another step.",
+                    //     position: 'bottom'
+                    // },
+                    // {
+                    //     element: '#step5',
+                    //     intro: 'Get it, use it.'
+                    // }
+                    ],
+                    showStepNumbers: false,
+                    exitOnOverlayClick: true,
+                    exitOnEsc:true,
+                    nextLabel: '<strong>NEXT</strong>',
+                    prevLabel: '<strong>PREVIOUS</strong>',
+                    skipLabel: 'EXIT',
+                    doneLabel: 'DONE'
+                };
+
+                $scope.ShouldAutoStart = false;
+
+        },1000);
 
                     }
                     ]);

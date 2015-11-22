@@ -726,18 +726,19 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
             getJSONDataByIndex($http, 'widgetPositions', $rootScope.dashboard.widgets.length, function(data) {
 
                 $scope.gridsterOpts = {
-                    margins: [10, 10],
-                    outerMargin: true,
-                    pushing: true,
-                    floating: true,
-                    draggable: {
-                        enabled: true
-                    },
-                    resizable: {
-                        enabled: true,
-                        handles: ['n', 'e', 's', 'w', 'se', 'sw']
-                    }
+                margins: [3, 3],
+                outerMargin: true,
+                pushing: true,
+                floating: true,
+                draggable: {
+                    enabled: true
+                },
+                resizable: {
+                    enabled: true,
+                    handles: ['n', 'e', 's', 'w', 'se', 'sw']
+                }
                 };
+
 
                 $scope.leftPosition = data.leftPosition;
                 $scope.topPosition = data.topPosition;
@@ -760,7 +761,6 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                     widView: widget.widView,
                     dataView: widget.dataView,
                     dataCtrl: widget.dataCtrl,
-                    dataJson: widget.dataJson,
                     initTemplate: widget.initTemplate,
                     initCtrl: widget.initController,
                     uniqueType: widget.title,
@@ -778,7 +778,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                     left: $scope.leftPosition + 'px',
                     top: $scope.topPosition + 'px',
                     height: '300px',
-                    mheight: '250px',
+                    mheight: '100%',
                     chartStack: [{
                         "id": '',
                         "title": "No"

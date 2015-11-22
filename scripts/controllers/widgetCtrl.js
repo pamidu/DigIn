@@ -2997,8 +2997,25 @@ function googleMapsInit(widId, $scope, $http, $rootScope, $mdDialog) {
 
 }
 
-function hnbInit($scope, $http, $mdDialog, widId, $rootScope, Digin_Engine_API) {
+routerApp.controller('D3ForceCtrl', function($rootScope, $scope, $http) {
+    
 
+    $scope.loadData = function() {
+
+        try {
+            $scope.data =
+                JSON.parse($rootScope.hierarchyData);
+        } catch (e) {
+            console.log(e);
+        }
+
+    };
+
+
+});
+ 
+
+function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) {
     $scope.datasources = ['BigQuery']; //temporary
     $scope.widgetValidity = 'elasticValidation'; //validation message visibility                                             
     $scope.query = {};
@@ -3009,11 +3026,11 @@ function hnbInit($scope, $http, $mdDialog, widId, $rootScope, Digin_Engine_API) 
     $scope.dataIndicator1 = false;
     $scope.categoryVal = "";
     $scope.mappedArray = {};
-
+    $scope.tablename = ""
     $scope.dataTab = true;
     $scope.chartTab = true;
     $scope.seriesAttributes = [];
-
+    $rootScope.hierarchyData = [];
     //getting the widget object
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
     $scope.widget = $rootScope.dashboard.widgets[objIndex];
@@ -3126,19 +3143,19 @@ function hnbInit($scope, $http, $mdDialog, widId, $rootScope, Digin_Engine_API) 
 
     $scope.getData = function() {
         var w1 = new Worker("scripts/webworkers/bigQueryWorker.js");
-        var parameter = '';
 
+        $rootScope.hierarchystring = '{';
         if ($scope.checkedFields.length != 0 || typeof $scope.query.value != "undefined") {
             $scope.classFields = $scope.checkedFields;
             $scope.classQuery = $scope.query.value;
-
+            $scope.parameter = "";
             if ($scope.query.state) {
-                parameter = $scope.classQuery;
+                $scope.parameter = $scope.classQuery;
             } else {
                 for (param in $scope.classFields) {
-                    parameter += " " + $scope.classFields[param].name;
+                    $scope.parameter += " " + $scope.classFields[param].name;
                 }
-                parameter += " " + $scope.categoryVal;
+                $scope.parameter += " " + $scope.categoryVal;
             }
 
             $scope.dataIndicator = true;
@@ -3151,34 +3168,24 @@ function hnbInit($scope, $http, $mdDialog, widId, $rootScope, Digin_Engine_API) 
                 //creating the array to map dynamically
                 $scope.arrayAttributes = [];
                 for (var key in obj) {
+                    $rootScope.hierarchystring += '"' + obj[key].value + "'" + ":" + obj[key].level + ",";
                     $scope.arrayAttributes.push(obj[key].value);
                 }
-
-
-
-                //getting the unique score to determine the hierarchy
-                for (var key in $scope.mappedArray) {
-                    if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
-                        if ($scope.mappedArray[key].isNaN) {
-                            $scope.mappedArray[key].unique = Enumerable.From($scope.mappedArray[key].data).Select().Distinct().ToArray().length;
-                        }
-                    }
-                }
-
                 $scope.toggleTab(2);
             };
 
             if ($scope.datasource == "DuoStore" || $scope.datasource == "BigQuery") {
                 if ($scope.datasource == "BigQuery") {
-                    w1.postMessage(parameter + "," + $scope.bigQueryFieldDetails.toString() + "," + $scope.query.state + "," + Digin_Engine_API);
+                    w1.postMessage($scope.selectedClass + ","+ Digin_Engine_API  + "," + "HierarchyFields" + "," + $scope.parameter.toString() );
+
                     w1.addEventListener('message', function(event) {
                         mapRetrieved(event);
                     });
 
                     $scope.widgetValidity = 'fade-out';
                 } else {
-                    w.postMessage($scope.indexType + "," + parameter + "," + $scope.query.state);
-                    w.addEventListener('message', function(event) {
+                    w1.postMessage($scope.indexType + "," + $scope.parameter + "," + $scope.query.state);
+                    w1.addEventListener('message', function(event) {
                         mapRetrieved(event);
                     });
 
@@ -3190,6 +3197,23 @@ function hnbInit($scope, $http, $mdDialog, widId, $rootScope, Digin_Engine_API) 
             if ($scope.query.state) $scope.validationMessage = "Please add a query for data retrieval";
             else $scope.validationMessage = "Please select fields for data retrieval";
             $scope.widgetValidity = 'fade-in';
+
+            function mapRetrieved(event) {
+                var obj = JSON.parse(event.data);
+                console.log(JSON.stringify(obj));
+                $scope.dataIndicator = false;
+
+                //creating the array to map dynamically
+                $scope.arrayAttributes = [];
+                for (var key in obj) {
+                    $rootScope.hierarchystring += '"' + obj[key].value + '"' + ":" + obj[key].level + ",";
+                    $scope.arrayAttributes.push(obj[key].value);
+                }
+
+                $rootScope.hierarchystring = $rootScope.hierarchystring.replace(/,\s*$/, "");
+                $rootScope.hierarchystring += "}";
+                $scope.toggleTab(2);
+            };
         }
 
     };
@@ -3197,12 +3221,25 @@ function hnbInit($scope, $http, $mdDialog, widId, $rootScope, Digin_Engine_API) 
 
     //builds the chart
     $scope.buildchart = function(widget) {
+        var w2 = new Worker("scripts/webworkers/bigQueryWorker.js");
+        var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+         $scope.widget = $rootScope.dashboard.widgets[objIndex];
+        w2.postMessage($scope.selectedClass + ","+ Digin_Engine_API  +"," + "Hierarchy" + "," + $rootScope.hierarchystring.toString()   );
+        w2.addEventListener('message', function(event) {
+            hierarchyRetrieved(event);
+        });
 
+        function hierarchyRetrieved(event) {
+           
+            $rootScope.hierarchyData   = event.data;           
+             $scope.widget.widData = $rootScope.hierarchyData;
+           console.log($scope.widget.widData);
+             $mdDialog.hide();
+
+        };
     };
 
 
-
-    //close the config
 
     $scope.cancel = function() {
         $mdDialog.hide();
@@ -3212,6 +3249,7 @@ function hnbInit($scope, $http, $mdDialog, widId, $rootScope, Digin_Engine_API) 
 
 
 }
+
 
 function clockInit($scope, $http, $mdDialog, widId, $rootScope) {
 

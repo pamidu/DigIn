@@ -1,7 +1,7 @@
  
 
 !function (exports){
-	'use strict';
+  'use strict';
 
   var DiginD3 = {
     version : "1.0.0",
@@ -766,6 +766,6 @@
     return d3.hsl(color).l > .5 ? "#222222" : "#ffffff";
   }
 
-	exports.DiginD3 = DiginD3;
+  exports.DiginD3 = DiginD3;
 
 }(typeof exports !== 'undefined' && exports || this);

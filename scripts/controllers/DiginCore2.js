@@ -149,8 +149,7 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         }
         
         $scope.exportToCSV = function ($http) {
-            alert("testing export to csv");
-
+            
             JSON2CSV();
             console.log("$scope.json2csv");
             console.log($scope.json2csv);

@@ -67,15 +67,16 @@
 </head>
 
 <body  style="background-color:#ECECEC;" ng-controller="NavCtrl" ng-app="DuoDiginRt">
-    <div ng-intro-options="IntroOptions" ng-intro-method="CallMe" ng-intro-oncomplete="CompletedEvent" ng-intro-onexit="ExitEvent" ng-intro-onchange="ChangeEvent" ng-intro-onbeforechange="BeforeChangeEvent" ng-intro-onafterchange="AfterChangeEvent"
-             ng-intro-autostart="ShouldAutoStart">
-    <div class="pre-loader-parent" id="pagePreLoader" layout="column" layout-align="center center" style="background-color:white">
+<div class="pre-loader-parent" id="pagePreLoader" layout="column" layout-align="center center" style="background-color:white">
         <div class="pre-loader-child" layout="column" layout-align="center center">
             <img src="styles/css/images/preloaders/Preloader_7/Preloader_7.gif" alt="Washed Out">
             <span><b>Getting your environment ready..</b></span>
             <md-progress-linear class="md-primary"></md-progress-linear>
         </div>
-    </div>
+        </div>
+    <div ng-intro-options="IntroOptions" ng-intro-method="CallMe" ng-intro-oncomplete="CompletedEvent" ng-intro-onexit="ExitEvent" ng-intro-onchange="ChangeEvent" ng-intro-onbeforechange="BeforeChangeEvent" ng-intro-onafterchange="AfterChangeEvent"
+             ng-intro-autostart="ShouldAutoStart">
+    
     <div md-theme="{{ dynamicTheme }}" md-theme-watch>
         <script type="text/javascript" src="scripts/fbSDK.js"></script>
         <script type="text/javascript" src="scripts/fbSDK.js"></script>
@@ -116,7 +117,7 @@
         </div>
         </div>
 
-         <md-tabs class="footer-bar" id="footerBar" md-selected="selectedIndex" md-border-bottom md-autoselect md-align-tabs="bottom" style="min-height:100vh; width:calc(100vw - 48px);float:right;visibility:hidden">
+        <md-tabs class="footer-bar" id="footerBar" md-selected="selectedIndex" md-border-bottom md-autoselect md-align-tabs="bottom" style="min-height:100vh; width:calc(100vw - 48px);float:right;visibility:hidden">
          <md-tab ng-repeat="tab in tabs" label="{{tab.title}}" md-on-select="$root.selectCurrentDashboard(tab);">
             <div class="demo-tab tab{{$index%4}}">
 
@@ -142,21 +143,20 @@
                      -->
                   <!--                        end of tab closing button-->
 
-                  <ul ui-view layout="column" id="content1" ng-mouseleave="show_sidebar()" ng-mouseover="hide_sidebar()" style="height:100% !important" gridster>
-                        
-                     <a class="btn btn-large btn-success" style="width:100px" ng-click="CallMe();">Intro</a>       
-                        
+                  <ul ui-view layout="column" id="content1" ng-mouseleave="show_sidebar()" ng-mouseover="hide_sidebar()" style="height:100% !important" gridster>                        
                   </ul>
-                        <div style="z-index:2147483647;" class="dashboard-widgets-close">
+                  <div style="z-index:2147483647;" class="dashboard-widgets-close">
                              <md-button ng-disabled="dashCloseWidgets" id="dashboardwidgetsclose" class="md-fab" ng-dblclick="closeAllWidgets()" aria-label="Close">
                                 <md-icon class="ion-close" style="margin-top: -40px;"></md-icon>
                             </md-button>
-                        </div>
+                  </div>
 
             </div>
                 </div>
          </md-tab>
       </md-tabs>
+
+
 
       <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" style="display:none" ng-mouseover="hide_sidebar()" >
             <div class="sidebar-btn-container" style="margin-top:45px;">
@@ -170,6 +170,8 @@
             </div>
 
         </div>
+
+
        
         <div class="overlay" style="z-index: 10;
     opacity: 0.8;">

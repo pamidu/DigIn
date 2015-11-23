@@ -1317,8 +1317,17 @@ $scope.test = 'test';
 
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'none';
-
-                $scope.help();
+                    
+                //user guide
+                setTimeout(function(){
+                        var intro;
+                        intro = introJs();
+                        intro.setOptions($scope.IntroOptions);
+                        intro.start();
+                },1000);
+                    
+                    
+                // $scope.help();
 
             }
             if (routeName == "Save") {
@@ -1430,51 +1439,88 @@ $scope.test = 'test';
                 $scope.IntroOptions = {
                     steps:[
                     {
-                        element: document.querySelector('#getReport'),
-                        intro: "<strong>This is the side navigation panel<strong>",
-                        position: 'right'
-                    }
-                    ,
-                    {
                         element: document.querySelectorAll('.main-headbar')[0],
-                        intro: "<strong> This is the main head bar area. Hover over to bring it down</strong>",
+                        intro: "<strong> This is the main head bar area. Hover over the blue line to bring it down</strong>",
                         position: 'bottom'
                     }
                     ,
                     {
+                        element: document.querySelector('#getReport'),
+                        intro: "<strong>This is the side navigation panel</strong>",
+                        position: 'right'
+                    }
+                    ,
+                    {
                         element: document.querySelectorAll('md-list > div.ng-scope')[0],
-                        intro: '<strong>Use this to access reports</strong>',
+                        intro: '<strong>Use this to create new dashboards</strong>',
                         position: 'right'
                     }
                     ,
                     {
                         element: document.querySelectorAll('md-list > div.ng-scope')[1],
-                        intro: '</strong>Realtime tool is a handy tool for data analysis </strong>',
+                        intro: '<strong>Use this to access reports</strong>',
                         position: 'right'
                     }
                     ,
                     {
                         element: document.querySelectorAll('md-list > div.ng-scope')[2],
-                        intro: '</strong>This is the Digin P Stack feature</strong>',
+                        intro: '<strong>Realtime tool is a handy tool for data analysis </strong>',
                         position: 'right'
                     }
                     ,
                     {
                         element: document.querySelectorAll('md-list > div.ng-scope')[3],
-                        intro: '</strong>Use this to add widgets to your dashbaord</strong>',
+                        intro: '<strong>This is the Digin P Stack feature</strong>',
                         position: 'right'
                     }
-                    
-                    //,
-                    // {
-                    //     element: '#step4',
-                    //     intro: "Another step.",
-                    //     position: 'bottom'
-                    // },
-                    // {
-                    //     element: '#step5',
-                    //     intro: 'Get it, use it.'
-                    // }
+                    ,
+                    {
+                        element: document.querySelectorAll('md-list > div.ng-scope')[4],
+                        intro: '<strong>D3plugins is a tool to create D3 visualizations</strong>',
+                        position: 'right'
+                    }
+                    ,
+                    {
+                        element: document.querySelectorAll('md-list > div.ng-scope')[5],
+                        intro: '<strong>Use this to add widgets to your dashbaord</strong>',
+                        position: 'right'
+                    }
+                    ,
+                    {
+                        element: document.querySelectorAll('md-list > div.ng-scope')[6],
+                        intro: '<strong>Settings feature can be used to create users and to add/remove features</strong>',
+                        position: 'right'
+                    }
+                    ,
+                    {
+                        element: document.querySelectorAll('md-list > div.ng-scope')[7],
+                        intro: '<strong>Save feature is to save Dashboards</strong>',
+                        position: 'right'
+                    }
+                    ,
+                    {
+                        element: document.querySelectorAll('md-list > div.ng-scope')[8],
+                        intro: '<strong>Give a nice look to the app with your desired theme</strong>',
+                        position: 'right'
+                    }
+                    ,
+                    {
+                        element: document.querySelectorAll('md-list > div.ng-scope')[9],
+                        intro: '<strong>Share using most popular social media and email</strong>',
+                        position: 'right'
+                    }
+                    ,
+                    {
+                        element: document.querySelectorAll('md-list > div.ng-scope')[10],
+                        intro: '<strong>Export your widget in any format</strong>',
+                        position: 'right'
+                    }
+                    ,
+                    {
+                        element: document.querySelectorAll('md-list > div.ng-scope')[11],
+                        intro: '<strong>Switch between browser view and Full Screen mode</strong>',
+                        position: 'right'
+                    }
                     ],
                     showStepNumbers: false,
                     exitOnOverlayClick: true,
@@ -1485,9 +1531,10 @@ $scope.test = 'test';
                     doneLabel: 'DONE'
                 };
 
-                $scope.ShouldAutoStart = false;
+                $scope.ShouldAutoStart = true;
 
-        },1000);
+        },1000);       
 
-                    }
-                    ]);
+    }
+
+]);

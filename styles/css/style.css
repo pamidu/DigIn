@@ -314,6 +314,7 @@ button.md-fab.md-raised.md-primary.md-button.md-teal-theme {
     background-color: #fff;
     background-size: 30px 30px;
     overflow: auto;
+    padding-left: 0px;
 }
 
 /*Unwanted style */
@@ -1219,7 +1220,7 @@ main {
     padding: 0px;
 }
 .digin-widget-toolbar {
-    height: 40px !important;
+    height: 50px !important;
     min-height: 40px !important;
     background-color: whitesmoke !important;
     border-top: 1px solid #000;
@@ -1258,10 +1259,10 @@ md-tabs-content-wrapper{
     top:0px !important;
 }
 #footerBar {
-    margin-top: -30px !important;
+    margin-top: -40px !important;
 }
 md-tab-content{
-    overflow:hidden !important;
+    overflow-y:scroll !important;
 }
 .gridster .gridster-item {
     margin-left: 0px !important;

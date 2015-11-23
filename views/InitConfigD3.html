@@ -1,4 +1,4 @@
-<md-dialog plumb-item style="min-width:400px;">
+<md-dialog plumb-item style="min-width:400px;" ng-controller="DiginD3Ctrl">
     <md-toolbar>
         <div class="md-toolbar-tools" flex layout="row">
             <div flex="10">
@@ -45,7 +45,7 @@
                                             <h4 class="text-muted">{{category}}</h4>
                                             <div class="row" group every="3" watch="charts">
                                                 <div class="col-lg-4 col-md-4" ng-repeat="c in filtered = (charts | categoryFilter:category) track by $index">
-                                                    <div ng-class="{selected: c == chart}" class="layout" ng-click="selectChart(c)">
+                                                    <div ng-class="{selected: c == chart}" class="layout">
                                                         <div class="layout-thumb" ng-style="{'background-image':'url(' + c.thumbnail() + ')'}">
                                                         </div>
                                                         <p class="layout-inner">
@@ -88,15 +88,15 @@
           </span>
           <span class="clearfix"></span>
         </h3>
-                            <div >
-                                <div  >
+                            <div data-ng-show="dataView != 'table'">
+                                <div data-ng-show="dataView == 'table'">
                                     <div>
                                         <textarea ui-codemirror="codeMirrorOptions" ng-model="text">
                                         </textarea>
                                     </div>
-                                    <div DiginD3Table class="data-table" ></div>
+                                    <div DiginD3Table class="data-table" data-ng-show="dataView == 'table'"></div>
                                     <div>
-                                        <div  class="alert alert-success"><i class="fa fa-thumbs-up breath-right"></i><strong>{{data.length}}</strong> records in your data have been successfully parsed!</div>
+                                        <div data-ng-show="!loading && !error && data.length" class="alert alert-success"><i class="fa fa-thumbs-up breath-right"></i><strong>{{data.length}}</strong> records in your data have been successfully parsed!</div>
                                         <div data-ng-show="error" class="alert alert-warning"><i class="fa fa-thumbs-down breath-right"></i><strong>Whoops!</strong> Please, check line {{error+1}}</div>
                                         <div data-ng-show="loading" class="alert"><i class="fa breath-right fa-refresh fa-spin"></i>Loading your data. Please wait.</div>
                                     </div>
@@ -104,7 +104,7 @@
                     </section>
                 </md-content>
             </md-tab>
-            <md-tab label="Mapping">
+            <md-tab label="Mapping" ng-click="selectMapping()">
                 <md-content class="md-padding">
                     <!-- <section class="dark" data-ng-show="!error && data.length"> -->
                     <section class="dark">
@@ -172,7 +172,7 @@
                     </section>
                 </md-content>
             </md-tab>
-            <md-tab label="Customization">
+            <md-tab label="Customization" >
                 <md-content class="md-padding">
                     <!-- <section class="" data-ng-show="!error && data.length"> -->
                     <section class="">
@@ -204,7 +204,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="col-lg-9" ng-controller="DiginD3Ctrl">
+                                <div class="col-lg-9">
                                     <div class="chart-resize">
                                         <div id="chart" chart></div>
                                     </div>

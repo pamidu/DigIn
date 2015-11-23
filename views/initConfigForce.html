@@ -93,49 +93,17 @@
                 <md-select ng-model="chartCategory.groupField" ng-change="selectSer(chartCategory.groupField)" placeholder="Select a category">
                     <md-option value="{{cat}}" ng-repeat="cat in arrayAttributes">{{ cat }}</md-option>
                 </md-select>
-                <md-switch ng-disabled="serSelected" ng-change="getDrillArray()" ng-model="query.drilled" aria-label="Switch 1">
-                    Drilled 
-                </md-switch>
-                <md-select ng-show="query.drilled" ng-model="chartCategory.drilledField" placeholder="Select a series">
-                    <md-option value="{{item}}" ng-repeat="item in chartCategory.drilledArray">{{ item }}</md-option>
-                </md-select>
                
-                <div layout="column" ng-repeat="ser in seriesArray">
-                      <accordion>                                                   
-                        <accordion-panel title="{{ser.name}}" itemind= "{{$index}}" callback-fn="removeSeries(arg1)">
-                            <md-input-container>
-                              <label>Name</label>
-                              <input ng-model="ser.name">
-                            </md-input-container>
-                            <md-select ng-model="ser.filter" placeholder="Select a filter" ng-change="filterData(ser.filter)">
-                                <md-option value="{{fil}}" ng-repeat="fil in filterAttributes">{{ fil }}</md-option>
-                            </md-select>
-                            <md-select ng-model="ser.serName" placeholder="Select a series" ng-click="checkSeriesAvailability()">
-                                <md-option value="{{cat}}" ng-repeat="cat in seriesAttributes">{{ cat }}</md-option>
-                            </md-select>                            
-                            <md-select ng-model="ser.type" placeholder="Select a chart type" flex>
-                              <md-optgroup label="Chart type">
-                                <md-option ng-value="chartType.type" ng-repeat="chartType in chartTypes">{{chartType.name}}</md-option>
-                              </md-optgroup>
-                            </md-select>
-                            <md-input-container>
-                              <label>Color</label>
-                              <input ng-model="ser.color">
-                            </md-input-container>
-                        </accordion-panel>
-                       </accordion>                   
-                </div>
-                <div layout="row">
-                    <md-subheader class="md-primary">Add series</md-subheader>
-                    <md-button ng-click="addSeries()">Add</md-button>
-                </div>
+              
+            
+            
             </div>
         </md-content>
       </md-tab>     
     </md-tabs>           
         <div layout="column">
             <md-input-container flex>
-                <md-button class="md-raised" ng-click="buildchart(widget)">Build Chart</md-button>
+                <md-button class="md-raised" ng-click="buildchart(widget)">Finish</md-button>
             </md-input-container>
             <span class="{{widgetValidity}}" layout-align="center center" id="elasticVal" style="color: #D8000C;background-color: #FFBABA;padding:5px;text-align:center;" flex>{{validationMessage}}</span>
 

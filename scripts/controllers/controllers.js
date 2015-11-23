@@ -4,7 +4,7 @@
 
 angular.module('DiginD3.controllers', [])
 
-  .controller('DiginD3Ctrl', function ($scope, dataService) {
+  .controller('DiginD3Ctrl', function ($rootScope, $scope, dataService) {
 
     $scope.samples = [
       { title : 'Cars (multivariate)', url : 'data/multivariate.csv' },
@@ -79,9 +79,14 @@ angular.module('DiginD3.controllers', [])
       $scope.delayParse(text);
     });
 
-    $scope.charts = DiginD3.charts.values().sort(function (a,b){ return a.title() < b.title() ? -1 : a.title() > b.title() ? 1 : 0; });
-    $scope.chart = $scope.charts[0];
-    $scope.model = $scope.chart ? $scope.chart.model() : null;
+    $rootScope.charts = DiginD3.charts.values().sort(function(a, b) {
+        return a.title() < b.title() ? -1 : a.title() > b.title() ? 1 : 0;
+    });
+    $scope.charts = $rootScope.charts;
+    $rootScope.chart = $rootScope.charts[0];
+    $scope.chart = $rootScope.chart;
+    $rootScope.model = $rootScope.chart ? $rootScope.chart.model() : null;
+    $scope.model = $rootScope.model;
 
     $scope.$watch('error', function (error){
       if (!$('.CodeMirror')[0]) return;
@@ -110,12 +115,46 @@ angular.module('DiginD3.controllers', [])
       placeholder : 'Paste your text or drop a file here. No data on hand? Try one of our sample datasets!'
     }
 
-    $scope.selectChart = function(chart){
-      if (chart == $scope.chart) return;
-      $scope.model.clear();
-      $scope.chart = chart;
-      $scope.model = $scope.chart.model();
+    $('.col-lg-4').click(function (event){
+      console.log("selected a chart");
+      console.log($scope.charts[0].title());
+      console.log("event");
+      console.log(event);
+      console.log("event.currentTarget");
+      console.log(event.currentTarget);
+      console.log("event.currentTarget.children[0].children[1]).innerText");
+      console.log(event.currentTarget.children[0].children[1].innerText);
+
+      for(var i=0; i<$scope.charts.length;i++){
+        
+        if($scope.charts[i].title() == event.currentTarget.children[0].children[1].innerText){
+
+            $rootScope.model.clear();
+            $scope.model.clear();
+
+            $rootScope.chart = $scope.charts[i];
+            $scope.chart = $rootScope.chart;
+
+            console.log("hit chart");
+            console.log($scope.chart);
+
+            $rootScope.model = $rootScope.chart.model();
+            $scope.model = $rootScope.model;
+
+            console.log("hit model");
+            console.log($scope.model);
+
+        }
+      }
+    })
+
+    $scope.selectMapping = function(){
+              
+        $scope.chart = $rootScope.chart;
+        $scope.model = $rootScope.model;
+
     }
+    
 
     function refreshScroll(){
       $('[data-spy="scroll"]').each(function () {

@@ -18,7 +18,7 @@
             "icon1": "bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg",
             "icon2": "assessment",
             "state": false,
-            "stateStr": "Disabled"
+            "stateStr": "Enabled"
         }, {
 
             "title": "RealTime",
@@ -39,8 +39,8 @@
             "title": "D3plugins",
             "icon1": "bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg",
             "icon2": "radio_button_on",
-            "state": false,
-            "stateStr": "Disabled"
+            "state": true,
+            "stateStr": "Enabled"
         }
     ]
 }

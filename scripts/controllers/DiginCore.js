@@ -599,11 +599,11 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
 
         $scope.username = localStorage.getItem('username');
 
-        getJSONData($http, 'features', function (data) {
-            $scope.featureOrigin = data;
+        // getJSONData($http, 'features', function (data) {
+        //     $scope.featureOrigin = data;
             var obj = JSON.parse(featureObj);
             if (featureObj === null) {
-                $scope.features = data;
+                $scope.features = null;
                 $scope.selected = [];
             } else {
                 $scope.selected = [];
@@ -614,7 +614,7 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
                 $scope.features = obj;
 
             }
-        });
+        // });
 
         $scope.toggle = function (item, list) {
 
@@ -640,11 +640,13 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
         };
 
         $scope.finish = function () {
+
+            alert("finish settingctrl");
             for (i = 0; i < $scope.selected.length; i++) {
-                for (j = 0; j < $scope.featureOrigin.length; j++) {
-                    if ($scope.featureOrigin[j].title == $scope.selected[i].title) {
-                        $scope.featureOrigin[j].state = true;
-                        $scope.featureOrigin[j].stateStr = "Enabled";
+                for (j = 0; j < $scope.features.length; j++) {
+                    if ($scope.features[j].title == $scope.selected[i].title) {
+                        $scope.features[j].state = true;
+                        $scope.features[j].stateStr = "Enabled";
                     }
                 }
             }
@@ -652,31 +654,33 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
             getJSONData($http, 'menu', function (data) {
 
                 var orignArray = [];
-                for (i = 0; i < $scope.featureOrigin.length; i++) {
-                    if ($scope.featureOrigin[i].state == true)
-                        orignArray.push($scope.featureOrigin[i]);
+                for (i = 0; i < $scope.features.length; i++) {
+                    if ($scope.features[i].state == true)
+                        orignArray.push($scope.features[i]);
                 }
                 $scope.menu = orignArray.concat(data);
 
             });
-            localStorage.setItem("featureObject", JSON.stringify($scope.featureOrigin));
+            localStorage.setItem("featureObject", JSON.stringify($scope.features));
             $mdDialog.show({
                 controller: 'settingsCtrl',
                 templateUrl: 'views/settings-save.html',
                 resolve: {
 
                 }
-            })
+            });
 
         };
 
         $scope.saveSettingsDetails = function () {
-            window.location = Digin_Base_URL + "home.html";
+            
+            window.location = "home.html";
         };
 
 
 
         $scope.closeDialog = function () {
+
             $mdDialog.hide();
         };
 

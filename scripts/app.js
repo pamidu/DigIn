@@ -3,7 +3,8 @@ $(window).load(function () {
     $('.nav-menu').show();
  
     $('.main-headbar').css("visibility","visible");
-    $('#footerBar').css("visibility","visible");    
+    $('#footerBar').css("visibility","visible");  
+     
 
 });
 
@@ -31,7 +32,8 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
     'servicess',
     'angularUtils.directives.dirPagination',
     'ngSanitize',
-    'ngCsv'
+    'ngCsv',
+    'angular-intro'
 ])
 
 routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider) {

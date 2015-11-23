@@ -10478,6 +10478,7 @@ button.toast-close-button {
     display: block;
 }
 .dashboard-widgets-close {
+    z-index:2147483647;
     float: right;
     /*display: none;*/
 }

@@ -3,7 +3,43 @@ routerApp.controller('DashboardCtrl', ['$scope',
     '$rootScope', '$mdDialog', '$objectstore', '$sce','AsTorPlotItems',
     function($scope, $rootScope, $mdDialog, $objectstore, $sce,AsTorPlotItems) {
 
+ $scope.IntroOptions = {
+            steps:[
+            {
+                element: document.querySelector('#getReport'),
+                intro: "This is the first tooltip."
+            }
+            //,
+            // {
+            //     element: document.querySelectorAll('#step2')[0],
+            //     intro: "<strong>You</strong> can also <em>include</em> HTML",
+            //     position: 'right'
+            // },
+            // {
+            //     element: '#step3',
+            //     intro: 'More features, more fun.',
+            //     position: 'left'
+            // },
+            // {
+            //     element: '#step4',
+            //     intro: "Another step.",
+            //     position: 'bottom'
+            // },
+            // {
+            //     element: '#step5',
+            //     intro: 'Get it, use it.'
+            // }
+            ],
+            showStepNumbers: false,
+            exitOnOverlayClick: true,
+            exitOnEsc:true,
+            nextLabel: '<strong>NEXT!</strong>',
+            prevLabel: '<span style="color:green">Previous</span>',
+            skipLabel: 'Exit',
+            doneLabel: 'Thanks'
+        };
 
+        $scope.ShouldAutoStart = false;
 
         $('#pagePreLoader').hide();
 

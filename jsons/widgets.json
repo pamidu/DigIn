@@ -422,10 +422,10 @@
             "color": "#8BC34A"
         }, {
 
-            "title": "Number of claims per vehicle type",
+            "title": "Hierarchy visualization",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Predefined Analytics",
-            "Description": "Force directive layout to show number of claims vehicle type",
+            "Description": "Build a fancy hierachy visualization for your data",
             "initTemplate": "initConfigForce",
             "initController": "hnbInit",
             "widView": "views/ViewHnbData.html",
@@ -439,7 +439,7 @@
             "color": "#E64A19"
         },
         {
-            "title": "Distributed claims",
+            "title": "Sunburst visualization",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Predefined Analytics",
             "Description": "Sunburst directive layout to show the data of claims",

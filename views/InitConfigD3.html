@@ -88,19 +88,18 @@
           </span>
           <span class="clearfix"></span>
         </h3>
-                            <div data-ng-show="dataView != 'table'">
-                                <div data-ng-show="dataView == 'table'">
+                            
                                     <div>
                                         <textarea ui-codemirror="codeMirrorOptions" ng-model="text">
                                         </textarea>
                                     </div>
                                     <div DiginD3Table class="data-table" data-ng-show="dataView == 'table'"></div>
                                     <div>
-                                        <div data-ng-show="!loading && !error && data.length" class="alert alert-success"><i class="fa fa-thumbs-up breath-right"></i><strong>{{data.length}}</strong> records in your data have been successfully parsed!</div>
+                                        <div class="alert alert-success"><i class="fa fa-thumbs-up breath-right"></i><strong>{{data.length}}</strong> records in your data have been successfully parsed!</div>
                                         <div data-ng-show="error" class="alert alert-warning"><i class="fa fa-thumbs-down breath-right"></i><strong>Whoops!</strong> Please, check line {{error+1}}</div>
                                         <div data-ng-show="loading" class="alert"><i class="fa breath-right fa-refresh fa-spin"></i>Loading your data. Please wait.</div>
                                     </div>
-                                </div>
+                              
                     </section>
                 </md-content>
             </md-tab>

@@ -485,7 +485,7 @@ function realtimeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId,
 };
 
 //new elastic controller
-function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout) {
+function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout,Digin_Engine_API) {
 
     $scope.filterAttributes = ['Sum', 'Average', 'Percentage', 'Count'];
     $scope.datasources = ['DuoStore', 'BigQuery', 'CSV/Excel', 'Rest/SOAP Service', 'SpreadSheet']; //temporary
@@ -1445,7 +1445,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
 };
 //metric controller
-function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout) {
+function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout, Digin_Engine_API) {
 
     $scope.filterAttributes = ['Sum', 'Average', 'Percentage', 'Count', 'Unique'];
     $scope.datasources = ['DuoStore', 'BigQuery', 'CSV/Excel', 'Rest/SOAP Service', 'SpreadSheet']; //temporary
@@ -1701,14 +1701,14 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
 
             if ($scope.datasource == "DuoStore" || $scope.datasource == "BigQuery") {
                 if ($scope.datasource == "BigQuery") {
-                    w1.postMessage(parameter + "," + $scope.bigQueryFieldDetails.toString() + "," + $scope.query.state);
+                    w1.postMessage(parameter + "," + $scope.bigQueryFieldDetails.toString() + "," + $scope.query.state + ",true"  );
                     w1.addEventListener('message', function(event) {
                         mapRetrieved(event);
                     });
 
                     $scope.widgetValidity = 'fade-out';
                 } else {
-                    w.postMessage($scope.indexType + "," + parameter + "," + $scope.query.state);
+                    w.postMessage($scope.indexType + "," + parameter + "," + $scope.query.state + ",true" );
                     w.addEventListener('message', function(event) {
                         mapRetrieved(event);
                     });
@@ -3175,7 +3175,8 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
 
             if ($scope.datasource == "DuoStore" || $scope.datasource == "BigQuery") {
                 if ($scope.datasource == "BigQuery") {
-                    w1.postMessage($scope.parameter + "," + $scope.bigQueryFieldDetails.toString() + "," + $scope.query.state + "," + Digin_Engine_API);
+                    w1.postMessage($scope.selectedClass + ","+ Digin_Engine_API  + "," + "HierarchyFields" + "," + $scope.parameter.toString() );
+
                     w1.addEventListener('message', function(event) {
                         mapRetrieved(event);
                     });
@@ -3222,7 +3223,7 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
         var w2 = new Worker("scripts/webworkers/bigQueryWorker.js");
         var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
          $scope.widget = $rootScope.dashboard.widgets[objIndex];
-        w2.postMessage($scope.selectedClass + "," + $rootScope.hierarchystring.toString() + "," + "Hierarchy" + "," + Digin_Engine_API);
+        w2.postMessage($scope.selectedClass + ","+ Digin_Engine_API  +"," + "Hierarchy" + "," + $rootScope.hierarchystring.toString()   );
         w2.addEventListener('message', function(event) {
             hierarchyRetrieved(event);
         });

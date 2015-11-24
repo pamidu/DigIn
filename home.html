@@ -83,25 +83,24 @@
         <div id="fb-root"></div>
 
           <!--        main headbar-->
-        <div id="mainHeadbar" style="height: 45px; width: 100%;z-index:1000;visibility:hidden">
-        <div class="main-headbar md-theme-light" layout="row" layout-align="space-between center">
+        <div id="mainHeadbar" style="height: 45px; width: 100%;z-index:1000;visibility:hidden" layout="row">
+        <div class="main-headbar-logo md-theme-light" layout="row" layout-align="space-between center" style="width:50px">
             <div layout="row" layout-align="start center">
-                <!--
-               <md-button class="md-primary" ng-click="toggleRight();toggleNavBarIcon();" style="margin: 0px 10px !important;">
-    <ng-md-icon icon="{{navBarIcon}}" style="fill:whitesmoke;"></ng-md-icon>
-</md-button>
--->
+                
                 <div style="    width: 35px;
     border-radius: 100%;
     background-color: rgba(255, 255, 255, 0.46);
     height: 35px;
-    margin: 10px;" layout="row" layout-align="center center">
+    margin: 8px;" layout="row" layout-align="center center">
                     <img ng-src="styles/css/images/innerlogo.png" class="md-avatar" id="digin-logo" style="width:80%;">
                 </div>
-                <div class="nav-search">
+                
+                
+            </div>
+        </div>
+        <div class="main-headbar md-theme-light" layout="row" layout-align="space-between center" flex>
+            <div class="nav-search">
                     <md-icon id="btnNavSearch" class="ion-search search sidebaricons"></md-icon>
-                </div>
-                <!--                <p style="font-size: large;margin: 0px 10px 0px 0px;color:whitesmoke;">Duo Digin</p>-->
             </div>
             <span ng-click=""></span>
             <div layout="row" layout-align="center center">
@@ -163,7 +162,7 @@
                 <md-list>
                     <div ng-click="$parent.navigate(item.title)" ng-repeat="item in menu" style="min-height:30px;height:40px;padding: 0px 10px !important;margin:5px;">
                         <!--                        <md-icon style="height:100%;margin-right:0px;" class="{{item.icon}}"></md-icon>-->
-                        <ng-md-icon icon="{{item.icon2}}" style="fill:darkgrey" size="20"></ng-md-icon>
+                        <ng-md-icon icon="{{item.icon2}}" style="fill:dimgrey" size="20"></ng-md-icon>
                         <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
                     </div>
                 </md-list>

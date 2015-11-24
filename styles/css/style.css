@@ -1243,9 +1243,24 @@ main {
     background-color: #4285F4;
     z-index: 1000;
     height:45px;
-    width:100%;
-    position: fixed;
+    /*width:100%;*/
+    position: relative;
     overflow: hidden;
+    box-shadow: 1px 1px 5px grey;
+}
+.main-headbar-logo {
+    visibility:visible;
+    width:50px;
+    /* transform: translateY(-85%); */
+    /* transition: transform .2s linear; */
+    background-color: #4285F4;
+    foreground-color: red;
+    z-index: 1000;
+    height: 45px;
+    /* width: 100%; */
+    position: initial;
+    overflow: hidden;
+    box-shadow: 1px 1px 5px grey;
 }
 .main-headbar:hover {
     transform: translateY(0);
@@ -1254,6 +1269,7 @@ main {
 md-tabs[md-border-bottom] md-tabs-wrapper {
     background-color: rgba(0, 0, 0, 0.14);
     margin-top:30px !important;
+    box-shadow: 1px 1px 5px grey;
 }
 md-tabs-content-wrapper{
     top:0px !important;
@@ -1281,6 +1297,11 @@ md-tab-content{
     background-color: transparent !important;
     border: 10px solid rgba(255,255,255,.5) !important;
     
+}
+
+/*override digind3 css*/
+md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
+    color: rgb(63,81,181) !important;
 }
 
 

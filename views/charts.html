@@ -19,6 +19,9 @@
         <div class="md-toolbar-tools">
             <p style="font-size:medium;margin:0px;">{{widget.uniqueType}}</p>
             <span flex></span>
+            <md-button ng-if="widget.initCtrl=='elasticInit' || 'metricInit'" ng-click="syncWidget(widget)" aria-label="Close" layout-wrap>
+                <md-icon class="ion-android-sync digin-widget-toolbar-icon"></md-icon>
+            </md-button>
             <md-button ng-click="widgetSettings(widget)" aria-label="Close" layout-wrap>
                 <md-icon class="ion-settings digin-widget-toolbar-icon"></md-icon>
             </md-button>

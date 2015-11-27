@@ -1445,11 +1445,12 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
 };
 //metric controller
-function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout, Digin_Engine_API) {
+function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout) {
 
     $scope.filterAttributes = ['Sum', 'Average', 'Percentage', 'Count', 'Unique'];
     $scope.datasources = ['DuoStore', 'BigQuery', 'CSV/Excel', 'Rest/SOAP Service', 'SpreadSheet']; //temporary
     $scope.storeIndex = 'com.duosoftware.com';
+    // $scope.storeIndex = 'janaki.epayments.lk';
     $scope.widgetValidity = 'elasticValidation'; //validation message visibility                                             
     $scope.query = {};
     $scope.query.state = false;
@@ -1457,8 +1458,8 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
     $scope.checkedFields = [];
     $scope.dataIndicator = false;
     $scope.categoryVal = "";
-    $scope.mappedArray = {};
-
+    $scope.mappedArray = {};    
+    
     $scope.chartCategory = {
         groupField: '',
         drilledField: '',
@@ -1472,50 +1473,50 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
     $scope.widget = $rootScope.dashboard.widgets[objIndex];
 
-    $scope.getTables = function() {
-
-        if ($scope.datasource == "DuoStore") {
+    $scope.getTables = function(){
+        
+        if($scope.datasource == "DuoStore"){
             var client = $objectstore.getClient($scope.storeIndex, " ");
 
             client.getClasses($scope.storeIndex);
 
             //classes retrieved
-            client.onGetMany(function(data) {
+            client.onGetMany(function (data) {
                 if (data.length > 0) $scope.objClasses = data;
                 else console.log('There are no classes present');
             });
 
             //error getting classes from the index
-            client.onError(function(data) {
+            client.onError(function (data) {
                 console.log('Error getting classes');
             });
-        } else if ($scope.datasource == "BigQuery") {
+        }else if($scope.datasource == "BigQuery"){
 
             var xhr = new XMLHttpRequest();
 
-            xhr.onreadystatechange = function(e) {
-                console.log(this);
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        console.log('query response:' + JSON.parse(xhr.response));
-                        var res = JSON.parse(xhr.response);
-                        var tableArray = [];
-                        $scope.objClasses = res;
-                        console.log(res.length);
-                    } else {
-                        console.error("XHR didn't work: ", xhr.status);
+            xhr.onreadystatechange = function(e){
+                    console.log(this);
+                    if (xhr.readyState === 4){
+                        if (xhr.status === 200){
+                            console.log('query response:'+ JSON.parse(xhr.response));
+                            var res = JSON.parse(xhr.response);
+                            var tableArray = [];
+                            $scope.objClasses = res;
+                            console.log(res.length);
+                        } else {
+                            console.error("XHR didn't work: ", xhr.status);
+                        }
                     }
                 }
-            }
-            xhr.ontimeout = function() {
-                console.error("request timedout: ", xhr);
-            }
-            xhr.open("get", Digin_Engine_API + "GetTables?dataSetID=digin_hnb", /*async*/ true);
+            xhr.ontimeout = function (){
+                    console.error("request timedout: ", xhr);
+                }
+            xhr.open("get", "http://104.131.48.155:8080/GetTables?dataSetID=digin_hnb", /*async*/ true);
             xhr.send();
         }
     };
 
-    if (typeof $scope.widget.widConfig == 'undefined') {
+    if(typeof $scope.widget.widConfig == 'undefined'){
 
         $scope.seriesArray = [{
             name: 'series1',
@@ -1525,7 +1526,7 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
             color: ''
         }];
 
-    } else {
+    } else{
         //source tab config
         $scope.objClasses = $scope.widget.widConfig.classArray;
         $scope.datasource = $scope.widget.widConfig.source;
@@ -1534,9 +1535,11 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
         //selection tab config
         $scope.dataTab = false;
         $scope.selectedFields = $scope.widget.widConfig.fields;
-        $scope.checkedFields = $scope.widget.widConfig.selFields;
+        $scope.selectedField = $scope.widget.widConfig.selField;
 
         //mapping tab config 
+        $scope.selectedFilter = $scope.widget.widConfig.selFilter;
+        $scope.filtersAvailable = $scope.widget.widConfig.filters;
         $scope.chartTab = false;
         $scope.mappedArray = $scope.widget.widConfig.mappedData;
         $scope.chartCategory = $scope.widget.widConfig.chartCat;
@@ -1549,19 +1552,20 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
     }
 
     //check for selected classes
-    $scope.getFields = function() {
+    $scope.getFields = function () {
         $scope.selectedFields = [];
         if ($scope.datasource == "DuoStore") {
             $scope.dataIndicator1 = true;
             if ($scope.selectedClass != null) {
                 $scope.indexType = $scope.selectedClass;
                 var client1 = $objectstore.getClient($scope.storeIndex, $scope.indexType);
+                // var client1 = $objectstore.getClient($scope.storeIndex, 'transaction');
                 client1.getFields($scope.storeIndex, $scope.indexType);
 
                 //class's fields retrieved
-                client1.onGetMany(function(data) {
+                client1.onGetMany(function (data) {
                     if (data.length > 0) {
-                        data.forEach(function(entry) {
+                        data.forEach(function (entry) {
                             $scope.selectedFields.push({
                                 name: entry,
                                 checked: false
@@ -1576,7 +1580,7 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
                 });
 
                 //error getting fields from the class
-                client1.onError(function(data) {
+                client1.onError(function (data) {
                     console.log('Error getting fields');
                 });
             } else {
@@ -1589,16 +1593,14 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
                 var fieldData = ($scope.selectedClass.split(':')[1]).split('.');
                 $scope.bigQueryFieldDetails = fieldData;
                 $scope.dataIndicator1 = true;
-
+                
                 $http({
                     method: 'GET',
-                    url: Digin_Engine_API + 'GetFields?datasetName=' + fieldData[0] + '&&tableName=' + fieldData[1],
-
-
+                    url: 'http://104.131.48.155:8080/GetFields?datasetName='+fieldData[0]+'&&tableName='+fieldData[1],
                 }).
-                success(function(data, status) {
+                success(function (data, status) {
                     if (data.length > 0) {
-                        data.forEach(function(entry) {
+                        data.forEach(function (entry) {
                             $scope.selectedFields.push({
                                 name: entry,
                                 checked: false
@@ -1611,7 +1613,7 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
                     } else console.log('There are no fields present in the class');
                     $scope.dataIndicator1 = false;
                 }).
-                error(function(data, status) {
+                error(function (data, status) {
                     alert("Request failed");
 
                 });
@@ -1641,7 +1643,7 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
         }
     };
 
-    $scope.getData = function() {
+    $scope.getData = function () {
         var w = new Worker("scripts/webworkers/elasticWorker.js");
         var w1 = new Worker("scripts/webworkers/bigQueryWorker.js");
         var parameter = '';
@@ -1658,64 +1660,64 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
 
             $scope.dataIndicator = true;
 
-            function mapRetrieved(event) {
-                var obj = JSON.parse(event.data);
-                console.log(JSON.stringify(obj));
-                $scope.dataIndicator = false;
+            function mapRetrieved(event){
+                    var obj = JSON.parse(event.data);
+                    console.log(JSON.stringify(obj));
+                    $scope.dataIndicator = false;
 
-                //creating the array to map dynamically
-                $scope.arrayAttributes = [];
-                for (var key in obj[0]) {
-                    if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
-                        var val = obj[0][key];
-                        console.log(key);
-                        $scope.mappedArray[key] = {
-                            name: key,
-                            data: [],
-                            isNaN: true
-                        };
-                        $scope.arrayAttributes.push(key);
-                    }
-                }
-
-                //mapping the dynamically created array
-                for (i = 0; i < obj.length; i++) {
-                    for (var key in obj[i]) {
-                        if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
-                            var val = obj[i][key];
-                            var parsedVal = parseFloat(val);
-                            if (!isNaN(parsedVal)) {
-                                $scope.mappedArray[key].data.push(parsedVal);
-                                $scope.mappedArray[key].isNaN = false;
-                            } else {
-                                $scope.mappedArray[key].data.push(val);
-                            }
-                            $scope.fieldRetrieved = $scope.mappedArray[key].name;
+                    //creating the array to map dynamically
+                    $scope.arrayAttributes = [];
+                    for (var key in obj[0]) {
+                        if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
+                            var val = obj[0][key];
+                            console.log(key);
+                            $scope.mappedArray[key] = {
+                                name: key,
+                                data: [],
+                                isNaN: true
+                            };
+                            $scope.arrayAttributes.push(key);
                         }
                     }
-                }
 
-                $scope.getFilters();
-                $scope.toggleTab(2);
+                    //mapping the dynamically created array
+                    for (i = 0; i < obj.length; i++) {
+                        for (var key in obj[i]) {
+                            if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
+                                var val = obj[i][key];
+                                var parsedVal = parseFloat(val);
+                                if (!isNaN(parsedVal)) {
+                                    $scope.mappedArray[key].data.push(parsedVal);
+                                    $scope.mappedArray[key].isNaN = false;
+                                } else {
+                                    $scope.mappedArray[key].data.push(val);
+                                }
+                                $scope.fieldRetrieved = $scope.mappedArray[key].name;
+                            }
+                        }
+                    }
+
+                    $scope.getFilters();
+                    $scope.toggleTab(2);
             };
 
             if ($scope.datasource == "DuoStore" || $scope.datasource == "BigQuery") {
-                if ($scope.datasource == "BigQuery") {
-                    w1.postMessage(parameter + "," + $scope.bigQueryFieldDetails.toString() + "," + $scope.query.state + ",true"  );
-                    w1.addEventListener('message', function(event) {
+                if($scope.datasource == "BigQuery"){
+                    w1.postMessage(parameter + "," + $scope.bigQueryFieldDetails.toString()+ "," + $scope.query.state);
+                    w1.addEventListener('message', function (event) {
                         mapRetrieved(event);
                     });
 
                     $scope.widgetValidity = 'fade-out';
-                } else {
-                    w.postMessage($scope.indexType + "," + parameter + "," + $scope.query.state + ",true" );
-                    w.addEventListener('message', function(event) {
+                }else{
+                    w.postMessage($scope.indexType + "," + parameter + "," + $scope.query.state);
+                    w.addEventListener('message', function (event) {
                         mapRetrieved(event);
                     });
 
                     $scope.widgetValidity = 'fade-out';
                 }
-
+                
             } else if ($scope.datasource == "CSV/Excel") {
                 var obj = JSON.parse($rootScope.json_string);
                 console.log(JSON.stringify(obj));
@@ -1777,50 +1779,71 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
     };
 
     //builds the chart
-    $scope.buildchart = function(widget) {
+    $scope.buildchart = function (widget) {
+
+        //saving configuration
+        widget['widConfig'] = {
+            source : $scope.datasource,
+            classArray: $scope.objClasses,
+            selectedClass: $scope.selectedClass,
+            fields: $scope.selectedFields,
+            selField: $scope.selectedField,
+            selFilter: $scope.selectedFilter,
+            filters: $scope.filtersAvailable,
+            claFields: $scope.classFields,
+            chartCat: $scope.chartCategory,
+            attributes: $scope.arrayAttributes,
+            indType: $scope.indexType,
+            query: $scope.query,
+            series: $scope.seriesArray,
+            serAttributes: $scope.seriesAttributes,
+            mappedData: $scope.mappedArray
+
+        };
+
         $scope.filterData($scope.selectedFilter);
         var dataObject = $scope.mappedArray[$scope.fieldRetrieved].data;
-        widget.widData['value'] = Math.round($scope.filtering.calculate(dataObject) * 100) / 100;
+        widget.widData['value'] = $scope.filtering.calculate(dataObject);
         $mdDialog.hide();
     }
 
-
-    $scope.toggleTab = function(ind) {
+    
+    $scope.toggleTab = function (ind) {
         var tabIndex = '';
         if (typeof ind === 'undefined') tabIndex = $scope.selectedTabIndex;
         else tabIndex = ind;
 
         //manually switching between tabs
         switch (tabIndex) {
-            case 0:
-                break;
-            case 1:
-                $scope.indexType != $scope.selectedClass && $scope.getFields();
-                $scope.dataTab = false;
-                $scope.selectedTabIndex = 1;
-                break;
-            case 2:
-                var classField = $scope.selectedField;
-                var classQuery = $scope.query.value;
-                if ($scope.query.state) {
-                    $scope.classQuery != $scope.query.value && $scope.getData();
-                } else {
-                    $scope.classField != $scope.selectedField && $scope.getData();
-                }
+        case 0:
+            break;
+        case 1:
+            $scope.indexType != $scope.selectedClass && $scope.getFields();
+            $scope.dataTab = false;
+            $scope.selectedTabIndex = 1;
+            break;
+        case 2:
+            var classField = $scope.selectedField;
+            var classQuery = $scope.query.value;
+            if ($scope.query.state) {
+                $scope.classQuery != $scope.query.value && $scope.getData();
+            } else {
+                $scope.classField != $scope.selectedField && $scope.getData();
+            }
 
-                $scope.chartTab = false;
-                $scope.selectedTabIndex = 2;
-                break;
+            $scope.chartTab = false;
+            $scope.selectedTabIndex = 2;
+            break;
         }
     };
 
     //close the config
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     }
 
-    $scope.filterData = function(c) {
+    $scope.filterData = function (c) {
         var filter = eval('new ' + c.toUpperCase() + '();');
         $scope.filtering = new Filtering();
         $scope.filtering.setFilter(filter);
@@ -1828,7 +1851,7 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
         $scope.widgetValidity = 'fade-out';
     };
 
-    $scope.checkSeriesAvailability = function() {
+    $scope.checkSeriesAvailability = function () {
         if ($scope.seriesAttributes.length == 0) {
             $scope.validationMessage = "Please check the filter you select";
             $scope.widgetValidity = 'fade-in';
@@ -1838,7 +1861,7 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
     $scope.getFilters = function() {
         for (var key in $scope.mappedArray) {
             if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
-                if ($scope.mappedArray[key].isNaN) $scope.filtersAvailable = ['Count'];
+                if($scope.mappedArray[key].isNaN) $scope.filtersAvailable = ['Count'];
                 else $scope.filtersAvailable = $scope.filterAttributes;
             }
         }
@@ -1846,96 +1869,87 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
 
 
     /* Strategy1 begin */
-    var Filtering = function() {
+    var Filtering = function () {
         this.filter = "";
     };
 
     Filtering.prototype = {
-        setFilter: function(filter) {
+        setFilter: function (filter) {
             this.filter = filter;
         },
 
-        calculate: function(dataObject) {
+        calculate: function (dataObject) {
             return this.filter.calculate(dataObject);
         },
 
-        filterFields: function() {
+        filterFields: function () {
             return this.filter.filterFields();
         }
     };
 
-    var SUM = function() {
-        this.calculate = function(dataObject) {
+    var SUM = function () {
+        this.calculate = function (dataObject) {
             console.log("calculations... for the sum filter");
             var sum = 0;
-            for (j = 0; j < dataObject.length; j++) {
-                sum += dataObject[j];
-            }
+                for (j = 0; j < dataObject.length; j++) {
+                    sum += dataObject[j];
+                }
             return sum;
         }
 
-        this.filterFields = function() {
+        this.filterFields = function () {
             return getFilteredFields(false);
         }
     };
 
-    var AVERAGE = function() {
-        this.calculate = function(dataObject) {
+    var AVERAGE = function () {
+        this.calculate = function (dataObject) {
             console.log("calculations... for the average filter");
-            var sum = 0;
-            for (j = 0; j < dataObject.length; j++) {
-                sum += dataObject[j];
+                var sum = 0;
+                for (j = 0; j < dataObject.length; j++) {
+                    sum += dataObject[j];
+                }
+                return sum/dataObject.length;                
             }
-            return sum / dataObject.length;
-        }
 
-        this.filterFields = function() {
+        this.filterFields = function () {
             return getFilteredFields(false);
         }
     };
-    var UNIQUE = function() {
-        this.calculate = function(dataObject) {
-            console.log("calculations... for the unique filter");
-            return Enumerable.From(dataObject).Select().Distinct().ToArray().length;;
-        }
 
-        this.filterFields = function() {
-            return getFilteredFields(true);
-        }
-    };
-    var PERCENTAGE = function() {
-        this.calculate = function(dataObject) {
+    var PERCENTAGE = function () {
+        this.calculate = function (dataObject) {
             console.log("calculations... for the prcentage filter");
             var sum = 0;
             for (j = 0; j < dataObject.length; j++) {
-                sum += dataObject[j];
-            }
-            return (sum / dataObject.length) * 100;
+                    sum += dataObject[j];
+                }
+            return (sum/dataObject.length)*100;            
         }
 
-        this.filterFields = function() {
+        this.filterFields = function () {
             return getFilteredFields(false);
         }
     };
 
-    var COUNT = function() {
-        this.calculate = function(dataObject) {
+    var COUNT = function () {
+        this.calculate = function (dataObject) {
             console.log("calculations... for the count filter");
             return dataObject.length;
         }
 
-        this.filterFields = function() {
+        this.filterFields = function () {
             return getFilteredFields(true);
         }
     };
 
-    var UNIQUE = function() {
-        this.calculate = function(dataObject) {
-            console.log("calculations... for the unique filter");
+    var UNIQUE = function () {
+        this.calculate = function (dataObject) {
+            console.log("calculations... for the unique filter");            
             return Enumerable.From(dataObject).Select().Distinct().ToArray().length;;
         }
 
-        this.filterFields = function() {
+        this.filterFields = function () {
             return getFilteredFields(true);
         }
     };

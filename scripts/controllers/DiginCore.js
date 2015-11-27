@@ -141,6 +141,22 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
 
         };
+
+        /*Summary:
+           synchronizes data per widget
+           @widget : widget that need to get updated
+        */
+        $scope.syncWidget = function(widget){
+            console.log('syncing...');
+            if(typeof widget.widConfig != 'undefined'){
+            widget.syncState = false;
+                DynamicVisualization.syncWidget(widget, function(data){
+                    widget.syncState = true;
+                    widget = data;
+                });
+            }
+        };
+
         $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }

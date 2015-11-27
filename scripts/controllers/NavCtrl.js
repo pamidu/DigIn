@@ -46,21 +46,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             getJSONData($http, 'features', function (data) {
                 $scope.featureOrigin = data;
                 localStorage.setItem("featureObject", JSON.stringify($scope.featureOrigin));
-                // var featureObj = localStorage.getItem("featureObject");
+                // var featureObj = localStorage.getItem("featureObject");                
                 
-                var obj = JSON.parse(JSON.stringify(data));
-                if (obj === null) {
-                    $scope.features = data;
-                    $scope.selected = [];
-                } else {
-                    $scope.selected = [];
-                    for (i = 0; i < obj.length; i++) {
-                        if (obj[i].stateStr === "Enabled")
-                            $scope.selected.push(obj[i]);
-                    }
-                    $scope.features = obj;
-
+                $scope.selected = [];
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].stateStr === "Enabled")
+                        $scope.selected.push(data[i]);
                 }
+                $scope.features = data;
             });
 
         }
@@ -704,7 +697,7 @@ $scope.test = 'test';
                         // else
                             selected = $rootScope.Dashboards[current];
                         if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
-                        if (current + 1) $log.debug('Hello ' + selected.title + '!');
+                        //if (current + 1) $log.debug('Hello ' + selected.title + '!');
                     });
                     console.log(dashboard);
                     //closing the overlay
@@ -1387,12 +1380,11 @@ $scope.test = 'test';
             $scope.$apply();
         }, 1700);
 
-        setTimeout(function(){
-            var featureObj = localStorage.getItem("featureObject");
+        var featureObj = localStorage.getItem("featureObject");
 
             getJSONData($http, 'menu', function (data) {
 
-                if (featureObj === null) $scope.menu = data;
+                if (featureObj == "undefined") $scope.menu = data;
                 else {
                     var featureArray = JSON.parse(featureObj);
                     var orignArray = [];
@@ -1404,6 +1396,9 @@ $scope.test = 'test';
                 }
 
             });
+
+        setTimeout(function(){
+
         },200);
 
         

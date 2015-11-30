@@ -1237,33 +1237,47 @@ main {
 .ui-widget-content .ui-icon {
     background-image: none !important;
 }
-.main-headbar {
-    transform: translateY(-85%);
-    transition: transform .2s linear;
+.main-headbar-slide {
+    transform: translateY(-100%);
+    transition: transform .5s linear;
     background-color: #4285F4;
-    z-index: 1000;
+    z-index: 1500;
     height:45px;
-    /*width:100%;*/
-    position: relative;
+    width:100%;
+    position: absolute;
     overflow: hidden;
     box-shadow: 1px 1px 5px grey;
+    top:0px;
+    left:0px;
+    padding:10px;
+}
+.main-headbar-transparent{
+    visibility:visible;
+    transform: translateY(0);
+    transition: transform .5s linear;
+    background-color: transparent;
+    z-index: 1400;
+    height:15px;
+    width:100%;
+    position: absolute;
+    overflow: hidden;
+    top:0px;
+    left:0px;
 }
 .main-headbar-logo {
     visibility:visible;
     width:50px;
-    /* transform: translateY(-85%); */
-    /* transition: transform .2s linear; */
     background-color: #4285F4;
-    foreground-color: red;
     z-index: 1000;
     height: 45px;
-    /* width: 100%; */
     position: initial;
     overflow: hidden;
     box-shadow: 1px 1px 5px grey;
 }
-.main-headbar:hover {
+#mainHeadbar:hover > .main-headbar > .main-headbar-slide{
     transform: translateY(0);
+    transition: transform .5s linear; 
+}
     
 }
 md-tabs[md-border-bottom] md-tabs-wrapper {

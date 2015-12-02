@@ -1246,7 +1246,7 @@ main {
     width:100%;
     position: absolute;
     overflow: hidden;
-    box-shadow: 1px 1px 5px grey;
+    /*box-shadow: 1px 1px 5px grey;*/
     top:0px;
     left:0px;
     padding:10px;
@@ -1267,12 +1267,12 @@ main {
 .main-headbar-logo {
     visibility:visible;
     width:50px;
-    background-color: #4285F4;
+    background-color: rgb(226, 226, 226);
     z-index: 1000;
     height: 45px;
     position: initial;
     overflow: hidden;
-    box-shadow: 1px 1px 5px grey;
+    /*box-shadow: 1px 1px 5px grey;*/
 }
 #mainHeadbar:hover > .main-headbar > .main-headbar-slide{
     transform: translateY(0);

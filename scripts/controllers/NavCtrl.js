@@ -1398,7 +1398,22 @@ $scope.test = 'test';
             });
 
         setTimeout(function(){
+            var featureObj = localStorage.getItem("featureObject");
 
+            getJSONData($http, 'menu', function (data) {
+
+                if (featureObj === null) $scope.menu = data;
+                else {
+                    var featureArray = JSON.parse(featureObj);
+                    var orignArray = [];
+                    for (i = 0; i < featureArray.length; i++) {
+                        if (featureArray[i].state == true)
+                            orignArray.push(featureArray[i]);
+                    }
+                    $scope.menu = orignArray.concat(data);
+                }
+
+            });
         },200);
 
         

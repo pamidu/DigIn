@@ -1,11 +1,8 @@
 $(window).load(function () {
     $('#pagePreLoader').hide();
     $('.nav-menu').show();
- 
     $('.main-headbar').css("visibility","visible");
     $('#footerBar').css("visibility","visible");  
-     
-
 });
 
 var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
@@ -26,6 +23,7 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
     'ngMdIcons',
     'nvd3',
     'gridster',
+    'ui.calendar',
     'mgcrea.ngStrap',
      'ui',
     'lk-google-picker',
@@ -33,7 +31,9 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
     'angularUtils.directives.dirPagination',
     'ngSanitize',
     'ngCsv',
-    'angular-intro'
+    'angular-intro',
+    'uiGmapgoogle-maps',
+    'angularMoment'
 ])
 
 routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider) {
@@ -124,14 +124,26 @@ routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$
             controller: 'settingsCtrl',
             templateUrl: "views/settings.html"
 
-        })
-        .state('Grid', {
-            url: '/Grid',
-            controller: 'DashboardCtrl',
-            templateUrl: "views/chartsGridster.html"
+        }).state('social-graph-fb', {
+            url: '/social-graph-fb',
+            controller: 'socialGraphCtrl',
+            templateUrl: "views/socialGraph/socialGraph_Temp.html"
 
-        })
+        }).state('Social Analysis', {
+            url: "/social-analysis",
+            controller: 'SocialAnalysisCtrl',
+            //templateUrl: "views/extended-analytics.html"
+            
+        }).state('SocialGraphFb', {
+            url: '/social-graph-fb',
+            controller: 'socialGraphFBCtrl',
+            templateUrl: "views/socialGraph/socialGraphFB_Temp.html"
 
+        }).state('SocialGraphTwitter', {
+            url: '/social-graph-twitter',
+            controller: 'socialGraphTwitterCtrl',
+            templateUrl: "views/socialGraph/socialGraphTwitter_Temp.html"
+    });
 
     lkGoogleSettingsProvider.configure({
         apiKey: 'AIzaSyA9fv9lYQdt1XV6wooFtItxYlMF8Y9t1ao',
@@ -957,6 +969,13 @@ routerApp.filter('getExtension', function () {
     };
 });
 
+routerApp.filter('htmlToPlaintext', function() {
+    return function(text) {
+      return  text ? String(text).replace(/<[^>]+>/gm, '') : '';
+    };
+  }
+);
+
 routerApp.directive('clockComponent', function () {
     return {
         restrict: 'E',
@@ -1024,4 +1043,17 @@ routerApp.directive('userprofileComponent', function () {
   </div>\
 </div>'
     };
+});
+
+
+// update damith
+//app config details
+routerApp.constant('config', {
+    appName: 'digin',
+    appVersion: 1.0,
+    apiUrl: 'http://104.131.48.155:8080/',
+    apiFbUrl: 'http://192.168.0.47:8080/',
+    Big_Qry_Get_Tbls: 'http://104.131.48.155:8080/GetTables?dataSetID=digin_hnb',
+    apiUrl2: '',
+    storeIndex: 'com.duosoftware.com'
 });

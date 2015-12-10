@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
-
     <title>Digin - Beyond BI</title>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
@@ -13,16 +11,13 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google-signin-client_id" content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com">
-    <link rel="shortcut icon" href="styles/css/images/innerlogo.ico">
 
+    <link rel="shortcut icon" href="styles/css/images/innerlogo.ico">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css">
-
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
-
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">   
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
-
     <link href="styles/css/material-wfont.css" rel="stylesheet">
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="styles/css/pivot.css">
@@ -31,181 +26,146 @@
     <link rel="stylesheet" type="text/css" href="styles/css/directive_library.css">
     <link rel="stylsheet" type="text/css" href="styles/css/pivot.css" />
     <!-- angular gridster -->
-    <link rel="stylesheet" href="styles/angular-gridster.min.css" />
+    <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css" />
     <link rel="stylesheet" type="text/css" href="styles/css/style.css">
     <link rel="stylesheet" type="text/css" href="styles/css/admin1.css">
-    <link rel="stylesheet" href="styles/css/nv.d3.css">
+    <!-- nv.d3.css commented for testing pursoses -->
+    <!-- <link rel="stylesheet" href="styles/css/nv.d3.css"> -->
     <link rel="stylesheet" type="text/css" href="styles/css/accordion.css">
     <link rel="stylesheet" type="text/css" href="styles/css/indicator.css">
-    
     <link rel="apple-touch-icon" href="../../assets/globals/img/icons/apple-touch-icon.png">
-
-    <link rel="stylesheet" href="styles/css/DiginD3.css"/>
-
-     <!-- event calendar -->
+    <!--  <link rel="stylesheet" href="styles/css/DiginD3.css"/> -->
+    <!-- event calendar -->
     <link rel="stylesheet" href="styles/css/fullcalendar.css" />
     <!-- event calendar -->
     <!-- Add IntroJs styles -->
     <link href="bower_components/intro.js/introjs.css" rel="stylesheet">
-
+    
+    <!-- damith
+      -- web font
+      -- google font
+      -- customer css
+    -->
+    <link rel="stylesheet" href="styles/fonts/font-awesome/font-awesome.min.css"  type='text/css'/>
+    <link rel="stylesheet" href="styles/fonts/themify/themify-icons.css"  type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="styles/css/customer.css"  type='text/css'/>
+    
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
         api_key: 75 mu4z7y428pty
         authorize: true
         scope: r_basicprofile r_emailaddress
 
     </script>
-
     <script src="https://apis.google.com/js/client.js"></script>
-    
     <style type="text/css">
         .ui-resizable {
             position: absolute !important;
         }
 
     </style>
-
+    
 </head>
 
 <body  style="background-color:#ECECEC;" ng-controller="NavCtrl" ng-app="DuoDiginRt">
-<div class="pre-loader-parent" id="pagePreLoader" layout="column" layout-align="center center" style="background-color:white">
+    <!-- preloader start -->
+    <div class="pre-loader-parent" id="pagePreLoader" layout="column" layout-align="center center" style="background-color:white">
         <div class="pre-loader-child" layout="column" layout-align="center center">
             <img src="styles/css/images/preloaders/Preloader_7/Preloader_7.gif" alt="Washed Out">
             <span><b>Getting your environment ready..</b></span>
             <md-progress-linear class="md-primary"></md-progress-linear>
         </div>
-        </div>
+    </div>
+    <!-- preloader end -->
+    <!-- gridster start -->
     <div ng-intro-options="IntroOptions" ng-intro-method="CallMe" ng-intro-oncomplete="CompletedEvent" ng-intro-onexit="ExitEvent" ng-intro-onchange="ChangeEvent" ng-intro-onbeforechange="BeforeChangeEvent" ng-intro-onafterchange="AfterChangeEvent"
-             ng-intro-autostart="ShouldAutoStart">
-    
+             ng-intro-autostart="ShouldAutoStart">      
+    </div>
+    <!-- gridster end -->
+    <!-- md theme watch start -->
     <div md-theme="{{ dynamicTheme }}" md-theme-watch>
         <script type="text/javascript" src="scripts/fbSDK.js"></script>
-        <script type="text/javascript" src="scripts/fbSDK.js"></script>
-        <div id="fb-root"></div>
-
-          <!--        main headbar-->
-        <div id="mainHeadbar" style="height: 45px; width: 100%;z-index:1000;visibility:hidden" layout="row">
-        <div class="main-headbar-logo md-theme-light" layout="row" layout-align="space-between center">
-            <div layout="row" layout-align="start center">
-                
-                <div style="    width: 35px;
-    border-radius: 100%;
-    background-color: rgba(255, 255, 255, 0.46);
-    height: 35px;
-    margin: 8px;" layout="row" layout-align="center center">
-                    <img ng-src="styles/css/images/innerlogo.png" class="md-avatar" id="digin-logo" style="width:80%;">
-                </div>
-                
-                
-            </div>
-        </div>
-        <div class="main-headbar" flex style="position:relative;">
-        <div class="main-headbar-slide md-theme-light" layout="row" layout-align="space-between center" flex>
-            <div class="nav-search">
+        <div id="fb-root">
+    </div>
+    <!-- md theme watch end -->
+    <!-- headbar start-->
+    <div id="mainHeadbar" class="main-headbar-wrapper" layout="row">
+        <div class="main-headbar" flex style="visibility:hidden">
+            <div class="main-headbar-slide md-theme-light" layout="row" layout-align="space-between center" flex>
+                <div class="nav-search">
                     <md-icon id="btnNavSearch" class="ion-search search sidebaricons"></md-icon>
-            </div>
-            <span ng-click=""></span>
-            <div layout="row" layout-align="center center">
-                <div layout="row" ng-click="showUserProfile($event);">
-                    <p style="color: whitesmoke;font-size: large;margin: 10px;" ng-model="username"> {{username}}</p>
-                    <img class="md-avatar" style="width: 30px;
-    height: 30px;
-    border-radius: 100%;
-    margin: 5px;" src="styles/css/images/person.jpg">
                 </div>
-
-            </div>
-        </div>
-        <div class="main-headbar-transparent md-theme-light" layout="row" layout-align="space-between center" flex>
-            
-        </div>
-        </div>
-        </div>
-
-        <md-tabs class="footer-bar" id="footerBar" md-selected="selectedIndex" md-border-bottom md-autoselect md-align-tabs="bottom" style="min-height:100vh; width:calc(100vw - 48px);float:right;visibility:hidden">
-         <md-tab ng-repeat="tab in tabs" label="{{tab.title}}" md-on-select="$root.selectCurrentDashboard(tab);">
-            <div class="demo-tab tab{{$index%4}}">
-
-               <div style="background-color: #ECECEC;
-                  border-top-left-radius: 10px;">
-
-                  <!--                    <div ng-bind="tab.content"></div>-->
-                  <div style="position: fixed;width: 100%;top: 0px;" layout="row" layout-align="end center">
-
-                     <md-button ng-click="removeTabConfirmation( tab,$event )" ng-disabled="tabs.length <= 1" style="border-radius: 100%;">
-                        <md-icon style="color:darkgrey;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
-                     </md-button>
-                  </div>
-
-                  <!--                    tab closing button-->
-                  <!--
-                     <div style="position: fixed;width: 100%;top: 0px;" layout="row" layout-align="end center">
-                     
-                     <md-button ng-click="removeTabConfirmation( tab,$event )" ng-disabled="tabs.length <= 1" style="border-radius: 100%;">
-                     <md-icon style="color:darkgrey;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
-                     </md-button>
-                     </div>
-                     -->
-                  <!--                        end of tab closing button-->
-
-                  <ul ui-view layout="column" id="content1" ng-mouseleave="show_sidebar()" ng-mouseover="hide_sidebar()" style="height:100% !important" gridster>                        
-                  </ul>
-                  <div style="z-index:2147483647;" class="dashboard-widgets-close">
-                             <md-button ng-disabled="dashCloseWidgets" id="dashboardwidgetsclose" class="md-fab" ng-dblclick="closeAllWidgets()" aria-label="Close">
-                                <md-icon class="ion-close" style="margin-top: -40px;"></md-icon>
-                            </md-button>
-                  </div>
-
-            </div>
-                </div>
-         </md-tab>
-      </md-tabs>
-
-
-
-      <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" style="display:none" ng-mouseover="hide_sidebar()" >
-            <div class="sidebar-btn-container" style="margin-top:45px;">
-                <md-list>
-                    <div ng-click="$parent.navigate(item.title)" ng-repeat="item in menu" style="min-height:30px;height:40px;padding: 0px 10px !important;margin:5px;">
-                        <!--                        <md-icon style="height:100%;margin-right:0px;" class="{{item.icon}}"></md-icon>-->
-                        <ng-md-icon icon="{{item.icon2}}" style="fill:dimgrey" size="20"></ng-md-icon>
-                        <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
+                <span ng-click=""></span>
+                <div layout="row" layout-align="center center">
+                    <div layout="row" ng-click="showUserProfile($event);">
+                        <p style="color: whitesmoke;font-size: large;margin: 10px;" ng-model="username"> {{username}}</p>
+                        <img class="md-avatar" style="width: 30px;height: 30px;border-radius: 100%;margin: 5px;" src="styles/css/images/person.jpg">
                     </div>
-                </md-list>
+                </div>
             </div>
-
+            <div class="main-headbar-transparent md-theme-light" layout="row" layout-align="space-between center" flex>
+            </div>
         </div>
-
-
-       
-        <div class="overlay" style="z-index: 10;
+    </div>
+    <!-- headbar end -->
+    <!-- tabs start -->
+    
+    <ul ui-view layout="column" id="content1" ng-mouseleave="show_sidebar()" ng-mouseover="hide_sidebar()" style="height:100% !important" gridster>                        
+    </ul>
+                
+    <!-- tabs end -->
+    <!-- sidebar start -->
+    <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" style="display:none" ng-mouseover="hide_sidebar()" >
+        <md-list>
+            <!-- logo -->
+            <md-item >
+                <a ng-click="">
+                    <md-item-content md-ink-ripple class="sidebar-btn digin-logo" layout="column" layout-align="center center"> 
+                        <div class="digin-logo-wrapper" layout="row" layout-align="center center">
+                            <img ng-src="styles/css/images/innerlogo.png" class="md-avatar" id="digin-logo" style="width:80%;">
+                        </div>   
+                    </md-item-content>
+                </a>
+            </md-item>
+            <!-- sidebar items -->
+            <md-item ng-repeat="item in menu">
+                <a ng-click="$parent.navigate(item.title)">
+                    <md-item-content md-ink-ripple class="sidebar-btn" layout="column" layout-align="center center">
+                        <ng-md-icon icon="{{item.icon2}}" style="fill:dimgrey" size="20" layout="column" layout-align="center center" flex></ng-md-icon>
+                        <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
+                    </md-item-content>
+                </a>
+            </md-item>
+        </md-list>
+    </div>
+    <!-- sidebar end -->
+    <!-- search start -->
+    <div class="overlay" style="z-index: 10;
     opacity: 0.8;">
         <div class="overlay">
             <div class="starting-point">
                 <span></span>
             </div>
         </div>
+    </div>  
+    <div class="search-layer">
+        <div class="search">
+            <form>
+                <div class="form-group" layout="row">
+                    <label id="postdomain" style="top: 20px"><img style="width:35px;height:35px;margin-top:10px;" src='styles/css/images/ic_search_white_24px.svg' />
+                    </label>
+                    <md-input-container flex style="padding-bottom:0px">
+                        <input ng-model="searchText" type="text" id="input-search" style="background-color: #FFFFFF;height:50px;font-size: 30px;">
+                    </md-input-container>
+                </div>
+            </form>
         </div>
-        <!-- start pulathisi 7/24/2015 -->
-        <!-- <div class="overlay-secondary"></div> -->
-        <!-- end pulathisi 7/24/2015 -->
-        <div class="search-layer">
-            <div class="search">
-                <form>
-                    <div class="form-group" layout="row">
-                        <label id="postdomain" style="top: 20px"><img style="width:35px;height:35px;margin-top:10px;" src='styles/css/images/ic_search_white_24px.svg' /></label>
-                        <md-input-container flex style="padding-bottom:0px">
-                            <input ng-model="searchText" type="text" id="input-search" style="background-color: #FFFFFF;height:50px;font-size: 30px;">
-                        </md-input-container>
-                    </div>
-                </form>
-            </div>
-  <div class="results">
+        <div class="results">
             <div class="row">
                 <div class="col-md-4" layout="column" layout-align="center center" layout-padding flex="30">
-                    <!--button type="submit" class="btn btn-default" ng-click="GetDshboardDetails()"><i class="ion-search"></i></button---->
                     <div class="result result-users">
-                        
-                        <h3 style="font-family:inherit;font-weight:300;font-size:23px;">DASHBOARDS <small>({{dashboards.length}})</small></h3>
+                        <h3 style="font-family:inherit;font-weight:300;font-size:23px;">DASHBOARDS <small>({{dashboards.length}})</small>
+                        </h3>
                         <div class="row">
                             <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg' />
                             <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites <small>({{favoriteDashboards.length}})</small></h4>
@@ -220,7 +180,6 @@
                                     </a>
                                 </li>
                             </ul>
-
                         </div>
                         <div class="row">
                             <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
@@ -236,11 +195,10 @@
                                     </a>
                                 </li>
                             </ul>
-                            
                             <div class="other-controller">
-                              <div>
-                              <dir-pagination-controls boundary-links="true" on-page-change="" pagination-id="list1"></dir-pagination-controls>
-                              </div>
+                                <div>
+                                    <dir-pagination-controls boundary-links="true" on-page-change="" pagination-id="list1"></dir-pagination-controls>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -261,8 +219,7 @@
                                         </div>
                                     </a>
                                 </li>
-                            </ul>
-                            
+                            </ul> 
                         </div>
                         <div class="row">
                             <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
@@ -278,11 +235,10 @@
                                     </a>
                                 </li>
                             </ul>
-                            
                             <div class="other-controller">
-                              <div>
-                              <dir-pagination-controls boundary-links="true" on-page-change="" pagination-id="list2"></dir-pagination-controls>
-                              </div>
+                                <div>
+                                    <dir-pagination-controls boundary-links="true" on-page-change="" pagination-id="list2"></dir-pagination-controls>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -325,56 +281,52 @@
                 </div>
             </div>
         </div>
-    <div class="layer-container">
-        <div ng-repeat="pannel in menuPanels" ng-controller="DashboardCtrl" class="menu-layer">
+        <div class="layer-container">
+            <div  ng-controller="DashboardCtrl" class="menu-layer">
         {{test}}
-            <div ng-if="currentView=='Dashboard' ">
-                <ul ng-repeat="item in dashboardmenu">
-                    <li ng-click="doFunction(item.title)">
-                        <a>{{item.title}} </a>
-                    </li>
-                </ul>
-            </div>
-            <div ng-if="currentView=='Reports'">
-            </div>
-            <div ng-if="currentView=='Analytics'">
-                <ul ng-repeat="item in analyticsmenu">
-                    <li ng-click="doFunction(item.title)">
-                        <a>{{item.title}} </a>
-                    </li>
-                </ul>
-            </div>
-            <div ng-if="currentView=='RealTime'">
-                <ul ng-repeat="item in realtimeMenu">
-                    <li ng-click="doFunction(item.title)">
-                        <a>{{item.title}} </a> </li>
-                </ul>
-            </div>
-           
-            <div ng-if="currentView=='Digin P Stack'">
-                <ul>
-                    <li ng-repeat="item in Extendedmenu" ng-click="doFunction(item.title)">
-                        <a>{{item.title}} </a>
-                    </li>
-                </ul>
+                <div ng-if="currentView=='Dashboard' ">
+                    <ul ng-repeat="item in dashboardmenu">
+                        <li ng-click="doFunction(item.title)">
+                            <a>{{item.title}} </a>
+                        </li>
+                    </ul>
+                </div>
+                <div ng-if="currentView=='Reports'">
+                </div>
+                <div ng-if="currentView=='Analytics'">
+                    <ul ng-repeat="item in analyticsmenu">
+                        <li ng-click="doFunction(item.title)">
+                            <a>{{item.title}} </a>
+                        </li>
+                    </ul>
+                </div>
+                <div ng-if="currentView=='RealTime'">
+                    <ul ng-repeat="item in realtimeMenu">
+                        <li ng-click="doFunction(item.title)">
+                            <a>{{item.title}} </a>
+                        </li>
+                    </ul>
+                </div>
+                <div ng-if="currentView=='Digin P Stack'">
+                    <ul>
+                        <li ng-repeat="item in Extendedmenu" ng-click="doFunction(item.title)">
+                            <a>{{item.title}} </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-    </div>
+    <!-- search end -->
     <script type="text/javascript" src="scripts/vendor/prefixfree.min.js"></script> 
     <script type="text/javascript" src='scripts/vendor/jquery.js'></script> 
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
-
     <script type="text/javascript" src="bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>
-
     <script type="text/javascript" src="scripts/vendor/jquery.jsPlumb-1.4.1-all-min.js"></script> 
-
     <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="bower_components/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
-   
     <script type="text/javascript" src="scripts/vendor/twitteroauth.js"></script> 
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
-    <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
     <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script> 
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
     <script type="text/javascript" src="http://highslide-software.github.io/export-csv/export-csv.js"></script>
@@ -383,7 +335,7 @@
     <script type="text/javascript" src="scripts/vendor/Googleinitial.js"></script> 
     <script type="text/javascript" src="scripts/vendor/twitterservice.js"></script> 
     <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-      <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
     <script type="text/javascript" src="bower_components/underscore/underscore.js"></script> 
     <script type="text/javascript" src="scripts/config.js"></script>
     <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
@@ -395,16 +347,15 @@
     <script type="text/javascript" src="scripts/vendor/global-vendors.js"></script> 
     <script type="text/javascript" src="scripts/vendor/angular-socialshare.min.js"></script> 
     <script type="text/javascript" src="scripts/vendor/angular-css-injector.js"></script> 
-
     <!-- codemirror -->
     <script type="text/javascript" src="bower_components/codemirror/lib/codemirror.js"></script>
-
     <script type="text/javascript" src="bower_components/codemirror/addon/display/placeholder.js"></script>
-      <!-- canvastoblob -->
+    <!-- canvastoblob -->
     <script type="text/javascript" src="bower_components/canvas-toBlob.js/canvas-toBlob.js"></script>
-
 	<!-- event calendar -->
     <script type="text/javascript" src="scripts/vendor/moment.js"></script> 
+    <!-- angularJS moment-->
+     <script type="text/javascript" src="bower_components/angular-moment/angular-moment.min.js"></script>
     <script type="text/javascript" src="scripts/vendor/fullcalendar.js"></script> 
     <script type="text/javascript" src="scripts/directives/calendar.js"></script> 
     <!-- filesaver -->
@@ -412,18 +363,27 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
     <script type="text/javascript" src="bower_components/ngstorage/ngStorage.js"></script> 
     <script type="text/javascript" src="scripts/vendor/pivot.js"></script>  
-
     <script type="text/javascript" src="bower_components/d3-plugins/sankey/sankey.js"></script>
     <script type="text/javascript" src="bower_components/d3-plugins/hexbin/hexbin.js"></script>
-
     <!-- html2canvas -->
     <script type="text/javascript" src="build/html2canvas.js"></script> 
     <script type="text/javascript" src="scripts/custom/utility.js"></script> 
     <script type="text/javascript" src="scripts/app.js"></script>
-    <!-- services -->
-    <script type="text/javascript" src="scripts/services/DynamicRealTimeVis.js"></script> 
-    <script type="text/javascript" src="scripts/services/ObjectStoreService.js"></script> 
+   
     
+    <!-- services start -->
+    <script type="text/javascript" src="scripts/services/DynamicRealTimeVis.js"></script> 
+    <script type="text/javascript" src="scripts/services/ObjectStoreService.js"></script>
+    <script type="application/javascript" src="scripts/services/CommonDataService.js"></script> 
+    <script type="application/javascript" src="scripts/services/fbGraphServices.js"></script>   
+    <!-- services end -->
+    
+       
+    <!--  directives start  -->
+    <script type="application/javascript" src="scripts/directives/commonData.js"></script>    
+    <!--  directives end    -->
+    
+    <!-- controller -->
     <script type="text/javascript" src="scripts/controllers/NavCtrl.js"></script> 
     <script type="text/javascript" src="scripts/controllers/DiginCore.js"></script> 
     <script type="text/javascript" src="scripts/controllers/DiginCore2.js"></script> 
@@ -431,7 +391,6 @@
     <script type="text/javascript" src="scripts/directives/postRender.js"></script> 
     <script type="text/javascript" src="scripts/directives/accordion.js"></script> 
     <script type="text/javascript" src="scripts/controllers/chartSettingsCtrl.js"></script> 
-
     <script type="text/javascript" src="scripts/directives/resizeable.js"></script> 
     <script type="text/javascript" src="scripts/directives/droppable.js"></script> 
     <script type="text/javascript" src="scripts/directives/draggable.js"></script> 
@@ -439,11 +398,15 @@
     <script type="text/javascript" src="scripts/directives/directivelibrary.js"></script>
     <script type="text/javascript" src="scripts/directives/diginDirectives.js"></script>  
     <script type="text/javascript" src="scripts/services/ReportService.js"></script> 
-
     <script type="text/javascript" src="bower_components/FileSaver/FileSaver.js"></script>
+    <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphCtrl.js"></script>
+    <script type="text/javascript" src="scripts/controllers/d3PluginCtrl.js"></script>
+    <script type="text/javascript" src="scripts/controllers/socialGraph/SocialAnalysisCtrl.js"></script>
+    <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphFBCtrl.js"></script>
+    <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphTwitterCtrl.js"></script>
+    
     <!-- zeroclipboard -->
     <script type="text/javascript" src="bower_components/zeroclipboard/ZeroClipboard.min.js"></script> 
-
     <script type="text/javascript" src="scripts/factories/d3Data.js"></script> 
     <script type="text/javascript" src="scripts/factories/Dashboard.js"></script> 
     <script type="text/javascript" src="scripts/services/RealTimeService.js"></script> 
@@ -467,111 +430,104 @@
     <!-- or use another assembly -->
     <script type="text/javascript" src="scripts/vendor/angular-nvd3.js"></script> 
     <script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script>
- 
     <script type="text/javascript" src="scripts/controllers/angular-touch.js"></script> 
-
     <!-- raw -->
-      <script type="text/javascript" src="scripts/controllers/DiginD3.js"></script>
+    <script type="text/javascript" src="scripts/controllers/DiginD3.js"></script>
+    <!-- charts -->
+    <script src="scripts/charts/treemap.js"></script>
+    <script src="scripts/charts/d3Force.js"></script>
+    <script src="scripts/charts/streamgraph.js"></script>
+    <script src="scripts/charts/scatterPlot.js"></script>
+    <script src="scripts/charts/packing.js"></script>
+    <script src="scripts/charts/clusterDendrogram.js"></script>
+    <script src="scripts/charts/voronoi.js"></script>
+    <script src="scripts/charts/delaunay.js"></script>
+    <script src="scripts/charts/alluvial.js"></script>
+    <script src="scripts/charts/clusterForce.js"></script>
+    <script src="scripts/charts/convexHull.js"></script>
+    <script src="scripts/charts/hexagonalBinning.js"></script>
+    <script src="scripts/charts/reingoldTilford.js"></script>
+    <script src="scripts/charts/parallelCoordinates.js"></script>
+    <script src="scripts/charts/circularDendrogram.js"></script>
+    <script src="scripts/charts/smallMultiplesArea.js"></script>
+    <script src="scripts/charts/bumpChart.js"></script>
+    <script src="scripts/services/services.js"></script>
+    <script type="text/javascript" src="scripts/controllers/controllers.js"></script>
+    <script type="text/javascript" src="scripts/filters/filters.js"></script>
+    <script type="text/javascript" src="scripts/directives/directives.js"></script>
+     <!--hight charts update damith -->
+    <script type="text/javascript" src="bower_components/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="bower_components/highcharts/highcharts-more.js"></script>
+    <script type="text/javascript" src="bower_components/highcharts/solid-gauge.src.js"></script>
+    <!-- gridster -->
+    <script type="text/javascript" src="scripts/controllers/angular-gridster.js"></script> 
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-sanitize.min.js"></script>
+    <!-- intro -->
+    <script type="text/javascript" src="bower_components/intro.js/minified/intro.min.js"></script>
+    <script type="text/javascript" src="scripts/controllers/angular-intro.js"></script>
+    <script type="text/javascript" src="bower_components/codemirror/lib/codemirror.js"></script>
+    <script type="text/javascript" src="bower_components/codemirror/addon/display/placeholder.js"></script>
+    <!-- canvastoblob -->
+    <script type="text/javascript" src="bower_components/canvas-toBlob.js/canvas-toBlob.js"></script>
+    <!-- filesaver -->
+    <script type="text/javascript" src="bower_components/FileSaver/FileSaver.js"></script>
+    <!-- zeroclipboard -->
+    <script type="text/javascript" src="bower_components/angular-strap/dist/angular-strap.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-ui/build/angular-ui.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
+    <script type="text/javascript" src="bower_components/zeroclipboard/ZeroClipboard.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.3/ng-csv.min.js"></script> 
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    
+    <!-- google map -->
+    <script src="http://maps.googleapis.com/maps/api/js?libraries=places&amp;sensor=false&amp;language=en&amp;v=3.20"></script>
+    <script src="bower_components/google-map/lodash.min.js"></script>
+    <script type="text/javascript" src="bower_components/google-map/angular-simple-logger.js"></script>
+    <script src="bower_components/google-map/angular-google-map.js"></script>
+    
+    <script type="text/javascript">
+        google.load('search', '1');
+    </script>
+    <script type="text/javascript">
+        google.load("feeds", "1");
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ=API_KEY&callback=finish">
+    </script>
+    <!-- angular datepicker -->
+    <script src="scripts/controllers/angular-datepicker.js"></script> 
+    <!-- linq for quering in elastic widget -->
+    <script type="text/javascript" src="scripts/vendor/linq/linq.js"></script> 
+    <script type="text/javascript" src="bower_components/angular-utils-pagination/dirPagination.js"></script> 
+    <script>
+        var script = '<script type="text/javascript" src="src/markerclusterer';
+        if (document.location.search.indexOf('compiled') !== -1) {
+            script += '_compiled';
+        }
+        script += '.js"><' + '/script>';
+        document.write(script);
+    </script>
+    <script>
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-12846745-20']);
+        _gaq.push(['_trackPageview']);
 
-      <!-- charts -->
-      <script src="scripts/charts/treemap.js"></script>
-            <script src="scripts/charts/d3Force.js"></script>
-      <script src="scripts/charts/streamgraph.js"></script>
-      <script src="scripts/charts/scatterPlot.js"></script>
-      <script src="scripts/charts/packing.js"></script>
-      <script src="scripts/charts/clusterDendrogram.js"></script>
-      <script src="scripts/charts/voronoi.js"></script>
-      <script src="scripts/charts/delaunay.js"></script>
-      <script src="scripts/charts/alluvial.js"></script>
-      <script src="scripts/charts/clusterForce.js"></script>
-      <script src="scripts/charts/convexHull.js"></script>
-      <script src="scripts/charts/hexagonalBinning.js"></script>
-      <script src="scripts/charts/reingoldTilford.js"></script>
-      <script src="scripts/charts/parallelCoordinates.js"></script>
-      <script src="scripts/charts/circularDendrogram.js"></script>
-      <script src="scripts/charts/smallMultiplesArea.js"></script>
-      <script src="scripts/charts/bumpChart.js"></script>
-      <script src="scripts/services/services.js"></script>
-      <script type="text/javascript" src="scripts/controllers/controllers.js"></script>
-      <script type="text/javascript" src="scripts/filters/filters.js"></script>
-      <script type="text/javascript" src="scripts/directives/directives.js"></script>
-
-      <script type="text/javascript" src="scripts/angular-gridster.js"></script> 
-      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-sanitize.min.js"></script> <!-- $$$ -->
-        <!-- intro -->
-      <script type="text/javascript" src="bower_components/intro.js/minified/intro.min.js"></script>
-      <script type="text/javascript" src="scripts/controllers/angular-intro.js"></script>
-
-      <script type="text/javascript" src="bower_components/codemirror/lib/codemirror.js"></script>
-      <script type="text/javascript" src="bower_components/codemirror/addon/display/placeholder.js"></script>
-        <!-- canvastoblob -->
-      <script type="text/javascript" src="bower_components/canvas-toBlob.js/canvas-toBlob.js"></script>
-        <!-- filesaver -->
-      <script type="text/javascript" src="bower_components/FileSaver/FileSaver.js"></script>
-        <!-- zeroclipboard -->
-      <script type="text/javascript" src="bower_components/angular-strap/dist/angular-strap.min.js"></script>
-      <script type="text/javascript" src="bower_components/angular-ui/build/angular-ui.min.js"></script>
-      <script type="text/javascript" src="bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
-      <script type="text/javascript" src="bower_components/zeroclipboard/ZeroClipboard.min.js"></script>
-
-      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.3/ng-csv.min.js"></script> 
-      <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-      <script type="text/javascript">
-            google.load('search', '1');
-
-      </script>
-      <script type="text/javascript">
-            google.load("feeds", "1");
-
-      </script>
-      <script async defer src="https://maps.googleapis.com/maps/api/js?AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ=API_KEY&callback=finish">
-
-
-      </script>
-        <!-- angular datepicker -->
-      <script src="scripts/controllers/angular-datepicker.js"></script> 
-
-        <!-- linq for quering in elastic widget -->
-      <script type="text/javascript" src="scripts/vendor/linq/linq.js"></script> 
-        </div>
-
-      <script type="text/javascript" src="bower_components/angular-utils-pagination/dirPagination.js"></script> 
-      <script>
-            var script = '<script type="text/javascript" src="src/markerclusterer';
-            if (document.location.search.indexOf('compiled') !== -1) {
-                script += '_compiled';
-            }
-            script += '.js"><' + '/script>';
-            document.write(script);
-
-      </script>
-
-      <script>
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', 'UA-12846745-20']);
-            _gaq.push(['_trackPageview']);
-
-            (function() {
-                var ga = document.createElement('script');
-                ga.type = 'text/javascript';
-                ga.async = true;
-                ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(ga, s);
-            })();
-
-      </script>
-      <script src="jsons/data.json"></script> 
-      <script>
-            $(document).ready(function() {
-
-                Layout.init();
-                
-                $('.nav-menu').hide();
-
-            });
-
-      </script>
+        (function() {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <script src="jsons/data.json"></script> 
+    <script>
+        $(document).ready(function() {
+            Layout.init();
+            $('.nav-menu').hide();
+        });
+    </script>
 </body>
 
 </html>
+

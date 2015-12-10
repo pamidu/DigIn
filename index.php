@@ -79,7 +79,6 @@
 
 <!DOCTYPE html>
     <html ng-app="diginLogin" ng-controller="LoginCtrl">
-
     <head>
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
         <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">

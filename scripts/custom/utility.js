@@ -12,6 +12,22 @@
       callback(data.d);
     });
  };
+ 
+ /*Summary 
+    parameters {http : $http service object,
+                file : json file name without the extension,
+                callback : callback function,
+                propName: property name you need from the json object
+                propVal: property value you need from the json object}
+    returns {JSON data as a single object}*/
+ function getJSONDataByProperty(http,file,propName,propVal,callback){
+    http.get('jsons/'+file+'.json').success(function(data) {
+        console.log(data);
+      callback(data.d.filter(function( obj ) {
+        return obj[propName] == propVal;
+      }));
+    });
+ };
 
  /*Summary 
     parameters {http : $http service object,

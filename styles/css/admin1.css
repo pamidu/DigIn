@@ -8204,7 +8204,7 @@ h6 {
     position: fixed;
     left: 0;
     top: 0;
-    width: 50px;
+    width: 40px;
     height: 100%;
     background: #fff;
     /*border-right: 1px solid #f0f0f0;*/
@@ -8433,7 +8433,7 @@ h6 {
 }
 .overlay.overlay-nav {
     z-index: 10;
-    width: 48px;
+    width: 40px;
 }
 
 /*.overlay.overlay-search {
@@ -9574,10 +9574,6 @@ button.toast-close-button {
     height: 100% !important;
     opacity: 0;
 }
-.md-button {
-    margin: 4px !important;
-}
-
 /*
 6.1 - Default Color
 */
@@ -10604,9 +10600,26 @@ md-icon {}
 }
 
 /*gridster widget east side handle*/
+.handle-s {
+    height: 2px !important;
+}
 .handle-e {
     width: 2px !important;
 }
+.handle-n {
+    height: 2px !important;
+}
+.handle-w {
+    width: 2px !important;
+}
 
-
-
+md-tooltip {
+  position: absolute;
+  z-index: 100;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: 4px;
+  font-size: 14px; 
+  padding: 5px;
+  margin-left:2px;
+}

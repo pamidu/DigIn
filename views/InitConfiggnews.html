@@ -20,12 +20,12 @@
             <div layout="row" layout-margin>
                 <md-input-container flex>
                     <label id="postdomain">Criteria:</label>
-                    <input id="gnewsrequest" name="gnewsrequest" type="text"/>
+                    <input id="gnewsrequest" type="text" ng-model="gnewsrequest"/>
                 </md-input-container>
             </div>
             <div class="md-actions" layout="row">
                 <span flex></span>
-                <md-button ng-click="finish()">
+                <md-button ng-click="finish(gnewsrequest)">
                     Finish
                 </md-button>
                 <md-button ng-click="cancel()">

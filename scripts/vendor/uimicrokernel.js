@@ -5,7 +5,7 @@
     function getHost() {
         var host = window.location.hostname;
 
-        if (host.indexOf("localhost") != -1 || host.indexOf("127.0.0.1") != -1)
+        if (host.indexOf("localhost") != -1 || host.indexOf("127.0.0.1") != -1 || host.indexOf("digin-sajeetharan.c9users.io") != -1)
             host = "adminduowebinfo.space.duoworld.duoweb.info"; //admin.srilankanvotes.com12thdoor.duoweb.info
 
         return host;

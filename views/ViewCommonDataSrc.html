@@ -1,0 +1,65 @@
+
+<md-button ng-click="toggleRight()"
+            ng-hide="isOpenRight()"
+            class="md-primary">
+            Toggle right
+          </md-button>
+<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+      <md-content ng-controller="RightCtrl" layout-padding>
+        <div>
+            <div class="card-head">
+                <header>Filter data</header>
+                <div class="tools">
+                    <a href="javascript:void(0)" data-ng-click="closeToggle()">
+                        <i class="ti-close"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="inline-text">
+                    <i class="fa fa-database"></i>
+                    <span>Source</span>
+                </div>
+                <div data-ng-if="tablesLoading" class="right loading-table">
+                    <i class="fa fa-circle-o-notch fa-spin"></i>
+                </div>
+                <div layout="row">
+                    <!-- select data source -->
+                    <div flex>
+                        <md-select class="full-width"
+                                   placeholder="Select Source"
+                                   id="source"
+                                   ng-model="source"
+                                   ng-change="onChangeSource(source)"
+                                   md-on-open="loadingDataSource()">
+                            <md-option ng-value="source.name"
+                                       ng-repeat="source in datasources">
+                                {{source.name}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div layout="row">
+                    <!-- select table -->
+                    <div flex>
+                        <md-select class="full-width"
+                                   placeholder="Select Table"
+                                   ng-change="onChangeTable(item)"
+                                   ng-model="item">
+                            <md-option ng-value="item" ng-repeat="item in dataTables">
+                                {{item}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+            </div>
+            <!-- index loader -->
+            <div layout="column" class="data-index">
+                <div class="draggable" ng-repeat="item in dataFields">
+                    <span>{{item}}</span>
+                </div>
+            </div>
+         </div>
+
+      </md-content>
+    </md-sidenav>

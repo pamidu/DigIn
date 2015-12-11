@@ -302,6 +302,7 @@ button.md-fab.md-raised.md-primary.md-button.md-teal-theme {
     padding-left: 0px;
     left: 40px;
     top: 0px;
+    z-index: 1;
 }
 
 /*Unwanted style */
@@ -1281,9 +1282,9 @@ md-tab-content{
 }
 
 .introjs-helperLayer {
-    
+    left: 0px !important;
     background-color: transparent !important;
-    border: 10px solid rgba(255,255,255,.5) !important;
+    border: 5px solid rgba(255,255,255,.5) !important;
     
 }
 
@@ -1311,7 +1312,7 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
 .main-headbar-wrapper
 {
     position:absolute;
-    height: 40px;
+    height: 15px;
     width: 100%;
     z-index:1000;
     visibility:hidden;
@@ -1341,7 +1342,6 @@ md-tabs > md-tabs-wrapper
     background-color: #fff;
     opacity: 0.8;
 }
-
 
 
 

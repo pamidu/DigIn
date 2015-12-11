@@ -1197,7 +1197,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         intro = introJs();
                         intro.setOptions($scope.IntroOptions);
                         intro.start();
-                },1000);
+                },0);
                     
                     
                 // $scope.help();
@@ -1326,7 +1326,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 console.log(targetElement);
             };
 
-                $scope.IntroOptions = {
+            $scope.IntroOptions = {
                     steps:[
                     {
                         element: document.querySelectorAll('.main-headbar')[0],
@@ -1341,73 +1341,73 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     }
                     ,
                     {
-                        element: document.querySelectorAll('md-list > div.ng-scope')[0],
+                        element: document.querySelectorAll('#getReport > md-list > md-item:nth-child(2) > a > md-item-content')[0],
                         intro: '<strong>Use this to create new dashboards</strong>',
                         position: 'right'
                     }
                     ,
                     {
-                        element: document.querySelectorAll('md-list > div.ng-scope')[1],
+                        element: document.querySelectorAll('md-item-content.sidebar-btn.md-ink-ripple')[1],
                         intro: '<strong>Use this to access reports</strong>',
                         position: 'right'
                     }
                     ,
                     {
-                        element: document.querySelectorAll('md-list > div.ng-scope')[2],
+                        element: document.querySelectorAll('md-item-content.sidebar-btn.md-ink-ripple')[2],
                         intro: '<strong>Realtime tool is a handy tool for data analysis </strong>',
                         position: 'right'
                     }
                     ,
                     {
-                        element: document.querySelectorAll('md-list > div.ng-scope')[3],
+                        element: document.querySelectorAll('md-list md-item > a > md-item-content')[4],
                         intro: '<strong>This is the Digin P Stack feature</strong>',
                         position: 'right'
                     }
                     ,
                     {
-                        element: document.querySelectorAll('md-list > div.ng-scope')[4],
+                        element: document.querySelectorAll('md-list > md-item > a > md-item-content')[5],
                         intro: '<strong>D3plugins is a tool to create D3 visualizations</strong>',
                         position: 'right'
                     }
                     ,
                     {
-                        element: document.querySelectorAll('md-list > div.ng-scope')[5],
+                        element: document.querySelectorAll('md-list > md-item > a > md-item-content')[6],
                         intro: '<strong>Use this to add widgets to your dashbaord</strong>',
                         position: 'right'
                     }
                     ,
                     {
-                        element: document.querySelectorAll('md-list > div.ng-scope')[6],
+                        element: document.querySelectorAll('md-list > md-item > a > md-item-content')[7],
                         intro: '<strong>Settings feature can be used to create users and to add/remove features</strong>',
                         position: 'right'
                     }
                     ,
                     {
-                        element: document.querySelectorAll('md-list > div.ng-scope')[7],
+                        element: document.querySelectorAll('md-list > md-item > a > md-item-content')[8],
                         intro: '<strong>Save feature is to save Dashboards</strong>',
                         position: 'right'
                     }
                     ,
                     {
-                        element: document.querySelectorAll('md-list > div.ng-scope')[8],
+                        element: document.querySelectorAll('md-list > md-item > a > md-item-content')[9],
                         intro: '<strong>Give a nice look to the app with your desired theme</strong>',
                         position: 'right'
                     }
                     ,
                     {
-                        element: document.querySelectorAll('md-list > div.ng-scope')[9],
+                        element: document.querySelectorAll('md-list > md-item > a > md-item-content')[10],
                         intro: '<strong>Share using most popular social media and email</strong>',
                         position: 'right'
                     }
                     ,
                     {
-                        element: document.querySelectorAll('md-list > div.ng-scope')[10],
+                        element: document.querySelectorAll('md-list > md-item > a > md-item-content')[11],
                         intro: '<strong>Export your widget in any format</strong>',
                         position: 'right'
                     }
                     ,
                     {
-                        element: document.querySelectorAll('md-list > div.ng-scope')[11],
+                        element: document.querySelectorAll('md-list > md-item > a > md-item-content')[12],
                         intro: '<strong>Switch between browser view and Full Screen mode</strong>',
                         position: 'right'
                     }
@@ -1419,9 +1419,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     prevLabel: '<strong>PREVIOUS</strong>',
                     skipLabel: 'EXIT',
                     doneLabel: 'DONE'
-                };
+            };
 
-                $scope.ShouldAutoStart = true;
+            $scope.ShouldAutoStart = true;
 
         },1000);       
 

@@ -1,8 +1,8 @@
 $(window).load(function () {
     $('#pagePreLoader').hide();
-    $('.nav-menu').show();
+    $('.nav-menu').css("visibility","visible");
     $('.main-headbar').css("visibility","visible");
-    $('#footerBar').css("visibility","visible");  
+    
 });
 
 var routerApp = angular.module('DuoDiginRt', ['ngMaterial',

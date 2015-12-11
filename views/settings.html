@@ -1,4 +1,4 @@
-<md-dialog>
+<md-dialog style="max-width:100%;max-height:100%">
     <md-content layout="row" style="height:100%;overflow:hidden;">
         <div flex>
             <img ng-click="test()" src="styles/css/images/person.jpg" style="height:100%;width:80%;">
@@ -71,11 +71,11 @@
                 </md-tab>
             </md-tabs>
             <div class="md-actions" layout="row">
-                <md-button class="md-fab md-mini" styl="background-color: #D33F3F;" ng-click="close();">
-                    <ng-md-icon icon="close" style="fill:whitesmoke"></ng-md-icon>
+                <md-button class="md-fab md-mini" ng-click="close();" >
+                    <ng-md-icon icon="close" style="fill:whitesmoke" layout-align="center center" layout="column"></ng-md-icon>
                 </md-button>
                 <md-button class="md-fab md-mini md-primary" ng-click="finish()">
-                    <ng-md-icon icon="arrow_forward" style="fill:whitesmoke"></ng-md-icon>
+                    <ng-md-icon icon="arrow_forward" style="fill:whitesmoke" layout-align="center center" layout="column"></ng-md-icon>
                 </md-button>
             </div>
         </div>

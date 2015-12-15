@@ -546,34 +546,33 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $rootScope.clickedDash = dashboard.data;
                     $(".dashboard-widgets-close").addClass("active");
                 }
+            }
+
+            $scope.tabs = $rootScope.Dashboards;
+            $rootScope.dashboard = $rootScope.Dashboards[0];
+            if($rootScope.dashboard.widgets.length==0)
+                $rootScope.dashboard.widgets = $rootScope.dashboardWidgetsCopy;
+            $scope.selectedIndex = 1;
+            $scope.$watch('selectedIndex', function (current, old) {
+            var previous = selected;
+            if($rootScope.Dashboards[current].widgets.length== 0)
+                selected = $rootScope.dashboardWidgetsCopy; 
+            else
+                selected = $rootScope.Dashboards[current];
+            if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
+            if (current + 1) $log.debug('Hello ' + selected.title + '!');
+            });
+            console.log(dashboard);
+            //closing the overlay
+            // start pulathisi 7/23/2015
+            // when saved dashboard is clicked change sidebar icon class, this changes icon colors
+            $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
+            // end pulathisi 7/23/2015
+            $(".overlay").removeClass("overlay-search active");
+            $(".nav-search").removeClass("active");
+            $(".search-layer").removeClass("activating active");
+
         }
-
-                    $scope.tabs = $rootScope.Dashboards;
-                    $rootScope.dashboard = $rootScope.Dashboards[0];
-                    if($rootScope.dashboard.widgets.length==0)
-                        $rootScope.dashboard.widgets = $rootScope.dashboardWidgetsCopy;
-                    $scope.selectedIndex = 1;
-                    $scope.$watch('selectedIndex', function (current, old) {
-                        //previous = selected;
-                        // if($rootScope.Dashboards[current].widgets.length== 0)
-                        //     selected = $rootScope.dashboardWidgetsCopy; 
-                        // else
-                            selected = $rootScope.Dashboards[current];
-                        if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
-                        //if (current + 1) $log.debug('Hello ' + selected.title + '!');
-                    });
-                    console.log(dashboard);
-                    //closing the overlay
-                    // start pulathisi 7/23/2015
-                    // when saved dashboard is clicked change sidebar icon class, this changes icon colors
-                    $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
-                    // end pulathisi 7/23/2015
-                    $(".overlay").removeClass("overlay-search active");
-                    $(".nav-search").removeClass("active");
-                    $(".search-layer").removeClass("activating active");
-
-
-                }
 
         $scope.goAnalyzer = function (report) {
             $scope.manageTabs(false);
@@ -1059,6 +1058,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             } else {
                 $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
             }
+            console.log("$scope");
+            console.log($scope);
+            console.log("$rootScope");
+            console.log($rootScope);
 
             // end pulathisi 7/23/2015
             // }

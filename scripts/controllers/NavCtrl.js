@@ -554,10 +554,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $rootScope.dashboard.widgets = $rootScope.dashboardWidgetsCopy;
             $scope.selectedIndex = 1;
             $scope.$watch('selectedIndex', function (current, old) {
-            var previous = selected;
-            if($rootScope.Dashboards[current].widgets.length== 0)
-                selected = $rootScope.dashboardWidgetsCopy; 
-            else
+            // var previous = selected;
+            // if($rootScope.Dashboards[current].widgets.length== 0)
+            //     selected = $rootScope.dashboardWidgetsCopy; 
+            // else
                 selected = $rootScope.Dashboards[current];
             if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
             if (current + 1) $log.debug('Hello ' + selected.title + '!');
@@ -898,26 +898,31 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 widgets: []
             };
 
+            console.log(tempObj);
+
             $rootScope.Dashboards.push(tempObj);
             showToast(obj.title + " created!");
         };
 
         $rootScope.selectCurrentDashboard = function (tab) {
+
+            console.log("$rootScope");
+            console.log($rootScope);
+
             console.log("you selected :");
             console.log(tab);
 
-            for (a = 0; a < $rootScope.Dashboards.length; a++) {
-                if ($rootScope.dashboardId == $rootScope.Dashboards[a].dashboardId) {
-                    $rootScope.Dashboards[a] = $rootScope.dashboard;
-                };
-            };
+            // for (a = 0; a < $rootScope.Dashboards.length; a++) {
+            //     if ($rootScope.dashboardId == $rootScope.Dashboards[a].dashboardId) {
+            //         $rootScope.Dashboards[a] = $rootScope.dashboard;
+            //     };
+            // };
 
             for (a = 0; a < $rootScope.Dashboards.length; a++) {
                 if (tab.dashboardId == $rootScope.Dashboards[a].dashboardId) {
                     $rootScope.dashboard = $rootScope.Dashboards[a];
                     //$rootScope.globalDashboardIndex = a;
                 };
-
             };
         }
 

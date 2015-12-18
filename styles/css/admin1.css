@@ -10601,16 +10601,18 @@ md-icon {}
 
 /*gridster widget east side handle*/
 .handle-s {
-    height: 2px !important;
+    height: 1px !important;
 }
 .handle-e {
-    width: 2px !important;
+    width: 1px !important;
+    right: 0;
 }
 .handle-n {
-    height: 2px !important;
+    height: 1px !important;
 }
 .handle-w {
-    width: 2px !important;
+    width: 1px !important;
+    left: 0;
 }
 
 md-tooltip {

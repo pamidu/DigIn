@@ -743,10 +743,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                 $scope.topPosition = data.topPosition;
                 $scope.ChartType = data.ChartType;
                 $scope.currWidget = {
-                    sizeX: 2,
-                    sizeY: 2,
-                    row: 2,
-                    col: 2,
+                    
                     widCsv: {},
                     widCsc: {},
                     widEnc: {},

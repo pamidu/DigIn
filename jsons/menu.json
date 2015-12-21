@@ -30,13 +30,8 @@
             "icon1": "bower_components/material-design-icons/social/svg/production/ic_share_24px.svg",
             "icon": "ion-share",
             "icon2": "share"
-        }, {
-
-            "title": "Export",
-            "icon1": "bower_components/material-design-icons/file/svg/production/ic_file_download_24px.svg",
-            "icon": "ion-paper-airplane",
-            "icon2": "import_export"
-        }, {
+        }, 
+        {
 
             "title": "TV Mode",
             "icon1": "bower_components/material-design-icons/hardware/svg/production/ic_tv_24px.svg",

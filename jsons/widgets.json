@@ -8,10 +8,6 @@
             "initTemplate": "InitConfigimage",
             "initController": "imInit",
             "widView": "views/Viewimage.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "0",
-            "col": "1",
             "color": "#2196F3"
         }, {
 
@@ -22,10 +18,6 @@
             "initTemplate": "InitConfigCalendar",
             "initController": "calendarInit",
             "widView": "views/ViewCalendar.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "0",
-            "col": "2",
             "color": "#FF9800"
         }, {
 
@@ -36,25 +28,7 @@
             "initTemplate": "InitConfigClock",
             "initController": "clockInit",
             "widView": "views/ViewClock.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "0",
-            "col": "2",
             "color": "#CDDC39"
-        }, {
-
-            "title": "Calendar",
-            "icon": "styles/css/images/icons/calendar.svg",
-            "type": "General",
-            "Description": "Date, Schedule day to day work",
-            "initTemplate": "InitConfigCal",
-            "initController": "calInit",
-            "widView": "views/ViewCal.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "0",
-            "col": "2",
-            "color": "#C2185B"
         }, {
 
             "title": "Weather",
@@ -64,11 +38,7 @@
             "initTemplate": "InitConfigWeatherc",
             "initController": "weathercInit",
             "widView": "views/ViewWeatherc.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "0",
-            "col": "2",
-            "color": "#FFEB3B"
+            "color": "#C2185B"
         }, {
 
             "title": "Profile",
@@ -78,10 +48,6 @@
             "initTemplate": "InitConfigProfile",
             "initController": "profileInit",
             "widView": "views/ViewProfile.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "0",
-            "col": "2",
             "color": "#9C27B0"
         }, {
 
@@ -92,10 +58,6 @@
             "initTemplate": "InitConfigD3",
             "initController": "InitConfigD3",
             "widView": "views/ViewD3.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "1",
-            "col": "0",
             "color": "#00BCD4"
 
         } , {
@@ -107,11 +69,7 @@
             "initTemplate": "InitConfigFacebook",
             "initController": "fbInit",
             "widView": "views/ViewFacebook.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "1",
-            "col": "2",
-            "color": "#03A9F4",
+            "color": "#3F51B5",
             "widConfig": {
                 "options": {
                     "chart": {
@@ -151,20 +109,6 @@
             }
         }, {
 
-            "title": "Instagram search",
-            "icon": "styles/css/images/icons/instagram.svg",
-            "type": "Social Media",
-            "Description": "Hash tags,Popular images,Followers, Other data",
-            "initTemplate": "InitConfigInstagram",
-            "initController": "instaInit",
-            "widView": "views/ViewInstagram.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "0",
-            "color": "#795548",
-            "col": "0"
-        }, {
-
             "title": "Google+",
             "icon": "styles/css/images/icons/googleplus.svg",
             "type": "Social Media",
@@ -172,10 +116,6 @@
             "initTemplate": "InitConfigGoogleplus",
             "initController": "googlePlusInit",
             "widView": "views/ViewGoogleplus.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "0",
-            "col": "1",
             "color": "#FF5722"
         }, {
 
@@ -186,10 +126,6 @@
             "initTemplate": "InitConfigTwitter",
             "initController": "TwitterInit",
             "widView": "views/ViewTwitter.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "0",
-            "col": "1",
             "color": "#2196F3"
         }, {
 
@@ -200,26 +136,7 @@
             "initTemplate": "InitConfigLinkedin",
             "initController": "linkedInit",
             "widView": "views/ViewLinkedIn.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "0",
-            "col": "2",
             "color": "#607D8B"
-        }, {
-
-            "title": "Pinterest",
-            "icon": "styles/css/images/icons/pinterest.svg",
-            "type": "Social Media",
-            "Description": "Boards, Pins, Likes, Followers, Following",
-            "initTemplate": "fbInitConfig",
-            "initController": "fbInit",
-            "widView": "views/chartview.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "0",
-            "col": "3",
-            "color": "#FFC107"
-
         }, {
             "title": "Dynamic visuals",
             "icon": "styles/css/images/icons/ic_av_timer_24px.svg",
@@ -230,10 +147,6 @@
             "widView": "views/ViewElasticSearch.html",
             "dataView": "ViewElasticData",
             "dataCtrl": "elasticDataCtrl",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "1",
-            "col": "0",
             "color": "#CDDC39"
 
         }, {
@@ -246,11 +159,7 @@
             "widView": "views/ViewRealTime.html",
             "dataView": "ViewElasticData",
             "dataCtrl": "elasticDataCtrl",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "1",
-            "col": "0",
-            "color": "#CDDC38"
+            "color": "#3F51B5"
 
         },
          {
@@ -263,10 +172,6 @@
             "widView": "views/ViewMetrics.html",
             "dataView": "ViewElasticData",
             "dataCtrl": "elasticDataCtrl",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "1",
-            "col": "0",
             "color": "#9C27B0"
 
         },
@@ -279,10 +184,6 @@
             "initTemplate": "InitConfigyoutube",
             "initController": "YoutubeInit",
             "widView": "views/Viewyoutube.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "1",
-            "col": "2",
             "color": "#F44336"
         }, {
 
@@ -293,10 +194,6 @@
             "initTemplate": "InitConfigWordpress",
             "initController": "wordpressInit",
             "widView": "views/ViewWordpress.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "1",
-            "col": "3",
             "color": "#B6B6B6"
         }, {
 
@@ -307,10 +204,6 @@
             "initTemplate": "InitConfigRss",
             "initController": "rssInit",
             "widView": "views/ViewRss.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "2",
-            "col": "0",
             "color": "#F57C00"
         }, {
 
@@ -321,10 +214,6 @@
             "initTemplate": "InitConfiggnews",
             "initController": "gnewsInit",
             "widView": "views/ViewGnews.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "2",
-            "col": "0",
             "color": "#3F51B5"
 
         }, {
@@ -335,10 +224,6 @@
             "initTemplate": "InitSLT",
             "initController": "SLTInit",
             "widView": "views/ViewSLTSkill.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "2",
-            "col": "2",
             "color": "#E040FB"
         }, {
 
@@ -349,11 +234,7 @@
             "initTemplate": "InitSLTIvr",
             "initController": "sltivrInit",
             "widView": "views/ViewSLTIvr.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "2",
-            "col": "3",
-            "color": "#673AB7"
+            "color": "#E64A19"
         }, {
 
             "title": "Calls in Queue",
@@ -366,10 +247,6 @@
             "dataView": "ViewQueuedSLTdata",
             "dataCtrl": "sltQueuedCtrl",
             "dataJson": "sltTotalqueued",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "3",
-            "col": "0",
             "color": "#F8BBD0"
         }, {
 
@@ -382,10 +259,6 @@
             "widView": "views/ViewSLTAgent.html",
             "dataView": "ViewConnectedSLTdata",
             "dataCtrl": "sltConnectedCtrl",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "3",
-            "col": "1",
             "color": "#8BC34A"
         }, {
 
@@ -399,10 +272,6 @@
             "dataView": "ViewQueueDetailsSLTdata",
             "dataCtrl": "sltQueueDetailsCtrl",
             "dataJson": "sltQueueDetails",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "3",
-            "col": "2",
             "color": "#00BCD4"
         }, {
 
@@ -415,10 +284,6 @@
             "widView": "views/ViewGoogleMaps.html",
             "dataView": "ViewDataGoogleMaps",
             "dataCtrl": "googleMapsCtrl",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "4",
-            "col": "0",
             "color": "#8BC34A"
         }, {
 
@@ -432,11 +297,7 @@
             "dataView": "ViewDataHnbClaims",
             "dataCtrl": "hnbClaimsCtrl",
             "dataJson": "hnbForceData",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "3",
-            "col": "0",
-            "color": "#E64A19"
+            "color": "#673AB7"
         },
         {
             "title": "Sunburst visualization",
@@ -449,10 +310,6 @@
             "dataView": "ViewDataDistributedClaims",
             "dataCtrl": "hnbDistributedCtrl",
             "dataJson": "hnbDistributedclaims",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "3",
-            "col": "0",
             "color": "#E64A19"
         },
         {
@@ -466,10 +323,6 @@
             "dataView": "ViewDataHnbBox",
             "dataCtrl": "hnbBoxCtrl",
             "dataJson": "hnbBoxData",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "3",
-            "col": "0",
             "color": "#303F9F"
         },
         {
@@ -477,10 +330,6 @@
             "title": "Widget Settings",
             "initController": "widgetSettingsCtrl",
             "widView": "views/ViewWidgetSettings.html",
-            "sizeX": "2",
-            "sizeY": "2",
-            "row": "1",
-            "col": "3",
             "color": "#B6B6B6"
         }
 

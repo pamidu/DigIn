@@ -560,7 +560,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             // else
                 selected = $rootScope.Dashboards[current];
             if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
-            if (current + 1) $log.debug('Hello ' + selected.title + '!');
+            //if (current + 1) $log.debug('Hello ' + selected.title + '!');
             });
             console.log(dashboard);
             //closing the overlay
@@ -678,7 +678,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $http({
                 method: 'GET',
-                url: 'http://localhost:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                // url: 'http://localhost:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
+                url: 'http://192.168.1.148:8080/pentaho/api/repo/files/%3Ahome%3A' + 'admin' + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
                 // cache: $templateCache,
                 headers: {
                     'Access-Control-Allow-Origin': '*',

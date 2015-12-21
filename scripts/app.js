@@ -937,21 +937,6 @@ routerApp.directive('barsChart', function ($parse) {
     return directiveDefinitionObject;
 });
 
-routerApp.factory('instagram', ['$http', function ($http) {
-
-    return {
-        fetchPopular: function (callback) {
-
-            var endPoint = "https://api.instagram.com/v1/media/popular?client_id=f22d4c5be733496c88c0e97f3f7f66c7&callback=JSON_CALLBACK";
-
-            $http.jsonp(endPoint).success(function (response) {
-                callback(response.data);
-            });
-        }
-    }
-
-}]);
-
 routerApp.filter('fromTo', function () {
     return function (input, from, total, lessThan) {
         from = parseInt(from);
@@ -983,33 +968,6 @@ routerApp.directive('clockComponent', function () {
         template: " <div class='clockmain widget-card'><md-button style='min-width: 10px;' ng-click='clockComponentSelectformat($event);'><img src='http://imgh.us/dots_1.svg' width='5' height='23'/></md-button><ul id='clockclock'><li id='clockhour'></li><li id='clockmin'></li><li id='clocksec'></li></ul><div id='clockdate'><p style='font-family: lato,sans-serif;font-size:xx-large;color:#00172F;margin: 10px;'><span id='clockHours'></span> : <span id='clockMins'></span> </p><span id='clockmonthDay'></span></div></div>"
     };
 });
-
-routerApp.directive('calenderComponent', function () {
-    return {
-        restrict: 'E',
-        controller: 'calenderWidgetController',
-        template: "<div class='widget-card'><section class='calendar'>\
-<ng-md-icon style='position: absolute;left: 40px;min-width: 5px;top: 25px;fill:white;' ng-click='previousMonth();' icon='navigate_before'>p</ng-md-icon>\
-  <h1>{{monthNames[month]}} 2015</h1>\
-<ng-md-icon style='position: absolute;right: 40px;min-width: 5px;top: 25px;fill:white' ng-click='nextMonth();' icon='navigate_next'>p</ng-md-icon>\
-  <form action='#'>\
-    <label class='weekday'>Mo</label>\
-    <label class='weekday'>Tu</label>\
-    <label class='weekday'>We</label>\
-    <label class='weekday'>Th</label>\
-    <label class='weekday'>Fr</label>\
-    <label class='weekday'>Sa</label>\
-    <label class='weekday'>Su</label>\
-    <label class='day' data-day='{{day.day}}' ng-repeat='day in days' ng-if='day.month == month'>\
-      <input class='appointment' date-day='{{day.day}}' ng-model='day.task' placeholder='What would you like to do?' required='true' type='text'>\
-      <span>{{day.date}}</span>\
-      <em></em>\
-    </label>\
- <div class='clearfix'></div>\
-  </form>\
-</section></div>"
-    };
-})
 
 routerApp.directive('weatherComponent', function () {
     return {

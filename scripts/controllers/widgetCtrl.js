@@ -6,7 +6,6 @@
 |      #linkedIn settings  : linkedInit                    |
 |      #elastic settings   : elasticInit                   | 
 |      #wordpress settings : wordpressInit                 |
-|      #instagram settings : instaInit                     | 
 |      #d3plugin settings  : d3Init                        |
 |      #sltskillwisecall   : sltskillInit                  |
 |      #sltivr settings    : sltivrInit                    | 
@@ -2718,80 +2717,6 @@ function googlePlusInit($scope, $http, $mdDialog, widId, $rootScope) {
     }
 
 }
-
-
-
-function instaInit($scope, $http, $window, instagram, widId, $rootScope, $mdDialog, $interval) {
-
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-
-
-
-    $scope.cancel = function() {
-        $mdDialog.hide();
-    };
-
-
-    $scope.finish = function() {
-        $mdDialog.hide();
-    };
-
-
-    $scope.message = null;
-
-    var searchByTag = function(tag) {
-
-        //config
-        var url = 'https://api.instagram.com/v1/tags/' + tag + '/media/recent';
-        var clientId = '416e81a93f0d4cb689ded7e74749bc86';
-        var config = {
-                'params': {
-                    'client_id': clientId,
-                    'callback': 'JSON_CALLBACK',
-                    'count': 200
-                }
-            }
-            //console.log( 'json request' );
-        $http.jsonp(url, config)
-            .success(function(results) {
-                var dataLength = results.data.length;
-                var resultData = results.data;
-                if (dataLength > 0) {
-                    $rootScope.instaImages = resultData;
-
-                    // console.log( resultData );
-                    $rootScope.dashboard.widgets[objIndex].widData = $rootScope.instaImages;
-                    // console.log(JSON.stringify($rootScope.instaImages));
-                    $scope.message = "We found " + dataLength + " results for " + tag;
-                } else {
-                    $scope.message = "No results.";
-                }
-            })
-            .error(function() {
-                $scope.message = "Not found.";
-            });
-
-    };
-
-    $scope.formData = {};
-
-    $scope.submitForm = function() {
-        // console.log( 'submit' );
-        // console.log( $scope.formData.tagInput );
-        var tag = $scope.formData.tagInput;
-        searchByTag(tag);
-        $scope.message = "Searching Instagram for photos tagged with " + tag;
-    };
-
-    $scope.clear = function() {
-        // console.log( 'clear' );
-        $scope.formData = {};
-        $scope.instaImage = {};
-        $scope.message = null;
-        $scope.instaForm.$submitted = false;
-    }
-
-};
 
 routerApp.controller('sltivrInit', function($scope, $mdDialog, $rootScope) {
 

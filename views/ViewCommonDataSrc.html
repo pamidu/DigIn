@@ -55,8 +55,10 @@
             </div>
             <!-- index loader -->
             <div layout="column" class="data-index">
-                <div class="draggable" ng-repeat="item in dataFields">
-                    <span>{{item}}</span>
+                <div class="dragMe" ng-repeat="item in dataFields">
+                    <md-checkbox  ng-click="toggle(item, selected)">
+                      {{ item }}
+                    </md-checkbox>
                 </div>
             </div>
          </div>

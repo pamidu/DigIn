@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css" />
     <link rel="stylesheet" type="text/css" href="styles/css/style.css">
     <link rel="stylesheet" type="text/css" href="styles/css/admin1.css">
+
+    <link rel="stylesheet" type="text/css" href="styles/css/common-data-src.css">
     <!-- nv.d3.css commented for testing pursoses -->
     <!-- <link rel="stylesheet" href="styles/css/nv.d3.css"> -->
     <link rel="stylesheet" type="text/css" href="styles/css/accordion.css">
@@ -113,7 +115,74 @@
     
     <ul ui-view layout="column" id="content1" style="height:100% !important;" gridster>                        
     </ul>
-                    
+    
+    <!--    Common data source start    -->
+                  <div ng-controller="commonDataSrcInit">
+                     <md-button ng-click="toggleRight()"
+                              ng-hide="isOpenRight()"
+                              class="md-primary">
+                              Toggle common source
+                     </md-button>
+                     <md-sidenav class="md-sidenav-right md-whiteframe-z2 overflow-none" md-component-id="right">
+                           <md-content class="overflow-none" ng-controller="RightCtrl" layout-padding>
+                             <div>
+                                 <div class="card-head">
+                                     <header>Filter data</header>
+                                     <div class="tools">
+                                         <a href="javascript:void(0)" data-ng-click="closeToggle()">
+                                             <i class="ti-close"></i>
+                                         </a>
+                                     </div>
+                                 </div>
+                                 <div class="card-body">
+                                     <div class="inline-text">
+                                         <i class="fa fa-database"></i>
+                                         <span>Source</span>
+                                     </div>
+                                     <div data-ng-if="tablesLoading" class="right loading-table">
+                                         <i class="fa fa-circle-o-notch fa-spin"></i>
+                                     </div>
+                                     <div layout="row">
+                                         <!-- select data source -->
+                                         <div flex>
+                                             <md-select class="full-width" placeholder="Select Source" ng-model="selectedClass"                                                          ng-change="onChangeSource(selectedClass)">
+                                                 <md-option ng-value="source.name"
+                                                            ng-repeat="source in datasources">
+                                                     {{source.name}}
+                                                 </md-option>
+                                             </md-select>
+                                         </div>
+                                     </div>
+                                     <div layout="row">
+                                         <!-- select table -->
+                                         <div flex>
+                                             <md-select class="full-width"
+                                                        placeholder="Select Table"
+                                                        ng-change="onChangeTable(tblItem)"
+                                                        ng-model="tblItem">
+                                                 <md-option ng-value="item" ng-repeat="item in dataTables">
+                                                     {{item  }}
+                                                 </md-option>
+                                             </md-select>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <!-- index loader -->
+                                 <div layout="column" class="data-index">
+                                     <div>
+                                         <md-checkbox ng-repeat="item in dataFields" ng-click="toggleCheck(item)">
+                                           {{ item }}
+                                         </md-checkbox>
+                                     </div>
+                                 </div>
+                                 <md-button ng-click="configGraph($event)" class="md-raised" flex>Create</md-button>
+                              </div>
+
+                           </md-content>
+                         </md-sidenav>
+                  </div>
+                  
+                  <!--    Common data source end    -->                
     <!-- ui view end -->
     <!-- sidebar start -->
     <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" style="visibility:visible" ng-mouseover="hide_sidebar()" >
@@ -407,6 +476,8 @@
     <script type="text/javascript" src="scripts/controllers/socialGraph/SocialAnalysisCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphFBCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphTwitterCtrl.js"></script>
+    <script type="application/javascript" src="scripts/controllers/CommonDataSrcCtrl.js"></script>
+    <!--  controllers end   -->
     
     <!-- zeroclipboard -->
     <script type="text/javascript" src="bower_components/zeroclipboard/ZeroClipboard.min.js"></script> 

@@ -116,7 +116,7 @@
                     
     <!-- ui view end -->
     <!-- sidebar start -->
-    <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" style="visibility:hidden" ng-mouseover="hide_sidebar()" >
+    <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" style="visibility:visible" ng-mouseover="hide_sidebar()" >
         <md-list>
             <!-- logo -->
             <md-item >
@@ -141,7 +141,7 @@
     </div>
     <!-- sidebar end -->
     <!-- search start -->
-    <div class="overlay" style="z-index: 10;
+    <div class="overlay" style="z-index: 100;
     opacity: 0.8;">
         <div class="overlay">
             <div class="starting-point">
@@ -525,13 +525,15 @@
             s.parentNode.insertBefore(ga, s);
         })();
     </script>
-    <script src="jsons/data.json"></script> 
+    <script src="jsons/data.json"></script>
     <script>
         $(document).ready(function() {
             Layout.init();
+        $('#pagePreLoader').show();
+        $('#content1').css("visibility","hidden");
+        $('#getReport').css("visibility","hidden");
         });
-    </script>
-    
+    </script>  
 </body>
 
 </html>

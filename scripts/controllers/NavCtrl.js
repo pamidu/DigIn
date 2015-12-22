@@ -566,7 +566,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             //closing the overlay
             // start pulathisi 7/23/2015
             // when saved dashboard is clicked change sidebar icon class, this changes icon colors
-            $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
+            //$(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
             // end pulathisi 7/23/2015
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
@@ -1058,19 +1058,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         $scope.navigate = function (routeName, ev) {
 
-            // start pulathisi 7/23/2015
-            if ($('.ion-settings').hasClass('sidebaricons')) {
-                $(".sidebaricons").removeClass("sidebaricons").addClass("sidebaricons-active");
-            } else {
-                $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
-            }
-            console.log("$scope");
-            console.log($scope);
-            console.log("$rootScope");
-            console.log($rootScope);
-
-            // end pulathisi 7/23/2015
-            // }
             if (routeName == "Dashboards") {
 
                 $scope.showAddNewDashboard(ev);

@@ -27,10 +27,7 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
             console.log($scope.arr);
         });
 
-           $('#pagePreLoader').hide();
-        $scope.test = function () {
-            alert("test");
-        };    
+           $('#pagePreLoader').hide();    
 
         $scope.showData = function () {
 
@@ -68,41 +65,39 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
                 console.log($scope.arr.children[i].name);
                 //str += $scope.arr.children[i].name;
                 if( $scope.arr.children[i].children != undefined){
-                for(var j=0; j< $scope.arr.children[i].children.length; j++){
-                    
-                    console.log("child level 2");
-                    console.log($scope.arr.children[i].children[j].name);
-                    str += $scope.arr.children[i].name + ',' + $scope.arr.children[i].children[j].name;
-                    obj['data1'] = $scope.arr.children[i].name;
-                    obj['data2'] = $scope.arr.children[i].children[j].name;
-                    if( $scope.arr.children[i].children[j].children != undefined){
-                        for(var k=0; k< $scope.arr.children[i].czildren[j].children.length; k++){
+                    for(var j=0; j< $scope.arr.children[i].children.length; j++){
+                        
+                        console.log("child level 2");
+                        console.log($scope.arr.children[i].children[j].name);
+                        str += $scope.arr.children[i].name + ',' + $scope.arr.children[i].children[j].name;
+                        obj['data1'] = $scope.arr.children[i].name;
+                        obj['data2'] = $scope.arr.children[i].children[j].name;
+                        if( $scope.arr.children[i].children[j].children != undefined){
+                            for(var k=0; k< $scope.arr.children[i].czildren[j].children.length; k++){
 
-                            console.log("child level 3");
-                            console.log($scope.arr.children[i].children[j].children[k].name);
-                            str += ',' + $scope.arr.children[i].children[j].children[k].name;
-                            obj['data3'] = $scope.arr.children[i].children[j].children[k].name;
+                                console.log("child level 3");
+                                console.log($scope.arr.children[i].children[j].children[k].name);
+                                str += ',' + $scope.arr.children[i].children[j].children[k].name;
+                                obj['data3'] = $scope.arr.children[i].children[j].children[k].name;
+                            }
+                            str += '\n';
                         }
-                        str += '\n';
+                        else{
+                            str += '\n';
+                        }
+                        jsonArray.push(obj);
+                        var obj = {};
+                        obj['data1'] = "";
+                        obj['data2'] = "";
+                        obj['data3'] = "";
+                        
                     }
-                    else{
-                        str += '\n';
-                    }
-                    jsonArray.push(obj);
-                    var obj = {};
-                    obj['data1'] = "";
-                    obj['data2'] = "";
-                    obj['data3'] = "";
-                    
-                }
                 }
                 else{
                         str += '\n';
                         obj['data1'] = $scope.arr.children[i].name1;
                         obj['data2'] = $scope.arr.children[i].name2;
-                }
-                
-                
+                }    
             }
 
             console.log("str");
@@ -443,12 +438,7 @@ routerApp.controller('ExportCtrl', ['$scope', '$objectstore', '$mdDialog', '$roo
     $objectstore, $mdDialog, $rootScope) {
     $scope.dashboard = [];
     $scope.dashboard = {
-
-        widgets: [
-
-        ]
-
-
+        widgets: []
     };
     $scope.dashboard.widgets = $rootScope.dashboard["1"].widgets;
 
@@ -738,7 +728,6 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                 }
                 };
 
-
                 $scope.leftPosition = data.leftPosition;
                 $scope.topPosition = data.topPosition;
                 $scope.ChartType = data.ChartType;
@@ -837,16 +826,8 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
 
                 $rootScope.dashboard.widgets.push($scope.currWidget);
                 $scope.openInitialConfig(ev, $scope.currWidget.id);
-                // if($scope.currWidget.type != "Sri Lanka Telecom"  )
-                // {
-                //     //opening initial widget config dialog
-                //    $scope.openInitialConfig(ev, $scope.currWidget.id);
-                // }
-                // else
                
             });
-
-
 
             //save the type of the widget for the purpose of the socialMediaCtrl
             $rootScope.widgetType = widget.title;

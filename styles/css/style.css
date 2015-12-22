@@ -189,24 +189,6 @@ md-sidenav.md-locked-open {
     background-color: #065798;
 }
 
-/*start pulathisi 7/23/2015*/
-
-
-/*md-icon
-{
-   color:#000 !important;
-}*/
-
-.sidebaricons {
-    color: #000;
-}
-.sidebaricons-active {
-    color: #fff;
-}
-
-/*end pulathisi 7/23/2015*/
-
-
 /*.pvtFilterBox{
   left: 320px !important;
   top: 180px !important;
@@ -1173,12 +1155,7 @@ h6 small {
 .ui-resizable-handle {
     z-index: 0 !important;
 }
-.nav-search .sidebaricons-active:before {
-    border-color: whitesmoke !important;
-}
-.nav-search .sidebaricons-active:after {
-    background: whitesmoke !important;
-}
+
 .nav-search .sidebaricons:before {
     border-color: whitesmoke !important;
 }

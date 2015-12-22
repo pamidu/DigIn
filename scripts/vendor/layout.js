@@ -69,112 +69,11 @@ var Layout = {
 
 	listenForMenuLayer: function () {
 
-
-
-		$('.nav-menu').on('click', function() {
-
-			$(".search-layer").removeClass("activating active");
-			$(".nav-search").removeClass("activating active");
-			// Define neccessary elements
-			var $this = $(this),
-					$startingPoint = $('.starting-point'),
-					$overlay = $('.overlay'),
-					$menu = $('.menu-layer'),
-					$overlaySecondary = $('.overlay-secondary'),
-					$content = $('.content'),
-					$body = $('body'),
-					$scrollableTabs = $('.scrollable-tabs');
-
-			// Add "open" class to active menu
-			$menu.find('[data-open-after="true"]').addClass('open');
-
-			// If Menu Layer is not active
-			if( !$this.hasClass('active') ) {
-
-				// start pulathisi 7/23/2015
-            
-                    $(".sidebaricons").removeClass("sidebaricons").addClass("sidebaricons-active");
-                
-               
-            	// end pulathisi 7/23/2015
-
-				if( !Pleasure.checkTouchScreen() && !Layout.settings.improvePerformance ) // If screen is desktop, add scaled effect
-					$content.addClass('scaled');
-
-				$menu.addClass('activating');
-				$scrollableTabs.addClass('disabled');
-
-				setTimeout(function () {
-					$body.addClass('disable-scroll');
-					$overlay.addClass('overlay-nav active');
-					$this.addClass('active');
-					//$menu.addClass('active');
-					$overlaySecondary.addClass('fade-in');
-
-					$menu.find('[data-open-after="true"]').parents('li').addClass('open animate');
-
-					$.Velocity.animate($startingPoint.children('span'), {
-						translateZ: 0,
-						scaleX: 1,
-						scaleY: 1
-					}, { duration: 500, easing: [.42, 0, .58, 1] });
-
-					if( Layout.settings.autoScrollWhenMenuIsActive ) {
-						setTimeout(function () {
-							$menu.animate({ scrollTop: $menu.find('[data-open-after="true"]').position().top + 200 }, 300);
-						}, 600);
-					}
-				}, 50);
-
-			} else {
-			// If Menu Layer is active
-
-			// start pulathisi 7/23/2015
-            
-                    $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
-               
-            // end pulathisi 7/23/2015
-
-				$this.addClass('rotating');
-
-				$overlaySecondary.removeClass('fade-in');
-				$content.removeClass('scaled');
-
-				setTimeout(function() {
-					$menu.removeClass('active');
-					$.Velocity.animate($startingPoint.children('span'), {
-						translateZ: 0,
-						scaleX: 0,
-						scaleY: 0
-					}, {
-						duration: 500,
-						easing: [.42, 0, .58, 1],
-						complete: function () {
-							$overlay.removeClass('active overlay-nav');
-							$this.removeClass('active rotating');
-							$menu.removeClass('activating');
-							$body.removeClass('disable-scroll');
-							$menu.find('.open').removeClass('open animate');
-							$scrollableTabs.removeClass('disabled');
-						}
-					})
-				}, 200);
-
-			}
-		});
-
-		// Close menu by clicking overlay
-		$('.overlay').on('click', function () {
-			$('.nav-menu').trigger('click');
-		});
 	},
 
 	listenForSearchLayer: function () {
 		$('.nav-search').on('click', function(){
-			// start pulathisi 7/23/2015
-			// when nav search is clicked change sidebar icon class, this changes icon colors
-			$(".sidebaricons").removeClass("sidebaricons").addClass( "sidebaricons-active" );
-			// end pulathisi 7/23/2015
+			
 			// Define neccessary elements
 			var $this = $(this),
 					$startingPoint = $('.starting-point'),
@@ -215,11 +114,7 @@ var Layout = {
 
 			} else {
 			// If Search Layer is active
-				// start pulathisi 7/23/2015
-				// when active nav search is clicked change sidebar icon class, this changes icon colors back to previous
-				$(".sidebaricons-active").removeClass("sidebaricons-active").addClass( "sidebaricons" );
-				// end pulathisi 7/23/2015
-
+	
 				$searchLayer.find('input').blur();
 				$searchLayer.removeClass('active');
 				$this.addClass('rotating');

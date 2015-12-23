@@ -563,11 +563,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             //if (current + 1) $log.debug('Hello ' + selected.title + '!');
             });
             console.log(dashboard);
-            //closing the overlay
-            // start pulathisi 7/23/2015
-            // when saved dashboard is clicked change sidebar icon class, this changes icon colors
-            //$(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
-            // end pulathisi 7/23/2015
+            
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
             $(".search-layer").removeClass("activating active");

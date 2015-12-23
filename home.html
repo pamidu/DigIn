@@ -74,9 +74,15 @@
     <!-- preloader start -->
     <div class="pre-loader-parent" id="pagePreLoader" layout="column" layout-align="center center" style="background-color:white">
         <div class="pre-loader-child" layout="column" layout-align="center center">
-            <img src="styles/css/images/preloaders/Preloader_7/Preloader_7.gif" alt="Washed Out">
-            <span><b>Getting your environment ready..</b></span>
-            <md-progress-linear class="md-primary"></md-progress-linear>
+            <div class="loader">
+              <span>D</span><span>I</span><span>G</span><span>I</span><span>N</span>
+              <div class="covers">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+            <!-- <img src="styles/css/images/preloaders/Preloader_7/Preloader_7.gif" alt="Washed Out"> -->
+            <span style="font-family: 'Roboto Condensed', sans-serif;font-size: 15px;margin-top: 10px;color:#4285F4"><b>Getting Your Environment Ready...</b></span>
+            <!-- <md-progress-linear md-mode="indeterminate"></md-progress-linear> -->
         </div>
     </div>
     <!-- preloader end -->
@@ -96,7 +102,7 @@
         <div class="main-headbar" flex style="visibility:hidden">
             <div class="main-headbar-slide md-theme-light" layout="row" layout-align="space-between center" flex>
                 <div class="nav-search">
-                    <md-icon id="btnNavSearch" class="ion-search search sidebaricons"></md-icon>
+                    <md-icon id="btnNavSearch" class="ion-search search searchicon"></md-icon>
                 </div>
                 <span ng-click=""></span>
                 <div layout="row" layout-align="center center">
@@ -116,73 +122,73 @@
     <ul ui-view layout="column" id="content1" style="height:100% !important;" gridster>                        
     </ul>
     
-    <!--    Common data source start    -->
-                  <div ng-controller="commonDataSrcInit">
-                     <md-button ng-click="toggleRight()"
+    <!-- Common data source start    -->
+    <div class="commonDataSource" ng-controller="commonDataSrcInit">
+        <md-button ng-click="toggleRight()"
                               ng-hide="isOpenRight()"
                               class="md-primary">
                               Toggle common source
-                     </md-button>
-                     <md-sidenav class="md-sidenav-right md-whiteframe-z2 overflow-none" md-component-id="right">
-                           <md-content class="overflow-none" ng-controller="RightCtrl" layout-padding>
-                             <div>
-                                 <div class="card-head">
-                                     <header>Filter data</header>
-                                     <div class="tools">
-                                         <a href="javascript:void(0)" data-ng-click="closeToggle()">
-                                             <i class="ti-close"></i>
-                                         </a>
-                                     </div>
-                                 </div>
-                                 <div class="card-body">
-                                     <div class="inline-text">
-                                         <i class="fa fa-database"></i>
-                                         <span>Source</span>
-                                     </div>
-                                     <div data-ng-if="tablesLoading" class="right loading-table">
-                                         <i class="fa fa-circle-o-notch fa-spin"></i>
-                                     </div>
-                                     <div layout="row">
-                                         <!-- select data source -->
-                                         <div flex>
-                                             <md-select class="full-width" placeholder="Select Source" ng-model="selectedClass"                                                          ng-change="onChangeSource(selectedClass)">
-                                                 <md-option ng-value="source.name"
+        </md-button>
+        <md-sidenav class="md-sidenav-right md-whiteframe-z2 overflow-none" md-component-id="right">
+            <md-content class="overflow-none" ng-controller="RightCtrl" layout-padding>
+                <div>
+                    <div class="card-head">
+                        <header>Filter data</header>
+                        <div class="tools">
+                            <a href="javascript:void(0)" data-ng-click="closeToggle()">
+                                <i class="ti-close"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="inline-text">
+                            <i class="fa fa-database"></i>
+                            <span>Source</span>
+                        </div>
+                        <div data-ng-if="tablesLoading" class="right loading-table">
+                            <i class="fa fa-circle-o-notch fa-spin"></i>
+                        </div>
+                        <div layout="row">
+                            <!-- select data source -->
+                            <div flex>
+                                <md-select class="full-width" placeholder="Select Source" ng-model="selectedClass"                                                          ng-change="onChangeSource(selectedClass)">
+                                    <md-option ng-value="source.name"
                                                             ng-repeat="source in datasources">
                                                      {{source.name}}
-                                                 </md-option>
-                                             </md-select>
-                                         </div>
-                                     </div>
-                                     <div layout="row">
-                                         <!-- select table -->
-                                         <div flex>
-                                             <md-select class="full-width"
+                                    </md-option>
+                                </md-select>
+                            </div>
+                        </div>
+                        <div layout="row">
+                            <!-- select table -->
+                            <div flex>
+                                <md-select class="full-width"
                                                         placeholder="Select Table"
                                                         ng-change="onChangeTable(tblItem)"
                                                         ng-model="tblItem">
-                                                 <md-option ng-value="item" ng-repeat="item in dataTables">
+                                    <md-option ng-value="item" ng-repeat="item in dataTables">
                                                      {{item  }}
-                                                 </md-option>
-                                             </md-select>
-                                         </div>
-                                     </div>
-                                 </div>
-                                 <!-- index loader -->
-                                 <div layout="column" class="data-index">
-                                     <div>
-                                         <md-checkbox ng-repeat="item in dataFields" ng-click="toggleCheck(item)">
+                                    </md-option>
+                                </md-select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- index loader -->
+                    <div layout="column" class="data-index">
+                        <div>
+                            <md-checkbox ng-repeat="item in dataFields" ng-click="toggleCheck(item)">
                                            {{ item }}
-                                         </md-checkbox>
-                                     </div>
-                                 </div>
-                                 <md-button ng-click="configGraph($event)" class="md-raised" flex>Create</md-button>
-                              </div>
+                            </md-checkbox>
+                        </div>
+                    </div>
+                    <md-button ng-click="configGraph($event)" class="md-raised" flex>Create</md-button>
+                </div>
 
-                           </md-content>
-                         </md-sidenav>
-                  </div>
+            </md-content>
+        </md-sidenav>
+    </div>
                   
-                  <!--    Common data source end    -->                
+    <!--    Common data source end    -->                
     <!-- ui view end -->
     <!-- sidebar start -->
     <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" style="visibility:visible" ng-mouseover="hide_sidebar()" >
@@ -201,7 +207,7 @@
             <md-item ng-repeat="item in menu">
                 <a ng-click="$parent.navigate(item.title)">
                     <md-item-content md-ink-ripple class="sidebar-btn" layout="column" layout-align="center center">
-                        <ng-md-icon icon="{{item.icon2}}" style="fill:dimgrey" size="20" layout="column" layout-align="center center" flex></ng-md-icon>
+                        <ng-md-icon icon="{{item.icon2}}" style="fill:#2F34A2" size="20" layout="column" layout-align="center center" flex></ng-md-icon>
                         <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
                     </md-item-content>
                 </a>
@@ -600,9 +606,9 @@
     <script>
         $(document).ready(function() {
             Layout.init();
-        $('#pagePreLoader').show();
-        $('#content1').css("visibility","hidden");
-        $('#getReport').css("visibility","hidden");
+            $('#pagePreLoader').show();
+            $('#content1').css("visibility","hidden");
+            $('#getReport').css("visibility","hidden");
         });
     </script>  
 </body>

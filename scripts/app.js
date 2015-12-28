@@ -1,8 +1,10 @@
 $(window).load(function () {
-    $('#pagePreLoader').hide();
-    $('.nav-menu').css("visibility","visible");
-    $('.main-headbar').css("visibility","visible");
-    $('#content1').css("visibility","visible");
+   setTimeout(function () {
+        $('#pagePreLoader').hide();
+        $('.nav-menu').css("visibility","visible");
+        $('.main-headbar').css("visibility","visible");
+        $('#content1').css("visibility","visible");
+    }, 3000);
 });
 
 var routerApp = angular.module('DuoDiginRt', ['ngMaterial',

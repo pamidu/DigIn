@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+    <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css"> -->
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">   
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
     <link href="styles/css/material-wfont.css" rel="stylesheet">
@@ -129,9 +130,17 @@
                               class="md-primary">
                               Toggle common source
         </md-button>
+        
         <md-sidenav class="md-sidenav-right md-whiteframe-z2 overflow-none" md-component-id="right">
-            <md-content class="overflow-none" ng-controller="RightCtrl" layout-padding>
-                <div>
+            <md-content class="overflow-none" ng-controller="RightCtrl" layout="row">
+
+                <md-button ng-click="toggleLeft()"
+                              ng-hide="isOpenLeft()"
+                              class="md-primary sidenav-button" layout="row" layout-align="center center">
+                              <md-icon md-svg-src="{{icon}}"></md-icon>
+                </md-button>
+                <accordion flex>
+                <accordion-panel title="Filter Data">
                     <div class="card-head">
                         <header>Filter data</header>
                         <div class="tools">
@@ -182,21 +191,35 @@
                         </div>
                     </div>
                     <md-button ng-click="configGraph($event)" class="md-raised" flex>Create</md-button>
-                </div>
-
+                </accordion-panel>
+                <accordion-panel title="Configuration">
+                    <div>test</div>
+                </accordion-panel>
+                </accordion>
+                
             </md-content>
         </md-sidenav>
+        <md-sidenav class="md-sidenav-right md-sidenav-custom md-whiteframe-z2 overflow-none" md-component-id="custom">
+            <md-content class="overflow-none" ng-controller="CustomCtrl" layout="column">
+                <accordion>
+                <accordion-panel title="Configuration">
+                    <div>test</div>
+                </accordion-panel>
+                </accordion>
+            </md-content>
+        </md-sidenav>
+        
     </div>
                   
     <!--    Common data source end    -->                
     <!-- ui view end -->
     <!-- sidebar start -->
-    <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" style="visibility:visible" ng-mouseover="hide_sidebar()" >
+    <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" style="visibility:visible" ng-mouseover="hide_sidebar()">
         <md-list>
             <!-- logo -->
-            <md-item md-ink-ripple="#00FF00">
+            <md-item>
                 <a ng-click="">
-                    <md-item-content md-ink-ripple="#FF0000" class="sidebar-btn digin-logo" layout="column" layout-align="center center"> 
+                    <md-item-content md-ink-ripple class="sidebar-btn digin-logo" layout="column" layout-align="center center"> 
                         <div class="digin-logo-wrapper" layout="row" layout-align="center center">
                             <img ng-src="styles/css/images/innerlogo.png" class="md-avatar" id="digin-logo" style="width:80%;">
                         </div>   
@@ -403,6 +426,12 @@
     <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="bower_components/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
     <script type="text/javascript" src="scripts/vendor/twitteroauth.js"></script> 
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script> -->
+    
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
     <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script> 
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
@@ -468,6 +497,7 @@
     <script type="text/javascript" src="scripts/directives/plumbItem.js"></script> 
     <script type="text/javascript" src="scripts/directives/postRender.js"></script> 
     <script type="text/javascript" src="scripts/directives/accordion.js"></script> 
+    <script type="text/javascript" src="scripts/directives/accordionHorizontal.js"></script> 
     <script type="text/javascript" src="scripts/controllers/chartSettingsCtrl.js"></script> 
     <script type="text/javascript" src="scripts/directives/resizeable.js"></script> 
     <script type="text/javascript" src="scripts/directives/droppable.js"></script> 

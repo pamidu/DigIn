@@ -3,6 +3,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
    $scope.fieldArray = [];
    $scope.selTable = "";
    $scope.selSrc = "";
+   $scope.icon = "bower_components/material-design-icons/navigation/svg/production/ic_chevron_left_18px.svg";
 
    $scope.datasources = [{
       name: "DuoStore"
@@ -17,8 +18,12 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
    }];
 
    $scope.toggleRight = buildToggler('right');
+   $scope.toggleLeft = buildToggler('custom');
    $scope.isOpenRight = function() {
       return $mdSidenav('right').isOpen();
+   };
+   $scope.isOpenRight = function() {
+      return $mdSidenav('custom').isOpen();
    };
 
    $scope.onChangeSource = function(src) {

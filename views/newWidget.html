@@ -7,7 +7,7 @@
                 <md-icon style="color:whitesmoke;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
             </md-button>
         </div>
-        <md-tabs md-border-bottom>
+        <md-tabs md-dynamic-height md-border-bottom>
             <md-tab ng-repeat="item in WidgetTypes" ng-init="filterWidgets(item)" ng-click="filterWidgets(item)">
                 <md-tab-label>
                     <md-icon md-svg-src="{{item.icon}}"></md-icon>
@@ -16,10 +16,10 @@
 
                 <md-content flex layout="row" layout-wrap>
                     <div layout="row" class="animate-repeat" layout-align="start center" ng-repeat="widget in Widgets | filter : selected" style="background-color: {{widget.color}};margin:10px;border-radius: 10px;" flex="30" ng-click="addAllinOne(widget,$event)">
-                        <div style="background-color: rgba(255, 246, 246, 0.68);border-radius: 100%;" layout-margin>
-                            <md-icon>
-                            <img ng-src="{{widget.icon}}" alt="{{widget.title}}" style="color:white;width: 100%;padding: 10px;">
-                            </md-icon>
+                        <div style="background-color: rgba(255, 246, 246, 0.68);
+    border-radius: 100%;
+    "  layout-margin>
+                            <img ng-src="{{widget.icon}}" alt="{{widget.title}}" style="color:white;width: 100%;padding: 10px;"></md-icon>
                         </div>
                         <div layout="column" flex>
                             <p style="color:whitesmoke;font-size:large;">{{ widget.title }}</p>

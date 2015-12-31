@@ -6,7 +6,7 @@
  /* socialGraphCtrl - Main controller
  */
 
-routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphServices) {
+routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphServices, $http, Digin_Engine_API1) {
 
      $scope.init = function () {
       
@@ -26,11 +26,171 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     $scope.page = null;
     $scope.activePageSearch = true;
     $scope.viewPageDetails = function (page) {
-        $scope.page = page;
-        $scope.activePageSearch = !$scope.activePageSearch;
-        _fun_filterPageDetails();
+       console.log('page details:'+JSON.stringify(page));
+       var serviceUrl = Digin_Engine_API1+'pageoverview?metric_names=[%27page_views%27,%27page_fans%27]&token='+page.accessToken+'&%27since%27=1429056000&%27until%27=1450137600';
+       $http({
+            method: 'GET',
+            url: serviceUrl,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+       }).
+        success(function (data, status) {
+           console.log(JSON.stringify(data));
+           var configSeries = [];
+           var overallInsights = {};   
+
+            data.forEach(function(entry) {
+
+                  
+                //alert(entry);
+               $scope.configData = [];
+               var insightCount = 0;
+                entry.data.forEach(function(value){
+                
+                  // alert(new Date('2015-12-25T08:00:00+0000').toISOString());
+                    var x = value[0].split('T')[0];
+                   insightCount = insightCount + value[1];
+                    var enDate = x.replace(/-/g , ",").split(',');
+                  $scope.configData.push([
+                    Date.UTC(enDate[0],enDate[1],enDate[2]),
+                    value[1]
+                  ]);
+                  
+                });
+               configSeries.push({
+                    type: 'column',
+                    name: entry.name,
+                    data: $scope.configData
+                  });
+               overallInsights[entry.name] = insightCount;
+            });
+          console.log(JSON.stringify(configSeries));
+          $scope.likeCount = overallInsights.page_fans;
+          $scope.viewCount = overallInsights.page_views;
+          $scope.highchartsNG = {
+        options: {
+            chart: {
+                type: 'column',
+                backgroundColor: null,
+                // Edit chart spacing
+                spacingBottom: 15,
+                spacingTop: 10,
+                spacingLeft: 10,
+                spacingRight: 10,
+
+                // Explicitly tell the width and height of a chart
+                width: 680,
+                height: 300
+            },
+            plotOptions: {
+                column: {
+                    borderWidth: 0,
+                    groupPadding: 0,
+                    shadow: false
+                }
+            }
+        },
+
+        xAxis: {
+                type: 'datetime'
+            },
+        yAxis: {
+
+            labels: {
+                style: {
+                    color: '#fff',
+                    fontSize: '12px',
+                    fontFamily: 'Ek Mukta, sans-serif',
+                    fontWeight: '200'
+                },
+                formatter: function () {
+                    return this.value;
+                }
+            }
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.1,
+                borderWidth: 0
+            }
+        },
+        series: configSeries,
+        title: {
+            text: ''
+        },
+        loading: false
+    };
+          
+//           $scope.highchartsNG = {
+//               options : {
+//                  chart: {
+//                zoomType: 'x'
+//            },
+//            title: {
+//                text: 'USD to EUR exchange rate over time'
+//            },
+//            subtitle: {
+//                text: document.ontouchstart === undefined ?
+//                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+//            },
+//            xAxis: {
+//                type: 'datetime'
+//            },
+//            yAxis: {
+//                title: {
+//                    text: 'Exchange rate'
+//                }
+//            },
+//            legend: {
+//                enabled: false
+//            },
+//            plotOptions: {
+//                area: {
+//                    fillColor: {
+//                        linearGradient: {
+//                            x1: 0,
+//                            y1: 0,
+//                            x2: 0,
+//                            y2: 1
+//                        },
+//                        stops: [
+//                            [0, Highcharts.getOptions().colors[0]],
+//                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+//                        ]
+//                    },
+//                    marker: {
+//                        radius: 2
+//                    },
+//                    lineWidth: 1,
+//                    states: {
+//                        hover: {
+//                            lineWidth: 1
+//                        }
+//                    },
+//                    threshold: null
+//                }
+//            },
+//
+//            series: configSeries
+//        }
+//               
+//           };
+          
+          console.log(JSON.stringify($scope.highchartsNG));
+           
+           $scope.page = page;
+           $scope.activePageSearch = !$scope.activePageSearch;
+           _fun_filterPageDetails();
+        }).
+        error(function (data, status) {
+         
+        });
+        
 
     };
+   
+    //
 
     var _fun_GetFbPageHttp = function (filterDate, callback) {
         if (!angular.isUndefined($scope.page.accessToken)) {
@@ -81,115 +241,8 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
 //HighChart theme
 
 
-//facebook graph
-    $scope.highchartsNG = {
-        options: {
-            chart: {
-                type: 'column',
-                backgroundColor: null,
-                // Edit chart spacing
-                spacingBottom: 15,
-                spacingTop: 10,
-                spacingLeft: 10,
-                spacingRight: 10,
-
-                // Explicitly tell the width and height of a chart
-                width: 680,
-                height: 300
-            },
-            plotOptions: {
-                column: {
-                    borderWidth: 0,
-                    groupPadding: 0,
-                    shadow: false
-                }
-            }
-        },
-
-        xAxis: {
-            gridLineWidth: 0,
-            tickColor: '#999',
-            gridLineColor: '#ebebeb',
-            lineColor: '#ebebeb',
-            minorGridLineColor: '#ebebeb',
-            labels: {
-                style: {
-                    color: '#fff',
-                    fontSize: '12px',
-                    fontFamily: 'Ek Mukta, sans-serif',
-                    fontWeight: '200'
-                },
-                formatter: function () {
-                    return this.value;
-                }
-            },
-            categories: [
-                'Jan', 'Feb', 'Mar', 'Apr', 'May',
-                'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-            ],
-            crosshair: true
-        },
-        yAxis: {
-
-            labels: {
-                style: {
-                    color: '#fff',
-                    fontSize: '12px',
-                    fontFamily: 'Ek Mukta, sans-serif',
-                    fontWeight: '200'
-                },
-                formatter: function () {
-                    return this.value;
-                }
-            }
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.1,
-                borderWidth: 0
-            }
-        },
-        series: [{
-            color: '#1DE9B6',
-            name: 'post',
-            lineWidth: 1,
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
-            dataLabels: {
-                style: {
-                    color: '#fff'
-                }
-            }
-
-        }, {
-            color: '#64FFDA',
-            name: 'like',
-            lineWidth: 1,
-            data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3],
-            dataLabels: {
-                style: {
-                    color: '#fff'
-                }
-            }
-
-        },
-            {
-                color: '#00BFA5',
-                name: 'comments',
-                lineWidth: 1,
-                data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3],
-                dataLabels: {
-                    style: {
-                        color: '#fff'
-                    }
-                }
-
-            }
-        ],
-        title: {
-            text: ''
-        },
-        loading: false
-    }
+////facebook graph
+    
 
     /*Post and Visitors */
     $scope.chooseView = {

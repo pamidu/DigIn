@@ -22,6 +22,7 @@ routerApp.controller('socialGraphFBCtrl', function ($scope, config, fbGraphServi
     $scope.page = null;
     $scope.activePageSearch = true;
     $scope.viewPageDetails = function (page) {
+       console.log('page details:'+JSON.stringify(page));
         $scope.page = page;
         $scope.activePageSearch = !$scope.activePageSearch;
         _fun_filterPageDetails();
@@ -47,6 +48,7 @@ routerApp.controller('socialGraphFBCtrl', function ($scope, config, fbGraphServi
 
     //filter page details
     var _fun_filterPageDetails = function () {
+       alert('test');
         var filterDate = {
             'since': moment($scope.pageSearchPara.startDate).month(-3).unix(),
             'until': moment($scope.pageSearchPara.endDate).unix()

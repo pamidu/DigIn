@@ -400,8 +400,8 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                    
                    if(requestCounter==0){
                       alert(widget.id);
-                      var widgetElem = document.getElementById(widget.id);
-                  widgetElem.highcharts({
+//                      var widgetElem = document.getElementById(widget.id);
+                  widget.highchartsNG = {
          chart: {
             type: 'column'
          },
@@ -461,7 +461,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             width: 300,
             height: 220
          }
-      });    
+      };    
                   //widget.highchartsNG = ;
                       console.log('highchartng:'+JSON.stringify(widget.highchartsNG));
                 }

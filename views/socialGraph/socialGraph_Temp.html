@@ -52,7 +52,7 @@
                                       role="listitem">
                             <button class="md-fab   md-button
                                 md-default-theme md-fab-md" ng-click="viewPageDetails(page)"
-                                    ng-transclude="" aria-label="button">
+                                     aria-label="button">
                                 <i class="fa fa-cogs fa-lg"></i>
                             </button>
 
@@ -140,15 +140,15 @@
                                 <!-- commenters -->
                                 <li>
                                     <p class="size-h2 text-color-100 graph-h1 font-weight-500">
-                                        10
+                                        {{viewCount}}
                                     </p>
 
-                                    <p class="text-muted graph-h5 font-weight-500">Commenters</p>
+                                    <p class="text-muted graph-h5 font-weight-500">Views</p>
                                 </li>
                                 <!-- likes-->
                                 <li class="last-icon">
                                     <p class="size-h2 text-color-100 graph-h1 font-weight-500">
-                                        50
+                                        {{likeCount}}
                                     </p>
 
                                     <p class="text-muted graph-h5">Likes</p>

@@ -264,8 +264,7 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
             client.insert([$rootScope.dashboard], {
                 KeyProperty: "dashboardName"
             });
-
-
+            
         }
     }
 ]);
@@ -274,7 +273,15 @@ routerApp.controller('RightCtrl', function ($scope, $timeout, $mdSidenav, $log) 
     $scope.close = function () {
         $mdSidenav('right').close()
             .then(function () {
-                $log.debug("close RIGHT is done");
+                $log.debug("close right is done");
+            });
+    };
+});
+routerApp.controller('CustomCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+    $scope.close = function () {
+        $mdSidenav('custom').close()
+            .then(function () {
+                $log.debug("close Custom is done");
             });
     };
 });

@@ -31,7 +31,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         }
 
-        /**
+         /**
          * Build handler to open/close a SideNav; when animation finishes
          * report completion in console
          */

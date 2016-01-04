@@ -125,11 +125,11 @@
     
     <!-- Common data source start    -->
     <div class="commonDataSource" ng-controller="commonDataSrcInit">
-        <md-button ng-click="toggleRight()"
+        <!-- <md-button ng-click="toggleRight()"
                               ng-hide="isOpenRight()"
                               class="md-primary">
                               Toggle common source
-        </md-button>
+        </md-button> -->
         
         <md-sidenav class="md-sidenav-right md-whiteframe-z2 overflow-none" md-component-id="right">
             <md-content class="overflow-none" ng-controller="RightCtrl" layout="row">
@@ -140,15 +140,15 @@
                               <md-icon md-svg-src="{{icon}}"></md-icon>
                 </md-button>
                 <accordion flex>
-                <accordion-panel title="Filter Data">
-                    <div class="card-head">
-                        <header>Filter data</header>
+                <accordion-panel title="Data Source">
+                    <!-- <div class="card-head">
+                        <header>Data Source</header>
                         <div class="tools">
                             <a href="javascript:void(0)" data-ng-click="closeToggle()">
                                 <i class="ti-close"></i>
                             </a>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="card-body">
                         <div class="inline-text">
                             <i class="fa fa-database"></i>
@@ -190,10 +190,7 @@
                             </md-checkbox>
                         </div>
                     </div>
-                    <md-button ng-click="configGraph($event)" class="md-raised" flex>Create</md-button>
-                </accordion-panel>
-                <accordion-panel title="Configuration">
-                    <div>test</div>
+                    <md-button ng-click="configGraph($event)" flex>Create</md-button>
                 </accordion-panel>
                 </accordion>
                 
@@ -201,9 +198,24 @@
         </md-sidenav>
         <md-sidenav class="md-sidenav-right md-sidenav-custom md-whiteframe-z2 overflow-none" md-component-id="custom">
             <md-content class="overflow-none" ng-controller="CustomCtrl" layout="column">
-                <accordion>
-                <accordion-panel title="Configuration">
-                    <div>test</div>
+                <accordion ng-repeat="item in modelContainer">
+                <accordion-panel title="{{item}}">
+                    <div class="card-body">
+                        <div>{{item}}</div>
+                    </div>
+                    <!-- <div class="card-body">
+                        <div class="inline-text">
+                                <i class="fa fa-filter"></i>
+                                <span>Filter Items</span>
+                        </div>
+                        <div layout="column" class="data-index">
+                            <div>
+                                <md-checkbox ng-repeat="item in dataFields" ng-click="toggleCheck(item)">
+                                               {{item }}
+                                </md-checkbox>
+                            </div>
+                        </div>
+                    </div> -->
                 </accordion-panel>
                 </accordion>
             </md-content>

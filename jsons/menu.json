@@ -51,6 +51,12 @@
             "icon2": "grid_off"
         }, {
 
+            "title": "CommonData",
+            "icon1": "bower_components/material-design-icons/action/svg/production/ic_input_24px.svg",
+            "icon": "ion-close",
+            "icon2": "assessment"
+        }, {
+
             "title": "Logout",
             "icon1": "bower_components/material-design-icons/action/svg/production/ic_input_24px.svg",
             "icon": "ion-toggle-filled",

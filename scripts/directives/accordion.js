@@ -54,7 +54,7 @@
                                     '<span flex=""></span>'+
                                     '<span layout-align="row" ng-if="childNodes > 0"><md-icon md-svg-src="{{icon}}"></md-icon></span></div>'+
                                     '</md-button><md-button flex="" ng-if="itemind >= 0" ng-click="someCtrlFn(itemind);"><md-icon class="ion-close"></md-icon></md-button></div>'+
-                                    '<md-content class="animate-show" ng-show="active" ng-transclude layout-margin></md-content>'+
+                                    '<md-content class="animate-show" ng-show="active" ng-transclude layout-margin layout-align="center center" layout="column"></md-content>'+
                                 '</section>',
                         link: function (scope, element, attrs, accordionCtrl) {
                             var elem=element[0];

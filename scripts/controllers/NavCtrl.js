@@ -1149,6 +1149,23 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 setTimeout(function(){$('#content1').css("height","100%");},3000);
                 
             }
+            if (routeName == "CommonData") {
+                
+                var selectedMenu = document.getElementsByClassName("menu-layer");
+                selectedMenu[0].style.display = 'block';
+                $rootScope.currentView = "CommonData";
+                $scope.manageTabs(false);
+                // $scope.toggleRight = buildToggler('right');
+                //$state.go(routeName);
+                $mdSidenav('right')
+                    .toggle()
+                    .then(function() {
+                       $log.debug("toggle right is done");
+                });
+                
+                // setTimeout(function(){$('#content1').css("height","100%");},3000);
+                
+            }
             if (routeName == "Logout") {
 
                 $window.location = "/Duodigin/index.php";

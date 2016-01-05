@@ -1,5 +1,5 @@
 <md-dialog plumb-item style="width:400px;">
-        <md-toolbar>
+       <md-toolbar>
             <div class="md-toolbar-tools" flex layout="row">
                 <div flex="10">
                         <md-icon class="ion-wrench"></md-icon>
@@ -9,28 +9,27 @@
                                  <span> Configuration </span>
                               </h3>
                 </div>                           
-                <div flex="10">
+                <div flex="10" class="widget-button">
                         <md-button class="widget-button" ng-click="cancel()" aria-label="Close" layout-wrap>
                             <ng-md-icon icon="close" style="fill:white" size="20" layout="column" layout-align="center center" flex></ng-md-icon>
                         </md-button>
                 </div>
             </div>                   
-    </md-toolbar> 
-        <md-content layout-margin>
-        <div>
-                <md-input-container flex>   
-            <input my-upload type="file" name="upload">
+    </md-toolbar>  
+    <md-content layout-margin>
+            <div layout="row" layout-align='center start' layout-margin>
+                <md-input-container flex>
+                    <md-button class="md-raised" ng-click="authorize()">Add Account</md-button>
                 </md-input-container>
-        </div>
-        <label id="dislab">Please select a image from a location and add to the widget</label>
-        <div class="md-actions" layout="row">
-            <span flex></span>
-            <md-button ng-click="finish()">
-                Finish
-            </md-button>
-            <md-button ng-click="cancel()">
-                Cancel
-            </md-button>
-        </div>
-        </md-content>
+            </div>
+            <div class="md-actions" layout="row">
+                <span flex></span>
+                <md-button ng-click="finish()">
+                    Finish
+                </md-button>
+                <md-button ng-click="cancel()">
+                    Cancel
+                </md-button>
+            </div>
+    </md-content>
 </md-dialog>

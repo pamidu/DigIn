@@ -1299,6 +1299,7 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
 .widget-button
 {
     margin: 0px;
+    min-width: 0px;
 }
 .widget-button-wrapper
 {
@@ -1388,5 +1389,24 @@ md-tabs-wrapper{
 /*end loader*/
 
 
+
+/* custom for sidenavs */
+
+.md-sidenav-custom {
+    left: calc(100vw - 304px);
+    top: 0;
+    z-index:59;
+    /* -webkit-transform: translate3d(0,0,0); */
+    /* transform: translate3d(0,0,0); */
+}
+
+.sidenav-button {
+    min-width:0px;
+    z-index:101 !important;
+    position:absolute;
+    padding: 0px;
+    margin: 0px;
+    height: 100vh;
+}
 
 

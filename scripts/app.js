@@ -14,7 +14,7 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
     'DiginD3.services',
     'DiginD3.directives',
     'DiginD3.controllers',
-    "highcharts-ng",
+    'highcharts-ng',
     'angular.css.injector',
     'ui.router',
     '720kb.socialshare',
@@ -27,7 +27,7 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
     'gridster',
     'ui.calendar',
     'mgcrea.ngStrap',
-     'ui',
+    'ui',
     'lk-google-picker',
     'servicess',
     'angularUtils.directives.dirPagination',
@@ -264,8 +264,7 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
             client.insert([$rootScope.dashboard], {
                 KeyProperty: "dashboardName"
             });
-
-
+            
         }
     }
 ]);
@@ -274,7 +273,15 @@ routerApp.controller('RightCtrl', function ($scope, $timeout, $mdSidenav, $log) 
     $scope.close = function () {
         $mdSidenav('right').close()
             .then(function () {
-                $log.debug("close RIGHT is done");
+                $log.debug("close right is done");
+            });
+    };
+});
+routerApp.controller('CustomCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+    $scope.close = function () {
+        $mdSidenav('custom').close()
+            .then(function () {
+                $log.debug("close Custom is done");
             });
     };
 });

@@ -3,6 +3,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
    $scope.fieldArray = [];
    $scope.selTable = "";
    $scope.selSrc = "";
+   $scope.icon = "bower_components/material-design-icons/navigation/svg/production/ic_chevron_left_18px.svg";
 
    $scope.datasources = [{
       name: "DuoStore"
@@ -16,9 +17,24 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
       name: "SpreadSheet"
    }];
 
-   $scope.toggleRight = buildToggler('right');
+   // $scope.toggleRight = buildToggler('right');
+   $scope.toggleLeft = buildToggler('custom');
+
+   $scope.modelContainer=[];
+   // angular.forEach($scope.dataFields,function(item){
+   //   $scope.modelContainer.push({item:item});
+   // });
+
+   $scope.FilterData = function(evt){
+      console.log("$scope.modelContainer");
+      console.log($scope.modelContainer);
+   }
+
    $scope.isOpenRight = function() {
       return $mdSidenav('right').isOpen();
+   };
+   $scope.isOpenRight = function() {
+      return $mdSidenav('custom').isOpen();
    };
 
    $scope.onChangeSource = function(src) {
@@ -50,8 +66,10 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
       var i = $scope.fieldArray.indexOf(field);
       if (i > -1) {
          $scope.fieldArray.splice(i, 1);
+         $scope.modelContainer.splice(i, 1);
       } else {
          $scope.fieldArray.push(field);
+         $scope.modelContainer.push(field);
       }
    };
 
@@ -134,6 +152,39 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
    };
 
 }]);
+
+// $scope.getDataByFields = function(evt) {
+//       $scope.fieldString = [];
+//       //building the fields string
+//       for(i=0;i<$scope.fieldArray.length;i++){
+//          $scope.fieldString.push("'"+$scope.fieldArray[i]+"'");
+//       }
+      
+//       var xhr = new XMLHttpRequest();
+
+//       xhr.onreadystatechange = function(e) {
+//          console.log(this);
+//          if (xhr.readyState === 4) {
+//             if (xhr.status === 200) {
+//               console.log(xhr.response);
+//             } else {
+//                console.error("XHR didn't work: ", xhr.status);
+//             }
+//          }
+//       }
+//       xhr.ontimeout = function() {
+//          console.error("request timedout: ", xhr);
+//       }
+      
+//       var queryString = ""
+//       // xhr.open("get", Digin_Engine_API + "executeQuery?tablename=[" + $scope.selTable.split(":")[1] + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
+//       // xhr.open("get", Digin_Engine_API + "executeQuery?SELECT*FROM ", /*async*/ true);
+
+//       // xhr.send();
+
+//    };
+
+// }]);
 
 
 routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData','Digin_Engine_API', function($scope, $mdDialog, $rootScope, widId, $state, fieldData, Digin_Engine_API) {
@@ -400,8 +451,8 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                    
                    if(requestCounter==0){
                       alert(widget.id);
-                      var widgetElem = document.getElementById(widget.id);
-                  widgetElem.highcharts({
+//                      var widgetElem = document.getElementById(widget.id);
+                  widget.highchartsNG = {
          chart: {
             type: 'column'
          },
@@ -461,7 +512,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             width: 300,
             height: 220
          }
-      });    
+      };    
                   //widget.highchartsNG = ;
                       console.log('highchartng:'+JSON.stringify(widget.highchartsNG));
                 }

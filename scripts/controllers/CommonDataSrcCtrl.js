@@ -314,7 +314,8 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
    $scope.orderByCat = function(widget) {
       $scope.seriesArray.forEach(function(entry) {
          entry['data'] = [];
-         var paramArr = $scope.generateParamArr('get',Digin_Engine_API, widget.commonSrcConfig.tbl,'aggregatefields', $scope.catItem.value, entry.filter,entry.serName.value);
+         var paramArr = $scope.generateParamArr('get',Digin_Engine_API, widget.commonSrcConfig.tbl,'aggregatefields',
+             $scope.catItem.value, entry.filter,entry.serName.value);
          var w = new Worker("scripts/webworkers/commonSrcWorker.js");
          w.postMessage(JSON.stringify(paramArr));
          w.addEventListener('message', function(event) {

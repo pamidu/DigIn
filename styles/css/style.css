@@ -1299,6 +1299,7 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
 .widget-button
 {
     margin: 0px;
+    min-width: 0px;
 }
 .widget-button-wrapper
 {

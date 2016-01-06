@@ -651,7 +651,7 @@ v-pane-content {
     text-align: center;
 }
 
-md-content.md-default-theme {
+/*md-content.md-default-theme {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     -ms-border-radius: 3px;
@@ -662,7 +662,7 @@ md-content.md-default-theme {
     -ms-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .06);
     -o-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .06);
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .06);
-}
+}*/
 
 .color-primary {
     color: #009688;

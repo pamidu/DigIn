@@ -1176,7 +1176,7 @@ md-tabs md-tabs-wrapper {
 }
 
 .d3-wrap:hover {
-    /*overflow-y: scroll;*/
+    overflow-y: scroll;
 }
 
 .d3-dialog {

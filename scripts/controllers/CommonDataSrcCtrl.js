@@ -514,7 +514,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
          }
       };    
                   //widget.highchartsNG = ;
-                      console.log('highchartng:'+JSON.stringify(widget.highchartsNG));
+                      console.log('highchartng drilled:'+JSON.stringify(widget.highchartsNG));
                 }
                    
                    

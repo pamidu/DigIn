@@ -110,13 +110,15 @@
                                         <i class="ti-search pull-right"></i>
                                     </a>
                                 </div>
-                                <div class="page-search">
-                                    <md-datepicker ng-model="pageSearchPara.startDate"
-                                                   md-placeholder="Enter date"></md-datepicker>
-                                    <md-datepicker ng-model="pageSearchPara.endDate"
-                                                   md-placeholder="Enter date"></md-datepicker>
+                                <div layout="row">
+                                   <div>
+                                    <md-date-picker model="sinceDate" label="Since" dialog-md-theme="datePickerTheme"/>
+                                   </div>
+                                   <div>
+                                    <md-date-picker model="untilDate" label="Until" dialog-md-theme="datePickerTheme"/>
+                                   </div>
+                                    <md-button class="md-primary" ng-click="changeTimeRange()">Search</md-button>
                                 </div>
-
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -128,14 +130,6 @@
                                     </p>
 
                                     <p class="text-muted graph-h5">Posts</p>
-                                </li>
-                                <!-- authors -->
-                                <li>
-                                    <p class="size-h2 text-color-100 graph-h1 font-weight-500">
-                                        2
-                                    </p>
-
-                                    <p class="text-muted graph-h5">Authors</p>
                                 </li>
                                 <!-- commenters -->
                                 <li>
@@ -182,9 +176,7 @@
                     <div flex="40">
                         <md-card class="graph-map overflow-none">
                             <div class="graph-map-content">
-                                <ui-gmap-google-map center='map.center'
-                                                    zoom='map.zoom'>
-                                </ui-gmap-google-map>
+                                <digin-map map-data="{{arrAdds}}"></digin-map>
                             </div>
                             <md-card-content>
                                 <h2 class="graph-h2">
@@ -439,17 +431,7 @@
             <!-- Posts details-->
             <div class="fb-posts-wrap">
                 <div layout="row" layout-wrap>
-                    <div flex="20">
-                        <md-card class="md-default-theme overflow-none">
-                            <div class="graph-fb-wrap-post">
-                                <md-radio-group ng-model="chooseView.Post" ng-change="onViewChange()">
-                                    <md-radio-button value="Posts" class="md-primary">Posts</md-radio-button>
-                                    <md-radio-button value="Visitors">Visitors</md-radio-button>
-                                </md-radio-group>
-                            </div>
-                        </md-card>
-                    </div>
-                    <div flex="80">
+                    <div flex>
                         <md-card class="md-default-theme overflow-none">
                             <div class="graph-fb-wrap-post">
                                 <div class="text-left col-sm-6">
@@ -465,7 +447,7 @@
                                             <td>
                                             </td>
                                             <td class="tbl-width-450">
-                                                Author and topic
+                                                Content
                                             </td>
                                             <td>
                                                 Likes
@@ -477,12 +459,12 @@
                                                 Comments
                                             </td>
                                             <td>
-                                                Date, time
+                                                Created
                                             </td>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr data-ng-repeat="post in postsObj track by $index">
+                                        <tr data-ng-repeat="post in postsObj">
                                             <td>
                                                 <div data-ng-if="post.image_url==null">
                                                     <i class="fa fa-link"></i>
@@ -492,72 +474,26 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <code>{{post.page_url}}</code>
+                                                <code class="post-message">{{post.message}}</code>
 
                                                 <div class="post-image">
                                                     <div data-ng-if="post.image_url==null">
                                                         {{post.url}}
                                                     </div>
-                                                    <img data-ng-src="{{post.image_url}}">
+                                                    <img class="post-image" data-ng-src="{{post.picture}}">
                                                 </div>
                                             </td>
                                             <td>
-                                                {{post.like}}
+                                               <code>{{post.likes}}</code>
                                             </td>
                                             <td>
                                                 <code>{{post.shares}}</code>
                                             </td>
                                             <td>
-                                                <code>{{post.Comments}}</code>
+                                                <code>{{post.comments}}</code>
                                             </td>
                                             <td>
-                                                <code>{{post.date_time}}</code>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- View Visitor -->
-                                <div class="post-view" data-ng-if="viewLayout.isVisitor">
-                                    <table class="table table-border-none">
-                                        <thead>
-                                        <tr class="tbl-border-bottom">
-                                            <td class="tbl-width-450">
-                                                Visitor
-                                            </td>
-                                            <td>
-                                                Rating
-                                            </td>
-                                            <td>
-                                                Likes
-                                            </td>
-                                            <td>
-                                                Posts
-                                            </td>
-                                            <td>
-                                                Comments
-                                            </td>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr data-ng-repeat="visitor in visitorsObj track by $index">
-                                            <td class="tbl-width-450">
-                                                <div class="inline-block">
-                                                    <img ng-src="{{visitor.avatar}}" class="md-avatar avatar "/>
-                                                    <h5 class="graph-h5">{{ visitor.name }}</h5>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {{visitor.rating}}
-                                            </td>
-                                            <td>
-                                                <code>{{visitor.likes}}</code>
-                                            </td>
-                                            <td>
-                                                <code>{{visitor.posts}}</code>
-                                            </td>
-                                            <td>
-                                                <code>{{visitor.comments}}</code>
+                                                <code ng-bind="post.created_time | date:'dd MMM yyyy'">{{post.created_time}}</code>
                                             </td>
                                         </tr>
                                         </tbody>

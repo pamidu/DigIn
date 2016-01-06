@@ -77,7 +77,7 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
       getServiceResponse(serviceUrl, function(data){
          console.log('chart data:'+JSON.stringify(data));
          generateChart(data);
-         serviceUrl = Digin_Engine_API1 + 'fbpostswithsummary?token=' + page.accessToken + '&%27since%27='+pageTimestamps.sinceStamp+'&%27until%27='+pageTimestamps.untilStamp;;
+         serviceUrl = Digin_Engine_API1 + 'fbpostswithsummary?token=' + page.accessToken + '&%27since%27='+pageTimestamps.sinceStamp+'&%27until%27='+pageTimestamps.untilStamp;
          getServiceResponse(serviceUrl, function(data){
             $scope.postsObj = data;
             $scope.arrAdds = [];

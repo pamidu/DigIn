@@ -1,4 +1,4 @@
-routerApp.service('CommonDataSrc', function($objectstore,$http) {
+routerApp.service('CommonDataSrc', function($objectstore,$http,Digin_Engine_API_Namespace) {
    var dataObj = null;
    var dataSrc = null;
    var dataTable = null;
@@ -31,13 +31,13 @@ routerApp.service('CommonDataSrc', function($objectstore,$http) {
             xhr.ontimeout = function() {
                console.error("request timedout: ", xhr);
             }
-            xhr.open(requestObj.method, requestObj.host + requestObj.request +"?"+requestObj.params[0]+"=digin_hnb", /*async*/ true);
+            xhr.open(requestObj.method, requestObj.host + requestObj.request +"?"+requestObj.params[0]+"="+Digin_Engine_API_Namespace, /*async*/ true);
             xhr.send();
          });
 
       },
       getFields: function(tbl, callback) {
-         var fieldData = (tbl.split(':')[1]).split('.');
+         //var fieldData = (tbl.split(':')[1]).split('.');
          getJSONDataByProperty($http,'pythonServices','name',dataSrc,function(data){
             var requestObj = data[0].getFields;
             console.log(JSON.stringify(requestObj));
@@ -58,7 +58,7 @@ routerApp.service('CommonDataSrc', function($objectstore,$http) {
                console.error("request timedout: ", xhr);
             }
             xhr.open(requestObj.method, requestObj.host + requestObj.request +"?"
-               + requestObj.params[0] + "=" + fieldData[0] + "&&" + requestObj.params[1] + "=" + fieldData[1], /*async*/ true);
+               + requestObj.params[0] + "="+Digin_Engine_API_Namespace+"&&" + requestObj.params[1] + "="+ tbl, /*async*/ true);
             xhr.send();
          });
       }

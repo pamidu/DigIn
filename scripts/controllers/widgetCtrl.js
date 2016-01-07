@@ -1147,6 +1147,8 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 height: 220
             }
         };
+       
+       console.log('drilled highchart config:'+JSON.stringify(widget.highchartsNG));
 
         widget['widConfig'] = {
             source: $scope.datasource,

@@ -1811,9 +1811,11 @@
 				}
 
 				function resize(e) {
-
-					scope.widget.highchartsNG.size.height = scope.gridsterItem.getElementSizeY();
-					scope.widget.highchartsNG.size.width = scope.gridsterItem.getElementSizeX();
+					var y = scope.gridsterItem.getElementSizeY();
+					var w = scope.gridsterItem.getElementSizeX();
+                   
+                    scope.widget.highchartsNG.size.height = y-100;
+					scope.widget.highchartsNG.size.width = w-100;
 					
 						var oldRow = item.row,
 						oldCol = item.col,

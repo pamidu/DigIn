@@ -1,0 +1,12 @@
+.post-message{
+   display:inline-block;
+    width:150px;
+    white-space: nowrap;
+    overflow:hidden !important;
+    text-overflow: ellipsis;
+}
+
+.post-image{
+   height: auto;
+   width: auto;
+}

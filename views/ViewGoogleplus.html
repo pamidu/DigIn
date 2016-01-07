@@ -1,63 +1,53 @@
-<md-content>
-    <md-tabs md-border-bottom>
+<md-content style="display:initial">
+     <md-tabs>
         <md-tab label="Profile">
-            <md-content class="md-padding">
-                <div layout="column">
-                    <h6>Profile information</h6>
-                    <div id="profile"></div>
+            <md-content>
+                <div flex>
+                    <!-- <h4 layout-margin>Profile Information</h4> -->
+                    <md-list-item class="md-3-line" layout-margin flex layout="row">
+                        <div flex="30" layout="column" layout-align="center center">
+                            <img class="google-plus-avatar" src="{{$root.profileData.image.url}}" >
+                            <h4 class="gp-title">{{$root.profileData.displayName}}</h4>
+                        </div>
+                        <div class="md-list-item-text" flex="70" layout="column" layout-align="start start">
+                            <h3 style="line-height: 1.0em;">Gender : {{$root.profileData.gender}}</h3>
+                            <h3 style="line-height: 1.0em;">Circled By : {{$root.profileData.circledByCount}}</h3>
+                            <h3 style="line-height: 1.0em;">In Circles : {{$root.peopleData.totalItems}}</h3>
+                            <h3 style="line-height: 1.0em;">Activities : {{$root.activityData.items.length}}</h3>
+                        </div>
+                    </md-list-item>
                 </div>
             </md-content>
         </md-tab>
-        <md-tab label="Followers">
-            <md-content class="md-padding">
-                <div layout="column">
-                    <h6>Followers:</h6>
-                    <div id="followerss"></div>
-                </div>
-            </md-content>
-        </md-tab>
-        <md-tab label="Followings">
-            <md-content class="md-padding">
-                <div layout="column">
-                    <h6>Followings:</h6>
-                    <div id="followinglist"></div>
-                </div>
-            </md-content>
-        </md-tab>
-        <md-tab label="Connected">
-            <md-content class="md-padding">
-                <div layout="column">
-                    <h6>Connected:</h6>
-                    <div id="connectedPeople"></div>
+        <md-tab label="In Circles">
+            <md-content>
+                <div flex ng-repeat="person in $root.peopleData.items" style="border-bottom: 1px solid #D8D8D8;">
+                    <!-- <h4 layout-margin>Profile Information</h4> -->
+                    <md-list-item class="md-3-line" layout-margin flex layout="row">
+                        <div flex="30" layout="row" layout-align="center center" style="height:60px"><img class="google-plus-avatar" src="{{person.image.url}}" ></div>
+                        <div class="md-list-item-text" flex="70" layout="column" layout-align="start start">
+                            <h3 style="line-height: 1.0em;">Name : {{person.displayName}}</h3>
+                            <h3 style="line-height: 1.0em;">Type : {{person.objectType}}</h3>
+                        </div>    
+                    </md-list-item>
                 </div>
             </md-content>
         </md-tab>
         <md-tab label="Activities">
-            <md-content class="md-padding">
-                <div layout="column">
-                    <h6>Activities:</h6>
-                    <div id="activitylist"></div>
-                </div>
-            </md-content>
-        </md-tab>
-        <md-tab label="Total Friends">
-            <md-content class="md-padding">
-                <div layout="column">
-                    <h6>Total friends:</h6>
-                    <div id="visiblePeople"></div>
-                </div>
-            </md-content>
-        </md-tab>
-        <md-tab label="Other Info">
-            <md-content class="md-padding">
-                <div layout="column">
-                    <h6>User contacts Details:</h6>
-                    <div id="placelist"></div>
-                    <h6>Organizations:</h6>
-                    <div id="orglist"></div>
+            <md-content>
+                <div flex ng-repeat="activity in $root.activityData.items" style="border-bottom: 1px solid #D8D8D8;">
+                    <h4 layout-margin>{{activity.title}}</h4>
+                    <md-list-item class="md-3-line" layout-margin flex layout="row">
+                        <div flex="30" layout="row" layout-align="center center" style="height:60px"><img class="google-plus-avatar" src="{{activity.object.attachments[0].image.url}}" ></div>
+                        <div class="md-list-item-text" flex="70" layout="column" layout-align="start start">
+                            <h3 style="line-height: 1.0em;">Published : {{activity.published}}</h3>
+                            <h3 style="line-height: 1.0em;">Comments : {{activity.object.replies.totalItems}}</h3>
+                            <h3 style="line-height: 1.0em;"><ng-md-icon icon="plus_one" style="fill:black" size="20" layout="column" layout-align="center center" flex></ng-md-icon> : {{activity.object.plusoners.totalItems}}</h3>
+
+                        </div>    
+                    </md-list-item>
                 </div>
             </md-content>
         </md-tab>
     </md-tabs>
-    <script type="text/javascript" src="../duodigin/scripts/controllers/Googleplus.js"></script>
 </md-content>

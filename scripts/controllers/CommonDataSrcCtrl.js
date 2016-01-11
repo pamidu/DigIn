@@ -1,4 +1,4 @@
-routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API', function($scope, $mdSidenav, $log, CommonDataSrc, $mdDialog, $rootScope, $http, Digin_Engine_API) {
+routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API','Digin_Engine_API_Namespace', function($scope, $mdSidenav, $log, CommonDataSrc, $mdDialog, $rootScope, $http, Digin_Engine_API, Digin_Engine_API_Namespace) {
 
    $scope.fieldArray = [];
    $scope.fieldString = [];

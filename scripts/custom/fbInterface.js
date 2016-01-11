@@ -3,36 +3,45 @@ var fbInterface = new function(){
 
 	this.state = "";
 
-	this.getFbLoginState = function(scope){
-		//alert(scope);
-		//setLoginButtonValue("response.status");
-		//scope.actIndicator = "false";
+	this.getFbLoginState = function(scope, analysis){
         FB.getLoginStatus(function(response) {
-            fbInterface.setLoginButtonValue(response.status,scope);
-            fbInterface.getUserPages(scope);
+            if(!analysis){
+               fbInterface.setLoginButtonValue(response.status,scope);
+               fbInterface.getUserPages(scope);
+            }else{               
+               fbInterface.setPageLoginButtonValue(response.status,scope);
+               fbInterface.getUserPages(scope);
+            }
+            
         });
 	};
 
-	this.loginToFb =  function(scope){
+	this.loginToFb =  function(scope, analysis, callback){
 		FB.login(function(response) {
             fbInterface.setLoginButtonValue(response.status,scope);
             fbInterface.getUserPages(scope);
+            if(analysis) scope.lblPageLogin='Logout';
+           alert(JSON.stringify(response));
+            scope.authResponse = response.authResponse;
+            if(callback) callback(response);
         }, {
             scope: 'manage_pages,read_insights'
         });
 	};
 
-	this.logoutFromFb =  function(scope){
+	this.logoutFromFb =  function(scope, analysis){
 		FB.logout(function(response) {
             fbInterface.setLoginButtonValue(response.status,scope);
             scope.accounts = [];
             scope.userAccountName = '';
+            scope.fbPages = [];
+            if(analysis) scope.lblPageLogin='Login';
         });
 	};
 
 	this.authenticate = function(scope){
         if (this.state === 'connected') {
-        	alert('connected');
+        	//alert('connected');
         	scope.connectBtnLabel = 'Remove Account';
         } else if (this.state === 'not_authorized') {
             //todo...
@@ -47,6 +56,12 @@ var fbInterface = new function(){
 		if(state!= 'connected') scope.connectBtnLabel='Add Account';
         else scope.connectBtnLabel='Remove Account';
 	};
+   
+   this.setPageLoginButtonValue = function(state,scope){
+      this.state = state;
+      if(state!= 'connected') scope.lblPageLogin='Login';
+      else scope.lblPageLogin='Logout';
+   };
 
 	this.getUserAccount = function(scope,callback){
 		FB.api('/me', function(response) {
@@ -153,6 +168,42 @@ var fbInterface = new function(){
         };
 
 	};
+   
+   this.getSearchedPages = function(scope, analysis,query){
+      if(this.state!= 'connected'){
+         this.loginToFb(scope,analysis,function(res){
+            alert(JSON.stringify(res));
+//            alert(res.access_token);
+            fbInterface.searchFromFb(scope, 'page', res.authResponse.accessToken, query);
+         });
+      }
+      else{
+         fbInterface.searchFromFb(scope, 'page', scope.authResponse.access_token, query);        
+      }
+   };
+   
+   this.searchFromFb = function(scope, type, token, query){
+      console.log('access token:'+token);     
+      var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function(e) {
+        console.log(this);
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                alert(xhr.response);
+
+            } else {
+                console.error("XHR didn't work: ", xhr.status);
+            }
+        }
+    }
+    xhr.ontimeout = function() {
+        console.error("request timedout: ", xhr);
+    }
+    xhr.open("get","https://graph.facebook.com/search?q="+query+"&type="+type+"&access_token="+token,true);
+    xhr.send();    
+      
+   };
 
 
 }

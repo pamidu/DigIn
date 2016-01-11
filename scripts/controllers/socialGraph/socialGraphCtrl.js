@@ -1,19 +1,21 @@
+/* Summary:
+   note: some of the scope variables are initialized inside fbInterface
+*/
+
 routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices, $http, Digin_Engine_API1, $rootScope, $mdDialog) {
 
    $scope.totalLikes = 0;
    
-   $scope.init = function() {
-
-      setTimeout(function() {
-         $('#content1').css("height", "100%");
-      }, 3000);
+   $scope.fbPageInit = function() {
+//      setTimeout(function() {
+//         $('#content1').css("height", "100%");
+//      }, 3000);
+      fbInterface.getFbLoginState($scope, true);
 
    }
-   $scope.accounts = [];
-
-   $scope.pageSearchPara = {
-      startDate: new Date(),
-      endDate: new Date()
+   
+   $scope.searchPage = function(searchQuery){
+      fbInterface.getSearchedPages($scope,true,searchQuery);
    };
    
    //getting the service response
@@ -135,9 +137,9 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
    $scope.isSearchingPage = false;
    $scope.loginWithFb = function() {
       if (fbInterface.state != 'connected') {
-         fbInterface.loginToFb($scope);
+         fbInterface.loginToFb($scope, true);
       } else {
-         fbInterface.logoutFromFb($scope);
+         fbInterface.logoutFromFb($scope, true);
       }
    };
    

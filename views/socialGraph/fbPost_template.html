@@ -1,0 +1,17 @@
+<md-dialog>
+    <md-content>
+       <div layout="column">
+        <div class="card-body bg-color-grey-100 p-b-40">
+            <div layout="row" layout-wrap>
+               <img class="post-image" data-ng-src="{{myPost.picture}}">
+               <span>{{myPost.message}}</span>
+            </div>
+           <div layout="row">
+             <span>Likes:{{myPost.likes}}</span>
+             <span>Comments:{{myPost.comments}}</span>
+             <span>Shares:{{myPost.shares}}</span>
+          </div>
+        </div>          
+       </div>
+    </md-content>
+</md-dialog>

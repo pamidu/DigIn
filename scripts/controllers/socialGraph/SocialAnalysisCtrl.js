@@ -5,7 +5,7 @@ routerApp.controller('socialAnalysisCtrl', function ($scope,$mdDialog,$location)
         $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","rgba(0, 0, 0, 0.14)" );
          $mdDialog.hide();
        
-    }
+    } 
     
     
 });

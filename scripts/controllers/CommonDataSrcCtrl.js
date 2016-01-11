@@ -1,4 +1,4 @@
-routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API','Digin_Engine_API_Namespace', function($scope, $mdSidenav, $log, CommonDataSrc, $mdDialog, $rootScope, $http, Digin_Engine_API,Digin_Engine_API_Namespace) {
+routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API', function($scope, $mdSidenav, $log, CommonDataSrc, $mdDialog, $rootScope, $http, Digin_Engine_API) {
 
    $scope.fieldArray = [];
    $scope.fieldString = [];
@@ -144,8 +144,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
       xhr.ontimeout = function() {
          console.error("request timedout: ", xhr);
       }
-      //alert($scope.selTable.split(":")[1]);
-      xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + Digin_Engine_API_Namespace +"."+ $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
+      alert($scope.selTable.split(":")[1]);
+      xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + $scope.selTable.split(":")[1] + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
 
       xhr.send();
 
@@ -222,7 +222,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
 }]);
 
 
-routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData','Digin_Engine_API','Digin_Engine_API_Namespace', function($scope, $mdDialog, $rootScope, widId, $state, fieldData, Digin_Engine_API, Digin_Engine_API_Namespace) {
+routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData','Digin_Engine_API', function($scope, $mdDialog, $rootScope, widId, $state, fieldData, Digin_Engine_API) {
    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
    $scope.widget = $rootScope.dashboard.widgets[objIndex];
    $scope.arrayAttributes = fieldData;
@@ -336,7 +336,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
               host: host,
               method: method,
               params: [
-                 {name: 'tablename', value: "["+tbl+"]"},
+                 {name: 'tablename', value: "["+tbl.split(':')[1]+"]"},
                  {name: 'group_by', value: "{'"+gBy+"':1}"},
                  {name: 'agg', value: agg.toLowerCase()},
                  {name: 'agg_f', value: "['"+aggF+"']"},
@@ -348,10 +348,9 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
    //order by category
    $scope.orderByCat = function(widget) {
       $scope.seriesArray.forEach(function(entry) {
-         var tblVal = Digin_Engine_API_Namespace + '.' + widget.commonSrcConfig.tbl;
          entry['data'] = [];
-//         alert(tblVal);
-         var paramArr = $scope.generateParamArr('get',Digin_Engine_API, tblVal,'aggregatefields', $scope.catItem.value, entry.filter,entry.serName.value);
+         var paramArr = $scope.generateParamArr('get',Digin_Engine_API, widget.commonSrcConfig.tbl,'aggregatefields',
+             $scope.catItem.value, entry.filter,entry.serName.value);
          var w = new Worker("scripts/webworkers/commonSrcWorker.js");
          w.postMessage(JSON.stringify(paramArr));
          w.addEventListener('message', function(event) {
@@ -431,8 +430,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
       $scope.seriesArray.forEach(function(entry) {
          var serObj = {name:'',color:'',type:'',data:[]};         
          entry['data'] = [];
-         var tblVal = Digin_Engine_API_Namespace + '.' + widget.commonSrcConfig.tbl;
-         var paramArr = $scope.generateParamArr('get',Digin_Engine_API, tblVal,'aggregatefields', $scope.catItem.value, entry.filter,entry.serName.value);
+         var paramArr = $scope.generateParamArr('get',Digin_Engine_API, widget.commonSrcConfig.tbl,'aggregatefields', $scope.catItem.value, entry.filter,entry.serName.value);
          var w = new Worker("scripts/webworkers/commonSrcWorker.js");
          requestCounter--;
          w.postMessage(JSON.stringify(paramArr));
@@ -552,7 +550,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
          }
       };    
                   //widget.highchartsNG = ;
-                      console.log('highchartng drilled:'+JSON.stringify(widget.highchartsNG));
+                      console.log('highchartng:'+JSON.stringify(widget.highchartsNG));
                 }
                    
                    

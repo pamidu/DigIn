@@ -1,9 +1,9 @@
 $(window).load(function () {
-   setTimeout(function () {
+    setTimeout(function () {
         $('#pagePreLoader').hide();
-        $('.nav-menu').css("visibility","visible");
-        $('.main-headbar').css("visibility","visible");
-        $('#content1').css("visibility","visible");
+        $('.nav-menu').css("visibility", "visible");
+        $('.main-headbar').css("visibility", "visible");
+        $('#content1').css("visibility", "visible");
     }, 3000);
 });
 
@@ -48,7 +48,7 @@ routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$
     $stateProvider
         .state('/', {
             url: "/"
-        })      
+        })
         .state('Dashboards', {
             url: "/Dashboards",
             controller: 'DashboardCtrl',
@@ -129,24 +129,24 @@ routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$
             templateUrl: "views/settings.html"
 
         }).state('social-graph-fb', {
-            url: '/social-graph-fb',
-            controller: 'socialGraphCtrl',
-            templateUrl: "views/socialGraph/socialGraph_Temp.html"
+        url: '/social-graph-fb',
+        controller: 'socialGraphCtrl',
+        templateUrl: "views/socialGraph/socialGraph_Temp.html"
 
-        }).state('Social Analysis', {
-            url: "/social-analysis",
-            controller: 'SocialAnalysisCtrl',
-            //templateUrl: "views/extended-analytics.html"
-            
-        }).state('SocialGraphFb', {
-            url: '/social-graph-fb',
-            controller: 'socialGraphFBCtrl',
-            templateUrl: "views/socialGraph/socialGraphFB_Temp.html"
+    }).state('Social Analysis', {
+        url: "/social-analysis",
+        controller: 'SocialAnalysisCtrl',
+        //templateUrl: "views/extended-analytics.html"
 
-        }).state('SocialGraphTwitter', {
-            url: '/social-graph-twitter',
-            controller: 'socialGraphTwitterCtrl',
-            templateUrl: "views/socialGraph/socialGraphTwitter_Temp.html"
+    }).state('SocialGraphFb', {
+        url: '/social-graph-fb',
+        controller: 'socialGraphFBCtrl',
+        templateUrl: "views/socialGraph/socialGraphFB_Temp.html"
+
+    }).state('SocialGraphTwitter', {
+        url: '/social-graph-twitter',
+        controller: 'socialGraphTwitterCtrl',
+        templateUrl: "views/socialGraph/socialGraphTwitter_Temp.html"
     });
 
     lkGoogleSettingsProvider.configure({
@@ -208,7 +208,6 @@ routerApp.controller('AnalyzerViewerControl', ['$scope', '$rootScope', '$statePa
     function ($scope, $rootScope, $stateParams, Digin_AnalyzerViewer, $sce, $localStorage) {
 
 
-
         $scope.reportURL = Digin_AnalyzerViewer + "3A" + $rootScope.username + "%3AAnalyzer%3A" + $stateParams.param + "/editor?";
 
         $scope.trustSrc = function (src) {
@@ -220,8 +219,8 @@ routerApp.controller('AnalyzerViewerControl', ['$scope', '$rootScope', '$statePa
 ]);
 
 
-
-routerApp.controller('mainController', ['$scope', '$http', function (scope, http) {}]);
+routerApp.controller('mainController', ['$scope', '$http', function (scope, http) {
+}]);
 
 routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope',
 
@@ -246,9 +245,7 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
                 $mdDialog.show({
                     controller: 'successCtrl',
                     templateUrl: 'views/dialog_success.html',
-                    resolve: {
-
-                    }
+                    resolve: {}
                 })
             });
             client.onError(function (data) {
@@ -256,9 +253,7 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
                 $mdDialog.show({
                     controller: 'errorCtrl',
                     templateUrl: 'views/dialog_error.html',
-                    resolve: {
-
-                    }
+                    resolve: {}
                 })
             });
 
@@ -266,7 +261,7 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
             client.insert([$rootScope.dashboard], {
                 KeyProperty: "dashboardName"
             });
-            
+
         }
     }
 ]);
@@ -387,13 +382,13 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function (
     // Internationalization strings
     dateFormat.i18n = {
         dayNames: [
-        "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
-        "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-    ],
+            "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
+            "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+        ],
         monthNames: [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-        "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-    ]
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+            "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+        ]
     };
 
     // For convenience...
@@ -475,49 +470,49 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function (
 
     function clockComponentformatController($scope, $mdDialog) {
         $scope.formats = [{
-                name: "default",
-                format: "ddd mmm dd yyyy HH:MM:ss"
-                },
+            name: "default",
+            format: "ddd mmm dd yyyy HH:MM:ss"
+        },
             {
                 name: "shortDate",
                 format: "m/d/yy"
-                },
+            },
             {
                 name: "longDate",
                 format: "mmmm d, yyyy"
-                },
+            },
             {
                 name: "fullDate",
                 format: "dddd, mmmm d, yyyy"
-                },
+            },
             {
                 name: "shortTime",
                 format: "h:MM TT"
-                },
+            },
             {
                 name: "mediumTime",
                 format: "h:MM:ss TT"
-                },
+            },
             {
                 name: "longTime",
                 format: "h:MM:ss TT Z"
-                },
+            },
             {
                 name: "isoDate",
                 format: "yyyy-mm-dd"
-                },
+            },
             {
                 name: "isoTime",
                 format: "HH:MM:ss"
-                },
+            },
             {
                 name: "isoDateTime",
                 format: "yyyy-mm-dd'T'HH:MM:ss"
-                },
+            },
             {
                 name: "isoUtcDateTime",
                 format: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
-                }];
+            }];
 
         $scope.clockComponentformatChange = function (data) {
             $mdDialog.hide(data);
@@ -542,7 +537,8 @@ routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
                 //console.log(firstDay);
                 if (firstDay == 0) {
                     firstDay = 7;
-                };
+                }
+                ;
                 for (i = 0; i < 40; i++) {
 
                     if (i + 1 < firstDay) {
@@ -567,12 +563,17 @@ routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
                                     task: '',
                                 };
                                 $scope.days.push(obj);
-                            };
-                        };
-                    };
-                };
+                            }
+                            ;
+                        }
+                        ;
+                    }
+                    ;
+                }
+                ;
                 //console.log($scope.days);
-            };
+            }
+            ;
         };
 
         $scope.previousMonth = function () {
@@ -581,7 +582,8 @@ routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
             } else {
                 $scope.month = $scope.month - 1;
 
-            };
+            }
+            ;
             //createCal();
         };
 
@@ -591,7 +593,8 @@ routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
 
             } else {
                 $scope.month = $scope.month + 1;
-            };
+            }
+            ;
             //createCal();
         };
 
@@ -634,7 +637,8 @@ routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog',
                     } else {
                         $scope.weatherComponentIcon = 'sun';
                         $scope.weatherComponentBg = "styles/css/images/weatherComponentBg.jpg";
-                    };
+                    }
+                    ;
                 }
 
             })
@@ -1068,11 +1072,11 @@ routerApp.filter('getExtension', function () {
     };
 });
 
-routerApp.filter('htmlToPlaintext', function() {
-    return function(text) {
-      return  text ? String(text).replace(/<[^>]+>/gm, '') : '';
-    };
-  }
+routerApp.filter('htmlToPlaintext', function () {
+        return function (text) {
+            return text ? String(text).replace(/<[^>]+>/gm, '') : '';
+        };
+    }
 );
 
 routerApp.directive('clockComponent', function () {
@@ -1110,7 +1114,7 @@ routerApp.directive('userprofileComponent', function () {
 <div style="background-image:url(styles/css/images/+++++ofileComponentBg.jpg);background-size:cover;width: 100%;height: 45%;position: absolute;"></div>\
     <button data-card-menu="data-card-menu" class="card-face__menu-button"><img src="http://imgh.us/dots_1.svg" width="5" height="23" draggable="false"/></button><!-- Avatar -->\
     <div class="card-face__avatar"><!-- Bullet notification --><span class="card-face__bullet">2</span><!-- User avatar --><img src="http://i.imgur.com/gGdWosb.png" width="110" height="110" draggable="false"/></div><!-- Name -->\
-    <h2 class="card-face__name">'+localStorage.getItem("username")+'</h2><!-- Title --><span class="card-face__title">Graphic & Web Designer</span><!-- Cart Footer -->\
+    <h2 class="card-face__name">' + localStorage.getItem("username") + '</h2><!-- Title --><span class="card-face__title">Graphic & Web Designer</span><!-- Cart Footer -->\
     <div class="card-face-footer"><a href="#" target="_blank" class="card-face__social"><img src="http://imgh.us/dribbble.svg" width="36" height="36" draggable="false"/></a><a href="#"_blank" class="card-face__social"><img src="http://imgh.us/beh.svg" width="36" height="36" draggable="false"/></a><a href="#" target="_blank" class="card-face__social"><img src="http://imgh.us/plus_5.svg" width="36" height="36" draggable="false"/></a></div>\
   </div>\
 </div>'
@@ -1125,7 +1129,8 @@ routerApp.constant('config', {
     appVersion: 1.0,
     apiUrl: 'http://104.131.48.155:8080/',
     apiFbUrl: 'http://192.168.0.47:8080/',
-    Big_Qry_Get_Tbls: 'http://104.131.48.155:8080/GetTables?dataSetID=digin_hnb',
+    Big_Qry_Get_Tbls: 'http://104.131.48.155:8080/GetTables?dataSetID=Demo',
+    Big_Qry_Get_Fields: 'http://104.131.48.155:8080/GetFields?dataSetID=Demo&&tableName=',
     apiUrl2: '',
     storeIndex: 'com.duosoftware.com'
 });

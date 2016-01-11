@@ -21,8 +21,7 @@ var fbInterface = new function(){
             fbInterface.setLoginButtonValue(response.status,scope);
             fbInterface.getUserPages(scope);
             if(analysis) scope.lblPageLogin='Logout';
-           alert(JSON.stringify(response));
-            scope.authResponse = response.authResponse;
+            localStorage.setItem('authResponse', JSON.stringify(response.authResponse));
             if(callback) callback(response);
         }, {
             scope: 'manage_pages,read_insights'
@@ -178,7 +177,9 @@ var fbInterface = new function(){
          });
       }
       else{
-         fbInterface.searchFromFb(scope, 'page', scope.authResponse.access_token, query);        
+//         alert(JSON.stringify(scope.authResponse));
+         var authObject = JSON.parse(localStorage.getItem('authResponse'));
+         fbInterface.searchFromFb(scope, 'page', authObject.accessToken, query);        
       }
    };
    

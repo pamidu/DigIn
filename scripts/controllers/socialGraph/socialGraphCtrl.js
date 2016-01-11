@@ -36,13 +36,23 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
       var colorObj = {'page_views':'#00796B','page_fans':'#B2DFDB','page_stories':'#FFFFFF'};
       data.forEach(function(entry) {
          $scope.configData = [];
+         var seriesName = '';
          entry.data.forEach(function(value) {
             var x = value[0].split('T')[0];
+            
             var enDate = x.replace(/-/g, ",").split(',');
             
-            if(entry.name == 'page_views') $scope.totalViews += value[1];
+            if(entry.name == 'page_views') {
+               seriesName = 'Page Views';
+               $scope.totalViews += value[1];
+            }
             
-            if(entry.name == 'page_fans') $scope.totalLikes = value[1];
+            if(entry.name == 'page_fans') {
+               seriesName = 'Page Likes';
+               $scope.totalLikes = value[1];
+            }
+            
+            if(entry.name == 'page_stories') seriesName = 'Page Stories';
             
             $scope.configData.push([
                Date.UTC(enDate[0], enDate[1], enDate[2]),
@@ -52,7 +62,7 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
          
          configSeries.push({
             type: 'column',
-            name: entry.name,
+            name: seriesName,
             data: $scope.configData,
             color: colorObj[entry.name]
          });

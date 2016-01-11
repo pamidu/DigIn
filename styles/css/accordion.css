@@ -35,3 +35,8 @@
   opacity: 0;
   padding: 0 10px;
 }
+
+.accordion-content{
+  overflow-x: hidden;
+  overflow-y: scroll;
+}

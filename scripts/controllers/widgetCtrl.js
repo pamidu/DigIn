@@ -2463,13 +2463,22 @@ function calendarInit(widId, $scope, $http, $rootScope, $mdDialog, $compile, $ti
 
 function googlePlusInit($scope, googleService, $http, $mdDialog, widId, $rootScope) {
     
+    var loggedIn = false;
     $scope.login = function () {
-                googleService.login().then(function (data) {
-                    // do something with returned data
-                    console.log(data);
-                }, function (err) {
-                    console.log('Failed: ' + err);
-                }); 
+        googleService.login().then(function (data) {
+                loggedIn = true;
+                console.log(data);
+        }, function (err) {
+                console.log('Failed: ' + err);
+        }); 
+    };
+
+    $scope.logout = function () {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+            loggedIn = false;
+            console.log('User signed out.');
+        });
     };
 
     $scope.cancel = function() {
@@ -2478,25 +2487,25 @@ function googlePlusInit($scope, googleService, $http, $mdDialog, widId, $rootSco
 
     $scope.finish = function() {
 
-        console.log("$rootScope");
-        console.log($rootScope);
-
-        googleService.getProfileData().then(function (data){
-            console.log("google plus retrieving profile data done");
-        },function (err) {
-            console.log('Failed: ' + err);
-        });
-        googleService.getPeopleData().then(function (data){
-            console.log("google plus retrieving people data done");
-        },function (err) {
-            console.log('Failed: ' + err);
-        });
-        googleService.getActivityData().then(function (data){
-            console.log("google plus retrieving activity data done");
-        },function (err) {
-            console.log('Failed: ' + err);
-        });
-
+        if(loggedIn){
+            
+            googleService.getProfileData().then(function (data){
+                console.log("google plus retrieving profile data done");
+            },function (err) {
+                console.log('Failed: ' + err);
+            });
+            googleService.getPeopleData().then(function (data){
+                console.log("google plus retrieving people data done");
+            },function (err) {
+                console.log('Failed: ' + err);
+            });
+            googleService.getActivityData().then(function (data){
+                console.log("google plus retrieving activity data done");
+            },function (err) {
+                console.log('Failed: ' + err);
+            });
+        }
+        
         $mdDialog.hide();
     };
 };

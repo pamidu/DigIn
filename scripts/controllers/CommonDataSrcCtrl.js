@@ -1,6 +1,8 @@
 routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API','Digin_Engine_API_Namespace', function($scope, $mdSidenav, $log, CommonDataSrc, $mdDialog, $rootScope, $http, Digin_Engine_API,Digin_Engine_API_Namespace) {
 
    $scope.fieldArray = [];
+   $scope.fieldString = [];
+   $scope.distinct = [];
    $scope.selTable = "";
    $scope.selSrc = "";
    $scope.icon = "bower_components/material-design-icons/navigation/svg/production/ic_chevron_left_18px.svg";
@@ -15,20 +17,12 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
       name: "Rest/SOAP Service"
    }, {
       name: "SpreadSheet"
+   }, {
+      name: "MSSql"
    }];
 
    // $scope.toggleRight = buildToggler('right');
    $scope.toggleLeft = buildToggler('custom');
-
-   $scope.modelContainer=[];
-   // angular.forEach($scope.dataFields,function(item){
-   //   $scope.modelContainer.push({item:item});
-   // });
-
-   $scope.FilterData = function(evt){
-      console.log("$scope.modelContainer");
-      console.log($scope.modelContainer);
-   }
 
    $scope.isOpenRight = function() {
       return $mdSidenav('right').isOpen();
@@ -38,6 +32,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
    };
 
    $scope.onChangeSource = function(src) {
+      //clear fieldArray
+      $scope.fieldArray = [];
+
       $scope.selSrc = src;
       CommonDataSrc.getTables(src, function(data) {
          $scope.dataTables = data;
@@ -45,6 +42,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
    };
 
    $scope.onChangeTable = function(tbl) {
+      //clear fieldArray
+      $scope.fieldArray = [];
+
       $scope.selTable = tbl;
       CommonDataSrc.getFields(tbl, function(data) {
          $scope.dataFields = data;
@@ -63,18 +63,18 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
    };
 
    $scope.toggleCheck = function(field) {
+
       var i = $scope.fieldArray.indexOf(field);
       if (i > -1) {
          $scope.fieldArray.splice(i, 1);
-         $scope.modelContainer.splice(i, 1);
       } else {
          $scope.fieldArray.push(field);
-         $scope.modelContainer.push(field);
+         
       }
    };
 
    $scope.configGraph = function(evt) {
-      $scope.fieldString = [];
+
       //building the fields string
       for(i=0;i<$scope.fieldArray.length;i++){
          $scope.fieldString.push("'"+$scope.fieldArray[i]+"'");
@@ -151,40 +151,75 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
 
    };
 
+   $scope.getDataByFields = function(field) {
+
+      //clear distinct scope array
+      //$scope.distinct = [];
+      $scope.distinct[field] = []; 
+      
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function(e) {
+         var array1 = [];
+         
+         console.log(this);
+         if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+               //parse json data to string
+               var parsed = JSON.parse(xhr.response);
+               var JSONDataArray = [];
+               //json data string to array
+               for(var x in parsed){
+                  JSONDataArray.push(parsed[x]);
+               }
+               //push field value of each array slot to scope array
+               for(var i=0;i<JSONDataArray.length;i++){
+             
+                  $scope.distinct[field][i] = JSONDataArray[i][field];
+                  //console.log($scope.distinct[field]);
+               }
+            } else {
+               console.error("XHR didn't work: ", xhr.status);
+            }
+         }
+
+         //get distinct values
+         // var distinct = [];
+         // var unique = {};
+
+         // for( var i in $scope.distinct[field] ){
+         //    if( typeof(unique[$scope.distinct[field][i]]) == "undefined"){
+         //       distinct.push($scope.distinct[i]);
+         //    }
+         //     unique[$scope.distinct[field][i]] = 0;
+         // }
+         //replace scope array with distict values
+         // $scope.distinct[field] = distinct;
+         console.log("$scope.distinct");
+         console.log($scope.distinct);
+         // console.log("distinct");
+         // console.log(distinct);
+
+      }
+
+      xhr.ontimeout = function() {
+         console.error("request timedout: ", xhr);
+      }
+
+      var limit = 1000;
+      var queryString = "SELECT " + field 
+                        + " FROM " + "[" + Digin_Engine_API_Namespace + "." + $scope.selTable + "]" 
+                        + " GROUP BY " + field
+                        + " LIMIT " + limit.toString();
+   
+      // xhr.open("get", Digin_Engine_API + "executeQuery?tablename=[" + $scope.selTable.split(":")[1] + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
+      xhr.open("get", Digin_Engine_API + "executeQuery?query=" + queryString, /*async*/ true);
+
+      xhr.send();
+
+   };
+
 }]);
-
-// $scope.getDataByFields = function(evt) {
-//       $scope.fieldString = [];
-//       //building the fields string
-//       for(i=0;i<$scope.fieldArray.length;i++){
-//          $scope.fieldString.push("'"+$scope.fieldArray[i]+"'");
-//       }
-      
-//       var xhr = new XMLHttpRequest();
-
-//       xhr.onreadystatechange = function(e) {
-//          console.log(this);
-//          if (xhr.readyState === 4) {
-//             if (xhr.status === 200) {
-//               console.log(xhr.response);
-//             } else {
-//                console.error("XHR didn't work: ", xhr.status);
-//             }
-//          }
-//       }
-//       xhr.ontimeout = function() {
-//          console.error("request timedout: ", xhr);
-//       }
-      
-//       var queryString = ""
-//       // xhr.open("get", Digin_Engine_API + "executeQuery?tablename=[" + $scope.selTable.split(":")[1] + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
-//       // xhr.open("get", Digin_Engine_API + "executeQuery?SELECT*FROM ", /*async*/ true);
-
-//       // xhr.send();
-
-//    };
-
-// }]);
 
 
 routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData','Digin_Engine_API','Digin_Engine_API_Namespace', function($scope, $mdDialog, $rootScope, widId, $state, fieldData, Digin_Engine_API, Digin_Engine_API_Namespace) {

@@ -8,13 +8,16 @@
                         },
                         controller:function($scope,$element){
                             var activePanel=null;
+                            
                             this.openPanel=function(panel){
                                 if(this.activePanel!=null){
                                     if(panel.active){
+                                        console.log("accordion if if");
                                         this.activePanel.active=false;
                                         this.activePanel=null;
                                         panel.icon='bower_components/material-design-icons/navigation/svg/production/ic_expand_more_18px.svg';
                                     }else{
+                                        console.log("accordion if else");
                                         this.activePanel.active=false;
                                         this.activePanel.icon='bower_components/material-design-icons/navigation/svg/production/ic_expand_more_18px.svg';
                                         this.activePanel=panel;
@@ -22,6 +25,8 @@
                                         panel.icon='bower_components/material-design-icons/navigation/svg/production/ic_expand_less_18px.svg';  
                                     }
                                 }else{
+                                    console.log("accordion else");
+                                
                                     this.activePanel=panel;
                                     this.activePanel.active=true;
                                     panel.icon='bower_components/material-design-icons/navigation/svg/production/ic_expand_less_18px.svg';
@@ -57,6 +62,7 @@
                                     '<md-content class="animate-show" ng-show="active" ng-transclude layout-margin layout-align="center center" layout="column"></md-content>'+
                                 '</section>',
                         link: function (scope, element, attrs, accordionCtrl) {
+                            var clickCount = 0;
                             var elem=element[0];
                             elem.id='panel_'+scope.$id;
                             
@@ -69,6 +75,17 @@
 
                             scope.toggle=function(){
                                 accordionCtrl.openPanel(scope);
+                                // clickCount++;
+                                // console.log("click count", clickCount);
+                                // if(clickCount == 1){
+                                //     console.log("click count in if", clickCount);
+                                    
+                                // }
+                                // else{
+                                //     console.log("click count in else before", clickCount);
+                                //     clickCount = 0;
+                                //     console.log("click count in else after", clickCount);
+                                // }
                             }
                         }
                     };

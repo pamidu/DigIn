@@ -96,7 +96,7 @@
                                 <!-- social page name-->
                                 <h2 class="color-primary graph-h1">
                                     <!-- digin{{page.name}}-->
-                                    Digin
+                                    {{page.name}}
                                 </h2>
                                 <a href="javascript:void(0);" class="small-text">
                                     Open in facebook
@@ -121,9 +121,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+<!--                        <div class="col-md-6">-->
                             <!-- posts -->
-                            <ul class="list-justified text-center">
+                        <!--    <ul class="list-justified text-center">
                                 <li>
                                     <p class="size-h2 text-color-100 graph-h1">
                                         {{postCount}}
@@ -132,23 +132,23 @@
                                     <p class="text-muted graph-h5">Posts</p>
                                 </li>
                                 <!-- commenters -->
-                                <li>
+                          <!--      <li>
                                     <p class="size-h2 text-color-100 graph-h1 font-weight-500">
-                                        {{viewCount}}
+                                        {{totalViews}}
                                     </p>
 
                                     <p class="text-muted graph-h5 font-weight-500">Views</p>
                                 </li>
                                 <!-- likes-->
-                                <li class="last-icon">
+                          <!--      <li class="last-icon">
                                     <p class="size-h2 text-color-100 graph-h1 font-weight-500">
-                                        {{likeCount}}
+                                        {{totalLikes}}
                                     </p>
 
                                     <p class="text-muted graph-h5">Likes</p>
                                 </li>
-                            </ul>
-                        </div>
+                            </ul> -->
+<!--                        </div>-->
                     </div>
                 </div>
 
@@ -191,16 +191,16 @@
                 <div class="post-wrap">
 
                     <div layout="row" layout-wrap>
-                        <div flex="40">
-                            <div layout="row" layout-wrap>
+                        <div flex>
+                            <div layout="row" layout-align="center center" layout-wrap>
                                 <!-- Likes -->
-                                <div flex="13">
+                                <div flex="30">
                                     <md-card class="md-default-theme">
                                         <div class="md-content__body">
                                             <section class="home-mini-card">
                                                 <div class="row">
                                                     <div class="col-md-4">
-                                                    <span class="circle-icon sm  bg-like m-l-10">
+                                                    <span class="circle-icon md  bg-like m-l-10">
                                                   <i class="color-white  ti-thumb-up"
                                                      aria-hidden="true">
                                                   </i>
@@ -208,7 +208,7 @@
                                                     </div>
                                                     <div class="col-md-8">
                                                         <h2 class=" graph-h1 color-accent">
-                                                            150
+                                                            {{totalLikes}}
                                                         </h2>
 
                                                         <p class="font-color-100">
@@ -221,26 +221,26 @@
                                     </md-card>
                                 </div>
 
-                                <div flex="13">
+                                <div flex="30">
                                     <!-- shares -->
                                     <md-card class="md-default-theme">
                                         <div class="md-content__body">
                                             <section class="home-mini-card">
                                                 <div class="row">
                                                     <div class="col-md-4">
-                                                    <span class="circle-icon sm  bg-like m-l-10">
-                                                  <i class="color-white ti-share"
+                                                    <span class="circle-icon md  bg-like m-l-10">
+                                                  <i class="color-white ti-eye"
                                                      aria-hidden="true">
                                                   </i>
                                                  </span>
                                                     </div>
                                                     <div class="col-md-8">
                                                         <h2 class=" graph-h1 color-accent">
-                                                            28
+                                                            {{totalViews}}
                                                         </h2>
 
                                                         <p class="font-color-100">
-                                                            shares
+                                                            Views
                                                         </p>
                                                     </div>
                                                 </div>
@@ -249,14 +249,14 @@
                                     </md-card>
                                 </div>
 
-                                <div flex="13">
+                                <div flex="30">
                                     <!-- comments -->
                                     <md-card class="md-default-theme">
                                         <div class="md-content__body">
                                             <section class="home-mini-card">
                                                 <div class="row">
                                                     <div class="col-md-4">
-                                                    <span class="circle-icon sm  bg-like m-l-10">
+                                                    <span class="circle-icon md  bg-like m-l-10">
                                                   <i class="color-white ti-comment"
                                                      aria-hidden="true">
                                                   </i>
@@ -264,11 +264,11 @@
                                                     </div>
                                                     <div class="col-md-8">
                                                         <h2 class=" graph-h1 color-accent">
-                                                            18
+                                                             {{postCount}}
                                                         </h2>
 
                                                         <p class="font-color-100">
-                                                            comments
+                                                            Posts
                                                         </p>
                                                     </div>
                                                 </div>
@@ -281,149 +281,7 @@
                             </div>
                         </div>
                         <!-- Post types -->
-                        <div flex="60">
-
-                            <div layout="row" layout-wrap class="m-l-20">
-
-                                <div flex="20">
-                                    <!-- photos -->
-                                    <md-card class="md-default-theme">
-                                        <div class="md-content__body">
-                                            <section class="home-mini-card">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                    <span class="circle-icon sm  bg-like m-l-10">
-                                                  <i class="color-white ti-image"
-                                                     aria-hidden="true">
-                                                  </i>
-                                                 </span>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <h2 class=" graph-h1 color-accent">
-                                                            255
-                                                        </h2>
-
-                                                        <p class="font-color-100">
-                                                            photos
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </md-card>
-                                </div>
-
-                                <div flex="20">
-                                    <!-- videos -->
-                                    <md-card class="md-default-theme">
-                                        <div class="md-content__body">
-                                            <section class="home-mini-card">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                    <span class="circle-icon sm  bg-like m-l-10">
-                                                  <i class="color-white ti-video-clapper"
-                                                     aria-hidden="true">
-                                                  </i>
-                                                 </span>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <h2 class=" graph-h1 color-accent">
-                                                            3
-                                                        </h2>
-
-                                                        <p class="font-color-100">
-                                                            videos
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </md-card>
-                                </div>
-
-                                <div flex="20">
-                                    <!-- links -->
-                                    <md-card class="md-default-theme">
-                                        <div class="md-content__body">
-                                            <section class="home-mini-card">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                    <span class="circle-icon sm  bg-like m-l-10">
-                                                  <i class="color-white ti-clip"
-                                                     aria-hidden="true">
-                                                  </i>
-                                                 </span>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <h2 class=" graph-h1 color-accent">
-                                                            4
-                                                        </h2>
-
-                                                        <p class="font-color-100">
-                                                            links
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </md-card>
-                                </div>
-                                <div flex="20">
-                                    <!-- statuses -->
-                                    <md-card class="md-default-theme">
-                                        <div class="md-content__body">
-                                            <section class="home-mini-card">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                    <span class="circle-icon sm  bg-like m-l-10">
-                                                  <i class="color-white ti-shine"
-                                                     aria-hidden="true">
-                                                  </i>
-                                                 </span>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <h2 class=" graph-h1 color-accent">
-                                                            15
-                                                        </h2>
-
-                                                        <p class="font-color-100">
-                                                            statuses
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </md-card>
-                                </div>
-                                <div flex="20">
-                                    <!-- event -->
-                                    <md-card class="md-default-theme">
-                                        <div class="md-content__body">
-                                            <section class="home-mini-card">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                    <span class="circle-icon sm  bg-like m-l-10">
-                                                  <i class="color-white ti-flag"
-                                                     aria-hidden="true">
-                                                  </i>
-                                                 </span>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <h2 class=" graph-h1 color-accent">
-                                                            0
-                                                        </h2>
-
-                                                        <p class="font-color-100">
-                                                            events
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </md-card>
-                                </div>
-                            </div>
-                        </div>
+                         
                     </div>
                 </div>
             </div>
@@ -464,7 +322,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr data-ng-repeat="post in postsObj">
+                                        <tr data-ng-repeat="post in postsObj" ng-click="viewSinglePost(post)">
                                             <td>
                                                 <div data-ng-if="post.image_url==null">
                                                     <i class="fa fa-link"></i>

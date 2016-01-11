@@ -1,11 +1,7 @@
-/**
- * Created by Damith on 12/1/2015.
- */
-/* AUTH damtih
- /* socialGraphCtrl - Main controller
- */
-routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices, $http, Digin_Engine_API1, $rootScope) {
+routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices, $http, Digin_Engine_API1, $rootScope, $mdDialog) {
 
+   $scope.totalLikes = 0;
+   
    $scope.init = function() {
 
       setTimeout(function() {
@@ -36,24 +32,43 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
    //generate the chart
    function generateChart(data){
       var configSeries = [];
+      $scope.totalViews = 0;
+      var colorObj = {'page_views':'#00796B','page_fans':'#B2DFDB','page_stories':'#FFFFFF'};
       data.forEach(function(entry) {
          $scope.configData = [];
+         var seriesName = '';
          entry.data.forEach(function(value) {
             var x = value[0].split('T')[0];
+            
             var enDate = x.replace(/-/g, ",").split(',');
+            
+            if(entry.name == 'page_views') {
+               seriesName = 'Page Views';
+               $scope.totalViews += value[1];
+            }
+            
+            if(entry.name == 'page_fans') {
+               seriesName = 'Page Likes';
+               $scope.totalLikes = value[1];
+            }
+            
+            if(entry.name == 'page_stories') seriesName = 'Page Stories';
+            
             $scope.configData.push([
                Date.UTC(enDate[0], enDate[1], enDate[2]),
                value[1]
             ]);
-         });
+         });         
+         
          configSeries.push({
             type: 'column',
-            name: entry.name,
-            data: $scope.configData
+            name: seriesName,
+            data: $scope.configData,
+            color: colorObj[entry.name]
          });
       });
       
-      $scope.highchartsNG = {options:{chart:{type:"column",backgroundColor:null,spacingBottom:15,spacingTop:10,spacingLeft:10,spacingRight:10,width:680,height:300},plotOptions:{column:{borderWidth:0,groupPadding:0,shadow:!1}}},xAxis:{type:"datetime"},yAxis:{labels:{style:{color:"#fff",fontSize:"12px",fontFamily:"Ek Mukta, sans-serif",fontWeight:"200"},formatter:function(){return this.value}}},plotOptions:{column:{pointPadding:.1,borderWidth:0}},title:{text:""},loading:!1};
+      $scope.highchartsNG = {options:{chart:{type:"column",backgroundColor:null,spacingBottom:15,spacingTop:10,spacingLeft:10,spacingRight:10,width:680,height:300},plotOptions:{column:{borderWidth:0,groupPadding:0,shadow:!1}}},credits:{enabled:false},xAxis:{type:"datetime"},yAxis:{labels:{style:{color:"#fff",fontSize:"12px",fontFamily:"Ek Mukta, sans-serif",fontWeight:"200"},formatter:function(){return this.value}}},plotOptions:{column:{pointPadding:.1,borderWidth:0}},title:{text:""},loading:!1};
       
       $scope.highchartsNG['series'] = configSeries;
    };
@@ -72,7 +87,7 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
    $scope.getPageDetails = function (page, pageTimestamps, changedTime){
       
       var serviceUrl = Digin_Engine_API1 + 'pageoverview?metric_names=[%27page_views%27,%27page_fans%27,%27page_stories%27]&token=' 
-      + page.accessToken + '&%27since%27='+pageTimestamps.sinceStamp+'&%27until%27='+pageTimestamps.untilStamp;
+      + page.accessToken + '&since='+pageTimestamps.sinceStamp+'&until='+pageTimestamps.untilStamp;
       
       getServiceResponse(serviceUrl, function(data){
          console.log('chart data:'+JSON.stringify(data));
@@ -106,9 +121,12 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
    };
    
    $scope.changeTimeRange = function(){
+      var since = new Date($scope.sinceDate);
+      var until = new Date($scope.untilDate);
+      //alert(typeof(since));
       var timeObj = {
-           sinceStamp: Math.floor($scope.sinceDate / 1000),
-           untilStamp: Math.floor($scope.untilDate / 1000)
+           sinceStamp: Math.floor(since / 1000),
+           untilStamp: Math.floor(until / 1000)
        };
       $scope.getPageDetails($scope.page, timeObj, true);
    };
@@ -134,6 +152,25 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
       'isPost': true,
       'isVisitor': false
    };
-
+   
+   //viewing a single post
+   $scope.viewSinglePost = function(post){
+      $mdDialog.show({
+          controller: singlePostCtrl,
+          templateUrl: 'views/socialGraph/fbPost_template.html',
+          clickOutsideToClose: true,
+          locals: {
+             fbPost: post
+          }
+      });
+   };
 
 });
+
+
+function singlePostCtrl($scope,fbPost){
+   $scope.myPost = fbPost;
+};
+
+
+

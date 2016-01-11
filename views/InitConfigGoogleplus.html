@@ -1,7 +1,7 @@
+<md-dialog plumb-item style="min-width:400px;">
 <!-- for google plus sign in button-->
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <!-- for google plus sign in button-->
-<md-dialog plumb-item style="min-width:400px;">
         <md-toolbar>
                 <div class="md-toolbar-tools"  flex  layout="row">
                       <div flex="10">
@@ -20,8 +20,10 @@
             </div>
         </md-toolbar>
         <md-content>
-            <div layout="row" layout-align='center start' layout-margin>    
-              <div class="g-signin2" ng-click="login()"></div>
+            <div layout="row" layout-align='center center' layout-margin>    
+              <md-button ng-click="login()">Sign In</md-button>
+              <!-- <div class="g-signin2" ng-click="login()" ></div> -->
+              <md-button ng-click="logout()" >Sign Out</md-button>
             </div>
             <div class="md-actions" layout="row">
                 <span flex></span>

@@ -1422,4 +1422,8 @@ md-tabs-wrapper{
     font-weight:400;
 }
 
+md-backdrop.md-sidenav-backdrop{
+    display:none
+}
+
 

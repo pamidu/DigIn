@@ -196,26 +196,15 @@
                 
             </md-content>
         </md-sidenav>
+
         <md-sidenav class="md-sidenav-right md-sidenav-custom md-whiteframe-z2 overflow-none" md-component-id="custom">
             <md-content class="overflow-none" ng-controller="CustomCtrl" layout="column">
-                <accordion ng-repeat="item in modelContainer">
+                <accordion ng-repeat="item in fieldArray" ng-click="getDataByFields(item)">
                 <accordion-panel title="{{item}}">
-                    <div class="card-body">
-                        <div>{{item}}</div>
+                    <div class="accordion-content">
+                        <!-- <md-button>Get Distinct Fields</md-button> -->
+                        <div ng-repeat="data in distinct[item] track by $index">{{data}}</div>
                     </div>
-                    <!-- <div class="card-body">
-                        <div class="inline-text">
-                                <i class="fa fa-filter"></i>
-                                <span>Filter Items</span>
-                        </div>
-                        <div layout="column" class="data-index">
-                            <div>
-                                <md-checkbox ng-repeat="item in dataFields" ng-click="toggleCheck(item)">
-                                               {{item }}
-                                </md-checkbox>
-                            </div>
-                        </div>
-                    </div> -->
                 </accordion-panel>
                 </accordion>
             </md-content>

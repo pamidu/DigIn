@@ -157,7 +157,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
       }
       xhr.ontimeout = function() {
          console.error("request timedout: ", xhr);
-      }
+      };
 
       xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + Digin_Engine_API_Namespace +"."+ $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
 
@@ -297,7 +297,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
    //removes the clicked series
    $scope.removeSeries = function(ind) {
       $scope.seriesArray.splice(ind, 1);
-   }
+   };
 
    $scope.getDrillArray = function() {
       var uniqueScore = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.unique');

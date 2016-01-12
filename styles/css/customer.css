@@ -279,14 +279,6 @@
     margin-top: 70px;
 }
 
-.data-index {
-    background-color: #EEEEEE;
-    width: 100%;
-    height: 300px;
-    position: relative;
-
-}
-
 /*button style */
 .btn-move-up {
     margin-right: 10px !important;
@@ -655,19 +647,6 @@ v-pane-content {
 .circle-icon {
     display: block;
     text-align: center;
-}
-
-md-content.md-default-theme {
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    -ms-border-radius: 3px;
-    -o-border-radius: 3px;
-    border-radius: 3px;
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .06);
-    -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .06);
-    -ms-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .06);
-    -o-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .06);
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .06);
 }
 
 .color-primary {

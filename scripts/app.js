@@ -874,17 +874,24 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
                 domain = '',
                 deferred = $q.defer();
 
-            this.login = function () {
+            this.signin = function () {
                 gapi.auth.authorize({ 
                     client_id: clientId, 
                     scope: scopes, 
                     immediate: false, 
+                    cookie_policy: 'single_host_origin',
                     hd: domain 
                 }, this.handleAuthResult);
 
                 return deferred.promise;
             };
 
+            this.signout = function () {
+                gapi.auth.signOut();
+                console.log("logged out");
+
+                return deferred.promise;
+            };
             this.handleClientLoad = function () {
                 gapi.client.setApiKey(apiKey);
                 gapi.auth.init(function () { });

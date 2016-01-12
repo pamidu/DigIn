@@ -59,8 +59,28 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
          currentSourceView ()
          */
 
-        $scope.currentSourceView = function () {
+        $scope.currentSourceView = function (widget) {
+            alert(widget.id);
+            var $mainButton = $(".main-button"),
+                $closeButton = $(".close-button"),
+                $buttonWrapper = $(".button-wrapper"),
+                $closeBtn = $(".close-button"),
+                $ripple = $("." + widget.id),
+                $layer = $(".layered-content");
+            alert($ripple);
 
+            $ripple.addClass("rippling");
+            $buttonWrapper.addClass("clicked").delay(1500).queue(function () {
+                $layer.addClass("active");
+                $(".close-button").addClass("active");
+            });
+
+            $closeButton.on("click", function () {
+                $buttonWrapper.removeClass("clicked");
+                $ripple.removeClass("rippling");
+                $layer.removeClass("active");
+                $closeBtn.removeClass("active");
+            });
         };
 
         $scope.widgetSettings = function (widget) {

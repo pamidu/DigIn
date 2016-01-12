@@ -3,6 +3,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
    $scope.fieldArray = [];
    $scope.fieldString = [];
    $scope.distinct = [];
+   $scope.dataArray = [];
    $scope.selTable = "";
    $scope.selSrc = "";
    $scope.icon = "bower_components/material-design-icons/navigation/svg/production/ic_chevron_left_18px.svg";
@@ -71,6 +72,19 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
          $scope.fieldArray.push(field);
          
       }
+   };
+
+   $scope.toggleCheck2 = function() {
+
+      console.log("toggleCheck2");
+      // var i = $scope.dataArray[field].indexOf(data);
+      // if (i > -1) {
+      //    $scope.dataArray[field].splice(i, 1);
+      // } else {
+      //    $scope.dataArray.push(data);
+      // }
+      // console.log("$scope.dataArray[field]");
+      // console.log($scope.dataArray[field]);
    };
 
    $scope.configGraph = function(evt) {

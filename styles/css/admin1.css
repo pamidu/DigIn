@@ -7974,7 +7974,7 @@ h6 {
     clear: both;
 }
 .nav-menu {
-    position: fixed;
+    position: relative;
     left: 0;
     top: 0;
     z-index: 4;
@@ -8200,11 +8200,11 @@ h6 {
     transform-origin: 50% 50%;
 }
 .nav-bar-border {
-    position: fixed;
+    position: relative;
     left: 0;
     top: 0;
     width: 40px;
-    height: 100%;
+    height: calc(100vh);
     background: #fff;
     /*border-right: 1px solid #f0f0f0;*/
 }

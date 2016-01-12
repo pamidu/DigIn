@@ -123,7 +123,9 @@
                                                            ng-click="onClickConvertCSV()">
                                                     Convert CSV
                                                 </md-button>
-                                                <md-button md-no-ink class="md-warn">
+                                                <md-button md-no-ink class="md-warn"
+                                                           ng-click="clearSource()"
+                                                >
                                                     <i class="ti-trash"></i>
                                                 </md-button>
                                             </div>
@@ -138,7 +140,7 @@
                                                      ng-if="isLoadingFiled">
                                                     <h2 class="graph-h2">Loading...</h2>
                                                 </div>
-                                                <div ng-repeat="item in tableFiled">
+                                                <div ng-repeat="item in tableFiled track by $index">
                                                     <md-checkbox ng-click="selectedFiled(item, selected)">
                                                         {{ item }}
                                                     </md-checkbox>

@@ -1,9 +1,8 @@
 var parentData = [];
 var url = "";
-onmessage = function(e) {
+onmessage = function (e) {
     console.log("parent says:" + e.data);
     parentData = e.data.split(",");
-    console.log("parent data is:" + parentData);
     if (parentData[2] == "Hierarchy") {
         url = parentData[1];
         getHierarchy(parentData);
@@ -18,14 +17,13 @@ onmessage = function(e) {
     }
 }
 var i = 0;
-1
 
 function getQueried(parentData) {
     console.log("web worker calls getQueried");
     postMessage("web worker calls getQueried");
     var xhr = new XMLHttpRequest();
 
-    xhr.onreadystatechange = function(e) {
+    xhr.onreadystatechange = function (e) {
         console.log(this);
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
@@ -36,7 +34,7 @@ function getQueried(parentData) {
             }
         }
     }
-    xhr.ontimeout = function() {
+    xhr.ontimeout = function () {
         console.error("request timedout: ", xhr);
     }
     xhr.open("post", "http://45.55.83.253:3000/com.duosoftware.com/" + parentData[0] + "?take=20000", /*async*/ true);
@@ -52,7 +50,7 @@ function getHierarchy(parentData) {
     postMessage("web worker calls getQueried");
     var xhr = new XMLHttpRequest();
 
-    xhr.onreadystatechange = function(e) {
+    xhr.onreadystatechange = function (e) {
         console.log(this);
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
@@ -63,21 +61,22 @@ function getHierarchy(parentData) {
             }
         }
     }
-    xhr.ontimeout = function() {
+    xhr.ontimeout = function () {
         console.error("request timedout: ", xhr);
     }
-     
+
     var fields = parentData;
-     var newfields = fields.slice(3, fields.length);
-   
+    var newfields = fields.slice(3, fields.length);
+
     var id = Math.floor((Math.random() * 100) + 1);
-    var request = url + "hierarchicalsummary?h=" ;
+    var request = url + "hierarchicalsummary?h=";
     for (var i = 0; i < newfields.length; i++) {
-         request += newfields[i] + ",";
-    };
+        request += newfields[i] + ",";
+    }
+    ;
     request = request.replace(/,\s*$/, "");
     request += "&tablename=[" + parentData[0] + "]&id=" + id;
-    xhr.open("get",request, /*async*/ true);
+    xhr.open("get", request, /*async*/ true);
 
     xhr.setRequestHeader("securityToken", "securityToken");
     var params = '{"Query" : {"Type" : "Query", "Parameters": ' + JSON.stringify(parentData[1]) + '}}';
@@ -86,13 +85,14 @@ function getHierarchy(parentData) {
 }
 
 function getHighest(parentData) {
+    console.log("parentData" + parentData);
     console.log("web worker calls getNonQueried");
     postMessage("web worker calls getNonQueried");
     var xhr = new XMLHttpRequest();
     var fields = parentData[0].replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     fields = fields.replace(/ /g, ",");
     //xhr.timeout = 2000;
-    xhr.onreadystatechange = function(e) {
+    xhr.onreadystatechange = function (e) {
         console.log(this);
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
@@ -107,7 +107,7 @@ function getHighest(parentData) {
             }
         }
     }
-    xhr.ontimeout = function() {
+    xhr.ontimeout = function () {
         console.error("request timedout: ", xhr);
     }
 
@@ -121,7 +121,7 @@ function getHighest(parentData) {
         finalstring += "'" + string[i] + "',";
     }
     finalstring = finalstring.replace(/,\s*$/, "");
-    xhr.open("get", url + "gethighestlevel?tablename=["+ parentData[0] + "]&id=1" + "&levels=" + "[" + finalstring + "]" + "&plvl=All", /*async*/ true);
+    xhr.open("get", url + "gethighestlevel?tablename=[" + parentData[0] + "]&id=1" + "&levels=" + "[" + finalstring + "]" + "&plvl=All", /*async*/ true);
     // xhr.open("get", "http://104.131.48.155:8080/executeQuery?query=SELECT * FROM ["+parentData[1]
     //     +"."+parentData[2]+"]", /*async*/ true);
 
@@ -136,7 +136,7 @@ function getNonQueried(parentData) {
     var fields = parentData[0].replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     fields = fields.replace(/ /g, ",");
     //xhr.timeout = 2000;
-    xhr.onreadystatechange = function(e) {
+    xhr.onreadystatechange = function (e) {
         console.log(this);
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
@@ -149,7 +149,7 @@ function getNonQueried(parentData) {
             }
         }
     }
-    xhr.ontimeout = function() {
+    xhr.ontimeout = function () {
         console.error("request timedout: ", xhr);
     }
     xhr.open("get", "http://104.131.48.155:8080/executeQuery?query=SELECT " + fields + " FROM [" + parentData[1] + "." + parentData[2] + "]", /*async*/ true);

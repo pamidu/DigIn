@@ -49,6 +49,7 @@
                             </md-checkbox>
                         </div>
                     </div>
+<<<<<<< Updated upstream
                     <md-button ng-click="configGraph($event)" flex>Create</md-button>
                 </accordion-panel>
                 </accordion>
@@ -74,3 +75,19 @@
                 </accordion>
             </md-content>
 </md-sidenav>
+=======
+                </div>
+            </div>
+            <!-- index loader -->
+            <div layout="column" class="data-index">
+                <div class="dragMe" ng-repeat="item in dataFields">
+                    <md-checkbox  ng-click="toggle(item, selected)">
+                      {{ item }}
+                    </md-checkbox>
+                </div>
+            </div>
+         </div>
+
+      </md-content>
+    </md-sidenav>
+>>>>>>> Stashed changes

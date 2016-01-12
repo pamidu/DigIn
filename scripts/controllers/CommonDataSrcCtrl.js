@@ -158,8 +158,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
       xhr.ontimeout = function() {
          console.error("request timedout: ", xhr);
       }
-      alert($scope.selTable.split(":")[1]);
-      xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + $scope.selTable.split(":")[1] + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
+      
+      xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + Digin_Engine_API_Namespace +"."+ $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
 
       xhr.send();
 

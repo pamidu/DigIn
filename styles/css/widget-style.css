@@ -1,0 +1,51 @@
+/* style by
+ * damith 12-14-2015
+ * important all css and id include in prefix
+   style = .widget0s-styleName
+   id = #widget0id-idName
+*/
+
+.widget0s-dialog {
+    width: 90%;
+    height: 550px;
+    overflow: hidden;
+}
+
+.widget0s-body {
+    padding: 11px 17px;
+}
+
+.widget0s-chart.wrap {
+    margin: 25px;
+
+}
+
+.widget0s-chart-view {
+    overflow: hidden;
+    position: relative;
+    padding: 30px;
+    width: 777px;
+}
+
+.widget0s-chart-view :hover {
+    overflow: auto;
+}
+
+.widget0s-filter {
+    height: 550px;
+    background: #fff;
+    width: 100%;
+    margin-top: 10px;
+    border-top-left-radius: 1em;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+}
+
+.widget0s-filter-body {
+    overflow: hidden;
+}
+
+.widget0s-filter-body:hover {
+    overflow-y: scroll;
+}

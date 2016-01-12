@@ -58,7 +58,7 @@ routerApp.service('CommonDataSrc', function($objectstore,$http,Digin_Engine_API_
                console.error("request timedout: ", xhr);
             }
             xhr.open(requestObj.method, requestObj.host + requestObj.request +"?"
-               + requestObj.params[0] + "="+Digin_Engine_API_Namespace+"&&" + requestObj.params[1] + "="+ tbl, /*async*/ true);
+                + requestObj.params[0] + "="+Digin_Engine_API_Namespace+"&&" + requestObj.params[1] + "="+ tbl, /*async*/ true);
             xhr.send();
          });
       }

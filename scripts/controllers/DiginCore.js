@@ -1,41 +1,51 @@
 /*
-----------------------Summary-------------------------------
-| Controllers listed below are here                        |
-------------------------------------------------------------
-|      showWidgetCtrl                                      |
-|      DashboardCtrl                                       |
-|      ReportCtrl                                          |
-|      analyticsCtrl                                       | 
-|      d3PluginCtrl                                        |
-|      ExtendedanalyticsCtrl                               | 
-|      ExtendedReportCtrl                                  |
-|      ExtendedDashboardCtrl                               |
-|      summarizeCtrl                                       | 
-|      settingsCtrl                                        |
-|      pStackCtrl                                          | 
-------------------------------------------------------------
-*/
-routerApp.controller('showWidgetCtrl', function($scope,$mdDialog, widget){
+ ----------------------Summary-------------------------------
+ | Controllers listed below are here                        |
+ ------------------------------------------------------------
+ |      showWidgetCtrl                                      |
+ |      DashboardCtrl                                       |
+ |      ReportCtrl                                          |
+ |      analyticsCtrl                                       |
+ |      d3PluginCtrl                                        |
+ |      ExtendedanalyticsCtrl                               |
+ |      ExtendedReportCtrl                                  |
+ |      ExtendedDashboardCtrl                               |
+ |      summarizeCtrl                                       |
+ |      settingsCtrl                                        |
+ |      pStackCtrl                                          |
+ ------------------------------------------------------------
+ */
+routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
 
     $scope.widget = angular.copy(widget);
     $scope.dHeight = $scope.widget.height + 100;
 
-    $scope.returnWidth = function(width,height) {
-        console.log("width here",width,height);
+    $scope.returnWidth = function (width, height) {
+        console.log("width here", width, height);
         if ($scope.widget.initCtrl == "elasticInit") {
             console.log('elastic');
-            $scope.widget.highchartsNG.size.width =parseInt(width);
+            $scope.widget.highchartsNG.size.width = parseInt(width);
             $scope.widget.highchartsNG.size.height = parseInt(height);
-        } 
-      };
-     
+        }
+    };
+    var reSizeWidget = function () {
+        $scope.widget.highchartsNG.size.width = parseInt(700);
+        $scope.widget.highchartsNG.size.height = parseInt(400);
+    }
+
+    $scope.setChartSize = function (data) {
+        console.log(data);
+        setTimeout(function () {
+            reSizeWidget();
+        }, 50);
+    }
 
     $scope.closeDialog = function () {
         $mdDialog.hide();
     };
 });
-routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log','DynamicVisualization',
-    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log,DynamicVisualization) {
+routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', 'DynamicVisualization',
+    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, DynamicVisualization) {
 
         $('#pagePreLoader').hide();
 
@@ -44,27 +54,31 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         // if($rootScope.tempDashboard.length != 0)
         $rootScope.tempDashboard = angular.copy($rootScope.dashboard);
 
-        $scope.widgetSettings = function (widget){
+        /* update damith
+         view current chart data source view
+         currentSourceView ()
+         */
 
+        $scope.currentSourceView = function () {
+
+        };
+
+        $scope.widgetSettings = function (widget) {
             $mdDialog.show({
                 controller: 'widgetSettingsCtrl',
                 templateUrl: 'views/ViewWidgetSettings.html',
                 clickOutsideToClose: true,
-                resolve: {
-
-                }
+                resolve: {}
             });
-
             $rootScope.widget = widget;
-
         };
 
-        $scope.initiate = function(widget){
+        $scope.initiate = function (widget) {
             alert('test');
             alert(DynamicVisualization.testRepeat(widget));
         };
 
-        $scope.showWidget = function(ev,wid){
+        $scope.showWidget = function (ev, wid) {
             //alert(JSON.stringify(wid));
             $scope.tempWidth = wid.highchartsNG.size.width;
             $scope.tempHeight = wid.highchartsNG.size.height;
@@ -77,11 +91,11 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         widget: wid
                     }
                 })
-                .then(function() {
+                .then(function () {
                     $scope.widget.highchartsNG.size.width = $scope.tempWidth;
                     $scope.widget.highchartsNG.size.height = $scope.tempHeight;
                     //$mdDialog.hide();
-                }, function() {
+                }, function () {
                     $scope.widget.highchartsNG.size.width = $scope.tempWidth;
                     $scope.widget.highchartsNG.size.height = $scope.tempHeight;
                     //$mdDialog.hide();
@@ -139,18 +153,17 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 });
 
 
-
         };
 
         /*Summary:
-           synchronizes data per widget
-           @widget : widget that need to get updated
-        */
-        $scope.syncWidget = function(widget){
+         synchronizes data per widget
+         @widget : widget that need to get updated
+         */
+        $scope.syncWidget = function (widget) {
             console.log('syncing...');
-            if(typeof widget.widConfig != 'undefined'){
-            widget.syncState = false;
-                DynamicVisualization.syncWidget(widget, function(data){
+            if (typeof widget.widConfig != 'undefined') {
+                widget.syncState = false;
+                DynamicVisualization.syncWidget(widget, function (data) {
                     widget.syncState = true;
                     widget = data;
                 });
@@ -181,7 +194,6 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             var chunks = [];
 
 
-
         }
         $scope.closeDialog = function () {
             $mdDialog.hide();
@@ -200,7 +212,6 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
         $scope.config = {}; // use defaults
         $scope.model = {};
-
 
 
         //   $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
@@ -322,48 +333,52 @@ function googleMapsCtrl($scope, $mdDialog, wid, $http) {
     });
 };
 
-function elasticDataCtrl($scope,$mdDialog,wid){
+function elasticDataCtrl($scope, $mdDialog, wid) {
 
-    $scope.closeDialog = function() {
-            $mdDialog.hide();
-        };
+    $scope.closeDialog = function () {
+        $mdDialog.hide();
+    };
 
-   $scope.series = wid.highchartsNG.series;
+    $scope.series = wid.highchartsNG.series;
     $scope.categories = wid.highchartsNG.xAxis.categories;
     $scope.mappedSeries = [];
-    for(i=0;i<$scope.series.length;i++){
-        var seriesObj = {name: $scope.series[i].name,
-                         data : []}; 
-        for(j=0;j<$scope.series[i].data.length;j++){
-            var dataObj = {val : $scope.series[i].data[j],
-                           cat : $scope.categories[j]};
+    for (i = 0; i < $scope.series.length; i++) {
+        var seriesObj = {
+            name: $scope.series[i].name,
+            data: []
+        };
+        for (j = 0; j < $scope.series[i].data.length; j++) {
+            var dataObj = {
+                val: $scope.series[i].data[j],
+                cat: $scope.categories[j]
+            };
             seriesObj.data.push(dataObj);
-        }       
+        }
         $scope.mappedSeries.push(seriesObj);
     }
-    
+
     //map data to eport to excel
     //start dynamically creating the object array
-      $scope.dataArray = [];
+    $scope.dataArray = [];
     $scope.dataObj = {};
     $scope.dataObj['a'] = "Category";
     var currChar = "a";
-    for(i=0;i<$scope.series.length;i++){
+    for (i = 0; i < $scope.series.length; i++) {
         currChar = nextChar(currChar);
         $scope.dataObj[currChar] = $scope.series[i].name;
     }
 
     $scope.dataArray.push($scope.dataObj);
 
-    for(i=0;i<$scope.categories.length;i++){
+    for (i = 0; i < $scope.categories.length; i++) {
         $scope.dataObj = {};
         $scope.dataObj['a'] = $scope.categories[i];
         currChar = 'a';
-        for(j=0;j<$scope.series.length;j++){
+        for (j = 0; j < $scope.series.length; j++) {
             currChar = nextChar(currChar);
-            $scope.dataObj[currChar] = $scope.series[j].data[i];            
+            $scope.dataObj[currChar] = $scope.series[j].data[i];
         }
-        $scope.dataArray.push($scope.dataObj);        
+        $scope.dataArray.push($scope.dataObj);
     }
 
     $scope.fileName = wid.uniqueType;
@@ -371,9 +386,9 @@ function elasticDataCtrl($scope,$mdDialog,wid){
 };
 
 routerApp.controller('ReportCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportService',
-'$timeout', '$log', 'cssInjector',
+    '$timeout', '$log', 'cssInjector',
     function ($scope, $mdSidenav, $sce, ReportService, $timeout,
-        $log, cssInjector) {
+              $log, cssInjector) {
         var allMuppets = [];
         $scope.selected = null;
         $scope.muppets = allMuppets;
@@ -384,11 +399,11 @@ routerApp.controller('ReportCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportServi
             return $sce.trustAsResourceUrl(src);
         }
         $scope.applyCSS = function () {
-                cssInjector.add("/styles/css/style1.css");
-            }
-            //*******************
-            // Internal Methods
-            //*******************
+            cssInjector.add("/styles/css/style1.css");
+        }
+        //*******************
+        // Internal Methods
+        //*******************
         function loadMuppets() {
             ReportService.loadAll()
                 .then(function (muppets) {
@@ -408,10 +423,10 @@ routerApp.controller('ReportCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportServi
 
             $scope.toggleSidenav('left');
         }
-}])
+    }])
 
 routerApp.controller('analyticsCtrl', ['$scope', '$sce', 'AnalyticsService',
-'$timeout', '$log', '$mdDialog',
+    '$timeout', '$log', '$mdDialog',
     function ($scope, $sce, AnalyticsService, $timeout, $log, mdDialog) {
 
         $scope.products = [];
@@ -441,16 +456,11 @@ routerApp.controller('analyticsCtrl', ['$scope', '$sce', 'AnalyticsService',
         }
 
 
+    }])
 
-
-}])
-
- 
-
- 
 
 routerApp.controller('RealTimeController', ['$scope', '$sce', 'RealTimeService',
-'$timeout', '$log', '$mdDialog',
+    '$timeout', '$log', '$mdDialog',
     function ($scope, $sce, RealTimeService, $timeout, $log, mdDialog) {
 
         $scope.products = [];
@@ -480,10 +490,10 @@ routerApp.controller('RealTimeController', ['$scope', '$sce', 'RealTimeService',
         }
 
 
-}])
+    }])
 
 routerApp.controller('ExtendedanalyticsCtrl', ['$scope', '$timeout', '$rootScope', '$mdDialog', '$sce', '$objectstore', 'Digin_Extended_Analytics',
-                                       function ($scope, $timeout, $rootScope, $mdDialog, $sce, $objectstore, Digin_Extended_Analytics) {
+    function ($scope, $timeout, $rootScope, $mdDialog, $sce, $objectstore, Digin_Extended_Analytics) {
 
         $scope.AnalyticsReportURL = Digin_Extended_Analytics;
 
@@ -493,7 +503,7 @@ routerApp.controller('ExtendedanalyticsCtrl', ['$scope', '$timeout', '$rootScope
 
 
     }
-    ]);
+]);
 routerApp.controller('ExtendedReportCtrl', ['$scope', '$timeout', '$rootScope', '$mdDialog', '$sce', '$objectstore', 'Digin_Extended_Reports',
     function ($scope, $timeout, $rootScope, $mdDialog, $sce, $objectstore, Digin_Extended_Reports) {
 
@@ -504,9 +514,8 @@ routerApp.controller('ExtendedReportCtrl', ['$scope', '$timeout', '$rootScope', 
         }
 
 
-
-  }
- ]);
+    }
+]);
 
 routerApp.controller('ExtendedDashboardCtrl', ['$scope', '$timeout', '$rootScope', '$mdDialog', '$sce', '$objectstore', 'Digin_Extended_Dashboard',
     function ($scope, $timeout, $rootScope, $mdDialog, $sce, $objectstore, Digin_Extended_Dashboard) {
@@ -518,13 +527,11 @@ routerApp.controller('ExtendedDashboardCtrl', ['$scope', '$timeout', '$rootScope
         }
 
 
-
-  }
- ]);
+    }
+]);
 
 routerApp.controller('summarizeCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', '$q', '$timeout',
- function ($scope, $http, $objectstore, $mdDialog, $rootScope, $q, $timeout)
-    {
+    function ($scope, $http, $objectstore, $mdDialog, $rootScope, $q, $timeout) {
         $scope.indexes = [];
 
         var self = this;
@@ -605,7 +612,7 @@ routerApp.controller('summarizeCtrl', ['$scope', '$http', '$objectstore', '$mdDi
                 return (state.value.indexOf(lowercaseQuery) === 0);
             };
         }
-}]);
+    }]);
 
 routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state', '$mdDialog', 'Digin_Base_URL', '$objectstore', '$mdToast',
     function ($scope, $rootScope, $http, $state, $mdDialog, Digin_Base_URL, $objectstore, $mdToast) {
@@ -617,19 +624,19 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
 
         // getJSONData($http, 'features', function (data) {
         //     $scope.featureOrigin = data;
-            var obj = JSON.parse(featureObj);
-            if (featureObj === null) {
-                $scope.features = null;
-                $scope.selected = [];
-            } else {
-                $scope.selected = [];
-                for (i = 0; i < obj.length; i++) {
-                    if (obj[i].stateStr === "Enabled")
-                        $scope.selected.push(obj[i]);
-                }
-                $scope.features = obj;
-
+        var obj = JSON.parse(featureObj);
+        if (featureObj === null) {
+            $scope.features = null;
+            $scope.selected = [];
+        } else {
+            $scope.selected = [];
+            for (i = 0; i < obj.length; i++) {
+                if (obj[i].stateStr === "Enabled")
+                    $scope.selected.push(obj[i]);
             }
+            $scope.features = obj;
+
+        }
         // });
 
         $scope.toggle = function (item, list) {
@@ -681,18 +688,15 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
             $mdDialog.show({
                 controller: 'settingsCtrl',
                 templateUrl: 'views/settings-save.html',
-                resolve: {
-
-                }
+                resolve: {}
             });
 
         };
 
         $scope.saveSettingsDetails = function () {
-            
+
             window.location = "home.html";
         };
-
 
 
         $scope.closeDialog = function () {
@@ -805,38 +809,38 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
             }
         };
     }
-    ]);
+]);
 
-routerApp.controller('pStackCtrl',function($scope,$mdDialog,$state){
+routerApp.controller('pStackCtrl', function ($scope, $mdDialog, $state) {
 
     //p stack menus
     $scope.Extendedmenu = [{
-            title: 'Analysis Report',
-            color:'#2196F3',
-            icon:'styles/css/images/icons/ic_assignment_24px.svg'
-        }, {
-            title: 'Interactive Report',
-            color:'#FF9800',
-            icon:'styles/css/images/icons/ic_assignment_24px.svg'
-        }, {
-            title: 'Dashboard',
-            color:'#CDDC39',
-            icon:'styles/css/images/icons/ic_assignment_24px.svg'
-        }];
+        title: 'Analysis Report',
+        color: '#2196F3',
+        icon: 'styles/css/images/icons/ic_assignment_24px.svg'
+    }, {
+        title: 'Interactive Report',
+        color: '#FF9800',
+        icon: 'styles/css/images/icons/ic_assignment_24px.svg'
+    }, {
+        title: 'Dashboard',
+        color: '#CDDC39',
+        icon: 'styles/css/images/icons/ic_assignment_24px.svg'
+    }];
 
-    $scope.closeDialog = function(){
+    $scope.closeDialog = function () {
         $mdDialog.hide();
     };
 
-    $scope.doFunction = function(name){
+    $scope.doFunction = function (name) {
 
-        $('.dashboard-widgets-close').css("visibility","hidden");
-        $('md-tabs-wrapper').css("visibility","hidden");
+        $('.dashboard-widgets-close').css("visibility", "hidden");
+        $('md-tabs-wrapper').css("visibility", "hidden");
 
         $state.go(name);
         $mdDialog.hide();
     };
-    
+
 
 });
 

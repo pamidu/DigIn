@@ -1,4 +1,4 @@
-<div data-ng-controller="socialGraphCtrl">
+<div ng-init="fbPageInit()" data-ng-controller="socialGraphCtrl">
 
     <!-- search fb page -->
     <div id="fbPageSearch" ng-class="{'block' : activePageSearch,'hidden' : !activePageSearch}">
@@ -22,7 +22,7 @@
                                 </h2>
                                 <md-button class="md-raised"
                                            ng-click="loginWithFb()"
-                                >login
+                                >{{lblPageLogin}}
                                 </md-button>
                             </div>
                         </div>
@@ -30,7 +30,7 @@
                             <!-- posts -->
                             <md-input-container flex>
                                 <label>Search page or group</label>
-                                <input ng-model="user.firstName">
+                                <input ng-enter="searchPage(searchPage.query)" ng-model="searchPage.query">
                             </md-input-container>
                         </div>
                     </div>

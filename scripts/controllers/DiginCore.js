@@ -59,28 +59,29 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
          currentSourceView ()
          */
 
-        $scope.currentSourceView = function (widget) {
-            alert(widget.id);
-            var $mainButton = $(".main-button"),
-                $closeButton = $(".close-button"),
-                $buttonWrapper = $(".button-wrapper"),
-                $closeBtn = $(".close-button"),
-                $ripple = $("." + widget.id),
-                $layer = $(".layered-content");
-            alert($ripple);
-
-            $ripple.addClass("rippling");
-            $buttonWrapper.addClass("clicked").delay(1500).queue(function () {
-                $layer.addClass("active");
-                $(".close-button").addClass("active");
+        $scope.currentSourceView = function (ev, widget) {
+            $mdDialog.show({
+                templateUrl: 'views/widgetDataTable_TEMP.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: {
+                    items: widget
+                },
+                controller: function dataSourceCtrl($scope, $mdDialog, items) {
+                    $scope.widget = items;
+                    console.log(items);
+                    $scope.cancel = function () {
+                        $mdDialog.cancel();
+                    };
+                    $scope.submit = function () {
+                        $mdDialog.submit();
+                    };
+                }
             });
+        };
 
-            $closeButton.on("click", function () {
-                $buttonWrapper.removeClass("clicked");
-                $ripple.removeClass("rippling");
-                $layer.removeClass("active");
-                $closeBtn.removeClass("active");
-            });
+        $scope.closeDialog = function () {
+            $mdDialog.hide();
         };
 
         $scope.widgetSettings = function (widget) {
@@ -863,4 +864,7 @@ routerApp.controller('pStackCtrl', function ($scope, $mdDialog, $state) {
 
 
 });
+
+
+
 

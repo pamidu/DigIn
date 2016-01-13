@@ -113,17 +113,16 @@
     
     <ul ui-view layout="column" id="content1" style="height:100% !important;" gridster>                        
     </ul>
-    
-    <!-- Common data source start -->
-    <div class="commonDataSource" ng-include src="'views/ViewCommonDataSrc.html'" ng-controller="commonDataSrcInit">        
-    </div>
-                  
-    <!-- Common data source end -->                
+            
     <!-- ui view end -->
     <!-- sidebar start -->
     <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border"ng-include src="'views/ViewSidebar.html'" >
     </div>
     <!-- sidebar end -->
+    <!-- Common data source start -->
+    <div class="commonDataSource" ng-include src="'views/ViewCommonDataSrc.html'" ng-controller="commonDataSrcInit">        
+    </div>         
+    <!-- Common data source end -->    
     <!-- search start -->
     <div class="overlay" style="z-index: 100;
     opacity: 0.8;">

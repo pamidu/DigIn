@@ -26,15 +26,24 @@
        <div>
          <md-content class="md-padding">
             <div layout="column">
-                <md-select ng-model="catItem" placeholder="Select a category">
+               
+               <md-select ng-if="widget.commonSrcConfig.src!='BigQuery'" ng-model="chartCategory.groupField" placeholder="Select a category">
+                     <md-option ng-value="catItem" ng-repeat="catItem in arrayAttributes">{{catItem}}</md-option>
+               </md-select>
+                <md-select ng-if="widget.commonSrcConfig.src=='BigQuery'" ng-model="catItem" placeholder="Select a category">
                      <md-option ng-value="catItem" ng-repeat="catItem in arrayAttributes">{{catItem.value}}</md-option>
                </md-select>
 
-                <md-switch ng-disabled="serSelected" ng-model="queryDrilled" aria-label="Switch 1">
+                <md-switch ng-disabled="serSelected" ng-change="getDrillArray()" ng-model="queryDrilled" aria-label="Switch 1">
                     Drilled 
                 </md-switch>
                
-               <md-select ng-show="queryDrilled" ng-model="drillItem" placeholder="Select a drill field">
+               <md-select ng-if="widget.commonSrcConfig.src!='BigQuery'" ng-show="queryDrilled" ng-model="chartCategory.drilledField" placeholder="Select a series">
+                    <md-option value="{{item}}" ng-repeat="item in chartCategory.drilledArray">{{ item }}</md-option>
+                </md-select>
+
+               
+               <md-select ng-if="widget.commonSrcConfig.src == 'BigQuery'" ng-show="queryDrilled" ng-model="drillItem" placeholder="Select a drill field">
                      <md-option ng-value="drillItem" ng-repeat="drillItem in arrayAttributes" ng-if="drillItem.value < catItem.value">{{drillItem.value}}</md-option>
                </md-select>
                
@@ -48,9 +57,12 @@
                             <md-select ng-model="ser.filter" placeholder="Select a filter" ng-change="filterData(ser.filter)">
                                 <md-option value="{{fil}}" ng-repeat="fil in filterAttributes">{{ fil }}</md-option>
                             </md-select>
-                            <md-select ng-model="ser.serName" placeholder="Select a series">
+                            <md-select ng-if="widget.commonSrcConfig.src =='BigQuery'" ng-model="ser.serName" placeholder="Select a series">
                                 <md-option ng-value="{{serItem}}" ng-repeat="serItem in arrayAttributes">{{ serItem.value }}</md-option>
-                            </md-select>                            
+                            </md-select>
+                            <md-select ng-if="widget.commonSrcConfig.src!='BigQuery'" ng-model="ser.serName" placeholder="Select a series" ng-click="checkSeriesAvailability()">
+                                <md-option value="{{cat}}" ng-repeat="cat in seriesAttributes">{{ cat }}</md-option>
+                            </md-select>
                             <md-select ng-model="ser.type" placeholder="Select a chart type" flex>
                               <md-optgroup label="Chart type">
                                 <md-option ng-value="chartType.type" ng-repeat="chartType in chartTypes">{{chartType.name}}</md-option>

@@ -79,14 +79,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
       for(i=0;i<$scope.fieldArray.length;i++){
          $scope.fieldString.push("'"+$scope.fieldArray[i]+"'");
       }
-
-      var xhr = new XMLHttpRequest();
-
-      xhr.onreadystatechange = function(e) {
-         console.log(this);
-         if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-               $scope.currWidget = {
+      
+      $scope.currWidget = {
                   widData: {},
                   widView: "views/ViewCommonSrc.html",
                   dataView: "ViewElasticData",
@@ -118,9 +112,35 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
                      fields: $scope.fieldArray
                   }
                };
+      $rootScope.dashboard.widgets.push($scope.currWidget);
+
+      if($scope.selSrc == 'DuoStore'){
+           $mdDialog.show({
+                     controller: 'commonSrcInit',
+                     templateUrl: 'views/InitConfigCommonSrc.html',
+                     targetEvent: evt,
+                     locals: {
+                        widId: $scope.currWidget.id,
+                        fieldData: {}
+                     }
+                  })
+                  .then(function() {
+                     //$mdDialog.hide();
+                  }, function() {
+                     //$mdDialog.hide();
+                  });        
+            
+      }else if($scope.selSrc == 'BigQuery'){
+         var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function(e) {
+         console.log(this);
+         if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+               
                var data = JSON.parse(xhr.response);
 
-               $rootScope.dashboard.widgets.push($scope.currWidget);
+               
                $mdDialog.show({
                      controller: 'commonSrcInit',
                      templateUrl: 'views/InitConfigCommonSrc.html',
@@ -148,8 +168,21 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
       xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + Digin_Engine_API_Namespace +"."+ $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
 
       xhr.send();
+      }    
 
    };
+   
+   
+   /*   TEMP CODE    */
+   
+  
+   
+   /*   TEMP CODE    */
+   
+   
+   
+   
+   
 
 }]);
 
@@ -187,7 +220,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
 // }]);
 
 
-routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData','Digin_Engine_API','Digin_Engine_API_Namespace', function($scope, $mdDialog, $rootScope, widId, $state, fieldData, Digin_Engine_API, Digin_Engine_API_Namespace) {
+routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData','Digin_Engine_API','Digin_Engine_API_Namespace', function($scope, $mdDialog, $rootScope, widId, $state, fieldData, Digin_Engine_API, Digin_Engine_API_Namespace) {   
+   
    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
    $scope.widget = $rootScope.dashboard.widgets[objIndex];
    $scope.arrayAttributes = fieldData;
@@ -231,6 +265,299 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
       name: "Scatter",
       type: "scatter"
    }];
+   
+   
+      /*TEMP*/
+   if($scope.widget.commonSrcConfig.src == "DuoStore"){
+      var parameter = "";
+         var w = new Worker("scripts/webworkers/elasticWorker.js");
+         $scope.mappedArray = {};
+         $scope.chartCategory = {
+              groupField: '',
+              drilledField: '',
+              drilledArray: []
+          };
+         var selFields = $scope.widget.commonSrcConfig.fields;
+         var selTbl = $scope.widget.commonSrcConfig.tbl;
+         for(i=0;i<selFields.length;i++){
+           parameter += " " + selFields[i];
+         }
+         
+         $scope.getFilters = function() {
+              for (var key in $scope.mappedArray) {
+                  if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
+                      if($scope.mappedArray[key].isNaN) $scope.filtersAvailable = ['Count'];
+                      else $scope.filtersAvailable = $scope.filterAttributes;
+                  }
+              }
+          };
+         
+         function mapRetrieved(event){
+                    var obj = JSON.parse(event.data);
+                    console.log(JSON.stringify(obj));
+
+                    //creating the array to map dynamically
+                    $scope.arrayAttributes = [];
+                    for (var key in obj[0]) {
+                        if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
+                            var val = obj[0][key];
+                            console.log(key);
+                            $scope.mappedArray[key] = {
+                                name: key,
+                                data: [],
+                                isNaN: true
+                            };
+                            $scope.arrayAttributes.push(key);
+                        }
+                    }
+
+                    //mapping the dynamically created array
+                    for (i = 0; i < obj.length; i++) {
+                        for (var key in obj[i]) {
+                            if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
+                                var val = obj[i][key];
+                                var parsedVal = parseFloat(val);
+                                if (!isNaN(parsedVal)) {
+                                    $scope.mappedArray[key].data.push(parsedVal);
+                                    $scope.mappedArray[key].isNaN = false;
+                                } else {
+                                    $scope.mappedArray[key].data.push(val);
+                                }
+                                $scope.fieldRetrieved = $scope.mappedArray[key].name;
+                            }
+                        }
+                    }
+            
+                    //getting the unique score to determine the hierarchy
+                for (var key in $scope.mappedArray) {
+                    if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
+                        if ($scope.mappedArray[key].isNaN) {
+                            $scope.mappedArray[key].unique = Enumerable.From($scope.mappedArray[key].data).Select().Distinct().ToArray().length;
+                        }
+                    }
+                }
+ 
+
+                    $scope.getFilters();
+            };
+         
+         w.postMessage(selTbl + "," + parameter + "," + false);
+         w.addEventListener('message', function(event) {
+            mapRetrieved(event);
+         });
+   }
+   
+   $scope.getDrillArray = function() {
+      if($scope.widget.commonSrcConfig.src == "DuoStore"){
+         var uniqueScore = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.unique');
+        console.log('unique score:' + uniqueScore);
+        for (var key in $scope.mappedArray) {
+            if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
+                if ($scope.mappedArray[key].unique > uniqueScore && $scope.mappedArray[key].unique != 0)
+                    $scope.chartCategory.drilledArray.push($scope.mappedArray[key].name);
+            }
+        }
+      }        
+    };
+   
+   $scope.filterData = function(c) {
+      alert('test'+c);
+        var filter = eval('new ' + c.toUpperCase() + '();');
+        $scope.filtering = new Filtering();
+        $scope.filtering.setFilter(filter);
+        $scope.seriesAttributes = $scope.filtering.filterFields();
+        $scope.widgetValidity = 'fade-out';
+    };
+   
+   
+    /* Strategy1 begin */
+    var Filtering = function() {
+        this.filter = "";
+    };
+
+    Filtering.prototype = {
+        setFilter: function(filter) {
+            this.filter = filter;
+        },
+
+        calculate: function(orderedObj, catMappedData, serMappedData, drillData) {
+            return this.filter.calculate(orderedObj, catMappedData, serMappedData, drillData);
+        },
+
+        filterFields: function() {
+            return this.filter.filterFields();
+        }
+    };
+
+    var SUM = function() {
+        this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
+            console.log("calculations... for the sum filter");
+            if (typeof drillData == 'undefined') {
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                }
+            } else if (serMappedData == null) {
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill].val += orderedObj[j].val;
+                }
+                return catMappedData;
+            } else {
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
+            }
+        }
+
+        this.filterFields = function() {
+            return getFilteredFields(false);
+        }
+    };
+
+    var AVERAGE = function() {
+        this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
+            console.log("calculations... for the average filter");
+            if (typeof drillData == 'undefined') {
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    orderedObj[catMappedData[j]].count += 1;
+                }
+                for (attr in orderedObj) {
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number((orderedObj[attr].val / orderedObj[attr].count).toFixed(2));
+                    }
+                }
+            } else if (serMappedData == null) {
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill].val += orderedObj[j].val;
+                    catMappedData[orderedObj[j].drill].count += 1;
+                }
+                for (attr in catMappedData) {
+                    if (Object.prototype.hasOwnProperty.call(catMappedData, attr)) {
+                        catMappedData[attr].val = Number((catMappedData[attr].val / catMappedData[attr].count).toFixed(2));
+                    }
+                }
+                return catMappedData;
+            } else {
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
+                for (attr in orderedObj) {
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number((orderedObj[attr].val / orderedObj[attr].arr.length).toFixed(2));
+                    }
+                }
+            }
+        }
+
+        this.filterFields = function() {
+            return getFilteredFields(false);
+        }
+    };
+
+    var PERCENTAGE = function() {
+        this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
+            console.log("calculations... for the prcentage filter");
+            var total;
+            if (typeof drillData == 'undefined') {
+                total = 0;
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    total += serMappedData[j];
+                }
+                for (attr in orderedObj) {
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number(((orderedObj[attr].val / total) * 100).toFixed(2));
+                    }
+                }
+            } else if (serMappedData == null) {
+                total = 0;
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill].val += orderedObj[j].val;
+                    total += orderedObj[j].val;
+                }
+                for (attr in catMappedData) {
+                    if (Object.prototype.hasOwnProperty.call(catMappedData, attr)) {
+                        catMappedData[attr].val = Number(((catMappedData[attr].val / total) * 100).toFixed(2));
+                    }
+                }
+                return catMappedData;
+            } else {
+                total = 0;
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += serMappedData[j];
+                    total += serMappedData[j];
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
+                for (attr in orderedObj) {
+                    if (Object.prototype.hasOwnProperty.call(orderedObj, attr)) {
+                        orderedObj[attr].val = Number(((orderedObj[attr].val / total) * 100).toFixed(2));
+                    }
+                }
+            }
+        }
+
+        this.filterFields = function() {
+            return getFilteredFields(false);
+        }
+    };
+
+    var COUNT = function() {
+        this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
+            console.log("calculations... for the count filter");
+            if (typeof drillData == 'undefined') {
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += 1;
+                }
+            } else if (serMappedData == null) {
+                for (j = 0; j < orderedObj.length; j++) {
+                    catMappedData[orderedObj[j].drill].val += 1;
+                }
+                return catMappedData;
+            } else {
+                for (j = 0; j < serMappedData.length; j++) {
+                    orderedObj[catMappedData[j]].val += 1;
+                    orderedObj[catMappedData[j]].arr.push({
+                        val: serMappedData[j],
+                        drill: drillData[j]
+                    });
+                }
+            }
+        }
+
+        this.filterFields = function() {
+            return getFilteredFields(true);
+        }
+    };
+
+    //returns the series array according to the filter selected
+    function getFilteredFields(isNaN) {
+        var objArr = [];
+        for (var key in $scope.mappedArray) {
+            if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
+                if (!isNaN) !$scope.mappedArray[key].isNaN && objArr.push($scope.mappedArray[key].name);
+                else objArr.push($scope.mappedArray[key].name);
+            }
+        }
+        return objArr;
+    };
+
+
+    /* Strategy1 end */
+   
+   
+   
+   /*TEMP*/
 
    //adds new series to the chart
    $scope.addSeries = function() {
@@ -249,18 +576,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
    $scope.removeSeries = function(ind) {
       $scope.seriesArray.splice(ind, 1);
    }
-
-   $scope.getDrillArray = function() {
-      var uniqueScore = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.unique');
-      console.log('unique score:' + uniqueScore);
-      for (var key in $scope.mappedArray) {
-         if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
-            if ($scope.mappedArray[key].unique > uniqueScore && $scope.mappedArray[key].unique != 0)
-               $scope.chartCategory.drilledArray.push($scope.mappedArray[key].name);
-         }
-      }
-   };
-
 
    //builds the chart
    $scope.buildchart = function(widget) {
@@ -312,22 +627,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
    //order by category
    $scope.orderByCat = function(widget) {
-      $scope.seriesArray.forEach(function(entry) {
-         var tblVal = Digin_Engine_API_Namespace + '.' + widget.commonSrcConfig.tbl;
-         entry['data'] = [];
-//         alert(tblVal);
-         var paramArr = $scope.generateParamArr('get',Digin_Engine_API, tblVal,'aggregatefields', $scope.catItem.value, entry.filter,entry.serName.value);
-         var w = new Worker("scripts/webworkers/commonSrcWorker.js");
-         w.postMessage(JSON.stringify(paramArr));
-         w.addEventListener('message', function(event) {
-            var objArr = [];
-            var evData = JSON.parse(event.data);
-            for(i=0;i<evData.length;i++){
-               entry['data'].push({name: evData[i][$scope.catItem.value],
-                            y: evData[i]['f0_']});               
-            }  
-        });
-      });
+      
       widget.highchartsNG = {
          options: {
             drilldown: {
@@ -374,8 +674,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
          legend: {
             enabled: false
          },
-
-         series: $scope.seriesArray,
          title: {
             text: ''
          },
@@ -384,7 +682,77 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             height: 220
          }
       };
-   };
+   
+      
+      if($scope.widget.commonSrcConfig.src == "DuoStore"){
+         console.log('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data');
+         var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
+        var orderedObjArray = [];
+
+        for (i = 0; i < $scope.seriesArray.length; i++) {
+            var serMappedData = eval('$scope.mappedArray.' + $scope.seriesArray[i].serName + '.data');
+            var catMappedData = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data');
+
+            var orderedArrayObj = {};
+            var orderedObj = {};
+            var data = [];
+            for (k = 0; k < cat.length; k++) {
+                orderedObj[cat[k]] = {
+                    val: 0,
+                    count: 0
+                };
+            }
+
+            if (typeof $scope.filtering == 'undefined') {
+                $scope.filterData($scope.seriesArray[i].filter);
+            }
+            $scope.filtering.calculate(orderedObj, catMappedData, serMappedData);
+            // for(j=0;j<serMappedData.length;j++){
+            //     orderedObj[catMappedData[j]] += serMappedData[j];
+            // }
+
+            for (var key in orderedObj) {
+                if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
+                    data.push({
+                        name: key,
+                        y: orderedObj[key].val
+                    });
+                }
+            }
+
+            orderedArrayObj["data"] = data;
+            orderedArrayObj["name"] = $scope.seriesArray[i].name;
+            orderedArrayObj["color"] = $scope.seriesArray[i].color;
+            orderedArrayObj["type"] = $scope.seriesArray[i].type;
+            orderedObjArray.push(orderedArrayObj);
+        }
+         
+         widget.highchartsNG['series'] = orderedObjArray;
+
+         
+      }else if($scope.widget.commonSrcConfig.src == "BigQuery"){
+         $scope.seriesArray.forEach(function(entry) {
+         var tblVal = Digin_Engine_API_Namespace + '.' + widget.commonSrcConfig.tbl;
+         entry['data'] = [];
+//         alert(tblVal);
+         var paramArr = $scope.generateParamArr('get',Digin_Engine_API, tblVal,'aggregatefields', $scope.catItem.value, entry.filter,entry.serName.value);
+         var w = new Worker("scripts/webworkers/commonSrcWorker.js");
+         w.postMessage(JSON.stringify(paramArr));
+         w.addEventListener('message', function(event) {
+            var objArr = [];
+            var evData = JSON.parse(event.data);
+            for(i=0;i<evData.length;i++){
+               entry['data'].push({name: evData[i][$scope.catItem.value],
+                            y: evData[i]['f0_']});               
+            }  
+        });
+      });
+         
+         widget.highchartsNG['series'] = $scope.seriesArray;
+      }
+      
+      };
+      
 
    //order by category (drilled)
 //order by category (drilled)
@@ -393,7 +761,147 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
       $scope.orderedArrayObj = [];
 	  var requestCounter = $scope.seriesArray.length;		//main request completion counter
       
-      $scope.seriesArray.forEach(function(entry) {
+      widget.highchartsNG = {
+         chart: {
+            type: 'column'
+         },
+
+         plotOptions: {
+            series: {
+               borderWidth: 0,
+               dataLabels: {
+                  enabled: true,
+               }
+            }
+         },
+
+         title: {
+            text: widget.uniqueType
+         },
+         xAxis: {
+            type: 'category'
+         },
+         credits: {
+            enabled: false
+         },
+         legend: {
+            enabled: false
+         },
+         drilldown: {
+            drillUpButton: {
+               relativeTo: 'spacingBox',
+               position: {
+                  y: 0,
+                  x: 0
+               },
+               theme: {
+                  fill: 'white',
+                  'stroke-width': 1,
+                  stroke: 'silver',
+                  r: 0,
+                  states: {
+                     hover: {
+                        fill: '#bada55'
+                     },
+                     select: {
+                        stroke: '#039',
+                        fill: '#bada55'
+                     }
+                  }
+               }
+
+            }
+         },
+         title: {
+            text: ''
+         },
+         size: {
+            width: 300,
+            height: 220
+         }
+      };
+      
+      if($scope.widget.commonSrcConfig.src == "DuoStore"){
+         var drilledSeries = [];
+        var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
+        var orderedObjArray = [];
+        var drilledCat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.drilledField + '.data')).Select().Distinct().ToArray();
+
+        for (i = 0; i < $scope.seriesArray.length; i++) {
+            var serMappedData = eval('$scope.mappedArray.' + $scope.seriesArray[i].serName + '.data');
+            var catMappedData = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data');
+            var drillData = eval('$scope.mappedArray.' + $scope.chartCategory.drilledField + '.data');
+
+            var orderedArrayObj = {};
+            var orderedObj = {};
+            var drilledObj = {};
+            var data = [];
+
+            for (k = 0; k < cat.length; k++) {
+
+                orderedObj[cat[k]] = {
+                    val: 0,
+                    arr: []
+                };
+            }
+
+            for (k = 0; k < drilledCat.length; k++) {
+                drilledObj[drilledCat[k]] = {
+                    val: 0,
+                    count: 0
+                };
+            }
+
+            if (typeof $scope.filtering == 'undefined') {
+                $scope.filterData($scope.seriesArray[i].filter);
+            }
+
+            $scope.filtering.calculate(orderedObj, catMappedData, serMappedData, drillData);
+
+            for (var key in orderedObj) {
+                if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
+
+                    var drilledArray = $scope.filtering.calculate(orderedObj[key].arr, drilledObj, null, null);
+
+                    var drilledSeriesObj = [];
+                    for (var key1 in drilledArray) {
+                        if (Object.prototype.hasOwnProperty.call(drilledArray, key1)) {
+                            if (drilledArray[key1].val > 0)
+                                drilledSeriesObj.push([key1, drilledArray[key1].val]);
+                        }
+                    }
+
+                    var test = {
+                        id: '',
+                        data: []
+                    };
+                    test.id = key;
+                    test.data = drilledSeriesObj;
+
+                    drilledSeries.push(test);
+
+                    data.push({
+                        name: key,
+                        y: orderedObj[key].val,
+                        //changed by sajee 9/19/2015
+                        drilldown: key
+                    });
+                }
+            }
+            console.log("Drilled series is");
+            console.log(drilledSeries);
+            orderedArrayObj["data"] = data;
+            orderedArrayObj["name"] = $scope.seriesArray[i].name;
+            orderedArrayObj["color"] = $scope.seriesArray[i].color;
+            orderedArrayObj["type"] = $scope.seriesArray[i].type;
+            orderedObjArray.push(orderedArrayObj);
+        }
+         
+         widget.highchartsNG['series'] = orderedObjArray;
+        widget.highchartsNG.drilldown['series'] = drilledSeries;
+         
+      }else if($scope.widget.commonSrcConfig.src == "BigQuery"){
+         $scope.seriesArray.forEach(function(entry) {
          var serObj = {name:'',color:'',type:'',data:[]};         
          entry['data'] = [];
          var tblVal = Digin_Engine_API_Namespace + '.' + widget.commonSrcConfig.tbl;
@@ -455,67 +963,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                    if(requestCounter==0){
                       alert(widget.id);
 //                      var widgetElem = document.getElementById(widget.id);
-                  widget.highchartsNG = {
-         chart: {
-            type: 'column'
-         },
-
-         plotOptions: {
-            series: {
-               borderWidth: 0,
-               dataLabels: {
-                  enabled: true,
-               }
-            }
-         },
-
-         title: {
-            text: widget.uniqueType
-         },
-         xAxis: {
-            type: 'category'
-         },
-         credits: {
-            enabled: false
-         },
-         legend: {
-            enabled: false
-         },
-         series: $scope.orderedArrayObj,
-         drilldown: {
-            series: $scope.objArr,
-            drillUpButton: {
-               relativeTo: 'spacingBox',
-               position: {
-                  y: 0,
-                  x: 0
-               },
-               theme: {
-                  fill: 'white',
-                  'stroke-width': 1,
-                  stroke: 'silver',
-                  r: 0,
-                  states: {
-                     hover: {
-                        fill: '#bada55'
-                     },
-                     select: {
-                        stroke: '#039',
-                        fill: '#bada55'
-                     }
-                  }
-               }
-
-            }
-         },
-         title: {
-            text: ''
-         },
-         size: {
-            width: 300,
-            height: 220
-         }
-      };    
+                      
                   //widget.highchartsNG = ;
                       console.log('highchartng drilled:'+JSON.stringify(widget.highchartsNG));
                 }
@@ -534,8 +982,11 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
            
            
 		});
-		
+		widget.highchartsNG['series'] = $scope.orderedArrayObj;
+        widget.highchartsNG.drilldown['series'] = $scope.objArr;   
 	  }
+      }
+      
    };
 
 }]);

@@ -2,8 +2,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
 
    $scope.fieldArray = [];
    $scope.fieldString = [];
-   $scope.distinct = [];
    $scope.dataArray = [];
+   $scope.dataString = [];
+   $scope.distinct = [];
    $scope.selTable = "";
    $scope.selSrc = "";
    $scope.icon = "bower_components/material-design-icons/navigation/svg/production/ic_chevron_left_18px.svg";
@@ -74,9 +75,15 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
       }
    };
 
-   $scope.toggleCheck2 = function() {
+   $scope.toggleCheck2 = function(data) {
 
       console.log("toggleCheck2");
+      var i = $scope.dataArray.indexOf(data);
+      if (i > -1) {
+         $scope.dataArray.splice(i, 1);
+      } else {
+         $scope.dataArray.push(data); 
+      }
       // var i = $scope.dataArray[field].indexOf(data);
       // if (i > -1) {
       //    $scope.dataArray[field].splice(i, 1);
@@ -92,6 +99,84 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
       //building the fields string
       for(i=0;i<$scope.fieldArray.length;i++){
          $scope.fieldString.push("'"+$scope.fieldArray[i]+"'");
+      }
+
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function(e) {
+         console.log(this);
+         if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+               $scope.currWidget = {
+                  widData: {},
+                  widView: "views/ViewCommonSrc.html",
+                  dataView: "ViewElasticData",
+                  dataCtrl: "elasticDataCtrl",
+                  initTemplate: "InitConfigCommonSrc",
+                  initCtrl: "commonSrcInit",
+                  uniqueType: "Common Source",
+                  syncState: true,
+                  expanded: true,
+                  seriesname: "",
+                  externalDataURL: "",
+                  dataname: "",
+                  d3plugin: "",
+                  divider: false,
+                  id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
+                  type: "Visualization",
+                  width: '370px',
+                  height: '300px',
+                  mheight: '100%',
+                  highchartsNG: {
+                     size: {
+                        height: 220,
+                        width: 300
+                     }
+                  },
+                  commonSrcConfig: {
+                     src: $scope.selSrc,
+                     tbl: $scope.selTable,
+                     fields: $scope.fieldArray
+                  }
+               };
+               var data = JSON.parse(xhr.response);
+
+               $rootScope.dashboard.widgets.push($scope.currWidget);
+               $mdDialog.show({
+                     controller: 'commonSrcInit',
+                     templateUrl: 'views/InitConfigCommonSrc.html',
+                     targetEvent: evt,
+                     locals: {
+                        widId: $scope.currWidget.id,
+                        fieldData: data
+                     }
+                  })
+                  .then(function() {
+                     //$mdDialog.hide();
+                  }, function() {
+                     //$mdDialog.hide();
+                  });
+
+            } else {
+               console.error("XHR didn't work: ", xhr.status);
+            }
+         }
+      }
+      xhr.ontimeout = function() {
+         console.error("request timedout: ", xhr);
+      }
+      
+      xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + Digin_Engine_API_Namespace +"."+ $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
+
+      xhr.send();
+
+   };
+
+   $scope.configGraph2 = function(evt, field) {
+
+      //building the data string
+      for(i=0;i<$scope.dataArray.length;i++){
+         $scope.dataString.push("'"+$scope.dataArray[i]+"'");
       }
 
       var xhr = new XMLHttpRequest();

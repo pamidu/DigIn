@@ -1,5 +1,5 @@
 <md-sidenav class="md-sidenav-right md-whiteframe-z2 overflow-none" md-component-id="right">
-            <md-content class="overflow-none" ng-controller="RightCtrl" layout="row">
+            <md-content class="overflow-none" layout="row">
 
                 <md-button ng-click="toggleLeft()"
                               ng-hide="isOpenLeft()"
@@ -57,19 +57,19 @@
 </md-sidenav>
 
 <md-sidenav class="md-sidenav-right md-sidenav-custom md-whiteframe-z2 overflow-none" md-component-id="custom">
-            <md-content class="overflow-none" ng-controller="CustomCtrl" layout="column">
-                <accordion ng-repeat="field in fieldArray" ng-click="getDataByFields(field)">
+            <md-content class="overflow-none" layout="column">
+                <accordion ng-repeat="field in fieldArray">
                 <accordion-panel title="{{field}}" >
+                    <ng-md-icon icon="file_download" style="fill:#BDBDBD" size="20" layout="column" layout-align="center center" flex ng-click="getDataByFields(field)"></ng-md-icon>
                       <!-- index loader -->
-                      <div layout="column" class="data-index">
+                      <div layout="column" class="data-index"> 
                           <div>
-                            <md-checkbox ng-repeat="data in distinct[field] track by $index" 
-                            ng-click="toggleCheck2()">
+                            <md-checkbox ng-repeat="data in distinct[field] track by $index" ng-click="toggleCheck2(data)">
                                     {{data}}
                             </md-checkbox>
                           </div>
                       </div>
-                      <!-- <div ng-repeat="data in distinct[item] track by $index">{{data}}</div> -->
+                      <md-button ng-click="configGraph2($event)" flex>Create</md-button>
                 </accordion-panel>
                 </accordion>
             </md-content>

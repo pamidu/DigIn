@@ -3,6 +3,7 @@
 }
 .accordion-panel button{
   height: 100%;
+  margin:0px;
 }
 .accordion-panel-title{
     padding:4px 6px 3px;

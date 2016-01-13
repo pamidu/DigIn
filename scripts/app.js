@@ -266,23 +266,6 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
     }
 ]);
 
-routerApp.controller('RightCtrl', function ($scope, $timeout, $mdSidenav, $log) {
-    $scope.close = function () {
-        $mdSidenav('right').close()
-            .then(function () {
-                $log.debug("close right is done");
-            });
-    };
-});
-routerApp.controller('CustomCtrl', function ($scope, $timeout, $mdSidenav, $log) {
-    $scope.close = function () {
-        $mdSidenav('custom').close()
-            .then(function () {
-                $log.debug("close Custom is done");
-            });
-    };
-});
-
 routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
     var dateFormat = function ($scope) {
         var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,

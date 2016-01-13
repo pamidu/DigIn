@@ -22,7 +22,7 @@ function getNonQueried(parentData) {
     xhr.ontimeout = function (){
         console.error("request timedout: ", xhr);
     }
-    xhr.open("post", "http://45.55.83.253:3000/com.duosoftware.com/"+parentData[0], /*async*/ true);
+    xhr.open("post", "http://45.55.83.253:3000/com.duosoftware.com/"+parentData[0].trim(), /*async*/ true);
     xhr.setRequestHeader("securityToken", "securityToken");
     var params = '{"Special":{"Type":"getSelected","Parameters":"'+parentData[1].trim()+'"}}';
     xhr.send(params);

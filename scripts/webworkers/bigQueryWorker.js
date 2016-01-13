@@ -17,13 +17,14 @@ onmessage = function (e) {
     }
 }
 var i = 0;
+1
 
 function getQueried(parentData) {
     console.log("web worker calls getQueried");
     postMessage("web worker calls getQueried");
     var xhr = new XMLHttpRequest();
 
-    xhr.onreadystatechange = function (e) {
+    xhr.onreadystatechange = function(e) {
         console.log(this);
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
@@ -50,7 +51,7 @@ function getHierarchy(parentData) {
     postMessage("web worker calls getQueried");
     var xhr = new XMLHttpRequest();
 
-    xhr.onreadystatechange = function (e) {
+    xhr.onreadystatechange = function(e) {
         console.log(this);
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
@@ -61,7 +62,7 @@ function getHierarchy(parentData) {
             }
         }
     }
-    xhr.ontimeout = function () {
+    xhr.ontimeout = function() {
         console.error("request timedout: ", xhr);
     }
 

@@ -2465,7 +2465,7 @@ function googlePlusInit($scope, googleService, $http, $mdDialog, widId, $rootSco
     
     var loggedIn = false;
     $scope.login = function () {
-        googleService.login().then(function (data) {
+        googleService.signin().then(function (data) {
                 loggedIn = true;
                 console.log(data);
         }, function (err) {
@@ -2474,11 +2474,17 @@ function googlePlusInit($scope, googleService, $http, $mdDialog, widId, $rootSco
     };
 
     $scope.logout = function () {
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-            loggedIn = false;
-            console.log('User signed out.');
-        });
+        // var auth2 = gapi.auth2.getAuthInstance();
+        // auth2.signOut().then(function () {
+        //     loggedIn = false;
+        //     console.log('User signed out.');
+        // });
+        googleService.signout().then(function (data) {
+                loggedIn = false;
+                console.log(data);
+        }, function (err) {
+                console.log('Failed: ' + err);
+        }); 
     };
 
     $scope.cancel = function() {

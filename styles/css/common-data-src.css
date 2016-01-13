@@ -225,6 +225,7 @@
     height: 300px;
     position: relative;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /*button style */

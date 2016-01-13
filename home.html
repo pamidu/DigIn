@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
     <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css"> -->
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">   
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.c/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
     <link href="styles/css/material-wfont.css" rel="stylesheet">
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="styles/css/pivot.css">
@@ -48,10 +48,12 @@
       -- web font
       -- google font
       -- customer css
+      -- widget style
     -->
     <link rel="stylesheet" href="styles/fonts/font-awesome/font-awesome.min.css"  type='text/css'/>
     <link rel="stylesheet" href="styles/fonts/themify/themify-icons.css"  type='text/css'/>
     <link href='https://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="styles/css/widget-style.css"  type='text/css'/>
     <link rel="stylesheet" href="styles/css/customer.css"  type='text/css'/>
     <link rel="stylesheet" href="styles/css/socialMedFb.css" type="text/css"/>
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
@@ -70,21 +72,10 @@
     
 </head>
 
-<body  style="background-color:#ECECEC !important;" ng-controller="NavCtrl" ng-app="DuoDiginRt">
+<body  style="background:#ECECEC !important;" ng-controller="NavCtrl" ng-app="DuoDiginRt">
     
     <!-- preloader start -->
-    <div class="pre-loader-parent" id="pagePreLoader" layout="column" layout-align="center center" style="background-color:white">
-        <div class="pre-loader-child" layout="column" layout-align="center center">
-            <div class="loader">
-              <span>D</span><span>I</span><span>G</span><span>I</span><span>N</span>
-              <div class="covers">
-                <span></span><span></span><span></span><span></span><span></span>
-              </div>
-            </div>
-            <!-- <img src="styles/css/images/preloaders/Preloader_7/Preloader_7.gif" alt="Washed Out"> -->
-            <span style="font-family: 'Roboto Condensed', sans-serif;font-size: 15px;margin-top: 10px;color:#4285F4"><b>Getting Your Environment Ready...</b></span>
-            <!-- <md-progress-linear md-mode="indeterminate"></md-progress-linear> -->
-        </div>
+    <div class="pre-loader-parent" id="pagePreLoader" layout="column" layout-align="center center" ng-include src="'views/ViewPreloader.html'" style="background-color:white">
     </div>
     <!-- preloader end -->
     <!-- gridster start -->
@@ -122,123 +113,16 @@
     
     <ul ui-view layout="column" id="content1" style="height:100% !important;" gridster>                        
     </ul>
-    
-    <!-- Common data source start    -->
-    <div class="commonDataSource" ng-controller="commonDataSrcInit">
-        <!-- <md-button ng-click="toggleRight()"
-                              ng-hide="isOpenRight()"
-                              class="md-primary">
-                              Toggle common source
-        </md-button> -->
-        
-        <md-sidenav class="md-sidenav-right md-whiteframe-z2 overflow-none" md-component-id="right">
-            <md-content class="overflow-none" ng-controller="RightCtrl" layout="row">
-
-                <md-button ng-click="toggleLeft()"
-                              ng-hide="isOpenLeft()"
-                              class="md-primary sidenav-button" layout="row" layout-align="center center">
-                              <md-icon md-svg-src="{{icon}}"></md-icon>
-                </md-button>
-                <accordion flex>
-                <accordion-panel title="Data Source">
-                    <!-- <div class="card-head">
-                        <header>Data Source</header>
-                        <div class="tools">
-                            <a href="javascript:void(0)" data-ng-click="closeToggle()">
-                                <i class="ti-close"></i>
-                            </a>
-                        </div>
-                    </div> -->
-                    <div class="card-body">
-                        <div class="inline-text">
-                            <i class="fa fa-database"></i>
-                            <span>Source</span>
-                        </div>
-                        <div data-ng-if="tablesLoading" class="right loading-table">
-                            <i class="fa fa-circle-o-notch fa-spin"></i>
-                        </div>
-                        <div layout="row">
-                            <!-- select data source -->
-                            <div flex>
-                                <md-select class="full-width" placeholder="Select Source" ng-model="selectedClass"                                                          ng-change="onChangeSource(selectedClass)">
-                                    <md-option ng-value="source.name"
-                                                            ng-repeat="source in datasources">
-                                                     {{source.name}}
-                                    </md-option>
-                                </md-select>
-                            </div>
-                        </div>
-                        <div layout="row">
-                            <!-- select table -->
-                            <div flex>
-                                <md-select class="full-width"
-                                                        placeholder="Select Table"
-                                                        ng-change="onChangeTable(tblItem)"
-                                                        ng-model="tblItem">
-                                    <md-option ng-value="item" ng-repeat="item in dataTables">
-                                                     {{item  }}
-                                    </md-option>
-                                </md-select>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- index loader -->
-                    <div layout="column" class="data-index">
-                        <div>
-                            <md-checkbox ng-repeat="item in dataFields" ng-click="toggleCheck(item)">
-                                           {{ item }}
-                            </md-checkbox>
-                        </div>
-                    </div>
-                    <md-button ng-click="configGraph($event)" flex>Create</md-button>
-                </accordion-panel>
-                </accordion>
-                
-            </md-content>
-        </md-sidenav>
-
-        <md-sidenav class="md-sidenav-right md-sidenav-custom md-whiteframe-z2 overflow-none" md-component-id="custom">
-            <md-content class="overflow-none" ng-controller="CustomCtrl" layout="column">
-                <accordion ng-repeat="item in fieldArray" ng-click="getDataByFields(item)">
-                <accordion-panel title="{{item}}">
-                    <div class="accordion-content">
-                        <!-- <md-button>Get Distinct Fields</md-button> -->
-                        <div ng-repeat="data in distinct[item] track by $index">{{data}}</div>
-                    </div>
-                </accordion-panel>
-                </accordion>
-            </md-content>
-        </md-sidenav>
-        
-    </div>
-                  
-    <!--    Common data source end    -->                
+            
     <!-- ui view end -->
     <!-- sidebar start -->
-    <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" style="visibility:visible" ng-mouseover="hide_sidebar()">
-        <md-list>
-            <!-- logo -->
-            <md-item>
-                <a ng-click="">
-                    <md-item-content md-ink-ripple class="sidebar-btn digin-logo" layout="column" layout-align="center center"> 
-                        <div class="digin-logo-wrapper" layout="row" layout-align="center center">
-                            <img ng-src="styles/css/images/innerlogo.png" class="md-avatar" id="digin-logo" style="width:80%;">
-                        </div>   
-                    </md-item-content>
-                </a>
-            </md-item>
-            <!-- sidebar items -->
-            <md-item ng-repeat="item in menu">
-                <a ng-click="$parent.navigate(item.title)">
-                    <md-item-content md-ink-ripple class="sidebar-btn" layout="column" layout-align="center center">
-                        <ng-md-icon icon="{{item.icon2}}" style="fill:#2F34A2" size="20" layout="column" layout-align="center center" flex></ng-md-icon>
-                        <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
-                    </md-item-content>
-                </a>
-            </md-item>
-        </md-list>
+    <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border"ng-include src="'views/ViewSidebar.html'" >
     </div>
     <!-- sidebar end -->
+    <!-- Common data source start -->
+    <div class="commonDataSource" ng-include src="'views/ViewCommonDataSrc.html'" ng-controller="commonDataSrcInit">        
+    </div>         
+    <!-- Common data source end -->    
     <!-- search start -->
     <div class="overlay" style="z-index: 100;
     opacity: 0.8;">

@@ -278,7 +278,6 @@ button.md-fab.md-raised.md-primary.md-button.md-teal-theme {
     width: calc(100vw - 40px);
     height: 100% !important;
     background-size: 100% 100%;
-    background-color: #ECECEC;
     background-size: 30px 30px;
     overflow: auto;
     padding-left: 0px;
@@ -290,7 +289,7 @@ button.md-fab.md-raised.md-primary.md-button.md-teal-theme {
 
 /*Unwanted style */
 
-.menuBtn {
+/*.menuBtn {
     background-color: transparent;
     border: none;
     height: 38px;
@@ -344,7 +343,7 @@ md-tabs.md-teal-theme md-tabs-ink-bar {
 #primary-col img {
     display: block;
     max-width: 100%;
-}
+}*/
 
 /* Utils */
 

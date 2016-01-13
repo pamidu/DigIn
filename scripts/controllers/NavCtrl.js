@@ -1088,7 +1088,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.manageTabs(false);
                 $state.go(routeName);
 
-                setTimeout(function(){$('#content1').css("height","100%");},3000);
+                setTimeout(function(){$('.h_iframe').css("height","100%");},3000);
 
             }
             if (routeName == "Reports") {
@@ -1099,7 +1099,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.manageTabs(false);
                 $state.go(routeName);
                 
-                setTimeout(function(){$('#content1').css("height","100%");},3000);
+                setTimeout(function(){$('.h_iframe').css("height","100%");},3000);
                 
             }
             if (routeName == "Analytics") {
@@ -1121,8 +1121,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.manageTabs(false);
                 $state.go(routeName);
                 
-
-                setTimeout(function(){$('#content1').css("height","100%");},3000);
+                setTimeout(function(){$('.h_iframe').css("height","100%");},3000);
                 
                 $rootScope.currentView = "RealTime";
 
@@ -1146,7 +1145,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $rootScope.currentView = "Digin P Stack";
                 //$state.go(routeName);
                 
-                setTimeout(function(){$('#content1').css("height","100%");},3000);
+                setTimeout(function(){$('.h_iframe').css("height","100%");},3000);
                 
             }
             if (routeName == "CommonData") {

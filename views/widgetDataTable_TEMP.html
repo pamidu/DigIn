@@ -1,0 +1,36 @@
+<md-dialog aria-label="Sample Dialog" class="widget100m.dialog">
+    <md-content>
+        <div layout="row">
+            <div class="card-head">
+                <header class="graph-h1 text-uppercase">
+                    {{widget.uniqueType}}
+                </header>
+                <div class="tools">
+                    <a href="javascript:void(0)" data-ng-click="cancel()">
+                        <i class="ti-close"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="widget0s-chart.wrap">
+            <div class="widget0s-chart-view">
+                <table id="table" class="table table-hover table-mc-light-blue">
+                    <thead>
+                    <tr>
+                        <th ng-repeat="attribute in widget.attributes">
+                            {{attribute}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="dataBody">
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+    </md-content>
+</md-dialog>

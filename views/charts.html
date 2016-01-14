@@ -24,24 +24,14 @@
                             <!-- update damith
                                  data source details view
                             -->
-                            <div class="button-wrapper">
-                                <div class="layer"></div>
-                                <button class="data-source-btn main-button fa fa-info"
-                                ng-click="currentSourceView(widget);">
-                                    <div class="ripple"
-                                    ></div>
-                                </button>
-                            </div>
-                            <div class="layered-content">
-                                <button class="data-source-btn close-button fa fa-times"
-                                ng-click="sourceClose()"></button>
-                                <div class="content">
-                                    <img src="https://d13yacurqjgara.cloudfront.net/users/332135/avatars/normal/52d614ee44e3e21d2b73894c465773d7.png" alt="Balapa">
-                                    <p>Crafted by balapa.</p>
-                                    <p>See also my <a href="http://codepen.io/balapa/details/gbQbXR/">other pen</a></p>
-                                </div>
-                            </div>
-
+                            <!-- mapped data view -->
+                            <md-button class="widget-button"
+                                       ng-click="currentSourceView($event,widget)">
+                                <ng-md-icon icon="info_outline" style="fill:dimgrey" size="20"
+                                            layout="column"
+                                            layout-align="center center" flex>
+                                </ng-md-icon>
+                            </md-button>
                             <md-button class="widget-button" ng-if="widget.initCtrl=='elasticInit' || 'metricInit'"
                                        ng-click="syncWidget(widget)">
                                 <ng-md-icon icon="sync" style="fill:dimgrey" size="20" layout="column"

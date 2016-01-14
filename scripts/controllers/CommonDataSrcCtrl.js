@@ -49,7 +49,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
 
       $scope.selTable = tbl;
       CommonDataSrc.getFields(tbl, function(data) {
-         $scope.tableFileds = data;
+         $scope.dataFields = data;
          //$compile(div)(scope);
       });
    };
@@ -57,10 +57,10 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
    function buildToggler(navID) {
       return function() {
          $mdSidenav(navID)
-             .toggle()
-             .then(function() {
-                $log.debug("toggle " + navID + " is done");
-             });
+            .toggle()
+            .then(function() {
+               $log.debug("toggle " + navID + " is done");
+            });
       }
    };
 
@@ -97,6 +97,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
    $scope.configGraph = function(evt) {
 
       //building the fields string
+      $scope.fieldString = [];
       for (i = 0; i < $scope.fieldArray.length; i++) {
          $scope.fieldString.push("'" + $scope.fieldArray[i] + "'");
       }
@@ -137,19 +138,19 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
 
       if ($scope.selSrc == 'DuoStore') {
          $mdDialog.show({
-                controller: 'commonSrcInit',
-                templateUrl: 'views/InitConfigCommonSrc.html',
-                targetEvent: evt,
-                locals: {
-                   widId: $scope.currWidget.id,
-                   fieldData: {}
-                }
-             })
-             .then(function() {
-                //$mdDialog.hide();
-             }, function() {
-                //$mdDialog.hide();
-             });
+               controller: 'commonSrcInit',
+               templateUrl: 'views/InitConfigCommonSrc.html',
+               targetEvent: evt,
+               locals: {
+                  widId: $scope.currWidget.id,
+                  fieldData: {}
+               }
+            })
+            .then(function() {
+               //$mdDialog.hide();
+            }, function() {
+               //$mdDialog.hide();
+            });
 
       } else if ($scope.selSrc == 'BigQuery') {
          var xhr = new XMLHttpRequest();
@@ -163,19 +164,19 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
 
 
                   $mdDialog.show({
-                         controller: 'commonSrcInit',
-                         templateUrl: 'views/InitConfigCommonSrc.html',
-                         targetEvent: evt,
-                         locals: {
-                            widId: $scope.currWidget.id,
-                            fieldData: data
-                         }
-                      })
-                      .then(function() {
-                         //$mdDialog.hide();
-                      }, function() {
-                         //$mdDialog.hide();
-                      });
+                        controller: 'commonSrcInit',
+                        templateUrl: 'views/InitConfigCommonSrc.html',
+                        targetEvent: evt,
+                        locals: {
+                           widId: $scope.currWidget.id,
+                           fieldData: data
+                        }
+                     })
+                     .then(function() {
+                        //$mdDialog.hide();
+                     }, function() {
+                        //$mdDialog.hide();
+                     });
 
                } else {
                   console.error("XHR didn't work: ", xhr.status);
@@ -191,101 +192,88 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
          xhr.send();
 
       };
-   };
+      };
 
-   $scope.configGraph2 = function(evt, field) {
+      $scope.configGraph2 = function(evt, field) {
 
-      //building the data string
-      for (i = 0; i < $scope.dataArray.length; i++) {
-         $scope.dataString.push("'" + $scope.dataArray[i] + "'");
-      }
+         //building the data string
+         for (i = 0; i < $scope.dataArray.length; i++) {
+            $scope.dataString.push("'" + $scope.dataArray[i] + "'");
+         }
 
-      var xhr = new XMLHttpRequest();
+         var xhr = new XMLHttpRequest();
 
-      xhr.onreadystatechange = function(e) {
-         console.log(this);
-         if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-               $scope.currWidget = {
-                  widData: {},
-                  widView: "views/ViewCommonSrc.html",
-                  dataView: "ViewElasticData",
-                  dataCtrl: "elasticDataCtrl",
-                  initTemplate: "InitConfigCommonSrc",
-                  initCtrl: "commonSrcInit",
-                  uniqueType: "Common Source",
-                  syncState: true,
-                  expanded: true,
-                  seriesname: "",
-                  externalDataURL: "",
-                  dataname: "",
-                  d3plugin: "",
-                  divider: false,
-                  id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
-                  type: "Visualization",
-                  width: '370px',
-                  height: '300px',
-                  mheight: '100%',
-                  highchartsNG: {
-                     size: {
-                        height: 220,
-                        width: 300
+         xhr.onreadystatechange = function(e) {
+            console.log(this);
+            if (xhr.readyState === 4) {
+               if (xhr.status === 200) {
+                  $scope.currWidget = {
+                     widData: {},
+                     widView: "views/ViewCommonSrc.html",
+                     dataView: "ViewElasticData",
+                     dataCtrl: "elasticDataCtrl",
+                     initTemplate: "InitConfigCommonSrc",
+                     initCtrl: "commonSrcInit",
+                     uniqueType: "Common Source",
+                     syncState: true,
+                     expanded: true,
+                     seriesname: "",
+                     externalDataURL: "",
+                     dataname: "",
+                     d3plugin: "",
+                     divider: false,
+                     id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
+                     type: "Visualization",
+                     width: '370px',
+                     height: '300px',
+                     mheight: '100%',
+                     highchartsNG: {
+                        size: {
+                           height: 220,
+                           width: 300
+                        }
+                     },
+                     commonSrcConfig: {
+                        src: $scope.selSrc,
+                        tbl: $scope.selTable,
+                        fields: $scope.fieldArray
                      }
-                  },
-                  commonSrcConfig: {
-                     src: $scope.selSrc,
-                     tbl: $scope.selTable,
-                     fields: $scope.fieldArray
-                  }
-               };
-               var data = JSON.parse(xhr.response);
+                  };
+                  var data = JSON.parse(xhr.response);
 
-               $rootScope.dashboard.widgets.push($scope.currWidget);
-               $mdDialog.show({
-                      controller: 'commonSrcInit',
-                      templateUrl: 'views/InitConfigCommonSrc.html',
-                      targetEvent: evt,
-                      locals: {
-                         widId: $scope.currWidget.id,
-                         fieldData: data
-                      }
-                   })
-                   .then(function() {
-                      //$mdDialog.hide();
-                   }, function() {
-                      //$mdDialog.hide();
-                   });
+                  $rootScope.dashboard.widgets.push($scope.currWidget);
+                  $mdDialog.show({
+                        controller: 'commonSrcInit',
+                        templateUrl: 'views/InitConfigCommonSrc.html',
+                        targetEvent: evt,
+                        locals: {
+                           widId: $scope.currWidget.id,
+                           fieldData: data
+                        }
+                     })
+                     .then(function() {
+                        //$mdDialog.hide();
+                     }, function() {
+                        //$mdDialog.hide();
+                     });
 
-            } else {
-               console.error("XHR didn't work: ", xhr.status);
+               } else {
+                  console.error("XHR didn't work: ", xhr.status);
+               }
             }
          }
-      }
-      xhr.ontimeout = function() {
-         console.error("request timedout: ", xhr);
-      }
+         xhr.ontimeout = function() {
+            console.error("request timedout: ", xhr);
+         }
 
-      xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + Digin_Engine_API_Namespace + "." + $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
+         xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + Digin_Engine_API_Namespace + "." + $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
 
-      xhr.send();
-   };
-
-
-
-
-   /*   TEMP CODE    */
-
-
-
-   /*   TEMP CODE    */
-
-
-
-
+         xhr.send();
+      };
 }]);
 
 
-routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData', 'Digin_Engine_API', function($scope, $mdDialog, $rootScope, widId, $state, fieldData, Digin_Engine_API) {
+routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData', 'Digin_Engine_API','Digin_Engine_API_Namespace', function($scope, $mdDialog, $rootScope, widId, $state, fieldData, Digin_Engine_API,Digin_Engine_API_Namespace) {
 
    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
    $scope.widget = $rootScope.dashboard.widgets[objIndex];
@@ -299,6 +287,9 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
       type: 'area',
       color: ''
    }];
+   
+   $scope.categItem = {};
+   
    $scope.chartCategory = {
       groupField: '',
       drilledField: '',
@@ -683,7 +674,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
          method: method,
          params: [{
             name: 'tablename',
-            value: "[" + tbl.split(':')[1] + "]"
+            value: "[" + tbl + "]"
          }, {
             name: 'group_by',
             value: "{'" + gBy + "':1}"
@@ -809,11 +800,15 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
 
       } else if ($scope.widget.commonSrcConfig.src == "BigQuery") {
+         //alert(JSON.stringify($scope.categItem.item));
+         $scope.catItem = $scope.categItem.item;
          $scope.seriesArray.forEach(function(entry) {
             var tblVal = Digin_Engine_API_Namespace + '.' + widget.commonSrcConfig.tbl;
+            alert(tblVal);
             entry['data'] = [];
             //         alert(tblVal);
             var paramArr = $scope.generateParamArr('get', Digin_Engine_API, tblVal, 'aggregatefields', $scope.catItem.value, entry.filter, entry.serName.value);
+            alert(JSON.stringify(paramArr));
             var w = new Worker("scripts/webworkers/commonSrcWorker.js");
             w.postMessage(JSON.stringify(paramArr));
             w.addEventListener('message', function(event) {
@@ -1033,7 +1028,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                   w1.addEventListener('message', function(event) {
                      requestCounter--;
                      var drilledData = JSON.parse(event.data);
-                     //                  console.log('drilleed data:'+ JSON.stringify(drilledData));
+                     //                  console.log('drilleed data:'+ JSON.stringify(drilledData)); 
                      var dataArr = [];
                      //                  alert(JSON.stringify(drilledData));
                      for (j = 0; j < drilledData.length; j++) {
@@ -1059,7 +1054,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                      //                  widget.highchartsNG.drilldown.series.push({
                      //                        id: enData.name,
                      //                        data: dataArr
-                     //                     });
+                     //                     }); 
                   });
 
 

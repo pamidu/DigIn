@@ -49,3 +49,10 @@
 .widget0s-filter-body:hover {
     overflow-y: scroll;
 }
+
+/*view mapped data */
+.widget100m.dialog{
+    width: 50%;
+    height: 300px;
+    overflow: hidden;
+}

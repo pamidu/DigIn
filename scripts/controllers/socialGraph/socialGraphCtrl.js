@@ -100,12 +100,12 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
             $scope.arrAdds = [];
             $scope.postCount = data.length;
             serviceUrl = Digin_Engine_API1 + 'demographicsinfo?token=' + page.accessToken;
-            getServiceResponse(serviceUrl, function(data){
+//            getServiceResponse(serviceUrl, function(data){
                setMap(data);
                $scope.page = page;
                if(!changedTime)
                $scope.activePageSearch = !$scope.activePageSearch;
-            });
+//            });
          });
       });   
    };

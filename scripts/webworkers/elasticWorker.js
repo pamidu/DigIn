@@ -62,7 +62,7 @@ function getNonQueried(parentData) {
     //xhr.setRequestHeader("Access-Control-Allow-Credentials","true");
     //xhr.setRequestHeader("Access-Control-Allow-Methods ","GET,POST,PUT,DELETE");
     xhr.setRequestHeader("securityToken", "securityToken");
-    var params = '{"Special":{"Type":"getSelected","Parameters":"' + parentData[1].trim() + '"}}';
+    var params = '{"Special":{"Type":"getSelected","Parameters":"' + parentData[1] + '"}}';
     console.log("test" + params);
     //xhr.setRequestHeader("log", "log");
     //xhr.setRequestHeader();

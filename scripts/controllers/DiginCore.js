@@ -59,26 +59,64 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
          currentSourceView ()
          */
 
+        $scope.showFace2 = function ($event, widget) {
+            alert("loadin 2nd face...!");
+            $event.preventDefault();
+            $(this).parent().toggleClass('expand');
+            $(this).parent().children().toggleClass('expand');
+        }
+
         $scope.currentSourceView = function (ev, widget) {
             $mdDialog.show({
-                templateUrl: 'views/widgetDataTable_TEMP.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                locals: {
-                    items: widget
-                },
-                controller: function dataSourceCtrl($scope, $mdDialog, items) {
-                    $scope.widget = items;
-                    console.log(items);
-                    $scope.cancel = function () {
-                        $mdDialog.cancel();
-                    };
-                    $scope.submit = function () {
-                        $mdDialog.submit();
-                    };
+                    templateUrl: 'views/widgetDataTable_TEMP.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    locals: {
+                        items: widget
+                    },
+                    controller: function dataSourceCtrl($scope, $mdDialog, items) {
+                        var selectedSourceData = {
+                            'uniqueType': items.uniqueType,
+                            'length': items.widConfig.attributes.length,
+                            'attributes': items.widConfig.attributes,
+                            'mappedData': []
+                        };
+                        for (var i = 0; i < selectedSourceData.length; i++) {
+                            var _attr = selectedSourceData.attributes[i].trim().
+                            toString();
+                            selectedSourceData.mappedData.push(items.
+                                widConfig.mappedData[_attr].data);
+                        }
+
+                        var appendTblBody = function () {
+                            for (var i = 0; i < selectedSourceData.length; i++) {
+                                for (var b = 0; b < selectedSourceData.mappedData[i].length; b++) {
+                                    var rows = '';
+                                    for (var c = 0; c < selectedSourceData.length; c++) {
+                                        var oneRow = "<td>" + selectedSourceData.mappedData[c][b] + "</td>";
+                                        rows += oneRow;
+                                    }
+                                    $("#dataBody").append("<tr>" + rows + "</tr>");
+                                    oneRow = '';
+                                }
+                            }
+                        };
+                        setTimeout(appendTblBody, 100);
+
+
+                        $scope.widget = selectedSourceData;
+                        $scope.cancel = function () {
+                            $mdDialog.cancel();
+                        };
+                        $scope.submit = function () {
+                            $mdDialog.submit();
+                        };
+                    }
                 }
-            });
-        };
+            )
+            ;
+        }
+        ;
 
         $scope.closeDialog = function () {
             $mdDialog.hide();
@@ -235,19 +273,20 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         $scope.model = {};
 
 
-        //   $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
-        //   if (newVal !== oldVal) {
-        //     $scope.dashboard = $scope.dashboard[newVal];
-        //   } else {
-        //     $scope.dashboard = $scope.dashboard[1];
-        //   }
-        // });
+//   $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
+//   if (newVal !== oldVal) {
+//     $scope.dashboard = $scope.dashboard[newVal];
+//   } else {
+//     $scope.dashboard = $scope.dashboard[1];
+//   }
+// });
 
-        // init dashboard
+// init dashboard
         $scope.selectedDashboardId = '1';
 
     }
-]);
+])
+;
 
 function hnbClaimsCtrl($scope, $mdDialog, wid, $http) {
     $scope.arr = [];

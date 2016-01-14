@@ -19,10 +19,11 @@ var fbInterface = new function(){
 	this.loginToFb =  function(scope, analysis, callback){
 		FB.login(function(response) {
             fbInterface.setLoginButtonValue(response.status,scope);
-            fbInterface.getUserPages(scope);
-            if(analysis) scope.lblPageLogin='Logout';
-            localStorage.setItem('authResponse', JSON.stringify(response.authResponse));
-            if(callback) callback(response);
+            fbInterface.getUserPages(scope, function(){
+               if(analysis) scope.lblPageLogin='Logout';
+               localStorage.setItem('authResponse', JSON.stringify(response.authResponse));
+               if(callback) callback(response);
+            });            
         }, {
             scope: 'manage_pages,read_insights'
         });
@@ -71,7 +72,7 @@ var fbInterface = new function(){
         });
 	};
 
-	this.getUserPages = function(scope){
+	this.getUserPages = function(scope, cb){
 		fbInterface.getUserAccount(scope,function(data){
 	        FB.api(
 	            "/" + data.id + "/accounts",
@@ -94,6 +95,7 @@ var fbInterface = new function(){
 	                        scope.fbPages.push(tempFbPg);
 	                    }
 	                    console.log('fbPages array:' + JSON.stringify(scope.fbPages));
+                       if(cb) cb();
 	                }
 	            }
 	        );
@@ -171,7 +173,7 @@ var fbInterface = new function(){
    this.getSearchedPages = function(scope, analysis,query){
       if(this.state!= 'connected'){
          this.loginToFb(scope,analysis,function(res){
-            alert(JSON.stringify(res));
+//            alert(JSON.stringify(res));
 //            alert(res.access_token);
             fbInterface.searchFromFb(scope, 'page', res.authResponse.accessToken, query);
          });
@@ -191,8 +193,18 @@ var fbInterface = new function(){
         console.log(this);
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-                alert(xhr.response);
-
+               console.log('search results:'+xhr.response);
+               console.log('fb Pages:'+JSON.stringify(scope.fbPages));
+               var searchRes = JSON.parse(xhr.response).data;
+               searchRes.forEach(function(entry){
+                  scope.fbPages.push({
+	                            id: entry.id,
+	                            accessToken: token,
+	                            name: entry.name,
+	                            category: entry.category
+	                        });
+               });
+               
             } else {
                 console.error("XHR didn't work: ", xhr.status);
             }

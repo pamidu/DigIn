@@ -30,12 +30,12 @@
                <md-select ng-if="widget.commonSrcConfig.src!='BigQuery'" ng-model="chartCategory.groupField" placeholder="Select a category">
                      <md-option ng-value="catItem" ng-repeat="catItem in arrayAttributes">{{catItem}}</md-option>
                </md-select>
-                <md-select ng-if="widget.commonSrcConfig.src=='BigQuery'" ng-model="catItem" placeholder="Select a category">
+                <md-select ng-if="widget.commonSrcConfig.src=='BigQuery'" ng-model="categItem.item" placeholder="Select a category">
                      <md-option ng-value="catItem" ng-repeat="catItem in arrayAttributes">{{catItem.value}}</md-option>
                </md-select>
 
                 <md-switch ng-disabled="serSelected" ng-change="getDrillArray()" ng-model="queryDrilled" aria-label="Switch 1">
-                    Drilled 
+                    Drilled
                 </md-switch>
                
                <md-select ng-if="widget.commonSrcConfig.src!='BigQuery'" ng-show="queryDrilled" ng-model="chartCategory.drilledField" placeholder="Select a series">

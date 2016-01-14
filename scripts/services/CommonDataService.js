@@ -60,10 +60,12 @@ routerApp.service('CommonDataSrc', function($objectstore,$http,Digin_Engine_API_
         }
     };
 
-    var BIGQUERY = function() {
+    var PYTHON = function() {
         this.getTables = function(src, callback) {
-            getJSONDataByProperty($http,'pythonServices','name',src,function(data){
+            getJSONDataByProperty($http,'pythonServices','name','Python',function(data){
+               alert(data[0]);
                var requestObj = data[0].getTables;
+               var namespace = localStorage.getItem('srcNamespace');
                console.log(JSON.stringify(requestObj));
                var xhr = new XMLHttpRequest();
                xhr.onreadystatechange = function(e) {
@@ -82,15 +84,16 @@ routerApp.service('CommonDataSrc', function($objectstore,$http,Digin_Engine_API_
                xhr.ontimeout = function() {
                   console.error("request timedout: ", xhr);
                }
-               xhr.open(requestObj.method, requestObj.host + requestObj.request +"?"+requestObj.params[0]+"="+Digin_Engine_API_Namespace, /*async*/ true);
+               xhr.open(requestObj.method, requestObj.host + requestObj.request +"?"+requestObj.params[0]+"="+namespace+"&"+requestObj.params[1]+"="+src, /*async*/ true);
                xhr.send();
          });
         }
 
         this.getFields = function(tbl, callback) {
             //var fieldData = (tbl.split(':')[1]).split('.');
-         getJSONDataByProperty($http,'pythonServices','name',dataSrc,function(data){
+         getJSONDataByProperty($http,'pythonServices','name','Python',function(data){
             var requestObj = data[0].getFields;
+            var namespace = localStorage.getItem('srcNamespace');
             console.log(JSON.stringify(requestObj));
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function(e) {
@@ -109,7 +112,7 @@ routerApp.service('CommonDataSrc', function($objectstore,$http,Digin_Engine_API_
                console.error("request timedout: ", xhr);
             }
             xhr.open(requestObj.method, requestObj.host + requestObj.request +"?"
-                + requestObj.params[0] + "="+Digin_Engine_API_Namespace+"&&" + requestObj.params[1] + "="+ tbl, /*async*/ true);
+                + requestObj.params[0] + "="+namespace+"&&" + requestObj.params[1] + "="+ tbl+"&"+requestObj.params[2]+"="+dataSrc, /*async*/ true);
             xhr.send();
          });
         }
@@ -117,7 +120,8 @@ routerApp.service('CommonDataSrc', function($objectstore,$http,Digin_Engine_API_
 
    return {
       getTables: function(src, callback) {
-         var dSrc = eval('new ' + src.toUpperCase() + '();');
+         if(src!= 'DuoStore') var dSrc = eval('new PYTHON();');
+         else var dSrc = eval('new ' + src.toUpperCase() + '();');
           this.dataSrcObj = new DataSource();
           this.dataSrcObj.setSource(dSrc);
           this.dataSrcObj.getTables(src, callback);

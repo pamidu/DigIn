@@ -54,7 +54,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
 
       $scope.selTable = tbl;
       CommonDataSrc.getFields(tbl, function(data) {
-         $scope.dataFields = data;
+         $scope.tblFields = data;
          //$compile(div)(scope);
       });
    };
@@ -181,8 +181,11 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
             console.error("request timedout: ", xhr);
          };
 
+         if($scope.selSrc == 'BigQuery')
          xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + $scope.srcNamespace + "." + $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All&db="+$scope.selSrc, /*async*/ true);
-
+         
+         else
+xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=" + $scope.selTable + "&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All&db="+$scope.selSrc, /*async*/ true);
          xhr.send();
 
       };
@@ -662,14 +665,15 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
    }
 
    //generate workers parameters
-   $scope.generateParamArr = function(httpMethod, host, tbl, method, gBy, agg, aggF, cons, oBy) {
+   $scope.generateParamArr = function(httpMethod, host, ns, tbl, method, gBy, agg, aggF, cons, oBy) {
       return {
          webMethod: httpMethod,
          host: host,
          method: method,
          params: [{
             name: 'tablename',
-            value: "[" + tbl + "]"
+//            value: "[" + tbl + "]"    //fix it for big query
+            value: tbl
          }, {
             name: 'group_by',
             value: "{'" + gBy + "':1}"
@@ -685,6 +689,9 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
          }, {
             name: 'order_by',
             value: oBy
+         },{
+            name: 'db',
+            value: ns
          }]
       };
    };
@@ -799,11 +806,14 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
          $scope.srcNamespace = $scope.widget.commonSrcConfig.namespace;
          $scope.catItem = $scope.categItem.item;
          $scope.seriesArray.forEach(function(entry) {
-            var tblVal = $scope.srcNamespace + '.' + widget.commonSrcConfig.tbl;
-            alert(tblVal);
+            if($scope.widget.commonSrcConfig.src == 'BigQuery')
+               var tblVal = $scope.srcNamespace + '.' + widget.commonSrcConfig.tbl;
+            else
+               var tblVal = widget.commonSrcConfig.tbl;   
+//            alert(tblVal);
             entry['data'] = [];
             //         alert(tblVal);
-            var paramArr = $scope.generateParamArr('get', Digin_Engine_API, tblVal, 'aggregatefields', $scope.catItem.value, entry.filter, entry.serName.value);
+            var paramArr = $scope.generateParamArr('get', Digin_Engine_API,$scope.widget.commonSrcConfig.src, tblVal, 'aggregatefields', $scope.catItem.value, entry.filter, entry.serName.value);
             alert(JSON.stringify(paramArr));
             var w = new Worker("scripts/webworkers/commonSrcWorker.js");
             w.postMessage(JSON.stringify(paramArr));
@@ -981,7 +991,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             };
             entry['data'] = [];
             var tblVal = $scope.srcNamespace + '.' + widget.commonSrcConfig.tbl;
-            var paramArr = $scope.generateParamArr('get', Digin_Engine_API, tblVal, 'aggregatefields', $scope.catItem.value, entry.filter, entry.serName.value);
+            var paramArr = $scope.generateParamArr('get', Digin_Engine_API,$scope.widget.commonSrcConfig.src, tblVal, 'aggregatefields', $scope.catItem.value, entry.filter, entry.serName.value);
             var w = new Worker("scripts/webworkers/commonSrcWorker.js");
             requestCounter--;
             w.postMessage(JSON.stringify(paramArr));
@@ -1016,7 +1026,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                requestCounter = entry.data.length;
                entry.data.forEach(function(enData) {
                   var con = "WHERE " + $scope.catItem.value + "='" + enData.name + "'";
-                  var drillParams = $scope.generateParamArr('get', Digin_Engine_API, widget.commonSrcConfig.tbl, 'aggregatefields', $scope.drillItem.value, entry.filter, entry.serName.value, con);
+                  var drillParams = $scope.generateParamArr('get', Digin_Engine_API,$scope.widget.commonSrcConfig.src, widget.commonSrcConfig.tbl, 'aggregatefields', $scope.drillItem.value, entry.filter, entry.serName.value, con);
                   //alert(JSON.stringify(drillParams));
                   var w1 = new Worker("scripts/webworkers/commonSrcWorker.js");
 

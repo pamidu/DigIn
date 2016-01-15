@@ -1,6 +1,6 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
-    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast','DevStudio','$auth','$helpers',
-  function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio,$auth,$helpers)
+    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast','DevStudio','$auth','$helpers','Geocoder',
+  function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio,$auth,$helpers,Geocoder)
     {
 
         if(DevStudio){
@@ -31,10 +31,118 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         }
 
-         /**
-         * Build handler to open/close a SideNav; when animation finishes
-         * report completion in console
-         */
+        $scope.adjustUI = function (){
+            $('#content1').css("top", "5px");
+            $('.h_iframe').css("height","100%");
+        } 
+
+        $scope.locationData = [];
+        $scope.dataArray = [];
+
+        $scope.generateMap = function () {
+
+            // var dataArray = [];
+            var JSONData = {    
+                                "pulathisi": {"address":"kottawa,pannipitiya","value1": 45,"value2":4445},
+                                "senal":{"address":"DODANWATTA,MALALPOLA,YATIYANTHOTA","value1": 55,"value2":566},
+                                "damith":{"address":"2nd,Lane,Mandawila,Kesbewa","value1": 65,"value2":812}
+                            }
+
+            console.log("JSONData",JSONData);
+            var i = 0;
+            for (var key in JSONData) {
+
+                $scope.dataArray[i] = {name:key,location:JSONData[key].address};
+
+                setTimeout(function(){geocoding();},200);
+
+                i++;                
+            }
+            console.log("$scope.dataArray",$scope.dataArray);
+
+        }
+
+        function geocoding(){
+            
+            if($scope.dataArray.length>0){
+                //getting the first element
+                var firstElement = $scope.dataArray[0];
+
+                //removing the first element
+                var indexToRemove = 0;
+                var numberToRemove = 1;
+                $scope.dataArray.splice(indexToRemove, numberToRemove); 
+
+                Geocoder.latLngForAddress(firstElement.location).then(function(result){
+
+                    var lattitude = result.lat;
+                    var longitude = result.lng;
+                    if(lattitude != undefined && longitude != undefined){
+                        $scope.locationData.push({ lattitude:lattitude, longitude:longitude, location:firstElement.location});
+                        drawGmap();
+                    }
+
+                });
+            }
+        }
+
+        var map = null;
+        var geocoder = null;
+        var markers = [];  
+        
+        function drawGmap(){
+
+            if($scope.locationData.length > 0){
+                //getting the first element
+                var firstElement = $scope.locationData[0];
+                //removing the first element
+                var indexToRemove = 0;
+                var numberToRemove = 1;
+                $scope.locationData.splice(indexToRemove, numberToRemove);
+
+                //define the area to display map
+                var mapCanvas = document.getElementById('gmap');
+                //define map options
+                var mapOptions = {
+                    center: {lat:firstElement.lattitude,lng:firstElement.longitude},
+                    zoom: 6,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                }    
+                            
+                geocoder = new google.maps.Geocoder();
+                map = new google.maps.Map(mapCanvas, mapOptions);
+                  //var mc = new MarkerClusterer(map);   
+
+                if (geocoder) {
+                    // map.setCenter(results[0].geometry.location);
+                    //infowindow
+                    var infowindow = new google.maps.InfoWindow({
+                        content: '<div><b>' + firstElement.location + '</b></div>',
+                        size: new google.maps.Size(100, 50)
+                    });
+
+                    //define marker
+                    var marker = new google.maps.Marker({
+                        position: {lat:firstElement.lattitude,lng:firstElement.longitude},
+                        map: map,
+                        title: location
+                    });
+
+                    //markers.push(marker);  
+                    //when clicking the marker infowindow open 
+                    google.maps.event.addListener(marker, 'click', function() {
+                        infowindow.open(map, marker);
+                    });
+                                          
+                    //when clicking the map infowindow close 
+                    google.maps.event.addListener(map, "click", function(event) {
+                        infowindow.close();
+                    });
+                }          
+            //marker clusterer
+            //var markerCluster = new MarkerClusterer(map, markers);  
+            }  
+        };
 
         //shows user profile in a dialog box
         $scope.showUserProfile = function (ev) {
@@ -96,220 +204,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 widget.mheight = mHeight + 'px';
 
             }
-        }
-
-        $scope.initialize = function () {
-            // alert("initialize");
-            var center = new google.maps.LatLng(7.2964, 80.6350);
-
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 3,
-                center: center,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            });
-
-            $scope.accident = [];
-
-            var markers = [];
-
-
-            for (var i = 0; i < 31; i++) {
-                var accident = data.accidents[i];
-                var latLng = new google.maps.LatLng(accident.latitude,
-                    accident.longitude);
-                var title = accident.title;
-                // var photo_url = accident.photo_url;
-                // var marker = new google.maps.Marker({
-                //   position: latLng,
-                //   title: title
-                // });
-
-                $scope.accident.push(accident);
-
-                // var contentString = photo_url;
-
-                var marker = new google.maps.Marker({
-                    title: title,
-                    map: map,
-                    position: latLng,
-                    clickable: true
-                });
-
-
-                var infowindow = new google.maps.InfoWindow({
-                    //content: '<img src="'+photo_url+'" style="width:200px; height:100px">'
-                    content: "test"
-                });
-
-                google.maps.event.addListener(marker, 'click', function (data) {
-                    console.log(data);
-
-                    for (var i = 0; i < $scope.accident.length; i++) {
-
-                        console.log(Math.floor(data.latLng.H * 1000000) / 1000000);
-
-                        if ((Math.floor(data.latLng.H * 10000) / 10000 == Math.floor($scope.accident[i].latitude * 10000) / 10000) && (Math.floor(data.latLng.L * 10000) / 10000 == Math.floor($scope.accident[i].longitude * 10000) / 10000)) {
-
-                            console.log($scope.accident[i].title);
-                            infowindow.setContent('<img src="' + $scope.accident[i].photoUrl + '" style="width:200px; height:200px">');
-                            infowindow.open(map, this);
-                        }
-
-
-                    }
-
-
-                });
-
-                markers.push(marker);
-            }
-
-            var markerCluster = new MarkerClusterer(map, markers);
-        }
-
-        $scope.changeMap = function () {
-
-            $mdDialog.hide();
-
-            document.getElementById('map').innerHTML = "";
-
-            var array = JSON.parse($rootScope.json_string);
-
-            $scope.locationData = [];
-
-            var k, j, temparray, chunk = 8;
-            for (k = 0, j = array.length; k < j; k += chunk) {
-                temparray = array.slice(k, k + chunk);
-
-                for (var i = 0; i < temparray.length; i++) {
-
-                    if (temparray[i].PLACE_OF_ACCIDENT != null) {
-                        Geocode(temparray[i].PLACE_OF_ACCIDENT, temparray[i].ID);
-                    }
-                }
-
-            }
-
-            setTimeout(function () {
-                arrangeArray();
-                googleMap();
-            }, 5000);
-
-        };
-
-        function arrangeArray() {
-
-            var dataStore = $scope.locationData;
-            $scope.locationData = [];
-
-            var i = 0;
-            for (i = 0; i < dataStore.length; i++) {
-
-                if (dataStore[i].id == undefined) {
-                    dataStore.splice(i, 1);
-                    i--;
-                }
-            }
-
-            var ArrangedById = dataStore.slice(0);
-            ArrangedById.sort(function (a, b) {
-                return a.id - b.id;
-            });
-
-            $scope.locationData = ArrangedById;
-        }
-
-        function Geocode(address, id) {
-            var obj = {};
-            var geocoder = new google.maps.Geocoder();
-
-            geocoder.geocode({
-                'address': address
-            }, function (results, status) {
-                if (status === google.maps.GeocoderStatus.OK) {
-                    obj = {
-                        lat: results[0].geometry.location.G,
-                        lng: results[0].geometry.location.K,
-                        id: id,
-                        address: address
-                    };
-
-                    setTimeout(function () {
-                        $scope.locationData.push(obj);
-                    }, 100);
-
-                }
-                if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-                    setTimeout(function () {
-                        Geocode(address);
-                    }, 100);
-                }
-                if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {
-
-                } else {
-
-                    alert('Geocode was not successful for the following reason: ' + status);
-                }
-
-            });
-        }
-
-        function googleMap() {
-
-            var dataStore = $scope.locationData;
-
-            var array = JSON.parse($rootScope.json_string);
-
-            var map = new google.maps.Map(document.getElementById('map'), {
-                center: {
-                    lat: 7.85,
-                    lng: 80.65
-                },
-                zoom: 6
-            });
-
-            var pinImageGreen = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/green-dot.png");
-            var pinImageBlue = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/blue-dot.png");
-            var marker = [];
-
-            var k;
-
-            for (k = 0; k < array.length; k++) {
-
-                // if(array[k].state == "High"){
-
-                marker[k] = new google.maps.Marker({
-                    position: {
-                        lat: dataStore[k].lat,
-                        lng: dataStore[k].lng
-                    },
-                    map: map,
-                    title: array[k].PLACE_OF_ACCIDENT,
-                    icon: pinImageGreen,
-                    VEHICLE_TYPE: array[k].VEHICLE_TYPE,
-                    VEHICLE_USAGE: array[k].VEHICLE_USAGE,
-                    // modal: array[k].modal,
-                    VEHICLE_CLASS: array[k].VEHICLE_CLASS
-                });
-
-                marker[k].addListener('click', function (data) {
-
-                    var j;
-                    for (j = 0; j < array.length; j++) {
-
-                        if ((dataStore[j].lat == data.latLng.G) && (dataStore[j].lng == data.latLng.K)) {
-
-                            /* document.getElementById("details").innerHTML = 
-                             array[j].PLACE_OF_ACCIDENT + "</br>" +
-                             array[j].VEHICLE_TYPE + "</br>" +
-                             array[j].VEHICLE_USAGE + "</br>" +*/
-                            /*array[j].VEHICLE_CLASS+ "</br>" +*/
-                            /*array[j].VEHICLE_CLASS + "</br>" ;*/
-                        }
-                    }
-                });
-            }
-
         }
 
 

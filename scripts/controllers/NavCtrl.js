@@ -76,6 +76,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             map = new google.maps.Map(mapCanvas, mapOptions);
             bounds = new google.maps.LatLngBounds();
 
+            google.maps.event.trigger(map, 'resize');
+
             JsonToArray();    
             theNext();
         }
@@ -151,7 +153,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
 
             bounds.extend(marker.position);
-
+            google.maps.event.trigger(map, 'resize');
         }
 /************************ google maps area finish ************************************/
 

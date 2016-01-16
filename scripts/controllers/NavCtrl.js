@@ -138,7 +138,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         // ======= Function to create a marker
         function createMarker(queueItem,lat,lng) {
-            var contentString = '<div id="infodiv">'+queueItem.address+'</div>';
+            var contentString = '<div id="infodiv">'+queueItem.name+' is at '+queueItem.address+'</div>';
             var marker = new google.maps.Marker({
             position: new google.maps.LatLng(lat,lng),
             map: map,

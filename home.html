@@ -62,7 +62,7 @@
         scope: r_basicprofile r_emailaddress
 
     </script>
-    <script src="https://apis.google.com/js/client.js"></script>
+    <!-- <script src="https://apis.google.com/js/client.js"></script> -->
     <style type="text/css">
         .ui-resizable {
             position: absolute !important;
@@ -72,7 +72,7 @@
     
 </head>
 
-<body  style="background:#ECECEC !important;" ng-controller="NavCtrl" ng-app="DuoDiginRt">
+<body style="background:#ECECEC !important;" ng-controller="NavCtrl" ng-app="DuoDiginRt" ng-mouseover="adjustUI()">
     
     <!-- preloader start -->
     <div class="pre-loader-parent" id="pagePreLoader" layout="column" layout-align="center center" ng-include src="'views/ViewPreloader.html'" style="background-color:white">
@@ -339,8 +339,7 @@
     <script type="text/javascript" src="scripts/vendor/global-vendors.js"></script> 
     <script type="text/javascript" src="scripts/vendor/angular-socialshare.min.js"></script> 
     <script type="text/javascript" src="scripts/vendor/angular-css-injector.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
-
+    
     <!-- codemirror -->
     <script type="text/javascript" src="bower_components/codemirror/lib/codemirror.js"></script>
     <script type="text/javascript" src="bower_components/codemirror/addon/display/placeholder.js"></script>
@@ -480,7 +479,7 @@
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     
     <!-- google map -->
-<!--    <script src="http://maps.googleapis.com/maps/api/js?libraries=places&amp;sensor=false&amp;language=en&amp;v=3.20"></script>-->
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
     <script src="bower_components/google-map/lodash.min.js"></script>
     <script type="text/javascript" src="bower_components/google-map/angular-simple-logger.js"></script>
     <script src="bower_components/google-map/angular-google-map.js"></script>
@@ -493,8 +492,7 @@
     <script type="text/javascript">
         google.load("feeds", "1");
     </script>
-  <!--  <script async defer src="https://maps.googleapis.com/maps/api/js?AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ=API_KEY&callback=finish">
-    </script>  -->
+  
     <!-- angular datepicker -->
     <script src="scripts/controllers/angular-datepicker.js"></script> 
     <!-- linq for quering in elastic widget -->

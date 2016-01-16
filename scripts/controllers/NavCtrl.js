@@ -31,10 +31,129 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         }
 
-         /**
-         * Build handler to open/close a SideNav; when animation finishes
-         * report completion in console
-         */
+        $scope.adjustUI = function (){
+            $('#content1').css("top", "5px");
+            $('.h_iframe').css("height","100%");
+        } 
+/************************ google maps area start ************************************/
+        // ====== Create map objects ======
+        
+        var delay = 100;
+        var map = null;
+        var bounds = null;
+        var latlng = new google.maps.LatLng(7.2964, 80.6350);
+        var infowindow = new google.maps.InfoWindow();
+        var geo = null;
+        var queue = [];
+        var nextAddress = 0;
+
+        // var JSONData = {   "pulathisi": {"address":"kottawa,pannipitiya","value1": 45,"value2":4445},
+        //                     "senal":{"address":"DODANWATTA,MALALPOLA,YATIYANTHOTA","value1": 55,"value2":566},
+        //                     "damith":{"address":"2nd,Lane,Mandawila,Kesbewa","value1": 65,"value2":812} 
+        //     };
+        var JSONData = {    "test":{"address":"test","value1": 0,"value2":0},
+                            "senal":{"address":"YATIYANTHOTA","value1": 55,"value2":566},
+                            "damith":{"address":"Kesbewa","value1": 65,"value2":812},
+                            "sajee":{"address":"colombo","value1": 75,"value2":412},
+                            "omal":{"address":"moratuwa","value1": 35,"value2":82},
+                            "pulathisi": {"address":"kandy","value1": 45,"value2":445},
+                            "marlon": {"address":"malabe","value1": 15,"value2":345},
+                            "pulathisi": {"address":"kandy","value1": 25,"value2":745},
+                            "pirinthan": {"address":"wattala","value1": 85,"value2":45}
+            };
+        // var JSONData = {"pulathisi": {"address":"kandy","value1": 45,"value2":4445}};
+
+        $scope.initGmap = function(){
+            //define the area to display map
+            var mapCanvas = document.getElementById('gmap');
+            //define map options
+            var mapOptions = {
+                center: latlng,
+                zoom: 6,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }    
+            geo = new google.maps.Geocoder();
+            map = new google.maps.Map(mapCanvas, mapOptions);
+            bounds = new google.maps.LatLngBounds();
+
+            JsonToArray();    
+            theNext();
+        }
+
+        // ====== Json data to array ======    
+        function JsonToArray() {
+            for(var key in JSONData){
+                queue.push({name:key,address:JSONData[key].address});
+            }
+        }
+        // ====== Decides the next thing to do ======
+        function theNext() {
+                if (nextAddress < queue.length) {
+                    setTimeout(function(){
+                            getAddress(queue[nextAddress]);
+                            //theNext();
+                    }, delay);
+                    nextAddress++;
+                } else {
+                    // We're done. Show map bounds
+                    alert("Done!");
+                    map.fitBounds(bounds);
+                }      
+        }
+
+        // ====== Geocoding ======
+        function getAddress(queueItem) {
+            if(queueItem != undefined){
+                geo.geocode({address:queueItem.address}, function (results,status)
+                  { 
+                    // If that was successful
+                    if (status == google.maps.GeocoderStatus.OK) {
+                      // Lets assume that the first marker is the one we want
+                      var p = results[0].geometry.location;
+                      var lat=p.lat();
+                      var lng=p.lng();
+                      // Output the data
+                        var msg = 'address="' + queueItem.address + '" lat=' +lat+ ' lng=' +lng+ '(delay='+delay+'ms)<br>';
+                        document.getElementById("gmap-messages").innerHTML += msg;
+                      // Create a marker
+                      createMarker(queueItem,lat,lng);
+                    }
+                    // ====== Decode the error status ======
+                    else {
+                      // === if we were sending the requests to fast, try this one again and increase the delay
+                      if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                        nextAddress--;
+                        delay++;
+                      } else {
+                        var reason="Code "+status;
+                        var msg = 'address="' + queueItem.address + '" error=' +reason+ '(delay='+delay+'ms)<br>';
+                        document.getElementById("messages").innerHTML += msg;
+                      }   
+                    }
+                    theNext();
+                  }
+                );
+            }    
+        }
+
+        // ======= Function to create a marker
+        function createMarker(queueItem,lat,lng) {
+            var contentString = '<div id="infodiv">'+queueItem.address+'</div>';
+            var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(lat,lng),
+            map: map,
+            zIndex: Math.round(latlng.lat()*-100000)<<5
+            });
+
+            google.maps.event.addListener(marker, 'click', function() {
+                infowindow.setContent(contentString); 
+                infowindow.open(map,marker);
+            });
+
+            bounds.extend(marker.position);
+
+        }
+/************************ google maps area finish ************************************/
 
         //shows user profile in a dialog box
         $scope.showUserProfile = function (ev) {
@@ -96,220 +215,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 widget.mheight = mHeight + 'px';
 
             }
-        }
-
-        $scope.initialize = function () {
-            // alert("initialize");
-            var center = new google.maps.LatLng(7.2964, 80.6350);
-
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 3,
-                center: center,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            });
-
-            $scope.accident = [];
-
-            var markers = [];
-
-
-            for (var i = 0; i < 31; i++) {
-                var accident = data.accidents[i];
-                var latLng = new google.maps.LatLng(accident.latitude,
-                    accident.longitude);
-                var title = accident.title;
-                // var photo_url = accident.photo_url;
-                // var marker = new google.maps.Marker({
-                //   position: latLng,
-                //   title: title
-                // });
-
-                $scope.accident.push(accident);
-
-                // var contentString = photo_url;
-
-                var marker = new google.maps.Marker({
-                    title: title,
-                    map: map,
-                    position: latLng,
-                    clickable: true
-                });
-
-
-                var infowindow = new google.maps.InfoWindow({
-                    //content: '<img src="'+photo_url+'" style="width:200px; height:100px">'
-                    content: "test"
-                });
-
-                google.maps.event.addListener(marker, 'click', function (data) {
-                    console.log(data);
-
-                    for (var i = 0; i < $scope.accident.length; i++) {
-
-                        console.log(Math.floor(data.latLng.H * 1000000) / 1000000);
-
-                        if ((Math.floor(data.latLng.H * 10000) / 10000 == Math.floor($scope.accident[i].latitude * 10000) / 10000) && (Math.floor(data.latLng.L * 10000) / 10000 == Math.floor($scope.accident[i].longitude * 10000) / 10000)) {
-
-                            console.log($scope.accident[i].title);
-                            infowindow.setContent('<img src="' + $scope.accident[i].photoUrl + '" style="width:200px; height:200px">');
-                            infowindow.open(map, this);
-                        }
-
-
-                    }
-
-
-                });
-
-                markers.push(marker);
-            }
-
-            var markerCluster = new MarkerClusterer(map, markers);
-        }
-
-        $scope.changeMap = function () {
-
-            $mdDialog.hide();
-
-            document.getElementById('map').innerHTML = "";
-
-            var array = JSON.parse($rootScope.json_string);
-
-            $scope.locationData = [];
-
-            var k, j, temparray, chunk = 8;
-            for (k = 0, j = array.length; k < j; k += chunk) {
-                temparray = array.slice(k, k + chunk);
-
-                for (var i = 0; i < temparray.length; i++) {
-
-                    if (temparray[i].PLACE_OF_ACCIDENT != null) {
-                        Geocode(temparray[i].PLACE_OF_ACCIDENT, temparray[i].ID);
-                    }
-                }
-
-            }
-
-            setTimeout(function () {
-                arrangeArray();
-                googleMap();
-            }, 5000);
-
-        };
-
-        function arrangeArray() {
-
-            var dataStore = $scope.locationData;
-            $scope.locationData = [];
-
-            var i = 0;
-            for (i = 0; i < dataStore.length; i++) {
-
-                if (dataStore[i].id == undefined) {
-                    dataStore.splice(i, 1);
-                    i--;
-                }
-            }
-
-            var ArrangedById = dataStore.slice(0);
-            ArrangedById.sort(function (a, b) {
-                return a.id - b.id;
-            });
-
-            $scope.locationData = ArrangedById;
-        }
-
-        function Geocode(address, id) {
-            var obj = {};
-            var geocoder = new google.maps.Geocoder();
-
-            geocoder.geocode({
-                'address': address
-            }, function (results, status) {
-                if (status === google.maps.GeocoderStatus.OK) {
-                    obj = {
-                        lat: results[0].geometry.location.G,
-                        lng: results[0].geometry.location.K,
-                        id: id,
-                        address: address
-                    };
-
-                    setTimeout(function () {
-                        $scope.locationData.push(obj);
-                    }, 100);
-
-                }
-                if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-                    setTimeout(function () {
-                        Geocode(address);
-                    }, 100);
-                }
-                if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {
-
-                } else {
-
-                    alert('Geocode was not successful for the following reason: ' + status);
-                }
-
-            });
-        }
-
-        function googleMap() {
-
-            var dataStore = $scope.locationData;
-
-            var array = JSON.parse($rootScope.json_string);
-
-            var map = new google.maps.Map(document.getElementById('map'), {
-                center: {
-                    lat: 7.85,
-                    lng: 80.65
-                },
-                zoom: 6
-            });
-
-            var pinImageGreen = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/green-dot.png");
-            var pinImageBlue = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/blue-dot.png");
-            var marker = [];
-
-            var k;
-
-            for (k = 0; k < array.length; k++) {
-
-                // if(array[k].state == "High"){
-
-                marker[k] = new google.maps.Marker({
-                    position: {
-                        lat: dataStore[k].lat,
-                        lng: dataStore[k].lng
-                    },
-                    map: map,
-                    title: array[k].PLACE_OF_ACCIDENT,
-                    icon: pinImageGreen,
-                    VEHICLE_TYPE: array[k].VEHICLE_TYPE,
-                    VEHICLE_USAGE: array[k].VEHICLE_USAGE,
-                    // modal: array[k].modal,
-                    VEHICLE_CLASS: array[k].VEHICLE_CLASS
-                });
-
-                marker[k].addListener('click', function (data) {
-
-                    var j;
-                    for (j = 0; j < array.length; j++) {
-
-                        if ((dataStore[j].lat == data.latLng.G) && (dataStore[j].lng == data.latLng.K)) {
-
-                            /* document.getElementById("details").innerHTML = 
-                             array[j].PLACE_OF_ACCIDENT + "</br>" +
-                             array[j].VEHICLE_TYPE + "</br>" +
-                             array[j].VEHICLE_USAGE + "</br>" +*/
-                            /*array[j].VEHICLE_CLASS+ "</br>" +*/
-                            /*array[j].VEHICLE_CLASS + "</br>" ;*/
-                        }
-                    }
-                });
-            }
-
         }
 
 
@@ -1087,9 +992,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $rootScope.currentView = "D3plugins";
                 $scope.manageTabs(false);
                 $state.go(routeName);
-
-                setTimeout(function(){$('.h_iframe').css("height","100%");},3000);
-
             }
             if (routeName == "Reports") {
                 
@@ -1097,10 +999,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 selectedMenu[0].style.display = 'block';
                 $rootScope.currentView = "Reports";
                 $scope.manageTabs(false);
-                $state.go(routeName);
-                
-                setTimeout(function(){$('.h_iframe').css("height","100%");},3000);
-                
+                $state.go(routeName);               
             }
             if (routeName == "Analytics") {
                                     
@@ -1110,7 +1009,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $("starting-point").css("top", "160px");
                 $scope.manageTabs(false);
                 $rootScope.currentView = "Analytics";
-
             }
             if (routeName == "RealTime") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
@@ -1120,8 +1018,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $("starting-point").css("top", "200px");  
                 $scope.manageTabs(false);
                 $state.go(routeName);
-                
-                setTimeout(function(){$('.h_iframe').css("height","100%");},3000);
                 
                 $rootScope.currentView = "RealTime";
 
@@ -1143,10 +1039,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 
                 });
                 $rootScope.currentView = "Digin P Stack";
-                //$state.go(routeName);
-                
-                setTimeout(function(){$('.h_iframe').css("height","100%");},3000);
-                
+                //$state.go(routeName);                
             }
             if (routeName == "CommonData") {
                 

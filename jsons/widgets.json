@@ -279,8 +279,6 @@
             "icon": "styles/css/images/icons/google.svg",
             "type": "Custom",
             "Description": "Google Maps",
-            "initTemplate": "InitConfigGoogleMaps",
-            "initController": "googleMapsInit",
             "widView": "views/ViewGoogleMaps.html",
             "dataView": "ViewDataGoogleMaps",
             "dataCtrl": "googleMapsCtrl",

@@ -52,17 +52,24 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //                     "damith":{"address":"2nd,Lane,Mandawila,Kesbewa","value1": 65,"value2":812} 
         //     };
         var JSONData = {    "test":{"address":"test","value1": 0,"value2":0},
-                            "senal":{"address":"YATIYANTHOTA","value1": 55,"value2":566},
-                            "damith":{"address":"Kesbewa","value1": 65,"value2":812},
+                            "senal":{"address":"matara","value1": 55,"value2":566},
+                            "damith":{"address":"galle","value1": 65,"value2":812},
                             "sajee":{"address":"colombo","value1": 75,"value2":412},
-                            "omal":{"address":"moratuwa","value1": 35,"value2":82},
+                            "omal":{"address":"matale","value1": 35,"value2":82},
                             "pulathisi": {"address":"kandy","value1": 45,"value2":445},
                             "marlon": {"address":"malabe","value1": 15,"value2":345},
                             "pulathisi": {"address":"kandy","value1": 25,"value2":745},
-                            "pirinthan": {"address":"wattala","value1": 85,"value2":45}
+                            "pirinthan": {"address":"wattala","value1": 85,"value2":45},
+                            "eranga":{"address":"jaffna","value1": 55,"value2":566},
+                            "rangika":{"address":"trincomalee","value1": 65,"value2":812},
+                            "prasad":{"address":"hambantota","value1": 35,"value2":82},
+                            "rukshan": {"address":"badulla","value1": 45,"value2":445},
+                            "kalana": {"address":"ampara","value1": 15,"value2":345},
+                            "lakshan": {"address":"anuradhapura","value1": 25,"value2":745},
+                            "sajith": {"address":"polonnaruwa","value1": 85,"value2":45}
             };
-        // var JSONData = {"pulathisi": {"address":"kandy","value1": 45,"value2":4445}};
-
+        
+        // ======== initializing map at google map loading =========
         $scope.initGmap = function(){
             //define the area to display map
             var mapCanvas = document.getElementById('gmap');
@@ -115,7 +122,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                       var lat=p.lat();
                       var lng=p.lng();
                       // Output the data
-                        var msg = 'address="' + queueItem.address + '" lat=' +lat+ ' lng=' +lng+ '(delay='+delay+'ms)<br>';
+                        var msg = 'name="'+queueItem.name+'" address="' + queueItem.address + '" lat=' +lat+ ' lng=' +lng+ '(delay='+delay+'ms)<br>';
                         document.getElementById("gmap-messages").innerHTML += msg;
                       // Create a marker
                       createMarker(queueItem,lat,lng);
@@ -129,7 +136,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                       } else {
                         var reason="Code "+status;
                         var msg = 'address="' + queueItem.address + '" error=' +reason+ '(delay='+delay+'ms)<br>';
-                        document.getElementById("messages").innerHTML += msg;
+                        document.getElementById("gmap-messages").innerHTML += msg;
                       }   
                     }
                     theNext();
@@ -138,7 +145,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }    
         }
 
-        // ======= Function to create a marker
+        // ======= Function to create a marker ========
         function createMarker(queueItem,lat,lng) {
             var contentString = '<div id="infodiv">'+queueItem.name+' is at '+queueItem.address+'</div>';
             var marker = new google.maps.Marker({

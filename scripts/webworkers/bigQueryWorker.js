@@ -75,7 +75,7 @@ function getHierarchy(parentData) {
     }
     ;
     request = request.replace(/,\s*$/, "");
-    request += "&tablename=[" + parentData[0] + "]&id=" + id;
+    request += "&tablename=[" + parentData[0] + "]&id=" + id + "&db=MSSQL" ;
     xhr.open("get", request, /*async*/ true);
 
     xhr.setRequestHeader("securityToken", "securityToken");

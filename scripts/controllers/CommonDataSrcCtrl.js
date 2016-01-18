@@ -20,7 +20,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
    }, {
       name: "SpreadSheet"
    }, {
-      name: "MSSql"
+      name: "MSSQL"
    }];
 
    // $scope.toggleRight = buildToggler('right');
@@ -34,12 +34,17 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
    };
 
    $scope.onChangeSource = function(src) {
-      //clear fieldArray
-      $scope.fieldArray = [];
+      //get the namespace for the relevant source
+      getJSONDataByProperty($http,'pythonServices','name', 'Namespaces' ,function(data){
+         $scope.srcNamespace = data[0][src.toLowerCase()];
+         localStorage.setItem('srcNamespace', $scope.srcNamespace);
+         //clear fieldArray
+         $scope.fieldArray = [];
 
-      $scope.selSrc = src;
-      CommonDataSrc.getTables(src, function(data) {
-         $scope.dataTables = data;
+         $scope.selSrc = src;
+         CommonDataSrc.getTables(src, function(data) {
+            $scope.dataTables = data;
+         });
       });
    };
 
@@ -49,7 +54,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
 
       $scope.selTable = tbl;
       CommonDataSrc.getFields(tbl, function(data) {
-         $scope.dataFields = data;
+         $scope.tblFields = data;
          //$compile(div)(scope);
       });
    };
@@ -65,19 +70,16 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
    };
 
    $scope.toggleCheck = function(field) {
-
       var i = $scope.fieldArray.indexOf(field);
       if (i > -1) {
          $scope.fieldArray.splice(i, 1);
       } else {
          $scope.fieldArray.push(field);
+
       }
-      console.log("$scope.fieldArray");
-      console.log($scope.fieldArray);
    };
 
    $scope.toggleCheck2 = function(data) {
-
       console.log("toggleCheck2");
       var i = $scope.dataArray.indexOf(data);
       if (i > -1) {
@@ -85,24 +87,14 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
       } else {
          $scope.dataArray.push(data);
       }
-      // var i = $scope.dataArray[field].indexOf(data);
-      // if (i > -1) {
-      //    $scope.dataArray[field].splice(i, 1);
-      // } else {
-      //    $scope.dataArray.push(data);
-      // }
-      // console.log("$scope.dataArray[field]");
-      // console.log($scope.dataArray[field]);
    };
 
    $scope.configGraph = function(evt) {
-
       //building the fields string
       $scope.fieldString = [];
       for (i = 0; i < $scope.fieldArray.length; i++) {
          $scope.fieldString.push("'" + $scope.fieldArray[i] + "'");
       }
-      console.log($scope.fieldString);
 
       $scope.currWidget = {
          widData: {},
@@ -154,7 +146,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
                //$mdDialog.hide();
             });
 
-      } else if ($scope.selSrc == 'BigQuery') {
+      } else if ($scope.selSrc != 'DuoStore') {
          var xhr = new XMLHttpRequest();
 
          xhr.onreadystatechange = function(e) {
@@ -188,24 +180,20 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
          xhr.ontimeout = function() {
             console.error("request timedout: ", xhr);
          };
-         console.log("fieldString");
-         console.log($scope.fieldString);
-         xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + Digin_Engine_API_Namespace + "." + $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
 
+         if($scope.selSrc == 'BigQuery')
+         xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + $scope.srcNamespace + "." + $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All&db="+$scope.selSrc, /*async*/ true);
+         
+         else
+xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=" + $scope.selTable + "&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All&db="+$scope.selSrc, /*async*/ true);
          xhr.send();
 
       };
-   };
+      };
 
-   $scope.configGraph2 = function(evt, field) {
-
-         //building the fields string
-         // for (i = 0; i < $scope.fieldArray.length; i++) {
-         //    $scope.fieldString.push("'" + $scope.fieldArray[i] + "'");
-         // }
+      $scope.configGraph2 = function(evt, field) {
 
          //building the data string
-         $scope.dataString = [];
          for (i = 0; i < $scope.dataArray.length; i++) {
             $scope.dataString.push("'" + $scope.dataArray[i] + "'");
          }
@@ -216,131 +204,72 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
             console.log(this);
             if (xhr.readyState === 4) {
                if (xhr.status === 200) {
+                  $scope.currWidget = {
+                     widData: {},
+                     widView: "views/ViewCommonSrc.html",
+                     dataView: "ViewElasticData",
+                     dataCtrl: "elasticDataCtrl",
+                     initTemplate: "InitConfigCommonSrc",
+                     initCtrl: "commonSrcInit",
+                     uniqueType: "Common Source",
+                     syncState: true,
+                     expanded: true,
+                     seriesname: "",
+                     externalDataURL: "",
+                     dataname: "",
+                     d3plugin: "",
+                     divider: false,
+                     id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
+                     type: "Visualization",
+                     width: '370px',
+                     height: '300px',
+                     mheight: '100%',
+                     highchartsNG: {
+                        size: {
+                           height: 220,
+                           width: 300
+                        }
+                     },
+                     commonSrcConfig: {
+                        src: $scope.selSrc,
+                        tbl: $scope.selTable,
+                        fields: $scope.fieldArray,
+                        namespace: $scope.srcNamespace
+                     }
+                  };
+                  var data = JSON.parse(xhr.response);
 
-                  //parse json data to string
-                  var parsed = JSON.parse(xhr.response);
-                  var JSONDataArray = [];
-                  //json data string to array
-                  for(var x in parsed){
-                     JSONDataArray.push(parsed[x]);
-                  }
-                  console.log("JSONDataArray");
-                  console.log(JSONDataArray);
-                  
+                  $rootScope.dashboard.widgets.push($scope.currWidget);
+                  $mdDialog.show({
+                        controller: 'commonSrcInit',
+                        templateUrl: 'views/InitConfigCommonSrc.html',
+                        targetEvent: evt,
+                        locals: {
+                           widId: $scope.currWidget.id,
+                           fieldData: data
+                        }
+                     })
+                     .then(function() {
+                        //$mdDialog.hide();
+                     }, function() {
+                        //$mdDialog.hide();
+                     });
+
                } else {
                   console.error("XHR didn't work: ", xhr.status);
                }
             }
          }
-
          xhr.ontimeout = function() {
             console.error("request timedout: ", xhr);
          }
 
-         var fields = "";
-         var dataStringLength = $scope.dataString.length;
+         xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + $scope.srcNamespace + "." + $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
 
-         for (i = 0; i < dataStringLength; i++) {
-
-            var statement = field + "=" + $scope.dataString[i]
-            //if it the last iteration
-            if(i == dataStringLength-1){
-               fields += statement;
-            }else{
-               fields += statement + " OR ";
-            }
-         }
-
-         console.log("fields");
-         console.log(fields);
-         
-         var whereClause = " WHERE " + fields;
-
-         var limit = 1000;
-         var queryString = "SELECT *"
-                        + " FROM " + "[" + Digin_Engine_API_Namespace + "." + $scope.selTable + "]"
-                        + whereClause
-                        + " LIMIT " + limit.toString();
-
-         xhr.open("get", Digin_Engine_API + "executeQuery?query=" + queryString, /*async*/ true);
-         /*SELECT * FROM [Demo.Flight_paths] WHERE airport1='DFW'  LIMIT 1000*/
-         console.log("queryString");
-         console.log(queryString);
          xhr.send();
       };
-
-      $scope.getDataByFields = function(field) {
-
-      //clear distinct scope array
-      //$scope.distinct = [];
-      $scope.distinct[field] = [];
-
-      var xhr = new XMLHttpRequest();
-
-      xhr.onreadystatechange = function(e) {
-         var array1 = [];
-
-         console.log(this);
-         if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-               //parse json data to string
-               var parsed = JSON.parse(xhr.response);
-               var JSONDataArray = [];
-               //json data string to array
-               for(var x in parsed){
-                  JSONDataArray.push(parsed[x]);
-               }
-               //push field value of each array slot to scope array
-               for(var i=0;i<JSONDataArray.length;i++){
-
-                  $scope.distinct[field][i] = JSONDataArray[i][field];
-                  //console.log($scope.distinct[field]);
-               }
-            } else {
-               console.error("XHR didn't work: ", xhr.status);
-            }
-         }
-
-         //get distinct values
-         // var distinct = [];
-         // var unique = {};
-
-         // for( var i in $scope.distinct[field] ){
-         //    if( typeof(unique[$scope.distinct[field][i]]) == "undefined"){
-         //       distinct.push($scope.distinct[i]);
-         //    }
-         //     unique[$scope.distinct[field][i]] = 0;
-         // }
-         //replace scope array with distict values
-         // $scope.distinct[field] = distinct;
-         console.log("$scope.distinct");
-         console.log($scope.distinct);
-         // console.log("distinct");
-         // console.log(distinct);
-
-      }
-
-      xhr.ontimeout = function() {
-         console.error("request timedout: ", xhr);
-      }
-
-      var limit = 1000;
-      var queryString = "SELECT " + field
-                        + " FROM " + "[" + Digin_Engine_API_Namespace + "." + $scope.selTable + "]"
-                        + " GROUP BY " + field
-                        + " LIMIT " + limit.toString();
-
-      // xhr.open("get", Digin_Engine_API + "executeQuery?tablename=[" + $scope.selTable.split(":")[1] + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
-      xhr.open("get", Digin_Engine_API + "executeQuery?query=" + queryString, /*async*/ true);
-
-      console.log("queryString");
-      console.log(queryString);
-
-      xhr.send();
-
-   };
-
 }]);
+
 
 routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData', 'Digin_Engine_API','Digin_Engine_API_Namespace', function($scope, $mdDialog, $rootScope, widId, $state, fieldData, Digin_Engine_API,Digin_Engine_API_Namespace) {
 
@@ -894,7 +823,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                for (i = 0; i < evData.length; i++) {
                   entry['data'].push({
                      name: evData[i][$scope.catItem.value],
-                     y: evData[i]['f0_']
+                     y: evData[i]['']
                   });
                }
             });
@@ -1088,7 +1017,8 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                   setWidget();
                }
             });
-            $scope.orderedArrayObj.push(serObj);
+            $scope.orderedArrayO
+bj.push(serObj);
          });
 
          function setWidget() {
@@ -1111,7 +1041,9 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                      for (j = 0; j < drilledData.length; j++) {
                         dataArr.push([
                            drilledData[j][$scope.drillItem.value],
-                           drilledData[j]['f0_']
+                          // drilledData[j]['f0_']
+                          //modified by sajee 1/17 
+                          drilledData[j]['']
                         ]);
                      }
                      $scope.objArr.push({

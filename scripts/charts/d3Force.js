@@ -3,9 +3,7 @@ routerApp.directive('linearChart', function () {
         restrict: 'EA',
 
         link: function (scope, elem, attrs) {
-            //this will watch the scope data            scope.$watch(
-                "data",
-            function handleChange(newValue, oldValue) {
+           scope.$watch("data",function handleChange(newValue, oldValue) {
               console.log(newValue)
                 if (!newValue) {
                     return;

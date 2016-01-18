@@ -43,8 +43,8 @@
                 </md-select>
 
                
-               <md-select ng-if="widget.commonSrcConfig.src !='DuoStore'" ng-show="queryDrilled" ng-model="drillItem" placeholder="Select a drill field">
-                     <md-option ng-value="drillItem" ng-repeat="drillItem in arrayAttributes" ng-if="drillItem.value < categItem.value">{{drillItem.value}}</md-option>
+               <md-select ng-if="widget.commonSrcConfig.src !='DuoStore'" ng-show="queryDrilled" ng-model="categItem.drillItem" placeholder="Select a drill field">
+                     <md-option ng-value="drillItem" ng-repeat="drillItem in arrayAttributes" ng-if="drillItem.level > categItem.item.level">{{drillItem.value}}</md-option>
                </md-select>
                
                 <div layout="column" ng-repeat="ser in seriesArray">

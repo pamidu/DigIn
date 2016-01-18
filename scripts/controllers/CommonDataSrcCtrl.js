@@ -319,6 +319,10 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
       name: "Scatter",
       type: "scatter"
    }];
+   
+   //   $scope.test = function(dat){
+   //      alert(JSON.stringify(dat));
+   //   };
 
 
    /*TEMP*/
@@ -402,6 +406,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
    }
 
    $scope.getDrillArray = function() {
+      console.log(JSON.stringify($scope.arrayAttributes));
       if ($scope.widget.commonSrcConfig.src == "DuoStore") {
          var uniqueScore = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.unique');
          console.log('unique score:' + uniqueScore);
@@ -814,12 +819,11 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             entry['data'] = [];
             //         alert(tblVal);
             var paramArr = $scope.generateParamArr('get', Digin_Engine_API,$scope.widget.commonSrcConfig.src, tblVal, 'aggregatefields', $scope.catItem.value, entry.filter, entry.serName.value);
-            alert(JSON.stringify(paramArr));
             var w = new Worker("scripts/webworkers/commonSrcWorker.js");
             w.postMessage(JSON.stringify(paramArr));
             w.addEventListener('message', function(event) {
                var objArr = [];
-               var evData = JSON.parse(event.data);
+var evData = JSON.parse(event.data);
                for (i = 0; i < evData.length; i++) {
                   entry['data'].push({
                      name: evData[i][$scope.catItem.value],
@@ -981,7 +985,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
          widget.highchartsNG['series'] = orderedObjArray;
          widget.highchartsNG.drilldown['series'] = drilledSeries;
 
-      } else if ($scope.widget.commonSrcConfig.src == "BigQuery") {
+      } else if ($scope.widget.commonSrcConfig.src != "DuoStore") {
          $scope.seriesArray.forEach(function(entry) {
             var serObj = {
                name: '',
@@ -990,8 +994,9 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                data: []
             };
             entry['data'] = [];
-            var tblVal = $scope.srcNamespace + '.' + widget.commonSrcConfig.tbl;
-            var paramArr = $scope.generateParamArr('get', Digin_Engine_API,$scope.widget.commonSrcConfig.src, tblVal, 'aggregatefields', $scope.catItem.value, entry.filter, entry.serName.value);
+            alert(JSON.stringify($scope.catItem));
+//            var tblVal = $scope.srcNamespace + '.' + widget.commonSrcConfig.tbl;
+            var paramArr = $scope.generateParamArr('get', Digin_Engine_API,$scope.widget.commonSrcConfig.src, widget.commonSrcConfig.tbl, 'aggregatefields', $scope.categItem.item.value, entry.filter, entry.serName.value);
             var w = new Worker("scripts/webworkers/commonSrcWorker.js");
             requestCounter--;
             w.postMessage(JSON.stringify(paramArr));
@@ -1003,22 +1008,23 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                serObj.color = entry.color;
                for (i = 0; i < evData.length; i++) {
                   serObj.data.push({
-                     drilldown: evData[i][$scope.catItem.value],
-                     name: evData[i][$scope.catItem.value],
-                     y: evData[i]['f0_']
+                     drilldown: evData[i][$scope.categItem.item.value],
+                     name: evData[i][$scope.categItem.item.value],
+                     y: evData[i]['']
+//                     y: evData[i]['f0_']
                   });
                   entry['data'].push({
-                     drilldown: evData[i][$scope.catItem.value],
-                     name: evData[i][$scope.catItem.value],
-                     y: evData[i]['f0_']
+                     drilldown: evData[i][$scope.categItem.item.value],
+                     name: evData[i][$scope.categItem.item.value],
+                     y: evData[i]['']
+//                     y: evData[i]['f0_']
                   });
                }
                if (requestCounter == 0) {
                   setWidget();
                }
             });
-            $scope.orderedArrayO
-bj.push(serObj);
+            $scope.orderedArrayObj.push(serObj);
          });
 
          function setWidget() {
@@ -1026,8 +1032,9 @@ bj.push(serObj);
             $scope.seriesArray.forEach(function(entry) {
                requestCounter = entry.data.length;
                entry.data.forEach(function(enData) {
-                  var con = "WHERE " + $scope.catItem.value + "='" + enData.name + "'";
-                  var drillParams = $scope.generateParamArr('get', Digin_Engine_API,$scope.widget.commonSrcConfig.src, widget.commonSrcConfig.tbl, 'aggregatefields', $scope.drillItem.value, entry.filter, entry.serName.value, con);
+                  var con = "WHERE " + $scope.categItem.item.value + "='" + enData.name + "'";
+//                  alert(JSON.stringify($scope.categItem.drillItem)+ ' ' + JSON.stringify(entry.serName));
+                  var drillParams = $scope.generateParamArr('get', Digin_Engine_API,$scope.widget.commonSrcConfig.src, widget.commonSrcConfig.tbl, 'aggregatefields', $scope.categItem.drillItem.value, entry.filter, entry.serName.value, con);
                   //alert(JSON.stringify(drillParams));
                   var w1 = new Worker("scripts/webworkers/commonSrcWorker.js");
 
@@ -1040,7 +1047,7 @@ bj.push(serObj);
                      //                  alert(JSON.stringify(drilledData));
                      for (j = 0; j < drilledData.length; j++) {
                         dataArr.push([
-                           drilledData[j][$scope.drillItem.value],
+                           drilledData[j][$scope.categItem.drillItem.value],
                           // drilledData[j]['f0_']
                           //modified by sajee 1/17 
                           drilledData[j]['']
@@ -1050,13 +1057,13 @@ bj.push(serObj);
                         id: enData.name,
                         data: dataArr
                      });
+//                     alert();
 
                      if (requestCounter == 0) {
-                        alert(widget.id);
-                        //                      var widgetElem = document.getElementById(widget.id);
-
-                        //widget.highchartsNG = ;
-                        console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
+                        widget.highchartsNG['series'] = $scope.orderedArrayObj;
+            widget.highchartsNG.drilldown['series'] = $scope.objArr;
+                        console.log(JSON.stringify($scope.objArr));
+            console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
                      }
 
 
@@ -1075,6 +1082,8 @@ bj.push(serObj);
             });
             widget.highchartsNG['series'] = $scope.orderedArrayObj;
             widget.highchartsNG.drilldown['series'] = $scope.objArr;
+            console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
+            $state.go('Dashboards');
          }
       }
 

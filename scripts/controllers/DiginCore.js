@@ -79,7 +79,9 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                             'uniqueType': items.uniqueType,
                             'length': items.widConfig.attributes.length,
                             'attributes': items.widConfig.attributes,
-                            'mappedData': []
+                            'mappedData': [],
+                            'className': items.widConfig.classArray[0],
+                            'type': items.type
                         };
                         for (var i = 0; i < selectedSourceData.length; i++) {
                             var _attr = selectedSourceData.attributes[i].trim().

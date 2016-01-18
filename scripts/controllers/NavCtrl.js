@@ -46,6 +46,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         var geo = null;
         var queue = [];
         var nextAddress = 0;
+        var markers = [];
+        var markerCluster;
+        var mcOptions = {gridSize: 50, maxZoom: 15};
 
         // var JSONData = {   "pulathisi": {"address":"kottawa,pannipitiya","value1": 45,"value2":4445},
         //                     "senal":{"address":"DODANWATTA,MALALPOLA,YATIYANTHOTA","value1": 55,"value2":566},
@@ -84,6 +87,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             bounds = new google.maps.LatLngBounds();
 
             google.maps.event.trigger(map, 'resize');
+            // for zoom on map new instance of marker cluster created
+            google.maps.event.addListener(map, 'zoom_changed', function(event) {
+                markerCluster = new MarkerClusterer(map, markers, mcOptions);    
+            });
 
             JsonToArray();    
             theNext();
@@ -142,6 +149,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     theNext();
                   }
                 );
+                markerCluster = new MarkerClusterer(map, markers, mcOptions);
             }    
         }
 
@@ -160,8 +168,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
 
             bounds.extend(marker.position);
+            markers.push(marker);
+
             google.maps.event.trigger(map, 'resize');
         }
+        
 /************************ google maps area finish ************************************/
 
         //shows user profile in a dialog box

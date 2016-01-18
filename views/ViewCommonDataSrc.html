@@ -34,7 +34,7 @@
                                                         placeholder="Select Table"
                                                         ng-change="onChangeTable(tblItem)"
                                                         ng-model="tblItem">
-                                    <md-option ng-value="item" ng-repeat="item in dataTables">
+                                    <md-option ng-value="item" ng-repeat="item in dataTables | orderBy : item">
                                                      {{item  }}
                                     </md-option>
                                 </md-select>
@@ -44,7 +44,7 @@
                     <!-- index loader -->
                     <div layout="column" class="data-index">
                         <div>
-                            <md-checkbox ng-repeat="item in dataFields" ng-click="toggleCheck(item)">
+                            <md-checkbox ng-repeat="item in tblFields | orderBy : item" ng-click="toggleCheck(item)">
                                            {{ item }}
                             </md-checkbox>
                         </div>

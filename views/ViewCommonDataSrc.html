@@ -44,7 +44,7 @@
                     <!-- index loader -->
                     <div layout="column" class="data-index">
                         <div>
-                            <md-checkbox ng-repeat="item in tableFileds" ng-click="toggleCheck(item)">
+                            <md-checkbox ng-repeat="item in dataFields" ng-click="toggleCheck(item)">
                                            {{ item }}
                             </md-checkbox>
                         </div>
@@ -70,24 +70,9 @@
                             </md-checkbox>
                           </div>
                       </div>
-                      <md-button ng-click="configGraph2($event)" flex>Create</md-button>
+                      <md-button ng-click="configGraph2($event, field)" flex>Create</md-button>
                 </accordion-panel>
                 </accordion>
             </md-content>
 </md-sidenav>
-
-                </div>
-            </div>
-            <!-- index loader -->
-            <div layout="column" class="data-index">
-                <div class="dragMe" ng-repeat="item in dataFields">
-                    <md-checkbox  ng-click="toggle(item, selected)">
-                      {{ item }}
-                    </md-checkbox>
-                </div>
-            </div>
-         </div>
-
-      </md-content>
-    </md-sidenav>
 

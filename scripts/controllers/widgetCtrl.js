@@ -2800,7 +2800,7 @@ routerApp.controller('D3ForceCtrl', function($rootScope, $scope, $http) {
 });
 
 function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) {
-    $scope.datasources = ['BigQuery']; //temporary
+    $scope.datasources = ['MSSql']; //temporary
     $scope.widgetValidity = 'elasticValidation'; //validation message visibility                                             
     $scope.query = {};
     $scope.query.state = false;
@@ -2821,7 +2821,7 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
 
     $scope.getTables = function() {
 
-        if ($scope.datasource == "BigQuery") {
+        if ($scope.datasource == "MSSql") {
 
             var xhr = new XMLHttpRequest();
 
@@ -2842,7 +2842,7 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
             xhr.ontimeout = function() {
                 console.error("request timedout: ", xhr);
             }
-            xhr.open("get", Digin_Engine_API + "GetTables?dataSetID=digin_hnb", /*async*/ true);
+            xhr.open("get", Digin_Engine_API + "GetTables?dataSetID=HutchDialogic&db=MSSQL", /*async*/ true);
             xhr.send();
         }
     };
@@ -2851,19 +2851,25 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
     //check for selected classes
     $scope.getFields = function() {
         $scope.selectedFields = [];
-        if ($scope.datasource == "BigQuery") {
+        if ($scope.datasource == "MSSql") {
             if ($scope.selectedClass != null) {
                 $scope.indexType = $scope.selectedClass;
-                var fieldData = ($scope.selectedClass.split(':')[1]).split('.');
-                $scope.bigQueryFieldDetails = fieldData;
+//                var fieldData = ($scope.selectedClass.split(':')[1]).split('.');
+                //$scope.bigQueryFieldDetails = fieldData;
                 $scope.dataIndicator1 = true;
-
-                $http({
-                    method: 'GET',
-                    url: Digin_Engine_API + 'GetFields?datasetName=' + fieldData[0] + '&&tableName=' + fieldData[1],
-                }).
-                success(function(data, status) {
-                    if (data.length > 0) {
+               
+               getJSONDataByProperty($http,'pythonServices','name','Python',function(data){
+            var requestObj = data[0].getFields;
+            var namespace = localStorage.getItem('srcNamespace');
+            console.log(JSON.stringify(requestObj));
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function(e) {
+               console.log(this);
+               if (xhr.readyState === 4) {
+                  if (xhr.status === 200) {
+                     console.log('query response:' + JSON.parse(xhr.response));
+                     var data = JSON.parse(xhr.response);
+                     if (data.length > 0) {
                         data.forEach(function(entry) {
                             $scope.selectedFields.push({
                                 name: entry,
@@ -2871,14 +2877,42 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
                             });
                         });
                         $scope.toggleTab(1);
-
-                    } else console.log('There are no fields present in the class');
+                        } else console.log('There are no fields present in the class');
                     $scope.dataIndicator1 = false;
-                }).
-                error(function(data, status) {
-                    alert("Request failed");
+                  } else {
+                     console.error("XHR didn't work: ", xhr.status);
+                  }
+               }
+            }
+            xhr.ontimeout = function() {
+               console.error("request timedout: ", xhr);
+            }
+            xhr.open(requestObj.method, requestObj.host + requestObj.request +"?"
+                + requestObj.params[0] + "=HutchDialogic&&" + requestObj.params[1] + "="+ $scope.selectedClass+"&"+requestObj.params[2]+"=MSSQL", /*async*/ true);
+            xhr.send();
+         });
 
-                });
+//                $http({
+//                    method: 'GET',
+//                    url: Digin_Engine_API + 'GetFields?datasetName=HutchDialogic&&tableName=' + $scope.selectedClass,
+//                }).
+//                success(function(data, status) {
+//                    if (data.length > 0) {
+//                        data.forEach(function(entry) {
+//                            $scope.selectedFields.push({
+//                                name: entry,
+//                                checked: false
+//                            });
+//                        });
+//                        $scope.toggleTab(1);
+//
+//                    } else console.log('There are no fields present in the class');
+//                    $scope.dataIndicator1 = false;
+//                }).
+//                error(function(data, status) {
+//                    alert("Request failed");
+//
+//                });
             } else {
                 $scope.widgetValidity = 'fade-in';
                 $scope.validationMessage = "Please select a class";
@@ -2958,8 +2992,7 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
                 $scope.toggleTab(2);
             };
 
-            if ($scope.datasource == "DuoStore" || $scope.datasource == "BigQuery") {
-                if ($scope.datasource == "BigQuery") {
+            if ($scope.datasource == "MSSql") {
                     w1.postMessage($scope.selectedClass + ","+ Digin_Engine_API  + "," + "HierarchyFields" + "," + $scope.parameter.toString() );
 
                     w1.addEventListener('message', function(event) {
@@ -2967,14 +3000,6 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
                     });
 
                     $scope.widgetValidity = 'fade-out';
-                } else {
-                    w1.postMessage($scope.indexType + "," + $scope.parameter + "," + $scope.query.state);
-                    w1.addEventListener('message', function(event) {
-                        mapRetrieved(event);
-                    });
-
-                    $scope.widgetValidity = 'fade-out';
-                }
 
             }
         } else {

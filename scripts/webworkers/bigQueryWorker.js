@@ -75,7 +75,7 @@ function getHierarchy(parentData) {
     }
     ;
     request = request.replace(/,\s*$/, "");
-    request += "&tablename=[" + parentData[0] + "]&id=" + id;
+    request += "&tablename=[" + parentData[0] + "]&id=" + id + "&db=MSSQL" ;
     xhr.open("get", request, /*async*/ true);
 
     xhr.setRequestHeader("securityToken", "securityToken");
@@ -121,7 +121,7 @@ function getHighest(parentData) {
         finalstring += "'" + string[i] + "',";
     }
     finalstring = finalstring.replace(/,\s*$/, "");
-    xhr.open("get", url + "gethighestlevel?tablename=[" + parentData[0] + "]&id=1" + "&levels=" + "[" + finalstring + "]" + "&plvl=All", /*async*/ true);
+    xhr.open("get", url + "gethighestlevel?tablename=[" + parentData[0] + "]&id=1" + "&levels=" + "[" + finalstring + "]" + "&plvl=All&db=MSSQL", /*async*/ true);
     // xhr.open("get", "http://104.131.48.155:8080/executeQuery?query=SELECT * FROM ["+parentData[1]
     //     +"."+parentData[2]+"]", /*async*/ true);
 

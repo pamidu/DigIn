@@ -1425,4 +1425,17 @@ md-backdrop.md-sidenav-backdrop{
     display:none
 }
 
+/* google maps */
+
+#gmap-messages {
+    overflow-y: scroll;
+}
+
+#infodiv {
+    width: 200px;
+    height: 20px;
+    overflow: hidden;
+    padding: 5px;
+}
+
 

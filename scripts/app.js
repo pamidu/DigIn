@@ -679,7 +679,6 @@ routerApp.controller('userprofileWidgetController', ['$scope', function ($scope)
     })();
 }])
 
-
 routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($window, $rootScope, $log) {
 
     var service = this;

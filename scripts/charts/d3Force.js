@@ -10,13 +10,10 @@ routerApp.directive('linearChart', function () {
                 }
                 console.log(newValue);
 
-                var width = 960,
-                    height = 500,
+                var width = 400,
+                    height = 320,
                     root;
 
-                var margin = {top: 100, right: 100, bottom: 100, left: 100},
-                    width = 960 - margin.right - margin.left,
-                    height = 500 - margin.top - margin.bottom;
 
                 var force = d3.layout.force()
                     .linkDistance(80)
@@ -24,15 +21,11 @@ routerApp.directive('linearChart', function () {
                     .gravity(.05)
                     .size([width, height])
                     .on("tick", tick);
-                console.log(d3.select("svg"))
+
                 var svg = d3.select("#d3Force")
-                    .append("svg").attr("viewBox", "500 50 450 500")
-                    .attr("width", width)
-                    .attr("height", height)
-                    .attr("width", width + margin.right + margin.left)
-                    .attr("height", height + margin.top + margin.bottom)
-                    .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                    .append("svg").attr("viewBox", "0 0  490 320")
+                    .attr("width", '100%')
+                    .attr("height", '100%');
 
                 var link = svg.selectAll(".link"),
                     node = svg.selectAll(".node");

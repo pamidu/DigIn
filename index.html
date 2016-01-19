@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="styles/css/commonstyle.css">
+    <link rel="stylesheet" href="styles/css/login.css">
 </head>
 
 <body ng-cloak style="background-color:white;">
@@ -18,43 +19,39 @@
             <img ng-src="styles/css/images/initiallog.png" style="width:140px;" height="90px">
         </div>
 
-        <form name="loginForm" style="padding:10px 36px;width:100%;" flex>
+        <!-- login form -->
+        <form name="loginForm" style="padding:10px 36px;width:100%;" flex novalidate>
             <div layout="row">
                 <ng-md-icon icon="account_circle" style="fill: darkgrey;
     padding: 25px 10px;"></ng-md-icon>
-                <md-input-container flex>
+                <md-input-container flex ng-class="{ 'has-error' : error.isUserName }">
                     <label>User Name</label>
                     <input id="userName" name="userName"
                            ng-model="txtUname">
-                    <!-- <div ng-messages="loginForm.userName.$error">
-            <div ng-message="required">This is required.</div>
-        </div> -->
                 </md-input-container>
             </div>
             <div layout="row">
                 <ng-md-icon icon="vpn_key" style="fill: darkgrey;
     padding: 25px 10px;"></ng-md-icon>
-                <md-input-container flex>
+                <md-input-container flex ng-class="{ 'has-error' : error.isPwd }">
                     <label>Password</label>
                     <input type="password" id="password" name="password"
                            ng-model="txtPwd">
-                    <!-- <div ng-messages="loginForm.password.$error">
-        <div ng-message="required">This is required.</div>
-    </div> -->
                 </md-input-container>
             </div>
             <p style="font-size:small;color:darkgrey;">New to Digin? <a href="http://duoworld.sossgrid.com/signup/">Signup</a>
             </p>
-
-            <md-button class="md-fab  md-primary" type="button" style="top: 50%;
+            <md-button class="md-fab  md-primary" type="button"
+                       ng-click="login()" style="top: 50%;
     margin-top: -25px;
     position: absolute;
     margin-left: 460px;">
                 <md-icon class="ion-android-arrow-forward" style="fill: darkgrey;
     line-height: 10px;font-size:25px;"></md-icon>
             </md-button>
+        </form>
     </md-card>
-    </form>
+
     <div id="companyCygilScroll" class=""></div>
 </div>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

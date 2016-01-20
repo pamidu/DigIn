@@ -420,7 +420,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
    };
 
    $scope.filterData = function(c) {
-      alert('test' + c);
+     // alert('test' + c);
       var filter = eval('new ' + c.toUpperCase() + '();');
       $scope.filtering = new Filtering();
       $scope.filtering.setFilter(filter);
@@ -994,7 +994,7 @@ var evData = JSON.parse(event.data);
                data: []
             };
             entry['data'] = [];
-            alert(JSON.stringify($scope.catItem));
+            //alert(JSON.stringify($scope.catItem));
 //            var tblVal = $scope.srcNamespace + '.' + widget.commonSrcConfig.tbl;
             var paramArr = $scope.generateParamArr('get', Digin_Engine_API,$scope.widget.commonSrcConfig.src, widget.commonSrcConfig.tbl, 'aggregatefields', $scope.categItem.item.value, entry.filter, entry.serName.value);
             var w = new Worker("scripts/webworkers/commonSrcWorker.js");

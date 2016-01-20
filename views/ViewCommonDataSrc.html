@@ -74,5 +74,15 @@
                 </accordion-panel>
                 </accordion>
             </md-content>
+            <md-content class="overflow-none" layout="column">
+                <accordion>
+                <accordion-panel title="Chart Types">
+                    <div layout="row" ng-repeat="chart in chartTypes" ng-click="changeChartType(chart.type)" layout="row">
+                    <div flex="30" layout="row" layout-align="center center"><img src="{{chart.icon}}"></div>
+                    <div flex="70" layout="row" layout-align="start center">{{chart.name}}</div> 
+                    </div>
+                </accordion-panel>
+                </accordion>
+            </md-content>
 </md-sidenav>
 

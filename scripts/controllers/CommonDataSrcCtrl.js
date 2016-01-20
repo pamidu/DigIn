@@ -1,4 +1,4 @@
-routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API', 'Digin_Engine_API_Namespace', function ($scope, $mdSidenav, $log, CommonDataSrc, $mdDialog, $rootScope, $http, Digin_Engine_API, Digin_Engine_API_Namespace) {
+routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log', 'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API', 'Digin_Engine_API_Namespace', function ($scope, $controller, $mdSidenav, $log, CommonDataSrc, $mdDialog, $rootScope, $http, Digin_Engine_API, Digin_Engine_API_Namespace) {
 
     $scope.fieldArray = [];
     $scope.fieldString = [];
@@ -22,6 +22,40 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
     }, {
         name: "MSSQL"
     }];
+
+    $scope.chartTypes = [{
+      name: "Area",
+      type: "area",
+      icon: "styles/css/images/charts/commonSrc/areaChart.png"
+   }, {
+      name: "Smooth area",
+      type: "areaspline",
+      icon: "styles/css/images/charts/commonSrc/smoothAreaChart.png"
+   }, {
+      name: "Line",
+      type: "line",
+      icon: "styles/css/images/charts/commonSrc/lineChart.png"
+   }, {
+      name: "Smooth line",
+      type: "spline",
+      icon: "styles/css/images/charts/commonSrc/lineChart.png"
+   }, {
+      name: "Column",
+      type: "column",
+      icon: "styles/css/images/charts/commonSrc/columnChart.png"
+   }, {
+      name: "Bar",
+      type: "bar",
+      icon: "styles/css/images/charts/commonSrc/barChart.png"
+   }, {
+      name: "Pie",
+      type: "pie",
+      icon: "styles/css/images/charts/commonSrc/pieChart.png"
+   }, {
+      name: "Scatter",
+      type: "scatter",
+      icon: "styles/css/images/charts/commonSrc/scatterPlot.png"
+   }];
 
     // $scope.toggleRight = buildToggler('right');
     $scope.toggleLeft = buildToggler('custom');
@@ -120,7 +154,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
                 size: {
                     height: 220,
                     width: 300
-                }
+                },
             },
             commonSrcConfig: {
                 src: $scope.selSrc,
@@ -229,7 +263,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
                             size: {
                                 height: 220,
                                 width: 300
-                            }
+                            },
                         },
                         commonSrcConfig: {
                             src: $scope.selSrc,
@@ -269,6 +303,20 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$mdSidenav', '$log', 'Comm
 
         xhr.send();
     };
+
+    $scope.changeChartType = function(chartType){
+
+        console.log(chartType);
+
+        for(var i=0; i < $rootScope.Dashboards[0].widgets.length; i++){
+            var length = $rootScope.Dashboards[0].widgets[i].highchartsNG.series.length;
+            for(var j = 0; j < length; j++){
+                $rootScope.Dashboards[0].widgets[i].highchartsNG.series[j].type = chartType;
+            };
+        }
+    
+    };
+
 }]);
 
 

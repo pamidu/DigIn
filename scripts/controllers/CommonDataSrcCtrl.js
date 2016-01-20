@@ -267,6 +267,7 @@ xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=" + $scope.selTabl
 
          xhr.send();
       };
+}
 }]);
 
 

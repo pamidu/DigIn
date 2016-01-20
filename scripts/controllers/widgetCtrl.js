@@ -714,6 +714,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
     };
 
     $scope.getData = function () {
+
         var w = new Worker("scripts/webworkers/elasticWorker.js");
         var w1 = new Worker("scripts/webworkers/bigQueryWorker.js");
         var parameter = '';
@@ -783,6 +784,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             };
 
             if ($scope.datasource == "DuoStore" || $scope.datasource == "BigQuery") {
+
                 if ($scope.datasource == "BigQuery") {
                     w1.postMessage(parameter + "," + $scope.bigQueryFieldDetails.toString() + "," + $scope.query.state);
                     w1.addEventListener('message', function (event) {
@@ -892,6 +894,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
 
     //order by category
     $scope.orderByCat = function (widget) {
+
         var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
         var orderedObjArray = [];
 
@@ -1438,6 +1441,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
                 else objArr.push($scope.mappedArray[key].name);
             }
         }
+        alert('get filter fields </hr>' + objArr);
         return objArr;
     };
 
@@ -1662,7 +1666,6 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
 
             function mapRetrieved(event) {
                 var obj = JSON.parse(event.data);
-                console.log(JSON.stringify(obj));
                 $scope.dataIndicator = false;
 
                 //creating the array to map dynamically
@@ -1670,7 +1673,6 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
                 for (var key in obj[0]) {
                     if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
                         var val = obj[0][key];
-                        console.log(key);
                         $scope.mappedArray[key] = {
                             name: key,
                             data: [],
@@ -1682,6 +1684,7 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
 
                 //mapping the dynamically created array
                 for (i = 0; i < obj.length; i++) {
+
                     for (var key in obj[i]) {
                         if (Object.prototype.hasOwnProperty.call(obj[i], key)) {
                             var val = obj[i][key];
@@ -1702,9 +1705,12 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
             };
 
             if ($scope.datasource == "DuoStore" || $scope.datasource == "BigQuery") {
+
                 if ($scope.datasource == "BigQuery") {
                     w1.postMessage(parameter + "," + $scope.bigQueryFieldDetails.toString() + "," + $scope.query.state);
                     w1.addEventListener('message', function (event) {
+                        var obj = JSON.parse(event.data);
+
                         mapRetrieved(event);
                     });
 
@@ -2780,8 +2786,54 @@ routerApp.controller('D3ForceCtrl', function ($rootScope, $scope, $http) {
     $scope.loadData = function () {
 
         try {
-            $scope.data =
-                JSON.parse($rootScope.hierarchyData);
+            //$scope.data =
+            //    JSON.parse($rootScope.hierarchyData);
+            $scope.data = {
+                "name": "flare",
+                "children": [{
+                    "name": "analytics",
+                    "children": [{
+                        "name": "cluster",
+                        "children": [{
+                            "name": "AgglomerativeCluster",
+                            "size": 3938
+                        }, {
+                            "name": "CommunityStructure",
+                            "size": 3812
+                        }, {
+                            "name": "HierarchicalCluster",
+                            "size": 6714
+                        }, {
+                            "name": "MergeEdge",
+                            "size": 743
+                        }]
+                    }, {
+                        "name": "graph",
+                        "children": [{
+                            "name": "BetweennessCentrality",
+                            "size": 3534
+                        }, {
+                            "name": "LinkDistance",
+                            "size": 5731
+                        }, {
+                            "name": "MaxFlowMinCut",
+                            "size": 7840
+                        }, {
+                            "name": "ShortestPaths",
+                            "size": 5914
+                        }, {
+                            "name": "SpanningTree",
+                            "size": 3416
+                        }]
+                    }, {
+                        "name": "optimization",
+                        "children": [{
+                            "name": "AspectRatioBanker",
+                            "size": 7074
+                        }]
+                    }]
+                }]
+            };
         } catch (e) {
             console.log(e);
         }

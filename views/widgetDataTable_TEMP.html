@@ -1,4 +1,6 @@
 <md-dialog aria-label="Sample Dialog" class="widget0m-data-dialog">
+
+
     <div layout="row">
         <div class="card-head widget0m-data-header">
             <header class="graph-h1 text-uppercase">
@@ -14,6 +16,9 @@
     </div>
 
     <div class="table-body">
+        <div class="widget-data-loading" ng-if="isTableSourceLoading">
+            Please wait..
+        </div>
         <div class="layout-row" layout="row">
             <div flex="70">
                 <div class="widget0m-mapped-data">

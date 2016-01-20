@@ -636,8 +636,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
     //builds the chart
     $scope.buildchart = function (widget) {
-
-        alert('build chart...!');
         widget.chartSeries = [];
 
         if ($scope.catItem != '') {
@@ -869,10 +867,9 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
     ;
 
 
-//order by category (drilled)
-//order by category (drilled)
+    //order by category (drilled)
+    //order by category (drilled)
     $scope.orderByDrilledCat = function (widget) {
-
         $scope.objArr = [];
         $scope.orderedArrayObj = [];
         var requestCounter = $scope.seriesArray.length; //main request completion counter
@@ -947,7 +944,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                 var serMappedData = eval('$scope.mappedArray.' + $scope.seriesArray[i].serName + '.data');
                 var catMappedData = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data');
                 var drillData = eval('$scope.mappedArray.' + $scope.chartCategory.drilledField + '.data');
-
 
                 var orderedArrayObj = {};
                 var orderedObj = {};
@@ -1026,6 +1022,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                     data: []
                 };
                 entry['data'] = [];
+                alert(JSON.stringify($scope.catItem));
 //            var tblVal = $scope.srcNamespace + '.' + widget.commonSrcConfig.tbl;
                 var paramArr = $scope.generateParamArr('get', Digin_Engine_API, $scope.widget.commonSrcConfig.src, widget.commonSrcConfig.tbl, 'aggregatefields', $scope.categItem.item.value, entry.filter, entry.serName.value);
                 var w = new Worker("scripts/webworkers/commonSrcWorker.js");
@@ -1118,5 +1115,4 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
     };
 
-}])
-;
+}]);

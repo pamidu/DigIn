@@ -2,69 +2,70 @@
 <html ng-app="diginLogin" ng-controller="LoginCtrl">
 
 <head>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="styles/css/commonstyle.css">
+    <link rel="stylesheet" href="styles/css/login.css">
 </head>
 
 <body ng-cloak style="background-color:white;">
-        <div id="gradient" style="height:50vh;" />
+<div id="gradient" style="height:50vh;"/>
 
-    <div id="viewContainer" layout="column" layout-align="center center">
-        <md-card id="loginFrame" class="md-whiteframe-z4" layout="column" layout-align="start center" style="min-width:525px;background-color:#fafafa;">
-            <div layout="row" layout-align="center center" style="padding:10px;">
-                <img ng-src="styles/css/images/initiallog.png" style="width:140px;" height="90px">
+<div id="viewContainer" layout="column" layout-align="center center">
+    <md-card id="loginFrame" class="md-whiteframe-z4" layout="column" layout-align="start center"
+             style="min-width:525px;background-color:#fafafa;">
+        <div layout="row" layout-align="center center" style="padding:10px;">
+            <img ng-src="styles/css/images/initiallog.png" style="width:140px;" height="90px">
+        </div>
+
+        <!-- login form -->
+        <form name="loginForm" style="padding:10px 36px;width:100%;" flex novalidate>
+            <div layout="row">
+                <ng-md-icon icon="account_circle" style="fill: darkgrey;
+    padding: 25px 10px;"></ng-md-icon>
+                <md-input-container flex ng-class="{ 'has-error' : error.isUserName }">
+                    <label>User Name</label>
+                    <input id="userName" name="userName"
+                           ng-model="txtUname">
+                </md-input-container>
             </div>
-
-            <form name="loginForm" style="padding:10px 36px;width:100%;" method="POST" flex >
-                <div layout="row">
-                    <ng-md-icon icon="account_circle" style="fill: darkgrey;
+            <div layout="row">
+                <ng-md-icon icon="vpn_key" style="fill: darkgrey;
     padding: 25px 10px;"></ng-md-icon>
-                    <md-input-container flex>
-                        <label>User Name</label>
-                        <input required id="userName" name="userName" ng-model="txtUname">
-                        <!-- <div ng-messages="loginForm.userName.$error">
-				<div ng-message="required">This is required.</div>
-			</div> -->
-                    </md-input-container>
-                </div>
-                <div layout="row">
-                    <ng-md-icon icon="vpn_key" style="fill: darkgrey;
-    padding: 25px 10px;"></ng-md-icon>
-                    <md-input-container flex>
-                        <label>Password</label>
-                        <input type="password" required id="password" name="password" ng-model="txtPwd">
-                        <!-- <div ng-messages="loginForm.password.$error">
-			<div ng-message="required">This is required.</div>
-		</div> -->
-                    </md-input-container>
-                </div>
-                <p style="font-size:small;color:darkgrey;">New to Digin? <a href="http://duoworld.sossgrid.com/signup/">Signup</a></p>
-            
-            <md-button class="md-fab  md-primary" type="submit" ng-click="login()" style="top: 50%;
+                <md-input-container flex ng-class="{ 'has-error' : error.isPwd }">
+                    <label>Password</label>
+                    <input type="password" id="password" name="password"
+                           ng-model="txtPwd">
+                </md-input-container>
+            </div>
+            <p style="font-size:small;color:darkgrey;">New to Digin? <a href="http://duoworld.sossgrid.com/signup/">Signup</a>
+            </p>
+            <md-button class="md-fab  md-primary" type="button"
+                       ng-click="login()" style="top: 50%;
     margin-top: -25px;
     position: absolute;
     margin-left: 460px;">
                 <md-icon class="ion-android-arrow-forward" style="fill: darkgrey;
     line-height: 10px;font-size:25px;"></md-icon>
             </md-button>
-        </md-card>
         </form>
-        <div id="companyCygilScroll" class=""></div>
-    </div>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular-route.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-messages.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.15.0/TweenMax.min.js"></script>
-    <script src="bower_components/angular-material/angular-material.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-aria/angular-aria.js"></script>
-    <script src="bower_components/hammerjs/hammer.js"></script>
-    <script src="scripts/vendor/uimicrokernel.js"></script>
-    <script type="text/javascript" src="scripts/controllers/login.js"></script>
-    <script type="text/javascript" src="scripts/loginBackground.js"></script>
+    </md-card>
+
+    <div id="companyCygilScroll" class=""></div>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular-route.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-messages.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.15.0/TweenMax.min.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-aria/angular-aria.js"></script>
+<script src="bower_components/hammerjs/hammer.js"></script>
+<script src="scripts/vendor/uimicrokernel.js"></script>
+<script type="text/javascript" src="scripts/controllers/login.js"></script>
+<script type="text/javascript" src="scripts/loginBackground.js"></script>
 </body>
 
 </html>

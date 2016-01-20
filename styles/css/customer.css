@@ -1355,85 +1355,112 @@ h2 {
     position: relative;
 }
 
+/*error*/
+.has-error > .form-control {
+    border: 2px solid #ff0000 !important;
+}
+
+.has-error > .append-icon > .form-control {
+    border: 2px solid #ff0000 !important;
+}
+
+.has-error > div > .form-control {
+    border: 2px solid #ff0000 !important;
+}
+
+.has-error {
+    color: #ff0000 !important;
+}
+
 
 
 /* Animation*/
 
 @keyframes avatar {
     from {
-        transform: scale(1.2,1.2);
-        opacity: 0; }
+        transform: scale(1.2, 1.2);
+        opacity: 0;
+    }
 
     to {
-        transform: scale(1,1);
-        opacity: 1; }
+        transform: scale(1, 1);
+        opacity: 1;
+    }
 }
-
 
 @keyframes menu {
     from {
-        transform: translateX( 150% ); }
+        transform: translateX(150%);
+    }
 
     to {
-        transform: translateX( 0 ); }
+        transform: translateX(0);
+    }
 }
-
 
 @keyframes fadedown {
     from {
-        transform: translateY( -50% );
-        opacity: 0; }
+        transform: translateY(-50%);
+        opacity: 0;
+    }
 
     to {
-        transform: translateY( 0 );
-        opacity: 1; }
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
-
 
 @keyframes socials {
     from {
-        transform: translateY( 300% ); }
+        transform: translateY(300%);
+    }
 
     to {
-        transform: translateY( 0% ); }
+        transform: translateY(0%);
+    }
 }
-
 
 @keyframes stats {
     from {
-        transform: translateX( 300% ); }
+        transform: translateX(300%);
+    }
 
     to {
-        transform: translateX( 0% ); }
+        transform: translateX(0%);
+    }
 }
-
-
-
 
 @keyframes bullet {
     0%, 20%, 40%, 60%, 80%, 100% {
-        transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000); }
+        transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
 
     0% {
         opacity: 0;
-        transform: scale3d(.3, .3, .3); }
+        transform: scale3d(.3, .3, .3);
+    }
 
     20% {
-        transform: scale3d(1.1, 1.1, 1.1); }
+        transform: scale3d(1.1, 1.1, 1.1);
+    }
 
     40% {
-        transform: scale3d(.9, .9, .9); }
+        transform: scale3d(.9, .9, .9);
+    }
 
     60% {
         opacity: 1;
-        transform: scale3d(1.03, 1.03, 1.03); }
+        transform: scale3d(1.03, 1.03, 1.03);
+    }
 
     80% {
-        transform: scale3d(.97, .97, .97); }
+        transform: scale3d(.97, .97, .97);
+    }
 
     100% {
         opacity: 1;
-        transform: scale3d(1, 1, 1); }
+        transform: scale3d(1, 1, 1);
+    }
 }
 
 

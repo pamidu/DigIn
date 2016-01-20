@@ -1,0 +1,25 @@
+/*error*/
+.has-error > .form-control {
+    border: 2px solid #ff0000 !important;
+}
+
+.has-error > .append-icon > .form-control {
+    border: 2px solid #ff0000 !important;
+}
+
+.has-error > div > .form-control {
+    border: 2px solid #ff0000 !important;
+}
+
+.has-error {
+    color: #ff0000 !important;
+}
+
+.has-error > label {
+    color: #ff0000 !important;
+}
+
+.has-error > .md-input {
+    border-bottom: 2px solid #ff0000 !important;
+}
+

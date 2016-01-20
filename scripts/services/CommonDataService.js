@@ -63,7 +63,7 @@ routerApp.service('CommonDataSrc', function($objectstore,$http,Digin_Engine_API_
     var PYTHON = function() {
         this.getTables = function(src, callback) {
             getJSONDataByProperty($http,'pythonServices','name','Python',function(data){
-//               alert(data[0]);
+
                var requestObj = data[0].getTables;
                var namespace = localStorage.getItem('srcNamespace');
                console.log(JSON.stringify(requestObj));
@@ -130,12 +130,6 @@ routerApp.service('CommonDataSrc', function($objectstore,$http,Digin_Engine_API_
           this.dataSrcObj.getFields(tbl, callback);
       }
    };
-   
-   
-
-   
-   
-   
    
    
 });

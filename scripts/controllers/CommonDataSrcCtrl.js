@@ -189,7 +189,6 @@ xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=" + $scope.selTabl
          xhr.send();
 
       };
-      };
 
       $scope.configGraph2 = function(evt, field) {
 
@@ -613,7 +612,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
 
    /* Strategy1 end */
-
 
 
    /*TEMP*/
@@ -1074,9 +1072,7 @@ var evData = JSON.parse(event.data);
                   });
 
 
-
                });
-
 
 
             });

@@ -3,15 +3,17 @@ routerApp.directive('linearChart', function () {
         restrict: 'EA',
 
         link: function (scope, elem, attrs) {
-           scope.$watch("data",function handleChange(newValue, oldValue) {
-              console.log(newValue)
+            scope.$watch("data", function handleChange(newValue, oldValue) {
+                console.log(newValue)
                 if (!newValue) {
                     return;
                 }
-   
-                var width = 960,
-                    height = 500,
+                console.log(newValue);
+
+                var width = 400,
+                    height = 320,
                     root;
+
 
                 var force = d3.layout.force()
                     .linkDistance(80)
@@ -19,11 +21,12 @@ routerApp.directive('linearChart', function () {
                     .gravity(.05)
                     .size([width, height])
                     .on("tick", tick);
-                console.log(d3.select("svg"))
+
                 var svg = d3.select("#d3Force")
-                    .append("svg").attr("viewBox", "0 0 450 500")
-                    .attr("width", width)
-                    .attr("height", height);
+                    .append("svg").attr("viewBox", "0 0  490 320")
+                    .attr("width", '100%')
+                    .attr("height", '100%');
+
                 var link = svg.selectAll(".link"),
                     node = svg.selectAll(".node");
                 root = newValue;
@@ -63,14 +66,14 @@ routerApp.directive('linearChart', function () {
 
                     nodeEnter.append("circle")
                         .attr("r", function (d) {
-                        return Math.sqrt(d.size) / 10 || 4.5;
-                    });
+                            return Math.sqrt(d.size) / 10 || 4.5;
+                        });
 
                     nodeEnter.append("text")
                         .attr("dy", ".35em")
                         .text(function (d) {
-                        return d.name;
-                    });
+                            return d.name;
+                        });
 
                     node.select("circle")
                         .style("fill", color);
@@ -78,17 +81,17 @@ routerApp.directive('linearChart', function () {
 
                 function tick() {
                     link.attr("x1", function (d) {
-                        return d.source.x;
-                    })
+                            return d.source.x;
+                        })
                         .attr("y1", function (d) {
-                        return d.source.y;
-                    })
+                            return d.source.y;
+                        })
                         .attr("x2", function (d) {
-                        return d.target.x;
-                    })
+                            return d.target.x;
+                        })
                         .attr("y2", function (d) {
-                        return d.target.y;
-                    });
+                            return d.target.y;
+                        });
 
                     node.attr("transform", function (d) {
                         return "translate(" + d.x + "," + d.y + ")";
@@ -97,10 +100,10 @@ routerApp.directive('linearChart', function () {
 
                 function color(d) {
                     return d._children ? "#3182bd" // collapsed package
-                    :
-                    d.children ? "#c6dbef" // expanded package
-                    :
-                        "#fd8d3c"; // leaf node
+                        :
+                        d.children ? "#c6dbef" // expanded package
+                            :
+                            "#fd8d3c"; // leaf node
                 }
 
                 // Toggle children on click.

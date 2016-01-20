@@ -75,33 +75,71 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         items: widget
                     },
                     controller: function dataSourceCtrl($scope, $mdDialog, items) {
-                        var selectedSourceData = {
-                            'uniqueType': items.uniqueType,
-                            'length': items.widConfig.attributes.length,
-                            'attributes': items.widConfig.attributes,
-                            'mappedData': [],
-                            'className': items.widConfig.selectedClass,
-                            'source':items.widConfig.source,
-                            'type': items.type,
-                            'groupBy':items.widConfig.chartCat.groupField,
-                        };
+                        var isCommonSrc = angular.isUndefined(items.widCsc);
+                        var selectedSourceData = {};
+                        if (isCommonSrc) {
+                            selectedSourceData = {
+                                'uniqueType': items.uniqueType,
+                                'length': items.commonSrcConfig.fields.length,
+                                'attributes': items.commonSrcConfig.fields,
+                                'mappedData': [],
+                                'className': items.commonSrcConfig.tbl,
+                                'source': items.commonSrcConfig.src,
+                                'type': null,
+                                'groupBy': null,
+                                'data': items.highchartsNG.series[0].data
+                            };
+                        } else {
+                            selectedSourceData = {
+                                'uniqueType': items.uniqueType,
+                                'length': items.widConfig.attributes.length,
+                                'attributes': items.widConfig.attributes,
+                                'mappedData': [],
+                                'className': items.widConfig.selectedClass,
+                                'source': items.widConfig.source,
+                                'type': items.type,
+                                'groupBy': items.widConfig.chartCat.groupField,
+                            };
+                        }
                         for (var i = 0; i < selectedSourceData.length; i++) {
-                            var _attr = selectedSourceData.attributes[i].trim().
-                            toString();
-                            selectedSourceData.mappedData.push(items.
-                                widConfig.mappedData[_attr].data);
+                            if (isCommonSrc) {
+                                selectedSourceData.mappedData.push(items.
+                                    commonSrcConfig.fields[i]);
+                            } else {
+                                var _attr = selectedSourceData.attributes[i].trim().
+                                toString();
+                                selectedSourceData.mappedData.push(items.
+                                    widConfig.mappedData[_attr].data);
+                            }
+
+
                         }
 
                         var appendTblBody = function () {
-                            for (var i = 0; i < selectedSourceData.length; i++) {
-                                for (var b = 0; b < selectedSourceData.mappedData[i].length; b++) {
+                            if (isCommonSrc) {
+                                var seriesDataLng = selectedSourceData.data.length;
+                                for (var i = 0; i < seriesDataLng; i++) {
                                     var rows = '';
-                                    for (var c = 0; c < selectedSourceData.length; c++) {
-                                        var oneRow = "<td>" + selectedSourceData.mappedData[c][b] + "</td>";
+                                    for (var b = 0; b < selectedSourceData.length; b++) {
+                                        console.log(selectedSourceData.data[i].name);
+                                        var oneRow = "<td>" + JSON.stringify(selectedSourceData.data[i]) + "</td>";
                                         rows += oneRow;
                                     }
                                     $("#dataBody").append("<tr>" + rows + "</tr>");
                                     oneRow = '';
+                                }
+                            }
+                            else {
+                                for (var i = 0; i < selectedSourceData.length; i++) {
+                                    for (var b = 0; b < selectedSourceData.mappedData[i].length; b++) {
+                                        var rows = '';
+                                        for (var c = 0; c < selectedSourceData.length; c++) {
+                                            var oneRow = "<td>" + selectedSourceData.mappedData[c][b] + "</td>";
+                                            rows += oneRow;
+                                        }
+                                        $("#dataBody").append("<tr>" + rows + "</tr>");
+                                        oneRow = '';
+                                    }
                                 }
                             }
                         };

@@ -160,7 +160,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 src: $scope.selSrc,
                 tbl: $scope.selTable,
                 fields: $scope.fieldArray
-            }
+            },
+            winConfig: {}
         };
         $rootScope.dashboard.widgets.push($scope.currWidget);
 
@@ -181,16 +182,13 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 });
 
         } else if ($scope.selSrc != 'DuoStore') {
+            //selected source is MSSQL
             var xhr = new XMLHttpRequest();
-
             xhr.onreadystatechange = function (e) {
                 console.log(this);
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-
                         var data = JSON.parse(xhr.response);
-
-
                         $mdDialog.show({
                                 controller: 'commonSrcInit',
                                 templateUrl: 'views/InitConfigCommonSrc.html',
@@ -859,32 +857,62 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             $scope.srcNamespace = $scope.widget.commonSrcConfig.namespace;
             $scope.catItem = $scope.categItem.item;
             $scope.seriesArray.forEach(function (entry) {
-                if ($scope.widget.commonSrcConfig.src == 'BigQuery')
-                    var tblVal = $scope.srcNamespace + '.' + widget.commonSrcConfig.tbl;
-                else
-                    var tblVal = widget.commonSrcConfig.tbl;
+                    if ($scope.widget.commonSrcConfig.src == 'BigQuery')
+                        var tblVal = $scope.srcNamespace + '.' + widget.commonSrcConfig.tbl;
+                    else
+                        var tblVal = widget.commonSrcConfig.tbl;
 //            alert(tblVal);
-                entry['data'] = [];
-                //         alert(tblVal);
-                var paramArr = $scope.generateParamArr('get', Digin_Engine_API, $scope.widget.commonSrcConfig.src, tblVal, 'aggregatefields', $scope.catItem.value, entry.filter, entry.serName.value);
-                var w = new Worker("scripts/webworkers/commonSrcWorker.js");
-                w.postMessage(JSON.stringify(paramArr));
-                w.addEventListener('message', function (event) {
-                    var objArr = [];
-                    var evData = JSON.parse(event.data);
-                    for (i = 0; i < evData.length; i++) {
-                        entry['data'].push({
-                            name: evData[i][$scope.catItem.value],
-                            y: evData[i]['']
-                        });
-                    }
-                });
-            });
-
-            widget.highchartsNG['series'] = $scope.seriesArray;
+                    entry['data'] = [];
+                    //         alert(tblVal);
+                    var paramArr = $scope.generateParamArr('get', Digin_Engine_API, $scope.widget.commonSrcConfig.src, tblVal, 'aggregatefields', $scope.catItem.value, entry.filter, entry.serName.value);
+                    var w = new Worker("scripts/webworkers/commonSrcWorker.js");
+                    w.postMessage(JSON.stringify(paramArr));
+                    w.addEventListener('message', function (event) {
+                        var objArr = [];
+                        var evData = JSON.parse(event.data);
+                        for (i = 0; i < evData.length; i++) {
+                            entry['data'].push({
+                                name: evData[i][$scope.catItem.value],
+                                y: evData[i]['']
+                            });
+                        }
+                        //update damith
+                        //create  mapped data
+                        var selectedFiled = $scope.widget.commonSrcConfig.fields;
+                        for (var c = 0; c < selectedFiled.length; c++) {
+                            var val = selectedFiled[c];
+                            $scope.mappedArray[val] = {
+                                data: []
+                            };
+                        }
+                        //y get series name
+                        var ySer = entry.serName.value;
+                        for (i = 0; i < evData.length; i++) {
+                            var val = evData[i];
+                            var index = 0;
+                            for (var key in val) {
+                                if (val.hasOwnProperty(key)) {
+                                    if (key == "" || key == null) {
+                                        var arr = Object.keys(val).map(function (k) {
+                                            return val[k]
+                                        });
+                                        $scope.mappedArray[ySer].data.push(arr[index]);
+                                    } else {
+                                        $scope.mappedArray[key].data.push(val[key]);
+                                    }
+                                }
+                                index++;
+                            }
+                        }
+                        widget.winConfig['mappedData'] = $scope.mappedArray;
+                        widget.highchartsNG['series'] = $scope.seriesArray;
+                        console.log("widget name " + JSON.stringify(widget));
+                    });
+                }
+            );
         }
-
-    };
+    }
+    ;
 
 
     //order by category (drilled)

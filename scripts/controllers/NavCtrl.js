@@ -130,7 +130,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                       var lng=p.lng();
                       // Output the data
                         var msg = 'name="'+queueItem.name+'" address="' + queueItem.address + '" lat=' +lat+ ' lng=' +lng+ '(delay='+delay+'ms)<br>';
-                        document.getElementById("gmap-messages").innerHTML += msg;
+//                        document.getElementById("gmap-messages").innerHTML += msg;
                       // Create a marker
                       createMarker(queueItem,lat,lng);
                     }
@@ -155,7 +155,22 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         // ======= Function to create a marker ========
         function createMarker(queueItem,lat,lng) {
-            var contentString = '<div id="infodiv">'+queueItem.name+' is at '+queueItem.address+'</div>';
+//            var contentString = '<div id="infodiv" >'+queueItem.name+' is at '+queueItem.address+'</div>';
+           var contentString = '<div id="iw-container">' +
+                    '<div class="iw-title">'+queueItem.name+'</div>' +
+                    '<div class="iw-content">' +
+                      '<div class="iw-subTitle">Address:</div>' +queueItem.address+
+////                      '<img src="images/vistalegre.jpg" alt="Porcelain Factory of Vista Alegre" height="115" width="83">' +
+//                      '<p></p>' +
+//                      '<div class="iw-subTitle">Contacts</div>' +
+//                      '<p>VISTA ALEGRE ATLANTIS, SA<br>3830-292 Ílhavo - Portugal<br>'+
+//                      '<br>Phone. +351 234 320 600<br>e-mail: geral@vaa.pt<br>www: www.myvistaalegre.com</p>'+
+                       '<div class="iw-subTitle">Coverage Type:</div>'+
+                       '<div class="iw-subTitle">Total Coverage Amount:</div>'+
+                    '</div>' +
+                    '<div class="iw-bottom-gradient"></div>' +
+                  '</div>';
+           
             var marker = new google.maps.Marker({
             position: new google.maps.LatLng(lat,lng),
             map: map,
@@ -172,6 +187,54 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             google.maps.event.trigger(map, 'resize');
         }
+       
+       google.maps.event.addListener(infowindow, 'domready', function() {
+// Reference to the DIV that wraps the bottom of infowindow
+    var iwOuter = $('.gm-style-iw');
+
+    /* Since this div is in a position prior to .gm-div style-iw.
+     * We use jQuery and create a iwBackground variable,
+     * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
+    */
+    var iwBackground = iwOuter.prev();
+
+    // Removes background shadow DIV
+    iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+
+    // Removes white background DIV
+    iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+
+    // Moves the infowindow 115px to the right.
+    iwOuter.parent().parent().css({left: '50px'});
+
+    // Moves the shadow of the arrow 76px to the left margin.
+    iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+
+    // Moves the arrow 76px to the left margin.
+    iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+
+    // Changes the desired tail shadow color.
+    iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
+
+          
+          var iwCloseBtn = iwOuter.next();
+
+// Apply the desired effect to the close button
+iwCloseBtn.css({
+  opacity: '1', // by default the close button has an opacity of 0.7
+ // right: '38px', top: '3px', // button repositioning
+//  border: '2px solid #48b5e9', // increasing button border and new color
+  'border-radius': '13px', // circular effect
+  'box-shadow': '0 0 5px #3990B9' // 3D effect to highlight the button
+  });
+
+// The API automatically applies 0.7 opacity to the button after the mouseout event.
+// This function reverses this event to the desired value.
+iwCloseBtn.mouseout(function(){
+  $(this).css({opacity: '1'});
+});
+   
+       });
         
 /************************ google maps area finish ************************************/
 

@@ -1123,3 +1123,4 @@ routerApp.constant('config', {
     apiUrl2: '',
     storeIndex: 'com.duosoftware.com'
 });
+

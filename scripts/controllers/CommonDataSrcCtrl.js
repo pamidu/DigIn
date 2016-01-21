@@ -23,40 +23,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         name: "MSSQL"
     }];
 
-    $scope.chartTypes = [{
-      name: "Area",
-      type: "area",
-      icon: "styles/css/images/charts/commonSrc/areaChart.png"
-   }, {
-      name: "Smooth area",
-      type: "areaspline",
-      icon: "styles/css/images/charts/commonSrc/smoothAreaChart.png"
-   }, {
-      name: "Line",
-      type: "line",
-      icon: "styles/css/images/charts/commonSrc/lineChart.png"
-   }, {
-      name: "Smooth line",
-      type: "spline",
-      icon: "styles/css/images/charts/commonSrc/lineChart.png"
-   }, {
-      name: "Column",
-      type: "column",
-      icon: "styles/css/images/charts/commonSrc/columnChart.png"
-   }, {
-      name: "Bar",
-      type: "bar",
-      icon: "styles/css/images/charts/commonSrc/barChart.png"
-   }, {
-      name: "Pie",
-      type: "pie",
-      icon: "styles/css/images/charts/commonSrc/pieChart.png"
-   }, {
-      name: "Scatter",
-      type: "scatter",
-      icon: "styles/css/images/charts/commonSrc/scatterPlot.png"
-   }];
-
     // $scope.toggleRight = buildToggler('right');
     $scope.toggleLeft = buildToggler('custom');
 
@@ -220,8 +186,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=" + $scope.selTable + "&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All&db=" + $scope.selSrc, /*async*/ true);
             xhr.send();
 
-        }
-        ;
+        };
     };
 
     $scope.configGraph2 = function (evt, field) {
@@ -302,7 +267,64 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         xhr.send();
     };
 
+    $scope.getDataByFields = function(field) {
+
+      //clear distinct scope array
+      //$scope.distinct = [];
+      $scope.distinct[field] = [];
+
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function(e) {
+         var array1 = [];
+
+         console.log(this);
+         if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+               //parse json data to string
+               var parsed = JSON.parse(xhr.response);
+               var JSONDataArray = [];
+               //json data string to array
+               for(var x in parsed){
+                  JSONDataArray.push(parsed[x]);
+               }
+               //push field value of each array slot to scope array
+               for(var i=0;i<JSONDataArray.length;i++){
+
+                  $scope.distinct[field][i] = JSONDataArray[i][field];
+                  //console.log($scope.distinct[field]);
+               }
+            } else {
+               console.error("XHR didn't work: ", xhr.status);
+            }
+         }
+
+      }
+
+      xhr.ontimeout = function() {
+         console.error("request timedout: ", xhr);
+      }
+
+      var limit = 1000;
+      var queryString = "SELECT " + field
+                        + " FROM " + "[" + Digin_Engine_API_Namespace + "." + $scope.selTable + "]"
+                        + " GROUP BY " + field
+                        + " LIMIT " + limit.toString();
+
+      // xhr.open("get", Digin_Engine_API + "executeQuery?tablename=[" + $scope.selTable.split(":")[1] + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
+      xhr.open("get", Digin_Engine_API + "executeQuery?query=" + queryString, /*async*/ true);
+
+      console.log("queryString");
+      console.log(queryString);
+
+      xhr.send();
+
+   };
+
+
     $scope.changeChartType = function(chartType){
+        console.log("chartTypes");
+        console.log(chartTypes);
 
         console.log(chartType);
 
@@ -314,6 +336,25 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         }
     
     };
+
+    var chartTypes = [];
+
+    function chunk(arr, size) {
+        var newArr = [];
+        for (var i=0; i<arr.length; i+=size) {
+            newArr.push(arr.slice(i, i+size));
+        }
+        return newArr;
+    }
+
+    $http.get('jsons/highChartsTypes.json').success(function (data) {
+    
+            for(var i = 0; i < data['chartTypes'].length; i++){
+                chartTypes.push(data['chartTypes'][i]);
+            }    
+            
+            $scope.chartTable = chunk(chartTypes,8);
+    });
 
 }]);
 

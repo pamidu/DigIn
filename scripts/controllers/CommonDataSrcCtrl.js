@@ -1,3 +1,8 @@
+/*controllers
+ --- commonDataSrcInit
+ --- commonSrcInit
+ */
+
 routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log', 'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API', 'Digin_Engine_API_Namespace', function ($scope, $controller, $mdSidenav, $log, CommonDataSrc, $mdDialog, $rootScope, $http, Digin_Engine_API, Digin_Engine_API_Namespace) {
 
     $scope.fieldArray = [];
@@ -24,38 +29,42 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
     }];
 
     $scope.chartTypes = [{
-      name: "Area",
-      type: "area",
-      icon: "styles/css/images/charts/commonSrc/areaChart.png"
-   }, {
-      name: "Smooth area",
-      type: "areaspline",
-      icon: "styles/css/images/charts/commonSrc/smoothAreaChart.png"
-   }, {
-      name: "Line",
-      type: "line",
-      icon: "styles/css/images/charts/commonSrc/lineChart.png"
-   }, {
-      name: "Smooth line",
-      type: "spline",
-      icon: "styles/css/images/charts/commonSrc/lineChart.png"
-   }, {
-      name: "Column",
-      type: "column",
-      icon: "styles/css/images/charts/commonSrc/columnChart.png"
-   }, {
-      name: "Bar",
-      type: "bar",
-      icon: "styles/css/images/charts/commonSrc/barChart.png"
-   }, {
-      name: "Pie",
-      type: "pie",
-      icon: "styles/css/images/charts/commonSrc/pieChart.png"
-   }, {
-      name: "Scatter",
-      type: "scatter",
-      icon: "styles/css/images/charts/commonSrc/scatterPlot.png"
-   }];
+        name: "Area",
+        type: "area",
+        icon: "styles/css/images/charts/commonSrc/areaChart.png"
+    }, {
+        name: "Smooth area",
+        type: "areaspline",
+        icon: "styles/css/images/charts/commonSrc/smoothAreaChart.png"
+    }, {
+        name: "Line",
+        type: "line",
+        icon: "styles/css/images/charts/commonSrc/lineChart.png"
+    }, {
+        name: "Smooth line",
+        type: "spline",
+        icon: "styles/css/images/charts/commonSrc/lineChart.png"
+    }, {
+        name: "Column",
+        type: "column",
+        icon: "styles/css/images/charts/commonSrc/columnChart.png"
+    }, {
+        name: "Bar",
+        type: "bar",
+        icon: "styles/css/images/charts/commonSrc/barChart.png"
+    }, {
+        name: "Pie",
+        type: "pie",
+        icon: "styles/css/images/charts/commonSrc/pieChart.png"
+    }, {
+        name: "Scatter",
+        type: "scatter",
+        icon: "styles/css/images/charts/commonSrc/scatterPlot.png"
+    }, {
+        name: "d3 visualization",
+        type: "d3 visualization",
+        icon: "styles/css/images/charts/d3Visualization/binning.png"
+    }];
 
     // $scope.toggleRight = buildToggler('right');
     $scope.toggleLeft = buildToggler('custom');
@@ -122,6 +131,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             $scope.dataArray.push(data);
         }
     };
+
 
     $scope.configGraph = function (evt) {
         //building the fields string
@@ -224,6 +234,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         ;
     };
 
+
     $scope.configGraph2 = function (evt, field) {
 
         //building the data string
@@ -232,7 +243,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         }
 
         var xhr = new XMLHttpRequest();
-
         xhr.onreadystatechange = function (e) {
             console.log(this);
             if (xhr.readyState === 4) {
@@ -296,23 +306,73 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         xhr.ontimeout = function () {
             console.error("request timedout: ", xhr);
         }
-
         xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + $scope.srcNamespace + "." + $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
-
         xhr.send();
     };
 
-    $scope.changeChartType = function(chartType){
+    //developer
+    //create pule
+    ////update damith
+    //on change chart type
+    $scope.onChangeChartType = function (_chartType) {
+        //dev damith
+        //d3 visualization
+        switch (_chartType) {
+            case 'd3 visualization':
+                var commonSrcConfig = {
+                    src: $scope.selSrc,
+                    tbl: $scope.selTable,
+                    fields: $scope.fieldArray,
+                    namespace: $scope.srcNamespace
+                };
 
-        console.log(chartType);
+                $scope.fieldString = [];
+                for (i = 0; i < $scope.fieldArray.length; i++) {
+                    $scope.fieldString.push("'" + $scope.fieldArray[i] + "'");
+                }
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function (e) {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            var data = JSON.parse(xhr.response);
+                            $mdDialog.show({
+                                templateUrl: 'views/InitConfigD3.html',
+                                locals: {
+                                    widId: $scope.currWidget,
+                                    fieldData: data,
+                                    commonSrcConfig: commonSrcConfig
+                                },
+                                controller: function d3CommonSrcCntrl($rootScope, $mdDialog, fieldData
+                                    , commonSrcConfig) {
+                                    $rootScope.d3CommonSrcData = {
+                                        data: fieldData,
+                                        srcConfig: commonSrcConfig
+                                    }
+                                }
+                            });
+                        }
+                    }
+                };
+                xhr.ontimeout = function () {
+                    console.error("request timedout: ", xhr);
+                    alert("Please check you't connection...");
+                };
+                if ($scope.selSrc == 'BigQuery')
+                    xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + $scope.srcNamespace + "." + $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All&db=" + $scope.selSrc, /*async*/ true);
 
-        for(var i=0; i < $rootScope.Dashboards[0].widgets.length; i++){
-            var length = $rootScope.Dashboards[0].widgets[i].highchartsNG.series.length;
-            for(var j = 0; j < length; j++){
-                $rootScope.Dashboards[0].widgets[i].highchartsNG.series[j].type = chartType;
-            };
+                else
+                    xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=" + $scope.selTable + "&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All&db=" + $scope.selSrc, /*async*/ true);
+                xhr.send();
+                //it's d3 visualization
+
+                break;
+            //other charts
+            default:
+
+                break;
         }
-    
+
+
     };
 
 }]);
@@ -1162,5 +1222,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
         }
 
     };
+
 
 }]);

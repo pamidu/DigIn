@@ -102,7 +102,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                 'className': items.widConfig.selectedClass,
                                 'source': items.widConfig.source,
                                 'type': items.type,
-                                'groupBy': items.widConfig.chartCat.groupField,
+                                'groupBy': items.widConfig.chartCat.groupField
                             };
                         }
                         for (var i = 0; i < selectedSourceData.length; i++) {

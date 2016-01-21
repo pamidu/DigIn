@@ -32,7 +32,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
 
         $scope.adjustUI = function (){
-            $('#content1').css("top", "5px");
+            $('#content1').css("top", "10px");
             $('.h_iframe').css("height","100%");
         } 
 /************************ google maps area start ************************************/

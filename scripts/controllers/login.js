@@ -11,8 +11,8 @@ app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$window
         //on click login  button
         $scope.login = function () {
             var loginAuth = {
-                'useName': 'admin',
-                'pwd': 'admin',
+                'useName': 'DSI',
+                'pwd': 'DSI',
                 authDetail: {
                     'user': $scope.txtUname,
                     'pwd': $scope.txtPwd
@@ -30,8 +30,8 @@ app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$window
                 return;
             } else {
                 //login authentication
-                if (loginAuth.authDetail.user == 'admin' &&
-                    loginAuth.authDetail.pwd == 'admin') {
+                if (loginAuth.authDetail.user == 'DSI' &&
+                    loginAuth.authDetail.pwd == 'DSI') {
                     $window.location = "home.html";
                     return;
                 } else {

@@ -802,14 +802,14 @@ md-card md-card-content.card-warning {
 .graph-main-header-text {
     padding-top: 10px;
 }
-
+   
 #content1 {
     overflow-x: hidden;
     height: 100% !important;
 }
 
 .graph-map {
-    width: 100%;
+    width: inherit !important;
     height: 400px;
     overflow: hidden;
     position: relative;
@@ -1120,6 +1120,7 @@ a:hover, a:active, a:link {
 
 .emotion-level-graph {
     height: 150px;
+   padding: 5px;
 }
 
 #emotionsLevel {

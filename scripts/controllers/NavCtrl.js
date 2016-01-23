@@ -1,26 +1,25 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
-    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast','DevStudio','$auth','$helpers',
-  function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio,$auth,$helpers)
-    {
+    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast', 'DevStudio', '$auth', '$helpers',
+    function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio, $auth, $helpers) {
 
-        if(DevStudio){
-          $auth.checkSession();
-        }else{
+        if (DevStudio) {
+            $auth.checkSession();
+        } else {
             var sessionInfo = $helpers.getCookie('securityToken');
-           // if(sessionInfo==null) location.href = 'index.php';
+            // if(sessionInfo==null) location.href = 'index.php';
         }
 
         //initially hiding the tabs
-        $( "md-tabs.footer-bar > md-tabs-wrapper" ).children().hide();
-        
-        $scope.dashCloseWidgets = false ;
+        $("md-tabs.footer-bar > md-tabs-wrapper").children().hide();
 
-        if(localStorage.getItem("featureObject") == undefined){
+        $scope.dashCloseWidgets = false;
+
+        if (localStorage.getItem("featureObject") == undefined) {
             getJSONData($http, 'features', function (data) {
                 $scope.featureOrigin = data;
                 localStorage.setItem("featureObject", JSON.stringify($scope.featureOrigin));
                 // var featureObj = localStorage.getItem("featureObject");                
-                
+
                 $scope.selected = [];
                 for (i = 0; i < data.length; i++) {
                     if (data[i].stateStr === "Enabled")
@@ -31,13 +30,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         }
 
-        $scope.adjustUI = function (){
+        $scope.adjustUI = function () {
             $('#content1').css("top", "10px");
-            $('.h_iframe').css("height","100%");
-        } 
-/************************ google maps area start ************************************/
+            $('.h_iframe').css("height", "100%");
+        }
+        /************************ google maps area start ************************************/
         // ====== Create map objects ======
-        
+
         var delay = 100;
         var map = null;
         var bounds = null;
@@ -54,26 +53,27 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //                     "senal":{"address":"DODANWATTA,MALALPOLA,YATIYANTHOTA","value1": 55,"value2":566},
         //                     "damith":{"address":"2nd,Lane,Mandawila,Kesbewa","value1": 65,"value2":812} 
         //     };
-        var JSONData = {    "test":{"address":"test","value1": 0,"value2":0},
-                            "senal":{"address":"matara","value1": 55,"value2":566},
-                            "damith":{"address":"galle","value1": 65,"value2":812},
-                            "sajee":{"address":"colombo","value1": 75,"value2":412},
-                            "omal":{"address":"matale","value1": 35,"value2":82},
-                            "pulathisi": {"address":"kandy","value1": 45,"value2":445},
-                            "marlon": {"address":"malabe","value1": 15,"value2":345},
-                            "pulathisi": {"address":"kandy","value1": 25,"value2":745},
-                            "pirinthan": {"address":"wattala","value1": 85,"value2":45},
-                            "eranga":{"address":"jaffna","value1": 55,"value2":566},
-                            "rangika":{"address":"trincomalee","value1": 65,"value2":812},
-                            "prasad":{"address":"hambantota","value1": 35,"value2":82},
-                            "rukshan": {"address":"badulla","value1": 45,"value2":445},
-                            "kalana": {"address":"ampara","value1": 15,"value2":345},
-                            "lakshan": {"address":"anuradhapura","value1": 25,"value2":745},
-                            "sajith": {"address":"polonnaruwa","value1": 85,"value2":45}
-            };
-        
+        var JSONData = {
+            "test": {"address": "test", "value1": 0, "value2": 0},
+            "senal": {"address": "matara", "value1": 55, "value2": 566},
+            "damith": {"address": "galle", "value1": 65, "value2": 812},
+            "sajee": {"address": "colombo", "value1": 75, "value2": 412},
+            "omal": {"address": "matale", "value1": 35, "value2": 82},
+            "pulathisi": {"address": "kandy", "value1": 45, "value2": 445},
+            "marlon": {"address": "malabe", "value1": 15, "value2": 345},
+            "pulathisi": {"address": "kandy", "value1": 25, "value2": 745},
+            "pirinthan": {"address": "wattala", "value1": 85, "value2": 45},
+            "eranga": {"address": "jaffna", "value1": 55, "value2": 566},
+            "rangika": {"address": "trincomalee", "value1": 65, "value2": 812},
+            "prasad": {"address": "hambantota", "value1": 35, "value2": 82},
+            "rukshan": {"address": "badulla", "value1": 45, "value2": 445},
+            "kalana": {"address": "ampara", "value1": 15, "value2": 345},
+            "lakshan": {"address": "anuradhapura", "value1": 25, "value2": 745},
+            "sajith": {"address": "polonnaruwa", "value1": 85, "value2": 45}
+        };
+
         // ======== initializing map at google map loading =========
-        $scope.initGmap = function(){
+        $scope.initGmap = function () {
             //define the area to display map
             var mapCanvas = document.getElementById('gmap');
             //define map options
@@ -81,105 +81,105 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 center: latlng,
                 zoom: 6,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
-            }    
+            }
             geo = new google.maps.Geocoder();
             map = new google.maps.Map(mapCanvas, mapOptions);
             bounds = new google.maps.LatLngBounds();
 
             google.maps.event.trigger(map, 'resize');
             // for zoom on map new instance of marker cluster created
-            google.maps.event.addListener(map, 'zoom_changed', function(event) {
-                markerCluster = new MarkerClusterer(map, markers, mcOptions);    
+            google.maps.event.addListener(map, 'zoom_changed', function (event) {
+                markerCluster = new MarkerClusterer(map, markers, mcOptions);
             });
 
-            JsonToArray();    
+            JsonToArray();
             theNext();
         }
 
         // ====== Json data to array ======    
         function JsonToArray() {
-            for(var key in JSONData){
-                queue.push({name:key,address:JSONData[key].address});
+            for (var key in JSONData) {
+                queue.push({name: key, address: JSONData[key].address});
             }
         }
+
         // ====== Decides the next thing to do ======
         function theNext() {
-                if (nextAddress < queue.length) {
-                    setTimeout(function(){
-                            getAddress(queue[nextAddress]);
-                            //theNext();
-                    }, delay);
-                    nextAddress++;
-                } else {
-                    // We're done. Show map bounds
-                    alert("Done!");
-                    map.fitBounds(bounds);
-                }      
+            if (nextAddress < queue.length) {
+                setTimeout(function () {
+                    getAddress(queue[nextAddress]);
+                    //theNext();
+                }, delay);
+                nextAddress++;
+            } else {
+                // We're done. Show map bounds
+                alert("Done!");
+                map.fitBounds(bounds);
+            }
         }
 
         // ====== Geocoding ======
         function getAddress(queueItem) {
-            if(queueItem != undefined){
-                geo.geocode({address:queueItem.address}, function (results,status)
-                  { 
-                    // If that was successful
-                    if (status == google.maps.GeocoderStatus.OK) {
-                      // Lets assume that the first marker is the one we want
-                      var p = results[0].geometry.location;
-                      var lat=p.lat();
-                      var lng=p.lng();
-                      // Output the data
-                        var msg = 'name="'+queueItem.name+'" address="' + queueItem.address + '" lat=' +lat+ ' lng=' +lng+ '(delay='+delay+'ms)<br>';
+            if (queueItem != undefined) {
+                geo.geocode({address: queueItem.address}, function (results, status) {
+                        // If that was successful
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            // Lets assume that the first marker is the one we want
+                            var p = results[0].geometry.location;
+                            var lat = p.lat();
+                            var lng = p.lng();
+                            // Output the data
+                            var msg = 'name="' + queueItem.name + '" address="' + queueItem.address + '" lat=' + lat + ' lng=' + lng + '(delay=' + delay + 'ms)<br>';
 //                        document.getElementById("gmap-messages").innerHTML += msg;
-                      // Create a marker
-                      createMarker(queueItem,lat,lng);
+                            // Create a marker
+                            createMarker(queueItem, lat, lng);
+                        }
+                        // ====== Decode the error status ======
+                        else {
+                            // === if we were sending the requests to fast, try this one again and increase the delay
+                            if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                                nextAddress--;
+                                delay++;
+                            } else {
+                                var reason = "Code " + status;
+                                var msg = 'address="' + queueItem.address + '" error=' + reason + '(delay=' + delay + 'ms)<br>';
+                                document.getElementById("gmap-messages").innerHTML += msg;
+                            }
+                        }
+                        theNext();
                     }
-                    // ====== Decode the error status ======
-                    else {
-                      // === if we were sending the requests to fast, try this one again and increase the delay
-                      if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-                        nextAddress--;
-                        delay++;
-                      } else {
-                        var reason="Code "+status;
-                        var msg = 'address="' + queueItem.address + '" error=' +reason+ '(delay='+delay+'ms)<br>';
-                        document.getElementById("gmap-messages").innerHTML += msg;
-                      }   
-                    }
-                    theNext();
-                  }
                 );
                 markerCluster = new MarkerClusterer(map, markers, mcOptions);
-            }    
+            }
         }
 
         // ======= Function to create a marker ========
-        function createMarker(queueItem,lat,lng) {
+        function createMarker(queueItem, lat, lng) {
 //            var contentString = '<div id="infodiv" >'+queueItem.name+' is at '+queueItem.address+'</div>';
-           var contentString = '<div id="iw-container">' +
-                    '<div class="iw-title">'+queueItem.name+'</div>' +
-                    '<div class="iw-content">' +
-                      '<div class="iw-subTitle">Address:</div>' +queueItem.address+
+            var contentString = '<div id="iw-container">' +
+                '<div class="iw-title">' + queueItem.name + '</div>' +
+                '<div class="iw-content">' +
+                '<div class="iw-subTitle">Address:</div>' + queueItem.address +
 ////                      '<img src="images/vistalegre.jpg" alt="Porcelain Factory of Vista Alegre" height="115" width="83">' +
 //                      '<p></p>' +
 //                      '<div class="iw-subTitle">Contacts</div>' +
 //                      '<p>VISTA ALEGRE ATLANTIS, SA<br>3830-292 Ílhavo - Portugal<br>'+
 //                      '<br>Phone. +351 234 320 600<br>e-mail: geral@vaa.pt<br>www: www.myvistaalegre.com</p>'+
-                       '<div class="iw-subTitle">Coverage Type:</div>'+
-                       '<div class="iw-subTitle">Total Coverage Amount:</div>'+
-                    '</div>' +
-                    '<div class="iw-bottom-gradient"></div>' +
-                  '</div>';
-           
+                '<div class="iw-subTitle">Coverage Type:</div>' +
+                '<div class="iw-subTitle">Total Coverage Amount:</div>' +
+                '</div>' +
+                '<div class="iw-bottom-gradient"></div>' +
+                '</div>';
+
             var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(lat,lng),
-            map: map,
-            zIndex: Math.round(latlng.lat()*-100000)<<5
+                position: new google.maps.LatLng(lat, lng),
+                map: map,
+                zIndex: Math.round(latlng.lat() * -100000) << 5
             });
 
-            google.maps.event.addListener(marker, 'click', function() {
-                infowindow.setContent(contentString); 
-                infowindow.open(map,marker);
+            google.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent(contentString);
+                infowindow.open(map, marker);
             });
 
             bounds.extend(marker.position);
@@ -187,58 +187,65 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             google.maps.event.trigger(map, 'resize');
         }
-       
-       google.maps.event.addListener(infowindow, 'domready', function() {
+
+        google.maps.event.addListener(infowindow, 'domready', function () {
 // Reference to the DIV that wraps the bottom of infowindow
-    var iwOuter = $('.gm-style-iw');
+            var iwOuter = $('.gm-style-iw');
 
-    /* Since this div is in a position prior to .gm-div style-iw.
-     * We use jQuery and create a iwBackground variable,
-     * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
-    */
-    var iwBackground = iwOuter.prev();
+            /* Since this div is in a position prior to .gm-div style-iw.
+             * We use jQuery and create a iwBackground variable,
+             * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
+             */
+            var iwBackground = iwOuter.prev();
 
-    // Removes background shadow DIV
-    iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+            // Removes background shadow DIV
+            iwBackground.children(':nth-child(2)').css({'display': 'none'});
 
-    // Removes white background DIV
-    iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+            // Removes white background DIV
+            iwBackground.children(':nth-child(4)').css({'display': 'none'});
 
-    // Moves the infowindow 115px to the right.
-    iwOuter.parent().parent().css({left: '50px'});
+            // Moves the infowindow 115px to the right.
+            iwOuter.parent().parent().css({left: '50px'});
 
-    // Moves the shadow of the arrow 76px to the left margin.
-    iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+            // Moves the shadow of the arrow 76px to the left margin.
+            iwBackground.children(':nth-child(1)').attr('style', function (i, s) {
+                return s + 'left: 76px !important;'
+            });
 
-    // Moves the arrow 76px to the left margin.
-    iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+            // Moves the arrow 76px to the left margin.
+            iwBackground.children(':nth-child(3)').attr('style', function (i, s) {
+                return s + 'left: 76px !important;'
+            });
 
-    // Changes the desired tail shadow color.
-    iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
+            // Changes the desired tail shadow color.
+            iwBackground.children(':nth-child(3)').find('div').children().css({
+                'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px',
+                'z-index': '1'
+            });
 
-          
-          var iwCloseBtn = iwOuter.next();
+
+            var iwCloseBtn = iwOuter.next();
 
 // Apply the desired effect to the close button
-iwCloseBtn.css({
-  opacity: '1', // by default the close button has an opacity of 0.7
- // right: '38px', top: '3px', // button repositioning
+            iwCloseBtn.css({
+                opacity: '1', // by default the close button has an opacity of 0.7
+                // right: '38px', top: '3px', // button repositioning
 //  border: '2px solid #48b5e9', // increasing button border and new color
-  'border-radius': '13px', // circular effect
-  'box-shadow': '0 0 5px #3990B9' // 3D effect to highlight the button
-  });
+                'border-radius': '13px', // circular effect
+                'box-shadow': '0 0 5px #3990B9' // 3D effect to highlight the button
+            });
 
 // The API automatically applies 0.7 opacity to the button after the mouseout event.
 // This function reverses this event to the desired value.
-iwCloseBtn.mouseout(function(){
-  $(this).css({opacity: '1'});
-});
-   
-       });
-        
-/************************ google maps area finish ************************************/
+            iwCloseBtn.mouseout(function () {
+                $(this).css({opacity: '1'});
+            });
 
-        //shows user profile in a dialog box
+        });
+
+        /************************ google maps area finish ************************************/
+
+            //shows user profile in a dialog box
         $scope.showUserProfile = function (ev) {
             $mdDialog.show({
                     controller: showProfileController,
@@ -282,8 +289,8 @@ iwCloseBtn.mouseout(function(){
             var width = ui.size.width;
             var height = ui.size.height;
             var mHeight = height - 50;
-            widget.top = pos.top+'px';
-            widget.left = pos.left+'px';
+            widget.top = pos.top + 'px';
+            widget.left = pos.left + 'px';
 
             if (widget.initCtrl == "elasticInit") {
                 console.log('elastic');
@@ -311,10 +318,10 @@ iwCloseBtn.mouseout(function(){
 
         $rootScope.username = localStorage.getItem('username');
         /*if ($rootScope.username == null) 
-        {
-           
-             $rootScope.username = "sajeetharan%40duosoftware.com";
-        }*/
+         {
+
+         $rootScope.username = "sajeetharan%40duosoftware.com";
+         }*/
 
         var mm = today.getMonth() + 1; //January is 0!
         var yyyy = today.getFullYear();
@@ -412,7 +419,8 @@ iwCloseBtn.mouseout(function(){
                 };
                 var likeHistory = fbInterface.getPageLikesObj(data);
                 $scope.chartConf.series[0].data = likeHistory.likeArr;
-                $scope.chartConf.series[0].pointStart = Date.UTC(likeHistory.start.getUTCFullYear(), likeHistory.start.getUTCMonth(), likeHistory.start.getUTCDate());;
+                $scope.chartConf.series[0].pointStart = Date.UTC(likeHistory.start.getUTCFullYear(), likeHistory.start.getUTCMonth(), likeHistory.start.getUTCDate());
+                ;
                 $scope.chartConf.series[0].pointInterval = likeHistory.interval;
 
                 $rootScope.dashboard.widgets[objIndex].widData.likeData = $scope.chartConf;
@@ -469,7 +477,8 @@ iwCloseBtn.mouseout(function(){
                 };
                 var viewHistory = fbInterface.getPageLikesObj(data);
                 $scope.chartConf.series[0].data = viewHistory.likeArr;
-                $scope.chartConf.series[0].pointStart = Date.UTC(viewHistory.start.getUTCFullYear(), viewHistory.start.getUTCMonth(), viewHistory.start.getUTCDate());;
+                $scope.chartConf.series[0].pointStart = Date.UTC(viewHistory.start.getUTCFullYear(), viewHistory.start.getUTCMonth(), viewHistory.start.getUTCDate());
+                ;
                 $scope.chartConf.series[0].pointInterval = viewHistory.interval;
 
                 $rootScope.dashboard.widgets[objIndex].widData.viewData = $scope.chartConf;
@@ -490,13 +499,13 @@ iwCloseBtn.mouseout(function(){
         $scope.goDashboard = function (dashboard) {
             console.log("hit dashboard");
             console.log(dashboard);
-        if (typeof dashboard.customDuoDash === "undefined"){
-            $state.go('DashboardViewer', {
-                            param: dashboard.name
-                        });
-            $scope.manageTabs(false);
-        }else{
-            $scope.manageTabs(true);
+            if (typeof dashboard.customDuoDash === "undefined") {
+                $state.go('DashboardViewer', {
+                    param: dashboard.name
+                });
+                $scope.manageTabs(false);
+            } else {
+                $scope.manageTabs(true);
                 if (dashboard.storyboard == undefined) {
                     if (dashboard.data.title == undefined) {
                         console.log("i got undefined");
@@ -511,7 +520,7 @@ iwCloseBtn.mouseout(function(){
                     } else {
                         $rootScope.Dashboards = dashboard.data;
                     }
-                }else{
+                } else {
                     if (dashboard.storyboard == false) {
                         // $('md-tabs-wrapper').css("display","block");
                         console.log("im a single page");
@@ -522,12 +531,12 @@ iwCloseBtn.mouseout(function(){
                             type: dashboard.type,
                             widgets: dashboard.data,
                             dashboardId: dashboard.dashboardId
-                    }];
+                        }];
                     } else {
                         console.log("im a storyboard");
                         $rootScope.Dashboards = dashboard.data;
                     }
-                    $state.go('CustomDashboardViewer',{
+                    $state.go('CustomDashboardViewer', {
                         param: dashboard.name
                     });
                     $scope.dashboard.widgets = dashboard.data;
@@ -538,20 +547,20 @@ iwCloseBtn.mouseout(function(){
 
             $scope.tabs = $rootScope.Dashboards;
             $rootScope.dashboard = $rootScope.Dashboards[0];
-            if($rootScope.dashboard.widgets.length==0)
+            if ($rootScope.dashboard.widgets.length == 0)
                 $rootScope.dashboard.widgets = $rootScope.dashboardWidgetsCopy;
             $scope.selectedIndex = 1;
             $scope.$watch('selectedIndex', function (current, old) {
-            // var previous = selected;
-            // if($rootScope.Dashboards[current].widgets.length== 0)
-            //     selected = $rootScope.dashboardWidgetsCopy; 
-            // else
+                // var previous = selected;
+                // if($rootScope.Dashboards[current].widgets.length== 0)
+                //     selected = $rootScope.dashboardWidgetsCopy;
+                // else
                 selected = $rootScope.Dashboards[current];
-            if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
-            //if (current + 1) $log.debug('Hello ' + selected.title + '!');
+                if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
+                //if (current + 1) $log.debug('Hello ' + selected.title + '!');
             });
             console.log(dashboard);
-            
+
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
             $(".search-layer").removeClass("activating active");
@@ -618,7 +627,6 @@ iwCloseBtn.mouseout(function(){
             $scope.dashboards = DashboardService.getDashboards();
 
 
-
             $http({
                 method: 'GET',
                 url: 'http://localhost:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
@@ -642,7 +650,7 @@ iwCloseBtn.mouseout(function(){
                     $scope.dashboards.push(obj1);
                 }
 
-                
+
                 $scope.favoriteDashboards.push($scope.dashboards[0]);
                 $scope.favoriteDashboards.push($scope.dashboards[1]);
 
@@ -652,7 +660,6 @@ iwCloseBtn.mouseout(function(){
             error(function (data, status) {
                 console.log(data);
             });
-
 
 
         };
@@ -729,7 +736,6 @@ iwCloseBtn.mouseout(function(){
                 $scope.favoriteAnalyzers.push($scope.analyzers[0]);
 
 
-
             }).
             error(function (data, status) {
 
@@ -781,9 +787,7 @@ iwCloseBtn.mouseout(function(){
                 controller: 'shareCtrl',
                 templateUrl: 'views/dashboard-share.html',
                 clickOutsideToClose: true,
-                resolve: {
-
-                }
+                resolve: {}
             });
 
         }
@@ -793,9 +797,7 @@ iwCloseBtn.mouseout(function(){
                 controller: 'ExportCtrl',
                 templateUrl: 'views/chart_export.html',
                 clickOutsideToClose: true,
-                resolve: {
-
-                }
+                resolve: {}
 
             })
 
@@ -806,9 +808,7 @@ iwCloseBtn.mouseout(function(){
                 templateUrl: 'views/change-theme.html',
                 targetEvent: ev,
                 clickOutsideToClose: true,
-                resolve: {
-
-                }
+                resolve: {}
             });
 
         };
@@ -829,9 +829,7 @@ iwCloseBtn.mouseout(function(){
                 controller: 'HelpCtrl',
                 templateUrl: 'views/help.html',
                 clickOutsideToClose: true,
-                resolve: {
-
-                }
+                resolve: {}
             });
         }
 
@@ -850,9 +848,9 @@ iwCloseBtn.mouseout(function(){
 
                 });
         };
-        
+
         //load social analysis  
-        $scope.showAddSocialAnalysis = function(ev){
+        $scope.showAddSocialAnalysis = function (ev) {
             $mdDialog.show({
                     templateUrl: 'views/socialGraph/socialAnalysis_TEMP.html',
                     parent: angular.element(document.body),
@@ -907,8 +905,10 @@ iwCloseBtn.mouseout(function(){
                 if (tab.dashboardId == $rootScope.Dashboards[a].dashboardId) {
                     $rootScope.dashboard = $rootScope.Dashboards[a];
                     //$rootScope.globalDashboardIndex = a;
-                };
-            };
+                }
+                ;
+            }
+            ;
         }
 
         //initial creation of default dashboard
@@ -922,8 +922,8 @@ iwCloseBtn.mouseout(function(){
                     type: "System",
                     widgets: [],
                     dashboardId: $scope.createuuid()
-            }
-        ];
+                }
+            ];
 
             $scope.tabs = $rootScope.Dashboards;
             $rootScope.dashboard = $rootScope.Dashboards[0];
@@ -975,9 +975,9 @@ iwCloseBtn.mouseout(function(){
         function showToast(text) {
             $mdToast.show(
                 $mdToast.simple()
-                .content(text)
-                .position("bottom right")
-                .hideDelay(3000)
+                    .content(text)
+                    .position("bottom right")
+                    .hideDelay(3000)
             );
         };
 
@@ -1025,18 +1025,18 @@ iwCloseBtn.mouseout(function(){
         };
         //end of erangas space
 
-         // hides and shows the dashboard tabs 
-        $scope.manageTabs = function(dashboard){
-            if(dashboard){
+        // hides and shows the dashboard tabs
+        $scope.manageTabs = function (dashboard) {
+            if (dashboard) {
                 console.log("manage tabs true");
-                $( "md-tabs > md-tabs-wrapper" ).children().show();
+                $("md-tabs > md-tabs-wrapper").children().show();
                 // $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","rgba(0, 0, 0, 0.14)" );
                 $scope.dashCloseWidgets = false;
-            }else{
+            } else {
                 console.log("manage tabs false");
-                $( "md-tabs > md-tabs-wrapper" ).children().hide();
+                $("md-tabs > md-tabs-wrapper").children().hide();
                 // $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","#ECECEC" );
-                $scope.dashCloseWidgets = false ;
+                $scope.dashCloseWidgets = false;
             }
         };
 
@@ -1049,24 +1049,24 @@ iwCloseBtn.mouseout(function(){
                 $scope.currentView = "Dashboard";
                 $state.go(routeName)
             }
-            if(routeName == "Social Analysis"){
+            if (routeName == "Social Analysis") {
                 $scope.manageTabs(false);
                 $scope.currentView = "Social Analysis";
                 $scope.showAddSocialAnalysis(ev);
-            
+
             }
-            
+
             if (routeName == "Add Widgets") {
 
-                $('.dashboard-widgets-close').css("visibility","visible");
-                $('md-tabs-wrapper').css("visibility","visible");
+                $('.dashboard-widgets-close').css("visibility", "visible");
+                $('md-tabs-wrapper').css("visibility", "visible");
 
-                
+
                 $scope.showAddNewWidgets(ev);
                 $scope.currentView = "Dashboard";
                 $scope.manageTabs(true);
                 $state.go("Dashboards");
-                
+
                 //$('md-tabs-wrapper').css("display","block");
             }
             if (routeName == "D3plugins") {
@@ -1077,15 +1077,15 @@ iwCloseBtn.mouseout(function(){
                 $state.go(routeName);
             }
             if (routeName == "Reports") {
-                
+
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $rootScope.currentView = "Reports";
                 $scope.manageTabs(false);
-                $state.go(routeName);               
+                $state.go(routeName);
             }
             if (routeName == "Analytics") {
-                                    
+
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $(".menu-layer").css("top", "160px");
@@ -1096,12 +1096,12 @@ iwCloseBtn.mouseout(function(){
             if (routeName == "RealTime") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
-                
+
                 $(".menu-layer").css("top", "200px");
-                $("starting-point").css("top", "200px");  
+                $("starting-point").css("top", "200px");
                 $scope.manageTabs(false);
                 $state.go(routeName);
-                
+
                 $rootScope.currentView = "RealTime";
 
             }
@@ -1112,48 +1112,47 @@ iwCloseBtn.mouseout(function(){
                 $(".menu-layer").css("top", "240px");
                 $("starting-point").css("top", "240px");
                 $scope.manageTabs(false);
-                
+
                 $mdDialog.show({
-                controller: 'pStackCtrl',
-                templateUrl: 'views/pStackMenu.html',
-                targetEvent: ev,
-                clickOutsideToClose: true,
-                resolve: {}
-                
+                    controller: 'pStackCtrl',
+                    templateUrl: 'views/pStackMenu.html',
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    resolve: {}
+
                 });
                 $rootScope.currentView = "Digin P Stack";
                 //$state.go(routeName);                
             }
             if (routeName == "CommonData") {
-                
+
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $rootScope.currentView = "CommonData";
                 $scope.manageTabs(false);
 
-                if($mdSidenav('right').isOpen()){
+                if ($mdSidenav('right').isOpen()) {
                     $mdSidenav('right')
-                       .close()
-                       .then(function(){
-                         $log.debug('right sidepanel closed');
-                   });
+                        .close()
+                        .then(function () {
+                            $log.debug('right sidepanel closed');
+                        });
                     $mdSidenav('custom')
-                       .close()
-                       .then(function(){
-                         $log.debug('custom sidepanel closed');
-                   });
-                }else{
+                        .close()
+                        .then(function () {
+                            $log.debug('custom sidepanel closed');
+                        });
+                } else {
                     $mdSidenav('right')
                         .toggle()
-                        .then(function() {
-                           $log.debug("toggle right is done");
-                    });
+                        .then(function () {
+                            $log.debug("toggle right is done");
+                        });
                 }
-                                
+
             }
             if (routeName == "Logout") {
-
-                $window.location = "/Duodigin/index.php";
+                $window.location = "index.html";
 
             }
             if (routeName == "Theme") {
@@ -1174,7 +1173,7 @@ iwCloseBtn.mouseout(function(){
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'none';
                 $scope.currentView = "Export";
-                
+
                 $scope.Export();
 
             }
@@ -1182,18 +1181,18 @@ iwCloseBtn.mouseout(function(){
 
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'none';
-                
+
                 $scope.currentView = "Help";
-                    
+
                 //user guide
-                setTimeout(function(){
-                        var intro;
-                        intro = introJs();
-                        intro.setOptions($scope.IntroOptions);
-                        intro.start();
-                },0);
-                    
-                    
+                setTimeout(function () {
+                    var intro;
+                    intro = introJs();
+                    intro.setOptions($scope.IntroOptions);
+                    intro.start();
+                }, 0);
+
+
                 // $scope.help();
 
             }
@@ -1230,9 +1229,9 @@ iwCloseBtn.mouseout(function(){
                 $rootScope.dashboardWidgetsCopy = angular.copy($rootScope.dashboard.widgets);
                 $rootScope.dashboard.widgets = [];
                 $state.go("/");
-        
+
             }
-             
+
 
         };
 
@@ -1257,8 +1256,8 @@ iwCloseBtn.mouseout(function(){
             }
             $scope.$apply();
         }, 1700);
-        setTimeout(function(){
-        var featureObj = localStorage.getItem("featureObject");
+        setTimeout(function () {
+            var featureObj = localStorage.getItem("featureObject");
 
             getJSONData($http, 'menu', function (data) {
 
@@ -1274,8 +1273,8 @@ iwCloseBtn.mouseout(function(){
                 }
 
             });
-        },300);
-        setTimeout(function(){
+        }, 300);
+        setTimeout(function () {
             var featureObj = localStorage.getItem("featureObject");
 
             getJSONData($http, 'menu', function (data) {
@@ -1292,10 +1291,10 @@ iwCloseBtn.mouseout(function(){
                 }
 
             });
-        },800);
+        }, 800);
 
-        setTimeout(function(){
-                     $scope.CompletedEvent = function (scope) {
+        setTimeout(function () {
+            $scope.CompletedEvent = function (scope) {
                 console.log("Completed Event called");
             };
 
@@ -1312,7 +1311,7 @@ iwCloseBtn.mouseout(function(){
             $scope.BeforeChangeEvent = function (targetElement, scope) {
                 console.log("Before Change Event called");
                 console.log(targetElement);
-                
+
             };
 
             $scope.AfterChangeEvent = function (targetElement, scope) {
@@ -1321,7 +1320,7 @@ iwCloseBtn.mouseout(function(){
             };
 
             $scope.IntroOptions = {
-                    steps:[
+                steps: [
                     {
                         element: document.querySelectorAll('.main-headbar')[0],
                         intro: "<strong> This is the main head bar area. Hover over the blue line to bring it down</strong>",
@@ -1405,19 +1404,19 @@ iwCloseBtn.mouseout(function(){
                         intro: '<strong>Switch between browser view and Full Screen mode</strong>',
                         position: 'right'
                     }
-                    ],
-                    showStepNumbers: false,
-                    exitOnOverlayClick: true,
-                    exitOnEsc:true,
-                    nextLabel: '<strong>NEXT</strong>',
-                    prevLabel: '<strong>PREVIOUS</strong>',
-                    skipLabel: 'EXIT',
-                    doneLabel: 'DONE'
+                ],
+                showStepNumbers: false,
+                exitOnOverlayClick: true,
+                exitOnEsc: true,
+                nextLabel: '<strong>NEXT</strong>',
+                prevLabel: '<strong>PREVIOUS</strong>',
+                skipLabel: 'EXIT',
+                doneLabel: 'DONE'
             };
 
             $scope.ShouldAutoStart = true;
 
-        },1000);       
+        }, 1000);
 
     }
 

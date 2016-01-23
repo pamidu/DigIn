@@ -5,8 +5,10 @@ app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$window
 
         $scope.error = {
             isUserName: false,
-            isPwd: false
+            isPwd: false,
+            event: 0
         };
+
 
         //on click login  button
         $scope.login = function () {
@@ -62,4 +64,16 @@ app.config(function ($mdThemingProvider, $httpProvider) {
                     element.focus();
             });
         };
-    });
+    }).directive('keyEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if (event.which === 13) {
+                //13 press key Enter
+                scope.$apply(function () {
+                    scope.$eval(attrs.keyEnter);
+                });
+                event.preventDefault();
+            }
+        });
+    };
+});

@@ -27,6 +27,7 @@
                 <md-input-container flex ng-class="{ 'has-error' : error.isUserName }">
                     <label>User Name</label>
                     <input id="userName" name="userName"
+                           key-enter="login()"
                            ng-model="txtUname">
                 </md-input-container>
             </div>
@@ -36,12 +37,15 @@
                 <md-input-container flex ng-class="{ 'has-error' : error.isPwd }">
                     <label>Password</label>
                     <input type="password" id="password" name="password"
+                           ng-keyup="$scope.error.event=$event"
+                           key-enter="login()"
                            ng-model="txtPwd">
                 </md-input-container>
             </div>
             <p style="font-size:small;color:darkgrey;">New to Digin? <a href="http://duoworld.sossgrid.com/signup/">Signup</a>
             </p>
             <md-button class="md-fab  md-primary" type="button"
+                       $scope.error.event=$event
                        ng-click="login()" style="top: 50%;
     margin-top: -25px;
     position: absolute;

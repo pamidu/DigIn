@@ -3,10 +3,10 @@
 /* Controllers */
 
 angular.module('DiginD3.controllers', [])
+    .controller('DiginD3Ctrl', function ($rootScope, $scope, dataService
+            , config, Digin_Engine_API) {
 
-    .controller('DiginD3Ctrl', function ($rootScope, $scope, $objectstore, $http, dataService,
-                                         CommonDataSrc, config) {
-
+            console.log($rootScope.d3CommonSrcData);
             $scope.samples = [
                 {title: 'Cars (multivariate)', url: 'data/multivariate.csv'},
                 {title: 'Movies (dispersions)', url: 'data/dispersions.csv'},
@@ -14,29 +14,6 @@ angular.module('DiginD3.controllers', [])
                 {title: 'Cocktails (correlations)', url: 'data/correlations.csv'}
             ]
 
-            // $scope.$watch('sample', function (sample){
-            //   if (!sample) return;
-            //   dataService.loadSample(sample.url).then(
-            //     function(data){
-            //       $scope.text = data;
-            //     },
-            //     function(error){
-            //       $scope.error = error;
-            //     }
-            //   );
-            // });
-
-
-            $scope.$watch('sample', function (sample) {
-                dataService.loadSample('data/multivariate.csv').then(
-                    function (data) {
-                        $scope.text = [];
-                    },
-                    function (error) {
-                        $scope.error = error;
-                    }
-                );
-            }, true);
 
             // init
             $scope.DiginD3 = DiginD3;
@@ -196,112 +173,6 @@ angular.module('DiginD3.controllers', [])
                 $mdDialog.hide();
             }
 
-            $scope.datasources = [{
-                name: "DuoStore"
-            }, {
-                name: "BigQuery"
-            }, {
-                name: "CSV/Excel"
-            }, {
-                name: "Rest/SOAP Service"
-            }, {
-                name: "SpreadSheet"
-            }];
-
-            $scope.onChangeSource = function (src) {
-                $scope.isLoadingTbl = true;
-                $scope.dataTables = [];
-                $scope.tableFiled = {};
-                $scope.fieldArray = [];
-                $scope.selSrc = src;
-                switch (src) {
-                    case 'DuoStore':
-                        var client = $objectstore.getClient(config.storeIndex, " ");
-                        client.getClasses(config.storeIndex);
-                        client.onGetMany(function (data) {
-                            $scope.dataTables = data;
-                            $scope.isLoadingTbl = false;
-                        });
-                        //error getting classes from the index
-                        client.onError(function (data) {
-                            console.error('Error getting classes');
-                            $scope.isLoadingTbl = false;
-                        });
-                        break;
-                    case 'BigQuery':
-                        var xhr = new XMLHttpRequest();
-                        xhr.onreadystatechange = function (e) {
-                            if (xhr.readyState === 4) {
-                                if (xhr.status === 200) {
-                                    var res = JSON.parse(xhr.response);
-                                    $scope.dataTables = res;
-                                    $scope.isLoadingTbl = false;
-                                } else {
-                                    console.error("XHR didn't work: ", xhr.status);
-                                    $scope.isLoadingTbl = false;
-                                }
-                            }
-                        };
-                        xhr.ontimeout = function () {
-                            console.error("request timedout: ", xhr);
-                        }
-                        xhr.open("get", config.Big_Qry_Get_Tbls, /*async*/ true);
-                        xhr.send();
-                        break;
-                    case 'CSV/Excel':
-
-                        break;
-                }
-            };
-
-            $scope.fieldArray = [];
-            $scope.onChangeTable = function (tbl) {
-                $scope.isLoadingFiled = true;
-                $scope.tableFiled = {};
-                $scope.fieldArray = [];
-                $scope.selTable = tbl;
-
-                switch ($scope.selSrc) {
-                    case 'DuoStore':
-                        var client1 = $objectstore.getClient(config.storeIndex,
-                            tbl);
-                        client1.getFields(config.storeIndex, tbl);
-                        //class's fields retrieved
-                        client1.onGetMany(function (data) {
-                            $scope.tableFiled = data;
-                            $scope.isLoadingFiled = false;
-                        });
-                        client1.onError(function (data) {
-                            consolo.error(data);
-                        });
-                        break;
-                    case 'BigQuery':
-                        $http({
-                            method: 'GET',
-                            url: config.apiUrl + 'GetFields?datasetName=Demo&&tableName=' + tbl
-                        }).
-                        success(function (data, status) {
-                            $scope.tableFiled = data;
-                            $scope.isLoadingFiled = false;
-                        }).
-                        error(function (data, status) {
-                            alert("Request failed" + status);
-                        });
-                        break;
-                }
-                //$scope.isLoadingFiled = true;
-
-            };
-
-            $scope.selectedFiled = function (field, state) {
-                var index = $scope.fieldArray.indexOf(field);
-                if (index >= 0) {
-                    $scope.fieldArray.splice(index, 1);
-                    return;
-                }
-                $scope.fieldArray.push(field);
-            };
-
 
             //convert json to csv
             var JSON2CSV = function (objArray) {
@@ -400,6 +271,55 @@ angular.module('DiginD3.controllers', [])
 
             $(document).ready(refreshScroll);
 
+            //update code
+            //common data source D3
+            var getAllExecuteQuery = function () {
+                switch ($rootScope.d3CommonSrcData.srcConfig.src) {
+                    case 'MSSQL':
+                        //main source MSSQL
+                        var parm = {
+                            srcNamespace: $rootScope.d3CommonSrcData.srcConfig.namespace,
+                            tblVal: $rootScope.d3CommonSrcData.srcConfig.tbl,
+                            filed: $rootScope.d3CommonSrcData.srcConfig.fields
+                        };
+                        var parameter = '';
+                        var i = 0;
+                        parm.filed.forEach(function (entry) {
+                            if (i == 0) {
+                                parameter = entry
+                            } else {
+                                parameter += "," + entry;
+                            }
+                            i++;
+                        });
+                        var xhr = new XMLHttpRequest();
+                        xhr.onreadystatechange = function (e) {
+                            console.log(this);
+                            if (xhr.readyState === 4) {
+                                if (xhr.status === 200) {
+                                    console.log(xhr.response);
+                                    $scope.text = JSON2CSV(xhr.response);
+                                } else {
+                                    console.error("XHR didn't work: ", xhr.status);
+                                }
+                            }
+                        };
+                        xhr.ontimeout = function () {
+                            console.error("request timedout: ", xhr);
+                        };
+                        var queryString = "SELECT " + parameter
+                            + " FROM " + "[" + parm.tblVal + "]";
+                        xhr.open("get", Digin_Engine_API + "executeQuery?query=" + queryString + "&db=MSSQL", /*async*/ true);
+                        xhr.send();
+                        break;
+                    default:
+                        break;
+                }
+
+            };
+            getAllExecuteQuery();
+
+           $
 
         }
     )

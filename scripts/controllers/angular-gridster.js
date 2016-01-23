@@ -1814,8 +1814,8 @@
 					var y = scope.gridsterItem.getElementSizeY();
 					var w = scope.gridsterItem.getElementSizeX();
                    
-                    scope.widget.highchartsNG.size.height = y-100;
-					scope.widget.highchartsNG.size.width = w-100;
+                    scope.widget.highchartsNG.size.height = y-50;
+					scope.widget.highchartsNG.size.width = w-10;
 					
 						var oldRow = item.row,
 						oldCol = item.col,

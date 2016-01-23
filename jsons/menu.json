@@ -54,7 +54,7 @@
             "title": "CommonData",
             "icon1": "bower_components/material-design-icons/action/svg/production/ic_input_24px.svg",
             "icon": "ion-close",
-            "icon2": "assessment"
+            "icon2": "view_array"
         }, {
 
             "title": "Logout",

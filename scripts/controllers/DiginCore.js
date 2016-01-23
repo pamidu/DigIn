@@ -67,17 +67,21 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         }
 
         $scope.currentSourceView = function (ev, widget) {
+            $scope.isTableSourceLoading = false;
             $mdDialog.show({
                     templateUrl: 'views/widgetDataTable_TEMP.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     locals: {
                         items: widget
-                    },
+                    }
+                    ,
                     controller: function dataSourceCtrl($scope, $mdDialog, items) {
+                        // console.log(JSON.stringify(items));
                         var isCommonSrc = angular.isUndefined(items.widCsc);
                         var selectedSourceData = {};
                         if (isCommonSrc) {
+                            //selected common data source
                             selectedSourceData = {
                                 'uniqueType': items.uniqueType,
                                 'length': items.commonSrcConfig.fields.length,
@@ -98,13 +102,15 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                 'className': items.widConfig.selectedClass,
                                 'source': items.widConfig.source,
                                 'type': items.type,
-                                'groupBy': items.widConfig.chartCat.groupField,
+                                'groupBy': items.widConfig.chartCat.groupField
                             };
                         }
                         for (var i = 0; i < selectedSourceData.length; i++) {
                             if (isCommonSrc) {
+                                var _attr = selectedSourceData.attributes[i].trim().
+                                toString();
                                 selectedSourceData.mappedData.push(items.
-                                    commonSrcConfig.fields[i]);
+                                    winConfig.mappedData[_attr].data);
                             } else {
                                 var _attr = selectedSourceData.attributes[i].trim().
                                 toString();
@@ -114,34 +120,20 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
 
                         }
-
                         var appendTblBody = function () {
-                            if (isCommonSrc) {
-                                var seriesDataLng = selectedSourceData.data.length;
-                                for (var i = 0; i < seriesDataLng; i++) {
+                            $scope.isTableSourceLoading = true;
+                            for (var i = 0; i < selectedSourceData.length; i++) {
+                                for (var b = 0; b < selectedSourceData.mappedData[i].length; b++) {
                                     var rows = '';
-                                    for (var b = 0; b < selectedSourceData.length; b++) {
-                                        console.log(selectedSourceData.data[i].name);
-                                        var oneRow = "<td>" + JSON.stringify(selectedSourceData.data[i]) + "</td>";
+                                    for (var c = 0; c < selectedSourceData.length; c++) {
+                                        var oneRow = "<td>" + selectedSourceData.mappedData[c][b] + "</td>";
                                         rows += oneRow;
                                     }
                                     $("#dataBody").append("<tr>" + rows + "</tr>");
                                     oneRow = '';
                                 }
                             }
-                            else {
-                                for (var i = 0; i < selectedSourceData.length; i++) {
-                                    for (var b = 0; b < selectedSourceData.mappedData[i].length; b++) {
-                                        var rows = '';
-                                        for (var c = 0; c < selectedSourceData.length; c++) {
-                                            var oneRow = "<td>" + selectedSourceData.mappedData[c][b] + "</td>";
-                                            rows += oneRow;
-                                        }
-                                        $("#dataBody").append("<tr>" + rows + "</tr>");
-                                        oneRow = '';
-                                    }
-                                }
-                            }
+                            $scope.isTableSourceLoading = false;
                         };
                         setTimeout(appendTblBody, 100);
 

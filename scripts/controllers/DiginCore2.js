@@ -732,7 +732,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                 $scope.topPosition = data.topPosition;
                 $scope.ChartType = data.ChartType;
                 $scope.currWidget = {
-                    
+
                     widCsv: {},
                     widCsc: {},
                     widEnc: {},
@@ -826,7 +826,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
 
                 $rootScope.dashboard.widgets.push($scope.currWidget);
                 $scope.openInitialConfig(ev, $scope.currWidget.id);
-               
+
             });
 
             //save the type of the widget for the purpose of the socialMediaCtrl

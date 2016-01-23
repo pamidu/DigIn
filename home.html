@@ -10,14 +10,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="google-signin-client_id" content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com">
+    <meta name="google-signin-client_id"
+          content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com">
 
     <link rel="shortcut icon" href="styles/css/images/innerlogo.ico">
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
     <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css"> -->
-    <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">   
+    <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
     <link href="http://netdna.bootstrapcdn.c/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
     <link href="styles/css/material-wfont.css" rel="stylesheet">
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -25,9 +26,9 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="styles/css/directive_library.css">
-    <link rel="stylsheet" type="text/css" href="styles/css/pivot.css" />
+    <link rel="stylsheet" type="text/css" href="styles/css/pivot.css"/>
     <!-- angular gridster -->
-    <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css" />
+    <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
     <link rel="stylesheet" type="text/css" href="styles/css/style.css">
     <link rel="stylesheet" type="text/css" href="styles/css/admin1.css">
 
@@ -37,9 +38,9 @@
     <link rel="stylesheet" type="text/css" href="styles/css/accordion.css">
     <link rel="stylesheet" type="text/css" href="styles/css/indicator.css">
     <link rel="apple-touch-icon" href="../../assets/globals/img/icons/apple-touch-icon.png">
-    <!--  <link rel="stylesheet" href="styles/css/DiginD3.css"/> -->
+    <link rel="stylesheet" href="styles/css/DiginD3.css"/>
     <!-- event calendar -->
-    <link rel="stylesheet" href="styles/css/fullcalendar.css" />
+    <link rel="stylesheet" href="styles/css/fullcalendar.css"/>
     <!-- event calendar -->
     <!-- Add IntroJs styles -->
     <link href="bower_components/intro.js/introjs.css" rel="stylesheet">
@@ -50,16 +51,18 @@
       -- customer css
       -- widget style
     -->
-    <link rel="stylesheet" href="styles/fonts/font-awesome/font-awesome.min.css"  type='text/css'/>
-    <link rel="stylesheet" href="styles/fonts/themify/themify-icons.css"  type='text/css'/>
+    <link rel="stylesheet" href="styles/fonts/font-awesome/font-awesome.min.css" type='text/css'/>
+    <link rel="stylesheet" href="styles/fonts/themify/themify-icons.css" type='text/css'/>
     <link href='https://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="styles/css/widget-style.css"  type='text/css'/>
-    <link rel="stylesheet" href="styles/css/customer.css"  type='text/css'/>
+    <link rel="stylesheet" href="styles/css/widget-style.css" type='text/css'/>
+    <link rel="stylesheet" href="styles/css/customer.css" type='text/css'/>
     <link rel="stylesheet" href="styles/css/socialMedFb.css" type="text/css"/>
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
-        api_key: 75 mu4z7y428pty
+        api_key: 75
+        mu4z7y428pty
         authorize: true
-        scope: r_basicprofile r_emailaddress
+        scope: r_basicprofile
+        r_emailaddress
 
     </script>
     <!-- <script src="https://apis.google.com/js/client.js"></script> -->
@@ -69,24 +72,27 @@
         }
 
     </style>
-    
+
 </head>
 
 <body style="background:#ECECEC !important;" ng-controller="NavCtrl" ng-app="DuoDiginRt" ng-mouseover="adjustUI()">
-    
-    <!-- preloader start -->
-    <div class="pre-loader-parent" id="pagePreLoader" layout="column" layout-align="center center" ng-include src="'views/ViewPreloader.html'" style="background-color:white">
-    </div>
-    <!-- preloader end -->
-    <!-- gridster start -->
-    <div ng-intro-options="IntroOptions" ng-intro-method="CallMe" ng-intro-oncomplete="CompletedEvent" ng-intro-onexit="ExitEvent" ng-intro-onchange="ChangeEvent" ng-intro-onbeforechange="BeforeChangeEvent" ng-intro-onafterchange="AfterChangeEvent"
-             ng-intro-autostart="ShouldAutoStart">      
-    </div>
-    <!-- gridster end -->
-    <!-- md theme watch start -->
-    <div md-theme="{{ dynamicTheme }}" md-theme-watch>
-        <script type="text/javascript" src="scripts/fbSDK.js"></script>
-        <div id="fb-root">
+
+<!-- preloader start -->
+<div class="pre-loader-parent" id="pagePreLoader" layout="column" layout-align="center center" ng-include
+     src="'views/ViewPreloader.html'" style="background-color:white">
+</div>
+<!-- preloader end -->
+<!-- gridster start -->
+<div ng-intro-options="IntroOptions" ng-intro-method="CallMe" ng-intro-oncomplete="CompletedEvent"
+     ng-intro-onexit="ExitEvent" ng-intro-onchange="ChangeEvent" ng-intro-onbeforechange="BeforeChangeEvent"
+     ng-intro-onafterchange="AfterChangeEvent"
+     ng-intro-autostart="ShouldAutoStart">
+</div>
+<!-- gridster end -->
+<!-- md theme watch start -->
+<div md-theme="{{ dynamicTheme }}" md-theme-watch>
+    <script type="text/javascript" src="scripts/fbSDK.js"></script>
+    <div id="fb-root">
     </div>
     <!-- md theme watch end -->
     <!-- headbar start-->
@@ -99,8 +105,10 @@
                 <span ng-click=""></span>
                 <div layout="row" layout-align="center center">
                     <div layout="row" ng-click="showUserProfile($event);">
-                        <p style="color: whitesmoke;font-size: large;margin: 10px;" ng-model="username"> {{username}}</p>
-                        <img class="md-avatar" style="width: 30px;height: 30px;border-radius: 100%;margin: 5px;" src="styles/css/images/person.jpg">
+                        <p style="color: whitesmoke;font-size: large;margin: 10px;" ng-model="username">
+                            {{username}}</p>
+                        <img class="md-avatar" style="width: 30px;height: 30px;border-radius: 100%;margin: 5px;"
+                             src="styles/css/images/person.jpg">
                     </div>
                 </div>
             </div>
@@ -110,19 +118,20 @@
     </div>
     <!-- headbar end -->
     <!-- ui view start -->
-    
-    <ul ui-view layout="column" id="content1" style="height:100% !important;" gridster>                        
+
+    <ul ui-view layout="column" id="content1" style="height:100% !important;" gridster>
     </ul>
-            
+
     <!-- ui view end -->
     <!-- sidebar start -->
-    <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border"ng-include src="'views/ViewSidebar.html'" >
+    <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" ng-include
+         src="'views/ViewSidebar.html'">
     </div>
     <!-- sidebar end -->
     <!-- Common data source start -->
-    <div class="commonDataSource" ng-include src="'views/ViewCommonDataSrc.html'" ng-controller="commonDataSrcInit">        
-    </div>         
-    <!-- Common data source end -->    
+    <div class="commonDataSource" ng-include src="'views/ViewCommonDataSrc.html'" ng-controller="commonDataSrcInit">
+    </div>
+    <!-- Common data source end -->
     <!-- search start -->
     <div class="overlay" style="z-index: 100;
     opacity: 0.8;">
@@ -131,15 +140,17 @@
                 <span></span>
             </div>
         </div>
-    </div>  
+    </div>
     <div class="search-layer">
         <div class="search">
             <form>
                 <div class="form-group" layout="row">
-                    <label id="postdomain" style="top: 20px"><img style="width:35px;height:35px;margin-top:10px;" src='styles/css/images/ic_search_white_24px.svg' />
+                    <label id="postdomain" style="top: 20px"><img style="width:35px;height:35px;margin-top:10px;"
+                                                                  src='styles/css/images/ic_search_white_24px.svg'/>
                     </label>
                     <md-input-container flex style="padding-bottom:0px">
-                        <input ng-model="searchText" type="text" id="input-search" style="background-color: #FFFFFF;height:50px;font-size: 30px;">
+                        <input ng-model="searchText" type="text" id="input-search"
+                               style="background-color: #FFFFFF;height:50px;font-size: 30px;">
                     </md-input-container>
                 </div>
             </form>
@@ -148,17 +159,24 @@
             <div class="row">
                 <div class="col-md-4" layout="column" layout-align="center center" layout-padding flex="30">
                     <div class="result result-users">
-                        <h3 style="font-family:inherit;font-weight:300;font-size:23px;">DASHBOARDS <small>({{dashboards.length}})</small>
+                        <h3 style="font-family:inherit;font-weight:300;font-size:23px;">DASHBOARDS
+                            <small>({{dashboards.length}})</small>
                         </h3>
                         <div class="row">
-                            <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg' />
-                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites <small>({{favoriteDashboards.length}})</small></h4>
+                            <img style="width:35px;height:35px;margin-top:-8px; "
+                                 src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg'/>
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites
+                                <small>({{favoriteDashboards.length}})</small>
+                            </h4>
                             <ul class="list-material">
                                 <li class="has-action-left" ng-repeat="x in favoriteDashboards | filter:searchText">
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
-                                        <div class="list-action-left" style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
-                                            <img style="width:35px;height:35px;"  src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg" class="face-radius" alt="">
+                                        <div class="list-action-left"
+                                             style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
+                                            <img style="width:35px;height:35px;"
+                                                 src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg"
+                                                 class="face-radius" alt="">
                                             <span ng-click="goDashboard(x)" class="title">{{x.splitName}}</span>
                                         </div>
                                     </a>
@@ -166,14 +184,22 @@
                             </ul>
                         </div>
                         <div class="row">
-                            <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
-                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More <small>({{dashboards.length}})</small></h4>
+                            <img style="width:35px;height:35px;margin-top:-8px; "
+                                 src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg'/>
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More
+                                <small>({{dashboards.length}})</small>
+                            </h4>
                             <ul class="list-material" style="height:150px">
-                                <li class="has-action-left" dir-paginate="x in dashboards | filter:searchText | itemsPerPage: pageSize" current-page="currentPage" pagination-id="list1">
+                                <li class="has-action-left"
+                                    dir-paginate="x in dashboards | filter:searchText | itemsPerPage: pageSize"
+                                    current-page="currentPage" pagination-id="list1">
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
-                                        <div class="list-action-left" style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
-                                            <img style="width:35px;height:35px;" src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg" class="face-radius" alt="">
+                                        <div class="list-action-left"
+                                             style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
+                                            <img style="width:35px;height:35px;"
+                                                 src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg"
+                                                 class="face-radius" alt="">
                                             <span ng-click="goDashboard(x)" class="title">{{x.splitName}}</span>
                                         </div>
                                     </a>
@@ -181,7 +207,8 @@
                             </ul>
                             <div class="other-controller">
                                 <div>
-                                    <dir-pagination-controls boundary-links="true" on-page-change="" pagination-id="list1"></dir-pagination-controls>
+                                    <dir-pagination-controls boundary-links="true" on-page-change=""
+                                                             pagination-id="list1"></dir-pagination-controls>
                                 </div>
                             </div>
                         </div>
@@ -189,31 +216,47 @@
                 </div>
                 <div class="col-md-4">
                     <div class="result result-posts">
-                        <h3 style="font-family:inherit;font-weight:300;font-size:23px;">REPORTS <small>({{reports.length}})</small></h3>
+                        <h3 style="font-family:inherit;font-weight:300;font-size:23px;">REPORTS
+                            <small>({{reports.length}})</small>
+                        </h3>
                         <div class="row">
-                            <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg' />
-                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites <small>({{favoriteReports.length}})</small></h4>
+                            <img style="width:35px;height:35px;margin-top:-8px; "
+                                 src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg'/>
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites
+                                <small>({{favoriteReports.length}})</small>
+                            </h4>
                             <ul class="list-material">
                                 <li class="has-action-left" ng-repeat="x in favoriteReports |filter:searchText">
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
-                                        <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
-                                            <img style="width:35px;height:35px;" src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg" class="img-radius" alt="">
+                                        <div class="list-action-left"
+                                             style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
+                                            <img style="width:35px;height:35px;"
+                                                 src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg"
+                                                 class="img-radius" alt="">
                                             <span ng-click="goReport(x.name)" class="title">{{x.splitName}}</span>
                                         </div>
                                     </a>
                                 </li>
-                            </ul> 
+                            </ul>
                         </div>
                         <div class="row">
-                            <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
-                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More <small>({{reports.length}})</small></h4>
+                            <img style="width:35px;height:35px;margin-top:-8px; "
+                                 src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg'/>
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More
+                                <small>({{reports.length}})</small>
+                            </h4>
                             <ul class="list-material" style="height:150px">
-                                <li class="has-action-left" dir-paginate="x in reports |filter:searchText | itemsPerPage: pageSize" current-page="currentPage" pagination-id="list2">
+                                <li class="has-action-left"
+                                    dir-paginate="x in reports |filter:searchText | itemsPerPage: pageSize"
+                                    current-page="currentPage" pagination-id="list2">
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
-                                        <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
-                                            <img style="width:35px;height:35px;" src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg" class="img-radius" alt="">
+                                        <div class="list-action-left"
+                                             style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
+                                            <img style="width:35px;height:35px;"
+                                                 src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg"
+                                                 class="img-radius" alt="">
                                             <span ng-click="goReport(x.name)" class="title">{{x.splitName}}</span>
                                         </div>
                                     </a>
@@ -221,7 +264,8 @@
                             </ul>
                             <div class="other-controller">
                                 <div>
-                                    <dir-pagination-controls boundary-links="true" on-page-change="" pagination-id="list2"></dir-pagination-controls>
+                                    <dir-pagination-controls boundary-links="true" on-page-change=""
+                                                             pagination-id="list2"></dir-pagination-controls>
                                 </div>
                             </div>
                         </div>
@@ -229,16 +273,24 @@
                 </div>
                 <div class="col-md-4">
                     <div class="result result-posts">
-                        <h3 style="font-family:inherit;font-weight:300;font-size:23px; ">ANALYZER <small>({{analyzers.length}})</small></h3>
+                        <h3 style="font-family:inherit;font-weight:300;font-size:23px; ">ANALYZER
+                            <small>({{analyzers.length}})</small>
+                        </h3>
                         <div class="row">
-                            <img style="width:35px;height:35px;margin-top:-8px" src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg' />
-                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites <small>({{favoriteAnalyzers.length}})</small></h4>
+                            <img style="width:35px;height:35px;margin-top:-8px"
+                                 src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg'/>
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites
+                                <small>({{favoriteAnalyzers.length}})</small>
+                            </h4>
                             <ul class="list-material">
-                            <li class="has-action-left" ng-repeat="x in favoriteAnalyzers |filter:searchText">
+                                <li class="has-action-left" ng-repeat="x in favoriteAnalyzers |filter:searchText">
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
-                                        <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
-                                            <img style="width:35px;height:35px;" src="bower_components/material-design-icons/navigation/svg/production/ic_apps_24px.svg" class="img-radius" alt="">
+                                        <div class="list-action-left"
+                                             style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
+                                            <img style="width:35px;height:35px;"
+                                                 src="bower_components/material-design-icons/navigation/svg/production/ic_apps_24px.svg"
+                                                 class="img-radius" alt="">
                                             <span ng-click="goAnalyzer(x.name)" class="title">{{x.splitName}}</span>
                                         </div>
                                     </a>
@@ -246,15 +298,21 @@
                             </ul>
                         </div>
                         <div class="row">
-                            <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
-                        
-                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More <small>({{analyzers.length}})</small></h4>
+                            <img style="width:35px;height:35px;margin-top:-8px; "
+                                 src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg'/>
+
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More
+                                <small>({{analyzers.length}})</small>
+                            </h4>
                             <ul class="list-material">
-                            <li class="has-action-left" ng-repeat="x in analyzers |filter:searchText">
+                                <li class="has-action-left" ng-repeat="x in analyzers |filter:searchText">
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
-                                        <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
-                                            <img style="width:35px;height:35px;" src="bower_components/material-design-icons/navigation/svg/production/ic_apps_24px.svg" class="img-radius" alt="">
+                                        <div class="list-action-left"
+                                             style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
+                                            <img style="width:35px;height:35px;"
+                                                 src="bower_components/material-design-icons/navigation/svg/production/ic_apps_24px.svg"
+                                                 class="img-radius" alt="">
                                             <span ng-click="goAnalyzer(x.name)" class="title">{{x.splitName}}</span>
                                         </div>
                                     </a>
@@ -266,8 +324,8 @@
             </div>
         </div>
         <div class="layer-container">
-            <div  ng-controller="DashboardCtrl" class="menu-layer">
-        {{test}}
+            <div ng-controller="DashboardCtrl" class="menu-layer">
+                {{test}}
                 <div ng-if="currentView=='Dashboard' ">
                     <ul ng-repeat="item in dashboardmenu">
                         <li ng-click="doFunction(item.title)">
@@ -302,95 +360,97 @@
         </div>
     </div>
     <!-- search end -->
-    
-    <script type="text/javascript" src="scripts/vendor/prefixfree.min.js"></script> 
-    <script type="text/javascript" src='scripts/vendor/jquery.js'></script> 
+
+    <script type="text/javascript" src="scripts/vendor/prefixfree.min.js"></script>
+    <script type="text/javascript" src='scripts/vendor/jquery.js'></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
     <script type="text/javascript" src="bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>
-    <script type="text/javascript" src="scripts/vendor/jquery.jsPlumb-1.4.1-all-min.js"></script> 
+    <script type="text/javascript" src="scripts/vendor/jquery.jsPlumb-1.4.1-all-min.js"></script>
     <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="bower_components/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
-    <script type="text/javascript" src="scripts/vendor/twitteroauth.js"></script> 
+    <script type="text/javascript" src="scripts/vendor/twitteroauth.js"></script>
 
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script> -->
-    
+
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
-    <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script> 
+    <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
     <script type="text/javascript" src="http://highslide-software.github.io/export-csv/export-csv.js"></script>
     <script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
-    <script type="text/javascript" src="scripts/vendor/google-picker.min.js"></script> 
+    <script type="text/javascript" src="scripts/vendor/google-picker.min.js"></script>
     <!-- <script type="text/javascript" src="scripts/vendor/Googleinitial.js"></script>  -->
-    <script type="text/javascript" src="scripts/vendor/twitterservice.js"></script> 
+    <script type="text/javascript" src="scripts/vendor/twitterservice.js"></script>
     <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
-    <script type="text/javascript" src="bower_components/underscore/underscore.js"></script> 
+    <script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
     <script type="text/javascript" src="scripts/config.js"></script>
     <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
     <script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
-    <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script> 
-    <script type="text/javascript" src=" bower_components/hammerjs/hammer.js"></script> 
+    <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
+    <script type="text/javascript" src=" bower_components/hammerjs/hammer.js"></script>
     <script type="text/javascript" src="scripts/vendor/oauth.js"></script>
-    <script type="text/javascript" src="scripts/vendor/zoom.js"></script> 
-    <script type="text/javascript" src="scripts/vendor/global-vendors.js"></script> 
-    <script type="text/javascript" src="scripts/vendor/angular-socialshare.min.js"></script> 
+    <script type="text/javascript" src="scripts/vendor/zoom.js"></script>
+    <script type="text/javascript" src="scripts/vendor/global-vendors.js"></script>
+    <script type="text/javascript" src="scripts/vendor/angular-socialshare.min.js"></script>
     <script type="text/javascript" src="scripts/vendor/angular-css-injector.js"></script>
-    
+
     <!-- codemirror -->
     <script type="text/javascript" src="bower_components/codemirror/lib/codemirror.js"></script>
     <script type="text/javascript" src="bower_components/codemirror/addon/display/placeholder.js"></script>
     <!-- canvastoblob -->
     <script type="text/javascript" src="bower_components/canvas-toBlob.js/canvas-toBlob.js"></script>
-	<!-- event calendar -->
-    <script type="text/javascript" src="scripts/vendor/moment.js"></script> 
+    <!-- event calendar -->
+    <script type="text/javascript" src="scripts/vendor/moment.js"></script>
     <!-- angularJS moment-->
-     <script type="text/javascript" src="bower_components/angular-moment/angular-moment.min.js"></script>
-    <script type="text/javascript" src="scripts/vendor/fullcalendar.js"></script> 
-    <script type="text/javascript" src="scripts/directives/calendar.js"></script> 
+    <script type="text/javascript" src="bower_components/angular-moment/angular-moment.min.js"></script>
+    <script type="text/javascript" src="scripts/vendor/fullcalendar.js"></script>
+    <script type="text/javascript" src="scripts/directives/calendar.js"></script>
     <!-- filesaver -->
-    <script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/98887/angular-fullscreen.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
-    <script type="text/javascript" src="bower_components/ngstorage/ngStorage.js"></script> 
-    <script type="text/javascript" src="scripts/vendor/pivot.js"></script>  
+    <script type="text/javascript"
+            src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/98887/angular-fullscreen.js"></script>
+    <script type="text/javascript"
+            src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="bower_components/ngstorage/ngStorage.js"></script>
+    <script type="text/javascript" src="scripts/vendor/pivot.js"></script>
     <script type="text/javascript" src="bower_components/d3-plugins/sankey/sankey.js"></script>
     <script type="text/javascript" src="bower_components/d3-plugins/hexbin/hexbin.js"></script>
     <!-- html2canvas -->
-    <script type="text/javascript" src="build/html2canvas.js"></script> 
-    <script type="text/javascript" src="scripts/custom/utility.js"></script> 
+    <script type="text/javascript" src="build/html2canvas.js"></script>
+    <script type="text/javascript" src="scripts/custom/utility.js"></script>
     <script type="text/javascript" src="scripts/app.js"></script>
-   
-    
+
+
     <!-- services start -->
-    <script type="text/javascript" src="scripts/services/DynamicRealTimeVis.js"></script> 
+    <script type="text/javascript" src="scripts/services/DynamicRealTimeVis.js"></script>
     <script type="text/javascript" src="scripts/services/ObjectStoreService.js"></script>
-    <script type="application/javascript" src="scripts/services/CommonDataService.js"></script> 
-    <script type="application/javascript" src="scripts/services/fbGraphServices.js"></script>   
+    <script type="application/javascript" src="scripts/services/CommonDataService.js"></script>
+    <script type="application/javascript" src="scripts/services/fbGraphServices.js"></script>
     <!-- services end -->
-    
+
     <!--  directives start  -->
     <script type="application/javascript" src="scripts/directives/commonData.js"></script>
     <script type="application/javascript" src="scripts/directives/googleMaps.js"></script>
     <!--  directives end    -->
-    
+
     <!-- controller -->
-    <script type="text/javascript" src="scripts/controllers/NavCtrl.js"></script> 
-    <script type="text/javascript" src="scripts/controllers/DiginCore.js"></script> 
-    <script type="text/javascript" src="scripts/controllers/DiginCore2.js"></script> 
-    <script type="text/javascript" src="scripts/directives/plumbItem.js"></script> 
-    <script type="text/javascript" src="scripts/directives/postRender.js"></script> 
-    <script type="text/javascript" src="scripts/directives/accordion.js"></script> 
-    <script type="text/javascript" src="scripts/controllers/chartSettingsCtrl.js"></script> 
-    <script type="text/javascript" src="scripts/directives/resizeable.js"></script> 
-    <script type="text/javascript" src="scripts/directives/droppable.js"></script> 
-    <script type="text/javascript" src="scripts/directives/draggable.js"></script> 
-    <script type="text/javascript" src="scripts/directives/validNumber.js"></script> 
+    <script type="text/javascript" src="scripts/controllers/NavCtrl.js"></script>
+    <script type="text/javascript" src="scripts/controllers/DiginCore.js"></script>
+    <script type="text/javascript" src="scripts/controllers/DiginCore2.js"></script>
+    <script type="text/javascript" src="scripts/directives/plumbItem.js"></script>
+    <script type="text/javascript" src="scripts/directives/postRender.js"></script>
+    <script type="text/javascript" src="scripts/directives/accordion.js"></script>
+    <script type="text/javascript" src="scripts/controllers/chartSettingsCtrl.js"></script>
+    <script type="text/javascript" src="scripts/directives/resizeable.js"></script>
+    <script type="text/javascript" src="scripts/directives/droppable.js"></script>
+    <script type="text/javascript" src="scripts/directives/draggable.js"></script>
+    <script type="text/javascript" src="scripts/directives/validNumber.js"></script>
     <script type="text/javascript" src="scripts/directives/directivelibrary.js"></script>
-    <script type="text/javascript" src="scripts/directives/diginDirectives.js"></script>  
-    <script type="text/javascript" src="scripts/services/ReportService.js"></script> 
+    <script type="text/javascript" src="scripts/directives/diginDirectives.js"></script>
+    <script type="text/javascript" src="scripts/services/ReportService.js"></script>
     <script type="text/javascript" src="bower_components/FileSaver/FileSaver.js"></script>
     <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/d3PluginCtrl.js"></script>
@@ -398,37 +458,38 @@
     <script type="text/javascript" src="scripts/controllers/socialGraph/SocialAnalysisCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphFBCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphTwitterCtrl.js"></script>
-    
+
     <!--  controllers end   -->
-    
+
     <!-- zeroclipboard -->
-    <script type="text/javascript" src="bower_components/zeroclipboard/ZeroClipboard.min.js"></script> 
-    <script type="text/javascript" src="scripts/factories/d3Data.js"></script> 
-    <script type="text/javascript" src="scripts/factories/Dashboard.js"></script> 
+    <script type="text/javascript" src="bower_components/zeroclipboard/ZeroClipboard.min.js"></script>
+    <script type="text/javascript" src="scripts/factories/d3Data.js"></script>
+    <script type="text/javascript" src="scripts/factories/Dashboard.js"></script>
     <script type="text/javascript" src="scripts/factories/getTableDataFactories.js"></script>
     <script type="text/javascript" src="scripts/services/RealTimeService.js"></script>
-    <script type="text/javascript" src="scripts/services/AnalyticsService.js"></script> 
-    <script type="text/javascript" src="scripts/custom/fbInterface.js"></script> 
-    <script type="text/javascript" src="scripts/vendor/indicator.js"></script> 
-    <script type="text/javascript" src="scripts/directives/indicatorWidget.js"></script> 
-    <script type="text/javascript" src="scripts/custom/linkedinInterface.js"></script> 
-    <script type="text/javascript" src="scripts/vendor/uimicrokernel.js"></script> 
+    <script type="text/javascript" src="scripts/services/AnalyticsService.js"></script>
+    <script type="text/javascript" src="scripts/custom/fbInterface.js"></script>
+    <script type="text/javascript" src="scripts/vendor/indicator.js"></script>
+    <script type="text/javascript" src="scripts/directives/indicatorWidget.js"></script>
+    <script type="text/javascript" src="scripts/custom/linkedinInterface.js"></script>
+    <script type="text/javascript" src="scripts/vendor/uimicrokernel.js"></script>
     <script type="text/javascript" src="scripts/controllers/widgetCtrl.js"></script>
-    <script type="application/javascript" src="scripts/controllers/CommonDataSrcCtrl.js"></script>    
-    <script type="text/javascript" src="scripts/controllers/gridBottomSheetCtrl.js"></script> 
-    <script type="text/javascript" src="scripts/controllers/ExcelCtrl.js"></script> 
+    <script type="application/javascript" src="scripts/controllers/CommonDataSrcCtrl.js"></script>
+    <script type="text/javascript" src="scripts/controllers/gridBottomSheetCtrl.js"></script>
+    <script type="text/javascript" src="scripts/controllers/ExcelCtrl.js"></script>
     <!-- Material Icons -->
-    <script type="text/javascript" src="//cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"></script>
-    <script type="text/javascript" src="scripts/vendor/layout.js"></script> 
+    <script type="text/javascript"
+            src="//cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"></script>
+    <script type="text/javascript" src="scripts/vendor/layout.js"></script>
     <!-- svg to canvas -->
     <script type="text/javascript" src="scripts/vendor/pleasure.js"></script>
     <script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script>
     <script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
-    <script type="text/javascript" src="scripts/vendor/nv.d3.js"></script> 
+    <script type="text/javascript" src="scripts/vendor/nv.d3.js"></script>
     <!-- or use another assembly -->
-    <script type="text/javascript" src="scripts/vendor/angular-nvd3.js"></script> 
+    <script type="text/javascript" src="scripts/vendor/angular-nvd3.js"></script>
     <script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script>
-    <script type="text/javascript" src="scripts/controllers/angular-touch.js"></script> 
+    <script type="text/javascript" src="scripts/controllers/angular-touch.js"></script>
     <!-- raw -->
     <script type="text/javascript" src="scripts/controllers/DiginD3.js"></script>
     <!-- charts -->
@@ -453,13 +514,14 @@
     <script type="text/javascript" src="scripts/controllers/controllers.js"></script>
     <script type="text/javascript" src="scripts/filters/filters.js"></script>
     <script type="text/javascript" src="scripts/directives/directives.js"></script>
-     <!--hight charts update damith -->
+    <!--hight charts update damith -->
     <!-- // <script type="text/javascript" src="bower_components/highcharts/highcharts.js"></script> -->
     <script type="text/javascript" src="bower_components/highcharts/highcharts-more.js"></script>
     <script type="text/javascript" src="bower_components/highcharts/solid-gauge.src.js"></script>
     <!-- gridster -->
-    <script type="text/javascript" src="scripts/controllers/angular-gridster.js"></script> 
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="scripts/controllers/angular-gridster.js"></script>
+    <script type="text/javascript"
+            src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-sanitize.min.js"></script>
     <!-- intro -->
     <script type="text/javascript" src="bower_components/intro.js/minified/intro.min.js"></script>
     <script type="text/javascript" src="scripts/controllers/angular-intro.js"></script>
@@ -472,11 +534,12 @@
     <!-- zeroclipboard -->
     <script type="text/javascript" src="bower_components/angular-strap/dist/angular-strap.min.js"></script>
     <script type="text/javascript" src="bower_components/angular-ui/build/angular-ui.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
+    <script type="text/javascript"
+            src="bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
     <script type="text/javascript" src="bower_components/zeroclipboard/ZeroClipboard.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.3/ng-csv.min.js"></script> 
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.3/ng-csv.min.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    
+
     <!-- google map -->
     <!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js"></script> -->
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.20&sensor=false"></script>
@@ -486,7 +549,7 @@
     <!-- marker clusterer -->
     <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
     <!-- angular google plus -->
-    <script src="bower_components/angular-google-plus/dist/angular-google-plus.min.js"></script>   
+    <script src="bower_components/angular-google-plus/dist/angular-google-plus.min.js"></script>
 
     <script type="text/javascript">
         google.load('search', '1');
@@ -494,11 +557,11 @@
     <script type="text/javascript">
         google.load("feeds", "1");
     </script>
-  
+
     <!-- angular datepicker -->
-    <script src="scripts/controllers/angular-datepicker.js"></script> 
+    <script src="scripts/controllers/angular-datepicker.js"></script>
     <!-- linq for quering in elastic widget -->
-    <script type="text/javascript" src="scripts/vendor/linq/linq.js"></script> 
+    <script type="text/javascript" src="scripts/vendor/linq/linq.js"></script>
     <script type="text/javascript" src="bower_components/angular-utils-pagination/dirPagination.js"></script>
 
     <script>
@@ -514,7 +577,7 @@
         _gaq.push(['_setAccount', 'UA-12846745-20']);
         _gaq.push(['_trackPageview']);
 
-        (function() {
+        (function () {
             var ga = document.createElement('script');
             ga.type = 'text/javascript';
             ga.async = true;
@@ -525,13 +588,13 @@
     </script>
     <script src="jsons/data.json"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             Layout.init();
             $('#pagePreLoader').show();
-            $('#content1').css("visibility","hidden");
-            $('#getReport').css("visibility","hidden");
+            $('#content1').css("visibility", "hidden");
+            $('#getReport').css("visibility", "hidden");
         });
-    </script>  
+    </script>
 </body>
 
 </html>

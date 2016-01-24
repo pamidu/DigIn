@@ -12,8 +12,8 @@
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #eaeaea;
-    border-left: 1px solid #ccc;
+   /* background-color: #eaeaea;
+    border-left: 1px solid #ccc;*/
 }
 
 ::-webkit-scrollbar-thumb {
@@ -1244,11 +1244,7 @@ md-tab-content {
 
 /* dashboard widget */
 .dashboard-widget {
-    overflow: visible;
-}
-
-.dashboard-widget:hover {
-    overflow-y: auto !important;
+    overflow: auto;
 }
 
 /*widget current source view */

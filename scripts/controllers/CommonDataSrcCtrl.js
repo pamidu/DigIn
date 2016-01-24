@@ -23,9 +23,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
     }, {
         name: "Rest/SOAP Service"
     }, {
-        name: "SpreadSheet"
-    }, {
         name: "MSSQL"
+    }, {
+        name: "SpreadSheet"
     }];
 
     // $scope.chartTypes = [{
@@ -374,7 +374,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
 
 
     };
-        $scope.getDataByFields = function(field) {
+    
+    $scope.getDataByFields = function(field) {
 
       //clear distinct scope array
       //$scope.distinct = [];
@@ -411,13 +412,19 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
       xhr.ontimeout = function() {
          console.error("request timedout: ", xhr);
       }
-
-      var limit = 1000;
-      var queryString = "SELECT " + field
-                        + " FROM " + "[" + Digin_Engine_API_Namespace + "." + $scope.selTable + "]"
-                        + " GROUP BY " + field
-                        + " LIMIT " + limit.toString();
-
+      if($scope.selSrc=="MSSQL"){
+          var queryString = "SELECT " + field
+                         + " FROM " + "[" + "HutchDialogic" + "." + $scope.selTable + "]"
+                      + " GROUP BY " + field
+                        + " db=MSSQL";
+      }
+      if($scope.selSrc=="BigQuery"){
+          var limit = 1000;
+          var queryString = "SELECT " + field
+                            + " FROM " + "[" + Digin_Engine_API_Namespace + "." + $scope.selTable + "]"
+                            + " GROUP BY " + field
+                            + " LIMIT " + limit.toString();
+      }                  
       // xhr.open("get", Digin_Engine_API + "executeQuery?tablename=[" + $scope.selTable.split(":")[1] + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
       xhr.open("get", Digin_Engine_API + "executeQuery?query=" + queryString, /*async*/ true);
 
@@ -430,18 +437,14 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
 
 
     $scope.changeChartType = function(chartType){
-        console.log("chartTypes");
-        console.log(chartTypes);
-
-        console.log(chartType);
-
-        for(var i=0; i < $rootScope.Dashboards[0].widgets.length; i++){
-            var length = $rootScope.Dashboards[0].widgets[i].highchartsNG.series.length;
-            for(var j = 0; j < length; j++){
-                $rootScope.Dashboards[0].widgets[i].highchartsNG.series[j].type = chartType;
-            };
+        if($rootScope.Dashboards[0].widgets.length > 0){
+            for(var i=0; i < $rootScope.Dashboards[0].widgets.length; i++){
+                var length = $rootScope.Dashboards[0].widgets[i].highchartsNG.series.length;
+                for(var j = 0; j < length; j++){
+                    $rootScope.Dashboards[0].widgets[i].highchartsNG.series[j].type = chartType;
+                };
+            }
         }
-    
     };
 
     var chartTypes = [];
@@ -1310,6 +1313,10 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
         }
 
     };
+
+    $scope.cancel = function(){
+        $mdDialog.hide();
+    }
 
 
 }]);

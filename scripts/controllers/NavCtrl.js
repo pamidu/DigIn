@@ -49,31 +49,45 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         var markers = [];
         var markerCluster;
         var mcOptions = {gridSize: 50, maxZoom: 15};
+        var count = 1;
 
         // var JSONData = {   "pulathisi": {"address":"kottawa,pannipitiya","value1": 45,"value2":4445},
         //                     "senal":{"address":"DODANWATTA,MALALPOLA,YATIYANTHOTA","value1": 55,"value2":566},
         //                     "damith":{"address":"2nd,Lane,Mandawila,Kesbewa","value1": 65,"value2":812} 
         //     };
-        var JSONData = {    "test":{"address":"test","value1": 0,"value2":0},
-                            "senal":{"address":"matara","value1": 55,"value2":566},
-                            "damith":{"address":"galle","value1": 65,"value2":812},
-                            "sajee":{"address":"colombo","value1": 75,"value2":412},
-                            "omal":{"address":"matale","value1": 35,"value2":82},
-                            "pulathisi": {"address":"kandy","value1": 45,"value2":445},
-                            "marlon": {"address":"malabe","value1": 15,"value2":345},
-                            "pulathisi": {"address":"kandy","value1": 25,"value2":745},
-                            "pirinthan": {"address":"wattala","value1": 85,"value2":45},
-                            "eranga":{"address":"jaffna","value1": 55,"value2":566},
-                            "rangika":{"address":"trincomalee","value1": 65,"value2":812},
-                            "prasad":{"address":"hambantota","value1": 35,"value2":82},
-                            "rukshan": {"address":"badulla","value1": 45,"value2":445},
-                            "kalana": {"address":"ampara","value1": 15,"value2":345},
-                            "lakshan": {"address":"anuradhapura","value1": 25,"value2":745},
-                            "sajith": {"address":"polonnaruwa","value1": 85,"value2":45}
-            };
+        var JSONData;
+
+        $http.get('jsons/test_address.json').success(function (data) {
+            $scope.JSONData = data;
+            console.log("data json");
+            console.log($scope.JSONData);
+
+        });
+
+        // var JSONData = {    "test":{"address":"test","value1": 0,"value2":0},
+        //                     "senal":{"address":"matara","value1": 55,"value2":566},
+        //                     "damith":{"address":"galle","value1": 65,"value2":812},
+        //                     "sajee":{"address":"colombo","value1": 75,"value2":412},
+        //                     "omal":{"address":"matale","value1": 35,"value2":82},
+        //                     "pulathisi": {"address":"kandy","value1": 45,"value2":445},
+        //                     "marlon": {"address":"malabe","value1": 15,"value2":345},
+        //                     "pirinthan": {"address":"wattala","value1": 85,"value2":45},
+        //                     "eranga":{"address":"jaffna","value1": 55,"value2":566},
+        //                     "rangika":{"address":"trincomalee","value1": 65,"value2":812},
+        //                     "prasad":{"address":"hambantota","value1": 35,"value2":82},
+        //                     "rukshan": {"address":"badulla","value1": 45,"value2":445},
+        //                     "kalana": {"address":"ampara","value1": 15,"value2":345},
+        //                     "lakshan": {"address":"anuradhapura","value1": 25,"value2":745},
+        //                     "sajith": {"address":"polonnaruwa","value1": 85,"value2":45}
+        //     };
         
         // ======== initializing map at google map loading =========
         $scope.initGmap = function(){
+            
+            queue = [];
+            markers = [];
+            delay = 100;
+            nextAddress = 0;
             //define the area to display map
             var mapCanvas = document.getElementById('gmap');
             //define map options
@@ -92,15 +106,20 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 markerCluster = new MarkerClusterer(map, markers, mcOptions);    
             });
 
-            JsonToArray();    
-            theNext();
+            JSONData = $scope.JSONData;
+
+            JsonToArray(); 
+            setTimeout(function(){theNext();},5000);   
+            
         }
 
         // ====== Json data to array ======    
         function JsonToArray() {
             for(var key in JSONData){
-                queue.push({name:key,address:JSONData[key].address});
+                console.log(JSONData[key].Address);
+                queue.push({name:key,address:JSONData[key].Address});
             }
+            console.log("queue",queue);
         }
         // ====== Decides the next thing to do ======
         function theNext() {
@@ -129,8 +148,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                       var lat=p.lat();
                       var lng=p.lng();
                       // Output the data
-                        var msg = 'name="'+queueItem.name+'" address="' + queueItem.address + '" lat=' +lat+ ' lng=' +lng+ '(delay='+delay+'ms)<br>';
-//                        document.getElementById("gmap-messages").innerHTML += msg;
+                        var msg = '"count="'+count+'"" name="'+queueItem.name+'" address="' + queueItem.address + '" lat=' +lat+ ' lng=' +lng+ '(delay='+delay+'ms)<br>';
+                       document.getElementById("gmap-messages").innerHTML += msg;
+                       count++;
+                       delay=100;
                       // Create a marker
                       createMarker(queueItem,lat,lng);
                     }
@@ -142,8 +163,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         delay++;
                       } else {
                         var reason="Code "+status;
-                        var msg = 'address="' + queueItem.address + '" error=' +reason+ '(delay='+delay+'ms)<br>';
+                        var msg = '"count="'+count+'" name="'+queueItem.name+'"address="' + queueItem.address + '" error=' +reason+ '(delay='+delay+'ms)<br>';
                         document.getElementById("gmap-messages").innerHTML += msg;
+                        count++;
+                        nextAddress++;
+                        delay = 100;
                       }   
                     }
                     theNext();
@@ -153,13 +177,19 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }    
         }
 
+        // ====== Check infowindow is open =======
+        function isInfoWindowOpen(infoWindow){
+            var map = infoWindow.getMap();
+            return (map !== null && typeof map !== "undefined");
+        }
+
         // ======= Function to create a marker ========
         function createMarker(queueItem,lat,lng) {
 //            var contentString = '<div id="infodiv" >'+queueItem.name+' is at '+queueItem.address+'</div>';
            var contentString = '<div id="iw-container">' +
                     '<div class="iw-title">'+queueItem.name+'</div>' +
                     '<div class="iw-content">' +
-                      '<div class="iw-subTitle">Address:</div>' +queueItem.address+
+                      '<div class="iw-subTitle">Address:</div>' +queueItem.Address+
 ////                      '<img src="images/vistalegre.jpg" alt="Porcelain Factory of Vista Alegre" height="115" width="83">' +
 //                      '<p></p>' +
 //                      '<div class="iw-subTitle">Contacts</div>' +
@@ -179,13 +209,19 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             google.maps.event.addListener(marker, 'click', function() {
                 infowindow.setContent(contentString); 
-                infowindow.open(map,marker);
+                if(isInfoWindowOpen(infowindow)){
+                    infowindow.close();
+                }
+                else{
+                    infowindow.open(map,marker);
+                } 
             });
 
             bounds.extend(marker.position);
             markers.push(marker);
 
             google.maps.event.trigger(map, 'resize');
+
         }
        
        google.maps.event.addListener(infowindow, 'domready', function() {
@@ -208,10 +244,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     iwOuter.parent().parent().css({left: '50px'});
 
     // Moves the shadow of the arrow 76px to the left margin.
-    iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+    iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 10px !important;'});
 
     // Moves the arrow 76px to the left margin.
-    iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+    iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 10px !important;'});
 
     // Changes the desired tail shadow color.
     iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
@@ -221,20 +257,21 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
 // Apply the desired effect to the close button
 iwCloseBtn.css({
-  opacity: '1', // by default the close button has an opacity of 0.7
- // right: '38px', top: '3px', // button repositioning
-//  border: '2px solid #48b5e9', // increasing button border and new color
-  'border-radius': '13px', // circular effect
-  'box-shadow': '0 0 5px #3990B9' // 3D effect to highlight the button
+//   opacity: '1', // by default the close button has an opacity of 0.7
+//  // right: '38px', top: '3px', // button repositioning
+// //  border: '2px solid #48b5e9', // increasing button border and new color
+//   'border-radius': '13px', // circular effect
+//   'box-shadow': '0 0 5px #3990B9' // 3D effect to highlight the button
+    'display' : 'none'
   });
 
 // The API automatically applies 0.7 opacity to the button after the mouseout event.
 // This function reverses this event to the desired value.
-iwCloseBtn.mouseout(function(){
-  $(this).css({opacity: '1'});
-});
+// iwCloseBtn.mouseout(function(){
+//   $(this).css({opacity: '1'});
+// });
    
-       });
+});
         
 /************************ google maps area finish ************************************/
 
@@ -886,7 +923,7 @@ iwCloseBtn.mouseout(function(){
             console.log(tempObj);
 
             $rootScope.Dashboards.push(tempObj);
-            showToast(obj.title + " created!");
+            // showToast(obj.title + " created!");
         };
 
         $rootScope.selectCurrentDashboard = function (tab) {
@@ -972,14 +1009,14 @@ iwCloseBtn.mouseout(function(){
             };
         };
 
-        function showToast(text) {
-            $mdToast.show(
-                $mdToast.simple()
-                .content(text)
-                .position("bottom right")
-                .hideDelay(3000)
-            );
-        };
+        // function showToast(text) {
+        //     $mdToast.show(
+        //         $mdToast.simple()
+        //         .content(text)
+        //         .position("bottom right")
+        //         .hideDelay(3000)
+        //     );
+        // };
 
         $scope.clickTabRemoveConfirmation = function () {
             document.getElementById("TabRemoveConfirmation").click();

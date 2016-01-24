@@ -2,14 +2,57 @@
    note: some of the scope variables are initialized inside fbInterface
 */
 
-routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices, $http, Digin_Engine_API1, $rootScope, $mdDialog) {
+routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices, $http, Digin_Engine_API3, $rootScope, $mdDialog) {
 
    $scope.totalLikes = 0;
    
+   $scope.sentimentConfig = {
+    options:{chart:{type:"line",backgroundColor:null,spacingBottom:15,spacingTop:10,spacingLeft:10,spacingRight:10,height:300},plotOptions:{column:{borderWidth:0,groupPadding:0,shadow:!1}}},
+        title: {
+            text: '',
+            style: {
+                display: 'none'
+            }
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: {
+            title: {
+                text: 'Sentiment'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '°C'
+        },
+//        legend: {
+//            layout: 'vertical',
+//            align: 'right',
+//            verticalAlign: 'middle',
+//            borderWidth: 0
+//        },
+        series: [{
+            name: 'Positive',
+            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+           color: '#1976D2'
+        }, {
+            name: 'Neutral',
+            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5],
+           color: '#FFC107'
+        }, {
+            name: 'Negative',
+            data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0],
+           color: '#D32F2F'
+        }]
+    };
+   
    $scope.fbPageInit = function() {
-//      setTimeout(function() {
-//         $('#content1').css("height", "100%");
-//      }, 3000);
       fbInterface.getFbLoginState($scope, true);
 
    }
@@ -33,6 +76,7 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
    
    //generate the chart
    function generateChart(data){
+      console.log('overview data'+JSON.stringify(data));
       var configSeries = [];
       $scope.totalViews = 0;
       var colorObj = {'page_views':'#00796B','page_fans':'#B2DFDB','page_stories':'#FFFFFF'};
@@ -57,7 +101,7 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
             if(entry.name == 'page_stories') seriesName = 'Page Stories';
             
             $scope.configData.push([
-               Date.UTC(enDate[0], enDate[1], enDate[2]),
+               Date.UTC(enDate[0], enDate[1]-1, enDate[2]),
                value[1]
             ]);
          });         
@@ -86,26 +130,56 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
       $rootScope.$broadcast('getLocations',{addData:$scope.arrAdds});
    };
    
-   $scope.getPageDetails = function (page, pageTimestamps, changedTime){
-      
-      var serviceUrl = Digin_Engine_API1 + 'pageoverview?metric_names=[%27page_views%27,%27page_fans%27,%27page_stories%27]&token=' 
+   $scope.getPageDetails = function (page, pageTimestamps, changedTime){ 
+      var serviceUrl = Digin_Engine_API3 + 'pageoverview?metric_names=[%27page_views%27,%27page_fans%27,%27page_stories%27]&token=' 
       + page.accessToken + '&since='+pageTimestamps.sinceStamp+'&until='+pageTimestamps.untilStamp;
       
       getServiceResponse(serviceUrl, function(data){
          console.log('chart data:'+JSON.stringify(data));
          generateChart(data);
-         serviceUrl = Digin_Engine_API1 + 'fbpostswithsummary?token=' + page.accessToken + '&%27since%27='+pageTimestamps.sinceStamp+'&%27until%27='+pageTimestamps.untilStamp;
+         serviceUrl = Digin_Engine_API3 + 'fbpostswithsummary?token=' + page.accessToken + '&since='+pageTimestamps.sinceStamp+'&until='+pageTimestamps.untilStamp;
          getServiceResponse(serviceUrl, function(data){
+            console.log('posts:'+JSON.stringify(data));
             $scope.postsObj = data;
             $scope.arrAdds = [];
             $scope.postCount = data.length;
-            serviceUrl = Digin_Engine_API1 + 'demographicsinfo?token=' + page.accessToken;
-            getServiceResponse(serviceUrl, function(data){
-               setMap(data);
-               $scope.page = page;
-               if(!changedTime)
-               $scope.activePageSearch = !$scope.activePageSearch;
+            $scope.postIds = [];
+            $scope.postsObj.forEach(function(postEntry){
+               $scope.postIds.push(postEntry.id);
             });
+            //$scope.postIds.push("908260585925557");
+            serviceUrl = Digin_Engine_API3 +'sentimentanalysis?tokens=%27' + page.accessToken + '%27&source=facebook&post_ids='+JSON.stringify($scope.postIds);
+            getServiceResponse(serviceUrl, function(data){
+               console.log(JSON.stringify(data));
+               var sentIcons = {'positive': 'fa fa-smile-o',
+                                'negative': 'fa fa-frown-o',
+                                'neutral': 'fa fa-meh-o'}; 
+               //assuming the data retreived is in the same order of the $scope.postIds 
+               for(i=0;i<data.length;i++){
+                  $scope.postsObj[i]['sentiment'] = {"res":data[i].sentiment,
+                                                     "pol":data[i].polarity,
+                                                     "ico":sentIcons[data[i].sentiment]};
+                  
+               }
+               console.log("post result:"+JSON.stringify($scope.postsObj));
+               serviceUrl = Digin_Engine_API3 + 'demographicsinfo?token=' + page.accessToken;
+               getServiceResponse(serviceUrl, function(data){
+                  $scope.wordArray = [['practically', 85],
+                    ['odd', 83],
+                    ['wash', 82],
+                    ['sing', 80],
+                    ['inch', 80],
+                    ['size', 79],
+                    ['secret', 79],
+                    ['who\'s', 79],
+                    ['clock', 76]];
+                  $scope.$apply();
+                  setMap(data);
+                  $scope.page = page;
+                  if(!changedTime)
+                  $scope.activePageSearch = !$scope.activePageSearch;
+               });
+            });            
          });
       });   
    };
@@ -166,6 +240,8 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
           }
       });
    };
+   
+
 
 });
 

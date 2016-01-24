@@ -104,12 +104,15 @@
                             </div>
 
                             <div class="page-search-warp">
+<!--
                                 <div class="p-l-20 ">
                                     <a href="javascript:void(0)" data-ng-click="onFilterData()" class="inline-block">
                                         <small class="small-text">search page data</small>
                                         <i class="ti-search pull-right"></i>
                                     </a>
                                 </div>
+-->
+<!--
                                 <div layout="row">
                                    <div>
                                     <md-date-picker model="sinceDate" label="Since" dialog-md-theme="datePickerTheme"/>
@@ -117,11 +120,25 @@
                                    <div>
                                     <md-date-picker model="untilDate" label="Until" dialog-md-theme="datePickerTheme"/>
                                    </div>
-                                    <md-button class="md-primary" ng-click="changeTimeRange()">Search</md-button>
+                                    <md-button class="md-primary" ng-click="changeTimeRange()">
+                                       <i class="ti-search pull-right"></i>
+                                    </md-button>
                                 </div>
+-->
                             </div>
                         </div>
-<!--                        <div class="col-md-6">-->
+                        <div class="col-md-6">
+                           <div layout="row">
+                                   <div>
+                                    <md-date-picker model="sinceDate" label="Since" dialog-md-theme="datePickerTheme"/>
+                                   </div>
+                                   <div>
+                                    <md-date-picker model="untilDate" label="Until" dialog-md-theme="datePickerTheme"/>
+                                   </div>
+                                    <md-button class="md-primary" ng-click="changeTimeRange()">
+                                       <i class="ti-search pull-right"></i>
+                                    </md-button>
+                                </div>
                             <!-- posts -->
                         <!--    <ul class="list-justified text-center">
                                 <li>
@@ -148,7 +165,7 @@
                                     <p class="text-muted graph-h5">Likes</p>
                                 </li>
                             </ul> -->
-<!--                        </div>-->
+                        </div>
                     </div>
                 </div>
 
@@ -158,6 +175,20 @@
         <div class="graph-main-wrap">
             <!-- body chart wrap -->
             <div class="graph-body">
+                <div>
+                  <md-card class="md-default-theme overflow-none fb-graph-bg">
+                            <div class="graph-fb-wrap">
+                                <div class="text-left col-sm-6">
+                                    <h2 class="graph-h2">
+                                        Sentiment Analysis
+                                    </h2>
+                                </div>
+                                <div class="graph-chart-body">
+                                    <highchart id="fbChart" config="sentimentConfig"></highchart>
+                                </div>
+                            </div>
+                        </md-card>
+                </div>
                 <div layout="row" layout-wrap>
                     <div flex="60">
                         <md-card class="md-default-theme overflow-none fb-graph-bg">
@@ -192,7 +223,7 @@
 
                     <div layout="row" layout-wrap>
                         <div flex>
-                            <div layout="column" layout-align="center center" layout-wrap flex>
+                            <div layout="row" layout-align="center center" layout-wrap>
                                 <!-- Likes -->
                                 <div flex="30">
                                     <md-card class="md-default-theme">
@@ -278,15 +309,27 @@
                                 </div>
 
 
-                            </div>
-                            <div layout="column" layout-align="center center" layout-wrap flex>
-                               <highchart id="fbChart" config="highchartsNG"></highchart>
-                           </div>    
+                           </div>
                         </div>
                         <!-- Post types -->
                          
                     </div>
                 </div>
+                <div class="post-wrap">
+                   <div layout="row" layout-wrap>
+                       <div flex>
+                           <div layout="row" layout-align="center center" layout-wrap>
+                               <div flex="90">
+                                   <md-card class="md-default-theme">
+                                       <div class="md-content__body" layout-align="center center">
+                                          <digin-word-cloud words="wordArray"></digin-word-cloud>
+                                       </div>
+                                   </md-card>
+                               </div>
+                           </div>
+                       </div>		 
+                   </div>
+               </div>   
             </div>
 
             <!-- Posts details-->
@@ -322,6 +365,9 @@
                                             <td>
                                                 Created
                                             </td>
+                                            <td>
+                                                Sentiment
+                                            </td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -341,7 +387,7 @@
                                                     <div data-ng-if="post.image_url==null">
                                                         {{post.url}}
                                                     </div>
-                                                    <img class="post-image" data-ng-src="{{post.picture}}">
+                                                    <img class="post-image" style="width:80px;height:80px;" data-ng-src="{{post.picture}}">
                                                 </div>
                                             </td>
                                             <td>
@@ -355,6 +401,13 @@
                                             </td>
                                             <td>
                                                 <code ng-bind="post.created_time | date:'dd MMM yyyy'">{{post.created_time}}</code>
+                                            </td>
+                                            <td>
+                                               <div>
+                                                 <i class="{{post.sentiment.ico}}"></i><br>
+                                                 <span>{{post.sentiment.pol}}</span>  
+                                               </div>
+                                                
                                             </td>
                                         </tr>
                                         </tbody>

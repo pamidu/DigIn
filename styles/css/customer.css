@@ -12,8 +12,8 @@
 }
 
 ::-webkit-scrollbar-track {
-   /* background-color: #eaeaea;
-    border-left: 1px solid #ccc;*/
+    /* background-color: #eaeaea;
+     border-left: 1px solid #ccc;*/
 }
 
 ::-webkit-scrollbar-thumb {
@@ -749,6 +749,7 @@ ul.list-justified > li p {
 
 .graph-fb-wrap > div {
     color: #ffffff;
+    width: 100%;
 }
 
 md-card md-card-content.card-primary {
@@ -808,7 +809,7 @@ md-card md-card-content.card-warning {
 .graph-main-header-text {
     padding-top: 10px;
 }
-   
+
 #content1 {
     overflow-x: hidden;
     height: 100% !important;
@@ -1126,7 +1127,7 @@ a:hover, a:active, a:link {
 
 .emotion-level-graph {
     height: 150px;
-   padding: 5px;
+    padding: 5px;
 }
 
 #emotionsLevel {
@@ -1377,6 +1378,44 @@ md-tab-content {
     color: #ff0000 !important;
 }
 
+/*social medial style*/
+
+.md-card-toolbar-actions {
+    display: inline;
+    float: right;
+}
+
+.md-card-toolbar-actions > i {
+    float: right;
+}
+
+.md-icon-1 {
+    font-size: 17px;
+    line-height: 32px !important;
+    height: 32px !important;
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    -webkit-transition: background 280ms ease-out, color 280ms ease-out;
+    transition: background 280ms ease-out, color 280ms ease-out;
+    width: 32px !important;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.md-icon-1.active, .md-icon-1:active, .md-icon-1:focus, .md-icon-1:hover {
+    background: rgba(0, 121, 107, 0.08) none repeat scroll 0 0;
+}
+
+.icheck-inline {
+    display: inline-block;
+    margin: 0 16px 16px 0;
+}
+
+.table-option {
+    height: 56px;
+    margin-top: -20px;
+}
 
 
 /* Animation*/

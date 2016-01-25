@@ -2,15 +2,15 @@
     <md-content>
        <div layout="column">
         <div class="card-body bg-color-grey-100 p-b-40">
-            <div layout="row" layout-wrap>
-               <img class="post-image" data-ng-src="{{myPost.picture}}">
-               <span>{{myPost.message}}</span>
+            <div layout="column" layout-wrap layout-align="center center">
+              <div class="margin-10">{{myPost.message}}</div>
+              <img class="post-image-postTemplate margin-10" data-ng-src="{{myPost.picture}}">
             </div>
-           <div layout="row">
-             <span>Likes:{{myPost.likes}}</span>
-             <span>Comments:{{myPost.comments}}</span>
-             <span>Shares:{{myPost.shares}}</span>
-          </div>
+            <div layout="row" layout-align="space-around center" class="margin-10">
+             <div>Likes:{{myPost.likes}}</div>
+             <div>Comments:{{myPost.comments}}</div>
+             <div>Shares:{{myPost.shares}}</div>
+            </div>
         </div>          
        </div>
     </md-content>

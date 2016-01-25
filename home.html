@@ -117,17 +117,17 @@
         </div>
     </div>
     <!-- headbar end -->
+    <!-- sidebar start -->
+    <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" ng-include
+         src="'views/ViewSidebar.html'">
+    </div>
+    <!-- sidebar end -->
     <!-- ui view start -->
 
     <ul ui-view layout="column" id="content1" style="height:100% !important;">
     </ul>
 
     <!-- ui view end -->
-    <!-- sidebar start -->
-    <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" ng-include
-         src="'views/ViewSidebar.html'">
-    </div>
-    <!-- sidebar end -->
     <!-- Common data source start -->
     <div class="commonDataSource" ng-include src="'views/ViewCommonDataSrc.html'" ng-controller="commonDataSrcInit">
     </div>

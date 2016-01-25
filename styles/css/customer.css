@@ -832,7 +832,7 @@ md-card md-card-content.card-warning {
 }
 
 .graph-map-content {
-    height: 350px;
+    height: 95%;
     overflow: hidden;
 }
 
@@ -955,6 +955,16 @@ md-card md-card-content.card-warning {
 .post-image {
     height: 150px;
     overflow: hidden;
+}
+
+.post-image-postTemplate {
+    height: 100px;
+    width:100px;
+    overflow: hidden;
+}
+
+.margin-10{
+    margin:10px;
 }
 
 .avatar {

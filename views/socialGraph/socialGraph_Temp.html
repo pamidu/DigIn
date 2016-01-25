@@ -205,15 +205,46 @@
                         </md-card>
                     </div>
                     <div flex="40">
-                        <md-card class="graph-map overflow-none">
-                            <div class="graph-map-content">
-                                <digin-map map-data="{{arrAdds}}"></digin-map>
+                        <md-card class="graph-map overflow-none fb-graph-bg">
+                            <div class="graph-fb-wrap">
+                                <div class="graph-map-content">
+                                    <digin-map map-data="{{arrAdds}}"></digin-map>
+                                </div>
+                                <div class="text-left col-sm-6" layout-margin>
+                                        <h2 class="graph-h2">
+                                            Location
+                                        </h2>
+                                </div>
                             </div>
-                            <md-card-content>
-                                <h2 class="graph-h2">
-                                    Location
-                                </h2>
-                            </md-card-content>
+                        </md-card>
+                    </div>
+                </div>
+                <div layout="row" layout-wrap>
+                    <div flex="50">
+                        <md-card class="md-default-theme overflow-none fb-graph-bg">
+                            <div class="graph-fb-wrap">
+                                <div class="text-left col-sm-6">
+                                    <h2 class="graph-h2">
+                                        Bipartite area 1
+                                    </h2>
+                                </div>
+                                <div class="graph-chart-body">
+                                    Bipartite content
+                                </div>
+                            </div>
+                        </md-card>
+                    </div>
+                    <div flex="50">
+                        <md-card class="md-default-theme overflow-none fb-graph-bg">
+                            <div class="graph-fb-wrap" style="overflow-y:scroll">
+                                <div class="text-left col-sm-6">
+                                    <h2 class="graph-h2">
+                                        Bipartite area 2
+                                    </h2>
+                                </div>
+                                <div class="graph-chart-body" ng-include="'bipartite.htm'" style="overflow-x:scroll">
+                                </div>
+                            </div>
                         </md-card>
                     </div>
                 </div>
@@ -225,7 +256,7 @@
                         <div flex>
                             <div layout="row" layout-align="center center" layout-wrap>
                                 <!-- Likes -->
-                                <div flex="30">
+                                <div flex="20">
                                     <md-card class="md-default-theme">
                                         <div class="md-content__body">
                                             <section class="home-mini-card">
@@ -252,7 +283,7 @@
                                     </md-card>
                                 </div>
 
-                                <div flex="30">
+                                <div flex="20">
                                     <!-- shares -->
                                     <md-card class="md-default-theme">
                                         <div class="md-content__body">
@@ -280,7 +311,7 @@
                                     </md-card>
                                 </div>
 
-                                <div flex="30">
+                                <div flex="20">
                                     <!-- comments -->
                                     <md-card class="md-default-theme">
                                         <div class="md-content__body">
@@ -308,6 +339,61 @@
                                     </md-card>
                                 </div>
 
+                                <div flex="20">
+                                    <!-- average engagement per week -->
+                                    <md-card class="md-default-theme">
+                                        <div class="md-content__body">
+                                            <section class="home-mini-card">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                    <span class="circle-icon md  bg-like m-l-10">
+                                                  <i class="color-white ti-comment"
+                                                     aria-hidden="true">
+                                                  </i>
+                                                 </span>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <h2 class=" graph-h1 color-accent">
+                                                             {{avgEngagementPerWeek}}
+                                                        </h2>
+
+                                                        <p class="font-color-100">
+                                                            Average Engagement Per Week
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </md-card>
+                                </div>
+
+                                <div flex="20">
+                                    <!-- total engagement this week -->
+                                    <md-card class="md-default-theme">
+                                        <div class="md-content__body">
+                                            <section class="home-mini-card">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                    <span class="circle-icon md  bg-like m-l-10">
+                                                  <i class="color-white ti-comment"
+                                                     aria-hidden="true">
+                                                  </i>
+                                                 </span>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <h2 class=" graph-h1 color-accent">
+                                                             {{totalEngagementThisWeek}}
+                                                        </h2>
+
+                                                        <p class="font-color-100">
+                                                            Total Engagement This Week
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </md-card>
+                                </div>
 
                            </div>
                         </div>
@@ -363,6 +449,9 @@
                                                 Comments
                                             </td>
                                             <td>
+                                                Engagement
+                                            </td>
+                                            <td>
                                                 Created
                                             </td>
                                             <td>
@@ -389,6 +478,7 @@
                                                     </div>
                                                     <img class="post-image" style="width:80px;height:80px;" data-ng-src="{{post.picture}}">
                                                 </div>
+                                                <md-tooltip md-direction="bottom">{{post.message}}</md-tooltip>
                                             </td>
                                             <td>
                                                <code>{{post.likes}}</code>
@@ -398,6 +488,9 @@
                                             </td>
                                             <td>
                                                 <code>{{post.comments}}</code>
+                                            </td>
+                                            <td>
+                                                <code>{{post.comments+post.shares}}</code>
                                             </td>
                                             <td>
                                                 <code ng-bind="post.created_time | date:'dd MMM yyyy'">{{post.created_time}}</code>

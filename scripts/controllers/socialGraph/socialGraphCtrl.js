@@ -5,6 +5,8 @@
 routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices, $http, Digin_Engine_API3, $rootScope, $mdDialog) {
 
    $scope.totalLikes = 0;
+   $scope.avgEngagementPerWeek = 23;
+   $scope.totalEngagementThisWeek = 30;
    
    $scope.sentimentConfig = {
     options:{chart:{type:"line",backgroundColor:null,spacingBottom:15,spacingTop:10,spacingLeft:10,spacingRight:10,height:300},plotOptions:{column:{borderWidth:0,groupPadding:0,shadow:!1}}},

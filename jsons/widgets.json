@@ -70,6 +70,7 @@
             "initController": "fbInit",
             "widView": "views/ViewFacebook.html",
             "color": "#3F51B5",
+            "href": "#social-graph-fb",
             "widConfig": {
                 "options": {
                     "chart": {
@@ -109,6 +110,17 @@
             }
         }, {
 
+            "title": "Twitter",
+            "icon": "styles/css/images/icons/twitter.svg",
+            "type": "Social Media",
+            "Description": "Timeline, Tags, Other data",
+            "initTemplate": "InitConfigTwitter",
+            "initController": "TwitterInit",
+            "widView": "views/ViewTwitter.html",
+            "color": "#2196F3",
+            "href": "#social-graph-twitter" 
+        }, {
+
             "title": "Google+",
             "icon": "styles/css/images/icons/googleplus.svg",
             "type": "Social Media",
@@ -117,16 +129,6 @@
             "initController": "googlePlusInit",
             "widView": "views/ViewGoogleplus.html",
             "color": "#FF5722"
-        }, {
-
-            "title": "Twitter",
-            "icon": "styles/css/images/icons/twitter.svg",
-            "type": "Social Media",
-            "Description": "Timeline, Tags, Other data",
-            "initTemplate": "InitConfigTwitter",
-            "initController": "TwitterInit",
-            "widView": "views/ViewTwitter.html",
-            "color": "#2196F3"
         }, {
 
             "title": "LinkedIn",

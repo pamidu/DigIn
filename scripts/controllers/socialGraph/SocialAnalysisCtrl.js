@@ -1,4 +1,11 @@
-routerApp.controller('socialAnalysisCtrl', function ($scope,$mdDialog,$location) {
+routerApp.controller('socialAnalysisCtrl', function ($scope,$mdDialog,$location,$http) {
+
+	getJSONData($http,'widgets',function(data){
+     $scope.Widgets=data;
+    });
+
+	$scope.selected = "Social Media";
+
     $scope.close = function () {
       
          $( "md-tabs.footer-bar > md-tabs-wrapper" ).children().show();

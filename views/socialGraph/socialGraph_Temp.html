@@ -39,6 +39,21 @@
             </div>
         </md-content>
         <div class="fb-page-search-wrap">
+            <md-card ng-show="preloader" class="md-default-theme message-card" flex>
+                                        <div class="md-content__body" layout-margin>
+                                            <section class="home-mini-card">
+                                                <div>
+                                                    <div class="col-md-8" layout="row" layout-align="center center">
+                                                        <h4 ng-show="errorMessage" class=" graph-h5 color-accent error-message">
+                                                           Unexpected Error Occured. Please Try Again!
+                                                        </h4>
+                                                        <img class="social-graph-preloader" 
+                                                        ng-show="preloader && !errorMessage" src="styles/css/images/preloaders/facebook.gif" alt="Washed Out">
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+            </md-card>
             <md-content class="md-default-theme overflow-none ">
                 <div class="md-content__body">
                     <div class="fb-pages-loading" data-ng-if="isPageLoading">
@@ -51,9 +66,9 @@
                         <md-list-item class="md-3-line md-no-proxy ng-scope" data-ng-repeat="page in fbPages"
                                       role="listitem">
                             <button class="md-fab   md-button
-                                md-default-theme md-fab-md" ng-click="viewPageDetails(page)"
+                                md-default-theme md-fab-md social-graph-fab" ng-click="viewPageDetails(page)"
                                      aria-label="button">
-                                <i class="fa fa-cogs fa-lg"></i>
+                                <i class="ion-social-facebook-outline ion-30"></i>
                             </button>
 
                             <div class="md-list-item-text text-right">
@@ -506,9 +521,10 @@
                                                 <code ng-bind="post.created_time | date:'dd MMM yyyy'">{{post.created_time}}</code>
                                             </td>
                                             <td>
-                                               <div>
-                                                 <i class="{{post.sentiment.ico}}"></i><br>
-                                                 <span>{{post.sentiment.pol}}</span>  
+                                               <div layout="column" layout-align="center center">
+                                                 <img class="sentiment-emoticon" ng-src="{{post.sentiment.ico}}">
+                                                 <br>
+                                                 <div>{{post.sentiment.pol}}</div>  
                                                </div>
                                                 
                                             </td>

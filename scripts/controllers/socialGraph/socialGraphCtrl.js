@@ -28,6 +28,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         }).success(function (data, status) {
             callback(data);
         }).error(function (data, status) {
+            $scope.errorMessage = true;
             console.log('unexpected error occured');
         });
     };
@@ -150,9 +151,9 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
          serviceUrl = Digin_Engine_API3 + 'sentimentanalysis?tokens=%27' + page.accessToken + '%27&source=facebook&post_ids=' + JSON.stringify($scope.postIds);
             getServiceResponse(serviceUrl, function(data) {
                var sentIcons = {
-                  'positive': 'fa fa-smile-o',
-                  'negative': 'fa fa-frown-o',
-                  'neutral': 'fa fa-meh-o'
+                  'positive': 'styles/css/images/socialAnalysis/happyFace.png',
+                  'negative': 'styles/css/images/socialAnalysis/sadFace.png',
+                  'neutral': 'styles/css/images/socialAnalysis/neutralFace.png'
                };
                
                //assuming the data retreived is in the same order of the $scope.postIds 
@@ -162,6 +163,8 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                      "pol": data[i].polarity,
                      "ico": sentIcons[data[i].sentiment]
                   };
+                  console.log("$scope.postsObj[i]['sentiment']");
+                  console.log($scope.postsObj[i]['sentiment']);
                   
                   $scope.totalEngagement += $scope.postsObj[i].shares + $scope.postsObj[i].comments;
                   $scope.engageLikes += $scope.postsObj[i].likes;
@@ -219,10 +222,13 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     $scope.activePageSearch = true;
 
     $scope.viewPageDetails = function (page) {
+        $scope.preloader = false;   
+        $scope.errorMessage = false;
         $scope.untilDate = new Date();
         var secondDate = new Date();
         secondDate.setDate($scope.untilDate.getDate() - 60);
         $scope.sinceDate = secondDate;
+        $scope.preloader = true;
         $scope.getPageDetails(page, getBoundaryTimestamps(60, new Date()));
     };
 

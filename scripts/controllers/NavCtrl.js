@@ -31,6 +31,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
 
         $scope.adjustUI = function () {
+            $('body').css("padding-top", "0px");
             $('#content1').css("top", "10px");
             $('.h_iframe').css("height", "100%");
         }

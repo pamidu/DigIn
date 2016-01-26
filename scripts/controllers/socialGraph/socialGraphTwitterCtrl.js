@@ -6,7 +6,7 @@
  /* socialGraphTwitterCtrl - Main controller
  */
 
-routerApp.controller('socialGraphTwitterCtrl', function ($scope, config) {
+routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootScope) {
 
    
 
@@ -177,16 +177,16 @@ routerApp.controller('socialGraphTwitterCtrl', function ($scope, config) {
         loading: false
     }
      
-     $scope.wordArray = [['practically', 85],
-                    ['odd', 83],
-                    ['wash', 82],
-                    ['sing', 80],
-                    ['inch', 80],
-                    ['size', 79],
-                    ['secret', 79],
-                    ['who\'s', 79],
-                    ['clock', 76],
-                    ['company', 64],
+     $scope.wordArray = [['bigquery', 85],
+                    ['digin', 100],
+                    ['bigdata', 82],
+                    ['python', 80],
+                    ['analytics', 80],
+                    ['business', 79],
+                    ['intelligence', 79],
+                    ['belgium', 79],
+                    ['Happy', 76],
+                    ['Newyear', 64],
                     ['view', 52],
                     ['suit', 40],
                     ['forever', 38],
@@ -227,6 +227,8 @@ routerApp.controller('socialGraphTwitterCtrl', function ($scope, config) {
                     ['certain', 16],
                     ['plate', 16],
                     ['darkness', 16]];
+   
+   $rootScope.$broadcast('getWordCloudData',{wordData:$scope.wordArray});
 
 });
 

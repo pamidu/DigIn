@@ -2,15 +2,100 @@
     <md-content>
        <div layout="column">
         <div class="card-body bg-color-grey-100 p-b-40">
-            <div layout="row" layout-wrap>
-               <img class="post-image" data-ng-src="{{myPost.picture}}">
-               <span>{{myPost.message}}</span>
+            <div layout="column" layout-wrap layout-align="center center">
+            <md-card class="md-default-theme" flex>
+                                        <div class="md-content__body">
+                                            <section class="home-mini-card">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                    <img class="post-image-postTemplate margin-10" data-ng-src="{{myPost.picture}}">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <h4 class=" graph-h5 color-accent">
+                                                           {{myPost.message}}
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+              </md-card>
+              
+              
             </div>
-           <div layout="row">
-             <span>Likes:{{myPost.likes}}</span>
-             <span>Comments:{{myPost.comments}}</span>
-             <span>Shares:{{myPost.shares}}</span>
-          </div>
+            <div layout="row" layout-align="space-around center" class="margin-10">
+              <md-card class="md-default-theme" flex>
+                                        <div class="md-content__body">
+                                            <section class="home-mini-card">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                    <span class="circle-icon md  bg-like m-l-10">
+                                                  <i class="ion-thumbsup"
+                                                     aria-hidden="true">
+                                                  </i>
+                                                 </span>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <h2 class=" graph-h2 color-accent">
+                                                            {{myPost.likes}}
+                                                        </h2>
+
+                                                        <p class="font-color-100">
+                                                            Likes
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                </md-card>
+                <md-card class="md-default-theme" flex>
+                                        <div class="md-content__body">
+                                            <section class="home-mini-card">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                    <span class="circle-icon md  bg-like m-l-10">
+                                                  <i class="ion-android-list"
+                                                     aria-hidden="true">
+                                                  </i>
+                                                 </span>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <h2 class=" graph-h2 color-accent">
+                                                            {{myPost.likes}}
+                                                        </h2>
+
+                                                        <p class="font-color-100">
+                                                            Comments
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                </md-card>
+                <md-card class="md-default-theme" flex>
+                                        <div class="md-content__body">
+                                            <section class="home-mini-card">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                    <span class="circle-icon md  bg-like m-l-10">
+                                                  <i class="ion-share"
+                                                     aria-hidden="true">
+                                                  </i>
+                                                 </span>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <h2 class=" graph-h2 color-accent">
+                                                            {{myPost.shares}}
+                                                        </h2>
+
+                                                        <p class="font-color-100">
+                                                            Shares
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                </md-card>
+            </div>
         </div>          
        </div>
     </md-content>

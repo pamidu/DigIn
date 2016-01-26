@@ -10,7 +10,7 @@
  Add New dashboard
 -->
 
-<md-dialog class="social-analysis width-450" ng-controller="socialAnalysisCtrl">
+<md-dialog class="social-analysis" ng-controller="socialAnalysisCtrl">
     <div layout="column">
         <div layout="row">
             <div class="card-head">
@@ -25,10 +25,21 @@
         </div>
         <div class="header-line-bottom"></div>
         <div class="card-body bg-color-grey-100 p-b-40">
-            <div layout="row" layout-wrap>
+            <div layout="row" layout-align="center center" layout-wrap>
+
+                <div class="select-card-btn asset" ng-repeat="widget in Widgets" ng-show="widget.type=='Social Media'">
+                    <a href="{{widget.href}}" ng-click="close()">
+                        <img ng-src="{{widget.icon}}"
+                             alt=""
+                             src="{{widget.icon}}">
+                    </a>
+                        <span class="size graph-h2">
+                            {{widget.title}}
+                        </span>
+                </div>
 
                 <!-- facebook -->
-                <div class="select-card-btn asset">
+                <!-- <div class="select-card-btn asset">
                     <a href="#social-graph-fb" ng-click="close()">
                         <img ng-src="styles/css/images/icons/facebook.svg"
                              alt="Facebook Pages"
@@ -37,11 +48,11 @@
                         <span class="size graph-h2">
                             facebook
                         </span>
-                </div>
+                </div> -->
 
 
                 <!-- twitter -->
-                <div>
+                <!-- <div>
                     <div class="select-card-btn asset">
                         <a href="#social-graph-twitter" ng-click="close()">
                             <img ng-src="styles/css/images/icons/twitter.svg"
@@ -52,7 +63,7 @@
                             twitter
                         </span>
                     </div>
-                </div>
+                </div> -->
             </div>
 
 

@@ -60,7 +60,7 @@
 /*widget mapped data*/
 .widget0m-data-dialog {
     width: 50%;
-    height: 400px;
+    height: 450px;
     overflow: hidden;
 }
 
@@ -79,6 +79,7 @@
     overflow: hidden;
     max-height: 300px;
     min-height: 300px;
+    width: 100%;
 }
 
 .widget0m-mapped-data:hover {

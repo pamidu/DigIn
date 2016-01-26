@@ -884,7 +884,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             console.log(tempObj);
 
             $rootScope.Dashboards.push(tempObj);
-            showToast(obj.title + " created!");
+            if(obj.title != undefined){
+               showToast(obj.title + " created!");
+            }
         };
 
         $rootScope.selectCurrentDashboard = function (tab) {

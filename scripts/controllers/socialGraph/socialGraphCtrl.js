@@ -5,6 +5,8 @@
 routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphServices, $http, Digin_Engine_API3, $rootScope, $mdDialog) {
 
     $scope.totalLikes = 0;
+    $scope.totalEngagement = 0;
+   $scope.engageLikes = 0;
    
    $scope.sentimentConfig = {options:{chart:{type:"line",backgroundColor:null,spacingBottom:15,spacingTop:10,spacingLeft:10,spacingRight:10,height:300},plotOptions:{column:{borderWidth:0,groupPadding:0,shadow:!1}}},credits:{enabled:false},xAxis:{type:"datetime"},yAxis:{labels:{style:{color:"#fff",fontSize:"12px",fontFamily:"Ek Mukta, sans-serif",fontWeight:"200"},formatter:function(){return this.value}}},plotOptions:{column:{pointPadding:.1,borderWidth:0}},title:{text:""},loading:!1};
 
@@ -118,83 +120,99 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         $rootScope.$broadcast('getLocations', {addData: $scope.arrAdds});
     };
 
-    $scope.getPageDetails = function (page, pageTimestamps, changedTime){ 
-      var serviceUrl = Digin_Engine_API3 + 'pageoverview?metric_names=[%27page_views%27,%27page_fans%27,%27page_stories%27]&token=' 
-      + page.accessToken + '&since='+pageTimestamps.sinceStamp+'&until='+pageTimestamps.untilStamp;
+    $scope.getPageDetails = function(page, pageTimestamps, changedTime) {
       
-      getServiceResponse(serviceUrl, function(data){
-         console.log('chart data:'+JSON.stringify(data));
-         generateChart(data);
-         serviceUrl = Digin_Engine_API3 + 'fbpostswithsummary?token=' + page.accessToken + '&since='+pageTimestamps.sinceStamp+'&until='+pageTimestamps.untilStamp;
-         getServiceResponse(serviceUrl, function(data){
-            console.log('posts:'+JSON.stringify(data));
-            $scope.postsObj = data;
-            $scope.arrAdds = [];
-            $scope.postCount = data.length;
-            $scope.postIds = [];
-            $scope.sentimentConfigData = [];
-            var sentimentConfigSeries = [];
-            $scope.postsObj.forEach(function(postEntry){
-               $scope.postIds.push(postEntry.id);
-            });
-            
-            serviceUrl = Digin_Engine_API3 +'buildwordcloudFB?token=%27' + page.accessToken + '%27&source=facebook';
-            getServiceResponse(serviceUrl, function(data){
-              var wordObjArr = [];
-              for (var key in data) {
-                 if (Object.prototype.hasOwnProperty.call(data, key)) {
-                     wordObjArr.push({
-                        name:key,
-                        val:data[key]
-                     }); 
-                 }
-              }
-                
-              $rootScope.$broadcast('getWordCloudData',{wordData:wordObjArr});  
-              // alert(JSON.stringify(data));
-               serviceUrl = Digin_Engine_API3 +'sentimentanalysis?tokens=%27' + page.accessToken + '%27&source=facebook&post_ids='+JSON.stringify($scope.postIds);
-               getServiceResponse(serviceUrl, function(data){
-                  var sentIcons = {'positive': 'fa fa-smile-o',
-                                   'negative': 'fa fa-frown-o',
-                                   'neutral': 'fa fa-meh-o'}; 
-                  //assuming the data retreived is in the same order of the $scope.postIds 
-                  for(i=0;i<data.length;i++){
-                     $scope.postsObj[i]['sentiment'] = {"res":data[i].sentiment,
-                                                        "pol":data[i].polarity,
-                                                        "ico":sentIcons[data[i].sentiment]};
-                     
-                     var x = $scope.postsObj[i].created_time.split('T')[0];            
+      //showing the page
+      $scope.page = page;
+      if (!changedTime) $scope.activePageSearch = !$scope.activePageSearch;
+      
+      //getting page overview data 
+      var serviceUrl = Digin_Engine_API3 + 'pageoverview?metric_names=[%27page_views%27,%27page_fans%27,%27page_stories%27]&token=' + page.accessToken + '&since=' + pageTimestamps.sinceStamp + '&until=' + pageTimestamps.untilStamp;
 
-                     var enDate = x.split('-');
-                     
-                     $scope.sentimentConfigData.push([
-                        Date.UTC(enDate[0], enDate[1]-1, enDate[2]),
-                        data[i].polarity
-                     ]);//
-                  }
-                   
-                     sentimentConfigSeries.push({
-                        type: 'line',
-                        name: 'Overall Sentiment',
-                        data: $scope.sentimentConfigData,
-                        color: '#fff'
-                     });
-                  
-                  $scope.sentimentConfig['series'] = sentimentConfigSeries;
-                  
-                  console.log("post result:"+JSON.stringify($scope.postsObj));
-                  serviceUrl = Digin_Engine_API3 + 'demographicsinfo?token=' + page.accessToken;
-                  getServiceResponse(serviceUrl, function(data){
-                     setMap(data);
-                     $scope.page = page;
-                     if(!changedTime)
-                     $scope.activePageSearch = !$scope.activePageSearch;
-                     
-                  });
-               });
-            });                        
+      getServiceResponse(serviceUrl, function(data) {
+         console.log('chart data:' + JSON.stringify(data));
+         generateChart(data);         
+      });
+      
+      //getting posts summary and sentiment data 
+      serviceUrl = Digin_Engine_API3 + 'fbpostswithsummary?token=' + page.accessToken + '&since=' + pageTimestamps.sinceStamp + '&until=' + pageTimestamps.untilStamp;
+      getServiceResponse(serviceUrl, function(data) {
+         console.log('posts:' + JSON.stringify(data));
+         $scope.postsObj = data;            
+         $scope.postCount = data.length;
+         $scope.postIds = [];
+         $scope.sentimentConfigData = [];
+         var sentimentConfigSeries = [];
+         $scope.postsObj.forEach(function(postEntry) {
+            $scope.postIds.push(postEntry.id);
          });
-      });   
+
+         serviceUrl = Digin_Engine_API3 + 'sentimentanalysis?tokens=%27' + page.accessToken + '%27&source=facebook&post_ids=' + JSON.stringify($scope.postIds);
+            getServiceResponse(serviceUrl, function(data) {
+               var sentIcons = {
+                  'positive': 'fa fa-smile-o',
+                  'negative': 'fa fa-frown-o',
+                  'neutral': 'fa fa-meh-o'
+               };
+               
+               //assuming the data retreived is in the same order of the $scope.postIds 
+               for (i = 0; i < data.length; i++) {
+                  $scope.postsObj[i]['sentiment'] = {
+                     "res": data[i].sentiment,
+                     "pol": data[i].polarity,
+                     "ico": sentIcons[data[i].sentiment]
+                  };
+                  
+                  $scope.totalEngagement += $scope.postsObj[i].shares + $scope.postsObj[i].comments;
+                  $scope.engageLikes += $scope.postsObj[i].likes;
+
+                  var x = $scope.postsObj[i].created_time.split('T')[0];
+
+                  var enDate = x.split('-');
+
+                  $scope.sentimentConfigData.push([
+                     Date.UTC(enDate[0], enDate[1] - 1, enDate[2]),
+                     data[i].polarity
+                  ]); //
+               }
+
+               sentimentConfigSeries.push({
+                  type: 'line',
+                  name: 'Overall Sentiment',
+                  data: $scope.sentimentConfigData,
+                  color: '#fff'
+               });
+
+               $scope.sentimentConfig['series'] = sentimentConfigSeries;
+
+               console.log("post result:" + JSON.stringify($scope.postsObj));                  
+            });
+      });
+      
+      //getting the data for the word cloud 
+      serviceUrl = Digin_Engine_API3 + 'buildwordcloudFB?token=%27' + page.accessToken + '%27&source=facebook';
+      getServiceResponse(serviceUrl, function(data) {
+         var wordObjArr = [];
+         for (var key in data) {
+            if (Object.prototype.hasOwnProperty.call(data, key)) {
+               wordObjArr.push({
+                  name: key,
+                  val: data[key]
+               });
+            }
+         }
+
+         $rootScope.$broadcast('getWordCloudData', {
+            wordData: wordObjArr
+         });               
+      });
+      
+      //getting location data for the map      
+      serviceUrl = Digin_Engine_API3 + 'demographicsinfo?token=' + page.accessToken;
+      getServiceResponse(serviceUrl, function(data) {
+         $scope.arrAdds = [];
+         setMap(data);
+      });
    };
     //on load current page details
     $scope.page = null;

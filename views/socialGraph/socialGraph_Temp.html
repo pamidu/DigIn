@@ -58,10 +58,6 @@
 
                             <div class="md-list-item-text text-right">
                                 <h3 class="graph-h2">{{page.name}}</h3>
-
-                                <p class="ng-binding">
-                                    I'll be in your neighborhood doing errands.
-                                </p>
                             </div>
                             <!-- ngIf: !$last -->
                             <md-divider md-inset="" ng-if="!$last" class="ng-scope md-default-theme"></md-divider>
@@ -241,12 +237,10 @@
                             <div class="graph-fb-wrap">
                                 <div class="text-left col-sm-6">
                                     <h2 class="graph-h2">
-                                        Bipartite area 1
+                                        Word Cloud
                                     </h2>
                                 </div>
-                                <div class="graph-chart-body">
-                                    Bipartite content
-                                </div>
+                                <digin-word-cloud words="wordArray"></digin-word-cloud>
                             </div>
                         </md-card>
                     </div>
@@ -255,7 +249,7 @@
                             <div class="graph-fb-wrap" style="overflow-y:scroll">
                                 <div class="text-left col-sm-6">
                                     <h2 class="graph-h2">
-                                        Bipartite area 2
+                                        Bipartite area
                                     </h2>
                                 </div>
                                 <div class="graph-chart-body" ng-include="'bipartite.htm'" style="overflow-x:scroll">

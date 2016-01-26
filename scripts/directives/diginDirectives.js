@@ -41,8 +41,8 @@ routerApp.directive('diginWordCloud', function() {
          
        scope.wordCloudInit = function (){
          var fill = d3.scale.category20();
-         var canvasWidth = 1127;
-         var canvasHeight = 110;
+         var canvasWidth = 525;
+         var canvasHeight = 320;
 //         alert('width:'+canvasWidth+' height:'+canvasHeight); 
   d3.layout.cloud().size([canvasWidth, canvasHeight])
       .words(scope.words.map(function(d) {
@@ -69,7 +69,7 @@ d3.select(window)
         .attr("width", canvasWidth)
         .attr("height", canvasHeight)
       .append("g")
-        .attr("transform", "translate(550,60)")
+        .attr("transform", "translate(225,160)")
       .selectAll("text")
         .data(words)
       .enter().append("text")

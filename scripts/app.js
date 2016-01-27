@@ -133,8 +133,8 @@ routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$
         controller: 'socialGraphCtrl',
         templateUrl: "views/socialGraph/socialGraph_Temp.html"
 
-    }).state('Social Analysis', {
-        url: "/social-analysis",
+    }).state('Social Media Analytics', {
+        url: "/social-media-analytics",
         controller: 'SocialAnalysisCtrl',
         //templateUrl: "views/extended-analytics.html"
 

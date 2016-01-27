@@ -39,6 +39,21 @@
             </div>
         </md-content>
         <div class="fb-page-search-wrap">
+            <md-card ng-show="preloader" class="md-default-theme message-card" flex>
+                                        <div class="md-content__body" layout-margin>
+                                            <section class="home-mini-card">
+                                                <div>
+                                                    <div class="col-md-8" layout="row" layout-align="center center">
+                                                        <h4 ng-show="errorMessage" class=" graph-h5 color-accent error-message">
+                                                           Unexpected Error Occured. Please Try Again!
+                                                        </h4>
+                                                        <img class="social-graph-preloader" 
+                                                        ng-show="preloader && !errorMessage" src="styles/css/images/preloaders/facebook.gif" alt="Washed Out">
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+            </md-card>
             <md-content class="md-default-theme overflow-none ">
                 <div class="md-content__body">
                     <div class="fb-pages-loading" data-ng-if="isPageLoading">
@@ -51,17 +66,13 @@
                         <md-list-item class="md-3-line md-no-proxy ng-scope" data-ng-repeat="page in fbPages"
                                       role="listitem">
                             <button class="md-fab   md-button
-                                md-default-theme md-fab-md" ng-click="viewPageDetails(page)"
+                                md-default-theme md-fab-md social-graph-fab" ng-click="viewPageDetails(page)"
                                      aria-label="button">
-                                <i class="fa fa-cogs fa-lg"></i>
+                                <i class="ion-social-facebook-outline ion-30"></i>
                             </button>
 
                             <div class="md-list-item-text text-right">
                                 <h3 class="graph-h2">{{page.name}}</h3>
-
-                                <p class="ng-binding">
-                                    I'll be in your neighborhood doing errands.
-                                </p>
                             </div>
                             <!-- ngIf: !$last -->
                             <md-divider md-inset="" ng-if="!$last" class="ng-scope md-default-theme"></md-divider>
@@ -216,14 +227,20 @@
                     </div>
                     <div flex="40">
                         <md-card class="graph-map overflow-none fb-graph-bg">
-                            <div class="graph-fb-wrap">
+                            <div class="graph-fb-wrap wrap-overflow ">
                                 <div class="graph-map-content">
                                     <digin-map map-data="{{arrAdds}}"></digin-map>
                                 </div>
                                 <div class="text-left col-sm-6" layout-margin>
-                                        <h2 class="graph-h2">
-                                            Location
-                                        </h2>
+                                    <h2 class="graph-h2">
+                                        Location
+                                        <div class="md-card-toolbar-actions">
+                                            <i class="md-icon-1 ti-view-list-alt"
+                                               ng-click="onClickViewTable('map')"
+                                            ></i>
+                                        </div>
+                                    </h2>
+
                                 </div>
                             </div>
                         </md-card>
@@ -235,12 +252,10 @@
                             <div class="graph-fb-wrap">
                                 <div class="text-left col-sm-6">
                                     <h2 class="graph-h2">
-                                        Bipartite area 1
+                                        Word Cloud
                                     </h2>
                                 </div>
-                                <div class="graph-chart-body">
-                                    Bipartite content
-                                </div>
+                                <digin-word-cloud words="wordArray"></digin-word-cloud>
                             </div>
                         </md-card>
                     </div>
@@ -249,7 +264,7 @@
                             <div class="graph-fb-wrap" style="overflow-y:scroll">
                                 <div class="text-left col-sm-6">
                                     <h2 class="graph-h2">
-                                        Bipartite area 2
+                                        Bipartite area
                                     </h2>
                                 </div>
                                 <div class="graph-chart-body" ng-include="'bipartite.htm'" style="overflow-x:scroll">
@@ -364,7 +379,7 @@
                                                     </div>
                                                     <div class="col-md-8">
                                                         <h2 class=" graph-h1 color-accent">
-                                                             {{avgEngagementPerWeek}}
+                                                             {{totalEngagement/engageLikes| number:2}}
                                                         </h2>
 
                                                         <p class="font-color-100">
@@ -392,7 +407,7 @@
                                                     </div>
                                                     <div class="col-md-8">
                                                         <h2 class=" graph-h1 color-accent">
-                                                             {{totalEngagementThisWeek}}
+                                                             {{totalEngagement}}
                                                         </h2>
 
                                                         <p class="font-color-100">
@@ -506,9 +521,10 @@
                                                 <code ng-bind="post.created_time | date:'dd MMM yyyy'">{{post.created_time}}</code>
                                             </td>
                                             <td>
-                                               <div>
-                                                 <i class="{{post.sentiment.ico}}"></i><br>
-                                                 <span>{{post.sentiment.pol}}</span>  
+                                               <div layout="column" layout-align="center center">
+                                                 <img class="sentiment-emoticon" ng-src="{{post.sentiment.ico}}">
+                                                 <br>
+                                                 <div>{{post.sentiment.pol}}</div>  
                                                </div>
                                                 
                                             </td>

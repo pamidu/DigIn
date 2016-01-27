@@ -38,12 +38,15 @@ routerApp.directive('diginWordCloud', function() {
       },
       template: '<div id="wordCanvas" style="height:100%;width:100%;"></div>',
       link: function(scope, element) {
+         
+       scope.wordCloudInit = function (){
          var fill = d3.scale.category20();
-         var canvasWidth = $('#wordCanvas').width();
-         var canvasHeight = $('#wordCanvas').height();
+         var canvasWidth = 525;
+         var canvasHeight = 320;
+//         alert('width:'+canvasWidth+' height:'+canvasHeight); 
   d3.layout.cloud().size([canvasWidth, canvasHeight])
       .words(scope.words.map(function(d) {
-        return {text: d[0], size: d[1]};
+        return {text: d.name, size: d.val+30};
       }))
       .rotate(function() { return ~~(Math.random() * 2) * 90; })
       .font("Impact")
@@ -53,11 +56,20 @@ routerApp.directive('diginWordCloud', function() {
       .start();
 
   function draw(words) {
+    var aspect = canvasWidth / canvasHeight,
+    chart = d3.select('#wordCanvas');
+d3.select(window)
+  .on("resize", function() {
+    var targetWidth = chart.node().getBoundingClientRect().width;
+    chart.attr("width", targetWidth);
+    chart.attr("height", targetWidth / aspect);
+  }); 
+     
     d3.select("#wordCanvas").append("svg")
         .attr("width", canvasWidth)
         .attr("height", canvasHeight)
       .append("g")
-        .attr("transform", "translate(230,70)")
+        .attr("transform", "translate(225,160)")
       .selectAll("text")
         .data(words)
       .enter().append("text")
@@ -71,6 +83,17 @@ routerApp.directive('diginWordCloud', function() {
         })
         .text(function(d) { return d.text; });
   }
+      };
+         
+         
+         
+         scope.$on('getWordCloudData',function(event, data){
+            console.log('word cloud data:'+JSON.stringify(data.wordData));            
+            scope.words = data.wordData;
+            scope.wordCloudInit();
+         });   
+         
+         
       }
   }
 });

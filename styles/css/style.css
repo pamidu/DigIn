@@ -1499,3 +1499,24 @@ md-backdrop.md-sidenav-backdrop{
 	background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
 	background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
 }
+
+.ion-30{        
+    font-size:30px;     
+}       
+.social-graph-fab {     
+    background-color:#009688 !important;        
+}       
+.message-card {     
+    height:auto;        
+}       
+.social-graph-preloader{       
+    height:50px;        
+    width:50px;     
+}
+.sentiment-emoticon{       
+    height:50px;        
+    width:50px;     
+}        
+.error-message{     
+    margin:auto;        
+}

@@ -1395,17 +1395,21 @@ md-tabs-wrapper{
     left: calc(100vw - 304px);
     top: 0;
     z-index:59;
+    overflow:auto;
     /* -webkit-transform: translate3d(0,0,0); */
     /* transform: translate3d(0,0,0); */
 }
 
 .sidenav-button {
-    min-width:0px;
-    z-index:101 !important;
-    position:absolute;
-    padding: 0px;
+    min-width: 0px;
+    z-index: 59 !important;
+    position: absolute;
+    top: 45vh;
+    left: -20px;
+    height: 10vh;
+    width: 20px;
     margin: 0px;
-    height: 100vh;
+    padding: 0px;
 }
 
 /* google plus widget */

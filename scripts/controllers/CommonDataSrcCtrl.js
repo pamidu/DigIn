@@ -27,45 +27,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
     }, {
         name: "MSSQL"
     }];
-
-    // $scope.chartTypes = [{
-    //     name: "Area",
-    //     type: "area",
-    //     icon: "styles/css/images/charts/commonSrc/areaChart.png"
-    // }, {
-    //     name: "Smooth area",
-    //     type: "areaspline",
-    //     icon: "styles/css/images/charts/commonSrc/smoothAreaChart.png"
-    // }, {
-    //     name: "Line",
-    //     type: "line",
-    //     icon: "styles/css/images/charts/commonSrc/lineChart.png"
-    // }, {
-    //     name: "Smooth line",
-    //     type: "spline",
-    //     icon: "styles/css/images/charts/commonSrc/lineChart.png"
-    // }, {
-    //     name: "Column",
-    //     type: "column",
-    //     icon: "styles/css/images/charts/commonSrc/columnChart.png"
-    // }, {
-    //     name: "Bar",
-    //     type: "bar",
-    //     icon: "styles/css/images/charts/commonSrc/barChart.png"
-    // }, {
-    //     name: "Pie",
-    //     type: "pie",
-    //     icon: "styles/css/images/charts/commonSrc/pieChart.png"
-    // }, {
-    //     name: "Scatter",
-    //     type: "scatter",
-    //     icon: "styles/css/images/charts/commonSrc/scatterPlot.png"
-    // }, {
-    //     name: "d3 visualization",
-    //     type: "d3 visualization",
-    //     icon: "styles/css/images/charts/d3Visualization/binning.png"
-    // }];
-
+    
     // $scope.toggleRight = buildToggler('right');
     $scope.toggleLeft = buildToggler('custom');
 
@@ -412,12 +374,19 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
          console.error("request timedout: ", xhr);
       }
 
-      var limit = 1000;
-      var queryString = "SELECT " + field
-                        + " FROM " + "[" + Digin_Engine_API_Namespace + "." + $scope.selTable + "]"
-                        + " GROUP BY " + field
-                        + " LIMIT " + limit.toString();
-
+      if($scope.selSrc=="MSSQL"){
+          var queryString = "SELECT " + field
+                         + " FROM " + "[" + "HutchDialogic" + "." + $scope.selTable + "]"
+                      + " GROUP BY " + field
+                        + " db=MSSQL";
+      }
+      if($scope.selSrc=="BigQuery"){
+          var limit = 1000;
+          var queryString = "SELECT " + field
+                            + " FROM " + "[" + Digin_Engine_API_Namespace + "." + $scope.selTable + "]"
+                            + " GROUP BY " + field
+                            + " LIMIT " + limit.toString();
+      }                  
       // xhr.open("get", Digin_Engine_API + "executeQuery?tablename=[" + $scope.selTable.split(":")[1] + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
       xhr.open("get", Digin_Engine_API + "executeQuery?query=" + queryString, /*async*/ true);
 
@@ -425,6 +394,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
       console.log(queryString);
 
       xhr.send();
+
 
    };
 

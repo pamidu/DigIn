@@ -2,9 +2,12 @@
  note: some of the scope variables are initialized inside fbInterface
  */
 
-routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphServices, $http, Digin_Engine_API3, $rootScope, $mdDialog) {
+routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphServices, $http,
+                                                  Digin_Engine_API3, $rootScope, $mdDialog,
+                                                  $timeout) {
 
     $scope.totalLikes = 0;
+    $scope.apiUrl = Digin_Engine_API3;
 
     $scope.sentimentConfig = {
         options: {
@@ -88,7 +91,6 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     var configSeries = [];
 
     function generateChart(data) {
-        console.log('overview data' + JSON.stringify(data));
         configSeries = [];
         $scope.totalViews = 0;
         var colorObj = {'page_views': '#00796B', 'page_fans': '#B2DFDB', 'page_stories': '#FFFFFF'};
@@ -169,8 +171,15 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
             }
         }
 
+
         $rootScope.$broadcast('getLocations', {addData: $scope.arrAdds});
     };
+
+
+    $scope.finishLoading = function () {
+
+    }
+
 
     $scope.getPageDetails = function (page, pageTimestamps, changedTime) {
         var serviceUrl = Digin_Engine_API3 + 'pageoverview?metric_names=[%27page_views%27,%27page_fans%27,%27page_stories%27]&token='
@@ -225,10 +234,19 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                         if (!changedTime)
                             $scope.activePageSearch = !$scope.activePageSearch;
                     });
+
+                    serviceUrl = Digin_Engine_API3 + 'buildbipartite?token=%27' + page.accessToken + '%27&source=facebook&post_ids=' + JSON.stringify($scope.postIds);
+                    getServiceResponse(serviceUrl, function (data) {
+                        $scope.buildBipartite = data;
+                    });
                 });
             });
         });
     };
+
+    //dev damtih
+    //char Bipartite
+
 
     //on load current page details
     $scope.page = null;
@@ -291,7 +309,18 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     //dev damith
     //on click view current JSON data to Table
     $scope.onClickViewTable = function (_type) {
-
+        if (_type == 'map') {
+            $mdDialog.show({
+                controller: viewMapTableCtrl,
+                templateUrl: 'views/socialGraph/viewTableMap_Temp.html',
+                clickOutsideToClose: true,
+                locals: {
+                    dataAry: $scope.arrAdds,
+                    pageName: $scope.page
+                }
+            });
+            return;
+        }
         $mdDialog.show({
             controller: viewTableCtrl,
             templateUrl: 'views/socialGraph/viewTable_Temp.html',
@@ -306,10 +335,6 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
 
 });
 
-
-function singlePostCtrl($scope, fbPost) {
-    $scope.myPost = fbPost;
-};
 
 function viewTableCtrl($scope, $mdDialog, jsonData, pageName) {
     $scope.tableData = jsonData;
@@ -412,15 +437,11 @@ function viewTableCtrl($scope, $mdDialog, jsonData, pageName) {
     }
 };
 
-//onScroll change table hader
-routerApp.directive("fixOnScroll", function () {
-    return function (scope, element, attrs) {
-        var fixedDiv = attrs.fixedDiv;
-        element.bind("scroll", function () {
-            if (element.scrollLeft()) {
-                var leftPos = element.scrollLeft();
-                $(fixedDiv).scrollLeft(leftPos);
-            }
-        });
+function viewMapTableCtrl($scope, $mdDialog, dataAry, pageName) {
+    $scope.mapTblData = dataAry;
+
+    $scope.closeDialog = function () {
+        $mdDialog.hide();
     }
-});
+}
+

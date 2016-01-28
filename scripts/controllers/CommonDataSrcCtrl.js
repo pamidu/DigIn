@@ -28,44 +28,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         name: "SpreadSheet"
     }];
 
-    // $scope.chartTypes = [{
-    //     name: "Area",
-    //     type: "area",
-    //     icon: "styles/css/images/charts/commonSrc/areaChart.png"
-    // }, {
-    //     name: "Smooth area",
-    //     type: "areaspline",
-    //     icon: "styles/css/images/charts/commonSrc/smoothAreaChart.png"
-    // }, {
-    //     name: "Line",
-    //     type: "line",
-    //     icon: "styles/css/images/charts/commonSrc/lineChart.png"
-    // }, {
-    //     name: "Smooth line",
-    //     type: "spline",
-    //     icon: "styles/css/images/charts/commonSrc/lineChart.png"
-    // }, {
-    //     name: "Column",
-    //     type: "column",
-    //     icon: "styles/css/images/charts/commonSrc/columnChart.png"
-    // }, {
-    //     name: "Bar",
-    //     type: "bar",
-    //     icon: "styles/css/images/charts/commonSrc/barChart.png"
-    // }, {
-    //     name: "Pie",
-    //     type: "pie",
-    //     icon: "styles/css/images/charts/commonSrc/pieChart.png"
-    // }, {
-    //     name: "Scatter",
-    //     type: "scatter",
-    //     icon: "styles/css/images/charts/commonSrc/scatterPlot.png"
-    // }, {
-    //     name: "d3 visualization",
-    //     type: "d3 visualization",
-    //     icon: "styles/css/images/charts/d3Visualization/binning.png"
-    // }];
-
     // $scope.toggleRight = buildToggler('right');
     $scope.toggleLeft = buildToggler('custom');
 

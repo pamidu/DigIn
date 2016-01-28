@@ -55,7 +55,7 @@
                               <input ng-model="ser.name">
                             </md-input-container>
                             <md-select ng-model="ser.filter" placeholder="Select a filter" ng-change="filterData(ser.filter)">
-                                <md-option value="{{fil}}" ng-repeat="fil in filterAttributes">{{ fil }}</md-option>
+                                <md-option ng-if="!fil.isMet" value="{{fil.method}}" ng-repeat="fil in filterAttributes">{{ fil.name }}</md-option>
                             </md-select>
                             <md-select ng-if="widget.commonSrcConfig.src !='DuoStore'" ng-model="ser.serName" placeholder="Select a series">
                                 <md-option ng-value="{{serItem}}" ng-repeat="serItem in arrayAttributes">{{ serItem.value }}</md-option>

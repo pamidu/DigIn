@@ -1,0 +1,58 @@
+{
+    "d": [{
+        "name": "Area",
+        "type": "area",
+        "configView": "InitConfigCommonSrc",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/areaChart.png"
+    }, {
+        "name": "Smooth area",
+        "type": "areaspline",
+        "configView": "InitConfigCommonSrc",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/smoothAreaChart.png"
+    }, {
+        "name": "Line",
+        "type": "line",
+        "configView": "InitConfigCommonSrc",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/lineChart.png"
+    }, {
+        "name": "Smooth line",
+        "type": "spline",
+        "configView": "InitConfigCommonSrc",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/lineChart.png"
+    }, {
+        "name": "Column",
+        "type": "column",
+        "configView": "InitConfigCommonSrc",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/columnChart.png"
+    }, {
+        "name": "Bar",
+        "type": "bar",
+        "configView": "InitConfigCommonSrc",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/barChart.png"
+    }, {
+        "name": "Pie",
+        "type": "pie",
+        "configView": "InitConfigCommonSrc",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/pieChart.png"
+    }, {
+        "name": "Scatter",
+        "type": "scatter",
+        "configView": "InitConfigCommonSrc",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/scatterPlot.png"
+    }, {
+       "name": "Metric",
+       "type": "metric",
+       "configView": "InitConfigCommonSrcMetric",
+       "resView": "views/common-data-src/res-views/ViewCommonSrcMetric.html",
+       "icon": "styles/css/images/charts/commonSrc/metrics.png"
+    }
+         ]
+}

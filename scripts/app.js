@@ -147,6 +147,10 @@ routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$
         url: '/social-graph-twitter',
         controller: 'socialGraphTwitterCtrl',
         templateUrl: "views/socialGraph/socialGraphTwitter_Temp.html"
+
+    }).state('salesForecast', {
+        url: '/sales-forecast',
+        templateUrl: "views/salesForecast/sales_forecast_Temp.html"
     });
 
     lkGoogleSettingsProvider.configure({
@@ -857,12 +861,12 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
                 deferred = $q.defer();
 
             this.signin = function () {
-                gapi.auth.authorize({ 
-                    client_id: clientId, 
-                    scope: scopes, 
-                    immediate: false, 
+                gapi.auth.authorize({
+                    client_id: clientId,
+                    scope: scopes,
+                    immediate: false,
                     cookie_policy: 'single_host_origin',
-                    hd: domain 
+                    hd: domain
                 }, this.handleAuthResult);
 
                 return deferred.promise;
@@ -881,11 +885,11 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
             };
 
             this.checkAuth = function() {
-                gapi.auth.authorize({ 
-                    client_id: clientId, 
-                    scope: scopes, 
-                    immediate: true, 
-                    hd: domain 
+                gapi.auth.authorize({
+                    client_id: clientId,
+                    scope: scopes,
+                    immediate: true,
+                    hd: domain
                 }, this.handleAuthResult);
             };
 
@@ -905,17 +909,17 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
             };
 
             this.handleAuthClick = function(event) {
-                gapi.auth.authorize({ 
-                    client_id: clientId, 
-                    scope: scopes, 
-                    immediate: false, 
-                    hd: domain 
+                gapi.auth.authorize({
+                    client_id: clientId,
+                    scope: scopes,
+                    immediate: false,
+                    hd: domain
                 }, this.handleAuthResult);
                 return false;
             };
 
             this.getProfileData = function(){
-                
+
                 gapi.client.load('plus','v1', function(){
                     var request = gapi.client.plus.people.get({
                        'userId': 'me'
@@ -928,7 +932,7 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
             };
 
             this.getPeopleData = function(){
-                
+
                 gapi.client.load('plus','v1', function(){
                     var request = gapi.client.plus.people.list({
                        'userId': 'me',
@@ -952,7 +956,7 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
                         $rootScope.activityData = resp;
                     });
                 });
-                
+
                 return deferred.promise;
             };
 

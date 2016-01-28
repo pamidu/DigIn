@@ -1,0 +1,176 @@
+<div ng-controller="salesForeCaseCtrl">
+    <md-content class="md-default-theme overflow-none ">
+        <div class="md-content__body">
+            <div class="home-mini-card">
+                <div class="row m-t-0">
+                    <div class="col-md-12">
+                        <div class="graph-main-header-text">
+                            <!-- social page name-->
+                            <h2 class="graph-h2 sf-header font-weight-500">
+                                US Sales Forecast for 2013 (excluding Small Business)
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </md-content>
+
+
+    <div class="sf-main-wrap">
+        <div layout="row" layout-align="center center" layout-wrap>
+            <div flex="25">
+                <md-card class="md-default-theme">
+                    <div class="md-content__body p-10 sf-bg-color-blue4">
+                        <div class="sf-card-heading">
+                            <h3 class="panel-title">
+                                <strong class="graph-h2">Planned Business Growth
+                                </strong>
+                            </h3>
+                            <div class="actions">
+                                <md-slider flex md-discrete ng-model="rating1" step="1" min="1"
+                                           class="sf-md-slider"
+                                           max="5" aria-label="rating">
+                                </md-slider>
+                            </div>
+                        </div>
+                        <div layout class="">
+
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+            <div flex="25">
+                <md-card class="md-default-theme">
+
+                    <div class="md-content__body p-10 sf-bg-color-blue1">
+                        <div class="sf-card-heading">
+                            <h3 class="panel-title">
+                                <strong class="graph-h2">Planned Churn Rate
+                                </strong>
+                            </h3>
+                            <div class="actions">
+                                <md-slider flex md-discrete ng-model="rating1" step="1" min="1"
+                                           class="sf-md-slider"
+                                           max="5" aria-label="rating">
+                                </md-slider>
+
+                            </div>
+                        </div>
+                        <div layout class="">
+
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+            <div flex="25">
+                <md-card class="md-default-theme">
+
+                    <div class="md-content__body p-10 sf-bg-color-blue3">
+                        <div class="sf-card-heading">
+                            <h3 class="panel-title">
+                                <strong class="graph-h2">Total Forecasted Sales
+                                </strong>
+                            </h3>
+                            <div class="actions">
+                                <div class="btn-group btn-group-lg  ">
+                                    <button class="btn btn-success sf-brd-color-blue3">$2.60M</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div layout class="">
+
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+            <div flex="25">
+                <md-card class="md-default-theme">
+                    <div class="md-content__body p-10 sf-bg-color-blue2">
+                        <div class="sf-card-heading">
+                            <h3 class="panel-title">
+                                <strong class="graph-h2">Total Forecasted Units
+                                </strong>
+                            </h3>
+                            <div class="actions">
+                                <div class="btn-group btn-group-lg">
+                                    <button class="btn btn-success sf-brd-color-blue2">$2.60M</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div layout class="">
+
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+        </div>
+
+        <!-- table -->
+        <md-card class="md-default-theme">
+            <div class="sf-table-wrap">
+                <div layout="row" layout-wrap>
+                    <div flex="80">
+                        <div layout="row" layout-wrap class="p-10">
+                            <div flex="35">
+
+                            </div>
+                            <div flex="11" class="text-center"><b>Q1</b>
+                                <div layout="column">
+                                    <div layout="row">
+                                        <div flex="33">Jan
+                                            <div layout="column">
+                                                25.5%
+                                            </div>
+                                            <div layout="column">
+                                                207
+                                            </div>
+                                        </div>
+
+                                        <div flex="33">Feb</div>
+                                        <div flex="33">Mar</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div flex="11" class="text-center"><b>Q2</b>
+                                <div layout="column">
+                                    <div layout="row">
+                                        <div flex="33">Apr</div>
+                                        <div flex="33">May</div>
+                                        <div flex="33">Jun</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div flex="11" class="text-center"><b>Q3</b>
+                                <div layout="column">
+                                    <div layout="row">
+                                        <div flex="33">Jun</div>
+                                        <div flex="33">Aug</div>
+                                        <div flex="33">Sep</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div flex="11" class="text-center"><b>Q4</b>
+                                <div layout="column">
+                                    <div layout="row">
+                                        <div flex="33">Oct</div>
+                                        <div flex="33">Nov</div>
+                                        <div flex="33">Dec</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div flex="20">
+                        <div class="graph-h5 p-10 text-center ">
+                            Visual Summary
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </md-card>
+    </div>
+
+
+</div>

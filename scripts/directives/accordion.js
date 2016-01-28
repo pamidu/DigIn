@@ -26,7 +26,7 @@
                                     }
                                 }else{
                                     console.log("accordion else");
-                                
+
                                     this.activePanel=panel;
                                     this.activePanel.active=true;
                                     panel.icon='bower_components/material-design-icons/navigation/svg/production/ic_expand_less_18px.svg';
@@ -75,17 +75,6 @@
 
                             scope.toggle=function(){
                                 accordionCtrl.openPanel(scope);
-                                // clickCount++;
-                                // console.log("click count", clickCount);
-                                // if(clickCount == 1){
-                                //     console.log("click count in if", clickCount);
-                                    
-                                // }
-                                // else{
-                                //     console.log("click count in else before", clickCount);
-                                //     clickCount = 0;
-                                //     console.log("click count in else after", clickCount);
-                                // }
                             }
                         }
                     };

@@ -24,9 +24,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
       }, {
          name: "Rest/SOAP Service"
       }, {
+        name: "MSSQL"
+    }, {
          name: "SpreadSheet"
-      }, {
-         name: "MSSQL"
       }];
       
       getJSONData($http, 'chartConfig', function (data) {
@@ -341,6 +341,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
       }
    };
 
+    
    $scope.getDataByFields = function(field) {
 
       //clear distinct scope array
@@ -378,10 +379,16 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
       xhr.ontimeout = function() {
          console.error("request timedout: ", xhr);
       }
-
+      if($scope.selSrc=="MSSQL"){
+          var queryString = "SELECT " + field
+                         + " FROM " + "[" + "HutchDialogic" + "." + $scope.selTable + "]"
+                      + " GROUP BY " + field
+                        + " db=MSSQL";
+      }
+      if($scope.selSrc=="BigQuery"){
       var limit = 1000;
       var queryString = "SELECT " + field + " FROM " + "[" + Digin_Engine_API_Namespace + "." + $scope.selTable + "]" + " GROUP BY " + field + " LIMIT " + limit.toString();
-
+      }                  
       // xhr.open("get", Digin_Engine_API + "executeQuery?tablename=[" + $scope.selTable.split(":")[1] + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
       xhr.open("get", Digin_Engine_API + "executeQuery?query=" + queryString, /*async*/ true);
 
@@ -393,18 +400,14 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
    };
 
    $scope.changeChartType = function(chartType) {
-      console.log("chartTypes");
-      console.log(chartTypes);
-
-      console.log(chartType);
-
+        if($rootScope.Dashboards[0].widgets.length > 0){
       for (var i = 0; i < $rootScope.Dashboards[0].widgets.length; i++) {
          var length = $rootScope.Dashboards[0].widgets[i].highchartsNG.series.length;
          for (var j = 0; j < length; j++) {
             $rootScope.Dashboards[0].widgets[i].highchartsNG.series[j].type = chartType;
          };
       }
-
+        }
    };
 
    var chartTypes = [];
@@ -578,7 +581,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
    };
 
    $scope.filterData = function(c) {
-      alert('test' + c);
+       
       var filter = eval('new ' + c.toUpperCase() + '();');
       $scope.filtering = new Filtering();
       $scope.filtering.setFilter(filter);
@@ -887,10 +890,12 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                   }
 
                },
-               series: [],
+                    series: [{
+                              "turboThreshold": 5000}],
                plotOptions: {
                   series: {
                      borderWidth: 0,
+                            turboThreshold: 5000,
                      dataLabels: {
                         enabled: true,
                      }
@@ -1038,6 +1043,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
          plotOptions: {
             series: {
+                    turboThreshold: 5000,
                borderWidth: 0,
                dataLabels: {
                   enabled: true,
@@ -1179,7 +1185,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                data: []
             };
             entry['data'] = [];
-            alert(JSON.stringify($scope.catItem));
+                
             //            var tblVal = $scope.srcNamespace + '.' + widget.commonSrcConfig.tbl;
             var paramArr = $scope.generateParamArr('get', Digin_Engine_API, $scope.widget.commonSrcConfig.src, widget.commonSrcConfig.tbl, 'aggregatefields', $scope.categItem.item.value, entry.filter, entry.serName.value);
             var w = new Worker("scripts/webworkers/commonSrcWorker.js");
@@ -1272,6 +1278,9 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
    };
    
+    $scope.cancel = function(){
+        $mdDialog.hide();
+    }
    $scope.buildMetric = function(widget){
       
    };

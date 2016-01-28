@@ -78,7 +78,8 @@
                     },
                     "plotOptions": {
                         "series": {
-                            "stacking": ""
+                            "stacking": "",
+                            "turboThreshold": 3000,
                         }
                     }
                 },

@@ -1431,6 +1431,76 @@ md-tab-content {
     margin-top: -20px;
 }
 
+/*sales-forecast
+ please dn't change this style :)
+*/
+.sf-bg-color-blue1 {
+    background: #0B618A;
+    color: #fff;
+}
+
+.sf-bg-color-blue2 {
+    background: #06344A;
+    color: #fff;
+}
+
+.sf-bg-color-blue3 {
+    background: #1197D6;
+    color: #fff;
+}
+
+.sf-bg-color-blue4 {
+    background: #0E7CB0;
+    color: #fff;
+}
+
+.sf-brd-color-blue3 {
+    background-color: #0E7CB0 !important;
+    border-color: #0E7CB0 !important;
+}
+
+.sf-brd-color-blue2 {
+    background-color: #084461 !important;
+    border-color: #084461 !important;
+}
+
+.sf-main-wrap {
+    padding: 10px 40px 0px 40px;
+}
+
+.sf-card-heading {
+    border-bottom: 0 none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    min-height: 46px;
+    position: relative;
+}
+
+.btn-group, .btn-group-vertical {
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0), 0 0px 0px rgba(0, 0, 0, 0.12);
+}
+
+.sf-header {
+    padding-left: 50px;
+    color: #BDBDBD;
+}
+
+.sf-md-slider {
+    height: 66px;
+    position: relative;
+    display: block;
+    margin-left: 11px;
+    margin-right: 18px;
+    padding: 0;
+    padding-top: 8px;
+}
+
+
+.sf-table-wrap {
+    width: 100%;
+    height: 800px;
+}
+
 /* Animation*/
 
 @keyframes avatar {

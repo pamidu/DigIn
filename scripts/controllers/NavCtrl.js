@@ -35,9 +35,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $('#content1').css("top", "10px");
             $('.h_iframe').css("height", "100%");
         }
-        /************************ google maps area start ************************************/
+/************************ google maps area start ************************************/
         // ====== Create map objects ======
-
+        
         var delay = 100;
         var map = null;
         var bounds = null;
@@ -49,32 +49,28 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         var markers = [];
         var markerCluster;
         var mcOptions = {gridSize: 50, maxZoom: 15};
+        var count = 1;
 
         // var JSONData = {   "pulathisi": {"address":"kottawa,pannipitiya","value1": 45,"value2":4445},
         //                     "senal":{"address":"DODANWATTA,MALALPOLA,YATIYANTHOTA","value1": 55,"value2":566},
         //                     "damith":{"address":"2nd,Lane,Mandawila,Kesbewa","value1": 65,"value2":812} 
         //     };
-        var JSONData = {
-            "test": {"address": "test", "value1": 0, "value2": 0},
-            "senal": {"address": "matara", "value1": 55, "value2": 566},
-            "damith": {"address": "galle", "value1": 65, "value2": 812},
-            "sajee": {"address": "colombo", "value1": 75, "value2": 412},
-            "omal": {"address": "matale", "value1": 35, "value2": 82},
-            "pulathisi": {"address": "kandy", "value1": 45, "value2": 445},
-            "marlon": {"address": "malabe", "value1": 15, "value2": 345},
-            "pulathisi": {"address": "kandy", "value1": 25, "value2": 745},
-            "pirinthan": {"address": "wattala", "value1": 85, "value2": 45},
-            "eranga": {"address": "jaffna", "value1": 55, "value2": 566},
-            "rangika": {"address": "trincomalee", "value1": 65, "value2": 812},
-            "prasad": {"address": "hambantota", "value1": 35, "value2": 82},
-            "rukshan": {"address": "badulla", "value1": 45, "value2": 445},
-            "kalana": {"address": "ampara", "value1": 15, "value2": 345},
-            "lakshan": {"address": "anuradhapura", "value1": 25, "value2": 745},
-            "sajith": {"address": "polonnaruwa", "value1": 85, "value2": 45}
-        };
+        var JSONData;
 
+        $http.get('jsons/test_address.json').success(function (data) {
+            $scope.JSONData = data;
+            console.log("data json");
+            console.log($scope.JSONData);
+
+        });
+        
         // ======== initializing map at google map loading =========
-        $scope.initGmap = function () {
+        $scope.initGmap = function(){
+            
+            queue = [];
+            markers = [];
+            delay = 100;
+            nextAddress = 0;
             //define the area to display map
             var mapCanvas = document.getElementById('gmap');
             //define map options
@@ -82,113 +78,137 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 center: latlng,
                 zoom: 6,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
-            }
+            }    
             geo = new google.maps.Geocoder();
             map = new google.maps.Map(mapCanvas, mapOptions);
             bounds = new google.maps.LatLngBounds();
 
             google.maps.event.trigger(map, 'resize');
             // for zoom on map new instance of marker cluster created
-            google.maps.event.addListener(map, 'zoom_changed', function (event) {
-                markerCluster = new MarkerClusterer(map, markers, mcOptions);
+            google.maps.event.addListener(map, 'zoom_changed', function(event) {
+                markerCluster = new MarkerClusterer(map, markers, mcOptions);    
             });
 
-            JsonToArray();
-            theNext();
+            JSONData = $scope.JSONData;
+
+            JsonToArray(); 
+            setTimeout(function(){theNext();},5000);   
+            
         }
 
         // ====== Json data to array ======    
         function JsonToArray() {
-            for (var key in JSONData) {
-                queue.push({name: key, address: JSONData[key].address});
+            for(var key in JSONData){
+                console.log(JSONData[key].Address);
+                queue.push({name:key,address:JSONData[key].Address});
             }
+            console.log("queue",queue);
         }
-
         // ====== Decides the next thing to do ======
         function theNext() {
-            if (nextAddress < queue.length) {
-                setTimeout(function () {
-                    getAddress(queue[nextAddress]);
-                    //theNext();
-                }, delay);
-                nextAddress++;
-            } else {
-                // We're done. Show map bounds
-                alert("Done!");
-                map.fitBounds(bounds);
-            }
+                if (nextAddress < queue.length) {
+                    setTimeout(function(){
+                            //getAddress(queue[nextAddress]);
+                            createMarker(queue[nextAddress]);
+                            console.log(queue[nextAddress]);
+                            theNext();
+                    }, delay);
+                    nextAddress++;
+                } else {
+                    // We're done. Show map bounds
+                    alert("Done!");
+                    map.fitBounds(bounds);
+                }
+                markerCluster = new MarkerClusterer(map, markers, mcOptions);
         }
 
         // ====== Geocoding ======
         function getAddress(queueItem) {
-            if (queueItem != undefined) {
-                geo.geocode({address: queueItem.address}, function (results, status) {
-                        // If that was successful
-                        if (status == google.maps.GeocoderStatus.OK) {
-                            // Lets assume that the first marker is the one we want
-                            var p = results[0].geometry.location;
-                            var lat = p.lat();
-                            var lng = p.lng();
-                            // Output the data
-                            var msg = 'name="' + queueItem.name + '" address="' + queueItem.address + '" lat=' + lat + ' lng=' + lng + '(delay=' + delay + 'ms)<br>';
-//                        document.getElementById("gmap-messages").innerHTML += msg;
-                            // Create a marker
-                            createMarker(queueItem, lat, lng);
-                        }
-                        // ====== Decode the error status ======
-                        else {
-                            // === if we were sending the requests to fast, try this one again and increase the delay
-                            if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-                                nextAddress--;
-                                delay++;
-                            } else {
-                                var reason = "Code " + status;
-                                var msg = 'address="' + queueItem.address + '" error=' + reason + '(delay=' + delay + 'ms)<br>';
-                                document.getElementById("gmap-messages").innerHTML += msg;
-                            }
-                        }
-                        theNext();
+            if(queueItem != undefined){
+                geo.geocode({address:queueItem.address}, function (results,status)
+                  { 
+                    // If that was successful
+                    if (status == google.maps.GeocoderStatus.OK) {
+                      // Lets assume that the first marker is the one we want
+                      var p = results[0].geometry.location;
+                      var lat=p.lat();
+                      var lng=p.lng();
+                      // Output the data
+                        var msg = '"count="'+count+'"" name="'+queueItem.name+'" address="' + queueItem.address + '" lat=' +lat+ ' lng=' +lng+ '(delay='+delay+'ms)<br>';
+                       document.getElementById("gmap-messages").innerHTML += msg;
+                       count++;
+                       delay=100;
+                      // Create a marker
+                      createMarker(queueItem,lat,lng);
                     }
+                    // ====== Decode the error status ======
+                    else {
+                      // === if we were sending the requests to fast, try this one again and increase the delay
+                      if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                        nextAddress--;
+                        delay++;
+                      } else {
+                        var reason="Code "+status;
+                        var msg = '"count="'+count+'" name="'+queueItem.name+'"address="' + queueItem.address + '" error=' +reason+ '(delay='+delay+'ms)<br>';
+                        document.getElementById("gmap-messages").innerHTML += msg;
+                        count++;
+                        nextAddress++;
+                        delay = 100;
+                      }   
+                    }
+                    theNext();
+                  }
                 );
-                markerCluster = new MarkerClusterer(map, markers, mcOptions);
-            }
+
+            }    
+        }
+
+        // ====== Check infowindow is open =======
+        function isInfoWindowOpen(infoWindow){
+            var map = infoWindow.getMap();
+            return (map !== null && typeof map !== "undefined");
         }
 
         // ======= Function to create a marker ========
-        function createMarker(queueItem, lat, lng) {
+        function createMarker(queueItem) {
 //            var contentString = '<div id="infodiv" >'+queueItem.name+' is at '+queueItem.address+'</div>';
-            var contentString = '<div id="iw-container">' +
-                '<div class="iw-title">' + queueItem.name + '</div>' +
-                '<div class="iw-content">' +
-                '<div class="iw-subTitle">Address:</div>' + queueItem.address +
+           var contentString = '<div id="iw-container">' +
+                    '<div class="iw-title">'+queueItem.name+'</div>' +
+                    '<div class="iw-content">' +
+                      '<div class="iw-subTitle">Address:</div>' +'address comes here'+
 ////                      '<img src="images/vistalegre.jpg" alt="Porcelain Factory of Vista Alegre" height="115" width="83">' +
 //                      '<p></p>' +
 //                      '<div class="iw-subTitle">Contacts</div>' +
 //                      '<p>VISTA ALEGRE ATLANTIS, SA<br>3830-292 Ílhavo - Portugal<br>'+
 //                      '<br>Phone. +351 234 320 600<br>e-mail: geral@vaa.pt<br>www: www.myvistaalegre.com</p>'+
-                '<div class="iw-subTitle">Coverage Type:</div>' +
-                '<div class="iw-subTitle">Total Coverage Amount:</div>' +
-                '</div>' +
-                '<div class="iw-bottom-gradient"></div>' +
-                '</div>';
-
+                       '<div class="iw-subTitle">Coverage Type:</div>'+
+                       '<div class="iw-subTitle">Total Coverage Amount:</div>'+
+                    '</div>' +
+                    '<div class="iw-bottom-gradient"></div>' +
+                  '</div>';
+           
             var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(lat, lng),
-                map: map,
-                zIndex: Math.round(latlng.lat() * -100000) << 5
+            position: new google.maps.LatLng(queueItem.address[0],queueItem.address[1]),
+            map: map,
+            zIndex: Math.round(latlng.lat()*-100000)<<5
             });
 
-            google.maps.event.addListener(marker, 'click', function () {
-                infowindow.setContent(contentString);
-                infowindow.open(map, marker);
+            google.maps.event.addListener(marker, 'click', function() {
+                infowindow.setContent(contentString); 
+                if(isInfoWindowOpen(infowindow)){
+                    infowindow.close();
+                }
+                else{
+                    infowindow.open(map,marker);
+                } 
             });
 
             bounds.extend(marker.position);
             markers.push(marker);
 
             google.maps.event.trigger(map, 'resize');
-        }
 
+        }
         google.maps.event.addListener(infowindow, 'domready', function () {
 // Reference to the DIV that wraps the bottom of infowindow
             var iwOuter = $('.gm-style-iw');
@@ -852,7 +872,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         //load social analysis  
-        $scope.showAddSocialAnalysis = function (ev) {
+        $scope.showAddSocialAnalysis = function(ev){
             $mdDialog.show({
                     templateUrl: 'views/socialGraph/socialAnalysis_TEMP.html',
                     parent: angular.element(document.body),

@@ -37,6 +37,7 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
     'uiGmapgoogle-maps',
     'angularMoment',
     'googleplus',
+    'rzModule'
 
 ])
 
@@ -854,111 +855,112 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($
 }]);
 
 routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http, $rootScope, $q) {
-            var clientId = '33022835624-q3km776rl7dkitpinaj7pf2tlu75tfhg.apps.googleusercontent.com',
-                apiKey = 'AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ',
-                scopes = 'https://www.googleapis.com/auth/plus.login',
-                domain = '',
-                deferred = $q.defer();
+    var clientId = '33022835624-q3km776rl7dkitpinaj7pf2tlu75tfhg.apps.googleusercontent.com',
+        apiKey = 'AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ',
+        scopes = 'https://www.googleapis.com/auth/plus.login',
+        domain = '',
+        deferred = $q.defer();
 
-            this.signin = function () {
-                gapi.auth.authorize({
-                    client_id: clientId,
-                    scope: scopes,
-                    immediate: false,
-                    cookie_policy: 'single_host_origin',
-                    hd: domain
-                }, this.handleAuthResult);
+    this.signin = function () {
+        gapi.auth.authorize({
+            client_id: clientId,
+            scope: scopes,
+            immediate: false,
+            cookie_policy: 'single_host_origin',
+            hd: domain
+        }, this.handleAuthResult);
 
-                return deferred.promise;
-            };
+        return deferred.promise;
+    };
 
-            this.signout = function () {
-                gapi.auth.signOut();
-                console.log("logged out");
+    this.signout = function () {
+        gapi.auth.signOut();
+        console.log("logged out");
 
-                return deferred.promise;
-            };
-            this.handleClientLoad = function () {
-                gapi.client.setApiKey(apiKey);
-                gapi.auth.init(function () { });
-                window.setTimeout(checkAuth, 1);
-            };
+        return deferred.promise;
+    };
+    this.handleClientLoad = function () {
+        gapi.client.setApiKey(apiKey);
+        gapi.auth.init(function () {
+        });
+        window.setTimeout(checkAuth, 1);
+    };
 
-            this.checkAuth = function() {
-                gapi.auth.authorize({
-                    client_id: clientId,
-                    scope: scopes,
-                    immediate: true,
-                    hd: domain
-                }, this.handleAuthResult);
-            };
+    this.checkAuth = function () {
+        gapi.auth.authorize({
+            client_id: clientId,
+            scope: scopes,
+            immediate: true,
+            hd: domain
+        }, this.handleAuthResult);
+    };
 
-            this.handleAuthResult = function(authResult) {
-                if (authResult && !authResult.error) {
-                    var data = {};
-                    gapi.client.load('oauth2', 'v2', function () {
-                        var request = gapi.client.oauth2.userinfo.get();
-                        request.execute(function (resp) {
-                            data.email = resp.email;
-                        });
-                    });
-                    deferred.resolve(data);
-                } else {
-                    deferred.reject('error');
-                }
-            };
-
-            this.handleAuthClick = function(event) {
-                gapi.auth.authorize({
-                    client_id: clientId,
-                    scope: scopes,
-                    immediate: false,
-                    hd: domain
-                }, this.handleAuthResult);
-                return false;
-            };
-
-            this.getProfileData = function(){
-
-                gapi.client.load('plus','v1', function(){
-                    var request = gapi.client.plus.people.get({
-                       'userId': 'me'
-                    });
-                    request.execute(function(resp) {
-                       $rootScope.profileData = resp;
-                    });
+    this.handleAuthResult = function (authResult) {
+        if (authResult && !authResult.error) {
+            var data = {};
+            gapi.client.load('oauth2', 'v2', function () {
+                var request = gapi.client.oauth2.userinfo.get();
+                request.execute(function (resp) {
+                    data.email = resp.email;
                 });
-                return deferred.promise;
-            };
+            });
+            deferred.resolve(data);
+        } else {
+            deferred.reject('error');
+        }
+    };
 
-            this.getPeopleData = function(){
+    this.handleAuthClick = function (event) {
+        gapi.auth.authorize({
+            client_id: clientId,
+            scope: scopes,
+            immediate: false,
+            hd: domain
+        }, this.handleAuthResult);
+        return false;
+    };
 
-                gapi.client.load('plus','v1', function(){
-                    var request = gapi.client.plus.people.list({
-                       'userId': 'me',
-                       'collection': 'visible'
-                    });
-                    request.execute(function(resp) {
-                        $rootScope.peopleData = resp;
-                    });
-                });
-                return deferred.promise;
-            };
+    this.getProfileData = function () {
 
-            this.getActivityData = function(){
-                gapi.client.load('plus','v1', function(){
-                    var request = gapi.client.plus.activities.list({
-                      'userId' : 'me',
-                      'collection' : 'public'
-                    });
+        gapi.client.load('plus', 'v1', function () {
+            var request = gapi.client.plus.people.get({
+                'userId': 'me'
+            });
+            request.execute(function (resp) {
+                $rootScope.profileData = resp;
+            });
+        });
+        return deferred.promise;
+    };
 
-                    request.execute(function(resp) {
-                        $rootScope.activityData = resp;
-                    });
-                });
+    this.getPeopleData = function () {
 
-                return deferred.promise;
-            };
+        gapi.client.load('plus', 'v1', function () {
+            var request = gapi.client.plus.people.list({
+                'userId': 'me',
+                'collection': 'visible'
+            });
+            request.execute(function (resp) {
+                $rootScope.peopleData = resp;
+            });
+        });
+        return deferred.promise;
+    };
+
+    this.getActivityData = function () {
+        gapi.client.load('plus', 'v1', function () {
+            var request = gapi.client.plus.activities.list({
+                'userId': 'me',
+                'collection': 'public'
+            });
+
+            request.execute(function (resp) {
+                $rootScope.activityData = resp;
+            });
+        });
+
+        return deferred.promise;
+    };
 
 }]);
 

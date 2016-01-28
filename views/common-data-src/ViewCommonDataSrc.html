@@ -1,4 +1,4 @@
-<md-sidenav class="md-sidenav-right md-whiteframe-z2 overflow-none" md-component-id="right">
+<md-sidenav ng-init="initCtrl()" class="md-sidenav-right md-whiteframe-z2 overflow-none" md-component-id="right">
             <md-content class="overflow-none" layout="row">
 
                 <md-button ng-click="toggleLeft()"
@@ -45,12 +45,22 @@
                     <div layout="column" class="data-index">
                         <div>
                             <md-checkbox ng-repeat="item in tblFields | orderBy : item" ng-click="toggleCheck(item)">
-                                           {{ item }}
+                               {{ item }}
                             </md-checkbox>
                         </div>
                     </div>
-
-                    <md-button ng-click="configGraph($event)" flex>Create</md-button>
+                    <md-content class="overflow-none" layout="column">
+                         <accordion>
+                         <accordion-panel title="Chart Types">
+                             <div layout="row" ng-repeat="row in chartTable" layout="row" layout-align="start center">
+                             <div layout="row" layout-align="center center" ng-repeat="chart in row" ng-click="configGraph($event,chart)" ><img src="{{chart.icon}}">
+                             <md-tooltip md-visible="false" md-direction="Bottom">{{chart.name}}</md-tooltip>    
+                             </div>
+                             </div>
+                         </accordion-panel>
+                         </accordion>
+                     </md-content>
+<!--                    <md-button ng-click="configGraph($event)" flex>Create</md-button>-->
                 </accordion-panel>
                 </accordion>
                 

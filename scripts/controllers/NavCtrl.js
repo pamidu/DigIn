@@ -1052,9 +1052,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.currentView = "Dashboard";
                 $state.go(routeName)
             }
-            if (routeName == "Social Analysis") {
+            if (routeName == "Social Media Analytics") {
                 $scope.manageTabs(false);
-                $scope.currentView = "Social Analysis";
+                $scope.currentView = "Social Media Analytics";
                 $scope.showAddSocialAnalysis(ev);
 
             }

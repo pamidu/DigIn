@@ -1,0 +1,11 @@
+<md-content ng-init="syncWidget(widget)" ng-show="widget.syncState" style="height:100%;width:100%;" flex>
+    <div style="height:100%;width:100%;" layout="column" layout-align='center center'>
+        <h1>  {{widget.widData.value}} </h1>
+        <h2>  {{widget.widData.label}} </h2>
+    </div>
+</md-content>
+<div ng-hide="widget.syncState" layout="row" layout-sm="column" layout-align="center center" style="height:100%;width:100%;">
+    <!-- <md-progress-circular md-mode="indeterminate" md-diameter="50"></md-progress-circular> -->
+    <!-- <md-progress-linear md-mode="indeterminate"></md-progress-linear> -->
+    <img src="styles/css/images/preloaders/facebook.gif" alt="Washed Out">
+</div>

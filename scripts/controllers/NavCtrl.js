@@ -391,6 +391,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         },
                         "plotOptions": {
                             "series": {
+                                 "turboThreshold": 5000,
                                 "stacking": ""
                             }
                         }

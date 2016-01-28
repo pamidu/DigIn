@@ -615,7 +615,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
     };
 
     $scope.filterData = function (c) {
-        alert('test' + c);
+       
         var filter = eval('new ' + c.toUpperCase() + '();');
         $scope.filtering = new Filtering();
         $scope.filtering.setFilter(filter);
@@ -924,10 +924,12 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                         }
 
                     },
-                    series: [],
+                    series: [{
+                              "turboThreshold": 5000}],
                     plotOptions: {
                         series: {
                             borderWidth: 0,
+                            turboThreshold: 5000,
                             dataLabels: {
                                 enabled: true,
                             }
@@ -1077,6 +1079,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
             plotOptions: {
                 series: {
+                    turboThreshold: 5000,
                     borderWidth: 0,
                     dataLabels: {
                         enabled: true,
@@ -1218,7 +1221,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                     data: []
                 };
                 entry['data'] = [];
-                alert(JSON.stringify($scope.catItem));
+                
 //            var tblVal = $scope.srcNamespace + '.' + widget.commonSrcConfig.tbl;
                 var paramArr = $scope.generateParamArr('get', Digin_Engine_API, $scope.widget.commonSrcConfig.src, widget.commonSrcConfig.tbl, 'aggregatefields', $scope.categItem.item.value, entry.filter, entry.serName.value);
                 var w = new Worker("scripts/webworkers/commonSrcWorker.js");

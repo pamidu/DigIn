@@ -21,6 +21,9 @@
                     <label>Metric Label</label>
                     <input name="sizeX" placeholder="label" ng-model="widget.widData.label">
                 </md-input-container>
+                <md-select ng-if="widget.commonSrcConfig.src=='DuoStore'" ng-model="ser.serName" placeholder="Select a series" ng-click="checkSeriesAvailability()">
+                    <md-option value="{{cat}}" ng-repeat="cat in seriesAttributes">{{ cat }}</md-option>
+                </md-select>
                 <md-select ng-if="widget.commonSrcConfig.src !='DuoStore'" ng-model="fieldName" placeholder="Select a series">
                     <md-option ng-value="{{serItem}}" ng-repeat="serItem in arrayAttributes">{{ serItem.value }}</md-option>
                 </md-select>

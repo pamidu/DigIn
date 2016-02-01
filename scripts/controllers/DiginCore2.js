@@ -788,7 +788,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
 
                             plotOptions: {
                                 series: {
-                                    stacking: ''
+                                    stacking: '',
                                     turboThreshold: 5000,
                                 }
                             }

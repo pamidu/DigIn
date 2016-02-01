@@ -79,7 +79,7 @@
                     "plotOptions": {
                         "series": {
                             "stacking": "",
-                            "turboThreshold": 3000,
+                            "turboThreshold": 3000
                         }
                     }
                 },

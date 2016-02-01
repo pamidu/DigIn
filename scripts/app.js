@@ -1139,7 +1139,7 @@ routerApp.constant('config', {
     apiUrl: 'http://104.131.48.155:8080/',
     apiFbUrl: 'http://192.168.0.47:8080/',
     Big_Qry_Get_Tbls: 'http://104.131.48.155:8080/GetTables?dataSetID=Demo',
-    Big_Qry_Get_Fields: 'http://104.131.48.155:8080/GetFields?dataSetID=Demo&&tableName=',
+    Big_Qry_Get_Fields: 'http://104.131.48.155:8080/GetFields?dataSetName =Demo&&tableName=',
     apiUrl2: '',
     storeIndex: 'com.duosoftware.com'
 });

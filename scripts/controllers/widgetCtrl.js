@@ -2889,7 +2889,7 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
             xhr.ontimeout = function () {
                 console.error("request timedout: ", xhr);
             }
-            xhr.open("get", Digin_Engine_API + "GetTables?dataSetID=HutchDialogic&db=MSSQL", /*async*/ true);
+            xhr.open("get", Digin_Engine_API + "GetTables?dataSetName=HutchDialogic&db=MSSQL", /*async*/ true);
             xhr.send();
         }
     };

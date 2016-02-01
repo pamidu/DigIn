@@ -20,18 +20,17 @@
     <div class="sf-main-wrap">
         <div layout="row" layout-align="center center" layout-wrap>
             <div flex="25">
-                <md-card class="md-default-theme">
-                    <div class="md-content__body p-10 sf-bg-color-blue4">
+                <md-card class="md-default-theme sf-bg-color-blue4 sf-min-panel ">
+                    <div class="md-content__body p-10 ">
                         <div class="sf-card-heading">
                             <h3 class="panel-title">
                                 <strong class="graph-h2">Planned Business Growth
                                 </strong>
                             </h3>
                             <div class="actions">
-                                <md-slider flex md-discrete ng-model="rating1" step="1" min="1"
-                                           class="sf-md-slider"
-                                           max="5" aria-label="rating">
-                                </md-slider>
+                                <rzslider
+                                        rz-slider-model="slider.businessGrowth.value"
+                                        rz-slider-options="slider.options"></rzslider>
                             </div>
                         </div>
                         <div layout class="">
@@ -41,20 +40,18 @@
                 </md-card>
             </div>
             <div flex="25">
-                <md-card class="md-default-theme">
+                <md-card class="md-default-theme sf-min-panel sf-bg-color-blue1">
 
-                    <div class="md-content__body p-10 sf-bg-color-blue1">
+                    <div class="md-content__body p-10  ">
                         <div class="sf-card-heading">
                             <h3 class="panel-title">
                                 <strong class="graph-h2">Planned Churn Rate
                                 </strong>
                             </h3>
                             <div class="actions">
-                                <md-slider flex md-discrete ng-model="rating1" step="1" min="1"
-                                           class="sf-md-slider"
-                                           max="5" aria-label="rating">
-                                </md-slider>
-
+                                <rzslider
+                                        rz-slider-model="slider.churnRate.value"
+                                        rz-slider-options="slider.options"></rzslider>
                             </div>
                         </div>
                         <div layout class="">
@@ -107,66 +104,154 @@
         </div>
 
         <!-- table -->
-        <md-card class="md-default-theme">
+        <md-card class="md-default-theme m-b-20">
             <div class="sf-table-wrap">
                 <div layout="row" layout-wrap>
-                    <div flex="80">
-                        <div layout="row" layout-wrap class="p-10">
-                            <div flex="35">
+                    <div flex="70">
+                        <div class="p-10">
+                            <table class="table sf-table">
+                                <tr>
+                                    <th>
+                                    </th>
+                                    <th>
+                                    </th>
+                                    <th>
+                                    </th>
+                                    <th colspan="3" class="text-center sf-lef-border-1"> Q1
+                                    </th>
+                                    <th colspan="3" class="text-center sf-lef-border-1"> Q2
+                                    </th>
+                                    <th colspan="3" class="text-center sf-lef-border-1"> Q3
+                                    </th>
+                                    <th colspan="3" class="text-center sf-lef-border-1"> Q4
+                                    </th>
+                                </tr>
 
-                            </div>
-                            <div flex="11" class="text-center"><b>Q1</b>
-                                <div layout="column">
-                                    <div layout="row">
-                                        <div flex="33">Jan
-                                            <div layout="column">
-                                                25.5%
-                                            </div>
-                                            <div layout="column">
-                                                207
-                                            </div>
-                                        </div>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th class="sf-lef-border-1">Jan</th>
+                                    <th>Feb</th>
+                                    <th>Mar</th>
+                                    <th class="sf-lef-border-1">Apr</th>
+                                    <th>May</th>
+                                    <th>Jun</th>
+                                    <th class="sf-lef-border-1">Jul</th>
+                                    <th>Aug</th>
+                                    <th>Sep</th>
+                                    <th class="sf-lef-border-1">Oct</th>
+                                    <th>Nov</th>
+                                    <th class="sf-table-lat-column">Dec</th>
+                                </tr>
+                                <tr>
+                                    <td rowspan="6">
+                                        <h4 class="vertical-text m-top-60 font-color-y-200">
+                                            CENTER
+                                        </h4>
+                                    </td>
+                                    <td rowspan="2">consumer</td>
+                                    <td class="sf-row-one">Sales</td>
+                                    <td class="sf-lef-border-1 sf-row-one">25.3</td>
+                                    <td class="sf-row-one">25.3</td>
+                                    <td class="sf-row-one">23.5</td>
+                                    <td class="sf-lef-border-1 sf-row-one">40%</td>
+                                    <td class="sf-row-one">40%</td>
+                                    <td class="sf-row-one">40%</td>
+                                    <td class="sf-lef-border-1 sf-row-one">40%</td>
+                                    <td class="sf-row-one">40%</td>
+                                    <td class="sf-row-one">40%</td>
+                                    <td class="sf-lef-border-1 sf-row-one">40%</td>
+                                    <td class="sf-row-one">40%</td>
+                                    <td class="sf-table-lat-column sf-row-one">40%</td>
+                                </tr>
 
-                                        <div flex="33">Feb</div>
-                                        <div flex="33">Mar</div>
-                                    </div>
+                                <tr>
+                                    <td class="sf-top-border-0 sf-row-two">Unit</td>
+                                    <td class="sf-lef-border-1 sf-row-two">256</td>
+                                    <td class="sf-row-two">0.003</td>
+                                    <td class="sf-row-two">0.003</td>
+                                    <td class="sf-lef-border-1 sf-row-two">40%</td>
+                                    <td class="sf-row-two">40%</td>
+                                    <td class="sf-row-two">40%</td>
+                                    <td class="sf-lef-border-1 sf-row-two">40%</td>
+                                    <td class="sf-row-two">40%</td>
+                                    <td class="sf-row-two">40%</td>
+                                    <td class="sf-lef-border-1 sf-row-two">40%</td>
+                                    <td class="sf-row-two">40%</td>
+                                    <td class="sf-table-lat-column sf-row-two">40%</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2">consumer</td>
+                                    <td class="sf-row-one">Sales</td>
+                                    <td class="sf-lef-border-1 sf-row-one">25.3</td>
+                                    <td class="sf-row-one">25.3</td>
+                                    <td class="sf-row-one">23.5</td>
+                                    <td class="sf-lef-border-1 sf-row-one">40%</td>
+                                    <td class="sf-row-one">40%</td>
+                                    <td class="sf-row-one">40%</td>
+                                    <td class="sf-lef-border-1 sf-row-one">40%</td>
+                                    <td class="sf-row-one">40%</td>
+                                    <td class="sf-row-one">40%</td>
+                                    <td class="sf-lef-border-1 sf-row-one">40%</td>
+                                    <td class="sf-row-one">40%</td>
+                                    <td class="sf-table-lat-column sf-row-one">40%</td>
+                                </tr>
+                                <tr>
+                                    <td class="sf-top-border-0 sf-row-two">Unit</td>
+                                    <td class="sf-lef-border-1 sf-row-two">256</td>
+                                    <td class="sf-row-two">0.003</td>
+                                    <td class="sf-row-two">0.003</td>
+                                    <td class="sf-lef-border-1 sf-row-two">40%</td>
+                                    <td class="sf-row-two">40%</td>
+                                    <td class="sf-row-two">40%</td>
+                                    <td class="sf-lef-border-1 sf-row-two">40%</td>
+                                    <td class="sf-row-two">40%</td>
+                                    <td class="sf-row-two">40%</td>
+                                    <td class="sf-lef-border-1 sf-row-two">40%</td>
+                                    <td class="sf-row-two">40%</td>
+                                    <td class="sf-table-lat-column sf-row-two">40%</td>
+                                </tr>
 
-                                </div>
+
+                            </table>
+                        </div>
+                    </div>
+
+                    <div flex="30">
+                        <div class="graph-h3 p-10 text-center font-color-y-200 ">
+                            visual summary
+                        </div>
+                        <div layout="row" layout-wrap>
+                            <div class="sf-chart-first">
+                                <highchart config="q1Row"></highchart>
                             </div>
-                            <div flex="11" class="text-center"><b>Q2</b>
-                                <div layout="column">
-                                    <div layout="row">
-                                        <div flex="33">Apr</div>
-                                        <div flex="33">May</div>
-                                        <div flex="33">Jun</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div flex="11" class="text-center"><b>Q3</b>
-                                <div layout="column">
-                                    <div layout="row">
-                                        <div flex="33">Jun</div>
-                                        <div flex="33">Aug</div>
-                                        <div flex="33">Sep</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div flex="11" class="text-center"><b>Q4</b>
-                                <div layout="column">
-                                    <div layout="row">
-                                        <div flex="33">Oct</div>
-                                        <div flex="33">Nov</div>
-                                        <div flex="33">Dec</div>
-                                    </div>
-                                </div>
+                        </div>
+                        <div layout="row" layout-wrap>
+                            <div>
+                                <highchart config="q1Row"></highchart>
                             </div>
                         </div>
                     </div>
-                    <div flex="20">
-                        <div class="graph-h5 p-10 text-center ">
-                            Visual Summary
-                        </div>
-                    </div>
+                </div>
+            </div>
+        </md-card>
+
+        <md-card class="md-default-theme sf-min-panel m-b-50 grad-blue-1">
+            <div layout="row" layout-wrap>
+                <div class="p-10">
+                    <ul class="list-justified none-border text-center">
+                        <li>
+                            <p class="color-white graph-h1 font-weight-500 sf-download
+                            sf-hover sink"
+                               ng-click="onClickDownload()"
+                            >
+                                <i class="ti-import m-r-10"></i>
+                                DOWNLOAD
+                            </p>
+                        </li>
+
+                    </ul>
                 </div>
             </div>
         </md-card>

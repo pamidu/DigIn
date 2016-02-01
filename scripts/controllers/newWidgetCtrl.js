@@ -113,6 +113,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
     },
      
       plotOptions: {
+        turboThreshold: 3000,
         series: {
           stacking: ''
         }

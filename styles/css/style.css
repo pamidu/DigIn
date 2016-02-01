@@ -1526,3 +1526,19 @@ md-backdrop.md-sidenav-backdrop{
 .error-message{     
     margin:auto;        
 }
+
+.overflowscroll{
+    overflow:scroll;
+}
+.height100percent{
+    height:100%;
+}
+.width100percent{
+    width:100%;
+}
+.widget-settings-button{
+    min-width: 0px;
+    margin: 0px !important;
+    z-index: 0 !important;
+    border-radius: 0px;
+}

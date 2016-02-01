@@ -63,6 +63,12 @@
     height: 450px;
     overflow: hidden;
 }
+.widget0m-data-dialog-sm {
+    width: 25%;
+    height: 250px;
+    overflow: hidden;
+}
+
 
 .widget0m-data-header {
     overflow: hidden !important;

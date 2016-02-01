@@ -1080,7 +1080,7 @@ routerApp.controller('gmapsController', ['$scope', '$mdDialog', '$state', '$http
     // ////                      '<img src="images/vistalegre.jpg" alt="Porcelain Factory of Vista Alegre" height="115" width="83">' +
     // //                      '<p></p>' +
     // //                      '<div class="iw-subTitle">Contacts</div>' +
-    // //                      '<p>VISTA ALEGRE ATLANTIS, SA<br>3830-292 √çlhavo - Portugal<br>'+
+    // //                      '<p>VISTA ALEGRE ATLANTIS, SA<br>3830-292 Õlhavo - Portugal<br>'+
     // //                      '<br>Phone. +351 234 320 600<br>e-mail: geral@vaa.pt<br>www: www.myvistaalegre.com</p>'+
     //                        '<div class="iw-subTitle">Coverage Type:</div>'+
     //                        '<div class="iw-subTitle">Total Coverage Amount:</div>'+

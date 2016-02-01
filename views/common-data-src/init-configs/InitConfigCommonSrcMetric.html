@@ -1,0 +1,39 @@
+<md-dialog style="min-width:400px">
+    <md-toolbar>
+        <div class="md-toolbar-tools" flex layout="row">
+            <div flex="10">
+                <md-icon class="ion-wrench"></md-icon>
+            </div>
+            <div flex="80">
+                <h3>Configuration</h3>
+            </div>
+            <div flex="10"> 
+                <md-button class="widget-button" ng-click="cancel()" aria-label="Close" layout-wrap>
+                            <ng-md-icon icon="close" style="fill:white" size="20" layout="column" layout-align="center center" flex></ng-md-icon>
+                </md-button> 
+            </div>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+       <md-content class="md-padding">
+            <div layout="column">
+                <md-input-container flex>
+                    <label>Metric Label</label>
+                    <input name="sizeX" placeholder="label" ng-model="widget.widData.label">
+                </md-input-container>
+                <md-select ng-if="widget.commonSrcConfig.src=='DuoStore'" ng-model="ser.serName" placeholder="Select a series" ng-click="checkSeriesAvailability()">
+                    <md-option value="{{cat}}" ng-repeat="cat in seriesAttributes">{{ cat }}</md-option>
+                </md-select>
+                <md-select ng-if="widget.commonSrcConfig.src !='DuoStore'" ng-model="fieldName" placeholder="Select a series">
+                    <md-option ng-value="{{serItem}}" ng-repeat="serItem in arrayAttributes">{{ serItem.value }}</md-option>
+                </md-select>
+                <md-select ng-model="selectedFilter" placeholder="Select a filter">
+                    <md-option value="{{fil.method}}" ng-repeat="fil in filterAttributes">{{ fil.name }}</md-option>
+                </md-select>
+               <md-input-container flex>
+                   <md-button class="md-raised" ng-click="buildMetric(widget)">Build Metric</md-button>
+               </md-input-container>
+            </div>
+        </md-content>      
+    </md-dialog-content>
+</md-dialog>

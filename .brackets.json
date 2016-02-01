@@ -1,0 +1,13 @@
+{
+    "jscodehints.detectedExclusions": [
+        "C:/xampp/htdocs/git/jan26/Digin/lib/sankey-plot.js",
+        "C:/xampp/htdocs/git/jan26/Digin/lib/hive-plot.js",
+        "C:/xampp/htdocs/git/jan26/Digin/lib/collapsible-tree.js",
+        "C:/xampp/htdocs/git/jan26/Digin/bower_components/zeroclipboard/index.js",
+        "C:/xampp/htdocs/git/jan26/Digin/bower_components/zeroclipboard/ZeroClipboard.js",
+        "C:/xampp/htdocs/git/jan26/Digin/bower_components/zeroclipboard/ZeroClipboard.min.js",
+        "C:/xampp/htdocs/git/jan26/Digin/scripts/charts/alluvial.js",
+        "C:/xampp/htdocs/git/jan26/Digin/scripts/charts/bumpChart.js",
+        "C:/xampp/htdocs/git/jan26/Digin/scripts/config.js"
+    ]
+}

@@ -931,7 +931,8 @@ routerApp.controller('pStackCtrl', function ($scope, $mdDialog, $state) {
 
 });
 
-routerApp.controller('gmapsController', ['$scope', '$mdDialog', '$state', '$http',function ($scope, $mdDialog, $state, $http) {
+routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state', '$http', 'ScopeShare',
+    function ($scope, $mdDialog, $state, $http, ScopeShare) {
 
         // ====== Create map objects ======
         
@@ -955,13 +956,7 @@ routerApp.controller('gmapsController', ['$scope', '$mdDialog', '$state', '$http
 
         $scope.markers = [];
         $scope.map = { center: { latitude: 7.2964, longitude: 80.6350 }, zoom: 8, bounds: {} };
-        $scope.windowParams = {
-            name: 'pule test',
-        };
-        $scope.iconVisible = true;
-        $scope.windowOpt = {
-            show: true
-        }
+        
         // ======== initializing map at google map loading =========
         $scope.initGmap = function(){
             
@@ -970,15 +965,11 @@ routerApp.controller('gmapsController', ['$scope', '$mdDialog', '$state', '$http
             delay = 100;
             nextAddress = 0;
 
-            JSONData = $scope.JSONData;
+            JSONData = $scope.JSONDataBranch;
 
             JsonToArray(); 
             setTimeout(function(){theNext();},5000);   
-        }
-        $scope.openWindow = function(marker) {
-            marker.showWindow = true;
-            $scope.$apply();
-        }      
+        }   
     
         // ====== Json data to array ======    
         function JsonToArray() {
@@ -986,7 +977,11 @@ routerApp.controller('gmapsController', ['$scope', '$mdDialog', '$state', '$http
                 if( JSONData[key].Address[0]!=undefined && // adding only defined value to queue
                     JSONData[key].Address[1]!=undefined &&
                     key!=undefined){
-                    queue.push({ name: key, address: JSONData[key].Address});
+                    queue.push({    branch: key, 
+                                    address: JSONData[key].Address, 
+                                    val1: JSONData[key].val1,
+                                    val2: JSONData[key].val2 
+                                });
                 }
                 else{ //counting undefined values 
                     undefinedErrors++;
@@ -1005,12 +1000,14 @@ routerApp.controller('gmapsController', ['$scope', '$mdDialog', '$state', '$http
                     }, delay);
                     nextAddress++;
                 } else {
-                    // We're done. Show map bounds
+                    // We're done. 
                     console.log("Done!");
                     
                     $scope.markers = markers;
+
+                    //sharing markers with widgetSettingsCtrl using Scopes factory
+                    ScopeShare.store('gmapsController', $scope.markers);
                     console.log($scope.markers);
-                    //map.fitBounds(bounds);
                     console.log("undefined errors",undefinedErrors);   
                     console.log("out of sri lanka",outOfSriLanka);  
                     console.log(outOfSLArray);
@@ -1019,23 +1016,10 @@ routerApp.controller('gmapsController', ['$scope', '$mdDialog', '$state', '$http
                 // $scope.markers = markers;
         }
 
-        // ====== Check infowindow is open =======
-        function isInfoWindowOpen(infoWindow){
-
-            var map = infoWindow.getMap();
-            return (map !== null && typeof map !== "undefined");
-        }
-
         // ====== between function ======
         function between(x, min, max) {
             return x >= min && x <= max;
         }
-
-        $scope.markerClicked = function (marker) {
-                    //$scope.openWindow(marker);
-                    marker.showWindow = true;
-                    $scope.$apply();
-        };
 
         // ======= Function to create a marker ========
         function createMarker(queueItem, id) {
@@ -1044,129 +1028,191 @@ routerApp.controller('gmapsController', ['$scope', '$mdDialog', '$state', '$http
                 between(queueItem.address[1],79,82)){   // in between 79 and 82
 
                 var marker = {  
-                                name: queueItem.name, 
                                 latitude: queueItem.address[0], 
                                 longitude: queueItem.address[1], 
-                                id: id, 
+                                id: id,
+                                // icon: 'styles/css/images/hnb3.png', 
                                 show: false,
                                 templateUrl:'views/googleMaps/infoWindow.html',
                                 templateParameter: {
-                                    name:queueItem.name,
-                                    field1:'not available'}
-                                };
-                // marker.markerClicked = function () {
-                //     //$scope.openWindow(marker);
-                //     marker.showWindow = true;
-                //     $scope.$apply();
-                // };
-                // marker.closeClick = function () {
-                //             marker.showWindow = false;
-                //             $scope.$apply();
-                // };
+                                    branch:queueItem.branch,
+                                    field1: queueItem.val1,
+                                    field2: queueItem.val2},
+                                windowOptions: {
+                                    boxClass: "infobox",
+                                    boxStyle: {
+                                        backgroundColor: "#FAA61A",
+                                        border: "2px solid #10297d",
+                                        borderRadius: "8px",
+                                        width: "140px",
+                                        height: "60px",
+                                        opacity: 0.9
+                                    },
+                                    // content: "Text",
+                                    disableAutoPan: false,
+                                    maxWidth: 0,
+                                    pixelOffset: new google.maps.Size(-60, -120),
+                                    zIndex: null,
+                                    closeBoxMargin: "3px",
+                                    closeBoxURL: "styles/css/images/close.svg",
+                                    infoBoxClearance: new google.maps.Size(1, 1),
+                                    isHidden: false,
+                                    pane: "floatPane",
+                                    enableEventPropagation: false
+                                }
+                            };
 
                 markers.push(marker);                
-                //windows.push({ id: id, latitude:queueItem.address[0], longitude: queueItem.address[1], showWindow: true});
             }
             else
             {
                 console.log("****** out of sri lanka range ******");
                 outOfSriLanka++;
-                outOfSLArray.push(queueItem.name);
-    // //            var contentString = '<div id="infodiv" >'+queueItem.name+' is at '+queueItem.address+'</div>';
-    //            var contentString = '<div id="iw-container">' +
-    //                     '<div class="iw-title">'+queueItem.name+'</div>' +
-    //                     '<div class="iw-content">' +
-    //                       '<div class="iw-subTitle">Address:</div>' +'address comes here'+
-    // ////                      '<img src="images/vistalegre.jpg" alt="Porcelain Factory of Vista Alegre" height="115" width="83">' +
-    // //                      '<p></p>' +
-    // //                      '<div class="iw-subTitle">Contacts</div>' +
-    // //                      '<p>VISTA ALEGRE ATLANTIS, SA<br>3830-292 Ílhavo - Portugal<br>'+
-    // //                      '<br>Phone. +351 234 320 600<br>e-mail: geral@vaa.pt<br>www: www.myvistaalegre.com</p>'+
-    //                        '<div class="iw-subTitle">Coverage Type:</div>'+
-    //                        '<div class="iw-subTitle">Total Coverage Amount:</div>'+
-    //                     '</div>' +
-    //                     '<div class="iw-bottom-gradient"></div>' +
-    //                   '</div>';
-               
-                // var marker = new google.maps.Marker({
-                // position: new google.maps.LatLng(queueItem.address[0],queueItem.address[1]),
-                // map: map,
-                // zIndex: Math.round(latlng.lat()*-100000)<<5
-                // });
-
-                // google.maps.event.addListener(marker, 'click', function() {
-                //     infowindow.setContent(contentString);
-                //     setInfowindowUI(); 
-                //     if(isInfoWindowOpen(infowindow)){
-                //         infowindow.close();
-                //     }
-                //     else{
-                //         infowindow.open(map,marker);
-                //     } 
-                // });
-
-                // bounds.extend(marker.position);
-                
-                // google.maps.event.trigger(map, 'resize');
+                outOfSLArray.push(queueItem.branch);
             }
+        }
+    }
+]);
 
+routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', '$http', 'ScopeShare',
+    function ($scope, $mdDialog, $state, $http, ScopeShare) {
+
+        // ====== Create map objects ======
+        
+        var delay = 100;
+        var map = null;
+        var bounds = null;
+        var latlng = new google.maps.LatLng(7.2964, 80.6350);
+        var infowindow = new google.maps.InfoWindow();
+        var geo = null;
+        var queue = [];
+        var nextAddress = 0;
+        var markers = [];
+        //var windows = [];
+        var markerCluster;
+        var mcOptions = {gridSize: 50, maxZoom: 15};
+        var count = 1;
+        var undefinedErrors = 0;
+        var outOfSriLanka = 0;
+        var JSONData = null;
+        var outOfSLArray = [];
+
+        $scope.markers = [];
+        $scope.map = { center: { latitude: 7.2964, longitude: 80.6350 }, zoom: 8, bounds: {} };
+
+        // ======== initializing map at google map loading =========
+        $scope.initGmap = function(){
+            
+            queue = [];
+            markers = [];
+            delay = 100;
+            nextAddress = 0;
+
+            JSONData = $scope.JSONDataClaim;
+
+            JsonToArray(); 
+            setTimeout(function(){theNext();},5000);   
+        }   
+    
+        // ====== Json data to array ======    
+        function JsonToArray() {
+            for(var key in JSONData){
+                if( JSONData[key].Address[0]!=undefined && // adding only defined value to queue
+                    JSONData[key].Address[1]!=undefined &&
+                    key!=undefined){
+                    queue.push({    branch: key, 
+                                    address: JSONData[key].Address, 
+                                    val1: JSONData[key].val1,
+                                    val2: JSONData[key].val2 
+                                });
+                }
+                else{ //counting undefined values 
+                    undefinedErrors++;
+                }
+            }
         }
 
-        function setInfowindowUI(){
-            google.maps.event.addListener(infowindow, 'domready', function () {
-    // Reference to the DIV that wraps the bottom of infowindow
-                var iwOuter = $('.gm-style-iw');
+        // ====== Decides the next thing to do ======
+        function theNext() {
+                if ((nextAddress+1) < queue.length) {
+                    console.log(nextAddress + " < " + queue.length);
+                    setTimeout(function(){
 
-                /* Since this div is in a position prior to .gm-div style-iw.
-                 * We use jQuery and create a iwBackground variable,
-                 * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
-                 */
-                var iwBackground = iwOuter.prev();
+                            createMarker(queue[nextAddress],nextAddress);                          
+                            theNext();
+                    }, delay);
+                    nextAddress++;
+                } else {
+                    // We're done. 
+                    console.log("Done!");
+                    
+                    $scope.markers = markers;
 
-                // Removes background shadow DIV
-                iwBackground.children(':nth-child(2)').css({'display': 'none'});
+                    //sharing markers with widgetSettingsCtrl using Scopes factory
+                    ScopeShare.store('gmapsController', $scope.markers);
+                    console.log($scope.markers);
+                    console.log("undefined errors",undefinedErrors);   
+                    console.log("out of sri lanka",outOfSriLanka);  
+                    console.log(outOfSLArray);
+                }
+                
+                // $scope.markers = markers;
+        }
 
-                // Removes white background DIV
-                iwBackground.children(':nth-child(4)').css({'display': 'none'});
+        // ====== between function ======
+        function between(x, min, max) {
+            return x >= min && x <= max;
+        }
 
-                // Moves the infowindow 115px to the right.
-                iwOuter.parent().parent().css({left: '50px'});
+        // ======= Function to create a marker ========
+        function createMarker(queueItem, id) {
 
-                // Moves the shadow of the arrow 76px to the left margin.
-                iwBackground.children(':nth-child(1)').attr('style', function (i, s) {
-                    return s + 'left: 76px !important;'
-                });
+            if( between(queueItem.address[0],5,10) &&   // in between 5 and 10 and
+                between(queueItem.address[1],79,82)){   // in between 79 and 82
 
-                // Moves the arrow 76px to the left margin.
-                iwBackground.children(':nth-child(3)').attr('style', function (i, s) {
-                    return s + 'left: 76px !important;'
-                });
+                var marker = {  
+                                latitude: queueItem.address[0], 
+                                longitude: queueItem.address[1], 
+                                id: id,
+                                icon: 'styles/css/images/car_repair.png', 
+                                show: false,
+                                templateUrl:'views/googleMaps/infoWindow.html',
+                                templateParameter: {
+                                    branch:queueItem.branch,
+                                    field1: queueItem.val1,
+                                    field2: queueItem.val2},
+                                windowOptions: {
+                                    boxClass: "infobox",
+                                    boxStyle: {
+                                        backgroundColor: "#FAA61A",
+                                        border: "2px solid #10297d",
+                                        borderRadius: "8px",
+                                        width: "140px",
+                                        height: "60px",
+                                        opacity: 0.9
+                                    },
+                                    // content: "Text",
+                                    disableAutoPan: false,
+                                    maxWidth: 0,
+                                    pixelOffset: new google.maps.Size(-60, -120),
+                                    zIndex: null,
+                                    closeBoxMargin: "3px",
+                                    closeBoxURL: "styles/css/images/close.svg",
+                                    infoBoxClearance: new google.maps.Size(1, 1),
+                                    isHidden: false,
+                                    pane: "floatPane",
+                                    enableEventPropagation: false
+                                }
+                            };
 
-                // Changes the desired tail shadow color.
-                iwBackground.children(':nth-child(3)').find('div').children().css({
-                    'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px',
-                    'z-index': '1'
-                });
-
-
-                var iwCloseBtn = iwOuter.next();
-
-    // Apply the desired effect to the close button
-                iwCloseBtn.css({
-                    opacity: '1', // by default the close button has an opacity of 0.7
-                    // right: '38px', top: '3px', // button repositioning
-    //  border: '2px solid #48b5e9', // increasing button border and new color
-                    'border-radius': '13px', // circular effect
-                    'box-shadow': '0 0 5px #3990B9' // 3D effect to highlight the button
-                });
-
-    // The API automatically applies 0.7 opacity to the button after the mouseout event.
-    // This function reverses this event to the desired value.
-                iwCloseBtn.mouseout(function () {
-                    $(this).css({opacity: '1'});
-                });
-
-            });
+                markers.push(marker);                
+            }
+            else
+            {
+                console.log("****** out of sri lanka range ******");
+                outOfSriLanka++;
+                outOfSLArray.push(queueItem.branch);
+            }
         }
     }
 ]);

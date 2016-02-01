@@ -222,10 +222,10 @@
 .data-index {
     background-color: #EEEEEE;
     width: 100%;
-    height: 300px;
-    position: relative;
     overflow-y: auto;
     overflow-x: hidden;
+    height: 250px;
+
 }
 
 /*button style */
@@ -509,24 +509,27 @@
 }
 
 .overflow-none {
-  overflow: visible !important;
+    overflow: visible !important;
 }
 
 .header-btn {
     padding-top: 18px;
 }
-.mapping-body{
+
+.mapping-body {
     height: 320px;
     overflow: hidden;
     width: 100%;
     padding-left: 0px;
     padding-right: 5px;
 }
-.mapping-body .not-found{
+
+.mapping-body .not-found {
     color: #215f84;
     text-align: center;
 }
-.not-found > h1{
+
+.not-found > h1 {
     font-weight: 300;
     font-size: 25px;
     color: #215f84;
@@ -534,9 +537,11 @@
     margin-top: 90px;
     position: relative;
 }
+
 v-pane-content {
     background-color: #EEEEEE;
 }
+
 .vAccordion--default v-pane-header {
     padding: 5px 0;
     /* margin-bottom: 20px; */

@@ -12,7 +12,7 @@
         var database = _db;
         
         return{
-            getTables: function(cb){
+             getTables: function(cb){
                 $servicehelpers.httpSend("get",function(data, status){
                    cb(data, status);
                 },$diginurls.diginengine + "/GetTables?dataSetName=" + dataSetId + "&db=" + database);
@@ -22,6 +22,23 @@
                    cb(data, status);
                 },$diginurls.diginengine + "/GetFields?dataSetName=" + dataSetId +"&tableName=" + tbl + "&db=" + database);
              },
+             getHighestLevel: function(tbl, fieldstr, cb){
+                $servicehelpers.httpSend("get",function(data, status){
+                   cb(data, status);
+                },$diginurls.diginengine + "/gethighestlevel?tablename=" + tbl +"&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database); 
+             },
+             getAggData: function(tbl, gb, agg, aggf, cb){
+                 var wSrc = "scripts/webworkers/commonSrcWorker.js";
+                 var reqUrl = $diginurls.diginengine + "/aggregatefields?tablename=" + tbl +
+                     "&group_by={'" + gb + "':1}&agg=" + agg + "&agg_f=[" + aggf + "]&db=" + database;
+                 var wData = {
+                     rUrl: reqUrl,
+                     method: "get"
+                 };
+                 $servicehelpers.sendWorker(wSrc,wData,function(data, status){
+                     cb(data, status);
+                 });
+             }
 //             get
             }
     }   
@@ -46,14 +63,21 @@
                   cb(data, false);
               });
             }
-         }
+         },
+         sendWorker: function (wSrc, wData, cb) {
+             var w = new Worker(wSrc);
+             w.postMessage(wData);
+             w.addEventListener('message', function(event) {
+                 //cb(JSON.parse(event.data.res), event.data.status);
+             });
+         }  
       }
    });
    dsh.factory('$diginurls', function () {
         var host = getHost();
         return {
 //            diginengine: "http://" + host + ":8080",
-           diginengine: "http://192.168.0.190:8080",
+           diginengine: "http://192.168.2.33:8080",
            diginenginealt: "http://" + host + ":8081"
         };
     });

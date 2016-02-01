@@ -1,6 +1,6 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
-    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast', 'DevStudio', '$auth', '$helpers',
-    function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio, $auth, $helpers) {
+    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast', 'DevStudio', '$auth', '$helpers', 'ScopeShare',
+    function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio, $auth, $helpers, ScopeShare) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -1211,11 +1211,19 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         }, 1000);
 
-        //getting data for google maps
-        $http.get('jsons/client.json').success(function (data) {
-            $scope.JSONData = data;
-            console.log("data json");
-            console.log($scope.JSONData);
+        //getting client data for google maps
+        $http.get('jsons/claim.json').success(function (data) {
+            $scope.JSONDataClaim = data;
+            console.log("data json claim");
+            console.log($scope.JSONDataClaim);
+            // ScopeShare.store('JSONDataClient',data);
+        });
+        //getting branch data for google maps
+        $http.get('jsons/branch.json').success(function (data) {
+            $scope.JSONDataBranch = data;
+            console.log("data json branch");
+            console.log($scope.JSONDataBranch);
+            // ScopeShare.store('JSONDataBranch',data);
         });
 
     }

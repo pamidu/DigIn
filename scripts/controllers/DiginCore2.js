@@ -179,7 +179,24 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
                 }
             })
             
-            $mdDialog.show({
+            if($rootScope.widget.uniqueType == "Common Source"){
+                $mdDialog.show({
+                    controller: 'commonSrcInit',
+                    templateUrl: 'views/common-data-src/init-configs/' + $rootScope.widget.initTemplate + '.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    locals: {
+                        widId: $rootScope.widget.id,
+                        fieldData: {}
+                    }
+                })
+                .then(function () {
+                    //$mdDialog.hide();
+                }, function () {
+                    //$mdDialog.hide();
+                });
+            }else{
+                $mdDialog.show({
                     controller: eval($rootScope.widget.initCtrl),
                     templateUrl: 'views/' + $rootScope.widget.initTemplate + '.html',
                     parent: angular.element(document.body),
@@ -193,6 +210,9 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
                 }, function () {
                     //$mdDialog.hide();
                 });
+            }
+
+            
 
         };
         $scope.trustSrc = function (src) {
@@ -683,7 +703,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
         };
 
         $scope.openInitialConfig = function(ev, id) {
-            //alert($scope.currWidget.uniqueType);
+            // alert($scope.currWidget.uniqueType);
 
             $mdDialog.show({
                     controller: eval($scope.currWidget.initCtrl),

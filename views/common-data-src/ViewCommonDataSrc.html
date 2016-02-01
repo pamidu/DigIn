@@ -1,88 +1,92 @@
-<md-sidenav ng-init="initCtrl()" class="md-sidenav-right md-whiteframe-z2 overflow-none" md-component-id="right">
-            <md-content class="overflow-none" layout="row">
 
-                <md-button ng-click="toggleLeft()"
-                              ng-hide="isOpenLeft()"
-                              class="md-primary sidenav-button" layout="row" layout-align="center center">
-                              <md-icon md-svg-src="{{icon}}"></md-icon>
-                </md-button>
-                <accordion flex>
-                <accordion-panel title="Data Source">
-                    <div class="card-body">
-                        <div class="inline-text">
-                            <i class="fa fa-database"></i>
-                            <span>Source</span>
-                        </div>
-                        <div data-ng-if="tablesLoading" class="right loading-table">
-                            <i class="fa fa-circle-o-notch fa-spin"></i>
-                        </div>
-                        <div layout="row">
-                            <!-- select data source -->
-                            <div flex>
-                                <md-select class="full-width" placeholder="Select Source" ng-model="selectedClass" ng-change="onChangeSource(selectedClass)">
-                                    <md-option ng-value="source.name"
-                                                            ng-repeat="source in datasources">
-                                                     {{source.name}}
-                                    </md-option>
-                                </md-select>
-                            </div>
-                        </div>
-                        <div layout="row">
-                            <!-- select table -->
-                            <div flex>
-                                <md-select class="full-width"
-                                                        placeholder="Select Table"
-                                                        ng-change="onChangeTable(tblItem)"
-                                                        ng-model="tblItem">
-                                    <md-option ng-value="item" ng-repeat="item in dataTables | orderBy : item">
-                                                     {{item  }}
-                                    </md-option>
-                                </md-select>
-                            </div>
+<md-sidenav ng-init="initCtrl()" class="md-sidenav-right slider-r-wrap"
+            md-component-id="right">
+    <md-content class="overflow-none m-0" layout="row">
+        <md-button ng-click="toggleLeft()"
+                   ng-hide="isOpenLeft()"
+                   class="md-primary sidenav-button" layout="row" layout-align="center center">
+            <md-icon md-svg-src="{{icon}}"></md-icon>
+        </md-button>
+        <accordion flex>
+            <accordion-panel title="Data Source">
+                <div class="card-body">
+                    <div class="inline-text">
+                        <i class="fa fa-database"></i>
+                        <span>Source</span>
+                    </div>
+                    <div data-ng-if="tablesLoading" class="right loading-table">
+                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                    </div>
+                    <div layout="row">
+                        <!-- select data source -->
+                        <div flex>
+                            <md-select class="full-width" placeholder="Select Source" ng-model="selectedClass"
+                                       ng-change="onChangeSource(selectedClass)">
+                                <md-option ng-value="source.name"
+                                           ng-repeat="source in datasources">
+                                    {{source.name}}
+                                </md-option>
+                            </md-select>
                         </div>
                     </div>
-                    <!-- index loader -->
-                    <div layout="column" class="data-index">
-                        <div>
-                            <md-checkbox ng-repeat="item in tblFields | orderBy : item" ng-click="toggleCheck(item)">
-                               {{ item }}
-                            </md-checkbox>
+                    <div layout="row">
+                        <!-- select table -->
+                        <div flex>
+                            <md-select class="full-width"
+                                       placeholder="Select Table"
+                                       ng-change="onChangeTable(tblItem)"
+                                       ng-model="tblItem">
+                                <md-option ng-value="item" ng-repeat="item in dataTables | orderBy : item">
+                                    {{item }}
+                                </md-option>
+                            </md-select>
                         </div>
                     </div>
-                    <md-content class="overflow-none" layout="column">
-                         <accordion>
-                         <accordion-panel title="Chart Types">
-                             <div layout="row" ng-repeat="row in chartTable" layout="row" layout-align="start center">
-                             <div layout="row" layout-align="center center" ng-repeat="chart in row" ng-click="configGraph($event,chart)" ><img src="{{chart.icon}}">
-                             <md-tooltip md-visible="false" md-direction="Bottom">{{chart.name}}</md-tooltip>    
-                             </div>
-                             </div>
-                         </accordion-panel>
-                         </accordion>
-                     </md-content>
-<!--                    <md-button ng-click="configGraph($event)" flex>Create</md-button>-->
-                </accordion-panel>
-                </accordion>
-                
-            </md-content>
+                </div>
+                <!-- index loader -->
+                <div layout="column" class="data-index">
+                    <div>
+                        <md-checkbox ng-repeat="item in tblFields | orderBy : item" ng-click="toggleCheck(item)">
+                            {{ item }}
+                        </md-checkbox>
+                    </div>
+                </div>
+                <md-content class="overflow-none" layout="column">
+                    <accordion>
+                        <accordion-panel title="Chart Types">
+                            <div layout="row" ng-repeat="row in chartTable" layout="row" layout-align="start center">
+                                <div layout="row" layout-align="center center" ng-repeat="chart in row"
+                                     ng-click="configGraph($event,chart)"><img src="{{chart.icon}}">
+                                    <md-tooltip md-visible="false" md-direction="Bottom">{{chart.name}}</md-tooltip>
+                                </div>
+                            </div>
+                        </accordion-panel>
+                    </accordion>
+                </md-content>
+                <!--                    <md-button ng-click="configGraph($event)" flex>Create</md-button>-->
+            </accordion-panel>
+        </accordion>
+
+    </md-content>
 </md-sidenav>
 
 <md-sidenav class="md-sidenav-right md-sidenav-custom md-whiteframe-z2" md-component-id="custom">
-            <md-content class="overflow-none" layout="column">
-                <accordion ng-repeat="field in fieldArray">
-                <accordion-panel title="{{field}}" >
-                    <ng-md-icon icon="file_download" style="fill:#BDBDBD" size="20" layout="column" layout-align="center center" flex ng-click="getDataByFields(field)"></ng-md-icon>
-                      <!-- index loader -->
-                      <div layout="column" class="data-index"> 
-                          <div>
-                            <md-checkbox ng-repeat="data in distinct[field] track by $index" ng-click="toggleCheck2(data)">
-                                    {{data}}
-                            </md-checkbox>
-                          </div>
-                      </div>
-                      <md-button ng-click="configGraph2($event, field)" flex>Create</md-button>
-                </accordion-panel>
-                </accordion>
-            </md-content>
+    <md-content class="overflow-none" layout="column">
+        <accordion ng-repeat="field in fieldArray">
+            <accordion-panel title="{{field}}">
+                <ng-md-icon icon="file_download" style="fill:#BDBDBD" size="20" layout="column"
+                            layout-align="center center" flex ng-click="getDataByFields(field)"></ng-md-icon>
+                <!-- index loader -->
+                <div layout="column" class="data-index">
+                    <div>
+                        <md-checkbox ng-repeat="data in distinct[field] track by $index" ng-click="toggleCheck2(data)">
+                            {{data}}
+                        </md-checkbox>
+                    </div>
+                </div>
+                <md-button ng-click="configGraph2($event, field)" flex>Create</md-button>
+            </accordion-panel>
+        </accordion>
+    </md-content>
 </md-sidenav>
 

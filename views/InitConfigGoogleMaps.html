@@ -15,9 +15,13 @@
             </md-button>
         </div>
     </div>
-</md-toolbar>
-
+    </md-toolbar>
     <md-content layout-margin>
+            <div layout="row" layout-align='center center'>
+                <md-select ng-model="selectedMap" placeholder="Select Map" flex="50">
+                    <md-option ng-value="map" ng-repeat="map in maps" ng>{{map.name}}</md-option>
+                </md-select>
+            </div>
             <div class="md-actions" layout="row">
             <span flex></span>
             <md-button ng-click="finish()">

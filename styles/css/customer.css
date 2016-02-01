@@ -1630,7 +1630,102 @@ ul.none-border > li {
     background: #2c3e50; /* fallback for old browsers */
     background: -webkit-linear-gradient(to left, #0B618A, #3498db); /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to left, #0B618A, #3498db); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
 
+.grad-grey-1 {
+    background: #fff; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #fff, #F5F5F5); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #fff, #F5F5F5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+/*slider right style*/
+.slider-r-wrap {
+    overflow: hidden;
+    padding: 0;
+    background: #F5F5F5;
+}
+
+.slider-r-tab {
+    padding: 0;
+    height: 80px;
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 3px solid #ECECEC;
+}
+
+.icheck-inline {
+    display: inline-block;
+}
+
+.slider-r-tab > .list-panel {
+    margin: 0;
+    overflow: hidden;
+    text-align: center;
+    display: inline;
+}
+
+.list-panel > .disable {
+    color: #EEEEEE;
+}
+
+.list-panel li {
+    float: left;
+}
+
+.list-panel > li {
+    list-style: outside none none;
+    padding: 14px;
+    width: 82px;
+}
+
+.tab_icon > i {
+    font-size: 35px;
+}
+
+.tab_icon {
+    bottom: 0;
+    display: block;
+    left: 0;
+    line-height: 35px;
+    right: 0;
+    text-align: center;
+    top: 0;
+}
+
+.slider-active {
+    color: #fff;
+    cursor: pointer;
+    background: #2098d1;
+    border-right: 2px solid #ECECEC;
+
+}
+
+.slider-disable {
+    color: #F5F5F5;
+    cursor: pointer;
+}
+
+.slider-r-source {
+    padding: 10px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.index-table {
+    display: table-cell;
+    width: 100%;
+}
+
+.animate-show {
+    padding: 0px;
+}
+
+.accordion-panel md-content {
+    padding: 0px;
+}
+
+.m-0 {
+    margin: -8px !important;
 }
 
 /* Animation*/

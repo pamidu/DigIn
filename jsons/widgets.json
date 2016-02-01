@@ -278,14 +278,24 @@
             "color": "#00BCD4"
         }, {
 
-            "title": "Google Maps",
+            "title": "Google Maps Branches",
             "icon": "styles/css/images/icons/google.svg",
             "type": "Custom",
             "Description": "Google Maps",
-            "widView": "views/ViewGoogleMaps.html",
+            "widView": "views/ViewGoogleMapsBranches.html",
             "dataView": "ViewDataGoogleMaps",
-            "dataCtrl": "gmapsController",
+            "dataCtrl": "gmapsControllerBranches",
             "color": "#8BC34A"
+        }, {
+
+            "title": "Google Maps Claims",
+            "icon": "styles/css/images/icons/google.svg",
+            "type": "Custom",
+            "Description": "Google Maps",
+            "widView": "views/ViewGoogleMapsClaims.html",
+            "dataView": "ViewDataGoogleMaps",
+            "dataCtrl": "gmapsControllerClaims",
+            "color": "#5AA008"
         }, {
 
             "title": "Hierarchy visualization",

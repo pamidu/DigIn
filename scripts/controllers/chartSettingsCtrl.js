@@ -21,7 +21,7 @@ routerApp.controller('chartSettingsCtrl', ['$scope', '$timeout', '$rootScope', '
         };
 
         $scope.form = {
-            name: widget.name,
+           // name: widget.name,
         };
 
         $scope.widget = widget;

@@ -55,8 +55,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
       return $mdSidenav('custom').isOpen();
    };
 
-   $scope.onChangeSource = function(src) {       
-       $scope.client.getTables(function(data){           
+   $scope.onChangeSource = function(src) {
+       $scope.selSrc = src;
+       $scope.client.getTables(function(data, status){           
            if(status) $scope.dataTables = data;
            else console.log("Tables not received due to:" + data);
        });
@@ -65,6 +66,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
    $scope.onChangeTable = function(tbl) {
        //clear fieldArray
        $scope.fieldArray = [];
+       $scope.selTable = tbl;
        $scope.client.getFields(tbl, function(data, status){
            if(status) $scope.tblFields = data;
            else console.log("Fields not received due to:" + data);           
@@ -168,30 +170,10 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
          openConfig(null);
 
       } else if ($scope.selSrc != 'DuoStore') {
-         //selected source is MSSQL
-         var xhr = new XMLHttpRequest();
-         xhr.onreadystatechange = function(e) {
-            console.log(this);
-            if (xhr.readyState === 4) {
-               if (xhr.status === 200) {
-                  var data = JSON.parse(xhr.response);
-                  openConfig(data);
-               } else {
-                  console.error("XHR didn't work: ", xhr.status);
-               }
-            }
-         }
-         xhr.ontimeout = function() {
-            console.error("request timedout: ", xhr);
-         };
-
-         if ($scope.selSrc == 'BigQuery')
-            xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + $scope.srcNamespace + "." + $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All&db=" + $scope.selSrc, /*async*/ true);
-
-         else
-            xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=" + $scope.selTable + "&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All&db=" + $scope.selSrc, /*async*/ true);
-         xhr.send();
-
+         $scope.client.getHighestLevel($scope.selTable, $scope.fieldString.toString(), function(data, status){
+              if(status) openConfig(data);
+              else console.log("Get highest level not received due to:" + data);           
+          });  
       };
    };
 
@@ -341,6 +323,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
    $scope.arrayAttributes = fieldData;
    $scope.fieldSelection = true;
    $scope.mappedArray = {};
+    $scope.selMetCat = "";
    $scope.seriesArray = [{
       name: 'series1',
       serName: '',
@@ -400,6 +383,14 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
       name: "Scatter",
       type: "scatter"
    }];
+    
+    if(typeof $scope.widget.commonSrcConfig.drilled != 'undefined'){
+        $scope.arrayAttributes = $scope.widget.commonSrcConfig.arrAttributes;
+        $scope.queryDrilled = $scope.widget.commonSrcConfig.drilled;
+        $scope.categItem.item = $scope.widget.commonSrcConfig.catItem;
+        $scope.seriesArray = $scope.widget.commonSrcConfig.serObjs;
+        $scope.categItem.drillItem = $scope.widget.commonSrcConfig.drillItem;
+    }
 
    /*TEMP*/
    if ($scope.widget.commonSrcConfig.src == "DuoStore") {
@@ -727,6 +718,12 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                if ($scope.drillItem != '') {
                   $scope.orderByDrilledCat(widget);
                   $state.go('Dashboards');
+                   widget.commonSrcConfig['drilled'] = true;
+               widget.commonSrcConfig['arrAttributes'] = $scope.arrayAttributes;
+               widget.commonSrcConfig['catItem'] = $scope.categItem.item;
+               widget.commonSrcConfig['serObjs'] = $scope.seriesArray; 
+                   widget.commonSrcConfig['drillItem'] = $scope.categItem.drillItem; 
+                   
                   $mdDialog.hide();
                   //$scope.widgetValidity = 'fade-out';
                } else {
@@ -736,6 +733,11 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             } else {
                $scope.orderByCat(widget);
                $state.go('Dashboards');
+               widget.commonSrcConfig['drilled'] = false;
+               widget.commonSrcConfig['arrAttributes'] = $scope.arrayAttributes;
+               widget.commonSrcConfig['catItem'] = $scope.categItem.item;
+               widget.commonSrcConfig['serObjs'] = $scope.seriesArray;               
+                
                $mdDialog.hide();
                //$scope.widgetValidity = 'fade-out';
             }
@@ -751,6 +753,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
    //generate workers parameters
    $scope.generateParamArr = function(httpMethod, host, ns, tbl, method, gBy, agg, aggF, cons, oBy) {
+       alert(ns);
       return {
          webMethod: httpMethod,
          host: host,
@@ -1201,7 +1204,34 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
     $scope.cancel = function(){
         $mdDialog.hide();
     }
+    
+//    $scope.checkSeriesAvailability = function(t){
+//        alert(categItem);
+//    }
+    
    $scope.buildMetric = function(widget){
+       var xhr = new XMLHttpRequest();
+   
+    xhr.onreadystatechange = function(e) {
+        console.log(this);
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                
+                var res = JSON.parse(xhr.response);
+                console.log(JSON.stringify(res)+ typeof res);
+               widget.widData.value = res[0][""];
+                $mdDialog.hide();
+            } else {
+                console.error("XHR didn't work: ", xhr.status);
+            }
+        }
+    }
+    xhr.ontimeout = function() {
+        console.error("request timedout: ", xhr);
+    }
+    xhr.open('get', "http://192.168.2.33:8080/aggregatefields?tablename="+widget.commonSrcConfig.tbl+"&agg="+$scope.selectedFilter+"&agg_f=[%27"+$scope.categItem+"%27]&db="+widget.commonSrcConfig.src, /*async*/ true);
+    xhr.send();
+       $state.go('Dashboards');
       
    };
 

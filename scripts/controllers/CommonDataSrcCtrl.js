@@ -2,10 +2,9 @@
  --- commonDataSrcInit
  --- commonSrcInit
  */
-routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log', 'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API', 'Digin_Engine_API_Namespace', function($scope, $controller, $mdSidenav, $log, CommonDataSrc, $mdDialog, $rootScope, $http, Digin_Engine_API, Digin_Engine_API_Namespace) {
+routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log', 'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API', 'Digin_Engine_API_Namespace', '$diginengine', function($scope, $controller, $mdSidenav, $log, CommonDataSrc, $mdDialog, $rootScope, $http, Digin_Engine_API, Digin_Engine_API_Namespace, $diginengine) {
 
    $scope.initCtrl = function() {
-
       $scope.fieldArray = [];
       $scope.fieldString = [];
       $scope.dataArray = [];
@@ -24,10 +23,12 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
       }, {
          name: "Rest/SOAP Service"
       }, {
-        name: "MSSQL"
-    }, {
+         name: "MSSQL"
+      }, {
          name: "SpreadSheet"
       }];
+       
+      $scope.client = $diginengine.getClient("HutchDialogic","MSSQL");   
       
       getJSONData($http, 'chartConfig', function (data) {
           $scope.chartTable = chunk(data, 8);
@@ -54,30 +55,20 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
       return $mdSidenav('custom').isOpen();
    };
 
-   $scope.onChangeSource = function(src) {
-      //get the namespace for the relevant source
-      getJSONDataByProperty($http, 'pythonServices', 'name', 'Namespaces', function(data) {
-         $scope.srcNamespace = data[0][src.toLowerCase()];
-         localStorage.setItem('srcNamespace', $scope.srcNamespace);
-         //clear fieldArray
-         $scope.fieldArray = [];
-
-         $scope.selSrc = src;
-         CommonDataSrc.getTables(src, function(data) {
-            $scope.dataTables = data;
-         });
-      });
+   $scope.onChangeSource = function(src) {       
+       $scope.client.getTables(function(data){           
+           if(status) $scope.dataTables = data;
+           else console.log("Tables not received due to:" + data);
+       });
    };
 
    $scope.onChangeTable = function(tbl) {
-      //clear fieldArray
-      $scope.fieldArray = [];
-
-      $scope.selTable = tbl;
-      CommonDataSrc.getFields(tbl, function(data) {
-         $scope.tblFields = data;
-         //$compile(div)(scope);
-      });
+       //clear fieldArray
+       $scope.fieldArray = [];
+       $scope.client.getFields(tbl, function(data, status){
+           if(status) $scope.tblFields = data;
+           else console.log("Fields not received due to:" + data);           
+       });
    };
 
    function buildToggler(navID) {
@@ -204,80 +195,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
       };
    };
 
-   $scope.configGraph2 = function(evt, field) {
 
-      //building the data string
-      for (i = 0; i < $scope.dataArray.length; i++) {
-         $scope.dataString.push("'" + $scope.dataArray[i] + "'");
-      }
-
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function(e) {
-         console.log(this);
-         if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-               $scope.currWidget = {
-                  widData: {},
-                  widView: "views/ViewCommonSrc.html",
-                  dataView: "ViewElasticData",
-                  dataCtrl: "elasticDataCtrl",
-                  initTemplate: "InitConfigCommonSrc",
-                  initCtrl: "commonSrcInit",
-                  uniqueType: "Common Source",
-                  syncState: true,
-                  expanded: true,
-                  seriesname: "",
-                  externalDataURL: "",
-                  dataname: "",
-                  d3plugin: "",
-                  divider: false,
-                  id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
-                  type: "Visualization",
-                  width: '370px',
-                  height: '300px',
-                  mheight: '100%',
-                  highchartsNG: {
-                     size: {
-                        height: 220,
-                        width: 300
-                     },
-                  },
-                  commonSrcConfig: {
-                     src: $scope.selSrc,
-                     tbl: $scope.selTable,
-                     fields: $scope.fieldArray,
-                     namespace: $scope.srcNamespace
-                  }
-               };
-               var data = JSON.parse(xhr.response);
-
-               $rootScope.dashboard.widgets.push($scope.currWidget);
-               $mdDialog.show({
-                     controller: 'commonSrcInit',
-                     templateUrl: 'views/InitConfigCommonSrc.html',
-                     targetEvent: evt,
-                     locals: {
-                        widId: $scope.currWidget.id,
-                        fieldData: data
-                     }
-                  })
-                  .then(function() {
-                     //$mdDialog.hide();
-                  }, function() {
-                     //$mdDialog.hide();
-                  });
-
-            } else {
-               console.error("XHR didn't work: ", xhr.status);
-            }
-         }
-      }
-      xhr.ontimeout = function() {
-         console.error("request timedout: ", xhr);
-      }
-      xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + $scope.srcNamespace + "." + $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
-      xhr.send();
-   };
 
    //developer
    //create pule
@@ -428,7 +346,8 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
       serName: '',
       filter: '',
       type: $scope.widget.commonSrcConfig.initSerType,
-      color: ''
+      color: '',
+      turboThreshold: 3000
    }];
 
    $scope.categItem = {};
@@ -786,7 +705,8 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
          filter: '',
          type: 'area',
          color: '',
-         drilled: false
+         drilled: false,
+         turboThreshold: 3000
       });
    }
 

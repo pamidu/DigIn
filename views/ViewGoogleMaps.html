@@ -1,5 +1,16 @@
-<md-content flex layout="column" ng-init="initGmap()"style="overflow:hidden;height:100%"> 
-   	<div id="gmap" flex="90"></div>
-    <div id="gmap-messages" flex="10"></div>
-	<!-- <md-button ng-click="initGmap()">Generate Map</md-button> -->
+<md-content flex layout="column" ng-init="initGmap()" class="gmap-widget" 
+ng-controller="gmapsController"> 
+   	<!-- <div id="gmap" flex></div> -->
+   	<ui-gmap-google-map center='map.center' zoom='map.zoom' options='map.options' bounds="map.bounds" 
+   	pan="'true'">
+   		<ui-gmap-markers models="markers" coords="'self'" doCluster=true idKey="'id'" icon="'icon'" 
+   		click="'markerClicked'">
+        <ui-gmap-windows  show="show" 
+        templateUrl="'templateUrl'" templateParameter="'templateParameter'" 
+        options="'windowOptions'">
+          <!-- <div ng-non-bindable>Test</div> -->
+        </ui-gmap-windows>
+      </ui-gmap-markers>
+   	</ui-gmap-google-map>
 </md-content>
+

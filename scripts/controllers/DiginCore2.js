@@ -15,10 +15,9 @@
 */
 routerApp.controller('widgetSettingsCtrl', ['$scope',
 
-    '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', '$http',
-     function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http) {
+    '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', '$http', 'ScopeShare',
+     function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http, ScopeShare) {
 
-        
         $http.get('jsons/'+ $rootScope.widget.dataJson +'.json').success(function (data) {
             console.log('['+JSON.stringify(data)+']');
             $scope.arr = data;
@@ -30,6 +29,9 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
            $('#pagePreLoader').hide();    
 
         $scope.showData = function () {
+
+            //get markers data and store in $scope
+            $scope.dataTable = ScopeShare.get('gmapsController');
 
             $('#downloadButton').css("display","block");
 

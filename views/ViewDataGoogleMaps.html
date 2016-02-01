@@ -1,36 +1,22 @@
-<md-dialog plumb-item>
-    <md-toolbar class="modal-header" md-theme="teal">
-        <h1>Data Explorer</h1>
-    </md-toolbar>
-    <md-content style="margin-top:15px;margin-left:15px;">
-        <md-button class="md-raised" ng-csv="dataArray" filename="{{fileName}}.csv" field-separator=",">Export to CSV</md-button>
-        <div layout="column">
-            <table>
+<md-content ng-controller="gmapsController" class="overflowscroll height100percent">
+        <div layout="column" layout-align="center center" layout-margin>
+            <table class="width100percent">
                 <tr>
-                    <th>ID</th>
-                    <th>City</th>
-                    <th>latitude</th>
-                    <th>longitude</th>
+                    <th>Branch</th>
+                    <th>field1</th>
+                    <th>field2</th>
                 </tr>
-                <tr ng-repeat='item in arr.accidents'>
+                <tr ng-repeat='row in dataTable'>
                     <td style="width:40px;">
-                        {{item.id}}
+                        {{row.templateParameter.branch}}
                     </td>
                     <td style="width:80px;">
-                        {{item.title}}
+                        {{row.templateParameter.field1}}
                     </td>
                     <td style="width:100px;">
-                        {{item.latitude}}
-                    </td>
-                     <td style="width:100px;">
-                        {{item.longitude}}
+                        {{row.templateParameter.field2}}
                     </td>
                 </tr>
             </table>
-        </div>
-    </md-content>
-    <div class="md-actions" md-theme="indigo" layout="row">
-        <md-button style="width:200px" ng-click="closeDialog()" class="md-raised">Ok</md-button>
-        <md-button style="width:200px" class="md-raised" ng-click="closeDialog()" class=" md-default">Cancel</md-button>
-    </div>
-</md-dialog>
+        <div>
+</md-content>

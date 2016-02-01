@@ -1447,13 +1447,13 @@ md-backdrop.md-sidenav-backdrop{
 	max-width: none !important;
 }
 .gm-style-iw {
-    width: auto !important;
-   top: 15px !important; 
-   left: 0 !important;
-   background-color: #fff;
-   box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
-   border: 1px solid rgba(72, 181, 233, 0.6);
-   border-radius: 2px 2px 0 0;
+    /*width: auto !important;
+    top: 15px !important; 
+    left: 0 !important;
+    background-color: #fff;
+    box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
+    border: 1px solid rgba(72, 181, 233, 0.6);
+    border-radius: 2px 2px 0 0;*/
 }
 
 #iw-container {
@@ -1499,6 +1499,12 @@ md-backdrop.md-sidenav-backdrop{
 	background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
 	background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
 }
+.gmap-widget{
+    overflow:hidden;
+    height:100%;
+}
+
+/* google maps finish*/
 
 .ion-30{        
     font-size:30px;     
@@ -1519,4 +1525,20 @@ md-backdrop.md-sidenav-backdrop{
 }        
 .error-message{     
     margin:auto;        
+}
+
+.overflowscroll{
+    overflow:scroll;
+}
+.height100percent{
+    height:100%;
+}
+.width100percent{
+    width:100%;
+}
+.widget-settings-button{
+    min-width: 0px;
+    margin: 0px !important;
+    z-index: 0 !important;
+    border-radius: 0px;
 }

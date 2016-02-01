@@ -837,7 +837,7 @@ md-card md-card-content.card-warning {
 }
 
 .angular-google-map-container {
-    height: 350px;
+    height: calc(100vh);
 }
 
 .graph-chart-body {

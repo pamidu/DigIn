@@ -31,13 +31,13 @@ ul {
 }
 
 .card__list {
-  padding: 0.75rem;
+  /*padding: 0.75rem;*/
   
   /*width:300px;*/
 }
 
 .card__item {
-  margin: 0 0 0.75rem;
+  /*margin: 0 0 0.75rem;*/
   padding: 2.25rem 1.5rem;
   border-top: 4px solid #404040;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -218,7 +218,7 @@ ul {
   display: flex;
   justify-content: center;
   flex-flow: column wrap;
-  padding: 0 3rem;
+  /*padding: 0 3rem;*/
   background: white;
 }
 
@@ -388,29 +388,25 @@ Cards.init();
 </script>
 
 <div class="view" plumb-item>
-  <div>
-    
-    <md-button ng-click="close()" aria-label="Close" layout-wrap style="margin:0px !important">
-                  <md-icon class="ion-close digin-widget-toolbar-icon"></md-icon>
+  <div layout="row" layout-align="space-around center" class="card__info" layout-margin>
+    <div class="info-player__name">Widget Settings</div>
+    <md-button ng-click="close()" aria-label="Close" layout-wrap class="widget-settings-button">
+      <md-icon class="ion-close digin-widget-toolbar-icon"></md-icon>
     </md-button>
-    
   </div>
   <div class="card__full">
     <div class="card__full-top" flex>
-
       <span class="card__full-num" flex="50"></span>
       <button id="downloadButton" type="button" class="btn btn-default" ng-csv="json2csv" filename="Data.csv" charset="utf-8" flex="30" style="display:none;color:white"><span class="glyphicon glyphicon-download-alt">&nbsp;</span>Download CSV</button>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" flex="20">
           <path d="M16.59 8.59l-4.59 4.58-4.59-4.58-1.41 1.41 6 6 6-6z"/>
           <path d="M0 0h24v24h-24z" fill="none"/>
       </svg>
-
-      
     </div>
     <div class="card__full-bottom">
       <p class="card__full-handle"></p>
       <!-- <div ng-include src="'views/ViewDataHnbClaims.html'" ></div> -->
-      <div ng-include src="dataViewPath"></div>      
+      <div ng-include src="dataViewPath" class="height100percent"></div>      
     </div>
   </div>
   <ul class="card__list">

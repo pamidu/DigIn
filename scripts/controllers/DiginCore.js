@@ -414,17 +414,10 @@ function sltQueueDetailsCtrl($scope, $mdDialog, wid, $http) {
 };
 
 function googleMapsCtrl($scope, $mdDialog, wid, $http) {
-    $scope.arr = [];
+    
     $scope.closeDialog = function () {
         $mdDialog.hide();
     };
-
-
-    $http.get('jsons/googleData.json').success(function (data) {
-        console.log(JSON.stringify(data));
-        $scope.arr = data;
-
-    });
 };
 
 function elasticDataCtrl($scope, $mdDialog, wid) {
@@ -937,6 +930,160 @@ routerApp.controller('pStackCtrl', function ($scope, $mdDialog, $state) {
 
 
 });
+
+routerApp.controller('gmapsController', ['$scope', '$mdDialog', '$state', '$http', 'ScopeShare',
+    function ($scope, $mdDialog, $state, $http, ScopeShare) {
+
+        // ====== Create map objects ======
+        
+        var delay = 100;
+        var map = null;
+        var bounds = null;
+        var latlng = new google.maps.LatLng(7.2964, 80.6350);
+        var infowindow = new google.maps.InfoWindow();
+        var geo = null;
+        var queue = [];
+        var nextAddress = 0;
+        var markers = [];
+        //var windows = [];
+        var markerCluster;
+        var mcOptions = {gridSize: 50, maxZoom: 15};
+        var count = 1;
+        var undefinedErrors = 0;
+        var outOfSriLanka = 0;
+        var JSONData = null;
+        var outOfSLArray = [];
+
+        $scope.markers = [];
+        $scope.map = { center: { latitude: 7.2964, longitude: 80.6350 }, zoom: 8, bounds: {} };
+        $scope.windowParams = {
+            name: 'pule test',
+        };
+        $scope.iconVisible = true;
+        $scope.windowOpt = {
+            show: true
+        }
+        
+        // ======== initializing map at google map loading =========
+        $scope.initGmap = function(){
+            
+            queue = [];
+            markers = [];
+            delay = 100;
+            nextAddress = 0;
+
+            JSONData = $scope.JSONData;
+
+            JsonToArray(); 
+            setTimeout(function(){theNext();},5000);   
+        }
+        $scope.openWindow = function(marker) {
+            marker.showWindow = true;
+            $scope.$apply();
+        }      
+    
+        // ====== Json data to array ======    
+        function JsonToArray() {
+            for(var key in JSONData){
+                if( JSONData[key].Address[0]!=undefined && // adding only defined value to queue
+                    JSONData[key].Address[1]!=undefined &&
+                    key!=undefined){
+                    queue.push({    branch: key, 
+                                    address: JSONData[key].Address, 
+                                    val1: JSONData[key].val1,
+                                    val2: JSONData[key].val2 
+                                });
+                }
+                else{ //counting undefined values 
+                    undefinedErrors++;
+                }
+            }
+        }
+
+        // ====== Decides the next thing to do ======
+        function theNext() {
+                if ((nextAddress+1) < queue.length) {
+                    console.log(nextAddress + " < " + queue.length);
+                    setTimeout(function(){
+
+                            createMarker(queue[nextAddress],nextAddress);                          
+                            theNext();
+                    }, delay);
+                    nextAddress++;
+                } else {
+                    // We're done. 
+                    console.log("Done!");
+                    
+                    $scope.markers = markers;
+
+                    //sharing markers with widgetSettingsCtrl using Scopes factory
+                    ScopeShare.store('gmapsController', $scope.markers);
+                    console.log($scope.markers);
+                    console.log("undefined errors",undefinedErrors);   
+                    console.log("out of sri lanka",outOfSriLanka);  
+                    console.log(outOfSLArray);
+                }
+                
+                // $scope.markers = markers;
+        }
+
+        // ====== between function ======
+        function between(x, min, max) {
+            return x >= min && x <= max;
+        }
+
+        // ======= Function to create a marker ========
+        function createMarker(queueItem, id) {
+
+            if( between(queueItem.address[0],5,10) &&   // in between 5 and 10 and
+                between(queueItem.address[1],79,82)){   // in between 79 and 82
+
+                var marker = {  
+                                latitude: queueItem.address[0], 
+                                longitude: queueItem.address[1], 
+                                id: id,
+                                icon: 'styles/css/images/hnb3.png', 
+                                show: false,
+                                templateUrl:'views/googleMaps/infoWindow.html',
+                                templateParameter: {
+                                    branch:queueItem.branch,
+                                    field1: queueItem.val1,
+                                    field2: queueItem.val2},
+                                windowOptions: {
+                                    boxClass: "infobox",
+                                    boxStyle: {
+                                        backgroundColor: "#FAA61A",
+                                        border: "2px solid #10297d",
+                                        borderRadius: "8px",
+                                        width: "140px",
+                                        height: "60px",
+                                        opacity: 0.9
+                                    },
+                                    // content: "Text",
+                                    disableAutoPan: true,
+                                    maxWidth: 0,
+                                    pixelOffset: new google.maps.Size(-60, -120),
+                                    zIndex: null,
+                                    closeBoxMargin: "3px",
+                                    closeBoxURL: "styles/css/images/close.svg",
+                                    infoBoxClearance: new google.maps.Size(1, 1),
+                                    isHidden: false,
+                                    pane: "floatPane",
+                                    enableEventPropagation: false
+                                }
+                            };
+
+                markers.push(marker);                
+            }
+            else
+            {
+                console.log("****** out of sri lanka range ******");
+                outOfSriLanka++;
+                outOfSLArray.push(queueItem.name);
+            }
+        }
+    }
+]);
 
 
 

@@ -35,236 +35,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $('#content1').css("top", "10px");
             $('.h_iframe').css("height", "100%");
         }
-/************************ google maps area start ************************************/
-        // ====== Create map objects ======
-        
-        var delay = 100;
-        var map = null;
-        var bounds = null;
-        var latlng = new google.maps.LatLng(7.2964, 80.6350);
-        var infowindow = new google.maps.InfoWindow();
-        var geo = null;
-        var queue = [];
-        var nextAddress = 0;
-        var markers = [];
-        var markerCluster;
-        var mcOptions = {gridSize: 50, maxZoom: 15};
-        var count = 1;
-
-        // var JSONData = {   "pulathisi": {"address":"kottawa,pannipitiya","value1": 45,"value2":4445},
-        //                     "senal":{"address":"DODANWATTA,MALALPOLA,YATIYANTHOTA","value1": 55,"value2":566},
-        //                     "damith":{"address":"2nd,Lane,Mandawila,Kesbewa","value1": 65,"value2":812} 
-        //     };
-        var JSONData;
-
-        $http.get('jsons/test_address.json').success(function (data) {
-            $scope.JSONData = data;
-            console.log("data json");
-            console.log($scope.JSONData);
-
-        });
-        
-        // ======== initializing map at google map loading =========
-        $scope.initGmap = function(){
-            
-            queue = [];
-            markers = [];
-            delay = 100;
-            nextAddress = 0;
-            //define the area to display map
-            var mapCanvas = document.getElementById('gmap');
-            //define map options
-            var mapOptions = {
-                center: latlng,
-                zoom: 6,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            }    
-            geo = new google.maps.Geocoder();
-            map = new google.maps.Map(mapCanvas, mapOptions);
-            bounds = new google.maps.LatLngBounds();
-
-            google.maps.event.trigger(map, 'resize');
-            // for zoom on map new instance of marker cluster created
-            google.maps.event.addListener(map, 'zoom_changed', function(event) {
-                markerCluster = new MarkerClusterer(map, markers, mcOptions);    
-            });
-
-            JSONData = $scope.JSONData;
-
-            JsonToArray(); 
-            setTimeout(function(){theNext();},5000);   
-            
-        }
-
-        // ====== Json data to array ======    
-        function JsonToArray() {
-            for(var key in JSONData){
-                console.log(JSONData[key].Address);
-                queue.push({name:key,address:JSONData[key].Address});
-            }
-            console.log("queue",queue);
-        }
-        // ====== Decides the next thing to do ======
-        function theNext() {
-                if (nextAddress < queue.length) {
-                    setTimeout(function(){
-                            //getAddress(queue[nextAddress]);
-                            createMarker(queue[nextAddress]);
-                            console.log(queue[nextAddress]);
-                            theNext();
-                    }, delay);
-                    nextAddress++;
-                } else {
-                    // We're done. Show map bounds
-                    alert("Done!");
-                    map.fitBounds(bounds);
-                }
-                markerCluster = new MarkerClusterer(map, markers, mcOptions);
-        }
-
-        // ====== Geocoding ======
-        function getAddress(queueItem) {
-            if(queueItem != undefined){
-                geo.geocode({address:queueItem.address}, function (results,status)
-                  { 
-                    // If that was successful
-                    if (status == google.maps.GeocoderStatus.OK) {
-                      // Lets assume that the first marker is the one we want
-                      var p = results[0].geometry.location;
-                      var lat=p.lat();
-                      var lng=p.lng();
-                      // Output the data
-                        var msg = '"count="'+count+'"" name="'+queueItem.name+'" address="' + queueItem.address + '" lat=' +lat+ ' lng=' +lng+ '(delay='+delay+'ms)<br>';
-                       document.getElementById("gmap-messages").innerHTML += msg;
-                       count++;
-                       delay=100;
-                      // Create a marker
-                      createMarker(queueItem,lat,lng);
-                    }
-                    // ====== Decode the error status ======
-                    else {
-                      // === if we were sending the requests to fast, try this one again and increase the delay
-                      if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-                        nextAddress--;
-                        delay++;
-                      } else {
-                        var reason="Code "+status;
-                        var msg = '"count="'+count+'" name="'+queueItem.name+'"address="' + queueItem.address + '" error=' +reason+ '(delay='+delay+'ms)<br>';
-                        document.getElementById("gmap-messages").innerHTML += msg;
-                        count++;
-                        nextAddress++;
-                        delay = 100;
-                      }   
-                    }
-                    theNext();
-                  }
-                );
-
-            }    
-        }
-
-        // ====== Check infowindow is open =======
-        function isInfoWindowOpen(infoWindow){
-            var map = infoWindow.getMap();
-            return (map !== null && typeof map !== "undefined");
-        }
-
-        // ======= Function to create a marker ========
-        function createMarker(queueItem) {
-//            var contentString = '<div id="infodiv" >'+queueItem.name+' is at '+queueItem.address+'</div>';
-           var contentString = '<div id="iw-container">' +
-                    '<div class="iw-title">'+queueItem.name+'</div>' +
-                    '<div class="iw-content">' +
-                      '<div class="iw-subTitle">Address:</div>' +'address comes here'+
-////                      '<img src="images/vistalegre.jpg" alt="Porcelain Factory of Vista Alegre" height="115" width="83">' +
-//                      '<p></p>' +
-//                      '<div class="iw-subTitle">Contacts</div>' +
-//                      '<p>VISTA ALEGRE ATLANTIS, SA<br>3830-292 Ílhavo - Portugal<br>'+
-//                      '<br>Phone. +351 234 320 600<br>e-mail: geral@vaa.pt<br>www: www.myvistaalegre.com</p>'+
-                       '<div class="iw-subTitle">Coverage Type:</div>'+
-                       '<div class="iw-subTitle">Total Coverage Amount:</div>'+
-                    '</div>' +
-                    '<div class="iw-bottom-gradient"></div>' +
-                  '</div>';
-           
-            var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(queueItem.address[0],queueItem.address[1]),
-            map: map,
-            zIndex: Math.round(latlng.lat()*-100000)<<5
-            });
-
-            google.maps.event.addListener(marker, 'click', function() {
-                infowindow.setContent(contentString); 
-                if(isInfoWindowOpen(infowindow)){
-                    infowindow.close();
-                }
-                else{
-                    infowindow.open(map,marker);
-                } 
-            });
-
-            bounds.extend(marker.position);
-            markers.push(marker);
-
-            google.maps.event.trigger(map, 'resize');
-
-        }
-        google.maps.event.addListener(infowindow, 'domready', function () {
-// Reference to the DIV that wraps the bottom of infowindow
-            var iwOuter = $('.gm-style-iw');
-
-            /* Since this div is in a position prior to .gm-div style-iw.
-             * We use jQuery and create a iwBackground variable,
-             * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
-             */
-            var iwBackground = iwOuter.prev();
-
-            // Removes background shadow DIV
-            iwBackground.children(':nth-child(2)').css({'display': 'none'});
-
-            // Removes white background DIV
-            iwBackground.children(':nth-child(4)').css({'display': 'none'});
-
-            // Moves the infowindow 115px to the right.
-            iwOuter.parent().parent().css({left: '50px'});
-
-            // Moves the shadow of the arrow 76px to the left margin.
-            iwBackground.children(':nth-child(1)').attr('style', function (i, s) {
-                return s + 'left: 76px !important;'
-            });
-
-            // Moves the arrow 76px to the left margin.
-            iwBackground.children(':nth-child(3)').attr('style', function (i, s) {
-                return s + 'left: 76px !important;'
-            });
-
-            // Changes the desired tail shadow color.
-            iwBackground.children(':nth-child(3)').find('div').children().css({
-                'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px',
-                'z-index': '1'
-            });
-
-
-            var iwCloseBtn = iwOuter.next();
-
-// Apply the desired effect to the close button
-            iwCloseBtn.css({
-                opacity: '1', // by default the close button has an opacity of 0.7
-                // right: '38px', top: '3px', // button repositioning
-//  border: '2px solid #48b5e9', // increasing button border and new color
-                'border-radius': '13px', // circular effect
-                'box-shadow': '0 0 5px #3990B9' // 3D effect to highlight the button
-            });
-
-// The API automatically applies 0.7 opacity to the button after the mouseout event.
-// This function reverses this event to the desired value.
-            iwCloseBtn.mouseout(function () {
-                $(this).css({opacity: '1'});
-            });
-
-        });
-
-        /************************ google maps area finish ************************************/
 
             //shows user profile in a dialog box
         $scope.showUserProfile = function (ev) {
@@ -872,7 +642,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         //load social analysis  
-        $scope.showAddSocialAnalysis = function(ev){
+        $scope.showAddSocialAnalysis = function (ev) {
             $mdDialog.show({
                     templateUrl: 'views/socialGraph/socialAnalysis_TEMP.html',
                     parent: angular.element(document.body),
@@ -1441,6 +1211,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $scope.ShouldAutoStart = true;
 
         }, 1000);
+
+        //getting data for google maps
+        $http.get('jsons/branch.json').success(function (data) {
+            $scope.JSONData = data;
+            console.log("data json");
+            console.log($scope.JSONData);
+        });
 
     }
 

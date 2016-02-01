@@ -283,7 +283,7 @@
             "Description": "Google Maps",
             "widView": "views/ViewGoogleMaps.html",
             "dataView": "ViewDataGoogleMaps",
-            "dataCtrl": "googleMapsCtrl",
+            "dataCtrl": "gmapsController",
             "color": "#8BC34A"
         }, {
 

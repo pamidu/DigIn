@@ -961,6 +961,20 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
             };
 
 }]);
+//use this to share scopes between two controllers
+//first store after that get
+routerApp.factory('ScopeShare', function ($rootScope) {
+    var mem = {};
+ 
+    return {
+        store: function (key, value) {
+            mem[key] = value;
+        },
+        get: function (key) {
+            return mem[key];
+        }
+    };
+});
 
 
 routerApp.directive('myUpload', [function () {

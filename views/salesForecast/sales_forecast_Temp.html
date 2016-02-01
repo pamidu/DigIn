@@ -104,7 +104,7 @@
         </div>
 
         <!-- table -->
-        <md-card class="md-default-theme">
+        <md-card class="md-default-theme m-b-20">
             <div class="sf-table-wrap">
                 <div layout="row" layout-wrap>
                     <div flex="70">
@@ -145,16 +145,16 @@
                                     <th class="sf-table-lat-column">Dec</th>
                                 </tr>
                                 <tr>
-                                    <td rowspan="6" >
-                                     <h4 class="vertical-text m-top-60">
-                                         CENTER
-                                     </h4>
+                                    <td rowspan="6">
+                                        <h4 class="vertical-text m-top-60 font-color-y-200">
+                                            CENTER
+                                        </h4>
                                     </td>
                                     <td rowspan="2">consumer</td>
                                     <td class="sf-row-one">Sales</td>
                                     <td class="sf-lef-border-1 sf-row-one">25.3</td>
                                     <td class="sf-row-one">25.3</td>
-                                    <td class="sf-row-one" >23.5</td>
+                                    <td class="sf-row-one">23.5</td>
                                     <td class="sf-lef-border-1 sf-row-one">40%</td>
                                     <td class="sf-row-one">40%</td>
                                     <td class="sf-row-one">40%</td>
@@ -186,7 +186,7 @@
                                     <td class="sf-row-one">Sales</td>
                                     <td class="sf-lef-border-1 sf-row-one">25.3</td>
                                     <td class="sf-row-one">25.3</td>
-                                    <td class="sf-row-one" >23.5</td>
+                                    <td class="sf-row-one">23.5</td>
                                     <td class="sf-lef-border-1 sf-row-one">40%</td>
                                     <td class="sf-row-one">40%</td>
                                     <td class="sf-row-one">40%</td>
@@ -219,8 +219,8 @@
                     </div>
 
                     <div flex="30">
-                        <div class="graph-h5 p-10 text-center ">
-                            Visual Summary
+                        <div class="graph-h3 p-10 text-center font-color-y-200 ">
+                            visual summary
                         </div>
                         <div layout="row" layout-wrap>
                             <div class="sf-chart-first">
@@ -233,6 +233,25 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </md-card>
+
+        <md-card class="md-default-theme sf-min-panel m-b-50 grad-blue-1">
+            <div layout="row" layout-wrap>
+                <div class="p-10">
+                    <ul class="list-justified none-border text-center">
+                        <li>
+                            <p class="color-white graph-h1 font-weight-500 sf-download
+                            sf-hover sink"
+                               ng-click="onClickDownload()"
+                            >
+                                <i class="ti-import m-r-10"></i>
+                                DOWNLOAD
+                            </p>
+                        </li>
+
+                    </ul>
                 </div>
             </div>
         </md-card>

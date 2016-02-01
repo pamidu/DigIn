@@ -1,7 +1,7 @@
 /**
  * Created by Damith on 1/27/2016.
  */
-routerApp.controller('salesForeCaseCtrl', function ($scope, $mdSidenav) {
+routerApp.controller('salesForeCaseCtrl', function ($scope, $mdDialog) {
     $scope.slider = {
         businessGrowth: {
             value: 100
@@ -35,7 +35,7 @@ routerApp.controller('salesForeCaseCtrl', function ($scope, $mdSidenav) {
                 spacingLeft: 10,
                 spacingRight: 10,
                 height: 150,
-                width:350
+                width: 350
             }, plotOptions: {column: {borderWidth: 0, groupPadding: 0, shadow: !1}}
         },
         title: {
@@ -58,9 +58,7 @@ routerApp.controller('salesForeCaseCtrl', function ($scope, $mdSidenav) {
                 color: '#FAFAFA'
             }]
         },
-        tooltip: {
-
-        },
+        tooltip: {},
 //        legend: {
 //            layout: 'vertical',
 //            align: 'right',
@@ -71,11 +69,28 @@ routerApp.controller('salesForeCaseCtrl', function ($scope, $mdSidenav) {
             data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
             color: '#757575',
             showInLegend: false
-        },{
+        }, {
             data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
             color: '#BDBDBD',
             showInLegend: false
         }]
     };
 
+    //download  sales forecast
+    $scope.onClickDownload = function () {
+        $mdDialog.show({
+            controller: forecastDownloadCtrl,
+            templateUrl: 'views/salesForecast/download_Temp.html',
+            clickOutsideToClose: true,
+            locals: {}
+        });
+
+    }
+
 });
+
+function forecastDownloadCtrl($scope, $mdDialog) {
+    $scope.closeDialog = function () {
+        $mdDialog.hide();
+    }
+}

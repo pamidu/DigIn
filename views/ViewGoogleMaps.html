@@ -5,9 +5,18 @@ ng-controller="gmapsController">
    	pan="'true'">
    		<ui-gmap-markers models="markers" coords="'self'" doCluster=true idKey="'id'" icon="'icon'" 
    		click="'markerClicked'">
-        <ui-gmap-windows  show="show" 
-        templateUrl="'templateUrl'" templateParameter="'templateParameter'" 
-        options="'windowOptions'">
+   			<!-- <ui-gmap-windows 
+          show="'showWindow'" 
+          idKey="id"
+          models="markers"
+          coords="'self'"
+          
+          templateParameter="'windowParams'"
+          isIconVisibleOnClick="'true'"
+          closeClick="'closeClick'" ng-cloak>
+                    
+        </ui-gmap-windows> -->
+        <ui-gmap-windows  show="show" templateUrl="'templateUrl'" templateParameter="'templateParameter'">
           <!-- <div ng-non-bindable>Test</div> -->
         </ui-gmap-windows>
       </ui-gmap-markers>

@@ -796,10 +796,20 @@ md-card md-card-content.card-warning {
     font-size: 25px;
 }
 
+.graph-h3 {
+    font-weight: 200;
+    font-family: 'Ek Mukta', sans-serif;
+    font-size: 20px;
+}
+
 .graph-h5 {
     font-weight: 200;
     font-family: 'Ek Mukta', sans-serif;
     font-size: 16px;
+}
+
+.font-color-y-200 {
+    color: #F39A01 !important;
 }
 
 .font-weight-500 {
@@ -1497,7 +1507,15 @@ md-tab-content {
 
 .sf-table-wrap {
     width: 100%;
-    height: 800px;
+    height: 600px;
+}
+
+.m-b-20 {
+    margin-bottom: 20px;
+}
+
+.m-b-50 {
+    margin-bottom: 50px;
 }
 
 .sf-min-panel {
@@ -1571,16 +1589,48 @@ rzslider .rz-bubble {
     margin-top: 19px;
 
 }
-.sf-row-one{
-    color:#757575 !important; ;
-}.sf-row-two{
-    color:#BDBDBD !important; ;
+
+.sf-row-one {
+    color: #757575 !important;;
 }
+
+.sf-row-two {
+    color: #BDBDBD !important;;
+}
+
 .vertical-text {
     transform: rotate(90deg);
 }
-.m-top-60{
+
+.m-top-60 {
     margin-top: 60px;
+}
+
+.sf-table-header {
+    margin-bottom: 25px;
+}
+
+ul.none-border > li {
+    border-right: 0px solid #eee !important;
+    width: 0%;
+}
+
+.sf-hover:hover {
+    cursor: pointer;
+}
+
+.sf-download {
+    padding-left: 10px;
+    padding-right: 50px;
+    padding-top: 22px;
+}
+
+/*gradients style */
+.grad-blue-1 {
+    background: #2c3e50; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #0B618A, #3498db); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #0B618A, #3498db); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 /* Animation*/

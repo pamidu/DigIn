@@ -9,6 +9,7 @@ $(window).load(function () {
 
 var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
     'uiMicrokernel',
+    'diginServiceHandler',
     'ngAnimate',
     'DiginD3.filters',
     'DiginD3.services',

@@ -181,7 +181,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         },
                         "plotOptions": {
                             "series": {
-                                 "turboThreshold": 5000,
                                 "stacking": ""
                             }
                         }
@@ -843,9 +842,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.currentView = "Dashboard";
                 $state.go(routeName)
             }
-            if (routeName == "Social Media Analytics") {
+            if (routeName == "Social Analysis") {
                 $scope.manageTabs(false);
-                $scope.currentView = "Social Media Analytics";
+                $scope.currentView = "Social Analysis";
                 $scope.showAddSocialAnalysis(ev);
 
             }
@@ -1213,7 +1212,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }, 1000);
 
         //getting data for google maps
-        $http.get('jsons/branch.json').success(function (data) {
+        $http.get('jsons/client.json').success(function (data) {
             $scope.JSONData = data;
             console.log("data json");
             console.log($scope.JSONData);

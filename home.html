@@ -29,6 +29,9 @@
     <link rel="stylsheet" type="text/css" href="styles/css/pivot.css"/>
     <!-- angular gridster -->
     <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
+    <!-- angular slider -->
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-slider/rzslider.min.css">
+
     <link rel="stylesheet" type="text/css" href="styles/css/style.css">
     <link rel="stylesheet" type="text/css" href="styles/css/admin1.css">
 
@@ -129,7 +132,7 @@
 
     <!-- ui view end -->
     <!-- Common data source start -->
-    <div class="commonDataSource" ng-include src="'views/ViewCommonDataSrc.html'" ng-controller="commonDataSrcInit">
+    <div class="commonDataSource" ng-include src="'views/common-data-src/ViewCommonDataSrc.html'" ng-controller="commonDataSrcInit">
     </div>
     <!-- Common data source end -->
     <!-- search start -->
@@ -397,6 +400,7 @@
     <script type="text/javascript" src="scripts/vendor/angular-socialshare.min.js"></script>
     <script type="text/javascript" src="scripts/vendor/angular-css-injector.js"></script>
 
+
     <!-- codemirror -->
     <script type="text/javascript" src="bower_components/codemirror/lib/codemirror.js"></script>
     <script type="text/javascript" src="bower_components/codemirror/addon/display/placeholder.js"></script>
@@ -406,6 +410,9 @@
     <script type="text/javascript" src="scripts/vendor/moment.js"></script>
     <!-- angularJS moment-->
     <script type="text/javascript" src="bower_components/angular-moment/angular-moment.min.js"></script>
+    <!-- angular slider -->
+    <script type="text/javascript" src="bower_components/angular-slider/rzslider.min.js"></script>
+
     <script type="text/javascript" src="scripts/vendor/fullcalendar.js"></script>
     <script type="text/javascript" src="scripts/directives/calendar.js"></script>
     <!-- filesaver -->
@@ -453,7 +460,8 @@
     <script type="text/javascript" src="bower_components/FileSaver/FileSaver.js"></script>
     <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/d3PluginCtrl.js"></script>
-    <script type="application/javascript" src="https://jardindesconnaissances.googlecode.com/svn-history/r82/trunk/public/js/d3.layout.cloud.js"></script>    
+    <script type="application/javascript"
+            src="https://jardindesconnaissances.googlecode.com/svn-history/r82/trunk/public/js/d3.layout.cloud.js"></script>
     <script type="text/javascript" src="scripts/controllers/socialGraph/SocialAnalysisCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphFBCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphTwitterCtrl.js"></script>

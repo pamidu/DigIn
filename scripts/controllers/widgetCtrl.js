@@ -47,7 +47,8 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
             },
             "plotOptions": {
                 "series": {
-                    "stacking": ""
+                    "stacking": "",
+                    "turboThreshold": 5000,
                 }
             }
         },
@@ -82,7 +83,8 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
             },
             "plotOptions": {
                 "series": {
-                    "stacking": ""
+                    "stacking": "",
+                    "turboThreshold": 5000,
                 }
             }
         },
@@ -1096,6 +1098,7 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             plotOptions: {
                 series: {
                     borderWidth: 0,
+                    turboThreshold: 3000,
                     dataLabels: {
                         enabled: true,
                     }

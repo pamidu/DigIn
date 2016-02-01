@@ -4,7 +4,7 @@ routerApp.directive('commonDataSrc', function($http,$log,$mdSidenav,CommonDataSr
       restrict: 'E',
       transclude: true,
       scope: {},
-      templateUrl: 'views/ViewCommonDataSrc.html',
+      templateUrl: 'views/common-data-src/ViewCommonDataSrc.html',
       link: function(scope, element) {
          scope.datasources = [
                {name: "DuoStore"},

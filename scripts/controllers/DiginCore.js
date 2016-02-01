@@ -414,17 +414,10 @@ function sltQueueDetailsCtrl($scope, $mdDialog, wid, $http) {
 };
 
 function googleMapsCtrl($scope, $mdDialog, wid, $http) {
-    $scope.arr = [];
+    
     $scope.closeDialog = function () {
         $mdDialog.hide();
     };
-
-
-    $http.get('jsons/googleData.json').success(function (data) {
-        console.log(JSON.stringify(data));
-        $scope.arr = data;
-
-    });
 };
 
 function elasticDataCtrl($scope, $mdDialog, wid) {
@@ -937,6 +930,246 @@ routerApp.controller('pStackCtrl', function ($scope, $mdDialog, $state) {
 
 
 });
+
+routerApp.controller('gmapsController', ['$scope', '$mdDialog', '$state', '$http',function ($scope, $mdDialog, $state, $http) {
+
+        // ====== Create map objects ======
+        
+        var delay = 100;
+        var map = null;
+        var bounds = null;
+        var latlng = new google.maps.LatLng(7.2964, 80.6350);
+        var infowindow = new google.maps.InfoWindow();
+        var geo = null;
+        var queue = [];
+        var nextAddress = 0;
+        var markers = [];
+        //var windows = [];
+        var markerCluster;
+        var mcOptions = {gridSize: 50, maxZoom: 15};
+        var count = 1;
+        var undefinedErrors = 0;
+        var outOfSriLanka = 0;
+        var JSONData = null;
+        var outOfSLArray = [];
+
+        $scope.markers = [];
+        $scope.map = { center: { latitude: 7.2964, longitude: 80.6350 }, zoom: 8, bounds: {} };
+        $scope.windowParams = {
+            name: 'pule test',
+        };
+        $scope.iconVisible = true;
+        $scope.windowOpt = {
+            show: true
+        }
+        // ======== initializing map at google map loading =========
+        $scope.initGmap = function(){
+            
+            queue = [];
+            markers = [];
+            delay = 100;
+            nextAddress = 0;
+
+            JSONData = $scope.JSONData;
+
+            JsonToArray(); 
+            setTimeout(function(){theNext();},5000);   
+        }
+        $scope.openWindow = function(marker) {
+            marker.showWindow = true;
+            $scope.$apply();
+        }      
+    
+        // ====== Json data to array ======    
+        function JsonToArray() {
+            for(var key in JSONData){
+                if( JSONData[key].Address[0]!=undefined && // adding only defined value to queue
+                    JSONData[key].Address[1]!=undefined &&
+                    key!=undefined){
+                    queue.push({ name: key, address: JSONData[key].Address});
+                }
+                else{ //counting undefined values 
+                    undefinedErrors++;
+                }
+            }
+        }
+
+        // ====== Decides the next thing to do ======
+        function theNext() {
+                if ((nextAddress+1) < queue.length) {
+                    console.log(nextAddress + " < " + queue.length);
+                    setTimeout(function(){
+
+                            createMarker(queue[nextAddress],nextAddress);                          
+                            theNext();
+                    }, delay);
+                    nextAddress++;
+                } else {
+                    // We're done. Show map bounds
+                    console.log("Done!");
+                    
+                    $scope.markers = markers;
+                    console.log($scope.markers);
+                    //map.fitBounds(bounds);
+                    console.log("undefined errors",undefinedErrors);   
+                    console.log("out of sri lanka",outOfSriLanka);  
+                    console.log(outOfSLArray);
+                }
+                
+                // $scope.markers = markers;
+        }
+
+        // ====== Check infowindow is open =======
+        function isInfoWindowOpen(infoWindow){
+
+            var map = infoWindow.getMap();
+            return (map !== null && typeof map !== "undefined");
+        }
+
+        // ====== between function ======
+        function between(x, min, max) {
+            return x >= min && x <= max;
+        }
+
+        $scope.markerClicked = function (marker) {
+                    //$scope.openWindow(marker);
+                    marker.showWindow = true;
+                    $scope.$apply();
+        };
+
+        // ======= Function to create a marker ========
+        function createMarker(queueItem, id) {
+
+            if( between(queueItem.address[0],5,10) &&   // in between 5 and 10 and
+                between(queueItem.address[1],79,82)){   // in between 79 and 82
+
+                var marker = {  
+                                name: queueItem.name, 
+                                latitude: queueItem.address[0], 
+                                longitude: queueItem.address[1], 
+                                id: id, 
+                                show: false,
+                                templateUrl:'views/googleMaps/infoWindow.html',
+                                templateParameter: {
+                                    name:queueItem.name,
+                                    field1:'not available'}
+                                };
+                // marker.markerClicked = function () {
+                //     //$scope.openWindow(marker);
+                //     marker.showWindow = true;
+                //     $scope.$apply();
+                // };
+                // marker.closeClick = function () {
+                //             marker.showWindow = false;
+                //             $scope.$apply();
+                // };
+
+                markers.push(marker);                
+                //windows.push({ id: id, latitude:queueItem.address[0], longitude: queueItem.address[1], showWindow: true});
+            }
+            else
+            {
+                console.log("****** out of sri lanka range ******");
+                outOfSriLanka++;
+                outOfSLArray.push(queueItem.name);
+    // //            var contentString = '<div id="infodiv" >'+queueItem.name+' is at '+queueItem.address+'</div>';
+    //            var contentString = '<div id="iw-container">' +
+    //                     '<div class="iw-title">'+queueItem.name+'</div>' +
+    //                     '<div class="iw-content">' +
+    //                       '<div class="iw-subTitle">Address:</div>' +'address comes here'+
+    // ////                      '<img src="images/vistalegre.jpg" alt="Porcelain Factory of Vista Alegre" height="115" width="83">' +
+    // //                      '<p></p>' +
+    // //                      '<div class="iw-subTitle">Contacts</div>' +
+    // //                      '<p>VISTA ALEGRE ATLANTIS, SA<br>3830-292 Ílhavo - Portugal<br>'+
+    // //                      '<br>Phone. +351 234 320 600<br>e-mail: geral@vaa.pt<br>www: www.myvistaalegre.com</p>'+
+    //                        '<div class="iw-subTitle">Coverage Type:</div>'+
+    //                        '<div class="iw-subTitle">Total Coverage Amount:</div>'+
+    //                     '</div>' +
+    //                     '<div class="iw-bottom-gradient"></div>' +
+    //                   '</div>';
+               
+                // var marker = new google.maps.Marker({
+                // position: new google.maps.LatLng(queueItem.address[0],queueItem.address[1]),
+                // map: map,
+                // zIndex: Math.round(latlng.lat()*-100000)<<5
+                // });
+
+                // google.maps.event.addListener(marker, 'click', function() {
+                //     infowindow.setContent(contentString);
+                //     setInfowindowUI(); 
+                //     if(isInfoWindowOpen(infowindow)){
+                //         infowindow.close();
+                //     }
+                //     else{
+                //         infowindow.open(map,marker);
+                //     } 
+                // });
+
+                // bounds.extend(marker.position);
+                
+                // google.maps.event.trigger(map, 'resize');
+            }
+
+        }
+
+        function setInfowindowUI(){
+            google.maps.event.addListener(infowindow, 'domready', function () {
+    // Reference to the DIV that wraps the bottom of infowindow
+                var iwOuter = $('.gm-style-iw');
+
+                /* Since this div is in a position prior to .gm-div style-iw.
+                 * We use jQuery and create a iwBackground variable,
+                 * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
+                 */
+                var iwBackground = iwOuter.prev();
+
+                // Removes background shadow DIV
+                iwBackground.children(':nth-child(2)').css({'display': 'none'});
+
+                // Removes white background DIV
+                iwBackground.children(':nth-child(4)').css({'display': 'none'});
+
+                // Moves the infowindow 115px to the right.
+                iwOuter.parent().parent().css({left: '50px'});
+
+                // Moves the shadow of the arrow 76px to the left margin.
+                iwBackground.children(':nth-child(1)').attr('style', function (i, s) {
+                    return s + 'left: 76px !important;'
+                });
+
+                // Moves the arrow 76px to the left margin.
+                iwBackground.children(':nth-child(3)').attr('style', function (i, s) {
+                    return s + 'left: 76px !important;'
+                });
+
+                // Changes the desired tail shadow color.
+                iwBackground.children(':nth-child(3)').find('div').children().css({
+                    'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px',
+                    'z-index': '1'
+                });
+
+
+                var iwCloseBtn = iwOuter.next();
+
+    // Apply the desired effect to the close button
+                iwCloseBtn.css({
+                    opacity: '1', // by default the close button has an opacity of 0.7
+                    // right: '38px', top: '3px', // button repositioning
+    //  border: '2px solid #48b5e9', // increasing button border and new color
+                    'border-radius': '13px', // circular effect
+                    'box-shadow': '0 0 5px #3990B9' // 3D effect to highlight the button
+                });
+
+    // The API automatically applies 0.7 opacity to the button after the mouseout event.
+    // This function reverses this event to the desired value.
+                iwCloseBtn.mouseout(function () {
+                    $(this).css({opacity: '1'});
+                });
+
+            });
+        }
+    }
+]);
 
 
 

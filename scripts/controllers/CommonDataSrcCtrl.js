@@ -316,7 +316,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
 
 }]);
 
-routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData', 'Digin_Engine_API', 'Digin_Engine_API_Namespace', function($scope, $mdDialog, $rootScope, widId, $state, fieldData, Digin_Engine_API, Digin_Engine_API_Namespace) {
+routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData', 'Digin_Engine_API', 'Digin_Engine_API_Namespace','$diginengine', function($scope, $mdDialog, $rootScope, widId, $state, fieldData, Digin_Engine_API, Digin_Engine_API_Namespace,$diginengine) {
 
    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
    $scope.widget = $rootScope.dashboard.widgets[objIndex];
@@ -334,7 +334,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
    }];
 
    $scope.categItem = {};
-
+   $scope.client = $diginengine.getClient("HutchDialogic","MSSQL");    
    $scope.chartCategory = {
       groupField: '',
       drilledField: '',
@@ -395,6 +395,8 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
         else{
             $scope.categItem = $scope.widget.commonSrcConfig.metCat;
             $scope.selectedFilter = $scope.widget.commonSrcConfig.metFil;
+            $scope.queryGrouped = $scope.widget.commonSrcConfig.metGrp;
+            $scope.metric = $scope.widget.commonSrcConfig.metGrpF;
         }
     }
 
@@ -1208,30 +1210,28 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
     }
     
    $scope.buildMetric = function(widget){
-       var xhr = new XMLHttpRequest();
-   
-    xhr.onreadystatechange = function(e) {
-        console.log(this);
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {                
-                var res = JSON.parse(xhr.response);
-                widget.widData.value = res[0][""];
-                widget.commonSrcConfig['arrAttributes'] = $scope.arrayAttributes;
-                widget.commonSrcConfig['metCat'] = $scope.categItem;
-                widget.commonSrcConfig['metFil'] = $scope.selectedFilter;
-                $mdDialog.hide();
-            } else {
-                console.error("XHR didn't work: ", xhr.status);
-            }
-        }
-    }
-    xhr.ontimeout = function() {
-        console.error("request timedout: ", xhr);
-    }
-    xhr.open('get', "http://192.168.2.33:8080/aggregatefields?tablename="+widget.commonSrcConfig.tbl+"&agg="+$scope.selectedFilter+"&agg_f=[%27"+$scope.categItem+"%27]&db="+widget.commonSrcConfig.src, /*async*/ true);
-    xhr.send();
-       $state.go('Dashboards');
-      
+       widget.commonSrcConfig['arrAttributes'] = $scope.arrayAttributes;
+       widget.commonSrcConfig['metCat'] = $scope.categItem;
+       widget.commonSrcConfig['metFil'] = $scope.selectedFilter;
+       if($scope.queryGrouped){
+           widget.commonSrcConfig['metGrp'] = true;
+           widget.commonSrcConfig['metGrpF'] = $scope.metric;
+           $scope.client.getAggData(widget.commonSrcConfig.tbl,$scope.selectedFilter,$scope.categItem,function(data, status){       if(status) {
+                   widget.widData.value = data[0][""];
+                    $mdDialog.hide();
+               }
+               else console.log("Aggregation not received due to:" + data);
+           }, $scope.metric.gField,"WHERE%20"+$scope.metric.gField+"=%27"+$scope.metric.gFieldVal+"%27");
+       }else{
+           widget.commonSrcConfig['metGrp'] = false;
+           $scope.client.getAggData(widget.commonSrcConfig.tbl,$scope.selectedFilter,$scope.categItem,function(data, status){       if(status) {
+                   widget.widData.value = data[0][""];
+               $mdDialog.hide();
+               }
+               else console.log("Aggregation not received due to:" + data);
+           });
+       }
+       $state.go('Dashboards');      
    };
 
 

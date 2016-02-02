@@ -26,8 +26,19 @@
                     <md-option value="{{cat}}" ng-repeat="cat in seriesAttributes">{{ cat }}</md-option>
                 </md-select>
 -->
+                <md-switch ng-model="queryGrouped" aria-label="Switch 2">
+                    Grouped
+                </md-switch>
+               
+               <md-select ng-show="queryGrouped" ng-model="metric.gField" placeholder="Select a group by field">
+                    <md-option value="{{metItem.value}}" ng-repeat="metItem in arrayAttributes">{{ metItem.value }}</md-option>
+                </md-select>
+                <md-input-container ng-show="queryGrouped" flex>
+                    <label>Group by value</label>
+                    <input ng-model="metric.gFieldVal">
+                </md-input-container>
                 <md-select ng-model="categItem">
-                     <md-option ng-value="metItem.value" ng-repeat="metItem in arrayAttributes">{{metItem.value}}</md-option>
+                     <md-option ng-value="metItem.value" ng-repeat="metItem in arrayAttributes" placeholder="Select a metric field">{{metItem.value}}</md-option>
                </md-select>
                 <md-select ng-model="selectedFilter" placeholder="Select a filter">
                     <md-option value="{{fil.method}}" ng-repeat="fil in filterAttributes">{{ fil.name }}</md-option>

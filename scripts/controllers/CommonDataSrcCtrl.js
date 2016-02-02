@@ -384,12 +384,18 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
       type: "scatter"
    }];
     
-    if(typeof $scope.widget.commonSrcConfig.drilled != 'undefined'){
+    if(typeof $scope.widget.commonSrcConfig.arrAttributes != 'undefined'){
         $scope.arrayAttributes = $scope.widget.commonSrcConfig.arrAttributes;
-        $scope.queryDrilled = $scope.widget.commonSrcConfig.drilled;
-        $scope.categItem.item = $scope.widget.commonSrcConfig.catItem;
-        $scope.seriesArray = $scope.widget.commonSrcConfig.serObjs;
-        $scope.categItem.drillItem = $scope.widget.commonSrcConfig.drillItem;
+        if(typeof $scope.widget.commonSrcConfig.drilled != 'undefined'){            
+            $scope.queryDrilled = $scope.widget.commonSrcConfig.drilled;
+            $scope.categItem.item = $scope.widget.commonSrcConfig.catItem;
+            $scope.seriesArray = $scope.widget.commonSrcConfig.serObjs;
+            $scope.categItem.drillItem = $scope.widget.commonSrcConfig.drillItem;
+        }
+        else{
+            $scope.categItem = $scope.widget.commonSrcConfig.metCat;
+            $scope.selectedFilter = $scope.widget.commonSrcConfig.metFil;
+        }
     }
 
    /*TEMP*/
@@ -1162,8 +1168,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                      for (j = 0; j < drilledData.length; j++) {
                         dataArr.push([
                            drilledData[j][$scope.categItem.drillItem.value],
-                           // drilledData[j]['f0_']
-                           //modified by sajee 1/17
                            drilledData[j]['']
                         ]);
                      }
@@ -1176,8 +1180,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                      if (requestCounter == 0) {
                         widget.highchartsNG['series'] = $scope.orderedArrayObj;
                         widget.highchartsNG.drilldown['series'] = $scope.objArr;
-                        console.log(JSON.stringify($scope.objArr));
-                        console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
                      }
 
 
@@ -1205,21 +1207,18 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
         $mdDialog.hide();
     }
     
-//    $scope.checkSeriesAvailability = function(t){
-//        alert(categItem);
-//    }
-    
    $scope.buildMetric = function(widget){
        var xhr = new XMLHttpRequest();
    
     xhr.onreadystatechange = function(e) {
         console.log(this);
         if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                
+            if (xhr.status === 200) {                
                 var res = JSON.parse(xhr.response);
-                console.log(JSON.stringify(res)+ typeof res);
-               widget.widData.value = res[0][""];
+                widget.widData.value = res[0][""];
+                widget.commonSrcConfig['arrAttributes'] = $scope.arrayAttributes;
+                widget.commonSrcConfig['metCat'] = $scope.categItem;
+                widget.commonSrcConfig['metFil'] = $scope.selectedFilter;
                 $mdDialog.hide();
             } else {
                 console.error("XHR didn't work: ", xhr.status);

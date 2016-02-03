@@ -753,7 +753,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
    //generate workers parameters
    $scope.generateParamArr = function(httpMethod, host, ns, tbl, method, gBy, agg, aggF, cons, oBy) {
-       alert(ns);
+ 
       return {
          webMethod: httpMethod,
          host: host,
@@ -1178,6 +1178,9 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                         widget.highchartsNG.drilldown['series'] = $scope.objArr;
                         console.log(JSON.stringify($scope.objArr));
                         console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
+                          widget.highchartsNG.drilldown['series'] = $scope.objArr;
+            console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
+            $state.go('Dashboards');
                      }
 
 
@@ -1193,14 +1196,21 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
             });
             widget.highchartsNG['series'] = $scope.orderedArrayObj;
-            widget.highchartsNG.drilldown['series'] = $scope.objArr;
-            console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
-            $state.go('Dashboards');
+          
          }
       }
 
    };
    
+
+     $scope.syncWidget = function (widget) {
+                widget.highchartsNG['series'] = $scope.orderedArrayObj;
+                        widget.highchartsNG.drilldown['series'] = $scope.objArr;
+                        console.log(JSON.stringify($scope.objArr));
+                        console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
+                          widget.highchartsNG.drilldown['series'] = $scope.objArr;
+            console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
+        };
     $scope.cancel = function(){
         $mdDialog.hide();
     }
@@ -1229,7 +1239,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
     xhr.ontimeout = function() {
         console.error("request timedout: ", xhr);
     }
-    xhr.open('get', "http://192.168.2.33:8080/aggregatefields?tablename="+widget.commonSrcConfig.tbl+"&agg="+$scope.selectedFilter+"&agg_f=[%27"+$scope.categItem+"%27]&db="+widget.commonSrcConfig.src, /*async*/ true);
+    xhr.open('get', "http://localhost:8080/aggregatefields?tablename="+widget.commonSrcConfig.tbl+"&agg="+$scope.selectedFilter+"&agg_f=[%27"+$scope.categItem+"%27]&db="+widget.commonSrcConfig.src, /*async*/ true);
     xhr.send();
        $state.go('Dashboards');
       

@@ -935,7 +935,7 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
     function ($scope, $mdDialog, $state, $http, ScopeShare) {
 
         // ====== Create map objects ======
-        
+        $scope.syncState = false;
         var delay = 100;
         var map = null;
         var bounds = null;
@@ -968,7 +968,7 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
             JSONData = $scope.JSONDataBranch;
 
             JsonToArray(); 
-            setTimeout(function(){theNext();},5000);   
+            setTimeout(function(){theNext();},400);   
         }   
     
         // ====== Json data to array ======    
@@ -1007,10 +1007,7 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
 
                     //sharing markers with widgetSettingsCtrl using Scopes factory
                     ScopeShare.store('gmapsController', $scope.markers);
-                    console.log($scope.markers);
-                    console.log("undefined errors",undefinedErrors);   
-                    console.log("out of sri lanka",outOfSriLanka);  
-                    console.log(outOfSLArray);
+                    
                 }
                 
                 // $scope.markers = markers;
@@ -1062,13 +1059,12 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
                                 }
                             };
 
-                markers.push(marker);                
+                markers.push(marker);
+                $scope.syncState = true;                
             }
             else
             {
-                console.log("****** out of sri lanka range ******");
-                outOfSriLanka++;
-                outOfSLArray.push(queueItem.branch);
+               
             }
         }
     }
@@ -1078,8 +1074,8 @@ routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', 
     function ($scope, $mdDialog, $state, $http, ScopeShare) {
 
         // ====== Create map objects ======
-        
-        var delay = 100;
+         $scope.syncState = false;
+        var delay = 80;
         var map = null;
         var bounds = null;
         var latlng = new google.maps.LatLng(7.2964, 80.6350);
@@ -1105,13 +1101,13 @@ routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', 
             
             queue = [];
             markers = [];
-            delay = 100;
+            delay = 50;
             nextAddress = 0;
 
             JSONData = $scope.JSONDataClaim;
 
             JsonToArray(); 
-            setTimeout(function(){theNext();},5000);   
+            setTimeout(function(){theNext();},400);   
         }   
     
         // ====== Json data to array ======    
@@ -1135,7 +1131,7 @@ routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', 
         // ====== Decides the next thing to do ======
         function theNext() {
                 if ((nextAddress+1) < queue.length) {
-                    console.log(nextAddress + " < " + queue.length);
+                   
                     setTimeout(function(){
 
                             createMarker(queue[nextAddress],nextAddress);                          
@@ -1144,16 +1140,13 @@ routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', 
                     nextAddress++;
                 } else {
                     // We're done. 
-                    console.log("Done!");
+                   
                     
                     $scope.markers = markers;
 
                     //sharing markers with widgetSettingsCtrl using Scopes factory
                     ScopeShare.store('gmapsController', $scope.markers);
-                    console.log($scope.markers);
-                    console.log("undefined errors",undefinedErrors);   
-                    console.log("out of sri lanka",outOfSriLanka);  
-                    console.log(outOfSLArray);
+                     
                 }
                 
                 // $scope.markers = markers;
@@ -1205,13 +1198,14 @@ routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', 
                                 }
                             };
 
-                markers.push(marker);                
+                markers.push(marker);   
+                $scope.syncState = true;               
             }
             else
             {
-                console.log("****** out of sri lanka range ******");
-                outOfSriLanka++;
-                outOfSLArray.push(queueItem.branch);
+                 
+                // outOfSriLanka++;
+                // outOfSLArray.push(queueItem.branch);
             }
         }
     }

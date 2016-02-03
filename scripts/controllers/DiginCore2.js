@@ -18,146 +18,171 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
     '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', '$http', 'ScopeShare',
      function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http, ScopeShare) {
 
-        $http.get('jsons/'+ $rootScope.widget.dataJson +'.json').success(function (data) {
-            console.log('['+JSON.stringify(data)+']');
-            $scope.arr = data;
+        // $http.get('jsons/'+ $rootScope.widget.dataJson +'.json').success(function (data) {
+        //     console.log('['+JSON.stringify(data)+']');
+        //     $scope.arr = data;
 
-            console.log("data json");
-            console.log($scope.arr);
-        });
+        //     console.log("data json");
+        //     console.log($scope.arr);
+        // });
 
-           $('#pagePreLoader').hide();    
+        $scope.sortType     = 'name'; // set the default sort type
+        $scope.sortReverse  = false;  // set the default sort order
+
+        // ====== Json data to array ======  
+        var JSONData = {};
+        var queue = [];  
+        function JsonToArray() {
+            for(var i = 0; i < JSONData.length; i++){
+    
+                queue.push({    name: JSONData[i].templateParameter.name,
+                                field1: JSONData[i].templateParameter.field1, 
+                                field2: JSONData[i].templateParameter.field2
+                            });
+            }
+            $scope.dataTable = queue;
+        }
+
+        $('#pagePreLoader').hide();    
 
         $scope.showData = function () {
 
-            //get markers data and store in $scope
-            $scope.dataTable = ScopeShare.get('gmapsController');
+            //get markers data for branch data
+            if(ScopeShare.get('gmapsControllerBranch') != undefined){
 
-            $('#downloadButton').css("display","block");
-
-            console.log("$rootScope.widget");
-            console.log($rootScope.widget);
-
-            $scope.dataViewPath = 'views/'+ $rootScope.widget.dataView + '.html';
-
-            console.log("showData");
-            console.log( $scope.dataViewPath);
-
-            if( $rootScope.widget.dataJson == 'hnbBoxData' ){
-                JSON2CSV2();
+                JSONData = ScopeShare.get('gmapsControllerBranch');  
+                if(JSONData){
+                    JsonToArray();
+                }              
             }
-            else{
-                JSON2CSV();
-            }
-            
-        };
+            //get markers data for branch data
+            if(ScopeShare.get('gmapsControllerClaim') != undefined){
 
-        function JSON2CSV() {
-
-            var str = '';
-            var jsonArray = [];
-
-            for(var i=0; i< $scope.arr.children.length; i++){
-
-                var obj = {};
-                obj['data1'] = "";
-                obj['data2'] = "";
-                obj['data3'] = "";
-                console.log("child level 1");
-                console.log($scope.arr.children[i].name);
-                //str += $scope.arr.children[i].name;
-                if( $scope.arr.children[i].children != undefined){
-                    for(var j=0; j< $scope.arr.children[i].children.length; j++){
-                        
-                        console.log("child level 2");
-                        console.log($scope.arr.children[i].children[j].name);
-                        str += $scope.arr.children[i].name + ',' + $scope.arr.children[i].children[j].name;
-                        obj['data1'] = $scope.arr.children[i].name;
-                        obj['data2'] = $scope.arr.children[i].children[j].name;
-                        if( $scope.arr.children[i].children[j].children != undefined){
-                            for(var k=0; k< $scope.arr.children[i].czildren[j].children.length; k++){
-
-                                console.log("child level 3");
-                                console.log($scope.arr.children[i].children[j].children[k].name);
-                                str += ',' + $scope.arr.children[i].children[j].children[k].name;
-                                obj['data3'] = $scope.arr.children[i].children[j].children[k].name;
-                            }
-                            str += '\n';
-                        }
-                        else{
-                            str += '\n';
-                        }
-                        jsonArray.push(obj);
-                        var obj = {};
-                        obj['data1'] = "";
-                        obj['data2'] = "";
-                        obj['data3'] = "";
-                        
-                    }
-                }
-                else{
-                        str += '\n';
-                        obj['data1'] = $scope.arr.children[i].name1;
-                        obj['data2'] = $scope.arr.children[i].name2;
+                JSONData = ScopeShare.get('gmapsControllerClaim');  
+                if(JSONData){
+                    JsonToArray();
                 }    
             }
+            //displaying download button
+            $('#downloadButton').css("display","block");
+            //dataViewPath for the ng-include in ViewDataGoogleMaps.html
+            $scope.dataViewPath = 'views/googleMaps/'+ $rootScope.widget.dataView + '.html';
 
-            console.log("str");
-            console.log(str);
-            console.log("jsonArray");
-            console.log(jsonArray);
+            // if( $rootScope.widget.dataJson == 'hnbBoxData' ){
+            //     JSON2CSV2();
+            // }
+            // else{
+            //     JSON2CSV();
+            // }
             
-            $scope.json2csv = jsonArray;
+        };
+
+        // function JSON2CSV() {
+
+        //     var str = '';
+        //     var jsonArray = [];
+
+        //     for(var i=0; i< $scope.arr.children.length; i++){
+
+        //         var obj = {};
+        //         obj['data1'] = "";
+        //         obj['data2'] = "";
+        //         obj['data3'] = "";
+        //         console.log("child level 1");
+        //         console.log($scope.arr.children[i].name);
+        //         //str += $scope.arr.children[i].name;
+        //         if( $scope.arr.children[i].children != undefined){
+        //             for(var j=0; j< $scope.arr.children[i].children.length; j++){
+                        
+        //                 console.log("child level 2");
+        //                 console.log($scope.arr.children[i].children[j].name);
+        //                 str += $scope.arr.children[i].name + ',' + $scope.arr.children[i].children[j].name;
+        //                 obj['data1'] = $scope.arr.children[i].name;
+        //                 obj['data2'] = $scope.arr.children[i].children[j].name;
+        //                 if( $scope.arr.children[i].children[j].children != undefined){
+        //                     for(var k=0; k< $scope.arr.children[i].czildren[j].children.length; k++){
+
+        //                         console.log("child level 3");
+        //                         console.log($scope.arr.children[i].children[j].children[k].name);
+        //                         str += ',' + $scope.arr.children[i].children[j].children[k].name;
+        //                         obj['data3'] = $scope.arr.children[i].children[j].children[k].name;
+        //                     }
+        //                     str += '\n';
+        //                 }
+        //                 else{
+        //                     str += '\n';
+        //                 }
+        //                 jsonArray.push(obj);
+        //                 var obj = {};
+        //                 obj['data1'] = "";
+        //                 obj['data2'] = "";
+        //                 obj['data3'] = "";
+                        
+        //             }
+        //         }
+        //         else{
+        //                 str += '\n';
+        //                 obj['data1'] = $scope.arr.children[i].name1;
+        //                 obj['data2'] = $scope.arr.children[i].name2;
+        //         }    
+        //     }
+
+        //     console.log("str");
+        //     console.log(str);
+        //     console.log("jsonArray");
+        //     console.log(jsonArray);
+            
+        //     $scope.json2csv = jsonArray;
     
-        }
+        // }
 
-        function JSON2CSV2() {
+        // function JSON2CSV2() {
 
-            var str = '';
-            var jsonArray = [];
+        //     var str = '';
+        //     var jsonArray = [];
 
-            for(var i=0; i< $scope.arr.children.length; i++){
+        //     for(var i=0; i< $scope.arr.children.length; i++){
 
-                var obj = {};
-                obj['data1'] = "";
-                obj['data2'] = "";
+        //         var obj = {};
+        //         obj['data1'] = "";
+        //         obj['data2'] = "";
                 
-                console.log("child level 1");
-                //console.log($scope.arr.children[i].name);
-                //str += $scope.arr.children[i].name;
-                obj['data1'] = $scope.arr.children[i].category;
-                obj['data2'] = $scope.arr.children[i].Observation;
+        //         console.log("child level 1");
+        //         //console.log($scope.arr.children[i].name);
+        //         //str += $scope.arr.children[i].name;
+        //         obj['data1'] = $scope.arr.children[i].category;
+        //         obj['data2'] = $scope.arr.children[i].Observation;
        
-                jsonArray.push(obj);
-                    var obj = {};
-                    obj['data1'] = "";
-                    obj['data2'] = "";
+        //         jsonArray.push(obj);
+        //             var obj = {};
+        //             obj['data1'] = "";
+        //             obj['data2'] = "";
                 
                 
-            }
+        //     }
 
-            console.log("str");
-            console.log(str);
-            console.log("jsonArray");
-            console.log(jsonArray);
+        //     console.log("str");
+        //     console.log(str);
+        //     console.log("jsonArray");
+        //     console.log(jsonArray);
             
-            $scope.json2csv = jsonArray;
+        //     $scope.json2csv = jsonArray;
     
-        }
+        // }
         
-        $scope.exportToCSV = function ($http) {
+        // $scope.exportToCSV = function ($http) {
             
-            JSON2CSV();
-            console.log("$scope.json2csv");
-            console.log($scope.json2csv);
+        //     JSON2CSV();
+        //     console.log("$scope.json2csv");
+        //     console.log($scope.json2csv);
 
-        };
+        // };
 
-        $scope.convertCSVtoJson = function (src) {
-            AsTorPlotItems.then(function (data) {
-                $scope.items = data;
-            });
-        };
+        // $scope.convertCSVtoJson = function (src) {
+        //     AsTorPlotItems.then(function (data) {
+        //         $scope.items = data;
+        //     });
+        // };
         
         $scope.showAdvanced = function (ev, widget) {
 
@@ -735,21 +760,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
             console.log($rootScope.Dashboards);
 
             getJSONDataByIndex($http, 'widgetPositions', $rootScope.dashboard.widgets.length, function(data) {
-
-                $scope.gridsterOpts = {
-                margins: [3, 3],
-                outerMargin: true,
-                pushing: true,
-                floating: true,
-                draggable: {
-                    enabled: true
-                },
-                resizable: {
-                    enabled: true,
-                    handles: ['n', 'e', 's', 'w', 'se', 'sw']
-                }
-                };
-
+               
                 $scope.leftPosition = data.leftPosition;
                 $scope.topPosition = data.topPosition;
                 $scope.ChartType = data.ChartType;
@@ -787,6 +798,10 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                     top: $scope.topPosition + 'px',
                     height: '300px',
                     mheight: '100%',
+                    // sizeX: ,
+                    // sizeY: ,
+                    // row: ,
+                    // col: ,
                     chartStack: [{
                         "id": '',
                         "title": "No"

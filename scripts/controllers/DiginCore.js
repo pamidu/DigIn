@@ -977,7 +977,7 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
                 if( JSONData[key].Address[0]!=undefined && // adding only defined value to queue
                     JSONData[key].Address[1]!=undefined &&
                     key!=undefined){
-                    queue.push({    branch: key, 
+                    queue.push({    name: key, 
                                     address: JSONData[key].Address, 
                                     val1: JSONData[key].val1,
                                     val2: JSONData[key].val2 
@@ -1006,14 +1006,14 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
                     $scope.markers = markers;
 
                     //sharing markers with widgetSettingsCtrl using Scopes factory
-                    ScopeShare.store('gmapsController', $scope.markers);
+                    ScopeShare.store('gmapsControllerBranch', $scope.markers);
                     console.log($scope.markers);
                     console.log("undefined errors",undefinedErrors);   
                     console.log("out of sri lanka",outOfSriLanka);  
                     console.log(outOfSLArray);
                 }
                 
-                // $scope.markers = markers;
+                $scope.markers = markers;
         }
 
         // ====== between function ======
@@ -1035,7 +1035,7 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
                                 show: false,
                                 templateUrl:'views/googleMaps/infoWindow.html',
                                 templateParameter: {
-                                    branch:queueItem.branch,
+                                    name: queueItem.name,
                                     field1: queueItem.val1,
                                     field2: queueItem.val2},
                                 windowOptions: {
@@ -1068,7 +1068,7 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
             {
                 console.log("****** out of sri lanka range ******");
                 outOfSriLanka++;
-                outOfSLArray.push(queueItem.branch);
+                outOfSLArray.push(queueItem.name);
             }
         }
     }
@@ -1120,7 +1120,7 @@ routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', 
                 if( JSONData[key].Address[0]!=undefined && // adding only defined value to queue
                     JSONData[key].Address[1]!=undefined &&
                     key!=undefined){
-                    queue.push({    branch: key, 
+                    queue.push({    name: key, 
                                     address: JSONData[key].Address, 
                                     val1: JSONData[key].val1,
                                     val2: JSONData[key].val2 
@@ -1149,14 +1149,14 @@ routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', 
                     $scope.markers = markers;
 
                     //sharing markers with widgetSettingsCtrl using Scopes factory
-                    ScopeShare.store('gmapsController', $scope.markers);
+                    ScopeShare.store('gmapsControllerClaim', $scope.markers);
                     console.log($scope.markers);
                     console.log("undefined errors",undefinedErrors);   
                     console.log("out of sri lanka",outOfSriLanka);  
                     console.log(outOfSLArray);
                 }
                 
-                // $scope.markers = markers;
+                //$scope.markers = markers;
         }
 
         // ====== between function ======
@@ -1178,7 +1178,7 @@ routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', 
                                 show: false,
                                 templateUrl:'views/googleMaps/infoWindow.html',
                                 templateParameter: {
-                                    branch:queueItem.branch,
+                                    name:queueItem.name,
                                     field1: queueItem.val1,
                                     field2: queueItem.val2},
                                 windowOptions: {
@@ -1211,7 +1211,7 @@ routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', 
             {
                 console.log("****** out of sri lanka range ******");
                 outOfSriLanka++;
-                outOfSLArray.push(queueItem.branch);
+                outOfSLArray.push(queueItem.name);
             }
         }
     }

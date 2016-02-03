@@ -55,10 +55,10 @@
                     <accordion>
                         <accordion-panel title="Chart Types">
                             <div layout="row" ng-repeat="row in chartTable" layout="row" layout-align="start center">
-                                <div layout="row" layout-align="center center" ng-repeat="chart in row"
+                                <fieldset  ng-disabled="tblFields.length == 0" layout="row" layout-align="center center" ng-repeat="chart in row"
                                      ng-click="configGraph($event,chart)"><img src="{{chart.icon}}">
                                     <md-tooltip md-visible="false" md-direction="Bottom">{{chart.name}}</md-tooltip>
-                                </div>
+                                </fieldset >
                             </div>
                         </accordion-panel>
                     </accordion>

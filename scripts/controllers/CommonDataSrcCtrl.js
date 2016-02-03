@@ -316,7 +316,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
 
 }]);
 
-routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData', 'Digin_Engine_API', 'Digin_Engine_API_Namespace', function($scope, $mdDialog, $rootScope, widId, $state, fieldData, Digin_Engine_API, Digin_Engine_API_Namespace) {
+routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData', 'Digin_Engine_API', 'Digin_Engine_API_Namespace','$diginengine', function($scope, $mdDialog, $rootScope, widId, $state, fieldData, Digin_Engine_API, Digin_Engine_API_Namespace,$diginengine) {
 
    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
    $scope.widget = $rootScope.dashboard.widgets[objIndex];
@@ -334,7 +334,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
    }];
 
    $scope.categItem = {};
-
+   $scope.client = $diginengine.getClient("HutchDialogic","MSSQL");    
    $scope.chartCategory = {
       groupField: '',
       drilledField: '',
@@ -384,12 +384,20 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
       type: "scatter"
    }];
     
-    if(typeof $scope.widget.commonSrcConfig.drilled != 'undefined'){
+    if(typeof $scope.widget.commonSrcConfig.arrAttributes != 'undefined'){
         $scope.arrayAttributes = $scope.widget.commonSrcConfig.arrAttributes;
-        $scope.queryDrilled = $scope.widget.commonSrcConfig.drilled;
-        $scope.categItem.item = $scope.widget.commonSrcConfig.catItem;
-        $scope.seriesArray = $scope.widget.commonSrcConfig.serObjs;
-        $scope.categItem.drillItem = $scope.widget.commonSrcConfig.drillItem;
+        if(typeof $scope.widget.commonSrcConfig.drilled != 'undefined'){            
+            $scope.queryDrilled = $scope.widget.commonSrcConfig.drilled;
+            $scope.categItem.item = $scope.widget.commonSrcConfig.catItem;
+            $scope.seriesArray = $scope.widget.commonSrcConfig.serObjs;
+            $scope.categItem.drillItem = $scope.widget.commonSrcConfig.drillItem;
+        }
+        else{
+            $scope.categItem = $scope.widget.commonSrcConfig.metCat;
+            $scope.selectedFilter = $scope.widget.commonSrcConfig.metFil;
+            $scope.queryGrouped = $scope.widget.commonSrcConfig.metGrp;
+            $scope.metric = $scope.widget.commonSrcConfig.metGrpF;
+        }
     }
 
    /*TEMP*/
@@ -753,7 +761,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
    //generate workers parameters
    $scope.generateParamArr = function(httpMethod, host, ns, tbl, method, gBy, agg, aggF, cons, oBy) {
- 
+       alert(ns);
       return {
          webMethod: httpMethod,
          host: host,
@@ -1162,8 +1170,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                      for (j = 0; j < drilledData.length; j++) {
                         dataArr.push([
                            drilledData[j][$scope.categItem.drillItem.value],
-                           // drilledData[j]['f0_']
-                           //modified by sajee 1/17
                            drilledData[j]['']
                         ]);
                      }
@@ -1176,11 +1182,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                      if (requestCounter == 0) {
                         widget.highchartsNG['series'] = $scope.orderedArrayObj;
                         widget.highchartsNG.drilldown['series'] = $scope.objArr;
-                        console.log(JSON.stringify($scope.objArr));
-                        console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
-                          widget.highchartsNG.drilldown['series'] = $scope.objArr;
-            console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
-            $state.go('Dashboards');
                      }
 
 
@@ -1196,53 +1197,41 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
             });
             widget.highchartsNG['series'] = $scope.orderedArrayObj;
-          
+            widget.highchartsNG.drilldown['series'] = $scope.objArr;
+            console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
+            $state.go('Dashboards');
          }
       }
 
    };
    
-
-     $scope.syncWidget = function (widget) {
-                widget.highchartsNG['series'] = $scope.orderedArrayObj;
-                        widget.highchartsNG.drilldown['series'] = $scope.objArr;
-                        console.log(JSON.stringify($scope.objArr));
-                        console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
-                          widget.highchartsNG.drilldown['series'] = $scope.objArr;
-            console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
-        };
     $scope.cancel = function(){
         $mdDialog.hide();
     }
     
-//    $scope.checkSeriesAvailability = function(t){
-//        alert(categItem);
-//    }
-    
    $scope.buildMetric = function(widget){
-       var xhr = new XMLHttpRequest();
-   
-    xhr.onreadystatechange = function(e) {
-        console.log(this);
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                
-                var res = JSON.parse(xhr.response);
-                console.log(JSON.stringify(res)+ typeof res);
-               widget.widData.value = res[0][""];
-                $mdDialog.hide();
-            } else {
-                console.error("XHR didn't work: ", xhr.status);
-            }
-        }
-    }
-    xhr.ontimeout = function() {
-        console.error("request timedout: ", xhr);
-    }
-    xhr.open('get', "http://localhost:8080/aggregatefields?tablename="+widget.commonSrcConfig.tbl+"&agg="+$scope.selectedFilter+"&agg_f=[%27"+$scope.categItem+"%27]&db="+widget.commonSrcConfig.src, /*async*/ true);
-    xhr.send();
-       $state.go('Dashboards');
-      
+       widget.commonSrcConfig['arrAttributes'] = $scope.arrayAttributes;
+       widget.commonSrcConfig['metCat'] = $scope.categItem;
+       widget.commonSrcConfig['metFil'] = $scope.selectedFilter;
+       if($scope.queryGrouped){
+           widget.commonSrcConfig['metGrp'] = true;
+           widget.commonSrcConfig['metGrpF'] = $scope.metric;
+           $scope.client.getAggData(widget.commonSrcConfig.tbl,$scope.selectedFilter,$scope.categItem,function(data, status){       if(status) {
+                   widget.widData.value = data[0][""];
+                    $mdDialog.hide();
+               }
+               else console.log("Aggregation not received due to:" + data);
+           }, $scope.metric.gField,"WHERE%20"+$scope.metric.gField+"=%27"+$scope.metric.gFieldVal+"%27");
+       }else{
+           widget.commonSrcConfig['metGrp'] = false;
+           $scope.client.getAggData(widget.commonSrcConfig.tbl,$scope.selectedFilter,$scope.categItem,function(data, status){       if(status) {
+                   widget.widData.value = data[0][""];
+               $mdDialog.hide();
+               }
+               else console.log("Aggregation not received due to:" + data);
+           });
+       }
+       $state.go('Dashboards');      
    };
 
 

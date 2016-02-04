@@ -1,0 +1,26 @@
+<md-content class="overflowscroll height100percent">
+    <md-input-container class="md-icon-float md-block">
+        <label>Search</label>
+        <input ng-model="searchText" type="text">
+    </md-input-container>
+    <div layout="column" layout-align="center center" layout-margin>
+            <table class="width100percent">
+                <tr>
+                    <th>Name</th>
+                    <th>field1</th>
+                    <th>field2</th>
+                </tr>
+                <tr ng-repeat='row in dataTable | filter : searchText'>
+                    <td style="width:40px;">
+                        {{row.name}}
+                    </td>
+                    <td style="width:80px;">
+                        {{row.field1}}
+                    </td>
+                    <td style="width:100px;">
+                        {{row.field2}}
+                    </td>
+                </tr>
+            </table>
+    <div>
+</md-content>

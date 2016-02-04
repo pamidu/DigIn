@@ -1,5 +1,5 @@
-"use strict";
-(function (dsh){
+'use strict';
+(function (dsh) {
    function getHost(){
         var host = window.location.hostname;
 
@@ -12,25 +12,25 @@
         var database = _db;
         
         return{
-             getTables: function(cb){
+             getTables: function (cb) {
                 $servicehelpers.httpSend("get",function(data, status){
                    cb(data, status);
                 },$diginurls.diginengine + "/GetTables?dataSetName=" + dataSetId + "&db=" + database);
              },
-             getFields: function(tbl, cb){
-                $servicehelpers.httpSend("get",function(data, status){
+             getFields: function (tbl, cb) {
+                $servicehelpers.httpSend("get", function (data, status) {
                    cb(data, status);
                 },$diginurls.diginengine + "/GetFields?dataSetName=" + dataSetId +"&tableName=" + tbl + "&db=" + database);
              },
-             getHighestLevel: function(tbl, fieldstr, cb){
-                $servicehelpers.httpSend("get",function(data, status){
+             getHighestLevel: function (tbl, fieldstr, cb) {
+                $servicehelpers.httpSend("get", function(data, status) {
                    cb(data, status);
                 },$diginurls.diginengine + "/gethighestlevel?tablename=" + tbl +"&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
              },
-             getAggData: function(tbl, agg, aggf, cb, gb, con){
+             getAggData: function (tbl, agg, aggf, cb, gb, con) {
                  console.log('aggregation');
                  var wSrc = "scripts/webworkers/webWorker.js";
-                 var params = "tablename=" + tbl + "&db=" + database + "&agg=" + agg + "&agg_f=[%27" + aggf + "%27] ";
+                 var params = "tablename=" + tbl + "&db=" + database + "&agg=" + agg + "&agg_f=[%27" + aggf + "%27]";
                  if(gb) params += "&group_by={'" + gb + "':1}";
                  if(con) params += "&cons=" + con;
                  var reqUrl = $diginurls.diginengine + "/aggregatefields?" + params;
@@ -41,13 +41,23 @@
                  $servicehelpers.sendWorker(wSrc,wData,function(data, status){
                      cb(data, status);
                  });
+             },
+             getExecQuery: function (qStr, cb) {
+                 var wSrc = "scripts/webworkers/webWorker.js";
+                 var reqUrl = $diginurls.diginengine + "/executeQuery?query=" + qStr;
+                 var wData = {
+                     rUrl: reqUrl,
+                     method: "get"
+                 };
+                 $servicehelpers.sendWorker(wSrc,wData,function(data, status){
+                     cb(data, status);
+                 });
              }
-//             get
             }
     }   
            
       return {
-         getClient : function(dsid, db){
+         getClient : function (dsid, db) {
              return new DiginEngineClient(dsid, db);
          }
       }

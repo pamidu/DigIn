@@ -15,12 +15,12 @@
  |      pStackCtrl                                          |
  ------------------------------------------------------------
  */
-routerApp.controller('showWidgetCtrl', function($scope, $mdDialog, widget) {
+routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
 
     $scope.widget = angular.copy(widget);
     $scope.dHeight = $scope.widget.height + 100;
 
-    $scope.returnWidth = function(width, height) {
+    $scope.returnWidth = function (width, height) {
         console.log("width here", width, height);
         if ($scope.widget.initCtrl == "elasticInit") {
             console.log('elastic');
@@ -28,24 +28,24 @@ routerApp.controller('showWidgetCtrl', function($scope, $mdDialog, widget) {
             $scope.widget.highchartsNG.size.height = parseInt(height);
         }
     };
-    var reSizeWidget = function() {
+    var reSizeWidget = function () {
         $scope.widget.highchartsNG.size.width = parseInt(700);
         $scope.widget.highchartsNG.size.height = parseInt(400);
     }
 
-    $scope.setChartSize = function(data) {
+    $scope.setChartSize = function (data) {
         console.log(data);
-        setTimeout(function() {
+        setTimeout(function () {
             reSizeWidget();
         }, 50);
     }
 
-    $scope.closeDialog = function() {
+    $scope.closeDialog = function () {
         $mdDialog.hide();
     };
 });
 routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', 'DynamicVisualization',
-    function($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, DynamicVisualization) {
+    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, DynamicVisualization) {
 
         $('#pagePreLoader').hide();
 
@@ -59,98 +59,104 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
          currentSourceView ()
          */
 
-        $scope.showFace2 = function($event, widget) {
+        $scope.showFace2 = function ($event, widget) {
             alert("loadin 2nd face...!");
             $event.preventDefault();
             $(this).parent().toggleClass('expand');
             $(this).parent().children().toggleClass('expand');
         }
 
-        $scope.currentSourceView = function(ev, widget) {
+        $scope.currentSourceView = function (ev, widget) {
             $scope.isTableSourceLoading = false;
             $mdDialog.show({
-                templateUrl: 'views/widgetDataTable_TEMP.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                locals: {
-                    items: widget
-                },
-                controller: function dataSourceCtrl($scope, $mdDialog, items) {
-                    // console.log(JSON.stringify(items));
-                    var isCommonSrc = angular.isUndefined(items.widCsc);
-                    var selectedSourceData = {};
-                    if (isCommonSrc) {
-                        //selected common data source
-                        selectedSourceData = {
-                            'uniqueType': items.uniqueType,
-                            'length': items.commonSrcConfig.fields.length,
-                            'attributes': items.commonSrcConfig.fields,
-                            'mappedData': [],
-                            'className': items.commonSrcConfig.tbl,
-                            'source': items.commonSrcConfig.src,
-                            'type': null,
-                            'groupBy': null,
-                            'data': items.highchartsNG.series[0].data
-                        };
-                    } else {
-                        selectedSourceData = {
-                            'uniqueType': items.uniqueType,
-                            'length': items.widConfig.attributes.length,
-                            'attributes': items.widConfig.attributes,
-                            'mappedData': [],
-                            'className': items.widConfig.selectedClass,
-                            'source': items.widConfig.source,
-                            'type': items.type,
-                            'groupBy': items.widConfig.chartCat.groupField
-                        };
+                    templateUrl: 'views/widgetDataTable_TEMP.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    locals: {
+                        items: widget
                     }
-                    for (var i = 0; i < selectedSourceData.length; i++) {
+                    ,
+                    controller: function dataSourceCtrl($scope, $mdDialog, items) {
+                        // console.log(JSON.stringify(items));
+                        var isCommonSrc = angular.isUndefined(items.widCsc);
+                        var selectedSourceData = {};
                         if (isCommonSrc) {
-                            var _attr = selectedSourceData.attributes[i].trim().
-                            toString();
-                            selectedSourceData.mappedData.push(items.winConfig.mappedData[_attr].data);
+                            //selected common data source
+                            selectedSourceData = {
+                                'uniqueType': items.uniqueType,
+                                'length': items.commonSrcConfig.fields.length,
+                                'attributes': items.commonSrcConfig.fields,
+                                'mappedData': [],
+                                'className': items.commonSrcConfig.tbl,
+                                'source': items.commonSrcConfig.src,
+                                'type': null,
+                                'groupBy': null,
+                                'data': items.highchartsNG.series[0].data
+                            };
                         } else {
-                            var _attr = selectedSourceData.attributes[i].trim().
-                            toString();
-                            selectedSourceData.mappedData.push(items.widConfig.mappedData[_attr].data);
+                            selectedSourceData = {
+                                'uniqueType': items.uniqueType,
+                                'length': items.widConfig.attributes.length,
+                                'attributes': items.widConfig.attributes,
+                                'mappedData': [],
+                                'className': items.widConfig.selectedClass,
+                                'source': items.widConfig.source,
+                                'type': items.type,
+                                'groupBy': items.widConfig.chartCat.groupField
+                            };
                         }
-
-
-                    }
-                    var appendTblBody = function() {
-                        $scope.isTableSourceLoading = true;
                         for (var i = 0; i < selectedSourceData.length; i++) {
-                            for (var b = 0; b < selectedSourceData.mappedData[i].length; b++) {
-                                var rows = '';
-                                for (var c = 0; c < selectedSourceData.length; c++) {
-                                    var oneRow = "<td>" + selectedSourceData.mappedData[c][b] + "</td>";
-                                    rows += oneRow;
-                                }
-                                $("#dataBody").append("<tr>" + rows + "</tr>");
-                                oneRow = '';
+                            if (isCommonSrc) {
+                                var _attr = selectedSourceData.attributes[i].trim().
+                                toString();
+                                selectedSourceData.mappedData.push(items.
+                                    winConfig.mappedData[_attr].data);
+                            } else {
+                                var _attr = selectedSourceData.attributes[i].trim().
+                                toString();
+                                selectedSourceData.mappedData.push(items.
+                                    widConfig.mappedData[_attr].data);
                             }
+
+
                         }
-                        $scope.isTableSourceLoading = false;
-                    };
-                    setTimeout(appendTblBody, 100);
+                        var appendTblBody = function () {
+                            $scope.isTableSourceLoading = true;
+                            for (var i = 0; i < selectedSourceData.length; i++) {
+                                for (var b = 0; b < selectedSourceData.mappedData[i].length; b++) {
+                                    var rows = '';
+                                    for (var c = 0; c < selectedSourceData.length; c++) {
+                                        var oneRow = "<td>" + selectedSourceData.mappedData[c][b] + "</td>";
+                                        rows += oneRow;
+                                    }
+                                    $("#dataBody").append("<tr>" + rows + "</tr>");
+                                    oneRow = '';
+                                }
+                            }
+                            $scope.isTableSourceLoading = false;
+                        };
+                        setTimeout(appendTblBody, 100);
 
 
-                    $scope.widget = selectedSourceData;
-                    $scope.cancel = function() {
-                        $mdDialog.cancel();
-                    };
-                    $scope.submit = function() {
-                        $mdDialog.submit();
-                    };
+                        $scope.widget = selectedSourceData;
+                        $scope.cancel = function () {
+                            $mdDialog.cancel();
+                        };
+                        $scope.submit = function () {
+                            $mdDialog.submit();
+                        };
+                    }
                 }
-            });
-        };
+            )
+            ;
+        }
+        ;
 
-        $scope.closeDialog = function() {
+        $scope.closeDialog = function () {
             $mdDialog.hide();
         };
 
-        $scope.widgetSettings = function(widget) {
+        $scope.widgetSettings = function (widget) {
             $mdDialog.show({
                 controller: 'widgetSettingsCtrl',
                 templateUrl: 'views/ViewWidgetSettings.html',
@@ -160,12 +166,12 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             $rootScope.widget = widget;
         };
 
-        $scope.initiate = function(widget) {
+        $scope.initiate = function (widget) {
             alert('test');
             alert(DynamicVisualization.testRepeat(widget));
         };
 
-        $scope.showWidget = function(ev, wid) {
+        $scope.showWidget = function (ev, wid) {
             //alert(JSON.stringify(wid));
             $scope.tempWidth = wid.highchartsNG.size.width;
             $scope.tempHeight = wid.highchartsNG.size.height;
@@ -178,18 +184,18 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         widget: wid
                     }
                 })
-                .then(function() {
+                .then(function () {
                     $scope.widget.highchartsNG.size.width = $scope.tempWidth;
                     $scope.widget.highchartsNG.size.height = $scope.tempHeight;
                     //$mdDialog.hide();
-                }, function() {
+                }, function () {
                     $scope.widget.highchartsNG.size.width = $scope.tempWidth;
                     $scope.widget.highchartsNG.size.height = $scope.tempHeight;
                     //$mdDialog.hide();
                 });
         };
 
-        $scope.showData = function(widget, ev) {
+        $scope.showData = function (widget, ev) {
             $mdDialog.show({
                     controller: eval(widget.dataCtrl),
                     templateUrl: 'views/' + widget.dataView + '.html',
@@ -199,19 +205,19 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         wid: widget
                     }
                 })
-                .then(function() {
+                .then(function () {
                     //$mdDialog.hide();
-                }, function() {
+                }, function () {
                     //$mdDialog.hide();
                 });
         };
 
-        $scope.convertCSVtoJson = function(src) {
-            AsTorPlotItems.then(function(data) {
+        $scope.convertCSVtoJson = function (src) {
+            AsTorPlotItems.then(function (data) {
                 $scope.items = data;
             });
         }
-        $scope.showAdvanced = function(ev, widget) {
+        $scope.showAdvanced = function (ev, widget) {
             // $mdDialog.show({
             //     controller: 'chartSettingsCtrl',
             //     templateUrl: 'views/chart_settings.html',
@@ -233,9 +239,9 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         widId: widget.id
                     }
                 })
-                .then(function() {
+                .then(function () {
                     //$mdDialog.hide();
-                }, function() {
+                }, function () {
                     //$mdDialog.hide();
                 });
 
@@ -246,24 +252,24 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
          synchronizes data per widget
          @widget : widget that need to get updated
          */
-        $scope.syncWidget = function(widget) {
+        $scope.syncWidget = function (widget) {
             console.log('syncing...');
             if (typeof widget.widConfig != 'undefined') {
                 widget.syncState = false;
-                DynamicVisualization.syncWidget(widget, function(data) {
+                DynamicVisualization.syncWidget(widget, function (data) {
                     widget.syncState = true;
                     widget = data;
                 });
             }
         };
 
-        $scope.trustSrc = function(src) {
+        $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
-        $scope.getIndexes = function() {
+        $scope.getIndexes = function () {
             var client = $objectstore.getClient("com.duosoftware.com");
-            client.onGetMany(function(data) {
-                data.forEach(function(entry) {
+            client.onGetMany(function (data) {
+                data.forEach(function (entry) {
 
                     $rootScope.indexes.push({
                         value: entry,
@@ -276,20 +282,20 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             });
             client.getClasses("com.duosoftware.com");
         }
-        $scope.commentary = function(widget) {
+        $scope.commentary = function (widget) {
             var comment = "";
             var chunks = [];
 
 
         }
-        $scope.closeDialog = function() {
+        $scope.closeDialog = function () {
             $mdDialog.hide();
         };
-        $scope.clear = function() {
+        $scope.clear = function () {
             $rootScope.dashboard.widgets = [];
         };
 
-        $scope.remove = function(widget) {
+        $scope.remove = function (widget) {
             $rootScope.dashboard.widgets.splice($rootScope.dashboard.widgets.indexOf(widget), 1);
         };
 
@@ -301,28 +307,29 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         $scope.model = {};
 
 
-        //   $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
-        //   if (newVal !== oldVal) {
-        //     $scope.dashboard = $scope.dashboard[newVal];
-        //   } else {
-        //     $scope.dashboard = $scope.dashboard[1];
-        //   }
-        // });
+//   $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
+//   if (newVal !== oldVal) {
+//     $scope.dashboard = $scope.dashboard[newVal];
+//   } else {
+//     $scope.dashboard = $scope.dashboard[1];
+//   }
+// });
 
-        // init dashboard
+// init dashboard
         $scope.selectedDashboardId = '1';
 
     }
-]);
+])
+;
 
 function hnbClaimsCtrl($scope, $mdDialog, wid, $http) {
     $scope.arr = [];
-    $scope.closeDialog = function() {
+    $scope.closeDialog = function () {
         $mdDialog.hide();
     };
 
 
-    $http.get('jsons/hnbForceData.json').success(function(data) {
+    $http.get('jsons/hnbForceData.json').success(function (data) {
 
         $scope.arr = data;
 
@@ -336,12 +343,12 @@ function hnbClaimsCtrl($scope, $mdDialog, wid, $http) {
 
 function hnbDistributedCtrl($scope, $mdDialog, wid, $http) {
     $scope.arr = [];
-    $scope.closeDialog = function() {
+    $scope.closeDialog = function () {
         alert("close Dialog");
         $mdDialog.hide();
     };
 
-    $http.get('jsons/hnbDistributedclaims.json').success(function(data) {
+    $http.get('jsons/hnbDistributedclaims.json').success(function (data) {
         console.log(JSON.stringify(data));
         $scope.arr = data;
 
@@ -351,12 +358,12 @@ function hnbDistributedCtrl($scope, $mdDialog, wid, $http) {
 
 function sltQueuedCtrl($scope, $mdDialog, wid, $http) {
     $scope.arr = [];
-    $scope.closeDialog = function() {
+    $scope.closeDialog = function () {
         $mdDialog.hide();
     };
 
 
-    $http.get('jsons/sltTotalqueued.json').success(function(data) {
+    $http.get('jsons/sltTotalqueued.json').success(function (data) {
         console.log(JSON.stringify(data));
         $scope.arr = data;
     });
@@ -365,13 +372,13 @@ function sltQueuedCtrl($scope, $mdDialog, wid, $http) {
 
 function sltConnectedCtrl($scope, $mdDialog, wid, $http) {
     $scope.arr = [];
-    $scope.closeDialog = function() {
+    $scope.closeDialog = function () {
         alert("slt connecetd");
         $mdDialog.hide();
     };
 
 
-    $http.get('jsons/sltConnectedCalls.json').success(function(data) {
+    $http.get('jsons/sltConnectedCalls.json').success(function (data) {
         console.log(JSON.stringify(data));
         $scope.arr = data;
 
@@ -380,12 +387,12 @@ function sltConnectedCtrl($scope, $mdDialog, wid, $http) {
 
 function hnbBoxCtrl($scope, $mdDialog, wid, $http) {
     $scope.arr = [];
-    $scope.closeDialog = function() {
+    $scope.closeDialog = function () {
         $mdDialog.hide();
     };
 
 
-    $http.get('jsons/hnbBoxData.json').success(function(data) {
+    $http.get('jsons/hnbBoxData.json').success(function (data) {
         console.log(JSON.stringify(data));
         $scope.arr = data;
 
@@ -394,12 +401,12 @@ function hnbBoxCtrl($scope, $mdDialog, wid, $http) {
 
 function sltQueueDetailsCtrl($scope, $mdDialog, wid, $http) {
     $scope.arr = [];
-    $scope.closeDialog = function() {
+    $scope.closeDialog = function () {
         $mdDialog.hide();
     };
 
 
-    $http.get('jsons/sltQueueDetails.json').success(function(data) {
+    $http.get('jsons/sltQueueDetails.json').success(function (data) {
         console.log(JSON.stringify(data));
         $scope.arr = data;
 
@@ -407,15 +414,15 @@ function sltQueueDetailsCtrl($scope, $mdDialog, wid, $http) {
 };
 
 function googleMapsCtrl($scope, $mdDialog, wid, $http) {
-
-    $scope.closeDialog = function() {
+    
+    $scope.closeDialog = function () {
         $mdDialog.hide();
     };
 };
 
 function elasticDataCtrl($scope, $mdDialog, wid) {
 
-    $scope.closeDialog = function() {
+    $scope.closeDialog = function () {
         $mdDialog.hide();
     };
 
@@ -467,26 +474,26 @@ function elasticDataCtrl($scope, $mdDialog, wid) {
 
 routerApp.controller('ReportCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportService',
     '$timeout', '$log', 'cssInjector',
-    function($scope, $mdSidenav, $sce, ReportService, $timeout,
-        $log, cssInjector) {
+    function ($scope, $mdSidenav, $sce, ReportService, $timeout,
+              $log, cssInjector) {
         var allMuppets = [];
         $scope.selected = null;
         $scope.muppets = allMuppets;
         $scope.selectMuppet = selectMuppet;
 
         loadMuppets();
-        $scope.trustSrc = function(src) {
+        $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
-        $scope.applyCSS = function() {
-                cssInjector.add("/styles/css/style1.css");
-            }
-            //*******************
-            // Internal Methods
-            //*******************
+        $scope.applyCSS = function () {
+            cssInjector.add("/styles/css/style1.css");
+        }
+        //*******************
+        // Internal Methods
+        //*******************
         function loadMuppets() {
             ReportService.loadAll()
-                .then(function(muppets) {
+                .then(function (muppets) {
                     allMuppets = muppets;
                     $scope.muppets = [].concat(muppets);
                     $scope.selected = $scope.muppets[0];
@@ -503,12 +510,11 @@ routerApp.controller('ReportCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportServi
 
             $scope.toggleSidenav('left');
         }
-    }
-])
+    }])
 
 routerApp.controller('analyticsCtrl', ['$scope', '$sce', 'AnalyticsService',
     '$timeout', '$log', '$mdDialog',
-    function($scope, $sce, AnalyticsService, $timeout, $log, mdDialog) {
+    function ($scope, $sce, AnalyticsService, $timeout, $log, mdDialog) {
 
         $scope.products = [];
         var allMuppets = [];
@@ -517,7 +523,7 @@ routerApp.controller('analyticsCtrl', ['$scope', '$sce', 'AnalyticsService',
         $scope.selectMuppet = selectMuppet;
 
         loadMuppets();
-        $scope.trustSrc = function(src) {
+        $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
 
@@ -529,7 +535,7 @@ routerApp.controller('analyticsCtrl', ['$scope', '$sce', 'AnalyticsService',
 
         function loadMuppets() {
             AnalyticsService.loadAll()
-                .then(function(muppets) {
+                .then(function (muppets) {
                     allMuppets = muppets;
                     $scope.muppets = [].concat(muppets);
                     $scope.selected = $scope.muppets[0];
@@ -537,13 +543,12 @@ routerApp.controller('analyticsCtrl', ['$scope', '$sce', 'AnalyticsService',
         }
 
 
-    }
-])
+    }])
 
 
 routerApp.controller('RealTimeController', ['$scope', '$sce', 'RealTimeService',
     '$timeout', '$log', '$mdDialog',
-    function($scope, $sce, RealTimeService, $timeout, $log, mdDialog) {
+    function ($scope, $sce, RealTimeService, $timeout, $log, mdDialog) {
 
         $scope.products = [];
         var allMuppets = [];
@@ -552,7 +557,7 @@ routerApp.controller('RealTimeController', ['$scope', '$sce', 'RealTimeService',
         $scope.selectMuppet = selectMuppet;
 
         loadMuppets();
-        $scope.trustSrc = function(src) {
+        $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
 
@@ -564,7 +569,7 @@ routerApp.controller('RealTimeController', ['$scope', '$sce', 'RealTimeService',
 
         function loadMuppets() {
             RealTimeService.loadAll()
-                .then(function(muppets) {
+                .then(function (muppets) {
                     allMuppets = muppets;
                     $scope.muppets = [].concat(muppets);
                     $scope.selected = $scope.muppets[0];
@@ -572,15 +577,14 @@ routerApp.controller('RealTimeController', ['$scope', '$sce', 'RealTimeService',
         }
 
 
-    }
-])
+    }])
 
 routerApp.controller('ExtendedanalyticsCtrl', ['$scope', '$timeout', '$rootScope', '$mdDialog', '$sce', '$objectstore', 'Digin_Extended_Analytics',
-    function($scope, $timeout, $rootScope, $mdDialog, $sce, $objectstore, Digin_Extended_Analytics) {
+    function ($scope, $timeout, $rootScope, $mdDialog, $sce, $objectstore, Digin_Extended_Analytics) {
 
         $scope.AnalyticsReportURL = Digin_Extended_Analytics;
 
-        $scope.trustSrc = function(src) {
+        $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
 
@@ -588,11 +592,11 @@ routerApp.controller('ExtendedanalyticsCtrl', ['$scope', '$timeout', '$rootScope
     }
 ]);
 routerApp.controller('ExtendedReportCtrl', ['$scope', '$timeout', '$rootScope', '$mdDialog', '$sce', '$objectstore', 'Digin_Extended_Reports',
-    function($scope, $timeout, $rootScope, $mdDialog, $sce, $objectstore, Digin_Extended_Reports) {
+    function ($scope, $timeout, $rootScope, $mdDialog, $sce, $objectstore, Digin_Extended_Reports) {
 
         $scope.AnalyticsReportURL = Digin_Extended_Reports;
 
-        $scope.trustSrc = function(src) {
+        $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
 
@@ -601,11 +605,11 @@ routerApp.controller('ExtendedReportCtrl', ['$scope', '$timeout', '$rootScope', 
 ]);
 
 routerApp.controller('ExtendedDashboardCtrl', ['$scope', '$timeout', '$rootScope', '$mdDialog', '$sce', '$objectstore', 'Digin_Extended_Dashboard',
-    function($scope, $timeout, $rootScope, $mdDialog, $sce, $objectstore, Digin_Extended_Dashboard) {
+    function ($scope, $timeout, $rootScope, $mdDialog, $sce, $objectstore, Digin_Extended_Dashboard) {
 
         $scope.AnalyticsDashboardURL = Digin_Extended_Dashboard;
 
-        $scope.trustSrc = function(src) {
+        $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
 
@@ -614,7 +618,7 @@ routerApp.controller('ExtendedDashboardCtrl', ['$scope', '$timeout', '$rootScope
 ]);
 
 routerApp.controller('summarizeCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', '$q', '$timeout',
-    function($scope, $http, $objectstore, $mdDialog, $rootScope, $q, $timeout) {
+    function ($scope, $http, $objectstore, $mdDialog, $rootScope, $q, $timeout) {
         $scope.indexes = [];
 
         var self = this;
@@ -629,14 +633,14 @@ routerApp.controller('summarizeCtrl', ['$scope', '$http', '$objectstore', '$mdDi
         $scope.products = [];
 
 
-        $scope.getFields = function(index) {
+        $scope.getFields = function (index) {
             $scope.selectedFields = [];
             var client = $objectstore.getClient("com.duosoftware.com", index.display);
-            client.onGetMany(function(data) {
+            client.onGetMany(function (data) {
                 if (data) {
                     $scope.selectedFields = data;
                     var client = $objectstore.getClient("com.duosoftware.com", index.display);
-                    client.onGetMany(function(datae) {
+                    client.onGetMany(function (datae) {
                         if (datae) {
                             $scope.products = [];
                             for (var i = 0; i < datae.length; i++) {
@@ -658,7 +662,7 @@ routerApp.controller('summarizeCtrl', ['$scope', '$http', '$objectstore', '$mdDi
 
             client.getFields("com.duosoftware.com", index.display);
         }
-        $scope.remove = function() {
+        $scope.remove = function () {
             // Easily hides most recent dialog shown...
             // no specific instance reference is needed.
             $mdDialog.hide();
@@ -680,7 +684,7 @@ routerApp.controller('summarizeCtrl', ['$scope', '$http', '$objectstore', '$mdDi
                 deferred;
             if (self.simulateQuery) {
                 deferred = $q.defer();
-                $timeout(function() {
+                $timeout(function () {
                     deferred.resolve(results);
                 }, Math.random() * 1000, false);
                 return deferred.promise;
@@ -695,11 +699,10 @@ routerApp.controller('summarizeCtrl', ['$scope', '$http', '$objectstore', '$mdDi
                 return (state.value.indexOf(lowercaseQuery) === 0);
             };
         }
-    }
-]);
+    }]);
 
 routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state', '$mdDialog', 'Digin_Base_URL', '$objectstore', '$mdToast',
-    function($scope, $rootScope, $http, $state, $mdDialog, Digin_Base_URL, $objectstore, $mdToast) {
+    function ($scope, $rootScope, $http, $state, $mdDialog, Digin_Base_URL, $objectstore, $mdToast) {
         var featureObj = localStorage.getItem("featureObject");
         $scope.User_Name = "";
         $scope.User_Email = "";
@@ -723,7 +726,7 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
         }
         // });
 
-        $scope.toggle = function(item, list) {
+        $scope.toggle = function (item, list) {
 
             var idx = list.indexOf(item);
             if (idx > -1) {
@@ -737,16 +740,16 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
             }
         };
 
-        $scope.close = function() {
+        $scope.close = function () {
             $mdDialog.cancel();
         };
 
-        $scope.test = function(item) {
+        $scope.test = function (item) {
 
             return false;
         };
 
-        $scope.finish = function() {
+        $scope.finish = function () {
 
             alert("finish settingctrl");
             for (i = 0; i < $scope.selected.length; i++) {
@@ -758,7 +761,7 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
                 }
             }
 
-            getJSONData($http, 'menu', function(data) {
+            getJSONData($http, 'menu', function (data) {
 
                 var orignArray = [];
                 for (i = 0; i < $scope.features.length; i++) {
@@ -777,18 +780,18 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
 
         };
 
-        $scope.saveSettingsDetails = function() {
+        $scope.saveSettingsDetails = function () {
 
             window.location = "home.html";
         };
 
 
-        $scope.closeDialog = function() {
+        $scope.closeDialog = function () {
 
             $mdDialog.hide();
         };
 
-        $scope.addUser = function() {
+        $scope.addUser = function () {
 
             if ($scope.user.password == $scope.user.confirmPassword) {
                 var SignUpBtn = document.getElementById("mySignup").disabled = true;
@@ -810,7 +813,7 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
 
-                }).success(function(data, status, headers, config) {
+                }).success(function (data, status, headers, config) {
                     $scope.User_Name = data.Name;
                     $scope.User_Email = data.EmailAddress;
                     //setting the name of the profile
@@ -829,13 +832,13 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
 
                         //setting the userdetails
                         var client = $objectstore.getClient("duosoftware.com", "profile", true);
-                        client.onError(function(data) {
+                        client.onError(function (data) {
                             $mdToast.show({
                                 position: "bottom right",
                                 template: "<md-toast>Successfully created your profile,Please check your Email for verification!</md-toast>"
                             });
                         });
-                        client.onComplete(function(data) {
+                        client.onComplete(function (data) {
                             // $mdToast.show({
                             //     position: "bottom right",
                             //     template: "<md-toast>Successfully created your profile,Please check your Email for verification!</md-toast>"
@@ -852,14 +855,14 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
                                 }
 
                             }).
-                            success(function(data, status) {
+                            success(function (data, status) {
                                 $mdToast.show({
                                     position: "bottom right",
                                     template: "<md-toast>Successfully created your profile,Please check your Email for verification!</md-toast>"
                                 });
                                 var SignUpBtn = document.getElementById("mySignup").disabled = false;
                             }).
-                            error(function(data, status) {
+                            error(function (data, status) {
                                 alert("Request failed");
 
                             });
@@ -878,7 +881,7 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
                     }
 
 
-                }).error(function(data, status, headers, config) {
+                }).error(function (data, status, headers, config) {
 
                     $mdToast.show({
                         position: "bottom right",
@@ -895,7 +898,7 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
     }
 ]);
 
-routerApp.controller('pStackCtrl', function($scope, $mdDialog, $state) {
+routerApp.controller('pStackCtrl', function ($scope, $mdDialog, $state) {
 
     //p stack menus
     $scope.Extendedmenu = [{
@@ -912,11 +915,11 @@ routerApp.controller('pStackCtrl', function($scope, $mdDialog, $state) {
         icon: 'styles/css/images/icons/ic_assignment_24px.svg'
     }];
 
-    $scope.closeDialog = function() {
+    $scope.closeDialog = function () {
         $mdDialog.hide();
     };
 
-    $scope.doFunction = function(name) {
+    $scope.doFunction = function (name) {
 
         $('.dashboard-widgets-close').css("visibility", "hidden");
         $('md-tabs-wrapper').css("visibility", "hidden");
@@ -929,7 +932,7 @@ routerApp.controller('pStackCtrl', function($scope, $mdDialog, $state) {
 });
 
 routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state', '$http', 'ScopeShare',
-    function($scope, $mdDialog, $state, $http, ScopeShare) {
+    function ($scope, $mdDialog, $state, $http, ScopeShare) {
 
         // ====== Create map objects ======
         $scope.syncState = false;
@@ -944,10 +947,7 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
         var markers = [];
         //var windows = [];
         var markerCluster;
-        var mcOptions = {
-            gridSize: 50,
-            maxZoom: 15
-        };
+        var mcOptions = {gridSize: 50, maxZoom: 15};
         var count = 1;
         var undefinedErrors = 0;
         var outOfSriLanka = 0;
@@ -955,18 +955,11 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
         var outOfSLArray = [];
 
         $scope.markers = [];
-        $scope.map = {
-            center: {
-                latitude: 7.2964,
-                longitude: 80.6350
-            },
-            zoom: 8,
-            bounds: {}
-        };
-
+        $scope.map = { center: { latitude: 7.2964, longitude: 80.6350 }, zoom: 8, bounds: {} };
+        
         // ======== initializing map at google map loading =========
-        $scope.initGmap = function() {
-
+        $scope.initGmap = function(){
+            
             queue = [];
             markers = [];
             delay = 100;
@@ -974,25 +967,23 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
 
             JSONData = $scope.JSONDataBranch;
 
-            JsonToArray();
-            setTimeout(function() {
-                theNext();
-            }, 400);
-        }
-
+            JsonToArray(); 
+            setTimeout(function(){theNext();},400);   
+        }   
+    
         // ====== Json data to array ======    
         function JsonToArray() {
-            for (var key in JSONData) {
-                if (JSONData[key].Address[0] != undefined && // adding only defined value to queue
-                    JSONData[key].Address[1] != undefined &&
-                    key != undefined) {
-                    queue.push({
-                        branch: key,
-                        address: JSONData[key].Address,
-                        val1: JSONData[key].val1,
-                        val2: JSONData[key].val2
-                    });
-                } else { //counting undefined values 
+            for(var key in JSONData){
+                if( JSONData[key].Address[0]!=undefined && // adding only defined value to queue
+                    JSONData[key].Address[1]!=undefined &&
+                    key!=undefined){
+                    queue.push({    name: key, 
+                                    address: JSONData[key].Address, 
+                                    val1: JSONData[key].val1,
+                                    val2: JSONData[key].val2 
+                                });
+                }
+                else{ //counting undefined values 
                     undefinedErrors++;
                 }
             }
@@ -1000,26 +991,26 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
 
         // ====== Decides the next thing to do ======
         function theNext() {
-            if ((nextAddress + 1) < queue.length) {
-                console.log(nextAddress + " < " + queue.length);
-                setTimeout(function() {
+                if ((nextAddress+1) < queue.length) {
+                    console.log(nextAddress + " < " + queue.length);
+                    setTimeout(function(){
 
-                    createMarker(queue[nextAddress], nextAddress);
-                    theNext();
-                }, delay);
-                nextAddress++;
-            } else {
-                // We're done. 
-                console.log("Done!");
+                            createMarker(queue[nextAddress],nextAddress);                          
+                            theNext();
+                    }, delay);
+                    nextAddress++;
+                } else {
+                    // We're done. 
+                    console.log("Done!");
+                    
+                    $scope.markers = markers;
 
+                    //sharing markers with widgetSettingsCtrl using Scopes factory
+                    ScopeShare.store('gmapsControllerBranch', $scope.markers);
+                    
+                }
+                
                 $scope.markers = markers;
-
-                //sharing markers with widgetSettingsCtrl using Scopes factory
-                ScopeShare.store('gmapsController', $scope.markers);
-
-            }
-
-            // $scope.markers = markers;
         }
 
         // ====== between function ======
@@ -1030,59 +1021,63 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
         // ======= Function to create a marker ========
         function createMarker(queueItem, id) {
 
-            if (between(queueItem.address[0], 5, 10) && // in between 5 and 10 and
-                between(queueItem.address[1], 79, 82)) { // in between 79 and 82
+            if( between(queueItem.address[0],5,10) &&   // in between 5 and 10 and
+                between(queueItem.address[1],79,82)){   // in between 79 and 82
 
-                var marker = {
-                    latitude: queueItem.address[0],
-                    longitude: queueItem.address[1],
-                    id: id,
-                    // icon: 'styles/css/images/hnb3.png', 
-                    show: false,
-                    templateUrl: 'views/googleMaps/infoWindow.html',
-                    templateParameter: {
-                        branch: queueItem.branch,
-                        field1: queueItem.val1,
-                        field2: queueItem.val2
-                    },
-                    windowOptions: {
-                        boxClass: "infobox",
-                        boxStyle: {
-                            backgroundColor: "#FAA61A",
-                            border: "2px solid #10297d",
-                            borderRadius: "8px",
-                            width: "140px",
-                            height: "60px",
-                            opacity: 0.9
-                        },
-                        // content: "Text",
-                        disableAutoPan: false,
-                        maxWidth: 0,
-                        pixelOffset: new google.maps.Size(-60, -120),
-                        zIndex: null,
-                        closeBoxMargin: "3px",
-                        closeBoxURL: "styles/css/images/close.svg",
-                        infoBoxClearance: new google.maps.Size(1, 1),
-                        isHidden: false,
-                        pane: "floatPane",
-                        enableEventPropagation: false
-                    }
-                };
+                var marker = {  
+                                latitude: queueItem.address[0], 
+                                longitude: queueItem.address[1], 
+                                id: id,
+                                // icon: 'styles/css/images/hnb3.png', 
+                                show: false,
+                                templateUrl:'views/googleMaps/infoWindow.html',
+                                templateParameter: {
+                                    name: queueItem.name,
+                                    field1: queueItem.val1,
+                                    field2: queueItem.val2},
+                                windowOptions: {
+                                    boxClass: "infobox",
+                                    boxStyle: {
+                                        backgroundColor: "#FAA61A",
+                                        border: "2px solid #10297d",
+                                        borderRadius: "8px",
+                                        width: "140px",
+                                        height: "60px",
+                                        opacity: 0.9
+                                    },
+                                    // content: "Text",
+                                    disableAutoPan: false,
+                                    maxWidth: 0,
+                                    pixelOffset: new google.maps.Size(-60, -120),
+                                    zIndex: null,
+                                    closeBoxMargin: "3px",
+                                    closeBoxURL: "styles/css/images/close.svg",
+                                    infoBoxClearance: new google.maps.Size(1, 1),
+                                    isHidden: false,
+                                    pane: "floatPane",
+                                    enableEventPropagation: false
+                                }
+                            };
 
                 markers.push(marker);
-                $scope.syncState = true;
-            } else {
-
+                $scope.syncState = true;                
+            }
+            else
+            {
+                
+                console.log("****** out of sri lanka range ******");
+                outOfSriLanka++;
+                outOfSLArray.push(queueItem.name);
             }
         }
     }
 ]);
 
 routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', '$http', 'ScopeShare',
-    function($scope, $mdDialog, $state, $http, ScopeShare) {
+    function ($scope, $mdDialog, $state, $http, ScopeShare) {
 
         // ====== Create map objects ======
-        $scope.syncState = false;
+         $scope.syncState = false;
         var delay = 80;
         var map = null;
         var bounds = null;
@@ -1094,10 +1089,7 @@ routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', 
         var markers = [];
         //var windows = [];
         var markerCluster;
-        var mcOptions = {
-            gridSize: 50,
-            maxZoom: 15
-        };
+        var mcOptions = {gridSize: 50, maxZoom: 15};
         var count = 1;
         var undefinedErrors = 0;
         var outOfSriLanka = 0;
@@ -1105,18 +1097,11 @@ routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', 
         var outOfSLArray = [];
 
         $scope.markers = [];
-        $scope.map = {
-            center: {
-                latitude: 7.2964,
-                longitude: 80.6350
-            },
-            zoom: 8,
-            bounds: {}
-        };
+        $scope.map = { center: { latitude: 7.2964, longitude: 80.6350 }, zoom: 8, bounds: {} };
 
         // ======== initializing map at google map loading =========
-        $scope.initGmap = function() {
-
+        $scope.initGmap = function(){
+            
             queue = [];
             markers = [];
             delay = 50;
@@ -1124,25 +1109,23 @@ routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', 
 
             JSONData = $scope.JSONDataClaim;
 
-            JsonToArray();
-            setTimeout(function() {
-                theNext();
-            }, 400);
-        }
-
+            JsonToArray(); 
+            setTimeout(function(){theNext();},400);   
+        }   
+    
         // ====== Json data to array ======    
         function JsonToArray() {
-            for (var key in JSONData) {
-                if (JSONData[key].Address[0] != undefined && // adding only defined value to queue
-                    JSONData[key].Address[1] != undefined &&
-                    key != undefined) {
-                    queue.push({
-                        branch: key,
-                        address: JSONData[key].Address,
-                        val1: JSONData[key].val1,
-                        val2: JSONData[key].val2
-                    });
-                } else { //counting undefined values 
+            for(var key in JSONData){
+                if( JSONData[key].Address[0]!=undefined && // adding only defined value to queue
+                    JSONData[key].Address[1]!=undefined &&
+                    key!=undefined){
+                    queue.push({    name: key, 
+                                    address: JSONData[key].Address, 
+                                    val1: JSONData[key].val1,
+                                    val2: JSONData[key].val2 
+                                });
+                }
+                else{ //counting undefined values 
                     undefinedErrors++;
                 }
             }
@@ -1150,26 +1133,26 @@ routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', 
 
         // ====== Decides the next thing to do ======
         function theNext() {
-            if ((nextAddress + 1) < queue.length) {
+                if ((nextAddress+1) < queue.length) {
+                   
+                    setTimeout(function(){
 
-                setTimeout(function() {
+                            createMarker(queue[nextAddress],nextAddress);                          
+                            theNext();
+                    }, delay);
+                    nextAddress++;
+                } else {
+                    // We're done. 
+                   
+                    
+                    $scope.markers = markers;
 
-                    createMarker(queue[nextAddress], nextAddress);
-                    theNext();
-                }, delay);
-                nextAddress++;
-            } else {
-                // We're done. 
-
-
-                $scope.markers = markers;
-
-                //sharing markers with widgetSettingsCtrl using Scopes factory
-                ScopeShare.store('gmapsController', $scope.markers);
-
-            }
-
-            // $scope.markers = markers;
+                    //sharing markers with widgetSettingsCtrl using Scopes factory
+                    ScopeShare.store('gmapsControllerClaim', $scope.markers);
+                     
+                }
+                
+                //$scope.markers = markers;
         }
 
         // ====== between function ======
@@ -1180,52 +1163,58 @@ routerApp.controller('gmapsControllerClaims', ['$scope', '$mdDialog', '$state', 
         // ======= Function to create a marker ========
         function createMarker(queueItem, id) {
 
-            if (between(queueItem.address[0], 5, 10) && // in between 5 and 10 and
-                between(queueItem.address[1], 79, 82)) { // in between 79 and 82
+            if( between(queueItem.address[0],5,10) &&   // in between 5 and 10 and
+                between(queueItem.address[1],79,82)){   // in between 79 and 82
 
-                var marker = {
-                    latitude: queueItem.address[0],
-                    longitude: queueItem.address[1],
-                    id: id,
-                    icon: 'styles/css/images/car_repair.png',
-                    show: false,
-                    templateUrl: 'views/googleMaps/infoWindow.html',
-                    templateParameter: {
-                        branch: queueItem.branch,
-                        field1: queueItem.val1,
-                        field2: queueItem.val2
-                    },
-                    windowOptions: {
-                        boxClass: "infobox",
-                        boxStyle: {
-                            backgroundColor: "#FAA61A",
-                            border: "2px solid #10297d",
-                            borderRadius: "8px",
-                            width: "140px",
-                            height: "60px",
-                            opacity: 0.9
-                        },
-                        // content: "Text",
-                        disableAutoPan: false,
-                        maxWidth: 0,
-                        pixelOffset: new google.maps.Size(-60, -120),
-                        zIndex: null,
-                        closeBoxMargin: "3px",
-                        closeBoxURL: "styles/css/images/close.svg",
-                        infoBoxClearance: new google.maps.Size(1, 1),
-                        isHidden: false,
-                        pane: "floatPane",
-                        enableEventPropagation: false
-                    }
-                };
+                var marker = {  
+                                latitude: queueItem.address[0], 
+                                longitude: queueItem.address[1], 
+                                id: id,
+                                icon: 'styles/css/images/car_repair.png', 
+                                show: false,
+                                templateUrl:'views/googleMaps/infoWindow.html',
+                                templateParameter: {
+                                    name:queueItem.name,
+                                    field1: queueItem.val1,
+                                    field2: queueItem.val2},
+                                windowOptions: {
+                                    boxClass: "infobox",
+                                    boxStyle: {
+                                        backgroundColor: "#FAA61A",
+                                        border: "2px solid #10297d",
+                                        borderRadius: "8px",
+                                        width: "140px",
+                                        height: "60px",
+                                        opacity: 0.9
+                                    },
+                                    // content: "Text",
+                                    disableAutoPan: false,
+                                    maxWidth: 0,
+                                    pixelOffset: new google.maps.Size(-60, -120),
+                                    zIndex: null,
+                                    closeBoxMargin: "3px",
+                                    closeBoxURL: "styles/css/images/close.svg",
+                                    infoBoxClearance: new google.maps.Size(1, 1),
+                                    isHidden: false,
+                                    pane: "floatPane",
+                                    enableEventPropagation: false
+                                }
+                            };
 
-                markers.push(marker);
-                $scope.syncState = true;
-            } else {
-
-                // outOfSriLanka++;
-                // outOfSLArray.push(queueItem.branch);
+                markers.push(marker);   
+                $scope.syncState = true;               
+            }
+            else
+            {
+                
+                console.log("****** out of sri lanka range ******");
+                outOfSriLanka++;
+                outOfSLArray.push(queueItem.name);
             }
         }
     }
 ]);
+
+
+
+

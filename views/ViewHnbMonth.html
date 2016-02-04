@@ -1,317 +1,297 @@
-<style>
-#pathhnb {
-    stroke: #fff;
-    fill-rule: evenodd;
-}
-</style>
-<div id="SunBurstView"></div>
-<script type="text/javascript">
-var width = 450,
-    height = 500,
-    radius = Math.min(width, height) / 2;
+<!DOCTYPE html>
+<meta charset="utf-8">
+    <style>
+        
+        path {
+            stroke: #fff;
+            fill-rule: evenodd;
+        }
+        
+        text {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+        
+        /*add tooltip*/
+        div.tooltip {
+            /*position: absolute;*/
+/*            top: 200px;*/
+            left: 20%;
+            -moz-border-radius:5px;
+            border-radius: 5px;
+            border: 2px solid #9E9E9E;
+            background: #fff;
+            opacity: .9;
+            color: black;
+            padding: 10px;
+            width: 400px;
+            font: 12px sans-serif;
+            font-size: 14px;
+/*            z-index: 10;*/
+        }
+        
+        .tooltip .title {
+            font-size: 13px;
+        }
+        
+        .tooltip .name {
+            font-weight:bold;
+            font-size: 15px;
+        }
+        
+        </style>
+    <body>
+      <div id="SunBurstView"></div>
+      <div id="SunBurstToolTip"></div>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script>
+            
+            var width = 500,
+            height = 500,
+            radius = Math.min(width, height) / 2;
+            
+            var x = d3.scale.linear()
+            .range([0, 2 * Math.PI]);
+            
+            var y = d3.scale.linear()
+            .range([0, radius]);
+            
+            var color = d3.scale.category20c();
+            
+            var svg = d3.select("#SunBurstView").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", "translate(" + width / 2 + "," + (height / 2 + 10) + ")");
+            
+            var partition = d3.layout.partition()
+            .value(function(d) { return d.size; });
+            
+            /*Tooltip definition */
+            var div = d3.select("#SunBurstToolTip").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+            
+            
+            var arc = d3.svg.arc()
+            .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
+            .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
+            .innerRadius(function(d) { return Math.max(0, y(d.y)); })
+            .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
 
-var x = d3.scale.linear()
-    .range([0, 2 * Math.PI]);
-
-var y = d3.scale.sqrt()
-    .range([0, radius]);
-
-var color = d3.scale.category10();
-
-var svg2 = d3.select("#SunBurstView").append("svg")
-    .attr("viewBox", "0 0 450 500 ")
-    .attr("width", '100%')
-    .attr("height", '100%')
-
-.append("g")
-    .attr("transform", "translate(" + width / 2 + "," + (height / 2 + 10) + ") rotate(-90 0 0)");
-
-var partition = d3.layout.partition()
-    .value(function(d) {
-        return d.size;
-    });
-
-var arc = d3.svg.arc()
-    .startAngle(function(d) {
-        return Math.max(0, Math.min(2 * Math.PI, x(d.x)));
-    })
-    .endAngle(function(d) {
-        return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx)));
-    })
-    .innerRadius(function(d) {
-        return Math.max(0, y(d.y));
-    })
-    .outerRadius(function(d) {
-        return Math.max(0, y(d.y + d.dy));
-    });
-
-//d3.json("/d/4063550/flare.json", function(error, root) {
-var root = getData();
-
-var g = svg2.selectAll("g")
-    .data(partition.nodes(root))
-    .enter().append("g");
-
-var path2 = g.append("path")
-    .attr("id", "pathhnb")
-    .attr("d", arc)
-    .style("fill", function(d) {
-        return color((d.children ? d : d.parent).name);
-    })
-    .on("click", click);
-
-//.append("text")
-var text = g.append("text")
-    .attr("x", function(d) {
-        return y(d.y);
-    })
+            
+                    var root = getData();
+                    var g = svg.selectAll("g")
+                    .data(partition.nodes(root))
+                    .enter().append("g");
+                    
+                   
+                    
+                    
+                    var path = g.append("path")
+                    .attr("d", arc)
+                    .style("fill", function(d, i) { return color(i); })
+                    .on("click", click)
+                     /*The following two '.on' attributes for tooltip*/
+                    .on("mouseover", function(d) {
+                        div.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                        var sizeStr = "";
+                        if(typeof d.size != 'undefined') sizeStr = "<br/>Size: " + d.size;
+                        div.html(d.name + sizeStr)
+                        //.style("left", (d3.event.pageX) + "px")
+                       // .style("top", (d3.event.pageY - 28) + "px");
+                        })
+                    .on("mouseout", function(d) {
+                        div.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                        });
+                    
+                    var text = g.append("text")
+                    .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")rotate(" + computeTextRotation(d) + ")"; })
+                    .attr('text-anchor', function (d) { return computeTextRotation(d) > 180 ? "end" : "start"; })
     .attr("dx", "-49") // margin
     .attr("dy", ".25em") // vertical-align
-    .attr("transform", function(d) {
-        return "rotate(" + computeTextRotation(d) + ")";
-    })
-    .text(function(d) {
-        return d.name + "  "+ "Policies:"
-        +"\n"+ d.size ;
-    })
-    .style("fill", "white");
-
-function computeTextRotation(d) {
-    var angle = x(d.x + d.dx / 2) - Math.PI / 2;
-    return angle / Math.PI * 180;
-}
-
-//text.attr("transform", function (d) {
-//    return "rotate(" + computeTextRotation(d) + ")";
-//});
-
-
-
-/*
-var label = g.append("rect")
-.attr("x", function(d) { return x(d.x) })
-.attr("y", function(d) { return y(d.y) })
-.attr("width", function(d) { return 100 })
-.attr("height", function(d) { return 100 })
-.attr("transform", function (d) {
-    return "rotate(" + computeTextRotation(d) + ")";
-})
-.attr("style", "fill:blue;stroke:pink;stroke-width:5;fill-opacity:0.1;stroke-opacity:0.9");
-*/
-
-function click(d) {
-    // fade out all text elements
-    if (d.size !== undefined) {
-        d.size += 100;
-    };
-    text.transition().attr("opacity", 0);
-
- 
-    path2.transition()
-        .duration(750)
-        .attrTween("d", arcTween(d))
-        .each("end", function(e, i) {
-            // check if the animated element's data e lies within the visible angle span given in d
-            if (e.x >= d.x && e.x < (d.x + d.dx)) {
-                // get a selection of the associated text element
-                var arcText = d3.select(this.parentNode).select("text");
-                // fade in the text element and recalculate positions
-                arcText.transition().duration(750)
-                    .attr("opacity", 1)
-                    .attr("transform", function() {
-                        return "rotate(" + computeTextRotation(e) + ")"
-                    })
-                    .attr("x", function(d) {
-                        return y(d.y);
-                    });
+                    .attr("pointer-events", "none")
+                    .text(function(d) { return ''; });
+                    
+                    function click(d) {
+                    // fade out all text elements
+                    text.transition().attr("opacity", 0);
+                    
+                    path.transition()
+                    .duration(750)
+                    .attrTween("d", arcTween(d))
+                    .each("end", function(e, i) {
+                          // check if the animated element's data e lies within the visible angle span given in d
+                          if (e.x >= d.x && e.x < (d.x + d.dx)) {
+                          // get a selection of the associated text element
+                          var arcText = d3.select(this.parentNode).select("text");
+                          // fade in the text element and recalculate positions
+                          arcText.transition().duration(750)
+                          .attr("opacity", 1)
+                          .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")rotate(" + computeTextRotation(d) + ")"; })
+                          .attr('text-anchor', function (d) { return computeTextRotation(d) > 180 ? "end" : "start"; })
+                          }
+                          });
+                    }
+                    
+            
+            d3.select(self.frameElement).style("height", height + "px");
+            
+            // Interpolate the scales!
+            function arcTween(d) {
+                var xd = d3.interpolate(x.domain(), [d.x, d.x + d.dx]),
+                yd = d3.interpolate(y.domain(), [d.y, 1]),
+                yr = d3.interpolate(y.range(), [d.y ? 20 : 0, radius]);
+                return function(d, i) {
+                    return i
+                    ? function(t) { return arc(d); }
+                    : function(t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); return arc(d); };
+                };
             }
-        });
-} //});
-
-// Word wrap!
-var insertLinebreaks = function(t, d, width) {
-    alert(0)
-    var el = d3.select(t);
-    var p = d3.select(t.parentNode);
-    p.append("g")
-        .attr("x", function(d) {
-            return y(d.y);
-        })
-        //    .attr("dx", "6") // margin
-        //.attr("dy", ".35em") // vertical-align
-        .attr("transform", function(d) {
-            return "rotate(" + computeTextRotation(d) + ")";
-        })
-        //p
-        .append("foreignObject")
-        .attr('x', -width / 2)
-        .attr("width", width)
-        .attr("height", 200)
-        .append("xhtml:p")
-        .attr('style', 'word-wrap: break-word; text-align:center;')
-        .html(d.name);
-    alert(1)
-    el.remove();
-    alert(2)
-};
-
-//g.selectAll("text")
-//    .each(function(d,i){ insertLinebreaks(this, d, 50 ); });
-
-
-d3.select(self.frameElement).style("height", height + "px");
-
-// Interpolate the scales!
-function arcTween(d) {
-    var xd = d3.interpolate(x.domain(), [d.x, d.x + d.dx]),
-        yd = d3.interpolate(y.domain(), [d.y, 1]),
-        yr = d3.interpolate(y.range(), [d.y ? 20 : 0, radius]);
-    return function(d, i) {
-        return i ? function(t) {
-            return arc(d);
-        } : function(t) {
-            x.domain(xd(t));
-            y.domain(yd(t)).range(yr(t));
-            return arc(d);
-        };
-    };
-}
-
-function getData() {
-    return   {
+            
+            function computeTextRotation(d) {
+                var ang = (x(d.x + d.dx / 2) - Math.PI / 2) / Math.PI * 180;
+                return (ang > 90) ? 180 + ang : ang;
+            }
+            function getData() {
+    return {
   "children": [
-    {
+                    {
       "children": [
-        {
+                    {
           "children": [
-            {
+                    {
               "children": [],
               "imageURL": "",
               "type": "2WD TRACTOR",
               "name": "2WD TRACTOR",
               "size": 92
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "4WD TRACTOR",
-              "name": "4WD TRACTOR",
+                        "name": "4WD TRACTOR",                      
               "size": 137
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "BACHOE",
               "name": "BACHOE",
               "size": 17
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "COMBINE HARVESTER",
               "name": "COMBINE HARVESTER",
               "size": 13
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "TRAILER",
               "name": "TRAILER",
-              "size": 1
-            }
+                            "size": 1
+                    }
           ],
           "imageURL": "",
           "type": "Agricultural Usage",
           "name": "Agricultural Usage",
           "size": 260
-        },
-        {
-          "children": [
+            },
             {
+          "children": [
+                    {
               "children": [],
               "imageURL": "",
               "type": "2WD TRACTOR",
               "name": "2WD TRACTOR",
-              "size": 14
-            },
-            {
+                            "size": 14
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "4WD TRACTOR",
               "name": "4WD TRACTOR",
               "size": 34
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "AMBULANCE",
               "name": "AMBULANCE",
               "size": 4
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "ANGLEDOZER",
               "name": "ANGLEDOZER",
-              "size": 1
-            },
-            {
+                            "size": 1
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "BACHOE",
               "name": "BACHOE",
               "size": 100
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "BOWSER",
               "name": "BOWSER",
               "size": 29
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "BULLDOZER",
               "name": "BULLDOZER",
               "size": 26
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "BULLGRADER",
               "name": "BULLGRADER",
               "size": 2
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "CATTEPILLER",
               "name": "CATTEPILLER",
               "size": 12
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "COMBINE HARVESTER",
               "name": "COMBINE HARVESTER",
               "size": 19
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "CONCRETE MIXER",
               "name": "CONCRETE MIXER",
               "size": 2
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "CREW CAB",
-              "name": "CREW CAB",
+                        "name": "CREW CAB",
               "size": 77
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "DOUBLE CAB",
@@ -323,16 +303,16 @@ function getData() {
               "imageURL": "",
               "type": "DOZER",
               "name": "DOZER",
-              "size": 5
-            },
-            {
+                            "size": 5
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "EXCAVATOR",
               "name": "EXCAVATOR",
               "size": 7
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "JEEP",
@@ -350,14 +330,14 @@ function getData() {
               "children": [],
               "imageURL": "",
               "type": "MOTOR CYCLE",
-              "name": "MOTOR CYCLE",
+                        "name": "MOTOR CYCLE",
               "size": 4
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "MOTOR LORRY",
-              "name": "MOTOR LORRY",
+                        "name": "MOTOR LORRY",
               "size": 4373
             },
             {
@@ -366,36 +346,36 @@ function getData() {
               "type": "PASSENGER CARRYING BUS",
               "name": "PASSENGER CARRYING BUS",
               "size": 693
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "PRIME MOVER",
               "name": "PRIME MOVER",
               "size": 321
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "SINGLE CAB",
               "name": "SINGLE CAB",
               "size": 868
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "THREE WHEELER",
-              "name": "THREE WHEELER",
+                        "name": "THREE WHEELER",
               "size": 15114
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "TRAILER",
               "name": "TRAILER",
               "size": 50
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "VAN",
@@ -405,230 +385,230 @@ function getData() {
           ],
           "imageURL": "",
           "type": "Hiring",
-          "name": "Hiring",
+                            "name": "Hiring",
           "size": 33002
-        },
-        {
+                    },
+                    {
           "children": [
-            {
+                    {
               "children": [],
               "imageURL": "",
               "type": "2WD TRACTOR",
-              "name": "2WD TRACTOR",
+                        "name": "2WD TRACTOR",
               "size": 8
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "4WD TRACTOR",
-              "name": "4WD TRACTOR",
+                        "name": "4WD TRACTOR",
               "size": 26
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "AMBULANCE",
               "name": "AMBULANCE",
               "size": 7
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "BACHOE",
               "name": "BACHOE",
               "size": 28
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "BOWSER",
               "name": "BOWSER",
               "size": 13
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "BULLDOZER",
               "name": "BULLDOZER",
-              "size": 2
-            },
-            {
+                            "size": 2
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "CATTEPILLER",
               "name": "CATTEPILLER",
               "size": 17
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "CONCRETE MIXER",
               "name": "CONCRETE MIXER",
-              "size": 2
-            },
-            {
+                            "size": 2
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "CREW CAB",
               "name": "CREW CAB",
               "size": 361
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "DOUBLE CAB",
               "name": "DOUBLE CAB",
               "size": 1089
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "DOZER",
               "name": "DOZER",
               "size": 2
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "EXCAVATOR",
               "name": "EXCAVATOR",
               "size": 3
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "JEEP",
               "name": "JEEP",
               "size": 423
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "MOTOR CAR",
               "name": "MOTOR CAR",
               "size": 47035
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "MOTOR CYCLE",
               "name": "MOTOR CYCLE",
               "size": 2539
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "MOTOR LORRY",
               "name": "MOTOR LORRY",
               "size": 3334
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "PASSENGER CARRYING BUS",
-              "name": "PASSENGER CARRYING BUS",
+                        "name": "PASSENGER CARRYING BUS",
               "size": 78
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "PRIME MOVER",
               "name": "PRIME MOVER",
               "size": 34
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "ROAD FINISHING MACHINE",
               "name": "ROAD FINISHING MACHINE",
-              "size": 1
-            },
-            {
+                            "size": 1
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "SINGLE CAB",
               "name": "SINGLE CAB",
               "size": 1495
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "THREE WHEELER",
               "name": "THREE WHEELER",
               "size": 748
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "TRADE PLATE",
-              "name": "TRADE PLATE",
+                        "name": "TRADE PLATE",
               "size": 162
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "TRAILER",
               "name": "TRAILER",
               "size": 14
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "VAN",
-              "name": "VAN",
+                        "name": "VAN",
               "size": 5723
             }
           ],
           "imageURL": "",
           "type": "Private",
-          "name": "Private",
+                            "name": "Private",
           "size": 63144
-        },
-        {
-          "children": [
-            {
+                    },
+                    {
+                "children": [
+                    {
               "children": [],
               "imageURL": "",
               "type": "CREW CAB",
               "name": "CREW CAB",
               "size": 5
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "DOUBLE CAB",
-              "name": "DOUBLE CAB",
+                        "name": "DOUBLE CAB",
               "size": 2
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "MOTOR CAR",
               "name": "MOTOR CAR",
               "size": 1222
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "MOTOR LORRY",
               "name": "MOTOR LORRY",
               "size": 29
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "PASSENGER CARRYING BUS",
-              "name": "PASSENGER CARRYING BUS",
-              "size": 3
-            },
-            {
+                        "name": "PASSENGER CARRYING BUS",
+                            "size": 3
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "SINGLE CAB",
               "name": "SINGLE CAB",
               "size": 15
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "VAN",
@@ -638,10 +618,10 @@ function getData() {
           ],
           "imageURL": "",
           "type": "Rent",
-          "name": "Rent",
+                            "name": "Rent",
           "size": 1337
-        },
-        {
+                    },
+                    {
           "children": [
             {
               "children": [],
@@ -649,43 +629,43 @@ function getData() {
               "type": "PASSENGER CARRYING BUS",
               "name": "PASSENGER CARRYING BUS",
               "size": 352
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "ROUTE BUS",
-              "name": "ROUTE BUS",
+                        "name": "ROUTE BUS",
               "size": 699
             }
           ],
           "imageURL": "",
           "type": "Route",
-          "name": "Route",
+                            "name": "Route",
           "size": 1051
-        },
-        {
+                    },
+                    {
           "children": [
             {
               "children": [],
               "imageURL": "",
               "type": "DOUBLE CAB",
               "name": "DOUBLE CAB",
-              "size": 6
-            },
-            {
+                            "size": 6
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "SINGLE CAB",
               "name": "SINGLE CAB",
               "size": 4
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "VAN",
-              "name": "VAN",
-              "size": 3
-            }
+                        "name": "VAN",
+                            "size": 3
+                    }
           ],
           "imageURL": "",
           "type": "Unknown",
@@ -697,26 +677,26 @@ function getData() {
       "type": "Comprehensive Cover",
       "name": "Comprehensive Cover",
       "size": 98807
-    },
-    {
-      "children": [
-        {
-          "children": [
+            },
             {
+                "children": [
+                    {
+          "children": [
+                    {
               "children": [],
               "imageURL": "",
               "type": "MOTOR LORRY",
               "name": "MOTOR LORRY",
               "size": 5
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "THREE WHEELER",
-              "name": "THREE WHEELER",
+                        "name": "THREE WHEELER",
               "size": 17
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "VAN",
@@ -726,68 +706,68 @@ function getData() {
           ],
           "imageURL": "",
           "type": "Hiring",
-          "name": "Hiring",
+                            "name": "Hiring",
           "size": 24
-        },
-        {
+                    },
+                    {
           "children": [
-            {
+                    {
               "children": [],
               "imageURL": "",
               "type": "BOWSER",
-              "name": "BOWSER",
-              "size": 1
-            },
-            {
+                        "name": "BOWSER",
+                            "size": 1
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "DOUBLE CAB",
               "name": "DOUBLE CAB",
-              "size": 4
-            },
-            {
+                            "size": 4
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "FORK LIFTER",
               "name": "FORK LIFTER",
               "size": 6
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "MOTOR CAR",
               "name": "MOTOR CAR",
               "size": 33
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "MOTOR CYCLE",
-              "name": "MOTOR CYCLE",
+                        "name": "MOTOR CYCLE",
               "size": 8
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "MOTOR LORRY",
-              "name": "MOTOR LORRY",
-              "size": 15
-            },
-            {
+                        "name": "MOTOR LORRY",
+                            "size": 15
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "PASSENGER CARRYING BUS",
               "name": "PASSENGER CARRYING BUS",
-              "size": 1
-            },
-            {
+                            "size": 1
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "SINGLE CAB",
-              "name": "SINGLE CAB",
-              "size": 1
-            },
-            {
+                        "name": "SINGLE CAB",
+                            "size": 1
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "VAN",
@@ -797,7 +777,7 @@ function getData() {
           ],
           "imageURL": "",
           "type": "Private",
-          "name": "Private",
+                            "name": "Private",
           "size": 71
         }
       ],
@@ -805,19 +785,19 @@ function getData() {
       "type": "Third Party",
       "name": "Third Party",
       "size": 95
-    },
-    {
+                    },
+                    {
       "children": [
-        {
+                    {
           "children": [
             {
               "children": [],
               "imageURL": "",
               "type": "MOTOR LORRY",
               "name": "MOTOR LORRY",
-              "size": 3
-            },
-            {
+                            "size": 3
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "VAN",
@@ -827,89 +807,89 @@ function getData() {
           ],
           "imageURL": "",
           "type": "Hiring",
-          "name": "Hiring",
+                            "name": "Hiring",
           "size": 7
-        },
-        {
+                    },
+                    {
           "children": [
-            {
+                    {
               "children": [],
               "imageURL": "",
               "type": "4WD TRACTOR",
               "name": "4WD TRACTOR",
               "size": 1
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "MOTOR CAR",
               "name": "MOTOR CAR",
-              "size": 6
-            },
-            {
+                            "size": 6
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "SINGLE CAB",
               "name": "SINGLE CAB",
               "size": 1
-            },
-            {
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "THREE WHEELER",
               "name": "THREE WHEELER",
-              "size": 1
-            },
-            {
+                            "size": 1
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "VAN",
               "name": "VAN",
-              "size": 1
+                            "size": 1
             }
           ],
           "imageURL": "",
           "type": "Private",
-          "name": "Private",
+                            "name": "Private",
           "size": 10
-        },
-        {
+                    },
+                    {
           "children": [
             {
               "children": [],
               "imageURL": "",
               "type": "MOTOR CAR",
-              "name": "MOTOR CAR",
-              "size": 5
-            },
-            {
+                        "name": "MOTOR CAR",
+                            "size": 5
+                    },
+                    {
               "children": [],
               "imageURL": "",
               "type": "VAN",
               "name": "VAN",
-              "size": 2
+                            "size": 2
             }
           ],
           "imageURL": "",
           "type": "Rent",
-          "name": "Rent",
+                            "name": "Rent",
           "size": 7
-        },
-        {
+                    },
+                    {
           "children": [
-            {
+                    {
               "children": [],
               "imageURL": "",
               "type": "Unknown",
               "name": "Unknown",
               "size": 23377
-            }
+                    }
           ],
           "imageURL": "",
           "type": "Unknown",
           "name": "Unknown",
           "size": 23377
-        }
+            } 
       ],
       "imageURL": "",
       "type": "Unknown",
@@ -923,4 +903,4 @@ function getData() {
   "size": 122303
 }
 };
-</script>
+            </script>

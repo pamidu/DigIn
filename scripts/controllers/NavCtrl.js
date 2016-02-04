@@ -11,6 +11,48 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         //initially hiding the tabs
         $("md-tabs.footer-bar > md-tabs-wrapper").children().hide();
+        //configuring gridster
+        $scope.gridsterOpts = {
+                    columns: 24, // number of columns in the grid
+                    pushing: true, // whether to push other items out of the way
+                    floating: true, // whether to automatically float items up so they stack
+                    swapping: false, // whether or not to have items switch places instead of push down if they are the same size
+                    width: 'auto', // width of the grid. "auto" will expand the grid to its parent container
+                    colWidth: 'auto', // width of grid columns. "auto" will divide the width of the grid evenly among the columns
+                    rowHeight: '/4', // height of grid rows. 'match' will make it the same as the column width, a numeric value will be interpreted as pixels, '/2' is half the column width, '*5' is five times the column width, etc.
+                    margins: [5, 5], // margins in between grid items
+                    outerMargin: true,
+                    isMobile: false, // toggle mobile view
+                    mobileBreakPoint: 600, // width threshold to toggle mobile mode
+                    mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
+                    minColumns: 1, // minimum amount of columns the grid can scale down to
+                    minRows: 1, // minimum amount of rows to show if the grid is empty
+                    maxRows: 100, // maximum amount of rows in the grid
+                    defaultSizeX: 4, // default width of an item in columns
+                    defaultSizeY: 8, // default height of an item in rows
+                    minSizeX: 4, // minimum column width of an item
+                    maxSizeX: null, // maximum column width of an item
+                    minSizeY: 8, // minumum row height of an item
+                    maxSizeY: null, // maximum row height of an item
+                    saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
+                    draggable: {
+                        enabled: true
+                    },
+                    resizable: {
+                        enabled: true,
+                        handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw']
+                    }
+        };
+
+        // maps the item from customItems in the scope to the gridsterItem options
+        $scope.customItemMap = {
+            sizeX: 'item.size.x',
+            sizeY: 'item.size.y',
+            row: 'item.position[0]',
+            col: 'item.position[1]',
+            minSizeY: 'item.minSizeY',
+            maxSizeY: 'item.maxSizeY'
+        };
 
         $scope.dashCloseWidgets = false;
 
@@ -29,7 +71,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
 
         }
-
+        //pushes gridster items 10px down, remove padding to body, adjust iframe height
         $scope.adjustUI = function () {
             $('body').css("padding-top", "0px");
             $('#content1').css("top", "10px");
@@ -842,7 +884,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.currentView = "Dashboard";
                 $state.go(routeName)
             }
-            if (routeName == "Social Analysis") {
+            if (routeName == "Social Media Analytics") {
                 $scope.manageTabs(false);
                 $scope.currentView = "Social Analysis";
                 $scope.showAddSocialAnalysis(ev);

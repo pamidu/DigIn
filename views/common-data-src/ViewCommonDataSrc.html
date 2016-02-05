@@ -1,4 +1,3 @@
-
 <md-sidenav ng-init="initCtrl()" class="md-sidenav-right slider-r-wrap"
             md-component-id="right">
     <md-content class="overflow-none m-0" layout="row">
@@ -43,8 +42,19 @@
                         </div>
                     </div>
                 </div>
+                <div layout="row" layout-align="center center">
+                    <md-switch ng-model="queried.state" aria-label="QuerySwitch">
+                        Queried
+                    </md-switch>
+                </div>
                 <!-- index loader -->
-                <div layout="column" class="data-index">
+                <div ng-show="queried.state">
+                    <md-input-container flex>
+                        <label>Query</label>
+                        <input placeholder="type here" ng-model="queried.value">
+                    </md-input-container>
+                </div>
+                <div ng-hide="queried.state" layout="column" class="data-index">
                     <div>
                         <md-checkbox ng-repeat="item in tblFields | orderBy : item" ng-click="toggleCheck(item)">
                             {{ item }}
@@ -55,7 +65,7 @@
                     <accordion>
                         <accordion-panel title="Chart Types">
                             <div layout="row" ng-repeat="row in chartTable" layout="row" layout-align="start center">
-                                <fieldset  ng-disabled="tblFields.length == 0" layout="row" layout-align="center center" ng-repeat="chart in row"
+                                <fieldset layout="row" layout-align="center center" ng-repeat="chart in row"
                                      ng-click="configGraph($event,chart)"><img src="{{chart.icon}}">
                                     <md-tooltip md-visible="false" md-direction="Bottom">{{chart.name}}</md-tooltip>
                                 </fieldset >

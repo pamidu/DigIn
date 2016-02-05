@@ -28,7 +28,6 @@
                 },$diginurls.diginengine + "/gethighestlevel?tablename=" + tbl +"&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
              },
              getAggData: function (tbl, agg, aggf, cb, gb, con) {
-                 console.log('aggregation');
                  var wSrc = "scripts/webworkers/webWorker.js";
                  var params = "tablename=" + tbl + "&db=" + database + "&agg=" + agg + "&agg_f=[%27" + aggf + "%27]";
                  if(gb) params += "&group_by={'" + gb + "':1}";
@@ -44,7 +43,7 @@
              },
              getExecQuery: function (qStr, cb) {
                  var wSrc = "scripts/webworkers/webWorker.js";
-                 var reqUrl = $diginurls.diginengine + "/executeQuery?query=" + qStr;
+                 var reqUrl = $diginurls.diginengine + "/executeQuery?query=" + qStr + "&db=" + database;
                  var wData = {
                      rUrl: reqUrl,
                      method: "get"
@@ -90,7 +89,7 @@
         var host = getHost();
         return {
 //            diginengine: "http://" + host + ":8080",
-           diginengine: "http://localhost:8080",
+           diginengine: "http://192.168.2.33:8080",
            diginenginealt: "http://" + host + ":8081"
         };
     });

@@ -2,9 +2,9 @@
  --- commonDataSrcInit
  --- commonSrcInit
  */
-routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log', 'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API', 'Digin_Engine_API_Namespace', '$diginengine', function($scope, $controller, $mdSidenav, $log, CommonDataSrc, $mdDialog, $rootScope, $http, Digin_Engine_API, Digin_Engine_API_Namespace, $diginengine) {
+routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log', 'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API', 'Digin_Engine_API_Namespace', '$diginengine', function ($scope, $controller, $mdSidenav, $log, CommonDataSrc, $mdDialog, $rootScope, $http, Digin_Engine_API, Digin_Engine_API_Namespace, $diginengine) {
 
-    $scope.initCtrl = function() {
+    $scope.initCtrl = function () {
         $scope.fieldArray = [];
         $scope.fieldString = [];
         $scope.dataArray = [];
@@ -12,6 +12,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         $scope.distinct = [];
         $scope.selTable = "";
         $scope.selSrc = "";
+        $scope.queried = {};
         $scope.icon = "bower_components/material-design-icons/navigation/svg/production/ic_chevron_left_18px.svg";
 
         $scope.datasources = [{
@@ -30,10 +31,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
 
         $scope.client = $diginengine.getClient("HutchDialogic", "MSSQL");
 
-        getJSONData($http, 'chartConfig', function(data) {
-            $scope.chartTable = chunk(data, 8);
-        });
-
         //breaking the chart types into arrays, purpose: to display the icons in rows of 8
         function chunk(arr, size) {
             var newArr = [];
@@ -42,6 +39,10 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             }
             return newArr;
         }
+        
+        getJSONData($http, 'chartConfig', function(data) {
+            $scope.chartTable = chunk(data, 8);
+        });        
 
     };
 
@@ -59,7 +60,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         $scope.selSrc = src;
         $scope.client.getTables(function(data, status) {
             if (status) $scope.dataTables = data;
-
+            else console.log("Tables not received due to:" + data);
         });
     };
 
@@ -69,7 +70,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         $scope.selTable = tbl;
         $scope.client.getFields(tbl, function(data, status) {
             if (status) $scope.tblFields = data;
-
+            else console.log("Fields not received due to:" + data);
         });
     };
 
@@ -83,18 +84,17 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         }
     };
 
-    $scope.toggleCheck = function(field) {
+    $scope.toggleCheck = function (field) {
         var i = $scope.fieldArray.indexOf(field);
         if (i > -1) {
             $scope.fieldArray.splice(i, 1);
         } else {
             $scope.fieldArray.push(field);
-
         }
     };
 
-    $scope.toggleCheck2 = function(data) {
-
+    $scope.toggleCheck2 = function (data) {
+        console.log("toggleCheck2");
         var i = $scope.dataArray.indexOf(data);
         if (i > -1) {
             $scope.dataArray.splice(i, 1);
@@ -104,7 +104,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
     };
 
 
-    $scope.configGraph = function(evt, chart) {
+    $scope.configGraph = function (evt, chart) {
         //building the fields string
         $scope.fieldString = [];
         for (i = 0; i < $scope.fieldArray.length; i++) {
@@ -132,37 +132,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             height: '300px',
             mheight: '100%',
             highchartsNG: {
-                options: {
-                    chart: {
-                        options3d: {
-                            enabled: true,
-                            alpha: 67,
-                            beta: 0
-                        },
-                        cursor: 'pointer',
-                            point: {
-                                events: {
-                                    click: function() {
-                                        alert('rawr');
-                                    }
-                                }
-                            }
-                    },
-                    plotOptions: {
-                        series: {
-                            borderWidth: 0,
-                            depth: 35,
-                            dataLabels: {
-                                enabled: true,
-                            }
-                            
-                        }
-                    },
-                    drilldown: {
-                        series: []
-                    }
-                },
-
                 size: {
                     height: 220,
                     width: 300
@@ -180,14 +149,15 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         $rootScope.dashboard.widgets.push($scope.currWidget);
 
         //open the config dialog
-        function openConfig(data) {
+        function openConfig(fields, initTemp, data) {
             $mdDialog.show({
                     controller: 'commonSrcInit',
-                    templateUrl: 'views/common-data-src/init-configs/' + $scope.currWidget.initTemplate + '.html',
+                    templateUrl: 'views/common-data-src/init-configs/' + initTemp + '.html',
                     targetEvent: evt,
                     locals: {
                         widId: $scope.currWidget.id,
-                        fieldData: data
+                        fieldData: fields,
+                        widData: data
                     }
                 })
                 .then(function() {
@@ -198,13 +168,20 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         };
 
         if ($scope.selSrc == 'DuoStore') {
-            openConfig(null);
+            openConfig(null, "InitConfigCommonSrc");
 
         } else if ($scope.selSrc != 'DuoStore') {
-            $scope.client.getHighestLevel($scope.selTable, $scope.fieldString.toString(), function(data, status) {
-                if (status) openConfig(data);
-
-            });
+            alert($scope.queried.state);
+            if($scope.queried.state){
+                $scope.client.getExecQuery($scope.queried.value, function(data, status){
+                    openConfig(null,"InitConfigCommonSrcQueried",data);
+                });
+            } else{
+                $scope.client.getHighestLevel($scope.selTable, $scope.fieldString.toString(), function(data, status) {
+                    if (status) openConfig(data, "InitConfigCommonSrc");
+                    else console.log("Get highest level not received due to:" + data);
+                });
+            }
         };
     };
 
@@ -284,6 +261,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         xhr.onreadystatechange = function(e) {
             var array1 = [];
 
+            console.log(this);
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     //parse json data to string
@@ -319,7 +297,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         // xhr.open("get", Digin_Engine_API + "executeQuery?tablename=[" + $scope.selTable.split(":")[1] + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
         xhr.open("get", Digin_Engine_API + "executeQuery?query=" + queryString, /*async*/ true);
 
-
+        console.log("queryString");
+        console.log(queryString);
 
         xhr.send();
 
@@ -342,7 +321,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
 
 }]);
 
-routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData', 'Digin_Engine_API', 'Digin_Engine_API_Namespace', '$diginengine', function($scope, $mdDialog, $rootScope, widId, $state, fieldData, Digin_Engine_API, Digin_Engine_API_Namespace, $diginengine) {
+routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData','widData', 'Digin_Engine_API', 'Digin_Engine_API_Namespace', '$diginengine', function($scope, $mdDialog, $rootScope, widId, $state, fieldData,widData, Digin_Engine_API, Digin_Engine_API_Namespace, $diginengine) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
     $scope.widget = $rootScope.dashboard.widgets[objIndex];
@@ -350,6 +329,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
     $scope.fieldSelection = true;
     $scope.mappedArray = {};
     $scope.selMetCat = "";
+    $scope.ser = {};
     $scope.seriesArray = [{
         name: 'series1',
         serName: '',
@@ -459,14 +439,14 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
         function mapRetrieved(event) {
             var obj = JSON.parse(event.data);
-
+            console.log(JSON.stringify(obj));
 
             //creating the array to map dynamically
             $scope.arrayAttributes = [];
             for (var key in obj[0]) {
                 if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
                     var val = obj[0][key];
-
+                    console.log(key);
                     $scope.mappedArray[key] = {
                         name: key,
                         data: [],
@@ -517,10 +497,10 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
     }
 
     $scope.getDrillArray = function() {
-
+        console.log(JSON.stringify($scope.arrayAttributes));
         if ($scope.widget.commonSrcConfig.src == "DuoStore") {
             var uniqueScore = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.unique');
-
+            console.log('unique score:' + uniqueScore);
             for (var key in $scope.mappedArray) {
                 if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
                     if ($scope.mappedArray[key].unique > uniqueScore && $scope.mappedArray[key].unique != 0)
@@ -561,7 +541,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
     var SUM = function() {
         this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
-
+            console.log("calculations... for the sum filter");
             if (typeof drillData == 'undefined') {
                 for (j = 0; j < serMappedData.length; j++) {
                     orderedObj[catMappedData[j]].val += serMappedData[j];
@@ -589,7 +569,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
     var AVERAGE = function() {
         this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
-
+            console.log("calculations... for the average filter");
             if (typeof drillData == 'undefined') {
                 for (j = 0; j < serMappedData.length; j++) {
                     orderedObj[catMappedData[j]].val += serMappedData[j];
@@ -634,7 +614,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
     var PERCENTAGE = function() {
         this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
-
+            console.log("calculations... for the prcentage filter");
             var total;
             if (typeof drillData == 'undefined') {
                 total = 0;
@@ -684,7 +664,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
     var COUNT = function() {
         this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
-
+            console.log("calculations... for the count filter");
             if (typeof drillData == 'undefined') {
                 for (j = 0; j < serMappedData.length; j++) {
                     orderedObj[catMappedData[j]].val += 1;
@@ -793,7 +773,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
     //generate workers parameters
     $scope.generateParamArr = function(httpMethod, host, ns, tbl, method, gBy, agg, aggF, cons, oBy) {
-
         return {
             webMethod: httpMethod,
             host: host,
@@ -829,22 +808,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
         widget.highchartsNG = {
             options: {
-                chart: {
-
-                    options3d: {
-                        enabled: true,
-                        alpha: 45,
-                        beta: 0
-                    },
-                    cursor: 'pointer',
-                    point: {
-                        events: {
-                            click: function() {
-                                alert('rawr');
-                            }
-                        }
-                    }
-                },
                 drilldown: {
                     drillUpButton: {
                         relativeTo: 'plotBox',
@@ -879,8 +842,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                             dataLabels: {
                                 enabled: true,
                             }
-
-
                         }
                     }
                 }
@@ -905,7 +866,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
 
         if ($scope.widget.commonSrcConfig.src == "DuoStore") {
-
+            console.log('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data');
             var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
             var orderedObjArray = [];
 
@@ -927,9 +888,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                     $scope.filterData($scope.seriesArray[i].filter);
                 }
                 $scope.filtering.calculate(orderedObj, catMappedData, serMappedData);
-                // for(j=0;j<serMappedData.length;j++){
-                //     orderedObj[catMappedData[j]] += serMappedData[j];
-                // }
 
                 for (var key in orderedObj) {
                     if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
@@ -951,7 +909,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
 
         } else if ($scope.widget.commonSrcConfig.src != "DuoStore") {
-            //alert(JSON.stringify($scope.categItem.item));
             $scope.srcNamespace = $scope.widget.commonSrcConfig.namespace;
             $scope.catItem = $scope.categItem.item;
             $scope.seriesArray.forEach(function(entry) {
@@ -959,9 +916,8 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                     var tblVal = $scope.srcNamespace + '.' + widget.commonSrcConfig.tbl;
                 else
                     var tblVal = widget.commonSrcConfig.tbl;
-                //            alert(tblVal);
+                
                 entry['data'] = [];
-                //         alert(tblVal);
                 var paramArr = $scope.generateParamArr('get', Digin_Engine_API, $scope.widget.commonSrcConfig.src, tblVal, 'aggregatefields', $scope.catItem.value, entry.filter, entry.serName.value);
                 var w = new Worker("scripts/webworkers/commonSrcWorker.js");
                 w.postMessage(JSON.stringify(paramArr));
@@ -974,7 +930,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                             y: evData[i]['']
                         });
                     }
-                    //update damith
                     //create  mapped data
                     var selectedFiled = $scope.widget.commonSrcConfig.fields;
                     for (var c = 0; c < selectedFiled.length; c++) {
@@ -1004,7 +959,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                     }
                     widget.winConfig['mappedData'] = $scope.mappedArray;
                     widget.highchartsNG['series'] = $scope.seriesArray;
-
+                    console.log("widget name " + JSON.stringify(widget));
                 });
             });
         }
@@ -1012,34 +967,24 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
 
     //order by category (drilled)
-    //order by category (drilled)
     $scope.orderByDrilledCat = function(widget) {
         $scope.objArr = [];
         $scope.orderedArrayObj = [];
         var requestCounter = $scope.seriesArray.length; //main request completion counter
 
         widget.highchartsNG = {
-
-            options:{
             chart: {
-
-                options3d: {
-                    enabled: true,
-                    alpha: 45,
-                    beta: 0
-                },
-                cursor: 'pointer',
-                point: {
-                    events: {
-                        click: function() {
-                            alert('rawr');
-                        }
+                type: 'column'
+            },
+            plotOptions: {
+                series: {
+                    turboThreshold: 5000,
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
                     }
                 }
-            }
             },
-
-
             title: {
                 text: widget.uniqueType
             },
@@ -1153,7 +1098,8 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                         });
                     }
                 }
-
+                console.log("Drilled series is");
+                console.log(drilledSeries);
                 orderedArrayObj["data"] = data;
                 orderedArrayObj["name"] = $scope.seriesArray[i].name;
                 orderedArrayObj["color"] = $scope.seriesArray[i].color;
@@ -1172,9 +1118,9 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                     type: '',
                     data: []
                 };
+                
                 entry['data'] = [];
 
-                //            var tblVal = $scope.srcNamespace + '.' + widget.commonSrcConfig.tbl;
                 var paramArr = $scope.generateParamArr('get', Digin_Engine_API, $scope.widget.commonSrcConfig.src, widget.commonSrcConfig.tbl, 'aggregatefields', $scope.categItem.item.value, entry.filter, entry.serName.value);
                 var w = new Worker("scripts/webworkers/commonSrcWorker.js");
                 requestCounter--;
@@ -1190,13 +1136,11 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                             drilldown: evData[i][$scope.categItem.item.value],
                             name: evData[i][$scope.categItem.item.value],
                             y: evData[i]['']
-                                //                     y: evData[i]['f0_']
                         });
                         entry['data'].push({
                             drilldown: evData[i][$scope.categItem.item.value],
                             name: evData[i][$scope.categItem.item.value],
                             y: evData[i]['']
-                                //                     y: evData[i]['f0_']
                         });
                     }
                     if (requestCounter == 0) {
@@ -1212,18 +1156,14 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                     requestCounter = entry.data.length;
                     entry.data.forEach(function(enData) {
                         var con = "WHERE " + $scope.categItem.item.value + "='" + enData.name + "'";
-                        //                  alert(JSON.stringify($scope.categItem.drillItem)+ ' ' + JSON.stringify(entry.serName));
                         var drillParams = $scope.generateParamArr('get', Digin_Engine_API, $scope.widget.commonSrcConfig.src, widget.commonSrcConfig.tbl, 'aggregatefields', $scope.categItem.drillItem.value, entry.filter, entry.serName.value, con);
-                        //alert(JSON.stringify(drillParams));
                         var w1 = new Worker("scripts/webworkers/commonSrcWorker.js");
 
                         w1.postMessage(JSON.stringify(drillParams));
                         w1.addEventListener('message', function(event) {
                             requestCounter--;
                             var drilledData = JSON.parse(event.data);
-
                             var dataArr = [];
-                            //                  alert(JSON.stringify(drilledData));
                             for (j = 0; j < drilledData.length; j++) {
                                 dataArr.push([
                                     drilledData[j][$scope.categItem.drillItem.value],
@@ -1234,22 +1174,11 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                                 id: enData.name,
                                 data: dataArr
                             });
-                            //                     alert();
 
                             if (requestCounter == 0) {
                                 widget.highchartsNG['series'] = $scope.orderedArrayObj;
                                 widget.highchartsNG.drilldown['series'] = $scope.objArr;
-                                widget.highchartsNG['series'] = $scope.orderedArrayObj;
-                                $scope.$apply();
-                                console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
-                                $state.go('Dashboards');
                             }
-
-
-                            //                  widget.highchartsNG.drilldown.series.push({
-                            //                        id: enData.name,
-                            //                        data: dataArr
-                            //                     });
                         });
 
 
@@ -1257,7 +1186,10 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
 
                 });
-
+                widget.highchartsNG['series'] = $scope.orderedArrayObj;
+                widget.highchartsNG.drilldown['series'] = $scope.objArr;
+                console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
+                $state.go('Dashboards');
             }
         }
 
@@ -1278,7 +1210,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                 if (status) {
                     widget.widData.value = data[0][""];
                     $mdDialog.hide();
-                }
+                } else console.log("Aggregation not received due to:" + data);
             }, $scope.metric.gField, "WHERE%20" + $scope.metric.gField + "=%27" + $scope.metric.gFieldVal + "%27");
         } else {
             widget.commonSrcConfig['metGrp'] = false;
@@ -1286,11 +1218,58 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                 if (status) {
                     widget.widData.value = data[0][""];
                     $mdDialog.hide();
-                }
+                } else console.log("Aggregation not received due to:" + data);
             });
         }
         $state.go('Dashboards');
     };
-
-
+    
+    $scope.buildQueriedChart = function(widget){
+        
+        widget.highchartsNG = {
+            options: {
+                
+            },
+            series:[],
+            xAxis: {
+                type: 'category'
+            },
+            credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: false
+            },
+            title: {
+                text: ''
+            },
+            size: {
+                width: 300,
+                height: 220
+            }
+        };
+        
+        //getting the category name
+        var catName = "";
+        var configData = [];
+        for (var key in widData[0]) {
+            if (Object.prototype.hasOwnProperty.call(widData[0], key)) {
+                if(key != "") catName = key;
+            }
+        }
+        
+        widData.forEach(function(entry){
+            configData.push({
+                name: entry[catName],
+                y: entry['']
+            });
+        });
+        
+        widget.highchartsNG.series.push({name: $scope.ser.name,
+                                         color: $scope.ser.color,
+                                         type: $scope.ser.type,
+                                         data: configData});
+        $mdDialog.hide();
+        $state.go('Dashboards');
+    };
 }]);

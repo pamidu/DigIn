@@ -16,7 +16,7 @@
 routerApp.controller('widgetSettingsCtrl', ['$scope',
 
     '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', '$http', 'ScopeShare',
-     function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http, ScopeShare) {
+    function($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http, ScopeShare) {
 
         // $http.get('jsons/'+ $rootScope.widget.dataJson +'.json').success(function (data) {
         //     console.log('['+JSON.stringify(data)+']');
@@ -26,47 +26,49 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         //     console.log($scope.arr);
         // });
 
-        $scope.sortType     = 'name'; // set the default sort type
-        $scope.sortReverse  = false;  // set the default sort order
+        $scope.sortType = 'name'; // set the default sort type
+        $scope.sortReverse = false; // set the default sort order
 
         // ====== Json data to array ======  
         var JSONData = {};
-        var queue = [];  
+        var queue = [];
+
         function JsonToArray() {
-            for(var i = 0; i < JSONData.length; i++){
-    
-                queue.push({    name: JSONData[i].templateParameter.name,
-                                field1: JSONData[i].templateParameter.field1, 
-                                field2: JSONData[i].templateParameter.field2
-                            });
+            for (var i = 0; i < JSONData.length; i++) {
+
+                queue.push({
+                    name: JSONData[i].templateParameter.name,
+                    field1: JSONData[i].templateParameter.field1,
+                    field2: JSONData[i].templateParameter.field2
+                });
             }
             $scope.dataTable = queue;
         }
 
-        $('#pagePreLoader').hide();    
+        $('#pagePreLoader').hide();
 
-        $scope.showData = function () {
+        $scope.showData = function() {
 
             //get markers data for branch data
-            if(ScopeShare.get('gmapsControllerBranch') != undefined){
+            if (ScopeShare.get('gmapsControllerBranch') != undefined) {
 
-                JSONData = ScopeShare.get('gmapsControllerBranch');  
-                if(JSONData){
+                JSONData = ScopeShare.get('gmapsControllerBranch');
+                if (JSONData) {
                     JsonToArray();
-                }              
+                }
             }
             //get markers data for branch data
-            if(ScopeShare.get('gmapsControllerClaim') != undefined){
+            if (ScopeShare.get('gmapsControllerClaim') != undefined) {
 
-                JSONData = ScopeShare.get('gmapsControllerClaim');  
-                if(JSONData){
+                JSONData = ScopeShare.get('gmapsControllerClaim');
+                if (JSONData) {
                     JsonToArray();
-                }    
+                }
             }
             //displaying download button
-            $('#downloadButton').css("display","block");
+            $('#downloadButton').css("display", "block");
             //dataViewPath for the ng-include in ViewDataGoogleMaps.html
-            $scope.dataViewPath = 'views/googleMaps/'+ $rootScope.widget.dataView + '.html';
+            $scope.dataViewPath = 'views/googleMaps/' + $rootScope.widget.dataView + '.html';
 
             // if( $rootScope.widget.dataJson == 'hnbBoxData' ){
             //     JSON2CSV2();
@@ -74,7 +76,7 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
             // else{
             //     JSON2CSV();
             // }
-            
+
         };
 
         // function JSON2CSV() {
@@ -93,7 +95,7 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         //         //str += $scope.arr.children[i].name;
         //         if( $scope.arr.children[i].children != undefined){
         //             for(var j=0; j< $scope.arr.children[i].children.length; j++){
-                        
+
         //                 console.log("child level 2");
         //                 console.log($scope.arr.children[i].children[j].name);
         //                 str += $scope.arr.children[i].name + ',' + $scope.arr.children[i].children[j].name;
@@ -117,7 +119,7 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         //                 obj['data1'] = "";
         //                 obj['data2'] = "";
         //                 obj['data3'] = "";
-                        
+
         //             }
         //         }
         //         else{
@@ -131,9 +133,9 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         //     console.log(str);
         //     console.log("jsonArray");
         //     console.log(jsonArray);
-            
+
         //     $scope.json2csv = jsonArray;
-    
+
         // }
 
         // function JSON2CSV2() {
@@ -146,32 +148,32 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         //         var obj = {};
         //         obj['data1'] = "";
         //         obj['data2'] = "";
-                
+
         //         console.log("child level 1");
         //         //console.log($scope.arr.children[i].name);
         //         //str += $scope.arr.children[i].name;
         //         obj['data1'] = $scope.arr.children[i].category;
         //         obj['data2'] = $scope.arr.children[i].Observation;
-       
+
         //         jsonArray.push(obj);
         //             var obj = {};
         //             obj['data1'] = "";
         //             obj['data2'] = "";
-                
-                
+
+
         //     }
 
         //     console.log("str");
         //     console.log(str);
         //     console.log("jsonArray");
         //     console.log(jsonArray);
-            
+
         //     $scope.json2csv = jsonArray;
-    
+
         // }
-        
+
         // $scope.exportToCSV = function ($http) {
-            
+
         //     JSON2CSV();
         //     console.log("$scope.json2csv");
         //     console.log($scope.json2csv);
@@ -183,15 +185,15 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         //         $scope.items = data;
         //     });
         // };
-        
-        $scope.showAdvanced = function (ev, widget) {
+
+        $scope.showAdvanced = function(ev, widget) {
 
             // $scope.dataViewPath = 'views/'+$rootScope.widget.initTemplate + '.html';
 
             // console.log("showAdvanced");
             // console.log( $scope.dataViewPath);
-             document.getElementsByClassName("card__full")[0].style.visibility="hidden";
-        
+            document.getElementsByClassName("card__full")[0].style.visibility = "hidden";
+
 
             $mdDialog.show({
                 controller: 'chartSettingsCtrl',
@@ -203,50 +205,50 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
                     }
                 }
             })
-            
-            if($rootScope.widget.uniqueType == "Common Source"){
+
+            if ($rootScope.widget.uniqueType == "Common Source") {
                 $mdDialog.show({
-                    controller: 'commonSrcInit',
-                    templateUrl: 'views/common-data-src/init-configs/' + $rootScope.widget.initTemplate + '.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    locals: {
-                        widId: $rootScope.widget.id,
-                        fieldData: {}
-                    }
-                })
-                .then(function () {
-                    //$mdDialog.hide();
-                }, function () {
-                    //$mdDialog.hide();
-                });
-            }else{
+                        controller: 'commonSrcInit',
+                        templateUrl: 'views/common-data-src/init-configs/' + $rootScope.widget.initTemplate + '.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        locals: {
+                            widId: $rootScope.widget.id,
+                            fieldData: {}
+                        }
+                    })
+                    .then(function() {
+                        //$mdDialog.hide();
+                    }, function() {
+                        //$mdDialog.hide();
+                    });
+            } else {
                 $mdDialog.show({
-                    controller: eval($rootScope.widget.initCtrl),
-                    templateUrl: 'views/' + $rootScope.widget.initTemplate + '.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    locals: {
-                        widId: $rootScope.widget.id
-                    }
-                })
-                .then(function () {
-                    //$mdDialog.hide();
-                }, function () {
-                    //$mdDialog.hide();
-                });
+                        controller: eval($rootScope.widget.initCtrl),
+                        templateUrl: 'views/' + $rootScope.widget.initTemplate + '.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        locals: {
+                            widId: $rootScope.widget.id
+                        }
+                    })
+                    .then(function() {
+                        //$mdDialog.hide();
+                    }, function() {
+                        //$mdDialog.hide();
+                    });
             }
 
-            
+
 
         };
-        $scope.trustSrc = function (src) {
+        $scope.trustSrc = function(src) {
             return $sce.trustAsResourceUrl(src);
         };
-        $scope.getIndexes = function () {
+        $scope.getIndexes = function() {
             var client = $objectstore.getClient("com.duosoftware.com");
-            client.onGetMany(function (data) {
-                data.forEach(function (entry) {
+            client.onGetMany(function(data) {
+                data.forEach(function(entry) {
 
                     $rootScope.indexes.push({
                         value: entry,
@@ -259,29 +261,29 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
             });
             client.getClasses("com.duosoftware.com");
         };
-        $scope.commentary = function (widget) {
+        $scope.commentary = function(widget) {
 
-            $('#downloadButton').css("display","none");
-            
+            $('#downloadButton').css("display", "none");
+
             var comment = "";
             var chunks = [];
 
             $scope.dataViewPath = '';
 
         };
-        $scope.close = function () {
-            $(".view").css("display","none");
-            $('md-backdrop').css("display","none");
+        $scope.close = function() {
+            $(".view").css("display", "none");
+            $('md-backdrop').css("display", "none");
         };
-        $scope.closeDialog = function () {
-            
+        $scope.closeDialog = function() {
+
             $mdDialog.hide();
         };
-        $scope.clear = function () {
+        $scope.clear = function() {
             $rootScope.dashboard.widgets = [];
         };
 
-        $scope.remove = function (widget) {
+        $scope.remove = function(widget) {
             $rootScope.dashboard.widgets.splice($rootScope.dashboard.widgets.indexOf(widget), 1);
         };
 
@@ -760,7 +762,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
             console.log($rootScope.Dashboards);
 
             getJSONDataByIndex($http, 'widgetPositions', $rootScope.dashboard.widgets.length, function(data) {
-               
+
                 $scope.leftPosition = data.leftPosition;
                 $scope.topPosition = data.topPosition;
                 $scope.ChartType = data.ChartType;
@@ -823,8 +825,19 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
 
                             plotOptions: {
                                 series: {
-                                    stacking: '',
-                                    turboThreshold: 5000,
+                                    borderWidth: 0,
+                                    depth: 35,
+                                    dataLabels: {
+                                        enabled: true,
+                                    },
+                                    cursor: 'pointer',
+                                    point: {
+                                        events: {
+                                            click: function() {
+                                                alert('rawr');
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },

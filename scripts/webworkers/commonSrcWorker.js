@@ -4,14 +4,13 @@ onmessage = function(e) {
 
 function getData(receivedData){
    var paramStr = getParamStr(receivedData.params);
-   console.log(paramStr);
+ 
    var xhr = new XMLHttpRequest();
    
     xhr.onreadystatechange = function(e) {
-        console.log(this);
+      
         if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-               console.log(xhr.response);
+            if (xhr.status === 200) {    
                 postMessage(xhr.response);
 
             } else {
@@ -28,10 +27,10 @@ function getData(receivedData){
 
 function getParamStr(paramArr){
    var str = '';
-   console.log(JSON.stringify(paramArr));
-   console.log(paramArr[0].value);
+   
+   
    for(var i=0;i< paramArr.length; i++){
-      console.log(paramArr[i]);
+     
       if(typeof(paramArr[i].value) != 'undefined'){
          str = str + paramArr[i].name + '=' + paramArr[i].value;
          if(i!= paramArr.length-1) str = str + '&';

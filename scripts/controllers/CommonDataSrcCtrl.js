@@ -59,7 +59,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         $scope.selSrc = src;
         $scope.client.getTables(function(data, status) {
             if (status) $scope.dataTables = data;
-            else console.log("Tables not received due to:" + data);
+
         });
     };
 
@@ -69,7 +69,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         $scope.selTable = tbl;
         $scope.client.getFields(tbl, function(data, status) {
             if (status) $scope.tblFields = data;
-            else console.log("Fields not received due to:" + data);
+
         });
     };
 
@@ -94,7 +94,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
     };
 
     $scope.toggleCheck2 = function(data) {
-        console.log("toggleCheck2");
+
         var i = $scope.dataArray.indexOf(data);
         if (i > -1) {
             $scope.dataArray.splice(i, 1);
@@ -131,24 +131,15 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             width: '370px',
             height: '300px',
             mheight: '100%',
-            highchartsNG: {   
+            highchartsNG: {
                 options: {
                     chart: {
-
                         options3d: {
                             enabled: true,
                             alpha: 67,
                             beta: 0
-                        }
-                    },
-                    plotOptions: {
-                        series: {
-                            borderWidth: 0,
-                            depth: 35,
-                            dataLabels: {
-                                enabled: true,
-                            },
-                            cursor: 'pointer',
+                        },
+                        cursor: 'pointer',
                             point: {
                                 events: {
                                     click: function() {
@@ -156,6 +147,15 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                     }
                                 }
                             }
+                    },
+                    plotOptions: {
+                        series: {
+                            borderWidth: 0,
+                            depth: 35,
+                            dataLabels: {
+                                enabled: true,
+                            }
+                            
                         }
                     },
                     drilldown: {
@@ -203,7 +203,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         } else if ($scope.selSrc != 'DuoStore') {
             $scope.client.getHighestLevel($scope.selTable, $scope.fieldString.toString(), function(data, status) {
                 if (status) openConfig(data);
-                else console.log("Get highest level not received due to:" + data);
+
             });
         };
     };
@@ -284,7 +284,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         xhr.onreadystatechange = function(e) {
             var array1 = [];
 
-            console.log(this);
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     //parse json data to string
@@ -320,8 +319,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         // xhr.open("get", Digin_Engine_API + "executeQuery?tablename=[" + $scope.selTable.split(":")[1] + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
         xhr.open("get", Digin_Engine_API + "executeQuery?query=" + queryString, /*async*/ true);
 
-        console.log("queryString");
-        console.log(queryString);
+
 
         xhr.send();
 
@@ -461,14 +459,14 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
         function mapRetrieved(event) {
             var obj = JSON.parse(event.data);
-            console.log(JSON.stringify(obj));
+
 
             //creating the array to map dynamically
             $scope.arrayAttributes = [];
             for (var key in obj[0]) {
                 if (Object.prototype.hasOwnProperty.call(obj[0], key)) {
                     var val = obj[0][key];
-                    console.log(key);
+
                     $scope.mappedArray[key] = {
                         name: key,
                         data: [],
@@ -519,10 +517,10 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
     }
 
     $scope.getDrillArray = function() {
-        console.log(JSON.stringify($scope.arrayAttributes));
+
         if ($scope.widget.commonSrcConfig.src == "DuoStore") {
             var uniqueScore = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.unique');
-            console.log('unique score:' + uniqueScore);
+
             for (var key in $scope.mappedArray) {
                 if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
                     if ($scope.mappedArray[key].unique > uniqueScore && $scope.mappedArray[key].unique != 0)
@@ -563,7 +561,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
     var SUM = function() {
         this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
-            console.log("calculations... for the sum filter");
+
             if (typeof drillData == 'undefined') {
                 for (j = 0; j < serMappedData.length; j++) {
                     orderedObj[catMappedData[j]].val += serMappedData[j];
@@ -591,7 +589,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
     var AVERAGE = function() {
         this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
-            console.log("calculations... for the average filter");
+
             if (typeof drillData == 'undefined') {
                 for (j = 0; j < serMappedData.length; j++) {
                     orderedObj[catMappedData[j]].val += serMappedData[j];
@@ -636,7 +634,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
     var PERCENTAGE = function() {
         this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
-            console.log("calculations... for the prcentage filter");
+
             var total;
             if (typeof drillData == 'undefined') {
                 total = 0;
@@ -686,7 +684,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
     var COUNT = function() {
         this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
-            console.log("calculations... for the count filter");
+
             if (typeof drillData == 'undefined') {
                 for (j = 0; j < serMappedData.length; j++) {
                     orderedObj[catMappedData[j]].val += 1;
@@ -795,7 +793,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
     //generate workers parameters
     $scope.generateParamArr = function(httpMethod, host, ns, tbl, method, gBy, agg, aggF, cons, oBy) {
-        alert(ns);
+
         return {
             webMethod: httpMethod,
             host: host,
@@ -837,6 +835,14 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                         enabled: true,
                         alpha: 45,
                         beta: 0
+                    },
+                    cursor: 'pointer',
+                    point: {
+                        events: {
+                            click: function() {
+                                alert('rawr');
+                            }
+                        }
                     }
                 },
                 drilldown: {
@@ -872,15 +878,8 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                             turboThreshold: 5000,
                             dataLabels: {
                                 enabled: true,
-                            },
-                            cursor: 'pointer',
-                            point: {
-                                events: {
-                                    click: function() {
-                                        alert('rawr');
-                                    }
-                                }
                             }
+
 
                         }
                     }
@@ -906,7 +905,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
 
         if ($scope.widget.commonSrcConfig.src == "DuoStore") {
-            console.log('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data');
+
             var cat = Enumerable.From(eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.data')).Select().Distinct().ToArray();
             var orderedObjArray = [];
 
@@ -1005,7 +1004,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                     }
                     widget.winConfig['mappedData'] = $scope.mappedArray;
                     widget.highchartsNG['series'] = $scope.seriesArray;
-                    console.log("widget name " + JSON.stringify(widget));
+
                 });
             });
         }
@@ -1020,32 +1019,26 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
         var requestCounter = $scope.seriesArray.length; //main request completion counter
 
         widget.highchartsNG = {
+
+            options:{
             chart: {
-                type: 'column',
+
                 options3d: {
                     enabled: true,
                     alpha: 45,
                     beta: 0
-                }
-            },
-
-            plotOptions: {
-                series: {
-                    borderWidth: 0,
-                    depth: 35,
-                    dataLabels: {
-                        enabled: true,
-                    },
-                    cursor: 'pointer',
-                    point: {
-                        events: {
-                            click: function() {
-                                alert('rawr');
-                            }
+                },
+                cursor: 'pointer',
+                point: {
+                    events: {
+                        click: function() {
+                            alert('rawr');
                         }
                     }
                 }
+            }
             },
+
 
             title: {
                 text: widget.uniqueType
@@ -1160,8 +1153,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                         });
                     }
                 }
-                console.log("Drilled series is");
-                console.log(drilledSeries);
+
                 orderedArrayObj["data"] = data;
                 orderedArrayObj["name"] = $scope.seriesArray[i].name;
                 orderedArrayObj["color"] = $scope.seriesArray[i].color;
@@ -1229,7 +1221,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                         w1.addEventListener('message', function(event) {
                             requestCounter--;
                             var drilledData = JSON.parse(event.data);
-                            //                  console.log('drilleed data:'+ JSON.stringify(drilledData));
+
                             var dataArr = [];
                             //                  alert(JSON.stringify(drilledData));
                             for (j = 0; j < drilledData.length; j++) {
@@ -1286,7 +1278,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                 if (status) {
                     widget.widData.value = data[0][""];
                     $mdDialog.hide();
-                } else console.log("Aggregation not received due to:" + data);
+                }
             }, $scope.metric.gField, "WHERE%20" + $scope.metric.gField + "=%27" + $scope.metric.gFieldVal + "%27");
         } else {
             widget.commonSrcConfig['metGrp'] = false;
@@ -1294,7 +1286,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                 if (status) {
                     widget.widData.value = data[0][""];
                     $mdDialog.hide();
-                } else console.log("Aggregation not received due to:" + data);
+                }
             });
         }
         $state.go('Dashboards');

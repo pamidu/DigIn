@@ -112,12 +112,23 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
       type:  $scope.ChartType
     },
      
-      plotOptions: {
-        turboThreshold: 3000,
-        series: {
-          stacking: ''
-        }
-      }
+       plotOptions: {
+                        series: {
+                            borderWidth: 0,
+                            depth: 35,
+                            dataLabels: {
+                                enabled: true,
+                            },
+                            cursor: 'pointer',
+                            point: {
+                                events: {
+                                    click: function() {
+                                        alert('rawr');
+                                    }
+                                }
+                            }
+                        }
+                    }
     },
    series: $scope.chartSeries,
     title: {

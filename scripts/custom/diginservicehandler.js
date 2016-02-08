@@ -85,6 +85,11 @@
          }  
       }
    });
+   dsh.factory('$forecaster', function () {
+        return {
+            
+        };
+    });    
    dsh.factory('$diginurls', function () {
         var host = getHost();
         return {

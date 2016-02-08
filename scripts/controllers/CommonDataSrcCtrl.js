@@ -29,7 +29,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             name: "SpreadSheet"
         }];
 
-        $scope.client = $diginengine.getClient("HutchDialogic", "MSSQL");
+        
 
         //breaking the chart types into arrays, purpose: to display the icons in rows of 8
         function chunk(arr, size) {
@@ -57,7 +57,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
     };
 
     $scope.onChangeSource = function(src) {
-        $scope.selSrc = src;
+        $scope.client = $diginengine.getClient("HutchDialogic",src);
+        alert(src);
         $scope.client.getTables(function(data, status) {
             if (status) $scope.dataTables = data;
             else console.log("Tables not received due to:" + data);

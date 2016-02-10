@@ -1,4 +1,21 @@
-<md-content class="overflowscroll height100percent">
+<!-- <md-content layout="column" layout-align="center center"> -->
+    <md-input-container class="md-icon-float md-block width100percent">
+        <label>Filter</label>
+        <input type="text" ng-model="query" ng-change="updateFilteredList(query)">
+    </md-input-container>
+    <table class="table table-striped" at-table at-list="dataTable" at-config="config" at-paginated>
+      <thead></thead>
+      <tbody>
+        <tr>
+          <td at-implicit at-sortable at-attribute="name"></td>
+          <td at-implicit at-sortable at-attribute="field1"></td>
+          <td at-implicit at-sortable at-attribute="field2"></td>
+        </tr>
+      </tbody>
+    </table>
+    <at-pagination class="custom-pagination" at-list="dataTable" at-config="config"></at-pagination>
+<!-- </md-content> -->
+<!-- <md-content class="overflowscroll height100percent">
     <md-input-container class="md-icon-float md-block">
         <label>Search</label>
         <input ng-model="searchText" type="text">
@@ -10,7 +27,7 @@
                     <th>field1</th>
                     <th>field2</th>
                 </tr>
-                <tr ng-repeat='row in dataTable | filter : searchText'>
+                <tr dir-paginate="row in dataTable | itemsPerPage: 10">
                     <td style="width:40px;">
                         {{row.name}}
                     </td>
@@ -22,5 +39,7 @@
                     </td>
                 </tr>
             </table>
+            <dir-pagination-controls></dir-pagination-controls>
     <div>
 </md-content>
+ -->

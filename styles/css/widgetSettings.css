@@ -1,0 +1,173 @@
+.view {
+  position: relative;
+  /*height: 380px;
+  width: 320px;*/
+  background: #fcfcfc;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  /*overflow-y: scroll;*/
+}
+
+.card__list {
+  /*padding: 0.75rem;*/
+  padding-left: 0px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  width:300px;
+}
+
+.card__item {
+  /*margin: 0 0 0.75rem;*/
+  padding: 2.25rem 1.5rem;
+  border-top: 4px solid #404040;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  background: white;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.card__item--blue {
+  border-top-color: #2F34A2;
+}
+
+.card__item--blue p.info-player__num {
+  background: #2F34A2;
+}
+
+.card__item--blue:hover .info-player__name,
+.card__item--blue:hover .info-place {
+  color: #2F34A2;
+}
+
+.card__item:hover {
+  background: #ECECEC;
+}
+
+.card__item:hover .info-player__num {
+  transform: scale(1.1);
+}
+
+.card__info .info-player {
+  display: flex;
+  align-items: center;
+}
+
+.card__info .info-player__num {
+  width: 60px;
+  height: 60px;
+  line-height: 36px;
+  padding: 0.75rem;
+  margin: 0 0.75rem 0 0;
+  text-align: center;
+  background: silver;
+  /*border-radius: 50%;*/
+  font-size: 36px;
+  color: white;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.card__info .info-player__name {
+  line-height: 1.1;
+  font-size: 20px;
+  margin: 0;
+}
+
+.card__info .info-player__name small {
+  font-size: 14px;
+}
+
+.card__info .info-place {
+  margin: 0;
+  font-size: 24px;
+}
+
+.card__full {
+    will-change: transform;
+    display: flex;
+    flex-flow: column wrap;
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    width: 640px;
+    height: 300px;
+    z-index: 2;
+    visibility: hidden;
+    transform-origin: top center;
+    transform: scaleY(0) translate(-50%, -50%);
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.card__full.active {
+  visibility: visible;
+  transform: scaleY(1) translate(-50%, -50%);
+}
+
+.card__full.active .card__full-num,
+.card__full.active .card__full-handle,
+.card__full.active .card__full-info {
+  opacity: 1;
+}
+
+.card__full-top{
+  height:15%;
+}
+.card__full-bottom {
+  /*flex: 1;*/
+  height:85%;
+}
+
+.card__full-bottom {
+  display: flex;
+  justify-content: center;
+  flex-flow: column wrap;
+  /*padding: 0 3rem;*/
+  background: white;
+}
+
+.card__full-top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #5171C3;
+  overflow: hidden;
+}
+
+.card__full-top svg {
+  position: absolute;
+  top: 1rem;
+  left: 1.5rem;
+  fill: rgba(0, 0, 0, 0.4);
+  width: 32px;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.card__full-top svg:hover {
+  fill: rgba(0, 0, 0, 0.7);
+}
+
+.card__full-num,
+.card__full-handle,
+.card__full-info {
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transition-duration: 2s;
+  transition-delay: .35s;
+}
+
+.card__full-num {
+  color: white;
+  font-size: 30px;
+}
+
+.card__full-handle {
+  font-size: 16px;
+  margin: 0;
+}
+
+.card__full-info {
+  margin: 0;
+  font-size: 20px;
+  color: #404040;
+}

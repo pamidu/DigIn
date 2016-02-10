@@ -1543,3 +1543,77 @@ md-backdrop.md-sidenav-backdrop{
     z-index: 0 !important;
     border-radius: 0px;
 }
+/* custom pagination*/
+.custom-pagination {
+    display: inline-block;
+    padding-left: 0;
+    margin: 0px 0;
+    border-radius: 2px;
+}
+.custom-pagination > li {
+    display: inline;
+}
+.custom-pagination > li > a,
+.custom-pagination > li > span {
+    position: relative;
+    float: left;
+    padding: 4px 16px;
+    line-height: 1.618;
+    text-decoration: none;
+    z-index: 2;
+    color: #999;
+    background-color: #fff;
+    border-color: #ddd;
+    font-size: 16px;
+    font-weight: 600;
+}
+.custom-pagination > li:first-child > a,
+.custom-pagination > li:first-child > span {
+    margin-left: 0;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+}
+.custom-pagination > li:last-child > a,
+.custom-pagination > li:last-child > span {
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.custom-pagination > li > a:hover,
+.custom-pagination > li > span:hover,
+.custom-pagination > li > a:focus,
+.custom-pagination > li > span:focus {
+    color: #ffffff;
+    background-color: #4B77BE;
+    border-color: #4B77BE;
+    font-weight: 800;
+    font-size: 16px;
+}
+.custom-pagination > .active > a,
+.custom-pagination > .active > span,
+.custom-pagination > .active > a:hover,
+.custom-pagination > .active > span:hover,
+.custom-pagination > .active > a:focus,
+.custom-pagination > .active > span:focus {
+    color: #000000;
+    background-color: #ffffff;
+    cursor: default;
+    font-size: 16px;
+    font-weight: 800;
+}
+.custom-pagination > .disabled > span,
+.custom-pagination > .disabled > span:hover,
+.custom-pagination > .disabled > span:focus,
+.custom-pagination > .disabled > a,
+.custom-pagination > .disabled > a:hover,
+.custom-pagination > .disabled > a:focus {
+    color: #999;
+    background-color: #fff;
+    border-color: #ddd;
+    cursor: not-allowed;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.buttonMinwidth38{
+    min-width: 38px;
+}

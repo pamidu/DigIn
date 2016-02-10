@@ -15,185 +15,24 @@
 */
 routerApp.controller('widgetSettingsCtrl', ['$scope',
 
-    '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', '$http', 'ScopeShare',
-    function($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http, ScopeShare) {
-
-        // $http.get('jsons/'+ $rootScope.widget.dataJson +'.json').success(function (data) {
-        //     console.log('['+JSON.stringify(data)+']');
-        //     $scope.arr = data;
-
-        //     console.log("data json");
-        //     console.log($scope.arr);
-        // });
-
-        $scope.sortType = 'name'; // set the default sort type
-        $scope.sortReverse = false; // set the default sort order
-
-        // ====== Json data to array ======  
-        var JSONData = {};
-        var queue = [];
-
-        function JsonToArray() {
-            for (var i = 0; i < JSONData.length; i++) {
-
-                queue.push({
-                    name: JSONData[i].templateParameter.name,
-                    field1: JSONData[i].templateParameter.field1,
-                    field2: JSONData[i].templateParameter.field2
-                });
-            }
-            $scope.dataTable = queue;
-        }
-
-        $('#pagePreLoader').hide();
+    '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', '$http', 'ScopeShare', '$filter',
+    function($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http, ScopeShare, $filter) {
 
         $scope.showData = function() {
 
-            //get markers data for branch data
-            if (ScopeShare.get('gmapsControllerBranch') != undefined) {
+            $mdDialog.show({
+                controller: 'widgetSettingsDataCtrl',
+                templateUrl: 'views/ViewWidgetSettingsData.html',
+                clickOutsideToClose: true,
+                resolve: {}
+            });
 
-                JSONData = ScopeShare.get('gmapsControllerBranch');
-                if (JSONData) {
-                    JsonToArray();
-                }
-            }
-            //get markers data for branch data
-            if (ScopeShare.get('gmapsControllerClaim') != undefined) {
-
-                JSONData = ScopeShare.get('gmapsControllerClaim');
-                if (JSONData) {
-                    JsonToArray();
-                }
-            }
-            //displaying download button
-            $('#downloadButton').css("display", "block");
-            //dataViewPath for the ng-include in ViewDataGoogleMaps.html
-            $scope.dataViewPath = 'views/googleMaps/' + $rootScope.widget.dataView + '.html';
-
-            // if( $rootScope.widget.dataJson == 'hnbBoxData' ){
-            //     JSON2CSV2();
-            // }
-            // else{
-            //     JSON2CSV();
-            // }
-
+            $scope.close();
         };
-
-        // function JSON2CSV() {
-
-        //     var str = '';
-        //     var jsonArray = [];
-
-        //     for(var i=0; i< $scope.arr.children.length; i++){
-
-        //         var obj = {};
-        //         obj['data1'] = "";
-        //         obj['data2'] = "";
-        //         obj['data3'] = "";
-        //         console.log("child level 1");
-        //         console.log($scope.arr.children[i].name);
-        //         //str += $scope.arr.children[i].name;
-        //         if( $scope.arr.children[i].children != undefined){
-        //             for(var j=0; j< $scope.arr.children[i].children.length; j++){
-
-        //                 console.log("child level 2");
-        //                 console.log($scope.arr.children[i].children[j].name);
-        //                 str += $scope.arr.children[i].name + ',' + $scope.arr.children[i].children[j].name;
-        //                 obj['data1'] = $scope.arr.children[i].name;
-        //                 obj['data2'] = $scope.arr.children[i].children[j].name;
-        //                 if( $scope.arr.children[i].children[j].children != undefined){
-        //                     for(var k=0; k< $scope.arr.children[i].czildren[j].children.length; k++){
-
-        //                         console.log("child level 3");
-        //                         console.log($scope.arr.children[i].children[j].children[k].name);
-        //                         str += ',' + $scope.arr.children[i].children[j].children[k].name;
-        //                         obj['data3'] = $scope.arr.children[i].children[j].children[k].name;
-        //                     }
-        //                     str += '\n';
-        //                 }
-        //                 else{
-        //                     str += '\n';
-        //                 }
-        //                 jsonArray.push(obj);
-        //                 var obj = {};
-        //                 obj['data1'] = "";
-        //                 obj['data2'] = "";
-        //                 obj['data3'] = "";
-
-        //             }
-        //         }
-        //         else{
-        //                 str += '\n';
-        //                 obj['data1'] = $scope.arr.children[i].name1;
-        //                 obj['data2'] = $scope.arr.children[i].name2;
-        //         }    
-        //     }
-
-        //     console.log("str");
-        //     console.log(str);
-        //     console.log("jsonArray");
-        //     console.log(jsonArray);
-
-        //     $scope.json2csv = jsonArray;
-
-        // }
-
-        // function JSON2CSV2() {
-
-        //     var str = '';
-        //     var jsonArray = [];
-
-        //     for(var i=0; i< $scope.arr.children.length; i++){
-
-        //         var obj = {};
-        //         obj['data1'] = "";
-        //         obj['data2'] = "";
-
-        //         console.log("child level 1");
-        //         //console.log($scope.arr.children[i].name);
-        //         //str += $scope.arr.children[i].name;
-        //         obj['data1'] = $scope.arr.children[i].category;
-        //         obj['data2'] = $scope.arr.children[i].Observation;
-
-        //         jsonArray.push(obj);
-        //             var obj = {};
-        //             obj['data1'] = "";
-        //             obj['data2'] = "";
-
-
-        //     }
-
-        //     console.log("str");
-        //     console.log(str);
-        //     console.log("jsonArray");
-        //     console.log(jsonArray);
-
-        //     $scope.json2csv = jsonArray;
-
-        // }
-
-        // $scope.exportToCSV = function ($http) {
-
-        //     JSON2CSV();
-        //     console.log("$scope.json2csv");
-        //     console.log($scope.json2csv);
-
-        // };
-
-        // $scope.convertCSVtoJson = function (src) {
-        //     AsTorPlotItems.then(function (data) {
-        //         $scope.items = data;
-        //     });
-        // };
 
         $scope.showAdvanced = function(ev, widget) {
 
-            // $scope.dataViewPath = 'views/'+$rootScope.widget.initTemplate + '.html';
-
-            // console.log("showAdvanced");
-            // console.log( $scope.dataViewPath);
             document.getElementsByClassName("card__full")[0].style.visibility = "hidden";
-
 
             $mdDialog.show({
                 controller: 'chartSettingsCtrl',
@@ -239,46 +78,50 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
                     });
             }
 
-
-
+            $scope.close();
         };
+
         $scope.trustSrc = function(src) {
             return $sce.trustAsResourceUrl(src);
         };
+
         $scope.getIndexes = function() {
+
             var client = $objectstore.getClient("com.duosoftware.com");
             client.onGetMany(function(data) {
                 data.forEach(function(entry) {
 
                     $rootScope.indexes.push({
+
                         value: entry,
                         display: entry
                     });
-
                 });
-
-
             });
             client.getClasses("com.duosoftware.com");
         };
-        $scope.commentary = function(widget) {
 
-            $('#downloadButton').css("display", "none");
+        $scope.commentary = function(widget) {
 
             var comment = "";
             var chunks = [];
 
-            $scope.dataViewPath = '';
-
+            $scope.close();
         };
+
         $scope.close = function() {
+
             $(".view").css("display", "none");
             $('md-backdrop').css("display", "none");
+            $('.md-dialog-container').css("display", "none");
+            $('.md-scroll-mask').css("display", "none"); 
         };
+
         $scope.closeDialog = function() {
 
             $mdDialog.hide();
         };
+
         $scope.clear = function() {
             $rootScope.dashboard.widgets = [];
         };
@@ -286,15 +129,6 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         $scope.remove = function(widget) {
             $rootScope.dashboard.widgets.splice($rootScope.dashboard.widgets.indexOf(widget), 1);
         };
-
-
-        $scope.alert = '';
-
-
-        $scope.config = {}; // use defaults
-        $scope.model = {};
-
-
 
         //   $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
         //   if (newVal !== oldVal) {
@@ -306,6 +140,70 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
 
         // init dashboard
         $scope.selectedDashboardId = '1';
+
+    }
+]);
+
+routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '$rootScope', 'ScopeShare', '$filter',
+    function($scope, $http, $mdDialog, $rootScope, ScopeShare, $filter){
+
+        // ====== angular-table configuration ========
+        $scope.config = {
+            itemsPerPage: 7,
+            fillLastPage: true
+        }
+
+        // ====== Json data to array ======  
+        var JSONData = {};
+
+        function JsonToArray() {
+
+            var queue = [];
+            for (var i = 0; i < JSONData.length; i++) {
+
+                queue.push({
+                    name: JSONData[i].templateParameter.name,
+                    field1: JSONData[i].templateParameter.field1,
+                    field2: JSONData[i].templateParameter.field2
+                });
+            }
+            $scope.dataTable = queue;
+            $scope.originalList = $scope.dataTable;
+        }
+
+        $scope.initialize = function(){
+            //if widget is google maps
+            if($rootScope.widget.uniqueType == "Google Maps Branches" || $rootScope.widget.uniqueType == "Google Maps Claims"){
+
+                $scope.dataViewPath = 'views/googleMaps/' + $rootScope.widget.dataView + '.html';
+                //get markers data for branch data
+                if (ScopeShare.get('gmapsControllerBranch') != undefined) {
+
+                    JSONData = ScopeShare.get('gmapsControllerBranch');
+                    if (JSONData) {
+                        JsonToArray();
+                    }
+                }
+                //get markers data for branch data
+                if (ScopeShare.get('gmapsControllerClaim') != undefined) {
+
+                    JSONData = ScopeShare.get('gmapsControllerClaim');
+                    if (JSONData) {
+                        JsonToArray();
+                    }
+                }
+            }
+            
+        }
+
+        $scope.updateFilteredList = function(query) {
+            $scope.dataTable = $filter("filter")($scope.originalList, query);
+        };
+
+        $scope.close = function() {
+
+            $mdDialog.hide();
+        };
 
     }
 ]);

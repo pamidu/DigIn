@@ -1,6 +1,7 @@
 $(window).load(function () {
     setTimeout(function () {
         $('#pagePreLoader').hide();
+        $('#preLoader').hide();
         $('.nav-menu').css("visibility", "visible");
         $('.main-headbar').css("visibility", "visible");
         $('#content1').css("visibility", "visible");
@@ -38,7 +39,8 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
     'uiGmapgoogle-maps',
     'angularMoment',
     'googleplus',
-    'rzModule'
+    'rzModule',
+    'angular-table'
 
 ])
 

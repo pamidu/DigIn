@@ -152,6 +152,7 @@ routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$
 
     }).state('salesForecast', {
         url: '/sales-forecast',
+        controller: 'salesForecastCtrl',
         templateUrl: "views/salesForecast/sales_forecast_Temp.html"
     });
 

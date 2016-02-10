@@ -41,15 +41,20 @@
                 getAggData: function(tbl, agg, aggf, cb, gb, con) {
                     if (database == "BigQuery") {
                         var wSrc = "scripts/webworkers/webWorker.js";
-                        var params = "tablename=" + tbl + "&db=" + database + "&agg=" + agg + "&agg_f=[%27" + aggf + "%27]";
+                        var params = "tablenames={1:%27" + tbl + " %27}&db=" + database + "&agg={%27" + agg + "%27:%27" + aggf + "%27}" + "&cons=&order_by={}";
                     }
                     if (database == "MSSQL") {
-                        var wSrc = "scripts/webworkers/webWorker.js";
-                        var params = "tablename=" + tbl + "&db=" + database + "&agg=" + agg + "&agg_f=[%27" + aggf + "%27]";
+                        if (gb === undefined) {
+                            var wSrc = "scripts/webworkers/webWorker.js";
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg={%27" + aggf + "%27:%27" + agg + "%27}" + "&cons=&order_by={}";
+                        } else {
+                            var wSrc = "scripts/webworkers/webWorker.js";
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&agg={%27" + aggf + "%27:%27" + agg + "%27}" + "&cons=&order_by={}";
+                        }
 
                     }
 
-                    if (gb) params += "&group_by={'" + gb + "':1}";
+                    // if (gb) params += "&group_by={'" + gb + "':1}";
                     if (con) params += "&cons=" + con;
                     var reqUrl = $diginurls.diginengine + "/aggregatefields?" + params;
                     var wData = {

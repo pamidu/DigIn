@@ -40,7 +40,7 @@
                 <md-select ng-model="categItem">
                      <md-option ng-value="metItem.value" ng-repeat="metItem in arrayAttributes" placeholder="Select a metric field">{{metItem.value}}</md-option>
                </md-select>
-                <md-select ng-model="selectedFilter" placeholder="Select a filter">
+                <md-select ng-model="selectedFilter" placeholder="Select an Aggregation ">
                     <md-option value="{{fil.method}}" ng-repeat="fil in filterAttributes">{{ fil.name }}</md-option>
                 </md-select>
                <md-input-container flex>

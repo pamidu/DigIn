@@ -56,8 +56,8 @@
                 </div>
                 <div ng-hide="queried.state" layout="column" class="data-index">
                     <div>
-                        <md-checkbox ng-repeat="item in tblFields | orderBy : item" ng-click="toggleCheck(item)">
-                            {{ item }}
+                        <md-checkbox ng-repeat="item in tblFields | orderBy : item" ng-click="toggleCheck(item.FieldName)">
+                            {{ item.FieldName }} ||  {{ item.FieldType }}
                         </md-checkbox>
                     </div>
                 </div>

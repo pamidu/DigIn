@@ -2899,7 +2899,7 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
                                 if (data.length > 0) {
                                     data.forEach(function(entry) {
                                         $scope.selectedFields.push({
-                                            name: entry,
+                                            name: entry['Fieldname'],
                                             checked: false
                                         });
                                     });

@@ -12,6 +12,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         $scope.distinct = [];
         $scope.selTable = "";
         $scope.selSrc = "";
+
         $scope.queried = {};
         $scope.icon = "bower_components/material-design-icons/navigation/svg/production/ic_chevron_left_18px.svg";
         $scope.queried.state = false;
@@ -68,10 +69,17 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
     $scope.onChangeTable = function(tbl) {
         //clear fieldArray
         $scope.fieldArray = [];
+        $scope.tblFields = [];
         $scope.selTable = tbl;
         $scope.client.getFields(tbl, function(data, status) {
-            if (status) $scope.tblFields = data;
-            else console.log("Fields not received due to:" + data);
+            if (status)
+                for (i = 0; i < data.length; i++) {
+                    $scope.tblFields.push({
+                        FieldName: data[i]['Fieldname'],
+                        FieldType: data[i]['FieldType']
+                    });
+
+                } else console.log("Fields not received due to:" + data);
         });
     };
 
@@ -178,10 +186,18 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     openConfig(null, "InitConfigCommonSrcQueried", data);
                 });
             } else {
-                $scope.client.getHighestLevel($scope.selTable, $scope.fieldString.toString(), function(data, status) {
-                    if (status) openConfig(data, "InitConfigCommonSrc");
-                    else console.log("Get highest level not received due to:" + data);
-                });
+                if ($scope.currWidget.commonSrcConfig.initSerType == "metric") {
+                    $scope.client.getHighestLevel($scope.selTable, $scope.fieldString.toString(), function(data, status) {
+                        if (status) openConfig(data, "InitConfigCommonSrcMetric");
+                        else console.log("Get highest level not received due to:" + data);
+                    });
+                } else {
+                    $scope.client.getHighestLevel($scope.selTable, $scope.fieldString.toString(), function(data, status) {
+                        if (status) openConfig(data, "InitConfigCommonSrc");
+                        else console.log("Get highest level not received due to:" + data);
+                    });
+                }
+
             }
         };
     };
@@ -803,26 +819,11 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
     //order by category
     $scope.orderByCat = function(widget) {
-        
+
         widget.highchartsNG = {
             options: {
                 chart: {
-                     type: widget.commonSrcConfig.initSerType,
 
-
-                    options3d: {
-                        enabled: true,
-                        alpha: 45,
-                        beta: 0
-                    },
-                    cursor: 'pointer',
-                    point: {
-                        events: {
-                            click: function() {
-                                alert('rawr');
-                            }
-                        }
-                    }
                 },
                 drilldown: {
                     drillUpButton: {
@@ -1007,21 +1008,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
         widget.highchartsNG = {
             chart: {
-                type: widget.commonSrcConfig.initSerType,
 
-                options3d: {
-                    enabled: true,
-                    alpha: 45,
-                    beta: 0
-                },
-                cursor: 'pointer',
-                point: {
-                    events: {
-                        click: function() {
-                            alert('rawr');
-                        }
-                    }
-                }
             },
             plotOptions: {
                 series: {
@@ -1255,7 +1242,8 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             widget.commonSrcConfig['metGrpF'] = $scope.metric;
             $scope.client.getAggData(widget.commonSrcConfig.tbl, $scope.selectedFilter, $scope.categItem, function(data, status) {
                 if (status) {
-                    widget.widData.value = data[0][""];
+                    var filterkey = $scope.selectedFilter+ "_"+$scope.categItem;
+                    widget.widData.value = data[0][filterkey] ;
                     $mdDialog.hide();
                 } else console.log("Aggregation not received due to:" + data);
             }, $scope.metric.gField, "WHERE%20" + $scope.metric.gField + "=%27" + $scope.metric.gFieldVal + "%27");
@@ -1263,7 +1251,8 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             widget.commonSrcConfig['metGrp'] = false;
             $scope.client.getAggData(widget.commonSrcConfig.tbl, $scope.selectedFilter, $scope.categItem, function(data, status) {
                 if (status) {
-                    widget.widData.value = data[0][""];
+                     var filterkey = $scope.selectedFilter+"_"+$scope.categItem;
+                    widget.widData.value = data[0][filterkey] ;
                     $mdDialog.hide();
                 } else console.log("Aggregation not received due to:" + data);
             });

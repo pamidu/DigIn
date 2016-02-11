@@ -857,7 +857,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
 
             }
-            if (routeName == "Sales Forecast Prediction") {
+            if (routeName == "Sales Forecast && Prediction") {
 
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';

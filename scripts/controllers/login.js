@@ -13,8 +13,8 @@ app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$window
         //on click login  button
         $scope.login = function () {
             var loginAuth = {
-                'useName': 'DSI',
-                'pwd': 'DSI',
+                'useName': 'Demo',
+                'pwd': 'Demo',
                 authDetail: {
                     'user': $scope.txtUname,
                     'pwd': $scope.txtPwd
@@ -32,8 +32,8 @@ app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$window
                 return;
             } else {
                 //login authentication
-                if (loginAuth.authDetail.user == 'DSI' &&
-                    loginAuth.authDetail.pwd == 'DSI') {
+                if (loginAuth.authDetail.user == 'Demo' &&
+                    loginAuth.authDetail.pwd == 'Demo') {
                     $window.location = "home.html";
                     return;
                 } else {

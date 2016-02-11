@@ -21,29 +21,36 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         $scope.showData = function() {
 
             $mdDialog.show({
-                controller: 'widgetSettingsDataCtrl',
-                templateUrl: 'views/ViewWidgetSettingsData.html',
-                clickOutsideToClose: true,
-                resolve: {}
-            });
+                        controller: $rootScope.widget.dataCtrl,
+                        templateUrl: 'views/ViewWidgetSettingsData.html',
+                        parent: angular.element(document.body),
+                        locals: {
+                            widId: $rootScope.widget.id
+                        }
+                    })
+                    .then(function() {
+                        //$mdDialog.hide();
+                    }, function() {
+                        //$mdDialog.hide();
+                    });
 
             $scope.close();
         };
 
         $scope.showAdvanced = function(ev, widget) {
 
-            document.getElementsByClassName("card__full")[0].style.visibility = "hidden";
+            //document.getElementsByClassName("card__full")[0].style.visibility = "hidden";
 
-            $mdDialog.show({
-                controller: 'chartSettingsCtrl',
-                templateUrl: 'views/chart_settings.html',
-                targetEvent: ev,
-                resolve: {
-                    widget: function() {
-                        return widget;
-                    }
-                }
-            })
+            // $mdDialog.show({
+            //     controller: 'chartSettingsCtrl',
+            //     templateUrl: 'views/chart_settings.html',
+            //     targetEvent: ev,
+            //     resolve: {
+            //         widget: function() {
+            //             return widget;
+            //         }
+            //     }
+            // })
 
             if ($rootScope.widget.uniqueType == "Common Source") {
                 $mdDialog.show({
@@ -111,14 +118,14 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
 
         $scope.close = function() {
 
-            $(".view").css("display", "none");
-            $('md-backdrop').css("display", "none");
-            $('.md-dialog-container').css("display", "none");
-            $('.md-scroll-mask').css("display", "none"); 
+            // $(".view").css("display", "none");
+            // $('md-backdrop').css("display", "none");
+            // $('.md-dialog-container').css("display", "none");
+            // $('.md-scroll-mask').css("display", "none"); 
+            $mdDialog.hide();
         };
 
         $scope.closeDialog = function() {
-
             $mdDialog.hide();
         };
 
@@ -175,7 +182,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
             //if widget is google maps
             if($rootScope.widget.uniqueType == "Google Maps Branches" || $rootScope.widget.uniqueType == "Google Maps Claims"){
 
-                $scope.dataViewPath = 'views/googleMaps/' + $rootScope.widget.dataView + '.html';
+                $scope.dataViewPath = $rootScope.widget.dataView;
                 //get markers data for branch data
                 if (ScopeShare.get('gmapsControllerBranch') != undefined) {
 

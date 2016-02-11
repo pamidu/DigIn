@@ -147,10 +147,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         };
                     }
                 }
-            )
-            ;
-        }
-        ;
+            );
+        };
 
         $scope.closeDialog = function () {
             $mdDialog.hide();

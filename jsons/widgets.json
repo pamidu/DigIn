@@ -279,8 +279,8 @@
             "type": "Custom",
             "Description": "Google Maps",
             "widView": "views/googleMaps/ViewGoogleMapsBranches.html",
-            "dataView": "ViewDataGoogleMaps",
-            "dataCtrl": "gmapsControllerBranches",
+            "dataView": "views/googleMaps/ViewDataGoogleMaps.html",
+            "dataCtrl": "widgetSettingsDataCtrl",
             "color": "#8BC34A",
             "sizeX": 4, "sizeY": 4, "row": 3, "col": 16
         }, {

@@ -152,7 +152,7 @@ routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$
         controller: 'socialGraphTwitterCtrl',
         templateUrl: "views/socialGraph/socialGraphTwitter_Temp.html"
 
-    }).state('salesForecast', {
+    }).state('Sales Forecast', {
         url: '/sales-forecast',
         controller: 'salesForecastCtrl',
         templateUrl: "views/salesForecast/sales_forecast_Temp.html"

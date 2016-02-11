@@ -843,6 +843,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
 
             }
+            if (routeName == "Sales Forecast") {
+
+                var selectedMenu = document.getElementsByClassName("menu-layer");
+                selectedMenu[0].style.display = 'block';
+                $scope.manageTabs(false);
+                $state.go(routeName);              
+
+            }
             if (routeName == "Logout") {
                 $window.location = "index.html";
 

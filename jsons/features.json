@@ -23,7 +23,7 @@
 
             "title": "RealTime",
             "icon1": "bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg",
-            "icon2": "trending_up",
+            "icon2": "access_time",
             "state": true,
             "stateStr": "Enabled"
         }, {

@@ -26,7 +26,7 @@
         <div class="header-line-bottom"></div>
         <div class="card-body bg-color-grey-100 p-b-40">
             <div layout="row" layout-align="center center" layout-wrap>
-
+                <!-- social media -->
                 <div class="select-card-btn asset" ng-repeat="widget in Widgets" ng-show="widget.type=='Social Media'">
                     <a href="{{widget.href}}" ng-click="close()">
                         <img ng-src="{{widget.icon}}"
@@ -38,32 +38,32 @@
                         </span>
                 </div>
 
-                <!-- facebook -->
-                <!-- <div class="select-card-btn asset">
-                    <a href="#social-graph-fb" ng-click="close()">
-                        <img ng-src="styles/css/images/icons/facebook.svg"
-                             alt="Facebook Pages"
-                             src="styles/css/images/icons/facebook.svg">
+                <!-- Sales Forecast -->
+                <div class="select-card-btn asset">
+                    <a href="#sales-forecast" ng-click="close()">
+                        <img ng-src="styles/css/images/icons/salesForecast.png"
+                             alt="Sales Forecast"
+                             src="styles/css/images/icons/salesForecast.png">
                     </a>
                         <span class="size graph-h2">
-                            facebook
+                            Sales Forecast
                         </span>
-                </div> -->
+                </div>
 
 
-                <!-- twitter -->
-                <!-- <div>
+                <!-- test -->
+                <div>
                     <div class="select-card-btn asset">
-                        <a href="#social-graph-twitter" ng-click="close()">
-                            <img ng-src="styles/css/images/icons/twitter.svg"
-                                 alt="Twitter"
-                                 src="styles/css/images/icons/twitter.svg">
+                        <a href="#prediction" ng-click="close()">
+                            <img ng-src="styles/css/images/icons/prediction.png"
+                                 alt="Prediction"
+                                 src="styles/css/images/icons/prediction.png">
                         </a>
                         <span class="size graph-h2">
-                            twitter
+                            Prediction
                         </span>
                     </div>
-                </div> -->
+                </div>
             </div>
 
 

@@ -156,6 +156,10 @@ routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$
         url: '/sales-forecast',
         controller: 'salesForecastCtrl',
         templateUrl: "views/salesForecast/sales_forecast_Temp.html"
+    }).state('Prediction', {
+        url: '/prediction',
+        controller: 'predictionCtrl',
+        templateUrl: "views/prediction/prediction.html"
     });
 
     lkGoogleSettingsProvider.configure({

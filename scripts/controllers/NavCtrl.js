@@ -557,6 +557,20 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                 });
         };
+        //load sales forecast and prediction  
+        $scope.showSalesForecastPrediction = function(ev) {
+            $mdDialog.show({
+                    templateUrl: 'views/salesForecastPrediction.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                })
+                .then(function(answer) {
+                    addToDashboards(answer);
+                }, function() {
+
+                });
+        };
 
         $scope.createuuid = function() {
             return Math.floor((1 + Math.random()) * 0x10000)
@@ -843,12 +857,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
 
             }
-            if (routeName == "Sales Forecast") {
+            if (routeName == "Sales Forecast Prediction") {
 
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $scope.manageTabs(false);
-                $state.go(routeName);              
+                $scope.showSalesForecastPrediction(ev);            
 
             }
             if (routeName == "Logout") {

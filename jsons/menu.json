@@ -57,7 +57,7 @@
             "icon2": "view_array"
         }, {
 
-            "title": "Sales Forecast",
+            "title": "Sales Forecast Prediction",
             "icon1": "bower_components/material-design-icons/action/svg/production/ic_input_24px.svg",
             "icon": "ion-close",
             "icon2": "trending_up"

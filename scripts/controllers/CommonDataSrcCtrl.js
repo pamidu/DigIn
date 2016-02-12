@@ -945,7 +945,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                     for (i = 0; i < evData.length; i++) {
                         entry['data'].push({
                             name: evData[i][$scope.catItem.value],
-                            y: evData[i][filter + "_" + entry.serName.value]
+                            y: parseFloat(evData[i][filter + "_" + entry.serName.value])
                         });
                     }
                     //create  mapped data
@@ -959,6 +959,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                     //y get series name
                     var ySer = entry.serName.value;
                     for (i = 0; i < evData.length; i++) {
+                        console.log(JSON.stringify(evData));
                         var val = evData[i];
                         var index = 0;
                         for (var key in val) {
@@ -973,25 +974,24 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                                         originalkey = key;
                                         key = key.replace('sum_', '');
                                         $scope.mappedArray[key].data.push(val[originalkey]);
-                                    } else if (key.indexOf('average') >= 0) {
+                                    } else if (key.indexOf('avg') >= 0) {
                                         originalkey = key;
-                                        key = key.replace('average_', '');
-                                        $scope.mappedArray[key].data.push(val[originalkey]);
+                                        key = key.replace('avg_', '');
+                                        $scope.mappedArray[key].data.push(parseFloat(val[originalkey]));
                                     } else if (key.indexOf('count') >= 0) {
                                         originalkey = key;
                                         key = key.replace('count_', '');
                                         $scope.mappedArray[key].data.push(val[originalkey]);
-                                    } else {
+                                    } else {                                        
                                         $scope.mappedArray[key].data.push(val[key]);
                                     }
-
-
                                 }
                             }
                             index++;
                         }
                     }
                     widget.winConfig['mappedData'] = $scope.mappedArray;
+                    console.log(JSON.stringify($scope.seriesArray));
                     widget.highchartsNG['series'] = $scope.seriesArray;
                     console.log("widget name " + JSON.stringify(widget.highchartsNG));
                 });
@@ -1242,7 +1242,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             widget.commonSrcConfig['metGrpF'] = $scope.metric;
             $scope.client.getAggData(widget.commonSrcConfig.tbl, $scope.selectedFilter, $scope.categItem, function(data, status) {
                 if (status) {
-                    var filterkey = $scope.selectedFilter+ "_"+$scope.categItem;
+                    var filterkey = $scope.selectedFilter+ "_" +$scope.categItem;
                     widget.widData.value = data[0][filterkey] ;
                     $mdDialog.hide();
                 } else console.log("Aggregation not received due to:" + data);

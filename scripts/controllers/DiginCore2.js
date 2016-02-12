@@ -60,7 +60,8 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
                         targetEvent: ev,
                         locals: {
                             widId: $rootScope.widget.id,
-                            fieldData: {}
+                            fieldData: {},
+                            widData:{}
                         }
                     })
                     .then(function() {

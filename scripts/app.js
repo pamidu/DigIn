@@ -160,6 +160,10 @@ routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$
         url: '/prediction',
         controller: 'predictionCtrl',
         templateUrl: "views/prediction/prediction.html"
+    }).state('setup', {
+        url: '/setup',
+        controller: 'dashboardSetupCtrl',
+        templateUrl: "views/setup/dashboardSetup.html"
     });
 
     lkGoogleSettingsProvider.configure({

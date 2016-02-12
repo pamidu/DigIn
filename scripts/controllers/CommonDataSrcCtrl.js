@@ -123,8 +123,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         $scope.currWidget = {
             widData: {},
             widView: chart.resView,
-            dataView: "ViewElasticData",
-            dataCtrl: "elasticDataCtrl",
+            dataView: '',
+            dataCtrl: 'widgetSettingsDataCtrl',
             initTemplate: chart.configView,
             initCtrl: "commonSrcInit",
             uniqueType: "Common Source",

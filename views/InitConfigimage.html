@@ -1,22 +1,14 @@
-<md-dialog plumb-item style="width:400px;">
-        <md-toolbar>
-            <div class="md-toolbar-tools" flex layout="row">
-                <div flex="10">
-                        <md-icon class="ion-wrench"></md-icon>
-                </div>   
-                <div flex="80">
-                              <h3>
-                                 <span> Configuration </span>
-                              </h3>
-                </div>                           
-                <div flex="10">
-                        <md-button class="widget-button" ng-click="cancel()" aria-label="Close" layout-wrap>
-                            <ng-md-icon icon="close" style="fill:white" size="20" layout="column" layout-align="center center" flex></ng-md-icon>
-                        </md-button>
-                </div>
-            </div>                   
-    </md-toolbar> 
-        <md-content layout-margin>
+<md-dialog plumb-item style="min-width:400px" ng-init="initialize()">
+  <md-toolbar style="width: 100%; min-height: 30vh!important;z-index: 0;">
+    <div style="width:100%; height:48px;" layout="row" layout-align="end center">                
+      <p style="color: whitesmoke;font-size: 20px;margin:5px;">CONFIGURATION</p>         
+      <md-button class="buttonMinwidth38" ng-click="cancel();">      
+        <ng-md-icon icon="close" style="fill:lightgrey" size="24" layout="row"></ng-md-icon>        
+      </md-button>            
+    </div>
+  </md-toolbar>
+  <md-card style="margin: 40px;margin-top: -20vh; margin-bottom: 0px;height:100%;">
+    <md-content layout-padding>
         <div>
                 <md-input-container flex>   
             <input my-upload type="file" name="upload">
@@ -32,5 +24,7 @@
                 Cancel
             </md-button>
         </div>
-        </md-content>
+    </md-content>
+  </md-card>
 </md-dialog>
+

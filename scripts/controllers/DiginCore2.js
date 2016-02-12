@@ -39,52 +39,25 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
 
         $scope.showAdvanced = function(ev, widget) {
 
-            //document.getElementsByClassName("card__full")[0].style.visibility = "hidden";
-
-            // $mdDialog.show({
-            //     controller: 'chartSettingsCtrl',
-            //     templateUrl: 'views/chart_settings.html',
-            //     targetEvent: ev,
-            //     resolve: {
-            //         widget: function() {
-            //             return widget;
-            //         }
-            //     }
-            // })
-
-            if ($rootScope.widget.uniqueType == "Common Source") {
-                $mdDialog.show({
-                        controller: 'commonSrcInit',
-                        templateUrl: 'views/common-data-src/init-configs/' + $rootScope.widget.initTemplate + '.html',
-                        parent: angular.element(document.body),
-                        targetEvent: ev,
-                        locals: {
-                            widId: $rootScope.widget.id,
-                            fieldData: {}
-                        }
-                    })
-                    .then(function() {
-                        //$mdDialog.hide();
-                    }, function() {
-                        //$mdDialog.hide();
-                    });
-            } else {
-                $mdDialog.show({
-                        controller: eval($rootScope.widget.initCtrl),
-                        templateUrl: 'views/' + $rootScope.widget.initTemplate + '.html',
-                        parent: angular.element(document.body),
-                        targetEvent: ev,
-                        locals: {
-                            widId: $rootScope.widget.id
-                        }
-                    })
-                    .then(function() {
-                        //$mdDialog.hide();
-                    }, function() {
-                        //$mdDialog.hide();
-                    });
+            if($rootScope.widget.initTemplate){
+                              
+                    $mdDialog.show({
+                            controller: $rootScope.widget.initCtrl,
+                            templateUrl: $rootScope.widget.initTemplate,
+                            parent: angular.element(document.body),
+                            targetEvent: ev,
+                            locals: {
+                                widId: $rootScope.widget.id,
+                                widData: {},
+                                fieldData: {}
+                            }
+                        })
+                        .then(function() {
+                            //$mdDialog.hide();
+                        }, function() {
+                            //$mdDialog.hide();
+                        });
             }
-
             $scope.close();
         };
 
@@ -117,11 +90,6 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         };
 
         $scope.close = function() {
-
-            // $(".view").css("display", "none");
-            // $('md-backdrop').css("display", "none");
-            // $('.md-dialog-container').css("display", "none");
-            // $('.md-scroll-mask').css("display", "none"); 
             $mdDialog.hide();
         };
 
@@ -635,11 +603,11 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
         };
 
         $scope.openInitialConfig = function(ev, id) {
-            // alert($scope.currWidget.uniqueType);
-
-            $mdDialog.show({
-                    controller: eval($scope.currWidget.initCtrl),
-                    templateUrl: 'views/' + $scope.currWidget.initTemplate + '.html',
+           
+            if($scope.currWidget.initTemplate){
+                $mdDialog.show({
+                    controller: $scope.currWidget.initCtrl,
+                    templateUrl: $scope.currWidget.initTemplate,
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     locals: {
@@ -650,7 +618,9 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                     //$mdDialog.hide();
                 }, function() {
                     //$mdDialog.hide();
-                });
+                });    
+            }
+            
         };
 
         $scope.closeDialog = function() {

@@ -7,7 +7,7 @@
                         <div class="graph-main-header-text">
                             <!-- social page name-->
                             <h2 class="graph-h2 sf-header font-weight-500">
-                                Lankem Sales Forecast for 2013 (excluding Small Business)
+                                Sales Forecast with  Product Sales
                             </h2>
                         </div>
                     </div>
@@ -19,39 +19,56 @@
 
     <div class="sf-main-wrap">
         <div layout="row" layout-align="center center" layout-wrap>
-            <div flex="25">
+            <div flex="20">
                 <md-card class="md-default-theme sf-bg-color-blue4 sf-min-panel ">
                     <div class="md-content__body p-10 ">
                         <div class="sf-card-heading">
                             <h3 class="panel-title">
-                                <strong class="graph-h2">Planned Business Growth
+                                <strong class="graph-h2"> Number of days
                                 </strong>
                             </h3>
                             <div class="actions">
-                                <rzslider
+                                <rzslider 
                                         rz-slider-model="slider.businessGrowth.value"
                                         rz-slider-options="slider.options"></rzslider>
                             </div>
                         </div>
-                        <div layout class="">
-
-                        </div>
+                        
                     </div>
                 </md-card>
             </div>
-            <div flex="25">
+               <div flex="20">
+                <md-card class="md-default-theme sf-bg-color-blue4 sf-min-panel ">
+                    <div class="md-content__body p-10 ">
+                        <div class="sf-card-heading">
+                            <h3 class="panel-title">
+                                <strong class="graph-h2"> Moving average steps
+                                </strong>
+                            </h3>
+                            <div class="actions">
+                                <rzslider 
+                                        rz-slider-model="slider.movingvalue.value"
+                                        rz-slider-options="slider.options"></rzslider>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </md-card>
+            </div>
+            <div flex="20">
                 <md-card class="md-default-theme sf-min-panel sf-bg-color-blue1">
 
                     <div class="md-content__body p-10  ">
                         <div class="sf-card-heading">
                             <h3 class="panel-title">
-                                <strong class="graph-h2">Planned Churn Rate
+                                <strong class="graph-h2"> Model to Use
                                 </strong>
                             </h3>
                             <div class="actions">
-                                <rzslider
-                                        rz-slider-model="slider.churnRate.value"
-                                        rz-slider-options="slider.options"></rzslider>
+                                <md-select ng-model="slider.model"  ng-change="changesale(slider.model);" placeholder="LinearModel" n  flex="50">
+                                    <md-option ng-value="opt"   ng-repeat="opt in models">{{ opt.name }}</md-option> 
+                                </md-select>
+                                
                             </div>
                         </div>
                         <div layout class="">
@@ -60,7 +77,7 @@
                     </div>
                 </md-card>
             </div>
-            <div flex="25">
+            <div flex="20">
                 <md-card class="md-default-theme">
 
                     <div class="md-content__body p-10 sf-bg-color-blue3">
@@ -71,7 +88,7 @@
                             </h3>
                             <div class="actions">
                                 <div class="btn-group btn-group-lg  ">
-                                    <button class="btn btn-success sf-brd-color-blue3">$2.60M</button>
+                                    <button class="btn btn-success sf-brd-color-blue3">{{totalsales}}</button>
                                 </div>
                             </div>
                         </div>
@@ -81,17 +98,17 @@
                     </div>
                 </md-card>
             </div>
-            <div flex="25">
+            <div flex="20">
                 <md-card class="md-default-theme">
                     <div class="md-content__body p-10 sf-bg-color-blue2">
                         <div class="sf-card-heading">
                             <h3 class="panel-title">
-                                <strong class="graph-h2">Total Forecasted Units
+                                <strong class="graph-h2"> RMS Error
                                 </strong>
                             </h3>
                             <div class="actions">
                                 <div class="btn-group btn-group-lg">
-                                    <button class="btn btn-success sf-brd-color-blue2">$2.60M</button>
+                                    <button class="btn btn-success sf-brd-color-blue2">{{rmserror}}</button>
                                 </div>
                             </div>
                         </div>
@@ -102,6 +119,10 @@
                 </md-card>
             </div>
         </div>
+          <div ng-show="dataIndicator" layout="row" layout-sm="column" layout-align="center center" style="z-index:10;position:absolute;height:100%;width:100%;">
+              <md-progress-circular md-mode="indeterminate" style"z-index:11;top:230px"></md-progress-circular>
+              <h2> Please hold on! We are Diging in!</h2>
+            </div>
 
         <!-- table -->
         <md-card>
@@ -109,11 +130,10 @@
                 <div layout="column" layout-wrap>
                     <div flex>
                         <div class="graph-h3 p-10 text-center font-color-y-200 ">
-                            Visual Summary
+                            Forecast visualization
                         </div>
                         <div layout="row" layout-align="center center">
-                             <highchart config="q1Row"></highchart>
-                             <highchart config="q1Row"></highchart>
+                             <highchart config="highchartsNG"></highchart>                            
                         </div>
                         </div>                        
                     </div>
@@ -125,7 +145,7 @@
                     <div flex>
                         <div id="tblForecast" class="p-10">
                             <div class="graph-h3 p-10 text-center font-color-y-200 ">
-                                Quarterly Sales
+                               Data summary
                             </div>
                             <table class="table sf-table" style="overflow-x:scroll;">
                                 <tr>

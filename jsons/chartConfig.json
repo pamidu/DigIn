@@ -2,55 +2,55 @@
     "d": [{
         "name": "Area",
         "type": "area",
-        "configView": "InitConfigCommonSrc",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
         "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
         "icon": "styles/css/images/charts/commonSrc/areaChart.png"
     }, {
         "name": "Smooth area",
         "type": "areaspline",
-        "configView": "InitConfigCommonSrc",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
         "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
         "icon": "styles/css/images/charts/commonSrc/smoothAreaChart.png"
     }, {
         "name": "Line",
         "type": "line",
-        "configView": "InitConfigCommonSrc",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
         "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
         "icon": "styles/css/images/charts/commonSrc/lineChart.png"
     }, {
         "name": "Smooth line",
         "type": "spline",
-        "configView": "InitConfigCommonSrc",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
         "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
         "icon": "styles/css/images/charts/commonSrc/lineChart.png"
     }, {
         "name": "Column",
         "type": "column",
-        "configView": "InitConfigCommonSrc",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
         "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
         "icon": "styles/css/images/charts/commonSrc/columnChart.png"
     }, {
         "name": "Bar",
         "type": "bar",
-        "configView": "InitConfigCommonSrc",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
         "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
         "icon": "styles/css/images/charts/commonSrc/barChart.png"
     }, {
         "name": "Pie",
         "type": "pie",
-        "configView": "InitConfigCommonSrc",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
         "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
         "icon": "styles/css/images/charts/commonSrc/pieChart.png"
     }, {
         "name": "Scatter",
         "type": "scatter",
-        "configView": "InitConfigCommonSrc",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
         "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
         "icon": "styles/css/images/charts/commonSrc/scatterPlot.png"
     }, {
        "name": "Metric",
        "type": "metric",
-       "configView": "InitConfigCommonSrcMetric",
+       "configView": "views/common-data-src/init-configs/InitConfigCommonSrcMetric.html",
        "resView": "views/common-data-src/res-views/ViewCommonSrcMetric.html",
        "icon": "styles/css/images/charts/commonSrc/metrics.png"
     },
@@ -70,6 +70,5 @@
        "name": "D3 Visualization",
        "type": "d3 visualization",
        "icon": "styles/css/images/charts/commonSrc/D3.png"
-    }
-         ]
+    }]
 }

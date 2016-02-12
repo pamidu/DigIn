@@ -18,10 +18,9 @@
 /*summary-
  fbInterface : (scripts/custom/fbInterface.js)
  */
-function fbInit(scope, $mdDialog, widId, $rootScope) {
+routerApp.controller('fbInit',['scope', '$mdDialog', 'widId', '$rootScope',function (scope, $mdDialog, widId, $rootScope) {
 
     scope.accounts = [];
-
     //get fb initial login state
     //scope.actIndicator = "false";
     fbInterface.getFbLoginState(scope);
@@ -203,12 +202,14 @@ function fbInit(scope, $mdDialog, widId, $rootScope) {
             // $rootScope.dashboard.widgets[objIndex].widData = data;
         });
     };
-};
+}]);
+
+
 
 /*summary-
  linkedinInterface : (scripts/custom/linkedinInterface.js)
  */
-function linkedInit(scope, $mdDialog, widId, $rootScope) {
+ routerApp.controller('linkedInit',['scope', '$mdDialog', 'widId', '$rootScope',function (scope, $mdDialog, widId, $rootScope) {
 
     scope.accounts = [];
 
@@ -236,9 +237,9 @@ function linkedInit(scope, $mdDialog, widId, $rootScope) {
         });
         $mdDialog.hide();
     };
-};
+}]);
 
-function TwitterInit($scope, $http, $mdDialog, widId, $rootScope, $q, twitterService) {
+routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope', '$q', 'twitterService',function ($scope, $http, $mdDialog, widId, $rootScope, $q, twitterService) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
@@ -312,9 +313,9 @@ function TwitterInit($scope, $http, $mdDialog, widId, $rootScope, $q, twitterSer
         $scope.refreshTimeline();
     }
 
-};
+}]);
 
-function analyticsInit($scope, $http, $mdDialog, widId, $rootScope) {
+routerApp.controller('analyticsInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope',function ($scope, $http, $mdDialog, widId, $rootScope) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
@@ -403,10 +404,9 @@ function analyticsInit($scope, $http, $mdDialog, widId, $rootScope) {
 
     $rootScope.dashboard.widgets[objIndex].widAexc = $rootScope.extraChart;
 
-};
+}]);
 
-
-function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosService) {
+routerApp.controller('YoutubeInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope', '$log', 'VideosService',function ($scope, $http, $mdDialog, widId, $rootScope, $log, VideosService) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
@@ -475,16 +475,14 @@ function YoutubeInit($scope, $http, $mdDialog, widId, $rootScope, $log, VideosSe
         $scope.playlist = state;
     }
 
-};
-
+}]);
 //real time widget with python service
-function realtimeInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout, DynamicVisualization) {
+routerApp.controller('realtimeInit',['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'widId', '$mdToast', '$timeout', 'DynamicVisualization',function ($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout, DynamicVisualization) {
 
 
-};
-
+}]);
 //new elastic controller
-function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout, Digin_Engine_API) {
+routerApp.controller('elasticInit',['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'widId', '$mdToast', '$timeout', 'Digin_Engine_API',function ($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout, Digin_Engine_API) {
 
     $scope.filterAttributes = ['Sum', 'Average', 'Percentage', 'Count'];
     $scope.datasources = ['DuoStore', 'BigQuery', 'CSV/Excel', 'Rest/SOAP Service', 'SpreadSheet']; //temporary
@@ -1442,7 +1440,6 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
             return getFilteredFields(true);
         }
     };
-
     //returns the series array according to the filter selected
     function getFilteredFields(isNaN) {
         var objArr = [];
@@ -1456,12 +1453,11 @@ function elasticInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, 
         return objArr;
     };
 
-
     /* Strategy1 end */
 
-};
+}]);
 //metric controller
-function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout) {
+routerApp.controller('metricInit',['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'widId', '$mdToast', '$timeout',function ($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout) {
 
     $scope.filterAttributes = ['Sum', 'Average', 'Percentage', 'Count', 'Unique'];
     $scope.datasources = ['DuoStore', 'BigQuery', 'CSV/Excel', 'Rest/SOAP Service', 'SpreadSheet']; //temporary
@@ -1792,9 +1788,7 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
             else $scope.validationMessage = "Please select fields for data retrieval";
             $scope.widgetValidity = 'fade-in';
         }
-
     };
-
     //builds the chart
     $scope.buildchart = function(widget) {
 
@@ -1823,7 +1817,6 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
         widget.widData['value'] = $scope.filtering.calculate(dataObject);
         $mdDialog.hide();
     }
-
 
     $scope.toggleTab = function(ind) {
         var tabIndex = '';
@@ -1883,7 +1876,6 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
             }
         }
     };
-
 
     /* Strategy1 begin */
     var Filtering = function() {
@@ -1985,19 +1977,16 @@ function metricInit($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $
 
     /* Strategy1 end */
 
-};
+}]);
 
-function InitConfigD3($scope, $mdDialog, widId, $rootScope, $sce, d3Service, $timeout) {
-
+routerApp.controller('InitConfigD3',['$scope', '$mdDialog', 'widId', '$rootScope', '$sce', 'd3Service', '$timeout',function ($scope, $mdDialog, widId, $rootScope, $sce, d3Service, $timeout) {
 
     $scope.cancel = function() {
         $mdDialog.hide();
     };
+}]);
 
-};
-
-
-function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
+routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widId', '$rootScope',function ($scope, $http, $mdDialog, widId, $rootScope) {
 
     //cancel config
     $scope.cancel = function() {
@@ -2015,8 +2004,6 @@ function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
             var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
             //console.log(JSON.stringify(data));
             var posts = data.posts;
-
-
             var trimmedPosts = [];
             var tempTitle = "";
 
@@ -2047,22 +2034,17 @@ function wordpressInit($scope, $http, $mdDialog, widId, $rootScope) {
         });
         $mdDialog.hide();
     };
+}]);
 
-};
-
-
-function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
+routerApp.controller('rssInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope',function ($scope, $http, $mdDialog, widId, $rootScope) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-
     //cancel config
     $scope.cancel = function() {
         $mdDialog.hide();
     };
-
     //complete config  
     $scope.finish = function(rssAddress) {
-
 
         $scope.entryArray = [];
         google.load("feeds", "1");
@@ -2070,6 +2052,7 @@ function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
         feed.setNumEntries(100);
 
         feed.load(function(result) {
+
             if (!result.error) {
 
                 for (var i = 0; i < result.feed.entries.length; i++) {
@@ -2083,25 +2066,20 @@ function rssInit($scope, $http, $mdDialog, widId, $rootScope) {
                 }
 
                 $rootScope.dashboard.widgets[objIndex].widData = $scope.entryArray;
-
             }
         });
 
         $mdDialog.hide();
     };
+}]);
 
-};
-
-
-function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSettings) {
+routerApp.controller('spreadInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope', 'lkGoogleSettings',function ($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSettings) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-
     //cancel config
     $scope.cancel = function() {
         $mdDialog.hide();
     };
-
     //complete config  
     $scope.finish = function() {
         $mdDialog.hide();
@@ -2109,12 +2087,10 @@ function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSetting
 
     $rootScope.files = [];
     $rootScope.show = "hello";
-
     // Callback triggered after Picker is shown
     $scope.onLoaded = function() {
         //console.log('Google Picker loaded!');
     }
-
     // Callback triggered after selecting files
     $scope.onPicked = function(docs) {
         angular.forEach(docs, function(file, index) {
@@ -2125,16 +2101,13 @@ function spreadInit($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSetting
 
         });
     }
-
     // Callback triggered after clicking on cancel
     $scope.onCancel = function() {
         //console.log('Google picker close/cancel!');
     }
+}]);
 
-};
-
-
-function gnewsInit($scope, $http, $mdDialog, widId, $rootScope) {
+routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope',function ($scope, $http, $mdDialog, widId, $rootScope) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
@@ -2185,8 +2158,6 @@ function gnewsInit($scope, $http, $mdDialog, widId, $rootScope) {
 
         // Specify search quer(ies)
         newsSearch.execute(gnewsrequest);
-
-
     };
 
     // $scope.finish = function(text,$scope) {
@@ -2264,9 +2235,9 @@ function gnewsInit($scope, $http, $mdDialog, widId, $rootScope) {
 
 
     // }
-};
+}]);
 
-function imInit($scope, $http, $rootScope, $mdDialog, widId) {
+routerApp.controller('imInit',['$scope', '$http', '$rootScope', '$mdDialog', 'widId',function ($scope, $http, $rootScope, $mdDialog, widId) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
@@ -2281,10 +2252,9 @@ function imInit($scope, $http, $rootScope, $mdDialog, widId) {
         // console.log(JSON.stringify($rootScope.image));
         $mdDialog.hide();
     };
-};
+}]);
 
-function csvInit($scope, $http, $mdDialog, widId, $rootScope) {
-
+routerApp.controller('csvInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope',function ($scope, $http, $mdDialog, widId, $rootScope) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
@@ -2303,14 +2273,10 @@ function csvInit($scope, $http, $mdDialog, widId, $rootScope) {
         $rootScope.dashboard.widgets[objIndex].widCsv = $rootScope.csvFile;
 
         $mdDialog.hide();
-
-
     };
+}]);
 
-};
-
-
-function weatherInit(widId, $scope, $http, $rootscope, $mdDialog) {
+routerApp.controller('weatherInit',['widId', '$scope', '$http', '$rootscope', '$mdDialog',function (widId, $scope, $http, $rootscope, $mdDialog) {
     //cancel config
     $scope.cancel = function() {
         $mdDialog.hide();
@@ -2330,10 +2296,9 @@ function weatherInit(widId, $scope, $http, $rootscope, $mdDialog) {
                 console.log('Error retrieving markets');
             });
     };
+}]);
 
-}
-
-function adsenseInit(widId, $scope, $http, $rootScope, $mdDialog) {
+routerApp.controller('adsenseInit',['widId', '$scope', '$http', '$rootScope', '$mdDialog',function (widId, $scope, $http, $rootScope, $mdDialog) {
     $scope.cancel = function() {
         $mdDialog.hide();
     }
@@ -2344,10 +2309,9 @@ function adsenseInit(widId, $scope, $http, $rootScope, $mdDialog) {
     $scope.signIn = function() {
 
     }
+}]);
 
-}
-
-function calendarInit(widId, $scope, $http, $rootScope, $mdDialog, $compile, $timeout, uiCalendarConfig) {
+routerApp.controller('calendarInit',['widId', '$scope', '$http', '$rootScope', '$mdDialog', '$compile', '$timeout', 'uiCalendarConfig',function (widId, $scope, $http, $rootScope, $mdDialog, $compile, $timeout, uiCalendarConfig) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
@@ -2468,10 +2432,9 @@ function calendarInit(widId, $scope, $http, $rootScope, $mdDialog, $compile, $ti
             console.log("Calender object retrieved:" + JSON.stringify(evObj));
         });
     }
+}]);
 
-};
-
-function googlePlusInit($scope, googleService, $http, $mdDialog, widId, $rootScope) {
+routerApp.controller('googlePlusInit',['$scope', 'googleService', '$http', '$mdDialog', 'widId', '$rootScope',function ($scope, googleService, $http, $mdDialog, widId, $rootScope) {
 
     var loggedIn = false;
     $scope.login = function() {
@@ -2521,10 +2484,9 @@ function googlePlusInit($scope, googleService, $http, $mdDialog, widId, $rootSco
                 console.log('Failed: ' + err);
             });
         }
-
         $mdDialog.hide();
     };
-};
+}]);
 
 routerApp.controller('sltivrInit', function($scope, $mdDialog, $rootScope) {
 
@@ -2532,8 +2494,6 @@ routerApp.controller('sltivrInit', function($scope, $mdDialog, $rootScope) {
     $scope.countFrom = 0;
     $scope.countToIvr = 21;
     $scope.countFromIvr = 0;
-
-
 });
 
 routerApp.controller('sltqueueInit', function($scope, $mdDialog, $rootScope) {
@@ -2600,7 +2560,9 @@ routerApp.controller('sltqueueInit', function($scope, $mdDialog, $rootScope) {
     }];
 
 });
+
 routerApp.controller('sltqueuedetailsInit', function($scope, $mdDialog, $rootScope) {
+
     $scope.options = {
         chart: {
             type: 'cumulativeLineChart',
@@ -2646,6 +2608,7 @@ routerApp.controller('sltqueuedetailsInit', function($scope, $mdDialog, $rootSco
     };
 
     $scope.data = [{
+
             key: "Sinhala",
             values: [
                 [24, -2.974623048543],
@@ -2675,10 +2638,7 @@ routerApp.controller('sltqueuedetailsInit', function($scope, $mdDialog, $rootSco
 
             ],
             mean: 32
-        },
-
-
-        {
+        }, {
             key: "Tamil",
             mean: 11,
             values: [
@@ -2691,18 +2651,14 @@ routerApp.controller('sltqueuedetailsInit', function($scope, $mdDialog, $rootSco
                 [14, 13.212577494462],
                 [16, 24.567562260634],
                 [11, 34.543699343650]
-
             ]
         }
     ];
-
-
 });
 routerApp.controller('sltagentInit', function($scope, $mdDialog, $rootScope) {
 
     $scope.countTo = 134;
     $scope.countFrom = 0;
-
 
     $scope.options = {
         chart: {
@@ -2754,6 +2710,7 @@ routerApp.controller('sltagentInit', function($scope, $mdDialog, $rootScope) {
 });
 
 routerApp.directive('formSectionTitle', function() {
+
     return {
         restrict: 'E',
         template: "<div id='newdiv' layout='row' style='width: 255px; margin-top:8px; margin-left:8px;' flex layout-sm='row'><div flex='25'>    <img src={{catogeryLetter}} style='margin-top:22px;border-radius:20px'/>    </div> <div flex style='margin-top:27px;'>  <label style='font-weight:700'>{{title}} {{catogeryLetter}}</label> </div></div>",
@@ -2771,13 +2728,11 @@ routerApp.directive('formSectionTitle', function() {
                     scope.catogeryLetter = "styles/css/images/icons/material alperbert/avatar_tile_" + scope.title.charAt(0).toLowerCase() + "_28.png";
                     element.find('#newdiv').attr('new', '');
                 }
-
-
             } //end of link
     };
 });
 
-function googleMapsInit(widId, $scope, $http, $rootScope, $mdDialog) {
+routerApp.controller('googleMapsInit',['widId', '$scope', '$http', '$rootScope', '$mdDialog',function (widId, $scope, $http, $rootScope, $mdDialog) {
 
     $scope.finish = function() {
         $mdDialog.hide();
@@ -2787,11 +2742,9 @@ function googleMapsInit(widId, $scope, $http, $rootScope, $mdDialog) {
     $scope.cancel = function() {
         $mdDialog.hide();
     };
-
-}
+}]);
 
 routerApp.controller('d3SunBurst', function($rootScope, $scope, $http) {
-
 
     $scope.loadData = function() {
 
@@ -2801,16 +2754,10 @@ routerApp.controller('d3SunBurst', function($rootScope, $scope, $http) {
         } catch (e) {
             console.log(e);
         }
-
     };
-
-
 });
 
-
-
 routerApp.controller('D3ForceCtrl', function($rootScope, $scope, $http) {
-
 
     $scope.loadData = function() {
 
@@ -2820,13 +2767,11 @@ routerApp.controller('D3ForceCtrl', function($rootScope, $scope, $http) {
         } catch (e) {
             console.log(e);
         }
-
     };
-
-
 });
 
-function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) {
+routerApp.controller('hnbInit',['$scope', '$rootScope', '$http', '$mdDialog', 'widId', 'Digin_Engine_API',function ($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) {
+
     $scope.datasources = ['MSSql']; //temporary
     $scope.widgetValidity = 'elasticValidation'; //validation message visibility                                             
     $scope.query = {};
@@ -2873,10 +2818,9 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
             xhr.send();
         }
     };
-
-
     //check for selected classes
     $scope.getFields = function() {
+
         $scope.selectedFields = [];
         if ($scope.datasource == "MSSql") {
             if ($scope.selectedClass != null) {
@@ -2943,9 +2887,9 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
                 $scope.widgetValidity = 'fade-in';
                 $scope.validationMessage = "Please select a class";
             }
-
         }
     };
+
     $scope.toggleTab = function(ind) {
         var tabIndex = '';
         if (typeof ind === 'undefined') tabIndex = $scope.selectedTabIndex;
@@ -2974,9 +2918,9 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
                 break;
         }
     };
-
     //selects fields for non-queried data retrieval
     $scope.toggleCheck = function(index) {
+
         index.checked = !index.checked;
         if ($scope.checkedFields.indexOf(index) === -1) {
             $scope.checkedFields.push(index);
@@ -2990,6 +2934,7 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
 
         $rootScope.hierarchystring = '{';
         if ($scope.checkedFields.length != 0 || typeof $scope.query.value != "undefined") {
+
             $scope.classFields = $scope.checkedFields;
             $scope.classQuery = $scope.query.value;
             $scope.parameter = "";
@@ -3026,8 +2971,6 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
                 });
 
                 $scope.widgetValidity = 'fade-out';
-                
-
             }
         } else {
             if ($scope.query.state) $scope.validationMessage = "Please add a query for data retrieval";
@@ -3051,12 +2994,10 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
                 $scope.toggleTab(2);
             };
         }
-
     };
-
-
     //builds the chart
     $scope.buildchart = function(widget) {
+
         var w2 = new Worker("scripts/webworkers/bigQueryWorker.js");
         var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
         $scope.widget = $rootScope.dashboard.widgets[objIndex];
@@ -3071,30 +3012,23 @@ function hnbInit($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) 
             $scope.widget.widData = $rootScope.hierarchyData;
             console.log($scope.widget.widData);
             $mdDialog.hide();
-
         };
     };
-
 
     $scope.cancel = function() {
         $mdDialog.hide();
     };
+}]);
 
-
-}
-
-function clockInit($scope, $http, $mdDialog, widId, $rootScope) {
-
+routerApp.controller('clockInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope',function ($scope, $http, $mdDialog, widId, $rootScope) {
 
     $scope.finish = function() {
 
         $mdDialog.hide();
-
     };
 
     $scope.cancel = function() {
         $mdDialog.hide();
     };
+}]);
 
-
-}

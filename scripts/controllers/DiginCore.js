@@ -418,7 +418,7 @@ function googleMapsCtrl($scope, $mdDialog, wid, $http) {
     };
 };
 
-function elasticDataCtrl($scope, $mdDialog, wid) {
+routerApp.controller('elasticDataCtrl',['$scope', '$mdDialog', 'wid',function ($scope, $mdDialog, wid) {
 
     $scope.closeDialog = function () {
         $mdDialog.hide();
@@ -468,7 +468,7 @@ function elasticDataCtrl($scope, $mdDialog, wid) {
 
     $scope.fileName = wid.uniqueType;
 
-};
+}]);
 
 routerApp.controller('ReportCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportService',
     '$timeout', '$log', 'cssInjector',

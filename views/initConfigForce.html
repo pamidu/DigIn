@@ -1,22 +1,15 @@
-<md-dialog plumb-item style="min-width:400px">
-    <md-toolbar>
-        <div class="md-toolbar-tools" flex layout="row">
-            <div flex="10">
-                <md-icon class="ion-wrench"></md-icon>
-            </div>
-            <div flex="80">
-                <h3>Configuration</h3>
-            </div>
-            <div flex="10"> 
-                <md-button class="widget-button" ng-click="cancel()" aria-label="Close" layout-wrap>
-                    <ng-md-icon icon="close" style="fill:white" size="20" layout="column" layout-align="center center" flex></ng-md-icon>
-                </md-button>
-            </div>
-        </div>
-    </md-toolbar>
-    <md-dialog-content>
-
-    <md-tabs md-dynamic-height md-border-bottom md-selected="selectedTabIndex">
+<md-dialog plumb-item ng-init="initialize()" class="custom-mdDialog">
+  <md-toolbar style="width: 100%; min-height: 30vh!important;z-index: 0;">
+    <div style="width:100%; height:48px;" layout="row" layout-align="end center">                
+      <p style="color: whitesmoke;font-size: 20px;margin:5px;">CONFIGURATION</p>         
+      <md-button class="buttonMinwidth38" ng-click="cancel()">      
+        <ng-md-icon icon="close" style="fill:lightgrey" size="24" layout="row"></ng-md-icon>        
+      </md-button>            
+    </div>
+  </md-toolbar>
+  <md-card style="margin: 20px;margin-top: -20vh; margin-bottom: 0px;height:100%;">
+    <md-content layout-padding class="minHeight600">
+  <md-tabs md-dynamic-height md-border-bottom md-selected="selectedTabIndex">
       <md-tab label="Source">
         <md-content class="md-padding">
             <div ng-show="dataIndicator1" layout="row" layout-align="center center" layout-sm="column" layout-align="center center" style="z-index:10;position:absolute;height:100%;width:100%;">
@@ -108,5 +101,7 @@
             <span class="{{widgetValidity}}" layout-align="center center" id="elasticVal" style="color: #D8000C;background-color: #FFBABA;padding:5px;text-align:center;" flex>{{validationMessage}}</span>
 
         </div>
-    </md-dialog-content>
+    </md-content>
+  </md-card>
 </md-dialog>
+

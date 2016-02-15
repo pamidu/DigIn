@@ -164,13 +164,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             $rootScope.widget = widget;
         };
 
-        $scope.initiate = function (widget) {
-            alert('test');
-            alert(DynamicVisualization.testRepeat(widget));
-        };
-
         $scope.showWidget = function (ev, wid) {
-            //alert(JSON.stringify(wid));
+            
             $scope.tempWidth = wid.highchartsNG.size.width;
             $scope.tempHeight = wid.highchartsNG.size.height;
             $mdDialog.show({
@@ -342,7 +337,7 @@ function hnbClaimsCtrl($scope, $mdDialog, wid, $http) {
 function hnbDistributedCtrl($scope, $mdDialog, wid, $http) {
     $scope.arr = [];
     $scope.closeDialog = function () {
-        alert("close Dialog");
+
         $mdDialog.hide();
     };
 
@@ -371,7 +366,7 @@ function sltQueuedCtrl($scope, $mdDialog, wid, $http) {
 function sltConnectedCtrl($scope, $mdDialog, wid, $http) {
     $scope.arr = [];
     $scope.closeDialog = function () {
-        alert("slt connecetd");
+        
         $mdDialog.hide();
     };
 
@@ -749,7 +744,6 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
 
         $scope.finish = function () {
 
-            alert("finish settingctrl");
             for (i = 0; i < $scope.selected.length; i++) {
                 for (j = 0; j < $scope.features.length; j++) {
                     if ($scope.features[j].title == $scope.selected[i].title) {

@@ -133,7 +133,7 @@ routerApp.controller('chartSettingsCtrl', ['$scope', '$timeout', '$rootScope', '
         };
 
         $scope.openD3 = function (ev) {
-            alert('open d3');
+            
             $mdDialog.show({
                 controller: 'chartSettingsCtrl',
                 templateUrl: 'views/d3plugins.html',

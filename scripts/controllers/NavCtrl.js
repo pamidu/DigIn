@@ -118,7 +118,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.mh = '250px';
 
         $scope.resize = function(evt, ui, pos, widget) {
-            //alert(JSON.stringify(pos));
+            
             var width = ui.size.width;
             var height = ui.size.height;
             var mHeight = height - 50;

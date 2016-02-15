@@ -1662,3 +1662,18 @@ md-tabs.setup-tabs md-tabs-wrapper md-tab-data{
 .setup-user-card{
     width: 200px;
 }
+
+.minHeight600{
+    /*min-height: 500px;*/
+}
+.custom-mdDialog {
+    overflow-y:hidden !important;
+    min-width:400px;
+}
+.actIndicator{
+    z-index:10;
+    position:absolute;
+    height:100%;
+    width:100%;
+    top:50px;
+}

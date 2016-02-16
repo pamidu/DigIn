@@ -1652,9 +1652,9 @@ md-tabs.setup-tabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper md-tab-i
 }
 md-tabs.setup-tabs md-tabs-wrapper{
     border-width: 0 0 1px !important;
-    margin-left: calc(50% - 165px);
+    margin-left: calc(50% - 85px);
     border-radius: 5px !important;
-    width: 330px;
+    width: 170px;
     background-color: transparent;
     border-color: transparent;
 }

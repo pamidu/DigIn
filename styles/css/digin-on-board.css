@@ -1,0 +1,148 @@
+.digin-wp-bg {
+    background-color: #204865;
+    overflow: hidden !important;
+}
+
+.digin-wp-hedaer-wrap {
+    margin-top: 50px;
+    text-align: center;
+    display: block;
+}
+
+.h1 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    font-size: 55px;
+    color: #ffffff;
+}
+
+.h2 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 200;
+    font-size: 28px;
+    color: #ffffff;
+}
+
+.digin-wp-hedaer-wrap > small {
+    font-family: 'Lato', sans-serif;
+    font-weight: 200;
+    font-size: 22px;
+    color: #fff;
+}
+
+.digin-wp-wrap {
+    width: 100%;
+    margin-top: 50px;
+}
+
+.digin-wp-process {
+    text-align: center;
+}
+
+.digin-wp-process > .digin-step {
+    margin: 0 auto;
+}
+
+.digin-step {
+    width: 50px;
+    height: 50px;
+    background: #D75C49;
+    border-radius: 50%;
+    border: 4px solid #D75C49;
+}
+
+.digin-step > span {
+    line-height: 40px;
+    color: #fff;
+    font-size: 20px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+}
+
+#timeline {
+    position: relative;
+}
+
+#timeline:before {
+    content: '';
+    position: absolute;
+    top: 232px;
+    height: 4px;
+    width: 58%;
+    background: #000000;
+    left: 20%;
+}
+
+.process-img {
+    margin-top: 25px;
+    margin-bottom: 20px;
+}
+
+.process-img > img {
+    width: 145px;
+}
+
+.process-img > i {
+    font-size: 145px;
+}
+
+.fa-cloud-download {
+    color: #2B87C4;
+}
+
+.fa-flask {
+    color: #2B87C4;
+}
+
+.fa-dashboard {
+    color: #2B87C4;
+}
+
+.digin-wp-btn-wrap {
+    text-align: center;
+    margin-top: 80px;
+}
+
+.btn-start-now {
+    color: #FEC901;
+    background-color: transparent;
+    border: 2px solid #FABF13;
+    padding: 5px 53px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 200;
+    font-size: 18px;
+}
+
+.btn-start-now:hover, .btn-Skip-now:hover {
+    background-color: transparent;
+    color: #12AEBD;
+    border-color: #12AEBD;
+}
+
+.btn-Skip-now {
+    color: #F77263;
+    background-color: transparent;
+    border: 2px solid #F77263;
+    padding: 5px 30px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 200;
+    font-size: 18px;
+}
+
+.timeline {
+    position: absolute;
+    height: 4px;
+    background: #92D8F3;
+    top: 387px;
+    width: 58%;
+    left: 21%;
+}
+
+.digin-p-l-r-70 {
+    padding-left: 90px;
+    padding-right: 90px;
+}
+
+
+
+

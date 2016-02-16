@@ -27,8 +27,6 @@
                         $servicehelpers.httpSend("get", function(data, status) {
                             cb(data, status);
                         }, $diginurls.diginengine + "/gethighestlevel?tablename=[" + dataSetId + "." + tbl + "]&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
-
-
                     }
                     if (database == "MSSQL") {
 

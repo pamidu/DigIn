@@ -40,8 +40,9 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
     'angularMoment',
     'googleplus',
     'rzModule',
-    'angular-table'
-
+    'angular-table',
+    'ngToast',
+    'vAccordion'
 ])
 
 routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", "GooglePlusProvider", function ($mdThemingProvider, $locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider, GooglePlusProvider) {

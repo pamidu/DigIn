@@ -1619,18 +1619,25 @@ md-backdrop.md-sidenav-backdrop{
 }
 
 /* Dashboard setup */
+@font-face {
+    font-family: "DistrictThin";
+    src: url(../fonts/DistProTh.otf);
+}
+.setup-font-theme{
+    font-family: DistrictThin;
+}
 .setup-wrapper{
     background-color: #fff;
     height: 100%;
-    width: 100%;
-    
+    width: 100%;    
 }
-
 .setup-button{
     background-color: #00B4FF !important;
+    text-transform: none;
 }
 .setup-tab-label{
     color: #fff !important;
+    font-size: 14px !important;
 }
 .setup-tabs{
     top:40px;
@@ -1643,22 +1650,98 @@ md-tabs.setup-tabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper md-tab-i
 md-tabs.setup-tabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper md-tab-item.md-active{
     background-color: #009ADA !important;
 }
-
- md-tabs.setup-tabs md-tabs-wrapper{
+md-tabs.setup-tabs md-tabs-wrapper{
     border-width: 0 0 1px !important;
-    margin-left: 25%;
+    margin-left: calc(50% - 165px);
     border-radius: 5px !important;
-    width: 385px;
+    width: 330px;
     background-color: transparent;
     border-color: transparent;
 }
-
 md-tabs.setup-tabs md-tabs-wrapper md-tab-data{
     opacity: 1;
     background-color: #00B4FF !important;
     border-radius: 5px;
 }
-
 .setup-user-card{
     width: 200px;
+    height: 200px;
+    background-color: #F0EDE8;
+}
+.setup-user-heading{
+    text-align:center;
+    font-size: 2.5em;
+    padding-bottom: 10px;
+}
+.setup-user-heading-secondary{
+    text-align:center;
+    font-size: 2.2em;
+    padding-bottom: 10px;
+}
+.setup-user-sub-heading{
+    text-align:center;
+    font-size: 1.5em;
+    color: #727272;
+    padding-bottom: 10px;
+}
+.setup-user-img{
+    width: 70px;
+    height: 70px;
+    position: relative;
+    top: 28px;
+    border-radius: 100%;
+    border: 2px solid #00B4FF;
+}
+.setup-username-wrapper{
+    position: relative;
+    top: 50px;
+}
+.setup-useremail{
+    font-size: 1.2em;
+}
+.setup-username{
+    color: #009ADA;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+.setup-dashviewers-img{
+    width: 150px;
+    height: 150px;
+}
+.setup-info-container{
+    padding: 0px 25px 0px 25px;
+}
+.setup-color-container{
+    padding: 15px;
+}
+.setup-color-stripes{
+    width:70px;
+    height:20px;
+    margin:10px;    
+}
+.setup-subscription-card{
+    padding: 15px 0px 15px 0px;
+    background-color: #EDF6FB;
+    border: 2px solid #F0EFED;
+}
+.setup-subscription-end{
+    color: #E91E63;
+    font-weight: bold;
+}
+.setup-subscription-description{
+    text-align: center;
+}
+.setup-subscription-plan-card{
+    width: 500px !important;
+    color: #fff;
+    padding: 15px 0px 15px 0px;
+    border: 2px solid #00B4FF;
+}
+.setup-subscription-trial-card{
+    background-color: #00B4FF;
+    border: 2px solid #00B4FF;
+}
+.setup-subscription-premium-card{
+    background-color: #2E353F;
+    border: 2px solid #00B4FF;
 }

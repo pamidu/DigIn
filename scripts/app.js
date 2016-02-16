@@ -129,8 +129,8 @@ routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$
         })
         .state('Settings', {
             url: '/settings',
-            controller: 'settingsCtrl',
-            templateUrl: "views/settings.html"
+            controller: 'dashboardSetupCtrl',
+            templateUrl: "views/setup/dashboardSetup.html"
 
         }).state('social-graph-fb', {
         url: '/social-graph-fb',

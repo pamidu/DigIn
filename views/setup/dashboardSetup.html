@@ -1,114 +1,205 @@
 <div ng-cloak class="setup-wrapper">
     <md-tabs class="setup-tabs" md-dynamic-height md-border-bottom>
-      <md-tab class="setup-tab">
-          <md-tab-label>
-            <i class="setup-tab-label fa fa-cog"></i>
-          </md-tab-label>
-        <div class="md-padding" layout="row">
-        <div layout="column" flex="80">
-            <h1 class="md-display-2" style="text-align:center;">Studio Users</h1>
-            <h3 style="text-align:center;">They can log in to the Digin studio to create new connections,<br/>queries and dashboards</h3>
-            <md-card >
-        <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline">Card with image</span>
-            <span class="md-subhead">Medium</span>
-          </md-card-title-text>
-          <md-card-title-media>
-            <div class="md-media-md card-media"></div>
-          </md-card-title-media>
-        </md-card-title>     
-       </md-card>
+        <md-tab class="setup-tab">
+            <md-tab-label>
+                <i class="setup-tab-label fa fa-cog"></i>
+            </md-tab-label>
+            <div class="md-padding" layout="column">
+                <div layout="column" layout-align="space-between center">
+                    <span class="setup-font-theme setup-user-heading">Account Information</span>
+                </div>
+                <div layout="row" layout-align="center center">
+                    <div layout="column" class="setup-info-container" flex="70">
+                        <md-input-container>
+                            <label>Account owner</label>
+                            <input ng-model="user.title">
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Logo</label>
+                            <input ng-model="user.appLogo">
+                        </md-input-container>
+                        <div layout="column">
+                            <span class="setup-font-theme">
+                            Theme configuration (Pick two colors)
+                            </span>
+                            <div layout="column" class="setup-color-container">
+                                <div layout="row" ng-repeat="colors in chunkedColorArr">
+                                    <div class="setup-color-stripes" ng-repeat="color in colors" style="background-color:{{color.value}}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <md-button class="setup-button md-raised md-primary"><span class="setup-font-theme">Update Account</span></md-button>
+                    </div>
+                </div>
             </div>
-            <div flex="20">
-            <md-button class="setup-button md-raised md-primary"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New</md-button>
-        </div> 
-          
-        </div>
-      </md-tab>
-      <md-tab>
-          <md-tab-label>
-            <i class="setup-tab-label fa fa-user"></i>
-          </md-tab-label>
-        <div class="md-padding" layout="row">
-        <div layout="column" layout-align="center center" flex="80">
-            <h1 class="md-display-2" style="text-align:center;">Studio Users</h1>
-            <h3 style="text-align:center;">They can log in to the Digin studio to create new connections,<br/>queries and dashboards</h3>
-            <md-card class="setup-user-card">
-        <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline">Card with image</span>
-            <span class="md-subhead">Medium</span>
-          </md-card-title-text>
-          <md-card-title-media>
-            <div class="md-media-md card-media"></div>
-          </md-card-title-media>
-        </md-card-title>     
-       </md-card>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>
+                <i class="setup-tab-label fa fa-user"></i>
+            </md-tab-label>
+            <div ng-hide="addUsrState" class="md-padding" layout="row">
+                <div flex="15"></div>
+                <div layout="column" layout-align="space-between center" flex="65">
+                    <span class="setup-font-theme setup-user-heading">Studio Users</span>
+                    <span class="setup-font-theme setup-user-sub-heading">They can log in to the Digin studio to create new connections,<br/>queries and dashboards</span>
+                    <md-card class="setup-user-card">
+                        <div layout="column" layout-align="center center">
+                            <img class="setup-user-img" src="styles/css/images/dashboard-setup/avator.jpg"/>
+                            <div class="setup-username-wrapper" layout="column" layout-align="space-between center">
+                                <span class="setup-font-theme setup-username">diginbig</span>
+                                <span class="setup-font-theme setup-useremail">diginbig@gmail.com</span>
+                            </div>
+                        </div>
+                    </md-card>
+                </div>
+                <div layout="column" flex="10">
+                    <md-button ng-click="addNewUser(true)" class="setup-button md-raised md-primary"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;<span class="setup-font-theme">New</span></md-button>
+                    <md-button class="setup-button md-raised md-primary"><i class="fa fa-envelope-o"></i>&nbsp;&nbsp;<span class="setup-font-theme">Invite</span></md-button>
+                </div>
             </div>
-            <div flex="20">
-            <md-button class="setup-button md-raised md-primary"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New</md-button>
-        </div> 
-          
-        </div>
-      </md-tab>
-      <md-tab>
-          <md-tab-label>
-            <i class="setup-tab-label fa fa-users"></i>
-          </md-tab-label>
-        <md-content class="md-padding">
-          <h1 class="md-display-2">Tab Three</h1>
-          <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
-        </md-content>
-      </md-tab>
-      <md-tab>
-          <md-tab-label>
-            <i class="setup-tab-label fa fa-envelope"></i>
-          </md-tab-label>
-        <md-content class="md-padding">
-          </md-content>
+            <div ng-show="addUsrState" class="md-padding" layout="row" layout-align="center center">
+                <div layout="column" class="setup-info-container" flex="70">
+                    <md-input-container>
+                        <label>First Name</label>
+                        <input ng-model="user.title">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Last Name</label>
+                        <input ng-model="user.title">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Email</label>
+                        <input ng-model="user.title">
+                    </md-input-container>
+                    <span class="setup-font-theme">
+                        The user will be asked to set his password.
+                    </span>
+                    <md-button class="setup-button md-raised md-primary" ng-click="addNewUser(false)"><span class="setup-font-theme">Create User</span></md-button>
+                </div>
+            </div>
         </md-tab>
         <md-tab>
-          <md-tab-label>
-            <i class="setup-tab-label fa fa-calendar"></i>
-          </md-tab-label>
-        <md-content class="md-padding">
-          </md-content>
+            <md-tab-label>
+                <i class="setup-tab-label fa fa-users"></i>
+            </md-tab-label>
+            <div class="md-padding">
+                <div layout="column" layout-align="space-between center" flex>
+                    <span class="setup-font-theme setup-user-heading">Dashboard Viewers</span>
+                    <span class="setup-font-theme setup-user-sub-heading">can access interactive dashboards or receive them via email</span>
+                    <img class="setup-dashviewers-img" src="styles/css/images/dashboard-setup/multi-user.png"/>
+                    <span class="setup-font-theme setup-user-heading-secondary">You don't have any group of dashboard viewers yet</span>
+                    <md-button class="setup-button md-raised md-primary"><span class="setup-font-theme">Let's create one</span></md-button>
+                </div>
+            </div>
         </md-tab>
         <md-tab>
-          <md-tab-label>
-            <i class="setup-tab-label fa fa-database"></i>
-          </md-tab-label>
-        <md-content class="md-padding">
-          </md-content>
+            <md-tab-label>
+                <i class="setup-tab-label fa fa-envelope"></i>
+            </md-tab-label>
+            <div class="md-padding">
+                <div layout="column" layout-align="space-between center" flex>
+                    <span class="setup-font-theme setup-user-heading">Dashboard Email Delivery</span>
+                </div>
+            </div>
         </md-tab>
         <md-tab>
-          <md-tab-label>
-            <i class="setup-tab-label fa fa-eye-slash"></i>
-          </md-tab-label>
-        <md-content class="md-padding">
-          </md-content>
+            <md-tab-label>
+                <i class="setup-tab-label fa fa-calendar"></i>
+            </md-tab-label>
+            <div class="md-padding">
+                <div layout="column" layout-align="space-between center" flex>
+                    <span class="setup-font-theme setup-user-heading">Scheduler</span>
+                </div>
+            </div>
         </md-tab>
         <md-tab>
-          <md-tab-label>
-            <i class="setup-tab-label fa fa-lock"></i>
-          </md-tab-label>
-        <md-content class="md-padding">
-          </md-content>
+            <md-tab-label>
+                <i class="setup-tab-label fa fa-database"></i>
+            </md-tab-label>
+            <div class="md-padding">
+                <div layout="column" layout-align="space-between center" flex>
+                    <span class="setup-font-theme setup-user-heading">DiginDB</span>
+                </div>
+            </div>
         </md-tab>
         <md-tab>
-          <md-tab-label>
-            <i class="setup-tab-label fa fa-terminal"></i>
-          </md-tab-label>
-        <md-content class="md-padding">
-          </md-content>
+            <md-tab-label>
+                <i class="setup-tab-label fa fa-eye-slash"></i>
+            </md-tab-label>
+            <div class="md-padding">
+                <div layout="column" layout-align="space-between center" flex>
+                    <span class="setup-font-theme setup-user-heading">User Authorization</span>
+                </div>
+            </div>
         </md-tab>
         <md-tab>
-          <md-tab-label>
-            <i class="setup-tab-label fa fa-credit-card"></i>
-          </md-tab-label>
-        <md-content class="md-padding">
-          </md-content>
+            <md-tab-label>
+                <i class="setup-tab-label fa fa-lock"></i>
+            </md-tab-label>
+            <div class="md-padding">
+                <div layout="column" layout-align="space-between center" flex>
+                    <span class="setup-font-theme setup-user-heading">Security Settings</span>
+                </div>
+            </div>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>
+                <i class="setup-tab-label fa fa-terminal"></i>
+            </md-tab-label>
+            <div class="md-padding">
+                <div layout="column" layout-align="space-between center" flex>
+                    <span class="setup-font-theme setup-user-heading">Your Applications</span>
+                </div>
+            </div>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>
+                <i class="setup-tab-label fa fa-credit-card"></i>
+            </md-tab-label>
+            <div class="md-padding">
+                <div layout="column" layout-align="space-between center" flex>
+                    <span class="setup-font-theme setup-user-heading">Subscription Details</span>
+                </div>
+                <div layout="row" layout-align="center center">
+                    <div layout="column" class="setup-info-container" flex="80">
+                        <md-card class="setup-subscription-card">
+                            <div layout="column" layout-align="center center">
+                                <span class="setup-font-theme">Status:&nbsp;&nbsp;&nbsp;Trial</span>
+                                <span class="setup-font-theme">&nbsp;&nbsp;&nbsp;End of trial:&nbsp;&nbsp;&nbsp;<span class="setup-subscription-end">February 23, 2016</span></span>
+                            </div>
+                        </md-card>
+                    </div>
+                </div>
+                <div layout="column" layout-align="space-between center" flex>
+                    <span class="setup-font-theme setup-user-heading-secondary">Your team is on the Big Data plan</span>
+                </div>
+                <div layout="row" layout-align="center center">
+                    <div layout="column" class="setup-info-container" flex="80">
+                        <md-card class="setup-subscription-card">
+                            <div layout="column" layout-align="center center">
+                                <span class="setup-font-theme setup-subscription-description">This plan gives you 35+ connectors, unlimited dashboards, datasources and queries, <b>10</b> named viewers for interactive dashboards and <b>2</b> studio users that<br/>can create new datasources, queries and dashboards.<br/>You also get premium connectors for BigQuery, Redshift, Vertica and Vectorwise.</span>
+                            </div>
+                        </md-card>
+                    </div>
+                </div>
+                <div layout="row" layout-align="center center">
+                    <div layout="column" class="setup-info-container" flex="80">
+                        <div layout="row">
+                            <md-card class="md-raised setup-subscription-plan-card setup-subscription-trial-card">
+                                <div layout="column" layout-align="center center">
+                                    <span class="setup-font-theme setup-user-heading-secondary">Try it out for free</span>
+                                </div>
+                            </md-card>
+                            <md-card class="setup-subscription-plan-card setup-subscription-premium-card">
+                                <div layout="column" layout-align="center center">
+                                    <span class="setup-font-theme setup-user-heading-secondary">Go premium</span>
+                                </div>
+                            </md-card>
+                        </div>
+                        <md-button class="setup-button md-raised md-primary"><span class="setup-font-theme">Update Subscription</span></md-button>
+                    </div>
+                </div>
+            </div>
         </md-tab>
     </md-tabs>
 </div>

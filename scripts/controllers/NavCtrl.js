@@ -917,9 +917,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.saveDashboard(ev);
             }
             if (routeName == "Settings") {
-                //                $state.go('Settings');
+                $state.go('Settings');
                 $scope.currentView = "Settings";
-                $scope.showSettings(ev);
+//                $scope.showSettings(ev);
             }
             if (routeName == "TV Mode") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");

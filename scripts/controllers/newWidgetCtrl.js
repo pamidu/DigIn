@@ -27,7 +27,6 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
     };
 
    $scope.openInitialConfig = function(ev,id){
-      //alert($scope.currWidget.uniqueType);
 
     $mdDialog.show({
       controller: eval($scope.currWidget.initCtrl),

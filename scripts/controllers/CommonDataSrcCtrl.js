@@ -774,7 +774,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                 if ($scope.queryDrilled) {
                     if ($scope.drillItem != '') {
                         $scope.orderByDrilledCat(widget);
-                        $state.go('Dashboards');
+                        $state.go('home.Dashboards');
                         widget.commonSrcConfig['drilled'] = true;
                         widget.commonSrcConfig['arrAttributes'] = $scope.arrayAttributes;
                         widget.commonSrcConfig['catItem'] = $scope.categItem.item;
@@ -789,7 +789,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                     }
                 } else {
                     $scope.orderByCat(widget);
-                    $state.go('Dashboards');
+                    $state.go('home.Dashboards');
                     widget.commonSrcConfig['drilled'] = false;
                     widget.commonSrcConfig['arrAttributes'] = $scope.arrayAttributes;
                     widget.commonSrcConfig['catItem'] = $scope.categItem.item;
@@ -1249,7 +1249,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                 widget.highchartsNG['series'] = $scope.orderedArrayObj;
                 widget.highchartsNG.drilldown['series'] = $scope.objArr;
                 console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
-                $state.go('Dashboards');
+                $state.go('home.Dashboards');
             }
         }
 
@@ -1282,7 +1282,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
         }
         xhr.open('get', "http://192.168.2.33:8080/aggregatefields?tablename=" + widget.commonSrcConfig.tbl + "&agg=" + $scope.selectedFilter + "&agg_f=[%27" + $scope.categItem + "%27]&db=" + widget.commonSrcConfig.src, /*async*/ true);
         xhr.send();
-        $state.go('Dashboards');
+        $state.go('home.Dashboards');
 
     };
 

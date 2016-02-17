@@ -228,7 +228,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                 if (name == "Analysis Report") {
                     var selectedMenu = document.getElementsByClassName("menu-layer");
                     selectedMenu[0].style.display = 'none';
-                    $state.go('Analysis Report');
+                    $state.go('home.Analysis Report');
 
                 }
                 if (name == "Save") {
@@ -244,32 +244,32 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                 if (name == "Data summary") {
                     var selectedMenu = document.getElementsByClassName("menu-layer");
                     selectedMenu[0].style.display = 'none';
-                    $state.go('PivotTable');
+                    $state.go('home.PivotTable');
                 }
                 if (name == "Dashboard") {
                     var selectedMenu = document.getElementsByClassName("menu-layer");
                     selectedMenu[0].style.display = 'block';
 
 
-                    $state.go(name);
+                    $state.go('home.'+name);
                 }
                 if (name == "New Analytics") {
                     var selectedMenu = document.getElementsByClassName("menu-layer");
                     selectedMenu[0].style.display = 'none';
-                    $state.go('Analytics');
+                    $state.go('home.Analytics');
                 }
 
                 if (name == "RealTime Extended") {
                     var selectedMenu = document.getElementsByClassName("menu-layer");
                     selectedMenu[0].style.display = 'none';
-                    $state.go('RealTime');
+                    $state.go('home.RealTime');
                 }
 
 
                 if (name == "Interactive Report") {
                     var selectedMenu = document.getElementsByClassName("menu-layer");
                     selectedMenu[0].style.display = 'none';
-                    $state.go('Interactive Report');
+                    $state.go('home.Interactive Report');
                 }
             };
 
@@ -303,7 +303,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                $(".nav-search").removeClass("active");
                $(".search-layer").removeClass("activating active"); 
 
-        $state.go('ReportViewer', { param:report });
+        $state.go('home.ReportViewer', { param:report });
         }
         $scope.goDashboard = function(report){
             //closing the overlay
@@ -311,7 +311,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                $(".nav-search").removeClass("active");
                $(".search-layer").removeClass("activating active"); 
 
-        $state.go('DashboardViewer', { param:report });
+        $state.go('home.DashboardViewer', { param:report });
         }
          
         $scope.goAnalyzer = function(report){
@@ -320,7 +320,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                $(".nav-search").removeClass("active");
                $(".search-layer").removeClass("activating active"); 
 
-        $state.go('AnalyzerViewer', { param:report });
+        $state.go('home.AnalyzerViewer', { param:report });
         }
         $scope.saveDashboard = function(ev, dashboard) {
             $mdDialog.show({
@@ -533,7 +533,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                 $(".menu-layer").css("top", "0px");
                 $("starting-point").css("top", "0px");
 
-                $state.go(routeName)
+                $state.go('home.'+routeName)
             }
             if (routeName == "Reports") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
@@ -543,7 +543,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                 $("starting-point").css("top", "40px");
 
 
-                $state.go(routeName)
+                $state.go('home.'+routeName)
             }
             if (routeName == "Analytics") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
@@ -559,7 +559,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav',
                 $(".menu-layer").css("top", "120px");
                 $("starting-point").css("top", "120px");
 
-                $state.go(routeName)
+                $state.go('home.'+routeName)
             }
             if (routeName == "Digin Extended") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");

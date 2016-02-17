@@ -1,14 +1,5 @@
-$(window).load(function () {
-    setTimeout(function () {
-        $('#pagePreLoader').hide();
-        $('#preLoader').hide();
-        $('.nav-menu').css("visibility", "visible");
-        $('.main-headbar').css("visibility", "visible");
-        $('#content1').css("visibility", "visible");
-    }, 3000);
-});
-
-var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
+var routerApp = angular.module('DuoDiginRt', [
+    'ngMaterial',
     'uiMicrokernel',
     'diginServiceHandler',
     'ngAnimate',
@@ -43,129 +34,210 @@ var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
     'angular-table',
     'ngToast',
     'vAccordion'
-])
+]);
 
-routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", "GooglePlusProvider", function ($mdThemingProvider, $locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider, GooglePlusProvider) {
+routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
+
     $httpProvider.defaults.headers.post['Content-Type'] = 'multipart/form-data';
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $httpProvider.defaults.headers.common["Content-Type"] = "application/x-www-form-urlencoded";
+
+    $urlRouterProvider.otherwise('/login');
+
     $stateProvider
-        .state('/', {
-            url: "/"
+        .state("login", {
+            url: "/login",
+            controller: "LoginCtrl",
+            templateUrl: "views/partial-login.html",
+            data: {
+                requireLogin: false
+            }
         })
-        .state('Dashboards', {
+        .state("home", {
+            url: "/home",
+            controller: "NavCtrl",
+            templateUrl: "views/partial-home.html",
+            data: {
+                requireLogin: true,
+                preLoader: true
+            }
+        })
+        .state("home.Settings", {
+            url: "/settings",
+            controller: "dashboardSetupCtrl",
+            templateUrl: "views/setup/dashboardSetup.html",
+            data: {
+                requireLogin: true
+            }
+        })
+        .state('home.Dashboards', {
             url: "/Dashboards",
             controller: 'DashboardCtrl',
-            templateUrl: "views/charts.html"
+            templateUrl: "views/charts.html",
+            data: {
+                requireLogin: true
+            }
         })
-        .state('Reports', {
+        .state('home.Reports', {
             url: "/Reports",
             controller: 'ReportCtrl',
-            templateUrl: "views/reports.html"
+            templateUrl: "views/reports.html",
+            data: {
+                requireLogin: true
+            }
         })
-        .state('Analytics', {
+        .state('home.Analytics', {
             url: "/Analytics",
             controller: 'analyticsCtrl',
-            templateUrl: "views/analytics.html"
+            templateUrl: "views/analytics.html",
+            data: {
+                requireLogin: true
+            }
         })
-        .state('RealTime', {
+        .state('home.RealTime', {
             url: "/RealTime",
             controller: 'RealTimeController',
-            templateUrl: "views/realtime.html"
+            templateUrl: "views/realtime.html",
+            data: {
+                requireLogin: true
+            }
         })
-
-        .state('Digin P Stack', {
+        .state('home.Digin P Stack', {
             url: "/Digin P Stack",
             controller: 'ExtendedanalyticsCtrl',
-            templateUrl: "views/extended-analytics.html"
+            templateUrl: "views/extended-analytics.html",
+            data: {
+                requireLogin: true
+            }
         })
-        .state('Interactive Report', {
+        .state('home.Interactive Report', {
             url: "/Interactive Report",
             controller: 'ExtendedReportCtrl',
-            templateUrl: "views/extended-reports.html"
+            templateUrl: "views/extended-reports.html",
+            data: {
+                requireLogin: true
+            }
         })
-        .state('Analysis Report', {
+        .state('home.Analysis Report', {
             url: "/Analysis Report",
             controller: 'ExtendedanalyticsCtrl',
-            templateUrl: "views/extended-analytics.html"
+            templateUrl: "views/extended-analytics.html",
+            data: {
+                requireLogin: true
+            }
         })
-        .state('Dashboard', {
+        .state('home.Dashboard', {
             url: "/Dashboard",
             controller: 'ExtendedDashboardCtrl',
-            templateUrl: "views/extended-dashboard.html"
+            templateUrl: "views/extended-dashboard.html",
+            data: {
+                requireLogin: true
+            }
         })
-        .state('D3plugins', {
+        .state('home.D3plugins', {
             url: "/D3plugins",
             controller: 'd3PluginCtrl',
-            templateUrl: "views/D3Plugin/d3View.html"
+            templateUrl: "views/D3Plugin/d3View.html",
+            data: {
+                requireLogin: true
+            }
         })
-        .state('PivotTable', {
+        .state('home.PivotTable', {
             url: "/PivotTable",
             controller: 'summarizeCtrl',
-            templateUrl: "views/pivottable.html"
+            templateUrl: "views/pivottable.html",
+            data: {
+                requireLogin: true
+            }
         })
-        .state('ReportViewer', {
+        .state('home.ReportViewer', {
             url: '/ReportViewer:param',
             controller: 'ReportViewerControl',
-            templateUrl: "views/Report_viewer.html"
+            templateUrl: "views/Report_viewer.html",
+            data: {
+                requireLogin: true
+            }
 
         })
-        .state('DashboardViewer', {
+        .state('home.DashboardViewer', {
             url: '/DashboardViewer:param',
             controller: 'DashboardViewerControl',
-            templateUrl: "views/Dashboard_viewer.html"
+            templateUrl: "views/Dashboard_viewer.html",
+            data: {
+                requireLogin: true
+            }
 
         })
-        .state('CustomDashboardViewer', {
+        .state('home.CustomDashboardViewer', {
             url: "/CustomDashboard:param",
             controller: 'DashboardCtrl',
-            templateUrl: "views/charts.html"
+            templateUrl: "views/charts.html",
+            data: {
+                requireLogin: true
+            }
         })
-        .state('AnalyzerViewer', {
+        .state('home.AnalyzerViewer', {
             url: '/AnalyzerViewer:param',
             controller: 'AnalyzerViewerControl',
-            templateUrl: "views/Analyzer_viewer.html"
+            templateUrl: "views/Analyzer_viewer.html",
+            data: {
+                requireLogin: true
+            }
 
         })
-        .state('Settings', {
-            url: '/settings',
-            controller: 'dashboardSetupCtrl',
-            templateUrl: "views/setup/dashboardSetup.html"
+        .state('home.social-graph-fb', {
+            url: '/social-graph-fb',
+            controller: 'socialGraphCtrl',
+            templateUrl: "views/socialGraph/socialGraph_Temp.html",
+            data: {
+                requireLogin: true
+            }
 
-        }).state('social-graph-fb', {
-        url: '/social-graph-fb',
-        controller: 'socialGraphCtrl',
-        templateUrl: "views/socialGraph/socialGraph_Temp.html"
+        })
+        .state('home.Social Media Analytics', {
+            url: "/social-media-analytics",
+            controller: 'SocialAnalysisCtrl',
+            //templateUrl: "views/extended-analytics.html",
+            data: {
+                requireLogin: true
+            }
 
-    }).state('Social Media Analytics', {
-        url: "/social-media-analytics",
-        controller: 'SocialAnalysisCtrl',
-        //templateUrl: "views/extended-analytics.html"
+        })
+        .state('home.SocialGraphFb', {
+            url: '/social-graph-fb',
+            controller: 'socialGraphFBCtrl',
+            templateUrl: "views/socialGraph/socialGraphFB_Temp.html",
+            data: {
+                requireLogin: true
+            }
 
-    }).state('SocialGraphFb', {
-        url: '/social-graph-fb',
-        controller: 'socialGraphFBCtrl',
-        templateUrl: "views/socialGraph/socialGraphFB_Temp.html"
+        })
+        .state('home.SocialGraphTwitter', {
+            url: '/social-graph-twitter',
+            controller: 'socialGraphTwitterCtrl',
+            templateUrl: "views/socialGraph/socialGraphTwitter_Temp.html",
+            data: {
+                requireLogin: true
+            }
 
-    }).state('SocialGraphTwitter', {
-        url: '/social-graph-twitter',
-        controller: 'socialGraphTwitterCtrl',
-        templateUrl: "views/socialGraph/socialGraphTwitter_Temp.html"
-
-    }).state('Sales Forecast', {
-        url: '/sales-forecast',
-        controller: 'salesForecastCtrl',
-        templateUrl: "views/salesForecast/sales_forecast_Temp.html"
-    }).state('Prediction', {
-        url: '/prediction',
-        controller: 'predictionCtrl',
-        templateUrl: "views/prediction/prediction.html"
-    }).state('setup', {
-        url: '/setup',
-        controller: 'dashboardSetupCtrl',
-        templateUrl: "views/setup/dashboardSetup.html"
-    });
+        })
+        .state('home.Sales Forecast', {
+            url: '/sales-forecast',
+            controller: 'salesForecastCtrl',
+            templateUrl: "views/salesForecast/sales_forecast_Temp.html",
+            data: {
+                requireLogin: true
+            }
+        })
+        .state('home.Prediction', {
+            url: '/prediction',
+            controller: 'predictionCtrl',
+            templateUrl: "views/prediction/prediction.html",
+            data: {
+                requireLogin: true
+            }
+        });
 
     lkGoogleSettingsProvider.configure({
         apiKey: 'AIzaSyA9fv9lYQdt1XV6wooFtItxYlMF8Y9t1ao',
@@ -190,18 +262,42 @@ routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$
         .accentPalette('teal');
 
     $mdThemingProvider.alwaysWatchTheme(true);
-
 }]);
+
+routerApp.run(function($rootScope, $auth, $state) {
+
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
+        var requireLogin = toState.data.requireLogin;        
+        var secToken = $auth.getSecurityToken();
+        var cookToken = getCookie("securityToken");
+        
+        if(toState.data.preLoader){
+            setTimeout(function () {
+                $('#pagePreLoader').hide();
+                $('#preLoader').hide();
+                $('.nav-menu').css("visibility", "visible");
+                $('.main-headbar').css("visibility", "visible");
+                $('#content1').css("visibility", "visible");
+            }, 3000);
+        }
+        
+        if (requireLogin && secToken === "N/A" && typeof(cookToken) === "undefined") {
+            event.preventDefault();
+            $state.go('login');
+        }
+    });
+
+});
 
 
 routerApp.controller('ReportViewerControl', ['$scope', '$rootScope', '$stateParams', 'Digin_ReportViewer', '$sce',
-    function ($scope, $rootScope, $stateParams, Digin_ReportViewer, $sce) {
+    function($scope, $rootScope, $stateParams, Digin_ReportViewer, $sce) {
 
         //here i need to append the report url ,
 
         $scope.reportURL = Digin_ReportViewer + "3A" + $rootScope.username + "%3AReports%3A" + $stateParams.param + "/viewer?";
 
-        $scope.trustSrc = function (src) {
+        $scope.trustSrc = function(src) {
             return $sce.trustAsResourceUrl(src);
         }
 
@@ -209,13 +305,13 @@ routerApp.controller('ReportViewerControl', ['$scope', '$rootScope', '$statePara
     }
 ]);
 routerApp.controller('DashboardViewerControl', ['$scope', '$rootScope', '$stateParams', 'Digin_DashboardViewer', '$sce',
-    function ($scope, $rootScope, $stateParams, Digin_DashboardViewer, $sce) {
+    function($scope, $rootScope, $stateParams, Digin_DashboardViewer, $sce) {
 
         //here i need to append the report url ,
 
         $scope.reportURL = Digin_DashboardViewer + "3A" + $rootScope.username + "%3ADashboards%3A" + $stateParams.param + "/viewer?";
 
-        $scope.trustSrc = function (src) {
+        $scope.trustSrc = function(src) {
             return $sce.trustAsResourceUrl(src);
         }
 
@@ -223,12 +319,12 @@ routerApp.controller('DashboardViewerControl', ['$scope', '$rootScope', '$stateP
     }
 ]);
 routerApp.controller('AnalyzerViewerControl', ['$scope', '$rootScope', '$stateParams', 'Digin_AnalyzerViewer', '$sce', '$localStorage',
-    function ($scope, $rootScope, $stateParams, Digin_AnalyzerViewer, $sce, $localStorage) {
+    function($scope, $rootScope, $stateParams, Digin_AnalyzerViewer, $sce, $localStorage) {
 
 
         $scope.reportURL = Digin_AnalyzerViewer + "3A" + $rootScope.username + "%3AAnalyzer%3A" + $stateParams.param + "/editor?";
 
-        $scope.trustSrc = function (src) {
+        $scope.trustSrc = function(src) {
             return $sce.trustAsResourceUrl(src);
         }
 
@@ -237,14 +333,13 @@ routerApp.controller('AnalyzerViewerControl', ['$scope', '$rootScope', '$statePa
 ]);
 
 
-routerApp.controller('mainController', ['$scope', '$http', function (scope, http) {
-}]);
+routerApp.controller('mainController', ['$scope', '$http', function(scope, http) {}]);
 
 routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope',
 
-    function ($scope, $http, $objectstore, $mdDialog, $rootScope) {
+    function($scope, $http, $objectstore, $mdDialog, $rootScope) {
 
-        $scope.closeDialog = function () {
+        $scope.closeDialog = function() {
             // Easily hides most recent dialog shown...
             // no specific instance reference is needed.
             $mdDialog.hide();
@@ -254,11 +349,11 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
         $scope.dashboardCulture = $rootScope.dashboard.dashboardCulture;
         $scope.dashboardDate = $rootScope.dashboard.dashboardDate;
 
-        $scope.saveDashboardDetails = function () {
+        $scope.saveDashboardDetails = function() {
             $rootScope.dashboard.dashboardName = $scope.dashboardName;
 
             var client = $objectstore.getClient("com.duosoftware.com", "duodigin_dashboard");
-            client.onComplete(function (data) {
+            client.onComplete(function(data) {
                 $mdDialog.hide();
                 $mdDialog.show({
                     controller: 'successCtrl',
@@ -266,7 +361,7 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
                     resolve: {}
                 })
             });
-            client.onError(function (data) {
+            client.onError(function(data) {
                 $mdDialog.hide();
                 $mdDialog.show({
                     controller: 'errorCtrl',
@@ -284,12 +379,12 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
     }
 ]);
 
-routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
-    var dateFormat = function ($scope) {
+routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function($scope, $mdDialog) {
+    var dateFormat = function($scope) {
         var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
             timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
             timezoneClip = /[^-+\dA-Z]/g,
-            pad = function (val, len) {
+            pad = function(val, len) {
                 val = String(val);
                 len = len || 2;
                 while (val.length < len) val = "0" + val;
@@ -297,7 +392,7 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function (
             };
 
         // Regexes and supporting functions are cached through closure
-        return function (date, mask, utc) {
+        return function(date, mask, utc) {
             var dF = dateFormat;
 
             // You can't provide utc if you skip other args (use the "UTC:" mask prefix)
@@ -358,7 +453,7 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function (
                     S: ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
                 };
 
-            return mask.replace(token, function ($0) {
+            return mask.replace(token, function($0) {
                 return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
             });
         };
@@ -393,7 +488,7 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function (
     };
 
     // For convenience...
-    Date.prototype.format = function (mask, utc) {
+    Date.prototype.format = function(mask, utc) {
         return dateFormat(this, mask, utc);
     };
 
@@ -409,9 +504,9 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function (
 
 
     // Clock Widget's Rotation 
-    $(function () {
+    $(function() {
 
-        setInterval(function () {
+        setInterval(function() {
             var seconds = new Date().getSeconds();
             var sdegree = seconds * 6;
             var srotate = "rotate(" + sdegree + "deg)";
@@ -422,7 +517,7 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function (
 
         }, 1000);
 
-        setInterval(function () {
+        setInterval(function() {
             var hours = new Date().getHours();
             $('#clockHours').text(hours);
             var mins = new Date().getMinutes();
@@ -437,7 +532,7 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function (
         }, 1000);
 
 
-        setInterval(function () {
+        setInterval(function() {
             var mins = new Date().getMinutes();
             //$scope.clockComponentMins = mins;
             //console.log(mins);
@@ -452,7 +547,7 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function (
 
     });
 
-    $scope.clockComponentSelectformat = function (ev) {
+    $scope.clockComponentSelectformat = function(ev) {
         $mdDialog.show({
                 controller: clockComponentformatController,
                 templateUrl: 'templates/clockComponentformat.html',
@@ -460,11 +555,11 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function (
                 targetEvent: ev,
                 clickOutsideToClose: true
             })
-            .then(function (answer) {
+            .then(function(answer) {
                 var monthDay = dateFormat(answer);
                 $('#clockmonthDay').text(monthDay);
 
-            }, function () {
+            }, function() {
 
             });
     };
@@ -473,60 +568,50 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function (
         $scope.formats = [{
             name: "default",
             format: "ddd mmm dd yyyy HH:MM:ss"
-        },
-            {
-                name: "shortDate",
-                format: "m/d/yy"
-            },
-            {
-                name: "longDate",
-                format: "mmmm d, yyyy"
-            },
-            {
-                name: "fullDate",
-                format: "dddd, mmmm d, yyyy"
-            },
-            {
-                name: "shortTime",
-                format: "h:MM TT"
-            },
-            {
-                name: "mediumTime",
-                format: "h:MM:ss TT"
-            },
-            {
-                name: "longTime",
-                format: "h:MM:ss TT Z"
-            },
-            {
-                name: "isoDate",
-                format: "yyyy-mm-dd"
-            },
-            {
-                name: "isoTime",
-                format: "HH:MM:ss"
-            },
-            {
-                name: "isoDateTime",
-                format: "yyyy-mm-dd'T'HH:MM:ss"
-            },
-            {
-                name: "isoUtcDateTime",
-                format: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
-            }];
+        }, {
+            name: "shortDate",
+            format: "m/d/yy"
+        }, {
+            name: "longDate",
+            format: "mmmm d, yyyy"
+        }, {
+            name: "fullDate",
+            format: "dddd, mmmm d, yyyy"
+        }, {
+            name: "shortTime",
+            format: "h:MM TT"
+        }, {
+            name: "mediumTime",
+            format: "h:MM:ss TT"
+        }, {
+            name: "longTime",
+            format: "h:MM:ss TT Z"
+        }, {
+            name: "isoDate",
+            format: "yyyy-mm-dd"
+        }, {
+            name: "isoTime",
+            format: "HH:MM:ss"
+        }, {
+            name: "isoDateTime",
+            format: "yyyy-mm-dd'T'HH:MM:ss"
+        }, {
+            name: "isoUtcDateTime",
+            format: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
+        }];
 
-        $scope.clockComponentformatChange = function (data) {
+        $scope.clockComponentformatChange = function(data) {
             $mdDialog.hide(data);
         };
-        $scope.closeWidgetOptions = function () {
+        $scope.closeWidgetOptions = function() {
             $mdDialog.cancel();
         };
     };
 
 }])
 
-routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
-    (function () {
+routerApp.controller('calenderWidgetController', ['$scope', function($scope) {
+    (function() {
         $scope.days = [];
         $scope.month = 01;
         createCal();
@@ -538,8 +623,7 @@ routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
                 //console.log(firstDay);
                 if (firstDay == 0) {
                     firstDay = 7;
-                }
-                ;
+                };
                 for (i = 0; i < 40; i++) {
 
                     if (i + 1 < firstDay) {
@@ -564,38 +648,31 @@ routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
                                     task: '',
                                 };
                                 $scope.days.push(obj);
-                            }
-                            ;
-                        }
-                        ;
-                    }
-                    ;
-                }
-                ;
+                            };
+                        };
+                    };
+                };
                 //console.log($scope.days);
-            }
-            ;
+            };
         };
 
-        $scope.previousMonth = function () {
+        $scope.previousMonth = function() {
             if ($scope.month == 1) {
                 $scope.month = 12;
             } else {
                 $scope.month = $scope.month - 1;
 
-            }
-            ;
+            };
             //createCal();
         };
 
-        $scope.nextMonth = function () {
+        $scope.nextMonth = function() {
             if ($scope.month == 12) {
                 $scope.month = 1;
 
             } else {
                 $scope.month = $scope.month + 1;
-            }
-            ;
+            };
             //createCal();
         };
 
@@ -604,13 +681,13 @@ routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
 
 }])
 
-routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog', function ($scope, $http, $mdDialog) {
-    $scope.loadWeather = function (data) {
+routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog', function($scope, $http, $mdDialog) {
+    $scope.loadWeather = function(data) {
         $scope.weatherComponentCity = data;
         //complete config  
         //            function () {
         $http.get('http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22' + data + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
-            .success(function (data) {
+            .success(function(data) {
                 console.log(data);
 
                 if (data.query.results.channel.item.condition == undefined) {
@@ -638,12 +715,11 @@ routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog',
                     } else {
                         $scope.weatherComponentIcon = 'sun';
                         $scope.weatherComponentBg = "styles/css/images/weatherComponentBg.jpg";
-                    }
-                    ;
+                    };
                 }
 
             })
-            .error(function (err) {
+            .error(function(err) {
                 console.log('Error retrieving markets');
             });
         //            };
@@ -654,7 +730,7 @@ routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog',
     $scope.weatherComponentError = false;
     $scope.loadWeather($scope.locZip);
 
-    $scope.weatherComponentSelectCity = function (ev) {
+    $scope.weatherComponentSelectCity = function(ev) {
         $mdDialog.show({
                 controller: weatherComponentCitySelectorController,
                 templateUrl: 'templates/weatherComponentCitySelector.html',
@@ -662,19 +738,19 @@ routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog',
                 targetEvent: ev,
                 clickOutsideToClose: true
             })
-            .then(function (answer) {
+            .then(function(answer) {
                 $scope.loadWeather(answer);
-            }, function () {
+            }, function() {
 
             });
     };
 
     function weatherComponentCitySelectorController($scope, $mdDialog) {
         $scope.cities = ['colombo', 'galle', 'kandy'];
-        $scope.weatherComponentCitySelectorChange = function (city) {
+        $scope.weatherComponentCitySelectorChange = function(city) {
             $mdDialog.hide(city);
         };
-        $scope.closeWidgetOptions = function () {
+        $scope.closeWidgetOptions = function() {
             $mdDialog.cancel();
         };
     };
@@ -682,22 +758,22 @@ routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog',
 
 }])
 
-routerApp.controller('userprofileWidgetController', ['$scope', function ($scope) {
-    (function () {
+routerApp.controller('userprofileWidgetController', ['$scope', function($scope) {
+    (function() {
         var menu_trigger = $("[data-card-menu]");
         var back_trigger = $("[data-card-back]");
 
-        menu_trigger.click(function () {
+        menu_trigger.click(function() {
             $(".card, body").toggleClass("show-menu");
         });
 
-        back_trigger.click(function () {
+        back_trigger.click(function() {
             $(".card, body").toggleClass("show-menu");
         });
     })();
 }])
 
-routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($window, $rootScope, $log) {
+routerApp.service('VideosService', ['$window', '$rootScope', '$log', function($window, $rootScope, $log) {
 
     var service = this;
 
@@ -739,7 +815,7 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($
         title: '[OFFICIAL HD] Daft Punk - Give Life Back To Music (feat. Nile Rodgers)'
     }];
 
-    $window.onYouTubeIframeAPIReady = function () {
+    $window.onYouTubeIframeAPIReady = function() {
         $log.info('Youtube API is ready');
         youtube.ready = true;
         service.bindPlayer('placeholder');
@@ -768,12 +844,12 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($
         $rootScope.$apply();
     }
 
-    this.bindPlayer = function (elementId) {
+    this.bindPlayer = function(elementId) {
         $log.info('Binding to ' + elementId);
         youtube.playerId = elementId;
     };
 
-    this.createPlayer = function () {
+    this.createPlayer = function() {
         $log.info('Creating a new Youtube player for DOM id ' + youtube.playerId + ' and video ' + youtube.videoId);
         return new YT.Player(youtube.playerId, {
             height: youtube.playerHeight,
@@ -789,7 +865,7 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($
         });
     };
 
-    this.loadPlayer = function () {
+    this.loadPlayer = function() {
         if (youtube.ready && youtube.playerId) {
             if (youtube.player) {
                 youtube.player.destroy();
@@ -798,14 +874,14 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($
         }
     };
 
-    this.launchPlayer = function (id, title) {
+    this.launchPlayer = function(id, title) {
         youtube.player.loadVideoById(id);
         youtube.videoId = id;
         youtube.videoTitle = title;
         return youtube;
     }
 
-    this.listResults = function (data) {
+    this.listResults = function(data) {
         results.length = 0;
         for (var i = data.items.length - 1; i >= 0; i--) {
             results.push({
@@ -824,7 +900,7 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($
         return results;
     }
 
-    this.queueVideo = function (id, title) {
+    this.queueVideo = function(id, title) {
         upcoming.push({
             id: id,
             title: title
@@ -832,7 +908,7 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($
         return upcoming;
     };
 
-    this.archiveVideo = function (id, title) {
+    this.archiveVideo = function(id, title) {
         history.unshift({
             id: id,
             title: title
@@ -840,7 +916,7 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($
         return history;
     };
 
-    this.deleteVideo = function (list, id) {
+    this.deleteVideo = function(list, id) {
         for (var i = list.length - 1; i >= 0; i--) {
             if (list[i].id === id) {
                 list.splice(i, 1);
@@ -849,32 +925,32 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($
         }
     };
 
-    this.getYoutube = function () {
+    this.getYoutube = function() {
         return youtube;
     };
 
-    this.getResults = function () {
+    this.getResults = function() {
         return results;
     };
 
-    this.getUpcoming = function () {
+    this.getUpcoming = function() {
         return upcoming;
     };
 
-    this.getHistory = function () {
+    this.getHistory = function() {
         return history;
     };
 
 }]);
 
-routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http, $rootScope, $q) {
+routerApp.service('googleService', ['$http', '$rootScope', '$q', function($http, $rootScope, $q) {
     var clientId = '33022835624-q3km776rl7dkitpinaj7pf2tlu75tfhg.apps.googleusercontent.com',
         apiKey = 'AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ',
         scopes = 'https://www.googleapis.com/auth/plus.login',
         domain = '',
         deferred = $q.defer();
 
-    this.signin = function () {
+    this.signin = function() {
         gapi.auth.authorize({
             client_id: clientId,
             scope: scopes,
@@ -886,20 +962,19 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
         return deferred.promise;
     };
 
-    this.signout = function () {
+    this.signout = function() {
         gapi.auth.signOut();
         console.log("logged out");
 
         return deferred.promise;
     };
-    this.handleClientLoad = function () {
+    this.handleClientLoad = function() {
         gapi.client.setApiKey(apiKey);
-        gapi.auth.init(function () {
-        });
+        gapi.auth.init(function() {});
         window.setTimeout(checkAuth, 1);
     };
 
-    this.checkAuth = function () {
+    this.checkAuth = function() {
         gapi.auth.authorize({
             client_id: clientId,
             scope: scopes,
@@ -908,12 +983,12 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
         }, this.handleAuthResult);
     };
 
-    this.handleAuthResult = function (authResult) {
+    this.handleAuthResult = function(authResult) {
         if (authResult && !authResult.error) {
             var data = {};
-            gapi.client.load('oauth2', 'v2', function () {
+            gapi.client.load('oauth2', 'v2', function() {
                 var request = gapi.client.oauth2.userinfo.get();
-                request.execute(function (resp) {
+                request.execute(function(resp) {
                     data.email = resp.email;
                 });
             });
@@ -923,7 +998,7 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
         }
     };
 
-    this.handleAuthClick = function (event) {
+    this.handleAuthClick = function(event) {
         gapi.auth.authorize({
             client_id: clientId,
             scope: scopes,
@@ -933,41 +1008,41 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
         return false;
     };
 
-    this.getProfileData = function () {
+    this.getProfileData = function() {
 
-        gapi.client.load('plus', 'v1', function () {
+        gapi.client.load('plus', 'v1', function() {
             var request = gapi.client.plus.people.get({
                 'userId': 'me'
             });
-            request.execute(function (resp) {
+            request.execute(function(resp) {
                 $rootScope.profileData = resp;
             });
         });
         return deferred.promise;
     };
 
-    this.getPeopleData = function () {
+    this.getPeopleData = function() {
 
-        gapi.client.load('plus', 'v1', function () {
+        gapi.client.load('plus', 'v1', function() {
             var request = gapi.client.plus.people.list({
                 'userId': 'me',
                 'collection': 'visible'
             });
-            request.execute(function (resp) {
+            request.execute(function(resp) {
                 $rootScope.peopleData = resp;
             });
         });
         return deferred.promise;
     };
 
-    this.getActivityData = function () {
-        gapi.client.load('plus', 'v1', function () {
+    this.getActivityData = function() {
+        gapi.client.load('plus', 'v1', function() {
             var request = gapi.client.plus.activities.list({
                 'userId': 'me',
                 'collection': 'public'
             });
 
-            request.execute(function (resp) {
+            request.execute(function(resp) {
                 $rootScope.activityData = resp;
             });
         });
@@ -978,50 +1053,50 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
 }]);
 //use this to share scopes between two controllers
 //first store after that get
-routerApp.factory('ScopeShare', function ($rootScope) {
+routerApp.factory('ScopeShare', function($rootScope) {
     var mem = {};
- 
+
     return {
-        store: function (key, value) {
+        store: function(key, value) {
             mem[key] = value;
         },
-        get: function (key) {
+        get: function(key) {
             return mem[key];
         }
     };
 });
 
 
-routerApp.directive('myUpload', [function () {
+routerApp.directive('myUpload', [function() {
     return {
         restrict: 'A',
-        link: function (scope, elem, attrs) {
+        link: function(scope, elem, attrs) {
             var reader = new FileReader();
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 scope.image = e.target.result;
                 scope.$apply();
             }
 
-            elem.on('change', function () {
+            elem.on('change', function() {
                 reader.readAsDataURL(elem[0].files[0]);
             });
         }
     };
 }]);
 
-routerApp.directive('fileReader', function () {
+routerApp.directive('fileReader', function() {
     return {
         scope: {
             fileReader: "="
         },
-        link: function (scope, element) {
-            $(element).on('change', function (changeEvent) {
+        link: function(scope, element) {
+            $(element).on('change', function(changeEvent) {
                 var files = changeEvent.target.files;
                 if (files.length) {
                     var r = new FileReader();
-                    r.onload = function (e) {
+                    r.onload = function(e) {
                         var contents = e.target.result;
-                        scope.$apply(function () {
+                        scope.$apply(function() {
                             scope.fileReader = contents;
                         });
                     };
@@ -1033,7 +1108,7 @@ routerApp.directive('fileReader', function () {
     };
 });
 
-routerApp.directive('barsChart', function ($parse) {
+routerApp.directive('barsChart', function($parse) {
     //explicitly creating a directive definition variable
     //this may look verbose but is good for clarification purposes
     //in real life you'd want to simply return the object {...}
@@ -1051,7 +1126,7 @@ routerApp.directive('barsChart', function ($parse) {
         scope: {
             data: '=chartData'
         },
-        link: function (scope, element, attrs) {
+        link: function(scope, element, attrs) {
             //in D3, any selection[0] contains the group
             //selection[0][0] is the DOM node
             //but we won't need that this time
@@ -1063,10 +1138,10 @@ routerApp.directive('barsChart', function ($parse) {
                 .selectAll('div')
                 .data(scope.data).enter().append("div")
                 .transition().ease("elastic")
-                .style("width", function (d) {
+                .style("width", function(d) {
                     return d + "%";
                 })
-                .text(function (d) {
+                .text(function(d) {
                     return d + "%";
                 });
             //a little of magic: setting it's width based
@@ -1077,8 +1152,8 @@ routerApp.directive('barsChart', function ($parse) {
     return directiveDefinitionObject;
 });
 
-routerApp.filter('fromTo', function () {
-    return function (input, from, total, lessThan) {
+routerApp.filter('fromTo', function() {
+    return function(input, from, total, lessThan) {
         from = parseInt(from);
         total = parseInt(total);
         for (var i = from; i < from + total && i < lessThan; i++) {
@@ -1088,20 +1163,19 @@ routerApp.filter('fromTo', function () {
     }
 });
 
-routerApp.filter('getExtension', function () {
-    return function (url) {
+routerApp.filter('getExtension', function() {
+    return function(url) {
         return url.split('.').pop();
     };
 });
 
-routerApp.filter('htmlToPlaintext', function () {
-        return function (text) {
-            return text ? String(text).replace(/<[^>]+>/gm, '') : '';
-        };
-    }
-);
+routerApp.filter('htmlToPlaintext', function() {
+    return function(text) {
+        return text ? String(text).replace(/<[^>]+>/gm, '') : '';
+    };
+});
 
-routerApp.directive('clockComponent', function () {
+routerApp.directive('clockComponent', function() {
     return {
         restrict: 'E',
         controller: 'clockWidgetController',
@@ -1109,7 +1183,7 @@ routerApp.directive('clockComponent', function () {
     };
 });
 
-routerApp.directive('weatherComponent', function () {
+routerApp.directive('weatherComponent', function() {
     return {
         restrict: 'E',
         controller: 'weatherWidgetController',
@@ -1124,7 +1198,7 @@ routerApp.directive('weatherComponent', function () {
     };
 });
 
-routerApp.directive('userprofileComponent', function () {
+routerApp.directive('userprofileComponent', function() {
     return {
         restrict: 'E',
         controller: 'userprofileWidgetController',
@@ -1156,4 +1230,3 @@ routerApp.constant('config', {
     apiUrl2: '',
     storeIndex: 'com.duosoftware.com'
 });
-

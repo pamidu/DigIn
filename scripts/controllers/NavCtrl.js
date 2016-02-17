@@ -1,6 +1,6 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
-    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast', 'DevStudio', '$auth', '$helpers', 'ScopeShare',
-    function($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio, $auth, $helpers, ScopeShare) {
+    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast', 'DevStudio', '$auth', '$helpers',
+    function($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio, $auth, $helpers) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -323,7 +323,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $(".nav-search").removeClass("active");
             $(".search-layer").removeClass("activating active");
 
-            $state.go('ReportViewer', {
+            $state.go('home.ReportViewer', {
                 param: report
             });
         }
@@ -331,7 +331,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             console.log("hit dashboard");
             console.log(dashboard);
             if (typeof dashboard.customDuoDash === "undefined") {
-                $state.go('DashboardViewer', {
+                $state.go('home.DashboardViewer', {
                     param: dashboard.name
                 });
                 $scope.manageTabs(false);
@@ -367,7 +367,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         console.log("im a storyboard");
                         $rootScope.Dashboards = dashboard.data;
                     }
-                    $state.go('CustomDashboardViewer', {
+                    $state.go('home.CustomDashboardViewer', {
                         param: dashboard.name
                     });
                     $scope.dashboard.widgets = dashboard.data;
@@ -405,7 +405,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $(".nav-search").removeClass("active");
             $(".search-layer").removeClass("activating active");
 
-            $state.go('AnalyzerViewer', {
+            $state.go('home.AnalyzerViewer', {
                 param: report
             });
         }
@@ -753,7 +753,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.showAddNewDashboard(ev);
                 $scope.manageTabs(true);
                 $scope.currentView = "Dashboard";
-                $state.go(routeName)
+                $state.go('home.'+routeName)
             }
             if (routeName == "Social Media Analytics") {
                 $scope.manageTabs(false);
@@ -771,7 +771,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.showAddNewWidgets(ev);
                 $scope.currentView = "Dashboard";
                 $scope.manageTabs(true);
-                $state.go("Dashboards");
+                $state.go("home.Dashboards");
 
                 //$('md-tabs-wrapper').css("display","block");
             }
@@ -780,7 +780,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 selectedMenu[0].style.display = 'block';
                 $rootScope.currentView = "D3plugins";
                 $scope.manageTabs(false);
-                $state.go(routeName);
+                $state.go('home.'+routeName);
             }
             if (routeName == "Reports") {
 
@@ -788,7 +788,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 selectedMenu[0].style.display = 'block';
                 $rootScope.currentView = "Reports";
                 $scope.manageTabs(false);
-                $state.go(routeName);
+                $state.go('home.'+routeName);
             }
             if (routeName == "Analytics") {
 
@@ -806,7 +806,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $(".menu-layer").css("top", "200px");
                 $("starting-point").css("top", "200px");
                 $scope.manageTabs(false);
-                $state.go(routeName);
+                $state.go('home.'+routeName);
 
                 $rootScope.currentView = "RealTime";
 
@@ -828,7 +828,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                 });
                 $rootScope.currentView = "Digin P Stack";
-                //$state.go(routeName);                
+                //$state.go('home.'+routeName);                
             }
             if (routeName == "CommonData") {
 
@@ -917,7 +917,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.saveDashboard(ev);
             }
             if (routeName == "Settings") {
-                $state.go('Settings');
+                $state.go('home.Settings');
                 $scope.currentView = "Settings";
 //                $scope.showSettings(ev);
             }
@@ -942,7 +942,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                 $rootScope.dashboardWidgetsCopy = angular.copy($rootScope.dashboard.widgets);
                 $rootScope.dashboard.widgets = [];
-                $state.go("/");
+                $state.go("/home");
 
             }
 
@@ -1110,7 +1110,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $scope.JSONDataBranch = data;
             console.log("data json branch");
             console.log($scope.JSONDataBranch);
-            // ScopeShare.store('JSONDataBranch',data);
         });
 
     }

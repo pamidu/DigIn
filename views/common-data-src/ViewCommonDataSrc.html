@@ -268,7 +268,7 @@
 
                         <ui ng-repeat="row in sourceUi.selectedAttribute ">
                             <li class="col-sheet-attr hvr-fade"
-                                ng-click="commonUi.onRemoveId(sourceUi.selectedAttribute,row)"
+                                ng-click="commonUi.onRemoveAtt(sourceUi.selectedAttribute,row)"
                                 ng-class="row.isRemove==true?'displayNone':'displayInlineBlock'"
                             > {{row.name}}
                             </li>
@@ -293,7 +293,7 @@
 
                         <ui ng-repeat="row in sourceUi.selectedMeasures ">
                             <li class="col-sheet-attr hvr-fade "
-                                ng-click="commonUi.onRemoveId(sourceUi.selectedMeasures ,row)"
+                                ng-click="commonUi.onRemoveMeasures(sourceUi.selectedMeasures ,row)"
                                 ng-class="row.isRemove==true?'displayNone':'displayInlineBlock'"
                             > {{row.name}}
                             </li>

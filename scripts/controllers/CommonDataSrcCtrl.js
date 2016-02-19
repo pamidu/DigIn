@@ -4,10 +4,10 @@
  */
 routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log',
     'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API',
-    'Digin_Engine_API_Namespace', '$diginengine', 'ngToast', '$window'
+    'Digin_Engine_API_Namespace', '$diginengine', 'ngToast', '$window','$state','$csContainer'
     , function ($scope, $controller, $mdSidenav, $log, CommonDataSrc,
                 $mdDialog, $rootScope, $http, Digin_Engine_API,
-                Digin_Engine_API_Namespace, $diginengine, ngToast, $window) {
+                Digin_Engine_API_Namespace, $diginengine, ngToast, $window, $state, $csContainer) {
 
         $rootScope.dashboard2 = [];
 
@@ -49,7 +49,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             {'type': 'int', 'category': 'mes'},
             {'type': 'decimal', 'category': 'mes'},
             {'type': 'float', 'category': 'mes'},
-            {'type': 'datetime', 'category': 'mes'}
+            {'type': 'datetime', 'category': 'mes'},
+            {'type': 'money', 'category': 'mes'}
         ];
 
 
@@ -100,7 +101,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     commonUi.isDataLoading = true;
                     commonUi.isServiceError = false;
                     $scope.client.getFields(tbl, function (data, status) {
-                        console.log(JSON.stringify(data));
                         callback(data, status);
                     });
                 },
@@ -245,6 +245,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 }
                 data.selected = true;
                 $scope.sourceUi.selectedNameSpace = data.name;
+//                alert($scope.sourceUi.selectedNameSpace);
             }
             ,
             onClickSelectedSrc: function (onSelect, data) {
@@ -256,7 +257,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 }
                 onSelect.selected = true;
                 $scope.sourceUi.selectedSource = onSelect.name;
-
             }
             ,
             clearTblData: function () {
@@ -272,23 +272,41 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 });
                 $rootScope.dashboard2.push($scope.sourceUi);
 
+                $csContainer.fillCSContainer({
+                    src: $scope.sourceUi.selectedSource,
+                    tbl: $scope.sourceUi.selectedNameSpace,
+                    fAttArr: $scope.sourceUi.attrObj,
+                    fMeaArr: $scope.sourceUi.mearsuresObj
+                });
+                
                 publicFun.clearAll(function (status) {
                     if (status) {
-                        $window.location.href = "#/query-builder?qry=" + currentQry + "";
+                        $state.go("home.QueryBuilder");
                         $mdSidenav('right').close();
                     }
                 });
-
+                
 
             }
             ,
-            onRemoveId: function (onSelected, data) {
+            onRemoveAtt: function (onSelected, data) {
                 var attrObj = onSelected;
                 var index = attrObj.indexOf(data);
                 if (index != -1) {
                     attrObj.splice(index, 1);
                 }
-            }
+                $scope.sourceUi.attrObj = attrObj;
+                
+            },
+            onRemoveMeasures: function (onSelected, data) {
+                var attrObj = onSelected;
+                var index = attrObj.indexOf(data);
+                if (index != -1) {
+                    attrObj.splice(index, 1);
+                }
+                $scope.sourceUi.mearsuresObj = attrObj;
+                
+            } 
             ,
             onRefresh: function (index) {
                 switch (index) {
@@ -810,7 +828,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
     //generate workers parameters
     $scope.generateParamArr = function (httpMethod, host, ns, tbl, method, gBy, agg, aggF, cons, oBy) {
-        alert(ns);
         return {
             webMethod: httpMethod,
             host: host,

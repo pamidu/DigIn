@@ -9,6 +9,20 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             // if(sessionInfo==null) location.href = 'index.php';
         }
 
+        var $windowHeight = $(window).height(),
+                $windowWidth = $(window).width(),
+                $startingPoint = $('.starting-point');
+
+        // Calculate the diameter
+        var diameterValue = (Math.sqrt( Math.pow($windowHeight, 2) + Math.pow($windowWidth, 2) ) * 2);
+
+        $startingPoint.children('span').css({
+            height: diameterValue+'px',
+            width: diameterValue+'px',
+            top: -(diameterValue/2)+'px',
+            left: -(diameterValue/2)+'px'
+        });
+
         //initially hiding the tabs
         $("md-tabs.footer-bar > md-tabs-wrapper").children().hide();
         //configuring gridster

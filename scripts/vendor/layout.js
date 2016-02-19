@@ -72,7 +72,8 @@ var Layout = {
 	},
 
 	listenForSearchLayer: function () {
-		$('.nav-search').on('click', function(){
+		$('body').on('click', 'div.nav-search', function() {
+		// $('.nav-search').on('click', function(){
 			
 			// Define neccessary elements
 			var $this = $(this),

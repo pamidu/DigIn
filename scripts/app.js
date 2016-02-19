@@ -237,6 +237,14 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             data: {
                 requireLogin: true
             }
+        })
+        .state('home.QueryBuilder', {
+            url: '/query-builder',
+            controller: 'queryBuilderCtrl',
+            templateUrl: "views/query/query-builder.html",
+            data: {
+                requireLogin: true
+            }
         });
 
     lkGoogleSettingsProvider.configure({

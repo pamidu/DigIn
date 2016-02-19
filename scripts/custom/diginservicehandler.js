@@ -85,15 +85,15 @@
             }
         }
     });
-    dsh.factory('$servicehelpers', function($http) {
+    dsh.factory('$servicehelpers', function($http, $auth) {
         return {
             httpSend: function(method, cb, reqUrl, obj) {
                 if (method == "get") {
-                    $http.get(reqUrl, {
+                    $http.get(reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=duoworld.duoweb.info', {
                         headers: {}
                     }).
                     success(function(data, status, headers, config) {
-                        cb(data, true);
+                        if(data.Is_Success) cb(data.Result, true);
                     }).
                     error(function(data, status, headers, config) {
                         cb(data, false);
@@ -102,6 +102,7 @@
             },
             sendWorker: function(wSrc, wData, cb) {
                 var w = new Worker(wSrc);
+                wData.rUrl = wData.rUrl + "&SecurityToken=" + getCookie("securityToken") + "&Domain=duoworld.duoweb.info";
                 w.postMessage(JSON.stringify(wData));
                 w.addEventListener('message', function(event) {
                     cb(JSON.parse(event.data.res), event.data.state);

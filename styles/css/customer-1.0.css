@@ -130,6 +130,17 @@ cmds >> common data source style
     padding: 5px;
 }
 
+.selectedChart {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+}
+
+.selectedChart > i {
+    color: #EC784B;
+}
+
 .selectedSource > i {
     color: #ffffff;
 }
@@ -555,6 +566,8 @@ cmds >> common data source style
     background: #ffffff;
     overflow: hidden;
     border-left: 3px solid #ECECEC;
+    z-index: 100;
+    position: relative;
 }
 
 .last-icon {
@@ -574,7 +587,7 @@ cmds >> common data source style
 
 .digin-gb-chart-wrap {
     width: 100%;
-    height: 400px;
+    height: 397px;
     background: rgb(250, 250, 250);
     border-left: 3px solid #ECECEC;
 }
@@ -584,23 +597,25 @@ cmds >> common data source style
     width: 280px;
     background: #EC784B;
     position: absolute;
-    left: 265px;
+    left: 20%;
     top: 63px;
     z-index: 1;
     border-radius: 10px;
     display: none;
 }
+
 .columns-config-panel {
     height: 450px;
     width: 280px;
     background: #EC784B;
     position: absolute;
-    left: 265px;
-    top: 63px;
+    left: 20%;
+    top: 30%;
     z-index: 1;
     border-radius: 10px;
     display: none;
 }
+
 .chart-config-wrap {
     padding: 20px;
     overflow: hidden;
@@ -608,18 +623,34 @@ cmds >> common data source style
     margin-right: 15px;
 }
 
-.chart-config-panel .header {
+.chart-config-wrap-rw1 {
+    padding: 17px 0px 17px 17px;
+    overflow: hidden;
+    height: 350px;
+    overflow: hidden;
+}
+
+.chart-config-panel .header,
+.chart-config-wrap .header,
+.digin-bq-chart-rw1 .header {
     display: inline-block;
     width: 100%;
     height: 57px;
 }
 
-.chart-config-panel .header > h4 .header-icon {
+.chart-config-panel .header > h4 .header-icon,
+.columns-config-panel .header > h4 .header-icon,
+.digin-bq-chart-rw1 .header > h4 .header-icon {
     float: right;
     cursor: pointer;
+    padding-left: 5px;
 }
 
 .chart-config-panel .header > h4
+.header-icon > i,
+.columns-config-panel .header > h4
+.header-icon > i,
+.digin-bq-chart-rw1 .header > h4
 .header-icon > i {
     width: 50px;
     height: 20px;
@@ -630,7 +661,9 @@ cmds >> common data source style
     font-size: 10px;
 }
 
-.chart-config-panel .header > h4 {
+.chart-config-panel .header > h4,
+.columns-config-panel .header > h4,
+.digin-bq-chart-rw1 .header > h4 {
     color: #FFFFFF;
     font-size: 18px;
     text-transform: capitalize;
@@ -646,17 +679,197 @@ cmds >> common data source style
     display: inline-block;
 }
 
+.data-row-columns {
+    padding-top: 0px !important;
+}
+
+.data-row-columns div > h5 {
+    display: inline-block;
+    width: 100%;
+}
+
+.data-row-columns div > h5 > i {
+    float: right;
+    display: none;
+}
+
+.data-row-columns:before,
+.data-row-columns:after {
+    display: none !important;
+}
+
 .data-row-style-2 > i {
     float: right;
     display: none;
 }
 
-.active-condition > i {
+.active-condition > i,
+.active-condition > .ti-close {
     display: block;
 }
 
-.de-active-condition  {
+.de-active-condition {
     display: none !important;
+}
+
+.digin-qb-panle-footer {
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+}
+
+.filter-data-not-fund {
+    position: absolute;
+    top: 32%;
+    text-align: center;
+    left: 25%;
+    color: #ECECEC;
+    font-size: 66px;
+}
+
+.filter-data-not-fund > h5 {
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+
+}
+
+/*chart setting panel
+  float on right
+*/
+.digin-bq-chart-rw1 {
+    position: absolute;
+    float: right;
+    width: 507px;
+    height: 396px;
+    background: #EC784B;
+    border-radius: 10px;
+    display: none;
+    z-index: 101;
+}
+
+.chart-tab {
+    right: 10%;
+    top: 13%;
+}
+
+.chart-tab:before,
+.chart-tab:after {
+    left: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.chart-tab:after {
+    border-color: rgba(47, 64, 74, 0);
+    border-left-color: #EC784B;
+    border-width: 14px;
+    margin-top: -186px;
+}
+
+.structure-tab {
+    right: 10%;
+    top: 13%;
+}
+
+.structure-tab:before,
+.structure-tab:after {
+    left: 100%;
+    top: 75%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.structure-tab:after {
+    border-color: rgba(47, 64, 74, 0);
+    border-left-color: #EC784B;
+    border-width: 14px;
+    margin-top: -186px;
+}
+
+.chart-tab:before {
+    border-color: rgba(194, 225, 245, 0);
+    border-width: 36px;
+    margin-top: -36px;
+}
+
+.icon-select-ri1 {
+    color: #EC784B !important;
+}
+
+.chart-config-wrap-rw1 > ul {
+    display: inline-block;
+    padding: 0px;
+}
+
+.chart-config-wrap-rw1 > ul > li {
+    display: inline-block;
+    background: #fff;
+    padding: 16px;
+    height: 83px;
+    width: 83px;
+    text-align: center;
+    cursor: pointer;
+    overflow: hidden;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.chart-config-wrap-rw1 > ul > li > i {
+    font-size: 40px;
+    color: #EC784B;
+}
+
+/*main page loader*/
+.digin-main-loader {
+    position: absolute;
+    background: #ffffff;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.5)
+}
+
+.digin-main-loader > .loader-wrap {
+    width: 450px;
+    position: relative;
+    background: #ffffff;
+    height: 250px;
+    margin: 0 auto;
+    margin-top: 10%;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.digin-main-loader > .loader-wrap .loader-body-wrap {
+    margin-top: 70px;
+}
+
+.digin-main-loader > .loader-wrap .loader-body-wrap >
+h3 {
+    margin-top: 30px;
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 200;
+    font-size: 32px;
+}
+
+.digin-gb-row {
+    width: 100%;
+    height: 250px;
+    background: #ffffff;
+    border-top: 3px solid #ECECEC;
+    border-left: 3px solid #ECECEC;
 }
 
 /*svg loader Google */
@@ -686,7 +899,8 @@ cmds >> common data source style
     border: 4px solid #c2e1f5;
 }
 
-.chart-config-panel:after, .chart-config-panel:before {
+.chart-config-panel:after,
+.chart-config-panel:before {
     right: 100%;
     top: 50%;
     border: solid transparent;
@@ -705,6 +919,31 @@ cmds >> common data source style
 }
 
 .chart-config-panel:before {
+    border-color: rgba(194, 225, 245, 0);
+    border-width: 36px;
+    margin-top: -36px;
+}
+
+.columns-config-panel:after,
+.columns-config-panel:before {
+    right: 100%;
+    top: 80%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.columns-config-panel:after {
+    border-color: rgba(47, 64, 74, 0);
+    border-right-color: #EC784B;
+    border-width: 14px;
+    margin-top: -186px;
+}
+
+.columns-config-panel:before {
     border-color: rgba(194, 225, 245, 0);
     border-width: 36px;
     margin-top: -36px;
@@ -825,3 +1064,66 @@ cmds >> common data source style
 
 }
 
+/*pre loader 2
+ */
+.loader2 {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    border: 4px solid #EC784B;
+    top: 50%;
+    animation: loader2 2s infinite ease;
+}
+
+.loader2-inner {
+    vertical-align: top;
+    display: inline-block;
+    width: 100%;
+    background-color: #EC784B;
+    animation: loader2-inner 2s infinite ease-in;
+}
+
+@keyframes loader2 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(180deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    75% {
+        transform: rotate(360deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes loader2-inner {
+    0% {
+        height: 0%;
+    }
+
+    25% {
+        height: 0%;
+    }
+
+    50% {
+        height: 100%;
+    }
+
+    75% {
+        height: 100%;
+    }
+
+    100% {
+        height: 0%;
+    }
+}

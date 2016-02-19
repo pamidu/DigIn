@@ -1,0 +1,324 @@
+<div class="digin-qb-wrap animated fadeInRight" ng-controller="queryBuilderCtrl">
+    <!-- page main loader -->
+    <div class="digin-main-loader slideOutDown "
+         ng-if="eventHndler.isMainLoading==true">
+        <div class="loader-wrap animated "
+             ng-class="eventHndler.isMainLoading==true?'zoomInUp':'fade-out'">
+            <div class="loader-body-wrap">
+                <span class="loader2"><span class="loader2-inner"></span></span>
+                <h3>
+                    {{eventHndler.message}}
+                </h3>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="digin-qb-header">
+        <div layout="row">
+            <div flex="10">
+                <div class="back">
+                    <i class="ti-arrow-left"></i>
+                </div>
+            </div>
+            <div flex="50">
+                <div class="digin-qb-header-text  ">
+                    <h1>
+                        Query Builder
+                        <small>{{queryStr.crntQryBuildNme}}</small>
+                    </h1>
+                </div>
+            </div>
+            <div flex="20" class="bg-lightskyblueh-2 p-l-20">
+                <div class="digin-gb-b ">
+                    <span>source name</span>
+                    <h5>data source 1</h5>
+                </div>
+            </div>
+            <div flex="20" class="bg-lightblue-h-1 p-l-20">
+                <div class="digin-gb-b">
+                    <span>source name</span>
+                    <h5>data source 1</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- measures config panel toggle -->
+    <div class="digin-gb-bdy-wrap">
+        <div layout="row">
+            <!-- chart config panel -->
+            <div class="chart-config-panel animated  "
+                 id="togglePanel">
+                <div class="header">
+                    <h4 class="font-weight-300 p-20">
+                        measures
+                        <div class="header-icon">
+                            <i class="ti-help"></i>
+                        </div>
+                    </h4>
+                </div>
+                <div class="chart-config-wrap">
+                    <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
+                                 onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
+                        <v-pane id="{{ ::measure.id }}" ng-repeat="measure in commonData.measures" class="v-pane">
+                            <v-pane-header id="{{ ::measure.id }}-header" aria-controls="{{ ::measure.id }}-content">
+                                <h5 class="font-weight-300 text-upper">{{ ::measure.filedName }}</h5>
+                            </v-pane-header>
+                            <v-pane-content class="trans-bg v-pane-content" id="{{ ::measure.id }}-content"
+                                            aria-labelledby="{{ ::measure.id }}-header">
+                                <p class="data-row-style-2 hvr-sweep-to-right"
+                                   markable
+                                   ng-click="eventHndler.onClickCondition(condition,measure,$event )"
+                                   ng-repeat="condition in commonData.measureCondition">
+                                    {{ ::condition.name }}
+                                    <i class="ti-close"
+                                       remove-markable
+                                       ng-click="eventHndler.onClickRmvCondition(condition,measure)"></i>
+                                </p>
+                            </v-pane-content>
+                        </v-pane>
+                    </v-accordion>
+                </div>
+
+                <div class="digin-qb-panle-footer">
+                    <span class="btn btn-block btn-default btn-apply" role="button"
+                          ng-click="eventHndler.onClickApply()"
+                          tabindex="0">
+                            apply
+                    </span>
+                </div>
+            </div>
+            <!-- measures -->
+            <div flex="20">
+                <div class="digin-gb-measures last-icon">
+                    <div class="panel-header">
+                        <h3 class="font-weight-300">
+                            measures
+                            <div class="toggle-icon animated "
+                                 ng-class="eventHndler.isToggleMeasure==true?'left-icon-toggle':'left-icon'"
+                                 ng-click="eventHndler.onToggleEvent('1')">
+                                <i class=""
+                                   ng-class="eventHndler.isToggleMeasure==true?'ti-angle-left rotateOut':'ti-angle-right rotateIn'"
+                                ></i>
+
+                            </div>
+                        </h3>
+                    </div>
+
+                    <div class="measures-body">
+                        <div class="data-row"
+                             ng-repeat="measure in executeQryData.executeMeasures">
+                            <span>
+                              {{measure.condition}}
+                            </span>
+                            <div class="measures-type">
+                                {{measure.filedName}}
+                            </div>
+                            </ul>
+
+                        </div>
+                        <div class="filter-data-not-fund"
+                             ng-if="executeQryData.executeMeasures.length < 1">
+                            <i class="ti-filter"></i>
+                            <h5>select measure</h5>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- columns config panel -->
+                <div class="columns-config-panel animated  "
+                     id="togglePanelColumns">
+                    <div class="header">
+                        <h4 class="font-weight-300 p-20">
+                            columns
+                            <div class="header-icon">
+                                <i class="ti-help"></i>
+                            </div>
+                        </h4>
+                    </div>
+                    <div class="chart-config-wrap">
+                        <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
+                                     onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
+                            <v-pane id="{{ ::column.id }}" ng-repeat="column in commonData.columns"
+                                    class="v-pane-column">
+                                <v-pane-header id="{{ ::column.id }}-header" class="data-row-columns"
+                                               ng-click="eventHndler.onClickColumn(column)"
+                                               aria-controls="{{ ::column.id }}-content">
+                                    <h5 markable class="font-weight-300 text-upper">{{ ::column.filedName }}
+                                        <i class="ti-close"></i>
+                                    </h5>
+                                </v-pane-header>
+
+                            </v-pane>
+                        </v-accordion>
+                    </div>
+
+                    <div class="digin-qb-panle-footer">
+                            <span class="btn btn-block btn-default btn-apply" role="button"
+                                  ng-click="eventHndler.onClickApply()"
+                                  tabindex="0">
+                                    apply
+                            </span>
+                    </div>
+                </div>
+                <div class="digin-gb-measures">
+                    <div class="panel-header">
+                        <h3 class="font-weight-300">
+                            columns
+                            <div class="toggle-icon animated "
+                                 ng-class="eventHndler.isToggleColumns==true?'left-icon-toggle':'left-icon'"
+                                 ng-click="eventHndler.onToggleEvent('2')">
+                                <i class=""
+                                   ng-class="eventHndler.isToggleColumns==true?'ti-angle-left rotateOut':'ti-angle-right rotateIn'"
+                                ></i>
+
+                            </div>
+                        </h3>
+                    </div>
+                    <div class="measures-body">
+                        <div class="data-row"
+                             ng-repeat="row in executeQryData.executeColumns">
+                            {{row.filedName}}
+
+                        </div>
+                        <div class="filter-data-not-fund"
+                             ng-if="executeQryData.executeColumns.length < 1">
+                            <i class="ti-layout-column2"></i>
+                            <h5>select columns</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div flex="70">
+                <div class="digin-gb-chart-wrap">
+                    <!-- chart loading wrap -->
+                    <div class="digin-gb-chart-loading"
+                         ng-if="eventHndler.isLoadingChart==true">
+                        <svg class="circular-loader" height="50" width="50">
+                            <circle class="path" cx="25" cy="25.2" r="19.9"
+                                    fill="none" stroke-width="6" stroke-miterlimit="10"/>
+                        </svg>
+                    </div>
+                    <highchart
+                            ng-if="eventHndler.isLoadingChart==false"
+                            config="highchartsNG"></highchart>
+                </div>
+
+                <div class="digin-gb-row">
+
+
+                </div>
+            </div>
+            <div flex="10">
+                <div class="digin-gb-menu">
+                    <div class="last-icon">
+                        <div class="right-menu ">
+                            <i class="ti-pie-chart hvr-pop "
+                               ng-click="eventHndler.onClickSetting('1')"
+                               selected-setting-icon></i>
+                        </div>
+                    </div>
+
+                    <div class="last-icon">
+                        <div class="right-menu">
+                            <i class="ti-package hvr-pop"
+                               ng-click="eventHndler.onClickSetting('2')"></i>
+                        </div>
+                    </div>
+
+                    <div class="last-icon">
+                        <div class="right-menu">
+                            <i class="ti-settings hvr-pop"></i>
+                        </div>
+                    </div>
+                    <div class="last-icon">
+                        <div class="right-menu">
+                            <i class="ti-save hvr-pop"
+                               ng-click="eventHndler.onClickSetting('4')"></i>
+                        </div>
+
+                    </div>
+                    <div class=" last-icon">
+                        <div class="right-menu">
+                            <i class="ti-eraser hvr-pop"></i>
+                        </div>
+                    </div>
+
+                    <div class="right-menu">
+                        <i class="ti-help-alt hvr-pop"></i>
+                    </div>
+                </div>
+
+                <!-- chart setting panle -->
+                <div class="digin-bq-chart-rw1 p-15"
+                     id="toggleSettingPanel">
+                    <div class="header">
+                        <h4 class="font-weight-300 p-20">
+                            Visualization type
+                            <div class="header-icon">
+                                <i class="ti-help"></i>
+                            </div>
+                            <div class="header-icon">
+                                <i class="ti-search"></i>
+                            </div>
+                        </h4>
+                    </div>
+                    <div class="chart-config-wrap-rw1 animated fadeIn">
+                        <ul>
+                            <li class="hvr-outline-in" ng-repeat="chart in commonData.chartTypes"
+                                ng-click="eventHndler.onClickSelectedChart(commonData.chartTypes,chart)">
+                                <i class="{{chart.icon}}"></i>
+                                <small>{{chart.name}}</small>
+                                <div class="selectedChart"
+                                     ng-class="chart.selected==true?'selectedChart':'displayNone'">
+                                    <i class="fa fa-check-circle-o"></i>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- organize Data Structure -->
+                <div class="digin-bq-chart-rw1 p-15"
+                     id="toggleStructurePanel">
+                    <div class="header">
+                        <h4 class="font-weight-300 p-20">
+                            Data Structure
+                            <div class="header-icon">
+                                <i class="ti-help"></i>
+                            </div>
+                            <div class="header-icon">
+                                <i class="ti-search"></i>
+                            </div>
+                        </h4>
+                    </div>
+                    <div class="chart-config-wrap-rw1 animated fadeIn">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div>
+                                    attribute
+                                </div>
+                                <p class="data-row-style-2"
+                                   ng-repeat="column in commonData.columns">
+                                    {{column.filedName}}
+                                </p>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div>
+                                    measure
+                                </div>
+                                <p class="data-row-style-2"
+                                   ng-repeat="measure in commonData.measures">
+                                    {{measure.filedName}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

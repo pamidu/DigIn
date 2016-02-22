@@ -1,4 +1,4 @@
-<div class="digin-qb-wrap animated fadeInRight" ng-controller="queryBuilderCtrl">
+<div ng-init="initQueryBuilder()" class="digin-qb-wrap animated fadeInRight" ng-controller="queryBuilderCtrl">
     <!-- page main loader -->
     <div class="digin-main-loader slideOutDown "
          ng-if="eventHndler.isMainLoading==true">
@@ -107,16 +107,14 @@
                     </div>
 
                     <div class="measures-body">
-                        <div class="data-row"
+                        <div class="draggable-measure data-row"
                              ng-repeat="measure in executeQryData.executeMeasures">
                             <span>
                               {{measure.condition}}
-                            </span>
+                            </span>                            
                             <div class="measures-type">
                                 {{measure.filedName}}
                             </div>
-                            </ul>
-
                         </div>
                         <div class="filter-data-not-fund"
                              ng-if="executeQryData.executeMeasures.length < 1">
@@ -181,7 +179,6 @@
                         <div class="data-row"
                              ng-repeat="row in executeQryData.executeColumns">
                             {{row.filedName}}
-
                         </div>
                         <div class="filter-data-not-fund"
                              ng-if="executeQryData.executeColumns.length < 1">

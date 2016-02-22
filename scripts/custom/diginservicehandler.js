@@ -6,6 +6,10 @@
         if (host.indexOf("localhost") != -1 || host.indexOf("127.0.0.1") != -1) host = "104.131.48.155";
         return host;
     }
+    
+    function getNamespace() {
+        return "Demo";
+    }
     dsh.factory('$diginengine', function($diginurls, $servicehelpers) {
         function DiginEngineClient(_dsid, _db) {
             var dataSetId = _dsid;
@@ -37,16 +41,18 @@
 
                 },
                 getAggData: function(tbl, agg, aggf, cb, gb, con) {
+                    var wSrc = "scripts/webworkers/webWorker.js";
                     if (database == "BigQuery") {
-                        var wSrc = "scripts/webworkers/webWorker.js";
-                        var params = "tablenames={1:%27" + tbl + " %27}&db=" + database + "&agg={%27" + agg + "%27:%27" + aggf + "%27}" + "&cons=&order_by={}";
+                        if(!gb){
+                            var params = "tablenames={1:%27"+ getNamespace() + "." + tbl + "%27}&db=" + database + "&agg={%27" + aggf + "%27:%27" + agg + "%27}" + "&group_by={}&cons=&order_by={}";
+                        }else{
+                            var params = "tablenames={1:%27"+ getNamespace() + "." + tbl + "%27}&db=" + database + "&agg={%27" + aggf + "%27:%27" + agg + "%27}" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={}";
+                        }               
                     }
                     if (database == "MSSQL") {
                         if (gb === undefined) {
-                            var wSrc = "scripts/webworkers/webWorker.js";
                             var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg={%27" + aggf + "%27:%27" + agg + "%27}" + "&cons=&order_by={}";
                         } else {
-                            var wSrc = "scripts/webworkers/webWorker.js";
                             var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&agg={%27" + aggf + "%27:%27" + agg + "%27}" + "&cons=&order_by={}";
                         }
 
@@ -80,8 +86,9 @@
         }
 
         return {
-            getClient: function(dsid, db) {
-                return new DiginEngineClient(dsid, db);
+            getClient: function(db, dsid) {
+                if(!dsid) return new DiginEngineClient(getNamespace(), db);
+                else return new DiginEngineClient(dsid, db);
             }
         }
     });
@@ -114,7 +121,7 @@
         var host = getHost();
         return {
             //            diginengine: "http://" + host + ":8080",
-            diginengine: "http://192.168.2.33:8080",
+            diginengine: "http://104.131.48.155:8082",
             diginenginealt: "http://" + host + ":8081"
         };
     });

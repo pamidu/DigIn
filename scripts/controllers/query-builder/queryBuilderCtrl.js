@@ -3,8 +3,15 @@
  */
 
 routerApp.controller('queryBuilderCtrl', function
-        ($scope, $rootScope, $location, $window, $csContainer) {
+        ($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state) {
 
+    $scope.initQueryBuilder = function(){
+        $scope.sourceData = $csContainer.fetchSrcObj();
+        $scope.client = $diginengine.getClient($scope.sourceData.src);
+    };
+    
+    $scope.sourceData = $csContainer.fetchSrcObj();
+    $scope.client = $diginengine.getClient($scope.sourceData.src);
         
 
         var privateFun = (function () {
@@ -28,11 +35,12 @@ routerApp.controller('queryBuilderCtrl', function
                 },
                 createHighchartsChart: function (type) {
                     //high charts config
+                    $scope.chartType = type;
                     $scope.highchartsNG = {
                         options: {
                             chart: {
-                                type: type == '' ? 'bar' :
-                                    type,
+                                type: $scope.chartType == '' ? 'bar' :
+                                    $scope.chartType,
                                 // Explicitly tell the width and height of a chart
                                 width: null,
                                 height: 397,
@@ -97,8 +105,14 @@ routerApp.controller('queryBuilderCtrl', function
         };
 
         $scope.commonData = {
-            measures: [],
-            columns: [],
+            measures: [
+//                {id: 'm01', filedName: 'Unit price', click: false},
+//                {id: 'm02', filedName: 'Price', click: false}
+            ],
+            columns: [
+//                {id: 'a01', filedName: 'name', click: false},
+//                {id: 'a02', filedName: 'location', click: false}
+            ],
             measureCondition: [
                 {id: 'c01', name: 'AVG', click: false},
                 {id: 'c02', name: 'SUM', click: false},
@@ -127,7 +141,9 @@ routerApp.controller('queryBuilderCtrl', function
 
         };
     
-        $scope.sourceData = $csContainer.fetchSrcObj();
+   
+    
+        
         
         //mapping measures array
         if($scope.sourceData.fMeaArr.length > 0){
@@ -151,6 +167,18 @@ routerApp.controller('queryBuilderCtrl', function
                 });
             }
         }
+    
+     $( ".draggable-measure" ).draggable({ revert: "invalid" });
+        $( ".droppable-container" ).droppable({
+              activeClass: "ui-state-default",
+              hoverClass: "ui-state-hover",
+              drop: function( event, ui ) {
+//                $( this )
+//                  .addClass( "ui-state-highlight" )
+//                  .find( "p" )
+//                    .html( "Dropped!" );
+              }
+            });
         
         console.log('source data:'+JSON.stringify());
     
@@ -227,11 +255,14 @@ routerApp.controller('queryBuilderCtrl', function
                 }
 
                 if (!isFoundCnd) {
-                    executeQryData.executeMeasures.push({
+                    var obj = {
                         filedName: filed.filedName,
                         condition: row.name
-                    })
+                    };
+                    executeQryData.executeMeasures.push(obj)
+                    $scope.getAggregation(obj);
                 }
+                
             },
             onClickColumn: function (column) {
                 var isFoundCnd = false;
@@ -247,7 +278,8 @@ routerApp.controller('queryBuilderCtrl', function
                 if (!isFoundCnd) {
                     executeQryData.executeColumns.push({
                         filedName: column.filedName
-                    })
+                    });
+                    $scope.getGroupedAggregation(column.filedName);
                 }
             },
 
@@ -302,11 +334,15 @@ routerApp.controller('queryBuilderCtrl', function
                     case '4':
                         //#save
                         //all config save to main dashboard
+                        $scope.widget = $scope.sourceData.wid;
+                        $scope.widget.highchartsNG = $scope.highchartsNG;
+                        $scope.widget.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
+                        $rootScope.dashboard.widgets.push($scope.widget);
                         this.isMainLoading = true;
                         this.message = this.messageAry[0];
                         setTimeout(function () {
                             $scope.eventHndler.isMainLoading = false;
-                            $window.location.href = "#/";
+                            $state.go('home.Dashboards');
                         }, 5000);
                         break;
                 }
@@ -320,13 +356,101 @@ routerApp.controller('queryBuilderCtrl', function
                 }
                 onSelect.selected = true;
                 $scope.executeQryData.chartType = onSelect.chart;
-                privateFun.createHighchartsChart(onSelect.chart);
+                $scope.chartType = onSelect.chart;
+                $scope.changeChartType(onSelect.chart);
+                //privateFun.createHighchartsChart(onSelect.chart);
             },
             onSaveChartConfig: function () {
 
 
             }
         }//end event function
+        
+        
+        $scope.changeChartType = function(type){
+            $scope.highchartsNG.options.chart.type = type;
+        };
+        
+        
+        $scope.getAggregation = function(aggObj){
+            $scope.eventHndler.isLoadingChart=true;
+            if($scope.highchartsNG.series.length == 3){
+                $scope.highchartsNG = {};
+                $scope.highchartsNG = {
+                            options: {
+                                chart: {
+                                    type: $scope.chartType == '' ? 'bar' :
+                                        $scope.chartType,
+                                    // Explicitly tell the width and height of a chart
+                                    width: null,
+                                    height: 397,
+                                }
+                            },
+                            subtitle: {
+                                text: 'Query Builder ',
+                                x: -20
+                            },
+                            legend: {
+                                layout: 'vertical',
+                                align: 'right',
+                                verticalAlign: 'middle',
+                                borderWidth: 0
+                            },
+                            xAxis: {
+                                type: 'category'
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            colors: ['#EC784B'],
+                            series: []
+                        };
+            }
+            
+            $scope.client.getAggData($scope.sourceData.tbl, aggObj.condition, aggObj.filedName, function(res, status){
+                for (var c in res[0]) {
+                    if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+                        $scope.highchartsNG.series.push({
+                            name: c,
+                            color: '#EC784B',
+                            data: [res[0][c]]
+                        })
+                    }
+                }
+                $scope.eventHndler.isLoadingChart=false;
+            });
+            //alert('test');
+        };
+    
+    $scope.getGroupedAggregation = function(row){
+        $scope.eventHndler.isLoadingChart=true;
+        $scope.highchartsNG.series = [];
+        var seriesArr = $scope.executeQryData.executeMeasures;
+        for(i=0;i<seriesArr.length;i++){
+            $scope.client.getAggData($scope.sourceData.tbl, seriesArr[i].condition, seriesArr[i].filedName, function(res, status){
+                var seriesArr = [];
+                //get the series name
+                var serName = "";
+                for (var c in res[0]) {
+                    if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+                        if(c != row) serName = c;
+                    }
+                }
+                res.forEach(function(key){
+                    seriesArr.push({
+                        name: key[row],
+                        y: key[serName]
+                    });
+                });
+                $scope.highchartsNG.series.push({
+                    name: serName,
+                    data: seriesArr
+                });
+            },row);
+        }
+        if(i == seriesArr.length)$scope.eventHndler.isLoadingChart=false;
+    };
+        
         privateFun.createHighchartsChart('');
 
     }

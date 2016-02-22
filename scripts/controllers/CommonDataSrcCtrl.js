@@ -46,11 +46,14 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             {'type': 'char', 'category': 'att'},
             {'type': 'char', 'category': 'att'},
             {'type': 'bit', 'category': 'att'},
+            {'type': 'STRING', 'category': 'att'},
             {'type': 'int', 'category': 'mes'},
             {'type': 'decimal', 'category': 'mes'},
             {'type': 'float', 'category': 'mes'},
             {'type': 'datetime', 'category': 'mes'},
-            {'type': 'money', 'category': 'mes'}
+            {'type': 'money', 'category': 'mes'},
+            {'type': 'INTEGER', 'category': 'mes'},
+            {'type': 'FLOAT', 'category': 'mes'}
         ];
 
 
@@ -88,7 +91,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     $scope.sourceUi.tableData = [];
                     commonUi.isDataLoading = true;
                     commonUi.isServiceError = false;
-                    $scope.client = $diginengine.getClient("HutchDialogic", src);
+                    $scope.client = $diginengine.getClient(src);
                     $scope.client.getTables(function (res, status) {
                         callback(res, status);
                     });
@@ -270,9 +273,34 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     name: currentQry,
                     id: publicFun.getRandomNo
                 });
-                $rootScope.dashboard2.push($scope.sourceUi);
+                
+                $scope.currWidget = {
+                     widData: {},
+                     widView: "",
+                     dataView: "ViewElasticData",
+                     dataCtrl: "elasticDataCtrl",
+                     initTemplate: "",
+                     initCtrl: "commonSrcInit",
+                     uniqueType: "Common Source",
+                     syncState: true,
+                     expanded: true,
+                     seriesname: "",
+                     externalDataURL: "",
+                     dataname: "",
+                     d3plugin: "",
+                     divider: false,
+                     id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
+                     type: "Visualization",
+                     width: '370px',
+                     height: '300px',
+                     mheight: '100%',
+                     highchartsNG: {}
+                  };
+
+//                $rootScope.dashboard.widgets.push($scope.currWidget);
 
                 $csContainer.fillCSContainer({
+                    wid: $scope.currWidget,
                     src: $scope.sourceUi.selectedSource,
                     tbl: $scope.sourceUi.selectedNameSpace,
                     fAttArr: $scope.sourceUi.attrObj,

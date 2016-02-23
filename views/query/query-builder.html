@@ -109,8 +109,9 @@
                     <div class="measures-body">
                         <div class="draggable-measure data-row"
                              ng-repeat="measure in executeQryData.executeMeasures">
+                            <i class="ti-close" ng-click="removeMeasure(measure)"></i>
                             <span>
-                              {{measure.condition}}
+                              &nbsp;&nbsp;{{measure.condition}}
                             </span>                            
                             <div class="measures-type">
                                 {{measure.filedName}}
@@ -178,6 +179,7 @@
                     <div class="measures-body">
                         <div class="data-row"
                              ng-repeat="row in executeQryData.executeColumns">
+                            <i class="ti-close" ng-click="removeCategory(row)"></i>&nbsp;&nbsp;
                             {{row.filedName}}
                         </div>
                         <div class="filter-data-not-fund"
@@ -204,7 +206,138 @@
                 </div>
 
                 <div class="digin-gb-row">
+                    <div class="panel-header inline-panel-header p-b-0">
+                        <h3 class="font-weight-300">
+                            customer query design
+                            <div class="header-icon">
+                                <i class="ti-help"></i>
+                            </div>
+                            <div class="header-icon">
+                                <i class="ti-pencil"></i>
+                            </div>
+                            <div class="header-icon">
+                                <i class="ti-paint-bucket"
+                                   ng-click="eventHndler.onClickSetting('5')"></i>
+                            </div>
+                        </h3>
+                    </div>
 
+
+                    <!-- query builder wrap -->
+                    <div class="query-builder" id="toggleQueryBuilder">
+                        <div class="header">
+                            <h4 class="font-weight-300 p-20"
+                            >
+                                design query
+                                <div class="header-icon">
+                                    <i class="ti-close"
+                                       ng-click="eventHndler.onClickSetting('5')"></i>
+                                </div>
+                                <div class="header-icon">
+                                    <i class="ti-help"></i>
+                                </div>
+                                <div class="header-icon">
+                                    <i class="ti-trash"></i>
+                                </div>
+                            </h4>
+                        </div>
+
+                        <div class="query-builder-wrap">
+                            <div class="filed">
+                                <div class="query-header measures-header">
+                                    <i class="ti-filter"></i>
+                                </div>
+                                <!-- #measures -->
+                                <p class="data-row-style-2"
+                                   ng-drop="true"
+                                   ng-drop-success="dragabbleEvent.onDropCompleteMeasure($data,measure)"
+                                   ng-repeat="measure in commonData.measures">
+                                    {{measure.filedName}}
+
+                                </p>
+                            </div>
+
+                            <div class="filed">
+                                <div class="query-header">
+                                    <i class=" ti-ruler-pencil"></i>
+                                </div>
+                                <div class="draggable-objects">
+                                    <!-- #condition -->
+                                    <p class="data-row-style-2"
+                                       ng-drag="true"
+                                       ng-drag-data="condition"
+                                       ng-center-anchor="true"
+                                       ng-repeat="condition in commonData.measureCondition">
+                                        {{condition.name}}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="filed">
+                                <div class="query-header">
+                                    <i class="ti-filter"></i>
+                                </div>
+                                <!-- #columns -->
+                                <p class="data-row-style-2"
+                                   ng-drag="true"
+                                   ng-drag-data="column"
+                                   ng-center-anchor="true"
+                                   ng-repeat="column in commonData.columns">
+                                    {{column.filedName}}
+                                </p>
+                            </div>
+
+
+                            <!-- #group conditon -->
+                            <div class="filed last-filed-option">
+                                <div class="query-header">
+                                    <i class="ti-layers"></i>
+                                </div>
+                                <span>Group option</span>
+                                <div class="group-by" ng-drop="true"
+                                     ng-drop-success="dragabbleEvent.onDropCompleteGroup($data)">
+                                    <div class="group-msg" ng-if="executeQryData.GrpFiled.length == 0">
+                                        columns drop here
+                                    </div>
+                                    <p class="data-row-style-2"
+                                       ng-repeat="filed in executeQryData.GrpFiled">
+                                        {{filed.filedName}}
+                                    </p>
+                                </div>
+
+                                <div class="button-wrap">
+                                    <span class="btn btn-sm btn-default ">
+                                        Apply
+                                    </span>
+                                     <span class="btn btn-sm btn-default">
+                                        clear
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="query-view-warp">
+                        <div class="query-viewer">
+                            <div class="query-view-not-fund"
+                                 ng-click="eventHndler.onClickSetting('5')"
+                                 ng-if="queryBuilderData.select.length < 1">
+                                <h5>
+                                    <i class="ti-paint-bucket"></i>
+                                    design query
+                                </h5>
+                            </div>
+                            <div ng-if="queryBuilderData.select.length > 0">
+                                select <p ng-repeat="select in queryBuilderData.select">
+                                {{select.condition}}({{select.filed}})<span
+                                    ng-if="queryBuilderData.select.length > 1">,</span></p>
+                                from cutomer
+                            </div>
+                        </div>
+
+
+                    </div>
 
                 </div>
             </div>

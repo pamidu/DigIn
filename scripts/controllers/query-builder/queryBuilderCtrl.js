@@ -12,31 +12,7 @@ routerApp.controller('queryBuilderCtrl', function
     
     $scope.sourceData = $csContainer.fetchSrcObj();
     $scope.client = $diginengine.getClient($scope.sourceData.src);
-        
-
-        var privateFun = (function () {
-            return {
-                checkToggleOpen: function (openWindow) {
-                    switch (openWindow) {
-                        case '1':
-                            if ($scope.eventHndler.isToggleMeasure) {
-                                $("#togglePanel").hide(200);
-                                $scope.eventHndler.isToggleMeasure = false;
-                            }
-                            break;
-                        case '2':
-                            if ($scope.eventHndler.isToggleColumns) {
-                                $("#togglePanelColumns").hide(200);
-                                $scope.eventHndler.isToggleColumns = false;
-                            }
-                            break;
-
-                    }
-                },
-                createHighchartsChart: function (type) {
-                    //high charts config
-                    $scope.chartType = type;
-                    $scope.highchartsNG = {
+    $scope.initHighchartObj = {
                         options: {
                             chart: {
                                 type: $scope.chartType == '' ? 'bar' :
@@ -92,6 +68,31 @@ routerApp.controller('queryBuilderCtrl', function
                             data: [17.4, 16.1, 19.45, 24.15, 28.44, 33.15, 37.2, 41.25, 43.3]
                         },]
                     };
+        
+
+        var privateFun = (function () {
+            return {
+                checkToggleOpen: function (openWindow) {
+                    switch (openWindow) {
+                        case '1':
+                            if ($scope.eventHndler.isToggleMeasure) {
+                                $("#togglePanel").hide(200);
+                                $scope.eventHndler.isToggleMeasure = false;
+                            }
+                            break;
+                        case '2':
+                            if ($scope.eventHndler.isToggleColumns) {
+                                $("#togglePanelColumns").hide(200);
+                                $scope.eventHndler.isToggleColumns = false;
+                            }
+                            break;
+
+                    }
+                },
+                createHighchartsChart: function (type) {
+                    //high charts config
+                    $scope.chartType = type;
+                    $scope.highchartsNG = $scope.initHighchartObj;
                 }
             }
 
@@ -126,15 +127,80 @@ routerApp.controller('queryBuilderCtrl', function
                     selected: false
                 },
                 {
-                    id: 'ct02', icon: 'ti-bar-chart', name: 'bar chart', chart: 'bar',
+                    id: 'ct02', icon: 'ti-bar-chart', name: 'bar ', chart: 'bar',
                     selected: false
                 },
                 {
-                    id: 'ct02', icon: 'fa fa-line-chart', name: 'line chart', chart: 'line',
+                    id: 'ct03', icon: 'fa fa-line-chart', name: 'line ', chart: 'line',
                     selected: false
                 },
                 {
-                    id: 'ct02', icon: 'fa fa-area-chart', name: 'area chart', chart: 'area',
+                    id: 'ct03', icon: ' chart-diginSmooth_line', name: 'Smooth line ', chart: 'smoothline',
+                    selected: false
+                },
+                {
+                    id: 'ct04', icon: 'fa fa-area-chart', name: 'area ', chart: 'area',
+                    selected: false
+                },{
+                    id: 'ct04', icon: 'chart-diginsmooth_area', name: 'Smooth area ', chart: 'area',
+                    selected: false
+                },
+                {
+                    id: 'ct05', icon: 'chart-diginalluvialt', name: 'alluvial', chart: 'alluvial',
+                    selected: false
+                },
+                {
+                    id: 'ct06', icon: 'chart-diginscatter', name: 'scatter ', chart: 'scatter',
+                    selected: false
+                },
+                {
+                    id: 'ct07', icon: 'chart-diginbump', name: 'bumpChart ', chart: 'bump',
+                    selected: false
+                },
+                {
+                    id: 'ct08',
+                    icon: 'chart-digincluster-dendrogram',
+                    name: 'circularDendrogram ',
+                    chart: 'circularDendrogram',
+                    selected: false
+                },
+                {
+                    id: 'ct08',
+                    icon: 'chart-digincluster-dendrogram',
+                    name: 'clusterDendrogram',
+                    chart: 'clusterDendrogram',
+                    selected: false
+                }
+                ,
+                {
+                    id: 'ct08',
+                    icon: 'chart-digincluster',
+                    name: 'clusterForce',
+                    chart: 'clusterForce',
+                    selected: false
+                }, {
+                    id: 'ct08',
+                    icon: 'chart-diginconvex-hull',
+                    name: 'convexHull',
+                    chart: 'convexHull',
+                    selected: false
+                }, {
+                    id: 'ct08',
+                    icon: 'chart-diginhierarchy-chart',
+                    name: 'hierarchy',
+                    chart: 'hierarchy',
+                    selected: false
+                }, {
+                    id: 'ct08',
+                    icon: 'chart-diginsunburst-chart',
+                    name: 'sunburst',
+                    chart: 'sunburst',
+                    selected: false
+                }, {
+                    id: 'ct08',
+                    icon: 'chart-digintreeeview',
+                    name: 'treeeview',
+                    chart: 'treeeview',
                     selected: false
                 }
             ]
@@ -260,7 +326,7 @@ routerApp.controller('queryBuilderCtrl', function
                         condition: row.name
                     };
                     executeQryData.executeMeasures.push(obj)
-                    $scope.getAggregation(obj);
+                    $scope.getAggregation();
                 }
                 
             },
@@ -276,15 +342,21 @@ routerApp.controller('queryBuilderCtrl', function
                 }
 
                 if (!isFoundCnd) {
-                    executeQryData.executeColumns.push({
-                        filedName: column.filedName
-                    });
-                    $scope.getGroupedAggregation(column.filedName);
+                    var seriesArr = $scope.executeQryData.executeMeasures;
+                    if(seriesArr.length > 0){
+                        executeQryData.executeColumns = [{
+                            filedName: column.filedName
+                        }];
+                        $scope.getGroupedAggregation(column.filedName);
+                    }else{
+                        alert("First select atleast one measure");
+                    }
+                    
                 }
             },
 
             onClickRmvCondition: function (condition, measure) {
-                alert('record delete function...');
+                alert('record delete function...'+ JSON.stringify(condition) + " " + JSON.stringify(measure));
             },
             onClickApply: function () {
                 this.isLoadingChart = true;
@@ -372,9 +444,10 @@ routerApp.controller('queryBuilderCtrl', function
         };
         
         
-        $scope.getAggregation = function(aggObj){
+        $scope.getAggregation = function(){
             $scope.eventHndler.isLoadingChart=true;
-            if($scope.highchartsNG.series.length == 3){
+            if(typeof $scope.highchartsNG["init"] == "undefined" || !$scope.highchartsNG.init){
+                $scope.highchartsNG["init"] = false;
                 $scope.highchartsNG = {};
                 $scope.highchartsNG = {
                             options: {
@@ -407,38 +480,51 @@ routerApp.controller('queryBuilderCtrl', function
                         };
             }
             
-            $scope.client.getAggData($scope.sourceData.tbl, aggObj.condition, aggObj.filedName, function(res, status){
-                for (var c in res[0]) {
-                    if (Object.prototype.hasOwnProperty.call(res[0], c)) {
-                        $scope.highchartsNG.series.push({
-                            name: c,
-                            color: '#EC784B',
-                            data: [res[0][c]]
-                        })
-                    }
-                }
-                $scope.eventHndler.isLoadingChart=false;
-            });
+            if($scope.executeQryData.executeColumns.length == 0){
+                var meaArr = executeQryData.executeMeasures;
+                meaArr.forEach(function(key){
+                    $scope.eventHndler.isLoadingChart=true;
+                    $scope.client.getAggData($scope.sourceData.tbl, key.condition, key.filedName, function(res, status){
+                        for (var c in res[0]) {
+                            if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+                                $scope.highchartsNG.series.push({
+                                    name: c,
+                                    color: '#EC784B',
+                                    data: [res[0][c]]
+                                })
+                            }
+                        }
+                        $scope.eventHndler.isLoadingChart=false;
+                    });
+                });
+                
+                
+            }else{
+                $scope.getGroupedAggregation();
+            }
+            
             //alert('test');
         };
     
     $scope.getGroupedAggregation = function(row){
-        $scope.eventHndler.isLoadingChart=true;
+        if(row) $scope.selectedCat = row;        
         $scope.highchartsNG.series = [];
+        
         var seriesArr = $scope.executeQryData.executeMeasures;
         for(i=0;i<seriesArr.length;i++){
+            $scope.eventHndler.isLoadingChart=true;
             $scope.client.getAggData($scope.sourceData.tbl, seriesArr[i].condition, seriesArr[i].filedName, function(res, status){
                 var seriesArr = [];
                 //get the series name
                 var serName = "";
                 for (var c in res[0]) {
                     if (Object.prototype.hasOwnProperty.call(res[0], c)) {
-                        if(c != row) serName = c;
+                        if(c != $scope.selectedCat) serName = c;
                     }
                 }
                 res.forEach(function(key){
                     seriesArr.push({
-                        name: key[row],
+                        name: key[$scope.selectedCat],
                         y: key[serName]
                     });
                 });
@@ -446,9 +532,31 @@ routerApp.controller('queryBuilderCtrl', function
                     name: serName,
                     data: seriesArr
                 });
-            },row);
+                $scope.eventHndler.isLoadingChart=false;
+            },$scope.selectedCat);
         }
-        if(i == seriesArr.length)$scope.eventHndler.isLoadingChart=false;
+    };
+    
+    $scope.removeMeasure = function(m){
+        var arrObj = $scope.executeQryData.executeMeasures;
+        var index = arrObj.indexOf(m);
+        if (index > -1) {
+            arrObj.splice(index, 1);
+            if(arrObj.length > 0) $scope.getAggregation();
+            else{
+                $scope.executeQryData.executeColumns = [];
+                $scope.highchartsNG = $scope.initHighchartObj;
+            } 
+        }
+    };
+    
+    $scope.removeCategory = function(c){
+        var arrObj = $scope.executeQryData.executeColumns;
+        var index = arrObj.indexOf(c);
+        if (index > -1) {
+            arrObj.splice(index, 1);
+            $scope.getAggregation();
+        }
     };
         
         privateFun.createHighchartsChart('');

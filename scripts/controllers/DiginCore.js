@@ -933,7 +933,7 @@ routerApp.controller('pStackCtrl', function ($scope, $mdDialog, $state) {
         $('.dashboard-widgets-close').css("visibility", "hidden");
         $('md-tabs-wrapper').css("visibility", "hidden");
 
-        $state.go(name);
+        $state.go('home.'+name);
         $mdDialog.hide();
     };
 

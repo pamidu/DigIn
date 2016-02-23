@@ -1,102 +1,321 @@
-<md-sidenav ng-init="initCtrl()" class="md-sidenav-right slider-r-wrap"
+<md-sidenav ng-init="initCtrl()" class="md-sidenav-right slider-r-wrap  "
             md-component-id="right">
-    <md-content class="overflow-none m-0" layout="row">
+    <!-- message -->
+    <div>
+        <toast></toast>
+    </div>
+    <md-content class="overflow-none" layout="row">
         <md-button ng-click="toggleLeft()"
                    ng-hide="isOpenLeft()"
                    class="md-primary sidenav-button" layout="row" layout-align="center center">
             <md-icon md-svg-src="{{icon}}"></md-icon>
         </md-button>
-        <accordion flex>
-            <accordion-panel title="Data Source">
-                <div class="card-body">
-                    <div class="inline-text">
-                        <i class="fa fa-database"></i>
-                        <span>Source</span>
-                    </div>
-                    <div data-ng-if="tablesLoading" class="right loading-table">
-                        <i class="fa fa-circle-o-notch fa-spin"></i>
-                    </div>
-                    <div layout="row">
-                        <!-- select data source -->
-                        <div flex>
-                            <md-select class="full-width" placeholder="Select Source" ng-model="selectedClass"
-                                       ng-change="onChangeSource(selectedClass)">
-                                <md-option ng-value="source.name"
-                                           ng-repeat="source in datasources">
-                                    {{source.name}}
-                                </md-option>
-                            </md-select>
-                        </div>
-                    </div>
-                    <div layout="row">
-                        <!-- select table -->
-                        <div flex>
-                            <md-select class="full-width"
-                                       placeholder="Select Table"
-                                       ng-change="onChangeTable(tblItem)"
-                                       ng-model="tblItem">
-                                <md-option ng-value="item" ng-repeat="item in dataTables | orderBy : item">
-                                    {{item }}
-                                </md-option>
-                            </md-select>
-                        </div>
-                    </div>
-                </div>
-                <div layout="row" layout-align="center center">
-                    <md-switch ng-model="queried.state" aria-label="QuerySwitch">
-                        Queried
-                    </md-switch>
-                </div>
-                <!-- index loader -->
-                <div ng-show="queried.state">
-                    <md-input-container flex>
-                        <label>Query</label>
-                        <input placeholder="type here" ng-model="queried.value">
-                    </md-input-container>
-                </div>
-                <div ng-hide="queried.state" layout="column" class="data-index">
-                    <div>
-                        <md-checkbox ng-repeat="item in tblFields | orderBy : item" ng-click="toggleCheck(item.FieldName)">
-                            {{ item.FieldName }} ||  {{ item.FieldType }}
-                        </md-checkbox>
-                    </div>
-                </div>
-                <md-content class="overflow-none" layout="column">
-                    <accordion>
-                        <accordion-panel title="Chart Types">
-                            <div layout="row" ng-repeat="row in chartTable" layout="row" layout-align="start center">
-                                <fieldset layout="row" layout-align="center center" ng-repeat="chart in row"
-                                     ng-click="configGraph($event,chart)"><img src="{{chart.icon}}">
-                                    <md-tooltip md-visible="false" md-direction="Bottom">{{chart.name}}</md-tooltip>
-                                </fieldset >
+        <div class="slider-r-tab">
+
+
+            <ul class="list-panel icheck-inline">
+                <li class=""
+                    ng-class="{sliderDisable  :commonUi.selectedIndex != 1,
+                    sliderActive: commonUi.selectedIndex==1}"
+                    ng-click="commonUi.onClickTab('1')">
+                    <span class="tab_icon">
+                      <i class="fa fa-database"></i>
+                    </span>
+                    <span>Source</span>
+                </li>
+
+                <li class=""
+                    ng-class="{sliderDisable:commonUi.selectedIndex != 2,
+                    sliderActive:commonUi.selectedIndex==2}"
+                    ng-click="commonUi.onClickTab('2')">
+                    <span class="tab_icon ">
+                      <i class="fa fa-table"></i>
+                    </span>
+                    <span>Info</span>
+                </li>
+                <li class=""
+                    ng-class="{sliderDisable:commonUi.selectedIndex != 3,
+                    sliderActive:commonUi.selectedIndex==3}"
+                    ng-click="commonUi.onClickTab('3')">
+                    <span class="tab_icon ">
+                      <i class="fa fa-th-list"></i>
+                    </span>
+                    <span>Schema</span>
+                </li>
+            </ul>
+        </div>
+
+
+    </md-content>
+
+    <!--
+    Update damith
+    UI Select Main Source -->
+    <md-content class="overflow-none animate-hide animated" layout="row"
+                ng-class="{fadeInRightBig: commonUi.selectedIndex==2,
+                fadeInLeft: commonUi.selectedIndex==1}"
+                ng-show="commonUi.selectedIndex=='1'">
+        <div class="slider-r-source ">
+            <!-- refresh all source -->
+            <div class="digni-cmds-header-btn">
+                <i class="ti-reload"
+                   ng-click="commonUi.onRefresh(3)"
+                ></i>
+            </div>
+
+            <h3 class="graph-h2 font-weight-500 text-center p-t-b-30">
+                Data source builder (1/3)
+                <small class="text-color-grey-600">
+                    what do you want to connect to?
+                </small>
+            </h3>
+            <div layout="row">
+                <!-- select data source -->
+                <div flex>
+                    <div class="digin-cmds-source">
+                        <div ng-repeat="source in datasources"
+                             class="source-wrap icheck-inline hvr-outline-in "
+                             ng-click="commonUi.onClickSelectedSrc(source,datasources)">
+                            <img class="source-icon" ng-src="{{source.icon}}"
+                                 alt="{{source.name}}">
+                            <div class="source-wrap-footer">
+                                {{source.name}}
                             </div>
-                        </accordion-panel>
-                    </accordion>
-                </md-content>
-                <!--                    <md-button ng-click="configGraph($event)" flex>Create</md-button>-->
-            </accordion-panel>
-        </accordion>
-
-    </md-content>
-</md-sidenav>
-
-<md-sidenav class="md-sidenav-right md-sidenav-custom md-whiteframe-z2" md-component-id="custom">
-    <md-content class="overflow-none" layout="column">
-        <accordion ng-repeat="field in fieldArray">
-            <accordion-panel title="{{field}}">
-                <ng-md-icon icon="file_download" style="fill:#BDBDBD" size="20" layout="column"
-                            layout-align="center center" flex ng-click="getDataByFields(field)"></ng-md-icon>
-                <!-- index loader -->
-                <div layout="column" class="data-index">
-                    <div>
-                        <md-checkbox ng-repeat="data in distinct[field] track by $index" ng-click="toggleCheck2(data)">
-                            {{data}}
-                        </md-checkbox>
+                            <div class="selectedSource"
+                                 ng-class="source.selected==true?'selectedSource':'displayNone'">
+                                <i class="fa fa-check-circle-o"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <md-button ng-click="configGraph2($event, field)" flex>Create</md-button>
-            </accordion-panel>
-        </accordion>
+            </div>
+            <div class="cmds-btn-footer m-top-10">
+                        <span class="btn btn-block btn-default"
+                              ng-click="commonUi.onClickNext('1')">
+                            next
+                        </span>
+                <span class="btn btn-block btn-default btn-close"
+                      ng-click="commonUi.onClickClose()">
+                            close
+                        </span>
+            </div>
+        </div>
     </md-content>
-</md-sidenav>
 
+    <!--UI Select table info -->
+    <md-content class="overflow-none animated " layout="row"
+                ng-class="{fadeInRightBig: commonUi.selectedIndex==2,
+                fadeInLeft: commonUi.selectedIndex==1}"
+                ng-show="commonUi.selectedIndex=='2'">
+        <div class="slider-r-source ">
+            <h3 class="graph-h2 font-weight-500 text-center p-t-b-30">
+                Data source builder (2/3)
+                <small class="text-color-grey-600">
+                    what do you want to connect to?
+                </small>
+            </h3>
+
+            <div layout="row">
+                <!-- source not found -->
+                <div class="digin-cmds-source "
+                     ng-show="sourceUi.selectedSource==''">
+                    <div class="error-wrap error">
+                        <i class="fa fa-database"></i>
+                        <span> Source Not Found</span>
+                    </div>
+
+                    <div class="cmds-btn-footer">
+                        <div class="cmds-btn-footer m-top-10">
+                        <span class="btn btn-block btn-default"
+                              ng-click="commonUi.onClickBack('2')">
+                            back
+                        </span>
+                        <span class="btn btn-block btn-default btn-close"
+                              ng-click="commonUi.onClickClose()">
+                                close
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- connection error
+                    time out error
+                    services error match -->
+            <div class="row">
+                <div class="digin-cmds-source "
+                     ng-show="commonUi.isServiceError==true">
+                    <div class="error-wrap error">
+                        <i class="fa fa-clock-o"></i>
+                        <span> Connection time out</span>
+                    </div>
+
+                    <div class="cmds-btn-footer m-top-10">
+                        <div class="text-center">
+                            <span class="btn btn-default"
+                                  ng-click="commonUi.onRefresh(4)">
+                                refresh
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- select table data -->
+            <div class="digin-cmds-source digin-cmds-info"
+                 ng-show="sourceUi.selectedSource!=''">
+
+                <div class="info-wrap">
+                    <!-- Is data loading -->
+                    <div class="digin-cmds-loading"
+                         ng-if="commonUi.isDataLoading"
+                         ng-show="sourceUi.selectedSource!=''">
+                        <svg class="circular-loader" height="50" width="50">
+                            <circle class="path" cx="25" cy="25.2" r="19.9"
+                                    fill="none" stroke-width="6" stroke-miterlimit="10"/>
+                        </svg>
+                    </div>
+                    <!-- table data -->
+                    <ui ng-repeat="row in sourceUi.tableData track by row.id ">
+                        <li class="col-sheet hvr-back-pulse "
+                            ng-click="commonUi.onSelectClassRow(row)"
+                            ng-class="row.selected==true?'selectedRow':'unSelectedRow'"
+                        > {{row.name}}
+                            <i class="ti-check pull-right">
+                            </i>
+                        </li>
+                    </ui>
+                </div>
+            </div>
+            <div class="cmds-btn-footer" ng-show="sourceUi.selectedSource!=''"
+                 ng-if="commonUi.isServiceError==false">
+                <div class="cmds-btn-footer m-top-10">
+                        <span class="btn btn-block btn-default"
+                              ng-click="commonUi.onClickNext('2')">
+                            next
+                        </span>
+                        <span class="btn btn-block btn-default btn-close"
+                              ng-click="commonUi.onClickBack('2')">
+                                back
+                        </span>
+                </div>
+            </div>
+        </div>
+    </md-content>
+
+    <!-- UI select table schema (table filed)-->
+    <md-content class="overflow-none animated " layout="row"
+                ng-class="{fadeInRightBig: commonUi.selectedIndex==3,
+                fadeInLeft: commonUi.selectedIndex==3}"
+                ng-show="commonUi.selectedIndex=='3'">
+        <div class="slider-r-source ">
+            <h3 class="graph-h2 font-weight-500 text-center p-t-15">
+                Data source builder (3/3)
+                <small class="text-color-grey-600">
+                    what do you want to connect to?
+                </small>
+            </h3>
+
+            <div layout="row">
+                <!-- source not found -->
+                <div class="digin-cmds-source "
+                     ng-show="sourceUi.selectedNameSpace==''">
+                    <div class="error-wrap error">
+                        <i class="fa fa-table"></i>
+                        <span> Table Not Found</span>
+                    </div>
+
+                    <div class="cmds-btn-footer">
+                        <div class="cmds-btn-footer m-top-10">
+                        <span class="btn btn-block btn-default"
+                              ng-click="commonUi.onClickBack('3')">
+                            back
+                        </span>
+                        <span class="btn btn-block btn-default btn-close"
+                              ng-click="commonUi.onClickClose()">
+                                close
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!-- search data-->
+            </div>
+            <div class="digin-cmds-source-2 digin-cmds-scheme"
+                 ng-show="sourceUi.selectedNameSpace!=''">
+                <!-- Is data loading -->
+                <div class="digin-cmds-loading"
+                     ng-if="commonUi.isDataLoading"
+                     ng-show="sourceUi.selectedSource!=''">
+                    <svg class="circular-loader" height="50" width="50">
+                        <circle class="path" cx="25" cy="25.2" r="19.9"
+                                fill="none" stroke-width="6" stroke-miterlimit="10"/>
+                    </svg>
+                </div>
+                <!-- filed data -->
+                <div class="row">
+                    <div class="sub-header">
+                        <span>Attribute</span>
+                    </div>
+                    <div class="digin-cmds-attribute">
+                        <div class="digin-cmds-attr-error"
+                             ng-show="sourceUi.selectedAttribute==''">
+                            <i class="fa fa-refresh"
+                               id="refAttribute"
+                               ng-class="commonUi.isRefAttribute==true?'fa-spin':''"
+                               ng-click="commonUi.onRefresh(1)"
+                            ></i>
+                            <span>Attribute Not Found</span>
+                        </div>
+
+                        <ui ng-repeat="row in sourceUi.selectedAttribute ">
+                            <li class="col-sheet-attr hvr-fade"
+                                ng-click="commonUi.onRemoveAtt(sourceUi.selectedAttribute,row)"
+                                ng-class="row.isRemove==true?'displayNone':'displayInlineBlock'"
+                            > {{row.name}}
+                            </li>
+                        </ui>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="sub-header">
+                        <span>Measures</span>
+                    </div>
+                    <div class="digin-cmds-measures ">
+                        <div class="digin-cmds-attr-error"
+                             ng-show="sourceUi.selectedMeasures==''">
+                            <i class="fa fa-refresh"
+                               id="refMeasures"
+                               ng-class="commonUi.isRefMeasures==true?'fa-spin':''"
+                               ng-click="commonUi.onRefresh(2)"
+                            ></i>
+                            <span>Measures Not Found</span>
+                        </div>
+
+                        <ui ng-repeat="row in sourceUi.selectedMeasures ">
+                            <li class="col-sheet-attr hvr-fade "
+                                ng-click="commonUi.onRemoveMeasures(sourceUi.selectedMeasures ,row)"
+                                ng-class="row.isRemove==true?'displayNone':'displayInlineBlock'"
+                            > {{row.name}}
+                            </li>
+                        </ui>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cmds-btn-footer" ng-show="sourceUi.selectedNameSpace!=''">
+                <div class="cmds-btn-footer m-top-10">
+                        <span class="btn btn-block btn-default"
+                              ng-click="commonUi.onSaveSource()">
+                            save
+                        </span>
+                        <span class="btn btn-block btn-default btn-close"
+                              ng-click="commonUi.onClickBack('3')">
+                                back
+                        </span>
+                </div>
+            </div>
+        </div>
+
+    </md-content>
+
+</md-sidenav>

@@ -1,8 +1,8 @@
-var app = angular.module("diginLogin", ['ngMaterial']);
+//var app = angular.module("diginLogin", ['ngMaterial']);
 
-app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$window', 'focus',
-    function ($scope, $http, $mdToast, $animate, $window, focus) {
-
+routerApp.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$window','$auth', '$state',
+    function ($scope, $http, $mdToast, $animate, $window,$auth, $state) {
+        $scope.isLoggedin = false;
         $scope.error = {
             isUserName: false,
             isPwd: false,
@@ -10,70 +10,67 @@ app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$window
         };
 
 
-        //on click login  button
-        $scope.login = function () {
-            var loginAuth = {
-                'useName': 'Demo',
-                'pwd': 'Demo',
-                authDetail: {
-                    'user': $scope.txtUname,
-                    'pwd': $scope.txtPwd
-                }
-            };
-
-            if (angular.isUndefined(loginAuth.authDetail.user)) {
-                $scope.error.isUserName = true;
-                focus('userName');
-                return;
-            }
-            else if (angular.isUndefined(loginAuth.authDetail.pwd)) {
-                $scope.error.isPwd = true;
-                focus('password');
-                return;
-            } else {
-                //login authentication
-                if (loginAuth.authDetail.user == 'Demo' &&
-                    loginAuth.authDetail.pwd == 'Demo') {
-                    $window.location = "home.html";
-                    return;
-                } else {
-                    //invalid login detials
-                    focus('userName');
-                    $scope.error = {
-                        isUserName: true,
-                        isPwd: true
-                    };
-                    return;
-                }
-
-            }
-
+        //on click login  button - Login user
+        $scope.login = function() {
+            alert('test');
+            $auth.login($scope.txtUname,$scope.txtPwd,"duoworld.duoweb.info");
+            $auth.onLoginResult(function () {
+                $scope.isLoggedin = true;
+                  $state.go('home');
+//                $window.location = "home.html";
+            });  
+            // , 
+            // function (errorData){
+            //     alert (errorData.description);
+            // });
         };
-    }]);
+       
 
-app.config(function ($mdThemingProvider, $httpProvider) {
-        $mdThemingProvider.theme('default')
-            .primaryPalette('indigo')
-            .accentPalette('orange');
-    })
-    .factory('focus', function ($timeout, $window) {
-        return function (id) {
-            $timeout(function () {
-                var element = $window.document.getElementById(id);
-                if (element)
-                    element.focus();
+        //Register user??
+        $scope.registerUser = function() {
+            $Auth.register({
+                UserID:$scope.txtUname,
+                EmailAddress: $scope.txtUname,
+                Name: $scope.txtUname,
+                Password: $scope.txtPwd,
+                ConfirmPassword:$scope.txtPwd,
+                Active: true
+            }).success(function(data) {
+                if (data.error) {
+                    alert("Err!");
+                }
+
+                if (data.success) {
+                    alert("Success!");
+                }
             });
         };
-    }).directive('keyEnter', function () {
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function (event) {
-            if (event.which === 13) {
-                //13 press key Enter
-                scope.$apply(function () {
-                    scope.$eval(attrs.keyEnter);
-                });
-                event.preventDefault();
-            }
-        });
-    };
-});
+
+    }]);
+
+//app.config(function ($mdThemingProvider, $httpProvider) {
+//        $mdThemingProvider.theme('default')
+//            .primaryPalette('indigo')
+//            .accentPalette('orange');
+//    })
+//    .factory('focus', function ($timeout, $window) {
+//        return function (id) {
+//            $timeout(function () {
+//                var element = $window.document.getElementById(id);
+//                if (element)
+//                    element.focus();
+//            });
+//        };
+//    }).directive('keyEnter', function () {
+//    return function (scope, element, attrs) {
+//        element.bind("keydown keypress", function (event) {
+//            if (event.which === 13) {
+//                //13 press key Enter
+//                scope.$apply(function () {
+//                    scope.$eval(attrs.keyEnter);
+//                });
+//                event.preventDefault();
+//            }
+//        });
+//    };
+//});

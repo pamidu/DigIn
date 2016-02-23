@@ -2,343 +2,406 @@
  --- commonDataSrcInit
  --- commonSrcInit
  */
-routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log', 'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API', 'Digin_Engine_API_Namespace', '$diginengine', function($scope, $controller, $mdSidenav, $log, CommonDataSrc, $mdDialog, $rootScope, $http, Digin_Engine_API, Digin_Engine_API_Namespace, $diginengine) {
+routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log',
+    'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API',
+    'Digin_Engine_API_Namespace', '$diginengine', 'ngToast', '$window','$state','$csContainer'
+    , function ($scope, $controller, $mdSidenav, $log, CommonDataSrc,
+                $mdDialog, $rootScope, $http, Digin_Engine_API,
+                Digin_Engine_API_Namespace, $diginengine, ngToast, $window, $state, $csContainer) {
 
-    $scope.initCtrl = function() {
-        $scope.fieldArray = [];
-        $scope.fieldString = [];
-        $scope.dataArray = [];
-        $scope.dataString = [];
-        $scope.distinct = [];
-        $scope.selTable = "";
-        $scope.selSrc = "";
+        $rootScope.dashboard2 = [];
 
-        $scope.queried = {};
-        $scope.icon = "bower_components/material-design-icons/navigation/svg/production/ic_chevron_left_18px.svg";
-        $scope.queried.state = false;
         $scope.datasources = [{
-            name: "DuoStore"
+            name: "DuoStore",
+            icon: "styles/icons/source/duo-store.svg",
+            selected: false
         }, {
-            name: "BigQuery"
+            name: "BigQuery",
+            icon: "styles/icons/source/biq-query.svg",
+            selected: false
         }, {
-            name: "CSV/Excel"
+            name: "CSV/Excel",
+            icon: "styles/icons/source/xlsx.svg",
+            selected: false
         }, {
-            name: "Rest/SOAP Service"
+            name: "Rest/SOAP Service",
+            icon: "styles/icons/source/api.svg",
+            selected: false
         }, {
-            name: "MSSQL"
+            name: "MSSQL",
+            icon: "styles/icons/source/mssql.svg",
+            selected: false
         }, {
-            name: "SpreadSheet"
+            name: "SpreadSheet",
+            icon: "styles/icons/source/spread-sheet.svg",
+            selected: false
+
         }];
 
-        //$scope.client = $diginengine.getClient("HutchDialogic", "MSSQL");
 
-        //breaking the chart types into arrays, purpose: to display the icons in rows of 8
-        function chunk(arr, size) {
-            var newArr = [];
-            for (var i = 0; i < arr.length; i += size) {
-                newArr.push(arr.slice(i, i + size));
-            }
-            return newArr;
-        }
-
-        getJSONData($http, 'chartConfig', function(data) {
-            $scope.chartTable = chunk(data, 8);
-        });
-
-    };
-
-    $scope.toggleLeft = buildToggler('custom');
-
-    $scope.isOpenRight = function() {
-        return $mdSidenav('right').isOpen();
-    };
-
-    $scope.isOpenRight = function() {
-        return $mdSidenav('custom').isOpen();
-    };
-
-    $scope.onChangeSource = function(src) {
-        $scope.selSrc = src;
-        $scope.client = $diginengine.getClient("Demo", src);
-        $scope.client.getTables(function(data, status) {
-            if (status) $scope.dataTables = data;
-            else console.log("Tables not received due to:" + data);
-        });
-    };
-
-    $scope.onChangeTable = function(tbl) {
-        //clear fieldArray
-        $scope.fieldArray = [];
-        $scope.tblFields = [];
-        $scope.selTable = tbl;
-        $scope.client.getFields(tbl, function(data, status) {
-            if (status)
-                for (i = 0; i < data.length; i++) {
-                    $scope.tblFields.push({
-                        FieldName: data[i]['Fieldname'],
-                        FieldType: data[i]['FieldType']
-                    });
-
-                } else console.log("Fields not received due to:" + data);
-        });
-    };
-
-    function buildToggler(navID) {
-        return function() {
-            $mdSidenav(navID)
-                .toggle()
-                .then(function() {
-                    $log.debug("toggle " + navID + " is done");
-                });
-        }
-    };
-
-    $scope.toggleCheck = function(field) {
-        var i = $scope.fieldArray.indexOf(field);
-        if (i > -1) {
-            $scope.fieldArray.splice(i, 1);
-        } else {
-            $scope.fieldArray.push(field);
-        }
-    };
-
-    $scope.toggleCheck2 = function(data) {
-        console.log("toggleCheck2");
-        var i = $scope.dataArray.indexOf(data);
-        if (i > -1) {
-            $scope.dataArray.splice(i, 1);
-        } else {
-            $scope.dataArray.push(data);
-        }
-    };
+        //data base field type
+        $scope.dataBaseFiledTypes = [
+            {'type': 'nvarchar', 'category': 'att'},
+            {'type': 'varchar', 'category': 'att'},
+            {'type': 'char', 'category': 'att'},
+            {'type': 'char', 'category': 'att'},
+            {'type': 'bit', 'category': 'att'},
+            {'type': 'STRING', 'category': 'att'},
+            {'type': 'int', 'category': 'mes'},
+            {'type': 'decimal', 'category': 'mes'},
+            {'type': 'float', 'category': 'mes'},
+            {'type': 'datetime', 'category': 'mes'},
+            {'type': 'money', 'category': 'mes'},
+            {'type': 'INTEGER', 'category': 'mes'},
+            {'type': 'FLOAT', 'category': 'mes'}
+        ];
 
 
-    $scope.configGraph = function(evt, chart) {
-        //building the fields string
-        $scope.fieldString = [];
-        for (i = 0; i < $scope.fieldArray.length; i++) {
-            $scope.fieldString.push("'" + $scope.fieldArray[i] + "'");
-        }
-
-        $scope.currWidget = {
-            widData: {},
-            widView: chart.resView,
-            dataView: '',
-            dataCtrl: 'widgetSettingsDataCtrl',
-            initTemplate: chart.configView,
-            initCtrl: "commonSrcInit",
-            uniqueType: "Common Source",
-            syncState: true,
-            expanded: true,
-            seriesname: "",
-            externalDataURL: "",
-            dataname: "",
-            d3plugin: "",
-            divider: false,
-            id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
-            type: "Visualization",
-            width: '370px',
-            height: '300px',
-            mheight: '100%',
-            highchartsNG: {
-                size: {
-                    height: 220,
-                    width: 300
-                },
-            },
-            commonSrcConfig: {
-                src: $scope.selSrc,
-                tbl: $scope.selTable,
-                fields: $scope.fieldArray,
-                initSerType: chart.type
-            },
-            winConfig: {}
-        };
-
-        $rootScope.dashboard.widgets.push($scope.currWidget);
-
-        //open the config dialog
-        function openConfig(fields, initTemp, data) {
-            $mdDialog.show({
-                    controller: 'commonSrcInit',
-                    templateUrl: 'views/common-data-src/init-configs/' + initTemp + '.html',
-                    targetEvent: evt,
-                    locals: {
-                        widId: $scope.currWidget.id,
-                        fieldData: fields,
-                        widData: data
+        var chartTypes = [];
+        //Update damith
+        //UI version 1.0
+        //select source tab
+        //comment UI
+        var publicFun = (function () {
+            return {
+                //clear all class Obj
+                clrTblSelectedObj: function (obj) {
+                    var sourceInData = obj;
+                    for (i = 0; i < sourceInData.length; i++) {
+                        sourceInData[i].selected = false;
                     }
-                })
-                .then(function() {
-                    $mdDialog.hide();
-                }, function() {
-                    $mdDialog.hide();
-                });
-        };
 
-        if ($scope.selSrc == 'DuoStore') {
-            openConfig(null, "InitConfigCommonSrc");
-
-        } else if ($scope.selSrc != 'DuoStore') {
-
-            if ($scope.queried.state) {
-                $scope.client.getExecQuery($scope.queried.value, function(data, status) {
-                    openConfig(null, "InitConfigCommonSrcQueried", data);
-                });
-            } else {
-                if ($scope.currWidget.commonSrcConfig.initSerType == "metric") {
-                    $scope.client.getHighestLevel($scope.selTable, $scope.fieldString.toString(), function(data, status) {
-                        if (status) openConfig(data, "InitConfigCommonSrcMetric");
-                        else console.log("Get highest level not received due to:" + data);
+                },
+                clrMainSelectedSource: function (obj) {
+                    //clear main source when click each source
+                    var sourceInData = obj;
+                    for (i = 0; i < sourceInData.length; i++) {
+                        sourceInData[i].selected = false;
+                    }
+                },
+                clearAll: function (callBack) {
+                    publicFun.clrTblSelectedObj($scope.sourceUi.tableData);
+                    publicFun.clrMainSelectedSource($scope.datasources);
+                    $scope.sourceUi.selectedSource = '';
+                    $scope.sourceUi.selectedNameSpace = '';
+                    commonUi.onRefresh(1);
+                    commonUi.onRefresh(2);
+                    callBack(true);
+                }, getAllTbl: function (src, callback) {
+                    $scope.sourceUi.tableData = [];
+                    commonUi.isDataLoading = true;
+                    commonUi.isServiceError = false;
+                    $scope.client = $diginengine.getClient(src);
+                    $scope.client.getTables(function (res, status) {
+                        callback(res, status);
                     });
-                } else {
-                    $scope.client.getHighestLevel($scope.selTable, $scope.fieldString.toString(), function(data, status) {
-                        if (status) openConfig(data, "InitConfigCommonSrc");
-                        else console.log("Get highest level not received due to:" + data);
+                },
+                getAllFields: function (tbl, callback) {
+                    $scope.commonUi.attribute = [];
+                    $scope.commonUi.measures = [];
+                    $scope.sourceUi.selectedAttribute = [];
+                    $scope.sourceUi.selectedMeasures = [];
+                    commonUi.isDataLoading = true;
+                    commonUi.isServiceError = false;
+                    $scope.client.getFields(tbl, function (data, status) {
+                        callback(data, status);
                     });
+                },
+                creteTableObj: function (status, res) {
+                    if (status) {
+                        commonUi.isServiceError = false;
+                        for (var i = 0; i < res.length; i++) {
+                            $scope.sourceUi.tableData.push(
+                                {'id': i, 'name': res[i], 'selected': false}
+                            );
+                        }
+                    } else {
+                        commonUi.isServiceError = true;
+                    }
+                    commonUi.isDataLoading = false;
+                },
+                getRandomNo: function () {
+                    function s4() {
+                        return Math.floor((1 + Math.random()) * 0x1000000)
+                            .toString(16)
+                            .substring(1);
+                    }
+
+                    return s4();
                 }
-
             }
-        };
-    };
+        })();
 
-
-
-    //developer
-    //create pule
-    ////update damith
-    //on change chart type
-    $scope.onChangeChartType = function(_chartType) {
-        //dev damith
-        //d3 visualization
-        switch (_chartType) {
-            case 'd3 visualization':
-                var commonSrcConfig = {
-                    src: $scope.selSrc,
-                    tbl: $scope.selTable,
-                    fields: $scope.fieldArray,
-                    namespace: $scope.srcNamespace
-                };
-
-                $scope.fieldString = [];
-                for (i = 0; i < $scope.fieldArray.length; i++) {
-                    $scope.fieldString.push("'" + $scope.fieldArray[i] + "'");
+        var commonUi = {
+            attribute: [],
+            measures: [],
+            selectedIndex: 1,
+            isDataLoading: false,
+            isRefAttribute: false,
+            isRefMeasures: false,
+            isServiceError: false,
+            isDone: 0,
+            onClickTab: function (index) {
+                switch (index) {
+                    case '1':
+                        //selected source
+                        commonUi.selectedIndex = 1;
+                        break;
+                    case '2':
+                        commonUi.selectedIndex = 2;
+                        //selected  info
+                        break;
+                    case '3':
+                        commonUi.selectedIndex = 3;
+                        //selected  info
+                        break;
                 }
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function(e) {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            var data = JSON.parse(xhr.response);
-                            $mdDialog.show({
-                                templateUrl: 'views/InitConfigD3.html',
-                                locals: {
-                                    widId: $scope.currWidget,
-                                    fieldData: data,
-                                    commonSrcConfig: commonSrcConfig
-                                },
-                                controller: function d3CommonSrcCntrl($rootScope, $mdDialog, fieldData, commonSrcConfig) {
-                                    $rootScope.d3CommonSrcData = {
-                                        data: fieldData,
-                                        srcConfig: commonSrcConfig
-                                    }
-                                }
+            }
+            ,
+            onClickBack: function (index) {
+                commonUi.isServiceError = false;
+                switch (index) {
+                    case '1':
+                        //selected source
+                        commonUi.selectedIndex = 1;
+                        break;
+                    case '2':
+                        //selected info
+                        commonUi.selectedIndex = 1;
+                        break;
+                    case '3':
+                        //selected schema
+                        commonUi.selectedIndex = 2;
+                        break;
+                }
+            }
+            ,
+            onClickClose: function () {
+            }
+            ,
+            onClickNext: function (index) {
+                commonUi.isServiceError = false;
+                switch (index) {
+                    case '1':
+                        //selected source
+                        commonUi.selectedIndex = 2;
+                        var selectedSrc = $scope.sourceUi.selectedSource;
+                        if (selectedSrc != null) {
+                            publicFun.getAllTbl(selectedSrc, function (res, state) {
+                                publicFun.creteTableObj(state, res);
                             });
                         }
-                    }
-                };
-                xhr.ontimeout = function() {
-                    console.error("request timedout: ", xhr);
-                    alert("Please check you't connection...");
-                };
-                if ($scope.selSrc == 'BigQuery')
-                    xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=[" + $scope.srcNamespace + "." + $scope.selTable + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All&db=" + $scope.selSrc, /*async*/ true);
+                        break;
+                    case '2':
+                        //selected info
+                        commonUi.selectedIndex = 3;
+                        var selectedTbl = $scope.sourceUi.selectedNameSpace;
+                        if (selectedTbl != null) {
+                            publicFun.getAllFields(selectedTbl, function (res, status) {
+                                if (status) {
+                                    var dataTypes = $scope.dataBaseFiledTypes;
+                                    for (var c in res) {
+                                        if (Object.prototype.hasOwnProperty.call(res, c)) {
+                                            var val = res[c];
+                                            angular.forEach(val, function (value, key) {
+                                                if (key == 'FieldType') {
+                                                    for (var i = 0; i < dataTypes.length; i++) {
+                                                        if (value == dataTypes[i].type) {
+                                                            if (dataTypes[i].category == 'att') {
+                                                                $scope.commonUi.attribute.push(
+                                                                    {id: c, name: res[c].Fieldname, isRemove: false}
+                                                                )
+                                                            } else {
+                                                                $scope.commonUi.measures.push(
+                                                                    {id: c, name: res[c].Fieldname, isRemove: false}
+                                                                )
+                                                            }
+                                                        }
+                                                    }
+                                                }
 
-                else
-                    xhr.open("get", Digin_Engine_API + "gethighestlevel?tablename=" + $scope.selTable + "&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All&db=" + $scope.selSrc, /*async*/ true);
-                xhr.send();
-                //it's d3 visualization
+                                            });
+                                        }
+                                    }
 
-                break;
-                //other charts
-            default:
-
-                break;
-        }
-    };
-
-
-    $scope.getDataByFields = function(field) {
-
-        //clear distinct scope array
-        //$scope.distinct = [];
-        $scope.distinct[field] = [];
-
-        var xhr = new XMLHttpRequest();
-
-        xhr.onreadystatechange = function(e) {
-            var array1 = [];
-
-            console.log(this);
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    //parse json data to string
-                    var parsed = JSON.parse(xhr.response);
-                    var JSONDataArray = [];
-                    //json data string to array
-                    for (var x in parsed) {
-                        JSONDataArray.push(parsed[x]);
-                    }
-                    //push field value of each array slot to scope array
-                    for (var i = 0; i < JSONDataArray.length; i++) {
-
-                        $scope.distinct[field][i] = JSONDataArray[i][field];
-                        //console.log($scope.distinct[field]);
-                    }
-                } else {
-                    console.error("XHR didn't work: ", xhr.status);
+                                    $scope.sourceUi.selectedAttribute = angular.
+                                    copy($scope.commonUi.attribute);
+                                    $scope.sourceUi.selectedMeasures = angular.
+                                    copy($scope.commonUi.measures);
+                                }
+                                commonUi.isDataLoading = false;
+                            });
+                        }
+                        break;
+                    case '3':
+                        //selected schema
+                        commonUi.selectedIndex = 4;
+                        break;
                 }
             }
-
-        }
-
-        xhr.ontimeout = function() {
-            console.error("request timedout: ", xhr);
-        }
-        if ($scope.selSrc == "MSSQL") {
-            var queryString = "SELECT " + field + " FROM " + "[" + "HutchDialogic" + "." + $scope.selTable + "]" + " GROUP BY " + field + " db=MSSQL";
-        }
-        if ($scope.selSrc == "BigQuery") {
-            var limit = 1000;
-            var queryString = "SELECT " + field + " FROM " + "[" + Digin_Engine_API_Namespace + "." + $scope.selTable + "]" + " GROUP BY " + field + " LIMIT " + limit.toString();
-        }
-        // xhr.open("get", Digin_Engine_API + "executeQuery?tablename=[" + $scope.selTable.split(":")[1] + "]&id=1&levels=[" + $scope.fieldString.toString() + "]&plvl=All", /*async*/ true);
-        xhr.open("get", Digin_Engine_API + "executeQuery?query=" + queryString, /*async*/ true);
-
-        console.log("queryString");
-        console.log(queryString);
-
-        xhr.send();
-
-    };
-
-    $scope.changeChartType = function(chartType) {
-        if ($rootScope.Dashboards[0].widgets.length > 0) {
-            for (var i = 0; i < $rootScope.Dashboards[0].widgets.length; i++) {
-                var length = $rootScope.Dashboards[0].widgets[i].highchartsNG.series.length;
-                for (var j = 0; j < length; j++) {
-                    $rootScope.Dashboards[0].widgets[i].highchartsNG.series[j].type = chartType;
-                };
+            ,
+            onSelectClassRow: function (data) {
+                var i;
+                var sourceInData = $scope.sourceUi.tableData;
+                for (i = 0; i < sourceInData.length; i++) {
+                    sourceInData[i].selected = false;
+                }
+                data.selected = true;
+                $scope.sourceUi.selectedNameSpace = data.name;
+//                alert($scope.sourceUi.selectedNameSpace);
             }
+            ,
+            onClickSelectedSrc: function (onSelect, data) {
+                commonUi.clearTblData();
+                var i;
+                var sourceInData = data;
+                for (i = 0; i < sourceInData.length; i++) {
+                    sourceInData[i].selected = false;
+                }
+                onSelect.selected = true;
+                $scope.sourceUi.selectedSource = onSelect.name;
+            }
+            ,
+            clearTblData: function () {
+                publicFun.clrTblSelectedObj($scope.sourceUi.tableData);
+            }
+            ,
+            onSaveSource: function () {
+                var length = $scope.sourceUi.sourceRcrd.length++;
+                var currentQry = $scope.sourceUi.selectedSource + '-' + length;
+                $scope.sourceUi.sourceRcrd.push({
+                    name: currentQry,
+                    id: publicFun.getRandomNo
+                });
+                
+                $scope.currWidget = {
+                     widData: {},
+                     widView: "",
+                     dataView: "ViewElasticData",
+                     dataCtrl: "elasticDataCtrl",
+                     initTemplate: "",
+                     initCtrl: "commonSrcInit",
+                     uniqueType: "Common Source",
+                     syncState: true,
+                     expanded: true,
+                     seriesname: "",
+                     externalDataURL: "",
+                     dataname: "",
+                     d3plugin: "",
+                     divider: false,
+                     id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
+                     type: "Visualization",
+                     width: '370px',
+                     height: '300px',
+                     mheight: '100%',
+                     highchartsNG: {}
+                  };
+
+//                $rootScope.dashboard.widgets.push($scope.currWidget);
+
+                $csContainer.fillCSContainer({
+                    wid: $scope.currWidget,
+                    src: $scope.sourceUi.selectedSource,
+                    tbl: $scope.sourceUi.selectedNameSpace,
+                    fAttArr: $scope.sourceUi.attrObj,
+                    fMeaArr: $scope.sourceUi.mearsuresObj
+                });
+                
+                publicFun.clearAll(function (status) {
+                    if (status) {
+                        $state.go("home.QueryBuilder");
+                        $mdSidenav('right').close();
+                    }
+                });
+                
+
+            }
+            ,
+            onRemoveAtt: function (onSelected, data) {
+                var attrObj = onSelected;
+                var index = attrObj.indexOf(data);
+                if (index != -1) {
+                    attrObj.splice(index, 1);
+                }
+                $scope.sourceUi.attrObj = attrObj;
+                
+            },
+            onRemoveMeasures: function (onSelected, data) {
+                var attrObj = onSelected;
+                var index = attrObj.indexOf(data);
+                if (index != -1) {
+                    attrObj.splice(index, 1);
+                }
+                $scope.sourceUi.mearsuresObj = attrObj;
+                
+            } 
+            ,
+            onRefresh: function (index) {
+                switch (index) {
+                    case 1:
+                        //refresh attribute data
+                        commonUi.isRefAttribute = true;
+                        var attributes = $scope.commonUi.attribute;
+                        setTimeout(function () {
+                            $scope.sourceUi.selectedAttribute = angular.
+                            copy(attributes);
+                            commonUi.isRefAttribute = false;
+                        }, 100);
+                        break;
+                    case 2:
+                        //refresh measures data
+                        commonUi.isRefMeasures = true;
+                        var measures = $scope.commonUi.measures;
+                        setTimeout(function () {
+                            $scope.sourceUi.selectedMeasures = angular.
+                            copy(measures);
+                            commonUi.isRefMeasures = false;
+                        }, 100);
+                        break;
+                    case 3:
+                        publicFun.clearAll(function (state) {
+                            if (state) {
+                                ngToast.create({
+                                    className: 'success',
+                                    content: 'Please wait...',
+                                    horizontalPosition: 'right',
+                                    verticalPosition: 'bottom',
+                                    timeout: 1500,
+                                    dismissOnClick: true
+                                });
+                            }
+                        });
+                        break;
+                    case 4:
+                        //refresh selected namespaces
+                        commonUi.isServiceError = false;
+                        var selectedSrc = $scope.sourceUi.selectedSource;
+                        if (selectedSrc != null) {
+                            publicFun.getAllTbl(selectedSrc, function (res, status) {
+                                publicFun.creteTableObj(status, res);
+                            });
+                        }
+                    default:
+                        break;
+                }
+            }
+        };
+        $scope.commonUi = commonUi;
+
+        //selected main source UI
+        //Data source
+        $scope.sourceUi = {
+            sourceRcrd: [],
+            selectedSource: '',
+            selectedNameSpace: '',
+            tableData: [],
+            selectedAttribute: [],
+            selectedMeasures: []
         }
-    };
-
-    var chartTypes = [];
+    }]);
 
 
-
-}]);
-
-routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData', 'widData', 'Digin_Engine_API', 'Digin_Engine_API_Namespace', '$diginengine', function($scope, $mdDialog, $rootScope, widId, $state, fieldData, widData, Digin_Engine_API, Digin_Engine_API_Namespace, $diginengine) {
+routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'widId', '$state', 'fieldData', 'Digin_Engine_API', 'Digin_Engine_API_Namespace', function ($scope, $mdDialog, $rootScope, widId, $state, fieldData, Digin_Engine_API, Digin_Engine_API_Namespace) {
 
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
     $scope.widget = $rootScope.dashboard.widgets[objIndex];
@@ -346,7 +409,6 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
     $scope.fieldSelection = true;
     $scope.mappedArray = {};
     $scope.selMetCat = "";
-    $scope.ser = {};
     $scope.seriesArray = [{
         name: 'series1',
         serName: '',
@@ -357,7 +419,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
     }];
 
     $scope.categItem = {};
-    $scope.client = $diginengine.getClient("HutchDialogic", "MSSQL");
+
     $scope.chartCategory = {
         groupField: '',
         drilledField: '',
@@ -367,27 +429,32 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
         name: 'Sum',
         method: 'SUM',
         isMet: false
-    }, {
-        name: 'Average',
-        method: 'AVG',
-        isMet: false
-    }, {
-        name: 'Count',
-        method: 'COUNT',
-        isMet: false
-    }, {
-        name: 'Mode',
-        method: 'MODE',
-        isMet: true
-    }, {
-        name: 'Mean',
-        method: 'MEAN',
-        isMet: true
-    }, {
-        name: 'Median',
-        method: 'MEDIAN',
-        isMet: true
-    }];
+    },
+        {
+            name: 'Average',
+            method: 'AVG',
+            isMet: false
+        },
+        {
+            name: 'Count',
+            method: 'COUNT',
+            isMet: false
+        },
+        {
+            name: 'Mode',
+            method: 'MODE',
+            isMet: true
+        },
+        {
+            name: 'Mean',
+            method: 'MEAN',
+            isMet: true
+        },
+        {
+            name: 'Median',
+            method: 'MEDIAN',
+            isMet: true
+        }];
     $scope.chartTypes = [{
         name: "Area",
         type: "area"
@@ -421,11 +488,10 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             $scope.categItem.item = $scope.widget.commonSrcConfig.catItem;
             $scope.seriesArray = $scope.widget.commonSrcConfig.serObjs;
             $scope.categItem.drillItem = $scope.widget.commonSrcConfig.drillItem;
-        } else {
+        }
+        else {
             $scope.categItem = $scope.widget.commonSrcConfig.metCat;
             $scope.selectedFilter = $scope.widget.commonSrcConfig.metFil;
-            $scope.queryGrouped = $scope.widget.commonSrcConfig.metGrp;
-            $scope.metric = $scope.widget.commonSrcConfig.metGrpF;
         }
     }
 
@@ -445,7 +511,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             parameter += " " + selFields[i];
         }
 
-        $scope.getFilters = function() {
+        $scope.getFilters = function () {
             for (var key in $scope.mappedArray) {
                 if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
                     if ($scope.mappedArray[key].isNaN) $scope.filtersAvailable = ['Count'];
@@ -504,16 +570,16 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
         };
 
         w.postMessage(selTbl + "," + parameter + "," + false);
-        w.addEventListener('message', function(event) {
+        w.addEventListener('message', function (event) {
             mapRetrieved(event);
         });
     }
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     }
 
-    $scope.getDrillArray = function() {
+    $scope.getDrillArray = function () {
         console.log(JSON.stringify($scope.arrayAttributes));
         if ($scope.widget.commonSrcConfig.src == "DuoStore") {
             var uniqueScore = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.unique');
@@ -527,7 +593,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
         }
     };
 
-    $scope.filterData = function(c) {
+    $scope.filterData = function (c) {
 
         var filter = eval('new ' + c.toUpperCase() + '();');
         $scope.filtering = new Filtering();
@@ -538,26 +604,26 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
 
     /* Strategy1 begin */
-    var Filtering = function() {
+    var Filtering = function () {
         this.filter = "";
     };
 
     Filtering.prototype = {
-        setFilter: function(filter) {
+        setFilter: function (filter) {
             this.filter = filter;
         },
 
-        calculate: function(orderedObj, catMappedData, serMappedData, drillData) {
+        calculate: function (orderedObj, catMappedData, serMappedData, drillData) {
             return this.filter.calculate(orderedObj, catMappedData, serMappedData, drillData);
         },
 
-        filterFields: function() {
+        filterFields: function () {
             return this.filter.filterFields();
         }
     };
 
-    var SUM = function() {
-        this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
+    var SUM = function () {
+        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
             console.log("calculations... for the sum filter");
             if (typeof drillData == 'undefined') {
                 for (j = 0; j < serMappedData.length; j++) {
@@ -579,13 +645,13 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             }
         }
 
-        this.filterFields = function() {
+        this.filterFields = function () {
             return getFilteredFields(false);
         }
     };
 
-    var AVERAGE = function() {
-        this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
+    var AVERAGE = function () {
+        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
             console.log("calculations... for the average filter");
             if (typeof drillData == 'undefined') {
                 for (j = 0; j < serMappedData.length; j++) {
@@ -624,13 +690,13 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             }
         }
 
-        this.filterFields = function() {
+        this.filterFields = function () {
             return getFilteredFields(false);
         }
     };
 
-    var PERCENTAGE = function() {
-        this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
+    var PERCENTAGE = function () {
+        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
             console.log("calculations... for the prcentage filter");
             var total;
             if (typeof drillData == 'undefined') {
@@ -674,13 +740,13 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             }
         }
 
-        this.filterFields = function() {
+        this.filterFields = function () {
             return getFilteredFields(false);
         }
     };
 
-    var COUNT = function() {
-        this.calculate = function(orderedObj, catMappedData, serMappedData, drillData) {
+    var COUNT = function () {
+        this.calculate = function (orderedObj, catMappedData, serMappedData, drillData) {
             console.log("calculations... for the count filter");
             if (typeof drillData == 'undefined') {
                 for (j = 0; j < serMappedData.length; j++) {
@@ -702,7 +768,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             }
         }
 
-        this.filterFields = function() {
+        this.filterFields = function () {
             return getFilteredFields(true);
         }
     };
@@ -726,7 +792,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
     /*TEMP*/
 
     //adds new series to the chart
-    $scope.addSeries = function() {
+    $scope.addSeries = function () {
         $scope.seriesArray.push({
             name: 'series1',
             serName: '',
@@ -740,12 +806,12 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
 
     //removes the clicked series
-    $scope.removeSeries = function(ind) {
+    $scope.removeSeries = function (ind) {
         $scope.seriesArray.splice(ind, 1);
     };
 
     //builds the chart
-    $scope.buildchart = function(widget) {
+    $scope.buildchart = function (widget) {
         widget.chartSeries = [];
 
         if ($scope.catItem != '') {
@@ -754,7 +820,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                 if ($scope.queryDrilled) {
                     if ($scope.drillItem != '') {
                         $scope.orderByDrilledCat(widget);
-                        $state.go('Dashboards');
+                        $state.go('home.Dashboards');
                         widget.commonSrcConfig['drilled'] = true;
                         widget.commonSrcConfig['arrAttributes'] = $scope.arrayAttributes;
                         widget.commonSrcConfig['catItem'] = $scope.categItem.item;
@@ -769,7 +835,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                     }
                 } else {
                     $scope.orderByCat(widget);
-                    $state.go('Dashboards');
+                    $state.go('home.Dashboards');
                     widget.commonSrcConfig['drilled'] = false;
                     widget.commonSrcConfig['arrAttributes'] = $scope.arrayAttributes;
                     widget.commonSrcConfig['catItem'] = $scope.categItem.item;
@@ -789,21 +855,24 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
     }
 
     //generate workers parameters
-    $scope.generateParamArr = function(httpMethod, host, ns, tbl, method, gBy, agg, aggF, cons, oBy) {
+    $scope.generateParamArr = function (httpMethod, host, ns, tbl, method, gBy, agg, aggF, cons, oBy) {
         return {
             webMethod: httpMethod,
             host: host,
             method: method,
             params: [{
-                name: 'tablenames',
+                name: 'tablename',
                 //            value: "[" + tbl + "]"    //fix it for big query
-                value: "{1:'" + tbl + "'}"
+                value: tbl
             }, {
                 name: 'group_by',
                 value: "{'" + gBy + "':1}"
             }, {
                 name: 'agg',
-                value: "{'" + aggF + "':" + "'" + agg.toLowerCase() + "'" + "}",
+                value: agg.toLowerCase()
+            }, {
+                name: 'agg_f',
+                value: "['" + aggF + "']"
             }, {
                 name: 'cons',
                 value: cons
@@ -818,13 +887,10 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
     };
 
     //order by category
-    $scope.orderByCat = function(widget) {
+    $scope.orderByCat = function (widget) {
 
         widget.highchartsNG = {
             options: {
-                chart: {
-
-                },
                 drilldown: {
                     drillUpButton: {
                         relativeTo: 'plotBox',
@@ -905,6 +971,9 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                     $scope.filterData($scope.seriesArray[i].filter);
                 }
                 $scope.filtering.calculate(orderedObj, catMappedData, serMappedData);
+                // for(j=0;j<serMappedData.length;j++){
+                //     orderedObj[catMappedData[j]] += serMappedData[j];
+                // }
 
                 for (var key in orderedObj) {
                     if (Object.prototype.hasOwnProperty.call(orderedObj, key)) {
@@ -926,28 +995,30 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
 
         } else if ($scope.widget.commonSrcConfig.src != "DuoStore") {
+            //alert(JSON.stringify($scope.categItem.item));
             $scope.srcNamespace = $scope.widget.commonSrcConfig.namespace;
             $scope.catItem = $scope.categItem.item;
-            $scope.seriesArray.forEach(function(entry) {
+            $scope.seriesArray.forEach(function (entry) {
                 if ($scope.widget.commonSrcConfig.src == 'BigQuery')
-                    var tblVal = "[" + "Demo" + '.' + widget.commonSrcConfig.tbl + "]";
+                    var tblVal = $scope.srcNamespace + '.' + widget.commonSrcConfig.tbl;
                 else
                     var tblVal = widget.commonSrcConfig.tbl;
-
+                //            alert(tblVal);
                 entry['data'] = [];
-                var paramArr = $scope.generateParamArr('get', Digin_Engine_API, $scope.widget.commonSrcConfig.src, tblVal, 'aggregatefields', $scope.catItem.value, entry.filter, entry.serName.value, "", "{}");
+                //         alert(tblVal);
+                var paramArr = $scope.generateParamArr('get', Digin_Engine_API, $scope.widget.commonSrcConfig.src, tblVal, 'aggregatefields', $scope.catItem.value, entry.filter, entry.serName.value);
                 var w = new Worker("scripts/webworkers/commonSrcWorker.js");
                 w.postMessage(JSON.stringify(paramArr));
-                w.addEventListener('message', function(event) {
+                w.addEventListener('message', function (event) {
                     var objArr = [];
-                    var filter = entry.filter.toLowerCase();
                     var evData = JSON.parse(event.data);
                     for (i = 0; i < evData.length; i++) {
                         entry['data'].push({
                             name: evData[i][$scope.catItem.value],
-                            y: parseFloat(evData[i][filter + "_" + entry.serName.value])
+                            y: evData[i]['']
                         });
                     }
+                    //update damith
                     //create  mapped data
                     var selectedFiled = $scope.widget.commonSrcConfig.fields;
                     for (var c = 0; c < selectedFiled.length; c++) {
@@ -959,41 +1030,25 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                     //y get series name
                     var ySer = entry.serName.value;
                     for (i = 0; i < evData.length; i++) {
-                        console.log(JSON.stringify(evData));
                         var val = evData[i];
                         var index = 0;
                         for (var key in val) {
                             if (val.hasOwnProperty(key)) {
                                 if (key == "" || key == null) {
-                                    var arr = Object.keys(val).map(function(k) {
+                                    var arr = Object.keys(val).map(function (k) {
                                         return val[k]
                                     });
                                     $scope.mappedArray[ySer].data.push(arr[index]);
                                 } else {
-                                    if (key.indexOf('sum') >= 0) {
-                                        originalkey = key;
-                                        key = key.replace('sum_', '');
-                                        $scope.mappedArray[key].data.push(val[originalkey]);
-                                    } else if (key.indexOf('avg') >= 0) {
-                                        originalkey = key;
-                                        key = key.replace('avg_', '');
-                                        $scope.mappedArray[key].data.push(parseFloat(val[originalkey]));
-                                    } else if (key.indexOf('count') >= 0) {
-                                        originalkey = key;
-                                        key = key.replace('count_', '');
-                                        $scope.mappedArray[key].data.push(val[originalkey]);
-                                    } else {                                        
-                                        $scope.mappedArray[key].data.push(val[key]);
-                                    }
+                                    $scope.mappedArray[key].data.push(val[key]);
                                 }
                             }
                             index++;
                         }
                     }
                     widget.winConfig['mappedData'] = $scope.mappedArray;
-                    console.log(JSON.stringify($scope.seriesArray));
                     widget.highchartsNG['series'] = $scope.seriesArray;
-                    console.log("widget name " + JSON.stringify(widget.highchartsNG));
+                    console.log("widget name " + JSON.stringify(widget));
                 });
             });
         }
@@ -1001,15 +1056,17 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
 
     //order by category (drilled)
-    $scope.orderByDrilledCat = function(widget) {
+    //order by category (drilled)
+    $scope.orderByDrilledCat = function (widget) {
         $scope.objArr = [];
         $scope.orderedArrayObj = [];
         var requestCounter = $scope.seriesArray.length; //main request completion counter
 
         widget.highchartsNG = {
             chart: {
-
+                type: 'column'
             },
+
             plotOptions: {
                 series: {
                     turboThreshold: 5000,
@@ -1019,6 +1076,7 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                     }
                 }
             },
+
             title: {
                 text: widget.uniqueType
             },
@@ -1145,21 +1203,21 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
             widget.highchartsNG.drilldown['series'] = drilledSeries;
 
         } else if ($scope.widget.commonSrcConfig.src != "DuoStore") {
-            $scope.seriesArray.forEach(function(entry) {
+            $scope.seriesArray.forEach(function (entry) {
                 var serObj = {
                     name: '',
                     color: '',
                     type: '',
                     data: []
                 };
-
                 entry['data'] = [];
 
+                //            var tblVal = $scope.srcNamespace + '.' + widget.commonSrcConfig.tbl;
                 var paramArr = $scope.generateParamArr('get', Digin_Engine_API, $scope.widget.commonSrcConfig.src, widget.commonSrcConfig.tbl, 'aggregatefields', $scope.categItem.item.value, entry.filter, entry.serName.value);
                 var w = new Worker("scripts/webworkers/commonSrcWorker.js");
                 requestCounter--;
                 w.postMessage(JSON.stringify(paramArr));
-                w.addEventListener('message', function(event) {
+                w.addEventListener('message', function (event) {
 
                     var evData = JSON.parse(event.data);
                     serObj.name = entry.name;
@@ -1170,11 +1228,13 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                             drilldown: evData[i][$scope.categItem.item.value],
                             name: evData[i][$scope.categItem.item.value],
                             y: evData[i]['']
+                            //                     y: evData[i]['f0_']
                         });
                         entry['data'].push({
                             drilldown: evData[i][$scope.categItem.item.value],
                             name: evData[i][$scope.categItem.item.value],
                             y: evData[i]['']
+                            //                     y: evData[i]['f0_']
                         });
                     }
                     if (requestCounter == 0) {
@@ -1186,18 +1246,22 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
 
             function setWidget() {
                 var requestCounter = 0;
-                $scope.seriesArray.forEach(function(entry) {
+                $scope.seriesArray.forEach(function (entry) {
                     requestCounter = entry.data.length;
-                    entry.data.forEach(function(enData) {
+                    entry.data.forEach(function (enData) {
                         var con = "WHERE " + $scope.categItem.item.value + "='" + enData.name + "'";
+                        //                  alert(JSON.stringify($scope.categItem.drillItem)+ ' ' + JSON.stringify(entry.serName));
                         var drillParams = $scope.generateParamArr('get', Digin_Engine_API, $scope.widget.commonSrcConfig.src, widget.commonSrcConfig.tbl, 'aggregatefields', $scope.categItem.drillItem.value, entry.filter, entry.serName.value, con);
+                        //alert(JSON.stringify(drillParams));
                         var w1 = new Worker("scripts/webworkers/commonSrcWorker.js");
 
                         w1.postMessage(JSON.stringify(drillParams));
-                        w1.addEventListener('message', function(event) {
+                        w1.addEventListener('message', function (event) {
                             requestCounter--;
                             var drilledData = JSON.parse(event.data);
+                            //                  console.log('drilleed data:'+ JSON.stringify(drilledData));
                             var dataArr = [];
+                            //                  alert(JSON.stringify(drilledData));
                             for (j = 0; j < drilledData.length; j++) {
                                 dataArr.push([
                                     drilledData[j][$scope.categItem.drillItem.value],
@@ -1208,11 +1272,18 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                                 id: enData.name,
                                 data: dataArr
                             });
+                            //                     alert();
 
                             if (requestCounter == 0) {
                                 widget.highchartsNG['series'] = $scope.orderedArrayObj;
                                 widget.highchartsNG.drilldown['series'] = $scope.objArr;
                             }
+
+
+                            //                  widget.highchartsNG.drilldown.series.push({
+                            //                        id: enData.name,
+                            //                        data: dataArr
+                            //                     });
                         });
 
 
@@ -1223,91 +1294,42 @@ routerApp.controller('commonSrcInit', ['$scope', '$mdDialog', '$rootScope', 'wid
                 widget.highchartsNG['series'] = $scope.orderedArrayObj;
                 widget.highchartsNG.drilldown['series'] = $scope.objArr;
                 console.log('highchartng:' + JSON.stringify(widget.highchartsNG));
-                $state.go('Dashboards');
+                $state.go('home.Dashboards');
             }
         }
 
     };
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $mdDialog.hide();
     }
 
-    $scope.buildMetric = function(widget) {
-        widget.commonSrcConfig['arrAttributes'] = $scope.arrayAttributes;
-        widget.commonSrcConfig['metCat'] = $scope.categItem;
-        widget.commonSrcConfig['metFil'] = $scope.selectedFilter;
-        if ($scope.queryGrouped) {
-            widget.commonSrcConfig['metGrp'] = true;
-            widget.commonSrcConfig['metGrpF'] = $scope.metric;
-            $scope.client.getAggData(widget.commonSrcConfig.tbl, $scope.selectedFilter, $scope.categItem, function(data, status) {
-                if (status) {
-                    var filterkey = $scope.selectedFilter+ "_" +$scope.categItem;
-                    widget.widData.value = data[0][filterkey] ;
+    $scope.buildMetric = function (widget) {
+        var xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function (e) {
+            console.log(this);
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    var res = JSON.parse(xhr.response);
+                    widget.widData.value = res[0][""];
+                    widget.commonSrcConfig['arrAttributes'] = $scope.arrayAttributes;
+                    widget.commonSrcConfig['metCat'] = $scope.categItem;
+                    widget.commonSrcConfig['metFil'] = $scope.selectedFilter;
                     $mdDialog.hide();
-                } else console.log("Aggregation not received due to:" + data);
-            }, $scope.metric.gField, "WHERE%20" + $scope.metric.gField + "=%27" + $scope.metric.gFieldVal + "%27");
-        } else {
-            widget.commonSrcConfig['metGrp'] = false;
-            $scope.client.getAggData(widget.commonSrcConfig.tbl, $scope.selectedFilter, $scope.categItem, function(data, status) {
-                if (status) {
-                     var filterkey = $scope.selectedFilter+"_"+$scope.categItem;
-                    widget.widData.value = data[0][filterkey] ;
-                    $mdDialog.hide();
-                } else console.log("Aggregation not received due to:" + data);
-            });
-        }
-        $state.go('Dashboards');
-    };
-
-    $scope.buildQueriedChart = function(widget) {
-
-        widget.highchartsNG = {
-            options: {
-
-            },
-            series: [],
-            xAxis: {
-                type: 'category'
-            },
-            credits: {
-                enabled: false
-            },
-            legend: {
-                enabled: false
-            },
-            title: {
-                text: ''
-            },
-            size: {
-                width: 300,
-                height: 220
-            }
-        };
-
-        //getting the category name
-        var catName = "";
-        var configData = [];
-        for (var key in widData[0]) {
-            if (Object.prototype.hasOwnProperty.call(widData[0], key)) {
-                if (key != "") catName = key;
+                } else {
+                    console.error("XHR didn't work: ", xhr.status);
+                }
             }
         }
+        xhr.ontimeout = function () {
+            console.error("request timedout: ", xhr);
+        }
+        xhr.open('get', "http://192.168.2.33:8080/aggregatefields?tablename=" + widget.commonSrcConfig.tbl + "&agg=" + $scope.selectedFilter + "&agg_f=[%27" + $scope.categItem + "%27]&db=" + widget.commonSrcConfig.src, /*async*/ true);
+        xhr.send();
+        $state.go('home.Dashboards');
 
-        widData.forEach(function(entry) {
-            configData.push({
-                name: entry[catName],
-                y: entry['']
-            });
-        });
-
-        widget.highchartsNG.series.push({
-            name: $scope.ser.name,
-            color: $scope.ser.color,
-            type: $scope.ser.type,
-            data: configData
-        });
-        $mdDialog.hide();
-        $state.go('Dashboards');
     };
+
+
 }]);

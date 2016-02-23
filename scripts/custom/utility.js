@@ -151,3 +151,19 @@ function validate(msg, mdToast, scope){
         .hideDelay(3000)
     );
 }
+
+
+
+function chunk(arr, size) {
+  var newArr = [];
+  for (var i=0; i<arr.length; i+=size) {
+    newArr.push(arr.slice(i, i+size));
+  }
+  return newArr;
+}
+
+function getCookie(name) {
+  var value = "; " + document.cookie;
+  var parts = value.split("; " + name + "=");
+  if (parts.length == 2) return parts.pop().split(";").shift();
+}

@@ -60,7 +60,7 @@
 /*widget mapped data*/
 .widget0m-data-dialog {
     width: 50%;
-    height: 450px;
+    /*height: 450px;*/
     overflow: hidden;
 }
 .widget0m-data-dialog-sm {

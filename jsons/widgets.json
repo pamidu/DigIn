@@ -222,6 +222,7 @@
             "Description": "Analyze the calls for each skills",
             "initTemplate": "views/InitSLT.html",
             "initController": "SLTInit",
+            "dataView": "views/ViewDataSkillwise.html",
             "widView": "views/ViewSLTSkill.html",
             "color": "#E040FB",
             "sizeX": 4, "sizeY": 4, "row": 2, "col": 20

@@ -1059,6 +1059,35 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function($http,
     };
 
 }]);
+routerApp.service('generatePDF1', function($timeout){
+    this.generate = function(htmlElement, config) {
+      
+        var doc = new jsPDF('landscape');
+        
+        doc.text(config.titleLeft, config.titleTop, config.title);
+        doc.fromHTML(htmlElement, config.tableLeft, config.tableTop, {
+        });
+        var pdfName = config.title.toString() + '.pdf';
+        doc.save(pdfName);
+        
+    };
+
+});
+routerApp.service('generatePDF2', function($timeout){
+    this.generate = function(htmlElement, config) {
+      
+        var doc = new jsPDF('landscape');
+        var options = {format:'PNG'};
+
+        doc.addHTML( htmlElement, config.tableLeft, config.tableTop, options,function(){
+            var pdfName = config.title.toString() + '.pdf';
+            doc.text(config.titleLeft, config.titleTop, config.title);
+            doc.save(pdfName);            
+        });
+    };
+
+});
+
 //use this to share scopes between two controllers
 //first store after that get
 routerApp.factory('ScopeShare', function($rootScope) {

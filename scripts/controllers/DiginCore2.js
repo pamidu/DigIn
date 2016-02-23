@@ -147,10 +147,11 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
         }
 
         $scope.initialize = function(){
+
+            $scope.dataViewPath = $rootScope.widget.dataView;
             //if widget is google maps
             if($rootScope.widget.uniqueType == "Google Maps Branches" || $rootScope.widget.uniqueType == "Google Maps Claims"){
 
-                $scope.dataViewPath = $rootScope.widget.dataView;
                 //get markers data for branch data
                 if (ScopeShare.get('gmapsControllerBranch') != undefined) {
 
@@ -167,6 +168,18 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                         JsonToArray();
                     }
                 }
+            }
+            if($rootScope.widget.uniqueType == "Skill wise summary"){
+
+                $http.get('views/graph.json').success(function (data) {
+                    console.log("graph data skill wise summary");
+                    console.log("data");
+                    JSONData = data;
+                    if (JSONData) {
+                        JsonToArray();
+                }
+
+                });                   
             }
             
         }

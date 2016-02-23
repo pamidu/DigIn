@@ -76,11 +76,11 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         items: widget
                     }
                     ,
-                    controller: function dataSourceCtrl($scope, $mdDialog, items) {
-                        // console.log(JSON.stringify(items));
+                    controller: function dataSourceCtrl($scope, $mdDialog, items, generatePDF1) {
+                        
                         var isCommonSrc = angular.isUndefined(items.widCsc);
                         var selectedSourceData = {};
-                        if (isCommonSrc) {
+                        // if (isCommonSrc) {
                             //selected common data source
                             selectedSourceData = {
                                 'uniqueType': items.uniqueType,
@@ -93,35 +93,48 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                 'groupBy': null,
                                 'data': items.highchartsNG.series[0].data
                             };
-                        } else {
-                            selectedSourceData = {
-                                'uniqueType': items.uniqueType,
-                                'length': items.widConfig.attributes.length,
-                                'attributes': items.widConfig.attributes,
-                                'mappedData': [],
-                                'className': items.widConfig.selectedClass,
-                                'source': items.widConfig.source,
-                                'type': items.type,
-                                'groupBy': items.widConfig.chartCat.groupField
-                            };
-                        }
+                        // } else {
+                        //     selectedSourceData = {
+                        //         'uniqueType': items.uniqueType,
+                        //         'length': items.widConfig.attributes.length,
+                        //         'attributes': items.widConfig.attributes,
+                        //         'mappedData': [],
+                        //         'className': items.widConfig.selectedClass,
+                        //         'source': items.widConfig.source,
+                        //         'type': items.type,
+                        //         'groupBy': items.widConfig.chartCat.groupField
+                        //     };
+                        // }
                         for (var i = 0; i < selectedSourceData.length; i++) {
-                            if (isCommonSrc) {
+                            // if (isCommonSrc) {
                                 var _attr = selectedSourceData.attributes[i].trim().
                                 toString();
+                                console.log("_attr",_attr);
+                                console.log("mapped data in items", items.
+                                    winConfig.mappedData[_attr]);
+                                console.log("mapped data in selected source data", selectedSourceData.mappedData);
                                 selectedSourceData.mappedData.push(items.
                                     winConfig.mappedData[_attr].data);
-                            } else {
-                                var _attr = selectedSourceData.attributes[i].trim().
-                                toString();
-                                selectedSourceData.mappedData.push(items.
-                                    widConfig.mappedData[_attr].data);
-                            }
+                            // } else {
+                            //     var _attr = selectedSourceData.attributes[i].trim().
+                            //     toString();
+                            //     selectedSourceData.mappedData.push(items.
+                            //         widConfig.mappedData[_attr].data);
+                            // }
 
 
                         }
                         var appendTblBody = function () {
+
                             $scope.isTableSourceLoading = true;
+                            var rows = '';
+                            for (var c = 0; c < selectedSourceData.attributes.length; c++) {
+                                var oneRow = "<td>" + selectedSourceData.attributes[c] + "</td>";
+                                rows += oneRow;
+                            }
+                            $("#dataBody").append("<tr>" + rows + "</tr>");
+                            oneRow = '';
+                        
                             for (var i = 0; i < selectedSourceData.length; i++) {
                                 for (var b = 0; b < selectedSourceData.mappedData[i].length; b++) {
                                     var rows = '';
@@ -139,6 +152,20 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
 
                         $scope.widget = selectedSourceData;
+
+                        $scope.downloadPDF = function(){
+            
+                            var htmlElement = $(".widget0m-mapped-data").get(0);
+                            var config = {
+                                title:"Sales Forecast Data Summary",
+                                titleLeft: 50, 
+                                titleTop: 20,
+                                tableLeft: 20,
+                                tableTop: 30
+                            };
+                            generatePDF1.generate(htmlElement, config);
+                        }
+
                         $scope.cancel = function () {
                             $mdDialog.cancel();
                         };
@@ -188,10 +215,10 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 });
         };
 
-        $scope.showData = function (widget, ev) {
+        $scope.showData = function (ev, widget) {
             $mdDialog.show({
-                    controller: eval(widget.dataCtrl),
-                    templateUrl: 'views/' + widget.dataView + '.html',
+                    controller: widget.dataCtrl,
+                    templateUrl: 'views/ViewWidgetSettingsData.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     locals: {
@@ -203,6 +230,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 }, function () {
                     //$mdDialog.hide();
                 });
+            $rootScope.widget = widget;
         };
 
         $scope.convertCSVtoJson = function (src) {
@@ -211,21 +239,10 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             });
         }
         $scope.showAdvanced = function (ev, widget) {
-            // $mdDialog.show({
-            //     controller: 'chartSettingsCtrl',
-            //     templateUrl: 'views/chart_settings.html',
-            //     targetEvent: ev,
-            //     resolve: {
-            //         widget: function() {
-            //             return widget;
-            //         }
-            //     }
-            // })
-
-
+    
             $mdDialog.show({
-                    controller: eval(widget.initCtrl),
-                    templateUrl: 'views/' + widget.initTemplate + '.html',
+                    controller: widget.initCtrl,
+                    templateUrl: widget.initTemplate,
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     locals: {
@@ -237,8 +254,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 }, function () {
                     //$mdDialog.hide();
                 });
-
-
+            $rootScope.widget = widget;
         };
 
         /*Summary:
@@ -292,6 +308,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             $rootScope.dashboard.widgets.splice($rootScope.dashboard.widgets.indexOf(widget), 1);
         };
 
+        $scope.showWidgetSettings = false;
 
         $scope.alert = '';
 

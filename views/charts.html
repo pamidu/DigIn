@@ -12,15 +12,11 @@
                 <li class="digin-widget" ng-repeat="widget in $root.dashboard.widgets" 
                 gridster-item="widget" layout="column"
                     layout-align="none stretch">
-                    <div class="digin-widget-content dashboard-widget" ng-style="{'height':widget.mheight}"
-                         layout="row">
+                    <div class="digin-widget-content dashboard-widget" ng-style="{'height':widget.mheight}" layout="row">
                         <div style="height:100%;width:100%" class="dashoard-Wrapper" ng-include src="widget.widView">
                         </div>
-
-                    </div>
-                    <div class="digin-widget-toolbar" layout="row" layout-align="center start">
-                        <div class="widget-title" layout-margin flex>{{widget.uniqueType}}</div>
-                        <div class="widget-button-wrapper" layout="row" layout-align="end center" flex="60">
+                        <div class="widget-button-wrapper widget-button-wrapper2" layout="column" layout-align="end center" ng-show="showWidgetSettings" ng-mouseover="showWidgetSettings = true" 
+                        ng-mouseleave="showWidgetSettings = false" flex>
                             <!-- update damith
                                  data source details view
                             -->
@@ -31,26 +27,52 @@
                                             layout="column"
                                             layout-align="center center" flex>
                                 </ng-md-icon>
+                                <md-tooltip md-direction="left">source</md-tooltip>
                             </md-button>
                             <md-button class="widget-button" ng-if="widget.initCtrl=='elasticInit' || 'metricInit'"
                                        ng-click="syncWidget(widget)">
                                 <ng-md-icon icon="sync" style="fill:dimgrey" size="20" layout="column"
                                             layout-align="center center" flex></ng-md-icon>
+                                <md-tooltip md-direction="left">sync</md-tooltip>
                             </md-button>
-                            <md-button class="widget-button" ng-click="widgetSettings(widget)">
+                            <md-button class="widget-button" ng-click="showAdvanced($event,widget)">
                                 <ng-md-icon icon="settings" style="fill:dimgrey" size="20" layout="column"
                                             layout-align="center center" flex></ng-md-icon>
+                                <md-tooltip md-direction="left">settings</md-tooltip>
                             </md-button>
                             <md-button class="widget-button" ng-click="showWidget($event,widget)">
                                 <ng-md-icon icon="fullscreen" style="fill:dimgrey" size="20" layout="column"
                                             layout-align="center center" flex></ng-md-icon>
+                                <md-tooltip md-direction="left">full view</md-tooltip>
                             </md-button>
+                            <md-button class="widget-button" ng-click="commentary(widget)">
+                                <ng-md-icon icon="volume_up" style="fill:dimgrey" size="20" layout="column"
+                                            layout-align="center center" flex></ng-md-icon>
+                                <md-tooltip md-direction="left">commentary</md-tooltip>
+                            </md-button>
+                            <md-button class="widget-button" ng-click="showData($event,widget)">
+                                <ng-md-icon icon="format_list_numbered" style="fill:dimgrey" size="20" layout="column"
+                                            layout-align="center center" flex></ng-md-icon>
+                                <md-tooltip md-direction="left">data</md-tooltip>
+                            </md-button>
+
+                    </div>
+                    </div>
+                    <div class="digin-widget-toolbar" layout="row" layout-align="center start">
+                        <div class="widget-title" layout-margin flex>{{widget.uniqueType}}</div>
+                        <div class="widget-button-wrapper2" layout="row" layout-align="end center" flex>
                             <md-button class="widget-button" ng-click="remove(widget)">
                                 <ng-md-icon icon="close" style="fill:dimgrey" size="20" layout="column"
                                             layout-align="center center" flex></ng-md-icon>
                             </md-button>
-
+                            <md-button class="widget-button" 
+                            ng-mouseover="showWidgetSettings = true" 
+                            ng-mouseleave="showWidgetSettings = false">
+                                <ng-md-icon icon="more_vert" style="fill:dimgrey" size="20" layout="column"
+                                            layout-align="center center" flex></ng-md-icon>
+                            </md-button>
                         </div>
+                        
                     </div>
                 </li>
                 <!--<common-data-src></common-data-src>-->

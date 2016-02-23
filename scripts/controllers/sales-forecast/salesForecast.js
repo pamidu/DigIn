@@ -569,24 +569,23 @@ routerApp.controller('salesForecastCtrl', function($scope, $mdDialog, $location,
 
 });
 
-function forecastDownloadCtrl($scope, $mdDialog) {
+function forecastDownloadCtrl($scope, $mdDialog, generatePDF2) {
     $scope.closeDialog = function() {
         $mdDialog.hide();
     }
 
-    $scope.test = function() {
-        html2canvas($("#tblForecast"), {
-            onrendered: function(canvas) {
-                var imgData = canvas.toDataURL(
-                    'image/png');
-                width = (canvas.width * 25.4) / 115, // DPI
-                    height = (canvas.height * 25.4) / 115; // DPI
-                var doc = new jsPDF('landscape');
-                doc.addImage(imgData, 'PNG', 15, 50, width, height);
-                doc.save('forcast-data.pdf');
-            }
-        });
-    };
-
+    $scope.test = function(){
+        
+        var htmlElement = $("#tblForecast");
+        var title = "Sales Forecast Data Summary";
+        var config = {
+                    title:"Sales Forecast Data Summary",
+                    titleLeft: 50, 
+                    titleTop: 20,
+                    tableLeft: 0,
+                    tableTop: 30
+                };
+        generatePDF2.generate(htmlElement, config);
+    }; 
 
 }

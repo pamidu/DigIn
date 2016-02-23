@@ -1303,6 +1303,15 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
 }
 .widget-button-wrapper
 {
+    -webkit-box-shadow: 0px -2px 5px -1px rgba(105, 105, 105, 0.2);
+    -moz-box-shadow: 0px -2px 5px -1px rgba(105, 105, 105, 0.2);
+    box-shadow: 0px -2px 5px -1px rgba(105, 105, 105, 0.2);
+    position: absolute;
+    bottom: 35px;
+    right: 0px;
+}
+.widget-button-wrapper2{
+    background-color: rgba(255,255,255,0.9);
     margin-right: 15px;
 }
 .widget-title
@@ -1677,3 +1686,4 @@ md-tabs.setup-tabs md-tabs-wrapper md-tab-data{
     width:100%;
     top:50px;
 }
+

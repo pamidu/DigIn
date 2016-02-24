@@ -93,6 +93,22 @@ routerApp.controller('queryBuilderCtrl', function
                     //high charts config
                     $scope.chartType = type;
                     $scope.highchartsNG = $scope.initHighchartObj;
+                },
+                fireMessage: function (msgType, msg) {
+
+                    var _className;
+                    if (msgType == '0') {
+                        _className = 'danger';
+                    } else if (msgType == '1') {
+                        _className = 'success';
+                    }
+                    ngToast.create({
+                        className: _className,
+                        content: msg,
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
                 }
             }
 
@@ -115,11 +131,11 @@ routerApp.controller('queryBuilderCtrl', function
 //                {id: 'a02', filedName: 'location', click: false}
             ],
             measureCondition: [
-                {id: 'c01', name: 'AVG', click: false},
-                {id: 'c02', name: 'SUM', click: false},
-                {id: 'c03', name: 'COUNT', click: false},
-                {id: 'c04', name: 'MIN', click: false},
-                {id: 'c05', name: 'MAX', click: false}
+                {id: 'c01', name: 'AVG', click: false, dragging: false, proBy: 'mc0'},
+                {id: 'c02', name: 'SUM', click: false, dragging: false, proBy: 'mc0'},
+                {id: 'c03', name: 'COUNT', click: false, dragging: false, proBy: 'mc0'},
+                {id: 'c04', name: 'MIN', click: false, dragging: false, proBy: 'mc0'},
+                {id: 'c05', name: 'MAX', click: false, dragging: false, proBy: 'mc0'}
             ],
             chartTypes: [
                 {
@@ -217,7 +233,9 @@ routerApp.controller('queryBuilderCtrl', function
                 $scope.commonData.measures.push({
                     id : $scope.sourceData.fMeaArr[i].id,
                     filedName : $scope.sourceData.fMeaArr[i].name,
-                    click : false
+                    click : false,
+                    selectQry: [],
+                    proBy: 'm0'
                 });
             }
         }
@@ -229,29 +247,21 @@ routerApp.controller('queryBuilderCtrl', function
                 $scope.commonData.columns.push({
                     id : $scope.sourceData.fAttArr[i].id,
                     filedName : $scope.sourceData.fAttArr[i].name,
-                    click : false
+                    click : false,
+                    selectQry: [],
+                    proBy: 'c0'
                 });
             }
         }
-    
-     $( ".draggable-measure" ).draggable({ revert: "invalid" });
-        $( ".droppable-container" ).droppable({
-              activeClass: "ui-state-default",
-              hoverClass: "ui-state-hover",
-              drop: function( event, ui ) {
-//                $( this )
-//                  .addClass( "ui-state-highlight" )
-//                  .find( "p" )
-//                    .html( "Dropped!" );
-              }
-            });
         
         console.log('source data:'+JSON.stringify());
     
         var executeQryData = {
             executeMeasures: [],
             executeColumns: [],
-            chartType: ''
+            chartType: '',
+            electQry: [],
+            GrpFiled: []
         };
         $scope.executeQryData = executeQryData;
 
@@ -417,6 +427,17 @@ routerApp.controller('queryBuilderCtrl', function
                             $state.go('home.Dashboards');
                         }, 5000);
                         break;
+                    case '5':
+                        //#create query builder
+                        //query builder
+                        if (this.openSettingToggle[1].isQueryBuilder) {
+                            $("#toggleQueryBuilder").hide(200);
+                            this.openSettingToggle[1].isQueryBuilder = false;
+                        } else {
+                            this.openSettingToggle[1].isQueryBuilder = true;
+                            $("#toggleQueryBuilder").show(300);
+                        }
+                        break;
                 }
 
             },
@@ -560,6 +581,85 @@ routerApp.controller('queryBuilderCtrl', function
     };
         
         privateFun.createHighchartsChart('');
+    
+    var queryBuilderData = {
+            select: []
+        };
+        $scope.queryBuilderData = queryBuilderData;
+
+        $scope.dragabbleEvent = {
+            onDropCompleteMeasure: function (dragData, dropFiled) {
+                // drop only measure Condition
+                if (dragData.proBy == 'mc0') {
+                    var i;
+                    var pushQry = {
+                        isFoundSelectQry: false,
+                        index: 0
+                    };
+                    var commonData = $scope.commonData.measures;
+                    for (i = 0; i < commonData.length; i++) {
+                        if (commonData[i].filedName == dropFiled.filedName) {
+                            pushQry.index = i;
+                            for (var c = 0; c < commonData[i].selectQry.length; c++) {
+                                if (commonData[i].selectQry[c] == dragData.name) {
+                                    pushQry.isFoundSelectQry = true;
+                                    c = commonData[i].selectQry.length;
+                                    i = commonData.length;
+                                }
+                            }
+                        }
+                    }
+                    //is not found  select qry in current filed
+                    //then push in to dropped filed
+                    if (!pushQry.isFoundSelectQry) {
+                        queryBuilderData.select.push({
+                            filed: dropFiled.filedName,
+                            condition: dragData.name
+                        });
+                        executeQryData.executeMeasures.push({
+                            filedName: dropFiled.filedName,
+                            condition: dragData.name
+                        });
+                        commonData[pushQry.index].selectQry.push(dragData.name)
+                    }
+                } else {
+                    //invalid dropped field
+                    //fire notification
+                    // fire error
+                    privateFun.fireMessage('0', 'invalid dropped list,Please check again.');
+                    return;
+                }
+            },
+            onDropCompleteGroup: function (dragData) {
+                if (dragData.proBy == 'c0') {
+                    var pushGrp = {
+                        isFoundGrp: false,
+                        index: 0
+                    };
+                    var grpObj = executeQryData.GrpFiled;
+                    for (i = 0; i < grpObj.length; i++) {
+                        if (grpObj[i].filedName == dragData.filedName) {
+                            pushGrp.isFoundGrp = true;
+                            pushGrp.index = i;
+                            i = grpObj.length;
+                        }
+                    }
+                    if (!pushGrp.isFoundGrp) {
+                        executeQryData.GrpFiled.push({
+                            filedName: dragData.filedName
+                        });
+                    } else {
+                        privateFun.fireMessage('0', 'invalid group found..!');
+                    }
+
+                } else {
+                    //invalid dropped field
+                    // fire error
+                    privateFun.fireMessage('0', 'invalid dropped list,Please check again.');
+                }
+            }
+        }
+    
 
     }
 ).directive("markable", function () {

@@ -382,7 +382,7 @@
                 </div>
 
                 <!-- chart setting panle -->
-                <div class="digin-bq-chart-rw1 p-15"
+                <div class="digin-bq-chart-rw1 p-15 p-t"
                      id="toggleSettingPanel">
                     <div class="header">
                         <h4 class="font-weight-300 p-20">
@@ -397,7 +397,7 @@
                     </div>
                     <div class="chart-config-wrap-rw1 animated fadeIn">
                         <ul>
-                            <li class="hvr-outline-in" ng-repeat="chart in commonData.chartTypes"
+                            <li class="hvr-border-fade" ng-repeat="chart in commonData.chartTypes"
                                 ng-click="eventHndler.onClickSelectedChart(commonData.chartTypes,chart)">
                                 <i class="{{chart.icon}}"></i>
                                 <small>{{chart.name}}</small>

@@ -17,43 +17,49 @@
 
             return {
                 getTables: function(cb) {
-                    $servicehelpers.httpSend("get", function(data, status) {
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
                     }, $diginurls.diginengine + "/GetTables?dataSetName=" + dataSetId + "&db=" + database);
                 },
                 getFields: function(tbl, cb) {
-                    $servicehelpers.httpSend("get", function(data, status) {
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
                     }, $diginurls.diginengine + "/GetFields?dataSetName=" + dataSetId + "&tableName=" + tbl + "&db=" + database);
                 },
                 getHighestLevel: function(tbl, fieldstr, cb) {
                     if (database == "BigQuery") {
-                        $servicehelpers.httpSend("get", function(data, status) {
+                        $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
                         }, $diginurls.diginengine + "/gethighestlevel?tablename=[" + dataSetId + "." + tbl + "]&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
                     }
                     if (database == "MSSQL") {
 
-                        $servicehelpers.httpSend("get", function(data, status) {
+                        $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
                         }, $diginurls.diginengine + "/gethighestlevel?tablename=" + tbl + "&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
                     }
 
                 },
-                getAggData: function(tbl, agg, aggf, cb, gb, con) {
+                getAggData: function(tbl, aggObjArr, cb, gb, con) {
+                    var strField = "";
+                    
+                    aggObjArr.forEach(function(key){
+                        strField += "%27" + key.field + "%27:%27" + key.agg + "%27,";
+                    });                    
+                    
                     var wSrc = "scripts/webworkers/webWorker.js";
                     if (database == "BigQuery") {
                         if(!gb){
-                            var params = "tablenames={1:%27"+ getNamespace() + "." + tbl + "%27}&db=" + database + "&agg={%27" + aggf + "%27:%27" + agg + "%27}" + "&group_by={}&cons=&order_by={}";
+                            var params = "tablenames={1:%27"+ getNamespace() + "." + tbl + "%27}&db=" + database + "&agg={" + strField + "}" + "&group_by={}&cons=&order_by={}";
                         }else{
-                            var params = "tablenames={1:%27"+ getNamespace() + "." + tbl + "%27}&db=" + database + "&agg={%27" + aggf + "%27:%27" + agg + "%27}" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={}";
+                            var params = "tablenames={1:%27"+ getNamespace() + "." + tbl + "%27}&db=" + database + "&agg={" + strField + "}" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={}";
                         }               
                     }
                     if (database == "MSSQL") {
                         if (gb === undefined) {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg={%27" + aggf + "%27:%27" + agg + "%27}" + "&cons=&order_by={}";
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg={" + strField + "}&cons=&order_by={}";
                         } else {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&agg={%27" + aggf + "%27:%27" + agg + "%27}" + "&cons=&order_by={}";
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg={" + strField + "}&cons=&order_by={}";
                         }
 
                     }
@@ -65,8 +71,8 @@
                         rUrl: reqUrl,
                         method: "get"
                     };
-                    $servicehelpers.sendWorker(wSrc, wData, function(data, status) {
-                        cb(data, status);
+                    $servicehelpers.sendWorker(wSrc, wData, function(data, status, msg) {
+                        cb(data, status, msg);
                     });
 
                 },
@@ -78,7 +84,7 @@
                         rUrl: reqUrl,
                         method: "get"
                     };
-                    $servicehelpers.sendWorker(wSrc, wData, function(data, status) {
+                    $servicehelpers.sendWorker(wSrc, wData, function(data, status, msg) {
                         cb(data, status);
                     });
                 }
@@ -100,10 +106,10 @@
                         headers: {}
                     }).
                     success(function(data, status, headers, config) {
-                        if(data.Is_Success) cb(data.Result, true);
+                        (data.Is_Success) ? cb(data.Result, true, data.Custom_Message) : cb(data.Custom_Message, false, "");
                     }).
                     error(function(data, status, headers, config) {
-                        cb(data, false);
+                        cb(data, false, "");
                     });
                 }
             },
@@ -112,7 +118,8 @@
                 wData.rUrl = wData.rUrl + "&SecurityToken=" + getCookie("securityToken") + "&Domain=duoworld.duoweb.info";
                 w.postMessage(JSON.stringify(wData));
                 w.addEventListener('message', function(event) {
-                    cb(JSON.parse(event.data.res), event.data.state);
+                    var res = JSON.parse(event.data.res);
+                    res.Is_Success ? cb(res.Result, event.data.state, res.Custom_Message) : cb(res.Custom_Message, event.data.state,"");   
                 });
             }
         }

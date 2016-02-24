@@ -33,7 +33,8 @@ var routerApp = angular.module('DuoDiginRt', [
     'rzModule',
     'angular-table',
     'ngToast',
-    'vAccordion'
+    'vAccordion',
+    'ngDraggable'
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {

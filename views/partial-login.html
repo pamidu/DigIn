@@ -31,7 +31,13 @@
                            ng-model="txtPwd">
                 </md-input-container>
             </div>
-            <p style="font-size:small;color:darkgrey;">New to Digin? <a href="http://duoworld.sossgrid.com/signup/">Signup</a>
+
+            <div layout="row" ng-click="signup()">
+                <p style="font-size:small;color:darkgrey;" ng-model="signup">New to Digin? <a>Signup</a>
+                <!--<p style="font-size:small;color:darkgrey;">New to Digin? <a href="http://localhost:8080/Diginlatest/signup.html">Signup</a>-->
+            </div>
+           
+
             </p>
             <md-button class="md-fab  md-primary" type="button"
                        $scope.error.event=$event

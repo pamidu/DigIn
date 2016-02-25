@@ -1,50 +1,64 @@
 //var app = angular.module("diginLogin", ['ngMaterial']);
 
-routerApp.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$window','$auth', '$state',
-    function ($scope, $http, $mdToast, $animate, $window,$auth, $state) {
+routerApp.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$window','$auth', '$state','$rootScope',
+    function ($scope, $http, $mdToast, $animate, $window,$auth, $state, $rootScope) {
         $scope.isLoggedin = false;
         $scope.error = {
             isUserName: false,
             isPwd: false,
             event: 0
         };
-
+        
+        $scope.signup = function() {
+                $scope.isLoggedin = false;
+                  $state.go('signup');
+        };
 
         //on click login  button - Login user
         $scope.login = function() {
-            alert('test');
             $auth.login($scope.txtUname,$scope.txtPwd,"duoworld.duoweb.info");
+            
             $auth.onLoginResult(function () {
                 $scope.isLoggedin = true;
-                  $state.go('home');
-//                $window.location = "home.html";
+
+                $rootScope.username = $scope.txtUname;
+                localStorage.setItem('username', $scope.txtUname);
+
+                
+                var userInfo = $auth.getSession();         
+                /*console.log("user data:"+JSON.stringify(userInfo));*/
+
+                $rootScope.name=userInfo.Name;
+                localStorage.setItem('name', userInfo.Name);
+
+                $rootScope.email=userInfo.Email;
+                localStorage.setItem('email', userInfo.Email);
+
+                $state.go('welcome'); 
+
             });  
-            // , 
-            // function (errorData){
-            //     alert (errorData.description);
-            // });
         };
        
 
-        //Register user??
-        $scope.registerUser = function() {
-            $Auth.register({
-                UserID:$scope.txtUname,
-                EmailAddress: $scope.txtUname,
-                Name: $scope.txtUname,
-                Password: $scope.txtPwd,
-                ConfirmPassword:$scope.txtPwd,
-                Active: true
-            }).success(function(data) {
-                if (data.error) {
-                    alert("Err!");
-                }
-
-                if (data.success) {
-                    alert("Success!");
-                }
-            });
-        };
+//        //Register user??
+//        $scope.registerUser = function() {
+//            $Auth.register({
+//                UserID:$scope.txtUname,
+//                EmailAddress: $scope.txtUname,
+//                Name: $scope.txtUname,
+//                Password: $scope.txtPwd,
+//                ConfirmPassword:$scope.txtPwd,
+//                Active: true
+//            }).success(function(data) {
+//                if (data.error) {
+//                    alert("Err!");
+//                }
+//
+//                if (data.success) {
+//                    alert("Success!");
+//                }
+//            });
+//        };
 
     }]);
 

@@ -55,6 +55,22 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: false
             }
         })
+        .state("signup", {
+            url: "/signup",
+            controller: "signUpCtrl",
+            templateUrl: "views/signUp.html",
+            data: {
+                requireLogin: false
+            }
+        })
+        .state("welcome", {
+            url: "/welcome",
+            controller: "welcomePageCtrl",
+            templateUrl: "views/partial-WelcomePage.html",
+            data: {
+                requireLogin: true
+            }
+        })
         .state("home", {
             url: "/home",
             controller: "NavCtrl",

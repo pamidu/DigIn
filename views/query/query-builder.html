@@ -200,9 +200,17 @@
                                     fill="none" stroke-width="6" stroke-miterlimit="10"/>
                         </svg>
                     </div>
-                    <highchart
-                            ng-if="eventHndler.isLoadingChart==false"
-                            config="highchartsNG"></highchart>
+                    <div ng-if="eventHndler.isLoadingChart==false">
+                        <highchart  ng-if="eventHndler.isHighCharts==true"
+                                    config="highchartsNG">
+                        </highchart>
+                        <div  ng-if="eventHndler.isD3Charts==true">
+                        </div>
+                        <div  ng-if="eventHndler.isPivotSummary==true" id="grid">
+                            <!-- <div ng-include src="'views/ViewPivotSummary.html'"></div> -->
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="digin-gb-row">

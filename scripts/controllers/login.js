@@ -16,8 +16,9 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$
             $auth.login($scope.txtUname,$scope.txtPwd,"duoworld.duoweb.info");
             $auth.onLoginResult(function () {
                 $scope.isLoggedin = true;
-                  $state.go('home');
-//                $window.location = "home.html";
+                $state.go('home');
+                console.log("logged in");
+               // $window.location = "home.html";
             });  
             // , 
             // function (errorData){

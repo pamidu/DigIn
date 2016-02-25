@@ -88,4 +88,84 @@ table.pvtTable tr td {
     width: 100%;
     max-height: 200px;
 }
-.pvtCheckContainer p{ margin: 5px; }
+.pvtCheckContainer p{ 
+    margin: 5px; 
+}
+
+#grid > table{
+    margin: 10px;
+    border-collapse: collapse;
+}
+
+#grid > table, th, td {
+    height: 100%;
+    padding: 10px;
+    display: inline-block;
+    z-index: 0;
+    overflow-y: auto;
+    overflow: hidden;
+}
+
+#grid > table > tbody > tr{
+    /*border: 2px solid #EC784B;*/
+    border: 2px solid #ECECEC;
+}
+/* width of  */
+#grid > table > tbody > tr:nth-child(1) > td:nth-child(1){
+    width: 200px;
+    border-style: solid;
+    /*border-color: #EC784B;*/
+    border-color: #ECECEC;
+    border-width: 0px 2px 0px 0px;
+}
+#grid > table > tbody > tr:nth-child(2) > td.pvtAxisContainer.pvtUnused.pvtVertList.ui-sortable{
+    width: 200px;
+    border-style: solid;
+    /*border-color: #EC784B;*/
+    border-color: #ECECEC;
+    border-width: 0px 2px 0px 0px;
+}
+#grid > table > tbody > tr:nth-child(1) > td.pvtVals{
+    width: 200px;
+    border-style: solid;
+    /*border-color: #EC784B;*/
+    border-color: #ECECEC;
+    border-width: 0px 2px 0px 0px;
+}
+#grid > table > tbody > tr:nth-child(2) > td.pvtAxisContainer.pvtRows.ui-sortable{
+    width: 200px;
+    border-style: solid;
+    /*border-color: #EC784B;*/
+    border-color: #ECECEC;
+    border-width: 0px 2px 0px 0px;
+}
+/* selectors */
+#grid > table > tbody > tr:nth-child(1) > td.pvtVals > select{
+    width: 100%;
+    margin: 10px 0;
+}
+#grid > table > tbody > tr:nth-child(1) > td:nth-child(1) > select{
+    width: 100%;
+    margin: 10px 0;
+}
+
+#grid > table > tbody > tr:nth-child(1) > td.pvtAxisContainer.pvtHorizList.pvtCols.ui-sortable{
+    min-width: 200px;
+}
+
+#grid > table > tbody > tr:nth-child(2) > td.pvtRendererArea > table{
+    background-color: #F69563;
+}
+
+#grid > table > tbody > tr:nth-child(2) > td.pvtRendererArea > table > tr{
+    background-color: #fff;
+}
+
+#grid > table > tbody > tr:nth-child(2) > td.pvtRendererArea > table > tr > th{
+    background-color: #FFE6DA;
+    border: 1px solid white;
+}
+#grid > table > tbody > tr:nth-child(2) > td.pvtRendererArea > table > tr > td{
+    background-color: #FFF2EC;
+    border: 1px solid white;
+}

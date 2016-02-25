@@ -23,11 +23,10 @@
         <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
         <link href="styles/css/material-wfont.css" rel="stylesheet">
         <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-        <link rel="stylesheet" href="styles/css/pivot.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="styles/css/directive_library.css">
-        <link rel="stylsheet" type="text/css" href="styles/css/pivot.css"/>
+        <link rel="stylesheet" type="text/css" href="styles/css/pivot.css"/>
         <!-- angular gridster -->
         <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
         <!-- angular slider -->
@@ -81,7 +80,10 @@
         <!--  new changes  -->
     </head>
     <body>
-        
+        <!-- preloader start -->
+        <div class="pre-loader-parent" id="pagePreLoader" layout="column" layout-align="center center" ng-include src="'views/ViewPreloader.html'" style="background-color:white">
+        </div>
+        <!-- preloader end -->
         <div ui-view layout="column" id="mainContainer" style="height:100% !important;">
         </div>        
     </body>

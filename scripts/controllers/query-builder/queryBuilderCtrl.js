@@ -41,6 +41,7 @@ routerApp.controller('queryBuilderCtrl', function
     
     $scope.sourceData = $csContainer.fetchSrcObj();
     $scope.client = $diginengine.getClient($scope.sourceData.src);
+    $scope.queryEditState = false;
     $scope.initHighchartObj = {
                         options: {
                             chart: {
@@ -72,7 +73,7 @@ routerApp.controller('queryBuilderCtrl', function
                                 width: 1,
                                 color: '#EC784B'
                             }]
-                        },
+                        },          
                         tooltip: {
                             valueSuffix: '°C'
                         },
@@ -407,6 +408,7 @@ routerApp.controller('queryBuilderCtrl', function
                 }
             },
             onClickCondition: function (row, filed) {
+                console.log("onClickCondition:"+ JSON.stringify(row) + " " + JSON.stringify(filed));
                 var isFoundCnd = false;
                 for (i in executeQryData.executeMeasures) {
                     if (executeQryData.executeMeasures[i].filedName == filed.filedName &&
@@ -505,9 +507,25 @@ routerApp.controller('queryBuilderCtrl', function
                         //#save
                         //all config save to main dashboard
                         $scope.widget = $scope.sourceData.wid;
-                        $scope.widget.highchartsNG = $scope.highchartsNG;
+                        $scope.widget.highchartsNG = $scope.highchartsNG;                        
                         $scope.widget.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
-                        $rootScope.dashboard.widgets.push($scope.widget);
+                        if(typeof $scope.widget.commonSrc == "undefined"){
+                            $scope.widget.highchartsNG["size"] = {width: 300, height: 220};
+                            $scope.widget["commonSrc"] = {src:$scope.sourceData,
+                                                      mea:$scope.executeQryData.executeMeasures,
+                                                      att:$scope.executeQryData.executeColumns,
+                                                      query:$scope.receivedQuery};
+                            $rootScope.dashboard.widgets.push($scope.widget);
+                        }else{
+                            $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
+                            $scope.widget["commonSrc"] = {src:$scope.sourceData,
+                                                      mea:$scope.executeQryData.executeMeasures,
+                                                      att:$scope.executeQryData.executeColumns,
+                                                      query:$scope.receivedQuery};
+                            var objIndex = getRootObjectById($scope.widget.id, $rootScope.dashboard.widgets);
+                            $rootScope.dashboard.widgets[objIndex] = $scope.widget;
+                        }                     
+                        
                         this.isMainLoading = true;
                         this.message = this.messageAry[0];
                         setTimeout(function () {
@@ -594,20 +612,23 @@ routerApp.controller('queryBuilderCtrl', function
             
             if($scope.executeQryData.executeColumns.length == 0){
                 var meaArr = executeQryData.executeMeasures;
+                var fieldArr = [];
+                $scope.eventHndler.isLoadingChart=true;
                 meaArr.forEach(function(key){
-                    $scope.eventHndler.isLoadingChart=true;
-                    $scope.client.getAggData($scope.sourceData.tbl, key.condition, key.filedName, function(res, status){
-                        for (var c in res[0]) {
-                            if (Object.prototype.hasOwnProperty.call(res[0], c)) {
-                                $scope.highchartsNG.series.push({
-                                    name: c,
-                                    color: '#EC784B',
-                                    data: [res[0][c]]
-                                })
-                            }
-                        }
-                        $scope.eventHndler.isLoadingChart=false;
+                    fieldArr.push({
+                        field : key.filedName,
+                        agg : key.condition
                     });
+                });
+                
+                $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res, status, query){
+                    if(status){
+                        $scope.setMeasureData(res[0]);                        
+                        $scope.receivedQuery = query;
+                    }
+                    else{
+                        //handle for exceptions
+                    }
                 });
                 
                 
@@ -618,35 +639,106 @@ routerApp.controller('queryBuilderCtrl', function
             //alert('test');
         };
     
+    $scope.setMeasureData = function(res){
+        $scope.highchartsNG.series = [];
+        for (var c in res) {
+            if (Object.prototype.hasOwnProperty.call(res, c)) {
+                $scope.highchartsNG.series.push({
+                    name: c,
+                    color: '#EC784B',
+                    data: [res[c]]
+                })
+            }
+        }
+        $scope.eventHndler.isLoadingChart=false;
+    };
+    
     $scope.getGroupedAggregation = function(row){
         if(row) $scope.selectedCat = row;        
         $scope.highchartsNG.series = [];
+        var fieldArr = [];
+        $scope.eventHndler.isLoadingChart=true;
         
-        var seriesArr = $scope.executeQryData.executeMeasures;
-        for(i=0;i<seriesArr.length;i++){
-            $scope.eventHndler.isLoadingChart=true;
-            $scope.client.getAggData($scope.sourceData.tbl, seriesArr[i].condition, seriesArr[i].filedName, function(res, status){
-                var seriesArr = [];
-                //get the series name
-                var serName = "";
-                for (var c in res[0]) {
+        var measureArr = $scope.executeQryData.executeMeasures;
+        measureArr.forEach(function(key){
+            fieldArr.push({
+                field : key.filedName,
+                agg : key.condition
+            });
+        });
+        
+        $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res, status, query){
+            if(status){
+                $scope.mapResult($scope.selectedCat, res, function(data){
+                    $scope.highchartsNG.series = data;
+                    $scope.eventHndler.isLoadingChart=false;
+                    $scope.receivedQuery = query;
+                });                
+            }
+
+        },$scope.selectedCat);
+    };
+    
+    $scope.getExecuteAgg = function(query){
+        $scope.eventHndler.isLoadingChart=true;
+        $scope.client.getExecQuery(query, function(res, status, query){
+            var cat = "";
+            var measureArr = [];
+            if(status){
+                for(c in res[0]){
                     if (Object.prototype.hasOwnProperty.call(res[0], c)) {
-                        if(c != $scope.selectedCat) serName = c;
+                        if(typeof res[0][c] == "string") cat = c;
+                        else{
+                            var m = c.split('_');
+                            measureArr.push({
+                                filedName: m[1],
+                                condition: m[0]
+                            });
+                        }
                     }
                 }
-                res.forEach(function(key){
-                    seriesArr.push({
-                        name: key[$scope.selectedCat],
-                        y: key[serName]
+                $scope.executeQryData.executeMeasures = measureArr;
+            }
+            if(cat != ""){
+                $scope.executeQryData.executeColumns = [{filedName: cat}];
+                $scope.mapResult(cat, res, function(data){
+                    $scope.highchartsNG.series = data;
+                    $scope.eventHndler.isLoadingChart=false;
+                    $scope.receivedQuery = query;
+                    $scope.queryEditState = false;
+                });
+            }else{
+                $scope.setMeasureData(res[0]);
+                $scope.receivedQuery = query;
+            }
+        });
+    };
+    
+    $scope.mapResult = function(cat, res, cb){
+        var serArr = [];
+        
+        //dynamically building the series objects
+        for(c in res[0]){
+            if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+                if(c != cat){
+                    serArr.push({
+                        name: c,
+                        data: []
                     });
-                });
-                $scope.highchartsNG.series.push({
-                    name: serName,
-                    data: seriesArr
-                });
-                $scope.eventHndler.isLoadingChart=false;
-            },$scope.selectedCat);
+                }                
+            }
         }
+        
+        //fill the series array
+        res.forEach(function(key){
+            serArr.forEach(function(ser){
+                ser.data.push({
+                    name: key[cat],
+                    y: parseFloat(key[ser.name])
+                });
+            });
+        });
+        cb(serArr);
     };
     
     $scope.removeMeasure = function(m){
@@ -671,7 +763,17 @@ routerApp.controller('queryBuilderCtrl', function
         }
     };
         
+    if(typeof($scope.sourceData.wid.commonSrc) == "undefined"){
         privateFun.createHighchartsChart('');
+    }else{
+        $scope.highchartsNG = $scope.sourceData.wid.highchartsNG;
+        $scope.prevChartSize = $scope.highchartsNG.size;
+        delete $scope.highchartsNG.size;
+        $scope.executeQryData.executeMeasures = $scope.sourceData.wid.commonSrc.mea;
+        $scope.executeQryData.executeColumns = $scope.sourceData.wid.commonSrc.att;
+        $scope.receivedQuery = $scope.sourceData.wid.commonSrc.query;
+    }
+    
     
     var queryBuilderData = {
             select: []
@@ -680,77 +782,18 @@ routerApp.controller('queryBuilderCtrl', function
 
         $scope.dragabbleEvent = {
             onDropCompleteMeasure: function (dragData, dropFiled) {
-                // drop only measure Condition
-                if (dragData.proBy == 'mc0') {
-                    var i;
-                    var pushQry = {
-                        isFoundSelectQry: false,
-                        index: 0
-                    };
-                    var commonData = $scope.commonData.measures;
-                    for (i = 0; i < commonData.length; i++) {
-                        if (commonData[i].filedName == dropFiled.filedName) {
-                            pushQry.index = i;
-                            for (var c = 0; c < commonData[i].selectQry.length; c++) {
-                                if (commonData[i].selectQry[c] == dragData.name) {
-                                    pushQry.isFoundSelectQry = true;
-                                    c = commonData[i].selectQry.length;
-                                    i = commonData.length;
-                                }
-                            }
-                        }
-                    }
-                    //is not found  select qry in current filed
-                    //then push in to dropped filed
-                    if (!pushQry.isFoundSelectQry) {
-                        queryBuilderData.select.push({
-                            filed: dropFiled.filedName,
-                            condition: dragData.name
-                        });
-                        executeQryData.executeMeasures.push({
-                            filedName: dropFiled.filedName,
-                            condition: dragData.name
-                        });
-                        commonData[pushQry.index].selectQry.push(dragData.name)
-                    }
-                } else {
-                    //invalid dropped field
-                    //fire notification
-                    // fire error
-                    privateFun.fireMessage('0', 'invalid dropped list,Please check again.');
-                    return;
-                }
+                console.log("onDropCompleteMeasure:"+ JSON.stringify(dragData) + " " + JSON.stringify(dropFiled));
+                $scope.eventHndler.onClickCondition(dragData, dropFiled);
+                
             },
             onDropCompleteGroup: function (dragData) {
-                if (dragData.proBy == 'c0') {
-                    var pushGrp = {
-                        isFoundGrp: false,
-                        index: 0
-                    };
-                    var grpObj = executeQryData.GrpFiled;
-                    for (i = 0; i < grpObj.length; i++) {
-                        if (grpObj[i].filedName == dragData.filedName) {
-                            pushGrp.isFoundGrp = true;
-                            pushGrp.index = i;
-                            i = grpObj.length;
-                        }
-                    }
-                    if (!pushGrp.isFoundGrp) {
-                        executeQryData.GrpFiled.push({
-                            filedName: dragData.filedName
-                        });
-                    } else {
-                        privateFun.fireMessage('0', 'invalid group found..!');
-                    }
-
-                } else {
-                    //invalid dropped field
-                    // fire error
-                    privateFun.fireMessage('0', 'invalid dropped list,Please check again.');
-                }
+                $scope.eventHndler.onClickColumn(dragData);
             }
         }
     
+        $scope.changeEditState = function(){
+            $scope.queryEditState = !$scope.queryEditState;  
+        };
 
     }
 ).directive("markable", function () {

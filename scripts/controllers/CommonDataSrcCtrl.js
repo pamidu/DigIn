@@ -182,7 +182,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             onClickNext: function (index) {
                 commonUi.isServiceError = false;
                 switch (index) {
-                    case '1':
+                    case '1':                        
                         //selected source
                         commonUi.selectedIndex = 2;
                         var selectedSrc = $scope.sourceUi.selectedSource;

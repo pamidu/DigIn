@@ -33,7 +33,8 @@ var routerApp = angular.module('DuoDiginRt', [
     'rzModule',
     'angular-table',
     'ngToast',
-    'vAccordion'
+    'vAccordion',
+    'ngDraggable'
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
@@ -52,6 +53,22 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             templateUrl: "views/partial-login.html",
             data: {
                 requireLogin: false
+            }
+        })
+        .state("signup", {
+            url: "/signup",
+            controller: "signUpCtrl",
+            templateUrl: "views/signUp.html",
+            data: {
+                requireLogin: false
+            }
+        })
+        .state("welcome", {
+            url: "/welcome",
+            controller: "welcomePageCtrl",
+            templateUrl: "views/partial-WelcomePage.html",
+            data: {
+                requireLogin: true
             }
         })
         .state("home", {
@@ -253,21 +270,12 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         scope: ['https://www.googleapis.com/auth/drive']
     })
 
-    $mdThemingProvider.theme('alt')
-        .primaryPalette('indigo')
-        .accentPalette('blue');
-
-    $mdThemingProvider.theme('alt1')
-        .primaryPalette('deep-purple')
-        .accentPalette('red');
-
-    $mdThemingProvider.theme('alt2')
-        .primaryPalette('green')
-        .accentPalette('amber');
-
-    $mdThemingProvider.theme('alt3')
-        .primaryPalette('blue-grey')
-        .accentPalette('teal');
+//    $rootScope.primaryPallete = "indigo";
+//    $rootScope.accentPallete = "pink";
+//    
+    $mdThemingProvider.theme('appTheme')
+    .primaryPalette("indigo")
+    .accentPalette("pink");
 
     $mdThemingProvider.alwaysWatchTheme(true);
 }]);

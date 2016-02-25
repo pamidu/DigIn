@@ -94,7 +94,7 @@
                 <div class="digin-gb-measures last-icon">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
-                            measures
+                            series
                             <div class="toggle-icon animated "
                                  ng-class="eventHndler.isToggleMeasure==true?'left-icon-toggle':'left-icon'"
                                  ng-click="eventHndler.onToggleEvent('1')">
@@ -120,7 +120,7 @@
                         <div class="filter-data-not-fund"
                              ng-if="executeQryData.executeMeasures.length < 1">
                             <i class="ti-filter"></i>
-                            <h5>select measure</h5>
+                            <h5>add measures</h5>
                         </div>
                     </div>
                 </div>
@@ -131,7 +131,7 @@
                      id="togglePanelColumns">
                     <div class="header">
                         <h4 class="font-weight-300 p-20">
-                            columns
+                            attributes
                             <div class="header-icon">
                                 <i class="ti-help"></i>
                             </div>
@@ -165,7 +165,7 @@
                 <div class="digin-gb-measures">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
-                            columns
+                            categories
                             <div class="toggle-icon animated "
                                  ng-class="eventHndler.isToggleColumns==true?'left-icon-toggle':'left-icon'"
                                  ng-click="eventHndler.onToggleEvent('2')">
@@ -185,7 +185,7 @@
                         <div class="filter-data-not-fund"
                              ng-if="executeQryData.executeColumns.length < 1">
                             <i class="ti-layout-column2"></i>
-                            <h5>select columns</h5>
+                            <h5>add attributes</h5>
                         </div>
                     </div>
                 </div>
@@ -216,11 +216,11 @@
                 <div class="digin-gb-row">
                     <div class="panel-header inline-panel-header p-b-0">
                         <h3 class="font-weight-300">
-                            customer query design
+                            custom query design
                             <div class="header-icon">
                                 <i class="ti-help"></i>
                             </div>
-                            <div class="header-icon">
+                            <div ng-click="changeEditState()" class="header-icon">
                                 <i class="ti-pencil"></i>
                             </div>
                             <div class="header-icon">
@@ -329,18 +329,20 @@
                     <div class="query-view-warp">
                         <div class="query-viewer">
                             <div class="query-view-not-fund"
-                                 ng-click="eventHndler.onClickSetting('5')"
+                                
                                  ng-if="queryBuilderData.select.length < 1">
                                 <h5>
                                     <i class="ti-paint-bucket"></i>
                                     design query
                                 </h5>
                             </div>
-                            <div ng-if="queryBuilderData.select.length > 0">
-                                select <p ng-repeat="select in queryBuilderData.select">
-                                {{select.condition}}({{select.filed}})<span
-                                    ng-if="queryBuilderData.select.length > 1">,</span></p>
-                                from cutomer
+                            <div>
+                                <span ng-hide= "queryEditState">{{receivedQuery}}</span>
+                                <md-input-container ng-show= "queryEditState" flex>
+                                    <label>Query</label>
+                                    <input ng-model="receivedQuery">
+                                </md-input-container>
+                                <md-button ng-click="getExecuteAgg(receivedQuery)" class="md-raised">go</md-button>
                             </div>
                         </div>
 

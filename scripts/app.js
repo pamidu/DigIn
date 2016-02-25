@@ -274,21 +274,12 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         scope: ['https://www.googleapis.com/auth/drive']
     })
 
-    $mdThemingProvider.theme('alt')
-        .primaryPalette('indigo')
-        .accentPalette('blue');
-
-    $mdThemingProvider.theme('alt1')
-        .primaryPalette('deep-purple')
-        .accentPalette('red');
-
-    $mdThemingProvider.theme('alt2')
-        .primaryPalette('green')
-        .accentPalette('amber');
-
-    $mdThemingProvider.theme('alt3')
-        .primaryPalette('blue-grey')
-        .accentPalette('teal');
+//    $rootScope.primaryPallete = "indigo";
+//    $rootScope.accentPallete = "pink";
+//    
+    $mdThemingProvider.theme('appTheme')
+    .primaryPalette("indigo")
+    .accentPalette("pink");
 
     $mdThemingProvider.alwaysWatchTheme(true);
 }]);

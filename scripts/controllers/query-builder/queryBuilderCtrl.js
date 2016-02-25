@@ -44,7 +44,7 @@ routerApp.controller('queryBuilderCtrl', function
                                 width: 1,
                                 color: '#EC784B'
                             }]
-                        },
+                        },          
                         tooltip: {
                             valueSuffix: '°C'
                         },
@@ -418,8 +418,9 @@ routerApp.controller('queryBuilderCtrl', function
                     case '4':
                         //#save
                         //all config save to main dashboard
-                        $scope.widget = $scope.sourceData.wid;
+                        $scope.widget = $scope.sourceData.wid;                        
                         $scope.widget.highchartsNG = $scope.highchartsNG;
+                        $scope.widget.highchartsNG["size"] = {width: 300, height: 220};
                         $scope.widget.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
                         $rootScope.dashboard.widgets.push($scope.widget);
                         this.isMainLoading = true;

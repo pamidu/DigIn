@@ -44,22 +44,22 @@
                     var strField = "";
                     
                     aggObjArr.forEach(function(key){
-                        strField += "%27" + key.field + "%27:%27" + key.agg + "%27,";
+                        strField += "[%27" + key.field + "%27,%27" + key.agg + "%27],";
                     });                    
                     
                     var wSrc = "scripts/webworkers/webWorker.js";
                     if (database == "BigQuery") {
                         if(!gb){
-                            var params = "tablenames={1:%27"+ getNamespace() + "." + tbl + "%27}&db=" + database + "&agg={" + strField + "}" + "&group_by={}&cons=&order_by={}";
+                            var params = "tablenames={1:%27"+ getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}";
                         }else{
-                            var params = "tablenames={1:%27"+ getNamespace() + "." + tbl + "%27}&db=" + database + "&agg={" + strField + "}" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={}";
-                        }               
+                            var params = "tablenames={1:%27"+ getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={}";
+                        }
                     }
                     if (database == "MSSQL") {
                         if (gb === undefined) {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg={" + strField + "}&cons=&order_by={}";
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}";
                         } else {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg={" + strField + "}&cons=&order_by={}";
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={}";
                         }
 
                     }
@@ -72,6 +72,7 @@
                         method: "get"
                     };
                     $servicehelpers.sendWorker(wSrc, wData, function(data, status, msg) {
+                        alert(JSON.stringify(data));
                         cb(data, status, msg);
                     });
 

@@ -72,7 +72,6 @@
                         method: "get"
                     };
                     $servicehelpers.sendWorker(wSrc, wData, function(data, status, msg) {
-                        alert(JSON.stringify(data));
                         cb(data, status, msg);
                     });
 

@@ -418,11 +418,26 @@ routerApp.controller('queryBuilderCtrl', function
                     case '4':
                         //#save
                         //all config save to main dashboard
-                        $scope.widget = $scope.sourceData.wid;                        
-                        $scope.widget.highchartsNG = $scope.highchartsNG;
-                        $scope.widget.highchartsNG["size"] = {width: 300, height: 220};
+                        $scope.widget = $scope.sourceData.wid;
+                        $scope.widget.highchartsNG = $scope.highchartsNG;                        
                         $scope.widget.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
-                        $rootScope.dashboard.widgets.push($scope.widget);
+                        if(typeof $scope.widget.commonSrc == "undefined"){
+                            $scope.widget.highchartsNG["size"] = {width: 300, height: 220};
+                            $scope.widget["commonSrc"] = {src:$scope.sourceData,
+                                                      mea:$scope.executeQryData.executeMeasures,
+                                                      att:$scope.executeQryData.executeColumns,
+                                                      query:$scope.receivedQuery};
+                            $rootScope.dashboard.widgets.push($scope.widget);
+                        }else{
+                            $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
+                            $scope.widget["commonSrc"] = {src:$scope.sourceData,
+                                                      mea:$scope.executeQryData.executeMeasures,
+                                                      att:$scope.executeQryData.executeColumns,
+                                                      query:$scope.receivedQuery};
+                            var objIndex = getRootObjectById($scope.widget.id, $rootScope.dashboard.widgets);
+                            $rootScope.dashboard.widgets[objIndex] = $scope.widget;
+                        }                     
+                        
                         this.isMainLoading = true;
                         this.message = this.messageAry[0];
                         setTimeout(function () {
@@ -657,7 +672,17 @@ routerApp.controller('queryBuilderCtrl', function
         }
     };
         
+    if(typeof($scope.sourceData.wid.commonSrc) == "undefined"){
         privateFun.createHighchartsChart('');
+    }else{
+        $scope.highchartsNG = $scope.sourceData.wid.highchartsNG;
+        $scope.prevChartSize = $scope.highchartsNG.size;
+        delete $scope.highchartsNG.size;
+        $scope.executeQryData.executeMeasures = $scope.sourceData.wid.commonSrc.mea;
+        $scope.executeQryData.executeColumns = $scope.sourceData.wid.commonSrc.att;
+        $scope.receivedQuery = $scope.sourceData.wid.commonSrc.query;
+    }
+    
     
     var queryBuilderData = {
             select: []

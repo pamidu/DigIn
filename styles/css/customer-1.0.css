@@ -1,8 +1,10 @@
 /*update damith
 update UI version 1.0
 cmds >> common data source style
+drb >> dynamically report builder
 */
 
+/*cmds >> common data source style*/
 .digin-cmds-source {
     display: block;
     padding-left: 16px;
@@ -452,7 +454,7 @@ cmds >> common data source style
 .digin-gb-measures {
     overflow: hidden;
     position: relative;
-    max-height: 550px;
+    min-height: 310px;
     background: #fff;
 }
 
@@ -572,7 +574,7 @@ cmds >> common data source style
 
 .digin-gb-menu {
     width: 100%;
-    height: 100%;
+    min-height: 620px;
     float: right;
     background: #ffffff;
     overflow: hidden;
@@ -882,7 +884,7 @@ h3 {
 
 .digin-gb-row {
     width: 100%;
-    height: 250px;
+    height: 300px;
     background: #ffffff;
     border-top: 3px solid #ECECEC;
     border-left: 3px solid #ECECEC;
@@ -1172,6 +1174,36 @@ span {
     margin-top: -36px;
 }
 
+/*drb >> dynamically report builder*/
+.digin-drb-wrap {
+    overflow: hidden;
+}
+
+.digin-drb-wrap .bdy-wrap {
+
+}
+
+.optional-panel {
+    background: #ffffff;
+    height: 550px;
+    position: relative;
+    width: 100%;
+    margin-top: 5px;
+
+}
+
+.optional-panel .radio-warp > h5 {
+    padding-left: 17px;
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.radio-warp > md-radio-group > span {
+    display: inline-block;
+    height: 20px;
+}
+
 /***************************** Element Selection *****************************/
 
 .selected {
@@ -1318,6 +1350,16 @@ span {
     animation: loader2 2s infinite ease;
 }
 
+.loader3 {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    position: relative;
+    border: 4px solid #EC784B;
+    top: 50%;
+    animation: loader2 2s infinite ease;
+}
+
 .loader2-inner {
     vertical-align: top;
     display: inline-block;
@@ -1327,6 +1369,28 @@ span {
 }
 
 @keyframes loader2 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(180deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    75% {
+        transform: rotate(360deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes loader3 {
     0% {
         transform: rotate(0deg);
     }

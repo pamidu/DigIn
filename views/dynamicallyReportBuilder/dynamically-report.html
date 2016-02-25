@@ -1,0 +1,57 @@
+<div class="digin-drb-wrap animated fadeInRight" ng-controller="dynamicallyReportCtrl">
+    <div class="digin-qb-header">
+        <div layout="row">
+            <div flex="10">
+                <div class="back">
+                    <i class="ti-arrow-left"></i>
+                </div>
+            </div>
+            <div flex="50">
+                <div class="digin-qb-header-text  ">
+                    <h1>
+                        Dynamically Report Builder
+                        <small class="ng-binding"></small>
+                    </h1>
+                </div>
+            </div>
+            <div flex="20" class="bg-lightskyblueh-2 p-l-20">
+                <div class="digin-gb-b ">
+
+                </div>
+            </div>
+            <div flex="20" class="bg-lightblue-h-1 p-l-20">
+                <div class="digin-gb-b">
+                    <span>Report Name</span>
+                    <h5>test report name 1</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- body content main wrap -->
+    <div class="bdy-wrap">
+        <div layout="row">
+            <div flex="30">
+                <div class="optional-panel pull-left p-10">
+                    <div class="radio-warp">
+                        <h5>
+                            {{reportFiledList.radioBtn.headerName}}
+                        </h5>
+                        <md-radio-group
+                                ng-model="reportFiledList.radioBtn.selectedRadio"
+                                ng-change="eventHandler.onChangeRadioBtn()">
+                    <span ng-repeat="type in reportFiledList.radioBtn.hasRadioBtn">
+                        <md-radio-button value="{{type.value}}"
+                                         ng-model="reportFiledList.radioBtn.selectedRadio"
+                                         class="md-primary">{{type.name}}
+                        </md-radio-button>
+                     </span>
+                        </md-radio-group>
+                    </div>
+                </div>
+            </div>
+            <div flex="70">
+            </div>
+        </div>
+    </div>
+</div>
+

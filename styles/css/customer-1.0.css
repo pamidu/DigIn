@@ -1245,7 +1245,7 @@ span {
     border-color: #EC784B;
 }
 
-.btn-wrap .apply:hover {
+.btn-wrap .apply :hover {
     background-color: #F69563;
 }
 

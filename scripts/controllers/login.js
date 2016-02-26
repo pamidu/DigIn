@@ -18,7 +18,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$
         $scope.login = function() {
             $auth.login($scope.txtUname,$scope.txtPwd,"duoworld.duoweb.info");
             
-            $auth.onLoginResult(function () {
+            $auth.onLoginResult(function (event, data) {
                 $scope.isLoggedin = true;
 
                 $rootScope.username = $scope.txtUname;
@@ -36,7 +36,12 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$
 
                 $state.go('welcome'); 
 
-            });  
+            });
+            
+            $auth.onLoginError(function(event, data){
+                validate(data.message, $mdToast, $scope);
+//                alert();
+            });
         };
        
 

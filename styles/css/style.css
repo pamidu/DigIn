@@ -1506,6 +1506,12 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
     margin-right: 15px;
 }
 
+.widget-button-wrapper2{
+    position: absolute;
+    bottom: 30px;
+    right: 0px;
+}
+
 .widget-title {
     text-align: left;
     font-size: large;

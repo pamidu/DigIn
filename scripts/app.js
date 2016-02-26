@@ -653,8 +653,7 @@ routerApp.controller('calenderWidgetController', ['$scope', function($scope) {
                 //console.log(firstDay);
                 if (firstDay == 0) {
                     firstDay = 7;
-                }
-                ;
+                };
                 for (i = 0; i < 40; i++) {
 
                     if (i + 1 < firstDay) {
@@ -679,10 +678,13 @@ routerApp.controller('calenderWidgetController', ['$scope', function($scope) {
                                     task: '',
                                 };
                                 $scope.days.push(obj);
+                            };
+                        };
+                    };
+                };
                 //console.log($scope.days);
-            }
-            ;
             };
+        };
 
         $scope.previousMonth = function() {
             if ($scope.month == 1) {
@@ -690,8 +692,7 @@ routerApp.controller('calenderWidgetController', ['$scope', function($scope) {
             } else {
                 $scope.month = $scope.month - 1;
 
-            }
-            ;
+            };
             //createCal();
         };
 
@@ -701,8 +702,7 @@ routerApp.controller('calenderWidgetController', ['$scope', function($scope) {
 
             } else {
                 $scope.month = $scope.month + 1;
-            }
-            ;
+            };
             //createCal();
         };
 

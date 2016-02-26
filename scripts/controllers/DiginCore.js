@@ -44,7 +44,8 @@ routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
         $mdDialog.hide();
     };
 });
-routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', 'DynamicVisualization', '$csContainer', '$state', function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, DynamicVisualization, $csContainer, $state) {
+routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', 'DynamicVisualization',
+    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, DynamicVisualization) {
 
         $('#pagePreLoader').hide();
 
@@ -238,8 +239,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             });
         }
         $scope.showAdvanced = function (ev, widget) {
-            if(typeof widget.commonSrc == "undefined"){
-                $mdDialog.show({
+    
+            $mdDialog.show({
                     controller: widget.initCtrl,
                     templateUrl: widget.initTemplate,
                     parent: angular.element(document.body),
@@ -253,11 +254,6 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 }, function () {
                     //$mdDialog.hide();
                 });
-            }else{
-                $csContainer.fillCSContainer(widget.commonSrc.src);
-                $state.go("home.QueryBuilder");
-            }
-            
             $rootScope.widget = widget;
         };
 

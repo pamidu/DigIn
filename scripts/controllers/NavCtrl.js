@@ -88,7 +88,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //pushes gridster items 10px down, remove padding to body, adjust iframe height
         $scope.adjustUI = function() {
             $('body').css("padding-top", "0px");
-            $('#content1').css("top", "10px");
+           // $('#content1').css("top", "10px");
             $('.h_iframe').css("height", "100%");
         }
 

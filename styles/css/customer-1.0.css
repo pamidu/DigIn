@@ -1,8 +1,10 @@
 /*update damith
 update UI version 1.0
 cmds >> common data source style
+drb >> dynamically report builder
 */
 
+/*cmds >> common data source style*/
 .digin-cmds-source {
     display: block;
     padding-left: 16px;
@@ -452,7 +454,7 @@ cmds >> common data source style
 .digin-gb-measures {
     overflow: hidden;
     position: relative;
-    max-height: 550px;
+    height: calc(50vh);
     background: #fff;
 }
 
@@ -572,7 +574,7 @@ cmds >> common data source style
 
 .digin-gb-menu {
     width: 100%;
-    height: 100%;
+    height: calc(100vh);;
     float: right;
     background: #ffffff;
     overflow: hidden;
@@ -598,7 +600,7 @@ cmds >> common data source style
 
 .digin-gb-chart-wrap {
     width: 100%;
-    height: 397px;
+    height: calc(55vh);
     background: rgb(250, 250, 250);
     border-left: 3px solid #ECECEC;
 }
@@ -908,7 +910,7 @@ h3 {
 
 .digin-gb-row {
     width: 100%;
-    height: 250px;
+    height: 50vh;
     background: #ffffff;
     border-top: 3px solid #ECECEC;
     border-left: 3px solid #ECECEC;
@@ -1202,6 +1204,173 @@ span {
     margin-top: -36px;
 }
 
+/*drb >> dynamically report builder*/
+.digin-drb-wrap {
+    overflow: hidden;
+}
+
+.digin-drb-wrap .report {
+    display: block;
+    width: 100%;
+}
+
+.report > .data-state {
+}
+
+.data-state .message {
+    display: block;
+    position: absolute;
+    top: 40%;
+    right: 20%;
+    margin: auto 0;
+}
+
+.message > span {
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 600;
+    font-size: 33px;
+    color: #fff;
+
+}
+
+.message > i {
+    display: block;
+    font-size: 75px;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.digin-drb-wrap .bdy-wrap {
+
+}
+
+.optional-panel {
+    background: #ffffff;
+    min-height: 700px;
+    position: relative;
+    width: 100%;
+    max-height: 1000px;
+    border-top: 3px solid #ECECEC;
+}
+
+.optional-panel > .btn-wrap {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 60px;
+    width: 398px;
+    text-align: center;
+    background-color: #026689;
+    padding: 16px;
+}
+
+.btn-wrap > span {
+    width: 100px;
+}
+
+.btn-wrap .apply {
+    color: #fff;
+    background-color: #EC784B;
+    border-color: #EC784B;
+}
+
+.btn-wrap .apply :hover {
+    background-color: #F69563;
+}
+
+.btn-wrap .clear:hover {
+    background-color: #EC784B;
+}
+
+.btn-wrap .clear {
+    color: #fff;
+    background-color: #F69563;
+    border-color: #F69563;
+}
+
+.optional-panel > .btn-wrap > span {
+    font-size: 15px;
+}
+
+.bottom-line {
+    border-bottom: 3px solid #ECECEC;
+}
+
+.bottom-top {
+    border-top: 3px solid #ECECEC;
+}
+
+.optional-panel .filed-list-warp {
+    margin-top: 35px;
+    padding-right: 30px;
+    padding-bottom: 15px;
+
+}
+
+.optional-panel .filed-list-warp > h5 {
+    padding-left: 17px;
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    margin-bottom: 0px !important;
+}
+
+.filed-list-warp > div > .inline,
+.filed-list-warp > md-radio-group > .inline {
+    display: inline-block;
+    height: 20px;
+}
+
+.filed-list-warp > .check-box-list {
+    position: relative;
+    padding-left: 5px;
+    display: inline-block;
+}
+
+.filed-list-warp > .txt-box-list {
+    position: relative;
+    padding-left: 15px;
+    display: block;
+
+}
+
+.filed-list-warp > .multi-select {
+    position: relative;
+    padding-left: 15px;
+    display: block;
+    padding-top: 10px;
+
+}
+
+.txt-box-list > div {
+    margin: 8px 0px;
+}
+
+.txt-box-list > div > input,
+.multi-select .form-control {
+    background: transparent !important;
+    background-image: none !important;
+    border: 2px solid #026689;
+    border-radius: 7px;
+}
+
+.txt-box-list > div > input:focus {
+    border-color: #EC784B;
+}
+
+.check-box-list > div >
+md-checkbox.md-checked .md-icon {
+    background-color: #EC784B;
+}
+
+.optional-panel .panel-wrap {
+    position: relative;
+    width: 100%;
+    height: 515px;
+    overflow: hidden;
+}
+
 /***************************** Element Selection *****************************/
 
 .selected {
@@ -1348,6 +1517,16 @@ span {
     animation: loader2 2s infinite ease;
 }
 
+.loader3 {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    position: relative;
+    border: 4px solid #EC784B;
+    top: 50%;
+    animation: loader2 2s infinite ease;
+}
+
 .loader2-inner {
     vertical-align: top;
     display: inline-block;
@@ -1357,6 +1536,28 @@ span {
 }
 
 @keyframes loader2 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(180deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    75% {
+        transform: rotate(360deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes loader3 {
     0% {
         transform: rotate(0deg);
     }

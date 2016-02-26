@@ -447,23 +447,7 @@ routerApp.controller('queryBuilderCtrl', function
                         $scope.widget = $scope.sourceData.wid;
                         $scope.widget.highchartsNG = $scope.highchartsNG;                        
                         $scope.widget.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
-                        if(typeof $scope.widget.commonSrc == "undefined"){
-                            $scope.widget.highchartsNG["size"] = {width: 300, height: 220};
-                            $scope.widget["commonSrc"] = {src:$scope.sourceData,
-                                                      mea:$scope.executeQryData.executeMeasures,
-                                                      att:$scope.executeQryData.executeColumns,
-                                                      query:$scope.receivedQuery};
                             $rootScope.dashboard.widgets.push($scope.widget);
-                        }else{
-                            $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
-                            $scope.widget["commonSrc"] = {src:$scope.sourceData,
-                                                          mea:$scope.executeQryData.executeMeasures,
-                                                          att:$scope.executeQryData.executeColumns,
-                                                          query:$scope.receivedQuery};
-                            var objIndex = getRootObjectById($scope.widget.id, $rootScope.dashboard.widgets);
-                            $rootScope.dashboard.widgets[objIndex] = $scope.widget;
-                        }                     
-                        
                         this.isMainLoading = true;
                         this.message = this.messageAry[0];
                         setTimeout(function () {
@@ -702,7 +686,6 @@ routerApp.controller('queryBuilderCtrl', function
         }
     };
         
-    
     
     
     var queryBuilderData = {

@@ -38,7 +38,7 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         };
 
         $scope.showAdvanced = function(ev, widget) {
-            if($rootScope.widget.initTemplate){
+                        if($rootScope.widget.initTemplate){
 
                 $mdDialog.show({
                     controller: $rootScope.widget.initCtrl,

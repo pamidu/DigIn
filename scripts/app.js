@@ -34,7 +34,8 @@ var routerApp = angular.module('DuoDiginRt', [
     'angular-table',
     'ngToast',
     'vAccordion',
-    'ngDraggable'
+    'ngDraggable',
+    'ui.select2'
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
@@ -262,6 +263,10 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             data: {
                 requireLogin: true
             }
+        }).state('home.DynamicallyReportBuilder', {
+        url: '/dynamically-report-builder',
+        controller: 'dynamicallyReportCtrl',
+        templateUrl: "views/dynamicallyReportBuilder/dynamically-report.html"
         });
 
     lkGoogleSettingsProvider.configure({
@@ -359,9 +364,6 @@ routerApp.controller('AnalyzerViewerControl', ['$scope', '$rootScope', '$statePa
 
     }
 ]);
-
-
-routerApp.controller('mainController', ['$scope', '$http', function(scope, http) {}]);
 
 routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope',
 
@@ -651,7 +653,8 @@ routerApp.controller('calenderWidgetController', ['$scope', function($scope) {
                 //console.log(firstDay);
                 if (firstDay == 0) {
                     firstDay = 7;
-                };
+                }
+                ;
                 for (i = 0; i < 40; i++) {
 
                     if (i + 1 < firstDay) {
@@ -676,13 +679,10 @@ routerApp.controller('calenderWidgetController', ['$scope', function($scope) {
                                     task: '',
                                 };
                                 $scope.days.push(obj);
-                            };
-                        };
-                    };
-                };
                 //console.log($scope.days);
+            }
+            ;
             };
-        };
 
         $scope.previousMonth = function() {
             if ($scope.month == 1) {
@@ -690,7 +690,8 @@ routerApp.controller('calenderWidgetController', ['$scope', function($scope) {
             } else {
                 $scope.month = $scope.month - 1;
 
-            };
+            }
+            ;
             //createCal();
         };
 
@@ -700,7 +701,8 @@ routerApp.controller('calenderWidgetController', ['$scope', function($scope) {
 
             } else {
                 $scope.month = $scope.month + 1;
-            };
+            }
+            ;
             //createCal();
         };
 
@@ -743,7 +745,8 @@ routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog',
                     } else {
                         $scope.weatherComponentIcon = 'sun';
                         $scope.weatherComponentBg = "styles/css/images/weatherComponentBg.jpg";
-                    };
+                }
+                    ;
                 }
 
             })
@@ -998,7 +1001,8 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function($http,
     };
     this.handleClientLoad = function() {
         gapi.client.setApiKey(apiKey);
-        gapi.auth.init(function() {});
+        gapi.auth.init(function () {
+        });
         window.setTimeout(checkAuth, 1);
     };
 
@@ -1085,8 +1089,7 @@ routerApp.service('generatePDF1', function($timeout){
         var doc = new jsPDF('landscape');
         
         doc.text(config.titleLeft, config.titleTop, config.title);
-        doc.fromHTML(htmlElement, config.tableLeft, config.tableTop, {
-        });
+        doc.fromHTML(htmlElement, config.tableLeft, config.tableTop, {});
         var pdfName = config.title.toString() + '.pdf';
         doc.save(pdfName);
         

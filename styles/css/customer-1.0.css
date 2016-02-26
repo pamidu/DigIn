@@ -1179,29 +1179,150 @@ span {
     overflow: hidden;
 }
 
+.digin-drb-wrap .report {
+    display: block;
+    width: 100%;
+}
+
+.report > .data-state {
+}
+
+.data-state .message {
+    display: block;
+    position: absolute;
+    top: 40%;
+    right: 20%;
+    margin: auto 0;
+}
+
+.message > span {
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 600;
+    font-size: 33px;
+    color: #fff;
+
+}
+
+.message > i {
+    display: block;
+    font-size: 75px;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
 .digin-drb-wrap .bdy-wrap {
 
 }
 
 .optional-panel {
     background: #ffffff;
-    height: 550px;
+    min-height: 700px;
     position: relative;
     width: 100%;
-    margin-top: 5px;
+    max-height: 1000px;
+    border-top: 3px solid #ECECEC;
+}
+
+.optional-panel > .btn-wrap {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 60px;
+    width: 398px;
+    text-align: center;
+    background-color: #026689;
+    padding: 16px;
+}
+
+.btn-wrap > span {
+    width: 100px;
+}
+
+.btn-wrap .apply {
+    color: #fff;
+    background-color: #EC784B;
+    border-color: #EC784B;
+}
+
+.btn-wrap .apply:hover {
+    background-color: #F69563;
+}
+
+.btn-wrap .clear:hover {
+    background-color: #EC784B;
+}
+
+.btn-wrap .clear {
+    color: #fff;
+    background-color: #F69563;
+    border-color: #F69563;
+}
+
+.optional-panel > .btn-wrap > span {
+    font-size: 15px;
+}
+
+.bottom-line {
+    border-bottom: 3px solid #ECECEC;
+}
+
+.bottom-top {
+    border-top: 3px solid #ECECEC;
+}
+
+.optional-panel .filed-list-warp {
+    margin-top: 35px;
+    padding-right: 30px;
+    padding-bottom: 15px;
 
 }
 
-.optional-panel .radio-warp > h5 {
+.optional-panel .filed-list-warp > h5 {
     padding-left: 17px;
     font-family: 'Ek Mukta', sans-serif;
     font-weight: 400;
     font-size: 18px;
+    margin-bottom: 0px !important;
 }
 
-.radio-warp > md-radio-group > span {
+.filed-list-warp > div > .inline,
+.filed-list-warp > md-radio-group > .inline {
     display: inline-block;
     height: 20px;
+}
+
+.filed-list-warp > .check-box-list {
+    position: relative;
+    padding-left: 5px;
+    display: inline-block;
+}
+
+.filed-list-warp > .txt-box-list {
+    position: relative;
+    padding-left: 15px;
+    display: block;
+
+}
+
+.txt-box-list > div {
+    margin: 8px 0px;
+}
+
+.txt-box-list > div > input {
+    background: transparent !important;
+    background-image: none !important;
+    border: 2px solid #026689;
+    border-radius: 7px;
+}
+
+.txt-box-list > div > input:focus {
+    border-color: #EC784B;
+}
+
+.check-box-list > div >
+md-checkbox.md-checked .md-icon {
+    background-color: #EC784B;
 }
 
 /***************************** Element Selection *****************************/

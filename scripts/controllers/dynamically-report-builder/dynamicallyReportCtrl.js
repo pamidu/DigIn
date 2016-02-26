@@ -36,6 +36,11 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope) {
     })();
 
     //
+    $scope.toggle = function (item, list) {
+        var idx = list.indexOf(item);
+        if (idx > -1) list.splice(idx, 1);
+        else list.push(item);
+    };
     var reportFiledList = {
         radioBtn: {
             selectedRadio: '',
@@ -46,6 +51,16 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope) {
                 {value: 3, name: 'test1'},
                 {value: 4, name: 'test1'},
                 {value: 5, name: 'test1'}]
+        },
+        checkBox: {
+            selectedCheckBox: [],
+            headerName: 'test checkbox',
+            items: [1, 2, 3, 4, 5]
+        }, textBox: {
+            headerName: 'test textbox',
+            txtFiled: [{name: 'enter test', value: ''},
+                {name: 'enter test2', value: ''},
+                {name: 'enter test3', value: ''}]
         }
     };
     $scope.reportFiledList = reportFiledList;
@@ -56,4 +71,5 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope) {
             var val = privateFun.onChangeRadio();
         }
     }
-});
+})
+;

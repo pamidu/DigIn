@@ -818,6 +818,32 @@ cmds >> common data source style
     margin-top: -36px;
 }
 
+/* series settings tab */
+.ser-setting-tab {
+    right: 10%;
+    top: 25%;
+}
+
+.ser-setting-tab:before,
+.ser-setting-tab:after {
+    left: 100%;
+    top: 75%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.ser-setting-tab:after {
+    border-color: rgba(47, 64, 74, 0);
+    border-left-color: #EC784B;
+    border-width: 14px;
+    margin-top: -186px;
+}
+/* end series settings tab */
+
 .icon-select-ri1 {
     color: #EC784B !important;
 }

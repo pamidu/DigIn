@@ -290,10 +290,10 @@ routerApp.controller('queryBuilderCtrl', function
             isMainLoading: false,
             openSettingToggle: [
                 {isChart: false},
-                {isStructuret: false}
-
+                {isStructuret: false},
+                {isSerSetting: false}
             ],
-            messageAry: [' Please wait five minute data saving..'],
+            messageAry: [' Please wait while the data is saving..'],
             message: '',
             isChartSelected: false,
             onToggleEvent: function (event) {
@@ -412,7 +412,7 @@ routerApp.controller('queryBuilderCtrl', function
                             this.openSettingToggle[0].isChart = true;
                             $("#toggleSettingPanel").show(300);
                         }
-                        break;
+                        break;                    
                     case '2':
                         //#data structure
                         //Data Structure
@@ -426,6 +426,19 @@ routerApp.controller('queryBuilderCtrl', function
                             $("#toggleStructurePanel").addClass('structure-tab');
                             this.openSettingToggle[1].isStructuret = true;
                             $("#toggleStructurePanel").show(300);
+                        }
+                        break;
+                    case '3':
+                        if (this.openSettingToggle[2].isChart) {
+                            $("#toggleSerSettingsPanel").hide(200);
+                            setTimeout(function () {
+                                $("#toggleSerSettingsPanel").removeClass('ser-setting-tab');
+                            }, 200);
+                            this.openSettingToggle[2].isChart = false;
+                        } else {
+                            $("#toggleSerSettingsPanel").addClass('ser-setting-tab');
+                            this.openSettingToggle[2].isChart = true;
+                            $("#toggleSerSettingsPanel").show(300);
                         }
                         break;
                     case '4':
@@ -602,38 +615,42 @@ routerApp.controller('queryBuilderCtrl', function
     };
     
     $scope.getExecuteAgg = function(query){
-        $scope.eventHndler.isLoadingChart=true;
-        $scope.client.getExecQuery(query, function(res, status, query){
-            var cat = "";
-            var measureArr = [];
-            if(status){
-                for(c in res[0]){
-                    if (Object.prototype.hasOwnProperty.call(res[0], c)) {
-                        if(typeof res[0][c] == "string") cat = c;
-                        else{
-                            var m = c.split('_');
-                            measureArr.push({
-                                filedName: m[1],
-                                condition: m[0]
-                            });
+        if(typeof query != "undefined"){
+            $scope.eventHndler.isLoadingChart=true;
+            $scope.client.getExecQuery(query, function(res, status, query){
+                var cat = "";
+                var measureArr = [];
+                if(status){
+                    for(c in res[0]){
+                        if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+                            if(typeof res[0][c] == "string") cat = c;
+                            else{
+                                var m = c.split('_');
+                                measureArr.push({
+                                    filedName: m[1],
+                                    condition: m[0]
+                                });
+                            }
                         }
                     }
+                    $scope.executeQryData.executeMeasures = measureArr;
                 }
-                $scope.executeQryData.executeMeasures = measureArr;
-            }
-            if(cat != ""){
-                $scope.executeQryData.executeColumns = [{filedName: cat}];
-                $scope.mapResult(cat, res, function(data){
-                    $scope.highchartsNG.series = data;
-                    $scope.eventHndler.isLoadingChart=false;
+                if(cat != ""){
+                    $scope.executeQryData.executeColumns = [{filedName: cat}];
+                    $scope.mapResult(cat, res, function(data){
+                        $scope.highchartsNG.series = data;
+                        $scope.eventHndler.isLoadingChart=false;
+                        $scope.receivedQuery = query;
+                        $scope.queryEditState = false;
+                    });
+                }else{
+                    $scope.setMeasureData(res[0]);
                     $scope.receivedQuery = query;
-                    $scope.queryEditState = false;
-                });
-            }else{
-                $scope.setMeasureData(res[0]);
-                $scope.receivedQuery = query;
-            }
-        });
+                }
+            });
+        }else{
+            alert("enter a query");
+        }
     };
     
     $scope.mapResult = function(cat, res, cb){

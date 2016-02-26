@@ -58,7 +58,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         .state("signup", {
             url: "/signup",
             controller: "signUpCtrl",
-            templateUrl: "views/signUp.html",
+            templateUrl: "views/signup.html",
             data: {
                 requireLogin: false
             }
@@ -280,7 +280,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
     $mdThemingProvider.alwaysWatchTheme(true);
 }]);
 
-routerApp.run(function($rootScope, $auth, $state) {
+routerApp.run(function($rootScope, $auth, $state, $csContainer) {
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
         var requireLogin = toState.data.requireLogin;        
@@ -300,6 +300,18 @@ routerApp.run(function($rootScope, $auth, $state) {
         if (requireLogin && secToken === "N/A" && typeof(cookToken) === "undefined") {
             event.preventDefault();
             $state.go('login');
+        }else{
+            var stateName = toState.name;
+            //check for custom state validations
+            switch (stateName) {
+                case 'home.QueryBuilder':
+                    var srcObj = $csContainer.fetchSrcObj();
+                    if(typeof srcObj.tbl == "undefined"){
+                        event.preventDefault();
+                        $state.go('home');
+                    }
+                    break;
+            }
         }
     });
 

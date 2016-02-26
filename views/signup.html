@@ -1,0 +1,78 @@
+
+<div class="Fsignup">
+	<div id="viewContainer" layout="column"  layout-align="center center" layout-fill>
+		<md-card class="loginBox" ng-init="showRegistration=true;showSuccess=false">
+			<img ng-src="styles/css/images/signupLogo.jpg" class="md-card-image" alt="Washed Out">
+			<md-card-content ng-show="showRegistration">
+					<form name="loginForm" method="POST" ng-submit="submit()">
+						<div layout layout-sm="column">
+							<md-input-container class="md-icon-float" >
+								<!-- Use floating label instead of placeholder -->
+								<label>First Name</label>
+								<md-icon md-svg-icon="bower_components/angular-material/demos/input/demoIcons/icons/ic_person_24px.svg" class="iconColor"></md-icon>
+								<input required ng-model="user.firstName" type="text" >
+							</md-input-container>
+							<md-input-container class="md-icon-float" >
+								<!-- Use floating label instead of placeholder -->
+								<label>Last Name</label>
+								<md-icon md-svg-icon="bower_components/angular-material/demos/input/demoIcons/icons/ic_person_24px.svg" class="iconColor"></md-icon>
+								<input required ng-model="user.lastName" type="text" >
+							</md-input-container>
+						</div>
+
+						<md-input-container class="md-icon-float" >
+							<!-- Use floating label instead of placeholder -->
+							<label>Email</label>
+							<md-icon md-svg-icon="bower_components/material-design-icons/communication/svg/design/ic_email_24px.svg" class="iconColor"></md-icon>
+							<input required ng-model="user.email" type="email">
+						</md-input-container>
+						
+						<md-input-container class="md-icon-float" >
+							<!-- Use floating label instead of placeholder -->
+							<label>Domain</label>
+							<md-icon md-svg-icon="bower_components/material-design-icons/communication/svg/design/ic_business_24px.svg" class="iconColor"></md-icon>
+							<!-- Use floating label instead of placeholder -->
+							<input required ng-model="user.domain" type="text">
+						</md-input-container>
+
+						<md-input-container class="md-icon-float" >
+							<!-- Use floating label instead of placeholder -->
+							<label>Password</label>
+							<md-icon md-svg-icon="bower_components/material-design-icons/action/svg/design/ic_lock_open_24px.svg" class="iconColor"></md-icon>
+							<input required ng-model="user.password" type="password" >
+						</md-input-container>
+						
+						<md-input-container class="md-icon-float" >
+							<!-- Use floating label instead of placeholder -->
+							<label>Confirm Password</label>
+							<md-icon md-svg-icon="bower_components/material-design-icons/action/svg/design/ic_lock_24px.svg" class="iconColor"></md-icon>
+							<input required ng-model="user.confirmPassword" type="password">
+						</md-input-container>
+						<div class="md-actions" layout="row" layout-align="center center">
+							<md-button id="mySignup" class="md-raised md-primary" style="width:93%" type="submit"><span class="loginBtnLabel">Sign Up</span></md-button>
+						</div>
+					</form>
+			</md-card-content>
+			<md-card-content ng-show="showSuccess">
+				<center>
+				<h1 class="md-title" style="color:green;font-weight:700"><md-icon md-svg-icon="bower_components/material-design-icons/action/svg/design/ic_done_all_24px.svg" style="color:green;padding-right:10px;"></md-icon>Thank You <span><h2>{{User_Name}}!</h2></span> for registering with Duo Digin</h1>
+				<h4>Please verify your  account from <a style="color:red">{{User_Email}}.</a> </h4>
+				<md-divider></md-divider>
+				<br/>
+			   <md-button class="md-raised md-primary" ng-click="login()">Login</md-button>
+			   <md-button class="md-raised md-primary" ng-click="welcome()">Duo Digin</md-button>
+			   </center>
+			</md-card-content>
+			<md-card-content ng-show="showFailure">
+				<center>
+				<h1 class="md-title" style="color:green;font-weight:700"><md-icon md-svg-icon="bower_components/material-design-icons/alert/svg/design/ic_warning_24px.svg" style="color:red;padding-right:10px;"></md-icon>Hey!! <span><h2>{{User_Name}}</h2></span> Problem occured in registering you to Duo Digin</h1>
+				<h4>There is a problem or else you have already been registered with <a style="color:red">{{User_Email}}.</a> </h4>
+				<md-divider></md-divider>
+				<br/>
+			   <md-button class="md-raised md-primary" ng-click="signup()">Sign Up</md-button>
+			   <md-button class="md-raised md-primary" ng-click="welcome()">Duo Digin</md-button>
+			   </center>
+			</md-card-content>
+		</md-card>
+	</div>
+</div>

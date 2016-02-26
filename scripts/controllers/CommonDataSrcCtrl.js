@@ -218,6 +218,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                                             }
                                                         }
                                                     }
+                                                    $scope.sourceUi.attrObj = $scope.commonUi.attribute;
+                                                    $scope.sourceUi.mearsuresObj = $scope.commonUi.measures;
                                                 }
 
                                             });
@@ -296,8 +298,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                      mheight: '100%',
                      highchartsNG: {}
                   };
-
-//                $rootScope.dashboard.widgets.push($scope.currWidget);
 
                 $csContainer.fillCSContainer({
                     wid: $scope.currWidget,

@@ -60,7 +60,19 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$
 //            });
 //        };
 
-    }]);
+    }]).directive('keyEnter', function () {
+        return function (scope, element, attrs) {
+            element.bind("keydown keypress", function (event) {
+                if (event.which === 13) {
+                    //13 press key Enter
+                    scope.$apply(function () {
+                        scope.$eval(attrs.keyEnter);
+                    });
+                    event.preventDefault();
+                }
+            });
+        };
+    });
 
 //app.config(function ($mdThemingProvider, $httpProvider) {
 //        $mdThemingProvider.theme('default')

@@ -5,35 +5,6 @@
 routerApp.controller('queryBuilderCtrl', function
         ($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state) {
 
-    $scope.selectedFields = [];        
-    $scope.drawPivotSummary = function(datae){
-        $scope.selectedFields = datae;
-        $scope.products = [];
-        product = {};
-        for (var i = 0; i <datae.length; i++) {
-            var data = datae[i],
-            product = {};
-            for (var j = 0; j < $scope.fieldArray.length; j++) {
-                         var field = $scope.fieldArray[j];
-                         product[field] = data[field];
-                        }
-                       $scope.products.push(product);
-                  }
-        pivotUi() ;
-        
-    }
-
-    function pivotUi() {
-        var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.gchart_renderers, $.pivotUtilities.d3_renderers);
-        $("#grid").pivotUI($scope.products, {
-            // renderers: renderers,
-            rows: [$scope.selectedFields[0]],
-            cols:[$scope.selectedFields[1]],
-              
-            // rendererName: "Table"         
-        });
-    }        
-
     $scope.initQueryBuilder = function(){
         $scope.sourceData = $csContainer.fetchSrcObj();
         $scope.client = $diginengine.getClient($scope.sourceData.src);
@@ -139,57 +110,6 @@ routerApp.controller('queryBuilderCtrl', function
                         verticalPosition: 'top',
                         dismissOnClick: true
                     });
-                },
-                selectChart: function(chartType, chart){
-
-                    $scope.eventHndler.isHighCharts = false;
-                    $scope.eventHndler.isD3Charts = false;
-                    $scope.eventHndler.isPivotSummary = false;
-
-                    switch (chartType) {
-                        case 'highCharts':
-
-                            $scope.eventHndler.isHighCharts = true;
-                            $scope.highchartsNG.options.chart.type = chart;
-                            break;
-                        case 'd3Charts':
-
-                            $scope.eventHndler.isD3Charts = true;
-                            console.log("d3Charts in switch");
-                            break;
-                        case 'pivotSummary':
-
-                            $scope.eventHndler.isPivotSummary = true;
-                            $scope.fieldArray = [];
-
-                            for(var i=0; i < $scope.commonData.measures.length; i++){
-                                $scope.fieldArray.push($scope.commonData.measures[i].filedName);
-                            }
-                            for(var i=0; i < $scope.commonData.columns.length; i++){
-                                $scope.fieldArray.push($scope.commonData.columns[i].filedName);
-                            }
-                            console.log($scope.fieldArray);
-                            var parameter;
-                            $scope.fieldArray.forEach(function (entry) {
-                                if (i == 0) {
-                                    parameter = entry
-                                } else {
-                                    parameter += "," + entry;
-                                }
-                                i++;
-                            });
-
-                            var query = "SELECT " + $scope.fieldArray.toString() + " FROM Demo." + $scope.sourceData.tbl;  
-                            $scope.client.getExecQuery(query, function(data, status){
-                                $scope.drawPivotSummary(data.Result);
-
-                            });
-                            break;
-                        default:
-
-                            $scope.eventHndler.isHighcharts = true;
-                            break;
-                    }
                 }
             }
 
@@ -221,99 +141,93 @@ routerApp.controller('queryBuilderCtrl', function
             chartTypes: [
                 {
                     id: 'ct01', icon: 'ti-pie-chart', name: 'pie chart', chart: 'pie',
-                    selected: false, chartType: 'highCharts'
+                    selected: false
                 },
                 {
                     id: 'ct02', icon: 'ti-bar-chart', name: 'bar ', chart: 'bar',
-                    selected: false, chartType: 'highCharts'
+                    selected: false
                 },
                 {
                     id: 'ct03', icon: 'fa fa-line-chart', name: 'line ', chart: 'line',
-                    selected: false, chartType: 'highCharts'
+                    selected: false
                 },
                 {
-                    id: 'ct04', icon: ' chart-diginSmooth_line', name: 'Smooth line ', chart: 'smoothline',
-                    selected: false, chartType: 'highCharts'
+                    id: 'ct03', icon: ' chart-diginSmooth_line', name: 'Smooth line ', chart: 'smoothline',
+                    selected: false
                 },
                 {
-                    id: 'ct05', icon: 'fa fa-area-chart', name: 'area ', chart: 'area',
-                    selected: false, chartType: 'highCharts'
+                    id: 'ct04', icon: 'fa fa-area-chart', name: 'area ', chart: 'area',
+                    selected: false
                 },{
-                    id: 'ct06', icon: 'chart-diginsmooth_area', name: 'Smooth area ', chart: 'area',
-                    selected: false, chartType: 'highCharts'
+                    id: 'ct04', icon: 'chart-diginsmooth_area', name: 'Smooth area ', chart: 'area',
+                    selected: false
                 },
                 {
-                    id: 'ct07', icon: 'chart-diginalluvialt', name: 'alluvial', chart: 'alluvial',
-                    selected: false, chartType: 'd3Charts'
+                    id: 'ct05', icon: 'chart-diginalluvialt', name: 'alluvial', chart: 'alluvial',
+                    selected: false
                 },
                 {
-                    id: 'ct08', icon: 'chart-diginscatter', name: 'scatter ', chart: 'scatter',
-                    selected: false, chartType: 'highCharts'
+                    id: 'ct06', icon: 'chart-diginscatter', name: 'scatter ', chart: 'scatter',
+                    selected: false
                 },
                 {
-                    id: 'ct09', icon: 'chart-diginbump', name: 'bumpChart ', chart: 'bump',
-                    selected: false, chartType: 'd3Charts'
+                    id: 'ct07', icon: 'chart-diginbump', name: 'bumpChart ', chart: 'bump',
+                    selected: false
                 },
                 {
-                    id: 'ct10',
+                    id: 'ct08',
+                    icon: 'chart-digincluster-dendrogram',
+                    name: 'circularDendrogram ',
+                    chart: 'circularDendrogram',
+                    selected: false
+                },
+                {
+                    id: 'ct08',
                     icon: 'chart-digincluster-dendrogram',
                     name: 'clusterDendrogram',
                     chart: 'clusterDendrogram',
-                    selected: false, 
-                    chartType: 'd3Charts'
-                },
+                    selected: false
+                }
+                ,
                 {
-                    id: 'ct11',
+                    id: 'ct08',
                     icon: 'chart-digincluster',
                     name: 'clusterForce',
                     chart: 'clusterForce',
-                    selected: false, 
-                    chartType: 'd3Charts'
-                }, 
-                {
-                    id: 'ct12',
+                    selected: false
+                }, {
+                    id: 'ct08',
                     icon: 'chart-diginconvex-hull',
                     name: 'convexHull',
                     chart: 'convexHull',
-                    selected: false, 
-                    chartType: 'd3Charts'
-                }, 
-                {
-                    id: 'ct13',
+                    selected: false
+                }, {
+                    id: 'ct08',
                     icon: 'chart-diginhierarchy-chart',
                     name: 'hierarchy',
                     chart: 'hierarchy',
-                    selected: false, 
-                    chartType: 'd3Charts'
-                }, 
-                {
-                    id: 'ct14',
+                    selected: false
+                }, {
+                    id: 'ct08',
                     icon: 'chart-diginsunburst-chart',
                     name: 'sunburst',
                     chart: 'sunburst',
-                    selected: false, 
-                    chartType: 'd3Charts'
-                }, 
-                {
-                    id: 'ct15',
+                    selected: false
+                }, {
+                    id: 'ct08',
                     icon: 'chart-digintreeeview',
                     name: 'treeeview',
                     chart: 'treeeview',
-                    selected: false, 
-                    chartType: 'd3Charts'
-                },
-                {
-                    id: 'ct16',
-                    icon: 'ti-layout-accordion-list',
-                    name: 'pivotsummary',
-                    chart: 'pivotsummary',
-                    selected: false, 
-                    chartType: 'pivotSummary'
+                    selected: false
                 }
             ]
 
         };
-            
+    
+   
+    
+        
+        
         //mapping measures array
         if($scope.sourceData.fMeaArr.length > 0){
             for(i=0; i <$scope.sourceData.fMeaArr.length; i++){
@@ -364,13 +278,11 @@ routerApp.controller('queryBuilderCtrl', function
             openSettingToggle: [
                 {isChart: false},
                 {isStructuret: false}
+
             ],
-            messageAry: ['Please wait five minute data saving..'],
+            messageAry: [' Please wait five minute data saving..'],
             message: '',
-            // isChartSelected: false,
-            // isHighcharts: false,
-            // isD3Charts: false,
-            isPivotSummary: false,
+            isChartSelected: false,
             onToggleEvent: function (event) {
                 switch (event) {
                     case '1':
@@ -506,26 +418,11 @@ routerApp.controller('queryBuilderCtrl', function
                     case '4':
                         //#save
                         //all config save to main dashboard
-                        $scope.widget = $scope.sourceData.wid;
-                        $scope.widget.highchartsNG = $scope.highchartsNG;                        
+                        $scope.widget = $scope.sourceData.wid;                        
+                        $scope.widget.highchartsNG = $scope.highchartsNG;
+                        $scope.widget.highchartsNG["size"] = {width: 300, height: 220};
                         $scope.widget.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
-                        if(typeof $scope.widget.commonSrc == "undefined"){
-                            $scope.widget.highchartsNG["size"] = {width: 300, height: 220};
-                            $scope.widget["commonSrc"] = {src:$scope.sourceData,
-                                                      mea:$scope.executeQryData.executeMeasures,
-                                                      att:$scope.executeQryData.executeColumns,
-                                                      query:$scope.receivedQuery};
-                            $rootScope.dashboard.widgets.push($scope.widget);
-                        }else{
-                            $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
-                            $scope.widget["commonSrc"] = {src:$scope.sourceData,
-                                                      mea:$scope.executeQryData.executeMeasures,
-                                                      att:$scope.executeQryData.executeColumns,
-                                                      query:$scope.receivedQuery};
-                            var objIndex = getRootObjectById($scope.widget.id, $rootScope.dashboard.widgets);
-                            $rootScope.dashboard.widgets[objIndex] = $scope.widget;
-                        }                     
-                        
+                        $rootScope.dashboard.widgets.push($scope.widget);
                         this.isMainLoading = true;
                         this.message = this.messageAry[0];
                         setTimeout(function () {
@@ -548,8 +445,6 @@ routerApp.controller('queryBuilderCtrl', function
 
             },
             onClickSelectedChart: function (data, onSelect) {
-
-                console.log("onSelect",onSelect);
                 var i;
                 var chartInData = data;
                 for (i = 0; i < chartInData.length; i++) {
@@ -558,8 +453,7 @@ routerApp.controller('queryBuilderCtrl', function
                 onSelect.selected = true;
                 $scope.executeQryData.chartType = onSelect.chart;
                 $scope.chartType = onSelect.chart;
-                // $scope.changeChartType(onSelect.chart);
-                privateFun.selectChart(onSelect.chartType, onSelect.chart);
+                $scope.changeChartType(onSelect.chart);
                 //privateFun.createHighchartsChart(onSelect.chart);
             },
             onSaveChartConfig: function () {
@@ -570,7 +464,7 @@ routerApp.controller('queryBuilderCtrl', function
         
         
         $scope.changeChartType = function(type){
-            
+            $scope.highchartsNG.options.chart.type = type;
         };
         
         
@@ -763,17 +657,7 @@ routerApp.controller('queryBuilderCtrl', function
         }
     };
         
-    if(typeof($scope.sourceData.wid.commonSrc) == "undefined"){
         privateFun.createHighchartsChart('');
-    }else{
-        $scope.highchartsNG = $scope.sourceData.wid.highchartsNG;
-        $scope.prevChartSize = $scope.highchartsNG.size;
-        delete $scope.highchartsNG.size;
-        $scope.executeQryData.executeMeasures = $scope.sourceData.wid.commonSrc.mea;
-        $scope.executeQryData.executeColumns = $scope.sourceData.wid.commonSrc.att;
-        $scope.receivedQuery = $scope.sourceData.wid.commonSrc.query;
-    }
-    
     
     var queryBuilderData = {
             select: []

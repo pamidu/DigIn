@@ -38,7 +38,7 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         };
 
         $scope.showAdvanced = function(ev, widget) {
-            alert('test digincore2');
+
             if($rootScope.widget.initTemplate){
 
                 $mdDialog.show({

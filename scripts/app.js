@@ -34,7 +34,8 @@ var routerApp = angular.module('DuoDiginRt', [
     'angular-table',
     'ngToast',
     'vAccordion',
-    'ngDraggable'
+    'ngDraggable',
+    'ui.select2'
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
@@ -76,7 +77,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: "NavCtrl",
             templateUrl: "views/partial-home.html",
             data: {
-                requireLogin: false,
+                requireLogin: true,
                 preLoader: true
             }
         })
@@ -85,7 +86,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: "dashboardSetupCtrl",
             templateUrl: "views/setup/dashboardSetup.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
         })
         .state('home.Dashboards', {
@@ -93,7 +94,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'DashboardCtrl',
             templateUrl: "views/charts.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
         })
         .state('home.Reports', {
@@ -101,7 +102,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'ReportCtrl',
             templateUrl: "views/reports.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
         })
         .state('home.Analytics', {
@@ -109,7 +110,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'analyticsCtrl',
             templateUrl: "views/analytics.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
         })
         .state('home.RealTime', {
@@ -117,7 +118,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'RealTimeController',
             templateUrl: "views/realtime.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
         })
         .state('home.Digin P Stack', {
@@ -125,7 +126,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'ExtendedanalyticsCtrl',
             templateUrl: "views/extended-analytics.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
         })
         .state('home.Interactive Report', {
@@ -133,7 +134,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'ExtendedReportCtrl',
             templateUrl: "views/extended-reports.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
         })
         .state('home.Analysis Report', {
@@ -141,7 +142,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'ExtendedanalyticsCtrl',
             templateUrl: "views/extended-analytics.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
         })
         .state('home.Dashboard', {
@@ -149,7 +150,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'ExtendedDashboardCtrl',
             templateUrl: "views/extended-dashboard.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
         })
         .state('home.D3plugins', {
@@ -157,7 +158,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'd3PluginCtrl',
             templateUrl: "views/D3Plugin/d3View.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
         })
         .state('home.PivotTable', {
@@ -165,7 +166,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'summarizeCtrl',
             templateUrl: "views/pivottable.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
         })
         .state('home.ReportViewer', {
@@ -173,7 +174,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'ReportViewerControl',
             templateUrl: "views/Report_viewer.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
 
         })
@@ -182,7 +183,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'DashboardViewerControl',
             templateUrl: "views/Dashboard_viewer.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
 
         })
@@ -191,7 +192,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'DashboardCtrl',
             templateUrl: "views/charts.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
         })
         .state('home.AnalyzerViewer', {
@@ -199,7 +200,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'AnalyzerViewerControl',
             templateUrl: "views/Analyzer_viewer.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
 
         })
@@ -208,7 +209,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'socialGraphCtrl',
             templateUrl: "views/socialGraph/socialGraph_Temp.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
 
         })
@@ -217,7 +218,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'SocialAnalysisCtrl',
             //templateUrl: "views/extended-analytics.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
 
         })
@@ -226,7 +227,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'socialGraphFBCtrl',
             templateUrl: "views/socialGraph/socialGraphFB_Temp.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
 
         })
@@ -235,7 +236,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'socialGraphTwitterCtrl',
             templateUrl: "views/socialGraph/socialGraphTwitter_Temp.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
 
         })
@@ -244,7 +245,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'salesForecastCtrl',
             templateUrl: "views/salesForecast/sales_forecast_Temp.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
         })
         .state('home.Prediction', {
@@ -252,7 +253,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'predictionCtrl',
             templateUrl: "views/prediction/prediction.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
         })
         .state('home.QueryBuilder', {
@@ -260,7 +261,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             controller: 'queryBuilderCtrl',
             templateUrl: "views/query/query-builder.html",
             data: {
-                requireLogin: false
+                requireLogin: true
             }
         }).state('home.DynamicallyReportBuilder', {
         url: '/dynamically-report-builder',

@@ -1325,6 +1325,13 @@ md-checkbox.md-checked .md-icon {
     background-color: #EC784B;
 }
 
+.optional-panel .panel-wrap {
+    position: relative;
+    width: 100%;
+    height: 515px;
+    overflow: hidden;
+}
+
 /***************************** Element Selection *****************************/
 
 .selected {

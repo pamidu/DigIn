@@ -32,47 +32,58 @@
         <div layout="row">
             <div flex="30">
                 <div class="optional-panel pull-left p-10">
-                    <!-- #textbox -->
-                    <div class="filed-list-warp bottom-line  ">
-                        <h5>
-                            {{reportFiledList.textBox.headerName}}
-                        </h5>
-                        <div class="txt-box-list">
-                            <div ng-repeat="item in reportFiledList.textBox.txtFiled">
-                                <input type="text"
-                                       placeholder="{{item.name}}"
-                                       class="form-control">
+                    <div class="panel-wrap">
+
+                        <!-- #multi selected -->
+                        <div class="filed-list-warp bottom-line">
+                            <select ui-select2="select2Options" multiple ng-model="selectedTags">
+                                <option ng-repeat="tag in tags" value="{{tag.id}}">{{tag.name}}</option>
+                            </select>
+                        </div>
+                        <!-- #textbox -->
+                        <div class="filed-list-warp bottom-line  ">
+                            <h5>
+                                {{reportFiledList.textBox.headerName}}
+                            </h5>
+                            <div class="txt-box-list">
+                                <div ng-repeat="item in reportFiledList.textBox.txtFiled">
+                                    <input type="text"
+                                           placeholder="{{item.name}}"
+                                           class="form-control">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- #radio btn-->
-                    <div class="filed-list-warp bottom-line">
-                        <h5>
-                            {{reportFiledList.radioBtn.headerName}}
-                        </h5>
-                        <md-radio-group
-                                ng-model="reportFiledList.radioBtn.selectedRadio"
-                                ng-change="eventHandler.onChangeRadioBtn()">
+                        <!-- #radio btn-->
+                        <div class="filed-list-warp bottom-line">
+                            <h5>
+                                {{reportFiledList.radioBtn.headerName}}
+                            </h5>
+                            <md-radio-group
+                                    ng-model="reportFiledList.radioBtn.selectedRadio"
+                                    ng-change="eventHandler.onChangeRadioBtn()">
                     <span class="inline" ng-repeat="type in reportFiledList.radioBtn.hasRadioBtn">
                         <md-radio-button value="{{type.value}}"
                                          ng-model="reportFiledList.radioBtn.selectedRadio"
                                          class="md-primary">{{type.name}}
                         </md-radio-button>
                      </span>
-                        </md-radio-group>
-                    </div>
-                    <!-- #checkBox -->
-                    <div class="filed-list-warp bottom-line ">
-                        <h5>
-                            {{reportFiledList.checkBox.headerName}}
-                        </h5>
-                        <div class="check-box-list">
-                            <div class="inline " ng-repeat="item in reportFiledList.checkBox.items">
-                                <md-checkbox ng-checked="item">
-                                    {{ item }}
-                                </md-checkbox>
+                            </md-radio-group>
+                        </div>
+                        <!-- #checkBox -->
+                        <div class="filed-list-warp bottom-line ">
+                            <h5>
+                                {{reportFiledList.checkBox.headerName}}
+                            </h5>
+                            <div class="check-box-list">
+                                <div class="inline " ng-repeat="item in reportFiledList.checkBox.items">
+                                    <md-checkbox ng-checked="item">
+                                        {{ item }}
+                                    </md-checkbox>
+                                </div>
                             </div>
                         </div>
+
+
                     </div>
 
                     <div class="btn-wrap">

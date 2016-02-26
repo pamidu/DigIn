@@ -8,6 +8,19 @@ routerApp.controller('queryBuilderCtrl', function
     $scope.initQueryBuilder = function(){
         $scope.sourceData = $csContainer.fetchSrcObj();
         $scope.client = $diginengine.getClient($scope.sourceData.src);
+        
+        
+        if(typeof($scope.sourceData.wid.commonSrc) == "undefined"){
+            privateFun.createHighchartsChart('');
+        }else{
+            $scope.highchartsNG = $scope.sourceData.wid.highchartsNG;
+            $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
+            delete $scope.highchartsNG.size;
+            $scope.executeQryData.executeMeasures = $scope.sourceData.wid.commonSrc.mea;
+            $scope.executeQryData.executeColumns = $scope.sourceData.wid.commonSrc.att;
+            $scope.receivedQuery = $scope.sourceData.wid.commonSrc.query;
+        }
+        
     };
     
     $scope.sourceData = $csContainer.fetchSrcObj();
@@ -431,9 +444,9 @@ routerApp.controller('queryBuilderCtrl', function
                         }else{
                             $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
                             $scope.widget["commonSrc"] = {src:$scope.sourceData,
-                                                      mea:$scope.executeQryData.executeMeasures,
-                                                      att:$scope.executeQryData.executeColumns,
-                                                      query:$scope.receivedQuery};
+                                                          mea:$scope.executeQryData.executeMeasures,
+                                                          att:$scope.executeQryData.executeColumns,
+                                                          query:$scope.receivedQuery};
                             var objIndex = getRootObjectById($scope.widget.id, $rootScope.dashboard.widgets);
                             $rootScope.dashboard.widgets[objIndex] = $scope.widget;
                         }                     
@@ -672,16 +685,7 @@ routerApp.controller('queryBuilderCtrl', function
         }
     };
         
-    if(typeof($scope.sourceData.wid.commonSrc) == "undefined"){
-        privateFun.createHighchartsChart('');
-    }else{
-        $scope.highchartsNG = $scope.sourceData.wid.highchartsNG;
-        $scope.prevChartSize = $scope.highchartsNG.size;
-        delete $scope.highchartsNG.size;
-        $scope.executeQryData.executeMeasures = $scope.sourceData.wid.commonSrc.mea;
-        $scope.executeQryData.executeColumns = $scope.sourceData.wid.commonSrc.att;
-        $scope.receivedQuery = $scope.sourceData.wid.commonSrc.query;
-    }
+    
     
     
     var queryBuilderData = {

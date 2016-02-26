@@ -328,13 +328,15 @@
                                     design query
                                 </h5>
                             </div>
-                            <div>
+                            <div class = "editable-query">
                                 <span ng-hide= "queryEditState">{{receivedQuery}}</span>
-                                <md-input-container ng-show= "queryEditState" flex>
-                                    <label>Query</label>
-                                    <input ng-model="receivedQuery">
-                                </md-input-container>
-                                <md-button ng-click="getExecuteAgg(receivedQuery)" class="md-raised">go</md-button>
+                                <div layout="row" ng-show= "queryEditState">
+                                    <md-input-container flex>
+                                        <label>Query</label>
+                                        <input ng-model="receivedQuery">
+                                    </md-input-container>
+                                    <md-button md-no-ink ng-click="getExecuteAgg(receivedQuery)" class="md-primary">go</md-button>
+                                </div>                                
                             </div>
                         </div>
 

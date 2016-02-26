@@ -949,6 +949,10 @@ h3 {
     font-size: 40px;
 }
 
+.editable-query{
+    width: 100%;
+}
+
 .query-builder {
     position: absolute;
     width: 69%;

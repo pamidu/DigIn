@@ -1,75 +1,117 @@
 {
     "d": [{
+
             "title": "Image",
-            "icon": "styles/css/images/icons/home_decorations.svg",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
             "type": "Custom",
             "Description": "Image",
-            "initTemplate": "views/InitConfigimage.html",
+            "initTemplate": "InitConfigimage",
             "initController": "imInit",
             "widView": "views/Viewimage.html",
-            "color": "#2196F3",
-            "sizeX": 4, "sizeY": 4, "row": 0, "col": 0
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "1",
+            "color": "#2196F3"
         }, {
+
             "title": "Google Calendar",
-            "icon": "styles/css/images/icons/google.svg",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
             "type": "Custom",
             "Description": "Upcoming events",
-            "initTemplate": "views/InitConfigCalendar.html",
+            "initTemplate": "InitConfigCalendar",
             "initController": "calendarInit",
             "widView": "views/ViewCalendar.html",
-            "color": "#FF9800",
-            "sizeX": 4, "sizeY": 4, "row": 0, "col": 4
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "2",
+            "color": "#FF9800"
         }, {
+
             "title": "Clock",
-            "icon": "styles/css/images/icons/dashboard.svg",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
             "type": "General",
             "Description": "Time, Manage day to day work",
-            "initTemplate": "views/InitConfigClock.html",
+            "initTemplate": "InitConfigClock",
             "initController": "clockInit",
             "widView": "views/ViewClock.html",
-            "color": "#CDDC39",
-            "sizeX": 4, "sizeY": 4, "row": 0, "col": 8
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "2",
+            "color": "#CDDC39"
         }, {
+
+            "title": "Calendar",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "type": "General",
+            "Description": "Date, Schedule day to day work",
+            "initTemplate": "InitConfigCal",
+            "initController": "calInit",
+            "widView": "views/ViewCal.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "2",
+            "color": "#C2185B"
+        }, {
+
             "title": "Weather",
-            "icon": "styles/css/images/icons/weather.svg",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
             "type": "General",
             "Description": "Current weather and city",
-            "initTemplate": "views/InitConfigWeatherc.html",
+            "initTemplate": "InitConfigWeatherc",
             "initController": "weathercInit",
             "widView": "views/ViewWeatherc.html",
-            "color": "#C2185B",
-            "sizeX": 4, "sizeY": 4, "row": 0, "col": 12
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "2",
+            "color": "#FFEB3B"
         }, {
+
             "title": "Profile",
-            "icon": "styles/css/images/icons/motion_detector.svg",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
             "type": "General",
             "Description": "Current user profile",
-            "initTemplate": "views/InitConfigProfile.html",
+            "initTemplate": "InitConfigProfile",
             "initController": "profileInit",
             "widView": "views/ViewProfile.html",
-            "color": "#9C27B0",
-            "sizeX": 4, "sizeY": 4, "row": 0, "col": 16
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "2",
+            "color": "#9C27B0"
         }, {
-            "title": "D3 Plugin",
+
+            "title": "Data Driven Document(D3) Plugin",
             "icon": "styles/css/images/icons/ic_assignment_24px.svg",
             "type": "Visualization",
             "Description": "Build your dream Visualization",
-            "initTemplate": "views/InitConfigD3.html",
+            "initTemplate": "InitConfigD3",
             "initController": "InitConfigD3",
             "widView": "views/ViewD3.html",
-            "color": "#00BCD4",
-            "sizeX": 4, "sizeY": 4, "row": 0, "col": 20
-        }, {
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "0",
+            "color": "#00BCD4"
+
+        } , {
+
             "title": "Facebook Pages",
             "icon": "styles/css/images/icons/facebook.svg",
             "type": "Social Media",
             "Description": "Likes, Clicks, Active Users, Pageviews",
-            "initTemplate": "views/InitConfigFacebook.html",
+            "initTemplate": "InitConfigFacebook",
             "initController": "fbInit",
             "widView": "views/ViewFacebook.html",
-            "color": "#3F51B5",
-            "sizeX": 4, "sizeY": 4, "row": 1, "col": 0,
-            "href": "#social-graph-fb",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "2",
+            "color": "#03A9F4",
             "widConfig": {
                 "options": {
                     "chart": {
@@ -77,8 +119,7 @@
                     },
                     "plotOptions": {
                         "series": {
-                            "stacking": "",
-                            "turboThreshold": 3000
+                            "stacking": ""
                         }
                     }
                 },
@@ -109,236 +150,303 @@
                 }
             }
         }, {
-            "title": "Twitter",
-            "icon": "styles/css/images/icons/twitter.svg",
+
+            "title": "Instagram search",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Social Media",
-            "Description": "Timeline, Tags, Other data",
-            "initTemplate": "views/InitConfigTwitter.html",
-            "initController": "TwitterInit",
-            "widView": "views/ViewTwitter.html",
-            "color": "#2196F3",
-            "sizeX": 4, "sizeY": 4, "row": 1, "col": 4,
-            "href": "#social-graph-twitter" 
+            "Description": "Hash tags,Popular images,Followers, Other data",
+            "initTemplate": "InitConfigInstagram",
+            "initController": "instaInit",
+            "widView": "views/ViewInstagram.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "color": "#795548",
+            "col": "0"
         }, {
+
             "title": "Google+",
             "icon": "styles/css/images/icons/googleplus.svg",
             "type": "Social Media",
             "Description": "Plus Ones, Circled By",
-            "initTemplate": "views/InitConfigGoogleplus.html",
+            "initTemplate": "InitConfigGoogleplus",
             "initController": "googlePlusInit",
             "widView": "views/ViewGoogleplus.html",
-            "color": "#FF5722",
-            "sizeX": 4, "sizeY": 4, "row": 1, "col": 8
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "1",
+            "color": "#FF5722"
         }, {
+
+            "title": "Twitter",
+            "icon": "styles/css/images/icons/twitter.svg",
+            "type": "Social Media",
+            "Description": "Timeline, Tags, Other data",
+            "initTemplate": "InitConfigTwitter",
+            "initController": "TwitterInit",
+            "widView": "views/ViewTwitter.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "1",
+            "color": "#2196F3"
+        }, {
+
             "title": "LinkedIn",
-            "icon": "styles/css/images/icons/linkedin.svg",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Social Media",
             "Description": "Connections, Network Updates",
-            "initTemplate": "views/InitConfigLinkedin.html",
+            "initTemplate": "InitConfigLinkedin",
             "initController": "linkedInit",
             "widView": "views/ViewLinkedIn.html",
-            "color": "#607D8B",
-            "sizeX": 4, "sizeY": 4, "row": 1, "col": 12
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "2",
+            "color": "#607D8B"
+        }, {
+
+            "title": "Pinterest",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Social Media",
+            "Description": "Boards, Pins, Likes, Followers, Following",
+            "initTemplate": "fbInitConfig",
+            "initController": "fbInit",
+            "widView": "views/chartview.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "3",
+            "color": "#FFC107"
+
         }, {
             "title": "Dynamic visuals",
             "icon": "styles/css/images/icons/ic_av_timer_24px.svg",
             "type": "Visualization",
             "Description": " Build your dream visualization from any datasource",
-            "initTemplate": "views/InitConfigElastic.html",
+            "initTemplate": "InitConfigElastic",
             "initController": "elasticInit",
             "widView": "views/ViewElasticSearch.html",
             "dataView": "ViewElasticData",
             "dataCtrl": "elasticDataCtrl",
-            "color": "#CDDC39",
-            "sizeX": 4, "sizeY": 4, "row": 1, "col": 16
-        }, {
-            "title": "Real Time",
-            "icon": "styles/css/images/icons/ic_av_timer_24px.svg",
-            "type": "Visualization",
-            "Description": " Build your dream visualization from any datasource",
-            "initTemplate": "views/InitConfigRealTime.html",
-            "initController": "realtimeInit",
-            "widView": "views/ViewRealTime.html",
-            "dataView": "ViewElasticData",
-            "dataCtrl": "elasticDataCtrl",
-            "color": "#3F51B5",
-            "sizeX": 4, "sizeY": 4, "row": 1, "col": 20
-        }, {
-            "title": "Metrics",
-            "icon": "styles/css/images/icons/ic_av_timer_24px.svg",
-            "type": "Visualization",
-            "Description": "Simple  calculation metric" ,
-            "initTemplate": "views/InitConfigMetric.html",
-            "initController": "metricInit",
-            "widView": "views/ViewMetrics.html",
-            "dataView": "ViewElasticData",
-            "dataCtrl": "elasticDataCtrl",
-            "color": "#9C27B0",
-            "sizeX": 4, "sizeY": 4, "row": 2, "col": 0
-        }, {
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "0",
+            "color": "#CDDC39"
+
+        },
+        {
+
             "title": "Youtube",
-            "icon": "styles/css/images/icons/youtube.svg",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Social Media",
             "Description": "Likes, Clicks, Active Users, Pageviews",
-            "initTemplate": "views/InitConfigyoutube.html",
+            "initTemplate": "InitConfigyoutube",
             "initController": "YoutubeInit",
             "widView": "views/Viewyoutube.html",
-            "color": "#F44336",
-            "sizeX": 4, "sizeY": 4, "row": 2, "col": 4
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "2",
+            "color": "#F44336"
         }, {
+
             "title": "WordPress",
-            "icon": "styles/css/images/icons/wordpress.svg",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Blogging",
             "Description": "Users, Posts, Comments",
-            "initTemplate": "views/InitConfigWordpress.html",
+            "initTemplate": "InitConfigWordpress",
             "initController": "wordpressInit",
             "widView": "views/ViewWordpress.html",
-            "color": "#B6B6B6",
-            "sizeX": 4, "sizeY": 4, "row": 2, "col": 8
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "3",
+            "color": "#B6B6B6"
         }, {
+
             "title": "RssFeeds",
-            "icon": "styles/css/images/icons/rss.svg",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Blogging",
             "Description": "Feeds, News",
-            "initTemplate": "views/InitConfigRss.html",
+            "initTemplate": "InitConfigRss",
             "initController": "rssInit",
             "widView": "views/ViewRss.html",
-            "color": "#F57C00",
-            "sizeX": 4, "sizeY": 4, "row": 2, "col": 12
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "2",
+            "col": "0",
+            "color": "#F57C00"
         }, {
+
             "title": "Gnews",
-            "icon": "styles/css/images/icons/google.svg",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Blogging",
             "Description": "Google news",
-            "initTemplate": "views/InitConfiggnews.html",
+            "initTemplate": "InitConfiggnews",
             "initController": "gnewsInit",
             "widView": "views/ViewGnews.html",
-            "color": "#3F51B5",
-            "sizeX": 4, "sizeY": 4, "row": 2, "col": 16
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "2",
+            "col": "0",
+            "color": "#3F51B5"
+
         }, {
             "title": "Skill wise summary",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Predefined Analytics",
+            "type": "Sri Lanka Telecom",
             "Description": "Analyze the calls for each skills",
-            "initTemplate": "views/InitSLT.html",
+            "initTemplate": "InitSLT",
             "initController": "SLTInit",
-            "dataView": "views/ViewDataSkillwise.html",
             "widView": "views/ViewSLTSkill.html",
-            "color": "#E040FB",
-            "sizeX": 4, "sizeY": 4, "row": 2, "col": 20
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "2",
+            "col": "2",
+            "color": "#E040FB"
         }, {
+
             "title": "Calls in IVR",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Predefined Analytics",
+            "type": "Sri Lanka Telecom",
             "Description": "Check how many calls are in the Interactive Voice Response",
-            "initTemplate": "views/InitSLTIvr.html",
+            "initTemplate": "InitSLTIvr",
             "initController": "sltivrInit",
             "widView": "views/ViewSLTIvr.html",
-            "color": "#E64A19",
-            "sizeX": 4, "sizeY": 4, "row": 3, "col": 0
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "2",
+            "col": "3",
+            "color": "#673AB7"
         }, {
+
             "title": "Calls in Queue",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Predefined Analytics",
+            "type": "Sri Lanka Telecom",
             "Description": "Check how many calls are in the Queue",
             "initTemplate": "InitS4LT",
             "initController": "SLTInit",
             "widView": "views/ViewSLTQueue.html",
             "dataView": "ViewQueuedSLTdata",
             "dataCtrl": "sltQueuedCtrl",
-            "dataJson": "sltTotalqueued",
-            "color": "#F8BBD0",
-            "sizeX": 4, "sizeY": 4, "row": 3, "col": 4
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "3",
+            "col": "0",
+            "color": "#F8BBD0"
         }, {
+
             "title": "Calls at Agent",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Predefined Analytics",
+            "type": "Sri Lanka Telecom",
             "Description": "Check who is handling calls",
-            "initTemplate": "views/InitSLT.html",
+            "initTemplate": "InitSLT",
             "initController": "SLTInit",
             "widView": "views/ViewSLTAgent.html",
             "dataView": "ViewConnectedSLTdata",
             "dataCtrl": "sltConnectedCtrl",
-            "color": "#8BC34A",
-            "sizeX": 4, "sizeY": 4, "row": 3, "col": 8
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "3",
+            "col": "1",
+            "color": "#8BC34A"
         }, {
+
             "title": "Queue Details",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Predefined Analytics",
+            "type": "Sri Lanka Telecom",
             "Description": "See the calls which has not been responded",
-            "initTemplate": "views/InitSLT.html",
+            "initTemplate": "InitSLT",
             "initController": "SLTInit",
             "widView": "views/ViewSLTQueueDetails.html",
             "dataView": "ViewQueueDetailsSLTdata",
             "dataCtrl": "sltQueueDetailsCtrl",
-            "dataJson": "sltQueueDetails",
-            "color": "#00BCD4",
-            "sizeX": 4, "sizeY": 4, "row": 3, "col": 12
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "3",
+            "col": "2",
+            "color": "#00BCD4"
         }, {
-            "title": "Google Maps Branches",
-            "icon": "styles/css/images/icons/google.svg",
+
+            "title": "Google Maps",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
             "type": "Custom",
             "Description": "Google Maps",
-            "widView": "views/googleMaps/ViewGoogleMapsBranches.html",
-            "dataView": "views/googleMaps/ViewDataGoogleMaps.html",
-            "dataCtrl": "widgetSettingsDataCtrl",
-            "color": "#8BC34A",
-            "sizeX": 4, "sizeY": 4, "row": 3, "col": 16
-        }, {
-            "title": "Google Maps Claims",
-            "icon": "styles/css/images/icons/google.svg",
-            "type": "Custom",
-            "Description": "Google Maps",
-            "widView": "views/googleMaps/ViewGoogleMapsClaims.html",
+            "initTemplate": "InitConfigGoogleMaps",
+            "initController": "googleMapsInit",
+            "widView": "views/ViewGoogleMaps.html",
             "dataView": "ViewDataGoogleMaps",
-            "dataCtrl": "gmapsControllerClaims",
-            "color": "#5AA008",
-            "sizeX": 4, "sizeY": 4, "row": 3, "col": 20
+            "dataCtrl": "googleMapsCtrl",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "4",
+            "col": "0",
+            "color": "#8BC34A"
         }, {
-            "title": "Hierarchy visualization",
+
+            "title": "Number of claims per vehicle type",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Predefined Analytics",
-            "Description": "Build a fancy hierachy visualization for your data",
-            "initTemplate": "views/initConfigForce.html",
+            "type": "HNB Assuarance",
+            "Description": "Force directive layout to show number of claims vehicle type",
+            "initTemplate": "InitConfighnb",
             "initController": "hnbInit",
             "widView": "views/ViewHnbData.html",
             "dataView": "ViewDataHnbClaims",
             "dataCtrl": "hnbClaimsCtrl",
-            "dataJson": "hnbForceData",
-            "color": "#673AB7",
-            "sizeX": 4, "sizeY": 4, "row": 4, "col": 0
-        }, {
-            "title": "Sunburst visualization",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "3",
+            "col": "0",
+            "color": "#E64A19"
+        },
+        {
+
+            "title": "Distributed claims",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Predefined Analytics",
+            "type": "HNB Assuarance",
             "Description": "Sunburst directive layout to show the data of claims",
-            "initTemplate": "views/initConfigForce.html",
+            "initTemplate": "InitConfighnb",
             "initController": "hnbInit",
             "widView": "views/ViewHnbMonth.html",
             "dataView": "ViewDataDistributedClaims",
             "dataCtrl": "hnbDistributedCtrl",
-            "dataJson": "hnbDistributedclaims",
-            "color": "#E64A19",
-            "sizeX": 4, "sizeY": 4, "row": 4, "col": 4
-        }, {
-            "title": "Treeview for month wise",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "3",
+            "col": "0",
+            "color": "#E64A19"
+        },
+        {
+            "title": "Box plot for month wise",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
-            "type": "Predefined Analytics",
-            "Description": "Tree view analysis to check month wise vehicle type claims",
-            "initTemplate": "views/InitConfighnb.html",
+            "type": "HNB Assuarance",
+            "Description": "Box plot analysis to check month wise vehicle type claims",
+            "initTemplate": "InitConfighnb",
             "initController": "hnbInit",
             "widView": "views/ViewHnbBox.html",
             "dataView": "ViewDataHnbBox",
             "dataCtrl": "hnbBoxCtrl",
-            "dataJson": "hnbBoxData",
-            "color": "#303F9F",
-            "sizeX": 4, "sizeY": 4, "row": 4, "col": 8
-        }, {
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "3",
+            "col": "0",
+            "color": "#303F9F"
+        },
+        {
+
             "title": "Widget Settings",
             "initController": "widgetSettingsCtrl",
             "widView": "views/ViewWidgetSettings.html",
-            "color": "#B6B6B6",
-            "sizeX": 4, "sizeY": 4, "row": 0, "col": 12
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "3",
+            "color": "#B6B6B6"
         }
+
+
     ]
 }

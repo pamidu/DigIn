@@ -12,22 +12,6 @@
       callback(data.d);
     });
  };
- 
- /*Summary 
-    parameters {http : $http service object,
-                file : json file name without the extension,
-                callback : callback function,
-                propName: property name you need from the json object
-                propVal: property value you need from the json object}
-    returns {JSON data as a single object}*/
- function getJSONDataByProperty(http,file,propName,propVal,callback){
-    http.get('jsons/'+file+'.json').success(function(data) {
-        console.log(data);
-      callback(data.d.filter(function( obj ) {
-        return obj[propName] == propVal;
-      }));
-    });
- };
 
  /*Summary 
     parameters {http : $http service object,
@@ -147,23 +131,7 @@ function validate(msg, mdToast, scope){
     mdToast.show(
       mdToast.simple()
         .content(msg)
-        .position('bottom right')
+        .position('top right')
         .hideDelay(3000)
     );
-}
-
-
-
-function chunk(arr, size) {
-  var newArr = [];
-  for (var i=0; i<arr.length; i+=size) {
-    newArr.push(arr.slice(i, i+size));
-  }
-  return newArr;
-}
-
-function getCookie(name) {
-  var value = "; " + document.cookie;
-  var parts = value.split("; " + name + "=");
-  if (parts.length == 2) return parts.pop().split(";").shift();
 }

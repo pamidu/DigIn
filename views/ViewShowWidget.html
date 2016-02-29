@@ -1,38 +1,9 @@
-<md-dialog class="widget0s-dialog">
-    <div layout="row" layout-xs="column">
-        <div flex="75">
-            <div class="card-head">
-                <header class="graph-h1 text-uppercase">
-                    {{widget.uniqueType}}
-                </header>
-            </div>
-            <div class="widget0s-chart.wrap">
-                <div class="widget0s-chart-view">
-                    <div get-width callback-fn="setChartSize(this)"
-                         id="settingChart"
-                         ng-include
-                         src="widget.widView"></div>
-                </div>
-            </div>
-        </div>
-        <div flex="25">
-            <div class="widget0s-filter">
-                <div class="card-head">
-                    <header class="graph-h1 text-uppercase">
-                        Filter
-                    </header>
-                    <div class="tools">
-                        <a href="javascript:void(0)" data-ng-click="closeDialog()">
-                            <i class="ti-close"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="widget0s-filter-body">
-
-                </div>
-            </div>
-        </div>
-    </div>
-
+<md-dialog style="width:70%;height:80%;">
+    <md-content>
+        <md-card  widget="widget" style="height:100%;width:100%">
+            <md-content style="height:100%;width:100%" style="overflow:auto;" layout="row" flex>
+                <div get-width callback-fn="returnWidth(width, height)" style="height:100%;width:100%" ng-include src="widget.widView"></div>
+            </md-content>
+        </md-card>
+    </md-content>
 </md-dialog>

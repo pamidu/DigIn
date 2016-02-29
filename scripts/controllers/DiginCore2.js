@@ -15,87 +15,257 @@
 */
 routerApp.controller('widgetSettingsCtrl', ['$scope',
 
-    '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', '$http', 'ScopeShare', '$filter',
-    function($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http, ScopeShare, $filter) {
+    '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', '$http',
+    function($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http) {
+
+        $http.get('jsons/hnbDistributedclaims.json').success(function(data) {
+            console.log('[' + JSON.stringify(data) + ']');
+            $scope.arr = data;
+
+            console.log($scope.arr);
+        });
+
+        //     $scope.json2csv = [{
+        //   id: 1,
+        //   primerNombre: 'Juan',
+        //   segundoNombre: 'Mario',
+        //   primerApellido: 'Perez',
+        //   segundoApellido: 'Maldonado',
+        //   fechaNacimiento: '23-12-1985'
+        // }, {
+        //   id: 2,
+        //   primerNombre: 'Jorge',
+        //   segundoNombre: 'Alfonzo',
+        //   primerApellido: 'Quinto',
+        //   segundoApellido: 'Marroquin',
+        //   fechaNacimiento: '15-01-1988'
+        // }, {
+        //   id: 3,
+        //   primerNombre: 'Carlos',
+        //   segundoNombre: 'Alberto',
+        //   primerApellido: 'Vargas',
+        //   segundoApellido: 'Martinez',
+        //   fechaNacimiento: '09-03-1990'
+        // }, {
+        //   id: 4,
+        //   primerNombre: 'Mario',
+        //   segundoNombre: 'Alvaro',
+        //   primerApellido: 'Hernadez',
+        //   segundoApellido: 'Morales',
+        //   fechaNacimiento: '23-02-1984'
+        // }, {
+        //   id: 5,
+        //   primerNombre: 'Marlon',
+        //   segundoNombre: 'Federico',
+        //   primerApellido: 'Lopez',
+        //   segundoApellido: 'Padilla',
+        //   fechaNacimiento: '01-03-1976'
+        // }, {
+        //   id: 6,
+        //   primerNombre: 'Daniel',
+        //   segundoNombre: 'Francisco',
+        //   primerApellido: 'Herrera',
+        //   segundoApellido: 'Perdomo',
+        //   fechaNacimiento: '22-03-1989'
+        // }, {
+        //   id: 7,
+        //   primerNombre: 'Cesar',
+        //   segundoNombre: 'Jaime',
+        //   primerApellido: 'Arroche',
+        //   segundoApellido: 'Pedrosa',
+        //   fechaNacimiento: '18-02-1987'
+        // }];
+
+        $('#pagePreLoader').hide();
+        $scope.test = function() {
+            alert("test");
+        };
+
+        // $scope.widget = $rootScope.widget.dataView + '.html';
+
 
         $scope.showData = function() {
 
-            $mdDialog.show({
-                        controller: $rootScope.widget.dataCtrl,
-                        templateUrl: 'views/ViewWidgetSettingsData.html',
-                        parent: angular.element(document.body),
-                        locals: {
-                            widId: $rootScope.widget.id
-                        }
-                    })
-                    .then(function() {
-                        //$mdDialog.hide();
-                    }, function() {
-                        //$mdDialog.hide();
-                    });
+            $scope.dataViewPath = 'views/' + $rootScope.widget.dataView + '.html';
 
-            $scope.close();
+            console.log("showData");
+            console.log($scope.dataViewPath);
+
+            JSON2CSV();
+
+            // $mdDialog.show({
+            //         controller: eval($rootScope.widget.dataCtrl),
+            //         templateUrl: 'views/' + $rootScope.widget.dataView + '.html',
+            //         parent: angular.element(document.body),
+            //         locals: {
+            //             wid: $rootScope.widget
+            //         }
+            //     })
+            //     .then(function () {
+            //         //$mdDialog.hide();
+            //     }, function () {
+            //         //$mdDialog.hide();
+            //     });
         };
 
-        $scope.showAdvanced = function(ev, widget) {
-                        if($rootScope.widget.initTemplate){
 
-                $mdDialog.show({
-                    controller: $rootScope.widget.initCtrl,
-                    templateUrl: $rootScope.widget.initTemplate,
+        function JSON2CSV() {
+
+            var str = '';
+            var jsonArray = [];
+
+            console.log("$scope.arr");
+            console.log($scope.arr);
+
+            console.log("$scope.arr.children.length");
+            console.log($scope.arr.children.length);
+
+
+
+            for (var i = 0; i < $scope.arr.children.length; i++) {
+
+                var obj = {};
+                obj['data1'] = "";
+                obj['data2'] = "";
+                obj['data3'] = "";
+                console.log("child level 1");
+                console.log($scope.arr.children[i].name);
+                //str += $scope.arr.children[i].name;
+
+                for (var j = 0; j < $scope.arr.children[i].children.length; j++) {
+
+                    console.log("child level 2");
+                    console.log($scope.arr.children[i].children[j].name);
+                    str += $scope.arr.children[i].name + ',' + $scope.arr.children[i].children[j].name;
+                    obj['data1'] = $scope.arr.children[i].name;
+                    obj['data2'] = $scope.arr.children[i].children[j].name;
+                    if ($scope.arr.children[i].children[j].children != undefined) {
+                        for (var k = 0; k < $scope.arr.children[i].children[j].children.length; k++) {
+
+                            console.log("child level 3");
+                            console.log($scope.arr.children[i].children[j].children[k].name);
+                            str += ',' + $scope.arr.children[i].children[j].children[k].name;
+                            obj['data3'] = $scope.arr.children[i].children[j].children[k].name;
+                        }
+                        str += '\n';
+                    } else {
+                        str += '\n';
+                    }
+                    jsonArray.push(obj);
+                    var obj = {};
+                    obj['data1'] = "";
+                    obj['data2'] = "";
+                    obj['data3'] = "";
+
+                }
+
+
+            }
+
+            console.log("str");
+            console.log(str);
+            console.log("jsonArray");
+            console.log(jsonArray);
+
+            $scope.json2csv = jsonArray;
+
+        }
+
+        // $("#convert").click(function() {
+        //     var json = $.parseJSON($("#json").val());
+        //     var csv = JSON2CSV(json);
+        //     $("#csv").val(csv);
+        // });
+
+        // $("#download").click(function() {
+        //     var json = $.parseJSON($("#json").val());
+        //     var csv = JSON2CSV(json);
+        //     window.open("data:text/csv;charset=utf-8," + escape(csv))
+        // });
+
+        $scope.exportToCSV = function($http) {
+            alert("testing export to csv");
+
+            JSON2CSV();
+            console.log("$scope.json2csv");
+            console.log($scope.json2csv);
+
+        };
+
+        $scope.convertCSVtoJson = function(src) {
+            AsTorPlotItems.then(function(data) {
+                $scope.items = data;
+            });
+        };
+
+        $scope.showAdvanced = function (ev, widget) {
+
+            // $scope.dataViewPath = 'views/'+$rootScope.widget.initTemplate + '.html';
+
+            // console.log("showAdvanced");
+            // console.log( $scope.dataViewPath);
+             document.getElementsByClassName("card__full")[0].style.visibility="hidden";
+        
+
+            $mdDialog.show({
+                controller: 'chartSettingsCtrl',
+                templateUrl: 'views/chart_settings.html',
+                targetEvent: ev,
+                resolve: {
+                    widget: function() {
+                        return widget;
+                    }
+                }
+            })
+            
+            $mdDialog.show({
+                    controller: eval($rootScope.widget.initCtrl),
+                    templateUrl: 'views/' + $rootScope.widget.initTemplate + '.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     locals: {
-                        widId: $rootScope.widget.id,
-                        widData: {},
-                        fieldData: {}
+                        widId: $rootScope.widget.id
                     }
                 })
-                .then(function() {
+                .then(function () {
                     //$mdDialog.hide();
-                }, function() {
+                }, function () {
                     //$mdDialog.hide();
                 });
-            }
-            $scope.close();
-        };
 
+        };
+        
         $scope.trustSrc = function(src) {
             return $sce.trustAsResourceUrl(src);
         };
-
         $scope.getIndexes = function() {
-
             var client = $objectstore.getClient("com.duosoftware.com");
             client.onGetMany(function(data) {
                 data.forEach(function(entry) {
 
                     $rootScope.indexes.push({
-
                         value: entry,
                         display: entry
                     });
+
                 });
+
+
             });
             client.getClasses("com.duosoftware.com");
         };
-
         $scope.commentary = function(widget) {
 
             var comment = "";
             var chunks = [];
 
-            $scope.close();
-        };
 
-        $scope.close = function() {
-            $mdDialog.hide();
-        };
 
+        };
         $scope.closeDialog = function() {
+            alert("close testing");
             $mdDialog.hide();
         };
-
         $scope.clear = function() {
             $rootScope.dashboard.widgets = [];
         };
@@ -103,6 +273,15 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         $scope.remove = function(widget) {
             $rootScope.dashboard.widgets.splice($rootScope.dashboard.widgets.indexOf(widget), 1);
         };
+
+
+        $scope.alert = '';
+
+
+        $scope.config = {}; // use defaults
+        $scope.model = {};
+
+
 
         //   $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
         //   if (newVal !== oldVal) {
@@ -114,83 +293,6 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
 
         // init dashboard
         $scope.selectedDashboardId = '1';
-
-    }
-]);
-
-routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '$rootScope', 'ScopeShare', '$filter',
-    function($scope, $http, $mdDialog, $rootScope, ScopeShare, $filter){
-
-        // ====== angular-table configuration ========
-        $scope.config = {
-            itemsPerPage: 7,
-            fillLastPage: true
-        }
-
-        // ====== Json data to array ======  
-        var JSONData = {};
-
-        function JsonToArray() {
-
-            var queue = [];
-            for (var i = 0; i < JSONData.length; i++) {
-
-                queue.push({
-                    name: JSONData[i].templateParameter.name,
-                    field1: JSONData[i].templateParameter.field1,
-                    field2: JSONData[i].templateParameter.field2
-                });
-            }
-            $scope.dataTable = queue;
-            $scope.originalList = $scope.dataTable;
-        }
-
-        $scope.initialize = function(){
-
-            $scope.dataViewPath = $rootScope.widget.dataView;
-            //if widget is google maps
-            if($rootScope.widget.uniqueType == "Google Maps Branches" || $rootScope.widget.uniqueType == "Google Maps Claims"){
-
-                //get markers data for branch data
-                if (ScopeShare.get('gmapsControllerBranch') != undefined) {
-
-                    JSONData = ScopeShare.get('gmapsControllerBranch');
-                    if (JSONData) {
-                        JsonToArray();
-                    }
-                }
-                //get markers data for branch data
-                if (ScopeShare.get('gmapsControllerClaim') != undefined) {
-
-                    JSONData = ScopeShare.get('gmapsControllerClaim');
-                    if (JSONData) {
-                        JsonToArray();
-                    }
-                }
-            }
-            if($rootScope.widget.uniqueType == "Skill wise summary"){
-
-                $http.get('views/graph.json').success(function (data) {
-                    console.log("graph data skill wise summary");
-                    console.log("data");
-                    JSONData = data;
-                    if (JSONData) {
-                        JsonToArray();
-                }
-
-                });                   
-            }
-            
-        }
-
-        $scope.updateFilteredList = function(query) {
-            $scope.dataTable = $filter("filter")($scope.originalList, query);
-        };
-
-        $scope.close = function() {
-
-            $mdDialog.hide();
-        };
 
     }
 ]);
@@ -372,7 +474,12 @@ routerApp.controller('ExportCtrl', ['$scope', '$objectstore', '$mdDialog', '$roo
     $objectstore, $mdDialog, $rootScope) {
     $scope.dashboard = [];
     $scope.dashboard = {
-        widgets: []
+
+        widgets: [
+
+        ]
+
+
     };
     $scope.dashboard.widgets = $rootScope.dashboard["1"].widgets;
 
@@ -615,11 +722,11 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
         };
 
         $scope.openInitialConfig = function(ev, id) {
+            //alert($scope.currWidget.uniqueType);
 
-            if($scope.currWidget.initTemplate){
             $mdDialog.show({
-                    controller: $scope.currWidget.initCtrl,
-                    templateUrl: $scope.currWidget.initTemplate,
+                    controller: eval($scope.currWidget.initCtrl),
+                    templateUrl: 'views/' + $scope.currWidget.initTemplate + '.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     locals: {
@@ -631,8 +738,6 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                 }, function() {
                     //$mdDialog.hide();
                 });
-            }
-            
         };
 
         $scope.closeDialog = function() {
@@ -650,11 +755,28 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
 
             getJSONDataByIndex($http, 'widgetPositions', $rootScope.dashboard.widgets.length, function(data) {
 
+                $scope.gridsterOpts = {
+                    margins: [10, 10],
+                    outerMargin: true,
+                    pushing: true,
+                    floating: true,
+                    draggable: {
+                        enabled: true
+                    },
+                    resizable: {
+                        enabled: true,
+                        handles: ['n', 'e', 's', 'w', 'se', 'sw']
+                    }
+                };
+
                 $scope.leftPosition = data.leftPosition;
                 $scope.topPosition = data.topPosition;
                 $scope.ChartType = data.ChartType;
                 $scope.currWidget = {
-
+                    sizeX: 2,
+                    sizeY: 2,
+                    row: 2,
+                    col: 2,
                     widCsv: {},
                     widCsc: {},
                     widEnc: {},
@@ -671,7 +793,6 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                     initTemplate: widget.initTemplate,
                     initCtrl: widget.initController,
                     uniqueType: widget.title,
-                    syncState: true,
                     expanded: true,
                     seriesname: "",
                     externalDataURL: "",
@@ -686,11 +807,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                     left: $scope.leftPosition + 'px',
                     top: $scope.topPosition + 'px',
                     height: '300px',
-                    mheight: '100%',
-                    // sizeX: ,
-                    // sizeY: ,
-                    // row: ,
-                    // col: ,
+                    mheight: '250px',
                     chartStack: [{
                         "id": '',
                         "title": "No"
@@ -712,19 +829,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
 
                             plotOptions: {
                                 series: {
-                                    borderWidth: 0,
-                                    depth: 35,
-                                    dataLabels: {
-                                        enabled: true,
-                                    },
-                                    cursor: 'pointer',
-                                    point: {
-                                        events: {
-                                            click: function() {
-                                                alert('rawr');
-                                            }
-                                        }
-                                    }
+                                    stacking: ''
                                 }
                             }
                         },
@@ -763,9 +868,19 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                 window.speechSynthesis.speak(msg);
 
                 $rootScope.dashboard.widgets.push($scope.currWidget);
-                $scope.openInitialConfig(ev, $scope.currWidget.id);
 
+                // if($scope.currWidget.type != "Sri Lanka Telecom"  )
+                // {
+                //     //opening initial widget config dialog
+                //    $scope.openInitialConfig(ev, $scope.currWidget.id);
+                // }
+                // else
+                if ($scope.currWidget.type != "HNB Assuarance") {
+                    $scope.openInitialConfig(ev, $scope.currWidget.id);
+                }
             });
+
+
 
             //save the type of the widget for the purpose of the socialMediaCtrl
             $rootScope.widgetType = widget.title;

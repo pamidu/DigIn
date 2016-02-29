@@ -1,13 +1,20 @@
-var routerApp = angular.module('DuoDiginRt', [
-    'ngMaterial',
+$(window).load(function () {
+    $('#pagePreLoader').hide();
+    $('.nav-menu').show();
+ 
+    $('.main-headbar').css("visibility","visible");
+    $('#footerBar').css("visibility","visible");    
+
+});
+
+var routerApp = angular.module('DuoDiginRt', ['ngMaterial',
     'uiMicrokernel',
-    'diginServiceHandler',
     'ngAnimate',
     'DiginD3.filters',
     'DiginD3.services',
     'DiginD3.directives',
     'DiginD3.controllers',
-    'highcharts-ng',
+    "highcharts-ng",
     'angular.css.injector',
     'ui.router',
     '720kb.socialshare',
@@ -18,257 +25,108 @@ var routerApp = angular.module('DuoDiginRt', [
     'ngMdIcons',
     'nvd3',
     'gridster',
-    'ui.calendar',
     'mgcrea.ngStrap',
-    'ui',
+     'ui',
     'lk-google-picker',
     'servicess',
     'angularUtils.directives.dirPagination',
     'ngSanitize',
-    'ngCsv',
-    'angular-intro',
-    'uiGmapgoogle-maps',
-    'angularMoment',
-    'googleplus',
-    'rzModule',
-    'angular-table',
-    'ngToast',
-    'vAccordion',
-    'ngDraggable',
-    'ui.select2',
-    'ngMessages'
-]);
+    'ngCsv'
+])
 
-routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
-
+routerApp.config(["$mdThemingProvider", "$locationProvider", "$httpProvider", "$stateProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $locationProvider, $httpProvider, $stateProvider, lkGoogleSettingsProvider) {
     $httpProvider.defaults.headers.post['Content-Type'] = 'multipart/form-data';
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $httpProvider.defaults.headers.common["Content-Type"] = "application/x-www-form-urlencoded";
-
-    $urlRouterProvider.otherwise('/login');
-
-    $stateProvider
-        .state("login", {
-            url: "/login",
-            controller: "LoginCtrl",
-            templateUrl: "views/partial-login.html",
-            data: {
-                requireLogin: false
-            }
-        })
-        .state("signup", {
-            url: "/signup",
-            controller: "signUpCtrl",
-            templateUrl: "views/signup.html",
-            data: {
-                requireLogin: false
-            }
-        })
-        .state("welcome", {
-            url: "/welcome",
-            controller: "welcomePageCtrl",
-            templateUrl: "views/partial-WelcomePage.html",
-            data: {
-                requireLogin: true
-            }
-        })
-        .state("home", {
-            url: "/home",
-            controller: "NavCtrl",
-            templateUrl: "views/partial-home.html",
-            data: {
-                requireLogin: true,
-                preLoader: true
-            }
-        })
-        .state("home.Settings", {
-            url: "/settings",
-            controller: "dashboardSetupCtrl",
-            templateUrl: "views/setup/dashboardSetup.html",
-            data: {
-                requireLogin: true
-            }
-        })
-        .state('home.Dashboards', {
+    $stateProvider        
+        .state('Dashboards', {
             url: "/Dashboards",
             controller: 'DashboardCtrl',
-            templateUrl: "views/charts.html",
-            data: {
-                requireLogin: true
-            }
+            templateUrl: "views/charts.html"
         })
-        .state('home.Reports', {
+        .state('Reports', {
             url: "/Reports",
             controller: 'ReportCtrl',
-            templateUrl: "views/reports.html",
-            data: {
-                requireLogin: true
-            }
+            templateUrl: "views/reports.html"
         })
-        .state('home.Analytics', {
+        .state('Analytics', {
             url: "/Analytics",
             controller: 'analyticsCtrl',
-            templateUrl: "views/analytics.html",
-            data: {
-                requireLogin: true
-            }
+            templateUrl: "views/analytics.html"
         })
-        .state('home.RealTime', {
+        .state('RealTime', {
             url: "/RealTime",
             controller: 'RealTimeController',
-            templateUrl: "views/realtime.html",
-            data: {
-                requireLogin: true
-            }
+            templateUrl: "views/realtime.html"
         })
-        .state('home.Digin P Stack', {
+
+        .state('Digin P Stack', {
             url: "/Digin P Stack",
             controller: 'ExtendedanalyticsCtrl',
-            templateUrl: "views/extended-analytics.html",
-            data: {
-                requireLogin: true
-            }
+            templateUrl: "views/extended-analytics.html"
         })
-        .state('home.Interactive Report', {
+        .state('Interactive Report', {
             url: "/Interactive Report",
             controller: 'ExtendedReportCtrl',
-            templateUrl: "views/extended-reports.html",
-            data: {
-                requireLogin: true
-            }
+            templateUrl: "views/extended-reports.html"
         })
-        .state('home.Analysis Report', {
+        .state('Analysis Report', {
             url: "/Analysis Report",
             controller: 'ExtendedanalyticsCtrl',
-            templateUrl: "views/extended-analytics.html",
-            data: {
-                requireLogin: true
-            }
+            templateUrl: "views/extended-analytics.html"
         })
-        .state('home.Dashboard', {
+        .state('Dashboard', {
             url: "/Dashboard",
             controller: 'ExtendedDashboardCtrl',
-            templateUrl: "views/extended-dashboard.html",
-            data: {
-                requireLogin: true
-            }
+            templateUrl: "views/extended-dashboard.html"
         })
-        .state('home.D3plugins', {
+        .state('D3plugins', {
             url: "/D3plugins",
             controller: 'd3PluginCtrl',
-            templateUrl: "views/D3Plugin/d3View.html",
-            data: {
-                requireLogin: true
-            }
+            templateUrl: "views/D3Plugin/d3View.html"
         })
-        .state('home.PivotTable', {
+        .state('PivotTable', {
             url: "/PivotTable",
             controller: 'summarizeCtrl',
-            templateUrl: "views/pivottable.html",
-            data: {
-                requireLogin: true
-            }
+            templateUrl: "views/pivottable.html"
         })
-        .state('home.ReportViewer', {
+        .state('ReportViewer', {
             url: '/ReportViewer:param',
             controller: 'ReportViewerControl',
-            templateUrl: "views/Report_viewer.html",
-            data: {
-                requireLogin: true
-            }
+            templateUrl: "views/Report_viewer.html"
 
         })
-        .state('home.DashboardViewer', {
+        .state('DashboardViewer', {
             url: '/DashboardViewer:param',
             controller: 'DashboardViewerControl',
-            templateUrl: "views/Dashboard_viewer.html",
-            data: {
-                requireLogin: true
-            }
+            templateUrl: "views/Dashboard_viewer.html"
 
         })
-        .state('home.CustomDashboardViewer', {
+        .state('CustomDashboardViewer', {
             url: "/CustomDashboard:param",
             controller: 'DashboardCtrl',
-            templateUrl: "views/charts.html",
-            data: {
-                requireLogin: true
-            }
+            templateUrl: "views/charts.html"
         })
-        .state('home.AnalyzerViewer', {
+        .state('AnalyzerViewer', {
             url: '/AnalyzerViewer:param',
             controller: 'AnalyzerViewerControl',
-            templateUrl: "views/Analyzer_viewer.html",
-            data: {
-                requireLogin: true
-            }
+            templateUrl: "views/Analyzer_viewer.html"
 
         })
-        .state('home.social-graph-fb', {
-            url: '/social-graph-fb',
-            controller: 'socialGraphCtrl',
-            templateUrl: "views/socialGraph/socialGraph_Temp.html",
-            data: {
-                requireLogin: true
-            }
+        .state('Settings', {
+            url: '/settings',
+            controller: 'settingsCtrl',
+            templateUrl: "views/settings.html"
 
         })
-        .state('home.Social Media Analytics', {
-            url: "/social-media-analytics",
-            controller: 'SocialAnalysisCtrl',
-            //templateUrl: "views/extended-analytics.html",
-            data: {
-                requireLogin: true
-            }
+        .state('Grid', {
+            url: '/Grid',
+            controller: 'DashboardCtrl',
+            templateUrl: "views/chartsGridster.html"
 
         })
-        .state('home.SocialGraphFb', {
-            url: '/social-graph-fb',
-            controller: 'socialGraphFBCtrl',
-            templateUrl: "views/socialGraph/socialGraphFB_Temp.html",
-            data: {
-                requireLogin: true
-            }
 
-        })
-        .state('home.SocialGraphTwitter', {
-            url: '/social-graph-twitter',
-            controller: 'socialGraphTwitterCtrl',
-            templateUrl: "views/socialGraph/socialGraphTwitter_Temp.html",
-            data: {
-                requireLogin: true
-            }
-
-        })
-        .state('home.Sales Forecast', {
-            url: '/sales-forecast',
-            controller: 'salesForecastCtrl',
-            templateUrl: "views/salesForecast/sales_forecast_Temp.html",
-            data: {
-                requireLogin: true
-            }
-        })
-        .state('home.Prediction', {
-            url: '/prediction',
-            controller: 'predictionCtrl',
-            templateUrl: "views/prediction/prediction.html",
-            data: {
-                requireLogin: true
-            }
-        })
-        .state('home.QueryBuilder', {
-            url: '/query-builder',
-            controller: 'queryBuilderCtrl',
-            templateUrl: "views/query/query-builder.html",
-            data: {
-                requireLogin: true
-            }
-        }).state('home.DynamicallyReportBuilder', {
-        url: '/dynamically-report-builder',
-        controller: 'dynamicallyReportCtrl',
-        templateUrl: "views/dynamicallyReportBuilder/dynamically-report.html"
-    });
 
     lkGoogleSettingsProvider.configure({
         apiKey: 'AIzaSyA9fv9lYQdt1XV6wooFtItxYlMF8Y9t1ao',
@@ -276,52 +134,25 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         scope: ['https://www.googleapis.com/auth/drive']
     })
 
-//    $rootScope.primaryPallete = "indigo";
-//    $rootScope.accentPallete = "pink";
-//    
-    $mdThemingProvider.theme('appTheme')
-        .primaryPalette("indigo")
-        .accentPalette("pink");
+    $mdThemingProvider.theme('alt')
+        .primaryPalette('indigo')
+        .accentPalette('blue');
+
+    $mdThemingProvider.theme('alt1')
+        .primaryPalette('deep-purple')
+        .accentPalette('red');
+
+    $mdThemingProvider.theme('alt2')
+        .primaryPalette('green')
+        .accentPalette('amber');
+
+    $mdThemingProvider.theme('alt3')
+        .primaryPalette('blue-grey')
+        .accentPalette('teal');
 
     $mdThemingProvider.alwaysWatchTheme(true);
+
 }]);
-
-routerApp.run(function ($rootScope, $auth, $state, $csContainer) {
-
-    $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
-        var requireLogin = toState.data.requireLogin;
-        var secToken = $auth.getSecurityToken();
-        var cookToken = getCookie("securityToken");
-
-        if (toState.data.preLoader) {
-            setTimeout(function () {
-                $('#pagePreLoader').hide();
-                $('#preLoader').hide();
-                $('.nav-menu').css("visibility", "visible");
-                $('.main-headbar').css("visibility", "visible");
-                $('#content1').css("visibility", "visible");
-            }, 3000);
-        }
-
-        if (requireLogin && secToken === "N/A" && typeof(cookToken) === "undefined") {
-            event.preventDefault();
-            $state.go('login');
-        } else {
-            var stateName = toState.name;
-            //check for custom state validations
-            switch (stateName) {
-                case 'home.QueryBuilder':
-                    var srcObj = $csContainer.fetchSrcObj();
-                    if (typeof srcObj.tbl == "undefined") {
-                        event.preventDefault();
-                        $state.go('home');
-                    }
-                    break;
-            }
-        }
-    });
-
-});
 
 
 routerApp.controller('ReportViewerControl', ['$scope', '$rootScope', '$stateParams', 'Digin_ReportViewer', '$sce',
@@ -356,6 +187,7 @@ routerApp.controller('AnalyzerViewerControl', ['$scope', '$rootScope', '$statePa
     function ($scope, $rootScope, $stateParams, Digin_AnalyzerViewer, $sce, $localStorage) {
 
 
+
         $scope.reportURL = Digin_AnalyzerViewer + "3A" + $rootScope.username + "%3AAnalyzer%3A" + $stateParams.param + "/editor?";
 
         $scope.trustSrc = function (src) {
@@ -365,6 +197,10 @@ routerApp.controller('AnalyzerViewerControl', ['$scope', '$rootScope', '$statePa
 
     }
 ]);
+
+
+
+routerApp.controller('mainController', ['$scope', '$http', function (scope, http) {}]);
 
 routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope',
 
@@ -389,7 +225,9 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
                 $mdDialog.show({
                     controller: 'successCtrl',
                     templateUrl: 'views/dialog_success.html',
-                    resolve: {}
+                    resolve: {
+
+                    }
                 })
             });
             client.onError(function (data) {
@@ -397,7 +235,9 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
                 $mdDialog.show({
                     controller: 'errorCtrl',
                     templateUrl: 'views/dialog_error.html',
-                    resolve: {}
+                    resolve: {
+
+                    }
                 })
             });
 
@@ -406,9 +246,19 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
                 KeyProperty: "dashboardName"
             });
 
+
         }
     }
 ]);
+
+routerApp.controller('RightCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+    $scope.close = function () {
+        $mdSidenav('right').close()
+            .then(function () {
+                $log.debug("close RIGHT is done");
+            });
+    };
+});
 
 routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
     var dateFormat = function ($scope) {
@@ -509,13 +359,13 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function (
     // Internationalization strings
     dateFormat.i18n = {
         dayNames: [
-            "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
-            "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-        ],
+        "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
+        "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+    ],
         monthNames: [
-            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-            "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-        ]
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+        "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+    ]
     };
 
     // For convenience...
@@ -597,39 +447,49 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function (
 
     function clockComponentformatController($scope, $mdDialog) {
         $scope.formats = [{
-            name: "default",
-            format: "ddd mmm dd yyyy HH:MM:ss"
-        }, {
-            name: "shortDate",
-            format: "m/d/yy"
-        }, {
-            name: "longDate",
-            format: "mmmm d, yyyy"
-        }, {
-            name: "fullDate",
-            format: "dddd, mmmm d, yyyy"
-        }, {
-            name: "shortTime",
-            format: "h:MM TT"
-        }, {
-            name: "mediumTime",
-            format: "h:MM:ss TT"
-        }, {
-            name: "longTime",
-            format: "h:MM:ss TT Z"
-        }, {
-            name: "isoDate",
-            format: "yyyy-mm-dd"
-        }, {
-            name: "isoTime",
-            format: "HH:MM:ss"
-        }, {
-            name: "isoDateTime",
-            format: "yyyy-mm-dd'T'HH:MM:ss"
-        }, {
-            name: "isoUtcDateTime",
-            format: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
-        }];
+                name: "default",
+                format: "ddd mmm dd yyyy HH:MM:ss"
+                },
+            {
+                name: "shortDate",
+                format: "m/d/yy"
+                },
+            {
+                name: "longDate",
+                format: "mmmm d, yyyy"
+                },
+            {
+                name: "fullDate",
+                format: "dddd, mmmm d, yyyy"
+                },
+            {
+                name: "shortTime",
+                format: "h:MM TT"
+                },
+            {
+                name: "mediumTime",
+                format: "h:MM:ss TT"
+                },
+            {
+                name: "longTime",
+                format: "h:MM:ss TT Z"
+                },
+            {
+                name: "isoDate",
+                format: "yyyy-mm-dd"
+                },
+            {
+                name: "isoTime",
+                format: "HH:MM:ss"
+                },
+            {
+                name: "isoDateTime",
+                format: "yyyy-mm-dd'T'HH:MM:ss"
+                },
+            {
+                name: "isoUtcDateTime",
+                format: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
+                }];
 
         $scope.clockComponentformatChange = function (data) {
             $mdDialog.hide(data);
@@ -654,8 +514,7 @@ routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
                 //console.log(firstDay);
                 if (firstDay == 0) {
                     firstDay = 7;
-                }
-                ;
+                };
                 for (i = 0; i < 40; i++) {
 
                     if (i + 1 < firstDay) {
@@ -680,17 +539,12 @@ routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
                                     task: '',
                                 };
                                 $scope.days.push(obj);
-                            }
-                            ;
-                        }
-                        ;
-                    }
-                    ;
-                }
-                ;
+                            };
+                        };
+                    };
+                };
                 //console.log($scope.days);
-            }
-            ;
+            };
         };
 
         $scope.previousMonth = function () {
@@ -699,8 +553,7 @@ routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
             } else {
                 $scope.month = $scope.month - 1;
 
-            }
-            ;
+            };
             //createCal();
         };
 
@@ -710,8 +563,7 @@ routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
 
             } else {
                 $scope.month = $scope.month + 1;
-            }
-            ;
+            };
             //createCal();
         };
 
@@ -754,8 +606,7 @@ routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog',
                     } else {
                         $scope.weatherComponentIcon = 'sun';
                         $scope.weatherComponentBg = "styles/css/images/weatherComponentBg.jpg";
-                    }
-                    ;
+                    };
                 }
 
             })
@@ -812,6 +663,7 @@ routerApp.controller('userprofileWidgetController', ['$scope', function ($scope)
         });
     })();
 }])
+
 
 routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($window, $rootScope, $log) {
 
@@ -983,159 +835,6 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($
 
 }]);
 
-routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http, $rootScope, $q) {
-    var clientId = '33022835624-q3km776rl7dkitpinaj7pf2tlu75tfhg.apps.googleusercontent.com',
-        apiKey = 'AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ',
-        scopes = 'https://www.googleapis.com/auth/plus.login',
-        domain = '',
-        deferred = $q.defer();
-
-    this.signin = function () {
-        gapi.auth.authorize({
-            client_id: clientId,
-            scope: scopes,
-            immediate: false,
-            cookie_policy: 'single_host_origin',
-            hd: domain
-        }, this.handleAuthResult);
-
-        return deferred.promise;
-    };
-
-    this.signout = function () {
-        gapi.auth.signOut();
-        console.log("logged out");
-
-        return deferred.promise;
-    };
-    this.handleClientLoad = function () {
-        gapi.client.setApiKey(apiKey);
-        gapi.auth.init(function () {
-        });
-        window.setTimeout(checkAuth, 1);
-    };
-
-    this.checkAuth = function () {
-        gapi.auth.authorize({
-            client_id: clientId,
-            scope: scopes,
-            immediate: true,
-            hd: domain
-        }, this.handleAuthResult);
-    };
-
-    this.handleAuthResult = function (authResult) {
-        if (authResult && !authResult.error) {
-            var data = {};
-            gapi.client.load('oauth2', 'v2', function () {
-                var request = gapi.client.oauth2.userinfo.get();
-                request.execute(function (resp) {
-                    data.email = resp.email;
-                });
-            });
-            deferred.resolve(data);
-        } else {
-            deferred.reject('error');
-        }
-    };
-
-    this.handleAuthClick = function (event) {
-        gapi.auth.authorize({
-            client_id: clientId,
-            scope: scopes,
-            immediate: false,
-            hd: domain
-        }, this.handleAuthResult);
-        return false;
-    };
-
-    this.getProfileData = function () {
-
-        gapi.client.load('plus', 'v1', function () {
-            var request = gapi.client.plus.people.get({
-                'userId': 'me'
-            });
-            request.execute(function (resp) {
-                $rootScope.profileData = resp;
-            });
-        });
-        return deferred.promise;
-    };
-
-    this.getPeopleData = function () {
-
-        gapi.client.load('plus', 'v1', function () {
-            var request = gapi.client.plus.people.list({
-                'userId': 'me',
-                'collection': 'visible'
-            });
-            request.execute(function (resp) {
-                $rootScope.peopleData = resp;
-            });
-        });
-        return deferred.promise;
-    };
-
-    this.getActivityData = function () {
-        gapi.client.load('plus', 'v1', function () {
-            var request = gapi.client.plus.activities.list({
-                'userId': 'me',
-                'collection': 'public'
-            });
-
-            request.execute(function (resp) {
-                $rootScope.activityData = resp;
-            });
-        });
-
-        return deferred.promise;
-    };
-
-}]);
-routerApp.service('generatePDF1', function ($timeout) {
-    this.generate = function (htmlElement, config) {
-
-        var doc = new jsPDF('landscape');
-
-        doc.text(config.titleLeft, config.titleTop, config.title);
-        doc.fromHTML(htmlElement, config.tableLeft, config.tableTop, {});
-        var pdfName = config.title.toString() + '.pdf';
-        doc.save(pdfName);
-
-    };
-
-});
-routerApp.service('generatePDF2', function ($timeout) {
-    this.generate = function (htmlElement, config) {
-
-        var doc = new jsPDF('landscape');
-        var options = {format: 'PNG'};
-
-        doc.addHTML(htmlElement, config.tableLeft, config.tableTop, options, function () {
-            var pdfName = config.title.toString() + '.pdf';
-            doc.text(config.titleLeft, config.titleTop, config.title);
-            doc.save(pdfName);
-        });
-    };
-
-});
-
-//use this to share scopes between two controllers
-//first store after that get
-routerApp.factory('ScopeShare', function ($rootScope) {
-    var mem = {};
-
-    return {
-        store: function (key, value) {
-            mem[key] = value;
-        },
-        get: function (key) {
-            return mem[key];
-        }
-    };
-});
-
-
 routerApp.directive('myUpload', [function () {
     return {
         restrict: 'A',
@@ -1221,6 +920,21 @@ routerApp.directive('barsChart', function ($parse) {
     return directiveDefinitionObject;
 });
 
+routerApp.factory('instagram', ['$http', function ($http) {
+
+    return {
+        fetchPopular: function (callback) {
+
+            var endPoint = "https://api.instagram.com/v1/media/popular?client_id=f22d4c5be733496c88c0e97f3f7f66c7&callback=JSON_CALLBACK";
+
+            $http.jsonp(endPoint).success(function (response) {
+                callback(response.data);
+            });
+        }
+    }
+
+}]);
+
 routerApp.filter('fromTo', function () {
     return function (input, from, total, lessThan) {
         from = parseInt(from);
@@ -1238,12 +952,6 @@ routerApp.filter('getExtension', function () {
     };
 });
 
-routerApp.filter('htmlToPlaintext', function () {
-    return function (text) {
-        return text ? String(text).replace(/<[^>]+>/gm, '') : '';
-    };
-});
-
 routerApp.directive('clockComponent', function () {
     return {
         restrict: 'E',
@@ -1251,6 +959,33 @@ routerApp.directive('clockComponent', function () {
         template: " <div class='clockmain widget-card'><md-button style='min-width: 10px;' ng-click='clockComponentSelectformat($event);'><img src='http://imgh.us/dots_1.svg' width='5' height='23'/></md-button><ul id='clockclock'><li id='clockhour'></li><li id='clockmin'></li><li id='clocksec'></li></ul><div id='clockdate'><p style='font-family: lato,sans-serif;font-size:xx-large;color:#00172F;margin: 10px;'><span id='clockHours'></span> : <span id='clockMins'></span> </p><span id='clockmonthDay'></span></div></div>"
     };
 });
+
+routerApp.directive('calenderComponent', function () {
+    return {
+        restrict: 'E',
+        controller: 'calenderWidgetController',
+        template: "<div class='widget-card'><section class='calendar'>\
+<ng-md-icon style='position: absolute;left: 40px;min-width: 5px;top: 25px;fill:white;' ng-click='previousMonth();' icon='navigate_before'>p</ng-md-icon>\
+  <h1>{{monthNames[month]}} 2015</h1>\
+<ng-md-icon style='position: absolute;right: 40px;min-width: 5px;top: 25px;fill:white' ng-click='nextMonth();' icon='navigate_next'>p</ng-md-icon>\
+  <form action='#'>\
+    <label class='weekday'>Mo</label>\
+    <label class='weekday'>Tu</label>\
+    <label class='weekday'>We</label>\
+    <label class='weekday'>Th</label>\
+    <label class='weekday'>Fr</label>\
+    <label class='weekday'>Sa</label>\
+    <label class='weekday'>Su</label>\
+    <label class='day' data-day='{{day.day}}' ng-repeat='day in days' ng-if='day.month == month'>\
+      <input class='appointment' date-day='{{day.day}}' ng-model='day.task' placeholder='What would you like to do?' required='true' type='text'>\
+      <span>{{day.date}}</span>\
+      <em></em>\
+    </label>\
+ <div class='clearfix'></div>\
+  </form>\
+</section></div>"
+    };
+})
 
 routerApp.directive('weatherComponent', function () {
     return {
@@ -1279,30 +1014,9 @@ routerApp.directive('userprofileComponent', function () {
 <div style="background-image:url(styles/css/images/+++++ofileComponentBg.jpg);background-size:cover;width: 100%;height: 45%;position: absolute;"></div>\
     <button data-card-menu="data-card-menu" class="card-face__menu-button"><img src="http://imgh.us/dots_1.svg" width="5" height="23" draggable="false"/></button><!-- Avatar -->\
     <div class="card-face__avatar"><!-- Bullet notification --><span class="card-face__bullet">2</span><!-- User avatar --><img src="http://i.imgur.com/gGdWosb.png" width="110" height="110" draggable="false"/></div><!-- Name -->\
-    <h2 class="card-face__name">' + localStorage.getItem("username") + '</h2><!-- Title --><span class="card-face__title">Graphic & Web Designer</span><!-- Cart Footer -->\
+    <h2 class="card-face__name">'+localStorage.getItem("username")+'</h2><!-- Title --><span class="card-face__title">Graphic & Web Designer</span><!-- Cart Footer -->\
     <div class="card-face-footer"><a href="#" target="_blank" class="card-face__social"><img src="http://imgh.us/dribbble.svg" width="36" height="36" draggable="false"/></a><a href="#"_blank" class="card-face__social"><img src="http://imgh.us/beh.svg" width="36" height="36" draggable="false"/></a><a href="#" target="_blank" class="card-face__social"><img src="http://imgh.us/plus_5.svg" width="36" height="36" draggable="false"/></a></div>\
   </div>\
 </div>'
     };
 });
-
-
-// update damith
-//app config details
-routerApp.constant('config', {
-    appName: 'digin',
-    appVersion: 1.0,
-    apiUrl: 'http://104.131.48.155:8080/',
-    apiFbUrl: 'http://192.168.0.47:8080/',
-    Big_Qry_Get_Tbls: 'http://104.131.48.155:8080/GetTables?dataSetID=Demo',
-    Big_Qry_Get_Fields: 'http://104.131.48.155:8080/GetFields?dataSetName =Demo&&tableName=',
-    apiUrl2: '',
-    storeIndex: 'com.duosoftware.com'
-});
-
-//create notification view animation
-app.config(['ngToastProvider', function(ngToastProvider) {
-    ngToastProvider.configure({
-        animation: 'slide' // or 'fade'
-    });
-}]);

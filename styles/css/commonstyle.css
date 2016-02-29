@@ -14,12 +14,6 @@
 
 .left-main-wrap > .left-wrap {
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#00a9ed+0,01718d+100 */
-    background: #00a9ed; /* Old browsers */
-    background: -moz-linear-gradient(top, #00a9ed 0%, #01718d 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, #00a9ed 0%, #01718d 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, #00a9ed 0%, #01718d 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00a9ed', endColorstr='#01718d', GradientType=0); /* IE6-9 */
-
     height: 340px;
     width: 100%;
     border-bottom-left-radius: 30px;
@@ -31,6 +25,25 @@
     transition: .3s ease;
     position: relative;
     overflow: hidden;
+    z-index: 999;
+}
+
+.sign-in {
+    background: #00a9ed; /* Old browsers */
+    background: -moz-linear-gradient(top, #00a9ed 0%, #01718d 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #00a9ed 0%, #01718d 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #00a9ed 0%, #01718d 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00a9ed', endColorstr='#01718d', GradientType=0); /* IE6-9 */
+
+}
+
+.signup {
+    background: #EC784B; /* Old browsers */
+    background: -moz-linear-gradient(top, #F69563 0%, #F1702E 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #F69563 0%, #F1702E 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #F69563 0%, #F1702E 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00a9ed', endColorstr='#01718d', GradientType=0); /* IE6-9 */
+
 }
 
 .left-wrap > .login-logo {
@@ -39,8 +52,11 @@
     height: 100px;
     border-radius: 50%;
     margin: 0 auto;
-    margin-bottom: 50px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
+    overflow: hidden;
+    position: relative;
+    z-index: 999;
+
 }
 
 .login-logo > img {
@@ -75,7 +91,7 @@
 }
 
 .right-wrap {
-    height: 450px;;
+    height: 450px;
     width: 100%;
     background: #ffffff;
     -moz-box-shadow: 1px 1px 8px 0px #ccc;
@@ -83,11 +99,15 @@
     box-shadow: 1px 1px 8px 0px #ccc;
 }
 
+.sign-up-wrap {
+    height: 550px !important;
+}
+
 .digin-login-card {
     min-width: 600px;
     height: 450px;
     position: relative;
-    margin-top: 5%;
+    margin-top: calc(10vh);
 }
 
 .right-wrap {
@@ -114,7 +134,7 @@
 
 .digin-lgn-wrap > .footer-wrap {
     text-align: center;
-    padding-top: 5%;
+    padding-top: 10%;
     font-family: 'Ek Mukta', sans-serif;
     font-weight: 200;
     color: #EC784B;
@@ -127,7 +147,7 @@
 .login-bdy > .text-wrap {
     height: 276px;
     width: 100%;
-    padding: 40px 22px;
+    padding: 20px 22px;
 }
 
 .login-btn-wrap {
@@ -138,14 +158,18 @@
     text-align: center;
 }
 
-.login-btn-wrap .disable {
+.sign-btn-wrap {
+    margin: 111px auto !important;
+}
+
+.disable {
     color: #F5F5F5;
     brackground-color: transparent;
     border: 1px solid #F5F5F5;
     background-image: linear-gradient(to right, transparent 50%, #F5F5F5 50%);
 }
 
-.login-btn-wrap .active {
+.active {
     color: #EC784B;
     brackground-color: transparent;
     border: 1px solid #EC784B;
@@ -290,21 +314,25 @@
     animation-delay: 11s;
 }
 
-.txt-box-login > div > input {
+.txt-box-login > div > input,
+.domain-name > div > input,
+.full-name > div > input,
+.namespace > div > input {
     background: transparent !important;
     background-image: none !important;
     border: 2px solid #F5F5F5;
     border-radius: 7px;
     height: 40px;
-
 }
 
-.txt-box-login.error > div > input {
+.txt-box-login.error > div > input,
+.error > div > input {
     border: 2px solid #B71C1C;
     color: #B71C1C;
 }
 
-.txt-box-login.error > label {
+.txt-box-login.error > label,
+.error > label {
     color: #B71C1C;
 }
 
@@ -312,18 +340,30 @@
     margin-top: 30px;
 }
 
-.txt-box-login > label {
+.txt-box-login > label,
+.domain-name > label,
+.full-name > label,
+.namespace > label,
+.form-group > label {
     font-family: 'Ek Mukta', sans-serif;
     font-weight: 400;
     font-size: 15px;
     text-transform: uppercase;
 }
 
-.txt-box-login > div > input:focus {
-    border-color: #EC784B;
+.txt-box-login > div > input:focus,
+.domain-name > div > input:focus,
+.namespace > div > input:focus,
+.full-name > div > input:focus,
+.form-group > div > input:focus {
+    border: 2px solid #EC784B !important;
 }
 
-.txt-box-login > div > input::-webkit-input-placeholder {
+.txt-box-login > div > input::-webkit-input-placeholder,
+.full-name > div > input::-webkit-input-placeholder,
+.namespace > div > input::-webkit-input-placeholder,
+.domain-name > div > input::-webkit-input-placeholder,
+.form-group > input::-webkit-input-placeholder {
     color: #EEEEEE;
 }
 
@@ -404,6 +444,89 @@
     padding-top: 3px;
     padding-left: 2px;
     text-transform: lowercase;
+}
+
+/*#signup style */
+
+.sign-up > img {
+    width: 100px;
+    position: absolute;
+    height: auto;
+    top: -19px;
+    left: -13px;
+}
+
+.border-white-5 {
+    border: 5px solid #fff;
+}
+
+.text-domain-name {
+    display: inline-block;
+}
+
+.domain-name > div > input {
+    width: 175px !important
+}
+
+.namespace > div > input {
+    width: 100px !important
+}
+
+.full-name > div > input {
+    width: 140px !important
+}
+
+.p-t-20 {
+    padding-top: 20px;
+}
+
+.auth-message-wrap {
+    position: absolute;
+    width: 100%;
+    margin: 25px auto;
+}
+
+.auth-message-wrap > .loader-body-wrap {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.welcome-link {
+    z-index: 999;
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+}
+
+.sign-up-link > a {
+    color: #3FBDF1;
+    border-radius: 15px;
+    border: 2px solid #33A8D1;
+}
+
+.sign-in-link > a {
+    color: #FFFBF9;
+    border-radius: 15px;
+    border: 2px solid #F06F2D;
+}
+
+.welcome-link > a {
+    width: 50px;
+    height: 50px;
+    padding: 5px 15px 5px 15px;
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 200;
+    cursor: pointer;
+    z-index: 1000;
+    text-align: center;
+}
+
+.welcome-link > a:focus,
+.welcome-link > a:hover {
+    color: #fff;
+    border: 2px solid #fff;
+    cursor: pointer;
+    z-index: 1000;
 }
 
 

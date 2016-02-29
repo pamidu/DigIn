@@ -34,7 +34,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$
                 $rootScope.email=userInfo.Email;
                 localStorage.setItem('email', userInfo.Email);
 
-                $state.go('welcome'); 
+                $state.go('home'); 
 
             });
             

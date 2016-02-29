@@ -2436,7 +2436,7 @@
         var host = getHost();
         return {
             auth: "http://" + "104.197.27.7" + ":3048",
-            objectStore: "http://" + host + ":3000",
+            objectStore: "http://" + "104.197.27.7" + ":3000",
             fws: "http://" + host + ":4000",
             processDispatcher: "http://" + host + ":5000",
             processManager: "http://" + host + ":8093"

@@ -844,11 +844,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $rootScope.currentView = "Digin P Stack";
                 //$state.go('home.'+routeName);                
             }
-            if (routeName == "CommonData") {
+            if (routeName == "DataSources") {
 
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
-                $rootScope.currentView = "CommonData";
+                $rootScope.currentView = "DataSources";
                 $scope.manageTabs(false);
 
                 if ($mdSidenav('right').isOpen()) {

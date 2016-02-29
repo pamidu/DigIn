@@ -1,95 +1,23 @@
 
-table.pvtTable {
-    font-family:arial;
-    font-size: 8pt;
-    text-align: left;
-    border-collapse: collapse;
-    width: 70vw;
-}
-table.pvtTable tr th, table.pvtTable tr th {
-    background-color: #e6EEEE;
-    border: 1px solid #CDCDCD;
-    font-size: 8pt;
-    padding: 5px;
-}
-
-table.pvtTable .pvtColLabel {text-align: center;}
-table.pvtTable .pvtTotalLabel {text-align: right;}
-
-table.pvtTable tr td {
-    color: #3D3D3D;
-    padding: 5px;
-    background-color: #FFF;
-    border: 1px solid #CDCDCD;
-    vertical-align: top;
-    text-align: right;
-}
-
-.pvtTotal, .pvtGrandTotal { font-weight: bold; }
-
-.pvtVals { text-align: center;}
-.pvtAggregator { margin-bottom: 5px ;}
-
-.pvtAxisContainer, .pvtVals {
-    border: 1px solid gray;
-    background: #EEE;
-    padding: 5px;
-    min-width: 20px;
-    min-height: 20px;
-}
-.pvtAxisContainer li {
-    padding: 8px 6px;
-    list-style-type: none;
-    cursor:move;
-}
-.pvtAxisContainer li.pvtPlaceholder {
-    -webkit-border-radius: 5px;
-    padding: 3px 15px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    border: 1px dashed #aaa;
-}
 
 .pvtAxisContainer li span.pvtAttr {
-    background: #F3F3F3;
-    border: 1px solid #DEDEDE;
-    padding: 2px 5px;
-    white-space:nowrap;
-    -webkit-border-radius: 5px;
+    webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-}
-
-.pvtTriangle {
-    cursor:pointer;
-    color: grey;
-}
-
-.pvtHorizList li { display: inline; }
-.pvtVertList { vertical-align: top; }
-
-.pvtFilteredAttribute { font-style: italic }
-
-.pvtFilterBox{
-    z-index: 100;
-    width: 280px;
-    border: 1px solid gray;
-    background-color: #fff;
-    position: absolute;
-    padding: 20px;
+    font-size: 15px;
+    padding: .5em;
+    background: #F69563;
+    color: white;
     text-align: center;
+    display: flex;
 }
 
-.pvtFilterBox h4{ margin:0; }
-
-.pvtCheckContainer{
-    text-align: left;
-    overflow: scroll;
-    width: 100%;
-    max-height: 200px;
-}
-.pvtCheckContainer p{ 
-    margin: 5px; 
+.pvtAxisContainer li {
+    margin: 2px;
+    list-style-type: none;
+    cursor: move;
+    border-radius: 5px;
+    width: 200px;
 }
 
 #grid > table{
@@ -98,9 +26,7 @@ table.pvtTable tr td {
 }
 
 #grid > table, th, td {
-    height: 100%;
     padding: 10px;
-    display: inline-block;
     z-index: 0;
     overflow-y: auto;
     overflow: hidden;
@@ -117,15 +43,17 @@ table.pvtTable tr td {
     /*border-color: #EC784B;*/
     border-color: #ECECEC;
     border-width: 0px 2px 0px 0px;
+    background-color: white;
 }
-#grid > table > tbody > tr:nth-child(2) > td.pvtAxisContainer.pvtUnused.pvtVertList.ui-sortable{
-    width: 200px;
+#grid > table > tbody > tr:nth-child(1) > td.pvtAxisContainer.pvtUnused.pvtHorizList.ui-sortable{
+    min-width: 200px;
     border-style: solid;
     /*border-color: #EC784B;*/
     border-color: #ECECEC;
     border-width: 0px 2px 0px 0px;
+    background-color: white;
 }
-#grid > table > tbody > tr:nth-child(1) > td.pvtVals{
+#grid > table > tbody > tr:nth-child(2) > td.pvtAxisContainer.pvtUnused.pvtVertList.ui-sortable{
     width: 200px;
     border-style: solid;
     /*border-color: #EC784B;*/
@@ -139,26 +67,50 @@ table.pvtTable tr td {
     border-color: #ECECEC;
     border-width: 0px 2px 0px 0px;
 }
-/* selectors */
-#grid > table > tbody > tr:nth-child(1) > td.pvtVals > select{
-    width: 100%;
-    margin: 10px 0;
+#grid > table > tbody > tr:nth-child(1) > td.pvtVals{
+    width: 200px;
+    border-style: solid;
+    /*border-color: #EC784B;*/
+    border-color: #ECECEC;
+    border-width: 0px 2px 0px 0px;
 }
-#grid > table > tbody > tr:nth-child(1) > td:nth-child(1) > select{
-    width: 100%;
-    margin: 10px 0;
+#grid > table > tbody > tr:nth-child(2) > td.pvtVals{
+    border-style: solid;
+    /* border-color: #EC784B; */
+    border-color: #ECECEC;
+    border-width: 0px 2px 0px 0px;
+    background-color: white;
 }
-
 #grid > table > tbody > tr:nth-child(1) > td.pvtAxisContainer.pvtHorizList.pvtCols.ui-sortable{
     min-width: 200px;
+    border-style: solid;
+    /* border-color: #EC784B; */
+    border-color: #ECECEC;
+    border-width: 0px 2px 0px 0px;
+    background-color: white;
 }
-
+#grid > table > tbody > tr:nth-child(2) > td.pvtAxisContainer.pvtHorizList.pvtCols.ui-sortable{
+    min-width: 200px;
+    border-style: solid;
+    /*border-color: #EC784B;*/
+    border-color: #ECECEC;
+    border-width: 0px 2px 0px 0px;
+    background-color: white;
+}
+#grid > table > tbody > tr:nth-child(3) > td.pvtAxisContainer.pvtRows.ui-sortable{
+    width: 200px;
+    border-style: solid;
+    /*border-color: #EC784B;*/
+    border-color: #ECECEC;
+    border-width: 0px 2px 0px 0px;
+    background-color: white;
+}
 #grid > table > tbody > tr:nth-child(2) > td.pvtRendererArea > table{
     background-color: #F69563;
 }
 
 #grid > table > tbody > tr:nth-child(2) > td.pvtRendererArea > table > tr{
-    background-color: #fff;
+    background-color: white;
 }
 
 #grid > table > tbody > tr:nth-child(2) > td.pvtRendererArea > table > tr > th{
@@ -169,3 +121,33 @@ table.pvtTable tr td {
     background-color: #FFF2EC;
     border: 1px solid white;
 }
+#grid > table > tbody > tr:nth-child(3) > td.pvtRendererArea > table{
+    background-color: #F69563;
+}
+
+#grid > table > tbody > tr:nth-child(3) > td.pvtRendererArea > table > tr{
+    background-color: white;
+}
+
+#grid > table > tbody > tr:nth-child(3) > td.pvtRendererArea > table > tr > th{
+    background-color: #FFE6DA;
+    border: 1px solid #F69563;
+}
+#grid > table > tbody > tr:nth-child(3) > td.pvtRendererArea > table > tr > td{
+    background-color: #FFF2EC;
+    border: 1px solid #F69563;
+}
+#grid > table > tbody > tr:nth-child(3) > td.pvtRendererArea{
+    background-color: white;
+}
+/* selectors */
+#grid > table > tbody > tr:nth-child(1) > td.pvtVals > select{
+    width: 100%;
+    margin: 10px 0;
+}
+#grid > table > tbody > tr:nth-child(1) > td:nth-child(1) > select{
+    width: 100%;
+    margin: 10px 0;
+}
+
+

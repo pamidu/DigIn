@@ -181,7 +181,7 @@ routerApp.controller('queryBuilderCtrl', function
 
                             var query = "SELECT " + $scope.fieldArray.toString() + " FROM Demo." + $scope.sourceData.tbl;  
                             $scope.client.getExecQuery(query, function(data, status){
-                                $scope.drawPivotSummary(data.Result);
+                                $scope.drawPivotSummary(data);
 
                             });
                             break;

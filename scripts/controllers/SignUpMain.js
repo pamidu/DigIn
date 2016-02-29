@@ -1,6 +1,6 @@
 // var app = angular.module('Fsignup', ['uiMicrokernel', 'ngMaterial']);
 
-routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate', '$http', '$objectstore', function ($scope, $mdToast, $animate, $http, $objectstore) {
+routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate', '$http', '$objectstore','$state', function ($scope, $mdToast, $animate, $http, $objectstore,$state) {
 
         $scope.signup = function() {
                 $scope.isLoggedin = false;
@@ -42,7 +42,7 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate', '$http', '
 
             $http({
                 method: 'POST',
-                url: 'http://104.131.48.155:3048/UserRegistation/',
+                url: 'http://104.197.27.7:3048//UserRegistation/',
                 data: angular.toJson($scope.user),
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'

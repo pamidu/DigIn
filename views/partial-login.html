@@ -1,56 +1,105 @@
-<div ng-cloak style="background-color:white;">
-<div id="gradient" style="height:50vh;"/>
+<div class="digin-lgn-wrap   animated" ng-controller="LoginCtrl">
+    <toast></toast>
+    <div layout="column" layout-align="center center">
 
-<div id="viewContainer" layout="column" layout-align="center center">
-    <md-card id="loginFrame" class="md-whiteframe-z4" layout="column" layout-align="start center"
-             style="min-width:525px;background-color:#fafafa;">
-        <div layout="row" layout-align="center center" style="padding:10px;">
-            <img ng-src="styles/css/images/initiallog.png" style="width:140px;" height="90px">
+        <div class="digin-login-card animated flipInX">
+            <div layout="row" layout-xs="column">
+                <div flex="45">
+                    <div class="left-main-wrap">
+                        <div class="left-wrap">
+                            <ul class="bg-bubbles">
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <div class="login-logo ">
+                                <img class="animate-circle" src="styles/css/images/login-logo.png">
+                            </div>
+                            <span class="login-welcome">
+                                Welcome back
+                            </span>
+                            <h5>
+                                DigIn - Beyond BI
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <div flex="55">
+                    <div class="right-wrap">
+                        <div class="header-login">
+                            <div class="login-text-wrap pull-right ">
+                                <h5 id="sliderRight">Sign In</h5>
+                            </div>
+                        </div>
+                        <form name="frmDiginLogin">
+                            <div class="login-bdy">
+                                <div class="text-wrap ">
+                                    <div>
+                                        <div class="txt-box-login"
+                                             ng-class="{error:error.isUserName,'':!error.isUserName}">
+                                            <label>User Name</label>
+                                            <div>
+                                                <input type="text"
+                                                       required
+                                                       name="loginUserName"
+                                                       ng-model="txtUname"
+                                                       placeholder="username@duoworld.com"
+                                                       class="form-control">
+                                            </div>
+                                            <div class="ng-message" ng-messages="frmDiginLogin.loginUserName.$error">
+                                                <div ng-message="required">This is required.</div>
+                                            </div>
+                                        </div>
+                                        <div class="txt-box-login password"
+                                             ng-class="{error:error.isPwd,'':!error.isPwd}">
+                                            <label>Password</label>
+                                            <div>
+                                                <input type="password"
+                                                       name="password"
+                                                       required
+                                                       ng-model="txtPwd"
+                                                       placeholder="***************"
+                                                       class="form-control">
+                                            </div>
+                                            <div class="ng-message" ng-messages="frmDiginLogin.password.$error">
+                                                <div ng-message="required">This is required.</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="login-help">
+                                            <div class="remember-me">
+                                                Remember me
+                                            </div>
+                                            <div class="forget-pwd">
+                                                Forgot password?
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="login-btn-wrap">
+                                    <a href="javascript:void(0  )"
+                                       ng-click="login()"
+                                       ng-class="{disable:frmDiginLogin.$invalid,active: !frmDiginLogin.$invalid}"
+                                       class="login-btn">
+                                        Login
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <!-- login form -->
-        <form name="loginForm" style="padding:10px 36px;width:100%;" flex novalidate>
-            <div layout="row">
-                <ng-md-icon icon="account_circle" style="fill: darkgrey;
-    padding: 25px 10px;"></ng-md-icon>
-                <md-input-container flex ng-class="{ 'has-error' : error.isUserName }">
-                    <label>User Name</label>
-                    <input id="userName" name="userName"
-                           key-enter="login()"
-                           ng-model="txtUname">
-                </md-input-container>
-            </div>
-            <div layout="row">
-                <ng-md-icon icon="vpn_key" style="fill: darkgrey;
-    padding: 25px 10px;"></ng-md-icon>
-                <md-input-container flex ng-class="{ 'has-error' : error.isPwd }">
-                    <label>Password</label>
-                    <input type="password" id="password" name="password"
-                           ng-keyup="$scope.error.event=$event"
-                           key-enter="login()"
-                           ng-model="txtPwd">
-                </md-input-container>
-            </div>
-
-            <div layout="row">
-                <p style="font-size:small;color:darkgrey;" ng-model="signup">New to Digin? <span ng-click="signup()">Signup</span>
-                <!--<p style="font-size:small;color:darkgrey;">New to Digin? <a href="http://localhost:8080/Diginlatest/signup.html">Signup</a>-->
-            </div>
-           
-
-            </p>
-            <md-button class="md-fab  md-primary" type="button"
-                       $scope.error.event=$event
-                       ng-click="login()" style="top: 50%;
-    margin-top: -20px;
-    position: absolute;
-    margin-left: 460px;">
-                <md-icon class="ion-android-arrow-forward" style="fill: darkgrey;
-    line-height: 10px;font-size:25px;margin-bottom:15px;"></md-icon>
-            </md-button>
-        </form>
-    </md-card>
-
-    <div id="companyCygilScroll" class=""></div>
-</div>
+    </div>
+    <div class="footer-wrap">
+        Copyright 2016 digin.io - All Rights Reserved
+    </div>
 </div>

@@ -6,10 +6,7 @@ routerApp.controller('queryBuilderCtrl', function
         ($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state) {
 
     $scope.initQueryBuilder = function(){
-        $scope.sourceData = $csContainer.fetchSrcObj();
-        $scope.client = $diginengine.getClient($scope.sourceData.src);
-        
-        
+        $scope.selectedChart = $scope.commonData.chartTypes[0];
         if(typeof($scope.sourceData.wid.commonSrc) == "undefined"){
             privateFun.createHighchartsChart('');
         }else{
@@ -33,7 +30,6 @@ routerApp.controller('queryBuilderCtrl', function
                                     $scope.chartType,
                                 // Explicitly tell the width and height of a chart
                                 width: null,
-
                                 height: 367,
                             }
                         },
@@ -101,7 +97,6 @@ routerApp.controller('queryBuilderCtrl', function
                                 $scope.eventHndler.isToggleColumns = false;
                             }
                             break;
-
                     }
                 },
                 createHighchartsChart: function (type) {
@@ -124,57 +119,6 @@ routerApp.controller('queryBuilderCtrl', function
                         verticalPosition: 'top',
                         dismissOnClick: true
                     });
-                },
-                selectChart: function(chartType, chart){
-
-                    $scope.eventHndler.isHighCharts = false;
-                    $scope.eventHndler.isD3Charts = false;
-                    $scope.eventHndler.isPivotSummary = false;
-
-                    switch (chartType) {
-                        case 'highCharts':
-
-                            $scope.eventHndler.isHighCharts = true;
-                            $scope.highchartsNG.options.chart.type = chart;
-                            break;
-                        case 'd3Charts':
-
-                            $scope.eventHndler.isD3Charts = true;
-                            console.log("d3Charts in switch");
-                            break;
-                        case 'pivotSummary':
-
-                            $scope.eventHndler.isPivotSummary = true;
-                            $scope.fieldArray = [];
-
-                            for(var i=0; i < $scope.commonData.measures.length; i++){
-                                $scope.fieldArray.push($scope.commonData.measures[i].filedName);
-                            }
-                            for(var i=0; i < $scope.commonData.columns.length; i++){
-                                $scope.fieldArray.push($scope.commonData.columns[i].filedName);
-                            }
-                            console.log($scope.fieldArray);
-                            var parameter;
-                            $scope.fieldArray.forEach(function (entry) {
-                                if (i == 0) {
-                                    parameter = entry
-                                } else {
-                                    parameter += "," + entry;
-                                }
-                                i++;
-                            });
-
-                            var query = "SELECT " + $scope.fieldArray.toString() + " FROM Demo." + $scope.sourceData.tbl;  
-                            $scope.client.getExecQuery(query, function(data, status){
-                                $scope.drawPivotSummary(data);
-
-                            });
-                            break;
-                        default:
-
-                            $scope.eventHndler.isHighcharts = true;
-                            break;
-                    }
                 }
             }
 
@@ -206,7 +150,7 @@ routerApp.controller('queryBuilderCtrl', function
             chartTypes: [
                 {
                     id: 'ct01', icon: 'ti-pie-chart', name: 'pie chart', chart: 'pie',
-                    selected: false, chartType: 'highCharts'
+                    selected: false, chartType: 'highCharts', view: 'views/query/chart-views/highcharts.js'
                 },
                 {
                     id: 'ct02', icon: 'ti-bar-chart', name: 'bar ', chart: 'bar',
@@ -298,10 +242,6 @@ routerApp.controller('queryBuilderCtrl', function
             ]
 
         };
-            
-    
-   
-    
         
         
         //mapping measures array
@@ -340,6 +280,7 @@ routerApp.controller('queryBuilderCtrl', function
             electQry: [],
             GrpFiled: []
         };
+
         $scope.executeQryData = executeQryData;
 
         $scope.uiSource = {};
@@ -353,7 +294,10 @@ routerApp.controller('queryBuilderCtrl', function
             isMainLoading: false,
             openSettingToggle: [
                 {isChart: false},
+                {isStructuret: false},
+                {isSerSetting: false}
             ],
+            messageAry: ['Please wait while the data is saving..'],
             message: '',
             isChartSelected: false,
             onToggleEvent: function (event) {
@@ -410,8 +354,8 @@ routerApp.controller('queryBuilderCtrl', function
                         filedName: filed.filedName,
                         condition: row.name
                     };
-                    executeQryData.executeMeasures.push(obj)
-                    $scope.getAggregation();
+                    executeQryData.executeMeasures.push(obj);
+                    eval("$scope."+ $scope.selectedChart.chartType + ".selectCondition()");                    
                 }
                 
             },
@@ -432,7 +376,8 @@ routerApp.controller('queryBuilderCtrl', function
                         executeQryData.executeColumns = [{
                             filedName: column.filedName
                         }];
-                        $scope.getGroupedAggregation(column.filedName);
+                        eval("$scope."+ $scope.selectedChart.chartType + ".selectAttribute(column.filedName)");
+                        
                     }else{
                         alert("First select atleast one measure");
                     }
@@ -472,6 +417,7 @@ routerApp.controller('queryBuilderCtrl', function
                             this.openSettingToggle[0].isChart = true;
                             $("#toggleSettingPanel").show(300);
                         }
+                        break;                    
                     case '2':
                         //#data structure
                         //Data Structure
@@ -516,6 +462,9 @@ routerApp.controller('queryBuilderCtrl', function
                         }else{
                             $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
                             $scope.widget["commonSrc"] = {src:$scope.sourceData,
+                                                          mea:$scope.executeQryData.executeMeasures,
+                                                          att:$scope.executeQryData.executeColumns,
+                                                          query:$scope.receivedQuery};
                             var objIndex = getRootObjectById($scope.widget.id, $rootScope.dashboard.widgets);
                             $rootScope.dashboard.widgets[objIndex] = $scope.widget;
                         }                     
@@ -550,6 +499,9 @@ routerApp.controller('queryBuilderCtrl', function
                 onSelect.selected = true;
                 $scope.executeQryData.chartType = onSelect.chart;
                 $scope.chartType = onSelect.chart;
+                $scope.changeChartType(onSelect.chart);
+                $scope.selectedChart = onSelect;
+                eval("$scope."+ $scope.selectedChart.chartType + ".changeType()");
                 //privateFun.createHighchartsChart(onSelect.chart);
             },
             onSaveChartConfig: function () {
@@ -562,6 +514,32 @@ routerApp.controller('queryBuilderCtrl', function
         $scope.changeChartType = function(type){
             $scope.highchartsNG.options.chart.type = type;
         };
+    
+    
+        //chart functions
+        $scope.highCharts = {
+            changeType: function(){
+                $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
+            },
+            selectCondition: function(){
+                $scope.getAggregation();
+            },
+            selectAttribute: function(fieldName){
+                $scope.getGroupedAggregation(fieldName);
+            }
+        };
+        
+        $scope.d3Charts = function(){
+            
+        }
+        
+        $scope.pivotSummary = function(){
+            //all the pivot summary code should go here
+        }
+        
+        $scope.metric = function(){
+            
+        }
         
         
         $scope.getAggregation = function(){
@@ -576,7 +554,6 @@ routerApp.controller('queryBuilderCtrl', function
                                         $scope.chartType,
                                     // Explicitly tell the width and height of a chart
                                     width: null,
-                                   
                                     height: 367,
                                 }
                             },
@@ -618,7 +595,7 @@ routerApp.controller('queryBuilderCtrl', function
                         $scope.receivedQuery = query;
                     }
                     else{
-                        //handle for exceptions
+                        //handle the exceptions
                     }
                 });
                 
@@ -689,10 +666,8 @@ routerApp.controller('queryBuilderCtrl', function
                             }
                         }
                     }
+                    $scope.executeQryData.executeMeasures = measureArr;
                 }
-                $scope.executeQryData.executeMeasures = measureArr;
-            }
-            if(cat != ""){
                 if(cat != ""){
                     $scope.executeQryData.executeColumns = [{filedName: cat}];
                     $scope.mapResult(cat, res, function(data){

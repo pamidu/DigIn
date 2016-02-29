@@ -1,33 +1,99 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
-    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast','DevStudio','$auth','$helpers',
-  function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio,$auth,$helpers)
-    {
+    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast', 'DevStudio', '$auth', '$helpers',
+    function($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio, $auth, $helpers) {
 
-        if(DevStudio){
-          $auth.checkSession();
-        }else{
+        if (DevStudio) {
+            $auth.checkSession();
+        } else {
             var sessionInfo = $helpers.getCookie('securityToken');
-           // if(sessionInfo==null) location.href = 'index.php';
+            // if(sessionInfo==null) location.href = 'index.php';
         }
 
-        $scope.closeAllWidgets = function() {
-            var length = document.getElementsByClassName("ion-close").length;
-            //$rootScope.dashboard.widgets = [];
-            var i;
-            for(i=0; i<length; i++){
-                document.getElementsByClassName("ion-close")[0].click();
+        var $windowHeight = $(window).height(),
+                $windowWidth = $(window).width(),
+                $startingPoint = $('.starting-point');
+
+        // Calculate the diameter
+        var diameterValue = (Math.sqrt( Math.pow($windowHeight, 2) + Math.pow($windowWidth, 2) ) * 2);
+
+        $startingPoint.children('span').css({
+            height: diameterValue+'px',
+            width: diameterValue+'px',
+            top: -(diameterValue/2)+'px',
+            left: -(diameterValue/2)+'px'
+        });
+
+        //initially hiding the tabs
+        $("md-tabs.footer-bar > md-tabs-wrapper").children().hide();
+        //configuring gridster
+        $scope.gridsterOpts = {
+            columns: 24, // number of columns in the grid
+            pushing: true, // whether to push other items out of the way
+            floating: true, // whether to automatically float items up so they stack
+            swapping: false, // whether or not to have items switch places instead of push down if they are the same size
+            width: 'auto', // width of the grid. "auto" will expand the grid to its parent container
+            colWidth: 'auto', // width of grid columns. "auto" will divide the width of the grid evenly among the columns
+            rowHeight: '/4', // height of grid rows. 'match' will make it the same as the column width, a numeric value will be interpreted as pixels, '/2' is half the column width, '*5' is five times the column width, etc.
+            margins: [5, 5], // margins in between grid items
+            outerMargin: true,
+            isMobile: false, // toggle mobile view
+            mobileBreakPoint: 600, // width threshold to toggle mobile mode
+            mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
+            minColumns: 1, // minimum amount of columns the grid can scale down to
+            minRows: 1, // minimum amount of rows to show if the grid is empty
+            maxRows: 100, // maximum amount of rows in the grid
+            defaultSizeX: 4, // default width of an item in columns
+            defaultSizeY: 8, // default height of an item in rows
+            minSizeX: 4, // minimum column width of an item
+            maxSizeX: null, // maximum column width of an item
+            minSizeY: 8, // minumum row height of an item
+            maxSizeY: null, // maximum row height of an item
+            saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
+            draggable: {
+                enabled: true
+            },
+            resizable: {
+                enabled: true,
+                handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw']
             }
+        };
 
-            //$(".dashboard-widgets-close").removeClass("active");            
-        };  
+        // maps the item from customItems in the scope to the gridsterItem options
+        $scope.customItemMap = {
+            sizeX: 'item.size.x',
+            sizeY: 'item.size.y',
+            row: 'item.position[0]',
+            col: 'item.position[1]',
+            minSizeY: 'item.minSizeY',
+            maxSizeY: 'item.maxSizeY'
+        };
 
-        /**
-         * Build handler to open/close a SideNav; when animation finishes
-         * report completion in console
-         */
+        $scope.dashCloseWidgets = false;
+
+        if (localStorage.getItem("featureObject") == undefined) {
+            getJSONData($http, 'features', function(data) {
+                $scope.featureOrigin = data;
+                localStorage.setItem("featureObject", JSON.stringify($scope.featureOrigin));
+                // var featureObj = localStorage.getItem("featureObject");                
+
+                $scope.selected = [];
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].stateStr === "Enabled")
+                        $scope.selected.push(data[i]);
+                }
+                $scope.features = data;
+            });
+
+        }
+        //pushes gridster items 10px down, remove padding to body, adjust iframe height
+        $scope.adjustUI = function() {
+            $('body').css("padding-top", "0px");
+           // $('#content1').css("top", "10px");
+            $('.h_iframe').css("height", "100%");
+        }
 
         //shows user profile in a dialog box
-        $scope.showUserProfile = function (ev) {
+        $scope.showUserProfile = function(ev) {
             $mdDialog.show({
                     controller: showProfileController,
                     templateUrl: 'templates/profileDialogTemplate.html',
@@ -35,9 +101,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     targetEvent: ev,
                     clickOutsideToClose: true
                 })
-                .then(function (answer) {
+                .then(function(answer) {
 
-                }, function () {
+                }, function() {
 
                 });
         };
@@ -52,7 +118,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 profile_pic: "styles/css/images/person.jpg"
             };
 
-            $scope.close = function () {
+            $scope.close = function() {
                 $mdDialog.cancel();
             };
 
@@ -65,13 +131,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.h = '300px';
         $scope.mh = '250px';
 
-        $scope.resize = function (evt, ui, pos, widget) {
-            //alert(JSON.stringify(pos));
+        $scope.resize = function(evt, ui, pos, widget) {
+            
             var width = ui.size.width;
             var height = ui.size.height;
             var mHeight = height - 50;
-            widget.top = pos.top+'px';
-            widget.left = pos.left+'px';
+            widget.top = pos.top + 'px';
+            widget.left = pos.left + 'px';
 
             if (widget.initCtrl == "elasticInit") {
                 console.log('elastic');
@@ -88,220 +154,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
         }
 
-        $scope.initialize = function () {
-            // alert("initialize");
-            var center = new google.maps.LatLng(7.2964, 80.6350);
-
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 3,
-                center: center,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            });
-
-            $scope.accident = [];
-
-            var markers = [];
-
-
-            for (var i = 0; i < 31; i++) {
-                var accident = data.accidents[i];
-                var latLng = new google.maps.LatLng(accident.latitude,
-                    accident.longitude);
-                var title = accident.title;
-                // var photo_url = accident.photo_url;
-                // var marker = new google.maps.Marker({
-                //   position: latLng,
-                //   title: title
-                // });
-
-                $scope.accident.push(accident);
-
-                // var contentString = photo_url;
-
-                var marker = new google.maps.Marker({
-                    title: title,
-                    map: map,
-                    position: latLng,
-                    clickable: true
-                });
-
-
-                var infowindow = new google.maps.InfoWindow({
-                    //content: '<img src="'+photo_url+'" style="width:200px; height:100px">'
-                    content: "test"
-                });
-
-                google.maps.event.addListener(marker, 'click', function (data) {
-                    console.log(data);
-
-                    for (var i = 0; i < $scope.accident.length; i++) {
-
-                        console.log(Math.floor(data.latLng.H * 1000000) / 1000000);
-
-                        if ((Math.floor(data.latLng.H * 10000) / 10000 == Math.floor($scope.accident[i].latitude * 10000) / 10000) && (Math.floor(data.latLng.L * 10000) / 10000 == Math.floor($scope.accident[i].longitude * 10000) / 10000)) {
-
-                            console.log($scope.accident[i].title);
-                            infowindow.setContent('<img src="' + $scope.accident[i].photoUrl + '" style="width:200px; height:200px">');
-                            infowindow.open(map, this);
-                        }
-
-
-                    }
-
-
-                });
-
-                markers.push(marker);
-            }
-
-            var markerCluster = new MarkerClusterer(map, markers);
-        }
-
-        $scope.changeMap = function () {
-
-            $mdDialog.hide();
-
-            document.getElementById('map').innerHTML = "";
-
-            var array = JSON.parse($rootScope.json_string);
-
-            $scope.locationData = [];
-
-            var k, j, temparray, chunk = 8;
-            for (k = 0, j = array.length; k < j; k += chunk) {
-                temparray = array.slice(k, k + chunk);
-
-                for (var i = 0; i < temparray.length; i++) {
-
-                    if (temparray[i].PLACE_OF_ACCIDENT != null) {
-                        Geocode(temparray[i].PLACE_OF_ACCIDENT, temparray[i].ID);
-                    }
-                }
-
-            }
-
-            setTimeout(function () {
-                arrangeArray();
-                googleMap();
-            }, 5000);
-
-        };
-
-        function arrangeArray() {
-
-            var dataStore = $scope.locationData;
-            $scope.locationData = [];
-
-            var i = 0;
-            for (i = 0; i < dataStore.length; i++) {
-
-                if (dataStore[i].id == undefined) {
-                    dataStore.splice(i, 1);
-                    i--;
-                }
-            }
-
-            var ArrangedById = dataStore.slice(0);
-            ArrangedById.sort(function (a, b) {
-                return a.id - b.id;
-            });
-
-            $scope.locationData = ArrangedById;
-        }
-
-        function Geocode(address, id) {
-            var obj = {};
-            var geocoder = new google.maps.Geocoder();
-
-            geocoder.geocode({
-                'address': address
-            }, function (results, status) {
-                if (status === google.maps.GeocoderStatus.OK) {
-                    obj = {
-                        lat: results[0].geometry.location.G,
-                        lng: results[0].geometry.location.K,
-                        id: id,
-                        address: address
-                    };
-
-                    setTimeout(function () {
-                        $scope.locationData.push(obj);
-                    }, 100);
-
-                }
-                if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-                    setTimeout(function () {
-                        Geocode(address);
-                    }, 100);
-                }
-                if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {
-
-                } else {
-
-                    alert('Geocode was not successful for the following reason: ' + status);
-                }
-
-            });
-        }
-
-        function googleMap() {
-
-            var dataStore = $scope.locationData;
-
-            var array = JSON.parse($rootScope.json_string);
-
-            var map = new google.maps.Map(document.getElementById('map'), {
-                center: {
-                    lat: 7.85,
-                    lng: 80.65
-                },
-                zoom: 6
-            });
-
-            var pinImageGreen = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/green-dot.png");
-            var pinImageBlue = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/blue-dot.png");
-            var marker = [];
-
-            var k;
-
-            for (k = 0; k < array.length; k++) {
-
-                // if(array[k].state == "High"){
-
-                marker[k] = new google.maps.Marker({
-                    position: {
-                        lat: dataStore[k].lat,
-                        lng: dataStore[k].lng
-                    },
-                    map: map,
-                    title: array[k].PLACE_OF_ACCIDENT,
-                    icon: pinImageGreen,
-                    VEHICLE_TYPE: array[k].VEHICLE_TYPE,
-                    VEHICLE_USAGE: array[k].VEHICLE_USAGE,
-                    // modal: array[k].modal,
-                    VEHICLE_CLASS: array[k].VEHICLE_CLASS
-                });
-
-                marker[k].addListener('click', function (data) {
-
-                    var j;
-                    for (j = 0; j < array.length; j++) {
-
-                        if ((dataStore[j].lat == data.latLng.G) && (dataStore[j].lng == data.latLng.K)) {
-
-                            /* document.getElementById("details").innerHTML = 
-                             array[j].PLACE_OF_ACCIDENT + "</br>" +
-                             array[j].VEHICLE_TYPE + "</br>" +
-                             array[j].VEHICLE_USAGE + "</br>" +*/
-                            /*array[j].VEHICLE_CLASS+ "</br>" +*/
-                            /*array[j].VEHICLE_CLASS + "</br>" ;*/
-                        }
-                    }
-                });
-            }
-
-        }
-
 
         // $scope.refreshHome = function(){
         //     $window.location.href = Digin_Base_URL + 'home.html';
@@ -313,10 +165,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         $rootScope.username = localStorage.getItem('username');
         /*if ($rootScope.username == null) 
-        {
-           
-             $rootScope.username = "sajeetharan%40duosoftware.com";
-        }*/
+         {
+
+         $rootScope.username = "sajeetharan%40duosoftware.com";
+         }*/
 
         var mm = today.getMonth() + 1; //January is 0!
         var yyyy = today.getFullYear();
@@ -333,8 +185,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         var client = $objectstore.getClient("com.duosoftware.com");
-        client.onGetMany(function (data) {
-            data.forEach(function (entry) {
+        client.onGetMany(function(data) {
+            data.forEach(function(entry) {
                 $rootScope.indexes.push({
                     value: entry,
                     display: entry
@@ -343,7 +195,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         });
         client.getClasses("com.duosoftware.com");
 
-        $scope.closeDialog = function () {
+        $scope.closeDialog = function() {
             $mdDialog.hide();
         };
         today = mm + '/' + dd + '/' + yyyy;
@@ -363,10 +215,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.dashboard.widgets = $rootScope.dashboard["1"].widgets;
 
 
-        $scope.menuPanels = [DashboardCtrl];
+        // $scope.menuPanels = [DashboardCtrl];
 
         //change dates range in likes
-        $scope.changeDatesRange = function (widId, sinceDay, untilDay) {
+        $scope.changeDatesRange = function(widId, sinceDay, untilDay) {
 
             var diffDays = getDateDifference(untilDay, sinceDay);
 
@@ -377,7 +229,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 until: untilDay,
                 range: diffDays
             };
-            fbInterface.getPageLikesInsight(pgId, dateObj, function (data) {
+            fbInterface.getPageLikesInsight(pgId, dateObj, function(data) {
                 $scope.chartConf = {
                     "options": {
                         "chart": {
@@ -422,7 +274,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         //change dates in views
-        $scope.changeViewedDatesRange = function (widId, sinceDay, untilDay) {
+        $scope.changeViewedDatesRange = function(widId, sinceDay, untilDay) {
 
             var diffDays = getDateDifference(untilDay, sinceDay);
 
@@ -433,7 +285,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 until: untilDay,
                 range: diffDays
             };
-            fbInterface.getPageViewsInsight(pgId, dateObj, function (data) {
+            fbInterface.getPageViewsInsight(pgId, dateObj, function(data) {
                 $scope.chartConf = {
                     "options": {
                         "chart": {
@@ -478,220 +330,118 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
         };
 
-        function DashboardCtrl($scope) {
-$scope.test = 'test';
-            $scope.dashboardmenu = [{
-                title: 'Add Widget'
-            }];
-
-            $scope.Extendedmenu = [{
-                title: 'Analysis Report'
-            }, {
-                title: 'Interactive Report'
-            }, {
-                title: 'Dashboard'
-            }];
-
-            $('#btnNavSearch').click(function () {
-                if ($('.overlay').hasClass('overlay-nav')) {
-                    $('.overlay').removeClass('overlay-nav');
-                }
-            });
-
-            $scope.doFunction = function (name) {
-
-                if (name == "Add Widget") {
-
-                    var selectedMenu = document.getElementsByClassName("menu-layer");
-                    selectedMenu[0].style.display = 'none';
-                    $mdDialog.show({
-                        controller: 'WidgetCtrl',
-                        templateUrl: 'views/newWidget.html',
-                        resolve: {
-                            dashboard: function () {
-                                return $scope.dashboard;
-                            }
-                        }
-                    })
-                }
-                if (name == "Analysis Report") {
-                    var selectedMenu = document.getElementsByClassName("menu-layer");                    
-                    selectedMenu[0].style.display = 'none';
-                    $state.go('Analysis Report');
-                }
-                if (name == "Save") {
-                    var selectedMenu = document.getElementsByClassName("menu-layer");
-                    selectedMenu[0].style.display = 'none';
-                    $scope.saveDashboard();
-                }
-
-                if (name == "Data summary") {
-
-                    var selectedMenu = document.getElementsByClassName("menu-layer");
-                    selectedMenu[0].style.display = 'none';
-                    $state.go('PivotTable');
-                }
-                if (name == "Dashboard") {
-
-                    var selectedMenu = document.getElementsByClassName("menu-layer");
-                    selectedMenu[0].style.display = 'none';
-
-
-                    $state.go(name);
-                }
-                if (name == "New Analytics") {
-
-                    var selectedMenu = document.getElementsByClassName("menu-layer");
-                    selectedMenu[0].style.display = 'none';
-                    $state.go('Analytics');
-                }
-
-                if (name == "RealTime Extended") {
-                    var selectedMenu = document.getElementsByClassName("menu-layer");
-                    selectedMenu[0].style.display = 'none';
-                    $state.go('RealTime');
-                }
-
-
-                if (name == "Interactive Report") {
-                    var selectedMenu = document.getElementsByClassName("menu-layer");
-                    selectedMenu[0].style.display = 'none';
-                    $state.go('Interactive Report');
-                }
-            };
-
-
-            $scope.reportmenu = [{
-
-                    title: 'Design report'
-                }, {
-                    title: 'View Report'
-                }
-
-            ];
-
-            $scope.analyticsmenu = [{
-                title: 'New Analytics'
-            }, {
-                title: 'Data summary'
-            }];
-
-            $scope.realtimeMenu = [
-            // {
-            //     title: 'Default widgets'
-            // }, {
-            //     title: 'RealTime Extended'
-            // }
-            ];
-
-
-        }
-        $scope.goReport = function (report) {
+        $scope.goReport = function(report) {
+            $scope.manageTabs(false);
             //closing the overlay
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
             $(".search-layer").removeClass("activating active");
 
-            $state.go('ReportViewer', {
+            $state.go('home.ReportViewer', {
                 param: report
             });
         }
-        $scope.goDashboard = function (dashboard) {
+        $scope.goDashboard = function(dashboard) {
+            console.log("hit dashboard");
             console.log(dashboard);
-            if (dashboard.storyboard == undefined) {
-                if (dashboard.data.title == undefined) {
-                    console.log("i got undefined");
-                    $rootScope.Dashboards = [{
-                        culture: dashboard.culture,
-                        date: dashboard.date,
-                        title: dashboard.name,
-                        type: dashboard.type,
-                        widgets: dashboard.data,
-                        dashboardId: dashboard.dashboardId
-            }];
-                } else {
-                    $rootScope.Dashboards = dashboard.data;
-                };
-            } else
-            if (dashboard.storyboard == false) {
-                // $('md-tabs-wrapper').css("display","block");
-                console.log("im a single page");
-                $rootScope.Dashboards = [{
-                    culture: dashboard.culture,
-                    date: dashboard.date,
-                    title: dashboard.name,
-                    type: dashboard.type,
-                    widgets: dashboard.data,
-                    dashboardId: dashboard.dashboardId
-            }];
+            if (typeof dashboard.customDuoDash === "undefined") {
+                $state.go('home.DashboardViewer', {
+                    param: dashboard.name
+                });
+                $scope.manageTabs(false);
             } else {
-                console.log("im a storyboard");
-                $rootScope.Dashboards = dashboard.data;
-            };
+                $scope.manageTabs(true);
+                if (dashboard.storyboard == undefined) {
+                    if (dashboard.data.title == undefined) {
+                        console.log("i got undefined");
+                        $rootScope.Dashboards = [{
+                            culture: dashboard.culture,
+                            date: dashboard.date,
+                            title: dashboard.name,
+                            type: dashboard.type,
+                            widgets: dashboard.data,
+                            dashboardId: dashboard.dashboardId
+                        }];
+                    } else {
+                        $rootScope.Dashboards = dashboard.data;
+                    }
+                } else {
+                    if (dashboard.storyboard == false) {
+                        // $('md-tabs-wrapper').css("display","block");
+                        console.log("im a single page");
+                        $rootScope.Dashboards = [{
+                            culture: dashboard.culture,
+                            date: dashboard.date,
+                            title: dashboard.name,
+                            type: dashboard.type,
+                            widgets: dashboard.data,
+                            dashboardId: dashboard.dashboardId
+                        }];
+                    } else {
+                        console.log("im a storyboard");
+                        $rootScope.Dashboards = dashboard.data;
+                    }
+                    $state.go('home.CustomDashboardViewer', {
+                        param: dashboard.name
+                    });
+                    $scope.dashboard.widgets = dashboard.data;
+                    $rootScope.clickedDash = dashboard.data;
+                    $(".dashboard-widgets-close").addClass("active");
+                }
+            }
 
             $scope.tabs = $rootScope.Dashboards;
             $rootScope.dashboard = $rootScope.Dashboards[0];
+            if ($rootScope.dashboard.widgets.length == 0)
+                $rootScope.dashboard.widgets = $rootScope.dashboardWidgetsCopy;
             $scope.selectedIndex = 1;
-            $scope.$watch('selectedIndex', function (current, old) {
-                //previous = selected;
+            $scope.$watch('selectedIndex', function(current, old) {
+                // var previous = selected;
+                // if($rootScope.Dashboards[current].widgets.length== 0)
+                //     selected = $rootScope.dashboardWidgetsCopy;
+                // else
                 selected = $rootScope.Dashboards[current];
                 if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
-                if (current + 1) $log.debug('Hello ' + selected.title + '!');
+                //if (current + 1) $log.debug('Hello ' + selected.title + '!');
             });
             console.log(dashboard);
-            //closing the overlay
-            // start pulathisi 7/23/2015
-            // when saved dashboard is clicked change sidebar icon class, this changes icon colors
-            $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
-            // end pulathisi 7/23/2015
+
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
             $(".search-layer").removeClass("activating active");
-
-            if (typeof dashboard.customDuoDash === "undefined") {
-                $state.go('DashboardViewer', {
-                    param: dashboard.name
-                });
-            } else {
-                $state.go('CustomDashboardViewer', {
-                    param: dashboard.name
-                });
-                $scope.dashboard.widgets = dashboard.data;
-                $rootScope.clickedDash = dashboard.data;
-                $(".dashboard-widgets-close").addClass("active");
-            }
 
         }
 
-        $scope.goAnalyzer = function (report) {
+        $scope.goAnalyzer = function(report) {
+            $scope.manageTabs(false);
             //closing the overlay
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
             $(".search-layer").removeClass("activating active");
 
-            $state.go('AnalyzerViewer', {
+            $state.go('home.AnalyzerViewer', {
                 param: report
             });
         }
-        $scope.saveDashboard = function (ev, dashboard) {
+        $scope.saveDashboard = function(ev, dashboard) {
             $mdDialog.show({
                 controller: 'saveCtrl',
                 templateUrl: 'views/dashboard-save.html',
                 targetEvent: ev,
                 resolve: {
-                    widget: function () {
+                    widget: function() {
                         return dashboard;
                     }
                 }
             })
         }
-        $scope.savePentaho = function (ev, dashboard) {
+        $scope.savePentaho = function(ev, dashboard) {
             $mdDialog.show({
                 controller: 'savePentahoCtrl',
                 templateUrl: 'views/pentaho_save.html',
                 targetEvent: ev,
                 resolve: {
-                    widget: function () {
+                    widget: function() {
                         return dashboard;
                     }
                 }
@@ -716,230 +466,83 @@ $scope.test = 'test';
         $scope.favoriteAnalyzers = [];
 
 
-        $scope.GetDashboardDetails = function () {
+        $scope.GetDashboardDetails = function() {
 
 
             $scope.dashboards = DashboardService.getDashboards();
 
 
 
-            $http({
-                method: 'GET',
-                url: 'http://104.131.48.155:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3ADashboards/children?showHidden=false&filter=*|FILES&_=1433330360180',
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-                    'Access-Control-Allow-Headers': 'Content-Type, X-Requested-With',
-                    'Authorization': 'Basic YWRtaW46cGFzc3dvcmQ='
-                }
-            }).
-            success(function (data, status) {
-
-                for (var i = 0; i < data.repositoryFileDto.length; i++) {
-                    var obj1 = {};
-
-                    obj1.name = data.repositoryFileDto[i].name;
-                    if (obj1.name.length > 20) {
-                        obj1.splitName = obj1.name.substring(0, 21) + '...';
-                    } else obj1.splitName = obj1.name;
-                    obj1.title = data.repositoryFileDto[i].title;
-                    $scope.dashboards.push(obj1);
-                }
-
-                $scope.favoriteDashboards.push($scope.dashboards[2]);
-                $scope.favoriteDashboards.push($scope.dashboards[0]);
-                $scope.favoriteDashboards.push($scope.dashboards[1]);
-
-                console.log($scope.dashboards);
-
-            }).
-            error(function (data, status) {
-                console.log(data);
-            });
-
-
-
         };
 
 
-        $scope.GetReportDetails = function () {
-
-            $http({
-                method: 'GET',
-                url: 'http://104.131.48.155:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AReports/children?showHidden=false&filter=*|FILES&_=1433330360180',
-                // cache: $templateCache,
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-                    'Access-Control-Allow-Headers': 'Content-Type, X-Requested-With',
-                    'Authorization': 'Basic YWRtaW46cGFzc3dvcmQ='
-                }
-            }).
-            success(function (data, status) {
-
-                for (var i = 0; i < data.repositoryFileDto.length; i++) {
-                    var obj1 = {};
-                    obj1.name = data.repositoryFileDto[i].name;
-                    if (obj1.name.length > 20) {
-                        obj1.splitName = obj1.name.substring(0, 21) + '...';
-                    } else obj1.splitName = obj1.name;
-                    obj1.title = data.repositoryFileDto[i].title;
-                    $scope.reports.push(obj1);
-
-                }
-
-                $scope.favoriteReports.push($scope.reports[2]);
-
-                $scope.favoriteReports.push($scope.reports[3]);
+        $scope.GetReportDetails = function() {
 
 
-            }).
-            error(function (data, status) {
-
-
-            });
             $scope.GetDashboardDetails();
             $scope.GetAnalyzerDetails();
 
         };
-        $scope.GetAnalyzerDetails = function () {
+        $scope.GetAnalyzerDetails = function() {
 
-            $http({
-                method: 'GET',
-                url: 'http://104.131.48.155:8080/pentaho/api/repo/files/%3Ahome%3A' + $rootScope.username + '%3AAnalyzer/children?showHidden=false&filter=*|FILES&_=1433330360180',
-                // cache: $templateCache,
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-                    'Access-Control-Allow-Headers': 'Content-Type, X-Requested-With',
-                    'Authorization': 'Basic YWRtaW46cGFzc3dvcmQ='
-                }
-            }).
-            success(function (data, status) {
-
-                for (var i = 0; i < data.repositoryFileDto.length; i++) {
-                    var obj1 = {};
-                    obj1.name = data.repositoryFileDto[i].name;
-                    if (obj1.name.length > 20) {
-                        obj1.splitName = obj1.name.substring(0, 21) + '...';
-                    } else obj1.splitName = obj1.name;
-                    obj1.title = data.repositoryFileDto[i].title;
-                    $scope.analyzers.push(obj1);
-                }
-
-
-                $scope.favoriteAnalyzers.push($scope.analyzers[1]);
-                $scope.favoriteAnalyzers.push($scope.analyzers[0]);
-
-
-
-            }).
-            error(function (data, status) {
-
-            });
 
 
         };
-        $scope.Share = function (ev) {
+        $scope.Share = function(ev) {
 
-            //document.getElementsByClassName("nav-search")[0].style.display = "none";
 
-            //            setTimeout(function () {
-            //                canvg();
-            //            }, 500);
-
-            //            setTimeout(function () {
-            //
-            //                html2canvas(document.body, {
-            //                    background: '#E0E0E0',
-            //                    useCORS: true,
-            //                    allowTaint: true,
-            //                    proxy: 'https://1.gravatar.com',
-            //                    letterRendering: true,
-            //                    onrendered: function (canvas) {
-            //
-            //                        $rootScope.a = canvas;
-            //                        setTimeout(function () {
-            //
-            //                        }, 500);
-            //
-            //                        setTimeout(function () {
-            //                            document.getElementsByClassName("nav-search")[0].style.display = "block";
-            //                        }, 500);
-            //
-            //                        $mdDialog.show({
-            //                            controller: 'shareCtrl',
-            //                            templateUrl: 'views/dashboard-share.html',
-            //                            resolve: {
-            //
-            //                            }
-            //                        });
-            //                    },
-            //
-            //                });
-            //
-            //            }, 500);
-            //            
             $mdDialog.show({
                 controller: 'shareCtrl',
                 templateUrl: 'views/dashboard-share.html',
                 clickOutsideToClose: true,
-                resolve: {
-
-                }
+                resolve: {}
             });
 
         }
 
-        $scope.Export = function (ev) {
+        $scope.Export = function(ev) {
             $mdDialog.show({
                 controller: 'ExportCtrl',
                 templateUrl: 'views/chart_export.html',
                 clickOutsideToClose: true,
-                resolve: {
-
-                }
+                resolve: {}
 
             })
 
         }
-        $scope.openTheme = function (ev) {
+        $scope.openTheme = function(ev) {
             $mdDialog.show({
                 controller: 'ThemeCtrl',
                 templateUrl: 'views/change-theme.html',
                 targetEvent: ev,
                 clickOutsideToClose: true,
-                resolve: {
-
-                }
+                resolve: {}
             });
 
         };
-        $scope.openDashboard = function (ev, dashboard) {
+        $scope.openDashboard = function(ev, dashboard) {
             $mdDialog.show({
                 controller: 'DataCtrl',
                 templateUrl: 'views/dashboard-load.html',
                 targetEvent: ev,
                 resolve: {
-                    dashboard: function () {
+                    dashboard: function() {
                         return dashboard;
                     }
                 }
             })
         }
-        $scope.help = function (ev, dashboard) {
+        $scope.help = function(ev, dashboard) {
             $mdDialog.show({
                 controller: 'HelpCtrl',
                 templateUrl: 'views/help.html',
                 clickOutsideToClose: true,
-                resolve: {
-
-                }
+                resolve: {}
             });
         }
 
         //erangas space
-        $scope.showAddNewDashboard = function (ev) {
+        $scope.showAddNewDashboard = function(ev) {
             $mdDialog.show({
                     controller: addNewDashboardController,
                     templateUrl: 'templates/addNewDashboardTemplate.html',
@@ -947,14 +550,43 @@ $scope.test = 'test';
                     targetEvent: ev,
                     clickOutsideToClose: true
                 })
-                .then(function (answer) {
+                .then(function(answer) {
                     addToDashboards(answer);
-                }, function () {
+                }, function() {
 
                 });
         };
 
-        $scope.createuuid = function () {
+        //load social analysis  
+        $scope.showAddSocialAnalysis = function(ev) {
+            $mdDialog.show({
+                    templateUrl: 'views/socialGraph/socialAnalysis_TEMP.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                })
+                .then(function(answer) {
+                    addToDashboards(answer);
+                }, function() {
+
+                });
+        };
+        //load sales forecast and prediction  
+        $scope.showSalesForecastPrediction = function(ev) {
+            $mdDialog.show({
+                    templateUrl: 'views/salesForecastPrediction.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                })
+                .then(function(answer) {
+                    addToDashboards(answer);
+                }, function() {
+
+                });
+        };
+
+        $scope.createuuid = function() {
             return Math.floor((1 + Math.random()) * 0x10000)
                 .toString(16)
                 .substring(1);
@@ -971,47 +603,52 @@ $scope.test = 'test';
                 widgets: []
             };
 
+            console.log(tempObj);
+
             $rootScope.Dashboards.push(tempObj);
-            showToast(obj.title + " created!");
+            if (obj.title != undefined) {
+                showToast(obj.title + " created!");
+            }
         };
 
-        $rootScope.selectCurrentDashboard = function (tab) {
+        $rootScope.selectCurrentDashboard = function(tab) {
+
+            console.log("$rootScope");
+            console.log($rootScope);
+
             console.log("you selected :");
             console.log(tab);
 
-            for (a = 0; a < $rootScope.Dashboards.length; a++) {
-                if ($rootScope.dashboardId == $rootScope.Dashboards[a].dashboardId) {
-                    $rootScope.Dashboards[a] = $rootScope.dashboard;
-                };
-            };
+            // for (a = 0; a < $rootScope.Dashboards.length; a++) {
+            //     if ($rootScope.dashboardId == $rootScope.Dashboards[a].dashboardId) {
+            //         $rootScope.Dashboards[a] = $rootScope.dashboard;
+            //     };
+            // };
 
             for (a = 0; a < $rootScope.Dashboards.length; a++) {
                 if (tab.dashboardId == $rootScope.Dashboards[a].dashboardId) {
                     $rootScope.dashboard = $rootScope.Dashboards[a];
                     //$rootScope.globalDashboardIndex = a;
                 };
-
             };
         }
 
         //initial creation of default dashboard
         function createDashboards() {
 
-            $rootScope.Dashboards = [
-                {
-                    culture: "English",
-                    date: "09/25/2015",
-                    title: "Default",
-                    type: "System",
-                    widgets: [],
-                    dashboardId: $scope.createuuid()
-            }
-        ];
+            $rootScope.Dashboards = [{
+                culture: "English",
+                date: "09/25/2015",
+                title: "Default",
+                type: "System",
+                widgets: [],
+                dashboardId: $scope.createuuid()
+            }];
 
             $scope.tabs = $rootScope.Dashboards;
             $rootScope.dashboard = $rootScope.Dashboards[0];
             $scope.selectedIndex = 1;
-            $scope.$watch('selectedIndex', function (current, old) {
+            $scope.$watch('selectedIndex', function(current, old) {
                 //previous = selected;
                 selected = $rootScope.Dashboards[current];
                 //                if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
@@ -1022,7 +659,7 @@ $scope.test = 'test';
 
         createDashboards();
 
-        $scope.addTab = function (title, view) {
+        $scope.addTab = function(title, view) {
             view = view || title + " Content View";
             tabs.push({
                 title: title,
@@ -1031,7 +668,7 @@ $scope.test = 'test';
             });
         };
 
-        $scope.removeTab = function (tab) {
+        $scope.removeTab = function(tab) {
             console.log("removing tab : ");
             console.log(tab);
             var index1 = $rootScope.Dashboards.indexOf(tab);
@@ -1043,14 +680,14 @@ $scope.test = 'test';
         function addNewDashboardController($scope, $mdDialog) {
             //console.log($rootScope.dashboard);
             $scope.numOfDashboards = $rootScope.dashboard.length;
-            $scope.createNewDashboard = function () {
+            $scope.createNewDashboard = function() {
                 var obj = {
                     title: $scope.dashboard.title,
                     type: $scope.dashboard.type
                 };
                 $mdDialog.hide(obj);
             };
-            $scope.close = function () {
+            $scope.close = function() {
                 $mdDialog.cancel();
             };
         };
@@ -1064,11 +701,11 @@ $scope.test = 'test';
             );
         };
 
-        $scope.clickTabRemoveConfirmation = function () {
+        $scope.clickTabRemoveConfirmation = function() {
             document.getElementById("TabRemoveConfirmation").click();
         };
 
-        $scope.removeTabConfirmation = function (tab, ev) {
+        $scope.removeTabConfirmation = function(tab, ev) {
             var confirm = $mdDialog.confirm()
                 .title('Would you like to delete dashboard ' + tab.title + '?')
                 .content('dashboard will be deleted from your collection')
@@ -1076,14 +713,14 @@ $scope.test = 'test';
                 .targetEvent(ev)
                 .ok('Please do it!')
                 .cancel('Oh NO!');
-            $mdDialog.show(confirm).then(function () {
+            $mdDialog.show(confirm).then(function() {
                 $scope.removeTab(tab);
-            }, function () {
+            }, function() {
 
             });
         };
 
-        $scope.showAddNewWidgets = function (ev) {
+        $scope.showAddNewWidgets = function(ev) {
             //            var selectedMenu = document.getElementsByClassName("menu-layer");
             //            selectedMenu[0].style.display = 'none';
             $mdDialog.show({
@@ -1092,14 +729,14 @@ $scope.test = 'test';
                 targetEvent: ev,
                 clickOutsideToClose: true,
                 resolve: {
-                    dashboard: function () {
+                    dashboard: function() {
                         return $scope.dashboard;
                     }
                 }
             })
         };
 
-        $scope.showSettings = function (ev) {
+        $scope.showSettings = function(ev) {
             $mdDialog.show({
                 controller: 'settingsCtrl',
                 templateUrl: "views/settings.html",
@@ -1108,85 +745,85 @@ $scope.test = 'test';
         };
         //end of erangas space
 
-         // hides and shows the dashboard tabs 
-        $scope.manageTabs = function(dashboard){
-            if(dashboard){
-                $( "md-tabs.footer-bar > md-tabs-wrapper" ).children().show();
-                $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","rgba(0, 0, 0, 0.14)" );
+        // hides and shows the dashboard tabs
+        $scope.manageTabs = function(dashboard) {
+            if (dashboard) {
+                console.log("manage tabs true");
+                $("md-tabs > md-tabs-wrapper").children().show();
+                // $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","rgba(0, 0, 0, 0.14)" );
                 $scope.dashCloseWidgets = false;
-            }else{
-                $( "md-tabs.footer-bar > md-tabs-wrapper" ).children().hide();
-                $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","#ECECEC" );
-                $scope.dashCloseWidgets = true ;
+            } else {
+                console.log("manage tabs false");
+                $("md-tabs > md-tabs-wrapper").children().hide();
+                // $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","#ECECEC" );
+                $scope.dashCloseWidgets = false;
             }
         };
 
-        $scope.navigate = function (routeName, ev) {
+        $scope.navigate = function(routeName, ev) {
 
-            // start pulathisi 7/23/2015
-            if ($('.ion-settings').hasClass('sidebaricons')) {
-                $(".sidebaricons").removeClass("sidebaricons").addClass("sidebaricons-active");
-            } else {
-                $(".sidebaricons-active").removeClass("sidebaricons-active").addClass("sidebaricons");
-            }
-
-            // end pulathisi 7/23/2015
-            // }
             if (routeName == "Dashboards") {
 
                 $scope.showAddNewDashboard(ev);
                 $scope.manageTabs(true);
-                $state.go(routeName)
+                $scope.currentView = "Dashboard";
+                $state.go('home.'+routeName)
             }
+            if (routeName == "Social Media Analytics") {
+                $scope.manageTabs(false);
+                $scope.currentView = "Social Analysis";
+                $scope.showAddSocialAnalysis(ev);
+
+            }
+
             if (routeName == "Add Widgets") {
 
-                $('.dashboard-widgets-close').css("visibility","visible");
-                $('md-tabs-wrapper').css("visibility","visible");
+                $('.dashboard-widgets-close').css("visibility", "visible");
+                $('md-tabs-wrapper').css("visibility", "visible");
 
 
                 $scope.showAddNewWidgets(ev);
+                $scope.currentView = "Dashboard";
                 $scope.manageTabs(true);
-                $state.go("Dashboards");
-                
+                $state.go("home.Dashboards");
+
                 //$('md-tabs-wrapper').css("display","block");
             }
             if (routeName == "D3plugins") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $rootScope.currentView = "D3plugins";
-                $(".menu-layer").css("top", "120px");
-                $("starting-point").css("top", "120px");
                 $scope.manageTabs(false);
-                $state.go(routeName)
+                $state.go('home.'+routeName);
             }
             if (routeName == "Reports") {
+
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $rootScope.currentView = "Reports";
-                $(".menu-layer").css("top", "120px");
-                $("starting-point").css("top", "120px");                
                 $scope.manageTabs(false);
-                $state.go(routeName)
+                $state.go('home.'+routeName);
             }
             if (routeName == "Analytics") {
-                                    
+
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $(".menu-layer").css("top", "160px");
                 $("starting-point").css("top", "160px");
                 $scope.manageTabs(false);
                 $rootScope.currentView = "Analytics";
-
             }
             if (routeName == "RealTime") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
-                $rootScope.currentView = "RealTime";
+
                 $(".menu-layer").css("top", "200px");
                 $("starting-point").css("top", "200px");
                 $scope.manageTabs(false);
+                $state.go('home.'+routeName);
 
-                $state.go(routeName);
+                $rootScope.currentView = "RealTime";
+
             }
             if (routeName == "Digin P Stack") {
 
@@ -1195,20 +832,55 @@ $scope.test = 'test';
                 $(".menu-layer").css("top", "240px");
                 $("starting-point").css("top", "240px");
                 $scope.manageTabs(false);
-                $rootScope.currentView = "Digin P Stack";
+
                 $mdDialog.show({
-                controller: 'pStackCtrl',
-                templateUrl: 'views/pStackMenu.html',
-                targetEvent: ev,
-                clickOutsideToClose: true,
-                resolve: {}
-                
-            })
-                //$state.go(routeName);
+                    controller: 'pStackCtrl',
+                    templateUrl: 'views/pStackMenu.html',
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    resolve: {}
+
+                });
+                $rootScope.currentView = "Digin P Stack";
+                //$state.go('home.'+routeName);                
+            }
+            if (routeName == "CommonData") {
+
+                var selectedMenu = document.getElementsByClassName("menu-layer");
+                selectedMenu[0].style.display = 'block';
+                $rootScope.currentView = "CommonData";
+                $scope.manageTabs(false);
+
+                if ($mdSidenav('right').isOpen()) {
+                    $mdSidenav('right')
+                        .close()
+                        .then(function() {
+                            $log.debug('right sidepanel closed');
+                        });
+                    $mdSidenav('custom')
+                        .close()
+                        .then(function() {
+                            $log.debug('custom sidepanel closed');
+                        });
+                } else {
+                    $mdSidenav('right')
+                        .toggle()
+                        .then(function() {
+                            $log.debug("toggle right is done");
+                        });
+                }
+
+            }
+            if (routeName == "Sales Forecast && Prediction") {
+
+                var selectedMenu = document.getElementsByClassName("menu-layer");
+                selectedMenu[0].style.display = 'block';
+                $scope.manageTabs(false);
+                $scope.showSalesForecastPrediction(ev);            
+
             }
             if (routeName == "Logout") {
-
-                $window.location = "/Duodigin/index.php";
+                $window.location = "index.html";
 
             }
             if (routeName == "Theme") {
@@ -1222,11 +894,13 @@ $scope.test = 'test';
                 //selectedMenu[0].style.display = 'none';
 
                 $scope.Share();
+                $scope.currentView = "Share";
 
             }
             if (routeName == "Export") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'none';
+                $scope.currentView = "Export";
 
                 $scope.Export();
 
@@ -1236,7 +910,18 @@ $scope.test = 'test';
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'none';
 
-                $scope.help();
+                $scope.currentView = "Help";
+
+                //user guide
+                setTimeout(function() {
+                    var intro;
+                    intro = introJs();
+                    intro.setOptions($scope.IntroOptions);
+                    intro.start();
+                }, 0);
+
+
+                // $scope.help();
 
             }
             if (routeName == "Save") {
@@ -1246,12 +931,14 @@ $scope.test = 'test';
                 $scope.saveDashboard(ev);
             }
             if (routeName == "Settings") {
-                //                $state.go('Settings');
-                $scope.showSettings(ev);
+                $state.go('home.Settings');
+                $scope.currentView = "Settings";
+//                $scope.showSettings(ev);
             }
             if (routeName == "TV Mode") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'none';
+                $scope.currentView = "TV Mode";
 
                 if (Fullscreen.isEnabled())
                     Fullscreen.cancel();
@@ -1259,18 +946,20 @@ $scope.test = 'test';
                     Fullscreen.all();
 
             }
-            if (routeName == "Grid") {
+            if (routeName == "Clear") {
 
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
-                $rootScope.currentView = "Grid";
+                // $rootScope.currentView = "Clear";
                 $(".menu-layer").css("top", "120px");
                 $("starting-point").css("top", "120px");
 
-
-                $state.go(routeName)
+                $rootScope.dashboardWidgetsCopy = angular.copy($rootScope.dashboard.widgets);
+                $rootScope.dashboard.widgets = [];
+                $state.go("/home");
 
             }
+
 
         };
 
@@ -1282,7 +971,7 @@ $scope.test = 'test';
         $scope.fill = colors[0];
         $scope.size = 48;
 
-        setInterval(function () {
+        setInterval(function() {
             var random = Math.random();
             if (random < 0.2) {
                 $scope.size = 28 + 4 * Math.floor(Math.random() * 9);
@@ -1295,23 +984,148 @@ $scope.test = 'test';
             }
             $scope.$apply();
         }, 1700);
+        setTimeout(function() {
+            var featureObj = localStorage.getItem("featureObject");
 
-        var featureObj = localStorage.getItem("featureObject");
+            getJSONData($http, 'menu', function(data) {
 
-        getJSONData($http, 'menu', function (data) {
-
-            if (featureObj === null) $scope.menu = data;
-            else {
-                var featureArray = JSON.parse(featureObj);
-                var orignArray = [];
-                for (i = 0; i < featureArray.length; i++) {
-                    if (featureArray[i].state == true)
-                        orignArray.push(featureArray[i]);
+                if (featureObj == "undefined") $scope.menu = data;
+                else {
+                    var featureArray = JSON.parse(featureObj);
+                    var orignArray = [];
+                    for (i = 0; i < featureArray.length; i++) {
+                        if (featureArray[i].state == true)
+                            orignArray.push(featureArray[i]);
+                    }
+                    $scope.menu = orignArray.concat(data);
                 }
-                $scope.menu = orignArray.concat(data);
-            }
 
+            });
+        }, 300);
+        setTimeout(function() {
+            var featureObj = localStorage.getItem("featureObject");
+
+            getJSONData($http, 'menu', function(data) {
+
+                if (featureObj === null) $scope.menu = data;
+                else {
+                    var featureArray = JSON.parse(featureObj);
+                    var orignArray = [];
+                    for (i = 0; i < featureArray.length; i++) {
+                        if (featureArray[i].state == true)
+                            orignArray.push(featureArray[i]);
+                    }
+                    $scope.menu = orignArray.concat(data);
+                }
+
+            });
+        }, 800);
+
+        setTimeout(function() {
+            $scope.CompletedEvent = function(scope) {
+                console.log("Completed Event called");
+            };
+
+            $scope.ExitEvent = function(scope) {
+                console.log("Exit Event called");
+            };
+
+            $scope.ChangeEvent = function(targetElement, scope) {
+                console.log("Change Event called");
+                console.log(targetElement); //The target element
+                console.log(this); //The IntroJS object
+            };
+
+            $scope.BeforeChangeEvent = function(targetElement, scope) {
+                console.log("Before Change Event called");
+                console.log(targetElement);
+
+            };
+
+            $scope.AfterChangeEvent = function(targetElement, scope) {
+                console.log("After Change Event called");
+                console.log(targetElement);
+            };
+
+            $scope.IntroOptions = {
+                steps: [{
+                    element: document.querySelectorAll('.main-headbar')[0],
+                    intro: "<strong> This is the main head bar area. Hover over the blue line to bring it down</strong>",
+                    position: 'bottom'
+                }, {
+                    element: document.querySelector('#getReport'),
+                    intro: "<strong>This is the side navigation panel</strong>",
+                    position: 'right'
+                }, {
+                    element: document.querySelectorAll('#getReport > md-list > md-item:nth-child(2) > a > md-item-content')[0],
+                    intro: '<strong>Use this to create new dashboards</strong>',
+                    position: 'right'
+                }, {
+                    element: document.querySelectorAll('md-item-content.sidebar-btn.md-ink-ripple')[1],
+                    intro: '<strong>Use this to access reports</strong>',
+                    position: 'right'
+                }, {
+                    element: document.querySelectorAll('md-item-content.sidebar-btn.md-ink-ripple')[2],
+                    intro: '<strong>Realtime tool is a handy tool for data analysis </strong>',
+                    position: 'right'
+                }, {
+                    element: document.querySelectorAll('md-list md-item > a > md-item-content')[4],
+                    intro: '<strong>This is the Digin P Stack feature</strong>',
+                    position: 'right'
+                }, {
+                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[5],
+                    intro: '<strong>D3plugins is a tool to create D3 visualizations</strong>',
+                    position: 'right'
+                }, {
+                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[6],
+                    intro: '<strong>Use this to add widgets to your dashbaord</strong>',
+                    position: 'right'
+                }, {
+                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[7],
+                    intro: '<strong>Settings feature can be used to create users and to add/remove features</strong>',
+                    position: 'right'
+                }, {
+                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[8],
+                    intro: '<strong>Save feature is to save Dashboards</strong>',
+                    position: 'right'
+                }, {
+                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[9],
+                    intro: '<strong>Give a nice look to the app with your desired theme</strong>',
+                    position: 'right'
+                }, {
+                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[10],
+                    intro: '<strong>Share using most popular social media and email</strong>',
+                    position: 'right'
+                }, {
+                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[11],
+                    intro: '<strong>Export your widget in any format</strong>',
+                    position: 'right'
+                }, {
+                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[12],
+                    intro: '<strong>Switch between browser view and Full Screen mode</strong>',
+                    position: 'right'
+                }],
+                showStepNumbers: false,
+                exitOnOverlayClick: true,
+                exitOnEsc: true,
+                nextLabel: '<strong>NEXT</strong>',
+                prevLabel: '<strong>PREVIOUS</strong>',
+                skipLabel: 'EXIT',
+                doneLabel: 'DONE'
+            };
+
+            $scope.ShouldAutoStart = true;
+
+        }, 1000);
+
+
+        //getting branch data for google maps
+        $http.get('jsons/branch.json').success(function(data) {
+            $scope.JSONDataBranch = data;
+            console.log("data json branch");
+            console.log($scope.JSONDataBranch);
         });
 
-                    }
-                    ]);
+    }
+
+]);

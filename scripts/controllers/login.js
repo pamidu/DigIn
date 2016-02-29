@@ -1,59 +1,107 @@
-var app = angular.module("diginLogin", ['ngMaterial']);
+//var app = angular.module("diginLogin", ['ngMaterial']);
 
-app.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', function ($scope, $http, $mdToast, $animate) {
-    $scope.login = function () {
+routerApp.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$window','$auth', '$state','$rootScope',
+    function ($scope, $http, $mdToast, $animate, $window,$auth, $state, $rootScope) {
+        $scope.isLoggedin = false;
+        $scope.error = {
+            isUserName: false,
+            isPwd: false,
+            event: 0
+        };
+        
+        $scope.signup = function() {
+                $scope.isLoggedin = false;
+                  $state.go('signup');
+        };
 
-        $http({
-            method: 'POST',
-            url: 'http://104.236.192.147:8080/pentaho/j_spring_security_check',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            transformRequest: function (obj) {
-                var str = [];
-                for (var p in obj)
-                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                return str.join("&");
-            },
-            data: {
-                j_username: $scope.txtUname,
-                j_password: $scope.txtPwd
-            }
+        //on click login  button - Login user
+        $scope.login = function() {
+            $auth.login($scope.txtUname,$scope.txtPwd,"duoworld.duoweb.info");
+            
+            $auth.onLoginResult(function (event, data) {
+                $scope.isLoggedin = true;
 
-        }).
-        success(function (data, status) {
-            localStorage.setItem('username', $scope.txtUname);
-            if (data.match(/Pentaho User Console - Login/g) == null)
-                window.location = "home.html";
-            else {
-                alert('username or password incorrect');
+                $rootScope.username = $scope.txtUname;
+                localStorage.setItem('username', $scope.txtUname);
 
-                var tmpl = '<md-toast><span flex>username or password incorrect</span></md-toast>';
-                $scope.toastPosition = {
-                    bottom: false,
-                    top: true,
-                    left: false,
-                    right: true
-                };
-                $mdToast.show({
-                    template: tmpl,
-                    hideDelay: 4000,
-                    // position: $scope.getToastPosition()
-                });
-            }
-        }).
-        error(function (data, status) {
-            alert("Request failed");
+                
+                var userInfo = $auth.getSession();         
+                /*console.log("user data:"+JSON.stringify(userInfo));*/
 
-        });
+                $rootScope.name=userInfo.Name;
+                localStorage.setItem('name', userInfo.Name);
 
-        $scope.loggedIn = false;
+                $rootScope.email=userInfo.Email;
+                localStorage.setItem('email', userInfo.Email);
 
-    };
-}]);
+                $state.go('welcome'); 
 
-app.config(function ($mdThemingProvider, $httpProvider) {
-    $mdThemingProvider.theme('default')
-        .primaryPalette('indigo')
-        .accentPalette('orange');
-});
+            });
+            
+            $auth.onLoginError(function(event, data){
+                validate(data.message, $mdToast, $scope);
+//                alert();
+            });
+        };
+       
+
+//        //Register user??
+//        $scope.registerUser = function() {
+//            $Auth.register({
+//                UserID:$scope.txtUname,
+//                EmailAddress: $scope.txtUname,
+//                Name: $scope.txtUname,
+//                Password: $scope.txtPwd,
+//                ConfirmPassword:$scope.txtPwd,
+//                Active: true
+//            }).success(function(data) {
+//                if (data.error) {
+//                    alert("Err!");
+//                }
+//
+//                if (data.success) {
+//                    alert("Success!");
+//                }
+//            });
+//        };
+
+    }]).directive('keyEnter', function () {
+        return function (scope, element, attrs) {
+            element.bind("keydown keypress", function (event) {
+                if (event.which === 13) {
+                    //13 press key Enter
+                    scope.$apply(function () {
+                        scope.$eval(attrs.keyEnter);
+                    });
+                    event.preventDefault();
+                }
+            });
+        };
+    });
+
+//app.config(function ($mdThemingProvider, $httpProvider) {
+//        $mdThemingProvider.theme('default')
+//            .primaryPalette('indigo')
+//            .accentPalette('orange');
+//    })
+//    .factory('focus', function ($timeout, $window) {
+//        return function (id) {
+//            $timeout(function () {
+//                var element = $window.document.getElementById(id);
+//                if (element)
+//                    element.focus();
+//            });
+//        };
+//    }).directive('keyEnter', function () {
+//    return function (scope, element, attrs) {
+//        element.bind("keydown keypress", function (event) {
+//            if (event.which === 13) {
+//                //13 press key Enter
+//                scope.$apply(function () {
+//                    scope.$eval(attrs.keyEnter);
+//                });
+//                event.preventDefault();
+//            }
+//        });
+//    };
+//});

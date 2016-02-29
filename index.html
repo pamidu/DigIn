@@ -1,66 +1,65 @@
 <!DOCTYPE html>
 <html ng-app="DuoDiginRt" ng-controller="LoginCtrl">
-<head>
-    <title>Digin - Beyond BI</title>
-    <link rel="stylesheet" href="styles/css/commonstyle.css">
-    <link rel="stylesheet" href="styles/css/login.css">
-    <!--  new changes  -->
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="google-signin-client_id"
-          content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com">
-    <link rel="shortcut icon" href="styles/css/images/innerlogo.ico">
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css">
-    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
-    <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css"> -->
-    <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
-    <!-- <link href="styles/css/material-wfont.css" rel="stylesheet">-->
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="styles/css/pivot.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="styles/css/directive_library.css">
-    <link rel="stylsheet" type="text/css" href="styles/css/pivot.css"/>
-    <!-- angular gridster -->
-    <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
-    <!-- angular slider -->
-    <link rel="stylesheet" type="text/css" href="bower_components/angular-slider/rzslider.min.css">
-    <link rel="stylesheet" type="text/css" href="styles/css/style.css">
-    <link rel="stylesheet" type="text/css" href="styles/css/admin1.css">
-    <link rel="stylesheet" type="text/css" href="styles/css/common-data-src.css">
-    <!-- nv.d3.css commented for testing pursoses -->
-    <!-- <link rel="stylesheet" href="styles/css/nv.d3.css"> -->
-    <link rel="stylesheet" type="text/css" href="styles/css/accordion.css">
-    <link rel="stylesheet" type="text/css" href="styles/css/indicator.css">
-    <link rel="apple-touch-icon" href="../../assets/globals/img/icons/apple-touch-icon.png">
-    <!-- <link rel="stylesheet" href="styles/css/DiginD3.css"/> -->
-    <!-- event calendar -->
-    <link rel="stylesheet" href="styles/css/fullcalendar.css"/>
-    <!-- event calendar -->
-    <!-- Add IntroJs styles -->
-    <link href="bower_components/intro.js/introjs.css" rel="stylesheet">
-    <link href="styles/css/widgetSettings.css" rel="stylesheet">
-    <!-- damith
-        -- web font
-        -- google font
-        -- customer css
-        -- widget style
-        -->
-    <link rel="stylesheet" href="styles/fonts/font-awesome/font-awesome.min.css" type='text/css'/>
-    <link rel="stylesheet" href="styles/fonts/digin-chart/digin-chart.css" type='text/css'/>
-    <link rel="stylesheet" href="styles/fonts/themify/themify-icons.css" type='text/css'/>
-    <link rel="stylesheet" href="styles/css/digin-on-board.css"/>
-    <link rel="stylesheet" href="styles/css/animate.css"/>
-    <link rel="stylesheet" href="styles/css/widget-style.css" type='text/css'/>
-    <link rel="stylesheet" href="bower_components/notification/ng-Toast/ngToast.min.css" type="text/css"/>
-    <link rel="stylesheet" href="styles/css/hover.css" type='text/css'/>
+    <head>
+        <title>Digin - Beyond BI</title>
+        <link rel="stylesheet" href="styles/css/commonstyle.css">
+        <link rel="stylesheet" href="styles/css/login.css">
+        <!--  new changes  -->
+        
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="google-signin-client_id"
+            content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com">
+        <link rel="shortcut icon" href="styles/css/images/innerlogo.ico">
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css">
+        <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+        <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css"> -->
+        <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
+        <link href="styles/css/material-wfont.css" rel="stylesheet">
+        <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="styles/css/directive_library.css">
+        <link rel="stylesheet" type="text/css" href="styles/css/pivot.css"/>
+        <!-- angular gridster -->
+        <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
+        <!-- angular slider -->
+        <link rel="stylesheet" type="text/css" href="bower_components/angular-slider/rzslider.min.css">
+        <link rel="stylesheet" type="text/css" href="styles/css/style.css">
+        <link rel="stylesheet" type="text/css" href="styles/css/admin1.css">
+        <link rel="stylesheet" type="text/css" href="styles/css/common-data-src.css">
+        <!-- nv.d3.css commented for testing pursoses -->
+        <!-- <link rel="stylesheet" href="styles/css/nv.d3.css"> -->
+        <link rel="stylesheet" type="text/css" href="styles/css/accordion.css">
+        <link rel="stylesheet" type="text/css" href="styles/css/indicator.css">
+        <link rel="apple-touch-icon" href="../../assets/globals/img/icons/apple-touch-icon.png">
+        <!-- <link rel="stylesheet" href="styles/css/DiginD3.css"/> -->
+        <!-- event calendar -->
+        <link rel="stylesheet" href="styles/css/fullcalendar.css"/>
+        <!-- event calendar -->
+        <!-- Add IntroJs styles -->
+        <link href="bower_components/intro.js/introjs.css" rel="stylesheet">
+        <link href="styles/css/widgetSettings.css" rel="stylesheet">
+        <!-- damith
+            -- web font
+            -- google font
+            -- customer css
+            -- widget style
+            -->
+        <link rel="stylesheet" href="styles/fonts/font-awesome/font-awesome.min.css" type='text/css'/>
+        <link rel="stylesheet" href="styles/fonts/digin-chart/digin-chart.css" type='text/css'/>
+        <link rel="stylesheet" href="styles/fonts/themify/themify-icons.css" type='text/css'/>
+        <link rel="stylesheet" href="styles/css/digin-on-board.css"/>
+        <link rel="stylesheet" href="styles/css/animate.css"/>
+        <link rel="stylesheet" href="styles/css/widget-style.css" type='text/css'/>
+        <link rel="stylesheet" href="bower_components/notification/ng-Toast/ngToast.min.css" type="text/css"/>
+        <link rel="stylesheet" href="styles/css/hover.css" type='text/css'/>
     <link rel="stylesheet" href="bower_components/angular-ui/angular-ui-select2/select2-bootstrap.min.css"
           type='text/css'/>
     <link rel="stylesheet" href="styles/css/customer.css" type='text/css'/>

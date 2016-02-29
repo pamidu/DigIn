@@ -33,6 +33,7 @@ routerApp.controller('queryBuilderCtrl', function
                                     $scope.chartType,
                                 // Explicitly tell the width and height of a chart
                                 width: null,
+
                                 height: 367,
                             }
                         },
@@ -123,6 +124,57 @@ routerApp.controller('queryBuilderCtrl', function
                         verticalPosition: 'top',
                         dismissOnClick: true
                     });
+                },
+                selectChart: function(chartType, chart){
+
+                    $scope.eventHndler.isHighCharts = false;
+                    $scope.eventHndler.isD3Charts = false;
+                    $scope.eventHndler.isPivotSummary = false;
+
+                    switch (chartType) {
+                        case 'highCharts':
+
+                            $scope.eventHndler.isHighCharts = true;
+                            $scope.highchartsNG.options.chart.type = chart;
+                            break;
+                        case 'd3Charts':
+
+                            $scope.eventHndler.isD3Charts = true;
+                            console.log("d3Charts in switch");
+                            break;
+                        case 'pivotSummary':
+
+                            $scope.eventHndler.isPivotSummary = true;
+                            $scope.fieldArray = [];
+
+                            for(var i=0; i < $scope.commonData.measures.length; i++){
+                                $scope.fieldArray.push($scope.commonData.measures[i].filedName);
+                            }
+                            for(var i=0; i < $scope.commonData.columns.length; i++){
+                                $scope.fieldArray.push($scope.commonData.columns[i].filedName);
+                            }
+                            console.log($scope.fieldArray);
+                            var parameter;
+                            $scope.fieldArray.forEach(function (entry) {
+                                if (i == 0) {
+                                    parameter = entry
+                                } else {
+                                    parameter += "," + entry;
+                                }
+                                i++;
+                            });
+
+                            var query = "SELECT " + $scope.fieldArray.toString() + " FROM Demo." + $scope.sourceData.tbl;  
+                            $scope.client.getExecQuery(query, function(data, status){
+                                $scope.drawPivotSummary(data);
+
+                            });
+                            break;
+                        default:
+
+                            $scope.eventHndler.isHighcharts = true;
+                            break;
+                    }
                 }
             }
 
@@ -154,88 +206,99 @@ routerApp.controller('queryBuilderCtrl', function
             chartTypes: [
                 {
                     id: 'ct01', icon: 'ti-pie-chart', name: 'pie chart', chart: 'pie',
-                    selected: false
+                    selected: false, chartType: 'highCharts'
                 },
                 {
                     id: 'ct02', icon: 'ti-bar-chart', name: 'bar ', chart: 'bar',
-                    selected: false
+                    selected: false, chartType: 'highCharts'
                 },
                 {
                     id: 'ct03', icon: 'fa fa-line-chart', name: 'line ', chart: 'line',
-                    selected: false
+                    selected: false, chartType: 'highCharts'
                 },
                 {
-                    id: 'ct03', icon: ' chart-diginSmooth_line', name: 'Smooth line ', chart: 'smoothline',
-                    selected: false
+                    id: 'ct04', icon: ' chart-diginSmooth_line', name: 'Smooth line ', chart: 'smoothline',
+                    selected: false, chartType: 'highCharts'
                 },
                 {
-                    id: 'ct04', icon: 'fa fa-area-chart', name: 'area ', chart: 'area',
-                    selected: false
+                    id: 'ct05', icon: 'fa fa-area-chart', name: 'area ', chart: 'area',
+                    selected: false, chartType: 'highCharts'
                 },{
-                    id: 'ct04', icon: 'chart-diginsmooth_area', name: 'Smooth area ', chart: 'area',
-                    selected: false
+                    id: 'ct06', icon: 'chart-diginsmooth_area', name: 'Smooth area ', chart: 'area',
+                    selected: false, chartType: 'highCharts'
                 },
                 {
-                    id: 'ct05', icon: 'chart-diginalluvialt', name: 'alluvial', chart: 'alluvial',
-                    selected: false
+                    id: 'ct07', icon: 'chart-diginalluvialt', name: 'alluvial', chart: 'alluvial',
+                    selected: false, chartType: 'd3Charts'
                 },
                 {
-                    id: 'ct06', icon: 'chart-diginscatter', name: 'scatter ', chart: 'scatter',
-                    selected: false
+                    id: 'ct08', icon: 'chart-diginscatter', name: 'scatter ', chart: 'scatter',
+                    selected: false, chartType: 'highCharts'
                 },
                 {
-                    id: 'ct07', icon: 'chart-diginbump', name: 'bumpChart ', chart: 'bump',
-                    selected: false
+                    id: 'ct09', icon: 'chart-diginbump', name: 'bumpChart ', chart: 'bump',
+                    selected: false, chartType: 'd3Charts'
                 },
                 {
-                    id: 'ct08',
-                    icon: 'chart-digincluster-dendrogram',
-                    name: 'circularDendrogram ',
-                    chart: 'circularDendrogram',
-                    selected: false
-                },
-                {
-                    id: 'ct08',
+                    id: 'ct10',
                     icon: 'chart-digincluster-dendrogram',
                     name: 'clusterDendrogram',
                     chart: 'clusterDendrogram',
-                    selected: false
-                }
-                ,
+                    selected: false, 
+                    chartType: 'd3Charts'
+                },
                 {
-                    id: 'ct08',
+                    id: 'ct11',
                     icon: 'chart-digincluster',
                     name: 'clusterForce',
                     chart: 'clusterForce',
-                    selected: false
-                }, {
-                    id: 'ct08',
+                    selected: false, 
+                    chartType: 'd3Charts'
+                }, 
+                {
+                    id: 'ct12',
                     icon: 'chart-diginconvex-hull',
                     name: 'convexHull',
                     chart: 'convexHull',
-                    selected: false
-                }, {
-                    id: 'ct08',
+                    selected: false, 
+                    chartType: 'd3Charts'
+                }, 
+                {
+                    id: 'ct13',
                     icon: 'chart-diginhierarchy-chart',
                     name: 'hierarchy',
                     chart: 'hierarchy',
-                    selected: false
-                }, {
-                    id: 'ct08',
+                    selected: false, 
+                    chartType: 'd3Charts'
+                }, 
+                {
+                    id: 'ct14',
                     icon: 'chart-diginsunburst-chart',
                     name: 'sunburst',
                     chart: 'sunburst',
-                    selected: false
-                }, {
-                    id: 'ct08',
+                    selected: false, 
+                    chartType: 'd3Charts'
+                }, 
+                {
+                    id: 'ct15',
                     icon: 'chart-digintreeeview',
                     name: 'treeeview',
                     chart: 'treeeview',
-                    selected: false
+                    selected: false, 
+                    chartType: 'd3Charts'
+                },
+                {
+                    id: 'ct16',
+                    icon: 'ti-layout-accordion-list',
+                    name: 'pivotsummary',
+                    chart: 'pivotsummary',
+                    selected: false, 
+                    chartType: 'pivotSummary'
                 }
             ]
 
         };
+            
     
    
     
@@ -290,10 +353,7 @@ routerApp.controller('queryBuilderCtrl', function
             isMainLoading: false,
             openSettingToggle: [
                 {isChart: false},
-                {isStructuret: false},
-                {isSerSetting: false}
             ],
-            messageAry: [' Please wait while the data is saving..'],
             message: '',
             isChartSelected: false,
             onToggleEvent: function (event) {
@@ -412,7 +472,6 @@ routerApp.controller('queryBuilderCtrl', function
                             this.openSettingToggle[0].isChart = true;
                             $("#toggleSettingPanel").show(300);
                         }
-                        break;                    
                     case '2':
                         //#data structure
                         //Data Structure
@@ -457,9 +516,6 @@ routerApp.controller('queryBuilderCtrl', function
                         }else{
                             $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
                             $scope.widget["commonSrc"] = {src:$scope.sourceData,
-                                                          mea:$scope.executeQryData.executeMeasures,
-                                                          att:$scope.executeQryData.executeColumns,
-                                                          query:$scope.receivedQuery};
                             var objIndex = getRootObjectById($scope.widget.id, $rootScope.dashboard.widgets);
                             $rootScope.dashboard.widgets[objIndex] = $scope.widget;
                         }                     
@@ -494,7 +550,6 @@ routerApp.controller('queryBuilderCtrl', function
                 onSelect.selected = true;
                 $scope.executeQryData.chartType = onSelect.chart;
                 $scope.chartType = onSelect.chart;
-                $scope.changeChartType(onSelect.chart);
                 //privateFun.createHighchartsChart(onSelect.chart);
             },
             onSaveChartConfig: function () {
@@ -521,6 +576,7 @@ routerApp.controller('queryBuilderCtrl', function
                                         $scope.chartType,
                                     // Explicitly tell the width and height of a chart
                                     width: null,
+                                   
                                     height: 367,
                                 }
                             },
@@ -633,8 +689,10 @@ routerApp.controller('queryBuilderCtrl', function
                             }
                         }
                     }
-                    $scope.executeQryData.executeMeasures = measureArr;
                 }
+                $scope.executeQryData.executeMeasures = measureArr;
+            }
+            if(cat != ""){
                 if(cat != ""){
                     $scope.executeQryData.executeColumns = [{filedName: cat}];
                     $scope.mapResult(cat, res, function(data){

@@ -38,26 +38,25 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         };
 
         $scope.showAdvanced = function(ev, widget) {
-            alert('test digincore2');
-            if($rootScope.widget.initTemplate){
+                        if($rootScope.widget.initTemplate){
 
                 $mdDialog.show({
-                            controller: $rootScope.widget.initCtrl,
-                            templateUrl: $rootScope.widget.initTemplate,
-                        parent: angular.element(document.body),
-                        targetEvent: ev,
-                        locals: {
-                            widId: $rootScope.widget.id,
-                                widData: {},
-                                fieldData: {}
-                        }
-                    })
-                    .then(function() {
-                        //$mdDialog.hide();
-                    }, function() {
-                        //$mdDialog.hide();
-                    });
-                        }
+                    controller: $rootScope.widget.initCtrl,
+                    templateUrl: $rootScope.widget.initTemplate,
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    locals: {
+                        widId: $rootScope.widget.id,
+                        widData: {},
+                        fieldData: {}
+                    }
+                })
+                .then(function() {
+                    //$mdDialog.hide();
+                }, function() {
+                    //$mdDialog.hide();
+                });
+            }
             $scope.close();
         };
 

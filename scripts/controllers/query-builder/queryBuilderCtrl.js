@@ -5,38 +5,22 @@
 routerApp.controller('queryBuilderCtrl', function
         ($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state) {
 
-    $scope.selectedFields = [];        
-    $scope.drawPivotSummary = function(datae){
-        $scope.selectedFields = datae;
-        $scope.products = [];
-        product = {};
-        for (var i = 0; i <datae.length; i++) {
-            var data = datae[i],
-            product = {};
-            for (var j = 0; j < $scope.fieldArray.length; j++) {
-                         var field = $scope.fieldArray[j];
-                         product[field] = data[field];
-                        }
-                       $scope.products.push(product);
-                  }
-        pivotUi() ;
-        
-    }
-
-    function pivotUi() {
-        var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.gchart_renderers, $.pivotUtilities.d3_renderers);
-        $("#grid").pivotUI($scope.products, {
-            // renderers: renderers,
-            rows: [$scope.selectedFields[0]],
-            cols:[$scope.selectedFields[1]],
-              
-            // rendererName: "Table"         
-        });
-    }        
-
     $scope.initQueryBuilder = function(){
         $scope.sourceData = $csContainer.fetchSrcObj();
         $scope.client = $diginengine.getClient($scope.sourceData.src);
+        
+        
+        if(typeof($scope.sourceData.wid.commonSrc) == "undefined"){
+            privateFun.createHighchartsChart('');
+        }else{
+            $scope.highchartsNG = $scope.sourceData.wid.highchartsNG;
+            $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
+            delete $scope.highchartsNG.size;
+            $scope.executeQryData.executeMeasures = $scope.sourceData.wid.commonSrc.mea;
+            $scope.executeQryData.executeColumns = $scope.sourceData.wid.commonSrc.att;
+            $scope.receivedQuery = $scope.sourceData.wid.commonSrc.query;
+        }
+        
     };
     
     $scope.sourceData = $csContainer.fetchSrcObj();
@@ -49,7 +33,8 @@ routerApp.controller('queryBuilderCtrl', function
                                     $scope.chartType,
                                 // Explicitly tell the width and height of a chart
                                 width: null,
-                                height: 397,
+
+                                height: 367,
                             }
                         },
                         title: {
@@ -314,6 +299,11 @@ routerApp.controller('queryBuilderCtrl', function
 
         };
             
+    
+   
+    
+        
+        
         //mapping measures array
         if($scope.sourceData.fMeaArr.length > 0){
             for(i=0; i <$scope.sourceData.fMeaArr.length; i++){
@@ -363,14 +353,9 @@ routerApp.controller('queryBuilderCtrl', function
             isMainLoading: false,
             openSettingToggle: [
                 {isChart: false},
-                {isStructuret: false}
             ],
-            messageAry: ['Please wait five minute data saving..'],
             message: '',
-            // isChartSelected: false,
-            // isHighcharts: false,
-            // isD3Charts: false,
-            isPivotSummary: false,
+            isChartSelected: false,
             onToggleEvent: function (event) {
                 switch (event) {
                     case '1':
@@ -487,7 +472,6 @@ routerApp.controller('queryBuilderCtrl', function
                             this.openSettingToggle[0].isChart = true;
                             $("#toggleSettingPanel").show(300);
                         }
-                        break;
                     case '2':
                         //#data structure
                         //Data Structure
@@ -501,6 +485,19 @@ routerApp.controller('queryBuilderCtrl', function
                             $("#toggleStructurePanel").addClass('structure-tab');
                             this.openSettingToggle[1].isStructuret = true;
                             $("#toggleStructurePanel").show(300);
+                        }
+                        break;
+                    case '3':
+                        if (this.openSettingToggle[2].isChart) {
+                            $("#toggleSerSettingsPanel").hide(200);
+                            setTimeout(function () {
+                                $("#toggleSerSettingsPanel").removeClass('ser-setting-tab');
+                            }, 200);
+                            this.openSettingToggle[2].isChart = false;
+                        } else {
+                            $("#toggleSerSettingsPanel").addClass('ser-setting-tab');
+                            this.openSettingToggle[2].isChart = true;
+                            $("#toggleSerSettingsPanel").show(300);
                         }
                         break;
                     case '4':
@@ -519,9 +516,6 @@ routerApp.controller('queryBuilderCtrl', function
                         }else{
                             $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
                             $scope.widget["commonSrc"] = {src:$scope.sourceData,
-                                                      mea:$scope.executeQryData.executeMeasures,
-                                                      att:$scope.executeQryData.executeColumns,
-                                                      query:$scope.receivedQuery};
                             var objIndex = getRootObjectById($scope.widget.id, $rootScope.dashboard.widgets);
                             $rootScope.dashboard.widgets[objIndex] = $scope.widget;
                         }                     
@@ -548,8 +542,6 @@ routerApp.controller('queryBuilderCtrl', function
 
             },
             onClickSelectedChart: function (data, onSelect) {
-
-                console.log("onSelect",onSelect);
                 var i;
                 var chartInData = data;
                 for (i = 0; i < chartInData.length; i++) {
@@ -558,8 +550,6 @@ routerApp.controller('queryBuilderCtrl', function
                 onSelect.selected = true;
                 $scope.executeQryData.chartType = onSelect.chart;
                 $scope.chartType = onSelect.chart;
-                // $scope.changeChartType(onSelect.chart);
-                privateFun.selectChart(onSelect.chartType, onSelect.chart);
                 //privateFun.createHighchartsChart(onSelect.chart);
             },
             onSaveChartConfig: function () {
@@ -570,7 +560,7 @@ routerApp.controller('queryBuilderCtrl', function
         
         
         $scope.changeChartType = function(type){
-            
+            $scope.highchartsNG.options.chart.type = type;
         };
         
         
@@ -586,7 +576,8 @@ routerApp.controller('queryBuilderCtrl', function
                                         $scope.chartType,
                                     // Explicitly tell the width and height of a chart
                                     width: null,
-                                    height: 397,
+                                   
+                                    height: 367,
                                 }
                             },
                             subtitle: {
@@ -680,38 +671,44 @@ routerApp.controller('queryBuilderCtrl', function
     };
     
     $scope.getExecuteAgg = function(query){
-        $scope.eventHndler.isLoadingChart=true;
-        $scope.client.getExecQuery(query, function(res, status, query){
-            var cat = "";
-            var measureArr = [];
-            if(status){
-                for(c in res[0]){
-                    if (Object.prototype.hasOwnProperty.call(res[0], c)) {
-                        if(typeof res[0][c] == "string") cat = c;
-                        else{
-                            var m = c.split('_');
-                            measureArr.push({
-                                filedName: m[1],
-                                condition: m[0]
-                            });
+        if(typeof query != "undefined"){
+            $scope.eventHndler.isLoadingChart=true;
+            $scope.client.getExecQuery(query, function(res, status, query){
+                var cat = "";
+                var measureArr = [];
+                if(status){
+                    for(c in res[0]){
+                        if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+                            if(typeof res[0][c] == "string") cat = c;
+                            else{
+                                var m = c.split('_');
+                                measureArr.push({
+                                    filedName: m[1],
+                                    condition: m[0]
+                                });
+                            }
                         }
                     }
                 }
                 $scope.executeQryData.executeMeasures = measureArr;
             }
             if(cat != ""){
-                $scope.executeQryData.executeColumns = [{filedName: cat}];
-                $scope.mapResult(cat, res, function(data){
-                    $scope.highchartsNG.series = data;
-                    $scope.eventHndler.isLoadingChart=false;
+                if(cat != ""){
+                    $scope.executeQryData.executeColumns = [{filedName: cat}];
+                    $scope.mapResult(cat, res, function(data){
+                        $scope.highchartsNG.series = data;
+                        $scope.eventHndler.isLoadingChart=false;
+                        $scope.receivedQuery = query;
+                        $scope.queryEditState = false;
+                    });
+                }else{
+                    $scope.setMeasureData(res[0]);
                     $scope.receivedQuery = query;
-                    $scope.queryEditState = false;
-                });
-            }else{
-                $scope.setMeasureData(res[0]);
-                $scope.receivedQuery = query;
-            }
-        });
+                }
+            });
+        }else{
+            alert("enter a query");
+        }
     };
     
     $scope.mapResult = function(cat, res, cb){
@@ -763,16 +760,6 @@ routerApp.controller('queryBuilderCtrl', function
         }
     };
         
-    if(typeof($scope.sourceData.wid.commonSrc) == "undefined"){
-        privateFun.createHighchartsChart('');
-    }else{
-        $scope.highchartsNG = $scope.sourceData.wid.highchartsNG;
-        $scope.prevChartSize = $scope.highchartsNG.size;
-        delete $scope.highchartsNG.size;
-        $scope.executeQryData.executeMeasures = $scope.sourceData.wid.commonSrc.mea;
-        $scope.executeQryData.executeColumns = $scope.sourceData.wid.commonSrc.att;
-        $scope.receivedQuery = $scope.sourceData.wid.commonSrc.query;
-    }
     
     
     var queryBuilderData = {

@@ -81,6 +81,7 @@
                     </v-accordion>
                 </div>
 
+<!--
                 <div class="digin-qb-panle-footer">
                     <span class="btn btn-block btn-default btn-apply" role="button"
                           ng-click="eventHndler.onClickApply()"
@@ -88,6 +89,7 @@
                             apply
                     </span>
                 </div>
+-->
             </div>
             <!-- measures -->
             <div flex="20">
@@ -154,6 +156,7 @@
                         </v-accordion>
                     </div>
 
+<!--
                     <div class="digin-qb-panle-footer">
                             <span class="btn btn-block btn-default btn-apply" role="button"
                                   ng-click="eventHndler.onClickApply()"
@@ -161,6 +164,7 @@
                                     apply
                             </span>
                     </div>
+-->
                 </div>
                 <div class="digin-gb-measures">
                     <div class="panel-header">
@@ -312,15 +316,6 @@
                                         {{filed.filedName}}
                                     </p>
                                 </div>
-
-                                <div class="button-wrap">
-                                    <span class="btn btn-sm btn-default ">
-                                        Apply
-                                    </span>
-                                     <span class="btn btn-sm btn-default">
-                                        clear
-                                    </span>
-                                </div>
                             </div>
                         </div>
 
@@ -336,13 +331,15 @@
                                     design query
                                 </h5>
                             </div>
-                            <div>
+                            <div class = "editable-query">
                                 <span ng-hide= "queryEditState">{{receivedQuery}}</span>
-                                <md-input-container ng-show= "queryEditState" flex>
-                                    <label>Query</label>
-                                    <input ng-model="receivedQuery">
-                                </md-input-container>
-                                <md-button ng-click="getExecuteAgg(receivedQuery)" class="md-raised">go</md-button>
+                                <div layout="row" ng-show= "queryEditState">
+                                    <md-input-container flex>
+                                        <label>Query</label>
+                                        <input ng-model="receivedQuery">
+                                    </md-input-container>
+                                    <md-button md-no-ink ng-click="getExecuteAgg(receivedQuery)" class="md-primary">go</md-button>
+                                </div>                                
                             </div>
                         </div>
 
@@ -370,7 +367,8 @@
 
                     <div class="last-icon">
                         <div class="right-menu">
-                            <i class="ti-settings hvr-pop"></i>
+                            <i class="ti-settings hvr-pop" 
+                               ng-click="eventHndler.onClickSetting('3')"></i>
                         </div>
                     </div>
                     <div class="last-icon">
@@ -455,6 +453,46 @@
                                     {{measure.filedName}}
                                 </p>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Series settings panel -->
+                <div class="digin-bq-chart-rw1 p-15"
+                     id="toggleSerSettingsPanel">
+                    <div class="header">
+                        <h4 class="font-weight-300 p-20">
+                            Chart Settings
+                        </h4>
+                    </div>
+                    <div class="chart-config-wrap-rw1 animated fadeIn">
+                        <div class="chart-config-wrap">                            
+                            <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
+                                         onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
+                                <v-pane ng-repeat="series in highchartsNG.series" class="v-pane">
+                                    <v-pane-header id="{{ ::measure.id }}-header" aria-controls="{{ ::series.name }}-content">
+                                        <h5 class="font-weight-300 text-upper">{{ series.name }}</h5>
+                                    </v-pane-header>
+                                    <v-pane-content class="trans-bg v-pane-content" id="{{ ::series.name }}-content"
+                                                    aria-labelledby="{{ ::series.name }}-header">
+                                        <md-input-container flex>
+                                            <label>Name</label>
+                                            <input ng-model="series.name">
+                                        </md-input-container>
+                                        <md-input-container flex>
+                                            <label>Color</label>
+                                            <input ng-model="series.color">
+                                        </md-input-container>
+                                    </v-pane-content>
+                                </v-pane>
+                            </v-accordion>
+                            <md-input-container flex>
+                                <label>Chart Title</label>
+                                <input ng-model="highchartsNG.subtitle.text">
+                            </md-input-container>
+                            <md-input-container flex>
+                                <label>Y axis</label>
+                                <input ng-model="highchartsNG.yAxis.title.text">
+                            </md-input-container>
                         </div>
                     </div>
                 </div>

@@ -18,7 +18,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$
         $scope.login = function() {
             $auth.login($scope.txtUname,$scope.txtPwd,"duoworld.duoweb.info");
             
-            $auth.onLoginResult(function () {
+            $auth.onLoginResult(function (event, data) {
                 $scope.isLoggedin = true;
 
                 $rootScope.username = $scope.txtUname;
@@ -36,7 +36,12 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$
 
                 $state.go('welcome'); 
 
-            });  
+            });
+            
+            $auth.onLoginError(function(event, data){
+                validate(data.message, $mdToast, $scope);
+//                alert();
+            });
         };
        
 
@@ -60,7 +65,19 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$
 //            });
 //        };
 
-    }]);
+    }]).directive('keyEnter', function () {
+        return function (scope, element, attrs) {
+            element.bind("keydown keypress", function (event) {
+                if (event.which === 13) {
+                    //13 press key Enter
+                    scope.$apply(function () {
+                        scope.$eval(attrs.keyEnter);
+                    });
+                    event.preventDefault();
+                }
+            });
+        };
+    });
 
 //app.config(function ($mdThemingProvider, $httpProvider) {
 //        $mdThemingProvider.theme('default')

@@ -605,6 +605,12 @@ drb >> dynamically report builder
     border-left: 3px solid #ECECEC;
 }
 
+.digin-gb-chart-wrap-view-container {
+    width: 100%;
+    height: calc(55vh);
+    background: #ffffff;
+}
+
 .chart-config-panel {
     height: 450px;
     width: 280px;

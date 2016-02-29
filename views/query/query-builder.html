@@ -204,10 +204,10 @@
                                     fill="none" stroke-width="6" stroke-miterlimit="10"/>
                         </svg>
                     </div>
-                    <highchart
-                            ng-if="eventHndler.isLoadingChart==false"
-                            config="highchartsNG"></highchart>
-                </div>
+<!--                    <highchart  ng-if="eventHndler.isHighCharts==true" config="highchartsNG"></highchart>-->
+<!--                    <highchart ng-if="eventHndler.isLoadingChart==false" config="highchartsNG"></highchart>-->
+                    <div class="digin-gb-chart-wrap-view-container" ng-include src="selectedChart.view"></div>
+                </div>  
 
                 <div class="digin-gb-row">
                     <div class="panel-header inline-panel-header p-b-0">

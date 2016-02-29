@@ -102,7 +102,7 @@
         return {
             httpSend: function(method, cb, reqUrl, obj) {
                 if (method == "get") {
-                    $http.get(reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=duoworld.duoweb.info', {
+                    $http.get(reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=duosoftware.com', {
                         headers: {}
                     }).
                     success(function(data, status, headers, config) {
@@ -115,7 +115,7 @@
             },
             sendWorker: function(wSrc, wData, cb) {
                 var w = new Worker(wSrc);
-                wData.rUrl = wData.rUrl + "&SecurityToken=" + getCookie("securityToken") + "&Domain=duoworld.duoweb.info";
+                wData.rUrl = wData.rUrl + "&SecurityToken=" + getCookie("securityToken") + "&Domain=duosoftware.com";
                 w.postMessage(JSON.stringify(wData));
                 w.addEventListener('message', function(event) {
                     var res = JSON.parse(event.data.res);

@@ -16,7 +16,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$mdToast', '$animate', '$
 
         //on click login  button - Login user
         $scope.login = function() {
-            $auth.login($scope.txtUname,$scope.txtPwd,"duoworld.duoweb.info");
+            $auth.login($scope.txtUname,$scope.txtPwd,"duosoftware.com");
             
             $auth.onLoginResult(function (event, data) {
                 $scope.isLoggedin = true;

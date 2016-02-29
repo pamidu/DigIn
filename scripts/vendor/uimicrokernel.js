@@ -2435,7 +2435,7 @@
     mkm.factory('$v6urls', function () {
         var host = getHost();
         return {
-            auth: "http://" + host + ":3048",
+            auth: "http://104.197.27.7" + ":3048",
             objectStore: "http://" + host + ":3000",
             fws: "http://" + host + ":4000",
             processDispatcher: "http://" + host + ":5000",

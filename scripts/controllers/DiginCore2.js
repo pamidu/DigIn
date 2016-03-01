@@ -721,7 +721,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                                     point: {
                                         events: {
                                             click: function() {
-                                                alert('rawr');
+                                               
                                             }
                                         }
                                     }

@@ -1192,7 +1192,7 @@ routerApp.controller('elasticInit',['$scope', '$http', '$objectstore', '$mdDialo
 
     $scope.getDrillArray = function() {
         var uniqueScore = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.unique');
-        alert(uniqueScore);
+       
         console.log('unique score:' + uniqueScore);
         for (var key in $scope.mappedArray) {
             if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
@@ -1449,7 +1449,7 @@ routerApp.controller('elasticInit',['$scope', '$http', '$objectstore', '$mdDialo
                 else objArr.push($scope.mappedArray[key].name);
             }
         }
-        alert('get filter fields </hr>' + objArr);
+       
         return objArr;
     };
 
@@ -1626,7 +1626,7 @@ routerApp.controller('metricInit',['$scope', '$http', '$objectstore', '$mdDialog
                     $scope.dataIndicator1 = false;
                 }).
                 error(function(data, status) {
-                    alert("Request failed");
+                  
 
                 });
             } else {
@@ -2769,10 +2769,11 @@ routerApp.controller('D3ForceCtrl', function($rootScope, $scope, $http) {
         }
     };
 });
+ 
 
-routerApp.controller('hnbInit',['$scope', '$rootScope', '$http', '$mdDialog', 'widId', 'Digin_Engine_API',function ($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API) {
+routerApp.controller('hnbInit',['$scope', '$rootScope', '$http', '$mdDialog', 'widId', 'Digin_Engine_API1',function ($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API1) {
 
-    $scope.datasources = ['MSSql']; //temporary
+    $scope.datasources = ['BigQuery']; //temporary
     $scope.widgetValidity = 'elasticValidation'; //validation message visibility                                             
     $scope.query = {};
     $scope.query.state = false;
@@ -2791,13 +2792,13 @@ routerApp.controller('hnbInit',['$scope', '$rootScope', '$http', '$mdDialog', 'w
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
     $scope.widget = $rootScope.dashboard.widgets[objIndex];
 
-    $scope.getTables = function() {
+    $scope.getTables = function () {
 
-        if ($scope.datasource == "MSSql") {
+        if ($scope.datasource == "BigQuery") {
 
             var xhr = new XMLHttpRequest();
 
-            xhr.onreadystatechange = function(e) {
+            xhr.onreadystatechange = function (e) {
                 console.log(this);
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
@@ -2811,39 +2812,40 @@ routerApp.controller('hnbInit',['$scope', '$rootScope', '$http', '$mdDialog', 'w
                     }
                 }
             }
-            xhr.ontimeout = function() {
+            xhr.ontimeout = function () {
                 console.error("request timedout: ", xhr);
             }
-            xhr.open("get", Digin_Engine_API + "GetTables?dataSetName=HutchDialogic&db=MSSQL", /*async*/ true);
+            xhr.open("get", Digin_Engine_API1 + "GetTables?dataSetName=Demo&db=BigQuery", /*async*/ true);
             xhr.send();
         }
     };
-    //check for selected classes
-    $scope.getFields = function() {
 
+
+    //check for selected classes
+    $scope.getFields = function () {
         $scope.selectedFields = [];
-        if ($scope.datasource == "MSSql") {
+        if ($scope.datasource == "BigQuery") {
             if ($scope.selectedClass != null) {
                 $scope.indexType = $scope.selectedClass;
-                //                var fieldData = ($scope.selectedClass.split(':')[1]).split('.');
+//                var fieldData = ($scope.selectedClass.split(':')[1]).split('.');
                 //$scope.bigQueryFieldDetails = fieldData;
                 $scope.dataIndicator1 = true;
 
-                getJSONDataByProperty($http, 'pythonServices', 'name', 'Python', function(data) {
+                getJSONDataByProperty($http, 'pythonServices', 'name', 'Python', function (data) {
                     var requestObj = data[0].getFields;
                     var namespace = localStorage.getItem('srcNamespace');
                     console.log(JSON.stringify(requestObj));
                     var xhr = new XMLHttpRequest();
-                    xhr.onreadystatechange = function(e) {
+                    xhr.onreadystatechange = function (e) {
                         console.log(this);
                         if (xhr.readyState === 4) {
                             if (xhr.status === 200) {
                                 console.log('query response:' + JSON.parse(xhr.response));
                                 var data = JSON.parse(xhr.response);
                                 if (data.length > 0) {
-                                    data.forEach(function(entry) {
+                                    data.forEach(function (entry) {
                                         $scope.selectedFields.push({
-                                            name: entry['Fieldname'],
+                                            name: entry,
                                             checked: false
                                         });
                                     });
@@ -2855,42 +2857,43 @@ routerApp.controller('hnbInit',['$scope', '$rootScope', '$http', '$mdDialog', 'w
                             }
                         }
                     }
-                    xhr.ontimeout = function() {
+                    xhr.ontimeout = function () {
                         console.error("request timedout: ", xhr);
                     }
-                    xhr.open(requestObj.method, requestObj.host + requestObj.request + "?" + requestObj.params[0] + "=HutchDialogic&&" + requestObj.params[1] + "=" + $scope.selectedClass + "&" + requestObj.params[2] + "=MSSQL", /*async*/ true);
+                    xhr.open(requestObj.method, requestObj.host + requestObj.request + "?"
+                        + requestObj.params[0] + "=Demo&&" + requestObj.params[1] + "=" + $scope.selectedClass + "&" + requestObj.params[2] + "=BigQuery", /*async*/ true);
                     xhr.send();
                 });
 
-                //                $http({
-                //                    method: 'GET',
-                //                    url: Digin_Engine_API + 'GetFields?datasetName=HutchDialogic&&tableName=' + $scope.selectedClass,
-                //                }).
-                //                success(function(data, status) {
-                //                    if (data.length > 0) {
-                //                        data.forEach(function(entry) {
-                //                            $scope.selectedFields.push({
-                //                                name: entry,
-                //                                checked: false
-                //                            });
-                //                        });
-                //                        $scope.toggleTab(1);
-                //
-                //                    } else console.log('There are no fields present in the class');
-                //                    $scope.dataIndicator1 = false;
-                //                }).
-                //                error(function(data, status) {
-                //                    alert("Request failed");
-                //
-                //                });
+//                $http({
+//                    method: 'GET',
+//                    url: Digin_Engine_API + 'GetFields?datasetName=Demo&&tableName=' + $scope.selectedClass,
+//                }).
+//                success(function(data, status) {
+//                    if (data.length > 0) {
+//                        data.forEach(function(entry) {
+//                            $scope.selectedFields.push({
+//                                name: entry,
+//                                checked: false
+//                            });
+//                        });
+//                        $scope.toggleTab(1);
+//
+//                    } else console.log('There are no fields present in the class');
+//                    $scope.dataIndicator1 = false;
+//                }).
+//                error(function(data, status) {
+//                    alert("Request failed");
+//
+//                });
             } else {
                 $scope.widgetValidity = 'fade-in';
                 $scope.validationMessage = "Please select a class";
             }
+
         }
     };
-
-    $scope.toggleTab = function(ind) {
+    $scope.toggleTab = function (ind) {
         var tabIndex = '';
         if (typeof ind === 'undefined') tabIndex = $scope.selectedTabIndex;
         else tabIndex = ind;
@@ -2918,9 +2921,9 @@ routerApp.controller('hnbInit',['$scope', '$rootScope', '$http', '$mdDialog', 'w
                 break;
         }
     };
-    //selects fields for non-queried data retrieval
-    $scope.toggleCheck = function(index) {
 
+    //selects fields for non-queried data retrieval
+    $scope.toggleCheck = function (index) {
         index.checked = !index.checked;
         if ($scope.checkedFields.indexOf(index) === -1) {
             $scope.checkedFields.push(index);
@@ -2929,12 +2932,11 @@ routerApp.controller('hnbInit',['$scope', '$rootScope', '$http', '$mdDialog', 'w
         }
     };
 
-    $scope.getData = function() {
+    $scope.getData = function () {
         var w1 = new Worker("scripts/webworkers/bigQueryWorker.js");
 
         $rootScope.hierarchystring = '{';
         if ($scope.checkedFields.length != 0 || typeof $scope.query.value != "undefined") {
-
             $scope.classFields = $scope.checkedFields;
             $scope.classQuery = $scope.query.value;
             $scope.parameter = "";
@@ -2963,14 +2965,15 @@ routerApp.controller('hnbInit',['$scope', '$rootScope', '$http', '$mdDialog', 'w
                 $scope.toggleTab(2);
             };
 
-            if ($scope.datasource == "MSSql") {
-                w1.postMessage($scope.selectedClass + "," + Digin_Engine_API + "," + "HierarchyFields" + "," + $scope.parameter.toString());
+            if ($scope.datasource == "BigQuery") {
+                w1.postMessage($scope.selectedClass + "," + Digin_Engine_API1 + "," + "HierarchyFields" + "," + $scope.parameter.toString());
 
-                w1.addEventListener('message', function(event) {
+                w1.addEventListener('message', function (event) {
                     mapRetrieved(event);
                 });
 
                 $scope.widgetValidity = 'fade-out';
+
             }
         } else {
             if ($scope.query.state) $scope.validationMessage = "Please add a query for data retrieval";
@@ -2994,15 +2997,17 @@ routerApp.controller('hnbInit',['$scope', '$rootScope', '$http', '$mdDialog', 'w
                 $scope.toggleTab(2);
             };
         }
-    };
-    //builds the chart
-    $scope.buildchart = function(widget) {
 
+    };
+
+
+    //builds the chart
+    $scope.buildchart = function (widget) {
         var w2 = new Worker("scripts/webworkers/bigQueryWorker.js");
         var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
         $scope.widget = $rootScope.dashboard.widgets[objIndex];
-        w2.postMessage($scope.selectedClass + "," + Digin_Engine_API + "," + "Hierarchy" + "," + $rootScope.hierarchystring.toString());
-        w2.addEventListener('message', function(event) {
+        w2.postMessage($scope.selectedClass + "," + Digin_Engine_API1 + "," + "Hierarchy" + "," + $rootScope.hierarchystring.toString());
+        w2.addEventListener('message', function (event) {
             hierarchyRetrieved(event);
         });
 
@@ -3012,12 +3017,16 @@ routerApp.controller('hnbInit',['$scope', '$rootScope', '$http', '$mdDialog', 'w
             $scope.widget.widData = $rootScope.hierarchyData;
             console.log($scope.widget.widData);
             $mdDialog.hide();
+
         };
     };
 
-    $scope.cancel = function() {
+
+    $scope.cancel = function () {
         $mdDialog.hide();
     };
+
+
 }]);
 
 routerApp.controller('clockInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope',function ($scope, $http, $mdDialog, widId, $rootScope) {

@@ -1192,7 +1192,7 @@ routerApp.controller('elasticInit',['$scope', '$http', '$objectstore', '$mdDialo
 
     $scope.getDrillArray = function() {
         var uniqueScore = eval('$scope.mappedArray.' + $scope.chartCategory.groupField + '.unique');
-        alert(uniqueScore);
+       
         console.log('unique score:' + uniqueScore);
         for (var key in $scope.mappedArray) {
             if (Object.prototype.hasOwnProperty.call($scope.mappedArray, key)) {
@@ -1449,7 +1449,7 @@ routerApp.controller('elasticInit',['$scope', '$http', '$objectstore', '$mdDialo
                 else objArr.push($scope.mappedArray[key].name);
             }
         }
-        alert('get filter fields </hr>' + objArr);
+       
         return objArr;
     };
 
@@ -1626,7 +1626,7 @@ routerApp.controller('metricInit',['$scope', '$http', '$objectstore', '$mdDialog
                     $scope.dataIndicator1 = false;
                 }).
                 error(function(data, status) {
-                    alert("Request failed");
+                  
 
                 });
             } else {

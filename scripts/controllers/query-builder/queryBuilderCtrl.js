@@ -6,13 +6,12 @@ routerApp.controller('queryBuilderCtrl', function
         ($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state) {
 
     $scope.initQueryBuilder = function(){
-        $scope.selectedChart = $scope.commonData.chartTypes[0];
+        
         if(typeof($scope.sourceData.wid.commonSrc) == "undefined"){
-            privateFun.createHighchartsChart('');
+            $scope.selectedChart = $scope.commonData.chartTypes[0];
+            $scope.highCharts.onInit(false);
         }else{
-            $scope.highchartsNG = $scope.sourceData.wid.highchartsNG;
-            $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
-            delete $scope.highchartsNG.size;
+            $scope.selectedChart = $scope.sourceData.wid.selectedChart;
             $scope.executeQryData.executeMeasures = $scope.sourceData.wid.commonSrc.mea;
             $scope.executeQryData.executeColumns = $scope.sourceData.wid.commonSrc.att;
             $scope.receivedQuery = $scope.sourceData.wid.commonSrc.query;
@@ -253,7 +252,9 @@ routerApp.controller('queryBuilderCtrl', function
                     chart: 'pivotsummary',
                     selected: false, 
                     chartType: 'pivotSummary',
+                    view: 'views/query/chart-views/pivotSummary.html',
                     initObj: $scope.initHighchartObj
+                    
                 },
                 {
                     id: 'ct17',
@@ -471,37 +472,9 @@ routerApp.controller('queryBuilderCtrl', function
                         }
                         break;
                     case '4':
-                        
+                        //save
                         $scope.widget = $scope.sourceData.wid;
-                        eval("$scope."+ $scope.selectedChart.chartType + ".saveWidget($scope.widget)");
-                        //#save
-                        //all config save to main dashboard
-//                        $scope.widget = $scope.sourceData.wid;
-//                        $scope.widget.highchartsNG = $scope.highchartsNG;                        
-//                        $scope.widget.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
-//                        if(typeof $scope.widget.commonSrc == "undefined"){
-//                            $scope.widget.highchartsNG["size"] = {width: 300, height: 220};
-//                            $scope.widget["commonSrc"] = {src:$scope.sourceData,
-//                                                      mea:$scope.executeQryData.executeMeasures,
-//                                                      att:$scope.executeQryData.executeColumns,
-//                                                      query:$scope.receivedQuery};
-//                            $rootScope.dashboard.widgets.push($scope.widget);
-//                        }else{
-//                            $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
-//                            $scope.widget["commonSrc"] = {src:$scope.sourceData,
-//                                                          mea:$scope.executeQryData.executeMeasures,
-//                                                          att:$scope.executeQryData.executeColumns,
-//                                                          query:$scope.receivedQuery};
-//                            var objIndex = getRootObjectById($scope.widget.id, $rootScope.dashboard.widgets);
-//                            $rootScope.dashboard.widgets[objIndex] = $scope.widget;
-//                        }                     
-//                        
-//                        this.isMainLoading = true;
-//                        this.message = this.messageAry[0];
-//                        setTimeout(function () {
-//                            $scope.eventHndler.isMainLoading = false;
-//                            $state.go('home.Dashboards');
-//                        }, 5000);
+                        eval("$scope."+ $scope.selectedChart.chartType + ".saveWidget($scope.widget)");                        
                         break;
                     case '5':
                         //#create query builder
@@ -543,12 +516,13 @@ routerApp.controller('queryBuilderCtrl', function
         
         
         $scope.saveChart = function(widget){
+            widget["selectedChart"] = $scope.selectedChart;
             if(typeof widget.commonSrc == "undefined"){
                 widget.highchartsNG["size"] = {width: 300, height: 220};
                 widget["commonSrc"] = {src:$scope.sourceData,
-                                          mea:$scope.executeQryData.executeMeasures,
-                                          att:$scope.executeQryData.executeColumns,
-                                          query:$scope.receivedQuery};
+                                      mea:$scope.executeQryData.executeMeasures,
+                                      att:$scope.executeQryData.executeColumns,
+                                      query:$scope.receivedQuery};
                 $rootScope.dashboard.widgets.push(widget);
             }else{
                 $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
@@ -570,6 +544,15 @@ routerApp.controller('queryBuilderCtrl', function
 
         //chart functions
         $scope.highCharts = {
+            onInit: function(recon){
+                if (!recon)
+                    $scope.highchartsNG = $scope.selectedChart.initObj;
+                else{
+                    $scope.highchartsNG = $scope.sourceData.wid.highchartsNG;
+                    $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
+                    delete $scope.highchartsNG.size;
+                }                
+            },
             changeType: function(){
                 $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
             },
@@ -620,11 +603,85 @@ routerApp.controller('queryBuilderCtrl', function
             
         }
         
-        $scope.pivotSummary = function(){
-            //all the pivot summary code should go here
-        }
+        $scope.pivotSummary = {
+            changeType: function(){
+                $scope.fieldArray = [];
+
+                for(var i=0; i < $scope.commonData.measures.length; i++){
+                    $scope.fieldArray.push($scope.commonData.measures[i].filedName);
+                }
+                for(var i=0; i < $scope.commonData.columns.length; i++){
+                                    $scope.fieldArray.push($scope.commonData.columns[i].filedName);
+                }
+                console.log($scope.fieldArray);
+                var parameter;
+                $scope.fieldArray.forEach(function (entry) {
+                    if (i == 0) {
+                        parameter = entry
+                    } else {
+                        parameter += "," + entry;
+                    }
+                    i++;
+                });
+
+                var query = "SELECT " + $scope.fieldArray.toString() + " FROM Demo." + $scope.sourceData.tbl;  
+                $scope.client.getExecQuery(query, function(data, status){
+                    $scope.summaryData = data;
+                    //$rootScope.$broadcast('getPivotSummaryData',{sumData: data, fields: $scope.fieldArray});
+//                    $rootScope.pivotSummaryData = data;
+//                    $scope.drawPivotSummary();
+                });
+            },
+            saveWidget: function(wid){
+                wid.widView = "views/query/chart-views/ViewPivotSummary.html";
+                wid.widData.summary = $scope.summaryData;
+                wid.widData.fieldArray = $scope.fieldArray;
+                $scope.saveChart(wid);
+            }
+        };
+    
+        $scope.selectedFields = [];  
+
+        $scope.drawPivotSummary = function(){
+
+            console.log("$scope",$scope);
+
+            $scope.initChart = $scope.commonData.chartTypes[15];
+
+            $scope.selectedFields = $rootScope.pivotSummaryData;
+            $scope.products = [];
+            product = {};
+            for (var i = 0; i <$scope.selectedFields.length; i++) {
+                var data = $scope.selectedFields[i],
+                product = {};
+                for (var j = 0; j < $scope.fieldArray.length; j++) {
+                             var field = $scope.fieldArray[j];
+                             product[field] = data[field];
+                }
+                $scope.products.push(product);
+            }
+
+            var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.gchart_renderers, $.pivotUtilities.d3_renderers);
+            $("#grid").pivotUI($scope.products, {
+                // renderers: renderers,
+                rows: [$scope.selectedFields[0]],
+                cols:[$scope.selectedFields[1]],
+                  
+                // rendererName: "Table"         
+            });
+        
+        } 
         
         $scope.metric = {
+            onInit: function(recon){
+                if (!recon)
+                    $scope.highchartsNG = $scope.selectedChart.initObj;
+                else{
+                    $scope.highchartsNG = $scope.sourceData.wid.highchartsNG;
+                    $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
+                    delete $scope.highchartsNG.size;
+                }                
+            },
             changeType: function(){
                 //$scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
             },
@@ -713,6 +770,7 @@ routerApp.controller('queryBuilderCtrl', function
             }
             
             if($scope.executeQryData.executeColumns.length == 0){
+                alert('test1');
                 var meaArr = executeQryData.executeMeasures;
                 var fieldArr = [];
                 $scope.eventHndler.isLoadingChart=true;
@@ -735,6 +793,7 @@ routerApp.controller('queryBuilderCtrl', function
                 
                 
             }else{
+                alert('test2');
                 $scope.getGroupedAggregation();
             }
             

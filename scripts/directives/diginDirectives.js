@@ -97,3 +97,63 @@ d3.select(window)
       }
   }
 });
+
+
+//pivot summary
+routerApp.directive('pivotSummary', function() {
+
+   return {
+      restrict: 'E',
+      transclude: true,
+      scope: {
+          summary : '=',
+          fields : '='
+      },
+      template: '<div id="grid" style="height:100%; overflow:scroll"></div>',
+      link: function(scope, element) {
+          scope.selectedFields = scope.summary;
+          
+          
+          scope.$watch('summary', function(newValue, oldValue) {
+                if (newValue){
+                    alert(newValue.length);
+                    scope.drawSummary(newValue);
+                }
+            });
+
+          scope.drawSummary = function(summaryData){
+              scope.selectedFields = summaryData;
+                scope.products = [];
+                product = {};
+                for (var i = 0; i <scope.selectedFields.length; i++) {
+                    var data = scope.selectedFields[i],
+                    product = {};
+                    for (var j = 0; j < scope.fields.length; j++) {
+                                 var field = scope.fields[j];
+                                 product[field] = data[field];
+                    }
+                    scope.products.push(product);
+                }
+
+                var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.gchart_renderers, $.pivotUtilities.d3_renderers);
+                $("#grid").pivotUI(scope.products, {
+                    // renderers: renderers,
+                    rows: [scope.selectedFields[0]],
+                    cols:[scope.selectedFields[1]],
+
+                    // rendererName: "Table"         
+                });  
+          }
+          
+          if(typeof scope.selectedFields != "undefined")
+          scope.drawSummary(scope.selectedFields);
+               
+         scope.$on('getPivotSummaryData',function(event, data){
+            console.log('word cloud data:'+JSON.stringify(data.wordData));
+            scope.selectedFields = data.sumData;
+            scope.fields = data.fields;
+            scope.drawSummary();
+         }); 
+      }
+  }
+});

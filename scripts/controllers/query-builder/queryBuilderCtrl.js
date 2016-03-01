@@ -250,9 +250,10 @@ routerApp.controller('queryBuilderCtrl', function
                     id: 'ct16',
                     icon: 'ti-layout-accordion-list',
                     name: 'pivotsummary',
-                    chart: 'pivotsummary',
+                    chart: 'pivotSummary',
                     selected: false, 
                     chartType: 'pivotSummary',
+                    view: 'views/query/chart-views/pivotSummary.html',
                     initObj: $scope.initHighchartObj
                 },
                 {
@@ -619,10 +620,90 @@ routerApp.controller('queryBuilderCtrl', function
         $scope.d3Charts = function(){
             
         }
+
+        var htmlElementPivotSummary;
         
-        $scope.pivotSummary = function(){
-            //all the pivot summary code should go here
+        $scope.pivotSummary = {
+
+            changeType: function(){
+                $scope.fieldArray = [];
+
+                for(var i=0; i < $scope.commonData.measures.length; i++){
+                    $scope.fieldArray.push($scope.commonData.measures[i].filedName);
+                }
+                for(var i=0; i < $scope.commonData.columns.length; i++){
+                                    $scope.fieldArray.push($scope.commonData.columns[i].filedName);
+                }
+                console.log($scope.fieldArray);
+                var parameter;
+                $scope.fieldArray.forEach(function (entry) {
+                    if (i == 0) {
+                        parameter = entry
+                    } else {
+                        parameter += "," + entry;
+                    }
+                    i++;
+                });
+
+                var query = "SELECT " + $scope.fieldArray.toString() + " FROM Demo." + $scope.sourceData.tbl;  
+                $scope.client.getExecQuery(query, function(data, status){
+                    $rootScope.pivotSummaryData = data;
+                    $scope.drawPivotSummary();
+                });
+
+            },
+            saveWidget: function(widget){
+                htmlElementPivotSummary  = document.getElementsByTagName("table")[0];;
+                console.log("htmlElementPivotSummary",htmlElementPivotSummary);
+                widget.highchartsNG["size"] = {width: 300, height: 220};
+                widget.uniqueType = "Pivot Summary";
+                widget.widView = "views/query/chart-views/pivotSummary.html";
+                $rootScope.dashboard.widgets.push(widget);
+                console.log("widget", widget);
+
+                $scope.eventHndler.isMainLoading = true;
+                $scope.eventHndler.message = $scope.eventHndler.messageAry[0];
+                
+                $state.go('home.Dashboards');
+                setTimeout(function(){
+                    document.getElementById("grid").appendChild(htmlElementPivotSummary);
+                },500);
+                
+                                
+            }
+            
         }
+        $scope.selectedFields = [];  
+
+        $scope.drawPivotSummary = function(){
+
+            console.log("$scope",$scope);
+
+            $scope.initChart = $scope.commonData.chartTypes[15];
+
+            $scope.selectedFields = $rootScope.pivotSummaryData;
+            $scope.products = [];
+            product = {};
+            for (var i = 0; i <$scope.selectedFields.length; i++) {
+                var data = $scope.selectedFields[i],
+                product = {};
+                for (var j = 0; j < $scope.fieldArray.length; j++) {
+                             var field = $scope.fieldArray[j];
+                             product[field] = data[field];
+                }
+                $scope.products.push(product);
+            }
+
+            var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.gchart_renderers, $.pivotUtilities.d3_renderers);
+            $("#grid").pivotUI($scope.products, {
+                // renderers: renderers,
+                rows: [$scope.selectedFields[0]],
+                cols:[$scope.selectedFields[1]],
+                  
+                // rendererName: "Table"         
+            });
+        
+        }   
         
         $scope.metric = {
             changeType: function(){

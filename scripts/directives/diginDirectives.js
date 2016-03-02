@@ -111,12 +111,10 @@ routerApp.directive('pivotSummary', function() {
       },
       template: '<div id="grid" style="height:100%; overflow:scroll"></div>',
       link: function(scope, element) {
-          scope.selectedFields = scope.summary;
-          
+          scope.selectedFields = scope.summary;          
           
           scope.$watch('summary', function(newValue, oldValue) {
                 if (newValue){
-                    alert(newValue.length);
                     scope.drawSummary(newValue);
                 }
             });

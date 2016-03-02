@@ -2312,7 +2312,6 @@ routerApp.controller('adsenseInit',['widId', '$scope', '$http', '$rootScope', '$
 }]);
 
 routerApp.controller('calendarInit',['widId', '$scope', '$http', '$rootScope', '$mdDialog', '$compile', '$timeout', 'uiCalendarConfig',function (widId, $scope, $http, $rootScope, $mdDialog, $compile, $timeout, uiCalendarConfig) {
-
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
     var date = new Date();
@@ -2374,7 +2373,7 @@ routerApp.controller('calendarInit',['widId', '$scope', '$http', '$rootScope', '
 
     $scope.authorize = function() {
         var config = {
-            'client_id': '774419948210-c4k8kdkf235pldvp6g8h8a6mnb58qpfm.apps.googleusercontent.com',
+            'client_id': '140016159778-94lb00ckgkkcghbcclae8dg36r16mm4t.apps.googleusercontent.com',
             'scope': 'https://www.googleapis.com/auth/calendar'
         };
         gapi.auth.authorize(config, function() {

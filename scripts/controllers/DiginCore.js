@@ -50,6 +50,17 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         $('#pagePreLoader').hide();
 
         localStorage.setItem('username', "admin");
+        
+        $('#content1').on('mousedown', function(e) {
+            if(e.target.className == "pvtAttr"){
+                
+                var widgetsCount = $('.gridster-item').length;
+                for(var i = 0; i < widgetsCount; i++){
+                
+                    $('.gridster-item')[i].className = "digin-widget ng-scope gridster-item";
+                }   
+            }
+        });
 
         // if($rootScope.tempDashboard.length != 0)
         $rootScope.tempDashboard = angular.copy($rootScope.dashboard);

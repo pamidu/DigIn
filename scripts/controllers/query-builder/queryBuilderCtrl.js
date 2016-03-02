@@ -12,6 +12,7 @@ routerApp.controller('queryBuilderCtrl', function
             $scope.highCharts.onInit(false);
         }else{
             $scope.selectedChart = $scope.sourceData.wid.selectedChart;
+            eval("$scope."+ $scope.selectedChart.chartType + ".onInit(true)");
             $scope.executeQryData.executeMeasures = $scope.sourceData.wid.commonSrc.mea;
             $scope.executeQryData.executeColumns = $scope.sourceData.wid.commonSrc.att;
             $scope.receivedQuery = $scope.sourceData.wid.commonSrc.query;
@@ -604,6 +605,9 @@ routerApp.controller('queryBuilderCtrl', function
         }
         
         $scope.pivotSummary = {
+            onInit: function(recon){
+                
+            },
             changeType: function(){
                 $scope.fieldArray = [];
 
@@ -627,13 +631,10 @@ routerApp.controller('queryBuilderCtrl', function
                 var query = "SELECT " + $scope.fieldArray.toString() + " FROM Demo." + $scope.sourceData.tbl;  
                 $scope.client.getExecQuery(query, function(data, status){
                     $scope.summaryData = data;
-                    //$rootScope.$broadcast('getPivotSummaryData',{sumData: data, fields: $scope.fieldArray});
-//                    $rootScope.pivotSummaryData = data;
-//                    $scope.drawPivotSummary();
                 });
             },
             saveWidget: function(wid){
-                wid.widView = "views/query/chart-views/ViewPivotSummary.html";
+                wid.widView = "views/ViewPivotSummary.html";
                 wid.widData.summary = $scope.summaryData;
                 wid.widData.fieldArray = $scope.fieldArray;
                 $scope.saveChart(wid);
@@ -674,13 +675,8 @@ routerApp.controller('queryBuilderCtrl', function
         
         $scope.metric = {
             onInit: function(recon){
-                if (!recon)
-                    $scope.highchartsNG = $scope.selectedChart.initObj;
-                else{
-                    $scope.highchartsNG = $scope.sourceData.wid.highchartsNG;
-                    $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
-                    delete $scope.highchartsNG.size;
-                }                
+                $scope.selectedChart.initObj = {value: $scope.sourceData.wid.widData.value,
+                                                label: $scope.sourceData.wid.widData.label};
             },
             changeType: function(){
                 //$scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
@@ -770,7 +766,6 @@ routerApp.controller('queryBuilderCtrl', function
             }
             
             if($scope.executeQryData.executeColumns.length == 0){
-                alert('test1');
                 var meaArr = executeQryData.executeMeasures;
                 var fieldArr = [];
                 $scope.eventHndler.isLoadingChart=true;
@@ -793,7 +788,6 @@ routerApp.controller('queryBuilderCtrl', function
                 
                 
             }else{
-                alert('test2');
                 $scope.getGroupedAggregation();
             }
             

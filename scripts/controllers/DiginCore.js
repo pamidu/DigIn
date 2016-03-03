@@ -44,8 +44,8 @@ routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
         $mdDialog.hide();
     };
 });
-routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', 'DynamicVisualization','$csContainer','$state',
-    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, DynamicVisualization, $csContainer, $state) {
+routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', 'DynamicVisualization','$csContainer','$state','$qbuilder',
+    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, DynamicVisualization, $csContainer, $state, $qbuilder) {
 
         $('#pagePreLoader').hide();
 
@@ -278,10 +278,17 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
          @widget : widget that need to get updated
          */
         $scope.syncWidget = function (widget) {
+            
             console.log('syncing...');
             if (typeof widget.widConfig != 'undefined') {
-                widget.syncState = false;
+                
                 DynamicVisualization.syncWidget(widget, function (data) {
+                    widget.syncState = true;
+                    widget = data;
+                });
+            }else if(typeof(widget.commonSrc) != "undefined"){
+                widget.syncState = false;
+                $qbuilder.sync(widget, function(data){
                     widget.syncState = true;
                     widget = data;
                 });

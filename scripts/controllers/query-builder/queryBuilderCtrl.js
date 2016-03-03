@@ -501,7 +501,7 @@ routerApp.controller('queryBuilderCtrl', function
                 $scope.executeQryData.chartType = onSelect.chart;
                 $scope.chartType = onSelect.chart;
                 
-                if($scope.selectedChart != onSelect){
+                if($scope.selectedChart.chartType != onSelect.chartType){
                     $scope.executeQryData.executeColumns = [];
                     $scope.executeQryData.executeMeasures = [];
                 }

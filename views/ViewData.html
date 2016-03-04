@@ -1,0 +1,18 @@
+<md-content>
+      <md-input-container class="md-icon-float md-block width100percent">
+        <label>Filter</label>
+        <input type="text" ng-model="query" ng-change="updateFilteredList(query)">
+    </md-input-container>
+    <table class="table table-striped" at-table at-list="tableData" at-config="config" at-paginated>
+      <thead>
+        <tr><th at-attribute={{field}} ng-repeat="field in fieldData">{{field}}</th></tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in tableData">
+          <td at-implicit at-sortable at-attribute={{field}} ng-repeat="field in fieldData"></td>
+        </tr>
+      </tbody>
+    </table>
+    <at-pagination class="custom-pagination" at-list="tableData" at-config="config"></at-pagination>
+</md-content>
+ 

@@ -50,16 +50,6 @@
             "color": "#9C27B0",
             "sizeX": 4, "sizeY": 4, "row": 0, "col": 16
         }, {
-            "title": "D3 Plugin",
-            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
-            "type": "Visualization",
-            "Description": "Build your dream Visualization",
-            "initTemplate": "views/InitConfigD3.html",
-            "initController": "InitConfigD3",
-            "widView": "views/ViewD3.html",
-            "color": "#00BCD4",
-            "sizeX": 4, "sizeY": 4, "row": 0, "col": 20
-        }, {
             "title": "Facebook Pages",
             "icon": "styles/css/images/icons/facebook.svg",
             "type": "Social Media",
@@ -139,42 +129,6 @@
             "widView": "views/ViewLinkedIn.html",
             "color": "#607D8B",
             "sizeX": 4, "sizeY": 4, "row": 1, "col": 12
-        }, {
-            "title": "Dynamic visuals",
-            "icon": "styles/css/images/icons/ic_av_timer_24px.svg",
-            "type": "Visualization",
-            "Description": " Build your dream visualization from any datasource",
-            "initTemplate": "views/InitConfigElastic.html",
-            "initController": "elasticInit",
-            "widView": "views/ViewElasticSearch.html",
-            "dataView": "ViewElasticData",
-            "dataCtrl": "elasticDataCtrl",
-            "color": "#CDDC39",
-            "sizeX": 4, "sizeY": 4, "row": 1, "col": 16
-        }, {
-            "title": "Real Time",
-            "icon": "styles/css/images/icons/ic_av_timer_24px.svg",
-            "type": "Visualization",
-            "Description": " Build your dream visualization from any datasource",
-            "initTemplate": "views/InitConfigRealTime.html",
-            "initController": "realtimeInit",
-            "widView": "views/ViewRealTime.html",
-            "dataView": "ViewElasticData",
-            "dataCtrl": "elasticDataCtrl",
-            "color": "#3F51B5",
-            "sizeX": 4, "sizeY": 4, "row": 1, "col": 20
-        }, {
-            "title": "Metrics",
-            "icon": "styles/css/images/icons/ic_av_timer_24px.svg",
-            "type": "Visualization",
-            "Description": "Simple  calculation metric" ,
-            "initTemplate": "views/InitConfigMetric.html",
-            "initController": "metricInit",
-            "widView": "views/ViewMetrics.html",
-            "dataView": "ViewElasticData",
-            "dataCtrl": "elasticDataCtrl",
-            "color": "#9C27B0",
-            "sizeX": 4, "sizeY": 4, "row": 2, "col": 0
         }, {
             "title": "Youtube",
             "icon": "styles/css/images/icons/youtube.svg",

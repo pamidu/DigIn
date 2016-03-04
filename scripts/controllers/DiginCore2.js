@@ -118,8 +118,8 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
     }
 ]);
 
-routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '$rootScope', 'ScopeShare', '$filter',
-    function($scope, $http, $mdDialog, $rootScope, ScopeShare, $filter){
+routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '$rootScope', 'ScopeShare', '$filter', '$diginengine',
+    function($scope, $http, $mdDialog, $rootScope, ScopeShare, $filter, $diginengine){
 
         // ====== angular-table configuration ========
         $scope.config = {
@@ -146,45 +146,61 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
         }
 
         $scope.initialize = function(){
-
             $scope.dataViewPath = $rootScope.widget.dataView;
+            console.log( "$rootScope.widget.dataView", $rootScope.widget.dataView);
             //if widget is google maps
-            if($rootScope.widget.uniqueType == "Google Maps Branches" || $rootScope.widget.uniqueType == "Google Maps Claims"){
+            switch($rootScope.widget.uniqueType){
+                case "Dynamic Visuals":
+                    
+                    var query = $rootScope.widget.commonSrc.query;
+                    $scope.client = $diginengine.getClient($rootScope.widget.commonSrc.src.src);
+                    $scope.client.getExecQuery(query, function(data, status){
+                        $scope.tableData = data;
+                        $scope.originalList = $scope.tableData;
+                        $scope.fieldData = [];
+                        for(var key in $scope.tableData[0]){
+                            $scope.fieldData.push(key);
+                        }
+                    });
 
-                //get markers data for branch data
-                if (ScopeShare.get('gmapsControllerBranch') != undefined) {
-
+                break;
+                case "Google Maps Branches":
                     JSONData = ScopeShare.get('gmapsControllerBranch');
                     if (JSONData) {
                         JsonToArray();
                     }
-                }
-                //get markers data for branch data
-                if (ScopeShare.get('gmapsControllerClaim') != undefined) {
-
+                break;
+                case "Google Maps Claims":
                     JSONData = ScopeShare.get('gmapsControllerClaim');
                     if (JSONData) {
                         JsonToArray();
                     }
-                }
-            }
-            if($rootScope.widget.uniqueType == "Skill wise summary"){
+                break;
+                case "Skill wise summary":
+                    $http.get('views/graph.json').success(function (data) {
+                        
+                        JSONData = data;
+                        if (JSONData) {
+                            JsonToArray();
+                        }
+                    });   
+                break;
+                case "Pivot Summary":
 
-                $http.get('views/graph.json').success(function (data) {
-                    console.log("graph data skill wise summary");
-                    console.log("data");
-                    JSONData = data;
-                    if (JSONData) {
-                        JsonToArray();
-                }
+                    $scope.tableData = $rootScope.widget.widData.summary;
+                    $scope.originalList = $scope.tableData;
+                    $scope.fieldData = $rootScope.widget.widData.fieldArray;
 
-                });                   
+                break;
+                default:
+
+                break;
             }
-            
+
         }
 
         $scope.updateFilteredList = function(query) {
-            $scope.dataTable = $filter("filter")($scope.originalList, query);
+            $scope.tableData = $filter("filter")($scope.originalList, query);
         };
 
         $scope.close = function() {

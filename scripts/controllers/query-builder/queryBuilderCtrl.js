@@ -517,6 +517,8 @@ routerApp.controller('queryBuilderCtrl', function
         
         
         $scope.saveChart = function(widget){
+            widget.dataCtrl = "widgetSettingsDataCtrl";
+            widget.dataView = "views/ViewData.html";
             widget["selectedChart"] = $scope.selectedChart;
             if(typeof widget.commonSrc == "undefined"){
                 widget.highchartsNG["size"] = {width: 300, height: 220};
@@ -595,7 +597,9 @@ routerApp.controller('queryBuilderCtrl', function
             },
             saveWidget: function(wid){
                 wid.highchartsNG = $scope.highchartsNG;
+                wid.uniqueType = "Dynamic Visuals";
                 wid.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
+                wid.initCtrl = "elasticInit";
                 $scope.saveChart(wid);
             }
         };
@@ -634,9 +638,11 @@ routerApp.controller('queryBuilderCtrl', function
                 });
             },
             saveWidget: function(wid){
-                wid.widView = "views/ViewPivotSummary.html";
-                wid.widData.summary = $scope.summaryData;
-                wid.widData.fieldArray = $scope.fieldArray;
+                wid.widView = "views/ViewPivotSummary.html";        
+                wid.widData.summary = $scope.summaryData;       
+                wid.widData.fieldArray = $scope.fieldArray;          
+                wid.uniqueType = "Pivot Summary";
+                wid.initCtrl="";
                 $scope.saveChart(wid);
             }
         };

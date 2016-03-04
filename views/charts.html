@@ -21,24 +21,11 @@
                                  data source details view
                             -->
                             <!-- mapped data view -->
-                            <md-button class="widget-button"
-                                       ng-click="currentSourceView($event,widget)">
-                                <ng-md-icon icon="info_outline" style="fill:dimgrey" size="20"
-                                            layout="column"
-                                            layout-align="center center" flex>
-                                </ng-md-icon>
-                                <md-tooltip md-direction="left">source</md-tooltip>
-                            </md-button>
-                            <md-button class="widget-button" ng-if="widget.initCtrl=='elasticInit' || 'metricInit'"
+                            <md-button class="widget-button" ng-show="widget.initCtrl=='elasticInit' || widget.initCtrl=='metricInit'"
                                        ng-click="syncWidget(widget)">
                                 <ng-md-icon icon="sync" style="fill:dimgrey" size="20" layout="column"
                                             layout-align="center center" flex></ng-md-icon>
                                 <md-tooltip md-direction="left">sync</md-tooltip>
-                            </md-button>
-                            <md-button class="widget-button" ng-click="showAdvanced($event,widget)">
-                                <ng-md-icon icon="settings" style="fill:dimgrey" size="20" layout="column"
-                                            layout-align="center center" flex></ng-md-icon>
-                                <md-tooltip md-direction="left">settings</md-tooltip>
                             </md-button>
                             <md-button class="widget-button" ng-click="showWidget($event,widget)">
                                 <ng-md-icon icon="fullscreen" style="fill:dimgrey" size="20" layout="column"

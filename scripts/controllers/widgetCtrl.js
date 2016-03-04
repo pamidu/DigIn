@@ -2312,7 +2312,6 @@ routerApp.controller('adsenseInit',['widId', '$scope', '$http', '$rootScope', '$
 }]);
 
 routerApp.controller('calendarInit',['widId', '$scope', '$http', '$rootScope', '$mdDialog', '$compile', '$timeout', 'uiCalendarConfig',function (widId, $scope, $http, $rootScope, $mdDialog, $compile, $timeout, uiCalendarConfig) {
-
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
     var date = new Date();

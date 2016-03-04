@@ -37,18 +37,6 @@
 
 }
 
-.digin-logo {
-    background: #00a9ed; /* Old browsers */
-    background: -moz-linear-gradient(top, #00a9ed 0%, #01718d 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, #00a9ed 0%, #01718d 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, #00a9ed 0%, #01718d 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00a9ed', endColorstr='#01718d', GradientType=0);
-}
-
-.digin-logo-wrapper {
-    background-color: #fff !important;
-}
-
 .signup {
     background: #EC784B; /* Old browsers */
     background: -moz-linear-gradient(top, #F69563 0%, #F1702E 100%); /* FF3.6-15 */
@@ -181,7 +169,7 @@
     background-image: linear-gradient(to right, transparent 50%, #F5F5F5 50%);
 }
 
-.activeBtn {
+.active {
     color: #EC784B;
     brackground-color: transparent;
     border: 1px solid #EC784B;
@@ -519,7 +507,7 @@
 .sign-in-link > a {
     color: #FFFBF9;
     border-radius: 15px;
-    border: 2px solid #fff;
+    border: 2px solid #F06F2D;
 }
 
 .welcome-link > a {
@@ -540,6 +528,7 @@
     cursor: pointer;
     z-index: 1000;
 }
+
 
 
 

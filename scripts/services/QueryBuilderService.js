@@ -12,6 +12,7 @@ routerApp.service('$qbuilder',function($diginengine){
     
     Widget.prototype = {
         sync: function(wid, cb) {
+            //console.log("wid object:"+JSON.stringify(wid));
             var q = wid.commonSrc.query;
             var db = wid.commonSrc.src.src;
             var cl = $diginengine.getClient(db);    

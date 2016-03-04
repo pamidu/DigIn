@@ -182,7 +182,7 @@
     background-position: -100% 100%;
 }
 
-.login-bdy .active:hover {
+.login-bdy .activeBtn:hover {
     color: rgba(255, 255, 255, 1);
     background-color: #EC784B;
     background-position: -100% 100%;

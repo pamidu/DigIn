@@ -1,0 +1,46 @@
+{
+    "d": [{
+            "title": "Dashboards",
+            "icon1": "bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg",
+            "icon2": "dashboard",
+            "state": true,
+            "stateStr": "Enabled"
+        }, {
+
+            "title": "Reports",
+            "icon1": "bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg",
+            "icon2": "description",
+            "state": true,
+            "stateStr": "Enabled"
+        }, {
+
+            "title": "Analytics",
+            "icon1": "bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg",
+            "icon2": "assessment",
+            "state": false,
+            "stateStr": "Enabled"
+        }, {
+
+            "title": "RealTime",
+            "icon1": "bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg",
+            "icon2": "trending_up",
+            "state": true,
+            "stateStr": "Enabled"
+        }, {
+
+            "title": "Digin P Stack",
+            "icon1": "bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg",
+            "icon2": "reorder",
+            "state": true,
+            "stateStr": "Enabled"
+        },
+        {
+
+            "title": "D3plugins",
+            "icon1": "bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg",
+            "icon2": "radio_button_on",
+            "state": true,
+            "stateStr": "Enabled"
+        }
+    ]
+}

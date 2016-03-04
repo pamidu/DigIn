@@ -641,14 +641,14 @@ drb >> dynamically report builder
 .chart-config-wrap {
     padding: 20px;
     overflow: hidden;
-    height: 350px;
+    /*height: 350px;*/
     margin-right: 15px;
 }
 
 .chart-config-wrap-rw1 {
     padding: 0px 0px 17px 17px;
     overflow: hidden;
-    height: 350px;
+    /*height: 350px;*/
     overflow: hidden;
 }
 
@@ -1380,6 +1380,109 @@ md-checkbox.md-checked .md-icon {
     width: 100%;
     height: calc(85vh);
     overflow: hidden;
+}
+
+.panel-wrap .panel-header {
+    padding: 15px 0px;
+}
+
+.panel-header > h2 {
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #ECECEC;
+}
+
+.panel-wrap .panel-filter,
+.panel-wrap .panel-filter .date-filter {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.inline-date {
+    display: inline-block;
+    width: 120px;
+}
+
+.panel-wrap .panel-filter > select {
+    width: 100%;
+}
+
+.panel-wrap .panel-filter > input,
+.panel-wrap .panel-filter .date-filter .inline-date > input {
+    background: transparent !important;
+    background-image: none !important;
+    border: 2px solid #F5F5F5;
+    border-radius: 7px;
+    height: 40px;
+}
+
+.panel-wrap .panel-filter > input::-webkit-input-placeholder,
+.panel-wrap .panel-filter .inline-date > input::-webkit-input-placeholder {
+    color: #EEEEEE;
+}
+
+.panel-wrap .panel-filter .date-filter .inline-date > input:hover,
+.panel-wrap .panel-filter > input:focus {
+    border: solid #EC784B 2px;
+}
+
+.select2-container--default .select2-selection--multiple {
+    background-color: white;
+    border: 2px solid #F5F5F5;
+    border-radius: 4px;
+    cursor: text;
+    height: 40px;
+}
+
+.select2-container--default .select2-selection--single {
+    background-color: #fff;
+    border: 2px solid #F5F5F5;
+    border-radius: 4px;
+    height: 40px;
+    padding-top: 4px;
+}
+
+.select2-container--default .select2-selection--single
+.select2-selection__arrow {
+    height: 26px;
+    position: absolute;
+    top: 6px;
+    right: 5px;
+    width: 20px;
+}
+
+.select2-dropdown {
+    border: 2px solid #F5F5F5;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: solid #EC784B 2px;
+    outline: 0;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #EC784B;
+    border: 1px solid #EC784B;
+    border-radius: 4px;
+    color: #ffffff;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #fff;
+    margin-right: 5px;
+    margin-left: 2px;
+}
+
+.panel-wrap .panel-filter > label,
+.panel-wrap .panel-filter .inline-date > label {
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    text-transform: uppercase;
+    float: left;
+    width: 100%;
 }
 
 /***************************** Element Selection *****************************/

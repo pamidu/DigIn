@@ -6,7 +6,7 @@ routerApp.controller('queryBuilderCtrl', function
         ($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state) {
 
     $scope.initQueryBuilder = function(){
-        
+            $scope.widget = $scope.sourceData.wid;
         if(typeof($scope.sourceData.wid.commonSrc) == "undefined"){
             $scope.selectedChart = $scope.commonData.chartTypes[0];
             $scope.highCharts.onInit(false);
@@ -325,7 +325,7 @@ routerApp.controller('queryBuilderCtrl', function
                 {isStructuret: false},
                 {isSerSetting: false}
             ],
-            messageAry: ['Please wait while the data is saving..'],
+            messageAry: ['Please wait while the data is saving...'],
             message: '',
             isChartSelected: false,
             onToggleEvent: function (event) {
@@ -508,10 +508,6 @@ routerApp.controller('queryBuilderCtrl', function
                 $scope.selectedChart = onSelect;
                 eval("$scope."+ $scope.selectedChart.chartType + ".changeType()");
                 //privateFun.createHighchartsChart(onSelect.chart);
-            },
-            onSaveChartConfig: function () {
-
-
             }
         }//end event function
         
@@ -969,5 +965,6 @@ routerApp.controller('queryBuilderCtrl', function
         }
     };
 });
+
 
 

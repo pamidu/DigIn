@@ -1,9 +1,6 @@
 <md-content ng-show="widget.syncState" flex style="padding-top:20px;">
 	<highchart flex id="{{widget.id}}"  config="widget.highchartsNG"></highchart>
-<!--   <div id="{{widget.id}}" style="min-width: 310px; height: 400px; margin: 0 auto"></div>-->
 </md-content>
 <div ng-hide="widget.syncState" layout="row" layout-sm="column" layout-align="center center" style="height:100%;width:100%;">
-    <!-- <md-progress-circular md-mode="indeterminate" md-diameter="50"></md-progress-circular> -->
-    <!-- <md-progress-linear md-mode="indeterminate"></md-progress-linear> -->
     <img src="styles/css/images/preloaders/facebook.gif" alt="Washed Out">
 </div>

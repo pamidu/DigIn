@@ -326,10 +326,14 @@
                             <div class = "editable-query">
                                 <span ng-hide= "queryEditState">{{receivedQuery}}</span>
                                 <div layout="row" ng-show= "queryEditState">
-                                    <md-input-container flex>
+                                    <md-input-container class="md-block" flex>
+                                      <label>Query</label>
+                                      <textarea ng-model="receivedQuery" md-select-on-focus></textarea>
+                                    </md-input-container>
+                                    <!-- <md-input-container flex>
                                         <label>Query</label>
                                         <input ng-model="receivedQuery">
-                                    </md-input-container>
+                                    </md-input-container> -->
                                     <md-button md-no-ink ng-click="getExecuteAgg(receivedQuery)" class="md-primary">go</md-button>
                                 </div>                                
                             </div>
@@ -448,7 +452,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- Series settings panel -->
+                <!-- Series settings panels -->
                 <div class="digin-bq-chart-rw1 p-15"
                      id="toggleSerSettingsPanel">
                     <div class="header">
@@ -457,7 +461,7 @@
                         </h4>
                     </div>
                     <div class="chart-config-wrap-rw1 animated fadeIn">
-                        <div class="chart-config-wrap">                            
+                        <div ng-show="selectedChart.chartType == 'highCharts'" class="chart-config-wrap">                            
                             <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
                                          onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
                                 <v-pane ng-repeat="series in highchartsNG.series" class="v-pane">
@@ -484,8 +488,18 @@
                             <md-input-container flex>
                                 <label>Y axis</label>
                                 <input ng-model="highchartsNG.yAxis.title.text">
-                            </md-input-container>
+                            </md-input-container>                            
                         </div>
+                        <div ng-show="selectedChart.chartType == 'metric'" class="chart-config-wrap">                            
+                            <md-input-container flex>
+                                <label>Label text</label>
+                                <input ng-model="selectedChart.initObj.label">
+                            </md-input-container>                           
+                        </div>
+                        <md-input-container flex>
+                            <label>Widget Title</label>
+                            <input ng-model="widget.uniqueType">
+                        </md-input-container>
                     </div>
                 </div>
             </div>

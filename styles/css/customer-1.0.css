@@ -608,6 +608,12 @@ drb >> dynamically report builder
     border-left: 3px solid #ECECEC;
 }
 
+.digin-gb-chart-wrap-view-container {
+    width: 100%;
+    height: calc(55vh);
+    background: #ffffff;
+}
+
 .chart-config-panel {
     height: 450px;
     width: 280px;
@@ -635,14 +641,14 @@ drb >> dynamically report builder
 .chart-config-wrap {
     padding: 20px;
     overflow: hidden;
-    height: 350px;
+    /*height: 350px;*/
     margin-right: 15px;
 }
 
 .chart-config-wrap-rw1 {
     padding: 0px 0px 17px 17px;
     overflow: hidden;
-    height: 350px;
+    /*height: 350px;*/
     overflow: hidden;
 }
 
@@ -1216,6 +1222,7 @@ span {
 .digin-drb-wrap .report {
     display: block;
     width: 100%;
+    height: 650px;
 }
 
 .report > .data-state {
@@ -1251,7 +1258,7 @@ span {
 
 .optional-panel {
     background: #ffffff;
-    min-height: 700px;
+    min-height: calc(100vh);
     position: relative;
     width: 100%;
     max-height: 1000px;
@@ -1259,11 +1266,11 @@ span {
 }
 
 .optional-panel > .btn-wrap {
-    position: fixed;
-    bottom: 0;
+    position: absolute;
+    bottom: 55px;
     left: 0;
     height: 60px;
-    width: 398px;
+    width: calc(41vh);
     text-align: center;
     background-color: #026689;
     padding: 16px;
@@ -1371,8 +1378,111 @@ md-checkbox.md-checked .md-icon {
 .optional-panel .panel-wrap {
     position: relative;
     width: 100%;
-    height: 515px;
+    height: calc(85vh);
     overflow: hidden;
+}
+
+.panel-wrap .panel-header {
+    padding: 15px 0px;
+}
+
+.panel-header > h2 {
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #ECECEC;
+}
+
+.panel-wrap .panel-filter,
+.panel-wrap .panel-filter .date-filter {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.inline-date {
+    display: inline-block;
+    width: 120px;
+}
+
+.panel-wrap .panel-filter > select {
+    width: 100%;
+}
+
+.panel-wrap .panel-filter > input,
+.panel-wrap .panel-filter .date-filter .inline-date > input {
+    background: transparent !important;
+    background-image: none !important;
+    border: 2px solid #F5F5F5;
+    border-radius: 7px;
+    height: 40px;
+}
+
+.panel-wrap .panel-filter > input::-webkit-input-placeholder,
+.panel-wrap .panel-filter .inline-date > input::-webkit-input-placeholder {
+    color: #EEEEEE;
+}
+
+.panel-wrap .panel-filter .date-filter .inline-date > input:hover,
+.panel-wrap .panel-filter > input:focus {
+    border: solid #EC784B 2px;
+}
+
+.select2-container--default .select2-selection--multiple {
+    background-color: white;
+    border: 2px solid #F5F5F5;
+    border-radius: 4px;
+    cursor: text;
+    height: 40px;
+}
+
+.select2-container--default .select2-selection--single {
+    background-color: #fff;
+    border: 2px solid #F5F5F5;
+    border-radius: 4px;
+    height: 40px;
+    padding-top: 4px;
+}
+
+.select2-container--default .select2-selection--single
+.select2-selection__arrow {
+    height: 26px;
+    position: absolute;
+    top: 6px;
+    right: 5px;
+    width: 20px;
+}
+
+.select2-dropdown {
+    border: 2px solid #F5F5F5;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: solid #EC784B 2px;
+    outline: 0;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #EC784B;
+    border: 1px solid #EC784B;
+    border-radius: 4px;
+    color: #ffffff;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #fff;
+    margin-right: 5px;
+    margin-left: 2px;
+}
+
+.panel-wrap .panel-filter > label,
+.panel-wrap .panel-filter .inline-date > label {
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    text-transform: uppercase;
+    float: left;
+    width: 100%;
 }
 
 /***************************** Element Selection *****************************/
@@ -1604,3 +1714,125 @@ md-checkbox.md-checked .md-icon {
         height: 0%;
     }
 }
+
+/*iframe style */
+.report > iframe {
+    border: 2px solid #ECECEC;
+}
+
+/* UI date picker */
+.ui-datepicker {
+    background-color: #fff;
+    border: 2px solid #EC784B;
+    border-radius: 4px;
+    display: none;
+    padding: 10px;
+    width: 240px;
+    margin-top: 10px;
+    margin-left: 12px;
+}
+
+.ui-datepicker a,
+.ui-datepicker a:hover {
+    text-decoration: none;
+}
+
+.ui-datepicker a:hover,
+.ui-datepicker td:hover a {
+    color: #2A6496;
+    -webkit-transition: color 0.1s ease-in-out;
+    -moz-transition: color 0.1s ease-in-out;
+    -o-transition: color 0.1s ease-in-out;
+    transition: color 0.1s ease-in-out;
+}
+
+.ui-datepicker .ui-datepicker-header {
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.ui-datepicker .ui-datepicker-title {
+    font-weight: 200;
+    font-family: 'Ek Mukta', sans-serif;
+}
+
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-next {
+    cursor: default;
+    font-family: 'themify';
+    -webkit-font-smoothing: antialiased;
+    font-style: normal;
+    font-weight: normal;
+    height: 20px;
+    line-height: 1;
+    margin-top: 2px;
+    width: 30px;
+}
+
+.ui-datepicker .ui-datepicker-prev {
+    float: left;
+    text-align: left;
+}
+
+.ui-datepicker .ui-datepicker-next {
+    float: right;
+    text-align: right;
+}
+
+.ui-datepicker .ui-datepicker-prev:before {
+    content: "\e64a";
+}
+
+.ui-datepicker .ui-datepicker-next:before {
+    content: "\e649";
+}
+
+.ui-datepicker .ui-icon {
+    display: none;
+}
+
+.ui-datepicker .ui-datepicker-calendar {
+    table-layout: fixed;
+    width: 100%;
+    font-weight: 200;
+    font-family: 'Ek Mukta', sans-serif;
+}
+
+.ui-datepicker .ui-datepicker-calendar th,
+.ui-datepicker .ui-datepicker-calendar td {
+    text-align: center;
+    padding: 4px 0;
+}
+
+.ui-datepicker .ui-datepicker-calendar td {
+    border-radius: 4px;
+    -webkit-transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+    -moz-transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+    -o-transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+    transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+}
+
+.ui-datepicker .ui-datepicker-calendar td:hover {
+    background-color: #eee;
+    cursor: pointer;
+}
+
+.ui-datepicker .ui-datepicker-calendar td a {
+    text-decoration: none;
+}
+
+.ui-datepicker .ui-datepicker-current-day {
+    background-color: #EC784B;
+}
+
+.ui-datepicker .ui-datepicker-current-day a {
+    color: #fff
+}
+
+.ui-datepicker .ui-datepicker-calendar .ui-datepicker-unselectable:hover {
+    background-color: #fff;
+    cursor: default;
+}
+
+
+

@@ -6,13 +6,13 @@ routerApp.controller('queryBuilderCtrl', function
         ($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state) {
 
     $scope.initQueryBuilder = function(){
-        $scope.selectedChart = $scope.commonData.chartTypes[0];
+            $scope.widget = $scope.sourceData.wid;
         if(typeof($scope.sourceData.wid.commonSrc) == "undefined"){
-            privateFun.createHighchartsChart('');
+            $scope.selectedChart = $scope.commonData.chartTypes[0];
+            $scope.highCharts.onInit(false);
         }else{
-            $scope.highchartsNG = $scope.sourceData.wid.highchartsNG;
-            $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
-            delete $scope.highchartsNG.size;
+            $scope.selectedChart = $scope.sourceData.wid.selectedChart;
+            eval("$scope."+ $scope.selectedChart.chartType + ".onInit(true)");
             $scope.executeQryData.executeMeasures = $scope.sourceData.wid.commonSrc.mea;
             $scope.executeQryData.executeColumns = $scope.sourceData.wid.commonSrc.att;
             $scope.receivedQuery = $scope.sourceData.wid.commonSrc.query;
@@ -150,38 +150,47 @@ routerApp.controller('queryBuilderCtrl', function
             chartTypes: [
                 {
                     id: 'ct01', icon: 'ti-pie-chart', name: 'pie chart', chart: 'pie',
-                    selected: false, chartType: 'highCharts', view: 'views/query/chart-views/highcharts.js'
+                    selected: false, chartType: 'highCharts', view: 'views/query/chart-views/highcharts.html',
+                    initObj: $scope.initHighchartObj
                 },
                 {
                     id: 'ct02', icon: 'ti-bar-chart', name: 'bar ', chart: 'bar',
-                    selected: false, chartType: 'highCharts'
+                    selected: false, chartType: 'highCharts', view: 'views/query/chart-views/highcharts.html',
+                    initObj: $scope.initHighchartObj
                 },
                 {
                     id: 'ct03', icon: 'fa fa-line-chart', name: 'line ', chart: 'line',
-                    selected: false, chartType: 'highCharts'
+                    selected: false, chartType: 'highCharts', view: 'views/query/chart-views/highcharts.html',
+                    initObj: $scope.initHighchartObj
                 },
                 {
-                    id: 'ct04', icon: ' chart-diginSmooth_line', name: 'Smooth line ', chart: 'smoothline',
-                    selected: false, chartType: 'highCharts'
+                    id: 'ct04', icon: ' chart-diginSmooth_line', name: 'Smooth line ', chart: 'spline',
+                    selected: false, chartType: 'highCharts', view: 'views/query/chart-views/highcharts.html',
+                    initObj: $scope.initHighchartObj
                 },
                 {
                     id: 'ct05', icon: 'fa fa-area-chart', name: 'area ', chart: 'area',
-                    selected: false, chartType: 'highCharts'
+                    selected: false, chartType: 'highCharts', view: 'views/query/chart-views/highcharts.html',
+                    initObj: $scope.initHighchartObj
                 },{
-                    id: 'ct06', icon: 'chart-diginsmooth_area', name: 'Smooth area ', chart: 'area',
-                    selected: false, chartType: 'highCharts'
+                    id: 'ct06', icon: 'chart-diginsmooth_area', name: 'Smooth area ', chart: 'areaspline',
+                    selected: false, chartType: 'highCharts', view: 'views/query/chart-views/highcharts.html',
+                    initObj: $scope.initHighchartObj
                 },
                 {
                     id: 'ct07', icon: 'chart-diginalluvialt', name: 'alluvial', chart: 'alluvial',
-                    selected: false, chartType: 'd3Charts'
+                    selected: false, chartType: 'd3Charts',
+                    initObj: $scope.initHighchartObj
                 },
                 {
                     id: 'ct08', icon: 'chart-diginscatter', name: 'scatter ', chart: 'scatter',
-                    selected: false, chartType: 'highCharts'
+                    selected: false, chartType: 'highCharts', view: 'views/query/chart-views/highcharts.html',
+                    initObj: $scope.initHighchartObj
                 },
                 {
                     id: 'ct09', icon: 'chart-diginbump', name: 'bumpChart ', chart: 'bump',
-                    selected: false, chartType: 'd3Charts'
+                    selected: false, chartType: 'd3Charts',
+                    initObj: $scope.initHighchartObj
                 },
                 {
                     id: 'ct10',
@@ -189,7 +198,8 @@ routerApp.controller('queryBuilderCtrl', function
                     name: 'clusterDendrogram',
                     chart: 'clusterDendrogram',
                     selected: false, 
-                    chartType: 'd3Charts'
+                    chartType: 'd3Charts',
+                    initObj: $scope.initHighchartObj
                 },
                 {
                     id: 'ct11',
@@ -197,7 +207,8 @@ routerApp.controller('queryBuilderCtrl', function
                     name: 'clusterForce',
                     chart: 'clusterForce',
                     selected: false, 
-                    chartType: 'd3Charts'
+                    chartType: 'd3Charts',
+                    initObj: $scope.initHighchartObj
                 }, 
                 {
                     id: 'ct12',
@@ -205,7 +216,8 @@ routerApp.controller('queryBuilderCtrl', function
                     name: 'convexHull',
                     chart: 'convexHull',
                     selected: false, 
-                    chartType: 'd3Charts'
+                    chartType: 'd3Charts',
+                    initObj: $scope.initHighchartObj
                 }, 
                 {
                     id: 'ct13',
@@ -213,7 +225,8 @@ routerApp.controller('queryBuilderCtrl', function
                     name: 'hierarchy',
                     chart: 'hierarchy',
                     selected: false, 
-                    chartType: 'd3Charts'
+                    chartType: 'd3Charts',
+                    initObj: $scope.initHighchartObj
                 }, 
                 {
                     id: 'ct14',
@@ -221,7 +234,8 @@ routerApp.controller('queryBuilderCtrl', function
                     name: 'sunburst',
                     chart: 'sunburst',
                     selected: false, 
-                    chartType: 'd3Charts'
+                    chartType: 'd3Charts',
+                    initObj: $scope.initHighchartObj
                 }, 
                 {
                     id: 'ct15',
@@ -229,7 +243,8 @@ routerApp.controller('queryBuilderCtrl', function
                     name: 'treeeview',
                     chart: 'treeeview',
                     selected: false, 
-                    chartType: 'd3Charts'
+                    chartType: 'd3Charts',
+                    initObj: $scope.initHighchartObj
                 },
                 {
                     id: 'ct16',
@@ -237,7 +252,20 @@ routerApp.controller('queryBuilderCtrl', function
                     name: 'pivotsummary',
                     chart: 'pivotsummary',
                     selected: false, 
-                    chartType: 'pivotSummary'
+                    chartType: 'pivotSummary',
+                    view: 'views/query/chart-views/pivotSummary.html',
+                    initObj: $scope.initHighchartObj
+                    
+                },
+                {
+                    id: 'ct17',
+                    icon: 'ti-layout-accordion-list',
+                    name: 'metric',
+                    chart: 'metric',
+                    selected: false, 
+                    chartType: 'metric',
+                    view: 'views/query/chart-views/metric.html',
+                    initObj: {value:33852, label:"Sales Average"}
                 }
             ]
 
@@ -297,7 +325,7 @@ routerApp.controller('queryBuilderCtrl', function
                 {isStructuret: false},
                 {isSerSetting: false}
             ],
-            messageAry: ['Please wait while the data is saving..'],
+            messageAry: ['Please wait while the data is saving...'],
             message: '',
             isChartSelected: false,
             onToggleEvent: function (event) {
@@ -373,9 +401,7 @@ routerApp.controller('queryBuilderCtrl', function
                 if (!isFoundCnd) {
                     var seriesArr = $scope.executeQryData.executeMeasures;
                     if(seriesArr.length > 0){
-                        executeQryData.executeColumns = [{
-                            filedName: column.filedName
-                        }];
+                        
                         eval("$scope."+ $scope.selectedChart.chartType + ".selectAttribute(column.filedName)");
                         
                     }else{
@@ -447,34 +473,9 @@ routerApp.controller('queryBuilderCtrl', function
                         }
                         break;
                     case '4':
-                        //#save
-                        //all config save to main dashboard
+                        //save
                         $scope.widget = $scope.sourceData.wid;
-                        $scope.widget.highchartsNG = $scope.highchartsNG;                        
-                        $scope.widget.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
-                        if(typeof $scope.widget.commonSrc == "undefined"){
-                            $scope.widget.highchartsNG["size"] = {width: 300, height: 220};
-                            $scope.widget["commonSrc"] = {src:$scope.sourceData,
-                                                      mea:$scope.executeQryData.executeMeasures,
-                                                      att:$scope.executeQryData.executeColumns,
-                                                      query:$scope.receivedQuery};
-                            $rootScope.dashboard.widgets.push($scope.widget);
-                        }else{
-                            $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
-                            $scope.widget["commonSrc"] = {src:$scope.sourceData,
-                                                          mea:$scope.executeQryData.executeMeasures,
-                                                          att:$scope.executeQryData.executeColumns,
-                                                          query:$scope.receivedQuery};
-                            var objIndex = getRootObjectById($scope.widget.id, $rootScope.dashboard.widgets);
-                            $rootScope.dashboard.widgets[objIndex] = $scope.widget;
-                        }                     
-                        
-                        this.isMainLoading = true;
-                        this.message = this.messageAry[0];
-                        setTimeout(function () {
-                            $scope.eventHndler.isMainLoading = false;
-                            $state.go('home.Dashboards');
-                        }, 5000);
+                        eval("$scope."+ $scope.selectedChart.chartType + ".saveWidget($scope.widget)");                        
                         break;
                     case '5':
                         //#create query builder
@@ -499,25 +500,56 @@ routerApp.controller('queryBuilderCtrl', function
                 onSelect.selected = true;
                 $scope.executeQryData.chartType = onSelect.chart;
                 $scope.chartType = onSelect.chart;
-                $scope.changeChartType(onSelect.chart);
+                
+                if($scope.selectedChart.chartType != onSelect.chartType){
+                    $scope.executeQryData.executeColumns = [];
+                    $scope.executeQryData.executeMeasures = [];
+                }
                 $scope.selectedChart = onSelect;
                 eval("$scope."+ $scope.selectedChart.chartType + ".changeType()");
                 //privateFun.createHighchartsChart(onSelect.chart);
-            },
-            onSaveChartConfig: function () {
-
-
             }
         }//end event function
         
         
-        $scope.changeChartType = function(type){
-            $scope.highchartsNG.options.chart.type = type;
+        $scope.saveChart = function(widget){
+            widget["selectedChart"] = $scope.selectedChart;
+            if(typeof widget.commonSrc == "undefined"){
+                widget.highchartsNG["size"] = {width: 300, height: 220};
+                widget["commonSrc"] = {src:$scope.sourceData,
+                                      mea:$scope.executeQryData.executeMeasures,
+                                      att:$scope.executeQryData.executeColumns,
+                                      query:$scope.receivedQuery};
+                $rootScope.dashboard.widgets.push(widget);
+            }else{
+                $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
+                $scope.widget["commonSrc"] = {src:$scope.sourceData,
+                                              mea:$scope.executeQryData.executeMeasures,
+                                              att:$scope.executeQryData.executeColumns,
+                                              query:$scope.receivedQuery};
+                var objIndex = getRootObjectById(widget.id, $rootScope.dashboard.widgets);
+                $rootScope.dashboard.widgets[objIndex] = widget;
+            }                     
+
+            $scope.eventHndler.isMainLoading = true;
+            $scope.eventHndler.message = $scope.eventHndler.messageAry[0];
+            setTimeout(function () {
+                $scope.eventHndler.isMainLoading = false;
+                $state.go('home.Dashboards');
+            }, 5000);
         };
-    
-    
+
         //chart functions
         $scope.highCharts = {
+            onInit: function(recon){
+                if (!recon)
+                    $scope.highchartsNG = $scope.selectedChart.initObj;
+                else{
+                    $scope.highchartsNG = $scope.sourceData.wid.highchartsNG;
+                    $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
+                    delete $scope.highchartsNG.size;
+                }                
+            },
             changeType: function(){
                 $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
             },
@@ -525,7 +557,42 @@ routerApp.controller('queryBuilderCtrl', function
                 $scope.getAggregation();
             },
             selectAttribute: function(fieldName){
+                $scope.executeQryData.executeColumns = [{
+                    filedName: fieldName
+                }];
                 $scope.getGroupedAggregation(fieldName);
+            },
+            executeQuery: function(cat, res){
+                if(cat != ""){
+                    $scope.executeQryData.executeColumns = [{filedName: cat}];
+                    $scope.mapResult(cat, res, function(data){
+                        $scope.highchartsNG.series = data;
+                        $scope.eventHndler.isLoadingChart=false;
+                        $scope.receivedQuery = query;
+                        $scope.queryEditState = false;
+                    });
+                }else{
+                    $scope.setMeasureData(res[0]);
+                    $scope.receivedQuery = query;
+                }
+            },
+            removeMea: function(l){
+                if(l > 0) $scope.getAggregation();
+                else{
+                    $scope.executeQryData.executeColumns = [];
+                    $scope.highchartsNG = $scope.selectedChart.initObj;
+                }
+            },
+            removeCat: function(){
+                $scope.getAggregation();
+            },
+            onGetAggData: function(res){
+                $scope.setMeasureData(res);
+            },
+            saveWidget: function(wid){
+                wid.highchartsNG = $scope.highchartsNG;
+                wid.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
+                $scope.saveChart(wid);
             }
         };
         
@@ -533,13 +600,129 @@ routerApp.controller('queryBuilderCtrl', function
             
         }
         
-        $scope.pivotSummary = function(){
-            //all the pivot summary code should go here
-        }
+        $scope.pivotSummary = {
+            onInit: function(recon){
+                
+            },
+            changeType: function(){
+                $scope.fieldArray = [];
+
+                for(var i=0; i < $scope.commonData.measures.length; i++){
+                    $scope.fieldArray.push($scope.commonData.measures[i].filedName);
+                }
+                for(var i=0; i < $scope.commonData.columns.length; i++){
+                                    $scope.fieldArray.push($scope.commonData.columns[i].filedName);
+                }
+                console.log($scope.fieldArray);
+                var parameter;
+                $scope.fieldArray.forEach(function (entry) {
+                    if (i == 0) {
+                        parameter = entry
+                    } else {
+                        parameter += "," + entry;
+                    }
+                    i++;
+                });
+
+                var query = "SELECT " + $scope.fieldArray.toString() + " FROM Demo." + $scope.sourceData.tbl;  
+                $scope.client.getExecQuery(query, function(data, status){
+                    $scope.summaryData = data;
+                });
+            },
+            saveWidget: function(wid){
+                wid.widView = "views/ViewPivotSummary.html";
+                wid.widData.summary = $scope.summaryData;
+                wid.widData.fieldArray = $scope.fieldArray;
+                $scope.saveChart(wid);
+            }
+        };
+    
+        $scope.selectedFields = [];  
+
+        $scope.drawPivotSummary = function(){
+
+            console.log("$scope",$scope);
+
+            $scope.initChart = $scope.commonData.chartTypes[15];
+
+            $scope.selectedFields = $rootScope.pivotSummaryData;
+            $scope.products = [];
+            product = {};
+            for (var i = 0; i <$scope.selectedFields.length; i++) {
+                var data = $scope.selectedFields[i],
+                product = {};
+                for (var j = 0; j < $scope.fieldArray.length; j++) {
+                             var field = $scope.fieldArray[j];
+                             product[field] = data[field];
+                }
+                $scope.products.push(product);
+            }
+
+            var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.gchart_renderers, $.pivotUtilities.d3_renderers);
+            $("#grid").pivotUI($scope.products, {
+                // renderers: renderers,
+                rows: [$scope.selectedFields[0]],
+                cols:[$scope.selectedFields[1]],
+                  
+                // rendererName: "Table"         
+            });
         
-        $scope.metric = function(){
-            
-        }
+        } 
+        
+        $scope.metric = {
+            onInit: function(recon){
+                $scope.selectedChart.initObj = {value: $scope.sourceData.wid.widData.value,
+                                                label: $scope.sourceData.wid.widData.label};
+            },
+            changeType: function(){
+                //$scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
+            },
+            selectCondition: function(){
+                $scope.getAggregation();
+            },
+            selectAttribute: function(fieldName){
+                $scope.getGroupedAggregation(fieldName);
+            },
+            executeQuery: function(cat, res){
+                if(cat != ""){
+                    $scope.executeQryData.executeColumns = [{filedName: cat}];
+                    $scope.mapResult(cat, res, function(data){
+                        $scope.highchartsNG.series = data;
+                        $scope.eventHndler.isLoadingChart=false;
+                        $scope.receivedQuery = query;
+                        $scope.queryEditState = false;
+                    });
+                }else{
+                    $scope.setMeasureData(res[0]);
+                    $scope.receivedQuery = query;
+                }
+            },
+            removeMea: function(l){
+                if(l > 0) $scope.getAggregation();
+                else{
+                    $scope.executeQryData.executeColumns = [];
+                    $scope.highchartsNG = $scope.selectedChart.initObj;
+                }
+            },
+            removeCat: function(){
+                $scope.getAggregation();
+            },
+            onGetAggData: function(res){
+                for (var c in res) {
+                    if (Object.prototype.hasOwnProperty.call(res, c)) {
+                        $scope.selectedChart.initObj.value = res[c];
+                        $scope.selectedChart.initObj.label = c;
+                    }
+                }
+                $scope.eventHndler.isLoadingChart=false;
+            },
+            saveWidget: function(wid){
+                wid["widData"] = {value:$scope.selectedChart.initObj.value,
+                                  label:$scope.selectedChart.initObj.label};
+                wid.widView = "views/common-data-src/res-views/ViewCommonSrcMetric.html";
+                $scope.saveChart(wid);
+            }
+        };
         
         
         $scope.getAggregation = function(){
@@ -591,7 +774,7 @@ routerApp.controller('queryBuilderCtrl', function
                 
                 $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res, status, query){
                     if(status){
-                        $scope.setMeasureData(res[0]);                        
+                        eval("$scope."+ $scope.selectedChart.chartType + ".onGetAggData(res[0])");
                         $scope.receivedQuery = query;
                     }
                     else{
@@ -668,18 +851,7 @@ routerApp.controller('queryBuilderCtrl', function
                     }
                     $scope.executeQryData.executeMeasures = measureArr;
                 }
-                if(cat != ""){
-                    $scope.executeQryData.executeColumns = [{filedName: cat}];
-                    $scope.mapResult(cat, res, function(data){
-                        $scope.highchartsNG.series = data;
-                        $scope.eventHndler.isLoadingChart=false;
-                        $scope.receivedQuery = query;
-                        $scope.queryEditState = false;
-                    });
-                }else{
-                    $scope.setMeasureData(res[0]);
-                    $scope.receivedQuery = query;
-                }
+                eval("$scope."+ $scope.selectedChart.chartType + ".executeQuery(cat, res)");
             });
         }else{
             alert("enter a query");
@@ -717,12 +889,8 @@ routerApp.controller('queryBuilderCtrl', function
         var arrObj = $scope.executeQryData.executeMeasures;
         var index = arrObj.indexOf(m);
         if (index > -1) {
-            arrObj.splice(index, 1);
-            if(arrObj.length > 0) $scope.getAggregation();
-            else{
-                $scope.executeQryData.executeColumns = [];
-                $scope.highchartsNG = $scope.initHighchartObj;
-            } 
+            arrObj.splice(index, 1);            
+            eval("$scope."+ $scope.selectedChart.chartType + ".removeMea(arrObj.length)");
         }
     };
     
@@ -731,7 +899,7 @@ routerApp.controller('queryBuilderCtrl', function
         var index = arrObj.indexOf(c);
         if (index > -1) {
             arrObj.splice(index, 1);
-            $scope.getAggregation();
+            eval("$scope."+ $scope.selectedChart.chartType + ".removeCat()");
         }
     };
         

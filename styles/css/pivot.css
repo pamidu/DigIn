@@ -1,6 +1,5 @@
-
-
 .pvtAxisContainer li span.pvtAttr {
+    height: 35px;
     webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -13,6 +12,7 @@
 }
 
 .pvtAxisContainer li {
+    display: inline-block;
     margin: 2px;
     list-style-type: none;
     cursor: move;
@@ -149,5 +149,3 @@
     width: 100%;
     margin: 10px 0;
 }
-
-

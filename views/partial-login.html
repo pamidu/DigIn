@@ -1,12 +1,18 @@
 <div class="digin-lgn-wrap   animated" ng-controller="LoginCtrl">
     <toast></toast>
+    <div class="auth-message-wrap"
+         ng-if="error.isLoading">
+        <div class="loader-body-wrap">
+            <span class="loader2"><span class="loader2-inner"></span></span>
+        </div>
+    </div>
     <div layout="column" layout-align="center center">
 
         <div class="digin-login-card animated flipInX">
             <div layout="row" layout-xs="column">
                 <div flex="45">
                     <div class="left-main-wrap">
-                        <div class="left-wrap">
+                        <div class="left-wrap sign-in">
                             <ul class="bg-bubbles">
                                 <li></li>
                                 <li></li>
@@ -28,6 +34,11 @@
                             <h5>
                                 DigIn - Beyond BI
                             </h5>
+
+                            <div class="welcome-link sign-up-link"
+                                 ng-click="onClickSignUp()">
+                                <a href="javascript:void(0)">sign up now</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -38,7 +49,7 @@
                                 <h5 id="sliderRight">Sign In</h5>
                             </div>
                         </div>
-                        <form name="frmDiginLogin">
+                        <form name="frmDiginLogin" autocomplete="off">
                             <div class="login-bdy">
                                 <div class="text-wrap ">
                                     <div>
@@ -48,6 +59,7 @@
                                             <div>
                                                 <input type="text"
                                                        required
+                                                       id="txtUname"
                                                        name="loginUserName"
                                                        ng-model="txtUname"
                                                        placeholder="username@duoworld.com"
@@ -63,6 +75,7 @@
                                             <div>
                                                 <input type="password"
                                                        name="password"
+                                                       id="password"
                                                        required
                                                        ng-model="txtPwd"
                                                        placeholder="***************"
@@ -87,7 +100,7 @@
                                 <div class="login-btn-wrap">
                                     <a href="javascript:void(0  )"
                                        ng-click="login()"
-                                       ng-class="{disable:frmDiginLogin.$invalid,active: !frmDiginLogin.$invalid}"
+                                       ng-class="{disable:frmDiginLogin.$invalid,activeBtn: !frmDiginLogin.$invalid}"
                                        class="login-btn">
                                         Login
                                     </a>

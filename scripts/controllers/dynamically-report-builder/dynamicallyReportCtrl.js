@@ -61,7 +61,24 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope) {
             txtFiled: [{name: 'enter test', value: ''},
                 {name: 'enter test2', value: ''},
                 {name: 'enter test3', value: ''}]
-        }
+        },
+        fromDate: '',
+        toDate: '',
+        cafDate: '',
+        tags: [
+            {id: 0, name: "SKY"},
+            {id: 1, name: "SKY2"}],
+        customerNames: [
+            {id: 0, name: 'RAJESWARI N'},
+            {id: 1, name: 'CHANDRASEKAR K'},
+            {id: 2, name: 'ANITHA B'},
+            {id: 3, name: 'ANANDALATCHOUMY S'},
+            {id: 4, name: 'ANURADHA R'},
+            {id: 5, name: 'VENKATESAN A'},
+            {id: 6, name: 'MURUGESAN S'},
+            {id: 7, name: 'GANESAN S'},
+            {id: 8, name: 'THIRUMANGAI G'}
+        ]
     };
     $scope.reportFiledList = reportFiledList;
 
@@ -69,46 +86,58 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope) {
     $scope.eventHandler = {
         onChangeRadioBtn: function () {
             var val = privateFun.onChangeRadio();
+        },
+        select2Options: {
+            formatNoMatches: function (term) {
+                console.log("Term: " + term);
+                var message = '<a ng-click="addTag()">Add tag:"' + term + '"</a>';
+                if (!$scope.$$phase) {
+                    $scope.$apply(function () {
+                        $scope.noResultsTag = term;
+                    });
+                }
+                return message;
+            }
         }
     }
 
     //test code
     $scope.noResultsTag = null;
-    $scope.tags = [
-        {id: 0, name: "Zero"},
-        {id: 1, name: "One"},
-        {id: 2, name: "Two"},
-        {id: 3, name: "Three"},
-        {id: 4, name: "Four"},
-    ];
-    $scope.select2Options = {
-        formatNoMatches: function(term) {
-            console.log("Term: " + term);
-            var message = '<a ng-click="addTag()">Add tag:"' + term + '"</a>';
-            if(!$scope.$$phase) {
-                $scope.$apply(function() {
-                    $scope.noResultsTag = term;
-                });
-            }
-            return message;
-        }
-    };
-
-    $scope.addTag = function() {
+    $scope.addTag = function () {
         $scope.tags.push({
             id: $scope.tags.length,
             name: $scope.noResultsTag
         });
     };
-
-    $scope.$watch('noResultsTag', function(newVal, oldVal) {
-        if(newVal && newVal !== oldVal) {
-            $timeout(function() {
+    $scope.$watch('noResultsTag', function (newVal, oldVal) {
+        if (newVal && newVal !== oldVal) {
+            $timeout(function () {
                 var noResultsLink = $('.select2-no-results');
                 console.log(noResultsLink.contents());
                 $compile(noResultsLink.contents())($scope);
             });
         }
     }, true);
+
+}).directive("select2", function ($timeout, $parse) {
+    return {
+        restrict: 'AC',
+        require: 'ngModel',
+        link: function (scope, element, attrs) {
+            console.log(attrs);
+            $timeout(function () {
+                element.select2();
+                element.select2Initialized = true;
+            });
+        }
+    };
+}).directive("datepicker", function () {
+    return {
+        restrict: "A",
+        link: function (scope, el, attr) {
+            el.datepicker({
+                dateFormat: 'yy-mm-dd'
+            });
+        }
+    };
 })
-;

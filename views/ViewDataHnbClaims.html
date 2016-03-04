@@ -1,9 +1,7 @@
 
-    <md-toolbar class="modal-header" md-theme="teal">
-        <h1>Data Explorer</h1>
-    </md-toolbar>
-    <md-content style="margin-top:15px;margin-left:15px;">
-        <md-button class="md-raised" ng-csv="dataArray" filename="{{fileName}}.csv" field-separator=",">Export to CSV</md-button>
+    
+    <md-content style="height:400px">
+        
         <div layout="column">
             <table>
                 <tr>
@@ -32,8 +30,5 @@
             </table>
         </div>
     </md-content>
-    <div class="md-actions" md-theme="indigo" layout="row">
-        <md-button style="width:200px" ng-click="closeDialog()" class="md-raised">Ok</md-button>
-        <md-button style="width:200px" class="md-raised" ng-click="closeDialog()" class=" md-default">Cancel</md-button>
-    </div>
+    
 

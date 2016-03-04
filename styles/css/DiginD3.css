@@ -18,7 +18,24 @@ h2 {
 h2 a {
   border-bottom: 1px dotted;
 }
+ 
 
+.node circle {
+    cursor: pointer;
+    stroke: #3182bd;
+    stroke-width: 1.5px;
+}
+.node text {
+    font: 10px sans-serif;
+    pointer-events: none;
+    text-anchor: middle;
+}
+line.link {
+    fill: none;
+    stroke: #9ecae1;
+    stroke-width: 1.5px;
+}
+ 
 h3 {
   font-weight: 400;
   letter-spacing: -0.01em;
@@ -51,8 +68,8 @@ h3 a {
   text-transform: none;
   letter-spacing: normal;
 }
- .ng-hide:not(.ng-hide-animate){
-  /*display: block !important;*/
+.ng-hide:not(.ng-hide-animate){
+/*  display: block !important;*/
  }
 
 h4 {
@@ -318,7 +335,7 @@ textarea:focus {
 }
 
 .btn {
-  border: none;
+  border: solid;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;

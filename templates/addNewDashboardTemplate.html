@@ -13,7 +13,6 @@
                 <md-icon md-svg-src="styles/css/images/icons/ic_dashboard_24px.svg" style="width:50px;height:50px;"></md-icon>
                 <p style="font-size:small;color:darkgrey">{{item.title}}</p>
             </div>
-
         </div>
         <md-divider></md-divider>
         <p style="font-size:large;margin:10px 10px;">+ Add a new</p>
@@ -28,11 +27,11 @@
             </md-input-container>
         </div>
         <div class="md-actions" layout="row">
-            <md-button class="md-fab md-mini" styl="background-color: #D33F3F;" ng-click="close();">
-                <ng-md-icon icon="close" style="fill:whitesmoke"></ng-md-icon>
+            <md-button class="md-fab md-mini" styl="background-color: #D33F3F;" ng-click="close();" >
+                <ng-md-icon icon="close" style="fill:whitesmoke" layout="column" layout-align="center center"></ng-md-icon>
             </md-button>
             <md-button class="md-fab md-mini md-primary" ng-click="createNewDashboard();">
-                <ng-md-icon icon="arrow_forward" style="fill:whitesmoke"></ng-md-icon>
+                <ng-md-icon icon="arrow_forward" style="fill:whitesmoke" layout="column" layout-align="center center"></ng-md-icon>
             </md-button>
         </div>
     </md-content>

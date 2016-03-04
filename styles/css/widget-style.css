@@ -63,6 +63,12 @@
     /*height: 450px;*/
     overflow: hidden;
 }
+.widget0m-data-dialog2 {
+    width: 50%;
+    /*height: 450px;*/
+    overflow: hidden;
+    max-height:90%;
+}
 .widget0m-data-dialog-sm {
     width: 25%;
     height: 250px;
@@ -90,6 +96,12 @@
 
 .widget0m-mapped-data:hover {
     overflow: auto;
+}
+.widget0m-mapped-data2 {
+    overflow: hidden;
+    max-height: 500px;
+    min-height: 300px;
+    width: 100%;
 }
 .mapped-details{
     padding-left: 30px;

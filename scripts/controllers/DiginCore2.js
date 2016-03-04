@@ -118,8 +118,8 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
     }
 ]);
 
-routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '$rootScope', 'ScopeShare', '$filter', '$diginengine',
-    function($scope, $http, $mdDialog, $rootScope, ScopeShare, $filter, $diginengine){
+routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '$rootScope', 'ScopeShare', '$filter', '$diginengine', 'generatePDF1',
+    function($scope, $http, $mdDialog, $rootScope, ScopeShare, $filter, $diginengine, generatePDF1){
 
         // ====== angular-table configuration ========
         $scope.config = {
@@ -202,6 +202,19 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
         $scope.updateFilteredList = function(query) {
             $scope.tableData = $filter("filter")($scope.originalList, query);
         };
+
+        $scope.downloadPDF = function(){
+            
+                            var htmlElement = $(".table-area").get(0);
+                            var config = {
+                                title:"Data",
+                                titleLeft: 50, 
+                                titleTop: 20,
+                                tableLeft: 20,
+                                tableTop: 30
+                            };
+                            generatePDF1.generate(htmlElement, config);
+                        }
 
         $scope.close = function() {
 

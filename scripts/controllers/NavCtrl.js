@@ -1,6 +1,6 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast', 'DevStudio', '$auth', '$helpers',
-    function($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio, $auth, $helpers) {
+    function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio, $auth, $helpers) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -10,17 +10,17 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
 
         var $windowHeight = $(window).height(),
-                $windowWidth = $(window).width(),
-                $startingPoint = $('.starting-point');
+            $windowWidth = $(window).width(),
+            $startingPoint = $('.starting-point');
 
         // Calculate the diameter
-        var diameterValue = (Math.sqrt( Math.pow($windowHeight, 2) + Math.pow($windowWidth, 2) ) * 2);
+        var diameterValue = (Math.sqrt(Math.pow($windowHeight, 2) + Math.pow($windowWidth, 2)) * 2);
 
         $startingPoint.children('span').css({
-            height: diameterValue+'px',
-            width: diameterValue+'px',
-            top: -(diameterValue/2)+'px',
-            left: -(diameterValue/2)+'px'
+            height: diameterValue + 'px',
+            width: diameterValue + 'px',
+            top: -(diameterValue / 2) + 'px',
+            left: -(diameterValue / 2) + 'px'
         });
 
         //initially hiding the tabs
@@ -71,7 +71,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.dashCloseWidgets = false;
 
         if (localStorage.getItem("featureObject") == undefined) {
-            getJSONData($http, 'features', function(data) {
+            getJSONData($http, 'features', function (data) {
                 $scope.featureOrigin = data;
                 localStorage.setItem("featureObject", JSON.stringify($scope.featureOrigin));
                 // var featureObj = localStorage.getItem("featureObject");                
@@ -86,14 +86,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         }
         //pushes gridster items 10px down, remove padding to body, adjust iframe height
-        $scope.adjustUI = function() {
+        $scope.adjustUI = function () {
             $('body').css("padding-top", "0px");
-           // $('#content1').css("top", "10px");
+            // $('#content1').css("top", "10px");
             $('.h_iframe').css("height", "100%");
         }
 
         //shows user profile in a dialog box
-        $scope.showUserProfile = function(ev) {
+        $scope.showUserProfile = function (ev) {
             $mdDialog.show({
                     controller: showProfileController,
                     templateUrl: 'templates/profileDialogTemplate.html',
@@ -101,9 +101,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     targetEvent: ev,
                     clickOutsideToClose: true
                 })
-                .then(function(answer) {
+                .then(function (answer) {
 
-                }, function() {
+                }, function () {
 
                 });
         };
@@ -118,7 +118,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 profile_pic: "styles/css/images/person.jpg"
             };
 
-            $scope.close = function() {
+            $scope.close = function () {
                 $mdDialog.cancel();
             };
 
@@ -131,8 +131,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.h = '300px';
         $scope.mh = '250px';
 
-        $scope.resize = function(evt, ui, pos, widget) {
-            
+        $scope.resize = function (evt, ui, pos, widget) {
+
             var width = ui.size.width;
             var height = ui.size.height;
             var mHeight = height - 50;
@@ -185,8 +185,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         var client = $objectstore.getClient("com.duosoftware.com");
-        client.onGetMany(function(data) {
-            data.forEach(function(entry) {
+        client.onGetMany(function (data) {
+            data.forEach(function (entry) {
                 $rootScope.indexes.push({
                     value: entry,
                     display: entry
@@ -195,7 +195,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         });
         client.getClasses("com.duosoftware.com");
 
-        $scope.closeDialog = function() {
+        $scope.closeDialog = function () {
             $mdDialog.hide();
         };
         today = mm + '/' + dd + '/' + yyyy;
@@ -218,7 +218,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         // $scope.menuPanels = [DashboardCtrl];
 
         //change dates range in likes
-        $scope.changeDatesRange = function(widId, sinceDay, untilDay) {
+        $scope.changeDatesRange = function (widId, sinceDay, untilDay) {
 
             var diffDays = getDateDifference(untilDay, sinceDay);
 
@@ -229,7 +229,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 until: untilDay,
                 range: diffDays
             };
-            fbInterface.getPageLikesInsight(pgId, dateObj, function(data) {
+            fbInterface.getPageLikesInsight(pgId, dateObj, function (data) {
                 $scope.chartConf = {
                     "options": {
                         "chart": {
@@ -266,7 +266,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 };
                 var likeHistory = fbInterface.getPageLikesObj(data);
                 $scope.chartConf.series[0].data = likeHistory.likeArr;
-                $scope.chartConf.series[0].pointStart = Date.UTC(likeHistory.start.getUTCFullYear(), likeHistory.start.getUTCMonth(), likeHistory.start.getUTCDate());;
+                $scope.chartConf.series[0].pointStart = Date.UTC(likeHistory.start.getUTCFullYear(), likeHistory.start.getUTCMonth(), likeHistory.start.getUTCDate());
+                ;
                 $scope.chartConf.series[0].pointInterval = likeHistory.interval;
 
                 $rootScope.dashboard.widgets[objIndex].widData.likeData = $scope.chartConf;
@@ -274,7 +275,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         //change dates in views
-        $scope.changeViewedDatesRange = function(widId, sinceDay, untilDay) {
+        $scope.changeViewedDatesRange = function (widId, sinceDay, untilDay) {
 
             var diffDays = getDateDifference(untilDay, sinceDay);
 
@@ -285,7 +286,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 until: untilDay,
                 range: diffDays
             };
-            fbInterface.getPageViewsInsight(pgId, dateObj, function(data) {
+            fbInterface.getPageViewsInsight(pgId, dateObj, function (data) {
                 $scope.chartConf = {
                     "options": {
                         "chart": {
@@ -323,25 +324,37 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 };
                 var viewHistory = fbInterface.getPageLikesObj(data);
                 $scope.chartConf.series[0].data = viewHistory.likeArr;
-                $scope.chartConf.series[0].pointStart = Date.UTC(viewHistory.start.getUTCFullYear(), viewHistory.start.getUTCMonth(), viewHistory.start.getUTCDate());;
+                $scope.chartConf.series[0].pointStart = Date.UTC(viewHistory.start.getUTCFullYear(), viewHistory.start.getUTCMonth(), viewHistory.start.getUTCDate());
+                ;
                 $scope.chartConf.series[0].pointInterval = viewHistory.interval;
 
                 $rootScope.dashboard.widgets[objIndex].widData.viewData = $scope.chartConf;
             });
         };
 
-        $scope.goReport = function(report) {
+        $scope.goReport = function (report) {
             $scope.manageTabs(false);
             //closing the overlay
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
             $(".search-layer").removeClass("activating active");
 
-            $state.go('home.ReportViewer', {
+            $state.go('home', {
                 param: report
             });
         }
-        $scope.goDashboard = function(dashboard) {
+
+        $scope.goReport2 = function (report) {
+            $scope.manageTabs(false);
+            //closing the overlay
+            $(".overlay").removeClass("overlay-search active");
+            $(".nav-search").removeClass("active");
+            $(".search-layer").removeClass("activating active");
+
+            // console.log(report);
+            $state.go('home.DynamicallyReportBuilder');
+        }
+        $scope.goDashboard = function (dashboard) {
             console.log("hit dashboard");
             console.log(dashboard);
             if (typeof dashboard.customDuoDash === "undefined") {
@@ -395,7 +408,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             if ($rootScope.dashboard.widgets.length == 0)
                 $rootScope.dashboard.widgets = $rootScope.dashboardWidgetsCopy;
             $scope.selectedIndex = 1;
-            $scope.$watch('selectedIndex', function(current, old) {
+            $scope.$watch('selectedIndex', function (current, old) {
                 // var previous = selected;
                 // if($rootScope.Dashboards[current].widgets.length== 0)
                 //     selected = $rootScope.dashboardWidgetsCopy;
@@ -412,7 +425,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         }
 
-        $scope.goAnalyzer = function(report) {
+        $scope.goAnalyzer = function (report) {
             $scope.manageTabs(false);
             //closing the overlay
             $(".overlay").removeClass("overlay-search active");
@@ -423,25 +436,25 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 param: report
             });
         }
-        $scope.saveDashboard = function(ev, dashboard) {
+        $scope.saveDashboard = function (ev, dashboard) {
             $mdDialog.show({
                 controller: 'saveCtrl',
                 templateUrl: 'views/dashboard-save.html',
                 targetEvent: ev,
                 resolve: {
-                    widget: function() {
+                    widget: function () {
                         return dashboard;
                     }
                 }
             })
         }
-        $scope.savePentaho = function(ev, dashboard) {
+        $scope.savePentaho = function (ev, dashboard) {
             $mdDialog.show({
                 controller: 'savePentahoCtrl',
                 templateUrl: 'views/pentaho_save.html',
                 targetEvent: ev,
                 resolve: {
-                    widget: function() {
+                    widget: function () {
                         return dashboard;
                     }
                 }
@@ -458,7 +471,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         // };
 
         $scope.ExistingDashboardDetails = [];
-        $scope.reports = [];
+        $scope.reports = [{splitName: 'CAF Details', path: '/dynamically-report-builder'}];
         $scope.favoriteReports = [];
         $scope.analyzers = [];
         $scope.favoriteDashboards = [];
@@ -466,29 +479,27 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.favoriteAnalyzers = [];
 
 
-        $scope.GetDashboardDetails = function() {
+        $scope.GetDashboardDetails = function () {
 
 
             $scope.dashboards = DashboardService.getDashboards();
 
 
-
         };
 
 
-        $scope.GetReportDetails = function() {
+        $scope.GetReportDetails = function () {
 
 
             $scope.GetDashboardDetails();
             $scope.GetAnalyzerDetails();
 
         };
-        $scope.GetAnalyzerDetails = function() {
-
+        $scope.GetAnalyzerDetails = function () {
 
 
         };
-        $scope.Share = function(ev) {
+        $scope.Share = function (ev) {
 
 
             $mdDialog.show({
@@ -500,7 +511,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         }
 
-        $scope.Export = function(ev) {
+        $scope.Export = function (ev) {
             $mdDialog.show({
                 controller: 'ExportCtrl',
                 templateUrl: 'views/chart_export.html',
@@ -510,7 +521,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             })
 
         }
-        $scope.openTheme = function(ev) {
+        $scope.openTheme = function (ev) {
             $mdDialog.show({
                 controller: 'ThemeCtrl',
                 templateUrl: 'views/change-theme.html',
@@ -520,19 +531,19 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
 
         };
-        $scope.openDashboard = function(ev, dashboard) {
+        $scope.openDashboard = function (ev, dashboard) {
             $mdDialog.show({
                 controller: 'DataCtrl',
                 templateUrl: 'views/dashboard-load.html',
                 targetEvent: ev,
                 resolve: {
-                    dashboard: function() {
+                    dashboard: function () {
                         return dashboard;
                     }
                 }
             })
         }
-        $scope.help = function(ev, dashboard) {
+        $scope.help = function (ev, dashboard) {
             $mdDialog.show({
                 controller: 'HelpCtrl',
                 templateUrl: 'views/help.html',
@@ -542,7 +553,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
 
         //erangas space
-        $scope.showAddNewDashboard = function(ev) {
+        $scope.showAddNewDashboard = function (ev) {
             $mdDialog.show({
                     controller: addNewDashboardController,
                     templateUrl: 'templates/addNewDashboardTemplate.html',
@@ -550,43 +561,43 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     targetEvent: ev,
                     clickOutsideToClose: true
                 })
-                .then(function(answer) {
+                .then(function (answer) {
                     addToDashboards(answer);
-                }, function() {
+                }, function () {
 
                 });
         };
 
         //load social analysis  
-        $scope.showAddSocialAnalysis = function(ev) {
+        $scope.showAddSocialAnalysis = function (ev) {
             $mdDialog.show({
                     templateUrl: 'views/socialGraph/socialAnalysis_TEMP.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     clickOutsideToClose: true
                 })
-                .then(function(answer) {
+                .then(function (answer) {
                     addToDashboards(answer);
-                }, function() {
+                }, function () {
 
                 });
         };
         //load sales forecast and prediction  
-        $scope.showSalesForecastPrediction = function(ev) {
+        $scope.showSalesForecastPrediction = function (ev) {
             $mdDialog.show({
                     templateUrl: 'views/salesForecastPrediction.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     clickOutsideToClose: true
                 })
-                .then(function(answer) {
+                .then(function (answer) {
                     addToDashboards(answer);
-                }, function() {
+                }, function () {
 
                 });
         };
 
-        $scope.createuuid = function() {
+        $scope.createuuid = function () {
             return Math.floor((1 + Math.random()) * 0x10000)
                 .toString(16)
                 .substring(1);
@@ -611,7 +622,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
         };
 
-        $rootScope.selectCurrentDashboard = function(tab) {
+        $rootScope.selectCurrentDashboard = function (tab) {
 
             console.log("$rootScope");
             console.log($rootScope);
@@ -629,8 +640,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 if (tab.dashboardId == $rootScope.Dashboards[a].dashboardId) {
                     $rootScope.dashboard = $rootScope.Dashboards[a];
                     //$rootScope.globalDashboardIndex = a;
-                };
-            };
+                }
+                ;
+            }
+            ;
         }
 
         //initial creation of default dashboard
@@ -648,7 +661,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $scope.tabs = $rootScope.Dashboards;
             $rootScope.dashboard = $rootScope.Dashboards[0];
             $scope.selectedIndex = 1;
-            $scope.$watch('selectedIndex', function(current, old) {
+            $scope.$watch('selectedIndex', function (current, old) {
                 //previous = selected;
                 selected = $rootScope.Dashboards[current];
                 //                if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
@@ -659,7 +672,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         createDashboards();
 
-        $scope.addTab = function(title, view) {
+        $scope.addTab = function (title, view) {
             view = view || title + " Content View";
             tabs.push({
                 title: title,
@@ -668,7 +681,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
         };
 
-        $scope.removeTab = function(tab) {
+        $scope.removeTab = function (tab) {
             console.log("removing tab : ");
             console.log(tab);
             var index1 = $rootScope.Dashboards.indexOf(tab);
@@ -680,14 +693,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         function addNewDashboardController($scope, $mdDialog) {
             //console.log($rootScope.dashboard);
             $scope.numOfDashboards = $rootScope.dashboard.length;
-            $scope.createNewDashboard = function() {
+            $scope.createNewDashboard = function () {
                 var obj = {
                     title: $scope.dashboard.title,
                     type: $scope.dashboard.type
                 };
                 $mdDialog.hide(obj);
             };
-            $scope.close = function() {
+            $scope.close = function () {
                 $mdDialog.cancel();
             };
         };
@@ -695,17 +708,17 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         function showToast(text) {
             $mdToast.show(
                 $mdToast.simple()
-                .content(text)
-                .position("bottom right")
-                .hideDelay(3000)
+                    .content(text)
+                    .position("bottom right")
+                    .hideDelay(3000)
             );
         };
 
-        $scope.clickTabRemoveConfirmation = function() {
+        $scope.clickTabRemoveConfirmation = function () {
             document.getElementById("TabRemoveConfirmation").click();
         };
 
-        $scope.removeTabConfirmation = function(tab, ev) {
+        $scope.removeTabConfirmation = function (tab, ev) {
             var confirm = $mdDialog.confirm()
                 .title('Would you like to delete dashboard ' + tab.title + '?')
                 .content('dashboard will be deleted from your collection')
@@ -713,14 +726,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 .targetEvent(ev)
                 .ok('Please do it!')
                 .cancel('Oh NO!');
-            $mdDialog.show(confirm).then(function() {
+            $mdDialog.show(confirm).then(function () {
                 $scope.removeTab(tab);
-            }, function() {
+            }, function () {
 
             });
         };
 
-        $scope.showAddNewWidgets = function(ev) {
+        $scope.showAddNewWidgets = function (ev) {
             //            var selectedMenu = document.getElementsByClassName("menu-layer");
             //            selectedMenu[0].style.display = 'none';
             $mdDialog.show({
@@ -729,14 +742,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 targetEvent: ev,
                 clickOutsideToClose: true,
                 resolve: {
-                    dashboard: function() {
+                    dashboard: function () {
                         return $scope.dashboard;
                     }
                 }
             })
         };
 
-        $scope.showSettings = function(ev) {
+        $scope.showSettings = function (ev) {
             $mdDialog.show({
                 controller: 'settingsCtrl',
                 templateUrl: "views/settings.html",
@@ -746,7 +759,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //end of erangas space
 
         // hides and shows the dashboard tabs
-        $scope.manageTabs = function(dashboard) {
+        $scope.manageTabs = function (dashboard) {
             if (dashboard) {
                 console.log("manage tabs true");
                 $("md-tabs > md-tabs-wrapper").children().show();
@@ -760,14 +773,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
         };
 
-        $scope.navigate = function(routeName, ev) {
+        $scope.navigate = function (routeName, ev) {
 
             if (routeName == "Dashboards") {
 
                 $scope.showAddNewDashboard(ev);
                 $scope.manageTabs(true);
                 $scope.currentView = "Dashboard";
-                $state.go('home.'+routeName)
+                $state.go('home.' + routeName)
             }
             if (routeName == "Social Media Analytics") {
                 $scope.manageTabs(false);
@@ -794,7 +807,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 selectedMenu[0].style.display = 'block';
                 $rootScope.currentView = "D3plugins";
                 $scope.manageTabs(false);
-                $state.go('home.'+routeName);
+                $state.go('home.' + routeName);
             }
             if (routeName == "Reports") {
 
@@ -802,7 +815,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 selectedMenu[0].style.display = 'block';
                 $rootScope.currentView = "Reports";
                 $scope.manageTabs(false);
-                $state.go('home.'+routeName);
+                $state.go('home.' + routeName);
             }
             if (routeName == "Analytics") {
 
@@ -820,7 +833,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $(".menu-layer").css("top", "200px");
                 $("starting-point").css("top", "200px");
                 $scope.manageTabs(false);
-                $state.go('home.'+routeName);
+                $state.go('home.' + routeName);
 
                 $rootScope.currentView = "RealTime";
 
@@ -844,7 +857,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $rootScope.currentView = "Digin P Stack";
                 //$state.go('home.'+routeName);                
             }
-            if (routeName == "CommonData") {
+            if (routeName == "Data Source") {
 
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
@@ -854,18 +867,18 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 if ($mdSidenav('right').isOpen()) {
                     $mdSidenav('right')
                         .close()
-                        .then(function() {
+                        .then(function () {
                             $log.debug('right sidepanel closed');
                         });
                     $mdSidenav('custom')
                         .close()
-                        .then(function() {
+                        .then(function () {
                             $log.debug('custom sidepanel closed');
                         });
                 } else {
                     $mdSidenav('right')
                         .toggle()
-                        .then(function() {
+                        .then(function () {
                             $log.debug("toggle right is done");
                         });
                 }
@@ -876,7 +889,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';
                 $scope.manageTabs(false);
-                $scope.showSalesForecastPrediction(ev);            
+                $scope.showSalesForecastPrediction(ev);
 
             }
             if (routeName == "Logout") {
@@ -913,7 +926,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.currentView = "Help";
 
                 //user guide
-                setTimeout(function() {
+                setTimeout(function () {
                     var intro;
                     intro = introJs();
                     intro.setOptions($scope.IntroOptions);
@@ -971,7 +984,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.fill = colors[0];
         $scope.size = 48;
 
-        setInterval(function() {
+        setInterval(function () {
             var random = Math.random();
             if (random < 0.2) {
                 $scope.size = 28 + 4 * Math.floor(Math.random() * 9);
@@ -984,10 +997,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
             $scope.$apply();
         }, 1700);
-        setTimeout(function() {
+        setTimeout(function () {
             var featureObj = localStorage.getItem("featureObject");
 
-            getJSONData($http, 'menu', function(data) {
+            getJSONData($http, 'menu', function (data) {
 
                 if (featureObj == "undefined") $scope.menu = data;
                 else {
@@ -1002,10 +1015,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             });
         }, 300);
-        setTimeout(function() {
+        setTimeout(function () {
             var featureObj = localStorage.getItem("featureObject");
 
-            getJSONData($http, 'menu', function(data) {
+            getJSONData($http, 'menu', function (data) {
 
                 if (featureObj === null) $scope.menu = data;
                 else {
@@ -1021,28 +1034,28 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
         }, 800);
 
-        setTimeout(function() {
-            $scope.CompletedEvent = function(scope) {
+        setTimeout(function () {
+            $scope.CompletedEvent = function (scope) {
                 console.log("Completed Event called");
             };
 
-            $scope.ExitEvent = function(scope) {
+            $scope.ExitEvent = function (scope) {
                 console.log("Exit Event called");
             };
 
-            $scope.ChangeEvent = function(targetElement, scope) {
+            $scope.ChangeEvent = function (targetElement, scope) {
                 console.log("Change Event called");
                 console.log(targetElement); //The target element
                 console.log(this); //The IntroJS object
             };
 
-            $scope.BeforeChangeEvent = function(targetElement, scope) {
+            $scope.BeforeChangeEvent = function (targetElement, scope) {
                 console.log("Before Change Event called");
                 console.log(targetElement);
 
             };
 
-            $scope.AfterChangeEvent = function(targetElement, scope) {
+            $scope.AfterChangeEvent = function (targetElement, scope) {
                 console.log("After Change Event called");
                 console.log(targetElement);
             };
@@ -1120,7 +1133,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
 
         //getting branch data for google maps
-        $http.get('jsons/branch.json').success(function(data) {
+        $http.get('jsons/branch.json').success(function (data) {
             $scope.JSONDataBranch = data;
             console.log("data json branch");
             console.log($scope.JSONDataBranch);

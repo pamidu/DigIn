@@ -269,6 +269,16 @@ routerApp.controller('queryBuilderCtrl', function
                     view: 'views/query/chart-views/metric.html',
                     initObj: {value:33852, label:"Sales Average"}
                 }
+                ,{
+                    id: 'ct18',
+                    icon: 'ti-map-alt',
+                    name: 'map',
+                    chart: 'map',
+                    selected: false, 
+                    chartType: 'googleMap',
+                    view: 'views/googleMaps/ViewGoogleMapsBranches.html',
+                    initObj: {}
+                }
             ]
 
         };
@@ -515,6 +525,8 @@ routerApp.controller('queryBuilderCtrl', function
         
         
         $scope.saveChart = function(widget){
+            widget.dataCtrl = "widgetSettingsDataCtrl";
+            widget.dataView = "views/ViewData.html";
             widget["selectedChart"] = $scope.selectedChart;
             if(typeof widget.commonSrc == "undefined"){
                 widget.highchartsNG["size"] = {width: 300, height: 220};
@@ -593,7 +605,9 @@ routerApp.controller('queryBuilderCtrl', function
             },
             saveWidget: function(wid){
                 wid.highchartsNG = $scope.highchartsNG;
+                wid.uniqueType = "Dynamic Visuals";
                 wid.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
+                wid.initCtrl = "elasticInit";
                 $scope.saveChart(wid);
             }
         };
@@ -708,10 +722,29 @@ routerApp.controller('queryBuilderCtrl', function
                 });
             },
             saveWidget: function(wid){
-                wid.widView = "views/ViewPivotSummary.html";
-                wid.widData.summary = $scope.summaryData;
-                wid.widData.fieldArray = $scope.fieldArray;
+                wid.widView = "views/ViewPivotSummary.html";        
+                wid.widData.summary = $scope.summaryData;       
+                wid.widData.fieldArray = $scope.fieldArray;          
+                wid.uniqueType = "Pivot Summary";
+                wid.initCtrl="";
                 $scope.saveChart(wid);
+            }
+        };
+
+        $scope.googleMap = {
+            onInit: function(recon){
+                
+            },
+            changeType: function(){
+                // $scope.commonData.chartTypes[17].view = "views/googleMaps/ViewGoogleMapsBranches.html";
+            },
+            saveWidget: function(wid){
+                wid.widView = "views/googleMaps/ViewGoogleMapsClaims.html";                 
+                wid.uniqueType = "Google Maps Branches";
+                // wid.initCtrl="";
+                setTimeout(function(){
+                    $scope.saveChart(wid);
+                },1000);  
             }
         };
     
@@ -1041,5 +1074,6 @@ routerApp.controller('queryBuilderCtrl', function
         }
     };
 });
+
 
 

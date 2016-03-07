@@ -2,13 +2,13 @@
     "d": [{
         "name": "Python",
         "getTables": {
-            "host": "http://192.168.2.33:8080/",
+            "host": "http://104.131.48.155:8080/",
             "request": "GetTables",
             "method":"get",
             "params":["dataSetName", "db"]
         },
         "getFields": {
-            "host": "http://192.168.2.33:8080/",
+            "host": "http://104.131.48.155:8080/",
             "request": "GetFields",
             "method":"get",
             "params":["dataSetName", "tableName", "db"]

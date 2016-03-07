@@ -51,7 +51,7 @@
             "icon2": "grid_off"
         }, {
 
-            "title": "CommonData",
+            "title": "Data Source",
             "icon1": "bower_components/material-design-icons/action/svg/production/ic_input_24px.svg",
             "icon": "ion-close",
             "icon2": "view_array"

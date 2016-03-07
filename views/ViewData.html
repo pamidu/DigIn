@@ -1,15 +1,15 @@
-<md-dialog aria-label="Sample Dialog" class="widget0m-data-dialog2" ng-controller="widgetSettingsDataCtrl" ng-init="initialize()">
+<md-dialog aria-label="Sample Dialog" class="widget0m-data-dialog">
     
     <div id="canvas">
         <div layout="row">
             <div class="card-head widget0m-data-header">
                 <header class="graph-h1 text-uppercase">
-                    Data
+                    {{widget.uniqueType}}
                 </header>
                 <div class="tools">
-                    <md-button class="buttonMinwidth38" ng-click="close();">      
-                      <ng-md-icon icon="close" style="fill:lightgrey" size="24" layout="row"></ng-md-icon>        
-                    </md-button> 
+                    <a href="javascript:void(0)" data-ng-click="cancel()">
+                        <i class="ti-close"></i>
+                    </a>
                 </div>
             </div>
 
@@ -20,13 +20,21 @@
                 Please wait..
             </div>
             <div class="layout-row" layout="row">
-                    <div class="widget0m-mapped-data2">
+                    <div class="widget0m-mapped-data">
+                        <table id="table" class="table table-hover table-mc-light-blue">
+                            <!-- <thead>
+                            <tr>
+                                <th ng-repeat="attribute in widget.attributes">
+                                    {{attribute}}
+                                </th>
+                            </tr>
+                            </thead> -->
+                            <tbody id="dataBody">
                               <md-content>
-                                  <md-input-container class="md-icon-float md-block width100percent">
+                                    <md-input-container class="md-icon-float md-block width100percent">
                                       <label>Filter</label>
                                       <input type="text" ng-model="query" ng-change="updateFilteredList(query)">
                                   </md-input-container>
-                                  <div class="table-area">
                                   <table class="table table-striped" at-table at-list="tableData" at-config="config" at-paginated>
                                     <thead>
                                       <tr><th at-attribute={{field}} ng-repeat="field in fieldData">{{field}}</th></tr>
@@ -37,10 +45,11 @@
                                       </tr>
                                     </tbody>
                                   </table>
-                                  </div>
                                   <at-pagination class="custom-pagination" at-list="tableData" at-config="config"></at-pagination>
                               </md-content>
-                    </div>                
+                            </tbody>
+                        </table>
+                    </div>
             </div>
         </div>
     </div>
@@ -50,3 +59,4 @@
 </md-dialog>
 
 
+ 

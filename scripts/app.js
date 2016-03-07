@@ -35,8 +35,7 @@ var routerApp = angular.module('DuoDiginRt', [
     'ngToast',
     'vAccordion',
     'ngDraggable',
-    'ui.select2',
-    'ngMessages',
+    'ngMessages'
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
@@ -82,6 +81,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 preLoader: true
             }
         })
+       
         .state("home.Settings", {
             url: "/settings",
             controller: "dashboardSetupCtrl",
@@ -226,7 +226,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         .state('home.SocialGraphFb', {
             url: '/social-graph-fb',
             controller: 'socialGraphFBCtrl',
-            templateUrl: "views/socialGraph/socialGraphFB_Temp.html",
+            templateUrl: "views/socialGraph/socialGraph_Temp.html",
             data: {
                 requireLogin: true
             }

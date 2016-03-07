@@ -9,7 +9,7 @@
             <div flex="50">
                 <div class="digin-qb-header-text  ">
                     <h1>
-                        Dynamically Report Builder
+                        Report Viewer
                         <small class="ng-binding"></small>
                     </h1>
                 </div>
@@ -22,7 +22,7 @@
             <div flex="20" class="bg-lightblue-h-1 p-l-20">
                 <div class="digin-gb-b">
                     <span>Report Name</span>
-                    <h5>test report name 1</h5>
+                    <h5>CAF Details</h5>
                 </div>
             </div>
         </div>
@@ -30,62 +30,57 @@
     <!-- body content main wrap -->
     <div class="bdy-wrap">
         <div layout="row">
-            <div flex="30">
+            <div flex="20">
                 <div class="optional-panel pull-left p-10">
                     <div class="panel-wrap">
+                        <div class="panel-header">
+                            <h2>Report Option - CAF Details </h2>
+                        </div>
 
-                        <!-- #multi selected -->
-                        <div class="filed-list-warp bottom-line">
-                            <select ui-select2="select2Options" multiple ng-model="selectedTags">
-                                <option ng-repeat="tag in tags" value="{{tag.id}}">{{tag.name}}</option>
+                        <div class="panel-filter">
+                            <div class="date-filter">
+                                <div class="inline-date">
+                                    <label>From Date</label>
+                                    <input type="text" class="form-control" datepicker
+                                           ng-model="reportFiledList.fromDate"
+                                           placeholder="from date"/>
+                                </div>
+                                <div class="inline-date">
+                                    <label>To Date</label>
+                                    <input type="text" class="form-control" datepicker ng-model="reportFiledList.toDate"
+                                           placeholder="to date"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-filter">
+                            <label>Account No</label>
+                            <input type="text" class="form-control"
+                                   placeholder="account no">
+                        </div>
+
+                        <div class="panel-filter">
+                            <label>Customer Name</label>
+                            <select class="form-control" select2 name="country"
+                                    ng-model="test">
+                                <option>Select customer</option>
+                                <option value="" ng-repeat="customer in reportFiledList.customerNames">
+                                    {{customer.name}}
+                                </option>
                             </select>
                         </div>
-                        <!-- #textbox -->
-                        <div class="filed-list-warp bottom-line  ">
-                            <h5>
-                                {{reportFiledList.textBox.headerName}}
-                            </h5>
-                            <div class="txt-box-list">
-                                <div ng-repeat="item in reportFiledList.textBox.txtFiled">
-                                    <input type="text"
-                                           placeholder="{{item.name}}"
-                                           class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- #radio btn-->
-                        <div class="filed-list-warp bottom-line">
-                            <h5>
-                                {{reportFiledList.radioBtn.headerName}}
-                            </h5>
-                            <md-radio-group
-                                    ng-model="reportFiledList.radioBtn.selectedRadio"
-                                    ng-change="eventHandler.onChangeRadioBtn()">
-                    <span class="inline" ng-repeat="type in reportFiledList.radioBtn.hasRadioBtn">
-                        <md-radio-button value="{{type.value}}"
-                                         ng-model="reportFiledList.radioBtn.selectedRadio"
-                                         class="md-primary">{{type.name}}
-                        </md-radio-button>
-                     </span>
-                            </md-radio-group>
-                        </div>
-                        <!-- #checkBox -->
-                        <div class="filed-list-warp bottom-line ">
-                            <h5>
-                                {{reportFiledList.checkBox.headerName}}
-                            </h5>
-                            <div class="check-box-list">
-                                <div class="inline " ng-repeat="item in reportFiledList.checkBox.items">
-                                    <md-checkbox ng-checked="item">
-                                        {{ item }}
-                                    </md-checkbox>
-                                </div>
-                            </div>
+                        <div class="panel-filter">
+                            <label>Promotion</label>
+                            <select ui-select2="eventHandler.select2Options" multiple ng-model="selectedTags">
+                                <option ng-repeat="tag in reportFiledList.tags" value="{{tag.id}}">{{tag.name}}</option>
+                            </select>
                         </div>
 
-
+                        <div class="panel-filter">
+                            <label>CAF Date</label>
+                            <input type="text" class="form-control" datepicker ng-model="reportFiledList.cafDate"
+                                   placeholder="from date"/>
+                        </div>
                     </div>
-
                     <div class="btn-wrap">
                         <span class="btn btn-sm btn-default apply ">
                             Apply
@@ -96,20 +91,22 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div flex="70">
+            <div flex="80">
+                <div class="digin-drb-wrap report">
+                    <div class="data-state">
+                        <div class="message"
+                             ng-if="isDataFound">
+                            <i class="ti-receipt"></i>
+                            <span>Please select report data..</span>
 
-            <div class="digin-drb-wrap report">
-                <div class="data-state">
-                    <div class="message">
-                        <i class="ti-receipt"></i>
-                        <span>Please select report data..</span>
-
+                        </div>
                     </div>
-
+                    <iframe ng-src="http://digin.io/report/report_test.html" height="100%"
+                            width="100%"></iframe>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 </div>

@@ -19,18 +19,19 @@
                 getTables: function(cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "/GetTables?dataSetName=" + dataSetId + "&db=" + database);
+                    }, $diginurls.diginengine + "/GetTables?dataSetName=" + getNamespace() + "&db=" + database);
                 },
+                
                 getFields: function(tbl, cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "/GetFields?dataSetName=" + dataSetId + "&tableName=" + tbl + "&db=" + database);
+                    }, $diginurls.diginengine + "/GetFields?dataSetName=" + getNamespace() + "&tableName=" + tbl + "&db=" + database);
                 },
                 getHighestLevel: function(tbl, fieldstr, cb) {
                     if (database == "BigQuery") {
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "/gethighestlevel?tablename=[" + dataSetId + "." + tbl + "]&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
+                        }, $diginurls.diginengine + "/gethighestlevel?tablename=[" + getNamespace() + "." + tbl + "]&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
                     }
                     if (database == "MSSQL") {
 
@@ -87,7 +88,13 @@
                     $servicehelpers.sendWorker(wSrc, wData, function(data, status, msg) {
                         cb(data, status);
                     });
-                }
+                },
+                
+                getHierarchicalSummary: function(tbl, h, cb){
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + "/hierarchicalsummary?h=" + h + "&tablename=[" + getNamespace() + "." + tbl + "]&id=19&db=" + database);
+                },
             }
         }
 
@@ -115,11 +122,17 @@
             },
             sendWorker: function(wSrc, wData, cb) {
                 var w = new Worker(wSrc);
+                
                 wData.rUrl = wData.rUrl + "&SecurityToken=" + getCookie("securityToken") + "&Domain=duosoftware.com";
                 w.postMessage(JSON.stringify(wData));
                 w.addEventListener('message', function(event) {
-                    var res = JSON.parse(event.data.res);
-                    res.Is_Success ? cb(res.Result, event.data.state, res.Custom_Message) : cb(res.Custom_Message, event.data.state,"");   
+                    if(event.data.state){
+                        var res = JSON.parse(event.data.res);
+                        res.Is_Success ? cb(res.Result, event.data.state, res.Custom_Message) : cb(res.Custom_Message, event.data.state,"");
+                    }else{
+                        cb(res.Custom_Message, event.data.state,"");
+                    }
+                       
                 });
             }
         }

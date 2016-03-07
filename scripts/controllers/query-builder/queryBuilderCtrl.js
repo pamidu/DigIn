@@ -6,7 +6,7 @@ routerApp.controller('queryBuilderCtrl', function
         ($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state) {
 
     $scope.initQueryBuilder = function(){
-        
+            $scope.widget = $scope.sourceData.wid;
         if(typeof($scope.sourceData.wid.commonSrc) == "undefined"){
             $scope.selectedChart = $scope.commonData.chartTypes[0];
             $scope.highCharts.onInit(false);
@@ -225,7 +225,8 @@ routerApp.controller('queryBuilderCtrl', function
                     name: 'hierarchy',
                     chart: 'hierarchy',
                     selected: false, 
-                    chartType: 'd3Charts',
+                    chartType: 'd3hierarchy',
+                    view: 'views/query/chart-views/hierarchySummary.html',
                     initObj: $scope.initHighchartObj
                 }, 
                 {
@@ -234,7 +235,8 @@ routerApp.controller('queryBuilderCtrl', function
                     name: 'sunburst',
                     chart: 'sunburst',
                     selected: false, 
-                    chartType: 'd3Charts',
+                    chartType: 'd3sunburst',
+                    view: 'views/query/chart-views/sunburst.html',
                     initObj: $scope.initHighchartObj
                 }, 
                 {
@@ -325,7 +327,7 @@ routerApp.controller('queryBuilderCtrl', function
                 {isStructuret: false},
                 {isSerSetting: false}
             ],
-            messageAry: ['Please wait while the data is saving..'],
+            messageAry: ['Please wait while the data is saving...'],
             message: '',
             isChartSelected: false,
             onToggleEvent: function (event) {
@@ -508,10 +510,6 @@ routerApp.controller('queryBuilderCtrl', function
                 $scope.selectedChart = onSelect;
                 eval("$scope."+ $scope.selectedChart.chartType + ".changeType()");
                 //privateFun.createHighchartsChart(onSelect.chart);
-            },
-            onSaveChartConfig: function () {
-
-
             }
         }//end event function
         
@@ -600,9 +598,85 @@ routerApp.controller('queryBuilderCtrl', function
             }
         };
         
-        $scope.d3Charts = function(){
+        $scope.d3hierarchy = {
+            changeType: function(){
+                $scope.eventHndler.isLoadingChart = true;
+                
+                var fieldArray = [];
+
+                for(var i=0; i < $scope.commonData.measures.length; i++){
+                    fieldArray.push("'"+$scope.commonData.measures[i].filedName+"'");
+                }
+                for(var i=0; i < $scope.commonData.columns.length; i++){
+                    fieldArray.push("'"+$scope.commonData.columns[i].filedName+"'");
+                }
+                
+                //get highest level
+                $scope.client.getHighestLevel($scope.sourceData.tbl, fieldArray.toString(),function(data, status){
+                    var hObj = {};
+                    if(status){
+                        data.forEach(function(entry){
+                            hObj[entry.value] = entry.level;
+                        });
+                        $scope.client.getHierarchicalSummary($scope.sourceData.tbl, JSON.stringify(hObj), function(data, status){
+                            if(status){
+                                $scope.hierarData = data;
+                                $scope.eventHndler.isLoadingChart = false;
+                            }else{}                            
+                        });
+                    }
+                    else{}                    
+                });
+            },
             
-        }
+            saveWidget: function(wid){
+                wid.widView = "views/ViewHnbMonth.html";
+                wid.widData = $scope.hierarData;
+                $scope.saveChart(wid);
+            }
+        };
+    
+        $scope.d3sunburst = {
+            
+            changeType: function(){
+                $scope.eventHndler.isLoadingChart = true;
+                
+                var fieldArray = [];
+
+                for(var i=0; i < $scope.commonData.measures.length; i++){
+                    fieldArray.push("'"+$scope.commonData.measures[i].filedName+"'");
+                }
+                for(var i=0; i < $scope.commonData.columns.length; i++){
+                    fieldArray.push("'"+$scope.commonData.columns[i].filedName+"'");
+                }
+                
+                //get highest level
+                $scope.client.getHighestLevel($scope.sourceData.tbl, fieldArray.toString(),function(data, status){
+                    var hObj = {};
+                    if(status){
+                        data.forEach(function(entry){
+                            hObj[entry.value] = entry.level;
+                        });
+                        $scope.client.getHierarchicalSummary($scope.sourceData.tbl, JSON.stringify(hObj), function(data, status){
+                            $scope.hierarData = data;
+                            $scope.eventHndler.isLoadingChart = false;
+                            if(status){
+                                $scope.hierarData = data;
+                                $scope.eventHndler.isLoadingChart = false;
+                            }else{}                            
+                        });
+                    }
+                    else{}                    
+                });
+            },
+            
+            saveWidget: function(wid){
+                wid.widView = "views/ViewHnbData.html";
+                wid.widData = $scope.hierarData;
+                $scope.saveChart(wid);
+            }
+            
+        };
         
         $scope.pivotSummary = {
             onInit: function(recon){
@@ -782,7 +856,7 @@ routerApp.controller('queryBuilderCtrl', function
                         $scope.receivedQuery = query;
                     }
                     else{
-                        //handle the exceptions
+                        alert('request failed');
                     }
                 });
                 
@@ -829,6 +903,8 @@ routerApp.controller('queryBuilderCtrl', function
                     $scope.eventHndler.isLoadingChart=false;
                     $scope.receivedQuery = query;
                 });                
+            }else{
+                alert('request failed');
             }
 
         },$scope.selectedCat);
@@ -854,8 +930,10 @@ routerApp.controller('queryBuilderCtrl', function
                         }
                     }
                     $scope.executeQryData.executeMeasures = measureArr;
-                }
-                eval("$scope."+ $scope.selectedChart.chartType + ".executeQuery(cat, res)");
+                    eval("$scope."+ $scope.selectedChart.chartType + ".executeQuery(cat, res)");
+                }else{
+                    alert('request failed');
+                }                
             });
         }else{
             alert("enter a query");

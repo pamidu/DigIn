@@ -1506,10 +1506,14 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
     margin-right: 15px;
 }
 
-.widget-button-wrapper2{
+.widget-button-wrapper2 {
+    background-color: white;
     position: absolute;
-    bottom: 30px;
+    bottom: 35px;
     right: 0px;
+    -webkit-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
 }
 
 .widget-title {

@@ -267,6 +267,16 @@ routerApp.controller('queryBuilderCtrl', function
                     view: 'views/query/chart-views/metric.html',
                     initObj: {value:33852, label:"Sales Average"}
                 }
+                ,{
+                    id: 'ct18',
+                    icon: 'ti-map-alt',
+                    name: 'map',
+                    chart: 'map',
+                    selected: false, 
+                    chartType: 'googleMap',
+                    view: 'views/googleMaps/ViewGoogleMapsBranches.html',
+                    initObj: {}
+                }
             ]
 
         };
@@ -640,6 +650,23 @@ routerApp.controller('queryBuilderCtrl', function
                 wid.uniqueType = "Pivot Summary";
                 wid.initCtrl="";
                 $scope.saveChart(wid);
+            }
+        };
+
+        $scope.googleMap = {
+            onInit: function(recon){
+                
+            },
+            changeType: function(){
+                // $scope.commonData.chartTypes[17].view = "views/googleMaps/ViewGoogleMapsBranches.html";
+            },
+            saveWidget: function(wid){
+                wid.widView = "views/googleMaps/ViewGoogleMapsClaims.html";                 
+                wid.uniqueType = "Google Maps Branches";
+                // wid.initCtrl="";
+                setTimeout(function(){
+                    $scope.saveChart(wid);
+                },1000);  
             }
         };
     

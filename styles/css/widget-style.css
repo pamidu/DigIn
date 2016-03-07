@@ -67,7 +67,7 @@
     width: 50%;
     /*height: 450px;*/
     overflow: hidden;
-    max-height:90%;
+    max-height:98%;
 }
 .widget0m-data-dialog-sm {
     width: 25%;
@@ -99,7 +99,7 @@
 }
 .widget0m-mapped-data2 {
     overflow: hidden;
-    max-height: 500px;
+    max-height: 600px;
     min-height: 300px;
     width: 100%;
 }

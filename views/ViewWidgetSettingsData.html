@@ -1,4 +1,19 @@
 <md-dialog aria-label="Sample Dialog" class="widget0m-data-dialog2" ng-controller="widgetSettingsDataCtrl" ng-init="initialize()">
+
+    <div class="digin-main-loader slideOutDown "
+         ng-if="eventHndler.isMainLoading==true">
+        <div class="loader-wrap animated "
+             ng-class="eventHndler.isMainLoading==true?'zoomInUp':'fade-out'">
+            <div class="loader-body-wrap">
+                <span class="loader2"><span class="loader2-inner"></span></span>
+                <h3>
+                    {{eventHndler.message}}
+                </h3>
+
+            </div>
+
+        </div>
+    </div>
     
     <div id="canvas">
         <div layout="row">

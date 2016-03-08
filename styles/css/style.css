@@ -1826,8 +1826,8 @@ md-backdrop.md-sidenav-backdrop {
     color: #ffffff;
     background-color: #4B77BE;
     border-color: #4B77BE;
-    font-weight: 800;
-    font-size: 16px;
+    /*font-weight: 800;
+    font-size: 16px;*/
 }
 
 .custom-pagination > .active > a,
@@ -1839,8 +1839,8 @@ md-backdrop.md-sidenav-backdrop {
     color: #000000;
     background-color: #ffffff;
     cursor: default;
-    font-size: 16px;
-    font-weight: 800;
+    /*font-size: 16px;
+    font-weight: 800;*/
 }
 
 .custom-pagination > .disabled > span,
@@ -1853,8 +1853,8 @@ md-backdrop.md-sidenav-backdrop {
     background-color: #fff;
     border-color: #ddd;
     cursor: not-allowed;
-    font-size: 16px;
-    font-weight: 600;
+    /*font-size: 16px;
+    font-weight: 600;*/
 }
 
 .buttonMinwidth38 {

@@ -1085,12 +1085,14 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function($http,
 
 }]);
 routerApp.service('generatePDF1', function($timeout){
-    this.generate = function(htmlElement, config) {
+    this.generate = function(htmlElement, config, tableDataString) {
       
         var doc = new jsPDF('landscape');
+        var htmlObject = document.createElement('div');
+        htmlObject.innerHTML = tableDataString;
         
         doc.text(config.titleLeft, config.titleTop, config.title);
-        doc.fromHTML(htmlElement, config.tableLeft, config.tableTop, {});
+        doc.fromHTML(htmlObject, config.tableLeft, config.tableTop, {});
         var pdfName = config.title.toString() + '.pdf';
         doc.save(pdfName);
         

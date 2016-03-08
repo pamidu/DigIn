@@ -145,11 +145,16 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
             $scope.originalList = $scope.dataTable;
         }
 
+        $scope.eventHndler = {
+                isMainLoading: true,
+                message: "Data Loading..."
+            }
+
         $scope.initialize = function(){
-            $scope.dataViewPath = $rootScope.widget.dataView;
-            console.log( "$rootScope.widget.dataView", $rootScope.widget.dataView);
+                        
             //if widget is google maps
             switch($rootScope.widget.uniqueType){
+
                 case "Dynamic Visuals":
                     
                     var query = $rootScope.widget.commonSrc.query;
@@ -204,6 +209,29 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
         };
 
         $scope.downloadPDF = function(){
+
+                            var tableDataString = "";
+                            var header = "<thead>";
+
+                            for(var i = 0; i < $scope.fieldData.length; i++){
+                                header += "<th>" + $scope.fieldData[i].toString() + "</th>"; 
+                            }
+
+                            header += "</thead>" 
+                            tableDataString = "<table>" + header + "<tbody>";
+
+                            for(var i = 0; i < $scope.tableData.length; i++){
+                                console.log($scope.tableData[i]);
+                                var rowData = "<tr>";
+                                for(var j = 0; j < $scope.fieldData.length; j++){
+                                   console.log($scope.tableData[i][$scope.fieldData[j]]);
+                                   rowData += "<td>" +$scope.tableData[i][$scope.fieldData[j]].toString() + "</td>";
+                                }
+                                rowData += "</tr>";
+                                tableDataString += rowData
+                            }
+
+                            tableDataString += "</tbody></table>"
             
                             var htmlElement = $(".table-area").get(0);
                             var config = {
@@ -213,8 +241,14 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                                 tableLeft: 20,
                                 tableTop: 30
                             };
-                            generatePDF1.generate(htmlElement, config);
-                        }
+                            generatePDF1.generate(htmlElement, config, tableDataString);
+        }
+        
+        $scope.$watch('tableData', function(newValue, oldValue) {
+                if (newValue){
+                    $scope.eventHndler.isMainLoading = false;
+                }
+        });
 
         $scope.close = function() {
 

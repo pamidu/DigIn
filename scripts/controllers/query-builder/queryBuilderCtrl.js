@@ -697,6 +697,7 @@ routerApp.controller('queryBuilderCtrl', function
                 
             },
             changeType: function(){
+                $scope.eventHndler.isLoadingChart = true;
                 $scope.fieldArray = [];
 
                 for(var i=0; i < $scope.commonData.measures.length; i++){
@@ -719,6 +720,7 @@ routerApp.controller('queryBuilderCtrl', function
                 var query = "SELECT " + $scope.fieldArray.toString() + " FROM Demo." + $scope.sourceData.tbl;  
                 $scope.client.getExecQuery(query, function(data, status){
                     $scope.summaryData = data;
+                    $scope.eventHndler.isLoadingChart = false;
                 });
             },
             saveWidget: function(wid){

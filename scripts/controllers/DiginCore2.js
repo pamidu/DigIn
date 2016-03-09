@@ -124,7 +124,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
         // ====== angular-table configuration ========
         $scope.config = {
             itemsPerPage: 7,
-            fillLastPage: true
+            fillLastPage: false
         }
 
         // ====== Json data to array ======  
@@ -376,28 +376,22 @@ routerApp.controller('shareCtrl', ['$scope', '$rootScope', '$objectstore', '$mdD
 
     $scope.shareOptions = [{
         provider: "facebook",
-        icon: "facebook56",
-        color: "#03A9F4"
+        icon: "styles/css/images/icons/facebook.svg"
     }, {
         provider: "google+",
-        icon: "google120",
-        color: "#FF5722"
+        icon: "styles/css/images/icons/googleplus.svg"
     }, {
         provider: "twitter",
-        icon: "twitter47",
-        color: "#2196F3"
+        icon: "styles/css/images/icons/twitter.svg"
     }, {
         provider: "linkedin",
-        icon: "linkedin24",
-        color: "#607D8B"
+        icon: "styles/css/images/icons/linkedin.svg"
     }, {
-        provider: "printerest",
-        icon: "pinterest33",
-        color: "#FFC107"
+        provider: "pinterest",
+        icon: "styles/css/images/icons/pinterest.svg"
     }, {
         provider: "tumbler",
-        icon: "tumblr22",
-        color: "#F57C00"
+        icon: "styles/css/images/icons/tumblr.svg"
     }];
 
     $scope.closeDialog = function() {

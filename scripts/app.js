@@ -122,14 +122,14 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: true
             }
         })
-        .state('home.Digin P Stack', {
-            url: "/Digin P Stack",
-            controller: 'ExtendedanalyticsCtrl',
-            templateUrl: "views/extended-analytics.html",
-            data: {
-                requireLogin: true
-            }
-        })
+        // .state('home.Digin P Stack', {
+        //     url: "/Digin P Stack",
+        //     controller: 'ExtendedanalyticsCtrl',
+        //     templateUrl: "views/extended-analytics.html",
+        //     data: {
+        //         requireLogin: true
+        //     }
+        // })
         .state('home.Interactive Report', {
             url: "/Interactive Report",
             controller: 'ExtendedReportCtrl',
@@ -154,14 +154,14 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: true
             }
         })
-        .state('home.D3plugins', {
-            url: "/D3plugins",
-            controller: 'd3PluginCtrl',
-            templateUrl: "views/D3Plugin/d3View.html",
-            data: {
-                requireLogin: true
-            }
-        })
+        // .state('home.D3plugins', {
+        //     url: "/D3plugins",
+        //     controller: 'd3PluginCtrl',
+        //     templateUrl: "views/D3Plugin/d3View.html",
+        //     data: {
+        //         requireLogin: true
+        //     }
+        // })
         .state('home.PivotTable', {
             url: "/PivotTable",
             controller: 'summarizeCtrl',

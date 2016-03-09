@@ -1,34 +1,39 @@
 
-<md-dialog style="min-width:600px;min-height:50vh; max-width:70vw;">
-    <md-content>
-        <div class="md-toolbar-tools" flex layout="row" layout-align="space-between center">
-            <p style="color:lightgrey;margin:0px;">ADD WIDGET</p>
-            <md-button ng-click="closeDialog()">
-                <md-icon style="color:whitesmoke;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
-            </md-button>
+<md-dialog>
+    
+        <!-- <div layout="row"> -->
+        <div class="card-head">
+                <header>ADD WIDGET</header>
+                <div class="tools">
+                    <a href="javascript:void(0)" ng-click="closeDialog()">
+                        <i class="ti-close"></i>
+                    </a>
+                </div>
         </div>
+
+        <!-- </div> -->
+        <div class="header-line-bottom"></div>
+        <div class="card-body bg-color-grey-100 p-b-20 add-widget-body">
         <md-tabs md-dynamic-height md-border-bottom>
-            <md-tab ng-repeat="item in WidgetTypes" ng-init="filterWidgets(item)" ng-click="filterWidgets(item)">
+            <md-tab ng-repeat="item in WidgetTypes" ng-init="filterWidgets(item)" ng-click="filterWidgets(item)" style="height: 280px">
                 <md-tab-label>
                     <md-icon md-svg-src="{{item.icon}}"></md-icon>
                     <md-tooltip>{{item.title}}</md-tooltip>
                 </md-tab-label>
 
-                <md-content flex layout="row" layout-wrap>
-                    <div layout="row" class="animate-repeat" layout-align="start center" ng-repeat="widget in Widgets | filter : selected" style="background-color: {{widget.color}};margin:10px;border-radius: 10px;" flex="30" ng-click="addAllinOne(widget,$event)">
-                        <div style="background-color: rgba(255, 246, 246, 0.68);
-    border-radius: 100%;
-    "  layout-margin>
-                            <img ng-src="{{widget.icon}}" alt="{{widget.title}}" style="color:white;width: 100%;padding: 10px;"></md-icon>
+                <md-content flex layout-align="center center" layout="row" layout-wrap>
+                        <div class="select-card-btn asset" ng-repeat="widget in Widgets | filter : selected" ng-click="addAllinOne(widget,$event)">
+                            <a>
+                                <img ng-src="{{widget.icon}}"
+                                     alt=""
+                                     src="{{widget.icon}}">
+                            </a>
+                                <span class="size graph-h2">
+                                    {{widget.title}}
+                                </span>
                         </div>
-                        <div layout="column" flex>
-                            <p style="color:whitesmoke;font-size:large;">{{ widget.title }}</p>
-                            <!--                            <p style="color:lightgrey;font-size:smaller;">{{ widget.Description }}</p>-->
-                        </div>
-                    </div>
-
                 </md-content>
             </md-tab>
         </md-tabs>
-    </md-content>
+        </div>
 </md-dialog>

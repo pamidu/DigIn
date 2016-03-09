@@ -26,21 +26,6 @@
             "icon2": "access_time",
             "state": true,
             "stateStr": "Enabled"
-        }, {
-
-            "title": "Digin P Stack",
-            "icon1": "bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg",
-            "icon2": "reorder",
-            "state": true,
-            "stateStr": "Enabled"
-        },
-        {
-
-            "title": "D3plugins",
-            "icon1": "bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg",
-            "icon2": "radio_button_on",
-            "state": true,
-            "stateStr": "Enabled"
         }
     ]
 }

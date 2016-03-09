@@ -10,19 +10,18 @@
  Add New dashboard
 -->
 
-<md-dialog class="social-analysis" ng-controller="socialAnalysisCtrl">
-    <div layout="column">
-        <div layout="row">
-            <div class="card-head">
+<md-dialog ng-controller="socialAnalysisCtrl">
+        <!-- <div layout="row"> -->
+        <div class="card-head">
                 <header>SOCIAL ANALYSIS</header>
                 <div class="tools">
-                    <a href="javascript:void(0)" data-ng-click="close()">
+                    <a href="javascript:void(0)" ng-click="close()">
                         <i class="ti-close"></i>
                     </a>
                 </div>
-            </div>
-
         </div>
+
+        <!-- </div> -->
         <div class="header-line-bottom"></div>
         <div class="card-body bg-color-grey-100 p-b-40">
             <div layout="row" layout-align="center center" layout-wrap>
@@ -42,7 +41,4 @@
 
 
         </div>
-
-
-    </div>
 </md-dialog>

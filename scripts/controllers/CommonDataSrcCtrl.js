@@ -177,6 +177,11 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             }
             ,
             onClickClose: function () {
+                $mdSidenav('right')
+                        .close()
+                        .then(function () {
+                            $log.debug('right sidepanel closed');
+                        });
             }
             ,
             onClickNext: function (index) {

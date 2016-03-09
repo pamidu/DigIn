@@ -2032,3 +2032,8 @@ md-tabs.setup-tabs md-tabs-wrapper md-tab-data {
     background-color: #2E353F;
     border: 2px solid #00B4FF;
 }
+
+/* div in md-tab */
+md-tab-content > div{
+    height: 100%;
+}

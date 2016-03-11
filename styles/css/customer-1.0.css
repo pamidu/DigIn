@@ -325,6 +325,16 @@ drb >> dynamically report builder
     font-size: 18px;
     border-radius: 5px;
 }
+.alert-danger-social-analysis {
+    right: 500px;
+    background: #E53935 !important;
+    width: 100%;
+    color: #ffffff;
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 100;
+    font-size: 14px;
+    border-radius: 5px;
+}
 
 .digin-gb-chart-loading {
     position: absolute;

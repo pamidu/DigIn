@@ -192,13 +192,26 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             $mdDialog.hide();
         };
 
-        $scope.widgetSettings = function (widget) {
-            $mdDialog.show({
-                controller: 'widgetSettingsCtrl',
-                templateUrl: 'views/ViewWidgetSettings.html',
-                clickOutsideToClose: true,
-                resolve: {}
-            });
+        $scope.widgetSettings = function (ev, widget) {
+            if(typeof widget.commonSrc == "undefined"){
+                $mdDialog.show({
+                    controller: widget.initCtrl,
+                    templateUrl: widget.initTemplate,
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    locals: {
+                        widId: widget.id
+                    }
+                })
+                .then(function () {
+                    //$mdDialog.hide();
+                }, function () {
+                    //$mdDialog.hide();
+                });
+            }else{
+                $csContainer.fillCSContainer(widget.commonSrc.src);
+                $state.go("home.QueryBuilder");
+            }
             $rootScope.widget = widget;
         };
 
@@ -227,20 +240,20 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         };
 
         $scope.showData = function (ev, widget) {
+            
             $mdDialog.show({
-                    controller: widget.dataCtrl,
-                    templateUrl: 'views/ViewWidgetSettingsData.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    locals: {
-                        wid: widget
-                    }
-                })
-                .then(function () {
-                    //$mdDialog.hide();
-                }, function () {
-                    //$mdDialog.hide();
-                });
+                controller: widget.dataCtrl,
+                templateUrl: 'views/ViewWidgetSettingsData.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: {
+                wid: widget
+                }
+            })
+            .then(function () {
+                    //
+            });
+
             $rootScope.widget = widget;
         };
 

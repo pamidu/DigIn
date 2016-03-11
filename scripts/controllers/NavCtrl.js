@@ -572,6 +572,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.showAddSocialAnalysis = function (ev) {
             $mdDialog.show({
                     templateUrl: 'views/socialGraph/socialAnalysis_TEMP.html',
+                    controller: 'socialAnalysisCtrl',
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     clickOutsideToClose: true
@@ -780,7 +781,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.showAddNewDashboard(ev);
                 $scope.manageTabs(true);
                 $scope.currentView = "Dashboard";
-                $state.go('home.' + routeName)
+                $state.go('home.' + routeName);
             }
             if (routeName == "Social Media Analytics") {
                 $scope.manageTabs(false);
@@ -802,13 +803,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                 //$('md-tabs-wrapper').css("display","block");
             }
-            // if (routeName == "D3plugins") {
-            //     var selectedMenu = document.getElementsByClassName("menu-layer");
-            //     selectedMenu[0].style.display = 'block';
-            //     $rootScope.currentView = "D3plugins";
-            //     $scope.manageTabs(false);
-            //     $state.go('home.' + routeName);
-            // }
             if (routeName == "Reports") {
 
                 var selectedMenu = document.getElementsByClassName("menu-layer");
@@ -838,25 +832,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $rootScope.currentView = "RealTime";
 
             }
-            // if (routeName == "Digin P Stack") {
-
-            //     var selectedMenu = document.getElementsByClassName("menu-layer");
-            //     selectedMenu[0].style.display = 'block';
-            //     $(".menu-layer").css("top", "240px");
-            //     $("starting-point").css("top", "240px");
-            //     $scope.manageTabs(false);
-
-            //     $mdDialog.show({
-            //         controller: 'pStackCtrl',
-            //         templateUrl: 'views/pStackMenu.html',
-            //         targetEvent: ev,
-            //         clickOutsideToClose: true,
-            //         resolve: {}
-
-            //     });
-            //     $rootScope.currentView = "Digin P Stack";
-            //     //$state.go('home.'+routeName);                
-            // }
             if (routeName == "Data Source") {
 
                 var selectedMenu = document.getElementsByClassName("menu-layer");
@@ -954,7 +929,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     Fullscreen.all();
 
             }
-            if (routeName == "Clear") {
+            if (routeName == "Clear Widgets") {
 
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'block';

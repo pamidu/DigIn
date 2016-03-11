@@ -1,3 +1,5 @@
+
+<md-dialog>
 <!--
  update damith
  last update 4-11-15
@@ -10,12 +12,11 @@
  Add New dashboard
 -->
 
-<md-dialog ng-controller="socialAnalysisCtrl">
         <!-- <div layout="row"> -->
         <div class="card-head">
                 <header>SOCIAL ANALYSIS</header>
                 <div class="tools">
-                    <a href="javascript:void(0)" ng-click="close()">
+                    <a ng-click="close()">
                         <i class="ti-close"></i>
                     </a>
                 </div>
@@ -27,10 +28,9 @@
             <div layout="row" layout-align="center center" layout-wrap>
                 <!-- social media -->
                 <div class="select-card-btn asset" ng-repeat="widget in Widgets" ng-show="widget.type=='Social Media'">
-                   <a ui-sref="{{widget.href}}" ng-click="close()">
+                   <a ng-click="navigateToSocialMedia(widget.href)">
                         <img ng-src="{{widget.icon}}"
-                             alt=""
-                             src="{{widget.icon}}">
+                             alt="">
                     </a>
                         <span class="size graph-h2">
                             {{widget.title}}

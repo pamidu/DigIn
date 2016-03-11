@@ -27,6 +27,13 @@
                                             layout-align="center center" flex></ng-md-icon>
                                 <md-tooltip md-direction="left">sync</md-tooltip>
                             </md-button>
+                            <md-button class="widget-button" 
+                            ng-show="widget.initTemplate!=undefined || 
+                            widget.commonSrc!=undefined" ng-click="widgetSettings($event,widget)">
+                                <ng-md-icon icon="settings" style="fill:dimgrey" size="20" layout="column"
+                                            layout-align="center center" flex></ng-md-icon>
+                                <md-tooltip md-direction="left">settings</md-tooltip>
+                            </md-button>
                             <md-button class="widget-button" ng-click="showWidget($event,widget)">
                                 <ng-md-icon icon="fullscreen" style="fill:dimgrey" size="20" layout="column"
                                             layout-align="center center" flex></ng-md-icon>
@@ -37,7 +44,7 @@
                                             layout-align="center center" flex></ng-md-icon>
                                 <md-tooltip md-direction="left">commentary</md-tooltip>
                             </md-button>
-                            <md-button class="widget-button" ng-click="showData($event,widget)">
+                            <md-button class="widget-button" ng-show="widget.dataCtrl != undefined" ng-click="showData($event,widget)">
                                 <ng-md-icon icon="format_list_numbered" style="fill:dimgrey" size="20" layout="column"
                                             layout-align="center center" flex></ng-md-icon>
                                 <md-tooltip md-direction="left">data</md-tooltip>

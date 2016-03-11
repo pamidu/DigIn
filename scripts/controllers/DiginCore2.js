@@ -161,11 +161,24 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                     $scope.client = $diginengine.getClient($rootScope.widget.commonSrc.src.src);
                     $scope.client.getExecQuery(query, function(data, status){
                         $scope.tableData = data;
-                        $scope.originalList = $scope.tableData;
                         $scope.fieldData = [];
                         for(var key in $scope.tableData[0]){
                             $scope.fieldData.push(key);
                         }
+                        var newTableData = [];
+                        for(var i = 0; i < 10; i++){
+                            
+                            var newObject = {};
+                            newObject["id"] = i;
+                            for(var j = 0; j < $scope.fieldData.length; j++){
+                                console.log()
+                                newObject[$scope.fieldData[j]] = data[i][$scope.fieldData[j]];
+                            }
+                            newTableData.push(newObject);
+                            console.log(newObject);
+                        }
+                        $scope.tableData = newTableData;
+                        $scope.originalList = $scope.tableData;   
                     });
 
                 break;

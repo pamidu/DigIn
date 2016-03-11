@@ -1,4 +1,4 @@
-<md-dialog plumb-item ng-init="initialize()" class="custom-mdDialog">
+<md-dialog plumb-item class="custom-mdDialog">
   <md-toolbar style="width: 100%; min-height: 30vh!important;z-index: 0;">
     <div style="width:100%; height:48px;" layout="row" layout-align="end center">                
       <p style="color: whitesmoke;font-size: 20px;margin:5px;">CONFIGURATION</p>         
@@ -9,39 +9,10 @@
   </md-toolbar>
   <md-card style="margin: 20px;margin-top: -20vh; margin-bottom: 0px;height:100%;">
     <md-content layout-padding class="minHeight600">
-      <div>
-
-                <md-input-container>
-
-                 <div ng-show="rateLimitError">
-                  You are making too many requests, Twitter server and api stoped working
-                </div>
-
-                <md-button ng-click="refreshTimeline()" id="getTimelineButton" type="button" class="btn btn-info" style="display:none;">Refersh</md-button>
-
-                </md-input-container>
-            </div>
-            <label id="dislab"></label>
-            <div>
-                <md-input-container flex>
-                    <label>Hashtag:</label>
-                    <input name="hashtag" id="hashtag" type="text" ng-model="twitterHashtag">
-                </md-input-container>
-               
-        </div>
             <div class="md-actions" layout="row">
                 <span flex></span>
-                <md-button ng-click="connectButton()" id="connectButton" type="button" class="btn btn-primary">Sign In</md-button>
-                <md-button ng-click="signOut()" id="signOut" type="button" style="display:none;">Sign Out</md-button>
-                <md-button id="load-more" ng-click="refreshTimeline(tweets[tweets.length-1].id);finish();" ng-show="connectedTwitter">
-                    Finish
-                </md-button>
-                <md-button ng-click="cancel()">
-                    Cancel
-                </md-button>
-                <md-button ng-click="fetch()">
-                    Fetch
-                </md-button>
+                <md-button ng-click="connectButton()" id="connectButton">Sign In</md-button>
+                <md-button ng-click="signOut()" id="signOut">Sign Out</md-button>
             </div>
     </md-content>
   </md-card>

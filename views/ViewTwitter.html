@@ -1,29 +1,22 @@
 <md-content layout-margin flex>
-
-<div ng-repeat="t in widget.widData">
-            <md-card layout-margin flex layout="column" style="border: 1px solid #D8D8D8;box-shadow: 2px 2px 2px rgba(188, 188, 188);background-color: rgb(238, 238, 238);
-    border-radius: 5px;"> 
-                
+    <div ng-repeat="item in widget.widData.tweets" flex style="border-bottom: 1px solid #D8D8D8;">
             <md-list-item class="md-3-line" layout-margin flex>
-               <div class="md-list-item-text">
-
-                        <h3 layout-margin>{{t.user.name}} || {{t.user.screen_name}}</h3><br/>
-                        <!-- <p ng-bind-html="t.text"></p> -->
-                        <p>Profile description: {{t.user.description}}</p>
-                        <img src="{{t.user.profile_image_url}}" class="img-circle">
-                        <p style="line-height: 1.0em;">No of favourites: {{t.favorite_count}}</p>
-                        <p style="line-height: 1.0em;">Retweet: {{t.retweet_count}}</p>
-                        <p style="line-height: 1.0em;">Followers: {{t.user.followers_count}}</p>
-                        <p style="line-height: 1.0em;">Friends: {{t.user.friends_count}}</p>
-                        <p style="line-height: 1.0em;">Staus: {{t.user.statuses_count}}</p>
-                        <p style="line-height: 1.0em;">Listed: {{t.user.listed_count}}</p>
-                        <p style="line-height: 1.0em;">Date created: {{t.user.created_at}}</p>
-                        <p style="line-height: 1.0em;">Reigon: {{t.user.time_zone}}</p>
-
+              <div layout="column" class="data-container1">
+                <div class="data-slot1">{{item.text}}</div>
+                <div layout="row" class="data-slot2">
+                    <div flex="20" class="image-slot1" layout="column" layout-align="center center"><img class="custom-avatar1" src="{{item.user.profile_image_url_https}}"/></div>
+                    <div layout="column" flex="80">
+                        <div class="data-slot3"layout="row">
+                            <div class="data-field1">favorites</div>
+                            <div class="data-item1">{{item.favorite_count}}</div>
                         </div>
-                
-            </md-list-item>
-            </md-card>  
+                        <div class="data-slot3" layout="row">
+                            <div class="data-field1">retweets</div>
+                            <div class="data-item2">{{item.retweet_count}}</div></div>
+                        </div>
+                    </div>
+                </div>
+            </md-list-item>   
     </div>
-
 </md-content>
+

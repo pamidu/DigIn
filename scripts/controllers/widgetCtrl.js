@@ -241,16 +241,8 @@ routerApp.controller('fbInit',['scope', '$mdDialog', 'widId', '$rootScope',funct
 
 routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope', '$q', 'twitterService',function ($scope, $http, $mdDialog, widId, $rootScope, $q, twitterService) {
 
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-
     $scope.cancel = function() {
         $mdDialog.hide();
-    };
-    $scope.finish = function() {
-
-        // twitterService.initialize();
-        $mdDialog.hide();
-
     };
 
     $rootScope.tweets = []; //array of tweets
@@ -260,18 +252,19 @@ routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$r
     //using the OAuth authorization result get the latest 20 tweets from twitter for the user
     $scope.refreshTimeline = function(maxId) {
         twitterService.getLatestTweets(maxId).then(function(data) {
-            $rootScope.tweets = $rootScope.tweets.concat(data);
+
+            var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+            $rootScope.dashboard.widgets[objIndex].widData.tweets = data;
+            console.log( "twitter data", data);
 
         }, function() {
             $scope.rateLimitError = true;
         });
-
-        $rootScope.dashboard.widgets[objIndex].widData = $rootScope.tweets;
-
     }
 
     //when the user clicks the connect twitter button, the popup authorization window opens
     $scope.connectButton = function() {
+        
         twitterService.connectTwitter().then(function() {
             if (twitterService.isReady()) {
                 //if the authorization is successful, hide the connect button and display the tweets

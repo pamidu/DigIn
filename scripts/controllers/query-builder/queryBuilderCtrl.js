@@ -5,6 +5,10 @@
 routerApp.controller('queryBuilderCtrl', function
         ($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state) {
 
+    $scope.goDashboard = function(){
+        $state.go('home.Dashboards');
+    }
+
     $scope.initQueryBuilder = function(){
             $scope.widget = $scope.sourceData.wid;
         if(typeof($scope.sourceData.wid.commonSrc) == "undefined"){
@@ -349,6 +353,9 @@ routerApp.controller('queryBuilderCtrl', function
                             $("#togglePanel").hide(200);
                             this.isToggleMeasure = false;
                         } else {
+                            if (this.openSettingToggle[1].isQueryBuilder) {
+                                this.hideDesignQuery();
+                            }
                             $("#togglePanel").show(300);
                             this.isToggleMeasure = true;
                         }
@@ -361,6 +368,9 @@ routerApp.controller('queryBuilderCtrl', function
                             $("#togglePanelColumns").hide(200);
                             this.isToggleColumns = false;
                         } else {
+                            if (this.openSettingToggle[1].isQueryBuilder) {
+                                this.hideDesignQuery();
+                            }
                             $("#togglePanelColumns").show(300);
                             this.isToggleColumns = true;
                         }
@@ -525,6 +535,14 @@ routerApp.controller('queryBuilderCtrl', function
                             }
                             if (this.openSettingToggle[2].isChart) {
                                 this.hideChartSettings();
+                            }
+                            if (this.isToggleMeasure) {
+                                $("#togglePanel").hide(200);
+                                this.isToggleMeasure = false;
+                            }
+                            if (this.isToggleColumns) {
+                                $("#togglePanelColumns").hide(200);
+                                this.isToggleColumns = false;
                             }
                         }
                         break;

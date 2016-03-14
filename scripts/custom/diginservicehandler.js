@@ -95,6 +95,11 @@
                         cb(data, status);
                     }, $diginurls.diginengine + "/hierarchicalsummary?h=" + h + "&tablename=[" + getNamespace() + "." + tbl + "]&id=19&db=" + database);
                 },
+                generateboxplot: function(tbl, fieldstr, cb){
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + "/generateboxplot?&tablename=[" + getNamespace() + "." + tbl +"]&&fields=["+fieldstr+"]" );
+                },
             }
         }
 
@@ -141,7 +146,7 @@
         var host = getHost();
         return {
             //            diginengine: "http://" + host + ":8080",
-            diginengine: "http://104.131.48.155:8082",
+            diginengine: "http://localhost:8080",
             diginenginealt: "http://" + host + ":8081"
         };
     });

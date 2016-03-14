@@ -273,14 +273,53 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         apiKey: 'AIzaSyA9fv9lYQdt1XV6wooFtItxYlMF8Y9t1ao',
         clientId: '468951747947-jb7obcgd91m7379q4nn7vroid8g37ds0.apps.googleusercontent.com',
         scope: ['https://www.googleapis.com/auth/drive']
-    })
+    });
 
-//    $rootScope.primaryPallete = "indigo";
-//    $rootScope.accentPallete = "pink";
-//    
-    $mdThemingProvider.theme('appTheme')
-    .primaryPalette("indigo")
-    .accentPalette("pink");
+    var customPrimary = {
+        '50': '#10cefd',
+        '100': '#02c2f2',
+        '200': '#02aed9',
+        '300': '#019ac0',
+        '400': '#0185a6',
+        '500': '#01718D',
+        '600': '#015d74',
+        '700': '#01485a',
+        '800': '#003441',
+        '900': '#002028',
+        'A100': '#29d3fd',
+        'A200': '#43d8fe',
+        'A400': '#5cdefe',
+        'A700': '#000c0e'
+    };
+    $mdThemingProvider
+        .definePalette('customPrimary', 
+                        customPrimary);
+
+    var customBackground = {
+        '50': '#ffffff',
+        '100': '#ffffff',
+        '200': '#ffffff',
+        '300': '#ffffff',
+        '400': '#ffffff',
+        '500': '#FFF',
+        '600': '#f2f2f2',
+        '700': '#e6e6e6',
+        '800': '#d9d9d9',
+        '900': '#cccccc',
+        'A100': '#ffffff',
+        'A200': '#ffffff',
+        'A400': '#ffffff',
+        'A700': '#bfbfbf'
+    };
+    $mdThemingProvider
+        .definePalette('customBackground', 
+                        customBackground);
+
+    $mdThemingProvider.theme('default')
+       .primaryPalette('customPrimary')
+       .accentPalette('blue')
+       .warnPalette('red')
+       .backgroundPalette('customBackground')
 
     $mdThemingProvider.alwaysWatchTheme(true);
 }]);

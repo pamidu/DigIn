@@ -7,24 +7,13 @@
       </md-button>            
     </div>
   </md-toolbar>
-  <md-card style="margin: 20px;margin-top: -20vh; margin-bottom: 0px;height:100%;">
+  <md-card class="card-style1">
     <md-content layout-padding class="minHeight600">
-      <div layout="row" layout-align='center center' layout-margin>    
-              <md-button ng-click="login()">Sign In</md-button>
-              <!-- <div class="g-signin2" ng-click="login()" ></div> -->
-              <md-button ng-click="logout()" >Sign Out</md-button>
-            </div>
-            <div class="md-actions" layout="row">
-                <span flex></span>
-                <md-button ng-click="cancel()">
-                    Cancel
-                </md-button>
-                <div id="authOps">
-                    <md-button id="disconnect" ng-click="finish()">
-                        Finish
-                    </md-button>
-                </div>
-            </div>
+      <div class="md-actions" layout="row">
+        <md-button ng-click="login()">Sign In</md-button>
+        <md-button ng-click="logout()" >Sign Out</md-button>
+        <md-button ng-click="finish()">Finish</md-button>
+      </div>
     </md-content>
   </md-card>
 </md-dialog>

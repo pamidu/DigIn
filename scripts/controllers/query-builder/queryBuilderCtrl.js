@@ -445,43 +445,61 @@ routerApp.controller('queryBuilderCtrl', function
                         //#chart setting
                         //click chart setting
                         if (this.openSettingToggle[0].isChart) {
-                            $("#toggleSettingPanel").hide(200);
-                            setTimeout(function () {
-                                $("#toggleSettingPanel").removeClass('chart-tab');
-                            }, 200);
-                            this.openSettingToggle[0].isChart = false;
+                            this.hideVisualizationType();
                         } else {
                             $("#toggleSettingPanel").addClass('chart-tab');
                             this.openSettingToggle[0].isChart = true;
                             $("#toggleSettingPanel").show(300);
+
+                            if (this.openSettingToggle[1].isStructuret) {
+                                this.hideDataStructure();
+                            }
+                            if (this.openSettingToggle[2].isChart) {
+                                this.hideChartSettings();
+                            }
+                            if (this.openSettingToggle[1].isQueryBuilder) {
+                                this.hideDesignQuery();
+                            }
                         }
                         break;                    
                     case '2':
                         //#data structure
                         //Data Structure
                         if (this.openSettingToggle[1].isStructuret) {
-                            $("#toggleStructurePanel").hide(200);
-                            setTimeout(function () {
-                                $("#toggleStructurePanel").removeClass('structure-tab');
-                            }, 200);
-                            this.openSettingToggle[1].isStructuret = false;
+                            this.hideDataStructure();
                         } else {
                             $("#toggleStructurePanel").addClass('structure-tab');
                             this.openSettingToggle[1].isStructuret = true;
                             $("#toggleStructurePanel").show(300);
+
+                            if (this.openSettingToggle[0].isChart) {
+                                this.hideVisualizationType();
+                            }
+                            if (this.openSettingToggle[2].isChart) {
+                                this.hideChartSettings();
+                            }
+                            if (this.openSettingToggle[1].isQueryBuilder) {
+                                this.hideDesignQuery();
+                            }
                         }
                         break;
                     case '3':
                         if (this.openSettingToggle[2].isChart) {
-                            $("#toggleSerSettingsPanel").hide(200);
-                            setTimeout(function () {
-                                $("#toggleSerSettingsPanel").removeClass('ser-setting-tab');
-                            }, 200);
-                            this.openSettingToggle[2].isChart = false;
+                            this.hideChartSettings();
                         } else {
                             $("#toggleSerSettingsPanel").addClass('ser-setting-tab');
                             this.openSettingToggle[2].isChart = true;
                             $("#toggleSerSettingsPanel").show(300);
+
+                            if (this.openSettingToggle[0].isChart) {
+                                this.hideVisualizationType();
+                            }
+                            if (this.openSettingToggle[1].isStructuret) {
+                                this.hideDataStructure();
+                            }
+                            if (this.openSettingToggle[1].isQueryBuilder) {
+                                this.hideDesignQuery();
+                            }
                         }
                         break;
                     case '4':
@@ -493,15 +511,54 @@ routerApp.controller('queryBuilderCtrl', function
                         //#create query builder
                         //query builder
                         if (this.openSettingToggle[1].isQueryBuilder) {
-                            $("#toggleQueryBuilder").hide(200);
-                            this.openSettingToggle[1].isQueryBuilder = false;
+                            this.hideDesignQuery();
                         } else {
+                            $("#toggleQueryBuilder").addClass('design-tab');
                             this.openSettingToggle[1].isQueryBuilder = true;
                             $("#toggleQueryBuilder").show(300);
+
+                            if (this.openSettingToggle[0].isChart) {
+                                this.hideVisualizationType();
+                            }
+                            if (this.openSettingToggle[1].isStructuret) {
+                                this.hideDataStructure();
+                            }
+                            if (this.openSettingToggle[2].isChart) {
+                                this.hideChartSettings();
+                            }
                         }
                         break;
                 }
 
+            },
+            //hide dialog boxes
+            hideVisualizationType : function(){
+                $("#toggleSettingPanel").hide(200);
+                setTimeout(function () {
+                    $("#toggleSettingPanel").removeClass('chart-tab');
+                }, 200);
+                this.openSettingToggle[0].isChart = false;
+            },
+            hideDataStructure : function(){
+                $("#toggleStructurePanel").hide(200);
+                setTimeout(function () {
+                    $("#toggleStructurePanel").removeClass('structure-tab');
+                }, 200);
+                this.openSettingToggle[1].isStructuret = false;
+            },
+            hideChartSettings : function(){
+                $("#toggleSerSettingsPanel").hide(200);
+                setTimeout(function () {
+                    $("#toggleSerSettingsPanel").removeClass('ser-setting-tab');
+                }, 200);
+                this.openSettingToggle[2].isChart = false;
+            },
+            hideDesignQuery : function(){
+                $("#toggleQueryBuilder").hide(200);
+                setTimeout(function () {
+                    $("#toggleQueryBuilder").removeClass('design-tab');
+                }, 200);
+                this.openSettingToggle[1].isQueryBuilder = false;
             },
             onClickSelectedChart: function (data, onSelect) {
                 var i;

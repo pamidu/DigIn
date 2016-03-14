@@ -75,12 +75,10 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
-        api_key: 75
-        mu4z7y428pty
+        api_key: 75gasspugsl6ow
         authorize: true
         scope: r_basicprofile
         r_emailaddress
-
     </script>
      <script src="https://apis.google.com/js/client.js"></script> 
     <style type="text/css">
@@ -107,10 +105,6 @@
 <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="bower_components/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
 <script type="text/javascript" src="scripts/vendor/twitteroauth.js"></script>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script> -->
 <script src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
 <script src="https://github.highcharts.com/highcharts.src.js"></script>
@@ -270,7 +264,7 @@ b
 <!--hight charts update damith -->
 <!-- // <script type="text/javascript" src="bower_components/highcharts/highcharts.js"></script> -->
 <script type="text/javascript" src="bower_components/highcharts/highcharts-more.js"></script>
-<!-- gridster -->
+<!-- customized angular gridster -->
 <script type="text/javascript" src="scripts/controllers/angular-gridster.js"></script>
 <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-sanitize.min.js"></script>

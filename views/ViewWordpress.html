@@ -1,17 +1,31 @@
-<md-content flex>
-  <div ng-repeat="post in widget.widData.posts track by $index" flex style="border-bottom: 1px solid #D8D8D8;">
-      <md-card layout-margin flex layout="column">
-        <h4 layout-margin>{{post.title}}</h4>
-        <md-list-item class="md-3-line" layout-margin flex>
-          <img class="md-avatar" src="{{post.picURL}}"/>
-          <div class="md-list-item-text">
-            <h3 style="line-height: 1.0em;">{{post.authorName}}</h3>
-            <h3 style="line-height: 1.0em;">comments : {{post.comments}}</h3>
-            <h3 style="line-height: 1.0em;">date : {{post.date}}</h3>
-          </div>
-        </md-list-item>
-      </md-card>  
-  </div>
+<md-content layout-margin flex>
+    <div ng-repeat="post in widget.widData.posts track by $index" flex>
+            <md-list-item class="md-3-line" layout-margin flex>
+              <div layout="column" class="data-container1">
+                <div class="data-slot1" layout="row">
+                  <div flex="10"><img ng-src="styles/css/images/icons/wordpress.svg" wdith="30" height="30">
+                  </div>
+                  <div flex="90">{{post.title}}</div>
+                </div>
+                <div layout="row" class="data-slot2">
+                    <div flex="30" class="image-slot1" layout="column" layout-align="center center"><img class="custom-avatar2" src="{{post.picURL}}"/></div>
+                    <div layout="column" flex="70">
+                        <div class="data-slot3"layout="row">
+                            <div class="data-field2">Author</div>
+                            <div class="data-item4">{{post.authorName}}</div>
+                        </div>
+                        <div class="data-slot3"layout="row">
+                            <div class="data-field1">Date</div>
+                            <div class="data-item3">{{post.date}}</div>
+                        </div>
+                        <div class="data-slot3" layout="row">
+                            <div class="data-field1">Comments</div>
+                            <div class="data-item2">{{post.comments}}</div></div>
+                        </div>
+                    </div>
+                </div>
+            </md-list-item>   
+    </div>
 </md-content>
 
 

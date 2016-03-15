@@ -808,6 +808,11 @@ drb >> dynamically report builder
     border-width: 14px;
     margin-top: -186px;
 }
+.chart-tab:before {
+    border-color: rgba(194, 225, 245, 0);
+    border-width: 36px;
+    margin-top: -36px;
+}
 
 .structure-tab {
     right: 10%;
@@ -831,12 +836,6 @@ drb >> dynamically report builder
     border-left-color: #EC784B;
     border-width: 14px;
     margin-top: -186px;
-}
-
-.chart-tab:before {
-    border-color: rgba(194, 225, 245, 0);
-    border-width: 36px;
-    margin-top: -36px;
 }
 
 /* series settings tab */
@@ -1006,7 +1005,8 @@ h3 {
     width: 69%;
     height: 58%;
     background: #EC784B;
-    top: 9%;
+    bottom: 35%;
+    right: 10%;
     margin-left: 5px;
     border-radius: 10px;
     display: none;
@@ -1038,7 +1038,7 @@ h3 {
 }
 
 .query-builder-wrap {
-    padding: 41px 15px;
+    padding: 41px 15px 0px 15px;
     display: inline-block;
 }
 

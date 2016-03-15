@@ -25,8 +25,9 @@ switch ($fullHost) {
     if(!isset($_COOKIE["securityToken"])){
         if($mainDomain!=$_SERVER['HTTP_HOST'])
         {
-            header("Location: http://".$mainDomain."/#/login?r=http://".$_SERVER['HTTP_HOST'].'/s.php');
-        }
+            header("Location: http://".$mainDomain."/login.php?r=http://".$_SERVER['HTTP_HOST'].'/s.php');
+	            
+	}
         else
         {
             header("Location: http://".$mainDomain."/#/login?r=http://".$_SERVER['HTTP_HOST'].'/s.php');
@@ -34,7 +35,7 @@ switch ($fullHost) {
                 //echo "string";
         exit();
     }
-    getURI();
+    include ("index1.php");
     break;
 }
 

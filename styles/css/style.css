@@ -126,11 +126,6 @@ md-autocomplete input {
     bottom: 90px;
 }
 
-md-tabs.md-default-theme md-tabs-ink-bar {
-    /* color:#CF000F;
-  background:#CF000F !important;*/
-}
-
 digin-md-sidenav {
     position: absolute;
     width: 304px;
@@ -1528,15 +1523,6 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
     overflow-x: hidden;
 }
 
-md-tabs > md-tabs-wrapper {
-    background-color: #fff;
-    opacity: 0.8;
-}
-
-md-tabs-wrapper {
-    height: 40px !important;
-}
-
 .commonDataSource {
     padding-left: 40px;
 }
@@ -2037,3 +2023,82 @@ md-tabs.setup-tabs md-tabs-wrapper md-tab-data {
 md-tab-content > div{
     height: 100%;
 }
+.data-container1{
+    font-family: sans-serif;
+    font-weight: 100;
+    
+}
+.data-slot1{
+    border-bottom: solid white 1px;
+    color: white;
+    background-color: #0E7CB0;
+    padding: 8px;
+    border-radius: 5px 5px 0 0;
+}
+.data-slot2{
+    border-radius: 0 0 5px 5px;
+}
+.data-slot3{
+    color: #0E7CB0;
+    border-top: solid white 1px;
+    border-radius: 5px;
+}
+.data-field1{
+    background-color: #ECECEC;
+    width: 80%;
+    padding: 8px;
+}
+.data-field2{
+    background-color: #ECECEC;
+    width: 50%;
+    padding: 8px;
+}
+.data-item1{
+    background-color: #DCDCDC;
+    width: 20%;
+    padding: 8px;
+}
+.data-item2{
+    background-color: #DCDCDC;
+    width: 20%;
+    padding: 8px;
+    border-radius: 0 0 5px 0;
+}
+.data-item3{
+    background-color: #DCDCDC;
+    padding: 8px;
+}
+.data-item4{
+    background-color: #DCDCDC;
+    width: 50%;
+    padding: 8px;
+}
+.image-slot1{
+    border-top: solid white 1px;
+    border-radius: 0 0 0 5px;
+    background-color: #DCDCDC;
+    border-right: solid white 1px;
+}
+.custom-avatar1{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    box-sizing: content-box;
+}
+.custom-avatar2{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    box-sizing: content-box;
+}
+.card-style1{
+    margin: 20px;
+    margin-top: -20vh; 
+    margin-bottom: 0px;
+    height:100%;"
+}
+.tab-style{
+    top: 5px;
+}
+
+

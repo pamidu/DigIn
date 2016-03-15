@@ -100,6 +100,11 @@
                         cb(data, status);
                     }, $diginurls.diginengine + "/generateboxplot?&tablename=[" + getNamespace() + "." + tbl +"]&&fields=["+fieldstr+"]" );
                 },
+                generatehist: function(tbl, fieldstr, cb){
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + "/generatehist?&tablename=[" + getNamespace() + "." + tbl +"]&&fields=["+fieldstr+"]" );
+                }
             }
         }
 

@@ -104,6 +104,11 @@
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
                     }, $diginurls.diginengine + "/generatehist?&tablename=[" + getNamespace() + "." + tbl +"]&&fields=["+fieldstr+"]" );
+                },
+                   generateBubble: function(tbl, x, y , c,cb){
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + "/generatebubble?&tablename=[" + getNamespace() + "." + tbl +"]&&x="+x+ "&&y="+y+"&&c="+c+"&&s="+x+"&db=" + database );
                 }
             }
         }

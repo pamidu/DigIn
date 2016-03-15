@@ -241,6 +241,9 @@ routerApp.controller('fbInit',['scope', '$mdDialog', 'widId', '$rootScope',funct
 
 routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope', '$q', 'twitterService',function ($scope, $http, $mdDialog, widId, $rootScope, $q, twitterService) {
 
+    $scope.showFinishButton = false;
+    $scope.connectedTwitter = false;
+
     $scope.cancel = function() {
         $mdDialog.hide();
     };
@@ -253,25 +256,21 @@ routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$r
 
             var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
             $rootScope.dashboard.widgets[objIndex].widData.tweets = data;
-
+            $scope.showFinishButton = true;
         }, function() {
-            $scope.rateLimitError = true;
+            
         });
     }
 
     //when the user clicks the connect twitter button, the popup authorization window opens
-    $scope.connectButton = function() {
+    $scope.signIn = function() {
         
         twitterService.connectTwitter().then(function() {
             if (twitterService.isReady()) {
                 //if the authorization is successful, hide the connect button and display the tweets
-
-                $('#connectButton').fadeOut(function() {
-                    $('#getTimelineButton, #signOut').fadeIn();
-
+ 
                     $scope.connectedTwitter = true;
                     $scope.refreshTimeline();
-                });
             } else {
 
 
@@ -281,23 +280,15 @@ routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$r
 
     //sign out clears the OAuth cache, the user will have to reauthenticate when returning
     $scope.signOut = function() {
+
         twitterService.clearCache();
 
-        $('#getTimelineButton, #signOut').fadeOut(function() {
-            $('#connectButton').fadeIn();
-
-            $scope.$apply(function() {
-                $scope.connectedTwitter = false
-            });
-        });
-
-        $scope.rateLimitError = false;
+        $scope.connectedTwitter = false;
+        $scope.showFinishButton = false;
     }
 
     //if the user is a returning user, hide the sign in button and display the tweets
     if (twitterService.isReady()) {
-        $('#connectButton').hide();
-        $('#getTimelineButton, #signOut').show();
 
         $scope.connectedTwitter = true;
         $scope.refreshTimeline();
@@ -1980,18 +1971,24 @@ routerApp.controller('InitConfigD3',['$scope', '$mdDialog', 'widId', '$rootScope
 
 routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widId', '$rootScope',
     function ($scope, $http, $mdDialog, widId, $rootScope) {
+        $scope.showFinishButton = false;
         //cancel config
         $scope.cancel = function() {
             $mdDialog.hide();
         };
+        $scope.finish = function(){
+            $scope.showFinishButton = false;
+            $scope.cancel();
+        }
         //complete config  
-        $scope.finish = function() {
+        $scope.fetch = function() {
             var wpapi = "http://public-api.wordpress.com/rest/v1/sites/";
             var choice = "/posts";
             var callbackString = '/?callback=JSON_CALLBACK';
 
             var message = $http.jsonp(wpapi + $scope.wpdomain + choice + callbackString).
             success(function(data, status) {
+                $scope.showFinishButton = true;
                 var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
                 //console.log(JSON.stringify(data));
                 var posts = data.posts;
@@ -2018,7 +2015,6 @@ routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widId',
                 trimmedObj.posts = trimmedPosts;
                 $rootScope.dashboard.widgets[objIndex].widData = trimmedObj;
 
-                $mdDialog.hide();
             }).error(function(data, status) {
 
                 console.log(message);

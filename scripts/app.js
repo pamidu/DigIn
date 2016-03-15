@@ -34,7 +34,8 @@ var routerApp = angular.module('DuoDiginRt', [
     'ngToast',
     'vAccordion',
     'ngDraggable',
-    'ngMessages'
+    'ngMessages',
+    'angularFileUpload'
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {

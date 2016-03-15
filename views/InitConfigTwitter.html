@@ -11,9 +11,9 @@
     <md-content layout-padding class="minHeight600">
             <div class="md-actions" layout="row">
                 <span flex></span>
-                <md-button ng-click="connectButton()" id="connectButton">Sign In</md-button>
-                <md-button ng-click="signOut()" id="signOut">Sign Out</md-button>
-                <md-button ng-click="cancel()">Finish</md-button>
+                <md-button class="md-primary" ng-click="signIn()" ng-show="!connectedTwitter">Sign In</md-button>
+                <md-button class="md-warn" ng-click="signOut()" ng-show="connectedTwitter">Sign Out</md-button>
+                <md-button class="md-accent" ng-click="cancel()" ng-show="showFinishButton">Finish</md-button>
             </div>
     </md-content>
   </md-card>

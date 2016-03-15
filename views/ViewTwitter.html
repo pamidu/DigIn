@@ -1,22 +1,23 @@
 <md-content layout-margin flex>
+    <div layout="row" layout-align="center center">
+        <img ng-src="styles/css/images/icons/twitter.svg" wdith="30" height="30">
+        <div class="widget-header font-twitter-blue">Tweets</div>
+    </div>
     <div ng-repeat="item in widget.widData.tweets" flex>
             <md-list-item class="md-3-line" layout-margin flex>
                 <div layout="column" class="data-container1">
-                    <div class="data-slot1" layout="row">
-                        <div flex="10"><img ng-src="styles/css/images/icons/twitter.svg" wdith="30" height="30"></div>
-                        <div flex="90">{{item.text}}</div>
-                    </div>
-                    <div layout="row" class="data-slot2">
-                        <div flex="20" class="md-primary image-slot1" layout="column" layout-align="center center"><img class="custom-avatar1" src="{{item.user.profile_image_url_https}}"/>
+                    <div class="data-slot1 background-twitter-grey">{{item.text}}</div>
+                    <div layout="row" class="background-twitter-blue padding-5">
+                        <div flex="20"><img class="custom-avatar1" src="{{item.user.profile_image_url_https}}"/>
                         </div>
-                        <div layout="column" flex="80">
-                            <div class="data-slot3"layout="row">
-                                <div class="data-field1">favorites</div>
-                                <div class="data-item1">{{item.favorite_count}}</div>
+                        <div layout="column" layout-align="center stretch" flex="80" class="data-slot2">
+                            <div class="data-slot3 margin-bottom-5" layout="row">
+                                <div class="data-field1 background-digin-blue">favorites</div>
+                                <div class="data-item1 background-twitter-grey">{{item.favorite_count}}</div>
                             </div>
                             <div class="data-slot3" layout="row">
-                                <div class="data-field1">retweets</div>
-                                <div class="data-item2">{{item.retweet_count}}</div>
+                                <div class="data-field1 background-digin-blue">retweets</div>
+                                <div class="data-item2 background-twitter-grey">{{item.retweet_count}}</div>
                             </div>
                         </div>
                     </div>

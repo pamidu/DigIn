@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/less/glyphicons.less"/>
     <link rel="stylesheet" type="text/css" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
-    <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css"> -->
+    <!-- <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css"> -->
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
     <!-- <link href="styles/css/material-wfont.css" rel="stylesheet">-->
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -75,10 +75,12 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
-        api_key: 75gasspugsl6ow
+        api_key: 75
+        mu4z7y428pty
         authorize: true
         scope: r_basicprofile
         r_emailaddress
+
     </script>
      <script src="https://apis.google.com/js/client.js"></script> 
     <style type="text/css">
@@ -105,6 +107,10 @@
 <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="bower_components/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
 <script type="text/javascript" src="scripts/vendor/twitteroauth.js"></script>
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script> -->
 <script src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
 <script src="https://github.highcharts.com/highcharts.src.js"></script>
@@ -114,7 +120,7 @@
 <script type="text/javascript" src="scripts/vendor/google-picker.min.js"></script>
 <script type="text/javascript" src="http://code.highcharts.com/highcharts-3d.js"></script>
 <!-- <script type="text/javascript" src="scripts/vendor/Googleinitial.js"></script>  -->
-
+<script type="text/javascript" src="scripts/vendor/twitterservice.js"></script>
 <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
 <script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
@@ -167,7 +173,6 @@
 <script type="text/javascript" src="scripts/services/ObjectStoreService.js"></script>
 <script type="application/javascript" src="scripts/services/CommonDataService.js"></script>
 <script type="application/javascript" src="scripts/services/fbGraphServices.js"></script>
-<script type="text/javascript" src="scripts/vendor/twitterservice.js"></script>
 <!-- services end -->
 <!--  directives start  -->
 <script type="application/javascript" src="scripts/directives/commonData.js"></script>
@@ -266,7 +271,7 @@ b
 <!--hight charts update damith -->
 <!-- // <script type="text/javascript" src="bower_components/highcharts/highcharts.js"></script> -->
 <script type="text/javascript" src="bower_components/highcharts/highcharts-more.js"></script>
-<!-- customized angular gridster -->
+<!-- customize angular gridster -->
 <script type="text/javascript" src="scripts/controllers/angular-gridster.js"></script>
 <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-sanitize.min.js"></script>

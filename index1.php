@@ -71,8 +71,8 @@
     <link rel="stylesheet" href="bower_components/v-accordion/v-accordion.min.css" type='text/css'/>
     <link rel="stylesheet" href="styles/css/customer-1.0.css" type='text/css'/>
     <link rel="stylesheet" href="styles/css/socialMedFb.css" type="text/css"/>
-    <link href='http://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
         api_key: 75
@@ -82,7 +82,7 @@
         r_emailaddress
 
     </script>
-     <script src="http://apis.google.com/js/client.js"></script> 
+     <script src="https://apis.google.com/js/client.js"></script> 
     <style type="text/css">
         .ui-resizable {
             position: absolute !important;
@@ -113,7 +113,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script> -->
 <script src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
-<script src="http://github.highcharts.com/highcharts.src.js"></script>
+<script src="https://github.highcharts.com/highcharts.src.js"></script>
 <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
@@ -154,7 +154,7 @@
 <script type="text/javascript" src="scripts/directives/calendar.js"></script>
 <!-- filesaver -->
 <script type="text/javascript"
-        src="http://s3-us-west-2.amazonaws.com/s.cdpn.io/98887/angular-fullscreen.js"></script>
+        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/98887/angular-fullscreen.js"></script>
 <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
 <script type="text/javascript" src="bower_components/ngstorage/ngStorage.js"></script>
@@ -197,7 +197,7 @@
 <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/d3PluginCtrl.js"></script>
  
-<script type="text/javascript" src="http://jardindesconnaissances.googlecode.com/svn-history/r82/trunk/public/js/d3.layout.cloud.js"></script>
+<script type="text/javascript" src="https://jardindesconnaissances.googlecode.com/svn-history/r82/trunk/public/js/d3.layout.cloud.js"></script>
 <script type="text/javascript" src="scripts/controllers/socialGraph/SocialAnalysisCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphFBCtrl.js"></script>
 <script type="text/javascript" src="scripts/directives/diginDirectives.js"></script>
@@ -208,7 +208,11 @@
 <script type="text/javascript" src="scripts/controllers/query-builder/queryBuilderCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/dynamically-report-builder/dynamicallyReportCtrl.js"></script>
 <script type="text/javascript" src="scripts/services/QueryBuilderService.js"></script>
+<script type="text/javascript" src="scripts/factories/dynamicallyReport/dynamicallyReportFact.js"></script>
+
 <!--  controllers end   -->
+<!-- angular file upload -->
+<script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
 <!-- zeroclipboard -->
 <script type="text/javascript" src="bower_components/zeroclipboard/ZeroClipboard.min.js"></script>
 <script type="text/javascript" src="scripts/factories/d3Data.js"></script>
@@ -269,7 +273,7 @@ b
 <!--hight charts update damith -->
 <!-- // <script type="text/javascript" src="bower_components/highcharts/highcharts.js"></script> -->
 <script type="text/javascript" src="bower_components/highcharts/highcharts-more.js"></script>
-<!-- gridster -->
+<!-- customize angular gridster -->
 <script type="text/javascript" src="scripts/controllers/angular-gridster.js"></script>
 <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-sanitize.min.js"></script>
@@ -293,7 +297,7 @@ b
 <script type="text/javascript" src="bower_components/angular-ui/angular-ui-select2/select2.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.3/ng-csv.min.js"></script>
 <!-- angular google maps -->
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
 <script src="bower_components/google-map/lodash.min.js"></script>
 <script type="text/javascript" src="bower_components/google-map/angular-simple-logger.js"></script>
@@ -332,7 +336,7 @@ b
         var ga = document.createElement('script');
         ga.type = 'text/javascript';
         ga.async = true;
-        ga.src = ('http:' === document.location.protocol ? 'http://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0];
         s.parentNode.insertBefore(ga, s);
     })();

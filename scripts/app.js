@@ -34,7 +34,8 @@ var routerApp = angular.module('DuoDiginRt', [
     'ngToast',
     'vAccordion',
     'ngDraggable',
-    'ngMessages'
+    'ngMessages',
+    'angularFileUpload'
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
@@ -264,7 +265,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: true
             }
         }).state('home.DynamicallyReportBuilder', {
-        url: '/dynamically-report-builder',
+        url: '/dynamically-report-builder:reportNme',
         controller: 'dynamicallyReportCtrl',
         templateUrl: "views/dynamicallyReportBuilder/dynamically-report.html"
         });

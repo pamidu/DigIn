@@ -4,6 +4,10 @@
 
 routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state) {
 
+    $scope.goDashboard = function(){
+        $state.go('home.Dashboards');
+    }
+
     $scope.initQueryBuilder = function() {
         $scope.widget = $scope.sourceData.wid;
         if (typeof($scope.sourceData.wid.commonSrc) == "undefined") {
@@ -424,7 +428,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             messageAry: ['Please wait while the data is saving...'],
             message: '',
             isChartSelected: false,
-            onToggleEvent: function(event) {
+            onToggleEvent: function (event) {
                 switch (event) {
                     case '1':
                         //event measures
@@ -433,6 +437,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             $("#togglePanel").hide(200);
                             this.isToggleMeasure = false;
                         } else {
+                            if (this.openSettingToggle[1].isQueryBuilder) {
+                                this.hideDesignQuery();
+                            }
                             $("#togglePanel").show(300);
                             this.isToggleMeasure = true;
                         }
@@ -445,6 +452,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             $("#togglePanelColumns").hide(200);
                             this.isToggleColumns = false;
                         } else {
+                            if (this.openSettingToggle[1].isQueryBuilder) {
+                                this.hideDesignQuery();
+                            }
                             $("#togglePanelColumns").show(300);
                             this.isToggleColumns = true;
                         }
@@ -453,15 +463,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         break;
                 }
             },
-            onClickMeasureToggle: function(row) {
+            onClickMeasureToggle: function (row) {
                 if (row.click) {
                     row.click = false;
                 } else {
                     row.click = true;
                 }
             },
-            onClickCondition: function(row, filed) {
-                console.log("onClickCondition:" + JSON.stringify(row) + " " + JSON.stringify(filed));
+            onClickCondition: function (row, filed) {
+                console.log("onClickCondition:"+ JSON.stringify(row) + " " + JSON.stringify(filed));
                 var isFoundCnd = false;
                 for (i in executeQryData.executeMeasures) {
                     if (executeQryData.executeMeasures[i].filedName == filed.filedName &&
@@ -479,11 +489,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         condition: row.name
                     };
                     executeQryData.executeMeasures.push(obj);
-                    eval("$scope." + $scope.selectedChart.chartType + ".selectCondition()");
+                    eval("$scope."+ $scope.selectedChart.chartType + ".selectCondition()");                    
                 }
-
+                
             },
-            onClickColumn: function(column) {
+            onClickColumn: function (column) {
                 var isFoundCnd = false;
                 for (i in executeQryData.executeColumns) {
                     if (executeQryData.executeColumns[i].filedName == column.filedName) {
@@ -496,21 +506,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                 if (!isFoundCnd) {
                     var seriesArr = $scope.executeQryData.executeMeasures;
-                    if (seriesArr.length > 0) {
-
-                        eval("$scope." + $scope.selectedChart.chartType + ".selectAttribute(column.filedName)");
-
-                    } else {
+                    if(seriesArr.length > 0){
+                        
+                        eval("$scope."+ $scope.selectedChart.chartType + ".selectAttribute(column.filedName)");
+                        
+                    }else{
                         alert("First select atleast one measure");
                     }
-
+                    
                 }
             },
 
-            onClickRmvCondition: function(condition, measure) {
-                alert('record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
+            onClickRmvCondition: function (condition, measure) {
+                alert('record delete function...'+ JSON.stringify(condition) + " " + JSON.stringify(measure));
             },
-            onClickApply: function() {
+            onClickApply: function () {
                 this.isLoadingChart = true;
                 if (this.isToggleMeasure) {
                     $("#togglePanel").hide(200);
@@ -519,11 +529,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     $("#togglePanel").show(300);
                     this.isToggleMeasure = true;
                 }
-                setTimeout(function() {
+                setTimeout(function () {
                     this.isLoadingChart = false;
                 }, 1000);
             },
-            onClickSetting: function(tabNo) {
+            onClickSetting: function (tabNo) {
                 switch (tabNo) {
                     case '1':
                         //#chart setting
@@ -545,7 +555,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 this.hideDesignQuery();
                             }
                         }
-                        break;
+                        break;                    
                     case '2':
                         //#data structure
                         //Data Structure
@@ -589,7 +599,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     case '4':
                         //save
                         $scope.widget = $scope.sourceData.wid;
-                        eval("$scope." + $scope.selectedChart.chartType + ".saveWidget($scope.widget)");
+                        eval("$scope."+ $scope.selectedChart.chartType + ".saveWidget($scope.widget)");                        
                         break;
                     case '5':
                         //#create query builder
@@ -609,6 +619,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             }
                             if (this.openSettingToggle[2].isChart) {
                                 this.hideChartSettings();
+                            }
+                            if (this.isToggleMeasure) {
+                                $("#togglePanel").hide(200);
+                                this.isToggleMeasure = false;
+                            }
+                            if (this.isToggleColumns) {
+                                $("#togglePanelColumns").hide(200);
+                                this.isToggleColumns = false;
                             }
                         }
                         break;

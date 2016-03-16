@@ -2,14 +2,15 @@
     <div class="digin-qb-header">
         <div layout="row">
             <div flex="10">
-                <div class="back">
+                <div class="back"
+                     ng-click="eventHandler.onClickBack ()">
                     <i class="ti-arrow-left"></i>
                 </div>
             </div>
             <div flex="50">
                 <div class="digin-qb-header-text  ">
                     <h1>
-                        Report Viewer
+                        Dynamically Report Builder
                         <small class="ng-binding"></small>
                     </h1>
                 </div>
@@ -22,7 +23,7 @@
             <div flex="20" class="bg-lightblue-h-1 p-l-20">
                 <div class="digin-gb-b">
                     <span>Report Name</span>
-                    <h5>CAF Details</h5>
+                    <h5>test report name 1</h5>
                 </div>
             </div>
         </div>
@@ -32,77 +33,77 @@
         <div layout="row">
             <div flex="20">
                 <div class="optional-panel pull-left p-10">
-                    <div class="panel-wrap">
-                        <div class="panel-header">
-                            <h2>Report Option - CAF Details </h2>
-                        </div>
 
-                        <div class="panel-filter">
-                            <div class="date-filter">
-                                <div class="inline-date">
-                                    <label>From Date</label>
-                                    <input type="text" class="form-control" datepicker
-                                           ng-model="reportFiledList.fromDate"
-                                           placeholder="from date"/>
-                                </div>
-                                <div class="inline-date">
-                                    <label>To Date</label>
-                                    <input type="text" class="form-control" datepicker ng-model="reportFiledList.toDate"
-                                           placeholder="to date"/>
+                    <div class="auth-message-wrap">
+                        <div class="dynamic-report-loader"
+                             ng-if="eventHandler.isFiled.loading">
+                            <span class="loader2"><span class="loader2-inner"></span></span>
+                            <p>please wait...</p>
+                        </div>
+                        <div class="dynamic-report-loader"
+                             ng-if="eventHandler.error.isGetError">
+                            <i class="fa fa-clock-o"></i>
+                            <p>{{eventHandler.error.msg}}</p>
+
+                            <div class="cmds-btn-footer m-top-10">
+                                <div class="text-center">
+                                    <span class="btn btn-default" role="button" ng-click="eventHandler.onClickRefresh()"
+                                          tabindex="0">
+                                        refresh
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-filter">
-                            <label>Account No</label>
-                            <input type="text" class="form-control"
-                                   placeholder="account no">
+                    </div>
+                    <div class="panel-wrap" ng-show="eventHandler.isFiled.found">
+                        <div class="panel-header">
+                            <h2>Report Option - CAF Details </h2>
                         </div>
-
                         <div class="panel-filter">
-                            <label>Customer Name</label>
+                            <div class="date-filter">
+                                <div class="inline-date" ng-if="reportFiledList.UIDate.length !=0"
+                                     ng-repeat="picker in reportFiledList.UIDate">
+                                    <label>{{picker.fieldname}}</label>
+                                    <input type="text" class="form-control" datepicker
+                                           ng-model="reportFiledList.fromDate"
+                                           placeholder="{{picker.fieldname}}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-filter" ng-if="reportFiledList.UITextBox.length !=0"
+                             ng-repeat="textBox in reportFiledList.UITextBox">
+                            <label>{{textBox.filedName}}</label>
+                            <input type="text" class="form-control"
+                                   placeholder="{{textBox.filedName}}">
+                        </div>
+                        <div class="panel-filter" ng-if="reportFiledList.UIDropDown.length !=0"
+                             ng-repeat="dropDown in reportFiledList.UIDropDown">
+                            <label>{{dropDown.fieldname}}</label>
                             <select class="form-control" select2 name="country"
                                     ng-model="test">
-                                <option>Select customer</option>
-                                <option value="" ng-repeat="customer in reportFiledList.customerNames">
-                                    {{customer.name}}
+                                <option>Select {{dropDown.fieldname}}</option>
+                                <option value="" ng-repeat="filed in dropDown.data">
+                                    {{filed}}
                                 </option>
                             </select>
                         </div>
-                        <div class="panel-filter">
-                            <label>Promotion</label>
-                            <select ui-select2="eventHandler.select2Options" multiple ng-model="selectedTags">
-                                <option ng-repeat="tag in reportFiledList.tags" value="{{tag.id}}">{{tag.name}}</option>
-                            </select>
-                        </div>
 
-                        <div class="panel-filter">
-                            <label>CAF Date</label>
-                            <input type="text" class="form-control" datepicker ng-model="reportFiledList.cafDate"
-                                   placeholder="from date"/>
-                        </div>
                     </div>
-                    <div class="btn-wrap">
-                        <span class="btn btn-sm btn-default apply ">
-                            Apply
-                          </span>
-                          <span class="btn btn-sm btn-default clear">
-                             clear
-                          </span>
-                    </div>
+
+
                 </div>
             </div>
             <div flex="80">
                 <div class="digin-drb-wrap report">
                     <div class="data-state">
                         <div class="message"
-                             ng-if="isDataFound">
+                             ng-if="eventHandler.isDataFound">
                             <i class="ti-receipt"></i>
                             <span>Please select report data..</span>
 
                         </div>
                     </div>
-                    <iframe ng-src="http://digin.io/report/report_test.html" height="100%"
-                            width="100%"></iframe>
+
                 </div>
             </div>
         </div>

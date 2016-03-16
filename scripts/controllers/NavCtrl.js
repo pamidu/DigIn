@@ -940,6 +940,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $rootScope.dashboardWidgetsCopy = angular.copy($rootScope.dashboard.widgets);
                 $rootScope.dashboard.widgets = [];
                 $state.go("/home");
+            }
+
+            if (routeName == "Common Source Algorithm") {
+                $state.go("home.commonSrcAlgorithm");
 
             }
 

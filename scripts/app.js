@@ -265,7 +265,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: true
             }
         }).state('home.DynamicallyReportBuilder', {
-        url: '/dynamically-report-builder',
+        url: '/dynamically-report-builder:reportNme',
         controller: 'dynamicallyReportCtrl',
         templateUrl: "views/dynamicallyReportBuilder/dynamically-report.html"
         });

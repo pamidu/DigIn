@@ -352,6 +352,6 @@ b
 <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.15.0/TweenMax.min.js"></script>
 <script type="text/javascript" src="scripts/loginBackground.js"></script>
 <!-- ng file upload -->
-<script src="bower_components/ng-file-upload-shim/ng-file-upload-shim.min.js"></script> <!-- for no html5 browsers support -->
+<!-- <script src="bower_components/ng-file-upload-shim/ng-file-upload-shim.min.js"></script> --> <!-- for no html5 browsers support -->
 <script src="bower_components/ng-file-upload-shim/ng-file-upload.min.js"></script>
 </html>

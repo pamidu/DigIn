@@ -85,18 +85,20 @@
                             </div>
                         </div>
                     </div>
-                    <!-- fiel upload -->
-                    <!-- <div> -->
-                        <!-- Upload right away after file selection: -->
-                        <!-- <div class="button" ngf-select="upload($file)">Upload on file select</div>
-                        <div class="button" ngf-select="uploadFiles($files)" multiple="multiple">Upload on file select</div> -->
-                          <!-- Drop File: -->
-                        <!-- <div ngf-drop="uploadFiles($files)" class="drop-box"
-                          ngf-drag-over-class="'dragover'" ngf-multiple="true" 
-                          ngf-pattern="'image/*,application/pdf'">Drop Images or PDFs files here</div>
-                        <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
-                    </div> -->
 
+                    <!-- file upload -->
+                    <div class="custom-file-upload" ng-show="showFileUpload">
+                            <div ngf-drop="upload($files)" ngf-select="upload($files)" ng-model="files" class="drop-box" 
+                                ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
+                                ngf-pattern="'.xls,.csv,.xlsx'" accept=".xls,.csv,.xlsx">Drop pdfs or images here or click to upload</div>
+                            <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+                            Files:
+                            <ul>
+                                <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
+                            </ul>
+                            Upload Log:
+                            <pre>{{log}}</pre>
+                    </div>
                 </div>
             </div>
             <div class="cmds-btn-footer m-top-10">

@@ -1608,4 +1608,3 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
     };
 });
-

@@ -120,7 +120,6 @@
 <script type="text/javascript" src="scripts/vendor/google-picker.min.js"></script>
 <script type="text/javascript" src="http://code.highcharts.com/highcharts-3d.js"></script>
 <!-- <script type="text/javascript" src="scripts/vendor/Googleinitial.js"></script>  -->
-<script type="text/javascript" src="scripts/vendor/twitterservice.js"></script>
 <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
 <script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
@@ -173,6 +172,7 @@
 <script type="text/javascript" src="scripts/services/ObjectStoreService.js"></script>
 <script type="application/javascript" src="scripts/services/CommonDataService.js"></script>
 <script type="application/javascript" src="scripts/services/fbGraphServices.js"></script>
+<script type="text/javascript" src="scripts/vendor/twitterservice.js"></script>
 <!-- services end -->
 <!--  directives start  -->
 <script type="application/javascript" src="scripts/directives/commonData.js"></script>
@@ -209,8 +209,6 @@
 <script type="text/javascript" src="scripts/controllers/dynamically-report-builder/dynamicallyReportCtrl.js"></script>
 <script type="text/javascript" src="scripts/services/QueryBuilderService.js"></script>
 <!--  controllers end   -->
-<!-- angular file upload -->
-<script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
 <!-- zeroclipboard -->
 <script type="text/javascript" src="bower_components/zeroclipboard/ZeroClipboard.min.js"></script>
 <script type="text/javascript" src="scripts/factories/d3Data.js"></script>
@@ -351,4 +349,7 @@ b
 <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-messages.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.15.0/TweenMax.min.js"></script>
 <script type="text/javascript" src="scripts/loginBackground.js"></script>
+<!-- ng file upload -->
+<script src="bower_components/ng-file-upload-shim/ng-file-upload-shim.min.js"></script> <!-- for no html5 browsers support -->
+<script src="bower_components/ng-file-upload-shim/ng-file-upload.min.js"></script>
 </html>

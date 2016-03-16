@@ -4,10 +4,10 @@
  */
 routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log',
     'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API',
-    'Digin_Engine_API_Namespace', '$diginengine', 'ngToast', '$window','$state','$csContainer'
-    , function ($scope, $controller, $mdSidenav, $log, CommonDataSrc,
+    'Digin_Engine_API_Namespace', '$diginengine', 'ngToast', '$window','$state','$csContainer','Upload',
+    function ($scope, $controller, $mdSidenav, $log, CommonDataSrc,
                 $mdDialog, $rootScope, $http, Digin_Engine_API,
-                Digin_Engine_API_Namespace, $diginengine, ngToast, $window, $state, $csContainer) {
+                Digin_Engine_API_Namespace, $diginengine, ngToast, $window, $state, $csContainer, Upload) {
 
         $rootScope.dashboard2 = [];
 
@@ -403,57 +403,22 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             selectedAttribute: [],
             selectedMeasures: []
         }
+
+        /* file upload  */
+
+        // upload on file select or drop
+        $scope.upload = function (file) {
+            Upload.upload({
+                url: 'upload/url',
+                data: {file: file, 'username': $scope.username}
+            }).then(function (resp) {
+                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+            }, function (resp) {
+                console.log('Error status: ' + resp.status);
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+            });
+        };
     }]);
 
-routerApp.controller('fileUploaderCtrl', ['$scope', 'FileUploader', function($scope, FileUploader) {
-        var uploader = $scope.uploader = new FileUploader({
-            url: 'upload.php'
-        });
-
-        // FILTERS
-
-        uploader.filters.push({
-            name: 'customFilter',
-            fn: function(item /*{File|FileLikeObject}*/, options) {
-                return this.queue.length < 10;
-            }
-        });
-
-        // CALLBACKS
-
-        uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
-            console.info('onWhenAddingFileFailed', item, filter, options);
-        };
-        uploader.onAfterAddingFile = function(fileItem) {
-            console.info('onAfterAddingFile', fileItem);
-        };
-        uploader.onAfterAddingAll = function(addedFileItems) {
-            console.info('onAfterAddingAll', addedFileItems);
-        };
-        uploader.onBeforeUploadItem = function(item) {
-            console.info('onBeforeUploadItem', item);
-        };
-        uploader.onProgressItem = function(fileItem, progress) {
-            console.info('onProgressItem', fileItem, progress);
-        };
-        uploader.onProgressAll = function(progress) {
-            console.info('onProgressAll', progress);
-        };
-        uploader.onSuccessItem = function(fileItem, response, status, headers) {
-            console.info('onSuccessItem', fileItem, response, status, headers);
-        };
-        uploader.onErrorItem = function(fileItem, response, status, headers) {
-            console.info('onErrorItem', fileItem, response, status, headers);
-        };
-        uploader.onCancelItem = function(fileItem, response, status, headers) {
-            console.info('onCancelItem', fileItem, response, status, headers);
-        };
-        uploader.onCompleteItem = function(fileItem, response, status, headers) {
-            console.info('onCompleteItem', fileItem, response, status, headers);
-        };
-        uploader.onCompleteAll = function() {
-            console.info('onCompleteAll');
-        };
-
-        console.info('uploader', uploader);
-    }]);

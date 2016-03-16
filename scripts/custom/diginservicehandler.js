@@ -156,7 +156,7 @@
         var host = getHost();
         return {
             //            diginengine: "http://" + host + ":8080",
-            diginengine: "http://localhost:8080",
+            diginengine: "http://104.155.236.85:8080",
             diginenginealt: "http://" + host + ":8081"
         };
     });

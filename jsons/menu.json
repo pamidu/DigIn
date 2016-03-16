@@ -1,60 +1,76 @@
 {
-    "d": [{
-            "title": "Data Source",
-            "icon1": "bower_components/material-design-icons/action/svg/production/ic_input_24px.svg",
-            "icon": "ion-close",
-            "icon2": "view_array"
-        }, {
-            "title": "Add Widgets",
-            "icon1": "bower_components/material-design-icons/action/svg/production/ic_settings_24px.svg",
-            "icon": "",
-            "icon2": "queue"
-        }, {
-            "title": "Clear Widgets",
-            "icon1": "bower_components/material-design-icons/action/svg/production/ic_input_24px.svg",
-            "icon": "ion-close",
-            "icon2": "grid_off"
-        }, {
-            "title": "Social Media Analytics",
-            "icon1": "bower_components/material-design-icons/file/svg/production/ic_file_download_24px.svg",
-            "icon": "ion-paper-airplane",
-            "icon2": "equalizer"
-        }, {
-            "title": "Sales Forecast && Prediction",
-            "icon1": "bower_components/material-design-icons/action/svg/production/ic_input_24px.svg",
-            "icon": "ion-close",
-            "icon2": "trending_up"
-        }, {
-            "title": "Save",
-            "icon1": "bower_components/material-design-icons/content/svg/production/ic_save_24px.svg",
-            "icon": "ion-archive",
-            "icon2": "save"
-        },  {
-            "title": "Share",
-            "icon1": "bower_components/material-design-icons/social/svg/production/ic_share_24px.svg",
-            "icon": "ion-share",
-            "icon2": "share"
-        }, {
-            "title": "Settings",
-            "icon1": "bower_components/material-design-icons/action/svg/production/ic_settings_24px.svg",
-            "icon": "ion-settings",
-            "icon2": "settings"
-        },  {
-            "title": "TV Mode",
-            "icon1": "bower_components/material-design-icons/hardware/svg/production/ic_tv_24px.svg",
-            "icon": "ion-monitor",
-            "icon2": "tv"
-        }, {
-            "title": "Help",
-            "icon1": "bower_components/material-design-icons/action/svg/production/ic_help_24px.svg",
-            "icon": "ion-help",
-            "icon2": "help"
-        }, {
-            "title": "Logout",
-            "icon1": "bower_components/material-design-icons/action/svg/production/ic_input_24px.svg",
-            "icon": "ion-toggle-filled",
-            "icon2": "close"
-        }
-        
-    ]
+  "d": [
+    {
+      "title": "Data Source",
+      "icon1": "bower_components/material-design-icons/action/svg/production/ic_input_24px.svg",
+      "icon": "ion-close",
+      "icon2": "view_array"
+    },
+    {
+      "title": "Add Widgets",
+      "icon1": "bower_components/material-design-icons/action/svg/production/ic_settings_24px.svg",
+      "icon": "",
+      "icon2": "queue"
+    },
+    {
+      "title": "Clear Widgets",
+      "icon1": "bower_components/material-design-icons/action/svg/production/ic_input_24px.svg",
+      "icon": "ion-close",
+      "icon2": "grid_off"
+    },
+    {
+      "title": "Social Media Analytics",
+      "icon1": "bower_components/material-design-icons/file/svg/production/ic_file_download_24px.svg",
+      "icon": "ion-paper-airplane",
+      "icon2": "equalizer"
+    },
+    {
+      "title": "Sales Forecast && Prediction",
+      "icon1": "bower_components/material-design-icons/action/svg/production/ic_input_24px.svg",
+      "icon": "ion-close",
+      "icon2": "trending_up"
+    },
+    {
+      "title": "Save",
+      "icon1": "bower_components/material-design-icons/content/svg/production/ic_save_24px.svg",
+      "icon": "ion-archive",
+      "icon2": "save"
+    },
+    {
+      "title": "Share",
+      "icon1": "bower_components/material-design-icons/social/svg/production/ic_share_24px.svg",
+      "icon": "ion-share",
+      "icon2": "share"
+    },
+    {
+      "title": "Settings",
+      "icon1": "bower_components/material-design-icons/action/svg/production/ic_settings_24px.svg",
+      "icon": "ion-settings",
+      "icon2": "settings"
+    },
+    {
+      "title": "TV Mode",
+      "icon1": "bower_components/material-design-icons/hardware/svg/production/ic_tv_24px.svg",
+      "icon": "ion-monitor",
+      "icon2": "tv"
+    },
+    {
+      "title": "Common Source Algorithm",
+      "icon1": "bower_components/material-design-icons/hardware/svg/production/ic_tv_24px.svg",
+      "icon": "accessibility",
+      "icon2": "accessibility"
+    },
+    {
+      "title": "Help",
+      "icon1": "bower_components/material-design-icons/action/svg/production/ic_help_24px.svg",
+      "icon": "ion-help",
+      "icon2": "help"
+    },
+    {
+      "title": "Logout",
+      "icon1": "bower_components/material-design-icons/action/svg/production/ic_input_24px.svg",
+      "icon": "ion-toggle-filled",
+      "icon2": "close"
+    }
+  ]
 }

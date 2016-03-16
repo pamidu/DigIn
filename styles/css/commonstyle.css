@@ -170,10 +170,10 @@
 }
 
 .active {
-    color: #EC784B;
-    brackground-color: transparent;
-    border: 1px solid #EC784B;
-    background-image: linear-gradient(to right, transparent 50%, #EC784B 50%);
+    /*color: #EC784B;*/
+    /*brackground-color: transparent;*/
+    /*border: 1px solid #EC784B;*/
+    /*background-image: linear-gradient(to right, transparent 50%, #EC784B 50%);*/
 }
 
 .login-bdy .disable:hover {
@@ -499,9 +499,9 @@
 }
 
 .sign-up-link > a {
-    color: #3FBDF1;
+    color: #fff;
     border-radius: 15px;
-    border: 2px solid #33A8D1;
+    border: 2px solid #fff;
 }
 
 .sign-in-link > a {

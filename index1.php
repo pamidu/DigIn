@@ -113,6 +113,8 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script> -->
 <script src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
+
 <script src="https://github.highcharts.com/highcharts.src.js"></script>
 <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
@@ -168,6 +170,7 @@
 <script type="text/javascript" src="scripts/controllers/login.js"></script>
 <script type="text/javascript" src="scripts/controllers/welcomePageCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/SignUpMain.js"></script>
+<script type="text/javascript" src="scripts/controllers/sourceAlgorithm/sourceAlgorithmCtrl.js"></script>
 <!-- services start -->
 <script type="text/javascript" src="scripts/services/DynamicRealTimeVis.js"></script>
 <script type="text/javascript" src="scripts/services/ObjectStoreService.js"></script>

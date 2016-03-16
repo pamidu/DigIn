@@ -38,7 +38,7 @@ var routerApp = angular.module('DuoDiginRt', [
     'angularFileUpload'
 ]);
 
-routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
+routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
 
     $httpProvider.defaults.headers.post['Content-Type'] = 'multipart/form-data';
     $httpProvider.defaults.useXDomain = true;
@@ -81,7 +81,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 preLoader: true
             }
         })
-       
+
         .state("home.Settings", {
             url: "/settings",
             controller: "dashboardSetupCtrl",
@@ -268,7 +268,11 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         url: '/dynamically-report-builder:reportNme',
         controller: 'dynamicallyReportCtrl',
         templateUrl: "views/dynamicallyReportBuilder/dynamically-report.html"
-        });
+    }).state('home.commonSrcAlgorithm', {
+        url: '/common-src-algorithm',
+        controller: 'sourceAlgorithmCtrl',
+        templateUrl: "views/sourceAlgorithm/common-src-algorithm.html"
+    });
 
     lkGoogleSettingsProvider.configure({
         apiKey: 'AIzaSyA9fv9lYQdt1XV6wooFtItxYlMF8Y9t1ao',
@@ -293,8 +297,8 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         'A700': '#000c0e'
     };
     $mdThemingProvider
-        .definePalette('customPrimary', 
-                        customPrimary);
+        .definePalette('customPrimary',
+            customPrimary);
 
     var customBackground = {
         '50': '#ffffff',
@@ -313,26 +317,26 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         'A700': '#bfbfbf'
     };
     $mdThemingProvider
-        .definePalette('customBackground', 
-                        customBackground);
+        .definePalette('customBackground',
+            customBackground);
 
     $mdThemingProvider.theme('default')
-       .primaryPalette('customPrimary')
-       .accentPalette('blue')
-       .warnPalette('red')
-       .backgroundPalette('customBackground')
+        .primaryPalette('customPrimary')
+        .accentPalette('blue')
+        .warnPalette('red')
+        .backgroundPalette('customBackground')
 
     $mdThemingProvider.alwaysWatchTheme(true);
 }]);
 
-routerApp.run(function($rootScope, $auth, $state, $csContainer) {
+routerApp.run(function ($rootScope, $auth, $state, $csContainer) {
 
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
-        var requireLogin = toState.data.requireLogin;        
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+        var requireLogin = toState.data.requireLogin;
         var secToken = $auth.getSecurityToken();
         var cookToken = getCookie("securityToken");
-        
-        if(toState.data.preLoader){
+
+        if (toState.data.preLoader) {
             setTimeout(function () {
                 $('#pagePreLoader').hide();
                 $('#preLoader').hide();
@@ -341,17 +345,17 @@ routerApp.run(function($rootScope, $auth, $state, $csContainer) {
                 $('#content1').css("visibility", "visible");
             }, 3000);
         }
-        
+
         if (requireLogin && secToken === "N/A" && typeof(cookToken) === "undefined") {
             event.preventDefault();
             $state.go('login');
-        }else{
+        } else {
             var stateName = toState.name;
             //check for custom state validations
             switch (stateName) {
                 case 'home.QueryBuilder':
                     var srcObj = $csContainer.fetchSrcObj();
-                    if(typeof srcObj.tbl == "undefined"){
+                    if (typeof srcObj.tbl == "undefined") {
                         event.preventDefault();
                         $state.go('home');
                     }
@@ -364,13 +368,13 @@ routerApp.run(function($rootScope, $auth, $state, $csContainer) {
 
 
 routerApp.controller('ReportViewerControl', ['$scope', '$rootScope', '$stateParams', 'Digin_ReportViewer', '$sce',
-    function($scope, $rootScope, $stateParams, Digin_ReportViewer, $sce) {
+    function ($scope, $rootScope, $stateParams, Digin_ReportViewer, $sce) {
 
         //here i need to append the report url ,
 
         $scope.reportURL = Digin_ReportViewer + "3A" + $rootScope.username + "%3AReports%3A" + $stateParams.param + "/viewer?";
 
-        $scope.trustSrc = function(src) {
+        $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
 
@@ -378,13 +382,13 @@ routerApp.controller('ReportViewerControl', ['$scope', '$rootScope', '$statePara
     }
 ]);
 routerApp.controller('DashboardViewerControl', ['$scope', '$rootScope', '$stateParams', 'Digin_DashboardViewer', '$sce',
-    function($scope, $rootScope, $stateParams, Digin_DashboardViewer, $sce) {
+    function ($scope, $rootScope, $stateParams, Digin_DashboardViewer, $sce) {
 
         //here i need to append the report url ,
 
         $scope.reportURL = Digin_DashboardViewer + "3A" + $rootScope.username + "%3ADashboards%3A" + $stateParams.param + "/viewer?";
 
-        $scope.trustSrc = function(src) {
+        $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
 
@@ -392,12 +396,12 @@ routerApp.controller('DashboardViewerControl', ['$scope', '$rootScope', '$stateP
     }
 ]);
 routerApp.controller('AnalyzerViewerControl', ['$scope', '$rootScope', '$stateParams', 'Digin_AnalyzerViewer', '$sce', '$localStorage',
-    function($scope, $rootScope, $stateParams, Digin_AnalyzerViewer, $sce, $localStorage) {
+    function ($scope, $rootScope, $stateParams, Digin_AnalyzerViewer, $sce, $localStorage) {
 
 
         $scope.reportURL = Digin_AnalyzerViewer + "3A" + $rootScope.username + "%3AAnalyzer%3A" + $stateParams.param + "/editor?";
 
-        $scope.trustSrc = function(src) {
+        $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
 
@@ -407,9 +411,9 @@ routerApp.controller('AnalyzerViewerControl', ['$scope', '$rootScope', '$statePa
 
 routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope',
 
-    function($scope, $http, $objectstore, $mdDialog, $rootScope) {
+    function ($scope, $http, $objectstore, $mdDialog, $rootScope) {
 
-        $scope.closeDialog = function() {
+        $scope.closeDialog = function () {
             // Easily hides most recent dialog shown...
             // no specific instance reference is needed.
             $mdDialog.hide();
@@ -419,11 +423,11 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
         $scope.dashboardCulture = $rootScope.dashboard.dashboardCulture;
         $scope.dashboardDate = $rootScope.dashboard.dashboardDate;
 
-        $scope.saveDashboardDetails = function() {
+        $scope.saveDashboardDetails = function () {
             $rootScope.dashboard.dashboardName = $scope.dashboardName;
 
             var client = $objectstore.getClient("com.duosoftware.com", "duodigin_dashboard");
-            client.onComplete(function(data) {
+            client.onComplete(function (data) {
                 $mdDialog.hide();
                 $mdDialog.show({
                     controller: 'successCtrl',
@@ -431,7 +435,7 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
                     resolve: {}
                 })
             });
-            client.onError(function(data) {
+            client.onError(function (data) {
                 $mdDialog.hide();
                 $mdDialog.show({
                     controller: 'errorCtrl',
@@ -449,12 +453,12 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
     }
 ]);
 
-routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function($scope, $mdDialog) {
-    var dateFormat = function($scope) {
+routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function ($scope, $mdDialog) {
+    var dateFormat = function ($scope) {
         var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
             timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
             timezoneClip = /[^-+\dA-Z]/g,
-            pad = function(val, len) {
+            pad = function (val, len) {
                 val = String(val);
                 len = len || 2;
                 while (val.length < len) val = "0" + val;
@@ -462,7 +466,7 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function($
             };
 
         // Regexes and supporting functions are cached through closure
-        return function(date, mask, utc) {
+        return function (date, mask, utc) {
             var dF = dateFormat;
 
             // You can't provide utc if you skip other args (use the "UTC:" mask prefix)
@@ -523,7 +527,7 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function($
                     S: ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
                 };
 
-            return mask.replace(token, function($0) {
+            return mask.replace(token, function ($0) {
                 return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
             });
         };
@@ -558,7 +562,7 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function($
     };
 
     // For convenience...
-    Date.prototype.format = function(mask, utc) {
+    Date.prototype.format = function (mask, utc) {
         return dateFormat(this, mask, utc);
     };
 
@@ -574,9 +578,9 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function($
 
 
     // Clock Widget's Rotation 
-    $(function() {
+    $(function () {
 
-        setInterval(function() {
+        setInterval(function () {
             var seconds = new Date().getSeconds();
             var sdegree = seconds * 6;
             var srotate = "rotate(" + sdegree + "deg)";
@@ -587,7 +591,7 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function($
 
         }, 1000);
 
-        setInterval(function() {
+        setInterval(function () {
             var hours = new Date().getHours();
             $('#clockHours').text(hours);
             var mins = new Date().getMinutes();
@@ -602,7 +606,7 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function($
         }, 1000);
 
 
-        setInterval(function() {
+        setInterval(function () {
             var mins = new Date().getMinutes();
             //$scope.clockComponentMins = mins;
             //console.log(mins);
@@ -617,7 +621,7 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function($
 
     });
 
-    $scope.clockComponentSelectformat = function(ev) {
+    $scope.clockComponentSelectformat = function (ev) {
         $mdDialog.show({
                 controller: clockComponentformatController,
                 templateUrl: 'templates/clockComponentformat.html',
@@ -625,11 +629,11 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function($
                 targetEvent: ev,
                 clickOutsideToClose: true
             })
-            .then(function(answer) {
+            .then(function (answer) {
                 var monthDay = dateFormat(answer);
                 $('#clockmonthDay').text(monthDay);
 
-            }, function() {
+            }, function () {
 
             });
     };
@@ -670,18 +674,18 @@ routerApp.controller('clockWidgetController', ['$scope', '$mdDialog', function($
             format: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
         }];
 
-        $scope.clockComponentformatChange = function(data) {
+        $scope.clockComponentformatChange = function (data) {
             $mdDialog.hide(data);
         };
-        $scope.closeWidgetOptions = function() {
+        $scope.closeWidgetOptions = function () {
             $mdDialog.cancel();
         };
     };
 
 }])
 
-routerApp.controller('calenderWidgetController', ['$scope', function($scope) {
-    (function() {
+routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
+    (function () {
         $scope.days = [];
         $scope.month = 01;
         createCal();
@@ -693,7 +697,8 @@ routerApp.controller('calenderWidgetController', ['$scope', function($scope) {
                 //console.log(firstDay);
                 if (firstDay == 0) {
                     firstDay = 7;
-                };
+                }
+                ;
                 for (i = 0; i < 40; i++) {
 
                     if (i + 1 < firstDay) {
@@ -718,31 +723,38 @@ routerApp.controller('calenderWidgetController', ['$scope', function($scope) {
                                     task: '',
                                 };
                                 $scope.days.push(obj);
-                            };
-                        };
-                    };
-                };
+                            }
+                            ;
+                        }
+                        ;
+                    }
+                    ;
+                }
+                ;
                 //console.log($scope.days);
-            };
+            }
+            ;
         };
 
-        $scope.previousMonth = function() {
+        $scope.previousMonth = function () {
             if ($scope.month == 1) {
                 $scope.month = 12;
             } else {
                 $scope.month = $scope.month - 1;
 
-            };
+            }
+            ;
             //createCal();
         };
 
-        $scope.nextMonth = function() {
+        $scope.nextMonth = function () {
             if ($scope.month == 12) {
                 $scope.month = 1;
 
             } else {
                 $scope.month = $scope.month + 1;
-            };
+            }
+            ;
             //createCal();
         };
 
@@ -751,13 +763,13 @@ routerApp.controller('calenderWidgetController', ['$scope', function($scope) {
 
 }])
 
-routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog', function($scope, $http, $mdDialog) {
-    $scope.loadWeather = function(data) {
+routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog', function ($scope, $http, $mdDialog) {
+    $scope.loadWeather = function (data) {
         $scope.weatherComponentCity = data;
         //complete config  
         //            function () {
         $http.get('http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22' + data + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
-            .success(function(data) {
+            .success(function (data) {
                 console.log(data);
 
                 if (data.query.results.channel.item.condition == undefined) {
@@ -785,12 +797,12 @@ routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog',
                     } else {
                         $scope.weatherComponentIcon = 'sun';
                         $scope.weatherComponentBg = "styles/css/images/weatherComponentBg.jpg";
-                }
+                    }
                     ;
                 }
 
             })
-            .error(function(err) {
+            .error(function (err) {
                 console.log('Error retrieving markets');
             });
         //            };
@@ -801,7 +813,7 @@ routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog',
     $scope.weatherComponentError = false;
     $scope.loadWeather($scope.locZip);
 
-    $scope.weatherComponentSelectCity = function(ev) {
+    $scope.weatherComponentSelectCity = function (ev) {
         $mdDialog.show({
                 controller: weatherComponentCitySelectorController,
                 templateUrl: 'templates/weatherComponentCitySelector.html',
@@ -809,19 +821,19 @@ routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog',
                 targetEvent: ev,
                 clickOutsideToClose: true
             })
-            .then(function(answer) {
+            .then(function (answer) {
                 $scope.loadWeather(answer);
-            }, function() {
+            }, function () {
 
             });
     };
 
     function weatherComponentCitySelectorController($scope, $mdDialog) {
         $scope.cities = ['colombo', 'galle', 'kandy'];
-        $scope.weatherComponentCitySelectorChange = function(city) {
+        $scope.weatherComponentCitySelectorChange = function (city) {
             $mdDialog.hide(city);
         };
-        $scope.closeWidgetOptions = function() {
+        $scope.closeWidgetOptions = function () {
             $mdDialog.cancel();
         };
     };
@@ -829,22 +841,22 @@ routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog',
 
 }])
 
-routerApp.controller('userprofileWidgetController', ['$scope', function($scope) {
-    (function() {
+routerApp.controller('userprofileWidgetController', ['$scope', function ($scope) {
+    (function () {
         var menu_trigger = $("[data-card-menu]");
         var back_trigger = $("[data-card-back]");
 
-        menu_trigger.click(function() {
+        menu_trigger.click(function () {
             $(".card, body").toggleClass("show-menu");
         });
 
-        back_trigger.click(function() {
+        back_trigger.click(function () {
             $(".card, body").toggleClass("show-menu");
         });
     })();
 }])
 
-routerApp.service('VideosService', ['$window', '$rootScope', '$log', function($window, $rootScope, $log) {
+routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($window, $rootScope, $log) {
 
     var service = this;
 
@@ -886,7 +898,7 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function($w
         title: '[OFFICIAL HD] Daft Punk - Give Life Back To Music (feat. Nile Rodgers)'
     }];
 
-    $window.onYouTubeIframeAPIReady = function() {
+    $window.onYouTubeIframeAPIReady = function () {
         $log.info('Youtube API is ready');
         youtube.ready = true;
         service.bindPlayer('placeholder');
@@ -915,12 +927,12 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function($w
         $rootScope.$apply();
     }
 
-    this.bindPlayer = function(elementId) {
+    this.bindPlayer = function (elementId) {
         $log.info('Binding to ' + elementId);
         youtube.playerId = elementId;
     };
 
-    this.createPlayer = function() {
+    this.createPlayer = function () {
         $log.info('Creating a new Youtube player for DOM id ' + youtube.playerId + ' and video ' + youtube.videoId);
         return new YT.Player(youtube.playerId, {
             height: youtube.playerHeight,
@@ -936,7 +948,7 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function($w
         });
     };
 
-    this.loadPlayer = function() {
+    this.loadPlayer = function () {
         if (youtube.ready && youtube.playerId) {
             if (youtube.player) {
                 youtube.player.destroy();
@@ -945,14 +957,14 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function($w
         }
     };
 
-    this.launchPlayer = function(id, title) {
+    this.launchPlayer = function (id, title) {
         youtube.player.loadVideoById(id);
         youtube.videoId = id;
         youtube.videoTitle = title;
         return youtube;
     }
 
-    this.listResults = function(data) {
+    this.listResults = function (data) {
         results.length = 0;
         for (var i = data.items.length - 1; i >= 0; i--) {
             results.push({
@@ -971,7 +983,7 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function($w
         return results;
     }
 
-    this.queueVideo = function(id, title) {
+    this.queueVideo = function (id, title) {
         upcoming.push({
             id: id,
             title: title
@@ -979,7 +991,7 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function($w
         return upcoming;
     };
 
-    this.archiveVideo = function(id, title) {
+    this.archiveVideo = function (id, title) {
         history.unshift({
             id: id,
             title: title
@@ -987,7 +999,7 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function($w
         return history;
     };
 
-    this.deleteVideo = function(list, id) {
+    this.deleteVideo = function (list, id) {
         for (var i = list.length - 1; i >= 0; i--) {
             if (list[i].id === id) {
                 list.splice(i, 1);
@@ -996,32 +1008,32 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function($w
         }
     };
 
-    this.getYoutube = function() {
+    this.getYoutube = function () {
         return youtube;
     };
 
-    this.getResults = function() {
+    this.getResults = function () {
         return results;
     };
 
-    this.getUpcoming = function() {
+    this.getUpcoming = function () {
         return upcoming;
     };
 
-    this.getHistory = function() {
+    this.getHistory = function () {
         return history;
     };
 
 }]);
 
-routerApp.service('googleService', ['$http', '$rootScope', '$q', function($http, $rootScope, $q) {
+routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http, $rootScope, $q) {
     var clientId = '33022835624-q3km776rl7dkitpinaj7pf2tlu75tfhg.apps.googleusercontent.com',
         apiKey = 'AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ',
         scopes = 'https://www.googleapis.com/auth/plus.login',
         domain = '',
         deferred = $q.defer();
 
-    this.signin = function() {
+    this.signin = function () {
         gapi.auth.authorize({
             client_id: clientId,
             scope: scopes,
@@ -1033,20 +1045,20 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function($http,
         return deferred.promise;
     };
 
-    this.signout = function() {
+    this.signout = function () {
         gapi.auth.signOut();
         console.log("logged out");
 
         return deferred.promise;
     };
-    this.handleClientLoad = function() {
+    this.handleClientLoad = function () {
         gapi.client.setApiKey(apiKey);
         gapi.auth.init(function () {
         });
         window.setTimeout(checkAuth, 1);
     };
 
-    this.checkAuth = function() {
+    this.checkAuth = function () {
         gapi.auth.authorize({
             client_id: clientId,
             scope: scopes,
@@ -1055,12 +1067,12 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function($http,
         }, this.handleAuthResult);
     };
 
-    this.handleAuthResult = function(authResult) {
+    this.handleAuthResult = function (authResult) {
         if (authResult && !authResult.error) {
             var data = {};
-            gapi.client.load('oauth2', 'v2', function() {
+            gapi.client.load('oauth2', 'v2', function () {
                 var request = gapi.client.oauth2.userinfo.get();
-                request.execute(function(resp) {
+                request.execute(function (resp) {
                     data.email = resp.email;
                 });
             });
@@ -1070,7 +1082,7 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function($http,
         }
     };
 
-    this.handleAuthClick = function(event) {
+    this.handleAuthClick = function (event) {
         gapi.auth.authorize({
             client_id: clientId,
             scope: scopes,
@@ -1080,41 +1092,41 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function($http,
         return false;
     };
 
-    this.getProfileData = function() {
+    this.getProfileData = function () {
 
-        gapi.client.load('plus', 'v1', function() {
+        gapi.client.load('plus', 'v1', function () {
             var request = gapi.client.plus.people.get({
                 'userId': 'me'
             });
-            request.execute(function(resp) {
+            request.execute(function (resp) {
                 $rootScope.profileData = resp;
             });
         });
         return deferred.promise;
     };
 
-    this.getPeopleData = function() {
+    this.getPeopleData = function () {
 
-        gapi.client.load('plus', 'v1', function() {
+        gapi.client.load('plus', 'v1', function () {
             var request = gapi.client.plus.people.list({
                 'userId': 'me',
                 'collection': 'visible'
             });
-            request.execute(function(resp) {
+            request.execute(function (resp) {
                 $rootScope.peopleData = resp;
             });
         });
         return deferred.promise;
     };
 
-    this.getActivityData = function() {
-        gapi.client.load('plus', 'v1', function() {
+    this.getActivityData = function () {
+        gapi.client.load('plus', 'v1', function () {
             var request = gapi.client.plus.activities.list({
                 'userId': 'me',
                 'collection': 'public'
             });
 
-            request.execute(function(resp) {
+            request.execute(function (resp) {
                 $rootScope.activityData = resp;
             });
         });
@@ -1123,31 +1135,31 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function($http,
     };
 
 }]);
-routerApp.service('generatePDF1', function($timeout){
-    this.generate = function(htmlElement, config, tableDataString) {
-      
+routerApp.service('generatePDF1', function ($timeout) {
+    this.generate = function (htmlElement, config, tableDataString) {
+
         var doc = new jsPDF('landscape');
         var htmlObject = document.createElement('div');
         htmlObject.innerHTML = tableDataString;
-        
+
         doc.text(config.titleLeft, config.titleTop, config.title);
         doc.fromHTML(htmlObject, config.tableLeft, config.tableTop, {});
         var pdfName = config.title.toString() + '.pdf';
         doc.save(pdfName);
-        
+
     };
 
 });
-routerApp.service('generatePDF2', function($timeout){
-    this.generate = function(htmlElement, config) {
-      
-        var doc = new jsPDF('landscape');
-        var options = {format:'PNG'};
+routerApp.service('generatePDF2', function ($timeout) {
+    this.generate = function (htmlElement, config) {
 
-        doc.addHTML( htmlElement, config.tableLeft, config.tableTop, options,function(){
+        var doc = new jsPDF('landscape');
+        var options = {format: 'PNG'};
+
+        doc.addHTML(htmlElement, config.tableLeft, config.tableTop, options, function () {
             var pdfName = config.title.toString() + '.pdf';
             doc.text(config.titleLeft, config.titleTop, config.title);
-            doc.save(pdfName);            
+            doc.save(pdfName);
         });
     };
 
@@ -1155,50 +1167,50 @@ routerApp.service('generatePDF2', function($timeout){
 
 //use this to share scopes between two controllers
 //first store after that get
-routerApp.factory('ScopeShare', function($rootScope) {
+routerApp.factory('ScopeShare', function ($rootScope) {
     var mem = {};
 
     return {
-        store: function(key, value) {
+        store: function (key, value) {
             mem[key] = value;
         },
-        get: function(key) {
+        get: function (key) {
             return mem[key];
         }
     };
 });
 
 
-routerApp.directive('myUpload', [function() {
+routerApp.directive('myUpload', [function () {
     return {
         restrict: 'A',
-        link: function(scope, elem, attrs) {
+        link: function (scope, elem, attrs) {
             var reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 scope.image = e.target.result;
                 scope.$apply();
             }
 
-            elem.on('change', function() {
+            elem.on('change', function () {
                 reader.readAsDataURL(elem[0].files[0]);
             });
         }
     };
 }]);
 
-routerApp.directive('fileReader', function() {
+routerApp.directive('fileReader', function () {
     return {
         scope: {
             fileReader: "="
         },
-        link: function(scope, element) {
-            $(element).on('change', function(changeEvent) {
+        link: function (scope, element) {
+            $(element).on('change', function (changeEvent) {
                 var files = changeEvent.target.files;
                 if (files.length) {
                     var r = new FileReader();
-                    r.onload = function(e) {
+                    r.onload = function (e) {
                         var contents = e.target.result;
-                        scope.$apply(function() {
+                        scope.$apply(function () {
                             scope.fileReader = contents;
                         });
                     };
@@ -1210,7 +1222,7 @@ routerApp.directive('fileReader', function() {
     };
 });
 
-routerApp.directive('barsChart', function($parse) {
+routerApp.directive('barsChart', function ($parse) {
     //explicitly creating a directive definition variable
     //this may look verbose but is good for clarification purposes
     //in real life you'd want to simply return the object {...}
@@ -1228,7 +1240,7 @@ routerApp.directive('barsChart', function($parse) {
         scope: {
             data: '=chartData'
         },
-        link: function(scope, element, attrs) {
+        link: function (scope, element, attrs) {
             //in D3, any selection[0] contains the group
             //selection[0][0] is the DOM node
             //but we won't need that this time
@@ -1240,10 +1252,10 @@ routerApp.directive('barsChart', function($parse) {
                 .selectAll('div')
                 .data(scope.data).enter().append("div")
                 .transition().ease("elastic")
-                .style("width", function(d) {
+                .style("width", function (d) {
                     return d + "%";
                 })
-                .text(function(d) {
+                .text(function (d) {
                     return d + "%";
                 });
             //a little of magic: setting it's width based
@@ -1254,8 +1266,8 @@ routerApp.directive('barsChart', function($parse) {
     return directiveDefinitionObject;
 });
 
-routerApp.filter('fromTo', function() {
-    return function(input, from, total, lessThan) {
+routerApp.filter('fromTo', function () {
+    return function (input, from, total, lessThan) {
         from = parseInt(from);
         total = parseInt(total);
         for (var i = from; i < from + total && i < lessThan; i++) {
@@ -1265,19 +1277,19 @@ routerApp.filter('fromTo', function() {
     }
 });
 
-routerApp.filter('getExtension', function() {
-    return function(url) {
+routerApp.filter('getExtension', function () {
+    return function (url) {
         return url.split('.').pop();
     };
 });
 
-routerApp.filter('htmlToPlaintext', function() {
-    return function(text) {
+routerApp.filter('htmlToPlaintext', function () {
+    return function (text) {
         return text ? String(text).replace(/<[^>]+>/gm, '') : '';
     };
 });
 
-routerApp.directive('clockComponent', function() {
+routerApp.directive('clockComponent', function () {
     return {
         restrict: 'E',
         controller: 'clockWidgetController',
@@ -1285,7 +1297,7 @@ routerApp.directive('clockComponent', function() {
     };
 });
 
-routerApp.directive('weatherComponent', function() {
+routerApp.directive('weatherComponent', function () {
     return {
         restrict: 'E',
         controller: 'weatherWidgetController',
@@ -1300,7 +1312,7 @@ routerApp.directive('weatherComponent', function() {
     };
 });
 
-routerApp.directive('userprofileComponent', function() {
+routerApp.directive('userprofileComponent', function () {
     return {
         restrict: 'E',
         controller: 'userprofileWidgetController',

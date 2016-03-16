@@ -889,13 +889,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             //get highest level
             $scope.client.generateBubble($scope.sourceData.tbl, $scope.commonData.measures[0].filedName, $scope.commonData.measures[1].filedName , $scope.commonData.columns[0].filedName, function(data, status) {
                 var hObj = {};
-                $scope.dataforeachBox = []
-                $scope.dataOutliers = [];
+                $scope.dataforbubble = []
+                $scope = [];
                 if (status) {
-                    for (var field in data) {
-                        $scope.dataforeachBox.push([data[field].minimum, data[field].l_w, data[field].median, data[field].u_w, data[field].maximum]);
-                        $scope.dataOutliers.push([data[field].outliers[0]]);
-                    }
+                    
                     $scope.categories = fieldArray;
                     $scope.eventHndler.isLoadingChart = false;
                      $scope.widget.initHighchartObj = {
@@ -912,7 +909,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         },
 
                         xAxis: {
-                            categories: $scope.categories,
+                            categories: $scope.dataforbubble,
                             title: {
                                 text: 'Selected Fields'
                             }

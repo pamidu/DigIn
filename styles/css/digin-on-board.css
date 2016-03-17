@@ -129,6 +129,7 @@
     font-size: 18px;
     border-radius: 2em;
     margin-right: 10px;
+    outline: none !important;
 }
 
 .btn-start-now:hover, .btn-Skip-now:hover {
@@ -136,6 +137,7 @@
     color: #fff !important;
     border-radius: 2em;
     border: 3px solid #E87142;
+    outline: none !important;
 }
 
 .btn-Skip-now {
@@ -147,6 +149,7 @@
     font-weight: 500;
     font-size: 18px;
     border-radius: 2em;
+    outline: none !important;
 }
 
 .timeline {

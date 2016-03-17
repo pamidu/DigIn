@@ -58,7 +58,7 @@
             "widView": "views/ViewFacebook.html",
             "color": "#3F51B5",
             "sizeX": 4, "sizeY": 4, "row": 1, "col": 0,
-            "href": "home.SocialGraphFb()",
+            "href": "home.SocialGraphFb",
             "widConfig": {
                 "options": {
                     "chart": {
@@ -107,7 +107,7 @@
             "widView": "views/ViewTwitter.html",
             "color": "#2196F3",
             "sizeX": 4, "sizeY": 4, "row": 1, "col": 4,
-            "href": "home.SocialGraphTwitter()" 
+            "href": "home.SocialGraphTwitter" 
         }, {
             "title": "Google+",
             "icon": "styles/css/images/icons/googleplus.svg",

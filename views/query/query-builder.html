@@ -1,6 +1,6 @@
 <div ng-init="initQueryBuilder()" class="digin-qb-wrap animated fadeInRight" ng-controller="queryBuilderCtrl">
     <!-- page main loader -->
-    <div class="digin-main-loader slideOutDown "
+    <div class="digin-main-loader slideOutDown"
          ng-if="eventHndler.isMainLoading==true">
         <div class="loader-wrap animated "
              ng-class="eventHndler.isMainLoading==true?'zoomInUp':'fade-out'">
@@ -9,16 +9,14 @@
                 <h3>
                     {{eventHndler.message}}
                 </h3>
-
             </div>
-
         </div>
     </div>
 
     <div class="digin-qb-header">
         <div layout="row">
             <div flex="10">
-                <div class="back">
+                <div class="back" ng-click="goDashboard()">
                     <i class="ti-arrow-left"></i>
                 </div>
             </div>

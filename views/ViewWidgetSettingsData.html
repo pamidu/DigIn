@@ -48,9 +48,10 @@
                                     </thead>
                                     <tbody>
                                       <tr ng-repeat="item in tableData">
-                                        <td at-implicit at-sortable at-attribute={{field}} ng-repeat="field in fieldData"></td>
+                                        <td at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
+                                        <td at-implicit at-sortable at-attribute={{field}} ng-repeat="field in fieldData"  ></td>
                                       </tr>
-                                    </tbody>
+                                    </tbody>                                      
                                   </table>
                                   </div>
                                   <at-pagination class="custom-pagination" at-list="tableData" at-config="config"></at-pagination>

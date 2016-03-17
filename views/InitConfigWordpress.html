@@ -7,7 +7,7 @@
       </md-button>            
     </div>
   </md-toolbar>
-  <md-card style="margin: 20px;margin-top: -20vh; margin-bottom: 0px;height:100%;">
+  <md-card class="card-style1">
     <md-content layout-padding>
             <div layout="row">
                 <md-input-container flex>
@@ -15,14 +15,14 @@
                     <input name="sizeX" id="inputwpdomain" type="text" ng-model="wpdomain">
                 </md-input-container>
             </div>
-            <label id="dislab">Please enter a URL similar to given sample, ex: en.blog.wordpress.com</label>
+            <p>Please enter a URL, ex: en.blog.wordpress.com</p>
             <div class="md-actions" layout="row">
             <span flex></span>
-            <md-button ng-click="finish()">
-                Finish
+            <md-button class="md-primary" ng-click="fetch()" >
+                Fetch
             </md-button>
-            <md-button ng-click="cancel()">
-                Cancel
+            <md-button class="md-accent" ng-click="finish()" ng-show="showFinishButton">
+                Finish
             </md-button>
             </div>
     </md-content>

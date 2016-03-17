@@ -215,7 +215,7 @@ routerApp.controller('fbInit',['scope', '$mdDialog', 'widId', '$rootScope',funct
 
     //get linkedin initial login state
     linkedinInterface.getLinkedinState(scope);
-
+    
     //add or remove account from the scope
     scope.addAccount = function() {
         if (!linkedinInterface.state)
@@ -223,64 +223,54 @@ routerApp.controller('fbInit',['scope', '$mdDialog', 'widId', '$rootScope',funct
         else
             linkedinInterface.logoutFromLinkedin(scope);
     };
-
     //cancel config
     scope.cancel = function() {
         $mdDialog.hide();
     };
-
     //complete config  
     scope.finish = function() {
+        
         linkedinInterface.getUserAccountOverview(scope, function(data) {
             var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
             $rootScope.dashboard.widgets[objIndex].widData = data;
         });
+
         $mdDialog.hide();
     };
 }]);
 
 routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope', '$q', 'twitterService',function ($scope, $http, $mdDialog, widId, $rootScope, $q, twitterService) {
 
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+    $scope.showFinishButton = false;
+    $scope.connectedTwitter = false;
 
     $scope.cancel = function() {
         $mdDialog.hide();
     };
-    $scope.finish = function() {
-
-        // twitterService.initialize();
-        $mdDialog.hide();
-
-    };
-
-    $rootScope.tweets = []; //array of tweets
 
     twitterService.initialize();
 
     //using the OAuth authorization result get the latest 20 tweets from twitter for the user
     $scope.refreshTimeline = function(maxId) {
         twitterService.getLatestTweets(maxId).then(function(data) {
-            $rootScope.tweets = $rootScope.tweets.concat(data);
 
+            var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+            $rootScope.dashboard.widgets[objIndex].widData.tweets = data;
+            $scope.showFinishButton = true;
         }, function() {
-            $scope.rateLimitError = true;
+            
         });
-
-        $rootScope.dashboard.widgets[objIndex].widData = $rootScope.tweets;
-
     }
 
     //when the user clicks the connect twitter button, the popup authorization window opens
-    $scope.connectButton = function() {
+    $scope.signIn = function() {
+        
         twitterService.connectTwitter().then(function() {
             if (twitterService.isReady()) {
                 //if the authorization is successful, hide the connect button and display the tweets
-
-                $('#connectButton').fadeOut(function() {
-                    $('#getTimelineButton, #signOut').fadeIn();
-
+ 
                     $scope.connectedTwitter = true;
-                });
+                    $scope.refreshTimeline();
             } else {
 
 
@@ -290,24 +280,15 @@ routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$r
 
     //sign out clears the OAuth cache, the user will have to reauthenticate when returning
     $scope.signOut = function() {
+
         twitterService.clearCache();
-        $rootScope.tweets.length = 0;
 
-        $('#getTimelineButton, #signOut').fadeOut(function() {
-            $('#connectButton').fadeIn();
-
-            $scope.$apply(function() {
-                $scope.connectedTwitter = false
-            })
-        });
-
-        $scope.rateLimitError = false;
+        $scope.connectedTwitter = false;
+        $scope.showFinishButton = false;
     }
 
     //if the user is a returning user, hide the sign in button and display the tweets
     if (twitterService.isReady()) {
-        $('#connectButton').hide();
-        $('#getTimelineButton, #signOut').show();
 
         $scope.connectedTwitter = true;
         $scope.refreshTimeline();
@@ -1979,99 +1960,108 @@ routerApp.controller('metricInit',['$scope', '$http', '$objectstore', '$mdDialog
 
 }]);
 
-routerApp.controller('InitConfigD3',['$scope', '$mdDialog', 'widId', '$rootScope', '$sce', 'd3Service', '$timeout',function ($scope, $mdDialog, widId, $rootScope, $sce, d3Service, $timeout) {
+routerApp.controller('InitConfigD3',['$scope', '$mdDialog', 'widId', '$rootScope', '$sce', 'd3Service', '$timeout',
+    function ($scope, $mdDialog, widId, $rootScope, $sce, d3Service, $timeout) {
 
-    $scope.cancel = function() {
-        $mdDialog.hide();
-    };
-}]);
+        $scope.cancel = function() {
+            $mdDialog.hide();
+        };
+    }
+]);
 
-routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widId', '$rootScope',function ($scope, $http, $mdDialog, widId, $rootScope) {
+routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widId', '$rootScope',
+    function ($scope, $http, $mdDialog, widId, $rootScope) {
+        $scope.showFinishButton = false;
+        //cancel config
+        $scope.cancel = function() {
+            $mdDialog.hide();
+        };
+        $scope.finish = function(){
+            $scope.showFinishButton = false;
+            $scope.cancel();
+        }
+        //complete config  
+        $scope.fetch = function() {
+            var wpapi = "http://public-api.wordpress.com/rest/v1/sites/";
+            var choice = "/posts";
+            var callbackString = '/?callback=JSON_CALLBACK';
 
-    //cancel config
-    $scope.cancel = function() {
-        $mdDialog.hide();
-    };
+            var message = $http.jsonp(wpapi + $scope.wpdomain + choice + callbackString).
+            success(function(data, status) {
+                $scope.showFinishButton = true;
+                var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+                //console.log(JSON.stringify(data));
+                var posts = data.posts;
+                var trimmedPosts = [];
+                var tempTitle = "";
 
-    //complete config  
-    $scope.finish = function() {
-        var wpapi = "http://public-api.wordpress.com/rest/v1/sites/";
-        var choice = "/posts";
-        var callbackString = '/?callback=JSON_CALLBACK';
+                for (i = 0; i < posts.length; i++) {
+                    var obj = {
+                        picURL: "",
+                        authorName: "",
+                        title: "",
+                        comments: "",
+                        likes: ""
+                    };
+                    obj.picURL = posts[i].author.avatar_URL;
+                    obj.authorName = posts[i].author.name;
+                    obj.title = posts[i].title;
+                    obj.comments = posts[i].comment_count;
+                    obj.date = posts[i].date
 
-        var message = $http.jsonp(wpapi + $scope.wpdomain + choice + callbackString).
-        success(function(data, status) {
-            var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-            //console.log(JSON.stringify(data));
-            var posts = data.posts;
-            var trimmedPosts = [];
-            var tempTitle = "";
-
-            for (i = 0; i < posts.length; i++) {
-                var obj = {
-                    picURL: "",
-                    authorName: "",
-                    title: "",
-                    comments: "",
-                    likes: ""
-                };
-                obj.picURL = posts[i].author.avatar_URL;
-                obj.authorName = posts[i].author.name;
-                obj.title = posts[i].title;
-                obj.comments = posts[i].comment_count;
-                obj.date = posts[i].date
-
-                trimmedPosts.push(obj);
-            }
-            var trimmedObj = {};
-            trimmedObj.posts = trimmedPosts;
-            $rootScope.dashboard.widgets[objIndex].widData = trimmedObj;
-            //$rootScope.dashboard.widgets[objIndex].widData = data;
-        }).
-        error(function(data, status) {
-
-            console.log(message);
-        });
-        $mdDialog.hide();
-    };
-}]);
-
-routerApp.controller('rssInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope',function ($scope, $http, $mdDialog, widId, $rootScope) {
-
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-    //cancel config
-    $scope.cancel = function() {
-        $mdDialog.hide();
-    };
-    //complete config  
-    $scope.finish = function(rssAddress) {
-
-        $scope.entryArray = [];
-        google.load("feeds", "1");
-        var feed = new google.feeds.Feed(rssAddress);
-        feed.setNumEntries(100);
-
-        feed.load(function(result) {
-
-            if (!result.error) {
-
-                for (var i = 0; i < result.feed.entries.length; i++) {
-
-                    var entry = result.feed.entries[i];
-
-                    $scope.entryContent = entry.content;
-                    $scope.entryArray.push(entry);
-
-                    $scope.$apply();
+                    trimmedPosts.push(obj);
                 }
+                var trimmedObj = {};
+                trimmedObj.posts = trimmedPosts;
+                $rootScope.dashboard.widgets[objIndex].widData = trimmedObj;
 
-                $rootScope.dashboard.widgets[objIndex].widData = $scope.entryArray;
-            }
-        });
+            }).error(function(data, status) {
 
-        $mdDialog.hide();
-    };
-}]);
+                console.log(message);
+            });    
+        };
+    }
+]);
+
+routerApp.controller('rssInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope',
+    function ($scope, $http, $mdDialog, widId, $rootScope) {
+
+        var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+        //cancel config
+        $scope.cancel = function() {
+            $mdDialog.hide();
+        };
+        //complete config  
+        $scope.finish = function(rssAddress) {
+
+            $scope.entryArray = [];
+            google.load("feeds", "1");
+            var feed = new google.feeds.Feed(rssAddress);
+            feed.setNumEntries(100);
+
+            feed.load(function(result) {
+
+                if (!result.error) {
+
+                    for (var i = 0; i < result.feed.entries.length; i++) {
+
+                        var entry = result.feed.entries[i];
+
+                        $scope.entryContent = entry.content;
+                        $scope.entryArray.push(entry);
+
+                        $scope.$apply();
+                    }
+
+                    $rootScope.dashboard.widgets[objIndex].widData = $scope.entryArray;
+                }
+                $mdDialog.hide();
+            });
+
+            
+        };
+    }
+]);
 
 routerApp.controller('spreadInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope', 'lkGoogleSettings',function ($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSettings) {
 
@@ -2433,59 +2423,62 @@ routerApp.controller('calendarInit',['widId', '$scope', '$http', '$rootScope', '
     }
 }]);
 
-routerApp.controller('googlePlusInit',['$scope', 'googleService', '$http', '$mdDialog', 'widId', '$rootScope',function ($scope, googleService, $http, $mdDialog, widId, $rootScope) {
+routerApp.controller('googlePlusInit',['$scope', 'googleService', '$http', '$mdDialog', 'widId', '$rootScope',
+    function ($scope, googleService, $http, $mdDialog, widId, $rootScope) {
 
-    var loggedIn = false;
-    $scope.login = function() {
-        googleService.signin().then(function(data) {
-            loggedIn = true;
-            console.log(data);
-        }, function(err) {
-            console.log('Failed: ' + err);
-        });
-    };
-
-    $scope.logout = function() {
-        // var auth2 = gapi.auth2.getAuthInstance();
-        // auth2.signOut().then(function () {
-        //     loggedIn = false;
-        //     console.log('User signed out.');
-        // });
-        googleService.signout().then(function(data) {
-            loggedIn = false;
-            console.log(data);
-        }, function(err) {
-            console.log('Failed: ' + err);
-        });
-    };
-
-    $scope.cancel = function() {
-        $mdDialog.hide();
-    };
-
-    $scope.finish = function() {
-
-        if (loggedIn) {
-
-            googleService.getProfileData().then(function(data) {
-                console.log("google plus retrieving profile data done");
+        var loggedIn = false;
+        $scope.login = function() {
+            googleService.signin().then(function(data) {
+                loggedIn = true;
+                console.log(data);
             }, function(err) {
                 console.log('Failed: ' + err);
             });
-            googleService.getPeopleData().then(function(data) {
-                console.log("google plus retrieving people data done");
+        };
+
+        $scope.logout = function() {
+
+            googleService.signout().then(function(data) {
+                loggedIn = false;
+                console.log(data);
             }, function(err) {
                 console.log('Failed: ' + err);
             });
-            googleService.getActivityData().then(function(data) {
-                console.log("google plus retrieving activity data done");
-            }, function(err) {
-                console.log('Failed: ' + err);
-            });
-        }
-        $mdDialog.hide();
-    };
-}]);
+        };
+
+        $scope.cancel = function() {
+            $mdDialog.hide();
+        };
+
+        $scope.finish = function() {
+
+            if (loggedIn) {
+
+                googleService.getProfileData().then(function(data) {
+                    console.log("google plus retrieving profile data done");
+                }, function(err) {
+                    console.log('Failed: ' + err);
+                });
+                googleService.getPeopleData().then(function(data) {
+                    console.log("google plus retrieving people data done");
+                }, function(err) {
+                    console.log('Failed: ' + err);
+                });
+                googleService.getActivityData().then(function(data) {
+                    console.log("google plus retrieving activity data done");
+                }, function(err) {
+                    console.log('Failed: ' + err);
+                });
+            }
+            $mdDialog.hide();
+        };
+
+        $scope.tabs = {
+                    selectedIndex: 0,
+                    pagination: true
+        };
+    }
+]);
 
 routerApp.controller('sltivrInit', function($scope, $mdDialog, $rootScope) {
 

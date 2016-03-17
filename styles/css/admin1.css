@@ -10473,6 +10473,8 @@ h6 {
 
 .overlay.active {
     display: block;
+    border: 0 solid transparent !important;
+    background: transparent !important;
 }
 
 .overlay-secondary {
@@ -12883,6 +12885,7 @@ button.toast-close-button {
 .search-layer.active {
     visibility: visible;
     z-index: 1300;
+    border: 0;
 }
 
 .search-layer.active .search {
@@ -13082,6 +13085,10 @@ md-icon {
     left: 0;
 }
 
+.handle-ne {
+    height: 20px !important;
+}
+
 md-tooltip {
     position: absolute;
     z-index: 100;
@@ -13091,4 +13098,15 @@ md-tooltip {
     font-size: 14px;
     padding: 5px;
     margin-left: 2px;
+}
+
+.gridster .gridster-item:hover .handle-se {
+    border-color: transparent transparent rgba(47, 52, 162, 0.5) !important;
+}
+
+.gridster .gridster-item:hover .handle-ne {
+    right: 1px;
+    top: 1px;
+    border-top: 12px solid rgba(47, 52, 162, 0.5);
+    border-left: 12px solid transparent;
 }

@@ -1,11 +1,11 @@
-angular.module('servicess', []).factory('twitterService', function($q) {
+routerApp.factory('twitterService', function($q) {
 
     var authorizationResult = false;
 
     return {
         initialize: function() {
             //initialize OAuth.io with public key of the application 19gVB-kbrzsJWQs5o7Ha2LIeX4I
-            OAuth.initialize('19gVB-kbrzsJWQs5o7Ha2LIeX4I', {cache:true});
+            OAuth.initialize('JyP7-6HVa5f_PTnmmPZ88UMn1y0', {cache:true});
             //try to create an authorization result when the page loads, this means a returning user won't have to click the twitter button again
             authorizationResult = OAuth.create('twitter');
         },

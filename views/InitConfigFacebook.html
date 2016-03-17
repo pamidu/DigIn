@@ -11,7 +11,7 @@
       </md-button>            
     </div>
   </md-toolbar>
-  <md-card style="margin: 20px;margin-top: -20vh; margin-bottom: 0px;height:100%;">
+  <md-card class="card-style1">
     <md-content layout-padding class="minHeight600">
       <div layout="row" layout-align='center start' layout-margin>
          <md-select placeholder="Account Owner" ng-model="userAccountName" flex>
@@ -28,6 +28,16 @@
             <md-option ng-repeat="item in fbPages" value="{{item.id}}">{{item.name}}</md-option>
          </md-select>
       </div>
+      <div class="md-actions" layout="row">
+        <span flex></span>
+        <md-button ng-click="cancel()">
+         Cancel
+        </md-button>
+        <md-button ng-click="finish()">
+         Finish
+        </md-button>
+      </div>
     </md-content>
+
   </md-card>
 </md-dialog>

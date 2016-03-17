@@ -1,0 +1,281 @@
+<div class="digin-drb-wrap animated fadeInRight" ng-controller="sourceAlgorithmCtrl">
+    <div class="digin-qb-header">
+        <div layout="row">
+            <div flex="10">
+                <div class="back"
+                     ng-click="eventHandler.onClickBack ()">
+                    <i class="ti-arrow-left"></i>
+                </div>
+            </div>
+            <div flex="50">
+                <div class="digin-qb-header-text  ">
+                    <h1>
+                        Common Source Algorithm
+                        <small class="ng-binding"></small>
+                    </h1>
+                </div>
+            </div>
+            <div flex="20" class="bg-lightskyblueh-2 p-l-20">
+                <div class="digin-gb-b ">
+
+                </div>
+            </div>
+            <div flex="20" class="bg-lightblue-h-1 p-l-20">
+                <div class="digin-gb-b">
+                    <span>Report Name</span>
+                    <h5>test report name 1</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- body wrap-->
+    <div class="bdy-wrap">
+        <div layout="row">
+            <div flex="20">
+                <div class="optional-panel pull-left p-10">
+
+
+                    <div class="panel-wrap-filter">
+                        <div class="anlz-option">
+                            <div class="anlz-btn">
+                                <button class="form-control btn btn-filter">
+                                    filter
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div flex="60">
+                <div class="optional-panel border-left">
+                    <!-- toggle panel -->
+                    <div class="tbl-header-option"
+                         id="toggleTblHeader">
+                        <div class="header">
+                            <h4>
+                                table header name
+                                <div class="header-icon"
+                                     ng-click="eventHandler.closeToggleOpen('1')">
+                                    <i class="ti-close"></i>
+                                </div>
+                            </h4>
+                        </div>
+                        <div class="body">
+                            <div class="select-tab-panel">
+                                <div class="select-tab">
+                                    choose as x
+                                </div>
+                                <div class="select-tab">
+                                    choose as y
+                                </div>
+                            </div>
+
+                            <div class="order-by">
+                                <md-radio-group ng-model="data.group1">
+                                    <md-radio-button value="Apple" class="md-primary">Sort ASC</md-radio-button>
+                                    <md-radio-button value="Banana"> Sort DESC</md-radio-button>
+                                </md-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end panel -->
+                    <div class="src-algo-tbl-wrap ">
+                        <div class="header">
+                            <div class="panel-filter  p-10">
+                                <label>Search</label>
+                                <input type="text" class="form-control min-width-250"
+                                       placeholder="search here any data..">
+                            </div>
+
+                            <table class="table sf-table" style="overflow-x:scroll;">
+                                <tr>
+                                    <th class="text-center sf-lef-border-1"
+                                        ng-click="eventHandler.HeaderClick()"> SKY
+                                    </th>
+                                    <th class="text-center sf-lef-border-1"
+                                        ng-click="eventHandler.HeaderClick()"> SKY
+                                    </th>
+                                    <th class="text-center sf-lef-border-1"
+                                        ng-click="eventHandler.HeaderClick()"> SKY
+                                    </th>
+                                    <th class="text-center sf-lef-border-1"
+                                        ng-click="eventHandler.HeaderClick()"> SKY
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>Consumer</td>
+                                    <td class="sf-lef-border-1 sf-row-one"
+                                    >Sales
+                                    </td>
+                                    <td class="sf-lef-border-1 sf-row-one"
+                                    >sd
+                                    </td>
+                                    <td class="sf-lef-border-1  sf-row-one"
+                                    >s
+                                    </td>
+                                    <td class="sf-lef-border-1  sf-row-one"
+                                    >d
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Consumer</td>
+                                    <td class="sf-lef-border-1  sf-row-one">Sales</td>
+                                    <td class="sf-lef-border-1  sf-lef-border-1 sf-row-one">sd</td>
+                                    <td class="sf-lef-border-1  sf-row-one">s</td>
+                                    <td class=" sf-lef-border-1 sf-row-one">d</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="algo-footer-line-one  p-10">
+
+                        <ul>
+                            <li ng-click="eventHandler.onClickTool('analysis')">
+                                <i class="ti-hummer"></i>
+                                <h5> Analysis</h5>
+                            </li>
+                            <li ng-click="eventHandler.onClickTool('export')">
+                                <i class="ti-download"></i>
+                                <h5> Export</h5>
+                            </li>
+
+                            <li ng-click="eventHandler.onClickTool('dataTool')">
+                                <i class="ti-filter"></i>
+                                <h5> Data Tool</h5>
+                            </li>
+                            <li ng-click="eventHandler.onClickTool()">
+                                <i class="ti-save"></i>
+                                <h5> Save</h5>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+            <div flex="20">
+                <div class="optional-panel border-left">
+                    <div class="panel-wrap">
+                        <div class="panel-filter">
+                            <label>series</label>
+                            <select ui-select2 multiple>
+                                <option ng-repeat="tag in source.series" ng-selected="tag.selected"
+                                        value="{{tag.id}}">{{tag.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="panel-filter">
+                            <label>categories</label>
+                            <select ui-select2 multiple>
+                                <option ng-repeat="cat in source.categories" ng-selected="cat.selected"
+                                        value="{{cat.id}}">{{cat.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="footer-option-wrap"
+                         id="toggleRightPanel">
+                        <div class="header">
+                            <h4>
+                                {{eventHandler.currentSelectedTool.name}}
+                                <div class="header-icon"
+                                     ng-click="eventHandler.closeToggleOpen('1')">
+                                    <i class="ti-close"></i>
+                                </div>
+                            </h4>
+                        </div>
+                        <div class="body"
+                             ng-if="eventHandler.currentSelectedTool.isAnalysis">
+                            <div class="select-tab-panel">
+                                <p>GENERAL</p>
+                                <div class="select-tab">
+                                    Fit data
+                                </div>
+                                <div class="select-tab">
+                                    Integrate
+                                </div>
+                                <div class="select-tab">
+                                    Take derivative
+                                </div>
+                            </div>
+
+                            <div class="select-tab-panel">
+                                <p>STATISTICS</p>
+                                <div class="select-tab">
+                                    Basic statistics
+                                </div>
+                                <div class="select-tab">
+                                    T-test
+                                </div>
+                                <div class="select-tab">
+                                    Chi-squared test
+                                </div>
+                                <div class="select-tab">
+                                    ANOVA
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- #dataTool -->
+                        <div class="body"
+                             ng-if="eventHandler.currentSelectedTool.isDataTool">
+                            <div class="select-tab-panel">
+                                <p>GENERAL</p>
+                                <div class="select-tab">
+                                    Generate x-values
+                                </div>
+                                <div class="select-tab">
+                                    Formulas f(x)
+                                </div>
+
+                            </div>
+
+                            <div class="select-tab-panel">
+                                <p>FORMAT DATA</p>
+                                <div class="select-tab">
+                                    Transpose
+                                </div>
+                            </div>
+
+                            <div class="select-tab-panel">
+                                <p>CLEAN-UP-DATA</p>
+                                <div class="select-tab">
+                                    Filter
+                                </div>
+                                <div class="select-tab">
+                                    Interpolate
+                                </div>
+                                <div class="select-tab">
+                                    Date-time-conversion
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- #export -->
+                        <div class="body"
+                             ng-if="eventHandler.currentSelectedTool.isExport">
+                            <div class="select-tab-panel">
+                                <p>SELECT TYOE</p>
+                                <div class="select-tab">
+                                    csv
+                                </div>
+                                <div class="select-tab">
+                                    excel
+                                </div>
+                                <div class="select-tab">
+                                    pdf
+                                </div>
+                                <div class="select-tab">
+                                    table
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

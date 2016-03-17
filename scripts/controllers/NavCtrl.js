@@ -93,7 +93,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
 
         //shows user profile in a dialog box
-        $scope.showUserProfile = function (ev) {
+        $scope.showUserProfile = function(ev) {
             $mdDialog.show({
                     controller: showProfileController,
                     templateUrl: 'templates/profileDialogTemplate.html',
@@ -101,26 +101,132 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     targetEvent: ev,
                     clickOutsideToClose: true
                 })
-                .then(function (answer) {
+                .then(function(answer) {
 
-                }, function () {
+                }, function() {
 
                 });
         };
 
-        function showProfileController($scope, $mdDialog) {
+
+        function showProfileController($rootScope,$scope, $mdDialog) {
+
+            var userInfo = $auth.getSession();  
+
             $scope.user = {
-                fname: "Sajeetharan",
+                fname: userInfo.Name,
                 lname: "",
-                email: "sajee@duo.com",
-                location: "colombo",
+                email: userInfo.Email,
+                location: "Colombo",
                 mobile: "077123123123",
                 profile_pic: "styles/css/images/person.jpg"
             };
 
-            $scope.close = function () {
+            $scope.close = function() {
                 $mdDialog.cancel();
             };
+
+        };
+
+
+         //shows tennant dialog box
+        $scope.showTennant = function(ev) {
+            $mdDialog.show({
+                    controller: showTennantController,
+                    templateUrl: 'templates/TennantDialogTemplate.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                })
+                .then(function(answer) {
+
+                }, function() {
+
+                });
+        };
+
+        function showTennantController($scope, $mdDialog,$http,$auth) {
+           /*
+            var userInfo = JSON.parse(getCookie("authData"));
+            //console.log(JSON.parse(userInfo.Otherdata.TenentsAccessible));
+            console.log(JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"'));
+            //$scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible);
+            $scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"');
+            */
+
+            var userInfo = JSO.parNse(getCookie("authData"));
+            $http.get('http://104.197.27.7:3048/tenant/GetTenants/'+ userInfo.SecurityToken)
+            .success(function(response){
+                 $scope.tennants=response;
+             });
+          
+
+            //------------------ 
+            /*
+            http://adminduowebinfo.space.duoworld.duoweb.info:3048/tenant/GetTenants/7137bb3fd12f4aaa93822202a75df562
+            $http.get('http://adminduowebinfo.space.duoworld.duoweb.info:3048/tenant/GetTenants/'+ $auth.getSecurityToken())
+            .success(function(response){
+                 alert(JSON.stringify(response));
+                 $scope.tennants=response;
+             });
+            */
+           
+            /*
+            $http({
+                method: 'GET',
+                url: "http://adminduowebinfo.space.duoworld.duoweb.info:3048/tenant/GetTenants/" +  $auth.getSecurityToken(),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).
+            success(function (response) {
+                 $scope.tennants=response.records;
+            });
+            */
+            //-------------------------
+
+                $scope.showConfirmation = function(tennant,event) {
+                    //$mdDialog.show(
+                        var confirm=$mdDialog.confirm()
+                            .title('Do you want to switching to '+ tennant)                            
+                            .targetEvent(event)
+                            .ok('Yes!')
+                            .cancel('No!');
+                        $mdDialog.show(confirm).then(function(){
+                            console.log(JSON.stringify(tennant));
+                            $scope.status = 'Yes';
+                            window.location = "http://"+tennant;
+                        },function(){
+                            //alert('No!');
+                            $scope.status = 'No';
+                        });
+                    //)       
+                };
+
+        
+           
+            /*
+            $scope.showConfirm = function(tennant,event) {
+            var confirm = $mdDialog.confirm()
+                  .title('Would you like to delete your debt?')
+                  .textContent('All of the banks have agreed to forgive you your debts.')
+                  .ariaLabel('Lucky day')
+                  .targetEvent(event)
+                  .ok('Please do it!')
+                  .cancel('Sounds like a scam');
+            $mdDialog.show(confirm).then(function() {
+              $scope.status = 'You decided to get rid of your debt.';
+            }, function() {
+              $scope.status = 'You decided to keep your debt.';
+            });
+          };
+          */
+
+
+        $scope.close = function() {
+            $mdDialog.cancel();
+        };
+
 
         };
 

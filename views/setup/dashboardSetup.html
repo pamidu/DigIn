@@ -1,4 +1,5 @@
 <div ng-cloak class="setup-wrapper">
+    <toast></toast>
     <md-tabs class="setup-tabs" md-dynamic-height md-border-bottom>
         <md-tab class="setup-tab">
             <md-tab-label>
@@ -37,7 +38,7 @@
             <md-tab-label>
                 <i class="setup-tab-label fa fa-user"></i>
             </md-tab-label>
-            <div ng-hide="addUsrState" class="md-padding" layout="row">
+            <div ng-hide="addUsrState || inviteUsrState" class="md-padding" layout="row">
                 <div flex="15"></div>
                 <div layout="column" layout-align="space-between center" flex="65">
                     <span class="setup-font-theme setup-user-heading">Studio Users</span>
@@ -54,22 +55,28 @@
                 </div>
                 <div layout="column" flex="10">
                     <md-button ng-click="addNewUser(true)" class="setup-button md-raised md-primary"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;<span class="setup-font-theme">New</span></md-button>
-                    <md-button class="setup-button md-raised md-primary"><i class="fa fa-envelope-o"></i>&nbsp;&nbsp;<span class="setup-font-theme">Invite</span></md-button>
+                    <md-button ng-click="inviteNewUser(true)"  class="setup-button md-raised md-primary"><i class="fa fa-envelope-o"></i>&nbsp;&nbsp;<span class="setup-font-theme">Invite</span></md-button>
                 </div>
             </div>
+
+            <!--Add new user-->
             <div ng-show="addUsrState" class="md-padding" layout="row" layout-align="center center">
                 <div layout="column" class="setup-info-container" flex="70">
                     <md-input-container>
                         <label>First Name</label>
-                        <input ng-model="user.title">
+                        <input ng-model="user.fname">
                     </md-input-container>
                     <md-input-container>
                         <label>Last Name</label>
-                        <input ng-model="user.title">
+                        <input ng-model="user.lname">
                     </md-input-container>
                     <md-input-container>
                         <label>Email</label>
-                        <input ng-model="user.title">
+                        <input ng-model="user.email">
+                    </md-input-container>
+                     <md-input-container>
+                        <label>Domain</label>
+                        <input ng-model="user.domain">
                     </md-input-container>
                     <span class="setup-font-theme">
                         The user will be asked to set his password.
@@ -77,6 +84,41 @@
                     <md-button class="setup-button md-raised md-primary" ng-click="addNewUser(false)"><span class="setup-font-theme">Create User</span></md-button>
                 </div>
             </div>
+
+            <!--invite new user-->
+            <div ng-show="inviteUsrState" class="md-padding" layout="row" layout-align="center center">
+                <div layout="column" class="setup-info-container" flex="70">
+                    <md-input-container>
+                        <label>Email</label>
+                        <input ng-model="user.email">
+                    </md-input-container>
+                    <span class="setup-font-theme">
+                        Invite user here...
+                    </span>
+
+                    <md-button class="setup-button md-raised md-primary" ng-click="inviteNewUser(false)"><span class="setup-font-theme">Invite User</span></md-button>
+
+                    <!-- <md-divider></md-divider>-->
+                    <!-- --> 
+                          <md-subheader class="md-no-sticky">Invited users...</md-subheader>
+                          <md-list-item ng-repeat="person in people" ng-click="goToPerson(person.name, $event)">
+                            <img alt="{{ person.name }}" ng-src="styles/css/images/icons/profile.svg"/>
+                            <p>{{ person.name }}</p>
+                            <md-icon md-svg-icon="styles/css/images/icons/remove.svg" ng-click="doSecondaryAction(person.name,$event)" aria-label="Open Chat" class="md-secondary md-hue-3" ng-class="{'md-primary': person.newMessage}"></md-icon>
+                    <!-- -->
+
+
+
+
+
+                </div>
+            </div>
+
+
+
+
+
+
         </md-tab>
         <md-tab>
             <md-tab-label>

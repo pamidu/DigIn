@@ -5,7 +5,7 @@
     function getHost() {
         var host = window.location.hostname;
 
-        if (host.indexOf("digin.io") != -1 || host.indexOf("127.0.0.1") != -1 || host.indexOf("digin-sajeetharan.c9users.io") != -1)
+        if (host.indexOf("127.0.0.1") != -1 || host.indexOf("digin-sajeetharan.c9users.io") != -1)
             host = "adminduowebinfo.space.duoworld.duoweb.info"; //admin.srilankanvotes.com12thdoor.duoweb.info
 
         return host;
@@ -618,24 +618,24 @@
             domain = username.split("@")[1];
 
             $http({
-                method: 'GET',
-                url: $v6urls.auth + "/Login/" + username + "/" + password + "/" + domain,
+                method: 'POST',
+                url: "http://digin.io/apis/authorization/userauthorization/login",
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
+                    'Content-Type': 'application/json'
+                },
+                data: {Username : username, Password: password}
             }).
             success(function (data, status, headers, config) {
-                userName = data.Username;
-                loginResult.details = data;
-                loginResult.securityToken = data.SecurityToken;
-
+                userName = data.Data.AuthData.Username;
+                loginResult.details = data.Data.AuthData;
+                loginResult.securityToken = data.Data.AuthData.SecurityToken;
 
                 sessionInfo = data;
-                securityToken = data.SecurityToken;
+                securityToken = data.Data.AuthData.SecurityToken;
 
                 document.cookie = "securityToken=" + securityToken;
                 _cookMan.set("securityToken", securityToken, 1);
-                _cookMan.set("authData", JSON.stringify(data), 1);
+                _cookMan.set("authData", JSON.stringify(loginResult.details), 1);
 
                 $rootScope.$emit("auth_onLogin", loginResult);
 
@@ -2436,7 +2436,7 @@
         var host = getHost();
         return {
             auth: "http://104.197.27.7" + ":3048",
-            objectStore: "http://" + host + ":3000",
+            objectStore: "http://104.197.27.7" + ":3000",
             fws: "http://" + host + ":4000",
             processDispatcher: "http://" + host + ":5000",
             processManager: "http://" + host + ":8093"

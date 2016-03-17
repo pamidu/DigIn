@@ -28,12 +28,14 @@
                 </div>
                 <span ng-click=""></span>
                 <div layout="row" layout-align="center center">
-                    <div layout="row" ng-click="showUserProfile($event);">
+                    <div layout="row" ng-click="showTennant($event);">
                         <p style="color: whitesmoke;font-size: large;margin: 10px;" ng-model="username">
-                            {{username}}</p>
+                        {{username}}</p>
+                    </div>   
+                    <div layout="row" ng-click="showUserProfile($event);"> 
                         <img class="md-avatar" style="width: 30px;height: 30px;border-radius: 100%;margin: 5px;"
-                             src="styles/css/images/person.jpg">
-                    </div>
+                        src="styles/css/images/person.jpg">
+                    </div>   
                 </div>
             </div>
             <div class="main-headbar-transparent md-theme-light" layout="row" layout-align="space-between center" flex>
@@ -148,7 +150,7 @@
                                 <small>({{favoriteReports.length}})</small>
                             </h4>
                             <ul class="list-material">
-                                <li class="has-action-left" ng-repeat="x in reports |filter:searchText">
+                                <li class="has-action-left" ng-repeat="x in favoriteReports |filter:searchText">
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
                                         <div class="list-action-left"
@@ -156,7 +158,7 @@
                                             <img style="width:35px;height:35px;"
                                                  src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg"
                                                  class="img-radius" alt="">
-                                            <span ng-click="goReport2(x.path)" class="title">{{x.splitName}}</span>
+                                            <span ng-click="goReport(x.name)" class="title">{{x.splitName}}</span>
                                         </div>
                                     </a>
                                 </li>

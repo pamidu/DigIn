@@ -89,7 +89,7 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
 
                     $http({
                         method: 'POST',
-                        url: 'http://104.197.27.7:3048//UserRegistation/',
+                        url: 'http://104.197.27.7:3048/UserRegistation/',
                         data: angular.toJson($scope.user),
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'

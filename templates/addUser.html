@@ -1,0 +1,27 @@
+<md-dialog style="width:60vw;">
+  <div layout="column">
+    <div class="card-head">
+                <header>ADD USER</header>
+                <div class="tools">
+                    <a href="javascript:void(0)" data-ng-click="close()">
+                        <i class="ti-close"></i>
+                    </a>
+                </div>
+  </div>
+  <div class="header-line-bottom"></div>
+
+ 	<div  flex="20" layout-gt-sm="row">
+        <md-input-container flex>
+          <label>Search</label>
+          <input type="text" ng-model="globalSearch.$"/>
+        </md-input-container>
+    </div>
+        
+    <div layout-wrap> 
+  		<md-list-item ng-repeat="tennant in tennants  | filter:globalSearch" ng-click="showConfirmation(tennant.TenantID,$event)">
+    		<img alt="{{ tennant.TenantID }}" ng-src="styles/css/images/icons/navigate.png"/>
+    		<p>{{ tennant.TenantID }}</p>
+  		</md-list-item>
+    </div>
+  </div>
+</md-dialog>

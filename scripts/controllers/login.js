@@ -24,6 +24,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
 
         var privateFun = (function () {
             return {
+                //Old login-----------------------------------
                 login: function () {
                     $scope.error.isLoading = true;
                     $auth.login($scope.txtUname, $scope.txtPwd, "duoworld.duoweb.info");
@@ -32,7 +33,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                         $rootScope.username = $scope.txtUname;
                         localStorage.setItem('username', $scope.txtUname);
                         var userInfo = $auth.getSession();
-                        /*console.log("user data:"+JSON.stringify(userInfo));*/
+                        //console.log("user data:"+JSON.stringify(userInfo));
                         $rootScope.name = userInfo.Name;
                         localStorage.setItem('name', userInfo.Name);
                         $rootScope.email = userInfo.Email;
@@ -49,6 +50,35 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                         focus('txtUname');
                     });
                 },
+                //---------------------------------------------------------------------------------
+
+                /*
+                login: function () {
+                    $scope.error.isLoading = true;
+                    var req = {
+                         method: 'POST',
+                         url: 'http://digin.io/apis/authorization/userauthorization/login',
+                         headers: {
+                           'Content-Type': "application/json"
+                         },
+                         data:{ Username:$scope.txtUname,Password:$scope.txtPwd }
+                    }    
+                                 
+                    $http(req)
+                    .then(function(data){
+                        alert(JSON.stringify(data));
+                        $state.go('welcome');
+                    }, 
+                    function(data){
+                        $scope.error.isLoading = false;
+                        privateFun.fireMsg('0', '<strong>Error : </strong>' + data.message);
+                        $scope.error.isUserName = true;
+                        $scope.error.isPwd = true;
+                        focus('txtUname');
+                    });
+                },
+                */
+                
                 fireMsg: function (msgType, content) {
                     ngToast.dismiss();
                     var _className;

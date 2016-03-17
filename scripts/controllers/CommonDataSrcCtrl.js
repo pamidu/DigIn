@@ -92,9 +92,25 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     commonUi.isDataLoading = true;
                     commonUi.isServiceError = false;
                     $scope.client = $diginengine.getClient(src);
-                    $scope.client.getTables(function (res, status) {
-                        callback(res, status);
-                    });
+                    switch(src){
+                            case "BigQuery" :
+                                if(localStorage.getItem("BigQueryTables") === null || 
+                                    localStorage.getItem("BigQueryTables") == "undefined"){
+                                    $scope.client.getTables(function (res, status) {
+                                        callback(res, status);   
+                                        localStorage.setItem("BigQueryTables", res);                     
+                                    });
+                                }
+                                else{
+                                    var BigQueryTablesString = localStorage.getItem("BigQueryTables");
+                                    var res = BigQueryTablesString.split(',');
+                                    callback(res, true);
+                                }
+                            break;
+
+                            default:
+                            break;
+                    }                    
                 },
                 getAllFields: function (tbl, callback) {
                     $scope.commonUi.attribute = [];
@@ -103,9 +119,26 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     $scope.sourceUi.selectedMeasures = [];
                     commonUi.isDataLoading = true;
                     commonUi.isServiceError = false;
-                    $scope.client.getFields(tbl, function (data, status) {
-                        callback(data, status);
-                    });
+                    switch($scope.sourceUi.selectedSource){
+                            case "BigQuery" :
+                                var saveName = "BigQuery" + tbl;
+                                if(localStorage.getItem(saveName) === null || 
+                                    localStorage.getItem(saveName) === "undefined"){
+                                    $scope.client.getFields(tbl, function (data, status) {
+                                        callback(data, status);
+                                        localStorage.setItem(saveName, JSON.stringify(data));
+                                    });   
+                                }
+                                else{
+                                    var BigQueryFieldsString = localStorage.getItem(saveName);
+                                    console.log(BigQueryFieldsString);
+                                    callback(JSON.parse(BigQueryFieldsString), true);
+                                }
+                            break;
+
+                            default:
+                            break;
+                    }
                 },
                 creteTableObj: function (status, res) {
                     if (status) {
@@ -267,10 +300,14 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 }
                 onSelect.selected = true;
                 $scope.sourceUi.selectedSource = onSelect.name;
+                localStorage.setItem("lastSelectedSource",$scope.sourceUi.selectedSource); 
 
                 if(onSelect.name == "CSV/Excel" || onSelect.name == "SpreadSheet"){
                     // alert("csv excel or spreadsheet selected");
                     $scope.showFileUpload = true;
+                }
+                else{
+                    $scope.showFileUpload = false;
                 }
             }
             ,
@@ -322,9 +359,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         $state.go("home.QueryBuilder");
                         $mdSidenav('right').close();
                     }
-                });
-                
-
+                });   
+                //after saving get back to first tab
+                commonUi.selectedIndex = 1;                           
             }
             ,
             onRemoveAtt: function (onSelected, data) {
@@ -407,6 +444,15 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             tableData: [],
             selectedAttribute: [],
             selectedMeasures: []
+        }
+
+        $scope.initCommonDataSrc = function(){
+
+             for(var i = 0; i < $scope.datasources.length; i++){
+                if($scope.datasources[i].name ==  localStorage.getItem("lastSelectedSource")){
+                    $scope.commonUi.onClickSelectedSrc($scope.datasources[i], $scope.datasources);
+                }
+             }
         }
 
         /* file upload */

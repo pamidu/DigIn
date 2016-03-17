@@ -5,7 +5,7 @@
     function getHost() {
         var host = window.location.hostname;
 
-        if (host.indexOf("digin.io") != -1 || host.indexOf("127.0.0.1") != -1 || host.indexOf("digin-sajeetharan.c9users.io") != -1)
+        if (host.indexOf("localhost") != -1 || host.indexOf("127.0.0.1") != -1 || host.indexOf("digin-sajeetharan.c9users.io") != -1)
             host = "adminduowebinfo.space.duoworld.duoweb.info"; //admin.srilankanvotes.com12thdoor.duoweb.info
 
         return host;
@@ -759,34 +759,34 @@
     });
 
     /*
-    	mkm.factory('$tenant', function($http, $v6urls, $auth) {
+        mkm.factory('$tenant', function($http, $v6urls, $auth) {
 
-    		function getEmail(tName, callback){
-    			var res = {isSuccess:true, message:"Success", securityToken:"", details:{}};
+            function getEmail(tName, callback){
+                var res = {isSuccess:true, message:"Success", securityToken:"", details:{}};
 
     //http://paydemo.epayments.lk:3048/tenant/GetTenants/f2a5f32ef00ee5fd6c3809c70babd5b0
 
-    			$http({method: 'GET',url: $v6urls.auth + "/tenant/GetTenants/" + tName, headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).
-    			  success(function(data, status, headers, config) {
-    			  	res.details = data;
+                $http({method: 'GET',url: $v6urls.auth + "/tenant/GetTenants/" + tName, headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).
+                  success(function(data, status, headers, config) {
+                    res.details = data;
 
-    				  	if (callback)
-    				  		callback(res)
-    			  }).
-    			  error(function(data, status, headers, config) {
-    			  	res.isSuccess = false;
-    			  	details = data;
-    				  	if (callback)
-    				  		callback(res)
-    			  });
+                        if (callback)
+                            callback(res)
+                  }).
+                  error(function(data, status, headers, config) {
+                    res.isSuccess = false;
+                    details = data;
+                        if (callback)
+                            callback(res)
+                  });
 
-    		}
+            }
 
-    		return {
-    	  		getEmail: function(tName, callback){
-    	  			getEmail(tName, callback);
-    	  		}
-    	});
+            return {
+                getEmail: function(tName, callback){
+                    getEmail(tName, callback);
+                }
+        });
     */
 
     mkm.factory('$fws', function ($rootScope, $v6urls, $auth) {
@@ -1039,7 +1039,7 @@
                                     value: 80
                                 }]
                             }
-						]
+                        ]
                     });
                 }
             },
@@ -1148,20 +1148,20 @@
 
         function filterAgentInfo(rawData) {
             /*
-			data = [
-				{name:"commands", caption:"Commands", displayType:"commands", contents:[
-					{name:"", displayType:"command", displayId:"redis1@duov6.com:createDocker", caption:"Create Docker", parameters:["Docker Name", "Server Type"]},
-					{name:"", displayType:"command", displayId:"redis1@duov6.com:deleteDocker", caption:"Delete Docker", parameters:["Docker Name", "Server Type"]}
-				]},
-				{name:"config", caption:"Configuration", displayType:"configs", contents:[
-					{name:"", displayType:"config", displayId:"redis1@duov6.com:serverConfig", caption:"Server Configuration", parameters:["One","Two","Three"]}
-				]},
-				{name:"info", caption:"Information", displayType:"info", contents:[
-					{name:"", displayType:"chart", displayId:"redis1@duov6.com:requests", caption:"Request Calculation", type:"line", parameters:[{x:1, y:5},{x:20, y:20},{x:40, y:10},{x:60, y:40},{x:80, y:5},{x:100, y:60}]},
-					{name:"", displayType:"logs", displayId:"redis1@duov6.com:logs", caption:"Logs"}
-				]}
-			];
-	*/
+            data = [
+                {name:"commands", caption:"Commands", displayType:"commands", contents:[
+                    {name:"", displayType:"command", displayId:"redis1@duov6.com:createDocker", caption:"Create Docker", parameters:["Docker Name", "Server Type"]},
+                    {name:"", displayType:"command", displayId:"redis1@duov6.com:deleteDocker", caption:"Delete Docker", parameters:["Docker Name", "Server Type"]}
+                ]},
+                {name:"config", caption:"Configuration", displayType:"configs", contents:[
+                    {name:"", displayType:"config", displayId:"redis1@duov6.com:serverConfig", caption:"Server Configuration", parameters:["One","Two","Three"]}
+                ]},
+                {name:"info", caption:"Information", displayType:"info", contents:[
+                    {name:"", displayType:"chart", displayId:"redis1@duov6.com:requests", caption:"Request Calculation", type:"line", parameters:[{x:1, y:5},{x:20, y:20},{x:40, y:10},{x:60, y:40},{x:80, y:5},{x:100, y:60}]},
+                    {name:"", displayType:"logs", displayId:"redis1@duov6.com:logs", caption:"Logs"}
+                ]}
+            ];
+    */
 
             var data = [];
 
@@ -1298,7 +1298,7 @@
                             displayType: "info",
                             contents: []
                         }
-					];
+                    ];
                     $rootScope.$emit("fws_agent_displayinfo", data);
                     break;
                 case "agent":
@@ -1561,12 +1561,12 @@
 
             /*
             if(navigator.webkitGetUserMedia) {
-            	if (localStream.getVideoTracks().length > 0) {
-            		log('Using video device: ' + localStream.getVideoTracks()[0].label);
-            	}
-            	if (localStream.getAudioTracks().length > 0) {
-            		log('Using audio device: ' + localStream.getAudioTracks()[0].label);
-            	}
+                if (localStream.getVideoTracks().length > 0) {
+                    log('Using video device: ' + localStream.getVideoTracks()[0].label);
+                }
+                if (localStream.getAudioTracks().length > 0) {
+                    log('Using audio device: ' + localStream.getAudioTracks()[0].label);
+                }
             }
             */
 
@@ -2612,7 +2612,7 @@
 
             }
         };
-	}]);
+    }]);
 
     mkm.directive("iduoapp", ["$rootScope", "$compile", "$presence", "$chat", "$webrtc", "$auth", "$backdoor", "$objectstore", "$agent", "$srs", "$uploader", "$apps", "$helpers", "$processManager", "$interval", "$timeout", function ($rootScope, $compile, $presence, $chat, $webrtc, $auth, $backdoor, $objectstore, $agent, $srs, $uploader, $apps, $helpers, $processManager, $interval, $timeout) {
         return {
@@ -2671,7 +2671,7 @@
 
             }
         };
-	}]);
+    }]);
 
     mkm.directive('fileModel', ['$parse', function ($parse) {
         return {
@@ -2687,5 +2687,5 @@
                 });
             }
         };
-	}]);
+    }]);
 })(angular.module('uiMicrokernel', []))

@@ -4,7 +4,7 @@
 
 routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state) {
 
-    $scope.goDashboard = function(){
+    $scope.goDashboard = function() {
         $state.go('home.Dashboards');
     }
 
@@ -342,7 +342,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'boxplot',
                 view: 'views/query/chart-views/BoxPlot.html',
-                initObj: {}
+                initObj: $scope.initHighchartObj
+
             }, {
                 id: 'ct20',
                 icon: 'chart-diginsunburst-chart',
@@ -428,7 +429,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             messageAry: ['Please wait while the data is saving...'],
             message: '',
             isChartSelected: false,
-            onToggleEvent: function (event) {
+            onToggleEvent: function(event) {
                 switch (event) {
                     case '1':
                         //event measures
@@ -463,15 +464,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         break;
                 }
             },
-            onClickMeasureToggle: function (row) {
+            onClickMeasureToggle: function(row) {
                 if (row.click) {
                     row.click = false;
                 } else {
                     row.click = true;
                 }
             },
-            onClickCondition: function (row, filed) {
-                console.log("onClickCondition:"+ JSON.stringify(row) + " " + JSON.stringify(filed));
+            onClickCondition: function(row, filed) {
+                console.log("onClickCondition:" + JSON.stringify(row) + " " + JSON.stringify(filed));
                 var isFoundCnd = false;
                 for (i in executeQryData.executeMeasures) {
                     if (executeQryData.executeMeasures[i].filedName == filed.filedName &&
@@ -489,11 +490,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         condition: row.name
                     };
                     executeQryData.executeMeasures.push(obj);
-                    eval("$scope."+ $scope.selectedChart.chartType + ".selectCondition()");                    
+                    eval("$scope." + $scope.selectedChart.chartType + ".selectCondition()");
                 }
-                
+
             },
-            onClickColumn: function (column) {
+            onClickColumn: function(column) {
                 var isFoundCnd = false;
                 for (i in executeQryData.executeColumns) {
                     if (executeQryData.executeColumns[i].filedName == column.filedName) {
@@ -506,21 +507,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                 if (!isFoundCnd) {
                     var seriesArr = $scope.executeQryData.executeMeasures;
-                    if(seriesArr.length > 0){
-                        
-                        eval("$scope."+ $scope.selectedChart.chartType + ".selectAttribute(column.filedName)");
-                        
-                    }else{
+                    if (seriesArr.length > 0) {
+
+                        eval("$scope." + $scope.selectedChart.chartType + ".selectAttribute(column.filedName)");
+
+                    } else {
                         alert("First select atleast one measure");
                     }
-                    
+
                 }
             },
 
-            onClickRmvCondition: function (condition, measure) {
-                alert('record delete function...'+ JSON.stringify(condition) + " " + JSON.stringify(measure));
+            onClickRmvCondition: function(condition, measure) {
+                alert('record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
             },
-            onClickApply: function () {
+            onClickApply: function() {
                 this.isLoadingChart = true;
                 if (this.isToggleMeasure) {
                     $("#togglePanel").hide(200);
@@ -529,11 +530,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     $("#togglePanel").show(300);
                     this.isToggleMeasure = true;
                 }
-                setTimeout(function () {
+                setTimeout(function() {
                     this.isLoadingChart = false;
                 }, 1000);
             },
-            onClickSetting: function (tabNo) {
+            onClickSetting: function(tabNo) {
                 switch (tabNo) {
                     case '1':
                         //#chart setting
@@ -555,7 +556,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 this.hideDesignQuery();
                             }
                         }
-                        break;                    
+                        break;
                     case '2':
                         //#data structure
                         //Data Structure
@@ -599,7 +600,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     case '4':
                         //save
                         $scope.widget = $scope.sourceData.wid;
-                        eval("$scope."+ $scope.selectedChart.chartType + ".saveWidget($scope.widget)");                        
+                        eval("$scope." + $scope.selectedChart.chartType + ".saveWidget($scope.widget)");
                         break;
                     case '5':
                         //#create query builder
@@ -804,7 +805,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     }
                     $scope.categories = fieldArray;
                     $scope.eventHndler.isLoadingChart = false;
-                    $scope.widget.initHighchartObj = {
+                    $scope.widget.highchartsNG = {
                         options: {
                             chart: {
                                 type: 'boxplot',
@@ -823,7 +824,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 text: 'Selected Fields'
                             }
                         },
-
+                        
                         yAxis: {
                             title: {
                                 text: 'Values'
@@ -881,10 +882,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
-            wid.initHighchartObj["size"] = {
-                width: 300,
-                height: 220
-            };
+            
             wid.widView = "views/query/chart-views/BoxPlot.html";
             $scope.saveChart(wid);
         }
@@ -905,15 +903,17 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             }
 
             //get highest level
-            $scope.client.generateBubble($scope.sourceData.tbl, $scope.commonData.measures[0].filedName, $scope.commonData.measures[1].filedName , $scope.commonData.columns[0].filedName, function(data, status) {
+            $scope.client.generateBubble($scope.sourceData.tbl, $scope.commonData.measures[0].filedName, $scope.commonData.measures[1].filedName, $scope.commonData.columns[0].filedName, function(data, status) {
                 var hObj = {};
-                $scope.dataforbubble = []
+                $scope.axisforbubble = []
+                $scope.seriesforBubble = [];
                 $scope = [];
                 if (status) {
-                    
+
                     $scope.categories = fieldArray;
                     $scope.eventHndler.isLoadingChart = false;
-                     $scope.widget.initHighchartObj = {
+                      
+                    $scope.widget.highchartsNG = {
                         options: {
                             chart: {
                                 type: 'bubble',
@@ -932,7 +932,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 text: 'Selected Fields'
                             }
                         },
-
+                        
                         yAxis: {
                             title: {
                                 text: 'Values'
@@ -1013,10 +1013,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
-            wid.initHighchartObj["size"] = {
-                width: 300,
-                height: 220
-            };
+             
             wid.widView = "views/query/chart-views/bubble.html";
             $scope.saveChart(wid);
         }
@@ -1045,14 +1042,17 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                     $scope.histogramPlotcat = [];
                     $scope.histogramPlotData = [];
-                    for (var field in data) {
+
+                    for (var field in data[0]) {
+                        var i = Object.keys(data[0]).indexOf(field);  
                         $scope.histogramPlotcat.push(field);
-                        $scope.histogramPlotData.push(data[field]);
+                        $scope.histogramPlotData.push(data[0][field]);
                     }
+                    
                     $scope.categories = fieldArray;
                     $scope.eventHndler.isLoadingChart = false;
 
-                    $scope.widget.initHighchartOb = {
+                    $scope.widget.highchartsNG = {
                         options: {
                             chart: {
                                 type: 'column',
@@ -1066,6 +1066,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         },
 
                         xAxis: {
+                             title: {
+                                text:  fieldArray[0]
+                            },
                             categories: $scope.histogramPlotcat,
                             labels: {
                                 rotation: -90,
@@ -1107,7 +1110,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         },
                         yAxis: {
                             title: {
-                                text: ''
+                                text:  'Count'
                             },
                             //maxPadding:0,
                             gridLineColor: '#e9e9e9',
@@ -1118,6 +1121,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             tickInterval: 25,
                             //endOnTick:false,
                         },
+                        
                         series: [{
                             data: $scope.histogramPlotData
                         }]

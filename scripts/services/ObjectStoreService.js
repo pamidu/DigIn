@@ -15,7 +15,7 @@ routerApp.service('ObjectStoreService',['$objectstore', function($objectstore){
     parameters {ind : index to create the client object}
     returns {client object}*/
     this.initialize = function(ind){
-    	return $objectstore.getClient("com.duosoftware.com", ind);
+    	return $objectstore.getClient("digin.io", ind);
     };
 
     /*Summary 

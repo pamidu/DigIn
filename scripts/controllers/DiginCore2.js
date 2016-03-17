@@ -308,7 +308,7 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
             console.log(dashboardObj);
 
             var client = ObjectStoreService.initialize("duodigin_dashboard");
-
+             
             ObjectStoreService.saveObject(client, dashboardObj, "name", function(data) {
                 if (data.state === 'error') {
                     $mdDialog.hide();
@@ -331,44 +331,9 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                     })
                 }
             });
+              
 
-            //localStorage.setItem('dasboardsObject', JSON.stringify(dashboardsObj));
-
-            //   $mdDialog.show({
-            //         controller: 'successCtrl',  
-            //   templateUrl: 'views/dialog_success.html',
-            //     resolve: {
-
-            //     }
-            // })
-
-            //   var client = $objectstore.getClient("com.duosoftware.com","duodigin_dashboard");
-            //   client.onComplete(function(data){ 
-            //        $mdDialog.hide();
-            //         $mdDialog.show({
-            //         controller: 'successCtrl',  
-            //   templateUrl: 'views/dialog_success.html',
-            //     resolve: {
-
-            //     }
-            // })
-            //   });
-            //   client.onError(function(data){
-            //         $mdDialog.hide();
-            //         $mdDialog.show({
-            //         controller: 'errorCtrl',
-            //   templateUrl: 'views/dialog_error.html',
-            //     resolve: {
-
-            //     }
-            // })
-            //   });
-
-
-            //   client.insert([$rootScope.dashboard], {KeyProperty:"dashboardName"});           
-
-
-            //   }
+ 
         }
 
 

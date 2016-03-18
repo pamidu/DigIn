@@ -109,6 +109,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             break;
 
                             default:
+                                $scope.client.getTables(function (res, status) {
+                                    callback(res, status);
+                                });
                             break;
                     }                    
                 },
@@ -137,6 +140,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             break;
 
                             default:
+                                $scope.client.getFields(tbl, function (data, status) {
+                                    callback(data, status);
+                                });
                             break;
                     }
                 },

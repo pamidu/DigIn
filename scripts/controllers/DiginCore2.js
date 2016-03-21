@@ -118,8 +118,8 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
     }
 ]);
 
-routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '$rootScope', 'ScopeShare', '$filter', '$diginengine', 'generatePDF1',
-    function($scope, $http, $mdDialog, $rootScope, ScopeShare, $filter, $diginengine, generatePDF1){
+routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '$rootScope', 'ScopeShare', '$filter', '$diginengine', 'generatePDF1', '$localStorage',
+    function($scope, $http, $mdDialog, $rootScope, ScopeShare, $filter, $diginengine, generatePDF1, $localStorage){
 
         // ====== angular-table configuration ========
         $scope.config = {
@@ -146,7 +146,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
         }
 
         $scope.eventHndler = {
-                isMainLoading: true,
+                isLoadingChart: true,
                 message: "Data Loading..."
             }
 
@@ -159,27 +159,42 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                     
                     var query = $rootScope.widget.commonSrc.query;
                     $scope.client = $diginengine.getClient($rootScope.widget.commonSrc.src.src);
-                    $scope.client.getExecQuery(query, function(data, status){
-                        $scope.tableData = data;
-                        $scope.fieldData = [];
-                        for(var key in $scope.tableData[0]){
-                            $scope.fieldData.push(key);
-                        }
-                        var newTableData = [];
-                        for(var i = 0; i < 10; i++){
-                            
-                            var newObject = {};
-                            newObject["id"] = i;
-                            for(var j = 0; j < $scope.fieldData.length; j++){
-                                console.log()
-                                newObject[$scope.fieldData[j]] = data[i][$scope.fieldData[j]];
-                            }
-                            newTableData.push(newObject);
-                            console.log(newObject);
-                        }
-                        $scope.tableData = newTableData;
-                        $scope.originalList = $scope.tableData;   
-                    });
+
+                    if( $localStorage.tableData === null || 
+                        $localStorage.tableData == undefined ||
+                        $localStorage.query != query || 
+                        $localStorage.query == undefined){
+                            $scope.client.getExecQuery(query, function(data, status){
+                                $scope.tableData = data;
+                                $scope.fieldData = [];
+                                for(var key in $scope.tableData[0]){
+                                    $scope.fieldData.push(key);
+                                }
+                                var newTableData = [];
+                                for(var i = 0; i < 10; i++){
+                                    
+                                    var newObject = {};
+                                    newObject["id"] = i;
+                                    for(var j = 0; j < $scope.fieldData.length; j++){
+                                        console.log()
+                                        newObject[$scope.fieldData[j]] = data[i][$scope.fieldData[j]];
+                                    }
+                                    newTableData.push(newObject);
+                                    console.log(newObject);
+                                }
+                                //save in $localStorage
+                                $localStorage.tableData = newTableData;
+                                $localStorage.originalList = $scope.tableData;
+                                $localStorage.fieldData = $scope.fieldData;
+                                $localStorage.query = query;   
+
+                            });
+                    }
+                    else{   //retrieve from $localStorage
+                            $scope.tableData = $localStorage.tableData;
+                            $scope.originalList = $localStorage.originalList;
+                            $scope.fieldData = $localStorage.fieldData;
+                    }
 
                 break;
                 case "Google Maps Branches":
@@ -188,23 +203,22 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                         JsonToArray();
                     }
                 break;
-                case "Google Maps Claims":
-                    JSONData = ScopeShare.get('gmapsControllerClaim');
-                    if (JSONData) {
-                        JsonToArray();
-                    }
-                break;
-                case "Skill wise summary":
-                    $http.get('views/graph.json').success(function (data) {
+                // case "Google Maps Claims":
+                //     JSONData = ScopeShare.get('gmapsControllerClaim');
+                //     if (JSONData) {
+                //         JsonToArray();
+                //     }
+                // break;
+                // case "Skill wise summary":
+                //     $http.get('views/graph.json').success(function (data) {
                         
-                        JSONData = data;
-                        if (JSONData) {
-                            JsonToArray();
-                        }
-                    });   
-                break;
+                //         JSONData = data;
+                //         if (JSONData) {
+                //             JsonToArray();
+                //         }
+                //     });   
+                // break;
                 case "Pivot Summary":
-
                     $scope.tableData = $rootScope.widget.widData.summary;
                     $scope.originalList = $scope.tableData;
                     $scope.fieldData = $rootScope.widget.widData.fieldArray;
@@ -259,7 +273,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
         
         $scope.$watch('tableData', function(newValue, oldValue) {
                 if (newValue){
-                    $scope.eventHndler.isMainLoading = false;
+                    $scope.eventHndler.isLoadingChart = false;
                 }
         });
 
@@ -801,11 +815,8 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                 $scope.openInitialConfig(ev, $scope.currWidget.id);
 
             });
-
             //save the type of the widget for the purpose of the socialMediaCtrl
             $rootScope.widgetType = widget.title;
-
-
         };
     }
 ]);

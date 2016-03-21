@@ -51,9 +51,9 @@
                     var wSrc = "scripts/webworkers/webWorker.js";
                     if (database == "BigQuery") {
                         if(!gb){
-                            var params = "tablenames={1:%27"+ getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}";
+                            var params = "tablenames={1:%27"+ getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}&id="+Math.floor((Math.random() * 10) + 1);
                         }else{
-                            var params = "tablenames={1:%27"+ getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={}";
+                            var params = "tablenames={1:%27"+ getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={}&id="+Math.floor((Math.random() * 10) + 1);
                         }
                     }
                     if (database == "MSSQL") {
@@ -156,7 +156,7 @@
         var host = getHost();
         return {
             //            diginengine: "http://" + host + ":8080",
-            diginengine: "http://localhost:8080",
+            diginengine: "http://104.155.236.85:8080",
             diginenginealt: "http://" + host + ":8081"
         };
     });

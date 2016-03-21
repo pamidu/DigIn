@@ -97,8 +97,10 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                 if(localStorage.getItem("BigQueryTables") === null || 
                                     localStorage.getItem("BigQueryTables") == "undefined"){
                                     $scope.client.getTables(function (res, status) {
-                                        callback(res, status);   
-                                        localStorage.setItem("BigQueryTables", res);                     
+                                        if(typeof res === 'object'){
+                                            callback(res, status);   
+                                            localStorage.setItem("BigQueryTables", res);
+                                        }        
                                     });
                                 }
                                 else{

@@ -9,6 +9,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             // if(sessionInfo==null) location.href = 'index.php';
         }
 
+        localStorage.clear();
+
+        console.log( "localStorage", localStorage);
+
         var $windowHeight = $(window).height(),
             $windowWidth = $(window).width(),
             $startingPoint = $('.starting-point');

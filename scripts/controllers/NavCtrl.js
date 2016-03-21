@@ -112,7 +112,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 });
         };
 
-
         function showProfileController($rootScope,$scope, $mdDialog) {
 
             var userInfo = $auth.getSession();  
@@ -454,7 +453,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
         }
 
-        $scope.goReport2 = function (report) {
+        $scope.goReport2 = function () {
             $scope.manageTabs(false);
             //closing the overlay
             $(".overlay").removeClass("overlay-search active");
@@ -603,6 +602,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $scope.GetDashboardDetails();
             $scope.GetAnalyzerDetails();
+
+            $http.get('http://104.155.236.85:8080/getreportnames?SecurityToken=0b4fac3276c5328db15e538590665d6a&Domain=duosoftware.com')
+            .success(function(response){
+                 // $scope.reportsData = response.Result;
+                 $scope.reportsData = [{title: "marle (mr. bean)"}, {title: "sajee + hasini"}];
+             });
 
         };
         $scope.GetAnalyzerDetails = function () {

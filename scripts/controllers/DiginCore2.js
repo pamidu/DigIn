@@ -163,7 +163,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                     if( $localStorage.tableData === null || 
                         $localStorage.tableData == undefined ||
                         $localStorage.query != query || 
-                        $localStorage.query == undefined){
+                        $localStorage.query == undefined ){
                             $scope.client.getExecQuery(query, function(data, status){
                                 $scope.tableData = data;
                                 $scope.fieldData = [];
@@ -171,7 +171,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                                     $scope.fieldData.push(key);
                                 }
                                 var newTableData = [];
-                                for(var i = 0; i < 10; i++){
+                                for(var i = 0; i < data.length; i++){
                                     
                                     var newObject = {};
                                     newObject["id"] = i;
@@ -184,7 +184,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                                 }
                                 //save in $localStorage
                                 $localStorage.tableData = newTableData;
-                                $localStorage.originalList = $scope.tableData;
+                                $localStorage.originalList = newTableData;
                                 $localStorage.fieldData = $scope.fieldData;
                                 $localStorage.query = query;   
 

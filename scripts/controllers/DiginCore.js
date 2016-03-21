@@ -210,7 +210,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 });
             }else{
                 $csContainer.fillCSContainer(widget.commonSrc.src);
-                $state.go("home.QueryBuilder");
+                $state.go("home.QueryBuilder", {widObj:widget});
             }
             $rootScope.widget = widget;
         };

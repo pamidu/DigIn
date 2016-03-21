@@ -45,7 +45,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $httpProvider.defaults.headers.common["Content-Type"] = "application/x-www-form-urlencoded";
 
-    $urlRouterProvider.otherwise('/login');
+    $urlRouterProvider.otherwise('/welcome');
 
     $stateProvider
         .state("login", {
@@ -261,6 +261,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             url: '/query-builder',
             controller: 'queryBuilderCtrl',
             templateUrl: "views/query/query-builder.html",
+            params: {widObj: null},
             data: {
                 requireLogin: true
             }

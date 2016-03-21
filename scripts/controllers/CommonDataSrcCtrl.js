@@ -355,7 +355,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                   };
 
                 $csContainer.fillCSContainer({
-                    wid: $scope.currWidget,
+//                    wid: $scope.currWidget,
                     src: $scope.sourceUi.selectedSource,
                     tbl: $scope.sourceUi.selectedNameSpace,
                     fAttArr: $scope.sourceUi.attrObj,
@@ -364,7 +364,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 
                 publicFun.clearAll(function (status) {
                     if (status) {
-                        $state.go("home.QueryBuilder");
+                        $state.go("home.QueryBuilder",{widObj:$scope.currWidget});
                         $mdSidenav('right').close();
                     }
                 });   

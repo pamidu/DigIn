@@ -2,25 +2,25 @@
  * Created by Damith on 2/12/2016.
  */
 
-routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state) {
+routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams) {
 
     $scope.goDashboard = function() {
         $state.go('home.Dashboards');
     }
-
-    $scope.initQueryBuilder = function() {
-        $scope.widget = $scope.sourceData.wid;
-        if (typeof($scope.sourceData.wid.commonSrc) == "undefined") {
+    
+    $scope.initQueryBuilder = function() {        
+        $scope.widget = $stateParams.widObj;
+        console.log(JSON.stringify($scope.widget));
+        if (typeof($scope.widget.commonSrc) == "undefined") {
             $scope.selectedChart = $scope.commonData.chartTypes[0];
             $scope.highCharts.onInit(false);
         } else {
-            $scope.selectedChart = $scope.sourceData.wid.selectedChart;
+            $scope.selectedChart = $scope.widget.selectedChart;
             eval("$scope." + $scope.selectedChart.chartType + ".onInit(true)");
-            $scope.executeQryData.executeMeasures = $scope.sourceData.wid.commonSrc.mea;
-            $scope.executeQryData.executeColumns = $scope.sourceData.wid.commonSrc.att;
-            $scope.receivedQuery = $scope.sourceData.wid.commonSrc.query;
+            $scope.executeQryData.executeMeasures = $scope.widget.commonSrc.mea;
+            $scope.executeQryData.executeColumns = $scope.widget.commonSrc.att;
+            $scope.receivedQuery = $scope.widget.commonSrc.query;
         }
-
     };
 
     $scope.sourceData = $csContainer.fetchSrcObj();
@@ -396,6 +396,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 proBy: 'c0'
             });
         }
+        $scope.commonData.columns = $scope.commonData.columns.concat($scope.commonData.measures);
     }
 
     console.log('source data:' + JSON.stringify());
@@ -599,7 +600,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         break;
                     case '4':
                         //save
-                        $scope.widget = $scope.sourceData.wid;
                         eval("$scope." + $scope.selectedChart.chartType + ".saveWidget($scope.widget)");
                         break;
                     case '5':
@@ -726,7 +726,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             if (!recon)
                 $scope.highchartsNG = $scope.selectedChart.initObj;
             else {
-                $scope.highchartsNG = $scope.sourceData.wid.highchartsNG;
+                $scope.highchartsNG = $scope.widget.highchartsNG;
                 $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
                 delete $scope.highchartsNG.size;
             }

@@ -97,8 +97,10 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                 if(localStorage.getItem("BigQueryTables") === null || 
                                     localStorage.getItem("BigQueryTables") == "undefined"){
                                     $scope.client.getTables(function (res, status) {
-                                        callback(res, status);   
-                                        localStorage.setItem("BigQueryTables", res);                     
+                                        if(typeof res === 'object'){
+                                            callback(res, status);   
+                                            localStorage.setItem("BigQueryTables", res);
+                                        }        
                                     });
                                 }
                                 else{
@@ -109,6 +111,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             break;
 
                             default:
+                                $scope.client.getTables(function (res, status) {
+                                    callback(res, status);
+                                });
                             break;
                     }                    
                 },
@@ -137,6 +142,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             break;
 
                             default:
+                                $scope.client.getFields(tbl, function (data, status) {
+                                    callback(data, status);
+                                });
                             break;
                     }
                 },
@@ -347,7 +355,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                   };
 
                 $csContainer.fillCSContainer({
-                    wid: $scope.currWidget,
+//                    wid: $scope.currWidget,
                     src: $scope.sourceUi.selectedSource,
                     tbl: $scope.sourceUi.selectedNameSpace,
                     fAttArr: $scope.sourceUi.attrObj,
@@ -356,7 +364,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 
                 publicFun.clearAll(function (status) {
                     if (status) {
-                        $state.go("home.QueryBuilder");
+                        $state.go("home.QueryBuilder",{widObj:$scope.currWidget});
                         $mdSidenav('right').close();
                     }
                 });   

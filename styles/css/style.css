@@ -2166,4 +2166,8 @@ md-tab-content > div{
     height: 160px;
     overflow: scroll;
 }
+.width80percent{
+    width: 80%;
+}
+
 

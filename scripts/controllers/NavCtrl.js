@@ -1,6 +1,6 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
-    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast', 'DevStudio', '$auth', '$helpers',
-    function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio, $auth, $helpers) {
+    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast', 'DevStudio', '$auth', '$helpers', '$localStorage',
+    function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio, $auth, $helpers, $localStorage) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -8,6 +8,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             var sessionInfo = $helpers.getCookie('securityToken');
             // if(sessionInfo==null) location.href = 'index.php';
         }
+
+        localStorage.clear();
+
+        console.log( "localStorage", localStorage);
 
         var $windowHeight = $(window).height(),
             $windowWidth = $(window).width(),
@@ -107,7 +111,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                 });
         };
-
 
         function showProfileController($rootScope,$scope, $mdDialog) {
 
@@ -450,7 +453,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
         }
 
-        $scope.goReport2 = function (report) {
+        $scope.goReport2 = function () {
             $scope.manageTabs(false);
             //closing the overlay
             $(".overlay").removeClass("overlay-search active");
@@ -599,6 +602,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $scope.GetDashboardDetails();
             $scope.GetAnalyzerDetails();
+
+            $http.get('http://104.155.236.85:8080/getreportnames?SecurityToken=0b4fac3276c5328db15e538590665d6a&Domain=duosoftware.com')
+            .success(function(response){
+                 // $scope.reportsData = response.Result;
+                 $scope.reportsData = [{title: "marle (mr. bean)"}, {title: "sajee + hasini"}];
+             });
 
         };
         $scope.GetAnalyzerDetails = function () {

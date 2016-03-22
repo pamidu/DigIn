@@ -344,6 +344,16 @@ drb >> dynamically report builder
     top: 32%;
 }
 
+.digin-gb-chart-loading2 {
+    margin: 0px auto;
+    position: relative;
+    width: 50%;
+    text-align: center;
+    top: 100px;
+    min-height: 300px;
+    z-index: 100;
+}
+
 /*padding */
 .p-t-b-30 {
     padding: 30px 0 30px 0px;
@@ -647,6 +657,7 @@ drb >> dynamically report builder
     z-index: 2;
     border-radius: 10px;
     display: none;
+    overflow: scroll;
 }
 
 .chart-config-wrap {

@@ -172,7 +172,7 @@
                             </h4>
                             <ul class="list-material" style="height:150px">
                                 <li class="has-action-left"
-                                    dir-paginate="x in reports |filter:searchText | itemsPerPage: pageSize"
+                                    dir-paginate="x in reportsData |filter:searchText | itemsPerPage: pageSize"
                                     current-page="currentPage" pagination-id="list2">
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
@@ -181,7 +181,7 @@
                                             <img style="width:35px;height:35px;"
                                                  src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg"
                                                  class="img-radius" alt="">
-                                            <span ng-click="goReport(x.name)" class="title">{{x.splitName}}</span>
+                                            <span ng-click="goReport2()" class="title">{{x}}</span>
                                         </div>
                                     </a>
                                 </li>

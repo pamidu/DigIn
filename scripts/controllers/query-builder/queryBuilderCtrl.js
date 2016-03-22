@@ -39,10 +39,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             text: 'Monthly Average Temperature',
             x: -20 //center
         },
-        subtitle: {
-            text: 'Query Builder ',
-            x: -20
-        },
+        
         xAxis: {
             categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
@@ -774,7 +771,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         },
         saveWidget: function(wid) {
             wid.highchartsNG = $scope.highchartsNG;
-            wid.uniqueType = "Dynamic Visuals";
             wid.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
             wid.initCtrl = "elasticInit";
             $scope.saveChart(wid);
@@ -1388,10 +1384,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         height: 367,
                     }
                 },
-                subtitle: {
-                    text: 'Query Builder ',
-                    x: -20
-                },
+                 
                 legend: {
                     layout: 'vertical',
                     align: 'right',

@@ -179,16 +179,6 @@
             "color": "#8BC34A",
             "sizeX": 4, "sizeY": 4, "row": 3, "col": 16
         }, {
-            "title": "Google Maps Claims",
-            "icon": "styles/css/images/icons/google.svg",
-            "type": "Custom",
-            "Description": "Google Maps",
-            "widView": "views/googleMaps/ViewGoogleMapsClaims.html",
-            "dataView": "ViewDataGoogleMaps",
-            "dataCtrl": "gmapsControllerClaims",
-            "color": "#5AA008",
-            "sizeX": 4, "sizeY": 4, "row": 3, "col": 20
-        }, {
             "title": "Hierarchy visualization",
             "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
             "type": "Predefined Analytics",

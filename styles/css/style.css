@@ -2032,6 +2032,9 @@ md-tab-content > div{
 .padding-5{
     padding: 5px;
 }
+.padding-10{
+    padding: 10px;
+}
 .margin-bottom-5{
     margin-bottom: 5px;
 }
@@ -2039,7 +2042,7 @@ md-tab-content > div{
     margin-bottom: 2px;
 }
 
-/****** start wordpress, twitter widgets custom css *****/
+/****** start wordpress, twitter, rss widgets custom css *****/
 
 /* common classes*/
 .data-container1{
@@ -2064,8 +2067,12 @@ md-tab-content > div{
     width: 50%;
     padding: 8px;
 }
+.data-field3{
+    width: 30%;
+    padding: 8px;
+}
 .data-item1{
-    width: 20%;
+    width: 70%;
     padding: 8px;
 }
 .data-item2{
@@ -2083,6 +2090,12 @@ md-tab-content > div{
     max-width: 100%;
     height: auto;
     border-radius: 50%;
+    box-sizing: content-box;
+}
+.custom-avatar2{
+    max-width: 80%;
+    height: auto;
+    border-radius: 10%;
     box-sizing: content-box;
 }
 .widget-header{
@@ -2125,8 +2138,21 @@ md-tab-content > div{
     color: white;
     background-color: #21759b;
 }
+/* rss */
+.background-rss-orange{
+    color: white;
+    background-color: #f26522;
+}
+.background-rss-dark-orange{
+    color: white;
+    background-color: #BB450E;
+}
+.background-rss-grey {
+    color: white;
+    background-color: #181818;
+}
 
-/**** end wordpress, twitter widgets custom css *****/
+/**** end wordpress, twitter, rss widgets custom css *****/
 
 .custom-drop-zone{
     margin-bottom: 0px !important;
@@ -2169,5 +2195,6 @@ md-tab-content > div{
 .width80percent{
     width: 80%;
 }
+
 
 

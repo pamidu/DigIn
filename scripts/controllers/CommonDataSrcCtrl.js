@@ -338,7 +338,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                      dataCtrl: "elasticDataCtrl",
                      initTemplate: "",
                      initCtrl: "commonSrcInit",
-                     uniqueType: "Common Source",
+                     uniqueType: "Dynamic Visuals",
                      syncState: true,
                      expanded: true,
                      seriesname: "",

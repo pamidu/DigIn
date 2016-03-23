@@ -2043,17 +2043,17 @@ routerApp.controller('rssInit',['$scope', '$http', '$mdDialog', 'widId', '$rootS
 
                 if (!result.error) {
 
-                    for (var i = 0; i < result.feed.entries.length; i++) {
+                    // for (var i = 0; i < result.feed.entries.length; i++) {
 
-                        var entry = result.feed.entries[i];
+                    //     var entry = result.feed.entries[i];
 
-                        $scope.entryContent = entry.content;
-                        $scope.entryArray.push(entry);
+                    //     $scope.entryContent = entry.content;
+                    //     $scope.entryArray.push(entry);
 
-                        $scope.$apply();
-                    }
+                    //     $scope.$apply();
+                    // }
 
-                    $rootScope.dashboard.widgets[objIndex].widData = $scope.entryArray;
+                    $rootScope.dashboard.widgets[objIndex].widData.feeds = result.feed.entries;
                 }
                 $mdDialog.hide();
             });

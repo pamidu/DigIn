@@ -75,12 +75,10 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
-        api_key: 75
-        mu4z7y428pty
+        api_key: 75gasspugsl6ow
         authorize: true
         scope: r_basicprofile
         r_emailaddress
-
     </script>
      <script src="https://apis.google.com/js/client.js"></script> 
     <style type="text/css">

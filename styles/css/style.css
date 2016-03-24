@@ -1881,6 +1881,7 @@ md-tabs.setup-tabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper md-tab-i
     padding: 10px 10px !important;
     height: 35px;
     border-radius: 5px;
+    background-color: rgba(0, 154, 218, 0.5);
 }
 
 md-tabs.setup-tabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper md-tab-item.md-active {

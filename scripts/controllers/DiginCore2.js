@@ -165,9 +165,9 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                         $localStorage.query != query || 
                         $localStorage.query == undefined ){
                             $scope.client.getExecQuery(query, function(data, status){
-                                $scope.tableData = data;
+                                
                                 $scope.fieldData = [];
-                                for(var key in $scope.tableData[0]){
+                                for(var key in data[0]){
                                     $scope.fieldData.push(key);
                                 }
                                 var newTableData = [];
@@ -180,8 +180,11 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                                         newObject[$scope.fieldData[j]] = data[i][$scope.fieldData[j]];
                                     }
                                     newTableData.push(newObject);
-                                    console.log(newObject);
                                 }
+                                
+                                $scope.tableData = newTableData;
+                                $scope.originalList = newTableData;
+                
                                 //save in $localStorage
                                 $localStorage.tableData = newTableData;
                                 $localStorage.originalList = newTableData;

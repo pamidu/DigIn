@@ -24,7 +24,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             icon: "styles/icons/source/xlsx.svg",
             selected: false
         }, {
-            name: "Rest/SOAP Service",
+            name: "Rest/SOAP",
             icon: "styles/icons/source/api.svg",
             selected: false
         }, {
@@ -32,7 +32,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             icon: "styles/icons/source/mssql.svg",
             selected: false
         }, {
-            name: "SpreadSheet",
+            name: "Spreadsheet",
             icon: "styles/icons/source/spread-sheet.svg",
             selected: false
 
@@ -94,7 +94,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     $scope.client = $diginengine.getClient(src);
                     switch(src){
                             case "BigQuery" :
-                                if(localStorage.getItem("BigQueryTables") === null || 
+                                if(localStorage.getItem("BigQueryTables") === null || localStorage.getItem("BigQueryTables") == "null" || 
                                     localStorage.getItem("BigQueryTables") == "undefined"){
                                     $scope.client.getTables(function (res, status) {
                                         if(typeof res === 'object'){
@@ -453,8 +453,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             selectedAttribute: [],
             selectedMeasures: []
         }
-
-        $scope.initCommonDataSrc = function(){
+        /* initialize tabs */
+        $scope.initTabSource = function(){
 
              for(var i = 0; i < $scope.datasources.length; i++){
                 if($scope.datasources[i].name ==  localStorage.getItem("lastSelectedSource")){
@@ -462,6 +462,15 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 }
              }
         }
+        $scope.initTabInfo = function(){
+
+             for(var i = 0; i < $scope.datasources.length; i++){
+                if($scope.datasources[i].name ==  localStorage.getItem("lastSelectedSource")){
+                    $scope.commonUi.onClickSelectedSrc($scope.datasources[i], $scope.datasources);
+                }
+             }
+        }
+
 
         /* file upload */
 

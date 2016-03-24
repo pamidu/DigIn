@@ -890,7 +890,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         $scope.navigate = function (routeName, ev) {
+            if (routeName == "home") {
 
+                $scope.manageTabs(true);
+                $scope.currentView = "Home";
+                $state.go('home');
+            }
             if (routeName == "Dashboards") {
 
                 $scope.showAddNewDashboard(ev);

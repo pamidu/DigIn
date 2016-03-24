@@ -1,4 +1,4 @@
-<md-sidenav ng-mouseover="initCommonDataSrc()" class="md-sidenav-right slider-r-wrap  "
+<md-sidenav ng-mouseover="initTabSource()" class="md-sidenav-right slider-r-wrap  "
             md-component-id="right">
     <!-- message -->
     <div>
@@ -198,7 +198,7 @@
                     </ui>
                 </div>
             </div>
-            <div class="cmds-btn-footer" ng-show="sourceUi.selectedSource!=''"
+            <div class="cmds-btn-footer" ng-show="sourceUi.selectedNameSpace!=''"
                  ng-if="commonUi.isServiceError==false">
                 <div class="cmds-btn-footer m-top-10">
                         <span class="btn btn-block btn-default"

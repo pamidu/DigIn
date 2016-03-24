@@ -1641,6 +1641,7 @@ ul.none-border > li {
 
 /*slider right style*/
 .slider-r-wrap {
+    border-left: 1px solid #ECECEC;
     overflow: hidden;
     padding: 0;
     background: #fff;

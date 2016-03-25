@@ -11,8 +11,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         localStorage.clear();
 
-        console.log( "localStorage", localStorage);
-
         var $windowHeight = $(window).height(),
             $windowWidth = $(window).width(),
             $startingPoint = $('.starting-point');
@@ -89,11 +87,26 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
 
         }
-        //pushes gridster items 10px down, remove padding to body, adjust iframe height
+        
+        $scope.headerbarPinned = false;
+
         $scope.adjustUI = function () {
-            $('body').css("padding-top", "0px");
-            // $('#content1').css("top", "10px");
-            $('.h_iframe').css("height", "100%");
+
+            if($scope.headerbarPinned){
+                $('#content1').css("top", "40px");
+                $('#content1').css("height", "calc(100vh - 40px)");
+                $('.h_iframe').css("height", "calc(100vh - 40px)");
+                $('.main-headbar-slide').css("transform", "translateY(0)");
+                $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
+            }
+            else{
+                // $('body').css("padding-top", "0px");
+                $('#content1').css("top", "0px");
+                $('#content1').css("height", "calc(100vh)");
+                $('.h_iframe').css("height", "calc(100vh)");
+                $('.main-headbar-slide').css("transform", "translateY(-40px)");
+                $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
+            }  
         }
 
         //shows user profile in a dialog box

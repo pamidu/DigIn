@@ -1201,7 +1201,6 @@ routerApp.factory('ScopeShare', function ($rootScope) {
     };
 });
 
-
 routerApp.directive('myUpload', [function () {
     return {
         restrict: 'A',

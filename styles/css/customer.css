@@ -794,7 +794,7 @@ md-card md-card-content.card-warning {
 .graph-h2 {
     font-weight: 200;
     font-family: 'Ek Mukta', sans-serif;
-    font-size: 25px;
+    font-size: 24px;
 }
 
 .graph-h3 {
@@ -827,7 +827,7 @@ md-card md-card-content.card-warning {
 
 #content1 {
     overflow-x: hidden;
-    height: 100% !important;
+    /*height: 100% !important;*/
 }
 
 .graph-map {

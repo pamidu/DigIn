@@ -462,15 +462,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 }
              }
         }
-        $scope.initTabInfo = function(){
-
-             for(var i = 0; i < $scope.datasources.length; i++){
-                if($scope.datasources[i].name ==  localStorage.getItem("lastSelectedSource")){
-                    $scope.commonUi.onClickSelectedSrc($scope.datasources[i], $scope.datasources);
-                }
-             }
-        }
-
 
         /* file upload */
 

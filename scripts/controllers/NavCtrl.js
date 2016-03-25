@@ -666,7 +666,23 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 resolve: {}
             });
         }
+        $scope.goHome = function(){
+            $scope.closeDialog();
+            $scope.manageTabs(true);
+            $scope.currentView = "Home";
+            $state.go('home');
+        }
 
+        $scope.goHomeDialog = function (ev){
+            $mdDialog.show({
+                    controller: 'NavCtrl',
+                    templateUrl: 'views/goHome.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+            }).then(function (answer) {
+            });
+        }
         //erangas space
         $scope.showAddNewDashboard = function (ev) {
             $mdDialog.show({
@@ -892,9 +908,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.navigate = function (routeName, ev) {
             if (routeName == "home") {
 
-                $scope.manageTabs(true);
-                $scope.currentView = "Home";
-                $state.go('home');
+                $scope.goHomeDialog(ev);
             }
             if (routeName == "Dashboards") {
 

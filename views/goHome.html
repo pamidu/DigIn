@@ -1,0 +1,24 @@
+<md-dialog plumb-item style="min-width:400px;overflow:hidden">
+  <md-toolbar style="width: 100%; min-height: 30vh!important;z-index: 0;">
+    <div style="width:100%; height:48px;" layout="row" layout-align="end center">                
+      <p style="color: whitesmoke;font-size: 20px;margin:5px;">GO HOME?</p>         
+      <md-button class="buttonMinwidth38" ng-click="closeDialog();">      
+        <ng-md-icon icon="close" style="fill:lightgrey" size="24" layout="row"></ng-md-icon>        
+      </md-button>            
+    </div>
+  </md-toolbar>
+  <md-card class="card-style1">
+    <md-content layout-padding>
+            <div class="md-actions" layout="row">
+                <span flex></span>
+                <md-button ng-click="goHome()">
+                    Yes
+                </md-button>
+                <md-button ng-click="closeDialog()">
+                    No
+                </md-button>
+            </div>
+    </md-content>
+  </md-card>
+</md-dialog>
+

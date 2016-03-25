@@ -128,6 +128,12 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
 
     $scope.updateAccount = function(){
         
+        if($scope.headerbar){
+            document.getElementById('mainHeadbar').style.display = "block";
+        }
+        else{
+            document.getElementById('mainHeadbar').style.display = "none";
+        }        
     };
 
     function fireMsg(msgType, content) {

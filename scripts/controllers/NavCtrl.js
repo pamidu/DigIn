@@ -90,6 +90,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         
         $scope.headerbarPinned = false;
 
+        $scope.pinHeaderbar = function(state){
+            $scope.headerbarPinned = state;
+        }
+
         $scope.adjustUI = function () {
 
             if($scope.headerbarPinned){

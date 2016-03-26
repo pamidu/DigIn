@@ -120,10 +120,6 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
    
     };
 
-
-
-
-
     //-----------------
 
     $scope.updateAccount = function(){
@@ -132,7 +128,10 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
             document.getElementById('mainHeadbar').style.display = "block";
         }
         else{
+            $scope.pinHeaderbar(false);
             document.getElementById('mainHeadbar').style.display = "none";
+            // $('#content1').css("top", "0px");
+            // $('#content1').css("height", "calc(100vh)");
         }        
     };
 

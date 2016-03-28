@@ -313,7 +313,7 @@ button.md-fab.md-raised.md-primary.md-button.md-teal-theme {
 #content1 {
     position: absolute;
     width: calc(100vw - 40px);
-    height: 100% !important;
+    /*height: 100% !important;*/
     background-size: 100% 100%;
     background-size: 30px 30px;
     overflow: auto;
@@ -1881,6 +1881,7 @@ md-tabs.setup-tabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper md-tab-i
     padding: 10px 10px !important;
     height: 35px;
     border-radius: 5px;
+    background-color: rgba(0, 154, 218, 0.5);
 }
 
 md-tabs.setup-tabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper md-tab-item.md-active {

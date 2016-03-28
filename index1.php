@@ -90,7 +90,7 @@
     <!--  new changes  -->
 </head>
 <body>
-<div ui-view layout="column" id="mainContainer" style="height:100% !important;">
+<div ui-view layout="column" id="mainContainer" style="height: 100%">
 </div>
 </body>
 <!--  new changes  -->
@@ -217,7 +217,6 @@
 <script type="text/javascript" src="scripts/factories/d3Data.js"></script>
 <script type="text/javascript" src="scripts/factories/Dashboard.js"></script>
 <script type="text/javascript" src="scripts/factories/getTableDataFactories.js"></script>
-b
 <script type="text/javascript" src="scripts/services/RealTimeService.js"></script>
 <script type="text/javascript" src="scripts/services/AnalyticsService.js"></script>
 <script type="text/javascript" src="scripts/vendor/indicator.js"></script>

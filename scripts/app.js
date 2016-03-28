@@ -301,6 +301,26 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         .definePalette('customPrimary',
             customPrimary);
 
+    var customAccent = {
+        '50': '#01718D',
+        '100': '#01718D',
+        '200': '#01718D',
+        '300': '#01718D',
+        '400': '#01718D',
+        '500': '#01718D',
+        '600': '#01718D',
+        '700': '#01718D',
+        '800': '#01718D',
+        '900': '#01718D',
+        'A100': '#01718D',
+        'A200': '#01718D',
+        'A400': '#01718D',
+        'A700': '#01718D'
+    };
+    $mdThemingProvider
+        .definePalette('customAccent',
+            customAccent);
+
     var customBackground = {
         '50': '#ffffff',
         '100': '#ffffff',
@@ -323,7 +343,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
 
     $mdThemingProvider.theme('default')
         .primaryPalette('customPrimary')
-        .accentPalette('blue')
+        .accentPalette('customAccent')
         .warnPalette('red')
         .backgroundPalette('customBackground')
 
@@ -1180,7 +1200,6 @@ routerApp.factory('ScopeShare', function ($rootScope) {
         }
     };
 });
-
 
 routerApp.directive('myUpload', [function () {
     return {

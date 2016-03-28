@@ -10,9 +10,6 @@ routerApp.controller('socialGraphFBCtrl', function ($scope, config, fbGraphServi
 
     $scope.accounts = [];
 
-     
-    
-
     $scope.pageSearchPara = {
         startDate: new Date(),
         endDate: new Date()

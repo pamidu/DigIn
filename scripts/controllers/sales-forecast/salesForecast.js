@@ -1,4 +1,8 @@
-routerApp.controller('salesForecastCtrl', function($scope, $mdDialog, $location, $http, Digin_Engine_API1) {
+routerApp.controller('salesForecastCtrl', function($scope, $mdDialog, $location, $http, Digin_Engine_API1, $state) {
+
+    $scope.goDashboard = function() {
+        $state.go('home.Dashboards');
+    }
 
     $scope.forecastInit = function() {
         var sales = [{

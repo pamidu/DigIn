@@ -1000,7 +1000,17 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
         var outOfSLArray = [];
 
         $scope.markers = [];
-        $scope.map = { center: { latitude: 7.2964, longitude: 80.6350 }, zoom: 8, bounds: {} };       
+        $scope.map = { center: { latitude: 7.2964, longitude: 80.6350 }, 
+                        zoom: 8, 
+                        bounds: {},
+                        events: {   
+                            mouseover: function (map) {
+                                $scope.$apply(function () {
+                                google.maps.event.trigger(map, "resize");
+                                });
+                            }
+                        } 
+                    };       
         
         // ======== initializing map at google map loading =========
         $scope.initGmap = function(){

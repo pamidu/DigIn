@@ -1,21 +1,32 @@
-
-    <v-pane ng-repeat="series in highchartsNG.series" class="v-pane">
-        <v-pane-header id="{{ ::measure.id }}-header" aria-controls="{{ ::series.name }}-content">
-            <h5 class="font-weight-300 text-upper">{{ series.name }}</h5>
-        </v-pane-header>
-        <v-pane-content class="trans-bg v-pane-content" id="{{ ::series.name }}-content"
-            aria-labelledby="{{ ::series.name }}-header">
-            <md-input-container flex>
-                <label>Name</label>
-                <input ng-model="series.name">
-            </md-input-container>
-            <md-input-container flex>
-                <label>Color</label>
-                <input ng-model="series.color">
-            </md-input-container>
-        </v-pane-content>
-    </v-pane>
-
-
-
-
+<div ng-show="selectedChart.chartType == 'highCharts'" class="chart-config-wrap"> 
+   <md-switch  ng-model="isDrilled" ng-change="toggleDrilled(isDrilled)" aria-label="Switch 1">
+    Drilled: {{ isDrilled }}
+  </md-switch>
+                            <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
+                                         onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
+                                <v-pane ng-repeat="series in highchartsNG.series" class="v-pane">
+                                    <v-pane-header id="{{ ::measure.id }}-header" aria-controls="{{ ::series.name }}-content">
+                                        <h5 class="font-weight-300 text-upper">{{ series.name }}</h5>
+                                    </v-pane-header>
+                                    <v-pane-content class="trans-bg v-pane-content" id="{{ ::series.name }}-content"
+                                                    aria-labelledby="{{ ::series.name }}-header">
+                                        <md-input-container flex>
+                                            <label>Name</label>
+                                            <input ng-model="series.name">
+                                        </md-input-container>
+                                        <md-input-container flex>
+                                            <label>Color</label>
+                                            <input ng-model="series.color">
+                                        </md-input-container>
+                                    </v-pane-content>
+                                </v-pane>
+                            </v-accordion>
+                            <md-input-container flex>
+                                <label>Chart Title</label>
+                                <input ng-model="highchartsNG.subtitle.text">
+                            </md-input-container>
+                            <md-input-container flex>
+                                <label>Y axis</label>
+                                <input ng-model="highchartsNG.yAxis.title.text">
+                            </md-input-container>                            
+                        </div>

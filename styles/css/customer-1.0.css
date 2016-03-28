@@ -478,7 +478,7 @@ drb >> dynamically report builder
 .digin-gb-measures {
     overflow: hidden;
     position: relative;
-    height: calc(50vh);
+/*    height: calc(31vh);*/
     background: #fff;
 }
 
@@ -624,14 +624,14 @@ drb >> dynamically report builder
 
 .digin-gb-chart-wrap {
     width: 100%;
-    height: calc(55vh);
+/*    height: calc(55vh);*/
     background: rgb(250, 250, 250);
     border-left: 3px solid #ECECEC;
 }
 
 .digin-gb-chart-wrap-view-container {
     width: 100%;
-    height: calc(55vh);
+/*    height: calc(55vh);*/
     background: #ffffff;
 }
 

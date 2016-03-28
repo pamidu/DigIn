@@ -1232,7 +1232,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         },
 
         saveWidget: function(wid) {
-            wid.widView = "views/ViewHnbMonth.html";
+            wid.widView = "views/ViewHnbData.html";
             wid.widData = $scope.hierarData;
             $scope.saveChart(wid);
         }
@@ -1272,7 +1272,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         },
 
         saveWidget: function(wid) {
-            wid.widView = "views/ViewHnbData.html";
+            wid.widView = "views/ViewHnbMonth.html";
             wid.widData = $scope.hierarData;
             $scope.saveChart(wid);
         }

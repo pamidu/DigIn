@@ -121,7 +121,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
     };
 
     //-----------------
-
+    $scope.headerbar = true;
     $scope.updateAccount = function(){
         
         if($scope.headerbar){

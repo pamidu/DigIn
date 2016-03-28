@@ -451,7 +451,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             selectedNameSpace: '',
             tableData: [],
             selectedAttribute: [],
-            selectedMeasures: []
+            selectedMeasures: [],
+            search: ''
         }
         /* initialize tabs */
         $scope.initTabSource = function(){

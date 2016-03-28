@@ -14,9 +14,12 @@ function getData(receivedData){
             } else {
                 postMessage({res: xhr.response,state: false});
             }
+        }else{
+            postMessage({res: null,state: false});
         }
     }
     xhr.ontimeout = function() {
+        postMessage({res: null,state: false});
         console.error("request timedout: ", xhr);
     }
     xhr.open(receivedData.method, receivedData.rUrl, /*async*/ true);

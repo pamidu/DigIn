@@ -8,9 +8,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         $state.go('home.Dashboards');
     }
     
-    $scope.initQueryBuilder = function() {        
+    $scope.initQueryBuilder = function() {
         $scope.widget = $stateParams.widObj;
-        console.log(JSON.stringify($scope.widget));
         if (typeof($scope.widget.commonSrc) == "undefined") {
             $scope.selectedChart = $scope.commonData.chartTypes[0];
             $scope.highCharts.onInit(false);
@@ -23,6 +22,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
     };
 
+    $scope.isDrilled = false;
+    $scope.dynFlex = 70;
+    $scope.chartWrapStyle = {height : 'calc(55vh)'};
+    $scope.isPendingRequest = false;
     $scope.sourceData = $csContainer.fetchSrcObj();
     $scope.client = $diginengine.getClient($scope.sourceData.src);
     $scope.queryEditState = false;
@@ -457,7 +460,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             $("#togglePanelColumns").show(300);
                             this.isToggleColumns = true;
                         }
-
+                        break;
+                    case '3':
+                        //event columns
+                        privateFun.checkToggleOpen('1');
+                        if (this.isToggleColumns) {
+                            $("#togglePanelColumns").hide(200);
+                            this.isToggleColumns = false;
+                        } else {
+                            if (this.openSettingToggle[1].isQueryBuilder) {
+                                this.hideDesignQuery();
+                            }
+                            $("#togglePanelColumns").show(300);
+                            this.isToggleColumns = true;
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -470,7 +487,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }
             },
             onClickCondition: function(row, filed) {
-                console.log("onClickCondition:" + JSON.stringify(row) + " " + JSON.stringify(filed));
+                $("#togglePanel").hide(200);
+                $scope.isPendingRequest = true;
+                $scope.eventHndler.isToggleMeasure = false;
+                
                 var isFoundCnd = false;
                 for (i in executeQryData.executeMeasures) {
                     if (executeQryData.executeMeasures[i].filedName == filed.filedName &&
@@ -493,6 +513,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
             },
             onClickColumn: function(column) {
+                $("#togglePanelColumns").hide(200);
+                $scope.isPendingRequest = true;
+                $scope.eventHndler.isToggleColumns = false;
+                
                 var isFoundCnd = false;
                 for (i in executeQryData.executeColumns) {
                     if (executeQryData.executeColumns[i].filedName == column.filedName) {
@@ -661,6 +685,17 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 this.openSettingToggle[1].isQueryBuilder = false;
             },
             onClickSelectedChart: function(data, onSelect) {
+                
+                //remove highcharts related configs
+                if(onSelect.chartType != 'metric' && onSelect.chartType != 'highCharts'){
+                    $scope.dynFlex = 90;
+                    $scope.chartWrapStyle.height = 'calc(91vh)';
+                }                
+                else {
+                    $scope.dynFlex = 70;
+                    $scope.chartWrapStyle.height = 'calc(55vh)';
+                }
+                
                 var i;
                 var chartInData = data;
                 for (i = 0; i < chartInData.length; i++) {
@@ -732,13 +767,35 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
         },
         selectCondition: function() {
-            $scope.getAggregation();
+            if(!$scope.isDrilled){
+                $scope.getAggregation();
+            }else{
+                if($scope.executeQryData.executeMeasures.length == 1){
+                    $scope.getDrilledAggregation();
+                }else{
+                    $scope.executeQryData.executeMeasures.pop();
+                    eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
+                    alert("drilldown only supports single series");
+                }                
+            }
         },
         selectAttribute: function(fieldName) {
-            $scope.executeQryData.executeColumns = [{
-                filedName: fieldName
-            }];
-            $scope.getGroupedAggregation(fieldName);
+            if(!$scope.isDrilled){
+//                if($scope.executeQryData.executeColumns.length == 0){
+                    $scope.executeQryData.executeColumns = [{
+                        filedName: fieldName
+                    }];
+                    $scope.getGroupedAggregation(fieldName);                
+            }else if($scope.executeQryData.executeColumns.length == 2){
+                eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
+                alert("drilldown only supports for two levels");                
+            }else{
+                $scope.executeQryData.executeColumns.push({
+                    filedName: fieldName
+                });
+                $scope.getDrilledAggregation();
+            }
+            
         },
         executeQuery: function(cat, res) {
             if (cat != "") {
@@ -767,7 +824,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             $scope.getAggregation();
         },
         onGetAggData: function(res) {
+            $scope.isPendingRequest = false;
             $scope.setMeasureData(res);
+        },
+        onGetGrpAggData: function(){
+            $scope.isPendingRequest = false;
         },
         saveWidget: function(wid) {
             wid.highchartsNG = $scope.highchartsNG;
@@ -1464,12 +1525,125 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     $scope.highchartsNG.series = data;
                     $scope.eventHndler.isLoadingChart = false;
                     $scope.receivedQuery = query;
+                    eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
                 });
             } else {
                 alert('request failed');
             }
 
         }, $scope.selectedCat);
+    };
+    
+    $scope.getDrilledAggregation = function(){
+        var fieldArr = [];
+        var catArr = [];
+        $scope.eventHndler.isLoadingChart = true;
+
+        var measureArr = $scope.executeQryData.executeMeasures;
+        measureArr.forEach(function(key) {
+            fieldArr.push({
+                field: key.filedName,
+                agg: key.condition
+            });
+        });
+        
+        $scope.executeQryData.executeColumns.forEach(function(key){
+            catArr.push('"'+key.filedName+'"');
+        });
+        
+        $scope.client.getHighestLevel($scope.sourceData.tbl, catArr.toString(), function(res, status){
+            if(status){                
+                var serArr = [];
+                var serMainArr = [];
+                var drillObj = {};
+                var drillSerMainArr = [];
+                var i = 0 , j= 0;
+                syncDrill(i, res);
+                function syncDrill(i, res){
+                    if(i<res.length){
+                        $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res1, status, query) {
+                            if (status) {
+                                console.log(JSON.stringify(res1));
+                                var serNameKey = "";
+                                var serValKey = "";
+                                for (var key in res1[0]) {
+                                    if (Object.prototype.hasOwnProperty.call(res1[0], key)) {
+                                        typeof res1[0][key] == "string" ? serNameKey = key : serValKey = key;                  
+                                    }
+                                }
+                                
+                                for(k=0;k<res1.length;k++){
+                                    serArr.push({
+                                        name: res1[k][serNameKey],
+                                        y: res1[k][serValKey],
+                                        drilldown: res1[k][serNameKey]
+                                    });
+                                }
+                                
+                                serMainArr.push({
+                                    name: serValKey,
+                                    data: serArr
+                                });
+                                
+                                console.log(JSON.stringify(serMainArr));
+                                syncAgg(j, res1);
+                                function syncAgg(j, res1){
+                                    if(j< res1.length){
+                                        var con = res[i].value + "='" + res1[j][res[i].value] + "'";
+                                        var drillSerArr = [];
+                                        $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res2, status, query) {
+                                            if (status) {
+                                                var dserNameKey = "";
+                                                var dserValKey = "";
+                                                for (var key in res2[0]) {
+                                                    if (Object.prototype.hasOwnProperty.call(res2[0], key)) {
+                                                        typeof res2[0][key] == "string" ? dserNameKey = key : dserValKey = key;
+                                                    }
+                                                }
+                                                console.log(JSON.stringify(res2));
+                                                
+                                                for(k=0;k<res2.length;k++){
+                                                    drillSerArr.push({
+                                                        name: res2[k][dserNameKey],
+                                                        y: res2[k][dserValKey],
+                                                        //drilldown: res2[k][dserNameKey]
+                                                    });
+                                                }
+                                                
+                                                drillSerMainArr.push({
+                                                    name: dserValKey,
+                                                    id: res1[j][res[i].value],
+                                                    data: drillSerArr
+                                                });
+                                                
+                                                console.log(JSON.stringify(drillSerMainArr));
+                                                syncAgg(j+1, res1);
+                                            }else{
+                                                alert('request failed');
+                                            }
+                                        }, res[i+1].value, con);
+                                    }else{
+                                        $scope.highchartsNG.series = serMainArr;
+                                        $scope.highchartsNG['drilldown'] = {series:drillSerMainArr};
+                                        console.log(JSON.stringify($scope.highchartsNG));
+                                        $scope.eventHndler.isLoadingChart = false;
+                                        eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
+                                    }
+                                };
+                                
+                            } else {
+                                alert('request failed');
+                            }
+
+                        }, res[i].value);
+                    }else{
+                        
+                    }
+                };
+            }else{
+                alert('request failed');
+            }
+        });
     };
 
     $scope.getExecuteAgg = function(query) {
@@ -1567,6 +1741,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
     $scope.changeEditState = function() {
         $scope.queryEditState = !$scope.queryEditState;
+    };
+    
+    //drilling down from here....
+    $scope.toggleDrilled = function(state){        
+        $scope.isDrilled = state;
+        if(!state){
+            $scope.executeQryData.executeColumns.pop();
+            $scope.getGroupedAggregation($scope.executeQryData.executeColumns[0].filedName);
+        }
     };
 
 }).directive("markable", function() {

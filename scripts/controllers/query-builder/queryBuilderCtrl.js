@@ -1328,7 +1328,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             // $scope.commonData.chartTypes[17].view = "views/googleMaps/ViewGoogleMapsBranches.html";
         },
         saveWidget: function(wid) {
-            wid.widView = "views/googleMaps/ViewGoogleMapsClaims.html";
+            wid.widView = "views/googleMaps/ViewGoogleMapsBranches.html";
             wid.uniqueType = "Google Maps Branches";
             // wid.initCtrl="";
             setTimeout(function() {

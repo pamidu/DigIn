@@ -86,7 +86,7 @@
                         method: "get"
                     };
                     $servicehelpers.sendWorker(wSrc, wData, function(data, status, msg) {
-                        cb(data, status);
+                        cb(data, status, msg);
                     });
                 },
                 

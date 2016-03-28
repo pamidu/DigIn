@@ -767,7 +767,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
         },
         selectCondition: function() {
-            if(!$scope.isDrilled){
+            if(!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0){
                 $scope.getAggregation();
             }else{
                 if($scope.executeQryData.executeMeasures.length == 1){
@@ -780,7 +780,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             }
         },
         selectAttribute: function(fieldName) {
-            if(!$scope.isDrilled){
+            if(!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0){
 //                if($scope.executeQryData.executeColumns.length == 0){
                     $scope.executeQryData.executeColumns = [{
                         filedName: fieldName
@@ -789,7 +789,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             }else if($scope.executeQryData.executeColumns.length == 2){
                 eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
                 alert("drilldown only supports for two levels");                
-            }else{
+            }else if($scope.executeQryData.executeColumns.length == 1){
                 $scope.executeQryData.executeColumns.push({
                     filedName: fieldName
                 });
@@ -1742,7 +1742,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     //drilling down from here...
     $scope.toggleDrilled = function(state){
         $scope.isDrilled = state;
-        if(!state){
+        if(!state && $scope.executeQryData.executeColumns.length == 2){
             $scope.executeQryData.executeColumns.pop();
             $scope.getGroupedAggregation($scope.executeQryData.executeColumns[0].filedName);
         }

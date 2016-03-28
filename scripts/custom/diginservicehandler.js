@@ -145,7 +145,9 @@
                         var res = JSON.parse(event.data.res);
                         res.Is_Success ? cb(res.Result, event.data.state, res.Custom_Message) : cb(res.Custom_Message, event.data.state,"");
                     }else{
+                        if(typeof res != "undefined")
                         cb(res.Custom_Message, event.data.state,"");
+                        else cb(null, event.data.state,"");
                     }
                        
                 });

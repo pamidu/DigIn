@@ -797,7 +797,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             }
             
         },
-        executeQuery: function(cat, res) {
+        executeQuery: function(cat, res, query) {
             if (cat != "") {
                 $scope.executeQryData.executeColumns = [{
                     filedName: cat
@@ -1383,23 +1383,18 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             $scope.getAggregation();
         },
         selectAttribute: function(fieldName) {
-            $scope.getGroupedAggregation(fieldName);
+            //$scope.getGroupedAggregation(fieldName);
+            alert("grouping in metric is not supported");
         },
-        executeQuery: function(cat, res) {
-            if (cat != "") {
-                $scope.executeQryData.executeColumns = [{
-                    filedName: cat
-                }];
-                $scope.mapResult(cat, res, function(data) {
-                    $scope.highchartsNG.series = data;
-                    $scope.eventHndler.isLoadingChart = false;
-                    $scope.receivedQuery = query;
-                    $scope.queryEditState = false;
-                });
-            } else {
-                $scope.setMeasureData(res[0]);
-                $scope.receivedQuery = query;
+        executeQuery: function(cat, res, query) {            
+            for (var c in res[0]) {
+                if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+                    $scope.selectedChart.initObj.value = res[0][c];
+                    $scope.selectedChart.initObj.label = c;
+                }
             }
+            $scope.eventHndler.isLoadingChart = false;
+            $scope.receivedQuery = query;
         },
         removeMea: function(l) {
             if (l > 0) $scope.getAggregation();
@@ -1666,7 +1661,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         }
                     }
                     $scope.executeQryData.executeMeasures = measureArr;
-                    eval("$scope." + $scope.selectedChart.chartType + ".executeQuery(cat, res)");
+                    eval("$scope." + $scope.selectedChart.chartType + ".executeQuery(cat, res, query)");
                 } else {
                     alert('request failed');
                 }
@@ -1741,10 +1736,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
     $scope.changeEditState = function() {
         $scope.queryEditState = !$scope.queryEditState;
+        $scope.isPendingRequest = $scope.queryEditState;
     };
     
-    //drilling down from here....
-    $scope.toggleDrilled = function(state){        
+    //drilling down from here...
+    $scope.toggleDrilled = function(state){
         $scope.isDrilled = state;
         if(!state){
             $scope.executeQryData.executeColumns.pop();

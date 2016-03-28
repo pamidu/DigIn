@@ -206,7 +206,7 @@
                     <div class="digin-gb-chart-wrap-view-container" ng-style="chartWrapStyle" ng-include src="selectedChart.view"></div>
                 </div>  
 
-                <div class="digin-gb-row" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric'">
+                <div ng-show="!isDrilled" class="digin-gb-row" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric'">
                     <div class="panel-header inline-panel-header p-b-0">
                         <h3 class="font-weight-300">
                             custom query design

@@ -15,7 +15,7 @@ function getData(receivedData){
                 postMessage({res: xhr.response,state: false});
             }
         }else{
-            postMessage({res: null,state: false});
+            //postMessage({res: null,state: false});
         }
     }
     xhr.ontimeout = function() {

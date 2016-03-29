@@ -29,13 +29,31 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.sourceData = $csContainer.fetchSrcObj();
     $scope.client = $diginengine.getClient($scope.sourceData.src);
     $scope.queryEditState = false;
+    $scope.forecastObj = {
+        models:["Additive", "Multiplicative", "Linear"],
+        intervals:["Daily", "Weekly", "Monthly", "Yearly"],
+        paramObj: {
+            model: "Additive",
+            pred_error_level: 0.0001,
+            alpha: 0,
+            beta: 53,
+            gamma: 34,
+            fcast_days: 30,
+            tbl: $scope.sourceData.tbl,
+            field_name_d: "",
+            field_name_f: "",
+            steps_pday: 1,
+            m: 7,
+            interval: "Daily"
+        }
+    }
     $scope.initHighchartObj = {
         options: {
             chart: {
                 type: $scope.chartType == '' ? 'bar' : $scope.chartType,
                 // Explicitly tell the width and height of a chart
                 width: null,
-                height: 367,
+                height: 367                
             }
         },
         title: {
@@ -182,7 +200,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct02',
                 icon: 'ti-bar-chart',
@@ -191,7 +210,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct03',
                 icon: 'fa fa-line-chart',
@@ -200,7 +220,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct04',
                 icon: ' chart-diginSmooth_line',
@@ -209,7 +230,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct05',
                 icon: 'fa fa-area-chart',
@@ -218,7 +240,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct06',
                 icon: 'chart-diginsmooth_area',
@@ -227,7 +250,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct07',
                 icon: 'chart-diginalluvialt',
@@ -235,7 +259,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 chart: 'alluvial',
                 selected: false,
                 chartType: 'd3Charts',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct08',
                 icon: 'chart-diginscatter',
@@ -244,7 +269,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct09',
                 icon: 'chart-diginbump',
@@ -252,7 +278,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 chart: 'bump',
                 selected: false,
                 chartType: 'd3Charts',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct10',
                 icon: 'chart-digincluster-dendrogram',
@@ -260,7 +287,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 chart: 'clusterDendrogram',
                 selected: false,
                 chartType: 'd3Charts',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct11',
                 icon: 'chart-digincluster',
@@ -268,7 +296,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 chart: 'clusterForce',
                 selected: false,
                 chartType: 'd3Charts',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct12',
                 icon: 'chart-diginconvex-hull',
@@ -276,7 +305,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 chart: 'convexHull',
                 selected: false,
                 chartType: 'd3Charts',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct13',
                 icon: 'chart-diginhierarchy-chart',
@@ -285,7 +315,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'd3hierarchy',
                 view: 'views/query/chart-views/hierarchySummary.html',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct14',
                 icon: 'chart-diginsunburst-chart',
@@ -294,7 +325,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'd3sunburst',
                 view: 'views/query/chart-views/sunburst.html',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct15',
                 icon: 'chart-digintreeeview',
@@ -302,7 +334,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 chart: 'treeeview',
                 selected: false,
                 chartType: 'd3Charts',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct16',
                 icon: 'ti-layout-accordion-list',
@@ -311,7 +344,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'pivotSummary',
                 view: 'views/query/chart-views/pivotSummary.html',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
 
             }, {
                 id: 'ct17',
@@ -324,7 +358,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 initObj: {
                     value: 33852,
                     label: "Sales Average"
-                }
+                },
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct18',
                 icon: 'ti-map-alt',
@@ -333,7 +368,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'googleMap',
                 view: 'views/googleMaps/ViewGoogleMapsBranches.html',
-                initObj: {}
+                initObj: {},
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct19',
                 icon: 'chart-diginsunburst-chart',
@@ -342,7 +378,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'boxplot',
                 view: 'views/query/chart-views/BoxPlot.html',
-                initObj: $scope.initHighchartObj
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
 
             }, {
                 id: 'ct20',
@@ -352,7 +389,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'histogram',
                 view: 'views/query/chart-views/histogram.html',
-                initObj: {}
+                initObj: {},
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct21',
                 icon: 'chart-diginsunburst-chart',
@@ -361,7 +399,18 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'bubble',
                 view: 'views/query/chart-views/bubble.html',
-                initObj: {}
+                initObj: {},
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            },{
+                id: 'ct22',
+                icon: 'fa fa-area-chart',
+                name: 'forecast',
+                chart: 'forecast',
+                selected: false,
+                chartType: 'forecast',
+                view: 'views/query/chart-views/highcharts.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/forecastSettings.html'
             }
 
 
@@ -837,6 +886,95 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             $scope.saveChart(wid);
         }
     };
+    
+    
+    $scope.forecast = {
+        changeType: function() {
+            var mergedArr = $scope.sourceData.fMeaArr.concat( $scope.sourceData.fAttArr);
+            var field_d, field_f = "";
+            var fObj = {
+                model: "Additive",
+                pred_error_level: 0.0001,
+                alpha: 0,
+                beta: 53,
+                gamma: 34,
+                fcast_days: 30,
+                tbl: $scope.sourceData.tbl,
+                field_name_d: "",
+                field_name_f: "",
+                steps_pday: 1,
+                m: 7,
+                interval: "Daily"
+            };
+            mergedArr.forEach(function(k){
+                if(k.dataType == "TIMESTAMP" || k.dataType == "datetime"){
+                    $scope.forecastObj.paramObj.field_name_d = k.name;
+                }else{
+                    $scope.forecastObj.paramObj.field_name_f = k.name;
+                }
+            });
+            
+            $scope.generateForecast($scope.forecastObj.paramObj);
+        },
+        saveWidget: function(wid) {
+            wid.highchartsNG = $scope.highchartsNG;
+            wid.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
+            wid.initCtrl = "elasticInit";
+            $scope.saveChart(wid);
+        }
+    };
+    
+    $scope.$watch("forecastObj.paramObj", function(newValue, oldValue) {
+      if(newValue != oldValue){
+        $scope.generateForecast(newValue);
+      }      
+    }, true);
+    
+    $scope.generateForecast = function(fObj){
+        $scope.eventHndler.isLoadingChart = true;
+        $scope.client.getForcast(fObj, function(data, status){            
+            var mainSerObj = [];
+            if (status) {
+                data.forEach(function(key){
+                    switch (key.target)
+                    {
+                        case "RMSE":
+                            break;
+                        case "TotalForecastedVal":
+                            break;
+                        default:
+                            var serObj = [];
+                            key.datapoints.forEach(function(val){
+                                var dArr = val[1].split('-');
+                                serObj.push([
+                                    Date.UTC(parseInt(dArr[0]), parseInt(dArr[1])-1, parseInt(dArr[2])),
+                                    val[0]
+                                ]);
+                            });
+                            mainSerObj.push({
+                                name: key.target,
+                                data: serObj    
+                            });
+                    }
+                });
+                console.log(JSON.stringify(mainSerObj));
+                $scope.highchartsNG = {};                
+                $scope.highchartsNG['options'] = {
+                    chart: {
+                        zoomType: 'x'
+                    }
+                };
+                $scope.highchartsNG['xAxis'] = {type : 'datetime'};
+                $scope.highchartsNG.series = mainSerObj;
+                $scope.eventHndler.isLoadingChart = false;
+                
+                
+            }else{
+                
+            }
+        });
+    };
+    
     $scope.boxplot = {
         changeType: function() {
             $scope.eventHndler.isLoadingChart = true;

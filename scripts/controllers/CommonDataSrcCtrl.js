@@ -51,6 +51,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             {'type': 'decimal', 'category': 'mes'},
             {'type': 'float', 'category': 'mes'},
             {'type': 'datetime', 'category': 'mes'},
+            {'type': 'TIMESTAMP', 'category': 'mes'},            
             {'type': 'money', 'category': 'mes'},
             {'type': 'INTEGER', 'category': 'mes'},
             {'type': 'FLOAT', 'category': 'mes'}
@@ -251,15 +252,15 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                             var val = res[c];
                                             angular.forEach(val, function (value, key) {
                                                 if (key == 'FieldType') {
-                                                    for (var i = 0; i < dataTypes.length; i++) {
+                                                     for (var i = 0; i < dataTypes.length; i++) {
                                                         if (value == dataTypes[i].type) {
                                                             if (dataTypes[i].category == 'att') {
                                                                 $scope.commonUi.attribute.push(
-                                                                    {id: c, name: res[c].Fieldname, isRemove: false}
+                                                                    {id: c, name: res[c].Fieldname, isRemove: false, dataType: dataTypes[i].type}
                                                                 )
                                                             } else {
                                                                 $scope.commonUi.measures.push(
-                                                                    {id: c, name: res[c].Fieldname, isRemove: false}
+                                                                    {id: c, name: res[c].Fieldname, isRemove: false, dataType: dataTypes[i].type}
                                                                 )
                                                             }
                                                         }

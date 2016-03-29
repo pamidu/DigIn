@@ -1,0 +1,26 @@
+<div layout="column">
+    <md-input-container>
+        <label>Model</label>
+        <md-select ng-model="forecastObj.paramObj.model">
+          <md-option ng-repeat="mod in forecastObj.models" value="{{mod}}">
+            {{mod}}
+          </md-option>
+        </md-select>
+    </md-input-container>
+    <md-input-container>
+        <label>Interval</label>
+        <md-select ng-model="forecastObj.paramObj.interval">
+          <md-option ng-repeat="int in forecastObj.intervals" value="{{int}}">
+            {{int}}
+          </md-option>
+        </md-select>
+    </md-input-container>
+    <md-input-container>
+        <label>Forcast days</label>
+        <input ng-model="forecastObj.paramObj.fcast_days">
+    </md-input-container>
+    <md-input-container>
+        <label>Steps per day</label>
+        <input ng-model="forecastObj.paramObj.steps_pday">
+    </md-input-container>
+</div>

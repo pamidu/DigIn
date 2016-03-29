@@ -46,7 +46,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             m: 7,
             interval: "Daily"
         }
-    }
+    };
+    
+    $scope.requestLimits = [1000,2000,3000,4000,5000];
+    
     $scope.initHighchartObj = {
         options: {
             chart: {
@@ -57,14 +60,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             }
         },
         title: {
-            text: 'Monthly Average Temperature',
+            text: "Chart Title",
             x: -20 //center
         },
         
         xAxis: {
             categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-            ]
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         },
         yAxis: {
             title: {

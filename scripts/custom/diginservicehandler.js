@@ -139,6 +139,7 @@
     });
     dsh.factory('$servicehelpers', function($http, $auth) {
         return {
+            limit: 1000,
             httpSend: function(method, cb, reqUrl, obj) {
                 if (method == "get") {
                     $http.get(reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=duosoftware.com', {
@@ -155,7 +156,7 @@
             sendWorker: function(wSrc, wData, cb) {
                 var w = new Worker(wSrc);
                 
-                wData.rUrl = wData.rUrl + "&SecurityToken=" + getCookie("securityToken") + "&Domain=duosoftware.com";
+                wData.rUrl = wData.rUrl + "&SecurityToken=" + getCookie("securityToken") + "&Domain=duosoftware.com&limit="+this.limit;
                 w.postMessage(JSON.stringify(wData));
                 w.addEventListener('message', function(event) {
                     if(event.data.state){

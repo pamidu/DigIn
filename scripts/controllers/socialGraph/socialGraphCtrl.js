@@ -112,6 +112,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
 
     //set the map
     function setMap(data) {
+        $scope.arrAdds = [];
         for (var key in data.value) {
             if (Object.prototype.hasOwnProperty.call(data.value, key)) {
                 $scope.arrAdds.push({add: key, likeCount: data.value[key]});

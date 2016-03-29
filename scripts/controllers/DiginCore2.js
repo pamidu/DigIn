@@ -732,6 +732,7 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                     widData: {},
                     widChart: widget.widConfig,
                     widView: widget.widView,
+                    widName: widget.title,
                     dataView: widget.dataView,
                     dataCtrl: widget.dataCtrl,
                     initTemplate: widget.initTemplate,

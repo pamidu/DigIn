@@ -55,108 +55,109 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
        $scope.currWidget = {
         widData:{},
         widChart: widget.widConfig,
-        widView:widget.widView,
+        widView: widget.widView,
+        widName: widget.title,
         initTemplate: widget.initTemplate,
         initCtrl: widget.initController,
-    uniqueType: widget.title,
-    expanded: true,
-    seriesname :"",
-    externalDataURL: "",
-    dataname:"",
-    d3plugin:"",
-     divider: false,    
-    chartSeries : $scope.chartSeries,
-    query:"select * from testJay where Name!= 'Beast Master'",
-    id: "chart" + Math.floor(Math.random()*(100-10+1)+10),
-    type:"All",
-    width : '350px',
-    left :  $scope.leftPosition +'px',
-    top :  $scope.topPosition +'px',
-    height : '270px',
-    chartTypes:[
-  {"id": "line", "title": "Line"},
-  {"id": "spline", "title": "Smooth line"},
-  {"id": "area", "title": "Area"},
-  {"id": "areaspline", "title": "Smooth area"},
-  {"id": "column", "title": "Column"},
-  {"id": "bar", "title": "Bar"},
-  {"id": "pie", "title": "Pie"},
-  {"id": "scatter", "title": "Scatter"}
-  ],
-       dashStyles:[
-  {"id": "Solid", "title": "Solid"},
-  {"id": "ShortDash", "title": "ShortDash"},
-  {"id": "ShortDot", "title": "ShortDot"},
-  {"id": "ShortDashDot", "title": "ShortDashDot"},
-  {"id": "ShortDashDotDot", "title": "ShortDashDotDot"},
-  {"id": "Dot", "title": "Dot"},
-  {"id": "Dash", "title": "Dash"},
-  {"id": "LongDash", "title": "LongDash"},
-  {"id": "DashDot", "title": "DashDot"},
-  {"id": "LongDashDot", "title": "LongDashDot"},
-  {"id": "LongDashDotDot", "title": "LongDashDotDot"}
-  ],
+        uniqueType: widget.title,
+        expanded: true,
+        seriesname :"",
+        externalDataURL: "",
+        dataname:"",
+        d3plugin:"",
+         divider: false,    
+        chartSeries : $scope.chartSeries,
+        query:"select * from testJay where Name!= 'Beast Master'",
+        id: "chart" + Math.floor(Math.random()*(100-10+1)+10),
+        type:"All",
+        width : '350px',
+        left :  $scope.leftPosition +'px',
+        top :  $scope.topPosition +'px',
+        height : '270px',
+        chartTypes:[
+      {"id": "line", "title": "Line"},
+      {"id": "spline", "title": "Smooth line"},
+      {"id": "area", "title": "Area"},
+      {"id": "areaspline", "title": "Smooth area"},
+      {"id": "column", "title": "Column"},
+      {"id": "bar", "title": "Bar"},
+      {"id": "pie", "title": "Pie"},
+      {"id": "scatter", "title": "Scatter"}
+      ],
+           dashStyles:[
+      {"id": "Solid", "title": "Solid"},
+      {"id": "ShortDash", "title": "ShortDash"},
+      {"id": "ShortDot", "title": "ShortDot"},
+      {"id": "ShortDashDot", "title": "ShortDashDot"},
+      {"id": "ShortDashDotDot", "title": "ShortDashDotDot"},
+      {"id": "Dot", "title": "Dot"},
+      {"id": "Dash", "title": "Dash"},
+      {"id": "LongDash", "title": "LongDash"},
+      {"id": "DashDot", "title": "DashDot"},
+      {"id": "LongDashDot", "title": "LongDashDot"},
+      {"id": "LongDashDotDot", "title": "LongDashDotDot"}
+      ],
 
-  chartStack : [
-  {"id": '', "title": "No"},
-  {"id": "normal", "title": "Normal"},
-  {"id": "percent", "title": "Percent"}
-  ],
-    chartConfig : {
-       exporting: {
-         enabled: false
-},
-    options: {
-    chart: {         
-      type:  $scope.ChartType
+      chartStack : [
+      {"id": '', "title": "No"},
+      {"id": "normal", "title": "Normal"},
+      {"id": "percent", "title": "Percent"}
+      ],
+        chartConfig : {
+           exporting: {
+             enabled: false
     },
-     
-       plotOptions: {
-                        series: {
-                            borderWidth: 0,
-                            depth: 35,
-                            dataLabels: {
-                                enabled: true,
-                            },
-                            cursor: 'pointer',
-                            point: {
-                                events: {
-                                    click: function() {
-                                        alert('rawr');
+        options: {
+        chart: {         
+          type:  $scope.ChartType
+        },
+         
+           plotOptions: {
+                            series: {
+                                borderWidth: 0,
+                                depth: 35,
+                                dataLabels: {
+                                    enabled: true,
+                                },
+                                cursor: 'pointer',
+                                point: {
+                                    events: {
+                                        click: function() {
+                                            alert('rawr');
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
+        },
+       series: $scope.chartSeries,
+        title: {
+        text: widget.title,
+        style: {
+            display: 'none'
+        }
+        },
+        subtitle: {
+        text: '',
+        style: {
+            display: 'none'
+        }
     },
-   series: $scope.chartSeries,
-    title: {
-    text: widget.title,
-    style: {
-        display: 'none'
-    }
-    },
-    subtitle: {
-    text: '',
-    style: {
-        display: 'none'
-    }
-},
-    credits: {
-      enabled: false,
-    
-    },
+        credits: {
+          enabled: false,
+        
+        },
 
-    loading: false,
-    size: {
-       height :220,
-     width :300
-    }
-  }
-    
-  }
+        loading: false,
+        size: {
+           height :220,
+         width :300
+        }
+      }
+        
+      }
 
-         
+             
          $rootScope.dashboard.widgets.push($scope.currWidget);
          
          // if($scope.currWidget.uniqueType != "Predefined Analytics") 

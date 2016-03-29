@@ -334,6 +334,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 $scope.currWidget = {
                      widData: {},
                      widView: "",
+                     widName: "Dynamic Visuals",
                      dataView: "ViewElasticData",
                      dataCtrl: "elasticDataCtrl",
                      initTemplate: "",

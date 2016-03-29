@@ -1312,6 +1312,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         },
         saveWidget: function(wid) {
             wid.widView = "views/ViewPivotSummary.html";
+            wid.widName = "Pivot Summary"
             wid.widData.summary = $scope.summaryData;
             wid.widData.fieldArray = $scope.fieldArray;
             wid.uniqueType = "Pivot Summary";

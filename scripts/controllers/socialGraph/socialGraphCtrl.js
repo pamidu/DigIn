@@ -251,6 +251,8 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
             fbInterface.loginToFb($scope, true);
         } else {
             fbInterface.logoutFromFb($scope, true);
+            $scope.activePageSearch = true;
+            $scope.preloader = false;
         }
     };
 

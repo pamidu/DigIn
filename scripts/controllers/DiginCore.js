@@ -1023,7 +1023,7 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
             JSONData = $scope.JSONDataBranch;
 
             JsonToArray(); 
-            setTimeout(function(){theNext();},400);   
+            setTimeout(function(){theNext();},400);  
         }   
     
         // ====== Json data to array ======    

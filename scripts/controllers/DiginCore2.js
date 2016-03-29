@@ -238,40 +238,54 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
             $scope.tableData = $filter("filter")($scope.originalList, query);
         };
 
-        $scope.downloadPDF = function(){
+        $scope.downloadPDF = function(ev){
 
-                            var tableDataString = "";
-                            var header = "<thead>";
+                            $mdDialog.show({
+                                    controller: 'InputNameCtrl',
+                                    templateUrl: 'views/getFileName.html',
+                                    parent: angular.element(document.body),
+                                    targetEvent: ev,
+                                    clickOutsideToClose: true
+                            }).then(function () {
+                                if($rootScope.pdfFilename){
+                                    var tableDataString = "";
+                                    var header = "<thead>";
 
-                            for(var i = 0; i < $scope.fieldData.length; i++){
-                                header += "<th>" + $scope.fieldData[i].toString() + "</th>"; 
-                            }
+                                    for(var i = 0; i < $scope.fieldData.length; i++){
+                                        header += "<th>" + $scope.fieldData[i].toString() + "</th>"; 
+                                    }
 
-                            header += "</thead>" 
-                            tableDataString = "<table>" + header + "<tbody>";
+                                    header += "</thead>" 
+                                    tableDataString = "<table>" + header + "<tbody>";
 
-                            for(var i = 0; i < $scope.tableData.length; i++){
-                                console.log($scope.tableData[i]);
-                                var rowData = "<tr>";
-                                for(var j = 0; j < $scope.fieldData.length; j++){
-                                   console.log($scope.tableData[i][$scope.fieldData[j]]);
-                                   rowData += "<td>" +$scope.tableData[i][$scope.fieldData[j]].toString() + "</td>";
+                                    for(var i = 0; i < $scope.tableData.length; i++){
+                                        console.log($scope.tableData[i]);
+                                        var rowData = "<tr>";
+                                        for(var j = 0; j < $scope.fieldData.length; j++){
+                                           console.log($scope.tableData[i][$scope.fieldData[j]]);
+                                           rowData += "<td>" +$scope.tableData[i][$scope.fieldData[j]].toString() + "</td>";
+                                        }
+                                        rowData += "</tr>";
+                                        tableDataString += rowData
+                                    }
+
+                                    tableDataString += "</tbody></table>"
+                    
+                                    var htmlElement = $(".table-area").get(0);
+                                    var config = {
+                                        title: $rootScope.pdfFilename,
+                                        titleLeft: 50, 
+                                        titleTop: 20,
+                                        tableLeft: 20,
+                                        tableTop: 30
+                                    };
+
+                                    generatePDF1.generate(htmlElement, config, tableDataString);
+                                    $rootScope.pdfFilename = "";       
                                 }
-                                rowData += "</tr>";
-                                tableDataString += rowData
-                            }
+                            });
 
-                            tableDataString += "</tbody></table>"
-            
-                            var htmlElement = $(".table-area").get(0);
-                            var config = {
-                                title:"Data",
-                                titleLeft: 50, 
-                                titleTop: 20,
-                                tableLeft: 20,
-                                tableTop: 30
-                            };
-                            generatePDF1.generate(htmlElement, config, tableDataString);
+                            
         }
         
         $scope.$watch('tableData', function(newValue, oldValue) {
@@ -823,3 +837,25 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
         };
     }
 ]);
+
+routerApp.controller('InputNameCtrl', [ '$scope', '$mdDialog', '$rootScope', function( $scope, $mdDialog, $rootScope) {
+    
+    $scope.setFileName = function(){
+        if($scope.filename === undefined){
+            $rootScope.pdfFilename = "Data";
+        }
+        else if($scope.filename.length > 0){
+            $rootScope.pdfFilename = $scope.filename;
+        }
+        else{
+            $rootScope.pdfFilename = "Data";
+        }
+        $scope.close();
+    }
+
+    $scope.close = function() {
+
+        $mdDialog.hide();
+    };
+
+}]);

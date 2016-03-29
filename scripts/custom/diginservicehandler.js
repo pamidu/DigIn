@@ -109,6 +109,23 @@
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
                     }, $diginurls.diginengine + "/generatebubble?&tablename=[" + getNamespace() + "." + tbl +"]&&x="+x+ "&&y="+y+"&&c="+c+"&&s="+x+"&db=" + database );
+                },
+                getForcast: function(fObj, cb){
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + "/forecast?model=" + fObj.model + 
+                                             "&pred_error_level=" + fObj.pred_error_level +
+                                             "&alpha=" + fObj.alpha +
+                                             "&beta=" + fObj.beta +
+                                             "&gamma=" + fObj.gamma +
+                                             "&fcast_days=" + fObj.fcast_days +
+                                             "&table_name=[" + getNamespace() + "." + fObj.tbl +
+                                             "]&field_name_d=" + fObj.field_name_d +
+                                             "&field_name_f=" + fObj.field_name_f +
+                                             "&steps_pday=" + fObj.steps_pday +
+                                             "&m=" + fObj.m +
+                                             "&interval=" + fObj.interval +
+                                             "&db=" + database);                    
                 }
             }
         }
@@ -122,6 +139,7 @@
     });
     dsh.factory('$servicehelpers', function($http, $auth) {
         return {
+            limit: 1000,
             httpSend: function(method, cb, reqUrl, obj) {
                 if (method == "get") {
                     $http.get(reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=duosoftware.com', {
@@ -138,7 +156,7 @@
             sendWorker: function(wSrc, wData, cb) {
                 var w = new Worker(wSrc);
                 
-                wData.rUrl = wData.rUrl + "&SecurityToken=" + getCookie("securityToken") + "&Domain=duosoftware.com";
+                wData.rUrl = wData.rUrl + "&SecurityToken=" + getCookie("securityToken") + "&Domain=duosoftware.com&limit="+this.limit;
                 w.postMessage(JSON.stringify(wData));
                 w.addEventListener('message', function(event) {
                     if(event.data.state){

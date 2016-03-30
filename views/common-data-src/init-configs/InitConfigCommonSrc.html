@@ -28,7 +28,7 @@
             <div layout="column">
               <md-input-container flex>
                     <label>Chart Label</label>
-                    <input name="sizeX" placeholder="label" ng-model="widget.uniqueType">
+                    <input name="sizeX" placeholder="label" ng-model="widget.widName">
                 </md-input-container>
                <md-select ng-if="widget.commonSrcConfig.src=='DuoStore'" ng-model="chartCategory.groupField" placeholder="Select a category">
                      <md-option ng-value="catItem" ng-repeat="catItem in arrayAttributes">{{catItem}}</md-option>

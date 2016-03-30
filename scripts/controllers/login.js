@@ -30,15 +30,18 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                     $auth.login($scope.txtUname, $scope.txtPwd, "duoworld.duoweb.info");
                     $auth.onLoginResult(function () {
                         $scope.isLoggedin = true;
+                        
                         $rootScope.username = $scope.txtUname;
                         localStorage.setItem('username', $scope.txtUname);
-                        var userInfo = $auth.getSession();
+                        //var userInfo = $auth.getSession();
+                        var userInfo = JSON.parse(getCookie("authData"));
+
                         //console.log("user data:"+JSON.stringify(userInfo));
-                        $rootScope.name = userInfo.Name;
-                        localStorage.setItem('name', userInfo.Name);
-                        $rootScope.email = userInfo.Email;
-                        localStorage.setItem('email', userInfo.Email);
-                        $state.go('welcome');
+                        // $rootScope.name = userInfo.Name;
+                        // localStorage.setItem('name', userInfo.Name);
+                        // $rootScope.email = userInfo.Email;
+                        // localStorage.setItem('email', userInfo.Email);
+                        // $state.go('welcome');
 
                     });
 

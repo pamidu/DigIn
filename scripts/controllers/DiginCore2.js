@@ -387,6 +387,9 @@ routerApp.controller('shareCtrl', ['$scope', '$rootScope', '$objectstore', '$mdD
     }, {
         provider: "tumbler",
         icon: "styles/css/images/icons/tumblr.svg"
+    },{
+        provider: "email",
+        icon: "styles/css/images/icons/email.svg"
     }];
 
     $scope.closeDialog = function() {
@@ -406,18 +409,26 @@ routerApp.controller('shareCtrl', ['$scope', '$rootScope', '$objectstore', '$mdD
 
 
 
-    $scope.openEmail = function() {
+    $scope.openProvider = function(provider) {
 
-        $mdDialog.show({
-            controller: 'emailCtrl',
-            templateUrl: 'views/loginEmail.html',
-            resolve: {
+        if(provider=="email")
+        {
+            $mdDialog.show({
+                controller: 'emailCtrl',
+                templateUrl: 'views/loginEmail.html',
+                resolve: {
 
-            }
-        })
+                }
+            })
+        }
+        else if (provider=="")
+        {
+        }
+        
     };
 
 }]);
+
 
 routerApp.controller('ExportCtrl', ['$scope', '$objectstore', '$mdDialog', '$rootScope', function($scope,
 

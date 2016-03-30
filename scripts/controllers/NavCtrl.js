@@ -10,6 +10,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
 
         localStorage.clear();
+        $scope.username=JSON.parse(getCookie('authData')).Username;
+
+        $scope.imageUrl="styles/css/images/innerlogo.png"; 
+
+
+        //$rootScope.imageUrl="styles/css/images/innerlogo.png"; 
 
         var $windowHeight = $(window).height(),
             $windowWidth = $(window).width(),
@@ -131,14 +137,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         function showProfileController($rootScope,$scope, $mdDialog) {
 
-            var userInfo = $auth.getSession();  
+            //var userInfo = $auth.getSession();  
+            var userInfo = JSON.parse(getCookie("authData"));
 
             $scope.user = {
                 fname: userInfo.Name,
                 lname: "",
                 email: userInfo.Email,
-                location: "Colombo",
-                mobile: "077123123123",
+                //location: "Colombo",
+                //mobile: "077123123123",
                 profile_pic: "styles/css/images/person.jpg"
             };
 
@@ -174,7 +181,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"');
             */
 
-            var userInfo = JSO.parNse(getCookie("authData"));
+            var userInfo = JSON.parse(getCookie("authData"));
+            $rootScope.username = userInfo.Username;
             $http.get('http://104.197.27.7:3048/tenant/GetTenants/'+ userInfo.SecurityToken)
             .success(function(response){
                  $scope.tennants=response;
@@ -213,9 +221,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             .ok('Yes!')
                             .cancel('No!');
                         $mdDialog.show(confirm).then(function(){
-                            console.log(JSON.stringify(tennant));
+                            //console.log(JSON.stringify(tennant));
                             $scope.status = 'Yes';
-                            window.location = "http://"+tennant;
+                            //window.location = "http://"+tennant;
+                            window.open("http://"+tennant);
                         },function(){
                             //alert('No!');
                             $scope.status = 'No';
@@ -924,7 +933,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         $scope.navigate = function (routeName, ev) {
             if (routeName == "home") {
-
+                
                 $scope.goHomeDialog(ev);
             }
             if (routeName == "Dashboards") {
@@ -1013,10 +1022,25 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.showSalesForecastPrediction(ev);
 
             }
+
             if (routeName == "Logout") {
-                $window.location = "index.html";
+                      var confirm=$mdDialog.confirm()
+                            .title('Do you want to logout ?')                            
+                            .targetEvent(event)
+                            .ok('Yes!')
+                            .cancel('No!');
+                        $mdDialog.show(confirm).then(function(){
+                            //$scope.status = 'Yes';
+                            $window.location = "index.html";    
+                        },function(){
+                            //$scope.status = 'No';
+                        });
+
+                //$window.location = "index.html";
 
             }
+
+
             if (routeName == "Theme") {
                 var selectedMenu = document.getElementsByClassName("menu-layer");
                 selectedMenu[0].style.display = 'none';
@@ -1101,6 +1125,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         };
 
+        $scope.getURL = function(){
+            $scope.imageUrl=$rootScope.image; 
+        }
 
         var icons = ['dashboard', 'dashboard'];
         var colors = ['#323232', '#262428'];
@@ -1255,6 +1282,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $scope.ShouldAutoStart = true;
 
         }, 1000);
+
 
 
         //getting branch data for google maps

@@ -11,11 +11,11 @@
         </div>
 
         <!-- </div> -->
-        <div class="header-line-bottom"></div>
+       <div class="header-line-bottom"></div>
         <div class="card-body bg-color-grey-100 p-b-20 share-body">
             <div layout="row" layout-align="center center" layout-wrap>
                 <div class="select-card-btn asset" ng-repeat="item in shareOptions">
-                                    <a socialshare socialshare-provider="{{item.provider}}" ng-src="{{item.icon}}" socialshare-text="Share this dashboard" socialshare-url="#">
+                                    <a socialshare socialshare-provider="{{item.provider}}" ng-src="{{item.icon}}" socialshare-text="Share this dashboard" socialshare-url="#" ng-click="openProvider(item.provider)">
                                     <img alt="" src="{{item.icon}}">
                                     </a>
                                     <span class="size graph-h2">
@@ -24,6 +24,7 @@
                 </div>
             </div>
         </div>
+        
 </md-dialog>
 
 

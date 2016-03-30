@@ -1,4 +1,4 @@
-routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location, $http, Digin_Engine_API1, ngToast) {
+routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location, $http, Digin_Engine_API1, ngToast,$rootScope) {
     
     //theme colors array
     $scope.colorArr = [{value:'#F44336'},{value:'#E91E63'},{value:'#9C27B0'},{value:'#673AB7'},{value:'#3F51B5'},{value:'#2196F3'},{value:'#03A9F4'},{value:'#00BCD4'},{value:'#009688'},{value:'#4CAF50'},{value:'#8BC34A'},{value:'#CDDC39'},{value:'#FFEB3B'},{value:'#FFC107'},{value:'#FF9800'},{value:'#FF5722'},{value:'#795548'},{value:'#9E9E9E'},{value:'#607D8B'}];
@@ -91,6 +91,32 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         );
     };
 
+
+
+      $scope.sizes = [
+          "5-min",
+          "10-min",
+          "15-min",
+          "30-min"
+      ];
+
+      $scope.toppings = [
+        { name: '1' },
+        { name: '2' },
+        { name: '3' },
+        { name: '4' },
+        { name: '5' },
+        { name: '6' },
+        { name: '7' },
+        { name: '8' },
+        { name: '9' },
+        { name: '10' }
+      ];
+  
+
+
+
+
     /*
     $scope.doSecondaryAction = function(event) {
         $mdDialog.show(
@@ -122,8 +148,17 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
 
     //-----------------
 
-    $scope.updateAccount = function(){
-        
+    $scope.updateAccount = function(){          
+        if($scope.image==""){
+            $rootScope.image = "styles/css/images/innerlogo.png";
+        }
+        else{
+            $rootScope.image = $scope.image;
+        }
+
+        $scope.getURL();
+        $scope.image = "";
+
         if($scope.headerbar){
             document.getElementById('mainHeadbar').style.display = "block";
         }
@@ -134,6 +169,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
             // $('#content1').css("height", "calc(100vh)");
         }        
     };
+
 
     function fireMsg(msgType, content) {
                     ngToast.dismiss();

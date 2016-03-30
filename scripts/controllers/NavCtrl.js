@@ -1017,7 +1017,17 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             }
             if (routeName == "Logout") {
-                $window.location = "index.html";
+                      var confirm=$mdDialog.confirm()
+                            .title('Do you want to logout ?')                            
+                            .targetEvent(event)
+                            .ok('Yes!')
+                            .cancel('No!');
+                        $mdDialog.show(confirm).then(function(){
+                            //$scope.status = 'Yes';
+                            $window.location = "logout.php";    
+                        },function(){
+                            //$scope.status = 'No';
+                        });
 
             }
             if (routeName == "Theme") {

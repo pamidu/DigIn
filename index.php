@@ -9,7 +9,7 @@ switch ($fullHost) {
             if(!isset($_COOKIE["securityToken"])){
 
               include ("index1.php");
-        }else{
+          }else{
             getURI();
 
         }

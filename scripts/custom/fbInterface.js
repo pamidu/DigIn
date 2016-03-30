@@ -28,6 +28,24 @@ var fbInterface = new function(){
             scope: 'manage_pages,read_insights'
         });
 	};
+    
+    this.getFreshPageAccessToken = function(pId, cb){
+        FB.api('/me', function(response) {
+            FB.api(
+	            "/" + data.id + "/accounts",
+	            function(response) {
+	            	$('#actIndicator').remove();
+	                scope.fbPages = [];
+	                console.log('page response:' + JSON.stringify(response));
+	                if (response && !response.error) {
+	                    for (i = 0; i < response.data.length; i++) {
+	                       if(pId == response.data[i].id) return cb(response.data[i].access_token);
+	                    }
+	                }
+	            }
+	        );
+        });
+    };
 
 	this.logoutFromFb =  function(scope, analysis){
 		FB.logout(function(response) {
@@ -102,6 +120,8 @@ var fbInterface = new function(){
 		});
 
 	};
+    
+    
 
 	this.getPageData = function(scope, callback){
 	    FB.api(

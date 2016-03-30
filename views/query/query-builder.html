@@ -328,6 +328,14 @@
                                       <label>Query</label>
                                       <textarea ng-model="receivedQuery" md-select-on-focus></textarea>
                                     </md-input-container>
+                                    <md-input-container>
+                                        <label>Limit</label>
+                                        <md-select ng-model="initRequestLimit.value">
+                                          <md-option ng-repeat="limit in requestLimits" value="{{limit}}">
+                                            {{limit}}
+                                          </md-option>
+                                        </md-select>
+                                    </md-input-container>
                                     <!-- <md-input-container flex>
                                         <label>Query</label>
                                         <input ng-model="receivedQuery">

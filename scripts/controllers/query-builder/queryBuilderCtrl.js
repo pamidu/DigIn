@@ -48,6 +48,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
     };
     
+    $scope.initRequestLimit={value:1000};
     $scope.requestLimits = [1000,2000,3000,4000,5000];
     
     $scope.initHighchartObj = {
@@ -903,6 +904,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     
     
     $scope.forecast = {
+        onInit: function(recon){
+            $scope.highchartsNG = $scope.widget.highchartsNG;
+            $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
+            delete $scope.highchartsNG.size;
+        },
         changeType: function() {
             var mergedArr = $scope.sourceData.fMeaArr.concat( $scope.sourceData.fAttArr);
             var field_d, field_f = "";
@@ -1460,7 +1466,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             $scope.client.getExecQuery(query, function(data, status) {
                 $scope.summaryData = data;
                 $scope.eventHndler.isLoadingChart = false;
-            });
+            }, $scope.initRequestLimit.value);
         },
         saveWidget: function(wid) {
             wid.widView = "views/ViewPivotSummary.html";
@@ -1807,6 +1813,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     };
 
     $scope.getExecuteAgg = function(query) {
+        alert($scope.initRequestLimit.value);
         if (typeof query != "undefined") {
             $scope.eventHndler.isLoadingChart = true;
             $scope.client.getExecQuery(query, function(res, status, query) {
@@ -1832,7 +1839,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     privateFun.fireMessage('0','request failed');
                     $scope.isPendingRequest = false;
                 }
-            });
+            }, $scope.initRequestLimit.value);
         } else {
             // alert("enter a query");
             privateFun.fireMessage('0','enter a query');

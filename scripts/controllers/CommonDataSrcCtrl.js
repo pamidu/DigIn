@@ -4,10 +4,10 @@
  */
 routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log',
     'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API',
-    'Digin_Engine_API_Namespace', '$diginengine', 'ngToast', '$window','$state','$csContainer','Upload', '$timeout',
+    'Digin_Engine_API_Namespace', '$diginengine', 'ngToast', '$window', '$state', '$csContainer', 'Upload', '$timeout',
     function ($scope, $controller, $mdSidenav, $log, CommonDataSrc,
-                $mdDialog, $rootScope, $http, Digin_Engine_API,
-                Digin_Engine_API_Namespace, $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout) {
+              $mdDialog, $rootScope, $http, Digin_Engine_API,
+              Digin_Engine_API_Namespace, $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout) {
 
         $rootScope.dashboard2 = [];
 
@@ -51,7 +51,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             {'type': 'decimal', 'category': 'mes'},
             {'type': 'float', 'category': 'mes'},
             {'type': 'datetime', 'category': 'mes'},
-            {'type': 'TIMESTAMP', 'category': 'mes'},            
+            {'type': 'TIMESTAMP', 'category': 'mes'},
             {'type': 'money', 'category': 'mes'},
             {'type': 'INTEGER', 'category': 'mes'},
             {'type': 'FLOAT', 'category': 'mes'}
@@ -93,30 +93,30 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     commonUi.isDataLoading = true;
                     commonUi.isServiceError = false;
                     $scope.client = $diginengine.getClient(src);
-                    switch(src){
-                            case "BigQuery" :
-                                if(localStorage.getItem("BigQueryTables") === null || localStorage.getItem("BigQueryTables") == "null" || 
-                                    localStorage.getItem("BigQueryTables") == "undefined"){
-                                    $scope.client.getTables(function (res, status) {
-                                        if(typeof res === 'object'){
-                                            callback(res, status);   
-                                            localStorage.setItem("BigQueryTables", res);
-                                        }        
-                                    });
-                                }
-                                else{
-                                    var BigQueryTablesString = localStorage.getItem("BigQueryTables");
-                                    var res = BigQueryTablesString.split(',');
-                                    callback(res, true);
-                                }
+                    switch (src) {
+                        case "BigQuery" :
+                            if (localStorage.getItem("BigQueryTables") === null || localStorage.getItem("BigQueryTables") == "null" ||
+                                localStorage.getItem("BigQueryTables") == "undefined") {
+                                $scope.client.getTables(function (res, status) {
+                                    if (typeof res === 'object') {
+                                        callback(res, status);
+                                        localStorage.setItem("BigQueryTables", res);
+                                    }
+                                });
+                            }
+                            else {
+                                var BigQueryTablesString = localStorage.getItem("BigQueryTables");
+                                var res = BigQueryTablesString.split(',');
+                                callback(res, true);
+                            }
                             break;
 
-                            default:
-                                $scope.client.getTables(function (res, status) {
-                                    callback(res, status);
-                                });
+                        default:
+                            $scope.client.getTables(function (res, status) {
+                                callback(res, status);
+                            });
                             break;
-                    }                    
+                    }
                 },
                 getAllFields: function (tbl, callback) {
                     $scope.commonUi.attribute = [];
@@ -125,27 +125,27 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     $scope.sourceUi.selectedMeasures = [];
                     commonUi.isDataLoading = true;
                     commonUi.isServiceError = false;
-                    switch($scope.sourceUi.selectedSource){
-                            case "BigQuery" :
-                                var saveName = "BigQuery" + tbl;
-                                if(localStorage.getItem(saveName) === null || 
-                                    localStorage.getItem(saveName) === "undefined"){
-                                    $scope.client.getFields(tbl, function (data, status) {
-                                        callback(data, status);
-                                        localStorage.setItem(saveName, JSON.stringify(data));
-                                    });   
-                                }
-                                else{
-                                    var BigQueryFieldsString = localStorage.getItem(saveName);
-                                    console.log(BigQueryFieldsString);
-                                    callback(JSON.parse(BigQueryFieldsString), true);
-                                }
-                            break;
-
-                            default:
+                    switch ($scope.sourceUi.selectedSource) {
+                        case "BigQuery" :
+                            var saveName = "BigQuery" + tbl;
+                            if (localStorage.getItem(saveName) === null ||
+                                localStorage.getItem(saveName) === "undefined") {
                                 $scope.client.getFields(tbl, function (data, status) {
                                     callback(data, status);
+                                    localStorage.setItem(saveName, JSON.stringify(data));
                                 });
+                            }
+                            else {
+                                var BigQueryFieldsString = localStorage.getItem(saveName);
+                                console.log(BigQueryFieldsString);
+                                callback(JSON.parse(BigQueryFieldsString), true);
+                            }
+                            break;
+
+                        default:
+                            $scope.client.getFields(tbl, function (data, status) {
+                                callback(data, status);
+                            });
                             break;
                     }
                 },
@@ -170,7 +170,22 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     }
 
                     return s4();
-                }
+                },
+                fireMessage: function (msgType, msg) {
+                    var _className;
+                    if (msgType == '0') {
+                        _className = 'danger';
+                    } else if (msgType == '1') {
+                        _className = 'success';
+                    }
+                    ngToast.create({
+                        className: _className,
+                        content: msg,
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
+                },
             }
         })();
 
@@ -220,16 +235,16 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             ,
             onClickClose: function () {
                 $mdSidenav('right')
-                        .close()
-                        .then(function () {
-                            $log.debug('right sidepanel closed');
-                        });
+                    .close()
+                    .then(function () {
+                        $log.debug('right sidepanel closed');
+                    });
             }
             ,
             onClickNext: function (index) {
                 commonUi.isServiceError = false;
                 switch (index) {
-                    case '1':                        
+                    case '1':
                         //selected source
                         commonUi.selectedIndex = 2;
                         var selectedSrc = $scope.sourceUi.selectedSource;
@@ -252,15 +267,25 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                             var val = res[c];
                                             angular.forEach(val, function (value, key) {
                                                 if (key == 'FieldType') {
-                                                     for (var i = 0; i < dataTypes.length; i++) {
+                                                    for (var i = 0; i < dataTypes.length; i++) {
                                                         if (value == dataTypes[i].type) {
                                                             if (dataTypes[i].category == 'att') {
                                                                 $scope.commonUi.attribute.push(
-                                                                    {id: c, name: res[c].Fieldname, isRemove: false, dataType: dataTypes[i].type}
+                                                                    {
+                                                                        id: c,
+                                                                        name: res[c].Fieldname,
+                                                                        isRemove: false,
+                                                                        dataType: dataTypes[i].type
+                                                                    }
                                                                 )
                                                             } else {
                                                                 $scope.commonUi.measures.push(
-                                                                    {id: c, name: res[c].Fieldname, isRemove: false, dataType: dataTypes[i].type}
+                                                                    {
+                                                                        id: c,
+                                                                        name: res[c].Fieldname,
+                                                                        isRemove: false,
+                                                                        dataType: dataTypes[i].type
+                                                                    }
                                                                 )
                                                             }
                                                         }
@@ -309,13 +334,13 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 }
                 onSelect.selected = true;
                 $scope.sourceUi.selectedSource = onSelect.name;
-                localStorage.setItem("lastSelectedSource",$scope.sourceUi.selectedSource); 
+                localStorage.setItem("lastSelectedSource", $scope.sourceUi.selectedSource);
 
-                if(onSelect.name == "CSV/Excel" || onSelect.name == "SpreadSheet"){
+                if (onSelect.name == "CSV/Excel" || onSelect.name == "SpreadSheet") {
                     // alert("csv excel or spreadsheet selected");
                     $scope.showFileUpload = true;
                 }
-                else{
+                else {
                     $scope.showFileUpload = false;
                 }
             }
@@ -331,30 +356,58 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     name: currentQry,
                     id: publicFun.getRandomNo
                 });
-                
+
+                //create new attribute
+                var newAttrObj = [];
+                var attrObj = $scope.sourceUi.attrObj;
+                for (var i = 0; i < attrObj.length; i++) {
+                    if (!attrObj[i].isRemove) {
+                        newAttrObj.push(attrObj[i]);
+                    }
+                }
+                $scope.sourceUi.attrObj = newAttrObj;
+                //end -----------------
+
+                //create new measures
+                var newMeasureObj = [];
+                var measureObj = $scope.sourceUi.mearsuresObj;
+                for (var i = 0; i < measureObj.length; i++) {
+                    if (!measureObj[i].isRemove) {
+                        newMeasureObj.push(measureObj[i]);
+                    }
+                }
+                $scope.sourceUi.mearsuresObj = newMeasureObj;
+                //end -----------------------
+
+                if (newMeasureObj.length == 0 &&
+                    newAttrObj.length == 0) {
+                    publicFun.fireMessage('0', 'Please select query data...');
+                    return;
+                }
+
                 $scope.currWidget = {
-                     widData: {},
-                     widView: "",
-                     widName: "Dynamic Visuals",
-                     dataView: "ViewElasticData",
-                     dataCtrl: "elasticDataCtrl",
-                     initTemplate: "",
-                     initCtrl: "commonSrcInit",
-                     uniqueType: "Dynamic Visuals",
-                     syncState: true,
-                     expanded: true,
-                     seriesname: "",
-                     externalDataURL: "",
-                     dataname: "",
-                     d3plugin: "",
-                     divider: false,
-                     id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
-                     type: "Visualization",
-                     width: '370px',
-                     height: '300px',
-                     mheight: '100%',
-                     highchartsNG: {}
-                  };
+                    widData: {},
+                    widView: "",
+                    widName: "Dynamic Visuals",
+                    dataView: "ViewElasticData",
+                    dataCtrl: "elasticDataCtrl",
+                    initTemplate: "",
+                    initCtrl: "commonSrcInit",
+                    uniqueType: "Dynamic Visuals",
+                    syncState: true,
+                    expanded: true,
+                    seriesname: "",
+                    externalDataURL: "",
+                    dataname: "",
+                    d3plugin: "",
+                    divider: false,
+                    id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
+                    type: "Visualization",
+                    width: '370px',
+                    height: '300px',
+                    mheight: '100%',
+                    highchartsNG: {}
+                };
 
                 $csContainer.fillCSContainer({
 //                    wid: $scope.currWidget,
@@ -363,35 +416,47 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     fAttArr: $scope.sourceUi.attrObj,
                     fMeaArr: $scope.sourceUi.mearsuresObj
                 });
-                
+
                 publicFun.clearAll(function (status) {
                     if (status) {
-                        $state.go("home.QueryBuilder",{widObj:$scope.currWidget});
+                        $state.go("home.QueryBuilder", {widObj: $scope.currWidget});
                         $mdSidenav('right').close();
                     }
-                });   
+                });
                 //after saving get back to first tab
-                commonUi.selectedIndex = 1;                           
+                commonUi.selectedIndex = 1;
             }
             ,
             onRemoveAtt: function (onSelected, data) {
                 var attrObj = onSelected;
                 var index = attrObj.indexOf(data);
-                if (index != -1) {
-                    attrObj.splice(index, 1);
+                if (data.isRemove) {
+                    $scope.sourceUi.selectedAttribute[index].
+                        isRemove = false;
+                    $scope.sourceUi.attrObj[index].
+                        isRemove = false;
+                } else {
+                    $scope.sourceUi.selectedAttribute[index].
+                        isRemove = true;
+                    $scope.sourceUi.attrObj[index].
+                        isRemove = true;
                 }
-                $scope.sourceUi.attrObj = attrObj;
-                
             },
             onRemoveMeasures: function (onSelected, data) {
                 var attrObj = onSelected;
                 var index = attrObj.indexOf(data);
-                if (index != -1) {
-                    attrObj.splice(index, 1);
+                if (data.isRemove) {
+                    $scope.sourceUi.selectedMeasures[index].
+                        isRemove = false;
+                    $scope.sourceUi.mearsuresObj[index].
+                        isRemove = false;
+                } else {
+                    $scope.sourceUi.selectedMeasures[index].
+                        isRemove = true;
+                    $scope.sourceUi.mearsuresObj[index].
+                        isRemove = true;
                 }
-                $scope.sourceUi.mearsuresObj = attrObj;
-                
-            } 
+            }
             ,
             onRefresh: function (index) {
                 switch (index) {
@@ -457,13 +522,13 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             search: ''
         }
         /* initialize tabs */
-        $scope.initTabSource = function(){
+        $scope.initTabSource = function () {
 
-             for(var i = 0; i < $scope.datasources.length; i++){
-                if($scope.datasources[i].name ==  localStorage.getItem("lastSelectedSource")){
+            for (var i = 0; i < $scope.datasources.length; i++) {
+                if ($scope.datasources[i].name == localStorage.getItem("lastSelectedSource")) {
                     $scope.commonUi.onClickSelectedSrc($scope.datasources[i], $scope.datasources);
                 }
-             }
+            }
         }
 
         /* file upload */
@@ -473,7 +538,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         });
         $scope.$watch('file', function () {
             if ($scope.file != null) {
-                $scope.files = [$scope.file]; 
+                $scope.files = [$scope.file];
             }
         });
         $scope.log = '';
@@ -481,28 +546,28 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         $scope.upload = function (files) {
             if (files && files.length) {
                 for (var i = 0; i < files.length; i++) {
-                  var file = files[i];
-                  if (!file.$error) {
-                    Upload.upload({
-                        url: 'git/mar16latest',
-                        data: {
-                          file: file  
-                        }
-                    }).then(function (resp) {
-                        $timeout(function() {
-                            $scope.log = 'file: ' +
-                            resp.config.data.file.name +
-                            ', Response: ' + JSON.stringify(resp.data) +
-                            '\n' + $scope.log;
-                        });
-                    }, null, function (evt) {
-                        var progressPercentage = parseInt(100.0 *
+                    var file = files[i];
+                    if (!file.$error) {
+                        Upload.upload({
+                            url: 'git/mar16latest',
+                            data: {
+                                file: file
+                            }
+                        }).then(function (resp) {
+                            $timeout(function () {
+                                $scope.log = 'file: ' +
+                                    resp.config.data.file.name +
+                                    ', Response: ' + JSON.stringify(resp.data) +
+                                    '\n' + $scope.log;
+                            });
+                        }, null, function (evt) {
+                            var progressPercentage = parseInt(100.0 *
                                 evt.loaded / evt.total);
-                        $scope.log = 'progress: ' + progressPercentage + 
-                            '% ' + evt.config.data.file.name + '\n' + 
-                          $scope.log;
-                    });
-                  }
+                            $scope.log = 'progress: ' + progressPercentage +
+                                '% ' + evt.config.data.file.name + '\n' +
+                                $scope.log;
+                        });
+                    }
                 }
             }
         };

@@ -412,7 +412,13 @@
       <option name="project" value="LOCAL" />
       <updated>1459335950718</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="select and unselect query bulider data">
+      <created>1459336099261</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1459336099261</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">

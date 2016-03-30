@@ -274,42 +274,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
-                id: 'ct09',
-                icon: 'chart-diginbump',
-                name: 'bumpChart ',
-                chart: 'bump',
-                selected: false,
-                chartType: 'd3Charts',
-                initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
-            }, {
-                id: 'ct10',
-                icon: 'chart-digincluster-dendrogram',
-                name: 'clusterDendrogram',
-                chart: 'clusterDendrogram',
-                selected: false,
-                chartType: 'd3Charts',
-                initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
-            }, {
-                id: 'ct11',
-                icon: 'chart-digincluster',
-                name: 'clusterForce',
-                chart: 'clusterForce',
-                selected: false,
-                chartType: 'd3Charts',
-                initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
-            }, {
-                id: 'ct12',
-                icon: 'chart-diginconvex-hull',
-                name: 'convexHull',
-                chart: 'convexHull',
-                selected: false,
-                chartType: 'd3Charts',
-                initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
-            }, {
                 id: 'ct13',
                 icon: 'chart-diginhierarchy-chart',
                 name: 'hierarchy',

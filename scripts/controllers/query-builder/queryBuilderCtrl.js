@@ -1644,6 +1644,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.getGroupedAggregation = function(row) {
         if (row) $scope.selectedCat = row;
         $scope.highchartsNG.series = [];
+        $scope.highchartsNG.xAxis["title"] = {text: row};
         var fieldArr = [];
         $scope.eventHndler.isLoadingChart = true;
 

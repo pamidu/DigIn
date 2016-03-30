@@ -1,6 +1,10 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
-    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer', '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast', 'DevStudio', '$auth', '$helpers', '$localStorage',
-    function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state, Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio, $auth, $helpers, $localStorage) {
+    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer',
+    '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast',
+    'DevStudio', '$auth', '$helpers', '$localStorage', 'Digin_Report_Base','dynamicallyReportSrv',
+    function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
+              Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService, Digin_Base_URL,
+              DashboardService, $log, $mdToast, DevStudio, $auth, $helpers, $localStorage, Digin_Report_Base,dynamicallyReportSrv) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -86,34 +90,34 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
 
         }
-        
+
         $scope.headerbarPinned = false;
 
-        $scope.pinHeaderbar = function(state){
+        $scope.pinHeaderbar = function (state) {
             $scope.headerbarPinned = state;
         }
 
         $scope.adjustUI = function () {
 
-            if($scope.headerbarPinned){
+            if ($scope.headerbarPinned) {
                 $('#content1').css("top", "40px");
                 $('#content1').css("height", "calc(100vh - 40px)");
                 $('.h_iframe').css("height", "calc(100vh - 40px)");
                 $('.main-headbar-slide').css("transform", "translateY(0)");
                 $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
             }
-            else{
+            else {
                 // $('body').css("padding-top", "0px");
                 $('#content1').css("top", "0px");
                 $('#content1').css("height", "calc(100vh)");
                 $('.h_iframe').css("height", "calc(100vh)");
                 $('.main-headbar-slide').css("transform", "translateY(-40px)");
                 $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
-            }  
+            }
         }
 
         //shows user profile in a dialog box
-        $scope.showUserProfile = function(ev) {
+        $scope.showUserProfile = function (ev) {
             $mdDialog.show({
                     controller: showProfileController,
                     templateUrl: 'templates/profileDialogTemplate.html',
@@ -121,16 +125,16 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     targetEvent: ev,
                     clickOutsideToClose: true
                 })
-                .then(function(answer) {
+                .then(function (answer) {
 
-                }, function() {
+                }, function () {
 
                 });
         };
 
-        function showProfileController($rootScope,$scope, $mdDialog) {
+        function showProfileController($rootScope, $scope, $mdDialog) {
 
-            var userInfo = $auth.getSession();  
+            var userInfo = $auth.getSession();
 
             $scope.user = {
                 fname: userInfo.Name,
@@ -141,15 +145,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 profile_pic: "styles/css/images/person.jpg"
             };
 
-            $scope.close = function() {
+            $scope.close = function () {
                 $mdDialog.cancel();
             };
 
         };
 
 
-         //shows tennant dialog box
-        $scope.showTennant = function(ev) {
+        //shows tennant dialog box
+        $scope.showTennant = function (ev) {
             $mdDialog.show({
                     controller: showTennantController,
                     templateUrl: 'templates/TennantDialogTemplate.html',
@@ -157,94 +161,93 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     targetEvent: ev,
                     clickOutsideToClose: true
                 })
-                .then(function(answer) {
+                .then(function (answer) {
 
-                }, function() {
+                }, function () {
 
                 });
         };
 
-        function showTennantController($scope, $mdDialog,$http,$auth) {
-           /*
-            var userInfo = JSON.parse(getCookie("authData"));
-            //console.log(JSON.parse(userInfo.Otherdata.TenentsAccessible));
-            console.log(JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"'));
-            //$scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible);
-            $scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"');
-            */
+        function showTennantController($scope, $mdDialog, $http, $auth) {
+            /*
+             var userInfo = JSON.parse(getCookie("authData"));
+             //console.log(JSON.parse(userInfo.Otherdata.TenentsAccessible));
+             console.log(JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"'));
+             //$scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible);
+             $scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"');
+             */
 
             var userInfo = JSO.parNse(getCookie("authData"));
-            $http.get('http://104.197.27.7:3048/tenant/GetTenants/'+ userInfo.SecurityToken)
-            .success(function(response){
-                 $scope.tennants=response;
-             });
-          
+            $http.get('http://104.197.27.7:3048/tenant/GetTenants/' + userInfo.SecurityToken)
+                .success(function (response) {
+                    $scope.tennants = response;
+                });
+
 
             //------------------ 
             /*
-            http://adminduowebinfo.space.duoworld.duoweb.info:3048/tenant/GetTenants/7137bb3fd12f4aaa93822202a75df562
-            $http.get('http://adminduowebinfo.space.duoworld.duoweb.info:3048/tenant/GetTenants/'+ $auth.getSecurityToken())
-            .success(function(response){
-                 alert(JSON.stringify(response));
-                 $scope.tennants=response;
+             http://adminduowebinfo.space.duoworld.duoweb.info:3048/tenant/GetTenants/7137bb3fd12f4aaa93822202a75df562
+             $http.get('http://adminduowebinfo.space.duoworld.duoweb.info:3048/tenant/GetTenants/'+ $auth.getSecurityToken())
+             .success(function(response){
+             alert(JSON.stringify(response));
+             $scope.tennants=response;
              });
-            */
-           
+             */
+
             /*
-            $http({
-                method: 'GET',
-                url: "http://adminduowebinfo.space.duoworld.duoweb.info:3048/tenant/GetTenants/" +  $auth.getSecurityToken(),
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            }).
-            success(function (response) {
-                 $scope.tennants=response.records;
-            });
-            */
+             $http({
+             method: 'GET',
+             url: "http://adminduowebinfo.space.duoworld.duoweb.info:3048/tenant/GetTenants/" +  $auth.getSecurityToken(),
+             headers: {
+             'Content-Type': 'application/x-www-form-urlencoded'
+             }
+             }).
+             success(function (response) {
+             $scope.tennants=response.records;
+             });
+             */
             //-------------------------
 
-                $scope.showConfirmation = function(tennant,event) {
-                    //$mdDialog.show(
-                        var confirm=$mdDialog.confirm()
-                            .title('Do you want to switching to '+ tennant)                            
-                            .targetEvent(event)
-                            .ok('Yes!')
-                            .cancel('No!');
-                        $mdDialog.show(confirm).then(function(){
-                            console.log(JSON.stringify(tennant));
-                            $scope.status = 'Yes';
-                            window.location = "http://"+tennant;
-                        },function(){
-                            //alert('No!');
-                            $scope.status = 'No';
-                        });
-                    //)       
-                };
+            $scope.showConfirmation = function (tennant, event) {
+                //$mdDialog.show(
+                var confirm = $mdDialog.confirm()
+                    .title('Do you want to switching to ' + tennant)
+                    .targetEvent(event)
+                    .ok('Yes!')
+                    .cancel('No!');
+                $mdDialog.show(confirm).then(function () {
+                    console.log(JSON.stringify(tennant));
+                    $scope.status = 'Yes';
+                    window.location = "http://" + tennant;
+                }, function () {
+                    //alert('No!');
+                    $scope.status = 'No';
+                });
+                //)
+            };
 
-        
-           
+
             /*
-            $scope.showConfirm = function(tennant,event) {
-            var confirm = $mdDialog.confirm()
-                  .title('Would you like to delete your debt?')
-                  .textContent('All of the banks have agreed to forgive you your debts.')
-                  .ariaLabel('Lucky day')
-                  .targetEvent(event)
-                  .ok('Please do it!')
-                  .cancel('Sounds like a scam');
-            $mdDialog.show(confirm).then(function() {
-              $scope.status = 'You decided to get rid of your debt.';
-            }, function() {
-              $scope.status = 'You decided to keep your debt.';
-            });
-          };
-          */
+             $scope.showConfirm = function(tennant,event) {
+             var confirm = $mdDialog.confirm()
+             .title('Would you like to delete your debt?')
+             .textContent('All of the banks have agreed to forgive you your debts.')
+             .ariaLabel('Lucky day')
+             .targetEvent(event)
+             .ok('Please do it!')
+             .cancel('Sounds like a scam');
+             $mdDialog.show(confirm).then(function() {
+             $scope.status = 'You decided to get rid of your debt.';
+             }, function() {
+             $scope.status = 'You decided to keep your debt.';
+             });
+             };
+             */
 
 
-        $scope.close = function() {
-            $mdDialog.cancel();
-        };
+            $scope.close = function () {
+                $mdDialog.cancel();
+            };
 
 
         };
@@ -464,9 +467,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $(".nav-search").removeClass("active");
             $(".search-layer").removeClass("activating active");
 
-            $state.go('home', {
-                param: report
-            });
+            // console.log(report);
+            $state.go('home.DynamicallyReportBuilder', {'reportNme': report});
         }
 
         $scope.goReport2 = function () {
@@ -477,7 +479,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $(".search-layer").removeClass("activating active");
 
             // console.log(report);
-            $state.go('home.DynamicallyReportBuilder');
+            $state.go('home.DynamicallyReportBuilder', {'reportNme': report});
         }
         $scope.goDashboard = function (dashboard) {
             console.log("hit dashboard");
@@ -595,6 +597,37 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         // };
 
+        var privateFun = (function () {
+            var reqParameter = {
+                apiBase: Digin_Report_Base,
+                token: '',
+                reportName: '',
+                queryFiled: ''
+            };
+            var getSession = function () {
+                reqParameter.token = getCookie("securityToken");
+            };
+
+            return {
+
+                getAllReport: function () {
+                    getSession();
+                    dynamicallyReportSrv.getAllReports(reqParameter).success(function (data) {
+                        if (data.Is_Success) {
+                            for (var i = 0; i < data.Result.length; i++) {
+                                $scope.reports.push(
+                                    {splitName: data.Result[i], path: '/dynamically-report-builder'}
+                                );
+                            }
+                        }
+                    }).error(function (respose) {
+
+                    });
+                }
+            }
+        }());
+        privateFun.getAllReport();
+
         $scope.ExistingDashboardDetails = [];
         $scope.reports = [{splitName: 'CAF Details', path: '/dynamically-report-builder'}];
         $scope.favoriteReports = [];
@@ -620,10 +653,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $scope.GetAnalyzerDetails();
 
             $http.get('http://104.155.236.85:8080/getreportnames?SecurityToken=0b4fac3276c5328db15e538590665d6a&Domain=duosoftware.com')
-            .success(function(response){
-                 // $scope.reportsData = response.Result;
-                 $scope.reportsData = [{title: "marle (mr. bean)"}, {title: "sajee + hasini"}];
-             });
+                .success(function (response) {
+                    // $scope.reportsData = response.Result;
+                    $scope.reportsData = [{title: "marle (mr. bean)"}, {title: "sajee + hasini"}];
+                });
 
         };
         $scope.GetAnalyzerDetails = function () {
@@ -682,20 +715,20 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 resolve: {}
             });
         }
-        $scope.goHome = function(){
+        $scope.goHome = function () {
             $scope.closeDialog();
             $scope.manageTabs(true);
             $scope.currentView = "Home";
             $state.go('home');
         }
 
-        $scope.goHomeDialog = function (ev){
+        $scope.goHomeDialog = function (ev) {
             $mdDialog.show({
-                    controller: 'NavCtrl',
-                    templateUrl: 'views/goHome.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true
+                controller: 'NavCtrl',
+                templateUrl: 'views/goHome.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true
             }).then(function (answer) {
             });
         }

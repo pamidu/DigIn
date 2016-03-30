@@ -1030,7 +1030,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             .cancel('No!');
                         $mdDialog.show(confirm).then(function(){
                             //$scope.status = 'Yes';
-                            $window.location = "index.html";    
+                            $window.location = "logout.php";    
                         },function(){
                             //$scope.status = 'No';
                         });

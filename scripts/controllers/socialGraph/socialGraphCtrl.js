@@ -255,6 +255,10 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
             $scope.preloader = false;
         }
     };
+    $scope.goBack = function(){
+      $scope.activePageSearch = true;
+      $scope.preloader = false;
+    }
 
     /*Post and Visitors */
     $scope.chooseView = {

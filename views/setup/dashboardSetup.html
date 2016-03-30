@@ -9,20 +9,41 @@
                 <div layout="column" layout-align="space-between center">
                     <span class="setup-font-theme setup-user-heading">Account Information</span>
                 </div>
+
                 <div layout="row" layout-align="center center">
                     <div layout="column" class="setup-info-container" flex="70">
+
+                        <!-- Configure account logo -->
                         <md-input-container>
                             <label>Account owner</label>
-                            <input id="accOwner" ng-model="user.title">
+                            <input id="accOwner" ng-model="username">
                         </md-input-container>
-                        <md-input-container>
+
+                         <div>
+                            <md-input-container flex>   
+                                <input my-upload type="file" name="upload" >
+                            </md-input-container>
+
+                            <!-- <label id="dislab">Please select a image from a location inorder to update account logo</label> -->
+                            <span class="setup-font-theme">
+                                Please select a image from a location inorder to update account logo
+                            </span>
+
+                        </div>
+                        
+
+                        <!-- <md-input-container>
                             <label>Logo</label>
                             <input ng-model="user.appLogo">
                         </md-input-container>
+                        -->
+
+
+                        <!-- Configure theme colout -->
                         <div layout="column">
-                            <span class="setup-font-theme">
-                            Theme configuration (Pick two colors)
-                            </span>
+                            
+                            <label id="dislab">Theme configuration (Pick two colors)</label>
+
                             <div layout="column" class="setup-color-container">
                                 <div layout="row" ng-repeat="colors in chunkedColorArr">
                                     <div class="setup-color-stripes" ng-repeat="color in colors" style="background-color:{{color.value}}"></div>
@@ -39,6 +60,8 @@
                 </div>
             </div>
         </md-tab>
+
+
         <md-tab>
             <md-tab-label>
                 <i class="setup-tab-label fa fa-user"></i>
@@ -105,11 +128,11 @@
 
                     <!-- <md-divider></md-divider>-->
                     <!-- --> 
-                          <md-subheader class="md-no-sticky">Invited users...</md-subheader>
+                       <!--    <md-subheader class="md-no-sticky">Invited users...</md-subheader>
                           <md-list-item ng-repeat="person in people" ng-click="goToPerson(person.name, $event)">
                             <img alt="{{ person.name }}" ng-src="styles/css/images/icons/profile.svg"/>
                             <p>{{ person.name }}</p>
-                            <md-icon md-svg-icon="styles/css/images/icons/remove.svg" ng-click="doSecondaryAction(person.name,$event)" aria-label="Open Chat" class="md-secondary md-hue-3" ng-class="{'md-primary': person.newMessage}"></md-icon>
+                            <md-icon md-svg-icon="styles/css/images/icons/remove.svg" ng-click="doSecondaryAction(person.name,$event)" aria-label="Open Chat" class="md-secondary md-hue-3" ng-class="{'md-primary': person.newMessage}"></md-icon> -->
                     <!-- -->
 
 
@@ -198,5 +221,43 @@
                 </div>
             </div>
         </md-tab>
+
+
+
+        <md-tab>
+            <md-tab-label>
+                <i class="setup-tab-label fa fa-clock-o"></i>
+            </md-tab-label>
+            
+            <div class="md-padding">
+                <div layout="column" layout-align="space-between center" flex>
+                    <span class="setup-font-theme setup-user-heading">Widget Settings</span>
+                </div>
+            
+
+                <!-- <div class="md-padding"  layout-align="center center" ng-cloak  > -->
+                <div layout="row" layout-align="center center">
+                      <md-input-container style="width:200px;">
+                        <label>Refresh Interval</label>
+                        <md-select ng-model="size">
+                          <md-option ng-repeat="size in sizes" value="{{size}}">{{size}}</md-option>
+                        </md-select>
+                      </md-input-container>
+
+                      <md-input-container style="width:200px;">
+                        <label>Number of Widget</label>
+                        <md-select ng-model="topping">
+                        <md-option ng-value="topping.name" ng-repeat="topping in toppings">{{topping.name}}</md-option>
+                        </md-select>
+                      </md-input-container> 
+
+                </div>
+
+            </div>
+
+
+        </md-tab>
+
+
     </md-tabs>
 </div>

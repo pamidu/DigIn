@@ -1,4 +1,5 @@
 <div class="digin-drb-wrap animated fadeInRight" ng-controller="dynamicallyReportCtrl">
+    <toast></toast>
     <div class="digin-qb-header">
         <div layout="row">
             <div flex="10">
@@ -23,12 +24,14 @@
             <div flex="20" class="bg-lightblue-h-1 p-l-20">
                 <div class="digin-gb-b">
                     <span>Report Name</span>
-                    <h5>test report name 1</h5>
+                    <h5>{{eventHandler.reportName}}</h5>
                 </div>
             </div>
         </div>
     </div>
     <!-- body content main wrap -->
+
+
     <div class="bdy-wrap">
         <div layout="row">
             <div flex="20">
@@ -36,7 +39,7 @@
 
                     <div class="auth-message-wrap">
                         <div class="dynamic-report-loader"
-                             ng-if="eventHandler.isFiled.loading">
+                             ng-if="isFiled.loading">
                             <span class="loader2"><span class="loader2-inner"></span></span>
                             <p>please wait...</p>
                         </div>
@@ -47,7 +50,7 @@
 
                             <div class="cmds-btn-footer m-top-10">
                                 <div class="text-center">
-                                    <span class="btn btn-default" role="button" ng-click="eventHandler.onClickRefresh()"
+                                    <span class="btn btn-default" role="button" ng-click="onClickRefresh()"
                                           tabindex="0">
                                         refresh
                                     </span>
@@ -55,17 +58,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-wrap" ng-show="eventHandler.isFiled.found">
+                    <div class="panel-wrap" ng-show="isFiled.found">
                         <div class="panel-header">
-                            <h2>Report Option - CAF Details </h2>
+                            <h2>Report Option </h2>
                         </div>
                         <div class="panel-filter">
+                            <!-- #datepicker -->
                             <div class="date-filter">
                                 <div class="inline-date" ng-if="reportFiledList.UIDate.length !=0"
                                      ng-repeat="picker in reportFiledList.UIDate">
                                     <label>{{picker.fieldname}}</label>
                                     <input type="text" class="form-control" datepicker
-                                           ng-model="reportFiledList.fromDate"
+                                           ng-model="reportFiledList.selectedDate[picker.fieldname]"
                                            placeholder="{{picker.fieldname}}"/>
                                 </div>
                             </div>
@@ -74,23 +78,40 @@
                              ng-repeat="textBox in reportFiledList.UITextBox">
                             <label>{{textBox.filedName}}</label>
                             <input type="text" class="form-control"
+                                   ng-model="txt[textBox.filedName]"
                                    placeholder="{{textBox.filedName}}">
                         </div>
                         <div class="panel-filter" ng-if="reportFiledList.UIDropDown.length !=0"
                              ng-repeat="dropDown in reportFiledList.UIDropDown">
                             <label>{{dropDown.fieldname}}</label>
                             <select class="form-control" select2 name="country"
-                                    ng-model="test">
-                                <option>Select {{dropDown.fieldname}}</option>
-                                <option value="" ng-repeat="filed in dropDown.data">
-                                    {{filed}}
-                                </option>
+                                    ng-model="selectedVal['value'.filed]"
+                                    ng-change="onChangeSelected(dropDown.fieldname)"
+                                    ng-options="filed as filed for filed in dropDown.data">
+                                <option value="">Select {{dropDown.fieldname}}</option>
                             </select>
                         </div>
 
                     </div>
-
-
+                    <div class="btn-wrap" ng-show="isFiled.found">
+                        <div class="cmds-btn-footer m-top-10">
+                        <span class="btn btn-block btn-default btn-font"
+                              ng-click="testClickevent()">
+                            generate report
+                        </span>
+                        <span class="btn btn-block btn-default btn-close btn-font"
+                              ng-click="onClickRefesh()">
+                                refresh
+                        </span>
+                        </div>
+                    </div>
+                    <!-- file data loading -->
+                    <div class="btn-wrap">
+                        <div class="filed-data-loading"
+                             ng-if="eventHandler.isFiledData">
+                            <b>{{filedName}}</b> report filed loading..
+                        </div>
+                    </div>
                 </div>
             </div>
             <div flex="80">
@@ -100,8 +121,20 @@
                              ng-if="eventHandler.isDataFound">
                             <i class="ti-receipt"></i>
                             <span>Please select report data..</span>
-
                         </div>
+
+                        <div class="message"
+                             ng-if="eventHandler.isReportLoad">
+                            <i class="ti-timer"></i>
+                            <span>Please wait....</span>
+                        </div>
+                        <div class="report" id="report">
+                            <iframe frameborder='0' ng-src="{{reportURL}}"
+                                    frameborder="0"
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+
                     </div>
 
                 </div>

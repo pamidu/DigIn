@@ -1456,15 +1456,18 @@
 				}
 
 				function dragStart(event) {
-					$el.addClass('gridster-item-moving');
-					gridster.movingItem = item;
+					console.log("dragStart element", $el);
+					if($el.context.className != "digin-widget ng-scope gridster-item"){
+						$el.addClass('gridster-item-moving');
+						gridster.movingItem = item;
 
-					gridster.updateHeight(item.sizeY);
-					scope.$apply(function() {
-						if (gridster.draggable && gridster.draggable.start) {
-							gridster.draggable.start(event, $el, itemOptions);
-						}
-					});
+						gridster.updateHeight(item.sizeY);
+						scope.$apply(function() {
+							if (gridster.draggable && gridster.draggable.start) {
+								gridster.draggable.start(event, $el, itemOptions);
+							}
+						});
+					}
 				}
 
 				function drag(event) {

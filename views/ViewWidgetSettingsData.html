@@ -28,9 +28,9 @@
               <div class="layout-row" layout="row">
                       <div class="widget0m-mapped-data2">
                           <md-content>
-                            <div layout="row" layout-align="center center">
+                            <div layout="row" class="margin-top-20" layout-align="center center">
                                 <md-input-container class="md-icon-float md-block width80percent">
-                                        <label>Filter</label>
+                                        <label>Search</label>
                                         <input type="text" ng-model="query" ng-change="updateFilteredList(query)">
                                 </md-input-container>
                             </div>
@@ -55,7 +55,7 @@
               </div>
           </div>
           <div layout="row" layout-align="center center">
-            <md-button ng-click="downloadPDF()">Download</md-button>
+            <md-button ng-click="downloadPDF($event)">Download</md-button>
           </div>
       </div>
 </md-dialog>

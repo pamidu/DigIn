@@ -65,7 +65,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw']
             }
         };
-
         // maps the item from customItems in the scope to the gridsterItem options
         $scope.customItemMap = {
             sizeX: 'item.size.x',

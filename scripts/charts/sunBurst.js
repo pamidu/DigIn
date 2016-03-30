@@ -26,6 +26,9 @@ routerApp.directive('sunburstChart', function() {
 
                     var color = d3.scale.category10();
                     console.log("s", elem)
+                    
+                    d3.select("#d3Sunburst").selectAll("*").remove();
+                    
                     var svg = d3.select("#d3Sunburst")
                         .append("svg").attr("viewBox", "0 0  500 600")
                         .attr("width", '100%')

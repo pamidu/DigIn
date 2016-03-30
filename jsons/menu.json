@@ -25,12 +25,6 @@
       "icon2": "equalizer"
     },
     {
-      "title": "Sales Forecast && Prediction",
-      "icon1": "bower_components/material-design-icons/action/svg/production/ic_input_24px.svg",
-      "icon": "ion-close",
-      "icon2": "trending_up"
-    },
-    {
       "title": "Save",
       "icon1": "bower_components/material-design-icons/content/svg/production/ic_save_24px.svg",
       "icon": "ion-archive",

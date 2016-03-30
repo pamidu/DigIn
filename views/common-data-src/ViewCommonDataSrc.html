@@ -103,7 +103,7 @@
             </div>
             <div class="cmds-btn-footer m-top-10">
                         <span class="btn btn-block btn-default"
-                              ng-click="commonUi.onClickNext('1')">
+                              ng-click="commonUi.onClickNext('1')" ng-show="sourceUi.selectedSource">
                             next
                         </span>
                 <span class="btn btn-block btn-default btn-close"
@@ -186,8 +186,14 @@
                                     fill="none" stroke-width="6" stroke-miterlimit="10"/>
                         </svg>
                     </div>
+                    <div layout="row" class="margin-top-20" layout-align="center center">
+                        <md-input-container class="md-icon-float md-block width100percent">
+                            <label>Search</label>
+                            <input type="text" ng-model="sourceUi.search">
+                        </md-input-container>
+                    </div>
                     <!-- table data -->
-                    <ui ng-repeat="row in sourceUi.tableData track by row.id ">
+                    <ui ng-repeat="row in sourceUi.tableData | filter : {name: sourceUi.search}">
                         <li class="col-sheet hvr-back-pulse "
                             ng-click="commonUi.onSelectClassRow(row)"
                             ng-class="row.selected==true?'selectedRow':'unSelectedRow'"
@@ -198,11 +204,10 @@
                     </ui>
                 </div>
             </div>
-            <div class="cmds-btn-footer" ng-show="sourceUi.selectedSource!=''"
-                 ng-if="commonUi.isServiceError==false">
+            <div class="cmds-btn-footer">
                 <div class="cmds-btn-footer m-top-10">
                         <span class="btn btn-block btn-default"
-                              ng-click="commonUi.onClickNext('2')">
+                              ng-click="commonUi.onClickNext('2')" ng-show="sourceUi.selectedNameSpace" ng-if="commonUi.isServiceError==false">
                             next
                         </span>
                         <span class="btn btn-block btn-default btn-close"

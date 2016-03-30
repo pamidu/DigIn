@@ -25,7 +25,9 @@ routerApp.directive('linearChart', function () {
                     .gravity(.05)
                     .size([width, height])
                     .on("tick", tick);
-
+                
+                d3.select("#d3Force").selectAll("*").remove();
+                
                 var svg = d3.select("#d3Force")
                     .append("svg").attr("viewBox", "0 0  490 490")
                     .attr("width", '100%')

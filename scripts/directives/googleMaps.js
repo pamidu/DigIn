@@ -10,6 +10,13 @@ routerApp.directive('diginMap', function($http) {
          var geocoder = null;
          var markers = [];
          
+      function clearOverlays() {
+          for (var i = 0; i < markers.length; i++ ) {
+            markers[i].setMap(null);
+          }
+          markers.length = 0;
+        }
+          
          scope.getLocations = function(data){
             var mapCanvas = document.getElementById('gmap');
            var mapOptions = {
@@ -20,7 +27,7 @@ routerApp.directive('diginMap', function($http) {
            geocoder = new google.maps.Geocoder();
            map = new google.maps.Map(mapCanvas, mapOptions);
            var mc = new MarkerClusterer(map);   
-           
+           clearOverlays();
            function Geocode(locItem){
               var address = locItem.add;
                var likeCount = locItem.likeCount;

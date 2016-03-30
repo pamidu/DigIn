@@ -90,19 +90,19 @@
 -->
             </div>
             <!-- measures -->
-            <div flex="20">
-                <div class="digin-gb-measures last-icon">
+            <div flex="20" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric'">
+                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
                             series
-                            <div class="toggle-icon animated "
+                            <fieldset ng-disabled="isPendingRequest" class="toggle-icon animated "
                                  ng-class="eventHndler.isToggleMeasure==true?'left-icon-toggle':'left-icon'"
                                  ng-click="eventHndler.onToggleEvent('1')">
                                 <i class=""
                                    ng-class="eventHndler.isToggleMeasure==true?'ti-angle-left rotateOut':'ti-angle-right rotateIn'"
                                 ></i>
 
-                            </div>
+                            </fieldset>
                         </h3>
                     </div>
 
@@ -120,11 +120,10 @@
                         <div class="filter-data-not-fund"
                              ng-if="executeQryData.executeMeasures.length < 1">
                             <i class="ti-filter"></i>
-                            <h5>add measures</h5>
+                            <h5>add aggregations</h5>
                         </div>
                     </div>
                 </div>
-
 
                 <!-- columns config panel -->
                 <div class="columns-config-panel animated  "
@@ -164,18 +163,18 @@
                     </div>
 -->
                 </div>
-                <div class="digin-gb-measures">
+                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
-                            categories
-                            <div class="toggle-icon animated "
+                            category
+                            <fieldset ng-disabled="isPendingRequest" class="toggle-icon animated "
                                  ng-class="eventHndler.isToggleColumns==true?'left-icon-toggle':'left-icon'"
                                  ng-click="eventHndler.onToggleEvent('2')">
                                 <i class=""
                                    ng-class="eventHndler.isToggleColumns==true?'ti-angle-left rotateOut':'ti-angle-right rotateIn'"
                                 ></i>
 
-                            </div>
+                            </fieldset>
                         </h3>
                     </div>
                     <div class="measures-body">
@@ -187,13 +186,13 @@
                         <div class="filter-data-not-fund"
                              ng-if="executeQryData.executeColumns.length < 1">
                             <i class="ti-layout-column2"></i>
-                            <h5>add attributes</h5>
+                            <h5>group aggregations</h5>
                         </div>
                     </div>
                 </div>
             </div>
-            <div flex="70">
-                <div class="digin-gb-chart-wrap">
+            <div flex="dynFlex">
+                <div class="digin-gb-chart-wrap" ng-style="chartGbMeaStyle">
                     <!-- chart loading wrap -->
                     <div class="digin-gb-chart-loading"
                          ng-if="eventHndler.isLoadingChart==true">
@@ -204,10 +203,10 @@
                     </div>
 <!--                    <highchart  ng-if="eventHndler.isHighCharts==true" config="highchartsNG"></highchart>-->
 <!--                    <highchart ng-if="eventHndler.isLoadingChart==false" config="highchartsNG"></highchart>-->
-                    <div class="digin-gb-chart-wrap-view-container" ng-include src="selectedChart.view"></div>
+                    <div class="digin-gb-chart-wrap-view-container" ng-style="chartWrapStyle" ng-include src="selectedChart.view"></div>
                 </div>  
 
-                <div class="digin-gb-row">
+                <div ng-show="!isDrilled" class="digin-gb-row" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric'">
                     <div class="panel-header inline-panel-header p-b-0">
                         <h3 class="font-weight-300">
                             custom query design
@@ -459,6 +458,8 @@
                         </h4>
                     </div>
                     <div class="chart-config-wrap-rw1 animated fadeIn">
+                        <div ng-include src="selectedChart.settingsView"></div>
+<!--
                         <div ng-show="selectedChart.chartType == 'highCharts'" class="chart-config-wrap">                            
                             <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
                                          onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
@@ -488,16 +489,24 @@
                                 <input ng-model="highchartsNG.yAxis.title.text">
                             </md-input-container>                            
                         </div>
+-->
+<!--
                         <div ng-show="selectedChart.chartType == 'metric'" class="chart-config-wrap">                            
                             <md-input-container flex>
                                 <label>Label text</label>
                                 <input ng-model="selectedChart.initObj.label">
                             </md-input-container>                           
                         </div>
+-->
                         <md-input-container flex>
                             <label>Widget Title</label>
-                            <input ng-model="widget.uniqueType">
+                            <input ng-model="widget.widName">
                         </md-input-container>
+                        <md-select ng-model="services.limit">
+                          <md-option ng-repeat="item in serviceLimits" value="{{serviceLimits}}">
+                            {{serviceLimits}}
+                          </md-option>
+                        </md-select>
                     </div>
                 </div>
             </div>

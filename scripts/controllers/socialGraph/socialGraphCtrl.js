@@ -8,7 +8,53 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     $scope.totalEngagement = 0;
    $scope.engageLikes = 0;
    
-   $scope.sentimentConfig = {options:{chart:{type:"line",backgroundColor:null,spacingBottom:15,spacingTop:10,spacingLeft:10,spacingRight:10,height:300},plotOptions:{column:{borderWidth:0,groupPadding:0,shadow:!1}}},credits:{enabled:false},xAxis:{type:"datetime"},yAxis:{title:{text:"Polarity"},labels:{style:{color:"#fff",fontSize:"12px",fontFamily:"Ek Mukta, sans-serif",fontWeight:"200"},formatter:function(){return this.value}}},plotOptions:{column:{pointPadding:.1,borderWidth:0}},title:{text:""},loading:!1};
+   $scope.sentimentConfig = {
+    options: {
+        chart: {
+            type: "line",
+            backgroundColor: null,
+            spacingBottom: 15,
+            spacingTop: 10,
+            spacingLeft: 10,
+            spacingRight: 10,
+            height: 300
+        },
+        plotOptions: {
+            column: {
+                borderWidth: 0,
+                groupPadding: 0,
+                shadow: !1,
+                pointPadding: .1
+            }
+        }
+    },
+    credits: {
+        enabled: false
+    },
+    xAxis: {
+        type : 'datetime'
+    },
+    yAxis: {
+        title: {
+            text: "Polarity"
+        },
+        labels: {
+            style: {
+                color: "#fff",
+                fontSize: "12px",
+                fontFamily: "Ek Mukta, sans-serif",
+                fontWeight: "200"
+            },
+            formatter: function () {
+                return this.value
+            }
+        }
+    },
+    title: {
+        text: ""
+    },
+    loading: !1
+};
 
     $scope.fbPageInit = function () {
         fbInterface.getFbLoginState($scope, true);
@@ -112,6 +158,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
 
     //set the map
     function setMap(data) {
+        $scope.arrAdds = [];
         for (var key in data.value) {
             if (Object.prototype.hasOwnProperty.call(data.value, key)) {
                 $scope.arrAdds.push({add: key, likeCount: data.value[key]});
@@ -250,6 +297,8 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
             fbInterface.loginToFb($scope, true);
         } else {
             fbInterface.logoutFromFb($scope, true);
+            $scope.activePageSearch = true;
+            $scope.preloader = false;
         }
     };
 

@@ -1006,8 +1006,14 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
                         events: {   
                             mouseover: function (map) {
                                 $scope.$apply(function () {
-                                google.maps.event.trigger(map, "resize");
+                                    google.maps.event.trigger(map, "resize");
                                 });
+                            },
+                            dragstart: function (map) {
+                                $(".digin-widget").removeClass("gridster-item-moving");
+                            },
+                            click: function (map) {
+                                $(".digin-widget").removeClass("gridster-item-moving");
                             }
                         } 
                     };       

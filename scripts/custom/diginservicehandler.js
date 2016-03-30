@@ -78,9 +78,12 @@
 
                 },
 
-                getExecQuery: function(qStr, cb) {
+                getExecQuery: function(qStr, cb, limit) {
                     var wSrc = "scripts/webworkers/webWorker.js";
-                    var reqUrl = $diginurls.diginengine + "/executeQuery?query=" + qStr + "&db=" + database;
+                    var limVal = 1000;
+                    if(limit) limVal = limit;
+                    var reqUrl = $diginurls.diginengine + "/executeQuery?query=" + qStr + "&db=" + database + "&limit="+limVal;
+                    
                     var wData = {
                         rUrl: reqUrl,
                         method: "get"

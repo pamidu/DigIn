@@ -102,7 +102,7 @@
                                   </md-icon>
                                 </span>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-5">
                             <div class="graph-main-header-text">
                                 <!-- social page name-->
                                 <h2 class="color-primary graph-h1">
@@ -114,15 +114,16 @@
                                 </a>
                             </div>
 
-<!--                            <div class="page-search-warp">
-
+                            <div class="page-search-warp">
+<!--
                                 <div class="p-l-20 ">
                                     <a href="javascript:void(0)" data-ng-click="onFilterData()" class="inline-block">
                                         <small class="small-text">search page data</small>
                                         <i class="ti-search pull-right"></i>
                                     </a>
                                 </div>
-
+-->
+<!--
                                 <div layout="row">
                                    <div>
                                     <md-date-picker model="sinceDate" label="Since" dialog-md-theme="datePickerTheme"/>
@@ -134,9 +135,8 @@
                                        <i class="ti-search pull-right"></i>
                                     </md-button>
                                 </div>
-
-                            </div>
 -->
+                            </div>
                         </div>
                         <div class="col-md-6">
                            <div layout="row">
@@ -178,10 +178,9 @@
                             </ul> -->
                         </div>
                         <div class="col-md-1">
-                            <md-button class="md-raised"
-                                           ng-click="loginWithFb()"
-                                >{{lblPageLogin}}
-                            </md-button>
+                            <div class="back p-l-20" ng-click="goBack()">
+                            <i class="ti-arrow-left fnt-s-24"></i>
+                            </div>
                         </div>
                     </div>
                 </div>

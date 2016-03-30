@@ -88,16 +88,19 @@
 
                     <!-- file upload -->
                     <div class="custom-file-upload" ng-show="showFileUpload">
-                            <div ngf-drop="upload($files)" ngf-select="upload($files)" ng-model="files" class="drop-box" 
-                                ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
-                                ngf-pattern="'.xls,.csv,.xlsx'" accept=".xls,.csv,.xlsx">Drop pdfs or images here or click to upload</div>
-                            <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
-                            Files:
-                            <ul>
-                                <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
-                            </ul>
-                            Upload Log:
-                            <pre>{{log}}</pre>
+                        <div ngf-drop="upload($files)" ngf-select="upload($files)" ng-model="files" class="drop-box"
+                             ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
+                             ngf-pattern="'.xls,.csv,.xlsx'" accept=".xls,.csv,.xlsx">Drop pdfs or images here or click
+                            to upload
+                        </div>
+                        <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+                        Files:
+                        <ul>
+                            <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}
+                            </li>
+                        </ul>
+                        Upload Log:
+                        <pre>{{log}}</pre>
                     </div>
                 </div>
             </div>
@@ -194,11 +197,11 @@
                     </div>
                     <!-- table data -->
                     <ui ng-repeat="row in sourceUi.tableData | filter : {name: sourceUi.search}">
-                        <li class="col-sheet hvr-back-pulse "
+                        <li class="col-sheet"
                             ng-click="commonUi.onSelectClassRow(row)"
                             ng-class="row.selected==true?'selectedRow':'unSelectedRow'"
                         > {{row.name}}
-                            <i class="ti-check pull-right">
+                            <i class="pull-right">
                             </i>
                         </li>
                     </ui>
@@ -207,7 +210,8 @@
             <div class="cmds-btn-footer">
                 <div class="cmds-btn-footer m-top-10">
                         <span class="btn btn-block btn-default"
-                              ng-click="commonUi.onClickNext('2')" ng-show="sourceUi.selectedNameSpace" ng-if="commonUi.isServiceError==false">
+                              ng-click="commonUi.onClickNext('2')" ng-show="sourceUi.selectedNameSpace"
+                              ng-if="commonUi.isServiceError==false">
                             next
                         </span>
                         <span class="btn btn-block btn-default btn-close"
@@ -272,22 +276,15 @@
                     <div class="sub-header">
                         <span>Attribute</span>
                     </div>
+                    <!-- #attribute -->
                     <div class="digin-cmds-attribute">
-                        <div class="digin-cmds-attr-error"
-                             ng-show="sourceUi.selectedAttribute==''">
-                            <i class="fa fa-refresh"
-                               id="refAttribute"
-                               ng-class="commonUi.isRefAttribute==true?'fa-spin':''"
-                               ng-click="commonUi.onRefresh(1)"
-                            ></i>
-                            <span>Attribute Not Found</span>
-                        </div>
-
                         <ui ng-repeat="row in sourceUi.selectedAttribute ">
-                            <li class="col-sheet-attr hvr-fade"
-                                ng-click="commonUi.onRemoveAtt(sourceUi.selectedAttribute,row)"
-                                ng-class="row.isRemove==true?'displayNone':'displayInlineBlock'"
-                            > {{row.name}}
+                            <li class="col-sheet-attr displayInlineBlock "
+                                ng-click="commonUi.onRemoveAtt(sourceUi.selectedAttribute ,row)"
+                                ng-class="row.isRemove==true?'unSelectedRow':'selectedRow'">
+                                {{row.name}}
+                                <i class="pull-right">
+                                </i>
                             </li>
                         </ui>
                     </div>
@@ -297,22 +294,15 @@
                     <div class="sub-header">
                         <span>Measures</span>
                     </div>
+                    <!-- #measures -->
                     <div class="digin-cmds-measures ">
-                        <div class="digin-cmds-attr-error"
-                             ng-show="sourceUi.selectedMeasures==''">
-                            <i class="fa fa-refresh"
-                               id="refMeasures"
-                               ng-class="commonUi.isRefMeasures==true?'fa-spin':''"
-                               ng-click="commonUi.onRefresh(2)"
-                            ></i>
-                            <span>Measures Not Found</span>
-                        </div>
-
                         <ui ng-repeat="row in sourceUi.selectedMeasures ">
-                            <li class="col-sheet-attr hvr-fade "
+                            <li class="col-sheet-attr displayInlineBlock "
                                 ng-click="commonUi.onRemoveMeasures(sourceUi.selectedMeasures ,row)"
-                                ng-class="row.isRemove==true?'displayNone':'displayInlineBlock'"
-                            > {{row.name}}
+                                ng-class="row.isRemove==true?'unSelectedRow':'selectedRow'">
+                                {{row.name}}
+                                <i class="pull-right">
+                                </i>
                             </li>
                         </ui>
                     </div>

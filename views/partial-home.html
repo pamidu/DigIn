@@ -151,7 +151,7 @@
                                 <small>({{favoriteReports.length}})</small>
                             </h4>
                             <ul class="list-material">
-                                <li class="has-action-left" ng-repeat="x in favoriteReports |filter:searchText">
+                                <li class="has-action-left" ng-repeat="x in reports |filter:searchText">
                                     <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
                                     <a href="#" class="visible">
                                         <div class="list-action-left"
@@ -159,41 +159,13 @@
                                             <img style="width:35px;height:35px;"
                                                  src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg"
                                                  class="img-radius" alt="">
-                                            <span ng-click="goReport(x.name)" class="title">{{x.splitName}}</span>
+                                            <span ng-click="goReport(x.splitName)" class="title">{{x.splitName}}</span>
                                         </div>
                                     </a>
                                 </li>
                             </ul>
                         </div>
-                        <div class="row">
-                            <img style="width:35px;height:35px;margin-top:-8px; "
-                                 src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg'/>
-                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More
-                                <small>({{reports.length}})</small>
-                            </h4>
-                            <ul class="list-material" style="height:150px">
-                                <li class="has-action-left"
-                                    dir-paginate="x in reportsData |filter:searchText | itemsPerPage: pageSize"
-                                    current-page="currentPage" pagination-id="list2">
-                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
-                                    <a href="#" class="visible">
-                                        <div class="list-action-left"
-                                             style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
-                                            <img style="width:35px;height:35px;"
-                                                 src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg"
-                                                 class="img-radius" alt="">
-                                            <span ng-click="goReport2()" class="title">{{x}}</span>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                            <div class="other-controller">
-                                <div>
-                                    <dir-pagination-controls boundary-links="true" on-page-change=""
-                                                             pagination-id="list2"></dir-pagination-controls>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
                 <div class="col-md-4">

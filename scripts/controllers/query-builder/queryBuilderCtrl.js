@@ -48,6 +48,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
     };
     
+    $scope.initRequestLimit={value:1000};
     $scope.requestLimits = [1000,2000,3000,4000,5000];
     
     $scope.initHighchartObj = {
@@ -271,42 +272,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
-                initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
-            }, {
-                id: 'ct09',
-                icon: 'chart-diginbump',
-                name: 'bumpChart ',
-                chart: 'bump',
-                selected: false,
-                chartType: 'd3Charts',
-                initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
-            }, {
-                id: 'ct10',
-                icon: 'chart-digincluster-dendrogram',
-                name: 'clusterDendrogram',
-                chart: 'clusterDendrogram',
-                selected: false,
-                chartType: 'd3Charts',
-                initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
-            }, {
-                id: 'ct11',
-                icon: 'chart-digincluster',
-                name: 'clusterForce',
-                chart: 'clusterForce',
-                selected: false,
-                chartType: 'd3Charts',
-                initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
-            }, {
-                id: 'ct12',
-                icon: 'chart-diginconvex-hull',
-                name: 'convexHull',
-                chart: 'convexHull',
-                selected: false,
-                chartType: 'd3Charts',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
@@ -891,6 +856,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     
     
     $scope.forecast = {
+        onInit: function(recon){
+            $scope.highchartsNG = $scope.widget.highchartsNG;
+            $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
+            delete $scope.highchartsNG.size;
+        },
         changeType: function() {
             var mergedArr = $scope.sourceData.fMeaArr.concat( $scope.sourceData.fAttArr);
             var field_d, field_f = "";
@@ -1448,7 +1418,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             $scope.client.getExecQuery(query, function(data, status) {
                 $scope.summaryData = data;
                 $scope.eventHndler.isLoadingChart = false;
-            });
+            }, $scope.initRequestLimit.value);
         },
         saveWidget: function(wid) {
             wid.widView = "views/ViewPivotSummary.html";
@@ -1784,6 +1754,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     };
 
     $scope.getExecuteAgg = function(query) {
+        alert($scope.initRequestLimit.value);
         if (typeof query != "undefined") {
             $scope.eventHndler.isLoadingChart = true;
             $scope.client.getExecQuery(query, function(res, status, query) {
@@ -1807,7 +1778,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 } else {
                     alert('request failed');
                 }
-            });
+            }, $scope.initRequestLimit.value);
         } else {
             alert("enter a query");
         }

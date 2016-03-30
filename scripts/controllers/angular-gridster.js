@@ -50,7 +50,7 @@
 		draggable: { // options to pass to draggable handler
 			enabled: true,
 			scrollSensitivity: 0, // Distance in pixels from the edge of the viewport after which the viewport should scroll, relative to pointer
-			scrollSpeed: 15 // Speed at which the window should scroll once the mouse pointer gets within scrollSensitivity distance
+			scrollSpeed: 100 // Speed at which the window should scroll once the mouse pointer gets within scrollSensitivity distance
 		}
 	})
 
@@ -1456,8 +1456,27 @@
 				}
 
 				function dragStart(event) {
-					console.log("dragStart element", $el);
-					if($el.context.className != "digin-widget ng-scope gridster-item"){
+					// console.log("dragStart element", $el);
+					// if($el.context.className != "digin-widget ng-scope gridster-item"){
+					// 	$el.addClass('gridster-item-moving');
+					// 	gridster.movingItem = item;
+
+					// 	gridster.updateHeight(item.sizeY);
+					// 	scope.$apply(function() {
+					// 		if (gridster.draggable && gridster.draggable.start) {
+					// 			gridster.draggable.start(event, $el, itemOptions);
+					// 		}
+					// 	});
+					// }
+					// if($el[0].childNodes[1].childNodes[2].childNodes[0].classList[0] == 'gmap-widget'){
+					// 	$el.addClass('gridster-item-moving');
+					// 	scope.$apply(function() {
+					// 		if (gridster.draggable && gridster.draggable.start) {
+					// 			gridster.draggable.start(event, $el, itemOptions);
+					// 		}
+					// 	});
+					// }
+					// else{
 						$el.addClass('gridster-item-moving');
 						gridster.movingItem = item;
 
@@ -1467,7 +1486,9 @@
 								gridster.draggable.start(event, $el, itemOptions);
 							}
 						});
-					}
+					// }
+					console.log("$el", $el);
+					console.log("$el", $el[0].childNodes[1].childNodes[2].childNodes[0].classList[0]);
 				}
 
 				function drag(event) {

@@ -33,7 +33,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
             method: 'GET',
             url: reqUrl
         }).success(function (data, status) {
-            if(data.Is_Success) callback(data);
+            if(data.Is_Success) callback(data.Result);
             else {
                 if(data.Custom_Message == "Error validating access token: This may be because the user logged out or may be due to a system error."){
                     $scope.resendConfirm($event, data.Custom_Message, serviceUrl, callback, demographic);

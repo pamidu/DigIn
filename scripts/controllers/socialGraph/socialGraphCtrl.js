@@ -20,18 +20,50 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     };
 
     //getting the service response
-    function getServiceResponse(serviceUrl, callback) {
+    // #demographic : bool true if the call from the demographic service because it doesn't have any other parameter
+    function getServiceResponse(serviceUrl, token, callback, demographic) {
         console.log('Sevice URL:' + serviceUrl);
+        var reqUrl = "";
+        
+        if(demographic) reqUrl = serviceUrl + "token=" + token;
+        else reqUrl = serviceUrl + "&token=" + token;
+        reqUrl = reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=duosoftware.com';
+        
         $http({
             method: 'GET',
-            url: serviceUrl
+            url: reqUrl
         }).success(function (data, status) {
-            callback(data);
+            if(data.Is_Success) callback(data);
+            else {
+                if(data.Custom_Message == "Error validating access token: This may be because the user logged out or may be due to a system error."){
+                    $scope.resendConfirm($event, data.Custom_Message, serviceUrl, callback, demographic);
+                }
+            }
+            
         }).error(function (data, status) {
             $scope.errorMessage = true;
             console.log('unexpected error occured');
         });
     };
+    
+    //confirming the resend request
+    $scope.resendConfirm = function(ev, msg, url, cb, demographic) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        var confirm = $mdDialog.confirm()
+              .title('Would you like to resend the request?')
+              .textContent(msg)
+              .ariaLabel('Lucky day')
+              .targetEvent(ev)
+              .ok('Yes')
+              .cancel('No');
+        $mdDialog.show(confirm).then(function() {
+            fbInterface.getFreshPageAccessToken($scope.page.id, function(data){
+                getServiceResponse(url, data, cb, demographic);
+            });          
+        }, function() {
+          $scope.status = 'You decided to keep your debt.';
+        });
+      };
 
     //generate the chart
     var configSeries = [];
@@ -129,16 +161,16 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
       if (!changedTime) $scope.activePageSearch = !$scope.activePageSearch;
       
       //getting page overview data 
-      var serviceUrl = Digin_Engine_API3 + 'pageoverview?metric_names=[%27page_views%27,%27page_fans%27,%27page_stories%27]&token=' + page.accessToken + '&since=' + pageTimestamps.sinceStamp + '&until=' + pageTimestamps.untilStamp;
+      var serviceUrl = Digin_Engine_API3 + 'pageoverview?metric_names=[%27page_views%27,%27page_fans%27,%27page_stories%27]&since=' + pageTimestamps.sinceStamp + '&until=' + pageTimestamps.untilStamp;
 
-      getServiceResponse(serviceUrl, function(data) {
+      getServiceResponse(serviceUrl, page.accessToken, function(data) {
          console.log('chart data:' + JSON.stringify(data));
-         generateChart(data);         
+         generateChart(data);
       });
       
       //getting posts summary and sentiment data 
-      serviceUrl = Digin_Engine_API3 + 'fbpostswithsummary?token=' + page.accessToken + '&since=' + pageTimestamps.sinceStamp + '&until=' + pageTimestamps.untilStamp+'&page='+page.id;
-      getServiceResponse(serviceUrl, function(data) {
+      serviceUrl = Digin_Engine_API3 + 'fbpostswithsummary?since=' + pageTimestamps.sinceStamp + '&until=' + pageTimestamps.untilStamp+'&page='+page.id;
+      getServiceResponse(serviceUrl, page.accessToken, function(data) {
          console.log('posts:' + JSON.stringify(data));
          $scope.postsObj = data;            
          $scope.postCount = data.length;
@@ -149,8 +181,8 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
             $scope.postIds.push(postEntry.id);
          });
 
-         serviceUrl = Digin_Engine_API3 + 'sentimentanalysis?tokens=%27' + page.accessToken + '%27&source=facebook&post_ids=' + JSON.stringify($scope.postIds);
-            getServiceResponse(serviceUrl, function(data) {
+         serviceUrl = Digin_Engine_API3 + 'sentimentanalysis?source=facebook&post_ids=' + JSON.stringify($scope.postIds);
+            getServiceResponse(serviceUrl, page.accessToken, function(data) {
                var sentIcons = {
                   'positive': 'styles/css/images/socialAnalysis/happyFace.png',
                   'negative': 'styles/css/images/socialAnalysis/sadFace.png',
@@ -194,8 +226,8 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
       });
       
       //getting the data for the word cloud 
-      serviceUrl = Digin_Engine_API3 + 'buildwordcloudFB?token=%27' + page.accessToken + '%27&source=facebook';
-      getServiceResponse(serviceUrl, function(data) {
+      serviceUrl = Digin_Engine_API3 + 'buildwordcloudFB?source=facebook';
+      getServiceResponse(serviceUrl, page.accessToken, function(data) {
          var wordObjArr = [];
          for (var key in data) {
             if (Object.prototype.hasOwnProperty.call(data, key)) {
@@ -212,11 +244,11 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
       });
       
       //getting location data for the map      
-      serviceUrl = Digin_Engine_API3 + 'demographicsinfo?token=' + page.accessToken;
-      getServiceResponse(serviceUrl, function(data) {
+      serviceUrl = Digin_Engine_API3 + 'demographicsinfo?';
+      getServiceResponse(serviceUrl, page.accessToken, function(data) {
          $scope.arrAdds = [];
          setMap(data);
-      });
+      }, true);
    };
     //on load current page details
     $scope.page = null;

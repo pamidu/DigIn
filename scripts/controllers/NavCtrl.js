@@ -15,6 +15,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         localStorage.clear();
 
+        $scope.username=JSON.parse(getCookie('authData')).Username;
+        $scope.imageUrl="styles/css/images/innerlogo.png"; 
+
         var $windowHeight = $(window).height(),
             $windowWidth = $(window).width(),
             $startingPoint = $('.starting-point');
@@ -134,14 +137,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         function showProfileController($rootScope,$scope, $mdDialog) {
 
-            var userInfo = $auth.getSession();  
+            //var userInfo = $auth.getSession();  
+            var userInfo = JSON.parse(getCookie("authData"));
 
             $scope.user = {
                 fname: userInfo.Name,
                 lname: "",
                 email: userInfo.Email,
-                location: "Colombo",
-                mobile: "077123123123",
+                //location: "Colombo",
+                //mobile: "077123123123",
                 profile_pic: "styles/css/images/person.jpg"
             };
 
@@ -177,7 +181,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"');
             */
 
-            var userInfo = JSO.parNse(getCookie("authData"));
+            var userInfo = JSON.parse(getCookie("authData"));
+            $rootScope.username = userInfo.Username;
             $http.get('http://104.197.27.7:3048/tenant/GetTenants/'+ userInfo.SecurityToken)
             .success(function(response){
                  $scope.tennants=response;
@@ -216,9 +221,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             .ok('Yes!')
                             .cancel('No!');
                         $mdDialog.show(confirm).then(function(){
-                            console.log(JSON.stringify(tennant));
+                            //console.log(JSON.stringify(tennant));
                             $scope.status = 'Yes';
-                            window.location = "http://"+tennant;
+                            //window.location = "http://"+tennant;
+                            window.open("http://"+tennant);
                         },function(){
                             //alert('No!');
                             $scope.status = 'No';
@@ -609,11 +615,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
 
         $scope.GetDashboardDetails = function () {
-
-
             $scope.dashboards = DashboardService.getDashboards();
-
-
         };
 
 
@@ -1113,6 +1115,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
 
         };
+
+
+        $scope.getURL = function(){
+            $scope.imageUrl=$rootScope.image; 
+        }
+
 
 
         var icons = ['dashboard', 'dashboard'];

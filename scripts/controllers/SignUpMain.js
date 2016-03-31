@@ -43,18 +43,34 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
 
 
         $scope.createDataSet=function (mailTo,UserName,fName) {
+
+            var dtSetName = mailTo.replace('@', "_");
+            dtSetName = dtSetName.replace('.', '_');
+
+
             //var userInfo = JSON.parse(getCookie("authData"));
             //$http.get($diginurls.diginengine + '/createDataset?dataSetName='+UserName+'&tableName='+UserName+'&db=BigQuery&SecurityToken=75809dbaff8548441d6ae64431670ec5&Domain=duosoftware.com')
-            $http.get($diginurls.diginengine + '/createDataset?dataSetName='+UserName+'&tableName='+UserName+'&db=BigQuery&Domain=duosoftware.com')
+            $http.get($diginurls.diginengine + '/createDataset?dataSetName='+dtSetName+'&tableName='+dtSetName+'&db=BigQuery&Domain=duosoftware.com')
                 .success(function(response){
                     //$scope.userDtSet=response; 75809dbaff8548441d6ae64431670ec5
                     //alert(JSON.stringify(response.Result));  
-                    $scope.sendConfirmationMail(mailTo,fName,UserName); 
+
+                    $scope.sendConfirmationMail(mailTo,fName,dtSetName); 
                 }).error(function(error){   
                     //alert("Fail !");                        
                 });     
         }
 
+
+        $scope.isDomainNameExist=function (email, cb) {  
+            $http.get('http://104.197.27.7:3048/GetUser/'+email)
+            .success(function(response){
+                cb(true);  
+            }).error(function(error){   
+                //alert("Fail !"); 
+                cb(false);
+            });     
+        }
 
         //Send confirmation mail for registration
          $scope.sendConfirmationMail=function (mailTo,fName,UserName) {
@@ -267,9 +283,20 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                 return;
             }
             else {
-                //validation TRUE
-                mainFun.signUpUser();
-                return;
+                $scope.isDomainNameExist(signUpUsr.email, function(data){
+                    if(data){
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Username already exist..');
+                        $scope.error.isEmail = true;
+                        focus('email');
+                        return;
+                    }else{
+                        //validation TRUE
+                        mainFun.signUpUser();
+                        return;
+                    }
+                });
+
+                
             }
         }
     }])

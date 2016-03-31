@@ -1456,8 +1456,18 @@
 				}
 
 				function dragStart(event) {
-					// console.log("dragStart element", $el);
-					// if($el.context.className != "digin-widget ng-scope gridster-item"){
+					console.log("$el", $el);
+					console.log("$el", $el[0].childNodes[1].childNodes[2].childNodes[0].classList[0]);
+					console.log(event);
+
+					// if($el[0].childNodes[1].childNodes[2].childNodes[0].classList[0] == 'gmap-widget'){
+					// 	$el.click(function(event) {
+					// 	    var elem = $(event.target);
+					// 	    console.log(event.target.parentElement.parentElement.parentElement.parentElement);
+					// 	});
+					// }
+					// else{
+						
 					// 	$el.addClass('gridster-item-moving');
 					// 	gridster.movingItem = item;
 
@@ -1468,15 +1478,11 @@
 					// 		}
 					// 	});
 					// }
-					// if($el[0].childNodes[1].childNodes[2].childNodes[0].classList[0] == 'gmap-widget'){
-					// 	$el.addClass('gridster-item-moving');
-					// 	scope.$apply(function() {
-					// 		if (gridster.draggable && gridster.draggable.start) {
-					// 			gridster.draggable.start(event, $el, itemOptions);
-					// 		}
-					// 	});
-					// }
-					// else{
+					if(event.target.parentElement.parentElement.parentElement.parentElement.className=='angular-google-map' ){
+						    	//do nothing
+						    	console.log("in angular gmaps");
+					}
+					else{
 						$el.addClass('gridster-item-moving');
 						gridster.movingItem = item;
 
@@ -1486,86 +1492,84 @@
 								gridster.draggable.start(event, $el, itemOptions);
 							}
 						});
-					// }
-					console.log("$el", $el);
-					console.log("$el", $el[0].childNodes[1].childNodes[2].childNodes[0].classList[0]);
+					}
 				}
 
 				function drag(event) {
-					var oldRow = item.row,
+						var oldRow = item.row,
 						oldCol = item.col,
 						hasCallback = gridster.draggable && gridster.draggable.drag,
 						scrollSensitivity = gridster.draggable.scrollSensitivity,
 						scrollSpeed = gridster.draggable.scrollSpeed;
 
-					var row = gridster.pixelsToRows(elmY);
-					var col = gridster.pixelsToColumns(elmX);
+						var row = gridster.pixelsToRows(elmY);
+						var col = gridster.pixelsToColumns(elmX);
 
-					var itemsInTheWay = gridster.getItems(row, col, item.sizeX, item.sizeY, item);
-					var hasItemsInTheWay = itemsInTheWay.length !== 0;
+						var itemsInTheWay = gridster.getItems(row, col, item.sizeX, item.sizeY, item);
+						var hasItemsInTheWay = itemsInTheWay.length !== 0;
 
-					if (gridster.swapping === true && hasItemsInTheWay) {
-						var boundingBoxItem = gridster.getBoundingBox(itemsInTheWay),
-							sameSize = boundingBoxItem.sizeX === item.sizeX && boundingBoxItem.sizeY === item.sizeY,
-							sameRow = boundingBoxItem.row === oldRow,
-							sameCol = boundingBoxItem.col === oldCol,
-							samePosition = boundingBoxItem.row === row && boundingBoxItem.col === col,
-							inline = sameRow || sameCol;
+						if (gridster.swapping === true && hasItemsInTheWay) {
+							var boundingBoxItem = gridster.getBoundingBox(itemsInTheWay),
+								sameSize = boundingBoxItem.sizeX === item.sizeX && boundingBoxItem.sizeY === item.sizeY,
+								sameRow = boundingBoxItem.row === oldRow,
+								sameCol = boundingBoxItem.col === oldCol,
+								samePosition = boundingBoxItem.row === row && boundingBoxItem.col === col,
+								inline = sameRow || sameCol;
 
-						if (sameSize && itemsInTheWay.length === 1) {
-							if (samePosition) {
-								gridster.swapItems(item, itemsInTheWay[0]);
-							} else if (inline) {
-								return;
-							}
-						} else if (boundingBoxItem.sizeX <= item.sizeX && boundingBoxItem.sizeY <= item.sizeY && inline) {
-							var emptyRow = item.row <= row ? item.row : row + item.sizeY,
-								emptyCol = item.col <= col ? item.col : col + item.sizeX,
-								rowOffset = emptyRow - boundingBoxItem.row,
-								colOffset = emptyCol - boundingBoxItem.col;
+							if (sameSize && itemsInTheWay.length === 1) {
+								if (samePosition) {
+									gridster.swapItems(item, itemsInTheWay[0]);
+								} else if (inline) {
+									return;
+								}
+							} else if (boundingBoxItem.sizeX <= item.sizeX && boundingBoxItem.sizeY <= item.sizeY && inline) {
+								var emptyRow = item.row <= row ? item.row : row + item.sizeY,
+									emptyCol = item.col <= col ? item.col : col + item.sizeX,
+									rowOffset = emptyRow - boundingBoxItem.row,
+									colOffset = emptyCol - boundingBoxItem.col;
 
-							for (var i = 0, l = itemsInTheWay.length; i < l; ++i) {
-								var itemInTheWay = itemsInTheWay[i];
+								for (var i = 0, l = itemsInTheWay.length; i < l; ++i) {
+									var itemInTheWay = itemsInTheWay[i];
 
-								var itemsInFreeSpace = gridster.getItems(
-									itemInTheWay.row + rowOffset,
-									itemInTheWay.col + colOffset,
-									itemInTheWay.sizeX,
-									itemInTheWay.sizeY,
-									item
-								);
+									var itemsInFreeSpace = gridster.getItems(
+										itemInTheWay.row + rowOffset,
+										itemInTheWay.col + colOffset,
+										itemInTheWay.sizeX,
+										itemInTheWay.sizeY,
+										item
+									);
 
-								if (itemsInFreeSpace.length === 0) {
-									gridster.putItem(itemInTheWay, itemInTheWay.row + rowOffset, itemInTheWay.col + colOffset);
+									if (itemsInFreeSpace.length === 0) {
+										gridster.putItem(itemInTheWay, itemInTheWay.row + rowOffset, itemInTheWay.col + colOffset);
+									}
 								}
 							}
 						}
-					}
 
-					if (gridster.pushing !== false || !hasItemsInTheWay) {
-						item.row = row;
-						item.col = col;
-					}
+						if (gridster.pushing !== false || !hasItemsInTheWay) {
+							item.row = row;
+							item.col = col;
+						}
 
-					if (event.pageY - realdocument.body.scrollTop < scrollSensitivity) {
-						realdocument.body.scrollTop = realdocument.body.scrollTop - scrollSpeed;
-					} else if ($window.innerHeight - (event.pageY - realdocument.body.scrollTop) < scrollSensitivity) {
-						realdocument.body.scrollTop = realdocument.body.scrollTop + scrollSpeed;
-					}
+						if (event.pageY - realdocument.body.scrollTop < scrollSensitivity) {
+							realdocument.body.scrollTop = realdocument.body.scrollTop - scrollSpeed;
+						} else if ($window.innerHeight - (event.pageY - realdocument.body.scrollTop) < scrollSensitivity) {
+							realdocument.body.scrollTop = realdocument.body.scrollTop + scrollSpeed;
+						}
 
-					if (event.pageX - realdocument.body.scrollLeft < scrollSensitivity) {
-						realdocument.body.scrollLeft = realdocument.body.scrollLeft - scrollSpeed;
-					} else if ($window.innerWidth - (event.pageX - realdocument.body.scrollLeft) < scrollSensitivity) {
-						realdocument.body.scrollLeft = realdocument.body.scrollLeft + scrollSpeed;
-					}
+						if (event.pageX - realdocument.body.scrollLeft < scrollSensitivity) {
+							realdocument.body.scrollLeft = realdocument.body.scrollLeft - scrollSpeed;
+						} else if ($window.innerWidth - (event.pageX - realdocument.body.scrollLeft) < scrollSensitivity) {
+							realdocument.body.scrollLeft = realdocument.body.scrollLeft + scrollSpeed;
+						}
 
-					if (hasCallback || oldRow !== item.row || oldCol !== item.col) {
-						scope.$apply(function() {
-							if (hasCallback) {
-								gridster.draggable.drag(event, $el, itemOptions);
-							}
-						});
-					}
+						if (hasCallback || oldRow !== item.row || oldCol !== item.col) {
+							scope.$apply(function() {
+								if (hasCallback) {
+									gridster.draggable.drag(event, $el, itemOptions);
+								}
+							});
+						}
 				}
 
 				function dragStop(event) {

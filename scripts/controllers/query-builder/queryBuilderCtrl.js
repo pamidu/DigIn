@@ -2,7 +2,7 @@
  * Created by Damith on 2/12/2016.
  */
 
-routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams) {
+routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, $ngToast) {
 
     $scope.goDashboard = function() {
         $state.go('home.Dashboards');

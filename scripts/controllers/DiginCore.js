@@ -1003,17 +1003,20 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
         $scope.map = { center: { latitude: 7.2964, longitude: 80.6350 }, 
                         zoom: 8, 
                         bounds: {},
+                        options: {
+                            maxZoom: 15,
+                            minZoom: 1
+                        },
                         events: {   
                             mouseover: function (map) {
                                 $scope.$apply(function () {
                                     google.maps.event.trigger(map, "resize");
                                 });
                             },
-                            dragstart: function (map) {
-                                $(".digin-widget").removeClass("gridster-item-moving");
-                            },
-                            click: function (map) {
-                                $(".digin-widget").removeClass("gridster-item-moving");
+                            dragend: function (map) {
+                                $scope.$apply(function () {
+                                    google.maps.event.trigger(map, "resize");
+                                });
                             }
                         } 
                     };       

@@ -113,7 +113,13 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         { name: '10' }
       ];
   
-
+    $scope.requests = [
+        { name: '1000' },
+        { name: '2000' },
+        { name: '3000' },
+        { name: '4000' },
+        { name: '5000' },
+      ];
 
 
 

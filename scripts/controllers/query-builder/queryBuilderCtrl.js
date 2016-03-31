@@ -275,6 +275,42 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
+                id: 'ct09',
+                icon: 'chart-diginbump',
+                name: 'bumpChart ',
+                chart: 'bump',
+                selected: false,
+                chartType: 'd3Charts',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct10',
+                icon: 'chart-digincluster-dendrogram',
+                name: 'clusterDendrogram',
+                chart: 'clusterDendrogram',
+                selected: false,
+                chartType: 'd3Charts',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct11',
+                icon: 'chart-digincluster',
+                name: 'clusterForce',
+                chart: 'clusterForce',
+                selected: false,
+                chartType: 'd3Charts',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct12',
+                icon: 'chart-diginconvex-hull',
+                name: 'convexHull',
+                chart: 'convexHull',
+                selected: false,
+                chartType: 'd3Charts',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
                 id: 'ct13',
                 icon: 'chart-diginhierarchy-chart',
                 name: 'hierarchy',
@@ -512,7 +548,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     if (executeQryData.executeMeasures[i].filedName == filed.filedName &&
                         executeQryData.executeMeasures[i].condition == row.name) {
                         isFoundCnd = true;
-                        alert('duplicate record found in object...');
+                        //alert('duplicate record found in object...');
+                        privateFun.fireMessage('0','duplicate record found in object...');
+                        $scope.isPendingRequest = false;
                         return;
                     }
                     isFoundCnd = false;
@@ -537,7 +575,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 for (i in executeQryData.executeColumns) {
                     if (executeQryData.executeColumns[i].filedName == column.filedName) {
                         isFoundCnd = true;
-                        alert('duplicate record found in object...');
+                        //alert('duplicate record found in object...');
+                        privateFun.fireMessage('0','duplicate record found in object...');
+                        $scope.isPendingRequest = false;
                         return;
                     }
                     isFoundCnd = false;
@@ -550,14 +590,18 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         eval("$scope." + $scope.selectedChart.chartType + ".selectAttribute(column.filedName)");
 
                     } else {
-                        alert("First select atleast one measure");
+                        //alert("First select atleast one measure");
+                        privateFun.fireMessage('0','First select atleast one measure');
+                        $scope.isPendingRequest = false;
                     }
 
                 }
             },
 
             onClickRmvCondition: function(condition, measure) {
-                alert('record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
+                //alert('record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
+                privateFun.fireMessage('0','record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
+                $scope.isPendingRequest = false;
             },
             onClickApply: function() {
                 this.isLoadingChart = true;
@@ -791,7 +835,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }else{
                     $scope.executeQryData.executeMeasures.pop();
                     eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
-                    alert("drilldown only supports single series");
+                    //alert("drilldown only supports single series");
+                    privateFun.fireMessage('0','drilldown only supports single series');
+                    $scope.isPendingRequest = false;
                 }                
             }
         },
@@ -804,7 +850,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     $scope.getGroupedAggregation(fieldName);                
             }else if($scope.executeQryData.executeColumns.length == 2){
                 eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
-                alert("drilldown only supports for two levels");                
+                // alert("drilldown only supports for two levels"); 
+                privateFun.fireMessage('0','drilldown only supports for two levels');
+                $scope.isPendingRequest = false;               
             }else if($scope.executeQryData.executeColumns.length == 1){
                 $scope.executeQryData.executeColumns.push({
                     filedName: fieldName
@@ -1495,7 +1543,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         },
         selectAttribute: function(fieldName) {
             //$scope.getGroupedAggregation(fieldName);
-            alert("grouping in metric is not supported");
+            // alert("grouping in metric is not supported");
+            privateFun.fireMessage('0','grouping in metric is not supported');
+            $scope.isPendingRequest = false;
         },
         executeQuery: function(cat, res, query) {            
             for (var c in res[0]) {
@@ -1585,7 +1635,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     eval("$scope." + $scope.selectedChart.chartType + ".onGetAggData(res[0])");
                     $scope.receivedQuery = query;
                 } else {
-                    alert('request failed');
+                    // alert('request failed');
+                    privateFun.fireMessage('0','request failed');
+                    $scope.isPendingRequest = false;
                 }
             });
 
@@ -1614,7 +1666,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.getGroupedAggregation = function(row) {
         if (row) $scope.selectedCat = row;
         $scope.highchartsNG.series = [];
-        $scope.highchartsNG.xAxis["title"] = {text: row};
         var fieldArr = [];
         $scope.eventHndler.isLoadingChart = true;
 
@@ -1635,7 +1686,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
                 });
             } else {
-                alert('request failed');
+                //alert('request failed');
+                privateFun.fireMessage('0','request failed');
+                $scope.isPendingRequest = false;
             }
 
         }, $scope.selectedCat);
@@ -1726,7 +1779,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                                 console.log(JSON.stringify(drillSerMainArr));
                                                 syncAgg(j+1, res1);
                                             }else{
-                                                alert('request failed');
+                                                //alert('request failed');
+                                                privateFun.fireMessage('0','request failed');
+                                                $scope.isPendingRequest = false;
                                             }
                                         }, res[i+1].value, con);
                                     }else{
@@ -1739,7 +1794,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 };
                                 
                             } else {
-                                alert('request failed');
+                                // alert('request failed');
+                                privateFun.fireMessage('0','request failed');
+                                $scope.isPendingRequest = false;
                             }
 
                         }, res[i].value);
@@ -1748,7 +1805,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     }
                 };
             }else{
-                alert('request failed');
+                // alert('request failed');
+                privateFun.fireMessage('0','request failed');
+                $scope.isPendingRequest = false;
             }
         });
     };
@@ -1776,11 +1835,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     $scope.executeQryData.executeMeasures = measureArr;
                     eval("$scope." + $scope.selectedChart.chartType + ".executeQuery(cat, res, query)");
                 } else {
-                    alert('request failed');
+                    //alert('request failed');
+                    privateFun.fireMessage('0','request failed');
+                    $scope.isPendingRequest = false;
                 }
             }, $scope.initRequestLimit.value);
         } else {
-            alert("enter a query");
+            // alert("enter a query");
+            privateFun.fireMessage('0','enter a query');
+            $scope.isPendingRequest = false;
         }
     };
 

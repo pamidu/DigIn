@@ -30,7 +30,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                     $auth.login($scope.txtUname, $scope.txtPwd, "duoworld.duoweb.info");
                     $auth.onLoginResult(function () {
                         $scope.isLoggedin = true;
-                        
+
                         $rootScope.username = $scope.txtUname;
                         localStorage.setItem('username', $scope.txtUname);
                         //var userInfo = $auth.getSession();
@@ -47,7 +47,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
 
                     $auth.onLoginError(function (event, data) {
                         $scope.error.isLoading = false;
-                        privateFun.fireMsg('0', '<strong>Error : </strong>' + data.message);
+                        privateFun.fireMsg('0', '<strong>Error : </strong>invalid login user name or password..');
                         $scope.error.isUserName = true;
                         $scope.error.isPwd = true;
                         focus('txtUname');
@@ -56,32 +56,32 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                 //---------------------------------------------------------------------------------
 
                 /*
-                login: function () {
-                    $scope.error.isLoading = true;
-                    var req = {
-                         method: 'POST',
-                         url: 'http://digin.io/apis/authorization/userauthorization/login',
-                         headers: {
-                           'Content-Type': "application/json"
-                         },
-                         data:{ Username:$scope.txtUname,Password:$scope.txtPwd }
-                    }    
-                                 
-                    $http(req)
-                    .then(function(data){
-                        alert(JSON.stringify(data));
-                        $state.go('welcome');
-                    }, 
-                    function(data){
-                        $scope.error.isLoading = false;
-                        privateFun.fireMsg('0', '<strong>Error : </strong>' + data.message);
-                        $scope.error.isUserName = true;
-                        $scope.error.isPwd = true;
-                        focus('txtUname');
-                    });
-                },
-                */
-                
+                 login: function () {
+                 $scope.error.isLoading = true;
+                 var req = {
+                 method: 'POST',
+                 url: 'http://digin.io/apis/authorization/userauthorization/login',
+                 headers: {
+                 'Content-Type': "application/json"
+                 },
+                 data:{ Username:$scope.txtUname,Password:$scope.txtPwd }
+                 }
+
+                 $http(req)
+                 .then(function(data){
+                 alert(JSON.stringify(data));
+                 $state.go('welcome');
+                 },
+                 function(data){
+                 $scope.error.isLoading = false;
+                 privateFun.fireMsg('0', '<strong>Error : </strong>' + data.message);
+                 $scope.error.isUserName = true;
+                 $scope.error.isPwd = true;
+                 focus('txtUname');
+                 });
+                 },
+                 */
+
                 fireMsg: function (msgType, content) {
                     ngToast.dismiss();
                     var _className;

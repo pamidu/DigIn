@@ -8,7 +8,7 @@ drb >> dynamically report builder
 .digin-cmds-source {
     display: block;
     padding-left: 16px;
-    /*margin-bottom: 30px;*/
+    margin-bottom: 30px;
     width: 100%;
     max-height: 307px;
 }
@@ -66,7 +66,6 @@ drb >> dynamically report builder
 
 .col-sheet {
     cursor: pointer;
-
     width: 100%;
     height: 40px;
     background: #ffffff;
@@ -74,7 +73,6 @@ drb >> dynamically report builder
     border: 1px solid rgba(203, 203, 187, 0.19);
     padding: 9px;
     margin-bottom: 10px;
-
     -webkit-box-shadow: 0px 0px 8px -5px rgba(0, 0, 0, 0.56);
     -moz-box-shadow: 0px 0px 8px -5px rgba(0, 0, 0, 0.56);
     box-shadow: 0px 0px 8px -5px rgba(0, 0, 0, 0.56);
@@ -182,6 +180,10 @@ drb >> dynamically report builder
     cursor: pointer;
 }
 
+.col-sheet > .selectedRow {
+    background-color: #026689 !important;
+}
+
 .digin-cmds-source .error-wrap > i {
     line-height: 46px;
     font-size: 75px;
@@ -211,13 +213,13 @@ drb >> dynamically report builder
 }
 
 .source-wrap-footer {
-    font-size: 9px;
+    font-size: 12px;
     color: #fff;
     position: absolute;
     background: #EC784B;
     bottom: 0;
     width: 100%;
-    height: 18px;
+    height: 22px;
     font-family: 'Ek Mukta', sans-serif;
     font-weight: 400;
     padding-top: 5px;

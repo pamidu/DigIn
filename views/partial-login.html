@@ -1,4 +1,4 @@
-<div class="digin-lgn-wrap   animated" ng-controller="LoginCtrl">
+<div class="digin-lgn-wrap" id="gradient" ng-controller="LoginCtrl">
     <toast></toast>
     <div class="auth-message-wrap"
          ng-if="error.isLoading">
@@ -8,45 +8,13 @@
     </div>
     <div layout="column" layout-align="center center">
 
-        <div class="digin-login-card animated flipInX">
-            <div layout="row" layout-xs="column">
-                <div flex="45">
-                    <div class="left-main-wrap">
-                        <div class="left-wrap sign-in">
-                            <ul class="bg-bubbles">
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                            </ul>
-                            <div class="login-logo ">
-                                <img class="animate-circle" src="styles/css/images/login-logo.png">
-                            </div>
-                            <span class="login-welcome">
-                                Welcome
-                            </span>
-                            <h5>
-                                DigIn - Beyond BI
-                            </h5>
-
-                            <div class="welcome-link sign-up-link"
-                                 ng-click="onClickSignUp()">
-                                <a href="javascript:void(0)">Sign up now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div flex="55">
+        <div class="digin-login-card">
+            <div layout="row" layout="row">
+                <div flex>
                     <div class="right-wrap">
                         <div class="header-login">
-                            <div class="login-text-wrap pull-right ">
-                                <h5 id="sliderRight">Sign In</h5>
+                            <div class="login-text-wrap text-center ">
+                                <img ng-src="styles/css/images/initiallog.png" style="width:140px;" height="90px">
                             </div>
                         </div>
                         <form name="frmDiginLogin" autocomplete="off">
@@ -104,6 +72,11 @@
                                        class="login-btn">
                                         Login
                                     </a>
+                                    <a href="javascript:void(0  )"
+                                       ng-click="onClickSignUp()"
+                                       class="login-btn">
+                                        Sign Up
+                                    </a>
                                 </div>
                             </div>
                         </form>
@@ -112,7 +85,5 @@
             </div>
         </div>
     </div>
-    <div class="footer-wrap">
-        Copyright 2016 digin.io - All Rights Reserved
-    </div>
+
 </div>

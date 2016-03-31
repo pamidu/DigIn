@@ -1,7 +1,7 @@
 // var app = angular.module('Fsignup', ['uiMicrokernel', 'ngMaterial']);
 
 routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
-    '$http', '$objectstore', '$state', 'ngToast', 'focus','$diginurls',
+    '$http', '$objectstore', '$state', 'ngToast', 'focus', '$diginurls',
     function ($scope, $mdToast, $animate, $http, $objectstore, $state,
               ngToast, focus, $diginurls) {
 
@@ -20,8 +20,6 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
             firstName: '',
             lastName: '',
             email: '',
-            domainName: '',
-            namespace: 'digin.io',
             pwd: '',
             cnfrPwd: ''
         };
@@ -35,36 +33,35 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
             isFirstName: false,
             isLastName: false,
             isEmail: false,
-            isDomainName: false,
             isPassword: false,
             isRetypeCnfrm: false,
             isLoading: false
         };
 
 
-        $scope.createDataSet=function (mailTo,UserName,fName) {
+        $scope.createDataSet = function (mailTo, UserName, fName) {
             //var userInfo = JSON.parse(getCookie("authData"));
             //$http.get($diginurls.diginengine + '/createDataset?dataSetName='+UserName+'&tableName='+UserName+'&db=BigQuery&SecurityToken=75809dbaff8548441d6ae64431670ec5&Domain=duosoftware.com')
-            $http.get($diginurls.diginengine + '/createDataset?dataSetName='+UserName+'&tableName='+UserName+'&db=BigQuery&Domain=duosoftware.com')
-                .success(function(response){
+            $http.get($diginurls.diginengine + '/createDataset?dataSetName=' + UserName + '&tableName=' + UserName + '&db=BigQuery&Domain=duosoftware.com')
+                .success(function (response) {
                     //$scope.userDtSet=response; 75809dbaff8548441d6ae64431670ec5
                     //alert(JSON.stringify(response.Result));  
-                    $scope.sendConfirmationMail(mailTo,fName,UserName); 
-                }).error(function(error){   
-                    //alert("Fail !");                        
-                });     
+                    $scope.sendConfirmationMail(mailTo, fName, UserName);
+                }).error(function (error) {
+                //alert("Fail !");
+            });
         }
 
 
         //Send confirmation mail for registration
-         $scope.sendConfirmationMail=function (mailTo,fName,UserName) {
-            $scope.mailData ={
-                 "type": "email",
-                 "to": mailTo,
-                 "subject": "Digin-RegistrationConfirmation",
-                 "from": "Digin <noreply-digin@duoworld.com>",
-                 "Namespace": "com.duosoftware.com",
-                 "TemplateID": "registration_confirmation2",
+        $scope.sendConfirmationMail = function (mailTo, fName, UserName) {
+            $scope.mailData = {
+                "type": "email",
+                "to": mailTo,
+                "subject": "Digin-RegistrationConfirmation",
+                "from": "Digin <noreply-digin@duoworld.com>",
+                "Namespace": "com.duosoftware.com",
+                "TemplateID": "registration_confirmation2",
                 // "attachments": [{
                 //   "filename": "hnb.png",
                 //   "path": "E:/hnb.png"
@@ -72,32 +69,32 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                 //   "filename": "Flag.png",
                 //   "path": "E:/Flag.png"
                 //  }],
-                 "DefaultParams": {
-                  "@@name@@": fName,
-                  "@@dataSet@@":UserName
-                 },
-                 "CustomParams": {
-                  "@@name@@": fName,
-                  "@@dataSet@@":UserName
-                 }
-                };
+                "DefaultParams": {
+                    "@@name@@": fName,
+                    "@@dataSet@@": UserName
+                },
+                "CustomParams": {
+                    "@@name@@": fName,
+                    "@@dataSet@@": UserName
+                }
+            };
 
-                $http({
-                        method: 'POST',
-                        url: 'http://104.197.27.7:3500/command/notification',
-                        data: angular.toJson($scope.mailData),
-                        headers: {'Content-Type': 'application/json',
-                                  'securitytoken': '1234567890'
-                                }
+            $http({
+                method: 'POST',
+                url: 'http://104.197.27.7:3500/command/notification',
+                data: angular.toJson($scope.mailData),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'securitytoken': '1234567890'
+                }
+            })
+                .success(function (response) {
+                    //alert(JSON.stringify(response));
                 })
-                    .success(function(response){
-                        //alert(JSON.stringify(response));                        
-                    })
-                    .error(function(error){   
-                        //alert("Fail !");                        
-                    });     
+                .error(function (error) {
+                    //alert("Fail !");
+                });
         }
-
 
 
         var mainFun = (function () {
@@ -142,9 +139,9 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                         "Name": fullname,
                         "Password": signUpUsr.pwd,
                         "ConfirmPassword": signUpUsr.cnfrPwd,
-                        "Domain": signUpUsr.domainName + "" + signUpUsr.namespace
+                        "Domain": ""
                     };
-                    $scope.error.isLoading = true;                  
+                    $scope.error.isLoading = true;
 
                     $http({
                         method: 'POST',
@@ -162,15 +159,15 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                             name: fullname,
                             phone: '',
                             email: $scope.user.EmailAddress,
-                            company: $scope.user.Domain,
+                            company: "",
                             country: "",
                             zipcode: "",
                             bannerPicture: 'fromObjectStore',
                             id: "admin@duosoftware.com"
                         };
- 
+
                         //Create Data Set
-                        $scope.createDataSet(signUpUsr.email,signUpUsr.domainName + "." + signUpUsr.namespace,signUpUsr.domainName);
+                        $scope.createDataSet(signUpUsr.email, signUpUsr.domainName + "." + signUpUsr.namespace, signUpUsr.domainName);
 
 
                         if (!data.Active) {
@@ -218,9 +215,6 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
         })();
 
 
-        
-
-
         $scope.submit = function () {
             mainFun.validationClear();
             console.log(signUpUsr);
@@ -246,11 +240,6 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                 mainFun.fireMsg('0', '<strong>Error : </strong>invalid email address is required..');
                 $scope.error.isEmail = true;
                 focus('email');
-                return;
-            } else if (signUpUsr.domainName == '' || angular.isUndefined(signUpUsr.domainName)) {
-                mainFun.fireMsg('0', '<strong>Error : </strong>domain name  is required..');
-                $scope.error.isDomainName = true;
-                focus('domainName');
                 return;
             }
             else if (signUpUsr.pwd == '' || angular.isUndefined(signUpUsr.pwd)) {

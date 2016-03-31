@@ -1,7 +1,7 @@
 // var app = angular.module('Fsignup', ['uiMicrokernel', 'ngMaterial']);
 
 routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
-    '$http', '$objectstore', '$state', 'ngToast', 'focus', '$diginurls',
+    '$http', '$objectstore', '$state', 'ngToast', 'focus','$diginurls',
     function ($scope, $mdToast, $animate, $http, $objectstore, $state,
               ngToast, focus, $diginurls) {
 
@@ -97,6 +97,7 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
         }
 
 
+
         var mainFun = (function () {
 
             return {
@@ -139,9 +140,9 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                         "Name": fullname,
                         "Password": signUpUsr.pwd,
                         "ConfirmPassword": signUpUsr.cnfrPwd,
-                        "Domain": ""
+                        "Domain": signUpUsr.domainName + "" + signUpUsr.namespace
                     };
-                    $scope.error.isLoading = true;
+                    $scope.error.isLoading = true;                  
 
                     $http({
                         method: 'POST',
@@ -159,15 +160,15 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                             name: fullname,
                             phone: '',
                             email: $scope.user.EmailAddress,
-                            company: "",
+                            company: $scope.user.Domain,
                             country: "",
                             zipcode: "",
                             bannerPicture: 'fromObjectStore',
                             id: "admin@duosoftware.com"
                         };
-
+ 
                         //Create Data Set
-                        $scope.createDataSet(signUpUsr.email, signUpUsr.domainName + "." + signUpUsr.namespace, signUpUsr.domainName);
+                        $scope.createDataSet(signUpUsr.email,signUpUsr.domainName + "." + signUpUsr.namespace,signUpUsr.domainName);
 
 
                         if (!data.Active) {
@@ -215,6 +216,9 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
         })();
 
 
+        
+
+
         $scope.submit = function () {
             mainFun.validationClear();
             console.log(signUpUsr);
@@ -240,6 +244,11 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                 mainFun.fireMsg('0', '<strong>Error : </strong>invalid email address is required..');
                 $scope.error.isEmail = true;
                 focus('email');
+                return;
+            } else if (signUpUsr.domainName == '' || angular.isUndefined(signUpUsr.domainName)) {
+                mainFun.fireMsg('0', '<strong>Error : </strong>domain name  is required..');
+                $scope.error.isDomainName = true;
+                focus('domainName');
                 return;
             }
             else if (signUpUsr.pwd == '' || angular.isUndefined(signUpUsr.pwd)) {

@@ -180,10 +180,6 @@ drb >> dynamically report builder
     cursor: pointer;
 }
 
-.col-sheet > .selectedRow {
-    background-color: #026689 !important;
-}
-
 .digin-cmds-source .error-wrap > i {
     line-height: 46px;
     font-size: 75px;

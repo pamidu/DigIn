@@ -49,8 +49,8 @@
 		},
 		draggable: { // options to pass to draggable handler
 			enabled: true,
-			scrollSensitivity: 0, // Distance in pixels from the edge of the viewport after which the viewport should scroll, relative to pointer
-			scrollSpeed: 100 // Speed at which the window should scroll once the mouse pointer gets within scrollSensitivity distance
+			scrollSensitivity: 100, // Distance in pixels from the edge of the viewport after which the viewport should scroll, relative to pointer
+			scrollSpeed: 10 // Speed at which the window should scroll once the mouse pointer gets within scrollSensitivity distance
 		}
 	})
 

@@ -320,9 +320,13 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 for (i = 0; i < sourceInData.length; i++) {
                     sourceInData[i].selected = false;
                 }
-                data.selected = true;
+                $scope.sourceUi.tableData = sourceInData;
+
+                var index = $scope.sourceUi.tableData.indexOf(data);
+                if (index != -1) {
+                    $scope.sourceUi.tableData[index].selected = true;
+                }
                 $scope.sourceUi.selectedNameSpace = data.name;
-//                alert($scope.sourceUi.selectedNameSpace);
             }
             ,
             onClickSelectedSrc: function (onSelect, data) {

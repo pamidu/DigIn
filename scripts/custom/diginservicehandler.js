@@ -10,9 +10,9 @@
     function getNamespace() {
         var authdata = JSON.parse(getCookie("authData"));
         var namespace = authdata.Email.replace('@','_');
-        namespace = namespace.replace(/./, "_");
-        alert(namespace);
-        return "Demo";
+//        namespace = namespace.replace(/./, '_');
+        namespace = namespace.replace(/\./g, '_');
+        return namespace;
     }
     dsh.factory('$diginengine', function($diginurls, $servicehelpers) {
         function DiginEngineClient(_dsid, _db) {

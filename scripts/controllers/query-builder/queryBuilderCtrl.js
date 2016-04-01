@@ -50,14 +50,20 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     
     $scope.initRequestLimit={value:1000};
     $scope.requestLimits = [1000,2000,3000,4000,5000];
+    $scope.chartType = 'bar';
     
     $scope.initHighchartObj = {
         options: {
             chart: {
-                type: $scope.chartType == '' ? 'bar' : $scope.chartType,
+                type: $scope.chartType,
                 // Explicitly tell the width and height of a chart
                 width: null,
                 height: 367                
+            }
+        },
+        plotOptions : {
+            bar: {
+                turboThreshold: 5000
             }
         },
         title: {
@@ -1565,7 +1571,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         height: 367,
                     }
                 },
-                 
+                plotOptions: {}, 
                 legend: {
                     layout: 'vertical',
                     align: 'right',
@@ -1643,10 +1649,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
         $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res, status, query) {
             if (status) {
+//                console.log(JSON.stringify(res));
                 $scope.mapResult($scope.selectedCat, res, function(data) {
+                    if(res.length > 1000) 
+                        $scope.highchartsNG.plotOptions[$scope.chartType] = {turboThreshold : res.length};
                     $scope.highchartsNG.series = data;
                     $scope.eventHndler.isLoadingChart = false;
                     $scope.receivedQuery = query;
+                    console.log(JSON.stringify($scope.highchartsNG));
                     eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
                 });
             } else {

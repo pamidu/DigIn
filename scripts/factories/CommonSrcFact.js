@@ -1,10 +1,10 @@
 routerApp.factory('$csContainer', function () {
     var srcObj = {};
     return {
-        fillCSContainer: function(obj) {
+        fillCSContainer: function (obj) {
             srcObj = obj;
         },
-        fetchSrcObj: function(){
+        fetchSrcObj: function () {
             return srcObj;
         }
     };

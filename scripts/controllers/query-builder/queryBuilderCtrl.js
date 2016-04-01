@@ -255,16 +255,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
-            }, {
-                id: 'ct07',
-                icon: 'chart-diginalluvialt',
-                name: 'alluvial',
-                chart: 'alluvial',
-                selected: false,
-                chartType: 'd3Charts',
-                initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
-            }, {
+            },  {
                 id: 'ct08',
                 icon: 'chart-diginscatter',
                 name: 'scatter ',

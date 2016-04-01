@@ -106,7 +106,7 @@
             </div>
             <div class="cmds-btn-footer m-top-10">
                         <span class="btn btn-block btn-default"
-                              ng-click="commonUi.onClickNext('1')" ng-show="sourceUi.selectedSource">
+                              ng-click="commonUi.onClickNext('1')" ng-disabled="!sourceUi.selectedSource">
                             next
                         </span>
                 <span class="btn btn-block btn-default btn-close"
@@ -189,7 +189,8 @@
                                     fill="none" stroke-width="6" stroke-miterlimit="10"/>
                         </svg>
                     </div>
-                    <div layout="row" class="margin-top-20" layout-align="center center">
+                    <div layout="row" class="margin-top-20" layout-align="center center"
+                    ng-if="!commonUi.isDataLoading">
                         <md-input-container class="md-icon-float md-block width100percent">
                             <label>Search</label>
                             <input type="text" ng-model="sourceUi.search">
@@ -210,7 +211,7 @@
             <div class="cmds-btn-footer">
                 <div class="cmds-btn-footer m-top-10">
                         <span class="btn btn-block btn-default"
-                              ng-click="commonUi.onClickNext('2')" ng-show="sourceUi.selectedNameSpace"
+                              ng-click="commonUi.onClickNext('2')" ng-disabled="!sourceUi.selectedNameSpace"
                               ng-if="commonUi.isServiceError==false">
                             next
                         </span>

@@ -280,7 +280,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         scope: ['https://www.googleapis.com/auth/drive']
     });
 
-    var customPrimary = {
+  var customPrimary = {
         '50': '#10cefd',
         '100': '#02c2f2',
         '200': '#02aed9',

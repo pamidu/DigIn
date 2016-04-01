@@ -2024,12 +2024,7 @@ md-tabs.setup-tabs md-tabs-wrapper md-tab-data {
 md-tab-content > div{
     height: 100%;
 }
-.card-style1{
-    margin: 20px;
-    margin-top: -20vh; 
-    margin-bottom: 0px;
-    height:100%;"
-}
+/* common styles */
 .padding-5{
     padding: 5px;
 }
@@ -2199,5 +2194,50 @@ md-tab-content > div{
 .margin-top-20{
     margin-top: 20px;
 }
+
+/* start md dialog */
+.btn-dialog{
+    color: #01718D;
+    font-size: 18px;
+}
+.dialog-1{
+    min-width: 400px;
+    overflow: hidden;
+    border-radius: 0px !important;
+}
+.card-1{
+    margin: 0px; 
+    margin-bottom: 0px;
+    height:100%;"
+}
+.tlbar-1{
+
+    background: #01718D; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #01718D , #6197F0); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #01718D , #6197F0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    width: 100%;
+    z-index: 0;
+}
+.dialog-title{
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 200;
+    font-size: 24px;
+    color: white;
+    margin: 10px;
+    margin-left: 30px;
+}
+.digin-logo-wrapper2{
+    margin-left: 10px;
+    background-color: rgb(255, 255, 255);
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+.digin-image{
+    height: 30px;
+    width: 30px;
+}
+/* end md dialog */
 
 

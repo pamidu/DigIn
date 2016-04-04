@@ -169,6 +169,12 @@
     font-size : 24px !important;
 }
 
+/* border style */
+
+.b-r-0 {
+    border-radius: 0px !important;
+}
+
 /*color text and background */
 .text-color-primary {
     color: #2396D3;

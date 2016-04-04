@@ -2235,11 +2235,6 @@ li:active {
 
 }
 
-md-tabs md-ink-bar {
-    color: #F4C831 !important;
-    background: #F4C831 !important;
-}
-
 .d3-tab-text {
     font-family: 'Roboto', sans-serif;
     font-weight: 500;

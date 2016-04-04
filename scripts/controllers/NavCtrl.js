@@ -333,6 +333,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.closeDialog = function () {
             $mdDialog.hide();
         };
+        
         today = mm + '/' + dd + '/' + yyyy;
         $rootScope.dashboard.dashboardName = "";
         $rootScope.dashboard.dashboardDate = today;
@@ -637,26 +638,20 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         };
         $scope.Share = function (ev) {
-
-
             $mdDialog.show({
                 controller: 'shareCtrl',
                 templateUrl: 'views/dashboard-share.html',
                 clickOutsideToClose: true,
                 resolve: {}
             });
-
         }
-
         $scope.Export = function (ev) {
             $mdDialog.show({
                 controller: 'ExportCtrl',
                 templateUrl: 'views/chart_export.html',
                 clickOutsideToClose: true,
                 resolve: {}
-
             })
-
         }
         $scope.openTheme = function (ev) {
             $mdDialog.show({
@@ -688,37 +683,34 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 resolve: {}
             });
         }
-        $scope.goHome = function(){
-            $scope.closeDialog();
-            $scope.manageTabs(true);
-            $scope.currentView = "Home";
-            $state.go('home');
-        }
-
         $scope.goHomeDialog = function (ev){
             $mdDialog.show({
-                    controller: 'NavCtrl',
-                    templateUrl: 'views/goHome.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true
-            }).then(function (answer) {
+                controller: goHomeCtrl,
+                templateUrl: 'views/goHome.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true
+            }).then(function (homeState) {
+                if(homeState){
+                    $scope.manageTabs(true);
+                    $scope.currentView = "Home";
+                    $state.go('home');
+                }
             });
         }
         //erangas space
         $scope.showAddNewDashboard = function (ev) {
             $mdDialog.show({
-                    controller: addNewDashboardController,
-                    templateUrl: 'templates/addNewDashboardTemplate.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true
-                })
-                .then(function (answer) {
-                    addToDashboards(answer);
-                }, function () {
-
-                });
+                controller: addNewDashboardController,
+                templateUrl: 'templates/addNewDashboardTemplate.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true
+            })
+            .then(function (answer) {
+                addToDashboards(answer);
+            }, function () {
+            });
         };
 
         //load social analysis  
@@ -858,6 +850,20 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $mdDialog.cancel();
             };
         };
+        
+        function goHomeCtrl($scope, $mdDialog) {
+
+            var homeState = null;
+            $scope.goHome = function(){
+                $mdDialog.hide();
+                homeState = true;
+            }
+            $scope.cancel = function () {
+                $mdDialog.cancel();
+                homeState = false;
+            };
+            return homeState;
+        };
 
         function showToast(text) {
             $mdToast.show(
@@ -940,6 +946,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $state.go('home.' + routeName);
             }
             if (routeName == "Social Media Analytics") {
+
                 $scope.manageTabs(false);
                 $scope.currentView = "Social Analysis";
                 $scope.showAddSocialAnalysis(ev);

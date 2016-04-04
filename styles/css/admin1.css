@@ -9845,8 +9845,9 @@ html {
 }
 
 body {
-    font-family: 'RobotoDraft', sans-serif;
+    font-family: 'Roboto', sans-serif;
     -webkit-text-size-adjust: none;
+    font-size: 16px;
 }
 
 *,

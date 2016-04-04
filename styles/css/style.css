@@ -1312,16 +1312,22 @@ h6 small {
 
 .data-table-b {
 }
-
+#digin-logo{
+    animation: diginLogo2 .5s;
+}
 #digin-logo:hover {
-    animation-name: diginLogo;
-    animation-duration: 2s;
+    animation: diginLogo 2s infinite;
 }
 
 @keyframes diginLogo {
     from {
         transform: rotateY(0deg);
     }
+    to {
+        transform: rotateY(360deg);
+    }
+}
+@keyframes diginLogo2 {
     to {
         transform: rotateY(360deg);
     }
@@ -1353,7 +1359,9 @@ md-list-item .md-list-item-inner > .md-avatar:first-child {
 }
 
 .digin-widget:hover {
-    box-shadow: 2px 5px 3px 0px rgba(0, 0, 0, 0.14), 2px 4px 4px 2px rgba(0, 0, 0, 0.098), 2px 3px 7px 2px rgba(0, 0, 0, 0.084);
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1),
+                1px 1px 1px 1px rgba(0, 0, 0, 0.01),
+                1px 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 main {
@@ -2095,9 +2103,10 @@ md-tab-content > div{
     box-sizing: content-box;
 }
 .widget-header{
-    font-size: 20px;
-    font-weight: 200;
+    font-size: 28px;
     margin-left: 10px;
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 200;
 }
 
 /* twitter */
@@ -2196,28 +2205,31 @@ md-tab-content > div{
 }
 
 /* start md dialog */
-.btn-dialog{
-    color: #01718D;
-    font-size: 18px;
+.btn-dialog:not([disabled]):hover {
+    background-color: rgba(37, 128, 179, 0.2);
 }
-.dialog-1{
+.dialog-1{ /*confirmation dialog*/
     min-width: 400px;
-    overflow: hidden;
-    border-radius: 0px !important;
+    overflow: hidden;   
 }
-.card-1{
+.dialog-content-1{
     margin: 0px; 
     margin-bottom: 0px;
-    height:100%;"
+    height:100%;
+    color: #01718D;
+    font-weight: 300;
+}
+.dialog-content-1 md-input-container .md-input {
+    color: #4285F4;
+    border-color: rgb(1, 113, 141);
 }
 .tlbar-1{
-
     background: #01718D; /* fallback for old browsers */
-    background: -webkit-linear-gradient(to left, #01718D , #6197F0); /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to left, #01718D , #6197F0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+    background: -webkit-linear-gradient(to left, #01718D , #4285F4); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #01718D , #4285F4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     width: 100%;
     z-index: 0;
+    opacity: 0.8;
 }
 .dialog-title{
     font-family: 'Ek Mukta', sans-serif;
@@ -2237,7 +2249,62 @@ md-tab-content > div{
 .digin-image{
     height: 30px;
     width: 30px;
+    animation: diginLogo2 .5s;
 }
+.digin-image:hover{
+    animation: diginLogo 2s infinite;
+}
+.digin-sonar{
+    -webkit-animation: sonarEffect 2s ease-out 75ms infinite;
+    -moz-animation: sonarEffect 2s ease-out 75ms infinite;
+    animation: sonarEffect 2s ease-out 75ms infinite;
+}
+
+@-webkit-keyframes sonarEffect {
+    0% {
+        opacity: 0.3;
+    }
+    40% {
+        box-shadow: 0 0 0 2px rgba(255,255,255,0.1), 0 0 10px 10px #4285F4, 0 0 0 10px rgba(255,255,255,0.5);
+        opacity: 0.5;
+    }
+    100% {
+        box-shadow: 0 0 0 2px rgba(255,255,255,0.1), 0 0 10px 10px #4285F4, 0 0 0 10px rgba(255,255,255,0.5);
+        opacity: 0.1;
+    }
+}
+@-moz-keyframes sonarEffect {
+    0% {
+        opacity: 0.3;
+    }
+    40% {
+        opacity: 0.5;
+        box-shadow: 0 0 0 2px rgba(255,255,255,0.1), 0 0 10px 10px #4285F4, 0 0 0 10px rgba(255,255,255,0.5);
+    }
+    100% {
+        box-shadow: 0 0 0 2px rgba(255,255,255,0.1), 0 0 10px 10px #4285F4, 0 0 0 10px rgba(255,255,255,0.5);
+        opacity: 0.1;
+    }
+}
+@keyframes sonarEffect {
+    0% {
+        opacity: 0.3;
+    }
+    40% {
+        opacity: 0.5;
+        box-shadow: 0 0 0 2px rgba(255,255,255,0.1), 0 0 10px 10px #4285F4, 0 0 0 10px rgba(255,255,255,0.5);
+    }
+    100% {
+        box-shadow: 0 0 0 2px rgba(255,255,255,0.1), 0 0 10px 10px #4285F4, 0 0 0 10px rgba(255,255,255,0.5);
+        opacity: 0.1;
+    }
+}
+
 /* end md dialog */
+
+.btn-close{
+    background-color: ;
+}
+
 
 

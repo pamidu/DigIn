@@ -241,6 +241,7 @@ routerApp.controller('fbInit',['scope', '$mdDialog', 'widId', '$rootScope',funct
 
 routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope', '$q', 'twitterService',function ($scope, $http, $mdDialog, widId, $rootScope, $q, twitterService) {
 
+    $scope.diginLogo = 'digin-logo-wrapper2';
     $scope.showFinishButton = false;
     $scope.connectedTwitter = false;
 
@@ -252,11 +253,13 @@ routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$r
 
     //using the OAuth authorization result get the latest 20 tweets from twitter for the user
     $scope.refreshTimeline = function(maxId) {
+        $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
         twitterService.getLatestTweets(maxId).then(function(data) {
 
             var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
             $rootScope.dashboard.widgets[objIndex].widData.tweets = data;
             $scope.showFinishButton = true;
+            $scope.diginLogo = 'digin-logo-wrapper2';
         }, function() {
             
         });
@@ -287,12 +290,11 @@ routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$r
         $scope.showFinishButton = false;
     }
 
-    //if the user is a returning user, hide the sign in button and display the tweets
-    if (twitterService.isReady()) {
+    // if (twitterService.isReady()) {
 
-        $scope.connectedTwitter = true;
-        $scope.refreshTimeline();
-    }
+    //     $scope.connectedTwitter = true;
+    //     $scope.refreshTimeline();
+    // }
 
 }]);
 
@@ -1971,26 +1973,28 @@ routerApp.controller('InitConfigD3',['$scope', '$mdDialog', 'widId', '$rootScope
 
 routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widId', '$rootScope',
     function ($scope, $http, $mdDialog, widId, $rootScope) {
+
+        $scope.diginLogo = 'digin-logo-wrapper2';
         $scope.showFinishButton = false;
         //cancel config
         $scope.cancel = function() {
-            $mdDialog.hide();
+            $mdDialog.cancel();
         };
         $scope.finish = function(){
             $scope.showFinishButton = false;
-            $scope.cancel();
+            $mdDialog.hide();
         }
         //complete config  
         $scope.fetch = function() {
+            $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
             var wpapi = "http://public-api.wordpress.com/rest/v1/sites/";
             var choice = "/posts";
             var callbackString = '/?callback=JSON_CALLBACK';
 
             var message = $http.jsonp(wpapi + $scope.wpdomain + choice + callbackString).
             success(function(data, status) {
-                $scope.showFinishButton = true;
+
                 var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-                //console.log(JSON.stringify(data));
                 var posts = data.posts;
                 var trimmedPosts = [];
                 var tempTitle = "";
@@ -2014,10 +2018,11 @@ routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widId',
                 var trimmedObj = {};
                 trimmedObj.posts = trimmedPosts;
                 $rootScope.dashboard.widgets[objIndex].widData = trimmedObj;
-
+                $scope.showFinishButton = true;
+                $scope.diginLogo = 'digin-logo-wrapper2';
             }).error(function(data, status) {
-
                 console.log(message);
+                $scope.diginLogo = 'digin-logo-wrapper2';
             });    
         };
     }
@@ -2026,39 +2031,35 @@ routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widId',
 routerApp.controller('rssInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope',
     function ($scope, $http, $mdDialog, widId, $rootScope) {
 
-        var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+        $scope.diginLogo = 'digin-logo-wrapper2';
+        $scope.showFinishButton = false;
         //cancel config
         $scope.cancel = function() {
-            $mdDialog.hide();
+            $mdDialog.cancel();
         };
+        $scope.finish = function(){
+            $scope.showFinishButton = false;
+            $mdDialog.hide();
+        }
         //complete config  
-        $scope.finish = function(rssAddress) {
-
+        $scope.fetch = function() {
+            $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
             $scope.entryArray = [];
             google.load("feeds", "1");
-            var feed = new google.feeds.Feed(rssAddress);
+            var feed = new google.feeds.Feed($scope.rssAddress);
             feed.setNumEntries(100);
 
             feed.load(function(result) {
 
                 if (!result.error) {
 
-                    // for (var i = 0; i < result.feed.entries.length; i++) {
-
-                    //     var entry = result.feed.entries[i];
-
-                    //     $scope.entryContent = entry.content;
-                    //     $scope.entryArray.push(entry);
-
-                    //     $scope.$apply();
-                    // }
-
+                    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
                     $rootScope.dashboard.widgets[objIndex].widData.feeds = result.feed.entries;
+                    $scope.showFinishButton = true;
+                    
                 }
-                $mdDialog.hide();
+                $scope.diginLogo = 'digin-logo-wrapper2';
             });
-
-            
         };
     }
 ]);
@@ -2099,132 +2100,46 @@ routerApp.controller('spreadInit',['$scope', '$http', '$mdDialog', 'widId', '$ro
 
 routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope',function ($scope, $http, $mdDialog, widId, $rootScope) {
 
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-
-    //cancel config
+    $scope.diginLogo = 'digin-logo-wrapper2';
+    $scope.showFinishButton = false;
+        //cancel config
     $scope.cancel = function() {
-        $mdDialog.hide();
+        $mdDialog.cancel();
     };
-
-    var newsSearch;
-
-    $scope.finish = function(gnewsrequest) {
-
+    $scope.finish = function(){
+        $scope.showFinishButton = false;
+        $mdDialog.hide();
+    }
+    $scope.fetch = function() {
+        $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
         $scope.entryArray = [];
 
         google.load('search', '1');
         // Create a News Search instance.
-        newsSearch = new google.search.NewsSearch();
+        var newsSearch = new google.search.NewsSearch();
 
         function searchComplete() {
 
             if (newsSearch.results && newsSearch.results.length > 0) {
 
-                console.log("newsSearch.results");
-                console.log(newsSearch.results);
+                var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
 
                 for (var i = 0; i < newsSearch.results.length; i++) {
 
                     var entry = newsSearch.results[i];
                     $scope.entryArray.push(entry);
-
                     $scope.$apply();
-
                 }
-
-                console.log("$scope.entryArray");
-                console.log($scope.entryArray);
-
+                $rootScope.dashboard.widgets[objIndex].widData = $scope.entryArray;
             }
-
-            $rootScope.dashboard.widgets[objIndex].widData = $scope.entryArray;
-
-            $mdDialog.hide();
         }
-
         // Set searchComplete as the callback function when a search is 
         // complete.  The newsSearch object will have results in it.
         newsSearch.setSearchCompleteCallback(this, searchComplete, null);
-
         // Specify search quer(ies)
         newsSearch.execute(gnewsrequest);
+        $scope.diginLogo = 'digin-logo-wrapper2';
     };
-
-    // $scope.finish = function(text,$scope) {
-    //     //get input value
-    //     var gnewsfeed = document.getElementById('gnewsrequest').value;
-    //     // Create a News Search instance.
-
-    //     newsSearch = new google.search.NewsSearch();
-
-    //     function searchComplete() {
-
-    //         // var container = document.getElementById('gnews-div');
-    //         // container.innerHTML = '';
-
-    //         if (newsSearch.results && newsSearch.results.length > 0) {
-
-    //             console.log("newsSearch.results");
-    //             console.log(newsSearch.results);
-
-    //             for (var i = 0; i < newsSearch.results.length; i++) {
-
-
-    //                 $scope.gnewsData.push(newsSearch.results[i]);
-
-    //             //     // Create HTML elements for search results
-    //             //     var p = document.createElement('p');
-    //             //     var gimg = document.createElement('gimg');
-    //             //     var gtitle = document.createElement('gtitle');
-    //             //     var gcontent = document.createElement('gcontent');
-    //             //     var gpubdate = document.createElement('gpubdate');
-    //             //     var gpub = document.createElement('gpub');
-    //             //     var gloc = document.createElement('gloc');
-    //             //     var gurl = document.createElement('gurl');
-    //             //     var glang = document.createElement('glang');
-
-
-    //             //     gimg.innerHTML = '<img style="width:60px;height:60px;" src=\"' + newsSearch.results[i].image.url + '\">'
-    //             //     gtitle.innerHTML = "<h2>" + newsSearch.results[i].title; + "</h2>"
-    //             //     gcontent.innerHTML = "<p>" + newsSearch.results[i].content; + "</p>"
-    //             //     gpubdate.innerHTML = "<p>Published on: " + newsSearch.results[i].publishedDate; + "</p>"
-    //             //     gpub.innerHTML = "<p>Published by: " + newsSearch.results[i].publisher; + "</p>"
-    //             //     gloc.innerHTML = "<p>Location: " + newsSearch.results[i].location; + "</p>"
-    //             //     gurl.innerHTML = "<p>Visit: " + newsSearch.results[i].signedRedirectUrl; + "</p>"
-    //             //     glang.innerHTML = "<p>Published language: " + newsSearch.results[i].language; + "</p>"
-
-    //             //     // Append search results to the HTML nodes
-    //             //     p.appendChild(gimg);
-    //             //     p.appendChild(gtitle);
-    //             //     p.appendChild(gcontent);
-    //             //     p.appendChild(gpubdate);
-    //             //     p.appendChild(gpub);
-    //             //     p.appendChild(gloc);
-    //             //     p.appendChild(gurl);
-    //             //     p.appendChild(glang);
-    //             //     container.appendChild(p);
-    //             }
-    //             console.log("$scope.gnewsData");
-    //             console.log($scope.gnewsData);
-    //         }
-    //     }
-
-
-    //     // Set searchComplete as the callback function when a search is 
-    //     // complete.  The newsSearch object will have results in it.
-    //     newsSearch.setSearchCompleteCallback(this, searchComplete(), null);
-
-    //     // Specify search quer(ies)
-    //     newsSearch.execute(gnewsfeed);
-
-
-    //     // Include the required Google branding
-    //     /*google.search.Search.getBranding('branding');*/
-
-    //     $mdDialog.hide();
-
-
-    // }
 }]);
 
 routerApp.controller('imInit',['$scope', '$http', '$rootScope', '$mdDialog', 'widId',function ($scope, $http, $rootScope, $mdDialog, widId) {
@@ -2234,7 +2149,6 @@ routerApp.controller('imInit',['$scope', '$http', '$rootScope', '$mdDialog', 'wi
     $scope.cancel = function() {
         $mdDialog.hide();
     };
-
     //complete config  
     $scope.finish = function() {
         $rootScope.image = $scope.image;
@@ -2426,53 +2340,59 @@ routerApp.controller('calendarInit',['widId', '$scope', '$http', '$rootScope', '
 routerApp.controller('googlePlusInit',['$scope', 'googleService', '$http', '$mdDialog', 'widId', '$rootScope',
     function ($scope, googleService, $http, $mdDialog, widId, $rootScope) {
 
-        var loggedIn = false;
+        $scope.diginLogo = 'digin-logo-wrapper2';
+        $scope.showFinishButton = false;
+        $scope.connectedgplus = false;
         $scope.login = function() {
-            googleService.signin().then(function(data) {
-                loggedIn = true;
-                console.log(data);
+
+            $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
+            googleService.signin().then(function(promise) {
+                if(promise){
+                    $scope.connectedgplus = true;
+                    $scope.getData();
+                    $scope.diginLogo = 'digin-logo-wrapper2';
+                    $scope.showFinishButton = true;
+                }
             }, function(err) {
                 console.log('Failed: ' + err);
             });
         };
-
         $scope.logout = function() {
 
-            googleService.signout().then(function(data) {
-                loggedIn = false;
-                console.log(data);
+            googleService.signout().then(function(promise) {
+                if(promise){
+                    $scope.connectedgplus = false;
+                }
             }, function(err) {
                 console.log('Failed: ' + err);
             });
         };
+        $scope.finish = function(){
 
+            $mdDialog.hide();
+        }
         $scope.cancel = function() {
+            
             $mdDialog.hide();
         };
+        $scope.getData = function() {
 
-        $scope.finish = function() {
-
-            if (loggedIn) {
-
-                googleService.getProfileData().then(function(data) {
-                    console.log("google plus retrieving profile data done");
-                }, function(err) {
-                    console.log('Failed: ' + err);
-                });
-                googleService.getPeopleData().then(function(data) {
-                    console.log("google plus retrieving people data done");
-                }, function(err) {
-                    console.log('Failed: ' + err);
-                });
-                googleService.getActivityData().then(function(data) {
-                    console.log("google plus retrieving activity data done");
-                }, function(err) {
-                    console.log('Failed: ' + err);
-                });
-            }
-            $mdDialog.hide();
+            googleService.getProfileData().then(function(data) {
+                console.log("google plus retrieving profile data done");
+            }, function(err) {
+                console.log('Failed: ' + err);
+            });
+            googleService.getPeopleData().then(function(data) {
+                console.log("google plus retrieving people data done");
+            }, function(err) {
+                console.log('Failed: ' + err);
+            });
+            googleService.getActivityData().then(function(data) {
+                console.log("google plus retrieving activity data done");
+            }, function(err) {
+                console.log('Failed: ' + err);
+            });
         };
-
         $scope.tabs = {
                     selectedIndex: 0,
                     pagination: true

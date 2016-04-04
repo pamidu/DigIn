@@ -301,20 +301,20 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             customPrimary);
 
     var customAccent = {
-        '50': '#01718D',
-        '100': '#01718D',
-        '200': '#01718D',
-        '300': '#01718D',
-        '400': '#01718D',
-        '500': '#01718D',
-        '600': '#01718D',
-        '700': '#01718D',
-        '800': '#01718D',
-        '900': '#01718D',
-        'A100': '#01718D',
-        'A200': '#01718D',
-        'A400': '#01718D',
-        'A700': '#01718D'
+        '50': '#4285F4',
+        '100': '#4285F4',
+        '200': '#4285F4',
+        '300': '#4285F4',
+        '400': '#4285F4',
+        '500': '#4285F4',
+        '600': '#4285F4',
+        '700': '#4285F4',
+        '800': '#4285F4',
+        '900': '#4285F4',
+        'A100': '#4285F4',
+        'A200': '#4285F4',
+        'A400': '#4285F4',
+        'A700': '#4285F4'
     };
     $mdThemingProvider
         .definePalette('customAccent',
@@ -1049,7 +1049,7 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($
 routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http, $rootScope, $q) {
     var clientId = '33022835624-q3km776rl7dkitpinaj7pf2tlu75tfhg.apps.googleusercontent.com',
         apiKey = 'AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ',
-        scopes = 'https://www.googleapis.com/auth/plus.login',
+        scopes = 'profile email https://www.googleapis.com/auth/plus.login',
         domain = '',
         deferred = $q.defer();
 

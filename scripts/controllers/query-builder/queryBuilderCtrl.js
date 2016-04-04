@@ -1400,6 +1400,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.d3sunburst = {
         onInit: function(recon) {            
             $scope.hierarData = $scope.widget.widData;
+            $scope.$apply;
         },
         changeType: function() {
             $scope.eventHndler.isLoadingChart = true;

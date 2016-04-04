@@ -5,7 +5,6 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
     function ($scope, $mdToast, $animate, $http, $objectstore, $state,
               ngToast, focus, $diginurls) {
 
-
         $scope.onClickSignIn = function () {
             $scope.isLoggedin = false;
             $state.go('login');

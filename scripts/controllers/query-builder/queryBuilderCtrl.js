@@ -222,7 +222,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
-id: 'ct03',
+            }, {
+                id: 'ct03',
                 icon: 'fa fa-line-chart',
                 icon: 'ti-bar-chart',
                 name: 'column',

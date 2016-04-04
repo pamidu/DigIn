@@ -1787,7 +1787,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     };
 
     $scope.getExecuteAgg = function(query) {
-        alert($scope.initRequestLimit.value);
         if (typeof query != "undefined") {
             $scope.eventHndler.isLoadingChart = true;
             $scope.client.getExecQuery(query, function(res, status, query) {

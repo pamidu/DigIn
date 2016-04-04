@@ -8,16 +8,13 @@
         <ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>
       </md-button>            
   </md-toolbar>
-  <md-content class="dialog-content-1" layout-padding>
-      <div>
-        <md-input-container flex>
+  <md-content class="dialog-content-1">
+      <md-input-container flex>
           <label id="postdomain">Domain URL:</label>
           <input id="inputrssdomain" type="text" ng-model="rssAddress" spellcheck="false">
-        </md-input-container>
-      </div>
+      </md-input-container>
       <p>Please enter a RSS feed URL, ex: http://rss.cnn.com/rss/cnn_topstories.rss</p>
       <div class="md-actions" layout="row">
-          <span flex></span>
           <md-button class="md-primary btn-dialog b-r-0" ng-click="fetch()" >
                   Fetch
           </md-button>

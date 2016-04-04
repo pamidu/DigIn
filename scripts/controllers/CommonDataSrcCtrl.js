@@ -327,6 +327,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     $scope.sourceUi.tableData[index].selected = true;
                 }
                 $scope.sourceUi.selectedNameSpace = data.name;
+                localStorage.setItem("lastSelectedTable", $scope.sourceUi.selectedNameSpace);
             }
             ,
             onClickSelectedSrc: function (onSelect, data) {
@@ -531,6 +532,14 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             for (var i = 0; i < $scope.datasources.length; i++) {
                 if ($scope.datasources[i].name == localStorage.getItem("lastSelectedSource")) {
                     $scope.commonUi.onClickSelectedSrc($scope.datasources[i], $scope.datasources);
+                }
+            }
+
+            for (var i = 0; i < $scope.sourceUi.tableData.length; i++){
+                //console.log($scope.sourceUi.tableData[i]);
+                if ($scope.sourceUi.tableData[i].name == localStorage.getItem("lastSelectedTable")) {
+                    $scope.commonUi.onSelectClassRow($scope.sourceUi.tableData[i]);
+                    console.log("selectedTable ***** ", $scope.sourceUi.tableData[i].name);
                 }
             }
         }

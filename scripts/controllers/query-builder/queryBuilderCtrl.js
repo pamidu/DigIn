@@ -223,7 +223,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct03',
-                icon: 'fa fa-line-chart',
+                icon: 'ti-gallery',
                 name: 'line ',
                 chart: 'line',
                 selected: false,
@@ -313,7 +313,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
             }, {
                 id: 'ct17',
-                icon: 'ti-layout-accordion-list',
+                icon: 'fa fa-sort-numeric-desc',
                 name: 'metric',
                 chart: 'metric',
                 selected: false,
@@ -336,7 +336,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct19',
-                icon: 'chart-diginsunburst-chart',
+                icon: 'fa fa-tasks',
                 name: 'boxplot',
                 chart: 'boxplot',
                 selected: false,
@@ -347,7 +347,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
             }, {
                 id: 'ct20',
-                icon: 'chart-diginsunburst-chart',
+                icon: 'fa fa-bar-chart',
                 name: 'histogram',
                 chart: 'histogram',
                 selected: false,
@@ -357,7 +357,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct21',
-                icon: 'chart-diginsunburst-chart',
+                icon: 'ti-panel',
                 name: 'bubble',
                 chart: 'bubble',
                 selected: false,
@@ -367,7 +367,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             },{
                 id: 'ct22',
-                icon: 'fa fa-area-chart',
+                icon: 'fa fa-line-chart',
                 name: 'forecast',
                 chart: 'forecast',
                 selected: false,

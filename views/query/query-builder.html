@@ -96,10 +96,10 @@
                     <div class="panel-header">
                         <h3 class="font-weight-300">
                             series
-                            <fieldset ng-disabled="isPendingRequest" class="toggle-icon animated "
+                            <fieldset ng-disabled="isPendingRequest" data-ng-style="isPendingRequest && {'cursor':'not-allowed'}" class="toggle-icon animated "
                                  ng-class="eventHndler.isToggleMeasure==true?'left-icon-toggle':'left-icon'"
                                  ng-click="eventHndler.onToggleEvent('1')">
-                                <i class=""
+                                <i class="" style="cursor:inherit;"
                                    ng-class="eventHndler.isToggleMeasure==true?'ti-angle-left rotateOut':'ti-angle-right rotateIn'"
                                 ></i>
 
@@ -168,10 +168,10 @@
                     <div class="panel-header">
                         <h3 class="font-weight-300">
                             category
-                            <fieldset ng-disabled="isPendingRequest" class="toggle-icon animated "
+                            <fieldset ng-disabled="isPendingRequest" data-ng-style="isPendingRequest && {'cursor':'not-allowed'}" class="toggle-icon animated "
                                  ng-class="eventHndler.isToggleColumns==true?'left-icon-toggle':'left-icon'"
                                  ng-click="eventHndler.onToggleEvent('2')">
-                                <i class=""
+                                <i class="" style="cursor:inherit;"
                                    ng-class="eventHndler.isToggleColumns==true?'ti-angle-left rotateOut':'ti-angle-right rotateIn'"
                                 ></i>
 
@@ -353,11 +353,11 @@
             <div flex="10">
                 <div class="digin-gb-menu">
                     <div class="last-icon">
-                        <div class="right-menu ">
+                        <fieldset ng-disabled="isPendingRequest" data-ng-style="isPendingRequest && {'cursor':'not-allowed'}" class="right-menu " ng-click="eventHndler.onClickSetting('1')" style="cursor:inherit">
                             <i class="ti-pie-chart hvr-pop "
-                               ng-click="eventHndler.onClickSetting('1')"
+                                style="cursor:inherit"
                                selected-setting-icon></i>
-                        </div>
+                        </fieldset>
                     </div>
 
                     <div class="last-icon">

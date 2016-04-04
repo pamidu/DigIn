@@ -20,7 +20,15 @@
         <input ng-model="forecastObj.paramObj.fcast_days">
     </md-input-container>
     <md-input-container>
-        <label>Steps per day</label>
+        <label>Moving Average Period</label>
         <input ng-model="forecastObj.paramObj.steps_pday">
+    </md-input-container>
+    <md-input-container>
+        <label>Error Level</label>
+        <md-select ng-model="forecastObj.paramObj.pred_error_level">
+          <md-option ng-repeat="lvl in forecastObj.errorLevels" value="{{lvl}}">
+            {{lvl}}
+          </md-option>
+        </md-select>
     </md-input-container>
 </div>

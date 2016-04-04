@@ -864,6 +864,7 @@ md-card md-card-content.card-warning {
 .graph-map-content {
     height: 85%;
     overflow: hidden;
+    color: #333 !important;
 }
 
 .post-wrap {

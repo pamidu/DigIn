@@ -32,9 +32,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.forecastObj = {
         models:["Additive", "Multiplicative", "Linear"],
         intervals:["Daily", "Weekly", "Monthly", "Yearly"],
+        errorLevels:[ 0.001,0.01,0.025,0.05,0.1,0.2,0.25],
         paramObj: {
             model: "Additive",
-            pred_error_level: 0.0001,
+            pred_error_level: 0.001,
             alpha: 0,
             beta: 53,
             gamma: 34,
@@ -221,7 +222,18 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
-            }, {
+id: 'ct03',
+                icon: 'fa fa-line-chart',
+                icon: 'ti-bar-chart',
+                name: 'column',
+                chart: 'column',
+                selected: false,
+                chartType: 'highCharts',
+                view: 'views/query/chart-views/highcharts.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            },
+            {
                 id: 'ct03',
                 icon: 'ti-gallery',
                 name: 'line ',
@@ -232,7 +244,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
-                id: 'ct04',
+                id: 'ct05',
                 icon: ' chart-diginSmooth_line',
                 name: 'Smooth line ',
                 chart: 'spline',
@@ -242,7 +254,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
-                id: 'ct05',
+                id: 'ct06',
                 icon: 'fa fa-area-chart',
                 name: 'area ',
                 chart: 'area',
@@ -252,7 +264,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
-                id: 'ct06',
+                id: 'ct07',
                 icon: 'chart-diginsmooth_area',
                 name: 'Smooth area ',
                 chart: 'areaspline',
@@ -272,7 +284,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
-                id: 'ct13',
+                id: 'ct9',
                 icon: 'chart-diginhierarchy-chart',
                 name: 'hierarchy',
                 chart: 'hierarchy',
@@ -282,7 +294,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
-                id: 'ct14',
+                id: 'ct10',
                 icon: 'chart-diginsunburst-chart',
                 name: 'sunburst',
                 chart: 'sunburst',
@@ -292,7 +304,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
-                id: 'ct15',
+                id: 'ct11',
                 icon: 'chart-digintreeeview',
                 name: 'treeeview',
                 chart: 'treeeview',
@@ -301,7 +313,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
-                id: 'ct16',
+                id: 'ct12',
                 icon: 'ti-layout-accordion-list',
                 name: 'pivotsummary',
                 chart: 'pivotsummary',
@@ -312,7 +324,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
 
             }, {
-                id: 'ct17',
+                id: 'ct13',
                 icon: 'fa fa-sort-numeric-desc',
                 name: 'metric',
                 chart: 'metric',
@@ -325,7 +337,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 },
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
-                id: 'ct18',
+                id: 'ct14',
                 icon: 'ti-map-alt',
                 name: 'map',
                 chart: 'map',
@@ -335,7 +347,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 initObj: {},
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
-                id: 'ct19',
+                id: 'ct15',
                 icon: 'fa fa-tasks',
                 name: 'boxplot',
                 chart: 'boxplot',
@@ -346,7 +358,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
 
             }, {
-                id: 'ct20',
+                id: 'ct16',
                 icon: 'fa fa-bar-chart',
                 name: 'histogram',
                 chart: 'histogram',
@@ -356,7 +368,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 initObj: {},
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
-                id: 'ct21',
+                id: 'ct17',
                 icon: 'ti-panel',
                 name: 'bubble',
                 chart: 'bubble',
@@ -366,7 +378,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 initObj: {},
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             },{
-                id: 'ct22',
+                id: 'ct18',
                 icon: 'fa fa-line-chart',
                 name: 'forecast',
                 chart: 'forecast',
@@ -958,100 +970,113 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     
     $scope.boxplot = {
         changeType: function() {
-            $scope.eventHndler.isLoadingChart = true;
-
-            var fieldArray = [];
-
-            for (var i = 0; i < $scope.commonData.measures.length; i++) {
-                fieldArray.push("'" + $scope.commonData.measures[i].filedName + "'");
-            }
-            for (var i = 0; i < $scope.commonData.columns.length; i++) {
-                fieldArray.push("'" + $scope.commonData.columns[i].filedName + "'");
-            }
-
-            //get highest level
-            $scope.client.generateboxplot($scope.sourceData.tbl, fieldArray.toString(), function(data, status) {
-                var hObj = {};
-                $scope.dataforeachBox = []
-                $scope.dataOutliers = [];
-                if (status) {
-                    for (var field in data) {
-                        $scope.dataforeachBox.push([data[field].minimum, data[field].l_w, data[field].median, data[field].u_w, data[field].maximum]);
-                        $scope.dataOutliers.push([data[field].outliers[0]]);
-                    }
-                    $scope.categories = fieldArray;
-                    $scope.eventHndler.isLoadingChart = false;
-                    $scope.widget.highchartsNG = {
-                        options: {
-                            chart: {
-                                type: 'boxplot',
-                                // Explicitly tell the width and height of a chart
-                                width: null,
-                                height: 367,
-                            }
-                        },
-                        title: {
-                            text: 'Basic drilldown'
-                        },
-
-                        xAxis: {
-                            categories: $scope.categories,
-                            title: {
-                                text: 'Selected Fields'
-                            }
-                        },
-                        
-                        yAxis: {
-                            title: {
-                                text: 'Values'
-                            }
-                        },
-                        credits: {
-                            enabled: false
-                        },
-                        legend: {
-                            enabled: false
-                        },
-
-                        plotOptions: {
-                            boxplot: {
-                                // Enabling this option overrides the fillColor property
-                                colorByPoint: true,
-                                fillColor: '#F0F0E0',
-                                lineWidth: 2,
-                                medianColor: '#0C5DA5',
-                                medianWidth: 3,
-                                stemColor: '#A63400',
-                                stemDashStyle: 'dot',
-                                stemWidth: 1,
-                                whiskerColor: '#3D9200',
-                                whiskerLength: '20%',
-                                whiskerWidth: 3
-                            }
-                        },
-                        series: [{
-                            name: 'Fields',
-                            data: $scope.dataforeachBox,
-                            tooltip: {
-                                headerFormat: '<em>Experiment No {point.key}</em><br/>'
-                            }
-                        }, {
-                            name: 'Outlier',
-                            color: Highcharts.getOptions().colors[0],
-                            type: 'scatter',
-                            data: $scope.dataOutliers,
-                            marker: {
-                                fillColor: 'white',
-                                lineWidth: 1,
-                                lineColor: Highcharts.getOptions().colors[0]
-                            },
-                            tooltip: {
-                                pointFormat: 'Observation: {point.y}'
-                            }
-                        }]
-                    };
-                } else {}
+            var meaArr = $scope.sourceData.fMeaArr;
+            var dataTypeFlag = true;
+            meaArr.forEach(function(k){
+                if(k.dataType != "TIMESTAMP" || k.dataType == "datetime"){
+                    dataTypeFlag = false;
+                }
             });
+            
+            if(dataTypeFlag){
+                $scope.eventHndler.isLoadingChart = true;
+
+                var fieldArray = [];
+
+                for (var i = 0; i < $scope.commonData.measures.length; i++) {
+                    fieldArray.push("'" + $scope.commonData.measures[i].filedName + "'");
+                }
+                for (var i = 0; i < $scope.commonData.columns.length; i++) {
+                    fieldArray.push("'" + $scope.commonData.columns[i].filedName + "'");
+                }
+
+                //get highest level
+                $scope.client.generateboxplot($scope.sourceData.tbl, fieldArray.toString(), function(data, status) {
+                    var hObj = {};
+                    $scope.dataforeachBox = []
+                    $scope.dataOutliers = [];
+                    if (status) {
+                        for (var field in data) {
+                            $scope.dataforeachBox.push([data[field].minimum, data[field].l_w, data[field].median, data[field].u_w, data[field].maximum]);
+                            $scope.dataOutliers.push([data[field].outliers[0]]);
+                        }
+                        $scope.categories = fieldArray;
+                        $scope.eventHndler.isLoadingChart = false;
+                        $scope.widget.highchartsNG = {
+                            options: {
+                                chart: {
+                                    type: 'boxplot',
+                                    // Explicitly tell the width and height of a chart
+                                    width: null,
+                                    height: 367,
+                                }
+                            },
+                            title: {
+                                text: 'Basic drilldown'
+                            },
+
+                            xAxis: {
+                                categories: $scope.categories,
+                                title: {
+                                    text: 'Selected Fields'
+                                }
+                            },
+
+                            yAxis: {
+                                title: {
+                                    text: 'Values'
+                                }
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            legend: {
+                                enabled: false
+                            },
+
+                            plotOptions: {
+                                boxplot: {
+                                    // Enabling this option overrides the fillColor property
+                                    colorByPoint: true,
+                                    fillColor: '#F0F0E0',
+                                    lineWidth: 2,
+                                    medianColor: '#0C5DA5',
+                                    medianWidth: 3,
+                                    stemColor: '#A63400',
+                                    stemDashStyle: 'dot',
+                                    stemWidth: 1,
+                                    whiskerColor: '#3D9200',
+                                    whiskerLength: '20%',
+                                    whiskerWidth: 3
+                                }
+                            },
+                            series: [{
+                                name: 'Fields',
+                                data: $scope.dataforeachBox,
+                                tooltip: {
+                                    headerFormat: '<em>Experiment No {point.key}</em><br/>'
+                                }
+                            }, {
+                                name: 'Outlier',
+                                color: Highcharts.getOptions().colors[0],
+                                type: 'scatter',
+                                data: $scope.dataOutliers,
+                                marker: {
+                                    fillColor: 'white',
+                                    lineWidth: 1,
+                                    lineColor: Highcharts.getOptions().colors[0]
+                                },
+                                tooltip: {
+                                    pointFormat: 'Observation: {point.y}'
+                                }
+                            }]
+                        };
+                    } else {}
+                });
+                
+            }else{
+                privateFun.fireMessage('0','Please select only numeric values to create bloxplot');
+            }
         },
         saveWidget: function(wid) {
             wid["widData"] = {
@@ -1199,112 +1224,124 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
     $scope.histogram = {
         changeType: function() {
-            $scope.eventHndler.isLoadingChart = true;
-            $scope.histogramPlot = []
-
-            var fieldArray = [];
-
-            for (var i = 0; i < $scope.commonData.measures.length; i++) {
-                fieldArray.push("'" + $scope.commonData.measures[i].filedName + "'");
-            }
-            for (var i = 0; i < $scope.commonData.columns.length; i++) {
-                fieldArray.push("'" + $scope.commonData.columns[i].filedName + "'");
-            }
-
-            //get highest level
-            $scope.client.generatehist($scope.sourceData.tbl, fieldArray.toString(), function(data, status) {
-                var hObj = {};
-                if (status) {
-
-                    $scope.histogramPlotcat = [];
-                    $scope.histogramPlotData = [];
-
-                    for (var field in data[0]) {
-                        var i = Object.keys(data[0]).indexOf(field);  
-                        $scope.histogramPlotcat.push(field);
-                        $scope.histogramPlotData.push(data[0][field]);
-                    }
-                    
-                    $scope.categories = fieldArray;
-                    $scope.eventHndler.isLoadingChart = false;
-
-                    $scope.widget.highchartsNG = {
-                        options: {
-                            chart: {
-                                type: 'column',
-                                // Explicitly tell the width and height of a chart
-                                width: null,
-                                height: 367,
-                            }
-                        },
-                        title: {
-                            text: 'Basic drilldown'
-                        },
-
-                        xAxis: {
-                             title: {
-                                text:  fieldArray[0]
-                            },
-                            categories: $scope.histogramPlotcat,
-                            labels: {
-                                rotation: -90,
-                                y: 40,
-                                style: {
-                                    fontSize: '8px',
-                                    fontWeight: 'normal',
-                                    color: '#333'
-                                },
-                            },
-                            lineWidth: 0,
-                            lineColor: '#999',
-                            tickLength: 70,
-                            tickColor: '#ccc',
-                        },
-                        plotOptions: {
-                            column: {
-                                shadow: false,
-                                borderWidth: .5,
-                                borderColor: '#666',
-                                pointPadding: 0,
-                                groupPadding: 0,
-                                color: 'rgba(204,204,204,.85)'
-                            },
-                            spline: {
-                                shadow: false,
-                                marker: {
-                                    radius: 1
-                                }
-                            },
-                            areaspline: {
-                                color: 'rgb(69, 114, 167)',
-                                fillColor: 'rgba(69, 114, 167,.25)',
-                                shadow: false,
-                                marker: {
-                                    radius: 1
-                                }
-                            }
-                        },
-                        yAxis: {
-                            title: {
-                                text:  'Count'
-                            },
-                            //maxPadding:0,
-                            gridLineColor: '#e9e9e9',
-                            tickWidth: 1,
-                            tickLength: 3,
-                            tickColor: '#ccc',
-                            lineColor: '#ccc',
-                            tickInterval: 25,
-                            //endOnTick:false,
-                        },
-                        
-                        series: [{
-                            data: $scope.histogramPlotData
-                        }]
-                    };
-                } else {}
+            var meaArr = $scope.sourceData.fMeaArr;
+            var dataTypeFlag = true;
+            meaArr.forEach(function(k){
+                if(k.dataType != "TIMESTAMP" || k.dataType == "datetime"){
+                    dataTypeFlag = false;
+                }
             });
-        },
+            
+            if(dataTypeFlag){
+                $scope.eventHndler.isLoadingChart = true;
+                $scope.histogramPlot = []
+
+                var fieldArray = [];
+
+                for (var i = 0; i < $scope.commonData.measures.length; i++) {
+                    fieldArray.push("'" + $scope.commonData.measures[i].filedName + "'");
+                }
+                for (var i = 0; i < $scope.commonData.columns.length; i++) {
+                    fieldArray.push("'" + $scope.commonData.columns[i].filedName + "'");
+                }
+
+                //get highest level
+                $scope.client.generatehist($scope.sourceData.tbl, fieldArray.toString(), function(data, status) {
+                    var hObj = {};
+                    if (status) {
+
+                        $scope.histogramPlotcat = [];
+                        $scope.histogramPlotData = [];
+
+                        for (var field in data[0]) {
+                            var i = Object.keys(data[0]).indexOf(field);  
+                            $scope.histogramPlotcat.push(field);
+                            $scope.histogramPlotData.push(data[0][field]);
+                        }
+
+                        $scope.categories = fieldArray;
+                        $scope.eventHndler.isLoadingChart = false;
+
+                        $scope.widget.highchartsNG = {
+                            options: {
+                                chart: {
+                                    type: 'column',
+                                    // Explicitly tell the width and height of a chart
+                                    width: null,
+                                    height: 367,
+                                }
+                            },
+                            title: {
+                                text: 'Basic drilldown'
+                            },
+
+                            xAxis: {
+                                 title: {
+                                    text:  fieldArray[0]
+                                },
+                                categories: $scope.histogramPlotcat,
+                                labels: {
+                                    rotation: -90,
+                                    y: 40,
+                                    style: {
+                                        fontSize: '8px',
+                                        fontWeight: 'normal',
+                                        color: '#333'
+                                    },
+                                },
+                                lineWidth: 0,
+                                lineColor: '#999',
+                                tickLength: 70,
+                                tickColor: '#ccc',
+                            },
+                            plotOptions: {
+                                column: {
+                                    shadow: false,
+                                    borderWidth: .5,
+                                    borderColor: '#666',
+                                    pointPadding: 0,
+                                    groupPadding: 0,
+                                    color: 'rgba(204,204,204,.85)'
+                                },
+                                spline: {
+                                    shadow: false,
+                                    marker: {
+                                        radius: 1
+                                    }
+                                },
+                                areaspline: {
+                                    color: 'rgb(69, 114, 167)',
+                                    fillColor: 'rgba(69, 114, 167,.25)',
+                                    shadow: false,
+                                    marker: {
+                                        radius: 1
+                                    }
+                                }
+                            },
+                            yAxis: {
+                                title: {
+                                    text:  'Count'
+                                },
+                                //maxPadding:0,
+                                gridLineColor: '#e9e9e9',
+                                tickWidth: 1,
+                                tickLength: 3,
+                                tickColor: '#ccc',
+                                lineColor: '#ccc',
+                                tickInterval: 25,
+                                //endOnTick:false,
+                            },
+
+                            series: [{
+                                data: $scope.histogramPlotData
+                            }]
+                        };
+                    } else {}
+                });
+            }else{
+                privateFun.fireMessage('0','Please select only numeric values to create histogram');
+            }      
+       },
         saveWidget: function(wid) {
             wid["widData"] = {
                 value: $scope.selectedChart.initObj.value,
@@ -1321,6 +1358,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
 
     $scope.d3hierarchy = {
+        onInit: function(recon) {            
+            $scope.hierarData = $scope.widget.widData;
+        },
         changeType: function() {
             $scope.eventHndler.isLoadingChart = true;
 
@@ -1358,7 +1398,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     };
 
     $scope.d3sunburst = {
-
+        onInit: function(recon) {            
+            $scope.hierarData = $scope.widget.widData;
+        },
         changeType: function() {
             $scope.eventHndler.isLoadingChart = true;
 
@@ -1778,7 +1820,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     };
 
     $scope.getExecuteAgg = function(query) {
-        alert($scope.initRequestLimit.value);
         if (typeof query != "undefined") {
             $scope.eventHndler.isLoadingChart = true;
             $scope.client.getExecQuery(query, function(res, status, query) {

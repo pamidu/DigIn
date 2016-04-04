@@ -9,14 +9,14 @@
       </md-button>            
   </md-toolbar>
   <md-content class="dialog-content-1" layout-padding>
-            <div class="md-actions" layout="row">
-                <span flex></span>
-                <md-button class="md-primary btn-dialog b-r-0" ng-click="signIn()" 
-                ng-disabled="connectedTwitter">Sign In</md-button>
-                <md-button class="md-warn btn-dialog b-r-0" ng-click="signOut()" 
-                ng-disabled="!connectedTwitter">Sign Out</md-button>
-                <md-button class="md-accent btn-dialog b-r-0" ng-click="cancel()" 
-                ng-disabled="!showFinishButton">Finish</md-button>
-            </div>
+      <p>Please Sign In to retrieve Twitter Feeds</p>
+      <div class="md-actions" layout="row">
+          <md-button class="md-primary btn-dialog b-r-0" ng-click="signIn()" 
+          ng-disabled="connectedTwitter">Sign In</md-button>
+          <md-button class="md-warn btn-dialog b-r-0" ng-click="signOut()" 
+          ng-disabled="!connectedTwitter">Sign Out</md-button>
+          <md-button class="md-accent btn-dialog b-r-0" ng-click="cancel()" 
+          ng-disabled="!showFinishButton">Finish</md-button>
+      </div>
   </md-content>
 </md-dialog>

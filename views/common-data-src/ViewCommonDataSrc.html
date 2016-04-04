@@ -190,7 +190,7 @@
                         </svg>
                     </div>
                     <div layout="row" class="margin-top-20" layout-align="center center"
-                    ng-if="!commonUi.isDataLoading">
+                    ng-if="!commonUi.isDataLoading && !commonUi.isServiceError">
                         <md-input-container class="md-icon-float md-block width100percent">
                             <label>Search</label>
                             <input type="text" ng-model="sourceUi.search">

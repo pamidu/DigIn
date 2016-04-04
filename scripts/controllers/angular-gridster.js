@@ -1456,28 +1456,7 @@
 				}
 
 				function dragStart(event) {
-					console.log("$el", $el);
-					console.log("$el", $el[0].childNodes[1].childNodes[2].childNodes[0].classList[0]);
-					console.log(event);
-
-					// if($el[0].childNodes[1].childNodes[2].childNodes[0].classList[0] == 'gmap-widget'){
-					// 	$el.click(function(event) {
-					// 	    var elem = $(event.target);
-					// 	    console.log(event.target.parentElement.parentElement.parentElement.parentElement);
-					// 	});
-					// }
-					// else{
-						
-					// 	$el.addClass('gridster-item-moving');
-					// 	gridster.movingItem = item;
-
-					// 	gridster.updateHeight(item.sizeY);
-					// 	scope.$apply(function() {
-					// 		if (gridster.draggable && gridster.draggable.start) {
-					// 			gridster.draggable.start(event, $el, itemOptions);
-					// 		}
-					// 	});
-					// }
+					
 					if(event.target.parentElement.parentElement.parentElement.parentElement.className=='angular-google-map' ){
 						    	//do nothing
 						    	console.log("in angular gmaps");

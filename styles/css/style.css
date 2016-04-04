@@ -2213,8 +2213,7 @@ md-tab-content > div{
     overflow: hidden;   
 }
 .dialog-content-1{
-    margin: 0px; 
-    margin-bottom: 0px;
+    margin: 15px; 
     height:100%;
     color: #01718D;
     font-weight: 300;

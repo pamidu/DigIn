@@ -4,6 +4,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
     '$auth', '$state', '$rootScope', 'ngToast', 'focus',
     function ($scope, $http, $animate, $window, $auth, $state,
               $rootScope, ngToast, focus) {
+
         $scope.isLoggedin = false;
         $scope.error = {
             isUserName: false,
@@ -152,6 +153,12 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
 //                }
 //            });
 //        };
+
+        //new update
+        //damith
+        //check sign up status
+
+
 
     }]).directive('keyEnter', function () {
     return function (scope, element, attrs) {

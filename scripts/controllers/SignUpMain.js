@@ -1,13 +1,12 @@
 // var app = angular.module('Fsignup', ['uiMicrokernel', 'ngMaterial']);
 
 routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
-    '$http', '$objectstore', '$state', 'ngToast', 'focus','$diginurls',
+    '$http', '$objectstore', '$state', 'ngToast', 'focus', '$diginurls',
     function ($scope, $mdToast, $animate, $http, $objectstore, $state,
               ngToast, focus, $diginurls) {
 
-
         $scope.onClickSignIn = function () {
-            $scope.isLoggedin = false;
+            $scope.isLoggedin = false; 
             $state.go('login');
         };
 
@@ -45,7 +44,7 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
             $http.get($diginurls.diginengine + '/createDataset?dataSetName=' + UserName + '&tableName=' + UserName + '&db=BigQuery&Domain=duosoftware.com')
                 .success(function (response) {
                     //$scope.userDtSet=response; 75809dbaff8548441d6ae64431670ec5
-                    //alert(JSON.stringify(response.Result));  
+                    //alert(JSON.stringify(response.Result));
                     $scope.sendConfirmationMail(mailTo, fName, UserName);
                 }).error(function (error) {
                 //alert("Fail !");
@@ -97,7 +96,6 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
         }
 
 
-
         var mainFun = (function () {
 
             return {
@@ -142,7 +140,7 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                         "ConfirmPassword": signUpUsr.cnfrPwd,
                         "Domain": signUpUsr.domainName + "" + signUpUsr.namespace
                     };
-                    $scope.error.isLoading = true;                  
+                    $scope.error.isLoading = true;
 
                     $http({
                         method: 'POST',
@@ -166,9 +164,9 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                             bannerPicture: 'fromObjectStore',
                             id: "admin@duosoftware.com"
                         };
- 
+
                         //Create Data Set
-                        $scope.createDataSet(signUpUsr.email,signUpUsr.domainName + "." + signUpUsr.namespace,signUpUsr.domainName);
+                        $scope.createDataSet(signUpUsr.email, signUpUsr.domainName + "." + signUpUsr.namespace, signUpUsr.domainName);
 
 
                         if (!data.Active) {
@@ -176,9 +174,12 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                             //setting the userdetails
                             var client = $objectstore.getClient("duosoftware.com", "profile", true);
                             client.onError(function (data) {
-                                mainFun.fireMsg('1', 'Successfully created your profile,Please check your Email for verification!');
+                                $state.go('login');
+                                //mainFun.fireMsg('1', 'Successfully created your profile,Please check your Email for verification!');
+
                             });
                             client.onComplete(function (data) {
+                                $state.go('login');
                                 mainFun.fireMsg('1', 'Successfully created your profile,Please check your Email for verification!');
                             });
                             client.update(userDetails, {
@@ -214,9 +215,6 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                 },
             }
         })();
-
-
-        
 
 
         $scope.submit = function () {
@@ -270,7 +268,8 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                 return;
             }
         }
-    }])
+    }
+])
 ;
 
 //Password verification

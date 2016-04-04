@@ -33,8 +33,6 @@
             "icon": "styles/css/images/icons/weather.svg",
             "type": "General",
             "Description": "Current weather and city",
-            "initTemplate": "views/InitConfigWeatherc.html",
-            "initController": "weathercInit",
             "widView": "views/ViewWeatherc.html",
             "color": "#C2185B",
             "sizeX": 4, "sizeY": 4, "row": 0, "col": 12

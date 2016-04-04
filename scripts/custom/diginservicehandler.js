@@ -8,7 +8,11 @@
     }
     
     function getNamespace() {
-        return "Demo";
+        var authdata = JSON.parse(getCookie("authData"));
+        var namespace = authdata.Email.replace('@','_');
+//        namespace = namespace.replace(/./, '_');
+        namespace = namespace.replace(/\./g, '_');
+        return namespace;
     }
     dsh.factory('$diginengine', function($diginurls, $servicehelpers) {
         function DiginEngineClient(_dsid, _db) {
@@ -142,7 +146,6 @@
     });
     dsh.factory('$servicehelpers', function($http, $auth) {
         return {
-            limit: 1000,
             httpSend: function(method, cb, reqUrl, obj) {
                 if (method == "get") {
                     $http.get(reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=duosoftware.com', {
@@ -159,7 +162,7 @@
             sendWorker: function(wSrc, wData, cb) {
                 var w = new Worker(wSrc);
                 
-                wData.rUrl = wData.rUrl + "&SecurityToken=" + getCookie("securityToken") + "&Domain=duosoftware.com&limit="+this.limit;
+                wData.rUrl = wData.rUrl + "&SecurityToken=" + getCookie("securityToken") + "&Domain=duosoftware.com";
                 w.postMessage(JSON.stringify(wData));
                 w.addEventListener('message', function(event) {
                     if(event.data.state){

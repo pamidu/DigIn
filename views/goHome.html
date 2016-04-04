@@ -1,20 +1,21 @@
-<md-dialog plumb-item style="min-width:400px;overflow:hidden">
-  <md-toolbar style="width: 100%; min-height: 30vh!important;z-index: 0;">
-    <div style="width:100%; height:48px;" layout="row" layout-align="end center">                
-      <p style="color: whitesmoke;font-size: 20px;margin:5px;">GO HOME?</p>         
+<md-dialog plumb-item class="dialog-1">
+  <md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">
+      <div layout="row" layout-align="center center" class="digin-logo-wrapper2">
+        <img ng-src="styles/css/images/innerlogo.png" class="digin-image">
+      </div>  
+      <div class="dialog-title">GO HOME?</div>         
       <md-button class="buttonMinwidth38" ng-click="closeDialog();">      
-        <ng-md-icon icon="close" style="fill:lightgrey" size="24" layout="row"></ng-md-icon>        
+        <ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>   
       </md-button>            
-    </div>
   </md-toolbar>
-  <md-card class="card-style1">
+  <md-card class="card-1">
     <md-content layout-padding>
             <div class="md-actions" layout="row">
                 <span flex></span>
-                <md-button ng-click="goHome()">
+                <md-button class="btn-font btn-dialog" ng-click="goHome()">
                     Yes
                 </md-button>
-                <md-button ng-click="closeDialog()">
+                <md-button class="btn-font btn-dialog" ng-click="closeDialog()">
                     No
                 </md-button>
             </div>

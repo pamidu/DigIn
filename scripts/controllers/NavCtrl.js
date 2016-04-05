@@ -15,7 +15,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         localStorage.clear();
 
-        $scope.username=JSON.parse(getCookie('authData')).Username;
+        //$scope.username=JSON.parse(getCookie('authData')).Username;
+        $scope.username=JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
         $scope.imageUrl="styles/css/images/innerlogo.png"; 
 
         var $windowHeight = $(window).height(),
@@ -138,7 +139,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         function showProfileController($rootScope,$scope, $mdDialog) {
 
             //var userInfo = $auth.getSession();  
-            var userInfo = JSON.parse(getCookie("authData"));
+            //var userInfo = JSON.parse(getCookie("authData"));
+            var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
 
             $scope.user = {
                 fname: userInfo.Name,
@@ -181,7 +183,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"');
             */
 
-            var userInfo = JSON.parse(getCookie("authData"));
+            var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+            $scope.username=userInfo.Username;
             $rootScope.username = userInfo.Username;
             $http.get('http://104.197.27.7:3048/tenant/GetTenants/'+ userInfo.SecurityToken)
             .success(function(response){

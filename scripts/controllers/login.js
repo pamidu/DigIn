@@ -35,7 +35,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                         $rootScope.username = $scope.txtUname;
                         localStorage.setItem('username', $scope.txtUname);
                         //var userInfo = $auth.getSession();
-                        var userInfo = JSON.parse(getCookie("authData"));
+                        //var userInfo = JSON.parse(getCookie("authData"));
 
                         //console.log("user data:"+JSON.stringify(userInfo));
                         // $rootScope.name = userInfo.Name;

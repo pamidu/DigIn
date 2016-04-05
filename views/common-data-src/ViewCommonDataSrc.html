@@ -1,17 +1,9 @@
 <md-sidenav ng-mouseover="initTabSource()" class="md-sidenav-right slider-r-wrap  "
             md-component-id="right">
     <!-- message -->
-    <div>
-        <toast></toast>
-    </div>
+    <toast></toast>
     <md-content class="overflow-none" layout="row">
-        <md-button ng-click="toggleLeft()"
-                   ng-hide="isOpenLeft()"
-                   class="md-primary sidenav-button" layout="row" layout-align="center center">
-            <md-icon md-svg-src="{{icon}}"></md-icon>
-        </md-button>
         <div class="slider-r-tab">
-
 
             <ul class="list-panel icheck-inline">
                 <li class=""
@@ -26,7 +18,8 @@
 
                 <li class=""
                     ng-class="{sliderDisable:commonUi.selectedIndex != 2,
-                    sliderActive:commonUi.selectedIndex==2}">
+                    sliderActive:commonUi.selectedIndex==2}"
+                    ng-click="commonUi.onClickTab('2')">
                     <span class="tab_icon ">
                       <i class="fa fa-table"></i>
                     </span>
@@ -34,13 +27,19 @@
                 </li>
                 <li class=""
                     ng-class="{sliderDisable:commonUi.selectedIndex != 3,
-                    sliderActive:commonUi.selectedIndex==3}">
+                    sliderActive:commonUi.selectedIndex==3}"
+                    ng-click="commonUi.onClickTab('3')">
                     <span class="tab_icon ">
                       <i class="fa fa-th-list"></i>
                     </span>
                     <span>Schema</span>
                 </li>
             </ul>
+            <div class="data-src-close" layout="row" layout-align="end center">
+                    <a ng-click="commonUi.onClickClose()" class="fnt-s-24">
+                        <i class="ti-close"></i>
+                    </a>
+            </div>
         </div>
 
 
@@ -109,10 +108,10 @@
                               ng-click="commonUi.onClickNext('1')" ng-disabled="!sourceUi.selectedSource">
                             next
                         </span>
-                <span class="btn btn-block btn-default btn-close"
+                <!-- <span class="btn btn-block btn-default btn-close"
                       ng-click="commonUi.onClickClose()">
                             close
-                        </span>
+                        </span> -->
             </div>
         </div>
     </md-content>

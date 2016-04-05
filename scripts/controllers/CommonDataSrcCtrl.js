@@ -205,12 +205,13 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         commonUi.selectedIndex = 1;
                         break;
                     case '2':
-                        commonUi.selectedIndex = 2;
                         //selected  info
+                        if(commonUi.selectedIndex != 1){
+                            commonUi.selectedIndex = 2;
+                        }
                         break;
                     case '3':
-                        commonUi.selectedIndex = 3;
-                        //selected  info
+                        //selected  schema
                         break;
                 }
             }
@@ -234,11 +235,24 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             }
             ,
             onClickClose: function () {
+                commonUi.selectedIndex = 1;
+                publicFun.clearAll(function (state) {
+                    if (state) {
+                        ngToast.create({
+                            className: 'success',
+                            content: 'Please wait...',
+                            horizontalPosition: 'right',
+                            verticalPosition: 'bottom',
+                            timeout: 1500,
+                            dismissOnClick: true
+                        });
+                    }
+                });
                 $mdSidenav('right')
                     .close()
                     .then(function () {
                         $log.debug('right sidepanel closed');
-                    });
+                });
             }
             ,
             onClickNext: function (index) {

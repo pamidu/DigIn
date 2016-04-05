@@ -1002,13 +1002,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $rootScope.currentView = "CommonData";
                 $scope.manageTabs(false);
 
-                if ($mdSidenav('right').isOpen()) {
-                    $mdSidenav('right')
-                        .close()
-                        .then(function () {
-                            $log.debug('right sidepanel closed');
-                        });
-                } else {
+                // if ($mdSidenav('right').isOpen()) {
+                //     $mdSidenav('right')
+                //         .close()
+                //         .then(function () {
+                //             $log.debug('right sidepanel closed');
+                //         });
+                // } 
+                if(!$mdSidenav('right').isOpen()) {
                     $mdSidenav('right')
                         .toggle()
                         .then(function () {

@@ -2301,8 +2301,9 @@ md-tab-content > div{
 
 /* end md dialog */
 
-.btn-close{
-    background-color: ;
+.data-src-close{
+    margin-top: 0px;
+    margin-right: 18px;
 }
 
 

@@ -45,7 +45,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $httpProvider.defaults.headers.common["Content-Type"] = "application/x-www-form-urlencoded";
 
-    $urlRouterProvider.otherwise('/welcome');
+    $urlRouterProvider.otherwise('/home');
 
     $stateProvider
         .state("login", {

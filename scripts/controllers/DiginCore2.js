@@ -330,13 +330,14 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                 storyboard: false,
             };
 
+
             if (type == "saveAll") {
                 console.log("saving the whole story board");
                 dashboardObj.data = $rootScope.Dashboards;
                 dashboardObj.storyboard = true;
             };
 
-            console.log(dashboardObj);
+            //console.log(dashboardObj);
 
             var client = ObjectStoreService.initialize("duodigin_dashboard");
              

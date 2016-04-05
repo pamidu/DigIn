@@ -222,9 +222,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
-            },
-            {
+            }, {
                 id: 'ct03',
+                icon: 'fa fa-line-chart',
                 icon: 'ti-bar-chart',
                 name: 'column',
                 chart: 'column',
@@ -233,9 +233,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
-            },{
-                id: 'ct04',
-                icon: 'fa fa-line-chart',
+            },
+            {
+                id: 'ct03',
+                icon: 'ti-gallery',
                 name: 'line ',
                 chart: 'line',
                 selected: false,
@@ -325,7 +326,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
             }, {
                 id: 'ct13',
-                icon: 'ti-layout-accordion-list',
+                icon: 'fa fa-sort-numeric-desc',
                 name: 'metric',
                 chart: 'metric',
                 selected: false,
@@ -348,7 +349,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct15',
-                icon: 'chart-diginsunburst-chart',
+                icon: 'fa fa-tasks',
                 name: 'boxplot',
                 chart: 'boxplot',
                 selected: false,
@@ -359,7 +360,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
             }, {
                 id: 'ct16',
-                icon: 'chart-diginsunburst-chart',
+                icon: 'fa fa-bar-chart',
                 name: 'histogram',
                 chart: 'histogram',
                 selected: false,
@@ -369,7 +370,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct17',
-                icon: 'chart-diginsunburst-chart',
+                icon: 'ti-panel',
                 name: 'bubble',
                 chart: 'bubble',
                 selected: false,
@@ -379,7 +380,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             },{
                 id: 'ct18',
-                icon: 'fa fa-area-chart',
+                icon: 'fa fa-line-chart',
                 name: 'forecast',
                 chart: 'forecast',
                 selected: false,
@@ -1400,6 +1401,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.d3sunburst = {
         onInit: function(recon) {            
             $scope.hierarData = $scope.widget.widData;
+            $scope.$apply;
         },
         changeType: function() {
             $scope.eventHndler.isLoadingChart = true;

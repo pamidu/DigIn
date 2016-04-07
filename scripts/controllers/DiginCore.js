@@ -65,6 +65,32 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         // if($rootScope.tempDashboard.length != 0)
         $rootScope.tempDashboard = angular.copy($rootScope.dashboard);
 
+        $scope.widgetTitleClass = 'widget-title-35';
+
+        $scope.adjustTitleLength = function(){
+
+            var titleLength = 0;
+            for(var i=0; i < $rootScope.dashboard.widgets.length; i++){
+
+                if(titleLength < $rootScope.dashboard.widgets[i].widName.length){
+
+                    titleLength = $rootScope.dashboard.widgets[i].widName.length;
+                    if(titleLength <= 35){
+                        $scope.widgetTitleClass = 'widget-title-35';
+                    }
+                    if(titleLength > 35 && titleLength <= 60){
+                        $scope.widgetTitleClass = 'widget-title-60';
+                    }
+                    if(titleLength > 60 && titleLength <= 80){
+                        $scope.widgetTitleClass = 'widget-title-80';
+                    } 
+                    if(titleLength > 80){
+                        $scope.widgetTitleClass = 'widget-title-long';
+                    }        
+                }
+            }
+        }
+
         /* update damith
          view current chart data source view
          currentSourceView ()
@@ -262,29 +288,29 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 $scope.items = data;
             });
         }
-        $scope.showAdvanced = function (ev, widget) {
-            if(typeof widget.commonSrc == "undefined"){
-                $mdDialog.show({
-                    controller: widget.initCtrl,
-                    templateUrl: widget.initTemplate,
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    locals: {
-                        widId: widget.id
-                    }
-                })
-                .then(function () {
-                    //$mdDialog.hide();
-                }, function () {
-                    //$mdDialog.hide();
-                });
-            }else{
-                $csContainer.fillCSContainer(widget.commonSrc.src);
-                $state.go("home.QueryBuilder");
-            }
+        // $scope.showAdvanced = function (ev, widget) {
+        //     if(typeof widget.commonSrc == "undefined"){
+        //         $mdDialog.show({
+        //             controller: widget.initCtrl,
+        //             templateUrl: widget.initTemplate,
+        //             parent: angular.element(document.body),
+        //             targetEvent: ev,
+        //             locals: {
+        //                 widId: widget.id
+        //             }
+        //         })
+        //         .then(function () {
+        //             //$mdDialog.hide();
+        //         }, function () {
+        //             //$mdDialog.hide();
+        //         });
+        //     }else{
+        //         $csContainer.fillCSContainer(widget.commonSrc.src);
+        //         $state.go("home.QueryBuilder");
+        //     }
             
-            $rootScope.widget = widget;
-        };
+        //     $rootScope.widget = widget;
+        // };
 
         /*Summary:
          synchronizes data per widget

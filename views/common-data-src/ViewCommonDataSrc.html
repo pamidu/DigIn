@@ -1,9 +1,10 @@
-<md-sidenav ng-mouseover="initTabSource()" class="md-sidenav-right slider-r-wrap  "
+<md-sidenav class="md-sidenav-right slider-r-wrap  "
             md-component-id="right">
     <!-- message -->
     <toast></toast>
     <md-content class="overflow-none" layout="row">
         <div class="slider-r-tab">
+
 
             <ul class="list-panel icheck-inline">
                 <li class=""
@@ -52,7 +53,7 @@
                 ng-class="{fadeInRightBig: commonUi.selectedIndex==2,
                 fadeInLeft: commonUi.selectedIndex==1}"
                 ng-show="commonUi.selectedIndex=='1'">
-        <div class="slider-r-source ">
+        <div class="slider-r-source " ng-mousemove="initTabSource()">
             <!-- refresh all source -->
             <div class="digni-cmds-header-btn">
                 <i class="ti-reload"
@@ -121,7 +122,7 @@
                 ng-class="{fadeInRightBig: commonUi.selectedIndex==2,
                 fadeInLeft: commonUi.selectedIndex==1}"
                 ng-show="commonUi.selectedIndex=='2'">
-        <div class="slider-r-source ">
+        <div class="slider-r-source " ng-mousemove="initTabSource()">
             <h3 class="graph-h2 font-weight-500 text-center p-t-b-30">
                 Data source builder (2/3)
                 <small class="text-color-grey-600">
@@ -228,7 +229,7 @@
                 ng-class="{fadeInRightBig: commonUi.selectedIndex==3,
                 fadeInLeft: commonUi.selectedIndex==3}"
                 ng-show="commonUi.selectedIndex=='3'">
-        <div class="slider-r-source ">
+        <div class="slider-r-source " ng-mousemove="initTabSource()">
             <h3 class="graph-h2 font-weight-500 text-center p-t-15">
                 Data source builder (3/3)
                 <small class="text-color-grey-600">

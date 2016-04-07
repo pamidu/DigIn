@@ -165,6 +165,9 @@
     width: 600px;
 }
 /* font style */
+.fnt-s-16 {
+    font-size : 16px !important;
+}
 .fnt-s-24 {
     font-size : 24px !important;
 }

@@ -751,6 +751,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
 
     $scope.saveChart = function(widget) {
+        widget.widName = $scope.widget.widName;
         widget.dataCtrl = "widgetSettingsDataCtrl";
         widget.dataView = "views/ViewData.html";
         widget["selectedChart"] = $scope.selectedChart;
@@ -1084,7 +1085,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
-            
             wid.widView = "views/query/chart-views/BoxPlot.html";
             $scope.saveChart(wid);
         }
@@ -1215,7 +1215,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
-             
             wid.widView = "views/query/chart-views/bubble.html";
             $scope.saveChart(wid);
         }
@@ -1348,7 +1347,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
-
             wid.widView = "views/query/chart-views/histogram.html";
             $scope.saveChart(wid);
         }
@@ -1475,7 +1473,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         },
         saveWidget: function(wid) {
             wid.widView = "views/ViewPivotSummary.html";
-            wid.widName = "Pivot Summary"
             wid.widData.summary = $scope.summaryData;
             wid.widData.fieldArray = $scope.fieldArray;
             wid.uniqueType = "Pivot Summary";
@@ -1494,10 +1491,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         saveWidget: function(wid) {
             wid.widView = "views/googleMaps/ViewGoogleMapsBranches.html";
             wid.uniqueType = "Google Maps Branches";
-            // wid.initCtrl="";
-            setTimeout(function() {
-                $scope.saveChart(wid);
-            }, 1000);
+            $scope.saveChart(wid);
         }
     };
 

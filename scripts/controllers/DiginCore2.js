@@ -18,47 +18,47 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
     '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', '$http', 'ScopeShare', '$filter',
     function($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http, ScopeShare, $filter) {
 
-        $scope.showData = function() {
+        // $scope.showData = function() {
 
-            $mdDialog.show({
-                        controller: $rootScope.widget.dataCtrl,
-                        templateUrl: 'views/ViewWidgetSettingsData.html',
-                        parent: angular.element(document.body),
-                        locals: {
-                            widId: $rootScope.widget.id
-                        }
-                    })
-                    .then(function() {
-                        //$mdDialog.hide();
-                    }, function() {
-                        //$mdDialog.hide();
-                    });
+        //     $mdDialog.show({
+        //                 controller: $rootScope.widget.dataCtrl,
+        //                 templateUrl: 'views/ViewWidgetSettingsData.html',
+        //                 parent: angular.element(document.body),
+        //                 locals: {
+        //                     widId: $rootScope.widget.id
+        //                 }
+        //             })
+        //             .then(function() {
+        //                 //$mdDialog.hide();
+        //             }, function() {
+        //                 //$mdDialog.hide();
+        //             });
 
-            $scope.close();
-        };
+        //     $scope.close();
+        // };
 
-        $scope.showAdvanced = function(ev, widget) {
-                        if($rootScope.widget.initTemplate){
+        // $scope.showAdvanced = function(ev, widget) {
+        //                 if($rootScope.widget.initTemplate){
 
-                $mdDialog.show({
-                    controller: $rootScope.widget.initCtrl,
-                    templateUrl: $rootScope.widget.initTemplate,
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    locals: {
-                        widId: $rootScope.widget.id,
-                        widData: {},
-                        fieldData: {}
-                    }
-                })
-                .then(function() {
-                    //$mdDialog.hide();
-                }, function() {
-                    //$mdDialog.hide();
-                });
-            }
-            $scope.close();
-        };
+        //         $mdDialog.show({
+        //             controller: $rootScope.widget.initCtrl,
+        //             templateUrl: $rootScope.widget.initTemplate,
+        //             parent: angular.element(document.body),
+        //             targetEvent: ev,
+        //             locals: {
+        //                 widId: $rootScope.widget.id,
+        //                 widData: {},
+        //                 fieldData: {}
+        //             }
+        //         })
+        //         .then(function() {
+        //             //$mdDialog.hide();
+        //         }, function() {
+        //             //$mdDialog.hide();
+        //         });
+        //     }
+        //     $scope.close();
+        // };
 
         $scope.trustSrc = function(src) {
             return $sce.trustAsResourceUrl(src);
@@ -80,13 +80,13 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
             client.getClasses("com.duosoftware.com");
         };
 
-        $scope.commentary = function(widget) {
+        // $scope.commentary = function(widget) {
 
-            var comment = "";
-            var chunks = [];
+        //     var comment = "";
+        //     var chunks = [];
 
-            $scope.close();
-        };
+        //     $scope.close();
+        // };
 
         $scope.close = function() {
             $mdDialog.hide();

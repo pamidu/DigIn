@@ -52,9 +52,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             minColumns: 1, // minimum amount of columns the grid can scale down to
             minRows: 1, // minimum amount of rows to show if the grid is empty
             maxRows: 100, // maximum amount of rows in the grid
-            defaultSizeX: 4, // default width of an item in columns
+            defaultSizeX: 6, // default width of an item in columns
             defaultSizeY: 8, // default height of an item in rows
-            minSizeX: 4, // minimum column width of an item
+            minSizeX: 6, // minimum column width of an item
             maxSizeX: null, // maximum column width of an item
             minSizeY: 8, // minumum row height of an item
             maxSizeY: null, // maximum row height of an item

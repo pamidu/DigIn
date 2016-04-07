@@ -1,4 +1,4 @@
-<md-tabs id="footerBar" md-selected="selectedIndex" md-border-bottom md-autoselect md-align-tabs="bottom" ng-show="currentView=='Dashboard'">
+<md-tabs id="footerBar" md-selected="selectedIndex" md-border-bottom md-autoselect md-align-tabs="bottom" ng-show="currentView=='Dashboard'" ng-mouseover="adjustTitleLength()">
     <md-tab ng-repeat="tab in tabs" label="{{tab.title}}" md-on-select="$root.selectCurrentDashboard(tab);">
         <div class="demo-tab tab{{$index%4}}">
             <div class="tab-style" gridster="gridsterOpts">
@@ -52,8 +52,10 @@
 
                     </div>
                     </div>
-                    <div class="digin-widget-toolbar" layout="row" layout-align="center start">
-                        <div class="widget-title" layout-margin flex>{{widget.widName}}</div>
+                    <div class="digin-widget-toolbar" layout="row" layout-align="center center">
+                        <div ng-class="widgetTitleClass" flex="80">
+                            {{widget.widName}}
+                        </div>
                         <div class="widget-button-wrapper" layout="row" layout-align="end center" flex>
                             <md-button class="widget-button" ng-click="remove(widget)">
                                 <ng-md-icon icon="close" style="fill:dimgrey" size="20" layout="column"

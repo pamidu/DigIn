@@ -128,12 +128,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     clickOutsideToClose: true
-                })
-                .then(function(answer) {
-
-                }, function() {
-
-                });
+            })
+            .then(function(answer) {
+            });
         };
 
         function showProfileController($rootScope,$scope, $mdDialog) {

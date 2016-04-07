@@ -344,7 +344,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 localStorage.setItem("lastSelectedTable", $scope.sourceUi.selectedNameSpace);
             }
             ,
-            onClickSelectedSrc: function (onSelect, data) {
+            onClickSelectedSrc: function (onSelect, data, ev) {
                 commonUi.clearTblData();
                 var i;
                 var sourceInData = data;
@@ -357,11 +357,69 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
 
                 if (onSelect.name == "CSV/Excel" || onSelect.name == "SpreadSheet") {
                     // alert("csv excel or spreadsheet selected");
-                    $scope.showFileUpload = true;
+                    commonUi.openFileUploadWindow(ev);
                 }
-                else {
-                    $scope.showFileUpload = false;
+            }
+            ,
+            openFileUploadWindow: function (ev) {
+                if(typeof ev != "undefined" && ev.type == 'click'){
+                    $mdDialog.show({
+                        controller: function fileUploadCtrl($scope, $mdDialog, Upload){
+                            $scope.finish = function(){
+                                $mdDialog.hide();
+                            }
+                            $scope.cancel = function(){
+                                $mdDialog.cancel();
+                            }
+                             /* file upload */
+                            $scope.$watch('files', function () {
+                                $scope.upload($scope.files);
+                            });
+                            $scope.$watch('file', function () {
+                                if ($scope.file != null) {
+                                    $scope.files = [$scope.file];
+                                }
+                            });
+                            $scope.log = '';
+
+                            $scope.upload = function (files) {
+                                if (files && files.length) {
+                                    for (var i = 0; i < files.length; i++) {
+                                        var file = files[i];
+                                        if (!file.$error) {
+                                            Upload.upload({
+                                                url: 'git/mar16latest',
+                                                data: {
+                                                    file: file
+                                                }
+                                            }).then(function (resp) {
+                                                $timeout(function () {
+                                                    $scope.log = 'file: ' +
+                                                        resp.config.data.file.name +
+                                                        ', Response: ' + JSON.stringify(resp.data) +
+                                                        '\n' + $scope.log;
+                                                });
+                                            }, null, function (evt) {
+                                                var progressPercentage = parseInt(100.0 *
+                                                    evt.loaded / evt.total);
+                                                $scope.log = 'progress: ' + progressPercentage +
+                                                    '% ' + evt.config.data.file.name + '\n' +
+                                                    $scope.log;
+                                            });
+                                        }
+                                    }
+                                }
+                            };
+                        },
+                        templateUrl: 'views/fileUpload.html',
+                        parent: angular.element(document.body),
+                        clickOutsideToClose: true,
+                        targetEvent: ev
+                    })
+                    .then(function(answer) {
+                    });
                 }
+                                
             }
             ,
             clearTblData: function () {
@@ -541,62 +599,20 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             search: ''
         }
         /* initialize tabs */
-        $scope.initTabSource = function () {
-
+        $scope.initTabSource = function (ev) {
+            
             for (var i = 0; i < $scope.datasources.length; i++) {
                 if ($scope.datasources[i].name == localStorage.getItem("lastSelectedSource")) {
-                    $scope.commonUi.onClickSelectedSrc($scope.datasources[i], $scope.datasources);
+                    $scope.commonUi.onClickSelectedSrc($scope.datasources[i], $scope.datasources, ev);
                 }
             }
-
             for (var i = 0; i < $scope.sourceUi.tableData.length; i++){
                 //console.log($scope.sourceUi.tableData[i]);
                 if ($scope.sourceUi.tableData[i].name == localStorage.getItem("lastSelectedTable")) {
                     $scope.commonUi.onSelectClassRow($scope.sourceUi.tableData[i]);
-                    console.log("selectedTable ***** ", $scope.sourceUi.tableData[i].name);
                 }
             }
+            
         }
-
-        /* file upload */
-
-        $scope.$watch('files', function () {
-            $scope.upload($scope.files);
-        });
-        $scope.$watch('file', function () {
-            if ($scope.file != null) {
-                $scope.files = [$scope.file];
-            }
-        });
-        $scope.log = '';
-
-        $scope.upload = function (files) {
-            if (files && files.length) {
-                for (var i = 0; i < files.length; i++) {
-                    var file = files[i];
-                    if (!file.$error) {
-                        Upload.upload({
-                            url: 'git/mar16latest',
-                            data: {
-                                file: file
-                            }
-                        }).then(function (resp) {
-                            $timeout(function () {
-                                $scope.log = 'file: ' +
-                                    resp.config.data.file.name +
-                                    ', Response: ' + JSON.stringify(resp.data) +
-                                    '\n' + $scope.log;
-                            });
-                        }, null, function (evt) {
-                            var progressPercentage = parseInt(100.0 *
-                                evt.loaded / evt.total);
-                            $scope.log = 'progress: ' + progressPercentage +
-                                '% ' + evt.config.data.file.name + '\n' +
-                                $scope.log;
-                        });
-                    }
-                }
-            }
-        };
     }]);
 

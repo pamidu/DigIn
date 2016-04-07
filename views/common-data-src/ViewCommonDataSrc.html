@@ -73,7 +73,7 @@
                     <div class="digin-cmds-source">
                         <div ng-repeat="source in datasources"
                              class="source-wrap icheck-inline hvr-outline-in "
-                             ng-click="commonUi.onClickSelectedSrc(source,datasources)">
+                             ng-click="commonUi.onClickSelectedSrc(source,datasources, $event)">
                             <img class="source-icon" ng-src="{{source.icon}}"
                                  alt="{{source.name}}">
                             <div class="source-wrap-footer">
@@ -84,23 +84,6 @@
                                 <i class="fa fa-check-circle-o"></i>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- file upload -->
-                    <div class="custom-file-upload" ng-show="showFileUpload">
-                        <div ngf-drop="upload($files)" ngf-select="upload($files)" ng-model="files" class="drop-box"
-                             ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
-                             ngf-pattern="'.xls,.csv,.xlsx'" accept=".xls,.csv,.xlsx">Drop pdfs or images here or click
-                            to upload
-                        </div>
-                        <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
-                        Files:
-                        <ul>
-                            <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}
-                            </li>
-                        </ul>
-                        Upload Log:
-                        <pre>{{log}}</pre>
                     </div>
                 </div>
             </div>
@@ -122,7 +105,7 @@
                 ng-class="{fadeInRightBig: commonUi.selectedIndex==2,
                 fadeInLeft: commonUi.selectedIndex==1}"
                 ng-show="commonUi.selectedIndex=='2'">
-        <div class="slider-r-source " ng-mousemove="initTabSource()">
+        <div class="slider-r-source " ng-mousemove="initTabSource($event)">
             <h3 class="graph-h2 font-weight-500 text-center p-t-b-30">
                 Data source builder (2/3)
                 <small class="text-color-grey-600">

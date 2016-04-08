@@ -1,67 +1,72 @@
 /* Summary:
  note: some of the scope variables are initialized inside fbInterface
  */
-
-routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphServices, $http, Digin_Engine_API3, $rootScope, $mdDialog) {
+routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices, $http, Digin_Engine_API3, $rootScope, $mdDialog, $restFb) {
 
     $scope.totalLikes = 0;
     $scope.totalEngagement = 0;
-   $scope.engageLikes = 0;
-   
-   $scope.sentimentConfig = {
-    options: {
-        chart: {
-            type: "line",
-            backgroundColor: null,
-            spacingBottom: 15,
-            spacingTop: 10,
-            spacingLeft: 10,
-            spacingRight: 10,
-            height: 300
-        },
-        plotOptions: {
-            column: {
-                borderWidth: 0,
-                groupPadding: 0,
-                shadow: !1,
-                pointPadding: .1
-            }
-        }
-    },
-    credits: {
-        enabled: false
-    },
-    xAxis: {
-        type : 'datetime'
-    },
-    yAxis: {
-        title: {
-            text: "Polarity"
-        },
-        labels: {
-            style: {
-                color: "#fff",
-                fontSize: "12px",
-                fontFamily: "Ek Mukta, sans-serif",
-                fontWeight: "200"
-            },
-            formatter: function () {
-                return this.value
-            }
-        }
-    },
-    title: {
-        text: ""
-    },
-    loading: !1
-};
+    $scope.engageLikes = 0;
+    $scope.requestCount = 0;
+    $scope.failedPool = [];
+    $scope.defReqPool = [{method: 'setPageOverview'},
+                         {method: 'setPostSummary'},
+                         {method: 'setWordCloud'},
+                         {method: 'setDemographicsinfo'}];
 
-    $scope.fbPageInit = function () {
+    $scope.sentimentConfig = {
+        options: {
+            chart: {
+                type: "line",
+                backgroundColor: null,
+                spacingBottom: 15,
+                spacingTop: 10,
+                spacingLeft: 10,
+                spacingRight: 10,
+                height: 300
+            },
+            plotOptions: {
+                column: {
+                    borderWidth: 0,
+                    groupPadding: 0,
+                    shadow: !1,
+                    pointPadding: .1
+                }
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        xAxis: {
+            type: 'datetime'
+        },
+        yAxis: {
+            title: {
+                text: "Polarity"
+            },
+            labels: {
+                style: {
+                    color: "#fff",
+                    fontSize: "12px",
+                    fontFamily: "Ek Mukta, sans-serif",
+                    fontWeight: "200"
+                },
+                formatter: function() {
+                    return this.value
+                }
+            }
+        },
+        title: {
+            text: ""
+        },
+        loading: !1
+    };
+
+    $scope.fbPageInit = function() {
         fbInterface.getFbLoginState($scope, true);
 
     }
 
-    $scope.searchPage = function (searchQuery) {
+    $scope.searchPage = function(searchQuery) {
         fbInterface.getSearchedPages($scope, true, searchQuery);
     };
 
@@ -70,46 +75,46 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     function getServiceResponse(serviceUrl, token, callback, demographic) {
         console.log('Sevice URL:' + serviceUrl);
         var reqUrl = "";
-        
-        if(demographic) reqUrl = serviceUrl + "token=" + token;
+
+        if (demographic) reqUrl = serviceUrl + "token=" + token;
         else reqUrl = serviceUrl + "&token=" + token;
         reqUrl = reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=duosoftware.com';
-        
+
         $http({
             method: 'GET',
             url: reqUrl
-        }).success(function (data, status) {
-            if(data.Is_Success) callback(data.Result);
+        }).success(function(data, status) {
+            if (data.Is_Success) callback(data.Result);
             else {
-                if(data.Custom_Message == "Error validating access token: This may be because the user logged out or may be due to a system error."){
+                if (data.Custom_Message == "Error validating access token: This may be because the user logged out or may be due to a system error.") {
                     $scope.resendConfirm($event, data.Custom_Message, serviceUrl, callback, demographic);
                 }
             }
-            
-        }).error(function (data, status) {
+
+        }).error(function(data, status) {
             $scope.errorMessage = true;
             console.log('unexpected error occured');
         });
     };
-    
+
     //confirming the resend request
     $scope.resendConfirm = function(ev, msg, url, cb, demographic) {
         // Appending dialog to document.body to cover sidenav in docs app
         var confirm = $mdDialog.confirm()
-              .title('Would you like to resend the request?')
-              .textContent(msg)
-              .ariaLabel('Lucky day')
-              .targetEvent(ev)
-              .ok('Yes')
-              .cancel('No');
+            .title('Would you like to resend the request?')
+            .textContent(msg)
+            .ariaLabel('Lucky day')
+            .targetEvent(ev)
+            .ok('Yes')
+            .cancel('No');
         $mdDialog.show(confirm).then(function() {
-            fbInterface.getFreshPageAccessToken($scope.page.id, function(data){
+            fbInterface.getFreshPageAccessToken($scope.page.id, function(data) {
                 getServiceResponse(url, data, cb, demographic);
-            });          
+            });
         }, function() {
-          $scope.status = 'You decided to keep your debt.';
+            $scope.status = 'You decided to keep your debt.';
         });
-      };
+    };
 
     //generate the chart
     var configSeries = [];
@@ -118,11 +123,15 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         console.log('overview data' + JSON.stringify(data));
         configSeries = [];
         $scope.totalViews = 0;
-        var colorObj = {'page_views': '#00796B', 'page_fans': '#B2DFDB', 'page_stories': '#FFFFFF'};
-        data.forEach(function (entry) {
+        var colorObj = {
+            'page_views': '#00796B',
+            'page_fans': '#B2DFDB',
+            'page_stories': '#FFFFFF'
+        };
+        data.forEach(function(entry) {
             $scope.configData = [];
             var seriesName = '';
-            entry.data.forEach(function (value) {
+            entry.data.forEach(function(value) {
                 var x = value[0].split('T')[0];
 
                 var enDate = x.split('-');
@@ -164,10 +173,22 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                     spacingRight: 10,
                     width: 680,
                     height: 300
-                }, plotOptions: {column: {borderWidth: 0, groupPadding: 0, shadow: !1, pointPadding: .1}}
+                },
+                plotOptions: {
+                    column: {
+                        borderWidth: 0,
+                        groupPadding: 0,
+                        shadow: !1,
+                        pointPadding: .1
+                    }
+                }
             },
-            credits: {enabled: false},
-            xAxis: {type: "datetime"},
+            credits: {
+                enabled: false
+            },
+            xAxis: {
+                type: "datetime"
+            },
             yAxis: {
                 labels: {
                     style: {
@@ -175,12 +196,15 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                         fontSize: "12px",
                         fontFamily: "Ek Mukta, sans-serif",
                         fontWeight: "200"
-                    }, formatter: function () {
+                    },
+                    formatter: function() {
                         return this.value
                     }
                 }
             },
-            title: {text: ""},
+            title: {
+                text: ""
+            },
             loading: !1
         };
 
@@ -192,125 +216,187 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         $scope.arrAdds = [];
         for (var key in data.value) {
             if (Object.prototype.hasOwnProperty.call(data.value, key)) {
-                $scope.arrAdds.push({add: key, likeCount: data.value[key]});
+                $scope.arrAdds.push({
+                    add: key,
+                    likeCount: data.value[key]
+                });
             }
         }
 
-        $rootScope.$broadcast('getLocations', {addData: $scope.arrAdds});
+        $rootScope.$broadcast('getLocations', {
+            addData: $scope.arrAdds
+        });
     };
-
-    $scope.getPageDetails = function(page, pageTimestamps, changedTime) {
-      
-      //showing the page
-      $scope.page = page;
-      if (!changedTime) $scope.activePageSearch = !$scope.activePageSearch;
-      
-      //getting page overview data 
-      var serviceUrl = Digin_Engine_API3 + 'pageoverview?metric_names=[%27page_views%27,%27page_fans%27,%27page_stories%27]&since=' + pageTimestamps.sinceStamp + '&until=' + pageTimestamps.untilStamp;
-
-      getServiceResponse(serviceUrl, page.accessToken, function(data) {
-         console.log('chart data:' + JSON.stringify(data));
-         generateChart(data);
-      });
-      
-      //getting posts summary and sentiment data 
-      serviceUrl = Digin_Engine_API3 + 'fbpostswithsummary?since=' + pageTimestamps.sinceStamp + '&until=' + pageTimestamps.untilStamp+'&page='+page.id;
-      getServiceResponse(serviceUrl, page.accessToken, function(data) {
-         console.log('posts:' + JSON.stringify(data));
-         $scope.postsObj = data;            
-         $scope.postCount = data.length;
-         $scope.postIds = [];
-         $scope.sentimentConfigData = [];
-         var sentimentConfigSeries = [];
-         $scope.postsObj.forEach(function(postEntry) {
-            $scope.postIds.push(postEntry.id);
-         });
-
-         serviceUrl = Digin_Engine_API3 + 'sentimentanalysis?source=facebook&post_ids=' + JSON.stringify($scope.postIds);
-            getServiceResponse(serviceUrl, page.accessToken, function(data) {
-               var sentIcons = {
-                  'positive': 'styles/css/images/socialAnalysis/happyFace.png',
-                  'negative': 'styles/css/images/socialAnalysis/sadFace.png',
-                  'neutral': 'styles/css/images/socialAnalysis/neutralFace.png'
-               };
-               
-               //assuming the data retreived is in the same order of the $scope.postIds 
-               for (i = 0; i < data.length; i++) {
-                  $scope.postsObj[i]['sentiment'] = {
-                     "res": data[i].sentiment,
-                     "pol": data[i].polarity,
-                     "ico": sentIcons[data[i].sentiment]
-                  };
-                  console.log("$scope.postsObj[i]['sentiment']");
-                  console.log($scope.postsObj[i]['sentiment']);
-                  
-                  $scope.totalEngagement += $scope.postsObj[i].shares + $scope.postsObj[i].comments;
-                  $scope.engageLikes += $scope.postsObj[i].likes;
-
-                  var x = $scope.postsObj[i].created_time.split('T')[0];
-
-                  var enDate = x.split('-');
-
-                  $scope.sentimentConfigData.push([
-                     Date.UTC(enDate[0], enDate[1] - 1, enDate[2]),
-                     data[i].polarity
-                  ]); //
-               }
-
-               sentimentConfigSeries.push({
-                  type: 'line',
-                  name: 'Overall Sentiment',
-                  data: $scope.sentimentConfigData,
-                  color: '#fff'
-               });
-
-               $scope.sentimentConfig['series'] = sentimentConfigSeries;
-
-               console.log("post result:" + JSON.stringify($scope.postsObj));                  
-            });
-      });
-      
-      //getting the data for the word cloud 
-      serviceUrl = Digin_Engine_API3 + 'buildwordcloudFB?source=facebook';
-      getServiceResponse(serviceUrl, page.accessToken, function(data) {
-         var wordObjArr = [];
-         for (var key in data) {
-            if (Object.prototype.hasOwnProperty.call(data, key)) {
-               wordObjArr.push({
-                  name: key,
-                  val: data[key]
-               });
+    
+    /* service methods start */
+    $scope.setPageOverview = function(){
+        $scope.fbClient.getPageOverview(function(data, status){
+            $scope.requestCount++;
+            status ? generateChart(data) : $scope.handleFailure({method: 'setPageOverview', error:data});
+        });
+    };
+    
+    $scope.setPostSummary = function(){
+        $scope.fbClient.getPostSummary(function(data, status){
+            $scope.requestCount++;
+            if(status){
+                $scope.postsObj = data;
+                $scope.postCount = data.length;
+                $scope.postIds = [];
+                $scope.postsObj.forEach(function(postEntry) {
+                    $scope.postIds.push(postEntry.id);
+                });
+                $scope.setSentimentAnalysis();
+            }else{
+                $scope.handleFailure({method: 'setPostSummary', error:data});
             }
-         }
+        });
+    };
+    
+    $scope.setSentimentAnalysis = function(){        
+        $scope.fbClient.getSentimentAnalysis(function(data, status){
+            $scope.requestCount++;
+            if(status){
+                $scope.sentimentConfigData = [];
+                var sentimentConfigSeries = [];
+                var sentIcons = {
+                    'positive': 'styles/css/images/socialAnalysis/happyFace.png',
+                    'negative': 'styles/css/images/socialAnalysis/sadFace.png',
+                    'neutral': 'styles/css/images/socialAnalysis/neutralFace.png'
+                };
 
-         $rootScope.$broadcast('getWordCloudData', {
-            wordData: wordObjArr
-         });               
-      });
-      
-      //getting location data for the map      
-      serviceUrl = Digin_Engine_API3 + 'demographicsinfo?';
-      getServiceResponse(serviceUrl, page.accessToken, function(data) {
-         $scope.arrAdds = [];
-         setMap(data);
-      }, true);
-   };
+                for (i = 0; i < data.length; i++) {
+                    $scope.postsObj[i]['sentiment'] = {
+                        "res": data[i].sentiment,
+                        "pol": data[i].polarity,
+                        "ico": sentIcons[data[i].sentiment]
+                    };
+                    console.log("$scope.postsObj[i]['sentiment']");
+                    console.log($scope.postsObj[i]['sentiment']);
+
+                    $scope.totalEngagement += $scope.postsObj[i].shares + $scope.postsObj[i].comments;
+                    $scope.engageLikes += $scope.postsObj[i].likes;
+
+                    var x = $scope.postsObj[i].created_time.split('T')[0];
+
+                    var enDate = x.split('-');
+
+                    $scope.sentimentConfigData.push([
+                        Date.UTC(enDate[0], enDate[1] - 1, enDate[2]),
+                        data[i].polarity
+                    ]); //
+                }
+
+                sentimentConfigSeries.push({
+                    type: 'line',
+                    name: 'Overall Sentiment',
+                    data: $scope.sentimentConfigData,
+                    color: '#fff'
+                });
+
+                $scope.sentimentConfig['series'] = sentimentConfigSeries;
+            }else{
+                $scope.handleFailure({method: 'setSentimentAnalysis', error:data});
+            }
+        }, JSON.stringify($scope.postIds));  
+    };
+    
+    $scope.setWordCloud = function(){
+        $scope.fbClient.getWordCloud(function(data, status){
+            $scope.requestCount++;
+            if(status){
+                var wordObjArr = [];
+                for (var key in data) {
+                    if (Object.prototype.hasOwnProperty.call(data, key)) {
+                        wordObjArr.push({
+                            name: key,
+                            val: data[key]
+                        });
+                    }
+                }
+
+                $rootScope.$broadcast('getWordCloudData', {
+                    wordData: wordObjArr
+                });
+            }else{
+                $scope.handleFailure({method: 'setWordCloud', error:data});
+            }
+        });
+    };
+    
+    $scope.setDemographicsinfo = function(){
+        $scope.fbClient.getDemographicsinfo(function(data, status){
+            $scope.requestCount++;
+            if(status){
+                $scope.arrAdds = [];
+                setMap(data);
+            }else{
+                $scope.handleFailure({method: 'setDemographicsinfo', error:data});
+            }
+        });
+    };
+    /* service methods end */
+    
+    // handle failed services
+    $scope.handleFailure = function(errObj){
+        if(errObj.error == "Error validating access token: This may be because the user logged out or may be due to a system error." || errObj.error == 'Error occurred while getting data from Facebook API')
+            $scope.failedPool.push(errObj);
+        if($scope.requestCount == 5){
+            if($scope.failedPool.length > 0){
+                var confirm = $mdDialog.confirm()
+                    .title('Would you like to resend the request?')
+                    .content('Error occurred while getting data from Facebook API')
+                    .ariaLabel('Lucky day')
+                    .targetEvent()
+                    .ok('Yes')
+                    .cancel('No');
+                $mdDialog.show(confirm).then(function() {
+                    fbInterface.getFreshPage($scope.page.id, function(data){                    
+                        $scope.getPageDetails(data, $scope.timestamps, $scope.failedPool);
+                    });
+                }, function() {
+                    $scope.status = 'You decided to keep your debt.';
+                });                
+                
+            }
+        }
+    };
+    
+    // watching for the request count
+    $scope.$watch("requestCount", function(newValue, oldValue) {
+      if(newValue > 5) $scope.requestCount = 1;
+    }, true);
+    
+
+    $scope.getPageDetails = function(page, pageTimestamps, reqPool, changedTime) {
+
+        //showing the page
+        $scope.page = page;
+        $scope.timestamps = pageTimestamps;
+        if (!changedTime) $scope.activePageSearch = !$scope.activePageSearch;
+        
+        $scope.fbClient = $restFb.getClient(page, pageTimestamps);
+
+        reqPool.forEach(function(key){
+            eval("$scope." + key.method + "()");
+        });
+    };
     //on load current page details
     $scope.page = null;
     $scope.activePageSearch = true;
 
-    $scope.viewPageDetails = function (page) {
-        $scope.preloader = false;   
+    $scope.viewPageDetails = function(page) {
+        $scope.preloader = false;
         $scope.errorMessage = false;
         $scope.untilDate = new Date();
         var secondDate = new Date();
         secondDate.setDate($scope.untilDate.getDate() - 60);
         $scope.sinceDate = secondDate;
         $scope.preloader = true;
-        $scope.getPageDetails(page, getBoundaryTimestamps(60, new Date()));
+        $scope.getPageDetails(page, getBoundaryTimestamps(60, new Date()), $scope.defReqPool);
     };
 
-    $scope.changeTimeRange = function () {
+    $scope.changeTimeRange = function() {
         var since = new Date($scope.sinceDate);
         var until = new Date($scope.untilDate);
         //alert(typeof(since));
@@ -318,12 +404,12 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
             sinceStamp: Math.floor(since / 1000),
             untilStamp: Math.floor(until / 1000)
         };
-        $scope.getPageDetails($scope.page, timeObj, true);
+        $scope.getPageDetails($scope.page, timeObj,$scope.defReqPool, true);
     };
 
     //Search fb page
     $scope.isSearchingPage = false;
-    $scope.loginWithFb = function () {
+    $scope.loginWithFb = function() {
         if (fbInterface.state != 'connected') {
             fbInterface.loginToFb($scope, true);
         } else {
@@ -332,9 +418,9 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
             $scope.preloader = false;
         }
     };
-    $scope.goBack = function(){
-      $scope.activePageSearch = true;
-      $scope.preloader = false;
+    $scope.goBack = function() {
+        $scope.activePageSearch = true;
+        $scope.preloader = false;
     }
 
     /*Post and Visitors */
@@ -350,7 +436,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     };
 
     //viewing a single post
-    $scope.viewSinglePost = function (post) {
+    $scope.viewSinglePost = function(post) {
         $mdDialog.show({
             controller: singlePostCtrl,
             templateUrl: 'views/socialGraph/fbPost_template.html',
@@ -364,9 +450,9 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     //create funtion damith
     //dev damith
     //on click view current JSON data to Table
-    $scope.onClickViewTable = function (_type) {
+    $scope.onClickViewTable = function(_type) {
 
-       if (_type == 'map') {
+        if (_type == 'map') {
             $mdDialog.show({
                 controller: viewMapTableCtrl,
                 templateUrl: 'views/socialGraph/viewTableMap_Temp.html',
@@ -378,7 +464,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
             });
             return;
         }
-       
+
         $mdDialog.show({
             controller: viewTableCtrl,
             templateUrl: 'views/socialGraph/viewTable_Temp.html',
@@ -390,7 +476,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         });
     }
 
-    
+
 
 });
 
@@ -398,7 +484,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
 function viewMapTableCtrl($scope, $mdDialog, dataAry, pageName) {
     $scope.mapTblData = dataAry;
 
-    $scope.closeDialog = function () {
+    $scope.closeDialog = function() {
         $mdDialog.hide();
     }
 }
@@ -412,7 +498,7 @@ function viewTableCtrl($scope, $mdDialog, jsonData, pageName) {
     $scope.pageName = pageName;
 
 
-    var cvtUnixToDate = function (unix) {
+    var cvtUnixToDate = function(unix) {
         var d = new Date(unix * 1000);
         return d.toGMTString();
     }
@@ -434,15 +520,17 @@ function viewTableCtrl($scope, $mdDialog, jsonData, pageName) {
         var tot = 0;
 
         for (var c = 0; c < jsonData[i].data.length; c++) {
-            var jsonObj = {'date': '', 'like': ''};
+            var jsonObj = {
+                'date': '',
+                'like': ''
+            };
             for (var b = 0; b < jsonData[i].data[c].length; b++) {
                 if (b == 0) {
                     //date
                     var date = jsonData[i].data[c][b];
                     jsonObj.date = cvtUnixToDate(date);
 
-                }
-                else {
+                } else {
                     //like
                     var like = jsonData[i].data[c][b];
                     jsonObj.like = like;
@@ -461,15 +549,20 @@ function viewTableCtrl($scope, $mdDialog, jsonData, pageName) {
         }
     }
 
-    $scope.viewTypes = [
-        {name: 'Page Likes', value: 'l1'},
-        {name: 'Page Stories', value: 's2'},
-        {name: 'Page  Views', value: 'v3'}
-    ];
+    $scope.viewTypes = [{
+        name: 'Page Likes',
+        value: 'l1'
+    }, {
+        name: 'Page Stories',
+        value: 's2'
+    }, {
+        name: 'Page  Views',
+        value: 'v3'
+    }];
 
     $scope.tblType = 'l1';
     $scope.selectTypeName = 'Page Likes';
-    $scope.onChangeTblView = function (type) {
+    $scope.onChangeTblView = function(type) {
         var updatedNeed = $scope.tblType;
         $scope.pageViewDta = [];
         switch (updatedNeed) {
@@ -503,16 +596,16 @@ function viewTableCtrl($scope, $mdDialog, jsonData, pageName) {
     };
 
 
-    $scope.closeDialog = function () {
+    $scope.closeDialog = function() {
         $mdDialog.hide();
     }
 };
 
 //onScroll change table hader
-routerApp.directive("fixOnScroll", function () {
-    return function (scope, element, attrs) {
+routerApp.directive("fixOnScroll", function() {
+    return function(scope, element, attrs) {
         var fixedDiv = attrs.fixedDiv;
-        element.bind("scroll", function () {
+        element.bind("scroll", function() {
             if (element.scrollLeft()) {
                 var leftPos = element.scrollLeft();
                 $(fixedDiv).scrollLeft(leftPos);

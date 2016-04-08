@@ -913,12 +913,12 @@ md-card md-card-content.card-warning {
 .fb-page-search-wrap {
     text-align: center;
     margin: 0 auto;
-    width: 800px;
+    /*width: 800px;*/
     margin-top: 5px;
-    height: 500px;
+    /*height: 500px;*/
     flex-align: center;
     flex-pack: center;
-    overflow: hidden;
+    overflow: scroll;
     border-top: 2px solid #64FFDA
 }
 

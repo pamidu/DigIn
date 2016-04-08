@@ -44,6 +44,11 @@
 
 }
 
+.signUp-card {
+    min-height: 600px;
+    background: #ffffff;
+}
+
 .left-wrap > .login-logo {
     background: #fff;
     width: 100px;
@@ -102,10 +107,13 @@
 }
 
 .digin-login-card {
-    min-width: 450px;
-    height: 600px;
+    min-width: 352px;
+    height: 450px;
     position: relative;
-    margin-top: 20px;
+    margin-top: 30px;
+    -moz-box-shadow: 1px 1px 8px 0px #ccc;
+    -webkit-box-shadow: 1px 1px 8px 0px #ccc;
+    box-shadow: 1px 1px 8px 0px #ccc;
 }
 
 .right-wrap {
@@ -134,8 +142,8 @@
     text-align: center;
     padding-top: 8%;
     font-family: 'Ek Mukta', sans-serif;
-    font-weight: 200;
-    color: #01718D;
+    font-weight: 600;
+    color: #fff;
     margin-bottom: 20px;
 }
 
@@ -331,7 +339,7 @@
     background-image: none !important;
     border: 2px solid #F5F5F5;
     border-radius: 7px;
-    height: 40px;
+
 }
 
 .txt-box-login.error > div > input,
@@ -396,6 +404,11 @@
 .login-help .forget-pwd {
     float: right;
     font-size: 12px;
+    padding-top: 15px;
+}
+
+.text-color-white {
+    color: #ffffff !important;
 }
 
 @-webkit-keyframes square {
@@ -540,6 +553,10 @@
     z-index: 1000;
 }
 
+.captcha-box {
+    margin: 20px auto;
+    text-align: center;
+}
 
 
 

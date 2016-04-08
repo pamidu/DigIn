@@ -1,9 +1,9 @@
 var fbInterface = new function(){
-	this.test = "facebook";
+  this.test = "facebook";
 
-	this.state = "";
+  this.state = "";
 
-	this.getFbLoginState = function(scope, analysis){
+  this.getFbLoginState = function(scope, analysis){
         FB.getLoginStatus(function(response) {
             if(!analysis){
                fbInterface.setLoginButtonValue(response.status,scope);
@@ -14,10 +14,10 @@ var fbInterface = new function(){
             }
             
         });
-	};
+  };
 
-	this.loginToFb =  function(scope, analysis, callback){
-		FB.login(function(response) {
+  this.loginToFb =  function(scope, analysis, callback){
+    FB.login(function(response) {
             fbInterface.setLoginButtonValue(response.status,scope);
             fbInterface.getUserPages(scope, function(){
                if(analysis) scope.lblPageLogin='Logout';
@@ -27,53 +27,53 @@ var fbInterface = new function(){
         }, {
             scope: 'manage_pages,read_insights'
         });
-	};
+  };
     
-    this.getFreshPageAccessToken = function(pId, cb){
+    this.getFreshPage = function(pId, cb){
         FB.api('/me', function(response) {
             FB.api(
-	            "/" + data.id + "/accounts",
-	            function(response) {
-	            	$('#actIndicator').remove();
-	                scope.fbPages = [];
-	                console.log('page response:' + JSON.stringify(response));
-	                if (response && !response.error) {
-	                    for (i = 0; i < response.data.length; i++) {
-	                       if(pId == response.data[i].id) return cb(response.data[i].access_token);
-	                    }
-	                }
-	            }
-	        );
+              "/" + pId + "/accounts",
+              function(response) {
+                $('#actIndicator').remove();
+                  scope.fbPages = [];
+                  console.log('page response:' + JSON.stringify(response));
+                  if (response && !response.error) {
+                      for (i = 0; i < response.data.length; i++) {
+                         if(pId == response.data[i].id) return cb(response.data[i]);
+                      }
+                  }
+              }
+          );
         });
     };
 
-	this.logoutFromFb =  function(scope, analysis){
-		FB.logout(function(response) {
+  this.logoutFromFb =  function(scope, analysis){
+    FB.logout(function(response) {
             fbInterface.setLoginButtonValue(response.status,scope);
             scope.accounts = [];
             scope.userAccountName = '';
             scope.fbPages = [];
             if(analysis) scope.lblPageLogin='Login';
         });
-	};
+  };
 
-	this.authenticate = function(scope){
+  this.authenticate = function(scope){
         if (this.state === 'connected') {
-        	//alert('connected');
-        	scope.connectBtnLabel = 'Remove Account';
+          //alert('connected');
+          scope.connectBtnLabel = 'Remove Account';
         } else if (this.state === 'not_authorized') {
             //todo...
         } else {
             //todo...
             scope.connectBtnLabel = 'Add Account';
         }
-	};
+  };
 
-	this.setLoginButtonValue = function(state,scope){
-		this.state = state;
-		if(state!= 'connected') scope.connectBtnLabel='Add Account';
+  this.setLoginButtonValue = function(state,scope){
+    this.state = state;
+    if(state!= 'connected') scope.connectBtnLabel='Add Account';
         else scope.connectBtnLabel='Remove Account';
-	};
+  };
    
    this.setPageLoginButtonValue = function(state,scope){
       this.state = state;
@@ -81,50 +81,50 @@ var fbInterface = new function(){
       else scope.lblPageLogin='Logout';
    };
 
-	this.getUserAccount = function(scope,callback){
-		FB.api('/me', function(response) {
+  this.getUserAccount = function(scope,callback){
+    FB.api('/me', function(response) {
             console.log('Successful login for: ' + JSON.stringify(response));
             scope.accounts.push(response.name);
             scope.userAccountName = response.name;
             callback(response);
         });
-	};
+  };
 
-	this.getUserPages = function(scope, cb){
-		fbInterface.getUserAccount(scope,function(data){
-	        FB.api(
-	            "/" + data.id + "/accounts",
-	            function(response) {
-	            	$('#actIndicator').remove();
-	                scope.fbPages = [];
-	                console.log('page response:' + JSON.stringify(response));
-	                if (response && !response.error) {
-	                    for (i = 0; i < response.data.length; i++) {
-	                        var tempFbPg = {
-	                            id: '',
-	                            accessToken: '',
-	                            name: '',
-	                            category: ''
-	                        };
-	                        tempFbPg.id = response.data[i].id;
-	                        tempFbPg.accessToken = response.data[i].access_token;
-	                        tempFbPg.name = response.data[i].name;
-	                        tempFbPg.category = response.data[i].category;
-	                        scope.fbPages.push(tempFbPg);
-	                    }
-	                    console.log('fbPages array:' + JSON.stringify(scope.fbPages));
+  this.getUserPages = function(scope, cb){
+    fbInterface.getUserAccount(scope,function(data){
+          FB.api(
+              "/" + data.id + "/accounts",
+              function(response) {
+                $('#actIndicator').remove();
+                  scope.fbPages = [];
+                  console.log('page response:' + JSON.stringify(response));
+                  if (response && !response.error) {
+                      for (i = 0; i < response.data.length; i++) {
+                          var tempFbPg = {
+                              id: '',
+                              accessToken: '',
+                              name: '',
+                              category: ''
+                          };
+                          tempFbPg.id = response.data[i].id;
+                          tempFbPg.accessToken = response.data[i].access_token;
+                          tempFbPg.name = response.data[i].name;
+                          tempFbPg.category = response.data[i].category;
+                          scope.fbPages.push(tempFbPg);
+                      }
+                      console.log('fbPages array:' + JSON.stringify(scope.fbPages));
                        if(cb) cb();
-	                }
-	            }
-	        );
-		});
+                  }
+              }
+          );
+    });
 
-	};
+  };
     
     
 
-	this.getPageData = function(scope, callback){
-	    FB.api(
+  this.getPageData = function(scope, callback){
+      FB.api(
             "/"+scope.fbPageModel,
             function (response) {
               if (response && !response.error) {
@@ -133,20 +133,20 @@ var fbInterface = new function(){
               }
             }
         );
-	};
+  };
 
-	/*
-		dateObj={
-			until: new Date(),
-			range: 7
-		}
-	*/
+  /*
+    dateObj={
+      until: new Date(),
+      range: 7
+    }
+  */
 
-	this.getPageViewsInsight = function(pageId, dateObj, callback){
-		var boundaryStamp = getBoundaryTimestamps(dateObj.range,dateObj.until);
-		var tes = "/"+pageId+"/insights/page_views_unique?debug=all&method=get&pretty=0&suppress_http_code=1&since="+boundaryStamp.sinceStamp+"&until="+boundaryStamp.untilStamp+"&limit=10";
-      	console.log(tes);
-	    FB.api(
+  this.getPageViewsInsight = function(pageId, dateObj, callback){
+    var boundaryStamp = getBoundaryTimestamps(dateObj.range,dateObj.until);
+    var tes = "/"+pageId+"/insights/page_views_unique?debug=all&method=get&pretty=0&suppress_http_code=1&since="+boundaryStamp.sinceStamp+"&until="+boundaryStamp.untilStamp+"&limit=10";
+        console.log(tes);
+      FB.api(
             "/"+pageId+"/insights/page_views_unique?debug=all&method=get&pretty=0&suppress_http_code=1&since="+boundaryStamp.sinceStamp+"&until="+boundaryStamp.untilStamp+"&limit=10",
             function (response) {
               if (response && !response.error) {                         
@@ -154,13 +154,13 @@ var fbInterface = new function(){
               }
             }
         );
-	};
-	
-	this.getPageLikesInsight = function(pageId, dateObj, callback){
-		var boundaryStamp = getBoundaryTimestamps(dateObj.range,dateObj.until);
-		var tes = "/"+pageId+"/insights/page_fan_adds?debug=all&method=get&pretty=0&suppress_http_code=1&since="+boundaryStamp.sinceStamp+"&until="+boundaryStamp.untilStamp+"&limit=10";
-      	console.log(tes);
-	    FB.api(
+  };
+  
+  this.getPageLikesInsight = function(pageId, dateObj, callback){
+    var boundaryStamp = getBoundaryTimestamps(dateObj.range,dateObj.until);
+    var tes = "/"+pageId+"/insights/page_fan_adds?debug=all&method=get&pretty=0&suppress_http_code=1&since="+boundaryStamp.sinceStamp+"&until="+boundaryStamp.untilStamp+"&limit=10";
+        console.log(tes);
+      FB.api(
             "/"+pageId+"/insights/page_fan_adds?debug=all&method=get&pretty=0&suppress_http_code=1&since="+boundaryStamp.sinceStamp+"&until="+boundaryStamp.untilStamp+"&limit=10",
             function (response) {
               if (response && !response.error) {                         
@@ -168,12 +168,12 @@ var fbInterface = new function(){
               }
             }
         );
-	};
+  };
 
-	this.getPageLikesObj = function(data){
-		var likeCountArray = [];
-		var startingDayStr;
-		var res = data.data[0].values;
+  this.getPageLikesObj = function(data){
+    var likeCountArray = [];
+    var startingDayStr;
+    var res = data.data[0].values;
             var i = 0;
             res.forEach(function(item){
                 if(i==0) startingDayStr =res[i].end_time;
@@ -183,12 +183,12 @@ var fbInterface = new function(){
         var startingDay = new Date(startingDayStr);
         var day =  1000 * 60 * 60 * 24;
         return {
-        	likeArr : likeCountArray,
-        	start : startingDay,
-        	interval : day
+          likeArr : likeCountArray,
+          start : startingDay,
+          interval : day
         };
 
-	};
+  };
    
    this.getSearchedPages = function(scope, analysis,query){
       if(this.state!= 'connected'){
@@ -215,14 +215,15 @@ var fbInterface = new function(){
             if (xhr.status === 200) {
                console.log('search results:'+xhr.response);
                console.log('fb Pages:'+JSON.stringify(scope.fbPages));
+               scope.searchedFbPages = [];    
                var searchRes = JSON.parse(xhr.response).data;
                searchRes.forEach(function(entry){
-                  scope.fbPages.push({
-	                            id: entry.id,
-	                            accessToken: token,
-	                            name: entry.name,
-	                            category: entry.category
-	                        });
+                  scope.searchedFbPages.push({
+                              id: entry.id,
+                              accessToken: token,
+                              name: entry.name,
+                              category: entry.category
+                          });
                });
                
             } else {

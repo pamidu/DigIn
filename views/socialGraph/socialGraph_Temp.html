@@ -55,31 +55,54 @@
                                         </div>
             </md-card>
             <md-content class="md-default-theme overflow-none ">
-                <div class="md-content__body">
+                <div layout="column" class="md-content__body">
+<!--
                     <div class="fb-pages-loading" data-ng-if="isPageLoading">
                         <md-progress-circular class="md-raised md-hue-1" md-mode="indeterminate">
                         </md-progress-circular>
                     </div>
-                    <div class="home-mini-card load-page-wrap">
-                        <!-- pages loading -->
-                        <!-- view pages wrap -->
-                        <md-list-item class="md-3-line md-no-proxy ng-scope" data-ng-repeat="page in fbPages"
+-->
+                    <md-card>
+                        <md-card-content>
+                            <h2 class="md-title">My Pages</h2>
+                            <md-list-item class="md-3-line md-no-proxy ng-scope" data-ng-repeat="page in fbPages"
                                       role="listitem">
-                            <button class="md-fab   md-button
-                                md-default-theme md-fab-md social-graph-fab" ng-click="viewPageDetails(page)"
-                                     aria-label="button">
-                                <i class="ion-social-facebook-outline ion-30"></i>
-                            </button>
+                                <button class="md-fab   md-button
+                                    md-default-theme md-fab-md social-graph-fab" ng-click="viewPageDetails(page)"
+                                         aria-label="button">
+                                    <i class="ion-social-facebook-outline ion-30"></i>
+                                </button>
 
-                            <div class="md-list-item-text text-right">
-                                <h3 class="graph-h2">{{page.name}}</h3>
-                            </div>
-                            <!-- ngIf: !$last -->
-                            <md-divider md-inset="" ng-if="!$last" class="ng-scope md-default-theme"></md-divider>
-                            <!-- end ngIf: !$last -->
-                        </md-list-item>
+                                <div class="md-list-item-text text-right">
+                                    <h3 class="graph-h2">{{page.name}}</h3>
+                                </div>
+                                <!-- ngIf: !$last -->
+                                <md-divider md-inset="" ng-if="!$last" class="ng-scope md-default-theme"></md-divider>
+                                <!-- end ngIf: !$last -->
+                            </md-list-item>
+                        </md-card-content>
+                    </md-card>
+                    
+                    <md-card ng-if="searchedFbPages.length > 0">
+                        <md-card-content>
+                            <h2 class="md-title">Searched Results</h2>
+                            <md-list-item class="md-3-line md-no-proxy ng-scope" data-ng-repeat="page in searchedFbPages"
+                                      role="listitem">
+                                <button class="md-fab   md-button
+                                    md-default-theme md-fab-md social-graph-fab" ng-click="viewPageDetails(page)"
+                                         aria-label="button">
+                                    <i class="ion-social-facebook-outline ion-30"></i>
+                                </button>
 
-                    </div>
+                                <div class="md-list-item-text text-right">
+                                    <h3 class="graph-h2">{{page.name}}</h3>
+                                </div>
+                                <!-- ngIf: !$last -->
+                                <md-divider md-inset="" ng-if="!$last" class="ng-scope md-default-theme"></md-divider>
+                                <!-- end ngIf: !$last -->
+                            </md-list-item>
+                        </md-card-content>
+                    </md-card>
 
                 </div>
             </md-content>
@@ -443,7 +466,7 @@
                                    </md-card>
                                </div>
                            </div>
-                       </div>		 
+                       </div>        
                    </div>
                </div>   
             </div>

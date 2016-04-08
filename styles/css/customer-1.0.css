@@ -222,7 +222,7 @@ drb >> dynamically report builder
     text-align: center;
 }
 
-.cmds-btn-footer {
+.cmds-btn-footer, .filed-data-loading {
     display: inline;
     margin-top: 20px;
     position: relative;
@@ -231,16 +231,23 @@ drb >> dynamically report builder
 }
 
 .filed-data-loading {
-    background: #fff;
+    background: rgba(255, 255, 255, 0.9);
     width: 100%;
     height: 100%;
+    top: -20px;
     padding: 41px;
     bottom: 16px;
+    left: 0px;
+    position: absolute;
+    padding-top: 85%;
+    text-align: center;
+}
+
+.filed-data-loading > h2 {
     color: #026689;
     font-family: 'Ek Mukta', sans-serif;
-    font-weight: 200;
-    left: 0px;
-    font-size: 18px;
+    font-weight: 600;
+    font-size: 23px;
 }
 
 .btn-close {
@@ -542,7 +549,7 @@ drb >> dynamically report builder
 }
 
 .left-icon-toggle {
-    background: #EC784B;
+    background: #4285F4;
 }
 
 .toggle-icon > i {
@@ -1289,7 +1296,7 @@ span {
 .digin-drb-wrap .report {
     display: block;
     width: 100%;
-    height: 650px;
+    height: calc(100vh);
 }
 
 .report > .data-state {
@@ -1299,7 +1306,7 @@ span {
     display: block;
     position: absolute;
     top: 40%;
-    right: 20%;
+    right: 40%;
     margin: auto 0;
 }
 
@@ -1307,14 +1314,14 @@ span {
     font-family: 'Ek Mukta', sans-serif;
     font-weight: 600;
     font-size: 33px;
-    color: #fff;
+    color: #EC784B;
 
 }
 
 .message > i {
     display: block;
     font-size: 75px;
-    color: #fff;
+    color: #EC784B;
     text-align: center;
     margin-bottom: 5px;
 }
@@ -1333,13 +1340,9 @@ span {
 }
 
 .optional-panel > .btn-wrap {
-    position: absolute;
-    bottom: 55px;
     left: 0;
     height: 60px;
-    width: calc(41vh);
     text-align: center;
-    background-color: #026689;
     padding: 16px;
 }
 
@@ -1454,8 +1457,10 @@ md-checkbox.md-checked .md-icon {
 .optional-panel .panel-wrap {
     position: relative;
     width: 100%;
-    height: calc(85vh);
+    height: calc(68vh);
     overflow: hidden;
+    padding-left: 8px;
+    overflow-y: auto;
 }
 
 .panel-wrap .panel-header {
@@ -1477,10 +1482,12 @@ md-checkbox.md-checked .md-icon {
 
 .panel-header > h2 {
     font-family: 'Ek Mukta', sans-serif;
-    font-weight: 600;
-    font-size: 18px;
+    font-weight: 300;
+    font-size: 17px;
     text-transform: uppercase;
-    color: #ECECEC;
+    border-bottom: 2px solid #ECECEC;
+    padding-bottom: 10px;
+    color: #01718D;
 }
 
 .panel-wrap .panel-filter,
@@ -1491,12 +1498,12 @@ md-checkbox.md-checked .md-icon {
 
 .inline-date {
     display: inline-block;
-    width: 120px;
+    width: 100px;
     padding-right: 5px;
 }
 
 .panel-wrap .panel-filter > select {
-    width: 100%;
+    width: 100% !important;
 }
 
 .panel-wrap .panel-filter > input,
@@ -1822,7 +1829,10 @@ md-checkbox.md-checked .md-icon {
 
 /*iframe style */
 .report > iframe {
-    border: 2px solid #ECECEC;
+    border: 3px solid #ECECEC;
+    width: 100%;
+    height: 100%;
+    background: #fff;
 }
 
 /* UI date picker */
@@ -2235,6 +2245,11 @@ li:active {
 
 }
 
+/*md-tabs md-ink-bar {*/
+    /*color: #F4C831 !important;*/
+    /*background: #F4C831 !important;*/
+/*}*/
+
 .d3-tab-text {
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
@@ -2427,5 +2442,39 @@ li:active {
     font-weight: 200;
     font-size: 35px;
     margin-top: 20%;
+}
+
+.report-download-opt {
+    width: 195px;
+    height: 60px;
+    position: fixed;
+    float: right;
+    right: 20px;
+    border: 1px solid #ECECEC;
+    background: #ffffff;
+    top: 12%;
+    padding: 13px;
+    -webkit-box-shadow: 0px 0px 8px -5px rgba(0, 0, 0, 0.56);
+    -moz-box-shadow: 0px 0px 8px -5px rgba(0, 0, 0, 0.56);
+    box-shadow: 0px 0px 8px -5px rgba(0, 0, 0, 0.56);
+}
+
+.report-download-opt > ul > li {
+    font-size: 32px;
+    cursor: pointer;
+    color: #ECECEC;
+    outline: none !important;
+}
+
+.p-r-20 {
+    padding-right: 20px;
+}
+
+.report-download-opt > ul > li:hover {
+    color: #01718D;
+}
+
+.report-download-opt > ul {
+    padding-left: 10px;
 }
 

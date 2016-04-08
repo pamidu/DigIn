@@ -10,11 +10,11 @@
     function getNamespace() {
         var authdata = JSON.parse(getCookie("authData"));
         var namespace = authdata.Email.replace('@','_');
-
+//        namespace = namespace.replace(/./, '_');
         namespace = namespace.replace(/\./g, '_');
 
-        //return namespace;
-        return "Demo";
+     // return "Demo";
+        return namespace;
     }
     dsh.factory('$diginengine', function($diginurls, $servicehelpers) {
         function DiginEngineClient(_dsid, _db) {
@@ -180,11 +180,53 @@
             }
         }
     });
+    
+    
+    dsh.factory('$restFb', function($diginurls, $servicehelpers) {
+        function RestFbClient(_page, _tst) {
+            var pg = _page;
+            var timestamp = _tst;
+            return{
+                getPageOverview: function(cb){
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + '/pageoverview?metric_names=[%27page_views%27,%27page_fans%27,%27page_stories%27]&since=' + timestamp.sinceStamp + '&until=' + timestamp.untilStamp + '&token=' + pg.accessToken);
+                },
+                getPostSummary: function(cb){
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + '/fbpostswithsummary?since=' + timestamp.sinceStamp + '&until=' + timestamp.untilStamp + '&page=' + pg.id + '&token=' + pg.accessToken);
+                },
+                getSentimentAnalysis: function(cb, post_ids){
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + '/sentimentanalysis?source=facebook&post_ids='+ post_ids + '&token=' + pg.accessToken);
+                },
+                getWordCloud: function(cb){
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + '/buildwordcloudFB?since=' + timestamp.sinceStamp + '&until=' + timestamp.untilStamp + '&source=facebook&token=' + pg.accessToken);
+                },
+                getDemographicsinfo: function(cb){
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + '/demographicsinfo?token=' + pg.accessToken);
+                }
+            }
+        }
+        return {
+            getClient: function(page, timestamp) {
+                return new RestFbClient(page, timestamp);
+            }
+        }
+    });
+    
     dsh.factory('$diginurls', function() {
         var host = getHost();
         return {
             //            diginengine: "http://" + host + ":8080",
-            diginengine: "http://104.155.236.85:8080",
+           // diginengine: "http://104.155.236.85:8080",
+            diginengine: "http://192.168.2.33:8080",
             diginenginealt: "http://" + host + ":8081"
         };
     });

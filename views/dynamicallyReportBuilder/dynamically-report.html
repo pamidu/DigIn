@@ -11,7 +11,7 @@
             <div flex="50">
                 <div class="digin-qb-header-text  ">
                     <h1>
-                        Dynamically Report Builder
+                        Report View
                         <small class="ng-binding"></small>
                     </h1>
                 </div>
@@ -60,7 +60,7 @@
                     </div>
                     <div class="panel-wrap" ng-show="isFiled.found">
                         <div class="panel-header">
-                            <h2>Report Option </h2>
+                            <h2> Parameters </h2>
                         </div>
                         <div class="panel-filter">
                             <!-- #datepicker -->
@@ -96,8 +96,8 @@
                     <div class="btn-wrap" ng-show="isFiled.found">
                         <div class="cmds-btn-footer m-top-10">
                         <span class="btn btn-block btn-default btn-font"
-                              ng-click="testClickevent()">
-                            generate report
+                              ng-click="onCreateReport()">
+                            Render report
                         </span>
                         <span class="btn btn-block btn-default btn-close btn-font"
                               ng-click="onClickRefesh()">
@@ -109,13 +109,28 @@
                     <div class="btn-wrap">
                         <div class="filed-data-loading"
                              ng-if="eventHandler.isFiledData">
-                            <b>{{filedName}}</b> report filed loading..
+                            <h2> Please wait..</h2>
+                            <span class="btn btn-default btn-sm m-top-30" ng-click="onClickStLoading();">
+                                cancel
+                            </span>
+                        </div>
+                        <div class="filed-data-loading"
+                             ng-if="reportFldLoading">
+                            <h2> report loading..</h2>
                         </div>
                     </div>
                 </div>
             </div>
             <div flex="80">
                 <div class="digin-drb-wrap report">
+
+                    <div class="report-download-opt">
+                        <ul>
+                            <li class="fa fa-cube p-r-20"></li>
+                            <li class="fa fa-cube p-r-20"></li>
+                            <li class="fa fa-cube"></li>
+                        </ul>
+                    </div>
                     <div class="data-state">
                         <div class="message"
                              ng-if="eventHandler.isDataFound">
@@ -125,12 +140,12 @@
 
                         <div class="message"
                              ng-if="eventHandler.isReportLoad">
-                            <i class="ti-timer"></i>
-                            <span>Please wait....</span>
+                            <span class="loader2"><span class="loader2-inner"></span></span>
                         </div>
                         <div class="report" id="report">
                             <iframe frameborder='0' ng-src="{{reportURL}}"
                                     frameborder="0"
+                                    id="reportFram"
                                     allowfullscreen>
                             </iframe>
                         </div>
@@ -144,4 +159,3 @@
     </div>
 </div>
 </div>
-

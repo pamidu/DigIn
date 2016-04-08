@@ -8,7 +8,7 @@
     </div>
     <div layout="column" layout-align="center center">
         <!--animated flipInY-->
-        <div class="digin-login-card ">
+        <div class="digin-login-card signUp-card ">
             <div layout="row" layout-xs="column">
                 <div flex>
                     <div class="right-wrap sign-up-wrap">
@@ -19,44 +19,44 @@
                         </div>
                         <form name="frmDiginSignUp" autocomplete="off">
                             <div class="login-bdy">
-                                <div class="text-wrap ">
+                                <div class="text-wrap margin-top-20">
                                     <div>
                                         <div class="form-inline " layout="row">
                                             <div class="text-domain-name full-name" flex
                                                  ng-class="{error:error.isFirstName,'':!error.isFirstName}">
-                                                <label for="firstName">first name</label>
-                                                <div>
+                                                <md-input-container class="md-block p-b-0" flex-gt-sm>
+                                                    <label>First Name</label>
                                                     <input type="text" class="form-control"
                                                            id="firstName"
                                                            name="firstName"
                                                            ng-model="signUpUsr.firstName"
                                                            required
                                                            placeholder="first name">
-                                                </div>
+                                                </md-input-container>
                                                 <div class="ng-message" ng-messages="frmDiginSignUp.firstName.$error">
-                                                    <div ng-message="required">This is required.</div>
+                                                    <div ng-message="required">firstName is required.</div>
                                                 </div>
                                             </div>
                                             <div class="text-domain-name full-name" flex
                                                  ng-class="{error:error.isLastName,'':!error.isLastName}">
-                                                <label for="lastName">last name</label>
-                                                <div>
+                                                <md-input-container class="md-block p-b-0" flex-gt-sm>
+                                                    <label>Last Name</label>
                                                     <input type="text" class="form-control"
                                                            id="lastName"
                                                            name="lastName"
                                                            required
                                                            ng-model="signUpUsr.lastName"
                                                            placeholder="last name">
-                                                </div>
+                                                </md-input-container>
                                                 <div class="ng-message" ng-messages="frmDiginSignUp.lastName.$error">
-                                                    <div ng-message="required">This is required.</div>
+                                                    <div ng-message="required">lastName is required.</div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="txt-box-login p-t-20"
                                              ng-class="{error:error.isEmail,'':!error.isEmail}">
-                                            <label for="email">email</label>
-                                            <div>
+                                            <md-input-container class="md-block p-b-0" flex-gt-sm>
+                                                <label>Email</label>
                                                 <input type="email" class="form-control"
                                                        id="email"
                                                        name="email"
@@ -64,34 +64,33 @@
                                                        ng-pattern="regex.email"
                                                        ng-model="signUpUsr.email"
                                                        placeholder="jane.doe@example.com">
-                                            </div>
+                                            </md-input-container>
                                             <div class="ng-message" ng-messages="frmDiginSignUp.email.$error">
-                                                <div ng-message="required">This is required.</div>
+                                                <div ng-message="required">email is required.</div>
                                                 <div ng-message="pattern">Your email address is invalid</div>
                                             </div>
                                         </div>
                                         <div class="form-inline" layout="row">
                                             <div class="text-domain-name full-name p-t-20" flex
                                                  ng-class="{error:error.isPassword,'':!error.isPassword}">
-                                                <label for="password">password</label>
-                                                <div>
+                                                <md-input-container class="md-block p-b-0" flex-gt-sm>
+                                                    <label>Password</label>
                                                     <input type="password" class="form-control"
                                                            id="password"
                                                            name="password"
                                                            required
                                                            ng-model="signUpUsr.pwd"
-
                                                            placeholder="password">
-                                                </div>
+                                                </md-input-container>
                                                 <div class="ng-message"
                                                      ng-messages="frmDiginSignUp.password.$error">
-                                                    <div ng-message="required">This is required.</div>
+                                                    <div ng-message="required">password is required.</div>
                                                 </div>
                                             </div>
                                             <div class="text-domain-name full-name p-t-20" flex
                                                  ng-class="{error:error.isRetypeCnfrm,'':!error.isRetypeCnfrm}">
-                                                <label for="cnfrmPwd">confirm password</label>
-                                                <div>
+                                                <md-input-container class="md-block p-b-0" flex-gt-sm>
+                                                    <label>Confirm Password</label>
                                                     <input type="password" class="form-control"
                                                            id="cnfrmPwd"
                                                            name="cnfrmPwd"
@@ -99,7 +98,7 @@
                                                            ng-model="signUpUsr.cnfrPwd"
                                                            password-verify="signUpUsr.pwd"
                                                            placeholder="confirm password">
-                                                </div>
+                                                </md-input-container>
                                                 <div class="ng-message"
                                                      ng-show=" frmDiginSignUp.cnfrmPwd.$invalid
                                                      && !frmDiginSignUp.cnfrmPwd.$pristine"
@@ -107,24 +106,31 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- captcha -->
+                                        <div class="captcha-box p-t-20">
+                                            <div class="g-recaptcha"
+                                                 data-sitekey="6LexsRwTAAAAAKoBvtryHzBDfQAvPa9DtFIVIK9w"></div>
+                                            <script type="text/javascript"
+                                                    src="https://www.google.com/recaptcha/api.js?hl=en">
+                                            </script>
+                                        </div>
+                                    </div>
+                                    <div class="login-btn-wrap sign-btn-wrap">
+                                        <a href="javascript:void(0)"
+                                           ng-click="submit()"
+                                           ng-class="{disable:frmDiginSignUp.$invalid,active: !frmDiginSignUp.$invalid}"
+                                           class="md-raised md-primary md-button md-ink-ripple text-color-white flex">
+                                            sign up
+                                        </a>
+                                        <a href="javascript:void(0  )"
+                                           ng-click="onClickSignIn()"
+                                           class="md-raised md-primary md-button md-ink-ripple text-color-white flex">
+                                            Login
+                                        </a>
+
                                     </div>
                                 </div>
-                                <div class="login-btn-wrap sign-btn-wrap">
-                                    <a href="javascript:void(0)"
-                                       ng-click="submit()"
-                                       ng-class="{disable:frmDiginSignUp.$invalid,active: !frmDiginSignUp.$invalid}"
-                                       class="login-btn">
-                                        sign up
-                                    </a>
-                                    <a href="javascript:void(0  )"
-                                       ng-click="onClickSignIn()"
-                                       class="login-btn">
-                                        Login
-                                    </a>
-
-                                </div>
-
-
                             </div>
                         </form>
 
@@ -133,7 +139,5 @@
             </div>
         </div>
     </div>
-    <div class="footer-wrap">
-        copyright 2016 digin.io - All Rights Reserved
-    </div>
+
 </div>

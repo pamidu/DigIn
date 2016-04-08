@@ -23,40 +23,47 @@
                                     <div>
                                         <div class="txt-box-login"
                                              ng-class="{error:error.isUserName,'':!error.isUserName}">
-                                            <label>User Name</label>
                                             <div>
-                                                <input type="text"
-                                                       required
-                                                       id="txtUname"
-                                                       name="loginUserName"
-                                                       ng-model="txtUname"
-                                                       placeholder="username@duoworld.com"
-                                                       class="form-control">
+                                                <md-input-container class="md-block p-b-0 p-t-15" flex-gt-sm>
+                                                    <label>Email</label>
+                                                    <input type="text"
+                                                           required
+                                                           id="txtUname"
+                                                           name="loginUserName"
+                                                           ng-model="txtUname"
+                                                           placeholder="username@duoworld.com"
+                                                           class="form-control">
+                                                </md-input-container>
                                             </div>
                                             <div class="ng-message" ng-messages="frmDiginLogin.loginUserName.$error">
-                                                <div ng-message="required">This is required.</div>
+                                                <div ng-message="required">required.</div>
                                             </div>
                                         </div>
                                         <div class="txt-box-login password"
                                              ng-class="{error:error.isPwd,'':!error.isPwd}">
-                                            <label>Password</label>
                                             <div>
-                                                <input type="password"
-                                                       name="password"
-                                                       id="password"
-                                                       required
-                                                       ng-model="txtPwd"
-                                                       placeholder="***************"
-                                                       class="form-control">
+                                                <md-input-container class="md-block p-b-0" flex-gt-sm>
+                                                    <label>Password</label>
+                                                    <input type="password"
+                                                           name="password"
+                                                           id="password"
+                                                           required
+                                                           ng-model="txtPwd"
+                                                           placeholder="***************"
+                                                           class="form-control">
+                                                </md-input-container>
                                             </div>
                                             <div class="ng-message" ng-messages="frmDiginLogin.password.$error">
-                                                <div ng-message="required">This is required.</div>
+                                                <div ng-message="required">required.</div>
                                             </div>
                                         </div>
 
-                                        <div class="login-help">
+                                        <div class="login-help p-t-20">
                                             <div class="remember-me">
-                                                Remember me
+                                                <md-checkbox  aria-label="Checkbox 1">
+                                                    Remember me
+                                                </md-checkbox>
+
                                             </div>
                                             <div class="forget-pwd">
                                                 Forgot password?
@@ -69,12 +76,12 @@
                                     <a href="javascript:void(0  )"
                                        ng-click="login()"
                                        ng-class="{disable:frmDiginLogin.$invalid,activeBtn: !frmDiginLogin.$invalid}"
-                                       class="login-btn">
+                                       class="md-raised md-primary md-button md-ink-ripple text-color-white flex">
                                         Login
                                     </a>
                                     <a href="javascript:void(0  )"
                                        ng-click="onClickSignUp()"
-                                       class="login-btn">
+                                       class="md-raised md-primary md-button md-ink-ripple text-color-white flex">
                                         Sign Up
                                     </a>
                                 </div>
@@ -84,6 +91,10 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="footer-wrap">
+        copyright 2016 digin.io - All Rights Reserved
     </div>
 
 </div>

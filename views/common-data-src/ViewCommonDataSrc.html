@@ -181,7 +181,7 @@
                     </div>
                     <!-- table data -->
                     <ui ng-repeat="row in sourceUi.tableData | filter : {name: sourceUi.search}">
-                        <li class="col-sheet hvr-outline-in"
+                        <li class="col-sheet"
                             ng-click="commonUi.onSelectClassRow(row)"
                             ng-class="row.selected==true?'selectedRow':'unSelectedRow'"
                         > {{row.name}}

@@ -35,7 +35,10 @@ var routerApp = angular.module('DuoDiginRt', [
     'vAccordion',
     'ngDraggable',
     'ngMessages',
-    'ngFileUpload'
+    'ngFileUpload',
+    "com.2fdevs.videogular",
+    "com.2fdevs.videogular.plugins.controls",
+    "info.vietnamcode.nampnq.videogular.plugins.youtube"
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
@@ -267,11 +270,17 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             }
         }).state('home.DynamicallyReportBuilder', {
         url: '/dynamically-report-builder?reportNme',
-        templateUrl: "views/dynamicallyReportBuilder/dynamically-report.html"
+        templateUrl: "views/dynamicallyReportBuilder/dynamically-report.html",
+        data: {
+            requireLogin: true
+        }
     }).state('home.commonSrcAlgorithm', {
         url: '/common-src-algorithm',
         controller: 'sourceAlgorithmCtrl',
         templateUrl: "views/sourceAlgorithm/common-src-algorithm.html"
+    }).state('videos', {
+        url: '/help-videos',
+        templateUrl: "views/help/videos/help-videos.html"
     });
 
     lkGoogleSettingsProvider.configure({
@@ -280,7 +289,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         scope: ['https://www.googleapis.com/auth/drive']
     });
 
-  var customPrimary = {
+    var customPrimary = {
         '50': '#10cefd',
         '100': '#02c2f2',
         '200': '#02aed9',

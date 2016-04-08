@@ -74,7 +74,12 @@
     <link href='https://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
+
+    <!-- videoJs ->
+    <link href="http://vjs.zencdn.net/5.8.0/video-js.css" rel="stylesheet">
+
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
+
         api_key: 75gasspugsl6ow
         authorize: true
         scope: r_basicprofile
@@ -88,6 +93,9 @@
     </style>
     <style rel="stylesheet" href="styles/css/init-dash-setup.css" type="text/css"></style>
     <!--  new changes  -->
+
+    <!-- If you'd like to support IE8 -->
+        <script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 </head>
 <body>
 <div ui-view layout="column" id="mainContainer" style="height: 100%">
@@ -168,6 +176,7 @@
 <script type="text/javascript" src="scripts/controllers/welcomePageCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/SignUpMain.js"></script>
 <script type="text/javascript" src="scripts/controllers/sourceAlgorithm/sourceAlgorithmCtrl.js"></script>
+<script type="text/javascript" src="scripts/controllers/help/videoCtrl.js"></script>
 <!-- services start -->
 <script type="text/javascript" src="scripts/services/DynamicRealTimeVis.js"></script>
 <script type="text/javascript" src="scripts/services/ObjectStoreService.js"></script>
@@ -354,4 +363,9 @@
 <!-- ng file upload -->
 <!-- <script src="bower_components/ng-file-upload-shim/ng-file-upload-shim.min.js"></script> --> <!-- for no html5 browsers support -->
 <script src="bower_components/ng-file-upload-shim/ng-file-upload.min.js"></script>
+
+<!-- video player -->
+<script src="http://static.videogular.com/scripts/videogular/latest/videogular.js"></script>
+<script src="http://static.videogular.com/scripts/controls/latest/vg-controls.js"></script>
+<script src="http://static.videogular.com/scripts/youtube/latest/youtube.js"></script>
 </html>

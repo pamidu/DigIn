@@ -19,7 +19,7 @@ routerApp.controller("welcomePageCtrl", ['$scope', '$http', '$mdToast', '$animat
          $scope.start = function() {
 
                 $scope.isLoggedin = true;
-                  $state.go('');
+                  $state.go('videos');
 
         };
 

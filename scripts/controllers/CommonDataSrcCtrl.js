@@ -388,8 +388,15 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                         var file = files[i];
                                         if (!file.$error) {
                                             Upload.upload({
-                                                url: 'git/mar16latest',
+                                                url: '104.155.236.85:8080/file_upload', 
+                                                headers: {
+                                                            'Content-Type': file.type,
+                                                            'enctype': 'multipart/form-data'
+                                                        },
+                                                method: 'POST',
                                                 data: {
+                                                    db: "bigquery",
+                                                    SecurityToken: "token",
                                                     file: file
                                                 }
                                             }).then(function (resp) {

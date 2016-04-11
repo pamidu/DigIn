@@ -746,6 +746,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 $scope.selectedChart = onSelect;
                 eval("$scope." + $scope.selectedChart.chartType + ".changeType()");
                 //privateFun.createHighchartsChart(onSelect.chart);
+            },
+            onClickDownload: function(){
+                // var htmlElement = document.getElementsByClassName("highcharts-container")[0];
+                var htmlElement = document.getElementById("d3Sunburst");
+                html2canvas(htmlElement, {
+                  onrendered: function(canvas) {
+                    var button = document.getElementById('downloadImage');
+                    button.addEventListener('click', function (e) {
+                        var dataURL = canvas.toDataURL('image/png');
+                        button.href = dataURL;
+                    });
+                  },
+                  width: 1000,
+                  height: 1000
+                });
             }
         } //end event function
 

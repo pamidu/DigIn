@@ -1171,7 +1171,8 @@ routerApp.service('generatePDF1', function ($timeout) {
 
 });
 routerApp.service('generatePDF2', function ($timeout) {
-    this.generate = function (htmlElement, config) {
+    this.generate = function (
+        Element, config) {
 
         var doc = new jsPDF('landscape');
         var options = {format: 'PNG'};

@@ -306,6 +306,10 @@
 <script src="bower_components/angular-google-plus/dist/angular-google-plus.min.js"></script>
 <!-- angular at-table -->
 <script src="bower_components/at-table/dist/angular-table.js"></script>
+<!-- canvg -->
+<script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script> 
+<script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
+<script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script> 
 <script type="text/javascript">
     google.load('search', '1');
 </script>

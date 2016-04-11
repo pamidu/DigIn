@@ -14,7 +14,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             // if(sessionInfo==null) location.href = 'index.php';
         }
 
-        localStorage.clear();
+        //localStorage.clear();
 
         $scope.username=JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
         $scope.imageUrl = "styles/css/images/innerlogo.png";
@@ -102,22 +102,24 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
 
         $scope.adjustUI = function () {
-
-            if ($scope.headerbarPinned) {
-                $('#content1').css("top", "40px");
-                $('#content1').css("height", "calc(100vh - 40px)");
-                $('.h_iframe').css("height", "calc(100vh - 40px)");
-                $('.main-headbar-slide').css("transform", "translateY(0)");
-                $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
-            }
-            else {
-                // $('body').css("padding-top", "0px");
-                $('#content1').css("top", "0px");
-                $('#content1').css("height", "calc(100vh)");
-                $('.h_iframe').css("height", "calc(100vh)");
-                $('.main-headbar-slide').css("transform", "translateY(-40px)");
-                $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
-            }
+            $('body').css("padding-top", "0px");
+            // $('#content1').css("top", "10px");
+            $('.h_iframe').css("height", "100%");
+            // if ($scope.headerbarPinned) {
+            //     $('#content1').css("top", "40px");
+            //     $('#content1').css("height", "calc(100vh - 40px)");
+            //     $('.h_iframe').css("height", "calc(100vh - 40px)");
+            //     $('.main-headbar-slide').css("transform", "translateY(0)");
+            //     $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
+            // }
+            // else {
+            //     // $('body').css("padding-top", "0px");
+            //     $('#content1').css("top", "0px");
+            //     $('#content1').css("height", "calc(100vh)");
+            //     $('.h_iframe').css("height", "calc(100vh)");
+            //     $('.main-headbar-slide').css("transform", "translateY(-40px)");
+            //     $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
+            // }
         }
 
         //shows user profile in a dialog box
@@ -722,21 +724,19 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 resolve: {}
             });
         }
-        $scope.goHome = function () {
-            $scope.closeDialog();
-            $scope.manageTabs(true);
-            $scope.currentView = "Home";
-            $state.go('home');
-        }
-
-        $scope.goHomeDialog = function (ev) {
+        $scope.goHomeDialog = function (ev){
             $mdDialog.show({
-                controller: 'NavCtrl',
+                controller: goHomeCtrl,
                 templateUrl: 'views/goHome.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 clickOutsideToClose: true
-            }).then(function (answer) {
+            }).then(function (homeState) {
+                if(homeState){
+                    $scope.manageTabs(true);
+                    $scope.currentView = "Home";
+                    $state.go('home');
+                }
             });
         }
         //erangas space
@@ -753,6 +753,20 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }, function () {
 
                 });
+        };
+
+        function goHomeCtrl($scope, $mdDialog) {
+
+            var homeState = null;
+            $scope.goHome = function(){
+                $mdDialog.hide();
+                homeState = true;
+            }
+            $scope.cancel = function () {
+                $mdDialog.cancel();
+                homeState = false;
+            };
+            return homeState;
         };
 
         //load social analysis  
@@ -1029,20 +1043,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $rootScope.currentView = "CommonData";
                 $scope.manageTabs(false);
 
-                if ($mdSidenav('right').isOpen()) {
-                    $mdSidenav('right')
-                        .close()
-                        .then(function () {
-                            $log.debug('right sidepanel closed');
-                        });
-                } else {
+                if (!$mdSidenav('right').isOpen()) {
                     $mdSidenav('right')
                         .toggle()
                         .then(function () {
                             $log.debug("toggle right is done");
                         });
                 }
-
             }
             if (routeName == "Sales Forecast && Prediction") {
 

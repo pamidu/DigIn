@@ -2,16 +2,22 @@ routerApp.controller("welcomePageCtrl", ['$scope', '$http', '$mdToast', '$animat
     
     
     function ($scope, $http, $mdToast, $animate, $window,$auth, $state) {
-    	$scope.isLoggedin = true;
+    	  $scope.isLoggedin = true;
+        
+        $scope.notShowWelcome = function(){
 
+          localStorage.setItem( 'notShowWelcome', true);
+          $scope.skip();
+        }
 
         $scope.skip = function() {
+
                 $scope.isLoggedin = true;
                   $state.go('home');
-
         };
 
          $scope.start = function() {
+
                 $scope.isLoggedin = true;
                   $state.go('');
 

@@ -205,6 +205,12 @@
 <!--                    <highchart  ng-if="eventHndler.isHighCharts==true" config="highchartsNG"></highchart>-->
 <!--                    <highchart ng-if="eventHndler.isLoadingChart==false" config="highchartsNG"></highchart>-->
                     <div class="digin-gb-chart-wrap-view-container" ng-style="chartWrapStyle" ng-include src="selectedChart.view"></div>
+                    <!-- <div ng-if="selectedChart.chartType == 'd3sunburst'" 
+                    style="position: absolute; top: 55px;">
+                        <a href="#" id="downloadImage" download="my-file-name.png" ng-click="eventHndler.onClickDownload()">
+                            <i class="ti-download"></i>
+                        </a>
+                    </div> -->
                 </div>  
 
                 <div ng-show="!isDrilled" class="digin-gb-row" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric'">

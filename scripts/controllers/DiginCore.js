@@ -214,10 +214,6 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             );
         };
 
-        $scope.closeDialog = function () {
-            $mdDialog.hide();
-        };
-
         $scope.widgetSettings = function (ev, widget) {
             if(typeof widget.commonSrc == "undefined"){
                 $mdDialog.show({
@@ -366,8 +362,32 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             $rootScope.dashboard.widgets = [];
         };
 
-        $scope.remove = function (widget) {
-            $rootScope.dashboard.widgets.splice($rootScope.dashboard.widgets.indexOf(widget), 1);
+        $scope.remove = function (widget, ev) {
+            $mdDialog.show({
+                controller: closeWidgetCtrl,
+                templateUrl: 'views/closeWidget.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true
+            }).then(function (closeWidget) {
+                if(closeWidget){
+                    $rootScope.dashboard.widgets.splice($rootScope.dashboard.widgets.indexOf(widget), 1);
+                }
+            });
+        };
+
+        function closeWidgetCtrl($scope, $mdDialog) {
+
+            var closeWidget = null;
+            $scope.close = function(){
+                $mdDialog.hide();
+                closeWidget = true;
+            }
+            $scope.cancel = function () {
+                $mdDialog.cancel();
+                closeWidget = false;
+            };
+            return closeWidget;
         };
 
         $scope.showWidgetSettings = false;
@@ -1032,19 +1052,20 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
                         options: {
                             maxZoom: 15,
                             minZoom: 1
-                        },
-                        events: {   
-                            mouseover: function (map) {
-                                $scope.$apply(function () {
-                                    google.maps.event.trigger(map, "resize");
-                                });
-                            },
-                            dragend: function (map) {
-                                $scope.$apply(function () {
-                                    google.maps.event.trigger(map, "resize");
-                                });
-                            }
-                        } 
+                        }
+                        // ,
+                        // events: {   
+                        //     mouseover: function (map) {
+                        //         $scope.$apply(function () {
+                        //             google.maps.event.trigger(map, "resize");
+                        //         });
+                        //     },
+                        //     dragend: function (map) {
+                        //         $scope.$apply(function () {
+                        //             google.maps.event.trigger(map, "resize");
+                        //         });
+                        //     }
+                        // } 
                     };       
         
         // ======== initializing map at google map loading =========

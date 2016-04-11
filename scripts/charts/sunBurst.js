@@ -6,6 +6,13 @@ routerApp.directive('sunburstChart', function() {
             chartData : '='
         },
         link: function(scope, elem, attrs) {
+
+            var svg;
+            elem.bind("change", function(event){
+
+              scope.svg = svg;
+              scope.$apply();
+            });
             
             scope.$watch('chartData', function(newValue, oldValue) {
                 if (newValue){
@@ -29,7 +36,7 @@ routerApp.directive('sunburstChart', function() {
                     
                     d3.select("#d3Sunburst").selectAll("*").remove();
                     
-                    var svg = d3.select("#d3Sunburst")
+                    svg = d3.select("#d3Sunburst")
                         .append("svg").attr("viewBox", "0 0  500 600")
                         .attr("width", '100%')
                         .attr("height", '100%')

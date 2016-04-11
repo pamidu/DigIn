@@ -310,10 +310,13 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
             $mdDialog.hide();
         };
 
-        $scope.dashboardName = "";
-        $scope.dashboardType = $rootScope.dashboard.dashboardType;
-        $scope.dashboardCulture = $rootScope.dashboard.dashboardCulture;
-        $scope.dashboardDate = $rootScope.dashboard.dashboardDate;
+        typeof $rootScope.clickedDash.name != "undefined" ? $scope.dashboardName = $rootScope.clickedDash.name : $scope.dashboardName = "";
+        
+        typeof $rootScope.clickedDash.type != "undefined" ? $scope.dashboardType = $rootScope.clickedDash.type : $scope.dashboardType = "";
+        
+        typeof $rootScope.clickedDash.date != "undefined" ? $scope.dashboardDate = new Date($rootScope.clickedDash.date) : $scope.dashboardDate = "";
+        
+        typeof $rootScope.clickedDash.culture != "undefined" ? $scope.dashboardCulture = $rootScope.clickedDash.culture : $scope.dashboardCulture = "";
 
         $scope.saveDashboardDetails = function(type) {
 

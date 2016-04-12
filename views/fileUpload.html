@@ -10,10 +10,10 @@
   </md-toolbar>
   <md-content class="dialog-content-1" layout-padding>
             <!-- file upload -->
-            <!-- <div class="custom-file-upload">
+            <div class="custom-file-upload">
                         <div ngf-drop="upload($files)" ngf-select="upload($files)" ng-model="files" class="drop-box"
                              ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
-                             accept="'image/*'">Drop excel files here or click
+                             ngf-pattern="'.xls,.csv,.xlsx'" accept=".xls,.csv,.xlsx">Drop excel files here or click
                             to upload
                         </div>
                         <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
@@ -24,10 +24,17 @@
                         </ul>
                         Upload Log:
                         <pre>{{log}}</pre>
-            </div> -->
-            <div>
+            </div>
+            <!-- <div>
               <input type = "file" file-model = "myFile"/>
-              <button ng-click = "uploadFile()">upload</button>
+              <button ng-click = "uploadFile()">upload me</button>
+            </div> -->
+            <!-- <div>
+              <form>
+                <input type="file" file-input="files" multiple />
+                <button ng-click="upload()">Upload</button>
+                <li ng-repeat="file in files">{{file.name}}</li>
+              </form>
             </div>
             <div class="md-actions" layout="row">
                 <span flex></span>
@@ -37,7 +44,7 @@
                 <md-button class="btn-dialog b-r-0" ng-click="cancel()">
                     Cancel
                 </md-button>
-            </div>
+            </div> -->
   </md-content>
 </md-dialog>
 

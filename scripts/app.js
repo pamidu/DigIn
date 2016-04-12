@@ -1375,17 +1375,14 @@ routerApp.constant('config', {
 });
 
 /* start excel file upload */
-routerApp.directive('fileModel', ['$parse', function ($parse) {
+routerApp.directive('fileInput', ['$parse', function ($parse) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            var model = $parse(attrs.fileModel);
-            var modelSetter = model.assign;
-                  
-                element.bind('change', function(){
-                    scope.$apply(function(){
-                    modelSetter(scope, element[0].files[0]);
-                });
+                              
+            element.bind('change', function(){
+                $parse(attrs.fileInput).assign();
+                scope.$apply(scope.element[0].files);
             });
         }
     };
@@ -1393,16 +1390,16 @@ routerApp.directive('fileModel', ['$parse', function ($parse) {
 
 routerApp.service('fileUpload', ['$http', function ($http) {
     this.uploadFileToUrl = function(file, uploadUrl){
-        var fd = new FormData();
-            fd.append('file', file);
+        // var fd = new FormData();
+        // fd.append('file', file);
+        console.log("fie to json", angular.toJson(file));
             
-            $http.post(uploadUrl, fd, {
-                  transformRequest: angular.identity,
-                  headers: {'Content-Type': undefined}
-            })
-            .success(function(){
-            })
-            .error(function(){
+        $http.post(uploadUrl, angular.toJson(file), {
+            headers: {'Content-Type': undefined},
+        })
+        .success(function(){  alert("success");
+        })
+        .error(function(){  alert("failure");
         });
     }
 }]);

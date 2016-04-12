@@ -62,11 +62,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 height: 367                
             }
         },
-        plotOptions : {
-            bar: {
-                turboThreshold: 5000
-            }
-        },
         title: {
             text: "Chart Title",
             x: -20 //center
@@ -1100,6 +1095,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
+            
             wid.widView = "views/query/chart-views/BoxPlot.html";
             $scope.saveChart(wid);
         }
@@ -1237,7 +1233,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
     }
 
-    $scope.histogram = {
+$scope.histogram = {
         changeType: function() {
             var meaArr = $scope.sourceData.fMeaArr;
             var dataTypeFlag = true;
@@ -1362,6 +1358,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
+
             wid.widView = "views/query/chart-views/histogram.html";
             $scope.saveChart(wid);
         }
@@ -1695,9 +1692,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             if (status) {
 //                console.log(JSON.stringify(res));
                 $scope.mapResult($scope.selectedCat, res, function(data) {
-                    if(res.length > 1000) 
-                        $scope.highchartsNG.plotOptions[$scope.chartType] = {turboThreshold : res.length};
                     $scope.highchartsNG.series = data;
+                    $scope.highchartsNG.series.forEach(function(key){
+                        if(key.data.length > 1000) 
+                            key['turboThreshold'] = key.data.length;
+                    });
+                    
                     $scope.eventHndler.isLoadingChart = false;
                     $scope.receivedQuery = query;
                     console.log(JSON.stringify($scope.highchartsNG));

@@ -5,7 +5,16 @@ routerApp.directive('linearChart', function () {
         scope: {
             chartData : '='
         },
+        controller: 'hierarchySummaryCtrl',
         link: function (scope, elem, attrs) {
+
+            var svg;
+            elem.bind("onmouseover", function(event){
+
+              scope.svg = svg;
+              console.log("hierarchy svg", scope.svg);
+              scope.$apply();
+            });
             
             scope.$watch('chartData', function(newValue, oldValue) {
                 if (newValue){
@@ -28,7 +37,7 @@ routerApp.directive('linearChart', function () {
                 
                 d3.select("#d3Force").selectAll("*").remove();
                 
-                var svg = d3.select("#d3Force")
+                svg = d3.select("#d3Force")
                     .append("svg").attr("viewBox", "0 0  490 490")
                     .attr("width", '100%')
                     .attr("height", '100%');
@@ -37,6 +46,8 @@ routerApp.directive('linearChart', function () {
                     node = svg.selectAll(".node");
                 root = rootData;
                 update();
+                console.log(svg);
+                scope.setSvg(svg[0][0].innerHTML);
 
                 function update() {
                     console.log(nodes)

@@ -364,59 +364,66 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             openFileUploadWindow: function (ev) {
                 if(typeof ev != "undefined" && ev.type == 'click'){
                     $mdDialog.show({
-                        controller: function fileUploadCtrl($scope, $mdDialog, Upload){
-                            $scope.finish = function(){
-                                $mdDialog.hide();
-                            }
-                            $scope.cancel = function(){
-                                $mdDialog.cancel();
-                            }
-                             /* file upload */
-                            $scope.$watch('files', function () {
-                                $scope.upload($scope.files);
-                            });
-                            $scope.$watch('file', function () {
-                                if ($scope.file != null) {
-                                    $scope.files = [$scope.file];
-                                }
-                            });
-                            $scope.log = '';
-
-                            $scope.upload = function (files) {
-                                if (files && files.length) {
-                                    for (var i = 0; i < files.length; i++) {
-                                        var file = files[i];
-                                        if (!file.$error) {
-                                            Upload.upload({
-                                                url: '104.155.236.85:8080/file_upload', 
-                                                headers: {
-                                                            'Content-Type': file.type,
-                                                            'enctype': 'multipart/form-data'
-                                                        },
-                                                method: 'POST',
-                                                data: {
-                                                    db: "bigquery",
-                                                    SecurityToken: "token",
-                                                    file: file
-                                                }
-                                            }).then(function (resp) {
-                                                $timeout(function () {
-                                                    $scope.log = 'file: ' +
-                                                        resp.config.data.file.name +
-                                                        ', Response: ' + JSON.stringify(resp.data) +
-                                                        '\n' + $scope.log;
-                                                });
-                                            }, null, function (evt) {
-                                                var progressPercentage = parseInt(100.0 *
-                                                    evt.loaded / evt.total);
-                                                $scope.log = 'progress: ' + progressPercentage +
-                                                    '% ' + evt.config.data.file.name + '\n' +
-                                                    $scope.log;
-                                            });
-                                        }
-                                    }
-                                }
+                        controller: function fileUploadCtrl($scope, $mdDialog, fileUpload){
+                            $scope.uploadFile = function(){
+                               var file = $scope.myFile;
+                               
+                               console.log('file is ' );
+                               console.dir(file);
+                               
+                               var uploadUrl = "http://192.168.3.15:8080/file_upload";
+                               fileUpload.uploadFileToUrl(file, uploadUrl);
                             };
+                            // $scope.finish = function(){
+                            //     $mdDialog.hide();
+                            // }
+                            // $scope.cancel = function(){
+                            //     $mdDialog.cancel();
+                            // }
+                            //  /* file upload */
+                            // $scope.$watch('files', function () {
+                            //     $scope.upload($scope.files);
+                            // });
+                            // $scope.$watch('file', function () {
+                            //     if ($scope.file != null) {
+                            //         $scope.files = [$scope.file];
+                            //     }
+                            // });
+                            // $scope.log = '';
+
+                            // $scope.upload = function (files) {
+                            //     if (files && files.length) {
+                            //         for (var i = 0; i < files.length; i++) {
+                            //             var file = files[i];
+                            //             if (!file.$error) {
+                            //                 file.upload = Upload.http({
+                            //                   url: 'http://192.168.3.15:8080/file_upload',
+                            //                   method: 'POST',
+                            //                   headers: {
+                            //                     'Content-Type': undefined
+                            //                   },
+                            //                   data: {
+                            //                       file :file,
+                            //                       db: 'BigQuery',
+                            //                       SecurityToken: 'e1f2e6f8c7a511a48b6add5c2ef24147',
+                            //                       Domain: 'duosoftware'
+                            //                   }
+                            //                 });
+
+                            //                 file.upload.then(function (response) {
+                            //                   file.result = response.data;
+                            //                 }, function (response) {
+                            //                   if (response.status > 0)
+                            //                     $scope.errorMsg = response.status + ': ' + response.data;
+                            //                 });
+
+                            //                 file.upload.progress(function (evt) {
+                            //                   file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                            //                 });
+                            //             }
+                            //         }
+                            //     }
+                            // };
                         },
                         templateUrl: 'views/fileUpload.html',
                         parent: angular.element(document.body),

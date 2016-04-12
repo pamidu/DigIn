@@ -877,14 +877,35 @@ routerApp.controller('sunburstCtrl', [ '$scope', '$mdDialog', '$rootScope',
     function( $scope, $mdDialog, $rootScope) {
 
         $scope.onClickDownload = function(){
+
             var svg = document.getElementById('d3Sunburst').childNodes[2].innerHTML;
-            // var svg = $("svg");
-            console.log("$scope.svg ", $scope.svg);
             var canvas = document.getElementById('canvas');
             canvg(canvas, svg);
             var dataURL = canvas.toDataURL('image/png');
             var downloadBtn = document.getElementById('downloadImage');
             downloadBtn.href = dataURL;
+        }
+    }
+]);
+
+routerApp.controller('hierarchySummaryCtrl', [ '$scope', '$mdDialog', '$rootScope', 
+    function( $scope, $mdDialog, $rootScope) {
+        var svg;
+
+        $scope.onClickDownload = function(){
+
+            // var svg = document.getElementById('d3Force').childNodes[1].innerHTML;
+            // console.log("svg", svg);
+            var canvas = document.getElementById('canvas');
+            // console.log("ctrl $scope.svg", $scope.svg);
+            canvg(canvas, $rootScope.hierarchySvg);
+            var dataURL = canvas.toDataURL('image/png');
+            var downloadBtn = document.getElementById('downloadImage');
+            downloadBtn.href = dataURL;
+        }
+
+        $scope.setSvg = function(svgString){
+            $rootScope.hierarchySvg = svgString;
         }
     }
 ]);

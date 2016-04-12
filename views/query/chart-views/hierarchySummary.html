@@ -17,6 +17,14 @@ line.link {
     stroke-width: 1.5px;
 }
 </style>
-<div id="d3Force" style="height:100%;width:100%;" layout="column" layout-align='center center'>
-    <linear-chart chart-data="hierarData"/>
+<div ng-controller="hierarchySummaryCtrl">
+    <div>
+        <a href="#" id="downloadImage" download="hierarchy.png" ng-click="onClickDownload()">
+            <i class="ti-download"></i>
+        </a>
+    </div>
+    <canvas id="canvas"  width="1000px" height="600px" style="display:none"></canvas>
+    <div id="d3Force" style="height:100%;width:100%;" layout="column" layout-align='center center'>
+        <linear-chart chart-data="hierarData"/>
+    </div>
 </div>

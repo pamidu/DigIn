@@ -6,13 +6,6 @@ routerApp.directive('sunburstChart', function() {
             chartData : '='
         },
         link: function(scope, elem, attrs) {
-
-            var svg;
-            elem.bind("change", function(event){
-
-              scope.svg = svg;
-              scope.$apply();
-            });
             
             scope.$watch('chartData', function(newValue, oldValue) {
                 if (newValue){

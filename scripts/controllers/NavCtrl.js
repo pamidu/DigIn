@@ -102,24 +102,22 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
 
         $scope.adjustUI = function () {
-            $('body').css("padding-top", "0px");
-            // $('#content1').css("top", "10px");
-            $('.h_iframe').css("height", "100%");
-            // if ($scope.headerbarPinned) {
-            //     $('#content1').css("top", "40px");
-            //     $('#content1').css("height", "calc(100vh - 40px)");
-            //     $('.h_iframe').css("height", "calc(100vh - 40px)");
-            //     $('.main-headbar-slide').css("transform", "translateY(0)");
-            //     $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
-            // }
-            // else {
-            //     // $('body').css("padding-top", "0px");
-            //     $('#content1').css("top", "0px");
-            //     $('#content1').css("height", "calc(100vh)");
-            //     $('.h_iframe').css("height", "calc(100vh)");
-            //     $('.main-headbar-slide').css("transform", "translateY(-40px)");
-            //     $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
-            // }
+            
+            if($scope.headerbarPinned){
+                $('#content1').css("top", "40px");
+                $('#content1').css("height", "calc(100vh - 40px)");
+                $('.h_iframe').css("height", "calc(100vh - 40px)");
+                $('.main-headbar-slide').css("transform", "translateY(0)");
+                $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
+            }
+            else{
+                // $('body').css("padding-top", "0px");
+                $('#content1').css("top", "0px");
+                $('#content1').css("height", "calc(100vh)");
+                $('.h_iframe').css("height", "calc(100vh)");
+                $('.main-headbar-slide').css("transform", "translateY(-40px)");
+                $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
+            }  
         }
 
         //shows user profile in a dialog box
@@ -726,7 +724,19 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
         $scope.goHomeDialog = function (ev){
             $mdDialog.show({
-                controller: goHomeCtrl,
+                controller: function goHomeCtrl($scope, $mdDialog) {
+
+                    var homeState = null;
+                    $scope.goHome = function(){
+                        $mdDialog.hide();
+                        homeState = true;
+                    }
+                    $scope.cancel = function () {
+                        $mdDialog.cancel();
+                        homeState = false;
+                    };
+                    return homeState;
+                },
                 templateUrl: 'views/goHome.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
@@ -737,6 +747,26 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $scope.currentView = "Home";
                     $state.go('home');
                 }
+            });
+        }
+        $scope.clearAllWidgets = function (ev)
+        {
+            $mdDialog.show({
+                controller: function clearWidgetsCtrl($scope, $mdDialog){
+                    $scope.clear = function(){
+                        $rootScope.dashboardWidgetsCopy = angular.copy($rootScope.dashboard.widgets);
+                        $rootScope.dashboard.widgets = [];
+                        $mdDialog.hide();
+                    };
+                    $scope.cancel = function () {
+                        $mdDialog.cancel();
+                    };
+                },
+                templateUrl: 'views/clearWidgets.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true
+            }).then(function () {
             });
         }
         //erangas space
@@ -753,20 +783,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }, function () {
 
                 });
-        };
-
-        function goHomeCtrl($scope, $mdDialog) {
-
-            var homeState = null;
-            $scope.goHome = function(){
-                $mdDialog.hide();
-                homeState = true;
-            }
-            $scope.cancel = function () {
-                $mdDialog.cancel();
-                homeState = false;
-            };
-            return homeState;
         };
 
         //load social analysis  
@@ -983,12 +999,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             if (routeName == "Dashboards") {
 
                 $scope.showAddNewDashboard(ev);
-                $scope.manageTabs(true);
+                // $scope.manageTabs(true);
                 $scope.currentView = "Dashboard";
                 $state.go('home.' + routeName);
             }
             if (routeName == "Social Media Analytics") {
-                $scope.manageTabs(false);
+                // $scope.manageTabs(false);
                 $scope.currentView = "Social Analysis";
                 $scope.showAddSocialAnalysis(ev);
 
@@ -996,52 +1012,51 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             if (routeName == "Add Widgets") {
 
-                $('.dashboard-widgets-close').css("visibility", "visible");
-                $('md-tabs-wrapper').css("visibility", "visible");
+                // $('.dashboard-widgets-close').css("visibility", "visible");
+                // $('md-tabs-wrapper').css("visibility", "visible");
 
 
                 $scope.showAddNewWidgets(ev);
                 $scope.currentView = "Dashboard";
-                $scope.manageTabs(true);
+                // $scope.manageTabs(true);
                 $state.go("home.Dashboards");
 
                 //$('md-tabs-wrapper').css("display","block");
             }
             if (routeName == "Reports") {
 
-                var selectedMenu = document.getElementsByClassName("menu-layer");
-                selectedMenu[0].style.display = 'block';
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'block';
                 $rootScope.currentView = "Reports";
-                $scope.manageTabs(false);
+                // $scope.manageTabs(false);
                 $state.go('home.' + routeName);
             }
             if (routeName == "Analytics") {
 
-                var selectedMenu = document.getElementsByClassName("menu-layer");
-                selectedMenu[0].style.display = 'block';
-                $(".menu-layer").css("top", "160px");
-                $("starting-point").css("top", "160px");
-                $scope.manageTabs(false);
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'block';
+                // $(".menu-layer").css("top", "160px");
+                // $("starting-point").css("top", "160px");
+                // $scope.manageTabs(false);
                 $rootScope.currentView = "Analytics";
             }
             if (routeName == "RealTime") {
-                var selectedMenu = document.getElementsByClassName("menu-layer");
-                selectedMenu[0].style.display = 'block';
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'block';
 
-                $(".menu-layer").css("top", "200px");
-                $("starting-point").css("top", "200px");
-                $scope.manageTabs(false);
+                // $(".menu-layer").css("top", "200px");
+                // $("starting-point").css("top", "200px");
+                // $scope.manageTabs(false);
                 $state.go('home.' + routeName);
-
                 $rootScope.currentView = "RealTime";
 
             }
             if (routeName == "Data Source") {
 
-                var selectedMenu = document.getElementsByClassName("menu-layer");
-                selectedMenu[0].style.display = 'block';
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'block';
                 $rootScope.currentView = "CommonData";
-                $scope.manageTabs(false);
+                // $scope.manageTabs(false);
 
                 if (!$mdSidenav('right').isOpen()) {
                     $mdSidenav('right')
@@ -1053,9 +1068,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
             if (routeName == "Sales Forecast && Prediction") {
 
-                var selectedMenu = document.getElementsByClassName("menu-layer");
-                selectedMenu[0].style.display = 'block';
-                $scope.manageTabs(false);
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'block';
+                // $scope.manageTabs(false);
                 $scope.showSalesForecastPrediction(ev);
 
             }
@@ -1074,8 +1089,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             }
             if (routeName == "Theme") {
-                var selectedMenu = document.getElementsByClassName("menu-layer");
-                selectedMenu[0].style.display = 'none';
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'none';
                 $scope.openTheme();
 
             }
@@ -1088,8 +1103,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             }
             if (routeName == "Export") {
-                var selectedMenu = document.getElementsByClassName("menu-layer");
-                selectedMenu[0].style.display = 'none';
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'none';
                 $scope.currentView = "Export";
 
                 $scope.Export();
@@ -1097,8 +1112,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
             if (routeName == "Help") {
 
-                var selectedMenu = document.getElementsByClassName("menu-layer");
-                selectedMenu[0].style.display = 'none';
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'none';
 
                 $scope.currentView = "Help";
 
@@ -1115,8 +1130,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             }
             if (routeName == "Save") {
-                var selectedMenu = document.getElementsByClassName("menu-layer");
-                selectedMenu[0].style.display = 'none';
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'none';
                 //$scope.savePentaho();
                 $scope.saveDashboard(ev);
             }
@@ -1126,8 +1141,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 //                $scope.showSettings(ev);
             }
             if (routeName == "TV Mode") {
-                var selectedMenu = document.getElementsByClassName("menu-layer");
-                selectedMenu[0].style.display = 'none';
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'none';
                 $scope.currentView = "TV Mode";
 
                 if (Fullscreen.isEnabled())
@@ -1138,20 +1153,17 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
             if (routeName == "Clear Widgets") {
 
-                var selectedMenu = document.getElementsByClassName("menu-layer");
-                selectedMenu[0].style.display = 'block';
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'block';
                 // $rootScope.currentView = "Clear";
-                $(".menu-layer").css("top", "120px");
-                $("starting-point").css("top", "120px");
+                // $(".menu-layer").css("top", "120px");
+                // $("starting-point").css("top", "120px");
 
-                $rootScope.dashboardWidgetsCopy = angular.copy($rootScope.dashboard.widgets);
-                $rootScope.dashboard.widgets = [];
-                $state.go("/home");
+                $scope.clearAllWidgets(ev);
             }
 
             if (routeName == "Common Source Algorithm") {
                 $state.go("home.commonSrcAlgorithm");
-
             }
 
 

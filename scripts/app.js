@@ -48,7 +48,23 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $httpProvider.defaults.headers.common["Content-Type"] = "application/x-www-form-urlencoded";
 
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise(function($injector, $location) {
+            
+            var state;
+            $rootScope = $injector.get("$rootScope");
+            console.log( "$location", $location);
+
+            if(localStorage.getItem("initialLogin") == undefined){
+
+                localStorage.setItem("initialLogin", false);
+                state = 'login';
+            }
+            else{
+                state = 'home';
+            }
+
+            return state;
+    });
 
     $stateProvider
         .state("login", {
@@ -360,10 +376,14 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
 
 routerApp.run(function ($rootScope, $auth, $state, $csContainer) {
 
+    var requireLogin;
+    var secToken;
+    var cookToken;
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
-        var requireLogin = toState.data.requireLogin;
-        var secToken = $auth.getSecurityToken();
-        var cookToken = getCookie("securityToken");
+
+        requireLogin = toState.data.requireLogin;
+        secToken = $auth.getSecurityToken();
+        cookToken = getCookie("securityToken");
 
         if (toState.data.preLoader) {
             setTimeout(function () {
@@ -378,7 +398,8 @@ routerApp.run(function ($rootScope, $auth, $state, $csContainer) {
         if (requireLogin && secToken === "N/A" && typeof(cookToken) === "undefined") {
             event.preventDefault();
             $state.go('login');
-        } else {
+        }else {
+    
             var stateName = toState.name;
             //check for custom state validations
             switch (stateName) {

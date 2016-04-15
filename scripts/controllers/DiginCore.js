@@ -1053,19 +1053,20 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
                             maxZoom: 15,
                             minZoom: 1
                         }
-                        // ,
-                        // events: {   
-                        //     mouseover: function (map) {
-                        //         $scope.$apply(function () {
-                        //             google.maps.event.trigger(map, "resize");
-                        //         });
-                        //     },
-                        //     dragend: function (map) {
-                        //         $scope.$apply(function () {
-                        //             google.maps.event.trigger(map, "resize");
-                        //         });
-                        //     }
-                        // } 
+                        ,
+                        events: {   
+                            mouseover: function (map) {
+                                $scope.$apply(function () {
+                                    google.maps.event.trigger(map, "resize");
+                                });
+                            }
+                            // ,
+                            // dragend: function (map) {
+                            //     $scope.$apply(function () {
+                            //         google.maps.event.trigger(map, "resize");
+                            //     });
+                            // }
+                        } 
                     };       
         
         // ======== initializing map at google map loading =========

@@ -75,11 +75,9 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
 
-    <!-- videoJs ->
-    <link href="http://vjs.zencdn.net/5.8.0/video-js.css" rel="stylesheet">
 
+    <!-- <link href="http://vjs.zencdn.net/5.8.0/video-js.css" rel="stylesheet"> -->
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
-
         api_key: 75gasspugsl6ow
         authorize: true
         scope: r_basicprofile
@@ -91,8 +89,8 @@
             position: absolute !important;
         }
     </style>
-    <style rel="stylesheet" href="styles/css/init-dash-setup.css" type="text/css"></style>
-    <!--  new changes  -->
+    <!--<style rel="stylesheet" href="styles/css/init-dash-setup.css" type="text/css"></style>-->
+    <!--  new changes 
 
     <!-- If you'd like to support IE8 -->
         <script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>

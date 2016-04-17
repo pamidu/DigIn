@@ -18,28 +18,33 @@
 /*summary-
  fbInterface : (scripts/custom/fbInterface.js)
  */
-routerApp.controller('fbInit',['scope', '$mdDialog', 'widId', '$rootScope',function (scope, $mdDialog, widId, $rootScope) {
+routerApp.controller('fbInit',['$scope', '$mdDialog', 'widId', '$rootScope',function ($scope, $mdDialog, widId, $rootScope) {
 
-    scope.accounts = [];
+    $scope.diginLogo = 'digin-logo-wrapper2';
+    $scope.showFinishButton = false;
+    $scope.accounts = [];
     //get fb initial login state
     //scope.actIndicator = "false";
-    fbInterface.getFbLoginState(scope);
+    fbInterface.getFbLoginState($scope);
     var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
     //add or remove account from the scope
-    scope.addAccount = function() {
+    $scope.addAccount = function() {
         if (fbInterface.state != 'connected')
-            fbInterface.loginToFb(scope);
+            fbInterface.loginToFb($scope);
         else
-            fbInterface.logoutFromFb(scope);
+            fbInterface.logoutFromFb($scope);
     };
-
-    //cancel config
-    scope.cancel = function() {
+    $scope.finish = function(){
+        $scope.showFinishButton = false;
         $mdDialog.hide();
+    }
+    //cancel config
+    $scope.cancel = function() {
+        $mdDialog.cancel();
     };
 
 
-    scope.chartConfView = {
+    $scope.chartConfView = {
         "options": {
             "chart": {
                 "type": "area"
@@ -75,7 +80,7 @@ routerApp.controller('fbInit',['scope', '$mdDialog', 'widId', '$rootScope',funct
             "min": 0
         }
     };
-    scope.chartConf = {
+    $scope.chartConf = {
         "options": {
             "chart": {
                 "type": "area"
@@ -110,7 +115,7 @@ routerApp.controller('fbInit',['scope', '$mdDialog', 'widId', '$rootScope',funct
             "min": 0
         }
     };
-    scope.chartConfView = {
+    $scope.chartConfView = {
         "options": {
             "chart": {
                 "type": "area"
@@ -148,7 +153,8 @@ routerApp.controller('fbInit',['scope', '$mdDialog', 'widId', '$rootScope',funct
 
 
     //complete config  
-    scope.finish = function() {
+    $scope.fetch = function() {
+        $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
         var likeCountArray = [];
         var startingDayStr;
         var dateObj = {
@@ -157,48 +163,54 @@ routerApp.controller('fbInit',['scope', '$mdDialog', 'widId', '$rootScope',funct
         }
 
         //getting page likes insights
-        fbInterface.getPageLikesInsight(scope.fbPageModel, dateObj, function(data) {
+        fbInterface.getPageLikesInsight($scope.fbPageModel, dateObj, function(data) {
 
             var likeHistory = fbInterface.getPageLikesObj(data);
-            scope.chartConf.series[0].data = likeHistory.likeArr;
-            scope.chartConf.series[0].pointStart = Date.UTC(likeHistory.start.getUTCFullYear(), likeHistory.start.getUTCMonth(), likeHistory.start.getUTCDate());;
-            scope.chartConf.series[0].pointInterval = likeHistory.interval;
+            $scope.chartConf.series[0].data = likeHistory.likeArr;
+            $scope.chartConf.series[0].pointStart = Date.UTC(likeHistory.start.getUTCFullYear(), likeHistory.start.getUTCMonth(), likeHistory.start.getUTCDate());;
+            $scope.chartConf.series[0].pointInterval = likeHistory.interval;
 
-            var obj = {
-                pgData: scope.pageData,
-                likeData: scope.chartConf
-            };
-            $rootScope.dashboard.widgets[objIndex].widData = obj;
+            // var obj = {
+            //     pgData: $scope.pageData,
+            //     likeData: $scope.chartConf
+            // };
+            // $rootScope.dashboard.widgets[objIndex].widData = obj;
         });
 
         //getting page views insights
-        fbInterface.getPageViewsInsight(scope.fbPageModel, dateObj, function(data) {
+        fbInterface.getPageViewsInsight($scope.fbPageModel, dateObj, function(data) {
 
             var viewHistory = fbInterface.getPageLikesObj(data);
-            scope.chartConfView.series[0].data = viewHistory.likeArr;
-            scope.chartConfView.series[0].pointStart = Date.UTC(viewHistory.start.getUTCFullYear(), viewHistory.start.getUTCMonth(), viewHistory.start.getUTCDate());;
-            scope.chartConfView.series[0].pointInterval = viewHistory.interval;
+            $scope.chartConfView.series[0].data = viewHistory.likeArr;
+            $scope.chartConfView.series[0].pointStart = Date.UTC(viewHistory.start.getUTCFullYear(), viewHistory.start.getUTCMonth(), viewHistory.start.getUTCDate());;
+            $scope.chartConfView.series[0].pointInterval = viewHistory.interval;
 
+            // var obj = {
+            //     pgData: $scope.pageData,
+            //     likeData: $scope.chartConf,
+            //     viewData: $scope.chartConfView
+            // };
+            // $rootScope.dashboard.widgets[objIndex].widData = obj;
             var obj = {
-                pgData: scope.pageData,
-                likeData: scope.chartConf,
-                viewData: scope.chartConfView
+                pgData: $scope.pageData,
+                likeData: $scope.chartConf,
+                viewData: $scope.chartConfView
             };
             $rootScope.dashboard.widgets[objIndex].widData = obj;
+            $scope.showFinishButton = true;
+            $scope.diginLogo = 'digin-logo-wrapper2';
         });
 
+        
+    }; 
 
-        $mdDialog.hide();
-    };
-
-    scope.pageData = {};
-
+    $scope.pageData = {};
 
     //selecting pages
-    scope.changePage = function() {
+    $scope.changePage = function() {
         //get page data on change
-        fbInterface.getPageData(scope, function(data) {
-            scope.pageData = data;
+        fbInterface.getPageData($scope, function(data) {
+            $scope.pageData = data;
             // $rootScope.dashboard.widgets[objIndex].widData = data;
         });
     };
@@ -209,33 +221,40 @@ routerApp.controller('fbInit',['scope', '$mdDialog', 'widId', '$rootScope',funct
 /*summary-
  linkedinInterface : (scripts/custom/linkedinInterface.js)
  */
- routerApp.controller('linkedInit',['scope', '$mdDialog', 'widId', '$rootScope',function (scope, $mdDialog, widId, $rootScope) {
+ routerApp.controller('linkedInit',['$scope', '$mdDialog', 'widId', '$rootScope',function ($scope, $mdDialog, widId, $rootScope) {
 
-    scope.accounts = [];
+    $scope.diginLogo = 'digin-logo-wrapper2';
+    $scope.showFinishButton = false;
+    $scope.accounts = [];
 
     //get linkedin initial login state
-    linkedinInterface.getLinkedinState(scope);
+    linkedinInterface.getLinkedinState($scope);
     
     //add or remove account from the scope
-    scope.addAccount = function() {
+    $scope.addAccount = function() {
         if (!linkedinInterface.state)
-            linkedinInterface.loginToLinkedin(scope);
+            linkedinInterface.loginToLinkedin($scope);
         else
-            linkedinInterface.logoutFromLinkedin(scope);
+            linkedinInterface.logoutFromLinkedin($scope);
     };
     //cancel config
-    scope.cancel = function() {
-        $mdDialog.hide();
+    $scope.cancel = function() {
+        $mdDialog.cancel();
     };
+    //finish
+    $scope.finish = function(){
+        $scope.showFinishButton = false;
+        $mdDialog.hide();
+    }       
     //complete config  
-    scope.finish = function() {
-        
-        linkedinInterface.getUserAccountOverview(scope, function(data) {
+    $scope.fetch = function() {
+        $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
+        linkedinInterface.getUserAccountOverview($scope, function(data) {
             var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
             $rootScope.dashboard.widgets[objIndex].widData = data;
+            $scope.diginLogo = 'digin-logo-wrapper2';
+            $scope.showFinishButton = true;
         });
-
-        $mdDialog.hide();
     };
 }]);
 
@@ -391,15 +410,16 @@ routerApp.controller('analyticsInit',['$scope', '$http', '$mdDialog', 'widId', '
 
 routerApp.controller('YoutubeInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope', '$log', 'VideosService',function ($scope, $http, $mdDialog, widId, $rootScope, $log, VideosService) {
 
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-
+    $scope.diginLogo = 'digin-logo-wrapper2';
+    $scope.showFinishButton = false;
+    
     $scope.cancel = function() {
         $mdDialog.hide();
     };
     $scope.finish = function() {
-        init();
+        $scope.showFinishButton = false;
         $mdDialog.hide();
-    };
+    }
 
     function init() {
         $scope.youtube = VideosService.getYoutube();
@@ -427,9 +447,8 @@ routerApp.controller('YoutubeInit',['$scope', '$http', '$mdDialog', 'widId', '$r
         VideosService.deleteVideo(list, id);
     };
 
-    $scope.search = function() {
-        //alert("Hello you hit the search function");
-
+    $scope.fetch = function() {
+        $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
         $http.get('https://www.googleapis.com/youtube/v3/search', {
                 params: {
                     key: 'AIzaSyAzf5VkNxCc-emzb5rujUSc9wSxoDla6AM',
@@ -439,22 +458,21 @@ routerApp.controller('YoutubeInit',['$scope', '$http', '$mdDialog', 'widId', '$r
                     fields: 'items/id,items/snippet/title,items/snippet/description,items/snippet/thumbnails/default,items/snippet/channelTitle,items/snippet/publishedAt,items/snippet/liveBroadcastContent,items/snippet/channelId,items/id/kind,items/id/videoId',
                     q: this.query
                 }
-
-            })
-            .success(function(data) {
+        }).success(function(data) {
                 VideosService.listResults(data);
+
+                var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
                 $rootScope.dashboard.widgets[objIndex].widData = data;
-                $mdDialog.hide();
-
-            })
-            .error(function() {
+                $scope.showFinishButton = true;
+                $scope.diginLogo = 'digin-logo-wrapper2';
+        }).error(function() {
                 $log.info('Search error');
-            });
-
+                $scope.showFinishButton = false;
+                $scope.diginLogo = 'digin-logo-wrapper2';
+        });
     }
 
     $scope.tabulate = function(state) {
-
         $scope.playlist = state;
     }
 
@@ -2022,6 +2040,7 @@ routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widId',
                 $scope.diginLogo = 'digin-logo-wrapper2';
             }).error(function(data, status) {
                 console.log(message);
+                $scope.showFinishButton = false;
                 $scope.diginLogo = 'digin-logo-wrapper2';
             });    
         };
@@ -2139,6 +2158,7 @@ routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widId', '$roo
         // Specify search quer(ies)
         newsSearch.execute(gnewsrequest);
         $scope.diginLogo = 'digin-logo-wrapper2';
+        $scope.showFinishButton = true;
     };
 }]);
 

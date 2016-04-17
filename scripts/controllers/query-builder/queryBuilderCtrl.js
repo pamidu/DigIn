@@ -865,6 +865,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         removeMea: function(l) {
             if (l > 0) $scope.getAggregation();
             else {
+                //$scope.eventHndler.isLoadingChart = false;
                 $scope.executeQryData.executeColumns = [];
                 $scope.highchartsNG = $scope.selectedChart.initObj;
             }
@@ -1571,6 +1572,7 @@ $scope.histogram = {
         removeMea: function(l) {
             if (l > 0) $scope.getAggregation();
             else {
+                // $scope.eventHndler.isLoadingChart = false;
                 $scope.executeQryData.executeColumns = [];
                 $scope.highchartsNG = $scope.selectedChart.initObj;
             }
@@ -1649,6 +1651,7 @@ $scope.histogram = {
                     // alert('request failed');
                     privateFun.fireMessage('0','request failed');
                     $scope.isPendingRequest = false;
+                    $scope.eventHndler.isLoadingChart = false;
                 }
             });
 
@@ -1707,6 +1710,7 @@ $scope.histogram = {
                 //alert('request failed');
                 privateFun.fireMessage('0','request failed');
                 $scope.isPendingRequest = false;
+                $scope.eventHndler.isLoadingChart = false;
             }
 
         }, $scope.selectedCat);
@@ -1815,6 +1819,7 @@ $scope.histogram = {
                                 // alert('request failed');
                                 privateFun.fireMessage('0','request failed');
                                 $scope.isPendingRequest = false;
+                                $scope.eventHndler.isLoadingChart = false;
                             }
 
                         }, res[i].value);

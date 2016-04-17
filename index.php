@@ -14,14 +14,14 @@ switch ($fullHost) {
 
         }
         break;
-        case "www.".$mainDomain:
+    case "www.".$mainDomain:
         if(!isset($_COOKIE["securityToken"])){
           include ("index1.php");
       }else{
         getURI();
 
     }
-    break;
+        break;
     default:
     if(!isset($_COOKIE["securityToken"])){
         if($mainDomain!=$_SERVER['HTTP_HOST'])

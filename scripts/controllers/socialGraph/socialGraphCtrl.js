@@ -1,7 +1,9 @@
 /* Summary:
  note: some of the scope variables are initialized inside fbInterface
  */
-routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices, $http, Digin_Engine_API3, $rootScope, $mdDialog, $restFb) {
+routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphServices,
+                                                  $http, Digin_Engine_API3,
+                                                  $rootScope, $mdDialog, $restFb, moment) {
 
     $scope.totalLikes = 0;
     $scope.totalEngagement = 0;
@@ -9,9 +11,9 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
     $scope.requestCount = 0;
     $scope.failedPool = [];
     $scope.defReqPool = [{method: 'setPageOverview'},
-                         {method: 'setPostSummary'},
-                         {method: 'setWordCloud'},
-                         {method: 'setDemographicsinfo'}];
+        {method: 'setPostSummary'},
+        {method: 'setWordCloud'},
+        {method: 'setDemographicsinfo'}];
 
     $scope.sentimentConfig = {
         options: {
@@ -50,7 +52,7 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
                     fontFamily: "Ek Mukta, sans-serif",
                     fontWeight: "200"
                 },
-                formatter: function() {
+                formatter: function () {
                     return this.value
                 }
             }
@@ -61,12 +63,12 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
         loading: !1
     };
 
-    $scope.fbPageInit = function() {
+    $scope.fbPageInit = function () {
         fbInterface.getFbLoginState($scope, true);
 
     }
 
-    $scope.searchPage = function(searchQuery) {
+    $scope.searchPage = function (searchQuery) {
         fbInterface.getSearchedPages($scope, true, searchQuery);
     };
 
@@ -83,7 +85,7 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
         $http({
             method: 'GET',
             url: reqUrl
-        }).success(function(data, status) {
+        }).success(function (data, status) {
             if (data.Is_Success) callback(data.Result);
             else {
                 if (data.Custom_Message == "Error validating access token: This may be because the user logged out or may be due to a system error.") {
@@ -91,14 +93,14 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
                 }
             }
 
-        }).error(function(data, status) {
+        }).error(function (data, status) {
             $scope.errorMessage = true;
             console.log('unexpected error occured');
         });
     };
 
     //confirming the resend request
-    $scope.resendConfirm = function(ev, msg, url, cb, demographic) {
+    $scope.resendConfirm = function (ev, msg, url, cb, demographic) {
         // Appending dialog to document.body to cover sidenav in docs app
         var confirm = $mdDialog.confirm()
             .title('Would you like to resend the request?')
@@ -107,11 +109,11 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
             .targetEvent(ev)
             .ok('Yes')
             .cancel('No');
-        $mdDialog.show(confirm).then(function() {
-            fbInterface.getFreshPageAccessToken($scope.page.id, function(data) {
+        $mdDialog.show(confirm).then(function () {
+            fbInterface.getFreshPageAccessToken($scope.page.id, function (data) {
                 getServiceResponse(url, data, cb, demographic);
             });
-        }, function() {
+        }, function () {
             $scope.status = 'You decided to keep your debt.';
         });
     };
@@ -128,10 +130,10 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
             'page_fans': '#B2DFDB',
             'page_stories': '#FFFFFF'
         };
-        data.forEach(function(entry) {
+        data.forEach(function (entry) {
             $scope.configData = [];
             var seriesName = '';
-            entry.data.forEach(function(value) {
+            entry.data.forEach(function (value) {
                 var x = value[0].split('T')[0];
 
                 var enDate = x.split('-');
@@ -150,7 +152,8 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
 
                 $scope.configData.push([
                     Date.UTC(enDate[0], enDate[1] - 1, enDate[2]),
-                    value[1]
+                    value[1],
+                    x
                 ]);
             });
 
@@ -197,7 +200,7 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
                         fontFamily: "Ek Mukta, sans-serif",
                         fontWeight: "200"
                     },
-                    formatter: function() {
+                    formatter: function () {
                         return this.value
                     }
                 }
@@ -227,36 +230,36 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
             addData: $scope.arrAdds
         });
     };
-    
+
     /* service methods start */
-    $scope.setPageOverview = function(){
-        $scope.fbClient.getPageOverview(function(data, status){
+    $scope.setPageOverview = function () {
+        $scope.fbClient.getPageOverview(function (data, status) {
             $scope.requestCount++;
-            status ? generateChart(data) : $scope.handleFailure({method: 'setPageOverview', error:data});
+            status ? generateChart(data) : $scope.handleFailure({method: 'setPageOverview', error: data});
         });
     };
-    
-    $scope.setPostSummary = function(){
-        $scope.fbClient.getPostSummary(function(data, status){
+
+    $scope.setPostSummary = function () {
+        $scope.fbClient.getPostSummary(function (data, status) {
             $scope.requestCount++;
-            if(status){
+            if (status) {
                 $scope.postsObj = data;
                 $scope.postCount = data.length;
                 $scope.postIds = [];
-                $scope.postsObj.forEach(function(postEntry) {
+                $scope.postsObj.forEach(function (postEntry) {
                     $scope.postIds.push(postEntry.id);
                 });
                 $scope.setSentimentAnalysis();
-            }else{
-                $scope.handleFailure({method: 'setPostSummary', error:data});
+            } else {
+                $scope.handleFailure({method: 'setPostSummary', error: data});
             }
         });
     };
-    
-    $scope.setSentimentAnalysis = function(){        
-        $scope.fbClient.getSentimentAnalysis(function(data, status){
+
+    $scope.setSentimentAnalysis = function () {
+        $scope.fbClient.getSentimentAnalysis(function (data, status) {
             $scope.requestCount++;
-            if(status){
+            if (status) {
                 $scope.sentimentConfigData = [];
                 var sentimentConfigSeries = [];
                 var sentIcons = {
@@ -295,16 +298,16 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
                 });
 
                 $scope.sentimentConfig['series'] = sentimentConfigSeries;
-            }else{
-                $scope.handleFailure({method: 'setSentimentAnalysis', error:data});
+            } else {
+                $scope.handleFailure({method: 'setSentimentAnalysis', error: data});
             }
-        }, JSON.stringify($scope.postIds));  
+        }, JSON.stringify($scope.postIds));
     };
-    
-    $scope.setWordCloud = function(){
-        $scope.fbClient.getWordCloud(function(data, status){
+
+    $scope.setWordCloud = function () {
+        $scope.fbClient.getWordCloud(function (data, status) {
             $scope.requestCount++;
-            if(status){
+            if (status) {
                 var wordObjArr = [];
                 for (var key in data) {
                     if (Object.prototype.hasOwnProperty.call(data, key)) {
@@ -318,31 +321,31 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
                 $rootScope.$broadcast('getWordCloudData', {
                     wordData: wordObjArr
                 });
-            }else{
-                $scope.handleFailure({method: 'setWordCloud', error:data});
+            } else {
+                $scope.handleFailure({method: 'setWordCloud', error: data});
             }
         });
     };
-    
-    $scope.setDemographicsinfo = function(){
-        $scope.fbClient.getDemographicsinfo(function(data, status){
+
+    $scope.setDemographicsinfo = function () {
+        $scope.fbClient.getDemographicsinfo(function (data, status) {
             $scope.requestCount++;
-            if(status){
+            if (status) {
                 $scope.arrAdds = [];
                 setMap(data);
-            }else{
-                $scope.handleFailure({method: 'setDemographicsinfo', error:data});
+            } else {
+                $scope.handleFailure({method: 'setDemographicsinfo', error: data});
             }
         });
     };
     /* service methods end */
-    
+
     // handle failed services
-    $scope.handleFailure = function(errObj){
-        if(errObj.error == "Error validating access token: This may be because the user logged out or may be due to a system error." || errObj.error == 'Error occurred while getting data from Facebook API')
+    $scope.handleFailure = function (errObj) {
+        if (errObj.error == "Error validating access token: This may be because the user logged out or may be due to a system error." || errObj.error == 'Error occurred while getting data from Facebook API')
             $scope.failedPool.push(errObj);
-        if($scope.requestCount == 5){
-            if($scope.failedPool.length > 0){
+        if ($scope.requestCount == 5) {
+            if ($scope.failedPool.length > 0) {
                 var confirm = $mdDialog.confirm()
                     .title('Would you like to resend the request?')
                     .content('Error occurred while getting data from Facebook API')
@@ -350,34 +353,34 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
                     .targetEvent()
                     .ok('Yes')
                     .cancel('No');
-                $mdDialog.show(confirm).then(function() {
-                    fbInterface.getFreshPage($scope.page.id, function(data){                    
+                $mdDialog.show(confirm).then(function () {
+                    fbInterface.getFreshPage($scope.page.id, function (data) {
                         $scope.getPageDetails(data, $scope.timestamps, $scope.failedPool);
                     });
-                }, function() {
+                }, function () {
                     $scope.status = 'You decided to keep your debt.';
-                });                
-                
+                });
+
             }
         }
     };
-    
-    // watching for the request count
-    $scope.$watch("requestCount", function(newValue, oldValue) {
-      if(newValue > 5) $scope.requestCount = 1;
-    }, true);
-    
 
-    $scope.getPageDetails = function(page, pageTimestamps, reqPool, changedTime) {
+    // watching for the request count
+    $scope.$watch("requestCount", function (newValue, oldValue) {
+        if (newValue > 5) $scope.requestCount = 1;
+    }, true);
+
+
+    $scope.getPageDetails = function (page, pageTimestamps, reqPool, changedTime) {
 
         //showing the page
         $scope.page = page;
         $scope.timestamps = pageTimestamps;
         if (!changedTime) $scope.activePageSearch = !$scope.activePageSearch;
-        
+
         $scope.fbClient = $restFb.getClient(page, pageTimestamps);
 
-        reqPool.forEach(function(key){
+        reqPool.forEach(function (key) {
             eval("$scope." + key.method + "()");
         });
     };
@@ -385,7 +388,7 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
     $scope.page = null;
     $scope.activePageSearch = true;
 
-    $scope.viewPageDetails = function(page) {
+    $scope.viewPageDetails = function (page) {
         $scope.preloader = false;
         $scope.errorMessage = false;
         $scope.untilDate = new Date();
@@ -396,7 +399,7 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
         $scope.getPageDetails(page, getBoundaryTimestamps(60, new Date()), $scope.defReqPool);
     };
 
-    $scope.changeTimeRange = function() {
+    $scope.changeTimeRange = function () {
         var since = new Date($scope.sinceDate);
         var until = new Date($scope.untilDate);
         //alert(typeof(since));
@@ -404,12 +407,12 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
             sinceStamp: Math.floor(since / 1000),
             untilStamp: Math.floor(until / 1000)
         };
-        $scope.getPageDetails($scope.page, timeObj,$scope.defReqPool, true);
+        $scope.getPageDetails($scope.page, timeObj, $scope.defReqPool, true);
     };
 
     //Search fb page
     $scope.isSearchingPage = false;
-    $scope.loginWithFb = function() {
+    $scope.loginWithFb = function () {
         if (fbInterface.state != 'connected') {
             fbInterface.loginToFb($scope, true);
         } else {
@@ -418,7 +421,7 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
             $scope.preloader = false;
         }
     };
-    $scope.goBack = function() {
+    $scope.goBack = function () {
         $scope.activePageSearch = true;
         $scope.preloader = false;
     }
@@ -436,7 +439,7 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
     };
 
     //viewing a single post
-    $scope.viewSinglePost = function(post) {
+    $scope.viewSinglePost = function (post) {
         $mdDialog.show({
             controller: singlePostCtrl,
             templateUrl: 'views/socialGraph/fbPost_template.html',
@@ -450,7 +453,7 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
     //create funtion damith
     //dev damith
     //on click view current JSON data to Table
-    $scope.onClickViewTable = function(_type) {
+    $scope.onClickViewTable = function (_type) {
 
         if (_type == 'map') {
             $mdDialog.show({
@@ -477,14 +480,12 @@ routerApp.controller('socialGraphCtrl', function($scope, config, fbGraphServices
     }
 
 
-
 });
 
 
 function viewMapTableCtrl($scope, $mdDialog, dataAry, pageName) {
     $scope.mapTblData = dataAry;
-
-    $scope.closeDialog = function() {
+    $scope.closeDialog = function () {
         $mdDialog.hide();
     }
 }
@@ -497,10 +498,8 @@ function viewTableCtrl($scope, $mdDialog, jsonData, pageName) {
     $scope.tableData = jsonData;
     $scope.pageName = pageName;
 
-
-    var cvtUnixToDate = function(unix) {
-        var d = new Date(unix * 1000);
-        return d.toGMTString();
+    var cvtUnixToDate = function (unix) {
+        return moment(unix).format('LL');
     }
 
     var pageAnalysis = {
@@ -525,12 +524,13 @@ function viewTableCtrl($scope, $mdDialog, jsonData, pageName) {
                 'like': ''
             };
             for (var b = 0; b < jsonData[i].data[c].length; b++) {
-                if (b == 0) {
+                if (b == 2) {
                     //date
                     var date = jsonData[i].data[c][b];
                     jsonObj.date = cvtUnixToDate(date);
 
-                } else {
+                }
+                if (b == 1) {
                     //like
                     var like = jsonData[i].data[c][b];
                     jsonObj.like = like;
@@ -562,7 +562,7 @@ function viewTableCtrl($scope, $mdDialog, jsonData, pageName) {
 
     $scope.tblType = 'l1';
     $scope.selectTypeName = 'Page Likes';
-    $scope.onChangeTblView = function(type) {
+    $scope.onChangeTblView = function (type) {
         var updatedNeed = $scope.tblType;
         $scope.pageViewDta = [];
         switch (updatedNeed) {
@@ -596,16 +596,16 @@ function viewTableCtrl($scope, $mdDialog, jsonData, pageName) {
     };
 
 
-    $scope.closeDialog = function() {
+    $scope.closeDialog = function () {
         $mdDialog.hide();
     }
 };
 
 //onScroll change table hader
-routerApp.directive("fixOnScroll", function() {
-    return function(scope, element, attrs) {
+routerApp.directive("fixOnScroll", function () {
+    return function (scope, element, attrs) {
         var fixedDiv = attrs.fixedDiv;
-        element.bind("scroll", function() {
+        element.bind("scroll", function () {
             if (element.scrollLeft()) {
                 var leftPos = element.scrollLeft();
                 $(fixedDiv).scrollLeft(leftPos);

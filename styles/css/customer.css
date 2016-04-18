@@ -6,7 +6,7 @@
 
 /*scrollbar*/
 ::-webkit-scrollbar {
-    width: 15px;
+   /* width: 15px;*/
     height: 15px;
 }
 
@@ -16,6 +16,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
+    height: 50px;
     background-color: #ECECEC;
     border: 5px solid rgba(0, 0, 0, 0);
     background-clip: padding-box;

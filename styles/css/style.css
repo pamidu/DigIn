@@ -2083,41 +2083,50 @@ md-tab-content > div{
 .data-container1{
     font-family: 'Ek Mukta', sans-serif;
     font-weight: 500;
-    
+    width: 100%;
+    padding-left: 8px;
+    padding-bottom: 8px;    
 }
 .data-slot1{
     padding: 8px;
 }
 .data-slot2{
-    /*padding-bottom: 2px;*/
+    text-align: left;
 }
 .data-slot3{
     border-radius: 5px;
 }
 .data-field1{
+    border-radius: 4px 0px 0px 4px;
     width: 80%;
     padding: 8px;
 }
 .data-field2{
+    border-radius: 4px 0px 0px 4px;
     width: 50%;
     padding: 8px;
 }
 .data-field3{
+    border-radius: 4px 0px 0px 4px;
     width: 30%;
     padding: 8px;
 }
 .data-item1{
+    border-radius: 0px 4px 4px 0px;
     width: 70%;
     padding: 8px;
 }
 .data-item2{
+    border-radius: 0px 4px 4px 0px;
     width: 20%;
     padding: 8px;
 }
 .data-item3{
+    border-radius: 0px 4px 4px 0px;
     padding: 8px;
 }
 .data-item4{
+    border-radius: 0px 4px 4px 0px;
     width: 50%;
     padding: 8px;
 }
@@ -2150,7 +2159,7 @@ md-tab-content > div{
     background-color: #292F33;
 }
 .background-twitter-blue{
-    color: #292F33;
+    color: white;
     background-color: #55acee;
 }
 .background-digin-blue{

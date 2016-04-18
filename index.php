@@ -5,8 +5,8 @@ $fullHost = strtolower($_SERVER['HTTP_HOST']);
 
 switch ($fullHost) {
 
-     case $mainDomain:
-        if(isset($_COOKIE["securityToken"])){
+    case $mainDomain:
+        if(!isset($_COOKIE["securityToken"])){
 
               include ("index1.php");
         }else{

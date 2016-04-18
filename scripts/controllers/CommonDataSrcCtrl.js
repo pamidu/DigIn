@@ -384,6 +384,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     $mdDialog.show({
                             controller: function fileUploadCtrl($scope, $mdDialog, fileUpload, $http, Upload) {
 
+                                $scope.diginLogo = 'digin-logo-wrapper2';
+                                $scope.preloader = false;
                                 $scope.finish = function() {
                                     $mdDialog.hide();
                                 }
@@ -402,27 +404,35 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                 $scope.log = '';
 
                                 $scope.upload = function(files) {
+                                    
                                     if (files && files.length) {
+                                        $scope.preloader = true;
+                                        $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
                                         for (var i = 0; i < files.length; i++) {
                                             var lim = i == 0 ? "" : "-" + i;
                                            
                                             Upload.upload({
-                                                 url: 'http://localhost:8080/file_upload',
+                                                 url: 'http://192.168.0.34:8080/file_upload',
                                                   headers: {
                                                  'Content-Type': 'multipart/form-data',
                                                   
                                                   },           
                                                   data: {
                                                     file: files[i],
-                                                  db: 'BigQuery',
-                                                  SecurityToken: 'e1f2e6f8c7a511a48b6add5c2ef24147',
-                                                  Domain: 'duosoftware'
+                                                    db: 'BigQuery',
+                                                    SecurityToken: 'e1f2e6f8c7a511a48b6add5c2ef24147',
+                                                    Domain: 'duosoftware'
                                                  }
                                                 
                                             }).success(function(data){                                                 
-                                                   fireMsg('1', 'Successfully uploaded!Analyse your data by picking it on bigquery!');
+                                                fireMsg('1', 'Successfully uploaded!Analyse your data by picking it on bigquery!');
+                                                $scope.preloader = false;
+                                                $scope.diginLogo = 'digin-logo-wrapper2';
+                                                $mdDialog.hide();
                                             }).error(function(data) {
-                                               fireMsg('1', 'There was an error while uploading data !');
+                                                fireMsg('0', 'There was an error while uploading data !');
+                                                $scope.preloader = false;
+                                                $scope.diginLogo = 'digin-logo-wrapper2';
                                             });
 
                                         }

@@ -2,5 +2,15 @@
     <md-input-container flex>
         <label>Label text</label>
         <input ng-model="selectedChart.initObj.label">
-    </md-input-container>                           
+    </md-input-container>
+    <md-select ng-model="forecastObj.paramObj.model">
+      <md-option ng-repeat="mod in forecastObj.models" value="{{mod}}">
+        {{mod}}
+      </md-option>
+    </md-select>
+    <md-select ng-model="forecastObj.paramObj.model">
+      <md-option ng-repeat="mod in forecastObj.models" value="{{mod}}">
+        {{mod}}
+      </md-option>
+    </md-select>
 </div>

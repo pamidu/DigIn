@@ -1,7 +1,7 @@
 <md-sidenav class="md-sidenav-right slider-r-wrap  "
             md-component-id="right">
     <!-- message -->
-    <toast></toast>
+    <!-- <toast></toast> -->
     <md-content class="overflow-none" layout="row">
         <div class="slider-r-tab">
             <ul class="list-panel icheck-inline">
@@ -293,7 +293,7 @@
 
             <div class="cmds-btn-footer" ng-show="sourceUi.selectedNameSpace!=''">
                 <div class="cmds-btn-footer m-top-10">
-                        <span class="btn btn-block btn-default"
+                        <span ng-disabled="pendingColumns" class="btn btn-block btn-default"
                               ng-click="commonUi.onSaveSource()">
                             save
                         </span>

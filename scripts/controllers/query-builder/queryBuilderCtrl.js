@@ -9,7 +9,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     }
     
     $scope.initQueryBuilder = function() {
-        $scope.widget = $stateParams.widObj;
+        
         if (typeof($scope.widget.commonSrc) == "undefined") {
             $scope.selectedChart = $scope.commonData.chartTypes[0];
             $scope.highCharts.onInit(false);
@@ -22,6 +22,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
     };
 
+    $scope.widget = $stateParams.widObj;
     $scope.isDrilled = false;
     $scope.dynFlex = 70;
     $scope.chartWrapStyle = {height : 'calc(55vh)'};
@@ -63,8 +64,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             }
         },
         title: {
-            text: "Chart Title",
-            x: -20 //center
+            text: $scope.widget.widName,
+//            x: -20 //center
         },
         
         xAxis: {
@@ -331,7 +332,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     value: 33852,
                     label: "Sales Average"
                 },
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/metricSettings.html'
             }, {
                 id: 'ct14',
                 icon: 'ti-map-alt',
@@ -862,6 +863,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }];
                 $scope.mapResult(cat, res, function(data) {
                     $scope.highchartsNG.series = data;
+                    $scope.highchartsNG.series.forEach(function(key){
+                        if(key.data.length > 1000) 
+                            key['turboThreshold'] = key.data.length;
+                    });
                     $scope.eventHndler.isLoadingChart = false;
                     $scope.receivedQuery = query;
                     $scope.queryEditState = false;
@@ -995,12 +1000,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             var meaArr = $scope.sourceData.fMeaArr;
             var dataTypeFlag = true;
             meaArr.forEach(function(k){
-                if(k.dataType != "TIMESTAMP" || k.dataType == "datetime"){
+                if(k.dataType == "TIMESTAMP" || k.dataType == "datetime"){
                     dataTypeFlag = false;
                 }
             });
             
-            if(dataTypeFlag){
+            if(dataTypeFlag && $scope.sourceData.fAttArr.length==0){
                 $scope.eventHndler.isLoadingChart = true;
 
                 var fieldArray = [];
@@ -1017,12 +1022,29 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     var hObj = {};
                     $scope.dataforeachBox = []
                     $scope.dataOutliers = [];
+                    
+                    $scope.plotCategories = [];
+                    $scope.observationsData = [];
+                    var i=0;
+                    
                     if (status) {
-                        for (var field in data) {
-                            $scope.dataforeachBox.push([data[field].minimum, data[field].l_w, data[field].median, data[field].u_w, data[field].maximum]);
-                            $scope.dataOutliers.push([data[field].outliers[0]]);
+                        for (var key in data) {
+                            if (Object.prototype.hasOwnProperty.call(data, key)) {
+                                $scope.plotCategories.push(key);
+                                $scope.observationsData.push([
+                                    data[key].l_w,
+                                    data[key].quartile_1,
+                                    data[key].quartile_2,
+                                    data[key].quartile_3,
+                                    data[key].u_w
+                                ]);
+                                data[key].outliers.forEach(function(k){
+                                    $scope.dataOutliers.push([i,k]);
+                                });
+                                i++;
+                            }
                         }
-                        $scope.categories = fieldArray;
+                        
                         $scope.eventHndler.isLoadingChart = false;
                         $scope.widget.highchartsNG = {
                             options: {
@@ -1034,11 +1056,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 }
                             },
                             title: {
-                                text: 'Basic drilldown'
+                                text: $scope.widget.widName
                             },
 
                             xAxis: {
-                                categories: $scope.categories,
+                                categories: $scope.plotCategories,
                                 title: {
                                     text: 'Selected Fields'
                                 }
@@ -1046,8 +1068,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                             yAxis: {
                                 title: {
-                                    text: 'Values'
-                                }
+                                    text: 'Observations'
+                                },
                             },
                             credits: {
                                 enabled: false
@@ -1073,8 +1095,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 }
                             },
                             series: [{
-                                name: 'Fields',
-                                data: $scope.dataforeachBox,
+                                name: 'Observations',
+                                data: $scope.observationsData,
                                 tooltip: {
                                     headerFormat: '<em>Experiment No {point.key}</em><br/>'
                                 }
@@ -1146,7 +1168,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             }
                         },
                         title: {
-                            text: 'Basic drilldown'
+                            text: $scope.widget.widName
                         },
 
                         xAxis: {
@@ -1243,12 +1265,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
     }
 
-$scope.histogram = {
+
+    $scope.histogram = {
         changeType: function() {
             var meaArr = $scope.sourceData.fMeaArr;
             var dataTypeFlag = true;
             meaArr.forEach(function(k){
-                if(k.dataType != "TIMESTAMP" || k.dataType == "datetime"){
+                if(k.dataType == "TIMESTAMP" || k.dataType == "datetime"){
                     dataTypeFlag = false;
                 }
             });
@@ -1270,14 +1293,18 @@ $scope.histogram = {
                 $scope.client.generatehist($scope.sourceData.tbl, fieldArray.toString(), function(data, status) {
                     var hObj = {};
                     if (status) {
-
                         $scope.histogramPlotcat = [];
                         $scope.histogramPlotData = [];
 
-                        for (var field in data[0]) {
-                            var i = Object.keys(data[0]).indexOf(field);  
-                            $scope.histogramPlotcat.push(field);
-                            $scope.histogramPlotData.push(data[0][field]);
+                        for (var key in data) {
+                            if (Object.prototype.hasOwnProperty.call(data, key)) {
+                                for(var k in data[key]){
+                                    if (Object.prototype.hasOwnProperty.call(data[key], k)) {
+                                        $scope.histogramPlotcat.push(k);
+                                        $scope.histogramPlotData.push(data[key][k]);
+                                    }
+                                }
+                            }
                         }
 
                         $scope.categories = fieldArray;
@@ -1374,10 +1401,8 @@ $scope.histogram = {
         }
 
 
-    }
-
-
-
+    };
+    
     $scope.d3hierarchy = {
         onInit: function(recon) {            
             $scope.hierarData = $scope.widget.widData;
@@ -1590,7 +1615,9 @@ $scope.histogram = {
             $scope.getAggregation();
         },
         onGetAggData: function(res) {
+            
             for (var c in res) {
+                $scope.isPendingRequest = false;
                 if (Object.prototype.hasOwnProperty.call(res, c)) {
                     $scope.selectedChart.initObj.value = res[c];
                     $scope.selectedChart.initObj.label = c;
@@ -1622,6 +1649,9 @@ $scope.histogram = {
                         width: null,
                         height: 367,
                     }
+                },
+                title: {
+                    text: $scope.widget.widName
                 },
                 plotOptions: {}, 
                 legend: {

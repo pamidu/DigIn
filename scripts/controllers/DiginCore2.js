@@ -666,6 +666,7 @@ routerApp.controller('successCtrl', ['$scope', '$objectstore', '$mdDialog', func
 
 }]);
 
+
 routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDialog', '$sce', '$http', '$objectstore', 'dashboard', '$log', 'ngToast',
     function($scope, $timeout, $rootScope, $mdDialog, $sce, $http, $objectstore, dashboard, $log, ngToast) {
         
@@ -846,6 +847,7 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
                 }
 
                 if ($rootScope.username == undefined || $rootScope.username == null) {
+
                         $rootScope.username = "DemoUser";
                 }
 

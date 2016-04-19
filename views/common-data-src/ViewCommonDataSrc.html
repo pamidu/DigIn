@@ -295,7 +295,7 @@
 
             <div class="cmds-btn-footer" ng-show="sourceUi.selectedNameSpace!=''">
                 <div class="cmds-btn-footer m-top-10">
-                        <span class="btn btn-block btn-default"
+                        <span ng-disabled="pendingColumns" class="btn btn-block btn-default"
                               ng-click="commonUi.onSaveSource()">
                             save
                         </span>

@@ -107,12 +107,12 @@
                 generateboxplot: function(tbl, fieldstr, cb){
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "/generateboxplot?&tablename=[" + getNamespace() + "." + tbl +"]&&fields=["+fieldstr+"]" );
+                    }, $diginurls.diginengine + "/generateboxplot?q=[{'[" + getNamespace() + "." + tbl +"]':["+fieldstr+"]}]&dbtype=" + database);
                 },
                 generatehist: function(tbl, fieldstr, cb){
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "/generatehist?&tablename=[" + getNamespace() + "." + tbl +"]&&fields=["+fieldstr+"]" );
+                    }, $diginurls.diginengine + "/generatehist?q=[{'[" + getNamespace() + "." + tbl +"]':["+fieldstr+"]}]&dbtype=" + database);
                 },
                    generateBubble: function(tbl, x, y , c,cb){
                     $servicehelpers.httpSend("get", function(data, status, msg) {
@@ -226,8 +226,16 @@
         return {
             //            diginengine: "http://" + host + ":8080",
             diginengine: "http://104.155.236.85:8080",
-            // diginengine: "http://192.168.2.33:8080",
-            diginenginealt: "http://" + host + ":8081"
+//             diginengine: "http://192.168.2.33:8080",
+            diginenginealt: "http://" + host + ":8081",
+            getNamespace : function getNamespace() {
+                var authdata = JSON.parse(getCookie("authData"));
+                var namespace = authdata.Email.replace('@','_');
+                namespace = namespace.replace(/\./g, '_');
+
+             return "Demo";
+                // return namespace;
+            }
         };
     });
 })(angular.module('diginServiceHandler', []))

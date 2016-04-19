@@ -30,6 +30,16 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.sourceData = $csContainer.fetchSrcObj();
     $scope.client = $diginengine.getClient($scope.sourceData.src);
     $scope.queryEditState = false;
+    $scope.metricObj = {
+        scales:[{name:'None',val:""},
+                {name:'$',val:"$"},
+                {name:'cm',val:"cm"},
+                {name:'m',val:"m"},
+                {name:'kg',val:"kg"}],
+        decimals: [1,2,3,4],
+        scale:"",
+        decimal:2
+    }
     $scope.forecastObj = {
         models:["Additive", "Multiplicative", "Linear"],
         intervals:["Daily", "Weekly", "Monthly", "Yearly"],

@@ -41,6 +41,23 @@
     color: #fff;
 }
 
+.help-skip {
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #EC784B;
+    cursor: pointer;
+    float: right;
+    margin-right: 10%;
+    border: 2px solid #EC784B;
+    padding: 5px 18px 5px;
+    border-radius: 10px;
+}
+
+.help-skip:hover{
+    color: #fff !important;
+}
+
 .digin-wp-wrap {
     width: 100%;
     margin-top: 50px;

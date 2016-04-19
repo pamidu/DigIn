@@ -761,40 +761,49 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
 
     $scope.saveChart = function(widget) {
-        widget.widName = $scope.widget.widName;
-        widget.dataCtrl = "widgetSettingsDataCtrl";
-        widget.dataView = "views/ViewData.html";
-        widget["selectedChart"] = $scope.selectedChart;
-        if (typeof widget.commonSrc == "undefined") {
-            widget.highchartsNG["size"] = {
-                width: 300,
-                height: 220
-            };
-            widget["commonSrc"] = {
-                src: $scope.sourceData,
-                mea: $scope.executeQryData.executeMeasures,
-                att: $scope.executeQryData.executeColumns,
-                query: $scope.receivedQuery
-            };
-            $rootScope.dashboard.widgets.push(widget);
-        } else {
-            $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
-            $scope.widget["commonSrc"] = {
-                src: $scope.sourceData,
-                mea: $scope.executeQryData.executeMeasures,
-                att: $scope.executeQryData.executeColumns,
-                query: $scope.receivedQuery
-            };
-            var objIndex = getRootObjectById(widget.id, $rootScope.dashboard.widgets);
-            $rootScope.dashboard.widgets[objIndex] = widget;
-        }
 
-        $scope.eventHndler.isMainLoading = true;
-        $scope.eventHndler.message = $scope.eventHndler.messageAry[0];
-        setTimeout(function() {
-            $scope.eventHndler.isMainLoading = false;
-            $state.go('home.Dashboards');
-        }, 5000);
+        var widgetLimit = 6;
+
+        if($rootScope.dashboard.widgets.length < widgetLimit){
+
+            widget.widName = $scope.widget.widName;
+            widget.dataCtrl = "widgetSettingsDataCtrl";
+            widget.dataView = "views/ViewData.html";
+            widget["selectedChart"] = $scope.selectedChart;
+            if (typeof widget.commonSrc == "undefined") {
+                widget.highchartsNG["size"] = {
+                    width: 300,
+                    height: 220
+                };
+                widget["commonSrc"] = {
+                    src: $scope.sourceData,
+                    mea: $scope.executeQryData.executeMeasures,
+                    att: $scope.executeQryData.executeColumns,
+                    query: $scope.receivedQuery
+                };
+                $rootScope.dashboard.widgets.push(widget);
+            } else {
+                $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
+                $scope.widget["commonSrc"] = {
+                    src: $scope.sourceData,
+                    mea: $scope.executeQryData.executeMeasures,
+                    att: $scope.executeQryData.executeColumns,
+                    query: $scope.receivedQuery
+                };
+                var objIndex = getRootObjectById(widget.id, $rootScope.dashboard.widgets);
+                $rootScope.dashboard.widgets[objIndex] = widget;
+            }
+
+            $scope.eventHndler.isMainLoading = true;
+            $scope.eventHndler.message = $scope.eventHndler.messageAry[0];
+            setTimeout(function() {
+                $scope.eventHndler.isMainLoading = false;
+                $state.go('home.Dashboards');
+            }, 5000);
+        }
+        else{
+            privateFun.fireMessage('0','Maximum Widget Limit Exceeded');
+        }
     };
 
     //chart functions

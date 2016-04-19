@@ -38,7 +38,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
 
         }];
 
-
+        //ng-disabled model of save button
+        $scope.pendingColumns = true;
+        
         //data base field type
         $scope.dataBaseFiledTypes = [{
             'type': 'nvarchar',
@@ -301,6 +303,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             publicFun.getAllFields(selectedTbl, function(res, status) {
                                 if (status) {
                                     var dataTypes = $scope.dataBaseFiledTypes;
+                                    //eable save button
+                                    $scope.pendingColumns = false;
                                     for (var c in res) {
                                         if (Object.prototype.hasOwnProperty.call(res, c)) {
                                             var val = res[c];

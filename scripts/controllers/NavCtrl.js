@@ -1130,9 +1130,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             }
             if (routeName == "Save") {
-                // var selectedMenu = document.getElementsByClassName("menu-layer");
-                // selectedMenu[0].style.display = 'none';
-                //$scope.savePentaho();
+                if($state.current.name == 'home.Dashboards' || $state.current.name == 'home.CustomDashboardViewer')
                 $scope.saveDashboard(ev);
             }
             if (routeName == "Settings") {

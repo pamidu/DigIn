@@ -310,65 +310,66 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
             $mdDialog.hide();
         };
 
-        typeof $rootScope.clickedDash.name != "undefined" ? $scope.dashboardName = $rootScope.clickedDash.name : $scope.dashboardName = "";
-        
-        typeof $rootScope.clickedDash.type != "undefined" ? $scope.dashboardType = $rootScope.clickedDash.type : $scope.dashboardType = "";
-        
-        typeof $rootScope.clickedDash.date != "undefined" ? $scope.dashboardDate = new Date($rootScope.clickedDash.date) : $scope.dashboardDate = "";
-        
-        typeof $rootScope.clickedDash.culture != "undefined" ? $scope.dashboardCulture = $rootScope.clickedDash.culture : $scope.dashboardCulture = "";
+        if(typeof $rootScope.clickedDash != "undefined"){
+            typeof $rootScope.clickedDash.name != "undefined" ? $scope.dashboardName = $rootScope.clickedDash.name : $scope.dashboardName = "";
+
+            typeof $rootScope.clickedDash.type != "undefined" ? $scope.dashboardType = $rootScope.clickedDash.type : $scope.dashboardType = "";
+
+            typeof $rootScope.clickedDash.date != "undefined" ? $scope.dashboardDate = new Date($rootScope.clickedDash.date) : $scope.dashboardDate = "";
+
+            typeof $rootScope.clickedDash.culture != "undefined" ? $scope.dashboardCulture = $rootScope.clickedDash.culture : $scope.dashboardCulture = "";
+        }
 
         $scope.saveDashboardDetails = function(type) {
 
-            $rootScope.dashboard.dashboardName = $scope.dashboardName;
+            if($scope.dashboardName){
+                $rootScope.dashboard.dashboardName = $scope.dashboardName;
+                var dashboardObj = {
+                    name: $scope.dashboardName,
+                    type: $scope.dashboardType,
+                    culture: $scope.dashboardCulture,
+                    date: $scope.dashboardDate,
+                    customDuoDash: true, //will be useful when filtering these dashboards with pentaho dashboards
+                    data: $rootScope.dashboard.widgets,
+                    storyboard: false,
+                };
 
 
-            var dashboardObj = {
-                name: $scope.dashboardName,
-                type: $scope.dashboardType,
-                culture: $scope.dashboardCulture,
-                date: $scope.dashboardDate,
-                customDuoDash: true, //will be useful when filtering these dashboards with pentaho dashboards
-                data: $rootScope.dashboard.widgets,
-                storyboard: false,
-            };
+                if (type == "saveAll") {
+                    console.log("saving the whole story board");
+                    dashboardObj.data = $rootScope.Dashboards;
+                    dashboardObj.storyboard = true;
+                };
 
+                //console.log(dashboardObj);
 
-            if (type == "saveAll") {
-                console.log("saving the whole story board");
-                dashboardObj.data = $rootScope.Dashboards;
-                dashboardObj.storyboard = true;
-            };
+                var client = ObjectStoreService.initialize("duodigin_dashboard");
 
-            //console.log(dashboardObj);
+                ObjectStoreService.saveObject(client, dashboardObj, "name", function(data) {
+                    if (data.state === 'error') {
+                        $mdDialog.hide();
+                        $mdDialog.show({
+                            controller: 'errorCtrl',
+                            templateUrl: 'views/dialog_error.html',
+                            resolve: {
 
-            var client = ObjectStoreService.initialize("duodigin_dashboard");
-             
-            ObjectStoreService.saveObject(client, dashboardObj, "name", function(data) {
-                if (data.state === 'error') {
-                    $mdDialog.hide();
-                    $mdDialog.show({
-                        controller: 'errorCtrl',
-                        templateUrl: 'views/dialog_error.html',
-                        resolve: {
+                            }
+                        })
+                    } else {
+                        DashboardService.getDashboards(dashboardObj);
+                        $mdDialog.hide();
+                        $mdDialog.show({
+                            controller: 'successCtrl',
+                            templateUrl: 'views/dialog_success.html',
+                            resolve: {
 
-                        }
-                    })
-                } else {
-                    DashboardService.getDashboards(dashboardObj);
-                    $mdDialog.hide();
-                    $mdDialog.show({
-                        controller: 'successCtrl',
-                        templateUrl: 'views/dialog_success.html',
-                        resolve: {
-
-                        }
-                    })
-                }
-            });
-              
-
- 
+                            }
+                        })
+                    }
+                });
+            }else{
+                alert('please insert a dashboard name');
+            }
         }
 
 
@@ -761,7 +762,6 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                     d3plugin: "",
                     divider: false,
                     chartSeries: $scope.chartSeries,
-                    query: "select * from testJay where Name!= 'Beast Master'",
                     id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
                     type: widget.type,
                     width: '370px',

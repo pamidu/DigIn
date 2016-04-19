@@ -67,7 +67,6 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope','$mdDialo
         d3plugin:"",
          divider: false,    
         chartSeries : $scope.chartSeries,
-        query:"select * from testJay where Name!= 'Beast Master'",
         id: "chart" + Math.floor(Math.random()*(100-10+1)+10),
         type:"All",
         width : '350px',

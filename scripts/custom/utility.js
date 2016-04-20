@@ -167,3 +167,15 @@ function getCookie(name) {
   var parts = value.split("; " + name + "=");
   if (parts.length == 2) return parts.pop().split(";").shift();
 }
+
+//rounding numbers to given decimal places
+function convertDecimals(number, decimal_places) {
+    if (typeof number === 'number' && typeof decimal_places === 'number') {
+      var denominator    = Math.pow(10, decimal_places),
+          rounded_number = Math.round(number * denominator) / denominator;
+
+      return rounded_number;
+    } else {
+      return number;
+    }
+  }

@@ -24,7 +24,6 @@
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
     <!-- <link href="styles/css/material-wfont.css" rel="stylesheet">-->
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="styles/css/directive_library.css">
     <link rel="stylesheet" type="text/css" href="styles/css/pivot.css"/>

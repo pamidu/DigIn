@@ -2,7 +2,7 @@
  * Created by Damith on 3/4/2016.
  */
 
-routerApp.controller('sourceAlgorithmCtrl', function ($scope) {
+routerApp.controller('sourceAlgorithmCtrl', function ($scope,$state) {
 
     var mainFunEventHandler = (function () {
         return {}
@@ -26,7 +26,7 @@ routerApp.controller('sourceAlgorithmCtrl', function ($scope) {
             this.currentSelectedTool.isExport = false;
         },
         onClickBack: function () {
-            alert('event fire');
+            $state.go('home.Dashboards');
         },
         select2Options: {
             formatNoMatches: function (term) {
@@ -67,7 +67,6 @@ routerApp.controller('sourceAlgorithmCtrl', function ($scope) {
             }
         },
         closeToggleOpen: function (openWindow) {
-
             switch (openWindow) {
                 case '1':
                     $("#toggleTblHeader").hide(200);

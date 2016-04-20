@@ -54,6 +54,10 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                         focus('txtUname');
                     });
                 },
+                validateEmail: function (email) {
+                    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return re.test(email);
+                },
                 //---------------------------------------------------------------------------------
 
                 /*
@@ -123,6 +127,11 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                 $scope.error.isUserName = true;
                 focus('txtUname');
                 return;
+            } else if (!privateFun.validateEmail(loginDetails.userName)) {
+                privateFun.fireMsg('0', '<strong>Error : </strong>invalid login user name..Please check.');
+                $scope.error.isUserName = true;
+                focus('txtUname');
+                return;
             } else if (loginDetails.pwd == '' || angular.isUndefined(loginDetails.pwd)) {
                 privateFun.fireMsg('0', '<strong>Error : </strong>invalid login password.Please check.');
                 $scope.error.isPwd = true;
@@ -157,7 +166,6 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
         //new update
         //damith
         //check sign up status
-
 
 
     }]).directive('keyEnter', function () {

@@ -1,45 +1,47 @@
 var routerApp = angular.module('DuoDiginRt', [
-    'ngMaterial',
-    'uiMicrokernel',
-    'diginServiceHandler',
-    'ngAnimate',
-    'DiginD3.filters',
-    'DiginD3.services',
-    'DiginD3.directives',
-    'DiginD3.controllers',
-    'highcharts-ng',
-    'angular.css.injector',
-    'ui.router',
-    '720kb.socialshare',
-    'FBAngular',
-    'ngStorage',
-    'configuration',
-    'directivelibrary',
-    'ngMdIcons',
-    'nvd3',
-    'gridster',
-    'ui.calendar',
-    'mgcrea.ngStrap',
-    'ui',
-    'lk-google-picker',
-    'angularUtils.directives.dirPagination',
-    'ngSanitize',
-    'ngCsv',
-    'angular-intro',
-    'uiGmapgoogle-maps',
-    'angularMoment',
-    'googleplus',
-    'rzModule',
-    'angular-table',
-    'ngToast',
-    'vAccordion',
-    'ngDraggable',
-    'ngMessages',
-    'ngFileUpload',
-    "com.2fdevs.videogular",
-    "com.2fdevs.videogular.plugins.controls",
-    "info.vietnamcode.nampnq.videogular.plugins.youtube"
-]);
+        'ngMaterial',
+        'uiMicrokernel',
+        'diginServiceHandler',
+        'ngAnimate',
+        'DiginD3.filters',
+        'DiginD3.services',
+        'DiginD3.directives',
+        'DiginD3.controllers',
+        'highcharts-ng',
+        'angular.css.injector',
+        'ui.router',
+        '720kb.socialshare',
+        'FBAngular',
+        'ngStorage',
+        'configuration',
+        'directivelibrary',
+        'ngMdIcons',
+        'nvd3',
+        'gridster',
+        'ui.calendar',
+        'mgcrea.ngStrap',
+        'ui',
+        'lk-google-picker',
+        'angularUtils.directives.dirPagination',
+        'ngSanitize',
+        'ngCsv',
+        'angular-intro',
+        'uiGmapgoogle-maps',
+        'angularMoment',
+        'googleplus',
+        'rzModule',
+        'angular-table',
+        'ngToast',
+        'vAccordion',
+        'ngDraggable',
+        'ngMessages',
+        'ngFileUpload',
+        "com.2fdevs.videogular",
+        "com.2fdevs.videogular.plugins.controls",
+        "info.vietnamcode.nampnq.videogular.plugins.youtube",
+        "ngTagsInput"
+    ])
+    ;
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
 
@@ -48,22 +50,22 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $httpProvider.defaults.headers.common["Content-Type"] = "application/x-www-form-urlencoded";
 
-    $urlRouterProvider.otherwise(function($injector, $location) {
-            
-            var state;
-            $rootScope = $injector.get("$rootScope");
-            console.log( "$location", $location);
+    $urlRouterProvider.otherwise(function ($injector, $location) {
 
-            if(localStorage.getItem("initialLogin") == undefined){
+        var state;
+        $rootScope = $injector.get("$rootScope");
+        console.log("$location", $location);
 
-                localStorage.setItem("initialLogin", false);
-                state = 'login';
-            }
-            else{
-                state = 'home';
-            }
+        if (localStorage.getItem("initialLogin") == undefined) {
 
-            return state;
+            localStorage.setItem("initialLogin", false);
+            state = 'login';
+        }
+        else {
+            state = 'home';
+        }
+
+        return state;
     });
 
     $stateProvider
@@ -398,8 +400,8 @@ routerApp.run(function ($rootScope, $auth, $state, $csContainer) {
         if (requireLogin && secToken === "N/A" && typeof(cookToken) === "undefined") {
             event.preventDefault();
             $state.go('login');
-        }else {
-    
+        } else {
+
             var stateName = toState.name;
             //check for custom state validations
             switch (stateName) {
@@ -970,8 +972,7 @@ routerApp.service('generatePDF1', function ($timeout) {
 
 });
 routerApp.service('generatePDF2', function ($timeout) {
-    this.generate = function (
-        Element, config) {
+    this.generate = function (Element, config) {
 
         var doc = new jsPDF('landscape');
         var options = {format: 'PNG'};
@@ -1168,9 +1169,9 @@ routerApp.constant('config', {
 routerApp.directive('fileInput', ['$parse', function ($parse) {
     return {
         restrict: 'A',
-        link: function(scope, element, attrs) {
-                              
-            element.bind('change', function(){
+        link: function (scope, element, attrs) {
+
+            element.bind('change', function () {
                 $parse(attrs.fileInput).assign();
                 scope.$apply(scope.element[0].files);
             });
@@ -1179,17 +1180,19 @@ routerApp.directive('fileInput', ['$parse', function ($parse) {
 }]);
 
 routerApp.service('fileUpload', ['$http', function ($http) {
-    this.uploadFileToUrl = function(file, uploadUrl){
+    this.uploadFileToUrl = function (file, uploadUrl) {
         // var fd = new FormData();
         // fd.append('file', file);
         console.log("fie to json", angular.toJson(file));
-            
+
         $http.post(uploadUrl, angular.toJson(file), {
-            headers: {'Content-Type': undefined},
-        })
-        .success(function(){  alert("success");
-        })
-        .error(function(){  alert("failure");
-        });
+                headers: {'Content-Type': undefined},
+            })
+            .success(function () {
+                alert("success");
+            })
+            .error(function () {
+                alert("failure");
+            });
     }
 }]);

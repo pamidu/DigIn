@@ -13,8 +13,8 @@
 //        namespace = namespace.replace(/./, '_');
         namespace = namespace.replace(/\./g, '_');
 
-     return "Demo";
-        // return namespace;
+//     return "Demo";
+         return namespace;
     }
     dsh.factory('$diginengine', function($diginurls, $servicehelpers) {
         function DiginEngineClient(_dsid, _db) {

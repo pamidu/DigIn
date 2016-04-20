@@ -34,7 +34,7 @@
                                             layout-align="center center" flex></ng-md-icon>
                                 <md-tooltip md-direction="left">settings</md-tooltip>
                             </md-button>
-                            <md-button class="widget-button" ng-show="widget.uniqueType=='Dynamic Visuals'" ng-click="showWidget($event,widget)">
+                            <md-button class="widget-button" ng-if="showFullView(widget)" ng-click="showWidget($event,widget)">
                                 <ng-md-icon icon="fullscreen" style="fill:dimgrey" size="20" 
                                 layout="column" layout-align="center center" flex></ng-md-icon>
                                 <md-tooltip md-direction="left">full view</md-tooltip>
@@ -44,7 +44,7 @@
                                             layout-align="center center" flex></ng-md-icon>
                                 <md-tooltip md-direction="left">commentary</md-tooltip>
                             </md-button>
-                            <md-button class="widget-button" ng-show="widget.dataCtrl != undefined" ng-click="showData($event,widget)">
+                            <md-button class="widget-button" ng-if="showDataView(widget)" ng-click="showData($event,widget)">
                                 <ng-md-icon icon="format_list_numbered" style="fill:dimgrey" size="20" layout="column"
                                             layout-align="center center" flex></ng-md-icon>
                                 <md-tooltip md-direction="left">data</md-tooltip>

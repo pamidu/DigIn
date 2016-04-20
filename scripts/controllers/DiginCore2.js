@@ -301,6 +301,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
     }
 ]);
+
 routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService',
 
     function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService) {
@@ -340,28 +341,47 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                 //console.log(dashboardObj);
 
                 var client = ObjectStoreService.initialize("duodigin_dashboard");
+                
+                for(i=0;i<$rootScope.dashboardsObj.length;i++){
+                    if($rootScope.dashboardsObj[i].name == dashboardObj.name){
+                        var confirm = $mdDialog.confirm()
+                          .parent(angular.element(document.body))
+                          .title('Overwrite existing dashboard')
+                          .content('There is already a dashboard with this name')
+                          .ariaLabel('Lucky day')
+                          .ok('Overwrite it!')
+                          .cancel("Don't overwrite it");
+                        $mdDialog.show(confirm).then(function() {
+                            ObjectStoreService.saveObject(client, dashboardObj, "name", function(data) {
+                                if (data.state === 'error') {
+                                    $mdDialog.hide();
+                                    $mdDialog.show({
+                                        controller: 'errorCtrl',
+                                        templateUrl: 'views/dialog_error.html',
+                                        resolve: {
+
+                                        }
+                                    })
+                                } else {
+                                    $rootScope.dashboardsObj.splice(i,1);
+                                    $rootScope.dashboardsObj.push(dashboardObj);
+                                    DashboardService.getDashboards(dashboardObj);
+                                    $mdDialog.hide();
+                                    $mdDialog.show({
+                                        controller: 'successCtrl',
+                                        templateUrl: 'views/dialog_success.html',
+                                        resolve: {
+
+                                        }
+                                    })
+                                }
+                            });                    
+                         }, function() {});                        
+                    }
+                }
 
                 ObjectStoreService.saveObject(client, dashboardObj, "name", function(data) {
-                    if (data.state === 'error') {
-                        $mdDialog.hide();
-                        $mdDialog.show({
-                            controller: 'errorCtrl',
-                            templateUrl: 'views/dialog_error.html',
-                            resolve: {
-
-                            }
-                        })
-                    } else {
-                        DashboardService.getDashboards(dashboardObj);
-                        $mdDialog.hide();
-                        $mdDialog.show({
-                            controller: 'successCtrl',
-                            templateUrl: 'views/dialog_success.html',
-                            resolve: {
-
-                            }
-                        })
-                    }
+                    
                 });
             }else{
                 alert('please insert a dashboard name');
@@ -371,6 +391,7 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
 
     }
 ]);
+
 
 routerApp.controller('shareCtrl', ['$scope', '$rootScope', '$objectstore', '$mdDialog', function($scope, $rootScope,
     $objectstore, $mdDialog) {

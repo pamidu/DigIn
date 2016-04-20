@@ -98,7 +98,8 @@ routerApp.service('$qbuilder',function($diginengine){
         this.sync = function(q, cl, widObj, cb) {
             cl.getExecQuery(q, function(res, status, query){
                 if(status){
-                    widObj.widData.value = setMeasureData(res[0]);
+                    widObj.widData.decValue = res[0];
+                    widObj.widData.value = convertDecimals(setMeasureData(res[0]),parseInt(widObj.widData.dec));
                 }
                 cb(widObj);
             });

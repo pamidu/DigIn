@@ -318,55 +318,54 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
         }
         $scope.saveDashboardDetails = function(type) {
 
-            $rootScope.dashboard.dashboardName = $scope.dashboardName;
+            if($scope.dashboardName){
+                $rootScope.dashboard.dashboardName = $scope.dashboardName;
+                var dashboardObj = {
+                    name: $scope.dashboardName,
+                    type: $scope.dashboardType,
+                    culture: $scope.dashboardCulture,
+                    date: $scope.dashboardDate,
+                    customDuoDash: true, //will be useful when filtering these dashboards with pentaho dashboards
+                    data: $rootScope.dashboard.widgets,
+                    storyboard: false,
+                };
 
 
-            var dashboardObj = {
-                name: $scope.dashboardName,
-                type: $scope.dashboardType,
-                culture: $scope.dashboardCulture,
-                date: $scope.dashboardDate,
-                customDuoDash: true, //will be useful when filtering these dashboards with pentaho dashboards
-                data: $rootScope.dashboard.widgets,
-                storyboard: false,
-            };
+                if (type == "saveAll") {
+                    console.log("saving the whole story board");
+                    dashboardObj.data = $rootScope.Dashboards;
+                    dashboardObj.storyboard = true;
+                };
 
+                //console.log(dashboardObj);
 
-            if (type == "saveAll") {
-                console.log("saving the whole story board");
-                dashboardObj.data = $rootScope.Dashboards;
-                dashboardObj.storyboard = true;
-            };
+                var client = ObjectStoreService.initialize("duodigin_dashboard");
 
-            //console.log(dashboardObj);
+                ObjectStoreService.saveObject(client, dashboardObj, "name", function(data) {
+                    if (data.state === 'error') {
+                        $mdDialog.hide();
+                        $mdDialog.show({
+                            controller: 'errorCtrl',
+                            templateUrl: 'views/dialog_error.html',
+                            resolve: {
 
-            var client = ObjectStoreService.initialize("duodigin_dashboard");
-             
-            ObjectStoreService.saveObject(client, dashboardObj, "name", function(data) {
-                if (data.state === 'error') {
-                    $mdDialog.hide();
-                    $mdDialog.show({
-                        controller: 'errorCtrl',
-                        templateUrl: 'views/dialog_error.html',
-                        resolve: {
+                            }
+                        })
+                    } else {
+                        DashboardService.getDashboards(dashboardObj);
+                        $mdDialog.hide();
+                        $mdDialog.show({
+                            controller: 'successCtrl',
+                            templateUrl: 'views/dialog_success.html',
+                            resolve: {
 
-                        }
-                    })
-                } else {
-                    DashboardService.getDashboards(dashboardObj);
-                    $mdDialog.hide();
-                    $mdDialog.show({
-                        controller: 'successCtrl',
-                        templateUrl: 'views/dialog_success.html',
-                        resolve: {
-
-                        }
-                    })
-                }
-            });
-              
-
- 
+                            }
+                        })
+                    }
+                });
+            }else{
+                alert('please insert a dashboard name');
+            }
         }
 
 
@@ -857,6 +856,8 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
                 $rootScope.dashboard.widgets.push($scope.currWidget);
                 $scope.openInitialConfig(ev, $scope.currWidget.id);
                 $rootScope.widgetType = widget.title;
+
+                console.log("$rootScope.dashboard.widgets", $rootScope.dashboard.widgets);
             }
             else{
                 privateFun.fireMessage('0','Maximum Widget Limit Exceeded');

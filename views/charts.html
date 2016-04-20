@@ -1,4 +1,3 @@
-<toast></toast>
 <md-tabs id="footerBar" md-selected="selectedIndex" md-border-bottom md-autoselect md-align-tabs="bottom" ng-show="currentView=='Dashboard'" ng-mouseover="adjustTitleLength()">
     <md-tab ng-repeat="tab in tabs" label="{{tab.title}}" md-on-select="$root.selectCurrentDashboard(tab);">
         <div class="demo-tab tab{{$index%4}}">
@@ -35,9 +34,9 @@
                                             layout-align="center center" flex></ng-md-icon>
                                 <md-tooltip md-direction="left">settings</md-tooltip>
                             </md-button>
-                            <md-button class="widget-button" ng-click="showWidget($event,widget)">
-                                <ng-md-icon icon="fullscreen" style="fill:dimgrey" size="20" layout="column"
-                                            layout-align="center center" flex></ng-md-icon>
+                            <md-button class="widget-button" ng-show="widget.uniqueType=='Dynamic Visuals'" ng-click="showWidget($event,widget)">
+                                <ng-md-icon icon="fullscreen" style="fill:dimgrey" size="20" 
+                                layout="column" layout-align="center center" flex></ng-md-icon>
                                 <md-tooltip md-direction="left">full view</md-tooltip>
                             </md-button>
                             <md-button class="widget-button" ng-click="commentary(widget)">

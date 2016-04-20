@@ -795,6 +795,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 $rootScope.dashboard.widgets[objIndex] = widget;
             }
 
+            console.log("$rootScope.dashboard.widgets", $rootScope.dashboard.widgets);
+
             $scope.eventHndler.isMainLoading = true;
             $scope.eventHndler.message = $scope.eventHndler.messageAry[0];
             setTimeout(function() {

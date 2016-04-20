@@ -309,17 +309,13 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
             // no specific instance reference is needed.
             $mdDialog.hide();
         };
-
         if(typeof $rootScope.clickedDash != "undefined"){
-            typeof $rootScope.clickedDash.name != "undefined" ? $scope.dashboardName = $rootScope.clickedDash.name : $scope.dashboardName = "";
 
+            typeof $rootScope.clickedDash.name != "undefined" ? $scope.dashboardName = $rootScope.clickedDash.name : $scope.dashboardName = ""
             typeof $rootScope.clickedDash.type != "undefined" ? $scope.dashboardType = $rootScope.clickedDash.type : $scope.dashboardType = "";
-
             typeof $rootScope.clickedDash.date != "undefined" ? $scope.dashboardDate = new Date($rootScope.clickedDash.date) : $scope.dashboardDate = "";
-
             typeof $rootScope.clickedDash.culture != "undefined" ? $scope.dashboardCulture = $rootScope.clickedDash.culture : $scope.dashboardCulture = "";
         }
-
         $scope.saveDashboardDetails = function(type) {
 
             if($scope.dashboardName){
@@ -669,11 +665,31 @@ routerApp.controller('successCtrl', ['$scope', '$objectstore', '$mdDialog', func
 
 }]);
 
-routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDialog', '$sce', '$http', '$objectstore', 'dashboard', '$log',
-    function($scope, $timeout, $rootScope, $mdDialog, $sce, $http, $objectstore, dashboard, $log) {
-        //$scope.dashboard = dashboard;
-        //$rootScope.dashboard = dashboard;
-        console.log(dashboard);
+
+routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDialog', '$sce', '$http', '$objectstore', 'dashboard', '$log', 'ngToast',
+    function($scope, $timeout, $rootScope, $mdDialog, $sce, $http, $objectstore, dashboard, $log, ngToast) {
+        
+        var privateFun = (function() {
+            return {
+                fireMessage: function(msgType, msg) {
+
+                    var _className;
+                    if (msgType == '0') {
+                        _className = 'danger';
+                    } else if (msgType == '1') {
+                        _className = 'success';
+                    }
+                    ngToast.create({
+                        className: _className,
+                        content: msg,
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
+                }
+            }
+        })();
+
         getJSONData($http, 'widgetType', function(data) {
             $scope.WidgetTypes = data;
         });
@@ -723,18 +739,10 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
 
         $scope.addAllinOne = function(widget, ev) {
 
-            $mdDialog.hide();
+            var widgetLimit = 6;
 
-            console.log("dashboard details: ");
-            console.log($rootScope.dashboard);
-            console.log("Global dashboard details: ");
-            console.log($rootScope.Dashboards);
+            if($rootScope.dashboard.widgets.length < widgetLimit){
 
-            getJSONDataByIndex($http, 'widgetPositions', $rootScope.dashboard.widgets.length, function(data) {
-
-                $scope.leftPosition = data.leftPosition;
-                $scope.topPosition = data.topPosition;
-                $scope.ChartType = data.ChartType;
                 $scope.currWidget = {
 
                     widCsv: {},
@@ -838,18 +846,24 @@ routerApp.controller('WidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDial
                 }
 
                 if ($rootScope.username == undefined || $rootScope.username == null) {
-                    $rootScope.username = "DemoUser";
-                }
-                var msg = new SpeechSynthesisUtterance(+$rootScope.username + ' you are adding' + widget.title + ' widget');
 
+                        $rootScope.username = "DemoUser";
+                }
+
+                var msg = new SpeechSynthesisUtterance(+$rootScope.username + ' you are adding' + widget.title + ' widget');
                 window.speechSynthesis.speak(msg);
 
                 $rootScope.dashboard.widgets.push($scope.currWidget);
                 $scope.openInitialConfig(ev, $scope.currWidget.id);
+                $rootScope.widgetType = widget.title;
 
-            });
-            //save the type of the widget for the purpose of the socialMediaCtrl
-            $rootScope.widgetType = widget.title;
+                console.log("$rootScope.dashboard.widgets", $rootScope.dashboard.widgets);
+            }
+            else{
+                privateFun.fireMessage('0','Maximum Widget Limit Exceeded');
+            }
+
+            $mdDialog.hide();
         };
     }
 ]);
@@ -912,3 +926,5 @@ routerApp.controller('hierarchySummaryCtrl', [ '$scope', '$mdDialog', '$rootScop
         }
     }
 ]);
+
+

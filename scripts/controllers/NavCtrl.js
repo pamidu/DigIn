@@ -955,8 +955,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             //            var selectedMenu = document.getElementsByClassName("menu-layer");
             //            selectedMenu[0].style.display = 'none';
             $mdDialog.show({
-                controller: 'WidgetCtrl',
-                templateUrl: 'views/newWidget.html',
+                controller: 'addWidgetCtrl',
+                templateUrl: 'views/addWidget.html',
                 targetEvent: ev,
                 clickOutsideToClose: true,
                 resolve: {

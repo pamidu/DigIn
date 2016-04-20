@@ -301,9 +301,9 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
     }
 ]);
-routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService',
+routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast',
 
-    function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService) {
+    function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast) {
         $scope.closeDialog = function() {
             // Easily hides most recent dialog shown...
             // no specific instance reference is needed.
@@ -343,24 +343,38 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
 
                 ObjectStoreService.saveObject(client, dashboardObj, "name", function(data) {
                     if (data.state === 'error') {
+                        ngToast.create({
+                            className: 'danger',
+                            content: 'Failed Saving Dashboard. Please Try Again!',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
+                        });
                         $mdDialog.hide();
-                        $mdDialog.show({
-                            controller: 'errorCtrl',
-                            templateUrl: 'views/dialog_error.html',
-                            resolve: {
+                        // $mdDialog.show({
+                        //     controller: 'errorCtrl',
+                        //     templateUrl: 'views/dialog_error.html',
+                        //     resolve: {
 
-                            }
-                        })
+                        //     }
+                        // })
                     } else {
                         DashboardService.getDashboards(dashboardObj);
+                        ngToast.create({
+                            className: 'success',
+                            content: 'Successfuly Saved Dashboard',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
+                        });
                         $mdDialog.hide();
-                        $mdDialog.show({
-                            controller: 'successCtrl',
-                            templateUrl: 'views/dialog_success.html',
-                            resolve: {
+                        // $mdDialog.show({
+                        //     controller: 'successCtrl',
+                        //     templateUrl: 'views/dialog_success.html',
+                        //     resolve: {
 
-                            }
-                        })
+                        //     }
+                        // })
                     }
                 });
             }else{

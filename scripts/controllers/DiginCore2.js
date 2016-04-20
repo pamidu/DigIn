@@ -301,6 +301,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
     }
 ]);
+
 routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService',
 
     function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService) {
@@ -390,6 +391,7 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
 
     }
 ]);
+
 
 routerApp.controller('shareCtrl', ['$scope', '$rootScope', '$objectstore', '$mdDialog', function($scope, $rootScope,
     $objectstore, $mdDialog) {

@@ -30,6 +30,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.sourceData = $csContainer.fetchSrcObj();
     $scope.client = $diginengine.getClient($scope.sourceData.src);
     $scope.queryEditState = false;
+    $scope.metricObj = {
+        scales:[{name:'None',val:""},
+                {name:'$',val:"$"},
+                {name:'cm',val:"cm"},
+                {name:'m',val:"m"},
+                {name:'kg',val:"kg"}],
+        decimals: [1,2,3,4]
+    };
     $scope.forecastObj = {
         models:["Additive", "Multiplicative", "Linear"],
         intervals:["Daily", "Weekly", "Monthly", "Yearly"],
@@ -330,6 +338,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 view: 'views/query/chart-views/metric.html',
                 initObj: {
                     value: 33852,
+                    decValue: 33852,
+                    scale: "",
+                    dec: 2,
                     label: "Sales Average"
                 },
                 settingsView: 'views/query/settings-views/metricSettings.html'
@@ -1278,7 +1289,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }
             });
             
-            if(dataTypeFlag){
+            if(dataTypeFlag && $scope.sourceData.fAttArr.length==0){
                 $scope.eventHndler.isLoadingChart = true;
                 $scope.histogramPlot = []
 
@@ -1598,7 +1609,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         executeQuery: function(cat, res, query) {            
             for (var c in res[0]) {
                 if (Object.prototype.hasOwnProperty.call(res[0], c)) {
-                    $scope.selectedChart.initObj.value = res[0][c];
+                    $scope.selectedChart.initObj.decValue = res[0][c];
+                    $scope.selectedChart.initObj.value = convertDecimals(res[0][c],2);
                     $scope.selectedChart.initObj.label = c;
                 }
             }
@@ -1621,7 +1633,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             for (var c in res) {
                 $scope.isPendingRequest = false;
                 if (Object.prototype.hasOwnProperty.call(res, c)) {
-                    $scope.selectedChart.initObj.value = res[c];
+                    $scope.selectedChart.initObj.decValue = res[c];
+                    $scope.selectedChart.initObj.value = convertDecimals(res[c],parseInt($scope.selectedChart.initObj.dec));
                     $scope.selectedChart.initObj.label = c;
                 }
             }
@@ -1629,6 +1642,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         },
         saveWidget: function(wid) {
             wid["widData"] = {
+                decValue: $scope.selectedChart.initObj.decValue,
+                dec: $scope.selectedChart.initObj.dec,
+                scale:$scope.selectedChart.initObj.scale,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
@@ -1986,6 +2002,23 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             $scope.getGroupedAggregation($scope.executeQryData.executeColumns[0].filedName);
         }
     };
+    
+    //metric decimal change
+    $scope.changeDecimals = function(){
+        $scope.selectedChart.initObj.value = convertDecimals($scope.selectedChart.initObj.decValue, parseInt($scope.selectedChart.initObj.dec));
+    };
+    
+    //watch for series colors
+    $scope.$watch('highchartsNG.series', function(newVal, oldVal){
+        console.log(JSON.stringify(newVal));
+        console.log(JSON.stringify(oldVal));
+        for(i=0;i<newVal.length;i++){
+            for(j=0;j<oldVal.lenth;j++){
+                if(newVal[i].name == oldVal[j].name && oldVal[j].color!="#EC784B")
+                    newVal[i].color = oldVal[j].color;
+            }
+        }
+    }, true);
 
 }).directive("markable", function() {
     return {

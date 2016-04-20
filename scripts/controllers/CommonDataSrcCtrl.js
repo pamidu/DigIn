@@ -300,6 +300,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         commonUi.selectedIndex = 3;
                         var selectedTbl = $scope.sourceUi.selectedNameSpace;
                         if (selectedTbl != null) {
+                            $scope.pendingColumns = true;
                             publicFun.getAllFields(selectedTbl, function(res, status) {
                                 if (status) {
                                     var dataTypes = $scope.dataBaseFiledTypes;

@@ -8,8 +8,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         $state.go('home.Dashboards');
     }
     
-    $scope.initQueryBuilder = function() {
-        
+    $scope.initQueryBuilder = function() {        
         if (typeof($scope.widget.commonSrc) == "undefined") {
             $scope.selectedChart = $scope.commonData.chartTypes[0];
             $scope.highCharts.onInit(false);
@@ -57,6 +56,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             interval: "Daily"
         }
     };
+    $scope.recordedColors = {};
     
     $scope.initRequestLimit={value:1000};
     $scope.requestLimits = [1000,2000,3000,4000,5000];
@@ -825,8 +825,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         onInit: function(recon) {
             if (!recon)
                 $scope.highchartsNG = $scope.selectedChart.initObj;
-            else {
+            else {            
                 $scope.highchartsNG = $scope.widget.highchartsNG;
+                $scope.highchartsNG.series.forEach(function(key){
+                    $scope.recordedColors[key.origName] = key.color;
+                });
+                
                 $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
                 delete $scope.highchartsNG.size;
             }
@@ -1688,6 +1692,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 series: []
             };
         }
+        var row = "";
 
         if ($scope.executeQryData.executeColumns.length == 0) {
             var meaArr = executeQryData.executeMeasures;
@@ -1714,7 +1719,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
 
         } else {
-            $scope.getGroupedAggregation();
+            row = $scope.executeQryData.executeColumns[0].filedName;
+            $scope.getGroupedAggregation(row);
         }
 
         //alert('test');
@@ -1722,11 +1728,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
     $scope.setMeasureData = function(res) {
         $scope.highchartsNG.series = [];
+        $scope.serColor = "";
         for (var c in res) {
             if (Object.prototype.hasOwnProperty.call(res, c)) {
+                 typeof $scope.recordedColors[c] == "undefined" ? serColor = "#EC784B" : serColor = $scope.recordedColors[c];
                 $scope.highchartsNG.series.push({
                     name: c,
-                    color: '#EC784B',
+                    color: serColor,
                     data: [res[c]]
                 })
             }
@@ -1928,15 +1936,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
     $scope.mapResult = function(cat, res, cb) {
         var serArr = [];
+        var serColor = "";
 
         //dynamically building the series objects
         for (c in res[0]) {
             if (Object.prototype.hasOwnProperty.call(res[0], c)) {
                 if (c != cat) {
+                    typeof $scope.recordedColors[c] == "undefined" ? serColor = "#EC784B" : serColor = $scope.recordedColors[c];
                     serArr.push({
                         name: c,
-                        data: []
+                        color: serColor,
+                        data: [],
+                        origName: c
                     });
+                    
+                    
                 }
             }
         }
@@ -2008,17 +2022,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         $scope.selectedChart.initObj.value = convertDecimals($scope.selectedChart.initObj.decValue, parseInt($scope.selectedChart.initObj.dec));
     };
     
-    //watch for series colors
-    $scope.$watch('highchartsNG.series', function(newVal, oldVal){
-        console.log(JSON.stringify(newVal));
-        console.log(JSON.stringify(oldVal));
-        for(i=0;i<newVal.length;i++){
-            for(j=0;j<oldVal.lenth;j++){
-                if(newVal[i].name == oldVal[j].name && oldVal[j].color!="#EC784B")
-                    newVal[i].color = oldVal[j].color;
-            }
-        }
-    }, true);
+    $scope.recordColor = function(ser){
+        $scope.recordedColors[ser.name]= ser.color;
+    };
 
 }).directive("markable", function() {
     return {

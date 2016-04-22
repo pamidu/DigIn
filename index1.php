@@ -51,6 +51,7 @@
         -- google font
         -- customer css
         -- widget style
+        -- ng tag input
         -->
     <link rel="stylesheet" href="styles/fonts/font-awesome/font-awesome.min.css" type='text/css'/>
     <link rel="stylesheet" href="bower_components/angular-ui/angular-ui-select2/select2.min.css" type="text/css"/>
@@ -66,6 +67,7 @@
     <link rel="stylesheet" href="styles/css/hover.css" type='text/css'/>
     <link rel="stylesheet" href="bower_components/angular-ui/angular-ui-select2/select2-bootstrap.min.css"
           type='text/css'/>
+    <link rel="stylesheet" href="bower_components/tag-input/ng-tags-input.min.css"/>
     <link rel="stylesheet" href="styles/css/customer.css" type='text/css'/>
     <link rel="stylesheet" href="bower_components/v-accordion/v-accordion.min.css" type='text/css'/>
     <link rel="stylesheet" href="styles/css/customer-1.0.css" type='text/css'/>
@@ -115,6 +117,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script> -->
 <script src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
+
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
 
@@ -140,6 +143,10 @@
 <script type="text/javascript" src="scripts/vendor/angular-css-injector.js"></script>
 <script type="text/javascript" src="bower_components/notification/ng-Toast/ngToast.min.js"></script>
 <script type="text/javascript" src="bower_components/v-accordion/v-accordion.min.js"></script>
+
+<!-- ng input tag -->
+<script src="bower_components/tag-input/ng-tags-input.min.js"></script>
+
 <!-- codemirror -->
 <script type="text/javascript" src="bower_components/codemirror/lib/codemirror.js"></script>
 <script type="text/javascript" src="bower_components/codemirror/addon/display/placeholder.js"></script>

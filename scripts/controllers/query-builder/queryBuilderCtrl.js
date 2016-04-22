@@ -116,7 +116,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     };
 
 
+    //#private function
     var privateFun = (function() {
+
         return {
             checkToggleOpen: function(openWindow) {
                 switch (openWindow) {
@@ -154,6 +156,95 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     verticalPosition: 'top',
                     dismissOnClick: true
                 });
+            },
+            grySyntaxErrorMsg: function (type, value) {
+                //key
+                //0 : invalid query
+                //01 : from is missing
+                switch (type) {
+                    case "0":
+                        privateFun.fireMessage('0', '<strong>SQL syntax error : </strong>please check your query.');
+                        break;
+                    case "01":
+                        privateFun.fireMessage('0', '<strong>SQL syntax error : </strong>In this example, the keyword "FROM" is misspelled.');
+                        break;
+                    case "02":
+                        privateFun.fireMessage('0', '<strong>SQL syntax error : </strong>In this example, the keyword "TABLE" is misspelled.');
+                        break;
+                    case "03":
+                        privateFun.fireMessage('0', '<strong>SQL syntax error : </strong>In this example, the keyword "SELECT" is misspelled.');
+                        break;
+                    case "04":
+                        privateFun.fireMessage('0', '<strong>SQL syntax error : </strong>In this example, the table filed  is misspelled.');
+                        break;
+                    case "isNumber":
+                        var reg = /^\d+$/;
+                        return reg.test(value);
+                        break;
+            }
+
+            },
+            isQrySyntaxError: function (qry) {
+                if (typeof qry != 'undefined') {
+                    var splitQry = qry.split(" ");
+                    if (splitQry.length < 4) {
+                        privateFun.grySyntaxErrorMsg("04", null);
+                        return false;
+                    } else {
+                        if (!privateFun.grySyntaxErrorMsg("isNumber", splitQry[0])) {
+                            var i = 0;
+                            var stateQry = {
+                                hasFrom: false,
+                                fromIndex: 0,
+                                hasTbl: false,
+                                tblIndex: 0
+                            };
+                            for (i; splitQry.length > i; i++) {
+                                if (splitQry[i].toLowerCase().trim() == 'from') {
+                                    stateQry.hasFrom = true;
+                                    stateQry.tblIndex = i + 1;
+                                    stateQry.fromIndex = i;
+                                    i = splitQry.length;
+                                } else {
+                                    stateQry.hasFrom = false;
+        }
+                            }
+
+                            //is check select
+                            if (splitQry[0].toLowerCase().trim() != "select") {
+                                privateFun.grySyntaxErrorMsg("03", null);
+                                return false;
+                            }
+                            //check table filed
+                            var filedAry = splitQry.slice(1, stateQry.fromIndex);
+                            if (filedAry.length == 0) {
+                                privateFun.grySyntaxErrorMsg("04", null);
+                                return false;
+                            }
+                            //is check syntax from
+                            if (!stateQry.hasFrom) {
+                                privateFun.grySyntaxErrorMsg("01", null);
+                                return false;
+                            }
+                            //is check table name
+                            console.log(typeof splitQry[stateQry.tblIndex]);
+                            if (splitQry[stateQry.tblIndex].trim() != $scope.sourceData.tbl) {
+                                privateFun.grySyntaxErrorMsg("02", null);
+                                return false;
+                            }
+
+
+                        }
+                        else {
+                            privateFun.grySyntaxErrorMsg("0", null);
+                            return false;
+                        }
+                    }
+                }
+                else {
+                    privateFun.fireMessage('0', '<strong>Invalid query : </strong>please enter your query');
+                    return false;
+                }
             }
         }
 
@@ -396,7 +487,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/forecastSettings.html'
             }
-
 
 
         ]
@@ -1267,7 +1357,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             }]
                         }]
                     };
-                } else {}
+                } else {
+                }
             });
         },
         saveWidget: function(wid) {
@@ -1401,7 +1492,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 data: $scope.histogramPlotData
                             }]
                         };
-                    } else {}
+                    } else {
+                    }
                 });
             }else{
                 privateFun.fireMessage('0','Please select only numeric values to create histogram');
@@ -1447,9 +1539,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         if (status) {
                             $scope.hierarData = data;
                             $scope.eventHndler.isLoadingChart = false;
-                        } else {}
+                        } else {
+                        }
                     });
-                } else {}
+                } else {
+                }
             });
         },
 
@@ -1490,9 +1584,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         if (status) {
                             $scope.hierarData = data;
                             $scope.eventHndler.isLoadingChart = false;
-                        } else {}
+                        } else {
+                        }
                     });
-                } else {}
+                } else {
+                }
             });
         },
 
@@ -1900,38 +1996,45 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         });
     };
 
+    //#customer query design
     $scope.getExecuteAgg = function(query) {
-        if (typeof query != "undefined") {
-            $scope.eventHndler.isLoadingChart = true;
-            $scope.client.getExecQuery(query, function(res, status, query) {
-                var cat = "";
-                var measureArr = [];
-                if (status) {
-                    for (c in res[0]) {
-                        if (Object.prototype.hasOwnProperty.call(res[0], c)) {
-                            if (typeof res[0][c] == "string") cat = c;
-                            else {
-                                var m = c.split('_');
-                                measureArr.push({
-                                    filedName: m[1],
-                                    condition: m[0]
-                                });
-                            }
-                        }
-                    }
-                    $scope.executeQryData.executeMeasures = measureArr;
-                    eval("$scope." + $scope.selectedChart.chartType + ".executeQuery(cat, res, query)");
-                } else {
-                    //alert('request failed');
-                    privateFun.fireMessage('0','request failed');
-                    $scope.isPendingRequest = false;
-                }
-            }, $scope.initRequestLimit.value);
-        } else {
-            // alert("enter a query");
-            privateFun.fireMessage('0','enter a query');
-            $scope.isPendingRequest = false;
-        }
+
+        privateFun.isQrySyntaxError(query);
+
+        //if (typeof query != "undefined") {
+        //    $scope.eventHndler.isLoadingChart = true;
+        //    $scope.client.getExecQuery(query, function (res, status, query) {
+        //        var cat = "";
+        //        var measureArr = [];
+        //        if (status) {
+        //            for (c in res[0]) {
+        //                if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+        //                    if (typeof res[0][c] == "string") cat = c;
+        //                    else {
+        //                        var m = c.split('_');
+        //                        measureArr.push({
+        //                            filedName: m[1],
+        //                            condition: m[0]
+        //                        });
+        //                    }
+        //                }
+        //            }
+        //            $scope.executeQryData.executeMeasures = measureArr;
+        //            eval("$scope." + $scope.selectedChart.chartType + ".executeQuery(cat, res, query)");
+        //        } else {
+        //            //alert('request failed');
+        //            privateFun.fireMessage('0', '<strong>Invalid query :</strong>please enter request failed ');
+        //            $scope.isPendingRequest = false;
+        //            $scope.eventHndler.isLoadingChart = false;
+        //        }
+        //    }, $scope.initRequestLimit.value);
+        //} else {
+        //    // alert("enter a query");
+        //    $scope.isPendingRequest = false;
+        //    $scope.eventHndler.isLoadingChart = false;
+        //    privateFun.fireMessage('0', 'pelase enter a query');
+        //
+        //}
     };
 
     $scope.mapResult = function(cat, res, cb) {
@@ -1986,7 +2089,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     };
 
 
-
     var queryBuilderData = {
         select: []
     };
@@ -2003,6 +2105,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
     }
 
+    //on click edit customer query
     $scope.changeEditState = function() {
         $scope.queryEditState = !$scope.queryEditState;
         $scope.isPendingRequest = $scope.queryEditState;
@@ -2025,6 +2128,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.recordColor = function(ser){
         $scope.recordedColors[ser.name]= ser.color;
     };
+
+    //#damith
+    //create custom query design catch syntax error
 
 }).directive("markable", function() {
     return {

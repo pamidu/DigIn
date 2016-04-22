@@ -302,9 +302,9 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
     }
 ]);
 
-routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService',
+routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService','ngToast',
 
-    function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService) {
+    function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast) {
         $scope.closeDialog = function() {
             // Easily hides most recent dialog shown...
             // no specific instance reference is needed.
@@ -384,7 +384,13 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                     
                 });
             }else{
-                alert('please insert a dashboard name');
+                ngToast.create({
+                    className: 'danger',
+                    content: 'please insert a dashboard name',
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                    dismissOnClick: true
+                });
             }
         }
 

@@ -282,7 +282,13 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         $scope.showFullView = function(widget){
 
             var showFullView = null;
-            switch(widget.selectedChart.chartType){
+            //if not dynamic visuals
+            if(widget.selectedChart == undefined){
+                showFullView = false;
+            }
+            else{
+            //if dynamic visuals
+                switch(widget.selectedChart.chartType){
                 case 'metric':
                     showFullView = false;
                 break;
@@ -294,6 +300,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         showFullView = false;
                     }
                 break;
+                }
             }
 
             return showFullView;
@@ -302,7 +309,13 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         $scope.showDataView = function(widget){
 
             var showDataView = null;
-            switch(widget.selectedChart.chartType){
+            //if not dynamic visuals
+            if(widget.selectedChart == undefined){
+                showDataView = false;
+            }
+            else{
+            //if dynamic visuals
+                switch(widget.selectedChart.chartType){
                 case 'metric':
                     showDataView = false;
                 break;
@@ -314,8 +327,9 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         showDataView = false;
                     }
                 break;
+                }
             }
-
+            
             return showDataView;
         }
 

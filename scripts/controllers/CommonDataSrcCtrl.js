@@ -128,9 +128,15 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             if (localStorage.getItem("BigQueryTables") === null || localStorage.getItem("BigQueryTables") == "null" ||
                                 localStorage.getItem("BigQueryTables") == "undefined") {
                                 $scope.client.getTables(function(res, status) {
-                                    if (typeof res === 'object') {
+                                    // console.log("get tables result", res.length);
+                                    // console.log("status", status);
+                                    if (typeof res === 'object' && status) {
                                         callback(res, status);
                                         localStorage.setItem("BigQueryTables", res);
+                                    }
+                                    if(!status){//if status false
+                                        commonUi.isDataLoading = false;
+                                        publicFun.fireMessage('0', 'No tables available');
                                     }
                                 });
                             } else {

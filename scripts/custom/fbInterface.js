@@ -30,21 +30,52 @@ var fbInterface = new function(){
   };
     
     this.getFreshPage = function(pId, cb){
-        FB.api('/me', function(response) {
-            FB.api(
-              "/" + pId + "/accounts",
-              function(response) {
-                $('#actIndicator').remove();
-                  scope.fbPages = [];
-                  console.log('page response:' + JSON.stringify(response));
-                  if (response && !response.error) {
-                      for (i = 0; i < response.data.length; i++) {
-                         if(pId == response.data[i].id) return cb(response.data[i]);
-                      }
-                  }
-              }
-          );
+        FB.login(function(response) {
+          var usrId = response.authResponse.userID;
+           FB.api(
+             "/" + usrId + "/accounts",
+             function(response) {
+//                  scope.fbPages = [];
+                 console.log('page response:' + JSON.stringify(response));
+                 if (response && !response.error) {
+                     for (i = 0; i < response.data.length; i++) {
+                        if(pId == response.data[i].id)
+                        {
+                           var tempFbPg = {
+                              id: '',
+                              accessToken: '',
+                              name: '',
+                              category: ''
+                          };
+                          tempFbPg.id = response.data[i].id;
+                          tempFbPg.accessToken = response.data[i].access_token;
+                          tempFbPg.name = response.data[i].name;
+                          tempFbPg.category = response.data[i].category;
+                          cb(tempFbPg);
+                        } 
+                     }
+                 }
+             }
+         );  
+        }, {
+            scope: 'manage_pages,read_insights'
         });
+        
+        // FB.api('/me', function(data) {
+//            FB.api(
+//              "/" + data.id + "/accounts",
+//              function(response) {
+//                $('#actIndicator').remove();
+////                  scope.fbPages = [];
+//                  console.log('page response:' + JSON.stringify(response));
+//                  if (response && !response.error) {
+//                      for (i = 0; i < response.data.length; i++) {
+//                         if(pId == response.data[i].id) return cb(response.data[i]);
+//                      }
+//                  }
+//              }
+//          );
+        // });
     };
 
   this.logoutFromFb =  function(scope, analysis){

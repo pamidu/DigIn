@@ -35,7 +35,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 {name:'cm',val:"cm"},
                 {name:'m',val:"m"},
                 {name:'kg',val:"kg"}],
-        decimals: [1,2,3,4]
+        decimals: [0,1,2,3,4]
     };
     $scope.forecastObj = {
         models:["Additive", "Multiplicative", "Linear"],
@@ -452,7 +452,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 chart: 'boxplot',
                 selected: false,
                 chartType: 'boxplot',
-                view: 'views/query/chart-views/BoxPlot.html',
+                view: 'views/query/chart-views/BoxPlot.html',   
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
 

@@ -1,8 +1,8 @@
-routerApp.factory('DashboardService', function (ObjectStoreService, $rootScope) {
+routerApp.factory('DashboardService', function (ObjectStoreService, $rootScope, $mdDialog) {
     var dashboards = [];
     return {
 
-        getDashboards: function (newDash, callback) {
+        getDashboards: function (newDash) {
             var client = ObjectStoreService.initialize("duodigin_dashboard");
 
             if (typeof (newDash) === 'undefined') {
@@ -22,16 +22,13 @@ routerApp.factory('DashboardService', function (ObjectStoreService, $rootScope) 
                     }
 
                 });
-            } else {
-                $rootScope.dashboardsObj.push(newDash);
+            } else {                
                 if (newDash.name.length > 20) newDash.splitName = newDash.name.substring(0, 21) + '...';
                 else newDash.splitName = newDash.name;
-                dashboards.push(newDash)
+                dashboards = $rootScope.dashboardsObj;
             }
 
-
             return dashboards;
-            console.log(dashboards);
         }
     }
 

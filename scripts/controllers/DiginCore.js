@@ -279,6 +279,46 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             $rootScope.widget = widget;
         };
 
+        $scope.showFullView = function(widget){
+
+            var showFullView = null;
+            switch(widget.selectedChart.chartType){
+                case 'metric':
+                    showFullView = false;
+                break;
+                default:
+                    if(widget.uniqueType=='Dynamic Visuals'){
+                        showFullView = true;
+                    }
+                    else{
+                        showFullView = false;
+                    }
+                break;
+            }
+
+            return showFullView;
+        }
+
+        $scope.showDataView = function(widget){
+
+            var showDataView = null;
+            switch(widget.selectedChart.chartType){
+                case 'metric':
+                    showDataView = false;
+                break;
+                default:
+                    if(widget.dataCtrl != undefined){
+                        showDataView = true;
+                    }
+                    else{
+                        showDataView = false;
+                    }
+                break;
+            }
+
+            return showDataView;
+        }
+
         $scope.convertCSVtoJson = function (src) {
             AsTorPlotItems.then(function (data) {
                 $scope.items = data;

@@ -101,21 +101,31 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
 
     //confirming the resend request
     $scope.resendConfirm = function (ev, msg, url, cb, demographic) {
+        console.log('test resendConfirm');
         // Appending dialog to document.body to cover sidenav in docs app
         var confirm = $mdDialog.confirm()
-            .title('Would you like to resend the request?')
-            .textContent(msg)
-            .ariaLabel('Lucky day')
-            .targetEvent(ev)
-            .ok('Yes')
-            .cancel('No');
-        $mdDialog.show(confirm).then(function () {
-            fbInterface.getFreshPageAccessToken($scope.page.id, function (data) {
-                getServiceResponse(url, data, cb, demographic);
-            });
-        }, function () {
-            $scope.status = 'You decided to keep your debt.';
-        });
+                          .parent(angular.element(document.body))
+                          .title('Would you like to resend the request?')
+                          .content(msg)
+                          .ariaLabel('Lucky day')
+                          .ok('Yes')
+                          .cancel("No");
+        $mdDialog.show(confirm).then(function() {
+            console.log('test');
+                    alert('test');
+                         }, function() {
+                            console.log('test1');
+                         });
+
+
+
+        // $mdDialog.show(confirm).then(function () {
+        //     fbInterface.getFreshPage($scope.page.id, function (data) {
+        //         getServiceResponse(url, data, cb, demographic);
+        //     });
+        // }, function () {
+        //     $scope.status = 'You decided to keep your debt.';
+        // });
     };
 
     //generate the chart
@@ -317,7 +327,12 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                         });
                     }
                 }
-
+                //clear word cloud canvas
+                var canvasNode = document.getElementById("wordCanvas");
+                while (canvasNode.firstChild) {
+                    canvasNode.removeChild(canvasNode.firstChild);
+                }
+                
                 $rootScope.$broadcast('getWordCloudData', {
                     wordData: wordObjArr
                 });
@@ -344,8 +359,33 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     $scope.handleFailure = function (errObj) {
         if (errObj.error == "Error validating access token: This may be because the user logged out or may be due to a system error." || errObj.error == 'Error occurred while getting data from Facebook API')
             $scope.failedPool.push(errObj);
-        if ($scope.requestCount == 5) {
-            if ($scope.failedPool.length > 0) {
+        // if ($scope.requestCount == 4) {
+        //     // if ($scope.failedPool.length == 4) {
+        //         var confirm = $mdDialog.confirm()
+        //             .title('Would you like to resend the request?')
+        //             .content('Error occurred while getting data from Facebook API')
+        //             .ariaLabel('Lucky day')
+        //             .targetEvent()
+        //             .ok('Yes')
+        //             .cancel('No');
+        //         $mdDialog.show(confirm).then(function () {
+        //             fbInterface.getFreshPage($scope.page.id, function (data) {
+        //                 $scope.getPageDetails(data, $scope.timestamps, $scope.failedPool);
+        //             });
+        //         }, function () {
+        //             $scope.status = 'You decided to keep your debt.';
+        //         });
+
+        //     // }
+        // }
+    };
+
+    // watching for the request count
+    $scope.$watch("failedPool", function (newValue, oldValue) {
+        // if (newValue == 4){
+            if (newValue.length == 4) {
+                newValue = [];
+                console.log('failed pool length:'+$scope.failedPool.length);
                 var confirm = $mdDialog.confirm()
                     .title('Would you like to resend the request?')
                     .content('Error occurred while getting data from Facebook API')
@@ -354,29 +394,29 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                     .ok('Yes')
                     .cancel('No');
                 $mdDialog.show(confirm).then(function () {
+                    console.log('sent request');
                     fbInterface.getFreshPage($scope.page.id, function (data) {
                         $scope.getPageDetails(data, $scope.timestamps, $scope.failedPool);
                     });
                 }, function () {
                     $scope.status = 'You decided to keep your debt.';
                 });
-
             }
-        }
-    };
-
-    // watching for the request count
-    $scope.$watch("requestCount", function (newValue, oldValue) {
-        if (newValue > 5) $scope.requestCount = 1;
+        // } else if(newValue == 6){
+        //     $scope.requestCount = 1;
+        // }
     }, true);
 
 
     $scope.getPageDetails = function (page, pageTimestamps, reqPool, changedTime) {
 
         //showing the page
+        console.log('old page: '+JSON.stringify($scope.page));
+        console.log('new page: '+JSON.stringify(page));
         $scope.page = page;
         $scope.timestamps = pageTimestamps;
         if (!changedTime) $scope.activePageSearch = !$scope.activePageSearch;
+        else $scope.activePageSearch = true;
 
         $scope.fbClient = $restFb.getClient(page, pageTimestamps);
 

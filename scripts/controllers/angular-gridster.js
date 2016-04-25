@@ -1824,11 +1824,11 @@
                     scope.widget.highchartsNG.size.height = y-50;
 					scope.widget.highchartsNG.size.width = w-10;
 					
-						var oldRow = item.row,
-						oldCol = item.col,
-						oldSizeX = item.sizeX,
-						oldSizeY = item.sizeY,
-						hasCallback = gridster.resizable && gridster.resizable.resize;
+					var oldRow = item.row,
+					oldCol = item.col,
+					oldSizeX = item.sizeX,
+					oldSizeY = item.sizeY,
+					hasCallback = gridster.resizable && gridster.resizable.resize;
 
 					var col = item.col;
 					// only change column if grabbing left edge

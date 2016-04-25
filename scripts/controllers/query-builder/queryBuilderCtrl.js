@@ -781,11 +781,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             widget.dataCtrl = "widgetSettingsDataCtrl";
             widget.dataView = "views/ViewData.html";
             widget["selectedChart"] = $scope.selectedChart;
-            if (typeof widget.commonSrc == "undefined") {
-                widget.highchartsNG["size"] = {
+            widget.highchartsNG["size"] = {
                     width: 300,
                     height: 220
-                };
+            };
+            if (typeof widget.commonSrc == "undefined") {
+                // widget.highchartsNG["size"] = {
+                //     width: 300,
+                //     height: 220
+                // };
                 widget["commonSrc"] = {
                     src: $scope.sourceData,
                     mea: $scope.executeQryData.executeMeasures,
@@ -794,7 +798,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 };
                 $rootScope.dashboard.widgets.push(widget);
             } else {
-                $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
+                // $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
                 $scope.widget["commonSrc"] = {
                     src: $scope.sourceData,
                     mea: $scope.executeQryData.executeMeasures,
@@ -1592,6 +1596,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.sourceData.wid.widData.value,
                 label: $scope.sourceData.wid.widData.label
             };
+            // $scope.highchartsNG = $scope.widget.highchartsNG;
+            // $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
+            $scope.prevChartSize = { width: 300, height: 220 };
         },
         changeType: function() {
             //$scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;

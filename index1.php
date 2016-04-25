@@ -186,7 +186,7 @@
 <script type="text/javascript" src="scripts/services/ObjectStoreService.js"></script>
 <script type="application/javascript" src="scripts/services/CommonDataService.js"></script>
 <script type="application/javascript" src="scripts/services/fbGraphServices.js"></script>
-<script type="text/javascript" src="scripts/vendor/twitterservice.js"></script>
+<script type="text/javascript" src="scripts/factories/socialMedia/twitterService.js"></script>
 <!-- services end -->
 <!--  directives start  -->
 <script type="application/javascript" src="scripts/directives/commonData.js"></script>

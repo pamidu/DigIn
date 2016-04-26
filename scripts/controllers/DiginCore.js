@@ -44,8 +44,8 @@ routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
         $mdDialog.hide();
     };
 });
-routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', 'DynamicVisualization','$csContainer','$state','$qbuilder',
-    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, DynamicVisualization, $csContainer, $state, $qbuilder) {
+routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', 'DynamicVisualization','$csContainer','$state','$qbuilder','$diginengine',
+    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, DynamicVisualization, $csContainer, $state, $qbuilder, $diginengine) {
 
         $('#pagePreLoader').hide();
 
@@ -356,7 +356,6 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             
             console.log('syncing...');
             if (typeof widget.widConfig != 'undefined') {
-                
                 DynamicVisualization.syncWidget(widget, function (data) {
                     widget.syncState = true;
                     widget = data;
@@ -366,7 +365,71 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 $qbuilder.sync(widget, function(data){
                     widget.syncState = true;
                     widget = data;
+                    if(typeof wid.widData.drilled != "undefined" && wid.widData.drilled)
+                        $scope.widInit();
                 });
+            }
+        };
+
+        $scope.widInit = function(wid){
+            if(typeof wid.widData.drilled != "undefined" && wid.widData.drilled)
+            {
+                var drillConf = wid.widData.drillConf;
+                var client = $diginengine.getClient(drillConf.dataSrc);
+                wid.highchartsNG.options.chart['events'] ={
+                    drilldown: function (e) {                            
+                            if (!e.seriesOptions) {
+                                var srcTbl = drillConf.srcTbl,
+                                fields = drillConf.fields,
+                                drillOrdArr = drillConf.drillOrdArr,
+                                chart = this,
+                                clientObj = client,
+                                clickedPoint = e.point.name,
+                                nextLevel = "",
+                                highestLvl = drillConf.highestLvl,
+                                drillObj = {};
+                                
+                                for(i=0;i<drillOrdArr.length;i++){
+                                    if(drillOrdArr[i].name == highestLvl){
+                                        nextLevel = drillOrdArr[i].nextLevel;
+                                    }
+                                }
+                                
+                                // Show the loading label
+                                chart.showLoading("Retrieving data for '" + clickedPoint.toLowerCase() + "' grouped by '" + nextLevel + "'");
+                                
+                                //aggregate method
+                                clientObj.getAggData(srcTbl, fields, function(res, status, query) {
+                                    if(status){
+                                        for (var key in res[0]) {
+                                            if (Object.prototype.hasOwnProperty.call(res[0], key)) {
+                                                if(key != nextLevel){
+                                                    drillObj = {name : key,
+                                                                data : []};
+                                                }
+                                            }
+                                        }
+                                        
+                                        res.forEach(function(key){
+                                            drillObj.data.push({
+                                                name: key[nextLevel],
+                                                y: key[drillObj.name]
+                                            });
+                                        });
+                                        
+                                        chart.addSeriesAsDrilldown(e.point, drillObj);
+                                        
+                                    }else{
+                                        alert('request failed due to :' + JSON.stringify(res));
+                                        e.preventDefault();
+                                    }
+                                    console.log(JSON.stringify(res));
+                                    highestLvl = nextLevel;
+                                    chart.hideLoading();
+                                }, nextLevel, highestLvl + "='" + clickedPoint + "'");
+                            }
+                        }
+                }
             }
         };
 

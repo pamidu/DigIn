@@ -12,7 +12,7 @@
                 <li class="digin-widget" ng-repeat="widget in $root.dashboard.widgets" 
                 gridster-item="widget" layout="column"
                     layout-align="none stretch">
-                    <div class="digin-widget-content dashboard-widget" ng-style="{'height':widget.mheight}" layout="row">
+                    <div ng-init="widInit(widget)" class="digin-widget-content dashboard-widget" ng-style="{'height':widget.mheight}" layout="row">
                         <div style="height:100%;width:100%" class="dashoard-Wrapper" ng-include src="widget.widView">
                         </div>
                         <div class="widget-button-wrapper widget-button-wrapper2" layout="column" layout-align="end center" ng-show="showWidgetSettings" ng-mouseover="showWidgetSettings = true" 

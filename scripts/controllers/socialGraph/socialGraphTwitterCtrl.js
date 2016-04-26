@@ -6,13 +6,23 @@
  /* socialGraphTwitterCtrl - Main controller
  */
 
-routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootScope, twitterService, ngToast) {
+routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootScope, twitterService, ngToast, Digin_Twitter_API) {
 
     $scope.isLoginTwitter = false;
     $scope.isLoadingTwitter = false;
 
     //main function
     var mainFunc = (function () {
+        var parameter = {
+            apiBase: Digin_Twitter_API,
+            key: {
+                consumer_key: 'Uz6KhfZsmlaACDJfxO3E4E9cT',
+                consumer_secret: '1cpKTIvlzQI4ncBstmG1sPrn1ly1u8vMeXRRlOEMw1ojFtwAng',
+                owner_id: '344250076',
+                access_level: 'Read and write'
+            },
+
+        }
         return {
             loginSuccess: function () {
                 $scope.isLoginTwitter = true;
@@ -49,19 +59,17 @@ routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootSc
                 twitterService.connectTwitter().then(function (d) {
                     if (twitterService.isReady()) {
                         //if the authorization is successful, hide the connect button and display the tweets
-                        $('#connectButton').fadeOut(function () {
-                            $('#getTimelineButton, #signOut').fadeIn();
-                            $scope.refreshTimeline();
-                            mainFunc.fireMsg('1', 'twitter login successfully');
-                            $scope.connectedTwitter = true;
-                        });
+                        mainFunc.fireMsg('1', 'twitter login successfully');
+                        $scope.connectedTwitter = true;
+                        $scope.isLoginTwitter = true;
                     } else {
                         mainFunc.fireMsg('0', 'twitter services error');
                     }
                 });
-                mainFunc.loadingDone();
+                //mainFunc.loadingDone();
             },
             onClickLogOut: function () {
+                mainFunc.loginError();
                 twitterService.clearCache();
             }
         }
@@ -74,14 +82,15 @@ routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootSc
     $scope.onInit = function () {
         $scope.tweets = []; //array of tweets
         twitterService.initialize();
-        var cookieLog = twitterService.getCookie("@tiwitter_oauth");
-        var twitterToken = twitterService.getCookie("@tiwitter_token");
-        var twitterSecret = twitterService.getCookie("@tiwitter_secret");
+        var cookieLog = twitterService.getStorage("@tiwitter_oauth");
+        var twitterToken = twitterService.getStorage("@tiwitter_token");
+        var twitterSecret = twitterService.getStorage("@tiwitter_secret");
         if (cookieLog != null) {
             console.log(twitterToken);
             console.log(twitterSecret);
             mainFunc.loginSuccess();
         } else {
+            $scope.isLoginTwitter = false;
             mainFunc.loginError();
         }
     };

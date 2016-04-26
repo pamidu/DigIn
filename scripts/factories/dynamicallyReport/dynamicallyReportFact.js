@@ -30,9 +30,10 @@ routerApp.factory('dynamicallyReportSrv', function ($http) {
                 '&fieldnames={' + parameter.queryFiled + '}')
         },
         getRenderReport: function (parameter) {
-            return $http.get(parameter.reportServer + 'executeKTR?SecurityToken=' + parameter.token +
-                '&Domain=duosoftware.com&parameters=[{' + parameter.rptParameter +
-                '}]&ReportName=' + parameter.reportName + '');
+            return $http.get(parameter.tomCatBase + 'DigIn-Report/ReportService/Reports/getreport/' + parameter.reportName + '/[' + parameter.rptParameter + ']');
+        },
+        startReportServer: function (parameter) {
+            return $http.get(parameter.tomCatBase + 'DigIn-Report/ReportService/Reports/command/start');
         }
     }
 });

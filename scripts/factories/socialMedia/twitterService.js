@@ -3,36 +3,22 @@
  */
 
 //login with twitter
-routerApp.factory('twitterService', function ($q, ngToast) {
+routerApp.factory('twitterService', function ($q, ngToast, $http) {
     var authorizationResult = false;
 
-    function createCookie(name, value, days) {
-        if (days) {
-            var date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            var expires = "; expires=" + date.toGMTString();
-        } else var expires = "";
-        document.cookie = name + "=" + value + expires;
-    };
 
-    function setCookie(name, value, days) {
-        createCookie(name, value, days);
-    };
+    function setLocalStorage(name, value) {
+        localStorage.setItem(name, value);
+    }
 
-    var getCookie = function (name) {
-        var nameEQ = name + "=";
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-        }
-        return null;
-    };
+    function getLocalStorage(name) {
+        return localStorage.getItem(name);
+    }
 
-    var deleteCookie = function (name) {
-        createCookie(name, "", -1);
-    };
+    function deleteStorage(name) {
+        localStorage.removeItem(name);
+    }
+
 
     var fireMsg = function (msgType, content) {
         ngToast.dismiss();
@@ -76,9 +62,9 @@ routerApp.factory('twitterService', function ($q, ngToast) {
                 if (!error) {
                     authorizationResult = result;
                     deferred.resolve();
-                    createCookie("@tiwitter_oauth", result, Date.now());
-                    createCookie("@tiwitter_secret", result.oauth_token_secret, Date.now());
-                    createCookie("@tiwitter_token", result.oauth_token, Date.now());
+                    setLocalStorage("@tiwitter_oauth", result);
+                    setLocalStorage("@tiwitter_secret", result.oauth_token_secret);
+                    setLocalStorage("@tiwitter_token", result.oauth_token);
                 } else {
                     //do something if there's an error
                     fireMsg('0', 'twitter services error...' + error);
@@ -91,12 +77,25 @@ routerApp.factory('twitterService', function ($q, ngToast) {
         clearCache: function () {
             OAuth.clearCache('twitter');
             authorizationResult = false;
-            deleteCookie('@twitter_auth');
-            deleteCookie('@tiwitter_secret');
-            deleteCookie('@tiwitter_token');
+            deleteStorage('@tiwitter_oauth');
+            deleteStorage('@tiwitter_secret');
+            deleteStorage('@tiwitter_token');
         },
-        getCookie: function (name) {
-            return getCookie(name);
+        getStorage: function (name) {
+            return getLocalStorage(name);
+        },
+        getHasTag: function (parameter) {
+            return $http.get(parameter.apiBase + 'hashtag?' +
+                'hashtag=' + parameter.tag +
+                '&tokens={consumer_key:' + parameter.consumer_key + ',' +
+                'consumer_secret:' + parameter.consumer_secret + ',' +
+                'access_token:' + parameter.access_token + ',' +
+                'access_token_secret:' + parameter.access_token_secret + '}', {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
         }
     }
 })

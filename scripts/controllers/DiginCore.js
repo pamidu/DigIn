@@ -390,6 +390,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             {
                 var drillConf = wid.widData.drillConf;
                 var client = $diginengine.getClient(drillConf.dataSrc);
+                wid.highchartsNG.options['customVar'] = drillConf.highestLvl;
                 wid.highchartsNG.options.chart['events'] ={
                     drilldown: function (e) {                            
                             if (!e.seriesOptions) {
@@ -400,7 +401,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                 clientObj = client,
                                 clickedPoint = e.point.name,
                                 nextLevel = "",
-                                highestLvl = drillConf.highestLvl,
+                                highestLvl = this.options.customVar,
                                 drillObj = {};
                                 
                                 for(i=0;i<drillOrdArr.length;i++){
@@ -427,7 +428,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                         res.forEach(function(key){
                                             drillObj.data.push({
                                                 name: key[nextLevel],
-                                                y: key[drillObj.name]
+                                                y: key[drillObj.name],
+                                                drilldown: true
                                             });
                                         });
                                         
@@ -438,7 +440,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                         e.preventDefault();
                                     }
                                     console.log(JSON.stringify(res));
-                                    highestLvl = nextLevel;
+                                    chart.options.customVar = nextLevel;
                                     chart.hideLoading();
                                 }, nextLevel, highestLvl + "='" + clickedPoint + "'");
                             }

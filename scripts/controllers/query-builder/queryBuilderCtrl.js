@@ -955,13 +955,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     }];
                     $scope.getGroupedAggregation(fieldName);                
             }
-            else if($scope.executeQryData.executeColumns.length == 2){
-                eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
-                // alert("drilldown only supports for two levels"); 
-                privateFun.fireMessage('0','drilldown only supports for two levels');
-                $scope.isPendingRequest = false;               
-            }
-            else if($scope.executeQryData.executeColumns.length == 1){
+            // else if($scope.executeQryData.executeColumns.length == 2){
+            //     eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
+            //     // alert("drilldown only supports for two levels"); 
+            //     privateFun.fireMessage('0','drilldown only supports for two levels');
+            //     $scope.isPendingRequest = false;               
+            // }
+            else if($scope.executeQryData.executeColumns.length >= 1){
                 $scope.executeQryData.executeColumns.push({
                     filedName: fieldName
                 });
@@ -1976,7 +1976,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         highestLvl: highestLevel,
                         fields: fieldArr
                     };
-                    
+                    $scope.highchartsNG.options['customVar'] = highestLevel;
                     $scope.highchartsNG.options.chart['events'] = {
                         drilldown: function (e) {
                             if (!e.seriesOptions) {
@@ -1987,9 +1987,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 clientObj = $scope.client,
                                 clickedPoint = e.point.name,
                                 nextLevel = "",
-                                highestLvl = highestLevel,
+                                highestLvl = this.options.customVar,
                                 drillObj = {};
                                 
+
                                 for(i=0;i<drillOrdArr.length;i++){
                                     if(drillOrdArr[i].name == highestLvl){
                                         nextLevel = drillOrdArr[i].nextLevel;
@@ -2026,7 +2027,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                         e.preventDefault();
                                     }
                                     console.log(JSON.stringify(res));
-                                    highestLevel = nextLevel;
+                                    chart.options.customVar = nextLevel;
                                     chart.hideLoading();
                                 }, nextLevel, highestLvl + "='" + clickedPoint + "'");
                             }

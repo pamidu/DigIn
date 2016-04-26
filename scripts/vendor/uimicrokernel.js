@@ -716,7 +716,7 @@
                 }
             },
             getSession: function () {
-                return sessionInfo;
+                    return sessionInfo;
             },
             forceLogin: function (username, password, domain) {
                 userName = username;

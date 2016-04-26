@@ -2246,8 +2246,8 @@ li:active {
 }
 
 /*md-tabs md-ink-bar {*/
-    /*color: #F4C831 !important;*/
-    /*background: #F4C831 !important;*/
+/*color: #F4C831 !important;*/
+/*background: #F4C831 !important;*/
 /*}*/
 
 .d3-tab-text {
@@ -2478,3 +2478,58 @@ li:active {
     padding-left: 10px;
 }
 
+/*twitter main login page*/
+.wrap-twitter-login {
+    width: 350px;
+    height: 400px;
+    background: #ffffff;
+    margin: 0 auto;
+    overflow: hidden;
+
+}
+
+.wrap-twitter-login > .btn-wrap {
+    text-align: center;
+    bottom: 0;
+}
+
+.wrap-twitter-login > .text-wrap {
+    text-align: center;
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 200;
+    font-size: 25px;
+    padding-top: 25px;
+}
+
+.text-wrap > p {
+    font-size: 15px;
+    padding: 10px;
+}
+
+.twitter-cover {
+    margin-top: 54px;
+    margin-bottom: 59px;
+}
+
+.twitter-cover > i {
+    font-size: 50px;
+    padding: 10px 0 10px;
+}
+
+.twitter-loading {
+    background: rgba(255, 255, 255, 0.9);
+    width: 350px;
+    height: 400px;
+    margin: 0 auto;
+    position: absolute;
+    text-align: center;
+    z-index: 101;
+}
+
+.twitter-loading > h2 {
+    color: #026689;
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 600;
+    font-size: 23px;
+    margin-top: 20%;
+}

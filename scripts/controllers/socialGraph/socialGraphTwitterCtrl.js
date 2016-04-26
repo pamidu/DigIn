@@ -6,9 +6,105 @@
  /* socialGraphTwitterCtrl - Main controller
  */
 
-routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootScope) {
+routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootScope, twitterService, ngToast, Digin_Twitter_API) {
 
-   
+    $scope.isLoginTwitter = false;
+    $scope.isLoadingTwitter = false;
+
+    //main function
+    var mainFunc = (function () {
+        var parameter = {
+            apiBase: Digin_Twitter_API,
+            key: {
+                consumer_key: 'Uz6KhfZsmlaACDJfxO3E4E9cT',
+                consumer_secret: '1cpKTIvlzQI4ncBstmG1sPrn1ly1u8vMeXRRlOEMw1ojFtwAng',
+                owner_id: '344250076',
+                access_level: 'Read and write'
+            },
+
+        }
+        return {
+            loginSuccess: function () {
+                $scope.isLoginTwitter = true;
+                $scope.isLoadingTwitter = false;
+            },
+            loginError: function () {
+                $scope.isLoginTwitter = false;
+                $scope.isLoadingTwitter = false;
+            }, loading: function () {
+                $scope.isLoginTwitter = false;
+                $scope.isLoadingTwitter = true;
+            }, loadingDone: function () {
+                $scope.isLoadingTwitter = false;
+            },
+            fireMsg: function (msgType, content) {
+                ngToast.dismiss();
+                var _className;
+                if (msgType == '0') {
+                    _className = 'danger';
+                } else if (msgType == '1') {
+                    _className = 'success';
+                }
+                ngToast.create({
+                    className: _className,
+                    content: content,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                    dismissOnClick: true,
+                    animation: 'slide'
+                });
+            },
+            onClickLogin: function () {
+                mainFunc.loading();
+                twitterService.connectTwitter().then(function (d) {
+                    if (twitterService.isReady()) {
+                        //if the authorization is successful, hide the connect button and display the tweets
+                        mainFunc.fireMsg('1', 'twitter login successfully');
+                        $scope.connectedTwitter = true;
+                        $scope.isLoginTwitter = true;
+                    } else {
+                        mainFunc.fireMsg('0', 'twitter services error');
+                    }
+                });
+                //mainFunc.loadingDone();
+            },
+            onClickLogOut: function () {
+                mainFunc.loginError();
+                twitterService.clearCache();
+            }
+        }
+    })();
+
+    //call function
+
+    //check cookie details
+    //is login into twitter
+    $scope.onInit = function () {
+        $scope.tweets = []; //array of tweets
+        twitterService.initialize();
+        var cookieLog = twitterService.getStorage("@tiwitter_oauth");
+        var twitterToken = twitterService.getStorage("@tiwitter_token");
+        var twitterSecret = twitterService.getStorage("@tiwitter_secret");
+        if (cookieLog != null) {
+            console.log(twitterToken);
+            console.log(twitterSecret);
+            mainFunc.loginSuccess();
+        } else {
+            $scope.isLoginTwitter = false;
+            mainFunc.loginError();
+        }
+    };
+
+
+    //on click login twitter
+    $scope.onLoginTwitter = function () {
+        mainFunc.onClickLogin();
+    };
+
+    $scope.logOut = function () {
+        $scope.isLoginTwitter = false;
+        mainFunc.onClickLogOut();
+    };
 
     //twitter emotions chart
     $scope.highchartsNG = {
@@ -117,9 +213,9 @@ routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootSc
         },
         loading: false
     }
-    
+
     //
-     $scope.emotionsLevel = {
+    $scope.emotionsLevel = {
         options: {
             chart: {
                 type: 'solidgauge'
@@ -176,59 +272,59 @@ routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootSc
         },
         loading: false
     }
-     
-     $scope.wordArray = [['bigquery', 85],
-                    ['digin', 100],
-                    ['bigdata', 82],
-                    ['python', 80],
-                    ['analytics', 80],
-                    ['business', 79],
-                    ['intelligence', 79],
-                    ['belgium', 79],
-                    ['Happy', 76],
-                    ['Newyear', 64],
-                    ['view', 52],
-                    ['suit', 40],
-                    ['forever', 38],
-                    ['familiar', 36],
-                    ['forehead', 34],
-                    ['shoot', 32],
-                    ['grew', 30],
-                    ['stretch', 28],
-                    ['pound', 26],
-                    ['despite', 24],
-                    ['response', 22],
-                    ['center', 20],
-                    ['curl', 18],
-                    ['slight', 18],
-                    ['toss', 18],
-                    ['beneath', 18],
-                    ['fist', 16],
-                    ['welcome', 16],
-                    ['laughter', 16],
-                    ['angel', 16],
-                    ['Christmas', 16],
-                    ['we\'d', 16],
-                    ['main', 16],
-                    ['simple', 16],
-                    ['neither', 16],
-                    ['distance', 16],
-                    ['comfort', 16],
-                    ['upset', 16],
-                    ['assume', 16],
-                    ['eight', 16],
-                    ['gather', 16],
-                    ['lucky', 16],
-                    ['fade', 16],
-                    ['Ms.', 16],
-                    ['coat', 16],
-                    ['special', 16],
-                    ['awkward', 16],
-                    ['certain', 16],
-                    ['plate', 16],
-                    ['darkness', 16]];
-   
-   $rootScope.$broadcast('getWordCloudData',{wordData:$scope.wordArray});
+
+    $scope.wordArray = [['bigquery', 85],
+        ['digin', 100],
+        ['bigdata', 82],
+        ['python', 80],
+        ['analytics', 80],
+        ['business', 79],
+        ['intelligence', 79],
+        ['belgium', 79],
+        ['Happy', 76],
+        ['Newyear', 64],
+        ['view', 52],
+        ['suit', 40],
+        ['forever', 38],
+        ['familiar', 36],
+        ['forehead', 34],
+        ['shoot', 32],
+        ['grew', 30],
+        ['stretch', 28],
+        ['pound', 26],
+        ['despite', 24],
+        ['response', 22],
+        ['center', 20],
+        ['curl', 18],
+        ['slight', 18],
+        ['toss', 18],
+        ['beneath', 18],
+        ['fist', 16],
+        ['welcome', 16],
+        ['laughter', 16],
+        ['angel', 16],
+        ['Christmas', 16],
+        ['we\'d', 16],
+        ['main', 16],
+        ['simple', 16],
+        ['neither', 16],
+        ['distance', 16],
+        ['comfort', 16],
+        ['upset', 16],
+        ['assume', 16],
+        ['eight', 16],
+        ['gather', 16],
+        ['lucky', 16],
+        ['fade', 16],
+        ['Ms.', 16],
+        ['coat', 16],
+        ['special', 16],
+        ['awkward', 16],
+        ['certain', 16],
+        ['plate', 16],
+        ['darkness', 16]];
+
+    $rootScope.$broadcast('getWordCloudData', {wordData: $scope.wordArray});
 
 });
 

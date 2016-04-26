@@ -1,93 +1,121 @@
-<div ng-controller="socialGraphTwitterCtrl">
+<div ng-controller="socialGraphTwitterCtrl" ng-init="onInit()">
 
-    <!-- search fb page -->
+    <div class="wrap-twitter-login" ng-show="!isLoginTwitter">
+        <div class="twitter-loading" ng-if="isLoadingTwitter">
+            <h2>please wait</h2>
+        </div>
+        <div class="text-wrap">
+            <h2>
+                Access your twitter data
+            </h2>
 
-    <!-- twitter graph -->
-    <md-content class="md-default-theme overflow-none ">
-        <div class="md-content__body">
-            <div class="home-mini-card">
-                <div class="row m-t-0">
-                    <div class="col-md-1">
+            <div class="twitter-cover">
+                <i class="ti-lock"></i>
+            </div>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+        </div>
+        <div class="btn-wrap">
+            <a href="javascript:void(0)"
+               id="connectButton"
+               ng-click="onLoginTwitter()"
+               class="md-raised md-primary md-button md-ink-ripple text-color-white flex">
+                access account
+            </a>
+        </div>
+    </div>
+    <div ng-show="isLoginTwitter">
+        <!-- search fb page -->
+        <!-- twitter graph -->
+        <md-content class="md-default-theme overflow-none ">
+            <div class="md-content__body">
+                <div class="home-mini-card">
+                    <div class="row m-t-0">
+                        <div class="col-md-1">
                                 <span class="circle-icon md bg-primary">
                                   <md-icon class="color-white ng-isolate-scope md-default-theme
                                   fa fa-twitter fa-2x"
                                            aria-hidden="true">
                                   </md-icon>
                                 </span>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="graph-main-header-text">
-                            <!-- social page name-->
-                            <h2 class="color-primary graph-h1">
-                                <!-- digin{{page.name}}-->
-                                Twitter
-                            </h2>
-                            <a href="javascript:void(0);" class="small-text">
-                                open in twitter
-                            </a>
                         </div>
-
-                        <div class="page-search-warp">
-                            <div class="page-search">
-
+                        <div class="col-md-5">
+                            <div class="graph-main-header-text">
+                                <!-- social page name-->
+                                <h2 class="color-primary graph-h1">
+                                    <!-- digin{{page.name}}-->
+                                    Twitter
+                                </h2>
+                                <a href="javascript:void(0);" class="small-text">
+                                    open in twitter
+                                </a>
                             </div>
 
+                            <div class="page-search-warp">
+                                <div class="page-search">
+
+                                </div>
+
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <!-- tweets -->
-                        <ul class="list-justified text-center">
-                            <li>
-                                <p class="size-h2 text-color-100 graph-h1">
-                                    2500
-                                </p>
+                        <div class="col-md-6">
+                            <!-- tweets -->
+                            <ul class="list-justified text-center">
+                                <li>
+                                    <p class="size-h2 text-color-100 graph-h1">
+                                        2500
+                                    </p>
 
-                                <p class="text-muted graph-h5">Tweets</p>
-                            </li>
-                            <li>
-                                <p class="size-h2 text-color-100 graph-h1">
-                                    239
-                                </p>
+                                    <p class="text-muted graph-h5">Tweets</p>
+                                </li>
+                                <li>
+                                    <p class="size-h2 text-color-100 graph-h1">
+                                        239
+                                    </p>
 
-                                <p class="text-muted graph-h5">Followers</p>
-                            </li>
-                            <li class="last-icon">
-                                <md-button class="md-raised md-primary">Check my source</md-button>
-                            </li>
-                        </ul>
+                                    <p class="text-muted graph-h5">Followers</p>
+                                </li>
+                                <li class="last-icon">
+                                    <md-button
+                                            class="md-raised md-primary md-button md-ink-ripple text-color-white flex"
+                                            ng-click="logOut()">
+                                        logout
+                                    </md-button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
+
             </div>
+        </md-content>
 
-        </div>
-    </md-content>
+        <!-- main wrap -->
+        <div class="twitter-wrap">
+            <!-- twitter profile
+                 Emotions
+            -->
+            <div layout="row" layout-wrap>
+                <div flex="40">
 
-    <!-- main wrap -->
-    <div class="twitter-wrap">
-        <!-- twitter profile
-             Emotions
-        -->
-        <div layout="row" layout-wrap>
-            <div flex="40">
+                    <!-- twitter profile -->
+                    <md-card class="md-default-theme overflow-none p-0 card-height-420">
+                        <div class="block-wrap bg-image text-center"
+                             style="background-image: url('http://i65.tinypic.com/23hw3yb.jpg');">
+                            <div class=" block-wrap-text">
+                                <img class="img-avatar img-avatar96 img-avatar-thumb"
+                                     src="http://i63.tinypic.com/9zwvwk.jpg" alt="">
 
-                <!-- twitter profile -->
-                <md-card class="md-default-theme overflow-none p-0 card-height-420">
-                    <div class="block-wrap bg-image text-center"
-                         style="background-image: url('http://i65.tinypic.com/23hw3yb.jpg');">
-                        <div class=" block-wrap-text">
-                            <img class="img-avatar img-avatar96 img-avatar-thumb"
-                                 src="http://i63.tinypic.com/9zwvwk.jpg" alt="">
-
-                            <div class="graph-h2 f-weight-600 ">
-                                Damith
+                                <div class="graph-h2 f-weight-600 ">
+                                    Damith
+                                </div>
+                                <a href="javascript:void(0);" class="small-text font-color-white ">
+                                    @damithtd
+                                </a>
                             </div>
-                            <a href="javascript:void(0);" class="small-text font-color-white ">
-                                @damithtd
-                            </a>
                         </div>
-                    </div>
 
-                    <div class="twitter-my-prf graph-body-wrap-p ">
+                        <div class="twitter-my-prf graph-body-wrap-p ">
 
                             <ul class="list-justified text-center">
                                 <li>
@@ -120,87 +148,86 @@
                                 </li>
                             </ul>
                             <div class="card-footer-text">
-                            <small>#SriLankan #Developer #Designer #CricketLover #Lecturer #BarotaMaster</small>
-                            <div class="inline-block">
-                                <a href="javascript:void(0)">
-                                    <i class="ti-time"></i>
-                                    22 May 2010
-                                </a>
+                                <small>#SriLankan #Developer #Designer #CricketLover #Lecturer #BarotaMaster</small>
+                                <div class="inline-block">
+                                    <a href="javascript:void(0)">
+                                        <i class="ti-time"></i>
+                                        22 May 2010
+                                    </a>
+                                </div>
                             </div>
-                        </div>  
+                        </div>
+                    </md-card>
+                </div>
+                <div flex="60">
+                    <!--  Emotions -->
+                    <div class="twitter-Emotions">
+                        <md-card class="md-default-theme overflow-none ">
+                            <div class="twitter-my-prf graph-body-wrap-p ">
+                                <div class="card-header">
+                                    <h2 class="graph-h2">
+                                        Emotions
+                                    </h2>
+                                </div>
+                                <div class="graph-chart-body">
+                                    <highchart id="emotionsChart" config="highchartsNG"></highchart>
+                                </div>
+                            </div>
+                        </md-card>
                     </div>
-                </md-card>
+                </div>
             </div>
-            <div flex="60">
-                <!--  Emotions -->
-                <div class="twitter-Emotions">
-                    <md-card class="md-default-theme overflow-none ">
-                        <div class="twitter-my-prf graph-body-wrap-p ">
-                            <div class="card-header">
+
+            <div layout="row" layout-wrap>
+                <div flex="40">
+
+                    <md-card class="md-default-theme overflow-none p-0">
+                        <div class="card-header">
+                            <div class="graph-body-wrap-p ">
                                 <h2 class="graph-h2">
-                                    Emotions
+                                    Word Cloud
                                 </h2>
                             </div>
-                            <div class="graph-chart-body">
-                                <highchart id="emotionsChart" config="highchartsNG"></highchart>
+                        </div>
+                        <div class="emotion-level-graph">
+                            <digin-word-cloud words="wordArray"></digin-word-cloud>
+                        </div>
+                    </md-card>
+                </div>
+                <div flex="30">
+                    <md-card class="md-default-theme overflow-none p-0">
+                        <div class="card-header">
+                            <div class="graph-body-wrap-p ">
+                                <h2 class="graph-h2">
+                                    Emotion Level
+                                </h2>
                             </div>
+                        </div>
+                        <div class="emotion-level-graph">
+                            <!--                        <highchart id="emotionsLevel"-->
+                            <!--                        config="emotionsLevel">-->
+                            <!--                        </highchart>-->
+                        </div>
+                    </md-card>
+                </div>
+                <div flex="30">
+
+                    <md-card class="md-default-theme overflow-none p-0">
+                        <div class="card-header">
+                            <div class="graph-body-wrap-p ">
+                                <h2 class="graph-h2">
+                                    Neg / Pos Balance
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="emotion-level-graph">
+                            <!--                        <highchart id="emotionsLevel"-->
+                            <!--                                   config="emotionsLevel">-->
+                            <!--                        </highchart>-->
                         </div>
                     </md-card>
                 </div>
             </div>
         </div>
-        
-          <div layout="row" layout-wrap>
-            <div flex="40">
-
-                <md-card class="md-default-theme overflow-none p-0">
-                  <div class="card-header">
-                        <div class="graph-body-wrap-p ">
-                            <h2 class="graph-h2">
-                                Word Cloud
-                            </h2>
-                        </div>
-                    </div>
-                    <div class="emotion-level-graph">
-                        <digin-word-cloud words="wordArray"></digin-word-cloud>
-                    </div>
-                </md-card>
-            </div>
-            <div flex="30">
-                <md-card class="md-default-theme overflow-none p-0">
-                    <div class="card-header">
-                        <div class="graph-body-wrap-p ">
-                            <h2 class="graph-h2">
-                                Emotion Level
-                            </h2>
-                        </div>
-                    </div>
-                    <div class="emotion-level-graph">
-<!--                        <highchart id="emotionsLevel"-->
-<!--                        config="emotionsLevel">-->
-<!--                        </highchart>-->
-                    </div>
-                </md-card>
-            </div>
-            <div flex="30">
-
-                <md-card class="md-default-theme overflow-none p-0">
-                    <div class="card-header">
-                        <div class="graph-body-wrap-p ">
-                            <h2 class="graph-h2">
-                                Neg / Pos Balance
-                            </h2>
-                        </div>
-                    </div>
-                    <div class="emotion-level-graph">
-<!--                        <highchart id="emotionsLevel"-->
-<!--                                   config="emotionsLevel">-->
-<!--                        </highchart>-->
-                    </div>
-                </md-card>
-            </div>
-        </div>
     </div>
-</div>
-
 </div>

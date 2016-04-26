@@ -302,7 +302,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
     }
 ]);
 
-routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService','ngToast',
+routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast',
 
     function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast) {
         $scope.closeDialog = function() {
@@ -341,56 +341,45 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                 //console.log(dashboardObj);
 
                 var client = ObjectStoreService.initialize("duodigin_dashboard");
-                
-                for(i=0;i<$rootScope.dashboardsObj.length;i++){
-                    if($rootScope.dashboardsObj[i].name == dashboardObj.name){
-                        var confirm = $mdDialog.confirm()
-                          .parent(angular.element(document.body))
-                          .title('Overwrite existing dashboard')
-                          .content('There is already a dashboard with this name')
-                          .ariaLabel('Lucky day')
-                          .ok('Overwrite it!')
-                          .cancel("Don't overwrite it");
-                        $mdDialog.show(confirm).then(function() {
-                            ObjectStoreService.saveObject(client, dashboardObj, "name", function(data) {
-                                if (data.state === 'error') {
-                                    $mdDialog.hide();
-                                    $mdDialog.show({
-                                        controller: 'errorCtrl',
-                                        templateUrl: 'views/dialog_error.html',
-                                        resolve: {
-
-                                        }
-                                    })
-                                } else {
-                                    $rootScope.dashboardsObj.splice(i,1);
-                                    $rootScope.dashboardsObj.push(dashboardObj);
-                                    DashboardService.getDashboards(dashboardObj);
-                                    $mdDialog.hide();
-                                    $mdDialog.show({
-                                        controller: 'successCtrl',
-                                        templateUrl: 'views/dialog_success.html',
-                                        resolve: {
-
-                                        }
-                                    })
-                                }
-                            });                    
-                         }, function() {});                        
-                    }
-                }
 
                 ObjectStoreService.saveObject(client, dashboardObj, "name", function(data) {
-                    
+                    if (data.state === 'error') {
+                        ngToast.create({
+                            className: 'danger',
+                            content: 'Failed Saving Dashboard. Please Try Again!',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
+                        });
+                        $mdDialog.hide();
+                        // $mdDialog.show({
+                        //     controller: 'errorCtrl',
+                        //     templateUrl: 'views/dialog_error.html',
+                        //     resolve: {
+
+                        //     }
+                        // })
+                    } else {
+                        DashboardService.getDashboards(dashboardObj);
+                        ngToast.create({
+                            className: 'success',
+                            content: 'Successfuly Saved Dashboard',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
+                        });
+                        $mdDialog.hide();
+                        // $mdDialog.show({
+                        //     controller: 'successCtrl',
+                        //     templateUrl: 'views/dialog_success.html',
+                        //     resolve: {
+
+                        //     }
+                        // })
+                    }
                 });
             }else{
-                ngToast.create({
-                    className: 'danger',
-                    content: 'please insert a dashboard name',
-                    horizontalPosition: 'center',
-                    verticalPosition: 'top',
-                    dismissOnClick: true
-                });
+                alert('please insert a dashboard name');
             }
         }
 

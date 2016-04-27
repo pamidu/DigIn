@@ -1926,31 +1926,41 @@
     });
 
 
-    mkm.factory('$uploader', function ($http, $v6urls, $rootScope) {
-        function upload(namespace, cls, file, customName) {
+        mkm.factory('$uploader', function ($http, $v6urls, $rootScope) {
+        function upload(namespace, cls, file, customName, isMedia) {
             if (!customName) customName = file.name;
+            var uUrl;
+            if (isMedia) uUrl = $v6urls.mediaLib + "/"  + cls + "/" + customName;
+            else uUrl = $v6urls.objectStore + "/" + namespace + "/" + cls + "/" + customName + "/";
 
-            uploadUrl = $v6urls.objectStore + "/" + namespace + "/" + cls + "/" + customName + "/";
-            var fd = new FormData();
-            fd.append('file', file);
+            var fd;
+            if (isMedia) fd = file;
+            else {
+                fd = new FormData();
+                fd.append('file', file);
+            }
 
-            $http.post(uploadUrl, fd, {
+            $http
+                .post(uUrl, fd, {
                     transformRequest: angular.identity,
                     headers: {
-                        'Content-Type': undefined
+                        'Content-Type': (isMedia ? "multipart/form-data" : undefined)
                     }
                 })
-                .success(function (e) {
+                .success(function(e) {
                     $rootScope.$emit("uploader_success", e);
                 })
-                .error(function (e) {
+                .error(function(e) {
                     $rootScope.$emit("uploader_fail", e);
                 });
         }
 
         return {
             upload: function (namespace, cls, file, customName, useGlobal) {
-                upload(useGlobal ? namespace : getHost(), cls, file, customName)
+                upload(useGlobal ? namespace : getHost(), cls, file, customName,false)
+            },
+            uploadMedia: function(cls, file, customName) {
+                upload(getHost(), "tenant/" + cls, file, customName, true)
             },
             onSuccess: function (func) {
                 var of = $rootScope.$on("uploader_success", function (e, data) {
@@ -1966,6 +1976,9 @@
             }
         };
     });
+
+
+
 
     mkm.factory('$processManager', function ($http, $v6urls, $auth, $backdoor, $helpers) {
 
@@ -2431,7 +2444,6 @@
     });
 
 
-
     mkm.factory('$v6urls', function () {
         var host = getHost();
         return {
@@ -2440,9 +2452,9 @@
             fws: "http://" + host + ":4000",
             processDispatcher: "http://" + host + ":5000",
             processManager: "http://" + host + ":8093"
+            mediaLib: "http://sachilagmailcom.space.test.12thdoor.com/apis/media",
         };
     });
-
 
 
     function CurrentApp(appCode, resources, appService, $compile, sc, $rootScope, $helpers) {

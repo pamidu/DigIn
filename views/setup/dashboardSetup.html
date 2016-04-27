@@ -1,6 +1,6 @@
-<div ng-cloak class="setup-wrapper">
-    <!-- <toast></toast> -->
-    <md-tabs class="setup-tabs" md-dynamic-height md-border-bottom>
+<div  ng-cloak class="setup-wrapper">
+    <toast></toast>
+    <md-tabs ng-init="initSettings()" class="setup-tabs" md-dynamic-height md-border-bottom>
         <md-tab class="setup-tab">
             <md-tab-label>
                 <i class="setup-tab-label fa fa-cog"></i>
@@ -134,34 +134,158 @@
                             <p>{{ person.name }}</p>
                             <md-icon md-svg-icon="styles/css/images/icons/remove.svg" ng-click="doSecondaryAction(person.name,$event)" aria-label="Open Chat" class="md-secondary md-hue-3" ng-class="{'md-primary': person.newMessage}"></md-icon> -->
                     <!-- -->
-
-
-
-
-
                 </div>
             </div>
-
-
-
-
-
-
         </md-tab>
-        <md-tab>
+
+
+
+
+
+        <!-- User group creation -->
+        <md-tab md-on-select="getAllGroups()">
             <md-tab-label>
                 <i class="setup-tab-label fa fa-users"></i>
             </md-tab-label>
-            <div class="md-padding">
-                <div layout="column" layout-align="space-between center" flex>
-                    <span class="setup-font-theme setup-user-heading">Dashboard Viewers</span>
-                    <span class="setup-font-theme setup-user-sub-heading">can access interactive dashboards or receive them via email</span>
-                    <img class="setup-dashviewers-img" src="styles/css/images/dashboard-setup/multi-user.png"/>
-                    <span class="setup-font-theme setup-user-heading-secondary">You don't have any group of dashboard viewers yet</span>
-                    <md-button class="setup-button md-raised md-primary"><span class="setup-font-theme">Let's create one</span></md-button>
+
+            <div ng-show="true" class="md-padding" layout="row" layout-align="center center" >
+                <div layout="column" class="setup-info-container" flex="70">
+                    <md-input-container>
+                        <label>User Group Name</label>
+                        <input ng-model="groupName">
+                    </md-input-container>
+
+        
+                    <!-- <md-content layout="column" class="md-padding" layout="column"  flex> -->
+                     <label>Select Users</label>
+                     <md-content style="height:100%; background-color: #ececee" flex>
+                            <md-chips ng-model="ContactChip" md-autocomplete-snap md-require-match="true" flex style="background: orange;">
+                               <md-autocomplete
+                                  md-selected-item="selectedItem"
+                                  md-search-text="searchText"
+                                  md-items="item in querySearch(searchText)"
+                                  md-item-text="item.name" >
+                                  <span md-highlight-text="searchText">{{item.name}}</span>
+                               </md-autocomplete>
+                               <md-chip-template>
+                                  <span>
+                                  <strong>{{$chip.name}}</strong>  
+                                  </span>
+                               </md-chip-template>
+                            </md-chips>
+                    </md-content>     
+                         
+
+                        <md-button class="setup-button md-raised md-primary" ng-click="createGroup()">
+                            <span class="setup-font-theme">CREATE GROUP</span>
+                        </md-button>
+
+                        <v-accordion onexpand="expandCallback(index, id)" class="vAccordion--default" multiple control="accordion">
+                              <!-- add expanded attribute to open the section -->
+                              <v-pane id="{{::group.groupId}}" ng-repeat="group in groups">
+                                <v-pane-header>
+                                         <table>
+                                            <tr>
+                                                <td>
+                                                    <div ng-click="viewUsersInGroup(group.groupId)">
+                                                        <img alt="{{ group.groupname }}" ng-src="styles/css/images/icons/profile.svg"/>
+                                                    </div>
+                                                </td>
+                                                    
+                                                <td  width="680">
+                                                    <div ng-click="viewUsersInGroup(group.groupId)">
+                                                        {{ group.groupname }}
+                                                    </div>        
+                                                </td>
+                                                    
+                                                <td>
+                                                    <!-- Delete group -->
+                                                    <div ng-click="deleteGroup(group.groupId,$event)">
+                                                        <md-icon md-svg-icon="styles/css/images/icons/remove.svg"></md-icon>
+                                                    </div>
+                                                </td>  
+                                                <td>
+                                                    <!-- Add users to group -->
+                                                    <div ng-click="loadAddUsersWindow(group.groupId)">
+                                                        <md-icon md-svg-icon="styles/css/images/icons/plus.svg"></md-icon>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>  
+                                     
+                                </v-pane-header>
+
+                                <!-- VIEW USERS IN THE GROUP -->
+                                <v-pane-content >
+                                    <li ng-repeat="user in users">
+                                        <table>
+                                            <tr>
+                                                <td width="680">
+                                                    {{ user.name }}
+                                                </td>
+                                                <td>
+                                                    <div ng-click="deleteUserFromGroup(group.groupId,user.id)">
+                                                        <img alt="{{ user.name }}" ng-src="styles/css/images/icons/close.svg"/>
+                                                    </div>
+                                                </td
+                                            </tr>        
+                                        </table>
+                                    </li>
+                                </v-pane-content>
+
+                              </v-pane>
+                        </v-accordion>
                 </div>
             </div>
         </md-tab>
+
+
+         <!--SHARE APPs  -->
+        <md-tab md-on-select="getAllApps()" >
+            <md-tab-label>
+                <i class="setup-tab-label fa fa-share-alt"></i>
+            </md-tab-label>
+            
+            <div ng-show="true" class="md-padding" layout="row" layout-align="center center" >
+                <div layout="column" class="setup-info-container" flex="70">
+                    <v-accordion class="vAccordion--default" multiple>
+                              <!-- add expanded attribute to open the section -->
+                              <v-pane ng-repeat="app in apps">
+                                <v-pane-header>
+                                         <table>
+                                            <tr>
+                                                <td><img alt="{{ app.name }}" ng-src="styles/css/images/icons/profile.svg"/></td>
+                                                <div ng-click="viewGroupsInApp(app.groupId,$event)">
+                                                        <td  width="680">{{ app.name }}</td>
+                                                </div>
+                                                
+                                                <!-- Delete group -->
+                                                <!-- <td>
+                                                    <div ng-click="deleteGroup(app.name,$event)">
+                                                        <md-icon md-svg-icon="styles/css/images/icons/remove.svg"></md-icon>
+                                                    </div>
+                                                </td>  -->
+
+                                                <!-- Add share app --> 
+                                                <td>
+                                                    <div ng-click="loadShareWindow(app.name)">
+                                                        <md-icon md-svg-icon="styles/css/images/icons/share.svg"></md-icon>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>  
+                                     
+                                </v-pane-header>
+
+                              </v-pane>
+                        </v-accordion>
+
+                </div>
+            </div>
+        </md-tab>
+
+
+       <!--Mail -->
         <md-tab>
             <md-tab-label>
                 <i class="setup-tab-label fa fa-envelope"></i>
@@ -172,6 +296,9 @@
                 </div>
             </div>
         </md-tab>
+
+
+
         <md-tab>
             <md-tab-label>
                 <i class="setup-tab-label fa fa-credit-card"></i>

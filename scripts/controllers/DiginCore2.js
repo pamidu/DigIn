@@ -641,22 +641,159 @@ routerApp.controller('DataCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
     }
 ]);
 
-routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog', function($scope, $rootScope, $mdDialog) {
+routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generatePDF3','$http','ngToast','$pdfString','$uploader','$helpers','$mdToast', function($scope, $rootScope, $mdDialog, generatePDF3,$http,ngToast,$pdfString,$uploader,$helpers,$mdToast) {
 
     $scope.generateSnapshot = function() {
-        document.getElementById("canvasTest").appendChild($rootScope.a);
+        //alert("core2");
+        //document.getElementById("canvasTest").appendChild($rootScope.a);
+
+        var htmlElement = $("#mainContainer");
+        var title = "Dashboard";
+        var config = {
+                    title:"Dashboard",
+                    titleLeft: 50, 
+                    titleTop: 20,
+                    tableLeft: 0,
+                    tableTop: 30
+        };
+        generatePDF3.generate(htmlElement, config);
+
     };
 
-    $scope.sendMail = function(wpdomain) {
+
+    $scope.getMailDetail = function(sendState){
+        $scope.sendMailState = true;
+    };
+
+    $scope.sendMail = function(sendState){
+        $scope.sendMailState = false;
+
+        var decodeUrl = $pdfString.returnPdf();
+        var blobFile = dataURItoBlob(decodeUrl) 
+        blobFile.name = 'dashboard.pdf'
+        $scope.uploadPdfName = 'dashboard.pdf'; 
+
+        $uploader.uploadMedia("diginDashboard",blobFile,blobFile.name);
+        $uploader.onSuccess(function (e, data) {
+            $scope.deliverMail($scope.emailTo);
+            console.log("upload success")
+        });
+        $uploader.onError(function (e, data) { 
+            var toast = $mdToast.simple()
+            .content('There was an error, please upload!')
+            .action('OK')
+            .highlightAction(false)
+            .position("bottom right");
+            $mdToast.show(toast).then(function () {
+                //whatever
+            }); 
+        });
+
+        
+        $mdDialog.hide();
 
     };
+
+    function dataURItoBlob(dataURI, callback) {
+        // convert base64 to raw binary data held in a string
+        // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+        var byteString = atob(dataURI.split(',')[1]);
+
+        // separate out the mime component
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+        // write the bytes of the string to an ArrayBuffer
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+
+        // write the ArrayBuffer to a blob, and you're done
+        var bb = new Blob([ab]);
+        return bb;
+    }
+
+
+
+    $scope.validateEmail=function (email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+
+
+     $scope.fireMsg=function (msgType, content) {
+        ngToast.dismiss();
+        var _className;
+        if (msgType == '0') {
+            _className = 'danger';
+        } else if (msgType == '1') {
+            _className = 'success';
+        }
+            ngToast.create({
+                className: _className,
+                content: content,
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                dismissOnClick: true
+                });
+    }
+
 
     $scope.closeDialog = function() {
         $mdDialog.hide();
     };
 
+    $scope.deliverMail=function (mailTo) {
+        // $helpers.getHost()
+        var path =  "http://sachilagmailcom.space.test.12thdoor.com/apis/media/tenant/diginDashboard/dashboard.pdf"
+        $scope.mailData ={
+                "type": "email",
+                "to": mailTo,
+                "subject": "Confirmation",
+                "from": "Digin <noreply-digin@duoworld.com>",
+                "Namespace": "com.duosoftware.com",
+                "TemplateID": "T_Email_GENERAL",
+                "attachments": [{
+                              "filename": $scope.uploadPdfName,
+                              "path": path
+                             }],
+                "DefaultParams": {
+                    "@@CNAME@@": "",
+                    "@@TITLE@@": "Dash board mail delivery",
+                    "@@MESSAGE@@": "Dash Board Mail Dilivery System",
+                    "@@CNAME@@": "",
+                    "@@APPLICATION@@": "Digin.io",
+                    "@@FOOTER@@": "Copyright 2016",
+                    "@@LOGO@@": ""
+                },
+                "CustomParams": {
+                    "@@CNAME@@": "",
+                    "@@TITLE@@": "Dash board mail delivery",
+                    "@@MESSAGE@@": "Dash Board Mail Dilivery System",
+                    "@@CNAME@@": "",
+                    "@@APPLICATION@@": "Digin.io",
+                    "@@FOOTER@@": "Copyright 2016",
+                    "@@LOGO@@": ""
+                }
+            };
 
-}]);
+            $http({
+                method: 'POST',
+                url: 'http://104.197.27.7:3500/command/notification',
+                data: angular.toJson($scope.mailData),
+                headers:{'Content-Type': 'application/json',
+                        'securitytoken': '1234567890'
+                        }
+                })
+                .success(function(response){
+                    alert("Mail Sent...!");                        
+                })
+                .error(function(error){   
+                    alert("Fail !");                        
+                });     
+        }
+    }]);
 
 routerApp.controller('errorCtrl', ['$scope', '$objectstore', '$mdDialog', function($scope,
 

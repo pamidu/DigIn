@@ -986,6 +986,23 @@ routerApp.service('generatePDF2', function ($timeout) {
 
 });
 
+//General PDF of dshboard snapshop inorder to share dashboard
+routerApp.service('generatePDF3', function ($timeout,$pdfString) {
+    this.generate = function (htmlElement, config) {
+
+        var doc = new jsPDF('landscape');
+        var options = {format: 'PNG'};
+
+        doc.addHTML(htmlElement, config.tableLeft, config.tableTop, options, function () {
+            var pdfName = config.title.toString() + '.pdf';
+            doc.text(config.titleLeft, config.titleTop, config.title);
+            var output = doc.output('datauristring')
+            $pdfString.savePdf(output);
+        });
+    };
+});
+
+
 //use this to share scopes between two controllers
 //first store after that get
 routerApp.factory('ScopeShare', function ($rootScope) {

@@ -924,7 +924,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 $scope.highchartsNG.series.forEach(function(key){
                     $scope.recordedColors[key.origName] = key.color;
                 });
-                
+                $scope.isDrilled = $scope.widget.widData.drilled;
+                if($scope.isDrilled) $scope.drillDownConf = $scope.widget.widData.drillConf;                
                 $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
                 delete $scope.highchartsNG.size;
             }
@@ -998,7 +999,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             }
         },
         removeCat: function() {
-            $scope.getAggregation();
+            if($scope.isDrilled) $scope.getDrilledAggregation();
+            else $scope.getAggregation();
         },
         onGetAggData: function(res) {
             $scope.isPendingRequest = false;
@@ -1988,12 +1990,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 clickedPoint = e.point.name,
                                 nextLevel = "",
                                 highestLvl = this.options.customVar,
-                                drillObj = {};
+                                drillObj = {},
+                                isLastLevel = false;
                                 
 
                                 for(i=0;i<drillOrdArr.length;i++){
                                     if(drillOrdArr[i].name == highestLvl){
                                         nextLevel = drillOrdArr[i].nextLevel;
+                                        if(!drillOrdArr[i+1].nextLevel) isLastLevel = true;
                                     }
                                 }
                                 
@@ -2013,11 +2017,19 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                         }
                                         
                                         res.forEach(function(key){
-                                            drillObj.data.push({
-                                                name: key[nextLevel],
-                                                y: key[drillObj.name],
-                                                drilldown: true
-                                            });
+                                            if(!isLastLevel){
+                                                drillObj.data.push({
+                                                    name: key[nextLevel],
+                                                    y: key[drillObj.name],
+                                                    drilldown: true
+                                                });
+                                            }else{
+                                                drillObj.data.push({
+                                                    name: key[nextLevel],
+                                                    y: key[drillObj.name]
+                                                });
+                                            }
+                                            
                                         });
                                         
                                         chart.addSeriesAsDrilldown(e.point, drillObj);
@@ -2031,6 +2043,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                     chart.hideLoading();
                                 }, nextLevel, highestLvl + "='" + clickedPoint + "'");
                             }
+                        },
+                        drillup: function(e){
+                            var chart = this;
+                            $scope.drillDownConf.drillOrdArr.forEach(function(key){
+                                if(key.nextLevel && key.nextLevel == chart.options.customVar)
+                                    chart.options.customVar = key.name;
+                            });
                         }
                     };
                     

@@ -402,11 +402,13 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                 clickedPoint = e.point.name,
                                 nextLevel = "",
                                 highestLvl = this.options.customVar,
-                                drillObj = {};
+                                drillObj = {},
+                                isLastLevel = false;
                                 
                                 for(i=0;i<drillOrdArr.length;i++){
                                     if(drillOrdArr[i].name == highestLvl){
                                         nextLevel = drillOrdArr[i].nextLevel;
+                                        if(!drillOrdArr[i+1].nextLevel) isLastLevel = true;
                                     }
                                 }
                                 
@@ -426,11 +428,18 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                         }
                                         
                                         res.forEach(function(key){
-                                            drillObj.data.push({
-                                                name: key[nextLevel],
-                                                y: key[drillObj.name],
-                                                drilldown: true
-                                            });
+                                            if(!isLastLevel){
+                                                drillObj.data.push({
+                                                    name: key[nextLevel],
+                                                    y: key[drillObj.name],
+                                                    drilldown: true
+                                                });
+                                            }else{
+                                                drillObj.data.push({
+                                                    name: key[nextLevel],
+                                                    y: key[drillObj.name]
+                                                });
+                                            }
                                         });
                                         
                                         chart.addSeriesAsDrilldown(e.point, drillObj);
@@ -444,6 +453,13 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                     chart.hideLoading();
                                 }, nextLevel, highestLvl + "='" + clickedPoint + "'");
                             }
+                        },
+                        drillup: function(e){
+                            var chart = this;
+                            drillConf.drillOrdArr.forEach(function(key){
+                                if(key.nextLevel && key.nextLevel == chart.options.customVar)
+                                    chart.options.customVar = key.name;
+                            });
                         }
                 }
             }

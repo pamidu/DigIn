@@ -2481,11 +2481,22 @@ li:active {
 /*twitter main login page*/
 .wrap-twitter-login {
     width: 350px;
-    height: 400px;
+    height: 460px;
     background: #ffffff;
-    margin: 0 auto;
+    margin: 10% auto;
     overflow: hidden;
+    border-radius: 10px;
+    padding: 20px;
 
+}
+
+.btn-text {
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 200;
+    font-size: 15px;
+    text-transform: lowercase;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .wrap-twitter-login > .btn-wrap {
@@ -2501,6 +2512,12 @@ li:active {
     padding-top: 25px;
 }
 
+.wrap-twitter-login > .text-wrap > h2 {
+    font-family: 'Dosis', sans-serif;
+    font-weight: 600;
+    font-size: 25px;
+}
+
 .text-wrap > p {
     font-size: 15px;
     padding: 10px;
@@ -2512,8 +2529,9 @@ li:active {
 }
 
 .twitter-cover > i {
-    font-size: 50px;
+    font-size: 70px;
     padding: 10px 0 10px;
+    color: #ECECEC;
 }
 
 .twitter-loading {
@@ -2532,4 +2550,36 @@ li:active {
     font-weight: 600;
     font-size: 23px;
     margin-top: 20%;
+}
+
+/*#serchbar*/
+.main-headbar-wrapper-u001 {
+    height: 60px;
+    width: 100%;
+    background: #ffffff;
+    position: fixed;
+}
+
+/*update twitter stylee*/
+.twitter-word-cloud {
+    min-height: 400px;
+}
+
+.word-cloud-wrap {
+    height: 100%;
+    overflow: hidden;
+    margin-left: 21px;
+    margin-right: 30px;
+}
+
+.common-loader {
+    position: absolute;
+    margin: 0 auto;
+    text-align: center;
+    width: 400px;
+}
+.common-loader > i{
+    text-align: center;
+    color: #026689;
+    font-size: 23px;
 }

@@ -199,7 +199,6 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
     //--------msg s------
     var privateFun = (function () {
             return {
-                
                 fireMsg: function (msgType, content) {
                     ngToast.dismiss();
                     var _className;

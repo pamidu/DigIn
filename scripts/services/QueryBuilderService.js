@@ -21,7 +21,7 @@ routerApp.service('$qbuilder',function($diginengine){
     };
     
     var HIGHCHARTS = function() {
-        function mapResult(cat, res, cb){
+        function mapResult(cat, res, d, cb){
             var serArr = [];
 
             //dynamically building the series objects
@@ -39,10 +39,18 @@ routerApp.service('$qbuilder',function($diginengine){
             //fill the series array
             res.forEach(function(key){
                 serArr.forEach(function(ser){
-                    ser.data.push({
-                        name: key[cat],
-                        y: parseFloat(key[ser.name])
-                    });
+                    if(!d){
+                        ser.data.push({
+                            name: key[cat],
+                            y: parseFloat(key[ser.name])
+                        });
+                    }else{
+                        ser.data.push({
+                            name: key[cat],
+                            y: parseFloat(key[ser.name]),
+                            drilldown: true
+                        });
+                    }                    
                 });
             });
             cb(serArr);
@@ -72,12 +80,27 @@ routerApp.service('$qbuilder',function($diginengine){
                     }
                     
                     if(cat != ""){
-                        mapResult(cat, res, function(data){
+                        mapResult(cat, res, widObj.widData.drilled, function(data){
                             widObj.highchartsNG.series = data;
                         });
                     }else{
                         widObj.highchartsNG.series = setMeasureData(res[0]);
                     }
+
+                    if(typeof widObj.widData.drilled != "undefined")
+                    {
+                        widObj.highchartsNG.options.chart['events'] ={
+                            drilldown: function (e) {                                
+                                if (!e.seriesOptions) {
+                                    console.log('drilled');
+                                }
+                            },
+                            click: function(){
+                                alert('test');
+                            }
+                        }
+                    }
+                    
                     cb(widObj);
                 }
             });

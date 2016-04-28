@@ -224,9 +224,9 @@
     dsh.factory('$diginurls', function() {
         var host = getHost();
         return {
-            //            diginengine: "http://" + host + ":8080",
- //           diginengine: "http://104.155.236.85:8080",
-             diginengine: "http://192.168.2.33:8080",
+            //diginengine: "http://" + host + ":8080",
+            diginengine: "http://104.155.236.85:8080",
+            //diginengine: "http://192.168.2.33:8080",
             diginenginealt: "http://" + host + ":8081",
             getNamespace : function getNamespace() {
                 var authdata = JSON.parse(getCookie("authData"));

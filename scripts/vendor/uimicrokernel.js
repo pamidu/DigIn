@@ -1933,6 +1933,7 @@
             if (isMedia) uUrl = $v6urls.mediaLib + "/"  + cls + "/" + customName;
             else uUrl = $v6urls.objectStore + "/" + namespace + "/" + cls + "/" + customName + "/";
 
+
             var fd;
             if (isMedia) fd = file;
             else {
@@ -2451,7 +2452,7 @@
             objectStore: "http://104.197.27.7" + ":3000",
             fws: "http://" + host + ":4000",
             processDispatcher: "http://" + host + ":5000",
-            processManager: "http://" + host + ":8093"
+            processManager: "http://" + host + ":8093",
             mediaLib: "http://sachilagmailcom.space.test.12thdoor.com/apis/media",
         };
     });

@@ -1002,6 +1002,17 @@ routerApp.service('generatePDF3', function ($timeout,$pdfString) {
     };
 });
 
+routerApp.factory("$pdfString",function(){
+    var base64Pdf;
+    return {
+        savePdf : function(url){
+            if (url)  base64Pdf = url;
+        },
+        returnPdf : function(){
+            return base64Pdf;
+        }
+    }
+})
 
 //use this to share scopes between two controllers
 //first store after that get

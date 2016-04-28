@@ -12,9 +12,9 @@ routerApp.controller('emailCtrl', ['$scope','$rootScope', function( $scope, $roo
   };
   
   //console.log($rootScope.b);
-	$scope.sendMail = function(wpdomain){
-	   
-	};
+  $scope.sendMail = function(wpdomain){
+     
+  };
 
   /*html2canvas($rootScope, {
             onrendered: function(canvas) {
@@ -42,4 +42,4 @@ routerApp.controller('emailCtrl', ['$scope','$rootScope', function( $scope, $roo
 //     .accentPalette('pink');
 //   $mdThemingProvider.theme('input', 'default')
 //         .primaryPalette('grey')
-// });
+// });emailCtrl

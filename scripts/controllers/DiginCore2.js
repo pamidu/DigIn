@@ -440,7 +440,7 @@ routerApp.controller('shareCtrl', ['$scope', '$rootScope', '$objectstore', '$mdD
 
 
 
-    $scope.openProvider = function(provider) {
+       $scope.openProvider = function(provider) {
 
         if(provider=="email")
         {
@@ -457,6 +457,8 @@ routerApp.controller('shareCtrl', ['$scope', '$rootScope', '$objectstore', '$mdD
         }
         
     };
+
+
 
 }]);
 
@@ -564,6 +566,7 @@ routerApp.controller('ThemeCtrl', ['$scope', '$rootScope', '$objectstore', '$mdD
     //   background-color:#B2DFDB !important; 
     // }*/
 
+
     // /*menu layer*/
     // .menu-layer li a{
     //   background-color: #00796B;
@@ -640,6 +643,7 @@ routerApp.controller('DataCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
 
     }
 ]);
+
 
 routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generatePDF3','$http','ngToast','$pdfString','$uploader','$helpers','$mdToast', function($scope, $rootScope, $mdDialog, generatePDF3,$http,ngToast,$pdfString,$uploader,$helpers,$mdToast) {
 
@@ -794,6 +798,20 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
                 });     
         }
     }]);
+
+
+routerApp.controller('errorCtrl', ['$scope', '$objectstore', '$mdDialog', function($scope,
+
+    $objectstore, $mdDialog) {
+    $scope.closeDialog = function() {
+        // Easily hides most recent dialog shown...
+        // no specific instance reference is needed.
+        $mdDialog.hide();
+    };
+
+
+}]);
+
 
 routerApp.controller('errorCtrl', ['$scope', '$objectstore', '$mdDialog', function($scope,
 

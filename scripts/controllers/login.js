@@ -46,8 +46,6 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
 
                     });
 
-                    $auth.
-
                     $auth.onLoginError(function (event, data) {
                         $scope.error.isLoading = false;
                         privateFun.fireMsg('0', '<strong>Error : </strong>invalid login user name or password..');

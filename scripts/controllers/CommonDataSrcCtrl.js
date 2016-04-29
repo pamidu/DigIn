@@ -650,7 +650,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             }
 
         }
-          function fireMsg(msgType, content) {
+        
+        function fireMsg(msgType, content) {
                     ngToast.dismiss();
                     var _className;
                     if (msgType == '0') {
@@ -665,33 +666,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         verticalPosition: 'top',
                         dismissOnClick: true
                     });
-    }
-
-
-    //--------msg s------
-    var privateFun = (function () {
-            return {
-                
-                fireMsg: function (msgType, content) {
-                    ngToast.dismiss();
-                    var _className;
-                    if (msgType == '0') {
-                        _className = 'danger';
-                    } else if (msgType == '1') {
-                        _className = 'success';
-                    }
-                    ngToast.create({
-                        className: _className,
-                        content: content,
-                        horizontalPosition: 'center',
-                        verticalPosition: 'top',
-                        dismissOnClick: true
-                    });
-                }
-            }
-        })();
-    //---------msg e---------
-
-
+        }
     }
 ]);

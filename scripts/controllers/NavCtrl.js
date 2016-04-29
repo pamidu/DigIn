@@ -814,6 +814,18 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                 });
         };
+        //load reports dialog  
+        $scope.showReports = function (ev) {
+            $mdDialog.show({
+                    templateUrl: 'views/reports/reportsDialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                })
+                .then(function () {
+                }, function () {
+                });
+        };
 
         $scope.createuuid = function () {
             return Math.floor((1 + Math.random()) * 0x10000)
@@ -1025,11 +1037,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
             if (routeName == "Reports") {
 
-                // var selectedMenu = document.getElementsByClassName("menu-layer");
-                // selectedMenu[0].style.display = 'block';
-                $rootScope.currentView = "Reports";
-                // $scope.manageTabs(false);
-                $state.go('home.' + routeName);
+                $scope.showReports(ev);
             }
             if (routeName == "Analytics") {
 

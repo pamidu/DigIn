@@ -27,7 +27,7 @@ routerApp.factory('dynamicallyReportSrv', function ($http) {
         },
         getCurrentQry: function (parameter) {
             return $http.get(parameter.apiBase + 'getQueries?Reportname=' + parameter.reportName +
-                '&fieldnames={' + parameter.queryFiled + '}')
+                    '&fieldnames={' + parameter.queryFiled + '}')
         },
         getRenderReport: function (parameter) {
             return $http.get(parameter.tomCatBase + 'DigIn-Report/ReportService/Reports/getreport/' + parameter.reportName + '/[' + parameter.rptParameter + ']');

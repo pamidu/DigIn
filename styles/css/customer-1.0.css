@@ -2445,8 +2445,8 @@ li:active {
 }
 
 .report-download-opt {
-    width: 195px;
-    height: 60px;
+    width: 77px;
+    height: 150px;
     position: fixed;
     float: right;
     right: 20px;
@@ -2464,6 +2464,7 @@ li:active {
     cursor: pointer;
     color: #ECECEC;
     outline: none !important;
+    padding-bottom: 14px;
 }
 
 .p-r-20 {

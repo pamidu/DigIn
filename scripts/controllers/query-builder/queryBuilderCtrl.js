@@ -1976,7 +1976,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         srcTbl: $scope.sourceData.tbl,
                         drillOrdArr: drillOrderArr,
                         highestLvl: highestLevel,
-                        fields: fieldArr
+                        fields: fieldArr,
+                        level1Query: query,
+                        level2Query: null,
+                        level3Query: null,
+                        currentLevel: 1
                     };
                     $scope.highchartsNG.options['customVar'] = highestLevel;
                     $scope.highchartsNG.options.chart['events'] = {
@@ -2006,6 +2010,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 
                                 //aggregate method
                                 clientObj.getAggData(srcTbl, fields, function(res, status, query) {
+                    
                                     if(status){
                                         for (var key in res[0]) {
                                             if (Object.prototype.hasOwnProperty.call(res[0], key)) {
@@ -2045,6 +2050,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             }
                         },
                         drillup: function(e){
+                            
                             var chart = this;
                             $scope.drillDownConf.drillOrdArr.forEach(function(key){
                                 if(key.nextLevel && key.nextLevel == chart.options.customVar)

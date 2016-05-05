@@ -142,16 +142,16 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
 
     //#oncreate #report
     $scope.onCreateReport = function () {
-
-
         serverRequest.reportCreate();
-        // console.log($scope.reportFiledList.selectedDrpFiled);
     };
 
 
     //#dropDown change selected
     //drop down on change event select
     $scope.onChangeSelected = function (filedName) {
+
+        console.log(filedName);
+
         var selectedVal = $scope.selectedVal;
         //console.log($scope.reportFiledList.selectedDate);
         var currentVal = {
@@ -461,9 +461,10 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
     //#execute query handler
     $scope.executeQueryAry = [];
     var executeQryHandler = (function () {
-
         return {
             executeNextQuery: function (filedName, selectedVal) {
+                //console.log(filedName);
+                //console.log(selectedVal);
                 var executeQueryAry = $scope.executeQueryAry;
                 console.log(filedName);
                 console.log($scope.executeQueryAry);

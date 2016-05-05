@@ -19,7 +19,7 @@
             <a href="javascript:void(0)"
                id="connectButton"
                ng-click="onLoginTwitter()"
-               class="md-raised md-primary md-button md-ink-ripple text-color-white flex">
+               class="md-raised md-primary md-button md-ink-ripple text-color-white flex btn-text">
                 access account
             </a>
         </div>
@@ -180,8 +180,7 @@
 
             <div layout="row" layout-wrap>
                 <div flex="40">
-
-                    <md-card class="md-default-theme overflow-none p-0">
+                    <md-card class="md-default-theme overflow-none p-0 twitter-word-cloud">
                         <div class="card-header">
                             <div class="graph-body-wrap-p ">
                                 <h2 class="graph-h2">
@@ -189,11 +188,15 @@
                                 </h2>
                             </div>
                         </div>
-                        <div class="emotion-level-graph">
-                            <digin-word-cloud words="wordArray"></digin-word-cloud>
+                        <div class="emotion-level-graph word-cloud-wrap">
+                            <div class="common-loader" ng-if="isLoadingWorkCloud">
+                                Loading...
+                            </div>
+                            <digin-word-cloud words="wordArray" ng-if="!isLoadingWorkCloud"></digin-word-cloud>
                         </div>
                     </md-card>
                 </div>
+
                 <div flex="30">
                     <md-card class="md-default-theme overflow-none p-0">
                         <div class="card-header">

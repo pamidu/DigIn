@@ -392,7 +392,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 var client = $diginengine.getClient(drillConf.dataSrc);
                 wid.highchartsNG.options['customVar'] = drillConf.highestLvl;
                 wid.highchartsNG.options.chart['events'] ={
-                    drilldown: function (e) {                            
+                    drilldown: function (e) {
+                                                
                             if (!e.seriesOptions) {
                                 var srcTbl = drillConf.srcTbl,
                                 fields = drillConf.fields,
@@ -417,6 +418,19 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                 
                                 //aggregate method
                                 clientObj.getAggData(srcTbl, fields, function(res, status, query) {
+                                    
+                                    wid.widData.drillConf.currentLevel++;
+                                    switch(wid.widData.drillConf.currentLevel){
+                                        case 2:
+                                            wid.widData.drillConf.level2Query = query;
+                                        break;
+                                        case 3:
+                                            wid.widData.drillConf.level3Query = query;
+                                        break;
+                                    }
+                                    wid.widData.drillConf.previousQuery = wid.widData.drillConf.currentQuery;
+                                    wid.widData.drillConf.currentQuery = query;
+                                    
                                     if(status){
                                         for (var key in res[0]) {
                                             if (Object.prototype.hasOwnProperty.call(res[0], key)) {
@@ -455,6 +469,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                             }
                         },
                         drillup: function(e){
+
+                            wid.widData.drillConf.currentLevel--;
                             var chart = this;
                             drillConf.drillOrdArr.forEach(function(key){
                                 if(key.nextLevel && key.nextLevel == chart.options.customVar)

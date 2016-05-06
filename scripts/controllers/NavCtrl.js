@@ -164,6 +164,26 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         $scope.tennants = response;
                     });
 
+<<<<<<< HEAD
+=======
+        function showTennantController($scope, $mdDialog, $http, $auth) {
+            /*
+             var userInfo = JSON.parse(getCookie("authData"));
+             //console.log(JSON.parse(userInfo.Otherdata.TenentsAccessible));
+             console.log(JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"'));
+             //$scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible);
+             $scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"');
+             */
+
+
+            var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
+            //var userInfo = JSON.parse(getCookie("authData"));
+            $rootScope.username = userInfo.Username;
+            $http.get('http://104.197.27.7:3048/tenant/GetTenants/' + userInfo.SecurityToken)
+                .success(function (response) {
+                    $scope.tennants = response;
+                });
+>>>>>>> 7dd7e255511be5b413dc74c73a5932ce35f5b71f
 
                     //------------------ 
                     /*
@@ -1139,3 +1159,4 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     }
 
 ]);
+

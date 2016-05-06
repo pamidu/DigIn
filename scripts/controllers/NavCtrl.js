@@ -182,7 +182,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
              $scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"');
              */
 
-            var userInfo = JSON.parse(getCookie("authData"));
+
+            var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
+            //var userInfo = JSON.parse(getCookie("authData"));
             $rootScope.username = userInfo.Username;
             $http.get('http://104.197.27.7:3048/tenant/GetTenants/' + userInfo.SecurityToken)
                 .success(function (response) {

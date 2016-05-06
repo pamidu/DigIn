@@ -1931,7 +1931,7 @@ md-tabs.setup-tabs md-tabs-wrapper {
     border-width: 0 0 1px !important;
     margin-left: calc(50% - 85px);
     border-radius: 5px !important;
-    width: 204px;
+    width: 238px;
     background-color: transparent;
     border-color: transparent;
 }
@@ -2346,3 +2346,6 @@ md-tab-content > div{
 
 
 
+.preloader {
+    padding: 50px;
+    background: url('styles/css/images/icons/Preloader1.gif') no-repeat 50% 50% transparent;}

@@ -21,11 +21,14 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
     */
 
     $scope.initSettings= function(){
-        $('#pagePreLoader').show();
-        $http.get('http://digin.io/apis/usercommon/getAllGroups')
+        //$('#pagePreLoader').show();
+        $scope.load=true;
+        //$http.get('http://digin.io/apis/usercommon/getAllGroups')
+        $http.get('http://192.168.2.33/apis/usercommon/getAllGroups')
             .success(function (response) {
                 $scope.groups = response;
-                $('#pagePreLoader').hide();
+                //$('#pagePreLoader').hide();
+                $scope.load=false;
             });
     };
 
@@ -110,10 +113,10 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
     };
   
     $scope.sizes = [
-          "5-min",
-          "10-min",
-          "15-min",
-          "30-min"
+          "5",
+          "10",
+          "15",
+          "30"
     ];
 
     $scope.toppings = [
@@ -214,15 +217,21 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
     $scope.querySearch = querySearch;
 
     $scope.ContactDetails = [{
-        name : 'aabbaaafgdf',
-        age : '22'
-    },{
-        name : 'bbbccbbbggeaada',
-        age : '24'
-    },{
-        name : 'cccccadafdhghg',
-        age : '25'
-    }];
+            Name : 'Steve',
+            UserID : '500'
+        },{
+            Name : 'Shane',
+            UserID : '100'
+        },{
+            Name : 'Ryan',
+            UserID : '200'
+        },{
+            Name : 'Nick',
+            UserID : '300'
+        },{
+            Name : 'Iann',
+            UserID : '400'
+        }];
 
     $scope.ContactChip = [];
 
@@ -231,7 +240,8 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         var results = [];
         for (i = 0, len = $scope.ContactDetails.length; i < len; ++i) {
             //if ($scope.ContactDetails[i].groupname.indexOf(query.toLowerCase()) != -1) {
-            if ($scope.ContactDetails[i].name.indexOf(query.toLowerCase()) != -1) {
+            if ($scope.ContactDetails[i].name.indexOf(query) != -1) {
+            //if ($scope.ContactDetails[i].name.indexOf(query.toLowerCase()) != -1) {
                 results.push($scope.ContactDetails[i]);
             }
         }
@@ -239,11 +249,13 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
     }
 
     //Get users in a specific group
-    $scope.viewUsersInGroup=function(group)
+    $scope.viewUsersInGroup=function(group,cb)
     {
-        $http.get('http://digin.io/apis/usercommon/getUserFromGroup/'+group)
+        //$http.get('http://digin.io/apis/usercommon/getUserFromGroup/'+group)
+        $http.get('http://192.168.2.33/apis/usercommon/getUserFromGroup/'+group)
             .success(function (response) {
-                $scope.users = response;
+                if(cb)cb(response);
+                else $scope.users = response;
             });
     };
 
@@ -259,7 +271,8 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
     //Get groups shared for specific apps
     $scope.viewGroupsInApp=function(app, event)
     {
-        $http.get('http://digin.io/apis/usercommon/getUserFromGroup/'+app)
+        //$http.get('http://digin.io/apis/usercommon/getUserFromGroup/'+app)
+        $http.get('http://192.168.2.33/apis/usercommon/getUserFromGroup/'+app)
             .success(function (response) {
                 $scope.users = response;
             });
@@ -268,19 +281,22 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
     //Get all existing users
     $scope.getAllGroups=function()
     {
-        $('#pagePreLoader').show();
-        $http.get('http://digin.io/apis/usercommon/getAllGroups')
+        //$('#pagePreLoader').show();
+        $scope.load=true;
+        //$http.get('http://digin.io/apis/usercommon/getAllGroups')
+        $http.get('http://192.168.2.33/apis/usercommon/getAllGroups')
             .success(function (response) {
                 $scope.groups = response;
-                $('#pagePreLoader').hide();
+                //$('#pagePreLoader').hide();
+                $scope.load=false;
             });
     };
 
       //Get all apps
     $scope.getAllApps=function()
     {
-        $('#pagePreLoader').show();
-
+        //$('#pagePreLoader').show();
+         $scope.load=true;
         $objectstore.getClient("duodigin_dashboard")
             .onGetMany(function (data) {
                 if (data) {
@@ -289,7 +305,8 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
                     //     localStorage.setItem("userDashboards", JSON.stringify(allApps));
                 }
                 $scope.apps=data;
-                $('#pagePreLoader').hide();
+                //$('#pagePreLoader').hide();
+                $scope.load=false;
             })
             .getByKeyword("*");
 
@@ -328,7 +345,8 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         };
         $http({
                 method: 'POST',
-                url: 'http://digin.io/apis/usercommon/addUserGroup',
+                //url: 'http://digin.io/apis/usercommon/addUserGroup',
+                url: 'http://192.168.2.33/apis/usercommon/addUserGroup',
                 data: angular.toJson($scope.grpDtl)
         })
         .success(function(response){
@@ -337,7 +355,9 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         .error(function(error){   
             //alert("Fail...!");                        
         });   
-        $scope.getAllGroups();
+
+        $scope.groups.push($scope.groupName);
+        //$scope.getAllGroups();
     };
 
     //------------Delete  group
@@ -348,7 +368,8 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
             .ok('Yes!')
             .cancel('No!');
         $mdDialog.show(confirm).then(function(){
-            $http.get('http://digin.io/apis/usercommon/removeUserGroup/'+ group)
+            //$http.get('http://digin.io/apis/usercommon/removeUserGroup/'+ group)
+            $http.get('http://192.168.2.33/apis/usercommon/removeUserGroup/'+ group)
             .success(function (response) {
                 alert('Deleted...!');
                 $scope.getAllGroups();
@@ -374,7 +395,8 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
             };
             $http({
                 method: 'POST',
-                url: 'http://digin.io/apis/usercommon/removeUserFromGroup',
+                //url: 'http://digin.io/apis/usercommon/removeUserFromGroup',
+                url: 'http://192.168.2.33/apis/usercommon/removeUserFromGroup',
                 data: angular.toJson($scope.UsrDtl)
             })
             .success(function(response){
@@ -390,6 +412,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
     };
 
     $scope.loadShareWindow = function(appName) {
+
         $mdDialog.show({
                 controller: dashboardshareCtrl,
                 templateUrl: 'views/shareApp.html',
@@ -408,7 +431,8 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         function querySearch(query) {
             var results = [];
             for (i = 0, len = $scope.ContactDetails.length; i < len; ++i) {
-                if ($scope.ContactDetails[i].groupname.indexOf(query.toLowerCase()) != -1) {
+                if ($scope.ContactDetails[i].groupname.indexOf(query) != -1) {
+                //if ($scope.ContactDetails[i].groupname.indexOf(query.toLowerCase()) != -1) {
                     results.push($scope.ContactDetails[i]);
                 }
             }
@@ -437,7 +461,8 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
                         };
                         $http({
                                 method: 'POST',
-                                url: 'http://digin.io/apis/usercommon/saveUiShareData',
+                                //url: 'http://digin.io/apis/usercommon/saveUiShareData',
+                                url: 'http://192.168.2.33/apis/usercommon/saveUiShareData',
                                 data: angular.toJson($scope.GrpDtl)
                         })
                         .success(function(response){
@@ -467,40 +492,49 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
 
     //------------Add users to group
     $scope.loadAddUsersWindow = function(group) {
-        $mdDialog.show({
-                controller: dashboardgroupCtrl,
-                templateUrl: 'views/addUsersToGroup.html',
-                resolve: {},
-                locals:{grpId: group}, 
+        $scope.viewUsersInGroup(group,function(data){
+            $mdDialog.show({
+                    controller: dashboardgroupCtrl,
+                    templateUrl: 'views/addUsersToGroup.html',
+                    resolve: {},
+                    locals:{grpId: group,users: data}, 
+            });
         });
+        
     };
 
 
-    var dashboardgroupCtrl = function($scope, grpId){
+    var dashboardgroupCtrl = function($scope, grpId,users){
        
         $scope.selectedItem = null;
         $scope.searchText = null;
         $scope.querySearch = querySearch;
 
         $scope.ContactDetails = [{
-            Name : 'aabbaaafgdf',
-            UserID : 'cdbdb40b88b0351cf12d73310e12f80e'
+            Name : 'Steve',
+            UserID : '500'
         },{
-            Name : 'bbbccbbbggeaada',
-            UserID : '24'
+            Name : 'Shane',
+            UserID : '100'
         },{
-            Name : 'cccccadafdhghg',
-            UserID : '25'
+            Name : 'Ryan',
+            UserID : '200'
+        },{
+            Name : 'Nick',
+            UserID : '300'
+        },{
+            Name : 'Iann',
+            UserID : '400'
         }];
 
-        $scope.ContactChip = [];
+        $scope.ContactChip = users;
 
         function querySearch(query) {
             //$scope.getAllContacts();
             var results = [];
             for (i = 0, len = $scope.ContactDetails.length; i < len; ++i) {
                 //if ($scope.ContactDetails[i].groupname.indexOf(query.toLowerCase()) != -1) {
-                if ($scope.ContactDetails[i].name.indexOf(query.toLowerCase()) != -1) {
+                if ($scope.ContactDetails[i].Name.indexOf(query.toLowerCase()) != -1) {
                     results.push($scope.ContactDetails[i]);
                 }
             }
@@ -514,13 +548,33 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
 
         //------------Add users to group
         $scope.addUsersToGroup = function () {
+
+            //*Remove all users group
+            // $scope.UsrDtl ={
+            //     "groupId":group,
+            //     "users":$scope.ContactChip
+            // };
+            // $http({
+            //     method: 'POST',
+            //     //url: 'http://digin.io/apis/usercommon/removeUserFromGroup',
+            //     url: 'http://192.168.2.33/apis/usercommon/removeUserFromGroup',
+            //     data: angular.toJson($scope.UsrDtl)
+            // })
+            // .success(function(response){
+            // })
+            // .error(function(error){   
+            // }); 
+
+
+            //Add user to group
             $scope.userDtl ={
                 "groupId":grpId,
                 "users":$scope.ContactChip
             };
             $http({
                     method: 'POST',
-                    url: 'http://digin.io/apis/usercommon/addUserToGroup',
+                    //url: 'http://digin.io/apis/usercommon/addUserToGroup',
+                    url: 'http://192.168.2.33/apis/usercommon/addUserToGroup',
                     data: angular.toJson($scope.userDtl)
             })
             .success(function(response){
@@ -538,12 +592,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         $scope.closeDialog = function () {
             $mdDialog.hide();
         };
-
-
-
     };
-
-
 
 
     $scope.doSecondaryAction = function(user,event) {
@@ -564,6 +613,43 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
 
 
     //------TESTING END
+
+    //update refresh widget settings
+    $scope.updateSettings = function() {
+
+        var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
+
+        $scope.settings ={
+          "user_id": userInfo.UserID,
+          "email": userInfo.Email,
+          "components":"dashboard1",
+          "user_role":"admin",
+          // "refresh_interval":parseInt($scope.refreshInterval),
+          // "widget_limit":parseInt($scope.noOfWidget),
+          // "query_limit":parseInt($scope.reqLimit),
+          "refresh_interval":$scope.refreshInterval,
+          "widget_limit":$scope.noOfWidget,
+          "query_limit":$scope.reqLimit,
+          "image_path":"/var",
+          "theme_config": "bla bla",
+          "SecurityToken":userInfo.SecurityToken,
+          "Domain":userInfo.Domain
+        }
+
+        $http({
+                method: 'POST',
+                url: 'http://192.168.2.33:8080/store_user_settings/',
+                data: angular.toJson($scope.settings),
+                headers: {'Content-Type': 'application/javascript'}
+        })
+        .success(function(response){
+            //alert("Success...!"); 
+             fireMsg('1', 'User settings saved Successfully !');
+        })
+        .error(function(error){   
+            fireMsg('0', 'Please re-check the settings !');
+        });   
+    };
 
 });
 

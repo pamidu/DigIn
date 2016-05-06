@@ -645,7 +645,7 @@ routerApp.controller('DataCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
 ]);
 
 
-routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generatePDF3','$http','ngToast','$pdfString','$uploader','$helpers','$mdToast', function($scope, $rootScope, $mdDialog, generatePDF3,$http,ngToast,$pdfString,$uploader,$helpers,$mdToast) {
+routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generatePDF3','$http','ngToast','$pdfString','$uploader','$helpers','$mdToast','$v6urls', function($scope, $rootScope, $mdDialog, generatePDF3,$http,ngToast,$pdfString,$uploader,$helpers,$mdToast,$v6urls) {
 
     $scope.generateSnapshot = function() {
         //alert("core2");
@@ -728,6 +728,7 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
 
      $scope.fireMsg=function (msgType, content) {
         ngToast.dismiss();
+
         var _className;
         if (msgType == '0') {
             _className = 'danger';
@@ -750,7 +751,11 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
 
     $scope.deliverMail=function (mailTo) {
         // $helpers.getHost()
-        var path =  "http://sachilagmailcom.space.test.12thdoor.com/apis/media/tenant/diginDashboard/dashboard.pdf"
+        
+        // var path =  $v6urls.mediaLib +"/apis/media/tenant/diginDashboard/dashboard.pdf"
+        var path =  "http://"+$helpers.getHost()+"/apis/media/tenant/diginDashboard/dashboard.pdf"
+        
+        // var path =  "http://sachilagmailcom.space.test.12thdoor.com/apis/media/tenant/diginDashboard/dashboard.pdf"
         $scope.mailData ={
                 "type": "email",
                 "to": mailTo,

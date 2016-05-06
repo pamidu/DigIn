@@ -415,8 +415,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         console.log('new page: '+JSON.stringify(page));
         $scope.page = page;
         $scope.timestamps = pageTimestamps;
-        if (!changedTime) $scope.activePageSearch = !$scope.activePageSearch;
-        else $scope.activePageSearch = true;
+        $scope.activePageSearch = false;
 
         $scope.fbClient = $restFb.getClient(page, pageTimestamps);
 

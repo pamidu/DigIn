@@ -14,9 +14,9 @@
     <div layout="column">
         <div layout="row">
             <div class="card-head">
-                <header> Prediction && Forecast</header>
+                <header> Reports</header>
                 <div class="tools">
-                    <a href="javascript:void(0)" data-ng-click="close()">
+                    <a href="javascript:void(0)" ng-click="close()">
                         <i class="ti-close"></i>
                     </a>
                 </div>
@@ -27,35 +27,33 @@
         <div class="card-body bg-color-grey-100 p-b-40">
             <div layout="row" layout-align="center center" layout-wrap>
 
-                <!-- Sales Forecast -->
-                <div class="select-card-btn asset">
-                    <a ui-sref="home.Sales Forecast" ng-click="close()">
-                        <img ng-src="styles/css/images/icons/salesForecast.png"
-                             alt="Sales Forecast"
-                             src="styles/css/images/icons/salesForecast.png">
-                    </a>
-                        <span class="size graph-h2">
-                            Sales Forecast
-                        </span>
-                </div>
-
-
-                <!-- test -->
+            	<!-- Reports Development -->
                 <div>
                     <div class="select-card-btn asset">
-                        <a href="#prediction" ng-click="close()">
+                        <a ng-click="navigateToSocialMedia('home.ReportsDev')">
                             <img ng-src="styles/css/images/icons/prediction.png"
-                                 alt="Prediction"
+                                 alt="Reports Development"
                                  src="styles/css/images/icons/prediction.png">
                         </a>
                         <span class="size graph-h2">
-                            Prediction
+                            Reports Development
                         </span>
                     </div>
                 </div>
+
+                <!-- Reports -->
+                <div class="select-card-btn asset">
+                    <a ng-click="navigateToSocialMedia('home.Reports')">
+                        <img ng-src="styles/css/images/icons/salesForecast.png"
+                             alt="Reports"
+                             src="styles/css/images/icons/salesForecast.png">
+                    </a>
+                        <span class="size graph-h2">
+                            Reports
+                        </span>
+                </div>
+
             </div>
-
-
         </div>
 
 

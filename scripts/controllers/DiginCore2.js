@@ -157,13 +157,23 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
                 case "Dynamic Visuals":
                     
-                    var query = $rootScope.widget.commonSrc.query;
+                    //var query = $rootScope.widget.commonSrc.query;
+                    switch($rootScope.widget.widData.drillConf.currentLevel){
+                        case 1: var query = $rootScope.widget.widData.drillConf.level1Query;
+                        break;
+                        case 2: var query = $rootScope.widget.widData.drillConf.level2Query;
+                        break;
+                        case 3: var query = $rootScope.widget.widData.drillConf.level3Query;
+                        break;
+                    }
+                    
                     $scope.client = $diginengine.getClient($rootScope.widget.commonSrc.src.src);
 
                     if( $localStorage.tableData === null || 
                         $localStorage.tableData == undefined ||
                         $localStorage.query != query || 
                         $localStorage.query == undefined ){
+                            console.log("$rootScope.widget", $rootScope.widget);
                             $scope.client.getExecQuery(query, function(data, status){
                                 
                                 $scope.fieldData = [];

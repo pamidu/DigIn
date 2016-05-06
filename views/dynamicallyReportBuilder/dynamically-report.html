@@ -88,7 +88,7 @@
                                     ng-model="selectedVal['value'.filed]"
                                     ng-change="onChangeSelected(dropDown.fieldname)"
                                     ng-options="filed as filed for filed in dropDown.data">
-                                <option value="filed">Select {{dropDown.fieldname}}</option>
+                                <option value="">Select {{dropDown.fieldname}}</option>
                             </select>
                         </div>
 
@@ -123,14 +123,13 @@
             </div>
             <div flex="80">
                 <div class="digin-drb-wrap report">
-
-                    <div class="report-download-opt">
-                        <ul>
-                            <li class="fa fa-cube p-r-20"></li>
-                            <li class="fa fa-cube p-r-20"></li>
-                            <li class="fa fa-cube"></li>
-                        </ul>
-                    </div>
+                        <!--<div class="report-download-opt">-->
+                        <!--<ul>-->
+                        <!--<li class="fa fa-cube p-r-20"></li>-->
+                        <!--<li class="fa fa-cube p-r-20"></li>-->
+                        <!--<li class="fa fa-cube"></li>-->
+                        <!--</ul>-->
+                        <!--</div>-->
                     <div class="data-state">
                         <div class="message"
                              ng-if="eventHandler.isDataFound">

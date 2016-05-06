@@ -1,0 +1,105 @@
+<!-- search report -->
+<div id="fbPageSearch">
+        <md-content class="md-default-theme overflow-none ">
+            <div class="md-content__body">
+                <div class="home-mini-card">
+                    <div class="row m-t-0">
+                        <div class="col-md-1">
+                                <span class="circle-icon md bg-primary">
+                                  <md-icon class="color-white ng-isolate-scope md-default-theme
+                                  fa fa-file-text fa-3x"
+                                           aria-hidden="true">
+                                  </md-icon>
+                                </span>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="graph-main-header-text">
+                                <!-- social page name-->
+                                <h2 class="color-primary graph-h1">
+                                    Reports
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- posts -->
+                            <md-input-container flex>
+                                <label>Search Report</label>
+                                <input ng-model="user.firstName">
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </md-content>
+        <div class="fb-page-search-wrap">
+            <md-content class="md-default-theme overflow-none ">
+                <div class="md-content__body">
+                    <div class="fb-pages-loading" data-ng-if="isPageLoading">
+                        <md-progress-circular class="md-raised md-hue-1" md-mode="indeterminate">
+                        </md-progress-circular>
+                    </div>
+                    <div layout="row">
+                        <div class="home-mini-card load-page-wrap" flex>
+                        <div class="row m-t-0" layout="row" layout-align="center center">
+                                <div class="graph-main-header-text">
+                                    <!-- social page name-->
+                                    <h2 class="color-primary graph-h2">
+                                        Reports ({{reports.length}})
+                                    </h2>
+                                </div>
+                        </div>
+                        <!-- pages loading -->
+                        <!-- view pages wrap -->
+                        <md-list-item class="md-3-line md-no-proxy ng-scope" ng-repeat="report in reports"
+                                      role="listitem">
+                            <button class="md-fab md-button
+                                md-default-theme md-fab-md" ng-click="" aria-label="button">
+                                <i class="fa fa-cogs fa-lg"></i>
+                            </button>
+
+                            <div class="md-list-item-text text-right">
+                                <h3 class="graph-h2">{{report.splitName}}</h3>
+                            </div>
+                            <!-- ngIf: !$last -->
+                            <md-divider md-inset="" ng-if="!$last" class="ng-scope md-default-theme"></md-divider>
+                            <!-- end ngIf: !$last -->
+                        </md-list-item>
+
+                        </div>
+                        <div class="home-mini-card load-page-wrap" flex>
+                            <div class="row m-t-0">
+                                <div class="graph-main-header-text">
+                                    <!-- social page name-->
+                                    <h2 class="color-primary graph-h2">
+                                        File Upload
+                                    </h2>
+                                </div>
+                            </div>
+                            <!-- file upload -->
+                            <div class="custom-file-upload" layout="column" layout-align="center center">
+                                        <div ngf-drop="upload($files)" ngf-select="upload($files)" ng-model="files" class="drop-box"
+                                             ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
+                                             ngf-pattern="'.zip,.rar'" accept=".zip,.rar">Drop Zip files here or click to upload
+                                        </div>
+                                        <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+                                        <div style="display:inline-flex;">
+                                        Files : <div ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}
+                                                </div>
+                                        </div>
+                                              
+                                        <!-- <div class="digin-gb-chart-loading m-l-50"
+                                         ng-show="preloader">
+                                          <svg class="circular-loader" height="50" width="50">
+                                              <circle class="path" cx="25" cy="25.2" r="19.9"
+                                                      fill="none" stroke-width="6" stroke-miterlimit="10"/>
+                                          </svg>
+                                        </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </md-content>
+
+        </div>
+    </div>

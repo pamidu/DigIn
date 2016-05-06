@@ -10,18 +10,28 @@ routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootSc
 
     $scope.isLoginTwitter = false;
     $scope.isLoadingTwitter = false;
+    $scope.isLoadingWorkCloud = false;
+
 
     //main function
     var mainFunc = (function () {
         var parameter = {
             apiBase: Digin_Twitter_API,
+            authToken: '',
             key: {
-                consumer_key: 'Uz6KhfZsmlaACDJfxO3E4E9cT',
-                consumer_secret: '1cpKTIvlzQI4ncBstmG1sPrn1ly1u8vMeXRRlOEMw1ojFtwAng',
-                owner_id: '344250076',
-                access_level: 'Read and write'
+                consumer_key: "'consumer_key':" + "'Uz6KhfZsmlaACDJfxO3E4E9cT'",
+                consumer_secret: "'consumer_secret':" + "'	1cpKTIvlzQI4ncBstmG1sPrn1ly1u8vMeXRRlOEMw1ojFtwAng'",
+                owner_id: "'344250076'",
+                access_level: "'Read and write'",
+                access_token_secret: '',
+                access_token: '',
             },
+            tag: ''
+        };
 
+        var twitterData = {
+            isLoadHasTag: false,
+            hasTag: []
         }
         return {
             loginSuccess: function () {
@@ -62,6 +72,7 @@ routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootSc
                         mainFunc.fireMsg('1', 'twitter login successfully');
                         $scope.connectedTwitter = true;
                         $scope.isLoginTwitter = true;
+                        mainFunc.getTags();
                     } else {
                         mainFunc.fireMsg('0', 'twitter services error');
                     }
@@ -71,6 +82,72 @@ routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootSc
             onClickLogOut: function () {
                 mainFunc.loginError();
                 twitterService.clearCache();
+            },
+            loadToken: function () {
+                parameter.authToken = getCookie("securityToken");
+                // parameter.key.access_token = "'access_token':" + "'" + twitterService.getStorage("@tiwitter_token") + "'";
+                //parameter.key.access_token_secret = "'access_token_secret':" + "'" + twitterService.getStorage("@tiwitter_secret") + "'";
+                parameter.key.access_token_secret = "'access_token_secret':" + "'Nd87KwUqYz2TQvgftP7fgmObdPHSzqBbSZ3zBDU0DGEPp'";
+                parameter.key.access_token = "'access_token':" + "'344250076-tTxdRyjzzvnbRIUWvsZjoRAncCBHsd8PvZs6d76t'";
+
+            },
+            getTags: function () {
+                parameter.tag = 'love';
+                mainFunc.loadToken();
+            },
+            createWorkCloud: function (data) {
+                $scope.isLoadingWorkCloud = true;
+                var wordObjArr = [];
+                for (var key in data) {
+                    if (Object.prototype.hasOwnProperty.call(data, key)) {
+                        wordObjArr.push(
+                            {
+                                "name": data[key].tag,
+                                "val": data[key].value
+                            }
+                        );
+                    }
+                }
+
+                //clear word cloud canvas
+                var canvasNode = document.getElementById("wordCanvas");
+                while (canvasNode.firstChild) {
+                    canvasNode.removeChild(canvasNode.firstChild);
+                }
+                canvasNode = wordObjArr;
+                $rootScope.$broadcast('getWordCloudData', {
+                    wordData: wordObjArr
+                });
+                $scope.isLoadingWorkCloud = false;
+            },
+            callTwitterServices: function () {
+                mainFunc.getTags();
+                //call twitter call
+                //get #has tag
+                twitterData.isLoadHasTag = true;
+                twitterService.getWorkCloud(parameter).success(function (data) {
+                    twitterData.isLoadHasTag = false;
+                    if (data.Is_Success) {
+                        console.log(data.Result);
+                        for (var c in data.Result) {
+                            twitterData.hasTag.push({
+                                'tag': c,
+                                'value': data.Result[c]
+                            });
+                        }
+                        //create workCloud
+                        if (twitterData.hasTag.length != 0) {
+                            mainFunc.createWorkCloud(twitterData.hasTag);
+                        }
+
+                    } else {
+                        mainFunc.fireMsg('0', 'has tag not found!');
+                    }
+                }).error(function (res) {
+
+                    twitterData.isLoadHasTag = false;
+                });
+                //twitterService.getSentimentAnalysis(parameter);
             }
         }
     })();
@@ -89,6 +166,7 @@ routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootSc
             console.log(twitterToken);
             console.log(twitterSecret);
             mainFunc.loginSuccess();
+            mainFunc.callTwitterServices();
         } else {
             $scope.isLoginTwitter = false;
             mainFunc.loginError();

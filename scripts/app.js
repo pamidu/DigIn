@@ -119,10 +119,18 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: true
             }
         })
+        .state('home.ReportsDev', {
+            url: "/ReportsDev",
+            controller: 'ReportsDevCtrl',
+            templateUrl: "views/reports/reportsDev.html",
+            data: {
+                requireLogin: true
+            }
+        })
         .state('home.Reports', {
             url: "/Reports",
             controller: 'ReportCtrl',
-            templateUrl: "views/reports.html",
+            templateUrl: "views/reports/reports.html",
             data: {
                 requireLogin: true
             }

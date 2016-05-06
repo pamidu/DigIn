@@ -392,7 +392,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 var client = $diginengine.getClient(drillConf.dataSrc);
                 wid.highchartsNG.options['customVar'] = drillConf.highestLvl;
                 wid.highchartsNG.options.chart['events'] ={
-                    drilldown: function (e) {                            
+                    drilldown: function (e) {
+                                                
                             if (!e.seriesOptions) {
                                 var srcTbl = drillConf.srcTbl,
                                 fields = drillConf.fields,
@@ -417,6 +418,19 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                 
                                 //aggregate method
                                 clientObj.getAggData(srcTbl, fields, function(res, status, query) {
+                                    
+                                    wid.widData.drillConf.currentLevel++;
+                                    switch(wid.widData.drillConf.currentLevel){
+                                        case 2:
+                                            wid.widData.drillConf.level2Query = query;
+                                        break;
+                                        case 3:
+                                            wid.widData.drillConf.level3Query = query;
+                                        break;
+                                    }
+                                    wid.widData.drillConf.previousQuery = wid.widData.drillConf.currentQuery;
+                                    wid.widData.drillConf.currentQuery = query;
+                                    
                                     if(status){
                                         for (var key in res[0]) {
                                             if (Object.prototype.hasOwnProperty.call(res[0], key)) {
@@ -455,6 +469,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                             }
                         },
                         drillup: function(e){
+
+                            wid.widData.drillConf.currentLevel--;
                             var chart = this;
                             drillConf.drillOrdArr.forEach(function(key){
                                 if(key.nextLevel && key.nextLevel == chart.options.customVar)
@@ -699,7 +715,7 @@ routerApp.controller('elasticDataCtrl',['$scope', '$mdDialog', 'wid',function ($
 
 }]);
 
-routerApp.controller('ReportCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportService',
+routerApp.controller('ReportsDevCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportService',
     '$timeout', '$log', 'cssInjector',
     function ($scope, $mdSidenav, $sce, ReportService, $timeout,
               $log, cssInjector) {
@@ -737,10 +753,123 @@ routerApp.controller('ReportCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportServi
 
             $scope.toggleSidenav('left');
         }
-    }])
+}]);
+routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Report_Base', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast',
+    function ($scope, dynamicallyReportSrv, $localStorage, Digin_Report_Base, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast) {
+                // update damith
+        // get all reports details
+        var privateFun = (function () {
+            var rptService = $localStorage.erportServices;
+            var reqParameter = {
+                apiBase: Digin_Report_Base,
+                tomCatBase: Digin_Tomcat_Base,
+                token: '',
+                reportName: '',
+                queryFiled: ''
+            };
+            var getSession = function () {
+                reqParameter.token = getCookie("securityToken");
+            };
 
-routerApp.controller('analyticsCtrl', ['$scope', '$sce', 'AnalyticsService',
-    '$timeout', '$log', '$mdDialog',
+            var startReportService = function () {
+                if (rptService == 0) {
+                    dynamicallyReportSrv.startReportServer(reqParameter).success(function (res) {
+                        $localStorage.erportServices = 1;
+                    }).error(function (err) {
+                        //false
+                    });
+                }
+            };//end
+
+            return {
+                getAllReport: function () {
+                    getSession();
+                    startReportService();
+                    dynamicallyReportSrv.getAllReports(reqParameter).success(function (data) {
+                        if (data.Is_Success) {
+                            for (var i = 0; i < data.Result.length; i++) {
+                                $scope.reports.push(
+                                    {splitName: data.Result[i], path: '/dynamically-report-builder'}
+                                );
+                            }
+                        }
+                    }).error(function (respose) {
+                        console.error('error request getAllReports...');
+                    });
+                }
+            }
+        }());
+
+        privateFun.getAllReport();
+
+        $scope.reports = [];
+        $scope.preloader = false;
+                                            /* file upload */
+        $scope.$watch('files', function() {
+            $scope.upload($scope.files);
+        });
+        $scope.$watch('file', function() {
+            if ($scope.file != null) {
+                $scope.files = [$scope.file];
+            }
+        });
+
+        $scope.log = '';
+
+        $scope.upload = function(files) {
+                                    
+            if (files && files.length) {
+                $scope.preloader = true;
+                $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
+
+                for (var i = 0; i < files.length; i++) {
+                    var lim = i == 0 ? "" : "-" + i;
+                                           
+                    Upload.upload({
+                        url: 'http://192.168.0.34:8080/file_upload',
+                        headers: {
+                            'Content-Type': 'multipart/form-data',                         
+                        },           
+                        data: {
+                            file: files[i],
+                            db: 'BigQuery',
+                            SecurityToken: 'e1f2e6f8c7a511a48b6add5c2ef24147',
+                            Domain: 'duosoftware'
+                        }                         
+                    }).success(function(data){                                                 
+                        fireMsg('1', 'Successfully uploaded!');
+                        $scope.preloader = false;
+                        $scope.diginLogo = 'digin-logo-wrapper2';
+                        $mdDialog.hide();
+                    }).error(function(data) {
+                        fireMsg('0', 'There was an error while uploading data !');
+                        $scope.preloader = false;
+                        $scope.diginLogo = 'digin-logo-wrapper2';
+                    });
+                }
+            }
+        };
+
+        function fireMsg(msgType, content) {
+                    ngToast.dismiss();
+                    var _className;
+                    if (msgType == '0') {
+                        _className = 'danger';
+                    } else if (msgType == '1') {
+                        _className = 'success';
+                    }
+                    ngToast.create({
+                        className: _className,
+                        content: content,
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
+        }
+    }
+]);
+
+routerApp.controller('analyticsCtrl', ['$scope', '$sce', 'AnalyticsService', '$timeout', '$log', '$mdDialog',
     function ($scope, $sce, AnalyticsService, $timeout, $log, mdDialog) {
 
         $scope.products = [];

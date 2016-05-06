@@ -1,0 +1,244 @@
+
+<div style="background:#ECECEC !important;" ng-mouseover="adjustUI()">
+<toast></toast>
+<!-- preloader start -->
+<div class="pre-loader-parent" id="pagePreLoader" layout="column" layout-align="center center" ng-include
+     src="'views/ViewPreloader.html'" style="background-color:white">
+</div>
+<!-- preloader end -->
+<!-- gridster start -->
+<div ng-intro-options="IntroOptions" ng-intro-method="CallMe" ng-intro-oncomplete="CompletedEvent"
+     ng-intro-onexit="ExitEvent" ng-intro-onchange="ChangeEvent" ng-intro-onbeforechange="BeforeChangeEvent"
+     ng-intro-onafterchange="AfterChangeEvent"
+     ng-intro-autostart="ShouldAutoStart">
+</div>
+<!-- gridster end -->
+<!-- md theme watch start -->
+<div>
+    <script type="text/javascript" src="scripts/fbSDK.js"></script>
+    <div id="fb-root">
+    </div>
+    <!-- md theme watch end -->
+    <!-- headbar start-->
+    <div id="mainHeadbar" class="main-headbar-wrapper-u001" layout="row">
+        <div class="main-headbar-u001" flex >
+
+            </div>
+        </div>
+    </div>
+    <!-- headbar end -->
+    <!-- sidebar start -->
+    <div ng-init="GetReportDetails()" id="getReport" class="nav-menu nav-bar-border" ng-include
+         src="'views/ViewSidebar.html'">
+    </div>
+    <!-- sidebar end -->
+    <!-- ui view start -->
+    <ul ui-view layout="column" id="content1" style="height:100% !important;">
+    </ul>
+    <!-- ui view end -->
+    <!-- Common data source start -->
+    <div class="commonDataSource" ng-include src="'views/common-data-src/ViewCommonDataSrc.html'" ng-controller="commonDataSrcInit">
+    </div>
+    <!-- Common data source end -->
+    <!-- search start -->
+    <div class="overlay" style="z-index: 100;
+    opacity: 0.8;">
+        <div class="overlay">
+            <div class="starting-point">
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <div class="search-layer">
+        <div class="search">
+            <form>
+                <div class="form-group" layout="row">
+                    <label id="postdomain" style="top: 20px"><img style="width:35px;height:35px;margin-top:10px;"
+                                                                  src='styles/css/images/ic_search_white_24px.svg'/>
+                    </label>
+                    <md-input-container flex style="padding-bottom:0px">
+                        <input ng-model="searchText" type="text" id="input-search"
+                               style="background-color: #FFFFFF;height:50px;font-size: 30px;">
+                    </md-input-container>
+                </div>
+            </form>
+        </div>
+        <div class="results">
+            <div class="row">
+                <div class="col-md-4" layout="column" layout-align="center center" layout-padding flex="30">
+                    <div class="result result-users">
+                        <h3 style="font-family:inherit;font-weight:300;font-size:23px;">DASHBOARDS
+                            <small>({{dashboards.length}})</small>
+                        </h3>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px; "
+                                 src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg'/>
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites
+                                <small>({{favoriteDashboards.length}})</small>
+                            </h4>
+                            <ul class="list-material">
+                                <li class="has-action-left" ng-repeat="x in favoriteDashboards | filter:searchText">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left"
+                                             style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
+                                            <img style="width:35px;height:35px;"
+                                                 src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg"
+                                                 class="face-radius" alt="">
+                                            <span ng-click="goDashboard(x)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px; "
+                                 src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg'/>
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More
+                                <small>({{dashboards.length}})</small>
+                            </h4>
+                            <ul class="list-material" style="height:150px">
+                                <li class="has-action-left"
+                                    dir-paginate="x in dashboards | filter:searchText | itemsPerPage: pageSize"
+                                    current-page="currentPage" pagination-id="list1">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left"
+                                             style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
+                                            <img style="width:35px;height:35px;"
+                                                 src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg"
+                                                 class="face-radius" alt="">
+                                            <span ng-click="goDashboard(x)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="other-controller">
+                                <div>
+                                    <dir-pagination-controls boundary-links="true" on-page-change=""
+                                                             pagination-id="list1"></dir-pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="result result-posts">
+                        <h3 style="font-family:inherit;font-weight:300;font-size:23px;">REPORTS
+                            <small>({{reports.length}})</small>
+                        </h3>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px; "
+                                 src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg'/>
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites
+                                <small>({{favoriteReports.length}})</small>
+                            </h4>
+                            <ul class="list-material">
+                                <li class="has-action-left" ng-repeat="x in reports |filter:searchText">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left"
+                                             style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
+                                            <img style="width:35px;height:35px;"
+                                                 src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg"
+                                                 class="img-radius" alt="">
+                                            <span ng-click="goReport2(x.splitName)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="result result-posts">
+                        <h3 style="font-family:inherit;font-weight:300;font-size:23px; ">ANALYZER
+                            <small>({{analyzers.length}})</small>
+                        </h3>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px"
+                                 src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg'/>
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites
+                                <small>({{favoriteAnalyzers.length}})</small>
+                            </h4>
+                            <ul class="list-material">
+                                <li class="has-action-left" ng-repeat="x in favoriteAnalyzers |filter:searchText">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left"
+                                             style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
+                                            <img style="width:35px;height:35px;"
+                                                 src="bower_components/material-design-icons/navigation/svg/production/ic_apps_24px.svg"
+                                                 class="img-radius" alt="">
+                                            <span ng-click="goAnalyzer(x.name)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px; "
+                                 src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg'/>
+
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More
+                                <small>({{analyzers.length}})</small>
+                            </h4>
+                            <ul class="list-material">
+                                <li class="has-action-left" ng-repeat="x in analyzers |filter:searchText">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left"
+                                             style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
+                                            <img style="width:35px;height:35px;"
+                                                 src="bower_components/material-design-icons/navigation/svg/production/ic_apps_24px.svg"
+                                                 class="img-radius" alt="">
+                                            <span ng-click="goAnalyzer(x.name)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layer-container">
+            <div ng-controller="DashboardCtrl" class="menu-layer">
+                {{test}}
+                <div ng-if="currentView=='Dashboard' ">
+                    <ul ng-repeat="item in dashboardmenu">
+                        <li ng-click="doFunction(item.title)">
+                            <a>{{item.title}} </a>
+                        </li>
+                    </ul>
+                </div>
+                <div ng-if="currentView=='Reports'">
+                </div>
+                <div ng-if="currentView=='Analytics'">
+                    <ul ng-repeat="item in analyticsmenu">
+                        <li ng-click="doFunction(item.title)">
+                            <a>{{item.title}} </a>
+                        </li>
+                    </ul>
+                </div>
+                <div ng-if="currentView=='RealTime'">
+                    <ul ng-repeat="item in realtimeMenu">
+                        <li ng-click="doFunction(item.title)">
+                            <a>{{item.title}} </a>
+                        </li>
+                    </ul>
+                </div>
+                <div ng-if="currentView=='Digin P Stack'">
+                    <ul>
+                        <li ng-repeat="item in Extendedmenu" ng-click="doFunction(item.title)">
+                            <a>{{item.title}} </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

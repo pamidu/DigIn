@@ -87,15 +87,39 @@ routerApp.factory('twitterService', function ($q, ngToast, $http) {
         getHasTag: function (parameter) {
             return $http.get(parameter.apiBase + 'hashtag?' +
                 'hashtag=' + parameter.tag +
-                '&tokens={consumer_key:' + parameter.consumer_key + ',' +
-                'consumer_secret:' + parameter.consumer_secret + ',' +
-                'access_token:' + parameter.access_token + ',' +
-                'access_token_secret:' + parameter.access_token_secret + '}', {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            });
+                '&tokens={' + parameter.key.consumer_key + ',' +
+                '' + parameter.key.consumer_secret + ',' +
+                '' + parameter.key.access_token + ',' +
+                '' + parameter.key.access_token_secret + '}' +
+                '&hash_tag=earthquake&unique_id=1&source=twitter' +
+                '&SecurityToken=' + parameter.authToken + '&Domain=duosoftware');
+        },
+        getSentimentAnalysis: function (parameter) {
+            return $http.get(parameter.apiBase + 'sentimentanalysis?' +
+                'token={' + parameter.key.consumer_key + ',' +
+                '' + parameter.key.consumer_secret + ',' +
+                '' + parameter.key.access_token + ',' +
+                '' + parameter.key.access_token_secret + '}' +
+                '&hash_tag=earthquake&unique_id=1&source=twitter' +
+                '&SecurityToken=' + parameter.authToken + '&Domain=duosoftware');
+        },
+        getProfileInfo: function (parameter) {
+            return $http.get(parameter.apiBase + 'sentimentanalysis?' +
+                'token={' + parameter.key.consumer_key + ',' +
+                '' + parameter.key.consumer_secret + ',' +
+                '' + parameter.key.access_token + ',' +
+                '' + parameter.key.access_token_secret + '}' +
+                '&hash_tag=earthquake&unique_id=1&source=twitter' +
+                '&SecurityToken=' + parameter.authToken + '&Domain=duosoftware');
+        },
+        getWorkCloud: function (parameter) {
+            return $http.get(parameter.apiBase + 'buildwordcloudtwitter?' +
+                'tokens={' + parameter.key.consumer_key + ',' +
+                '' + parameter.key.consumer_secret + ',' +
+                '' + parameter.key.access_token + ',' +
+                '' + parameter.key.access_token_secret + '}' +
+                '&hash_tag=earthquake&unique_id=1&source=twitter' +
+                '&SecurityToken=' + parameter.authToken + '&Domain=duosoftware');
         }
     }
 })

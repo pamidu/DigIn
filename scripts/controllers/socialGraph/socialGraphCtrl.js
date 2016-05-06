@@ -332,7 +332,6 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                 while (canvasNode.firstChild) {
                     canvasNode.removeChild(canvasNode.firstChild);
                 }
-                
                 $rootScope.$broadcast('getWordCloudData', {
                     wordData: wordObjArr
                 });

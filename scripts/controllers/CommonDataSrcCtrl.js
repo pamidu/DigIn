@@ -463,83 +463,92 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 publicFun.clrTblSelectedObj($scope.sourceUi.tableData);
             },
             onSaveSource: function() {
-                var length = $scope.sourceUi.sourceRcrd.length++;
-                var currentQry = $scope.sourceUi.selectedSource + '-' + length;
-                $scope.sourceUi.sourceRcrd.push({
-                    name: currentQry,
-                    id: publicFun.getRandomNo
-                });
+                //if number of widgets are lesser than 6
+                var widgetLimit = 6;
+                if($rootScope.dashboard.widgets.length < widgetLimit)
+                {
+                    var length = $scope.sourceUi.sourceRcrd.length++;
+                    var currentQry = $scope.sourceUi.selectedSource + '-' + length;
+                    $scope.sourceUi.sourceRcrd.push({
+                        name: currentQry,
+                        id: publicFun.getRandomNo
+                    });
 
-                //create new attribute
-                var newAttrObj = [];
-                var attrObj = $scope.sourceUi.attrObj;
-                for (var i = 0; i < attrObj.length; i++) {
-                    if (!attrObj[i].isRemove) {
-                        newAttrObj.push(attrObj[i]);
+                    //create new attribute
+                    var newAttrObj = [];
+                    var attrObj = $scope.sourceUi.attrObj;
+                    for (var i = 0; i < attrObj.length; i++) {
+                        if (!attrObj[i].isRemove) {
+                            newAttrObj.push(attrObj[i]);
+                        }
                     }
-                }
-                $scope.sourceUi.attrObj = newAttrObj;
-                //end -----------------
+                    $scope.sourceUi.attrObj = newAttrObj;
+                    //end -----------------
 
-                //create new measures
-                var newMeasureObj = [];
-                var measureObj = $scope.sourceUi.mearsuresObj;
-                for (var i = 0; i < measureObj.length; i++) {
-                    if (!measureObj[i].isRemove) {
-                        newMeasureObj.push(measureObj[i]);
+                    //create new measures
+                    var newMeasureObj = [];
+                    var measureObj = $scope.sourceUi.mearsuresObj;
+                    for (var i = 0; i < measureObj.length; i++) {
+                        if (!measureObj[i].isRemove) {
+                            newMeasureObj.push(measureObj[i]);
+                        }
                     }
-                }
-                $scope.sourceUi.mearsuresObj = newMeasureObj;
-                //end -----------------------
+                    $scope.sourceUi.mearsuresObj = newMeasureObj;
+                    //end -----------------------
 
-                if (newMeasureObj.length == 0 &&
-                    newAttrObj.length == 0) {
-                    publicFun.fireMessage('0', 'Please select query data...');
-                    return;
-                }
-
-                $scope.currWidget = {
-                    widData: {},
-                    widView: "",
-                    widName: "Dynamic Visuals",
-                    dataView: "ViewElasticData",
-                    dataCtrl: "elasticDataCtrl",
-                    initTemplate: "",
-                    initCtrl: "commonSrcInit",
-                    uniqueType: "Dynamic Visuals",
-                    syncState: true,
-                    expanded: true,
-                    seriesname: "",
-                    externalDataURL: "",
-                    dataname: "",
-                    d3plugin: "",
-                    divider: false,
-                    id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
-                    type: "Visualization",
-                    width: '370px',
-                    height: '300px',
-                    mheight: '100%',
-                    highchartsNG: {}
-                };
-
-                $csContainer.fillCSContainer({
-                    //                    wid: $scope.currWidget,
-                    src: $scope.sourceUi.selectedSource,
-                    tbl: $scope.sourceUi.selectedNameSpace,
-                    fAttArr: $scope.sourceUi.attrObj,
-                    fMeaArr: $scope.sourceUi.mearsuresObj
-                });
-
-                publicFun.clearAll(function(status) {
-                    if (status) {
-                        $state.go("home.QueryBuilder", {
-                            widObj: $scope.currWidget
-                        });
-                        $mdSidenav('right').close();
+                    if (newMeasureObj.length == 0 &&
+                        newAttrObj.length == 0) {
+                        publicFun.fireMessage('0', 'Please select query data...');
+                        return;
                     }
-                });
-                //after saving get back to first tab
-                commonUi.selectedIndex = 1;
+
+                    $scope.currWidget = {
+                        widData: {},
+                        widView: "",
+                        widName: "Dynamic Visuals",
+                        dataView: "ViewElasticData",
+                        dataCtrl: "elasticDataCtrl",
+                        initTemplate: "",
+                        initCtrl: "commonSrcInit",
+                        uniqueType: "Dynamic Visuals",
+                        syncState: true,
+                        expanded: true,
+                        seriesname: "",
+                        externalDataURL: "",
+                        dataname: "",
+                        d3plugin: "",
+                        divider: false,
+                        id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
+                        type: "Visualization",
+                        width: '370px',
+                        height: '300px',
+                        mheight: '100%',
+                        highchartsNG: {}
+                    };
+
+                    $csContainer.fillCSContainer({
+                        //                    wid: $scope.currWidget,
+                        src: $scope.sourceUi.selectedSource,
+                        tbl: $scope.sourceUi.selectedNameSpace,
+                        fAttArr: $scope.sourceUi.attrObj,
+                        fMeaArr: $scope.sourceUi.mearsuresObj
+                    });
+
+                    publicFun.clearAll(function(status) {
+                        if (status) {
+                            $state.go("home.QueryBuilder", {
+                                widObj: $scope.currWidget
+                            });
+                            $mdSidenav('right').close();
+                        }
+                    });
+                    //after saving get back to first tab
+                    commonUi.selectedIndex = 1;
+                }
+                else{
+                    
+                    fireMsg('0', 'Maximum Widget Limit Exceeded')
+                }
             },
             onRemoveAtt: function(onSelected, data) {
                 var attrObj = onSelected;

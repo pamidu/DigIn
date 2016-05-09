@@ -1491,7 +1491,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             },
 
                             series: [{
-                                data: $scope.histogramPlotData
+                                data: $scope.histogramPlotData,
+                                pointWidth: 70  
                             }]
                         };
                     } else {

@@ -14,8 +14,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             // if(sessionInfo==null) location.href = 'index.php';
         }
 
-        //localStorage.clear();
-
         $scope.username=JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
         $scope.imageUrl = "styles/css/images/innerlogo.png";
 
@@ -79,28 +77,20 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         $scope.dashCloseWidgets = false;
 
-        if (localStorage.getItem("featureObject") == undefined) {
-            getJSONData($http, 'features', function (data) {
-                $scope.featureOrigin = data;
-                localStorage.setItem("featureObject", JSON.stringify($scope.featureOrigin));
-                // var featureObj = localStorage.getItem("featureObject");                
-
-                $scope.selected = [];
-                for (i = 0; i < data.length; i++) {
-                    if (data[i].stateStr === "Enabled")
-                        $scope.selected.push(data[i]);
-                }
-                $scope.features = data;
+        // getting sidebar data
+        if (localStorage.getItem("sidebarData") == undefined) {
+            getJSONData($http, 'menu', function (data) {
+            
+                localStorage.setItem("sidebarData", JSON.stringify(data));
+                $scope.sidebarItems = data;
             });
-
         }
-
+        // headerbar 
         $scope.headerbarPinned = false;
 
         $scope.pinHeaderbar = function (state) {
             $scope.headerbarPinned = state;
         }
-
         $scope.adjustUI = function () {
             
             if($scope.headerbarPinned){
@@ -111,7 +101,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
             }
             else{
-                // $('body').css("padding-top", "0px");
                 $('#content1').css("top", "0px");
                 $('#content1').css("height", "calc(100vh)");
                 $('.h_iframe').css("height", "calc(100vh)");
@@ -120,143 +109,127 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }  
         }
 
+        $scope.closeDialog = function () {
+            $mdDialog.hide();
+        };
         //shows user profile in a dialog box
         $scope.showUserProfile = function (ev) {
             $mdDialog.show({
-                    controller: showProfileController,
-                    templateUrl: 'templates/profileDialogTemplate.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true
-                })
-                .then(function (answer) {
-
-                }, function () {
-
-                });
+                templateUrl: 'templates/profileDialogTemplate.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                //controller start
+                controller: function showProfileController($rootScope, $scope, $mdDialog) {
+                    //var userInfo = $auth.getSession();
+                    var userInfo = JSON.parse(getCookie("authData"));
+                    $scope.user = {
+                         fname: userInfo.Name,
+                        lname: "",
+                        email: userInfo.Email,
+                        //location: "Colombo",
+                        //mobile: "077123123123",
+                        profile_pic: "styles/css/images/person.jpg"
+                    };
+                    $scope.close = function () {
+                        $mdDialog.cancel();
+                    };
+                }
+                    //controller end
+            })
+            .then(function (answer) {}, function () {});
         };
-
-        function showProfileController($rootScope, $scope, $mdDialog) {
-
-            //var userInfo = $auth.getSession();
-            var userInfo = JSON.parse(getCookie("authData"));
-
-            $scope.user = {
-                fname: userInfo.Name,
-                lname: "",
-                email: userInfo.Email,
-                //location: "Colombo",
-                //mobile: "077123123123",
-                profile_pic: "styles/css/images/person.jpg"
-            };
-
-            $scope.close = function () {
-                $mdDialog.cancel();
-            };
-
-        };
-
 
         //shows tennant dialog box
         $scope.showTennant = function (ev) {
             $mdDialog.show({
-                    controller: showTennantController,
-                    templateUrl: 'templates/TennantDialogTemplate.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true
-                })
-                .then(function (answer) {
+                templateUrl: 'templates/TennantDialogTemplate.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                //controller start
+                controller: function showTennantController($scope, $mdDialog, $http, $auth) {
+                    /*
+                    var userInfo = JSON.parse(getCookie("authData"));
+                    //console.log(JSON.parse(userInfo.Otherdata.TenentsAccessible));
+                    console.log(JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"'));
+                    //$scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible);
+                    $scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"');
+                    */
 
-                }, function () {
-
-                });
-        };
-
-        function showTennantController($scope, $mdDialog, $http, $auth) {
-            /*
-             var userInfo = JSON.parse(getCookie("authData"));
-             //console.log(JSON.parse(userInfo.Otherdata.TenentsAccessible));
-             console.log(JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"'));
-             //$scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible);
-             $scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"');
-             */
-
-            var userInfo = JSON.parse(getCookie("authData"));
-            $rootScope.username = userInfo.Username;
-            $http.get('http://104.197.27.7:3048/tenant/GetTenants/' + userInfo.SecurityToken)
-                .success(function (response) {
-                    $scope.tennants = response;
-                });
+                    var userInfo = JSON.parse(getCookie("authData"));
+                    $rootScope.username = userInfo.Username;
+                    $http.get('http://104.197.27.7:3048/tenant/GetTenants/' + userInfo.SecurityToken)
+                    .success(function (response) {
+                        $scope.tennants = response;
+                    });
 
 
-            //------------------ 
-            /*
-             http://adminduowebinfo.space.duoworld.duoweb.info:3048/tenant/GetTenants/7137bb3fd12f4aaa93822202a75df562
-             $http.get('http://adminduowebinfo.space.duoworld.duoweb.info:3048/tenant/GetTenants/'+ $auth.getSecurityToken())
-             .success(function(response){
-             alert(JSON.stringify(response));
-             $scope.tennants=response;
-             });
-             */
+                    //------------------ 
+                    /*
+                    http://adminduowebinfo.space.duoworld.duoweb.info:3048/tenant/GetTenants/7137bb3fd12f4aaa93822202a75df562
+                    $http.get('http://adminduowebinfo.space.duoworld.duoweb.info:3048/tenant/GetTenants/'+ $auth.getSecurityToken())
+                    .success(function(response){
+                    alert(JSON.stringify(response));
+                    $scope.tennants=response;
+                    });
+                    */
 
-            /*
-             $http({
-             method: 'GET',
-             url: "http://adminduowebinfo.space.duoworld.duoweb.info:3048/tenant/GetTenants/" +  $auth.getSecurityToken(),
-             headers: {
-             'Content-Type': 'application/x-www-form-urlencoded'
-             }
-             }).
-             success(function (response) {
-             $scope.tennants=response.records;
-             });
-             */
-            //-------------------------
+                    /*
+                    $http({
+                    method: 'GET',
+                    url: "http://adminduowebinfo.space.duoworld.duoweb.info:3048/tenant/GetTenants/" +  $auth.getSecurityToken(),
+                    headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                    }).
+                    success(function (response) {
+                    $scope.tennants=response.records;
+                    });
+                    */
+                    //-------------------------
 
-            $scope.showConfirmation = function (tennant, event) {
-                //$mdDialog.show(
-                var confirm = $mdDialog.confirm()
-                    .title('Do you want to switching to ' + tennant)
+                    $scope.showConfirmation = function (tennant, event) {
+                    //$mdDialog.show(
+                    var confirm = $mdDialog.confirm()
+                        .title('Do you want to switching to ' + tennant)
+                        .targetEvent(event)
+                        .ok('Yes!')
+                        .cancel('No!');
+                        $mdDialog.show(confirm).then(function () {
+                            //console.log(JSON.stringify(tennant));
+                            $scope.status = 'Yes';
+                            //window.location = "http://"+tennant;
+                            window.open("http://" + tennant);
+                        }, function () {
+                            //alert('No!');
+                            $scope.status = 'No';
+                        });
+                        //)
+                    };
+
+                    /*
+                    $scope.showConfirm = function(tennant,event) {
+                    var confirm = $mdDialog.confirm()
+                    .title('Would you like to delete your debt?')
+                    .textContent('All of the banks have agreed to forgive you your debts.')
+                    .ariaLabel('Lucky day')
                     .targetEvent(event)
-                    .ok('Yes!')
-                    .cancel('No!');
-                $mdDialog.show(confirm).then(function () {
-                    //console.log(JSON.stringify(tennant));
-                    $scope.status = 'Yes';
-                    //window.location = "http://"+tennant;
-                    window.open("http://" + tennant);
-                }, function () {
-                    //alert('No!');
-                    $scope.status = 'No';
-                });
-                //)
-            };
-
-
-            /*
-             $scope.showConfirm = function(tennant,event) {
-             var confirm = $mdDialog.confirm()
-             .title('Would you like to delete your debt?')
-             .textContent('All of the banks have agreed to forgive you your debts.')
-             .ariaLabel('Lucky day')
-             .targetEvent(event)
-             .ok('Please do it!')
-             .cancel('Sounds like a scam');
-             $mdDialog.show(confirm).then(function() {
-             $scope.status = 'You decided to get rid of your debt.';
-             }, function() {
-             $scope.status = 'You decided to keep your debt.';
-             });
-             };
-             */
-
-
-            $scope.close = function () {
-                $mdDialog.cancel();
-            };
-
-
+                    .ok('Please do it!')
+                    .cancel('Sounds like a scam');
+                    $mdDialog.show(confirm).then(function() {
+                    $scope.status = 'You decided to get rid of your debt.';
+                    }, function() {
+                    $scope.status = 'You decided to keep your debt.';
+                    });
+                    };
+                    */
+                    $scope.close = function () {
+                         $mdDialog.cancel();
+                    };
+                }
+                //controller end
+            }).then(function (answer) {}, function () {});
         };
 
         $scope.currentPage = 1;
@@ -289,21 +262,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
         }
 
-
-        // $scope.refreshHome = function(){
-        //     $window.location.href = Digin_Base_URL + 'home.html';
-        // };
         $rootScope.indexes = [];
         $scope.toggle = true;
         var today = new Date();
         var dd = today.getDate();
 
         $rootScope.username = localStorage.getItem('username');
-        /*if ($rootScope.username == null) 
-         {
-
-         $rootScope.username = "sajeetharan%40duosoftware.com";
-         }*/
 
         var mm = today.getMonth() + 1; //January is 0!
         var yyyy = today.getFullYear();
@@ -330,9 +294,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         });
         client.getClasses("com.duosoftware.com");
 
-        $scope.closeDialog = function () {
-            $mdDialog.hide();
-        };
         today = mm + '/' + dd + '/' + yyyy;
         $rootScope.dashboard.dashboardName = "";
         $rootScope.dashboard.dashboardDate = today;
@@ -572,18 +533,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 param: report
             });
         }
-        $scope.saveDashboard = function (ev, dashboard) {
-            $mdDialog.show({
-                controller: 'saveCtrl',
-                templateUrl: 'views/dashboard-save.html',
-                targetEvent: ev,
-                resolve: {
-                    widget: function () {
-                        return dashboard;
-                    }
-                }
-            })
-        }
+        
         $scope.savePentaho = function (ev, dashboard) {
             $mdDialog.show({
                 controller: 'savePentahoCtrl',
@@ -649,12 +599,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.dashboards = [];
         $scope.favoriteAnalyzers = [];
 
-
         $scope.GetDashboardDetails = function () {
             $scope.dashboards = DashboardService.getDashboards();
         };
-
-
         $scope.GetReportDetails = function () {
             $scope.GetDashboardDetails();
             $scope.GetAnalyzerDetails();
@@ -668,165 +615,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
         $scope.GetAnalyzerDetails = function () {
 
-
         };
-        $scope.Share = function (ev) {
-
-
-            $mdDialog.show({
-                controller: 'shareCtrl',
-                templateUrl: 'views/dashboard-share.html',
-                clickOutsideToClose: true,
-                resolve: {}
-            });
-
-        }
-
-        $scope.Export = function (ev) {
-            $mdDialog.show({
-                controller: 'ExportCtrl',
-                templateUrl: 'views/chart_export.html',
-                clickOutsideToClose: true,
-                resolve: {}
-
-            })
-
-        }
-        $scope.openTheme = function (ev) {
-            $mdDialog.show({
-                controller: 'ThemeCtrl',
-                templateUrl: 'views/change-theme.html',
-                targetEvent: ev,
-                clickOutsideToClose: true,
-                resolve: {}
-            });
-
-        };
-        $scope.openDashboard = function (ev, dashboard) {
-            $mdDialog.show({
-                controller: 'DataCtrl',
-                templateUrl: 'views/dashboard-load.html',
-                targetEvent: ev,
-                resolve: {
-                    dashboard: function () {
-                        return dashboard;
-                    }
-                }
-            })
-        }
-        $scope.help = function (ev, dashboard) {
-            $mdDialog.show({
-                controller: 'HelpCtrl',
-                templateUrl: 'views/help.html',
-                clickOutsideToClose: true,
-                resolve: {}
-            });
-        }
-        $scope.goHomeDialog = function (ev){
-            $mdDialog.show({
-                controller: function goHomeCtrl($scope, $mdDialog) {
-
-                    var homeState = null;
-                    $scope.goHome = function(){
-                        $mdDialog.hide();
-                        homeState = true;
-                    }
-                    $scope.cancel = function () {
-                        $mdDialog.cancel();
-                        homeState = false;
-                    };
-                    return homeState;
-                },
-                templateUrl: 'views/goHome.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                clickOutsideToClose: true
-            }).then(function (homeState) {
-                if(homeState){
-                    $scope.manageTabs(true);
-                    $scope.currentView = "Home";
-                    $state.go('home');
-                }
-            });
-        }
-        $scope.clearAllWidgets = function (ev)
-        {
-            $mdDialog.show({
-                controller: function clearWidgetsCtrl($scope, $mdDialog){
-                    $scope.clear = function(){
-                        $rootScope.dashboardWidgetsCopy = angular.copy($rootScope.dashboard.widgets);
-                        $rootScope.dashboard.widgets = [];
-                        $mdDialog.hide();
-                    };
-                    $scope.cancel = function () {
-                        $mdDialog.cancel();
-                    };
-                },
-                templateUrl: 'views/clearWidgets.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                clickOutsideToClose: true
-            }).then(function () {
-            });
-        }
-        //erangas space
-        $scope.showAddNewDashboard = function (ev) {
-            $mdDialog.show({
-                    controller: addNewDashboardController,
-                    templateUrl: 'templates/addNewDashboardTemplate.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true
-                })
-                .then(function (answer) {
-                    addToDashboards(answer);
-                }, function () {
-
-                });
-        };
-
-        //load social analysis  
-        $scope.showAddSocialAnalysis = function (ev) {
-            $mdDialog.show({
-                    templateUrl: 'views/socialGraph/socialAnalysis_TEMP.html',
-                    controller: 'socialAnalysisCtrl',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true
-                })
-                .then(function (answer) {
-                    addToDashboards(answer);
-                }, function () {
-
-                });
-        };
-        //load sales forecast and prediction  
-        $scope.showSalesForecastPrediction = function (ev) {
-            $mdDialog.show({
-                    templateUrl: 'views/salesForecastPrediction.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true
-                })
-                .then(function (answer) {
-                    addToDashboards(answer);
-                }, function () {
-
-                });
-        };
-        //load reports dialog  
-        $scope.showReports = function (ev) {
-            $mdDialog.show({
-                    templateUrl: 'views/reports/reportsDialog.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true
-                })
-                .then(function () {
-                }, function () {
-                });
-        };
-
         $scope.createuuid = function () {
             return Math.floor((1 + Math.random()) * 0x10000)
                 .toString(16)
@@ -848,7 +637,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $rootScope.Dashboards.push(tempObj);
             if (obj.title != undefined) {
-                showToast(obj.title + " created!");
+    
+                $mdToast.show(
+                    $mdToast.simple()
+                    .content(obj.title + " created!")
+                    .position("bottom right")
+                    .hideDelay(3000)
+                );
             }
         };
 
@@ -910,7 +705,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 disabled: false
             });
         };
-
         $scope.removeTab = function (tab) {
             console.log("removing tab : ");
             console.log(tab);
@@ -918,37 +712,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $rootScope.Dashboards.splice(index1, 1);
 
         };
-
-
-        function addNewDashboardController($scope, $mdDialog) {
-            //console.log($rootScope.dashboard);
-            $scope.numOfDashboards = $rootScope.dashboard.length;
-            $scope.createNewDashboard = function () {
-                var obj = {
-                    title: $scope.dashboard.title,
-                    type: $scope.dashboard.type
-                };
-                $mdDialog.hide(obj);
-            };
-            $scope.close = function () {
-                $mdDialog.cancel();
-            };
-        };
-
-        function showToast(text) {
-            $mdToast.show(
-                $mdToast.simple()
-                    .content(text)
-                    .position("bottom right")
-                    .hideDelay(3000)
-            );
-        };
-
         $scope.clickTabRemoveConfirmation = function () {
+
             document.getElementById("TabRemoveConfirmation").click();
         };
-
         $scope.removeTabConfirmation = function (tab, ev) {
+
             var confirm = $mdDialog.confirm()
                 .title('Would you like to delete dashboard ' + tab.title + '?')
                 .content('dashboard will be deleted from your collection')
@@ -962,32 +731,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             });
         };
-
-        $scope.showAddNewWidgets = function (ev) {
-            //            var selectedMenu = document.getElementsByClassName("menu-layer");
-            //            selectedMenu[0].style.display = 'none';
-            $mdDialog.show({
-                controller: 'addWidgetCtrl',
-                templateUrl: 'views/addWidget.html',
-                targetEvent: ev,
-                clickOutsideToClose: true,
-                resolve: {
-                    dashboard: function () {
-                        return $scope.dashboard;
-                    }
-                }
-            })
-        };
-
-        $scope.showSettings = function (ev) {
-            $mdDialog.show({
-                controller: 'settingsCtrl',
-                templateUrl: "views/settings.html",
-                targetEvent: ev,
-            })
-        };
         //end of erangas space
-
+        $scope.getURL = function () {
+            $scope.imageUrl = $rootScope.image;
+        }
         // hides and shows the dashboard tabs
         $scope.manageTabs = function (dashboard) {
             if (dashboard) {
@@ -1002,184 +749,275 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.dashCloseWidgets = false;
             }
         };
-
+        //navigate
         $scope.navigate = function (routeName, ev) {
-            if (routeName == "home") {
 
-                $scope.goHomeDialog(ev);
-            }
-            if (routeName == "Dashboards") {
-
-                $scope.showAddNewDashboard(ev);
-                // $scope.manageTabs(true);
-                $scope.currentView = "Dashboard";
-                $state.go('home.' + routeName);
-            }
-            if (routeName == "Social Media Analytics") {
-                // $scope.manageTabs(false);
-                $scope.currentView = "Social Analysis";
-                $scope.showAddSocialAnalysis(ev);
-
-            }
-
-            if (routeName == "Add Widgets") {
-
-                // $('.dashboard-widgets-close').css("visibility", "visible");
-                // $('md-tabs-wrapper').css("visibility", "visible");
-
-
-                $scope.showAddNewWidgets(ev);
-                $scope.currentView = "Dashboard";
-                // $scope.manageTabs(true);
-                $state.go("home.Dashboards");
-
-                //$('md-tabs-wrapper').css("display","block");
-            }
-            if (routeName == "Reports") {
-
-                $scope.showReports(ev);
-            }
-            if (routeName == "Analytics") {
-
-                // var selectedMenu = document.getElementsByClassName("menu-layer");
-                // selectedMenu[0].style.display = 'block';
-                // $(".menu-layer").css("top", "160px");
-                // $("starting-point").css("top", "160px");
-                // $scope.manageTabs(false);
-                $rootScope.currentView = "Analytics";
-            }
-            if (routeName == "RealTime") {
-                // var selectedMenu = document.getElementsByClassName("menu-layer");
-                // selectedMenu[0].style.display = 'block';
-
-                // $(".menu-layer").css("top", "200px");
-                // $("starting-point").css("top", "200px");
-                // $scope.manageTabs(false);
-                $state.go('home.' + routeName);
-                $rootScope.currentView = "RealTime";
-
-            }
-            if (routeName == "Data Source") {
-
-                // var selectedMenu = document.getElementsByClassName("menu-layer");
-                // selectedMenu[0].style.display = 'block';
-                $rootScope.currentView = "CommonData";
-                // $scope.manageTabs(false);
-
-                if (!$mdSidenav('right').isOpen()) {
-                    $mdSidenav('right')
-                        .toggle()
-                        .then(function () {
-                            $log.debug("toggle right is done");
+            switch(routeName){
+                case "home":
+                    $scope.goHomeDialog(ev);
+                break;
+                case "Add Page":
+                    $scope.currentView = "Dashboard";
+                    $scope.showAddNewDashboard(ev);
+                    $state.go('home.' + routeName);
+                break;
+                case "Social Media Analytics":
+                    $scope.currentView = "Social Analysis";
+                    $scope.showAddSocialAnalysis(ev);
+                break;
+                case "Add Widgets":
+                    $scope.currentView = "Dashboard";
+                    $scope.showAddNewWidgets(ev);
+                    $state.go("home.Dashboards");
+                break;
+                case "Reports":
+                    $scope.showReports(ev);
+                break;
+                case "Analytics":
+                    $rootScope.currentView = "Analytics";
+                break;
+                case "RealTime":
+                    $rootScope.currentView = "RealTime";
+                    $state.go('home.' + routeName);
+                break;
+                case "Data Source":
+                    $rootScope.currentView = "CommonData";
+                    if (!$mdSidenav('right').isOpen()) {
+                        $mdSidenav('right').toggle().then(function () {
+                                $log.debug("toggle right is done");
                         });
-                }
+                    }
+                break;
+                case "Sales Forecast && Prediction":
+                    $scope.showSalesForecastPrediction(ev);
+                break;
+                case "Logout":
+                    var confirm = $mdDialog.confirm()
+                        .title('Do you want to logout ?')
+                        .targetEvent(event)
+                        .ok('Yes!')
+                        .cancel('No!');
+                    $mdDialog.show(confirm).then(function () {
+                        //$scope.status = 'Yes';
+                        $window.location = "logout.php";
+                    }, function () {
+                        //$scope.status = 'No';
+                    });
+                break;
+                case "Theme":
+                    $scope.openTheme();
+                break;
+                case "Share":
+                    $scope.currentView = "Share";
+                    $scope.Share();
+                break;
+                case "Export":
+                    $scope.currentView = "Export";
+                    $scope.Export();
+                break;
+                case "Help":
+                    $scope.currentView = "Help";
+                    //user guide
+                    setTimeout(function () {
+                        var intro;
+                        intro = introJs();
+                        intro.setOptions($scope.IntroOptions);
+                        intro.start();
+                    }, 0);
+                break;
+                case "Save":
+                    if($state.current.name == 'home.Dashboards' || $state.current.name == 'home.CustomDashboardViewer')
+                    $scope.saveDashboard(ev);
+                break;
+                case "Settings":
+                    $scope.currentView = "Settings";
+                    $state.go('home.Settings');
+                break;
+                case "TV Mode":
+                    $scope.currentView = "TV Mode";
+                    if (Fullscreen.isEnabled()) Fullscreen.cancel();
+                    else Fullscreen.all();
+                break;
+                case "Clear Widgets":
+                    $scope.clearAllWidgets(ev);
+                break;
+                case "Common Source Algorithm":
+                    $state.go("home.commonSrcAlgorithm");
+                break;
+                default:
+                    $state.go("home");
+                break;
             }
-            if (routeName == "Sales Forecast && Prediction") {
-
-                // var selectedMenu = document.getElementsByClassName("menu-layer");
-                // selectedMenu[0].style.display = 'block';
-                // $scope.manageTabs(false);
-                $scope.showSalesForecastPrediction(ev);
-
-            }
-            if (routeName == "Logout") {
-                var confirm = $mdDialog.confirm()
-                    .title('Do you want to logout ?')
-                    .targetEvent(event)
-                    .ok('Yes!')
-                    .cancel('No!');
-                $mdDialog.show(confirm).then(function () {
-                    //$scope.status = 'Yes';
-                    $window.location = "logout.php";
-                }, function () {
-                    //$scope.status = 'No';
-                });
-
-            }
-            if (routeName == "Theme") {
-                // var selectedMenu = document.getElementsByClassName("menu-layer");
-                // selectedMenu[0].style.display = 'none';
-                $scope.openTheme();
-
-            }
-            if (routeName == "Share") {
-                //var selectedMenu = document.getElementsByClassName("menu-layer");
-                //selectedMenu[0].style.display = 'none';
-
-                $scope.Share();
-                $scope.currentView = "Share";
-
-            }
-            if (routeName == "Export") {
-                // var selectedMenu = document.getElementsByClassName("menu-layer");
-                // selectedMenu[0].style.display = 'none';
-                $scope.currentView = "Export";
-
-                $scope.Export();
-
-            }
-            if (routeName == "Help") {
-
-                // var selectedMenu = document.getElementsByClassName("menu-layer");
-                // selectedMenu[0].style.display = 'none';
-
-                $scope.currentView = "Help";
-
-                //user guide
-                setTimeout(function () {
-                    var intro;
-                    intro = introJs();
-                    intro.setOptions($scope.IntroOptions);
-                    intro.start();
-                }, 0);
-
-
-                // $scope.help();
-
-            }
-            if (routeName == "Save") {
-                if($state.current.name == 'home.Dashboards' || $state.current.name == 'home.CustomDashboardViewer')
-                $scope.saveDashboard(ev);
-            }
-            if (routeName == "Settings") {
-                $state.go('home.Settings');
-                $scope.currentView = "Settings";
-//                $scope.showSettings(ev);
-            }
-            if (routeName == "TV Mode") {
-                // var selectedMenu = document.getElementsByClassName("menu-layer");
-                // selectedMenu[0].style.display = 'none';
-                $scope.currentView = "TV Mode";
-
-                if (Fullscreen.isEnabled())
-                    Fullscreen.cancel();
-                else
-                    Fullscreen.all();
-
-            }
-            if (routeName == "Clear Widgets") {
-
-                // var selectedMenu = document.getElementsByClassName("menu-layer");
-                // selectedMenu[0].style.display = 'block';
-                // $rootScope.currentView = "Clear";
-                // $(".menu-layer").css("top", "120px");
-                // $("starting-point").css("top", "120px");
-
-                $scope.clearAllWidgets(ev);
-            }
-
-            if (routeName == "Common Source Algorithm") {
-                $state.go("home.commonSrcAlgorithm");
-            }
-
-
         };
+        //navigate functions start
+        $scope.goHomeDialog = function (ev){
+            $mdDialog.show({
+                controller: function goHomeCtrl($scope, $mdDialog) {
 
-
-        $scope.getURL = function () {
-            $scope.imageUrl = $rootScope.image;
+                    var homeState = null;
+                    $scope.goHome = function(){
+                        $mdDialog.hide();
+                        homeState = true;
+                    }
+                    $scope.cancel = function () {
+                        $mdDialog.cancel();
+                        homeState = false;
+                    };
+                    return homeState;
+                },
+                templateUrl: 'views/goHome.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true
+            }).then(function (homeState) {
+                if(homeState){
+                    $scope.manageTabs(true);
+                    $scope.currentView = "Home";
+                    $state.go('home');
+                }
+            });
         }
+        $scope.showAddNewDashboard = function (ev) {
+            $mdDialog.show({
+                    templateUrl: 'templates/addNewDashboardTemplate.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    controller: function addNewDashboardController($scope, $mdDialog) {
+                        //console.log($rootScope.dashboard);
+                        $scope.numOfDashboards = $rootScope.dashboard.length;
+                        $scope.createNewDashboard = function () {
+                            var obj = {
+                                title: $scope.dashboard.title,
+                                type: $scope.dashboard.type
+                            };
+                            $mdDialog.hide(obj);
+                        };
+                        $scope.close = function () {
+                            $mdDialog.cancel();
+                        };
+                    }
+                })
+                .then(function (answer) {
+                    addToDashboards(answer);
+                }, function () {
 
+                });
+        };
+        //load social analysis  
+        $scope.showAddSocialAnalysis = function (ev) {
+            $mdDialog.show({
+                    templateUrl: 'views/socialGraph/socialAnalysis_TEMP.html',
+                    controller: 'socialAnalysisCtrl',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                })
+                .then(function (answer) {
+                    addToDashboards(answer);
+                }, function () {
+
+                });
+        };
+        $scope.showAddNewWidgets = function (ev) {
+            $mdDialog.show({
+                controller: 'addWidgetCtrl',
+                templateUrl: 'views/addWidget.html',
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                resolve: {
+                    dashboard: function () {
+                        return $scope.dashboard;
+                    }
+                }
+            })
+        };
+        //load reports dialog  
+        $scope.showReports = function (ev) {
+            $mdDialog.show({
+                    templateUrl: 'views/reports/reportsDialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                })
+                .then(function () {
+                }, function () {
+                });
+        };
+        //load sales forecast and prediction  
+        $scope.showSalesForecastPrediction = function (ev) {
+            $mdDialog.show({
+                    templateUrl: 'views/salesForecastPrediction.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                })
+                .then(function (answer) {
+                    addToDashboards(answer);
+                }, function () {
+
+                });
+        };
+        $scope.openTheme = function (ev) {
+            $mdDialog.show({
+                controller: 'ThemeCtrl',
+                templateUrl: 'views/change-theme.html',
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                resolve: {}
+            });
+        };
+        $scope.Share = function (ev) {
+
+            $mdDialog.show({
+                controller: 'shareCtrl',
+                templateUrl: 'views/dashboard-share.html',
+                clickOutsideToClose: true,
+                resolve: {}
+            });
+        }
+        $scope.Export = function (ev) {
+
+            $mdDialog.show({
+                controller: 'ExportCtrl',
+                templateUrl: 'views/chart_export.html',
+                clickOutsideToClose: true,
+                resolve: {}
+
+            })
+        }
+        $scope.saveDashboard = function (ev, dashboard) {
+            $mdDialog.show({
+                controller: 'saveCtrl',
+                templateUrl: 'views/dashboard-save.html',
+                targetEvent: ev,
+                resolve: {
+                    widget: function () {
+                        return dashboard;
+                    }
+                }
+            })
+        }
+        $scope.clearAllWidgets = function (ev){
+            $mdDialog.show({
+                controller: function clearWidgetsCtrl($scope, $mdDialog){
+                    $scope.clear = function(){
+                        $rootScope.dashboardWidgetsCopy = angular.copy($rootScope.dashboard.widgets);
+                        $rootScope.dashboard.widgets = [];
+                        $mdDialog.hide();
+                    };
+                    $scope.cancel = function () {
+                        $mdDialog.cancel();
+                    };
+                },
+                templateUrl: 'views/clearWidgets.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true
+            }).then(function () {
+            });
+        };
+        //navigate functions end
 
         var icons = ['dashboard', 'dashboard'];
         var colors = ['#323232', '#262428'];
@@ -1201,43 +1039,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
             $scope.$apply();
         }, 1700);
-        setTimeout(function () {
-            var featureObj = localStorage.getItem("featureObject");
-
-            getJSONData($http, 'menu', function (data) {
-
-                if (featureObj == "undefined") $scope.menu = data;
-                else {
-                    var featureArray = JSON.parse(featureObj);
-                    var orignArray = [];
-                    for (i = 0; i < featureArray.length; i++) {
-                        if (featureArray[i].state == true)
-                            orignArray.push(featureArray[i]);
-                    }
-                    $scope.menu = orignArray.concat(data);
-                }
-
-            });
-        }, 300);
-        setTimeout(function () {
-            var featureObj = localStorage.getItem("featureObject");
-
-            getJSONData($http, 'menu', function (data) {
-
-                if (featureObj === null) $scope.menu = data;
-                else {
-                    var featureArray = JSON.parse(featureObj);
-                    var orignArray = [];
-                    for (i = 0; i < featureArray.length; i++) {
-                        if (featureArray[i].state == true)
-                            orignArray.push(featureArray[i]);
-                    }
-                    $scope.menu = orignArray.concat(data);
-                }
-
-            });
-        }, 800);
-
+        // help 
         setTimeout(function () {
             $scope.CompletedEvent = function (scope) {
                 console.log("Completed Event called");
@@ -1334,15 +1136,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $scope.ShouldAutoStart = true;
 
         }, 1000);
-
-
-        //getting branch data for google maps
-        $http.get('jsons/branch.json').success(function (data) {
-            $scope.JSONDataBranch = data;
-            console.log("data json branch");
-            console.log($scope.JSONDataBranch);
-        });
-
     }
 
 ]);

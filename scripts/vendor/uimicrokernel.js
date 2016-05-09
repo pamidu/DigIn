@@ -2444,6 +2444,7 @@
         }
     });
 
+    
 
     mkm.factory('$v6urls', function () {
         var host = getHost();
@@ -2453,7 +2454,8 @@
             fws: "http://" + host + ":4000",
             processDispatcher: "http://" + host + ":5000",
             processManager: "http://" + host + ":8093",
-            mediaLib: "http://sachilagmailcom.space.test.12thdoor.com/apis/media",
+            mediaLib: "http://" + host + "/apis/media",
+            //mediaLib: "http://sachilagmailcom.space.test.12thdoor.com/apis/media",
         };
     });
 

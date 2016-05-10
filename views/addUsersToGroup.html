@@ -11,18 +11,18 @@
   </md-toolbar>
 
                      <label>Select Users</label>
-                     <md-content style="height:100%; background-color: #ececee" flex>
+                     <md-content style="height:100%; background-color: " flex>
                             <md-chips ng-model="ContactChip" md-autocomplete-snap md-require-match="true" flex style="background: orange;">
                                <md-autocomplete
                                   md-selected-item="selectedItem"
                                   md-search-text="searchText"
                                   md-items="item in querySearch(searchText)"
-                                  md-item-text="item.name" >
-                                  <span md-highlight-text="searchText">{{item.name}}</span>
+                                  md-item-text="item.Name" >
+                                  <span md-highlight-text="searchText">{{item.Name}}</span>
                                </md-autocomplete>
                                <md-chip-template>
                                   <span>
-                                  <strong>{{$chip.name}}</strong>  
+                                  <strong>{{$chip.Name}}</strong>  
                                   </span>
                                </md-chip-template>
                             </md-chips>

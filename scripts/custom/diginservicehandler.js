@@ -1,5 +1,4 @@
 'use strict';
-(function (dsh) {
     function getHost() {
         var host = window.location.hostname;
 
@@ -9,15 +8,9 @@
 
     function getNamespace() {
         var authdata = JSON.parse(getCookie("authData"));
-        var namespace = authdata.Email.replace('@', '_');
-//        namespace = namespace.replace(/./, '_');
-        namespace = namespace.replace(/\./g, '_');
-
-        return "Demo";
-        // return namespace;
+        var namespace = authdata.Email.replace(/[@.]/g, '_');
+        return namespace;
     }
-
-    dsh.factory('$diginengine', function ($diginurls, $servicehelpers) {
         function DiginEngineClient(_dsid, _db) {
             var dataSetId = _dsid;
             var database = _db;
@@ -120,124 +113,72 @@
                         cb(data, status);
                     }, $diginurls.diginengine + "/generatebubble?&tablename=[" + getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + x + "&db=" + database);
                 },
-                getForcast: function (fObj, cb) {
-                    $servicehelpers.httpSend("get", function (data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "/forecast?model=" + fObj.model +
-                        "&pred_error_level=" + fObj.pred_error_level +
-                        "&alpha=" + fObj.alpha +
-                        "&beta=" + fObj.beta +
-                        "&gamma=" + fObj.gamma +
-                        "&fcast_days=" + fObj.fcast_days +
-                        "&table_name=[" + getNamespace() + "." + fObj.tbl +
-                        "]&field_name_d=" + fObj.field_name_d +
-                        "&field_name_f=" + fObj.field_name_f +
-                        "&steps_pday=" + fObj.steps_pday +
-                        "&m=" + fObj.m +
-                        "&interval=" + fObj.interval +
-                        "&db=" + database);
                 }
             }
         }
 
         return {
-            getClient: function (db, dsid) {
-                if (!dsid) return new DiginEngineClient(getNamespace(), db);
                 else return new DiginEngineClient(dsid, db);
             }
         }
     });
-    dsh.factory('$servicehelpers', function ($http, $auth) {
         return {
-            httpSend: function (method, cb, reqUrl, obj) {
                 if (method == "get") {
                     $http.get(reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=duosoftware.com', {
                         headers: {}
                     }).
-                    success(function (data, status, headers, config) {
                         (data.Is_Success) ? cb(data.Result, true, data.Custom_Message) : cb(data.Custom_Message, false, "");
                     }).
-                    error(function (data, status, headers, config) {
                         cb(data, false, "");
                     });
                 }
             },
-            sendWorker: function (wSrc, wData, cb) {
                 var w = new Worker(wSrc);
-
                 wData.rUrl = wData.rUrl + "&SecurityToken=" + getCookie("securityToken") + "&Domain=duosoftware.com";
                 w.postMessage(JSON.stringify(wData));
-                w.addEventListener('message', function (event) {
-                    if (event.data.state) {
                         var res = JSON.parse(event.data.res);
-                        res.Is_Success ? cb(res.Result, event.data.state, res.Custom_Message) : cb(res.Custom_Message, event.data.state, "");
-                    } else {
-                        if (typeof res != "undefined")
-                            cb(res.Custom_Message, event.data.state, "");
-                        else cb(null, event.data.state, "");
                     }
-
                 });
             }
         }
     });
-
-
-    dsh.factory('$restFb', function ($diginurls, $servicehelpers) {
         function RestFbClient(_page, _tst) {
             var pg = _page;
             var timestamp = _tst;
-            return {
-                getPageOverview: function (cb) {
-                    $servicehelpers.httpSend("get", function (data, status, msg) {
                         cb(data, status);
                     }, $diginurls.diginengine + '/pageoverview?metric_names=[%27page_views%27,%27page_fans%27,%27page_stories%27]&since=' + timestamp.sinceStamp + '&until=' + timestamp.untilStamp + '&token=' + pg.accessToken);
                 },
-                getPostSummary: function (cb) {
-                    $servicehelpers.httpSend("get", function (data, status, msg) {
                         cb(data, status);
                     }, $diginurls.diginengine + '/fbpostswithsummary?since=' + timestamp.sinceStamp + '&until=' + timestamp.untilStamp + '&page=' + pg.id + '&token=' + pg.accessToken);
                 },
-                getSentimentAnalysis: function (cb, post_ids) {
-                    $servicehelpers.httpSend("get", function (data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + '/sentimentanalysis?source=facebook&post_ids=' + post_ids + '&token=' + pg.accessToken);
                 },
-                getWordCloud: function (cb) {
-                    $servicehelpers.httpSend("get", function (data, status, msg) {
                         cb(data, status);
                     }, $diginurls.diginengine + '/buildwordcloudFB?since=' + timestamp.sinceStamp + '&until=' + timestamp.untilStamp + '&source=facebook&token=' + pg.accessToken);
                 },
-                getDemographicsinfo: function (cb) {
-                    $servicehelpers.httpSend("get", function (data, status, msg) {
                         cb(data, status);
                     }, $diginurls.diginengine + '/demographicsinfo?token=' + pg.accessToken);
                 }
             }
         }
-
         return {
-            getClient: function (page, timestamp) {
                 return new RestFbClient(page, timestamp);
             }
         }
     });
-
-    dsh.factory('$diginurls', function () {
         var host = getHost();
         return {
             //diginengine: "http://" + host + ":8080",
-            // diginengine: "http://104.155.236.85:8080",
             diginengine: "http://192.168.2.33:8080",
+            // diginengine: "http://192.168.2.33:8080",
             diginenginealt: "http://" + host + ":8081",
             getNamespace: function getNamespace() {
                 var authdata = JSON.parse(getCookie("authData"));
                 var namespace = authdata.Email.replace('@', '_');
                 namespace = namespace.replace(/\./g, '_');
-
-                return "Demo";
-                // return namespace;
-            }
+ 
+                 return namespace;
         };
     });
 })(angular.module('diginServiceHandler', []))

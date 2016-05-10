@@ -158,13 +158,23 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
                 case "Dynamic Visuals":
                     
-                    var query = $rootScope.widget.commonSrc.query;
+                    //var query = $rootScope.widget.commonSrc.query;
+                    switch($rootScope.widget.widData.drillConf.currentLevel){
+                        case 1: var query = $rootScope.widget.widData.drillConf.level1Query;
+                        break;
+                        case 2: var query = $rootScope.widget.widData.drillConf.level2Query;
+                        break;
+                        case 3: var query = $rootScope.widget.widData.drillConf.level3Query;
+                        break;
+                    }
+                    
                     $scope.client = $diginengine.getClient($rootScope.widget.commonSrc.src.src);
 
                     if( $localStorage.tableData === null || 
                         $localStorage.tableData == undefined ||
                         $localStorage.query != query || 
                         $localStorage.query == undefined ){
+                            console.log("$rootScope.widget", $rootScope.widget);
                             $scope.client.getExecQuery(query, function(data, status){
                                 
                                 $scope.fieldData = [];
@@ -646,7 +656,7 @@ routerApp.controller('DataCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
 ]);
 
 
-routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generatePDF3','$http','ngToast','$pdfString','$uploader','$helpers','$mdToast', function($scope, $rootScope, $mdDialog, generatePDF3,$http,ngToast,$pdfString,$uploader,$helpers,$mdToast) {
+routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generatePDF3','$http','ngToast','$pdfString','$uploader','$helpers','$mdToast','$v6urls', function($scope, $rootScope, $mdDialog, generatePDF3,$http,ngToast,$pdfString,$uploader,$helpers,$mdToast,$v6urls) {
 
     $scope.generateSnapshot = function() {
         //alert("core2");
@@ -729,6 +739,7 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
 
      $scope.fireMsg=function (msgType, content) {
         ngToast.dismiss();
+
         var _className;
         if (msgType == '0') {
             _className = 'danger';
@@ -751,7 +762,11 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
 
     $scope.deliverMail=function (mailTo) {
         // $helpers.getHost()
-        var path =  "http://sachilagmailcom.space.test.12thdoor.com/apis/media/tenant/diginDashboard/dashboard.pdf"
+        
+        // var path =  $v6urls.mediaLib +"/apis/media/tenant/diginDashboard/dashboard.pdf"
+        var path =  "http://"+$helpers.getHost()+"/apis/media/tenant/diginDashboard/dashboard.pdf"
+        
+        // var path =  "http://sachilagmailcom.space.test.12thdoor.com/apis/media/tenant/diginDashboard/dashboard.pdf"
         $scope.mailData ={
                 "type": "email",
                 "to": mailTo,

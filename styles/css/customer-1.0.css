@@ -2457,8 +2457,8 @@ li:active {
 }
 
 .report-download-opt {
-    width: 195px;
-    height: 60px;
+    width: 77px;
+    height: 150px;
     position: fixed;
     float: right;
     right: 20px;
@@ -2476,6 +2476,7 @@ li:active {
     cursor: pointer;
     color: #ECECEC;
     outline: none !important;
+    padding-bottom: 14px;
 }
 
 .p-r-20 {
@@ -2493,11 +2494,22 @@ li:active {
 /*twitter main login page*/
 .wrap-twitter-login {
     width: 350px;
-    height: 400px;
+    height: 460px;
     background: #ffffff;
-    margin: 0 auto;
+    margin: 10% auto;
     overflow: hidden;
+    border-radius: 10px;
+    padding: 20px;
 
+}
+
+.btn-text {
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 200;
+    font-size: 15px;
+    text-transform: lowercase;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .wrap-twitter-login > .btn-wrap {
@@ -2513,6 +2525,12 @@ li:active {
     padding-top: 25px;
 }
 
+.wrap-twitter-login > .text-wrap > h2 {
+    font-family: 'Dosis', sans-serif;
+    font-weight: 600;
+    font-size: 25px;
+}
+
 .text-wrap > p {
     font-size: 15px;
     padding: 10px;
@@ -2524,8 +2542,9 @@ li:active {
 }
 
 .twitter-cover > i {
-    font-size: 50px;
+    font-size: 70px;
     padding: 10px 0 10px;
+    color: #ECECEC;
 }
 
 .twitter-loading {

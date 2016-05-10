@@ -142,16 +142,16 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
 
     //#oncreate #report
     $scope.onCreateReport = function () {
-
-
         serverRequest.reportCreate();
-        // console.log($scope.reportFiledList.selectedDrpFiled);
     };
 
 
     //#dropDown change selected
     //drop down on change event select
     $scope.onChangeSelected = function (filedName) {
+
+        console.log(filedName);
+
         var selectedVal = $scope.selectedVal;
         //console.log($scope.reportFiledList.selectedDate);
         var currentVal = {
@@ -245,7 +245,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 console.error("request timedout: ", xhr);
                 data({'code': 500, 'data': 'request timedout'});
             };
-            xhr.open("GET", Digin_PostgreSql + "executeQuery?query=" + queryString + "&SecurityToken=" + reqParameter.token + "" +
+            xhr.open("GET", Digin_PostgreSql + "executeQuery?query=" + encodeURIComponent(queryString) + "&SecurityToken=" + reqParameter.token + "" +
                 "&Domain=duosoftware.com&db=PostgreSQL", /*async*/ true);
             xhr.send();
         };
@@ -280,22 +280,35 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                     for (var d in data) {
                         if (Object.prototype.hasOwnProperty.call(data, d)) {
                             var val = data[d];
+
+                            //update line
+                            //check label value Is null
+                            var valLable=null;
+                            if(val.Label==null || val.Label==""){
+                               valLable=val.Fieldname.toLowerCase(); 
+                            }else{
+                                valLable=val.Label.toLowerCase();
+                            }
+
                             //get filed data
                             var dynObject = {
                                 query: val.Query,
-                                fieldname: val.Fieldname.toLowerCase(),
+                                label : val.Fieldname,
+                                fieldname: valLable,
                                 data: []
                             };
 
                             $scope.reportFiledList.selectedDrpFiled.push({
                                 'filedName': dynObject.fieldname,
-                                'value': ''
+                                'value': '',
+                                'label':dynObject.label
                             });
                             angular.forEach(val, function (value, key) {
                                 var executeQueryAryObj = {
                                     id: '',
                                     filedName: '',
                                     query: '',
+                                    label :'',
                                     state: false,
                                 };
 
@@ -312,7 +325,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                         length = reportFiledList.UIDropDown.length;
 
                                         executeQueryAryObj.id = loop;
-                                        executeQueryAryObj.filedName = val.Fieldname.toLowerCase();
+                                        executeQueryAryObj.filedName = val.Label.toLowerCase();
                                         executeQueryAryObj.query = val.Query;
                                         if (loop == 1) {
                                             executeQueryAryObj.state = true;
@@ -323,7 +336,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
 
 
                                         if (val.Query != "" && loop == 1) {
-                                            privateFun.waitLoadingFiled(val.Fieldname.toLowerCase());
+                                            privateFun.waitLoadingFiled(val.Label.toLowerCase());
                                             getExecuteQuery(val.Query, length, function (res) {
                                                 if (res.data == 500) {
                                                     privateFun.fireMsg('0', '<strong>Error 500 :' +
@@ -394,11 +407,11 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 //create drop down report parameter
                 for (var i = 0; i < selDrpDwnObj.length; i++) {
                     if (i == 0) {
-                        reqParameter.rptParameter = '{"' + selDrpDwnObj[i]['filedName'] + '" : ' +
+                        reqParameter.rptParameter = '{"' + selDrpDwnObj[i]['label'] + '" : ' +
                             '"' + selDrpDwnObj[i]['value'] + '"}';
                     }
                     else {
-                        reqParameter.rptParameter = reqParameter.rptParameter + ',{"' + selDrpDwnObj[i]['filedName'] + '" : ' +
+                        reqParameter.rptParameter = reqParameter.rptParameter + ',{"' + selDrpDwnObj[i]['label'] + '" : ' +
                             '"' + selDrpDwnObj[i]['value'] + '"}';
                     }
                 }//end
@@ -461,9 +474,10 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
     //#execute query handler
     $scope.executeQueryAry = [];
     var executeQryHandler = (function () {
-
         return {
             executeNextQuery: function (filedName, selectedVal) {
+                //console.log(filedName);
+                //console.log(selectedVal);
                 var executeQueryAry = $scope.executeQueryAry;
                 console.log(filedName);
                 console.log($scope.executeQueryAry);

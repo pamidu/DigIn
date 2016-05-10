@@ -226,14 +226,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 privateFun.grySyntaxErrorMsg("01", null);
                                 return false;
                             }
-                            //is check table name
-                            console.log(typeof splitQry[stateQry.tblIndex]);
-                            if (splitQry[stateQry.tblIndex].trim() != $scope.sourceData.tbl) {
-                                privateFun.grySyntaxErrorMsg("02", null);
-                                return false;
-                            }
-
-
                         }
                         else {
                             privateFun.grySyntaxErrorMsg("0", null);

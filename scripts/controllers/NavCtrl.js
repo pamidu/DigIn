@@ -1169,7 +1169,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
 
             if (routeName == "Common Source Algorithm") {
-                $state.go("home.commonSrcAlgorithm");
+                $state.go("home.dataSource");
             }
 
 

@@ -619,7 +619,7 @@
 
             $http({
                 method: 'POST',
-                url: "http://digin.io/apis/authorization/userauthorization/login",
+                url: "http://192.168.2.33/apis/authorization/userauthorization/login",
                 headers: {
                     'Content-Type': 'application/json'
                 },

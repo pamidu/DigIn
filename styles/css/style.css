@@ -1161,7 +1161,7 @@ h6 small {
 /*Preloaders*/
 
 #pagePreLoader {
-    background-color: #01718D !important;
+    background-color: #757f93 !important;
     height: 100%;
     width: 100%;
     z-index: 100;
@@ -1174,7 +1174,7 @@ h6 small {
     font-weight: 200;
     font-size: 35px;
     margin-top: 10px;
-    color: #EC784B;
+    color: #13b6b3;
 }
 
 .pre-loader-parent {

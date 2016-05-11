@@ -31,23 +31,7 @@
     <!-- body wrap-->
     <div class="bdy-wrap">
         <div layout="row">
-            <div flex="20">
-                <div class="optional-panel pull-left p-10">
-
-
-                    <div class="panel-wrap-filter">
-                        <div class="anlz-option">
-                            <div class="anlz-btn">
-                                <button class="form-control btn btn-filter">
-                                    filter
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <div flex="60">
+            <div flex="80">
                 <div class="optional-panel border-left">
                     <!-- toggle panel -->
                     <div class="tbl-header-option"
@@ -88,69 +72,52 @@
                                        placeholder="search here any data..">
                             </div>
 
-                            <table class="table sf-table" style="overflow-x:scroll;">
-                                <tr>
-                                    <th class="text-center sf-lef-border-1"
-                                        ng-click="eventHandler.HeaderClick()"> SKY
-                                    </th>
-                                    <th class="text-center sf-lef-border-1"
-                                        ng-click="eventHandler.HeaderClick()"> SKY
-                                    </th>
-                                    <th class="text-center sf-lef-border-1"
-                                        ng-click="eventHandler.HeaderClick()"> SKY
-                                    </th>
-                                    <th class="text-center sf-lef-border-1"
-                                        ng-click="eventHandler.HeaderClick()"> SKY
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td>Consumer</td>
-                                    <td class="sf-lef-border-1 sf-row-one"
-                                    >Sales
-                                    </td>
-                                    <td class="sf-lef-border-1 sf-row-one"
-                                    >sd
-                                    </td>
-                                    <td class="sf-lef-border-1  sf-row-one"
-                                    >s
-                                    </td>
-                                    <td class="sf-lef-border-1  sf-row-one"
-                                    >d
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Consumer</td>
-                                    <td class="sf-lef-border-1  sf-row-one">Sales</td>
-                                    <td class="sf-lef-border-1  sf-lef-border-1 sf-row-one">sd</td>
-                                    <td class="sf-lef-border-1  sf-row-one">s</td>
-                                    <td class=" sf-lef-border-1 sf-row-one">d</td>
-                                </tr>
-                            </table>
+                            <div class="table-area" layout-margin>
+                                <table class="table table-striped" at-table at-list="tableData" at-config="config"
+                                       at-paginated>
+                                    <thead>
+                                    <tr>
+                                        <th at-attribute={{field}} ng-repeat="field in fieldData">{{field}}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="item in tableData">
+                                        <td at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
+                                        <td at-implicit at-sortable at-attribute={{field}}
+                                            ng-repeat="field in fieldData"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div layout="row" layout-align="center center">
+                                <at-pagination class="custom-pagination" at-list="tableData"
+                                               at-config="config"></at-pagination>
+                            </div>
                         </div>
                     </div>
-                    <div class="algo-footer-line-one  p-10">
+                    <!--<div class="algo-footer-line-one  p-10">-->
 
-                        <ul>
-                            <li ng-click="eventHandler.onClickTool('analysis')">
-                                <i class="ti-hummer"></i>
-                                <h5> Analysis</h5>
-                            </li>
-                            <li ng-click="eventHandler.onClickTool('export')">
-                                <i class="ti-download"></i>
-                                <h5> Export</h5>
-                            </li>
+                    <!--<ul>-->
+                    <!--<li ng-click="eventHandler.onClickTool('analysis')">-->
+                    <!--<i class="ti-hummer"></i>-->
+                    <!--<h5> Analysis</h5>-->
+                    <!--</li>-->
+                    <!--<li ng-click="eventHandler.onClickTool('export')">-->
+                    <!--<i class="ti-download"></i>-->
+                    <!--<h5> Export</h5>-->
+                    <!--</li>-->
 
-                            <li ng-click="eventHandler.onClickTool('dataTool')">
-                                <i class="ti-filter"></i>
-                                <h5> Data Tool</h5>
-                            </li>
-                            <li ng-click="eventHandler.onClickTool()">
-                                <i class="ti-save"></i>
-                                <h5> Save</h5>
-                            </li>
-                        </ul>
+                    <!--<li ng-click="eventHandler.onClickTool('dataTool')">-->
+                    <!--<i class="ti-filter"></i>-->
+                    <!--<h5> Data Tool</h5>-->
+                    <!--</li>-->
+                    <!--<li ng-click="eventHandler.onClickTool()">-->
+                    <!--<i class="ti-save"></i>-->
+                    <!--<h5> Save</h5>-->
+                    <!--</li>-->
+                    <!--</ul>-->
 
-                    </div>
+                    <!--</div>-->
                 </div>
             </div>
 

@@ -2186,42 +2186,42 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     //#customer query design
     $scope.getExecuteAgg = function(query) {
 
-        //privateFun.isQrySyntaxError(query);
+        privateFun.isQrySyntaxError(query);
 
-        if (typeof query != "undefined") {
-		$scope.eventHndler.isLoadingChart = true;
-		$scope.client.getExecQuery(query, function (res, status, query) {
-			var cat = "";
-			var measureArr = [];
-			if (status) {
-				for (c in res[0]) {
-					if (Object.prototype.hasOwnProperty.call(res[0], c)) {
-						if (typeof res[0][c] == "string") cat = c;
-						else {
-							var m = c.split('_');
-							measureArr.push({
-								filedName: m[1],
-								condition: m[0]
-							});
-						}
-					}
-				}
-				$scope.executeQryData.executeMeasures = measureArr;
-				eval("$scope." + $scope.selectedChart.chartType + ".executeQuery(cat, res, query)");
-			} else {
-				//alert('request failed');
-				privateFun.fireMessage('0', '<strong>Invalid query :</strong>please enter request failed ');
-				$scope.isPendingRequest = false;
-				$scope.eventHndler.isLoadingChart = false;
-			}
-		}, $scope.initRequestLimit.value);
-		} else {
-			// alert("enter a query");
-			$scope.isPendingRequest = false;
-			$scope.eventHndler.isLoadingChart = false;
-			privateFun.fireMessage('0', 'pelase enter a query');
-
-		}
+        //if (typeof query != "undefined") {
+        //    $scope.eventHndler.isLoadingChart = true;
+        //    $scope.client.getExecQuery(query, function (res, status, query) {
+        //        var cat = "";
+        //        var measureArr = [];
+        //        if (status) {
+        //            for (c in res[0]) {
+        //                if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+        //                    if (typeof res[0][c] == "string") cat = c;
+        //                    else {
+        //                        var m = c.split('_');
+        //                        measureArr.push({
+        //                            filedName: m[1],
+        //                            condition: m[0]
+        //                        });
+        //                    }
+        //                }
+        //            }
+        //            $scope.executeQryData.executeMeasures = measureArr;
+        //            eval("$scope." + $scope.selectedChart.chartType + ".executeQuery(cat, res, query)");
+        //        } else {
+        //            //alert('request failed');
+        //            privateFun.fireMessage('0', '<strong>Invalid query :</strong>please enter request failed ');
+        //            $scope.isPendingRequest = false;
+        //            $scope.eventHndler.isLoadingChart = false;
+        //        }
+        //    }, $scope.initRequestLimit.value);
+        //} else {
+        //    // alert("enter a query");
+        //    $scope.isPendingRequest = false;
+        //    $scope.eventHndler.isLoadingChart = false;
+        //    privateFun.fireMessage('0', 'pelase enter a query');
+        //
+        //}
     };
 
     $scope.mapResult = function(cat, res, cb) {

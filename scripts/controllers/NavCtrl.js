@@ -943,6 +943,88 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 .then(function () {
                 }, function () {
                 });
+<<<<<<< HEAD
+
+            }
+            if (routeName == "Theme") {
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'none';
+                $scope.openTheme();
+
+            }
+            if (routeName == "Share") {
+                //var selectedMenu = document.getElementsByClassName("menu-layer");
+                //selectedMenu[0].style.display = 'none';
+
+                $scope.Share();
+                $scope.currentView = "Share";
+
+            }
+            if (routeName == "Export") {
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'none';
+                $scope.currentView = "Export";
+
+                $scope.Export();
+
+            }
+            if (routeName == "Help") {
+
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'none';
+
+                $scope.currentView = "Help";
+
+                //user guide
+                setTimeout(function () {
+                    var intro;
+                    intro = introJs();
+                    intro.setOptions($scope.IntroOptions);
+                    intro.start();
+                }, 0);
+
+
+                // $scope.help();
+
+            }
+            if (routeName == "Save") {
+                if($state.current.name == 'home.Dashboards' || $state.current.name == 'home.CustomDashboardViewer')
+                $scope.saveDashboard(ev);
+            }
+            if (routeName == "Settings") {
+                $state.go('home.Settings');
+                $scope.currentView = "Settings";
+//                $scope.showSettings(ev);
+            }
+            if (routeName == "TV Mode") {
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'none';
+                $scope.currentView = "TV Mode";
+
+                if (Fullscreen.isEnabled())
+                    Fullscreen.cancel();
+                else
+                    Fullscreen.all();
+
+            }
+            if (routeName == "Clear Widgets") {
+
+                // var selectedMenu = document.getElementsByClassName("menu-layer");
+                // selectedMenu[0].style.display = 'block';
+                // $rootScope.currentView = "Clear";
+                // $(".menu-layer").css("top", "120px");
+                // $("starting-point").css("top", "120px");
+
+                $scope.clearAllWidgets(ev);
+            }
+
+            if (routeName == "Common Source Algorithm") {
+                $state.go("home.dataSource");
+            }
+
+
+=======
+>>>>>>> be2dda6b0dcc96ef5b3a110b64e9156a10b8e845
         };
         //load sales forecast and prediction  
         $scope.showSalesForecastPrediction = function (ev) {

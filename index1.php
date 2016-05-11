@@ -181,6 +181,7 @@
 <script type="text/javascript" src="scripts/controllers/SignUpMain.js"></script>
 <script type="text/javascript" src="scripts/controllers/sourceAlgorithm/sourceAlgorithmCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/help/videoCtrl.js"></script>
+<script type="text/javascript" src="scripts/controllers/data-source/dataSourceCtrl.js"></script>
 <!-- services start -->
 <script type="text/javascript" src="scripts/services/DynamicRealTimeVis.js"></script>
 <script type="text/javascript" src="scripts/services/ObjectStoreService.js"></script>

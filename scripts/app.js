@@ -241,7 +241,6 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             data: {
                 requireLogin: true
             }
-
         })
         .state('home.Social Media Analytics', {
             url: "/social-media-analytics",
@@ -307,6 +306,12 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
     }).state('videos', {
         url: '/help-videos',
         templateUrl: "views/help/videos/help-videos.html"
+    }).state('home.dataSource', {
+        url: '/data-source',
+        templateUrl: "views/common-data-src/viewDataSource.html",
+        data: {
+            requireLogin: true
+        }
     });
 
     lkGoogleSettingsProvider.configure({
@@ -995,7 +1000,7 @@ routerApp.service('generatePDF2', function ($timeout) {
 });
 
 //General PDF of dshboard snapshop inorder to share dashboard
-routerApp.service('generatePDF3', function ($timeout,$pdfString) {
+routerApp.service('generatePDF3', function ($timeout, $pdfString) {
     this.generate = function (htmlElement, config) {
 
         var doc = new jsPDF('landscape');
@@ -1010,13 +1015,13 @@ routerApp.service('generatePDF3', function ($timeout,$pdfString) {
     };
 });
 
-routerApp.factory("$pdfString",function(){
+routerApp.factory("$pdfString", function () {
     var base64Pdf;
     return {
-        savePdf : function(url){
+        savePdf: function (url) {
             if (url)  base64Pdf = url;
         },
-        returnPdf : function(){
+        returnPdf: function () {
             return base64Pdf;
         }
     }

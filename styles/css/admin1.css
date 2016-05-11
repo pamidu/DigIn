@@ -1017,9 +1017,9 @@ a.thumbnail.active {
 }
 
 .alert-info {
-    background-color: #92dcfe;
-    border-color: #6fe9fd;
-    color: #015276;
+    background-color: #FFB300;
+    border-color: #FFB300;
+    color: #fff;
 }
 
 .alert-info hr {

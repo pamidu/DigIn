@@ -118,7 +118,8 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
     }
 ]);
 
-routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '$rootScope', 'ScopeShare', '$filter', '$diginengine', 'generatePDF1', '$localStorage',
+routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '$rootScope', 'ScopeShare', '$filter',
+    '$diginengine', 'generatePDF1', '$localStorage',
     function($scope, $http, $mdDialog, $rootScope, ScopeShare, $filter, $diginengine, generatePDF1, $localStorage){
 
         // ====== angular-table configuration ========

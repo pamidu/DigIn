@@ -2,7 +2,9 @@
  * Created by Damith on 3/4/2016.
  */
 
-routerApp.controller('sourceAlgorithmCtrl', function ($scope,$state) {
+routerApp.controller('sourceAlgorithmCtrl', function ($scope, $state, $rootScope) {
+
+    console.log($rootScope.algoSource);
 
     var mainFunEventHandler = (function () {
         return {}
@@ -16,7 +18,7 @@ routerApp.controller('sourceAlgorithmCtrl', function ($scope,$state) {
             name: '',
             isAnalysis: false,
             isDataTool: false,
-            isExport:false
+            isExport: false
 
         },
         clearAllSelectedTool: function () {
@@ -121,4 +123,10 @@ routerApp.controller('sourceAlgorithmCtrl', function ($scope,$state) {
             });
         }
     }, true);
+
+    //table data filter option
+    $scope.config = {
+        itemsPerPage: 7,
+        fillLastPage: false
+    }
 });

@@ -18,48 +18,6 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
     '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', '$http', 'ScopeShare', '$filter',
     function($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http, ScopeShare, $filter) {
 
-        // $scope.showData = function() {
-
-        //     $mdDialog.show({
-        //                 controller: $rootScope.widget.dataCtrl,
-        //                 templateUrl: 'views/ViewWidgetSettingsData.html',
-        //                 parent: angular.element(document.body),
-        //                 locals: {
-        //                     widId: $rootScope.widget.id
-        //                 }
-        //             })
-        //             .then(function() {
-        //                 //$mdDialog.hide();
-        //             }, function() {
-        //                 //$mdDialog.hide();
-        //             });
-
-        //     $scope.close();
-        // };
-
-        // $scope.showAdvanced = function(ev, widget) {
-        //                 if($rootScope.widget.initTemplate){
-
-        //         $mdDialog.show({
-        //             controller: $rootScope.widget.initCtrl,
-        //             templateUrl: $rootScope.widget.initTemplate,
-        //             parent: angular.element(document.body),
-        //             targetEvent: ev,
-        //             locals: {
-        //                 widId: $rootScope.widget.id,
-        //                 widData: {},
-        //                 fieldData: {}
-        //             }
-        //         })
-        //         .then(function() {
-        //             //$mdDialog.hide();
-        //         }, function() {
-        //             //$mdDialog.hide();
-        //         });
-        //     }
-        //     $scope.close();
-        // };
-
         $scope.trustSrc = function(src) {
             return $sce.trustAsResourceUrl(src);
         };
@@ -80,14 +38,6 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
             client.getClasses("com.duosoftware.com");
         };
 
-        // $scope.commentary = function(widget) {
-
-        //     var comment = "";
-        //     var chunks = [];
-
-        //     $scope.close();
-        // };
-
         $scope.close = function() {
             $mdDialog.hide();
         };
@@ -103,14 +53,6 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
         $scope.remove = function(widget) {
             $rootScope.dashboard.widgets.splice($rootScope.dashboard.widgets.indexOf(widget), 1);
         };
-
-        //   $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
-        //   if (newVal !== oldVal) {
-        //     $scope.dashboard = $scope.dashboard[newVal];
-        //   } else {
-        //     $scope.dashboard = $scope.dashboard[1];
-        //   }
-        // });
 
         // init dashboard
         $scope.selectedDashboardId = '1';
@@ -216,21 +158,6 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                         JsonToArray();
                     }
                 break;
-                // case "Google Maps Claims":
-                //     JSONData = ScopeShare.get('gmapsControllerClaim');
-                //     if (JSONData) {
-                //         JsonToArray();
-                //     }
-                // break;
-                // case "Skill wise summary":
-                //     $http.get('views/graph.json').success(function (data) {
-                        
-                //         JSONData = data;
-                //         if (JSONData) {
-                //             JsonToArray();
-                //         }
-                //     });   
-                // break;
                 case "Pivot Summary":
                     $scope.tableData = $rootScope.widget.widData.summary;
                     $scope.originalList = $scope.tableData;
@@ -241,7 +168,6 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
                 break;
             }
-
         }
 
         $scope.updateFilteredList = function(query) {
@@ -293,9 +219,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                                     generatePDF1.generate(htmlElement, config, tableDataString);
                                     $rootScope.pdfFilename = "";       
                                 }
-                            });
-
-                            
+                            });                       
         }
         
         $scope.$watch('tableData', function(newValue, oldValue) {
@@ -312,9 +236,9 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
     }
 ]);
 
-routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast',
+routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter',
 
-    function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast) {
+    function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter) {
         $scope.closeDialog = function() {
             // Easily hides most recent dialog shown...
             // no specific instance reference is needed.
@@ -327,73 +251,135 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
             typeof $rootScope.clickedDash.date != "undefined" ? $scope.dashboardDate = new Date($rootScope.clickedDash.date) : $scope.dashboardDate = "";
             typeof $rootScope.clickedDash.culture != "undefined" ? $scope.dashboardCulture = $rootScope.clickedDash.culture : $scope.dashboardCulture = "";
         }
-        $scope.saveDashboardDetails = function(type) {
+        // $scope.saveDashboardDetails = function(type) {
 
+        //     if($scope.dashboardName){
+        //         $rootScope.dashboard.dashboardName = $scope.dashboardName;
+        //         var dashboardObj = {
+        //             name: $scope.dashboardName,
+        //             type: $scope.dashboardType,
+        //             culture: $scope.dashboardCulture,
+        //             date: $scope.dashboardDate,
+        //             customDuoDash: true, //will be useful when filtering these dashboards with pentaho dashboards
+        //             data: $rootScope.dashboard.widgets,
+        //             storyboard: false,
+        //         };
+
+
+        //         if (type == "saveAll") {
+        //             console.log("saving the whole story board");
+        //             dashboardObj.data = $rootScope.Dashboards;
+        //             dashboardObj.storyboard = true;
+        //         };
+
+        //         //console.log(dashboardObj);
+
+        //         var client = ObjectStoreService.initialize("duodigin_dashboard");
+
+        //         ObjectStoreService.saveObject(client, dashboardObj, "name", function(data) {
+        //             if (data.state === 'error') {
+        //                 ngToast.create({
+        //                     className: 'danger',
+        //                     content: 'Failed Saving Dashboard. Please Try Again!',
+        //                     horizontalPosition: 'center',
+        //                     verticalPosition: 'top',
+        //                     dismissOnClick: true
+        //                 });
+        //                 $mdDialog.hide();
+    
+        //             } else {
+        //                 DashboardService.getDashboards(dashboardObj);
+        //                 ngToast.create({
+        //                     className: 'success',
+        //                     content: 'Successfuly Saved Dashboard',
+        //                     horizontalPosition: 'center',
+        //                     verticalPosition: 'top',
+        //                     dismissOnClick: true
+        //                 });
+        //                 $mdDialog.hide();
+ 
+        //             }
+        //         });
+        //     } else {
+        //         alert('please insert a dashboard name');
+        //     }
+        // }
+
+        $scope.saveDashboard = function() {          
             if($scope.dashboardName){
-                $rootScope.dashboard.dashboardName = $scope.dashboardName;
-                var dashboardObj = {
-                    name: $scope.dashboardName,
-                    type: $scope.dashboardType,
-                    culture: $scope.dashboardCulture,
-                    date: $scope.dashboardDate,
-                    customDuoDash: true, //will be useful when filtering these dashboards with pentaho dashboards
-                    data: $rootScope.dashboard.widgets,
-                    storyboard: false,
+
+                var widgestArr = [];
+                for (i = 0, len = $rootScope.dashboard.widgets.length; i < len; ++i) {
+                        switch($rootScope.dashboard.widgets[i].uniqueType){
+                            case 'Dynamic Visuals':
+                                widgestArr.push(
+                                    {   
+                                        "DiginCompWidgetID":$rootScope.dashboard.widgets[i].id,
+                                        "DiginCompWidgetData":{ 
+                                                                query:$rootScope.dashboard.widgets[i].commonSrc.query,
+                                                                type:$rootScope.dashboard.widgets[i].uniqueType
+                                                            }
+                                    });      
+                            break;
+                            default:
+                                widgestArr.push(
+                                    {   
+                                        "DiginCompWidgetID":$rootScope.dashboard.widgets[i].id,
+                                        "DiginCompWidgetData":{ 
+                                                                query:null,
+                                                                type:$rootScope.dashboard.widgets[i].uniqueType
+                                                            }
+                                    }); 
+                            break;
+                        }
+                }
+
+                $scope.components = {
+
+                    "widgets":widgestArr,
+                    "DiginCompClass":$rootScope.dashboard.type,
+                    "DiginCompType":"Dashboard",
+                    "DiginCompCategory":"Admin",
+                    "DigInCompID":$rootScope.dashboard.dashboardId,
+                    "Namespace":"duoworld",
+                    "Tenant":3
                 };
 
+                console.log(JSON.stringify($scope.components));
+                console.log(angular.toJson($scope.components));
+                    
+                $http({
+                    method: 'POST',
+                    url: 'http://192.168.2.33:8080/store_component',
+                    data: angular.toJson($scope.components),
+                    headers: {'Content-Type': 'application/json'}
+                })
+                .success(function(response){
+                    ngToast.create({
+                    className: 'success',
+                    content: 'Successfuly Saved Dashboard',
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                    dismissOnClick: true
+                    });
+                    $mdDialog.hide();
 
-                if (type == "saveAll") {
-                    console.log("saving the whole story board");
-                    dashboardObj.data = $rootScope.Dashboards;
-                    dashboardObj.storyboard = true;
-                };
+                })
+                .error(function(error){   
+                    ngToast.create({
+                    className: 'danger',
+                    content: 'Failed Saving Dashboard. Please Try Again!',
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                    dismissOnClick: true
+                    });
+                    $mdDialog.hide()
+                });   
 
-                //console.log(dashboardObj);
-
-                var client = ObjectStoreService.initialize("duodigin_dashboard");
-
-                ObjectStoreService.saveObject(client, dashboardObj, "name", function(data) {
-                    if (data.state === 'error') {
-                        ngToast.create({
-                            className: 'danger',
-                            content: 'Failed Saving Dashboard. Please Try Again!',
-                            horizontalPosition: 'center',
-                            verticalPosition: 'top',
-                            dismissOnClick: true
-                        });
-                        $mdDialog.hide();
-                        // $mdDialog.show({
-                        //     controller: 'errorCtrl',
-                        //     templateUrl: 'views/dialog_error.html',
-                        //     resolve: {
-
-                        //     }
-                        // })
-                    } else {
-                        DashboardService.getDashboards(dashboardObj);
-                        ngToast.create({
-                            className: 'success',
-                            content: 'Successfuly Saved Dashboard',
-                            horizontalPosition: 'center',
-                            verticalPosition: 'top',
-                            dismissOnClick: true
-                        });
-                        $mdDialog.hide();
-                        // $mdDialog.show({
-                        //     controller: 'successCtrl',
-                        //     templateUrl: 'views/dialog_success.html',
-                        //     resolve: {
-
-                        //     }
-                        // })
-                    }
-                });
             }else{
                 alert('please insert a dashboard name');
             }
         }
-
-
     }
 ]);
 
@@ -401,16 +387,7 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
 routerApp.controller('shareCtrl', ['$scope', '$rootScope', '$objectstore', '$mdDialog', function($scope, $rootScope,
     $objectstore, $mdDialog) {
 
-    // html2canvas(document.body, {
-    //                 onrendered: function(canvas) {
-
-    //                     $rootScope.a = canvas;
-
-    //                     alert("Snapshot Taken");
-    //                 }
-    // });
-
-    $scope.shareOptions = [{
+     $scope.shareOptions = [{
         provider: "facebook",
         icon: "styles/css/images/icons/facebook.svg"
     }, {
@@ -439,17 +416,6 @@ routerApp.controller('shareCtrl', ['$scope', '$rootScope', '$objectstore', '$mdD
         $mdDialog.hide();
     };
 
-    /*html2canvas(document.body, {
-                onrendered: function(canvas) {
-                  
-                    $rootScope.a = canvas;
-                                     
-                    alert("Snapshot Taken");
-                }
-    });*/
-
-
-
        $scope.openProvider = function(provider) {
 
         if(provider=="email")
@@ -467,9 +433,6 @@ routerApp.controller('shareCtrl', ['$scope', '$rootScope', '$objectstore', '$mdD
         }
         
     };
-
-
-
 }]);
 
 
@@ -539,54 +502,7 @@ routerApp.controller('ThemeCtrl', ['$scope', '$rootScope', '$objectstore', '$mdD
             $(".nav-menu").css('background-color', '#fff');
             $(".logo-background").css('background-color', '#fff');
         }
-
-        // switch(theme){
-        //   case 'alt':
-        //     $(".nav-menu").css('background-color', '#3F51B5');
-        //     break;
-        //   case 'alt1':
-        //     $(".nav-menu").css('background-color', '#673AB7');
-        //     break;
-        //   case 'alt2':
-        //     $(".nav-menu").css('background-color', '#4CAF50');
-        //     break;
-        //   case 'alt3':
-        //     $(".nav-menu").css('background-color', '#CFD8DC');
-        //     $(".overlay .starting-point span").css('background-color', '#607D8B');
-        //     break;
-        // }
-
     };
-
-
-
-    //   .nav-search .search::after{
-    //   background-color: #00796B !important;
-    // }
-    // .nav-search .search::before{
-    //   border-color: #00796B !important;
-    // }
-
-    // .nav-search.active .search::before{
-    //   background-color:#00796B !important; 
-    // }
-
-    // nav menu
-    // /*.nav-menu{
-    //   background-color:#B2DFDB !important; 
-    // }*/
-
-
-    // /*menu layer*/
-    // .menu-layer li a{
-    //   background-color: #00796B;
-    //   color: #fff;
-    // }
-
-    // .overlay .starting-point span{
-    //   background-color: #80cfb3 !important;
-
-    // }
 
     $scope.closeDialog = function() {
         // Easily hides most recent dialog shown...

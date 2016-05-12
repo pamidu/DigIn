@@ -77,14 +77,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         $scope.dashCloseWidgets = false;
 
-        // getting sidebar data
-        if (localStorage.getItem("sidebarData") == undefined) {
-            getJSONData($http, 'menu', function (data) {
+        
+        getJSONData($http, 'menu', function (data) {
             
-                localStorage.setItem("sidebarData", JSON.stringify(data));
-                $scope.sidebarItems = data;
-            });
-        }
+            localStorage.setItem("sidebarData", JSON.stringify(data));
+            $scope.sidebarItems = data;
+        });
+        
         // headerbar 
         $scope.headerbarPinned = false;
 
@@ -142,6 +141,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         //shows tennant dialog box
         $scope.showTennant = function (ev) {
+
             $mdDialog.show({
                 templateUrl: 'templates/TennantDialogTemplate.html',
                 parent: angular.element(document.body),
@@ -232,43 +232,49 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }).then(function (answer) {}, function () {});
         };
 
-        $scope.currentPage = 1;
-        $scope.pageSize = 5;
-
-        $scope.w = '320px';
-        $scope.h = '300px';
-        $scope.mh = '250px';
-
-        $scope.resize = function (evt, ui, pos, widget) {
-
-            var width = ui.size.width;
-            var height = ui.size.height;
-            var mHeight = height - 50;
-            widget.top = pos.top + 'px';
-            widget.left = pos.left + 'px';
-
-            if (widget.initCtrl == "elasticInit") {
-                console.log('elastic');
-                widget.highchartsNG.size.width = width - 30;
-                widget.highchartsNG.size.height = mHeight - 30;
-                widget.width = (width + 10) + 'px';
-                widget.height = (height + 10) + 'px';
-                widget.mheight = (mHeight + 10) + 'px';
-            } else {
-                widget.width = width + 'px';
-                widget.height = height + 'px';
-                widget.mheight = mHeight + 'px';
-
-            }
+        // angular-table configuration 
+        $scope.configDashboards = {
+            itemsPerPage: 5,
+            fillLastPage: true
         }
+        $scope.configReports = {
+            itemsPerPage: 5,
+            fillLastPage: true
+        }
+
+        // $scope.w = '320px';
+        // $scope.h = '300px';
+        // $scope.mh = '250px';
+
+        // $scope.resize = function (evt, ui, pos, widget) {
+
+        //     var width = ui.size.width;
+        //     var height = ui.size.height;
+        //     var mHeight = height - 50;
+        //     widget.top = pos.top + 'px';
+        //     widget.left = pos.left + 'px';
+
+        //     if (widget.initCtrl == "elasticInit") {
+        //         console.log('elastic');
+        //         widget.highchartsNG.size.width = width - 30;
+        //         widget.highchartsNG.size.height = mHeight - 30;
+        //         widget.width = (width + 10) + 'px';
+        //         widget.height = (height + 10) + 'px';
+        //         widget.mheight = (mHeight + 10) + 'px';
+        //     } else {
+        //         widget.width = width + 'px';
+        //         widget.height = height + 'px';
+        //         widget.mheight = mHeight + 'px';
+
+        //     }
+        // }
+
+        $rootScope.username = localStorage.getItem('username');
 
         $rootScope.indexes = [];
         $scope.toggle = true;
         var today = new Date();
         var dd = today.getDate();
-
-        $rootScope.username = localStorage.getItem('username');
-
         var mm = today.getMonth() + 1; //January is 0!
         var yyyy = today.getFullYear();
         if (dd < 10) {
@@ -283,16 +289,16 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
         };
 
-        var client = $objectstore.getClient("com.duosoftware.com");
-        client.onGetMany(function (data) {
-            data.forEach(function (entry) {
-                $rootScope.indexes.push({
-                    value: entry,
-                    display: entry
-                });
-            });
-        });
-        client.getClasses("com.duosoftware.com");
+        // var client = $objectstore.getClient("com.duosoftware.com");
+        // client.onGetMany(function (data) {
+        //     data.forEach(function (entry) {
+        //         $rootScope.indexes.push({
+        //             value: entry,
+        //             display: entry
+        //         });
+        //     });
+        // });
+        // client.getClasses("com.duosoftware.com");
 
         today = mm + '/' + dd + '/' + yyyy;
         $rootScope.dashboard.dashboardName = "";
@@ -759,7 +765,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 case "Add Page":
                     $scope.currentView = "Dashboard";
                     $scope.showAddNewDashboard(ev);
-                    $state.go('home.' + routeName);
+                    $state.go('home.Dashboards');
                 break;
                 case "Social Media Analytics":
                     $scope.currentView = "Social Analysis";

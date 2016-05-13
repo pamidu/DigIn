@@ -7,8 +7,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.goDashboard = function() {
         $state.go('home.Dashboards');
     }
-    
-    $scope.initQueryBuilder = function() {        
+
+    $scope.initQueryBuilder = function() {
         if (typeof($scope.widget.commonSrc) == "undefined") {
             $scope.selectedChart = $scope.commonData.chartTypes[0];
             $scope.highCharts.onInit(false);
@@ -24,23 +24,36 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.widget = $stateParams.widObj;
     $scope.isDrilled = false;
     $scope.dynFlex = 70;
-    $scope.chartWrapStyle = {height : 'calc(55vh)'};
+    $scope.chartWrapStyle = {
+        height: 'calc(55vh)'
+    };
     $scope.isPendingRequest = false;
     $scope.sourceData = $csContainer.fetchSrcObj();
     $scope.client = $diginengine.getClient($scope.sourceData.src);
     $scope.queryEditState = false;
     $scope.metricObj = {
-        scales:[{name:'None',val:""},
-                {name:'$',val:"$"},
-                {name:'cm',val:"cm"},
-                {name:'m',val:"m"},
-                {name:'kg',val:"kg"}],
-        decimals: [0,1,2,3,4]
+        scales: [{
+            name: 'None',
+            val: ""
+        }, {
+            name: '$',
+            val: "$"
+        }, {
+            name: 'cm',
+            val: "cm"
+        }, {
+            name: 'm',
+            val: "m"
+        }, {
+            name: 'kg',
+            val: "kg"
+        }],
+        decimals: [0, 1, 2, 3, 4]
     };
     $scope.forecastObj = {
-        models:["Additive", "Multiplicative", "Linear"],
-        intervals:["Daily", "Weekly", "Monthly", "Yearly"],
-        errorLevels:[ 0.001,0.01,0.025,0.05,0.1,0.2,0.25],
+        models: ["Additive", "Multiplicative", "Linear"],
+        intervals: ["Daily", "Weekly", "Monthly", "Yearly"],
+        errorLevels: [0.001, 0.01, 0.025, 0.05, 0.1, 0.2, 0.25],
         paramObj: {
             model: "Additive",
             pred_error_level: 0.001,
@@ -57,28 +70,31 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
     };
     $scope.recordedColors = {};
-    
-    $scope.initRequestLimit={value:1000};
-    $scope.requestLimits = [1000,2000,3000,4000,5000];
+
+    $scope.initRequestLimit = {
+        value: 1000
+    };
+    $scope.requestLimits = [1000, 2000, 3000, 4000, 5000];
     $scope.chartType = 'bar';
-    
+
     $scope.initHighchartObj = {
         options: {
             chart: {
                 type: $scope.chartType,
                 // Explicitly tell the width and height of a chart
                 width: null,
-                height: 367                
+                height: 367
             }
         },
         title: {
             text: $scope.widget.widName,
-//            x: -20 //center
+            //            x: -20 //center
         },
-        
+
         xAxis: {
             categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+            ]
         },
         yAxis: {
             title: {
@@ -157,7 +173,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     dismissOnClick: true
                 });
             },
-            grySyntaxErrorMsg: function (type, value) {
+            grySyntaxErrorMsg: function(type, value) {
                 //key
                 //0 : invalid query
                 //01 : from is missing
@@ -181,10 +197,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         var reg = /^\d+$/;
                         return reg.test(value);
                         break;
-            }
+                }
 
             },
-            isQrySyntaxError: function (qry) {
+            isQrySyntaxError: function(qry) {
                 if (typeof qry != 'undefined') {
                     var splitQry = qry.split(" ");
                     if (splitQry.length < 4) {
@@ -207,7 +223,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                     i = splitQry.length;
                                 } else {
                                     stateQry.hasFrom = false;
-        }
+                                }
                             }
 
                             //is check select
@@ -226,14 +242,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 privateFun.grySyntaxErrorMsg("01", null);
                                 return false;
                             }
-                        }
-                        else {
+                        } else {
                             privateFun.grySyntaxErrorMsg("0", null);
                             return false;
                         }
                     }
-                }
-                else {
+                } else {
                     privateFun.fireMessage('0', '<strong>Invalid query : </strong>please enter your query');
                     return false;
                 }
@@ -320,8 +334,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
-            },
-            {
+            }, {
                 id: 'ct03',
                 icon: 'ti-gallery',
                 name: 'line ',
@@ -361,7 +374,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
-            },  {
+            }, {
                 id: 'ct08',
                 icon: 'chart-diginscatter',
                 name: 'scatter ',
@@ -444,7 +457,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 chart: 'boxplot',
                 selected: false,
                 chartType: 'boxplot',
-                view: 'views/query/chart-views/BoxPlot.html',   
+                view: 'views/query/chart-views/BoxPlot.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
 
@@ -468,7 +481,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 view: 'views/query/chart-views/bubble.html',
                 initObj: {},
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
-            },{
+            }, {
                 id: 'ct18',
                 icon: 'fa fa-line-chart',
                 name: 'forecast',
@@ -605,14 +618,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 $("#togglePanel").hide(200);
                 $scope.isPendingRequest = true;
                 $scope.eventHndler.isToggleMeasure = false;
-                
+
                 var isFoundCnd = false;
                 for (i in executeQryData.executeMeasures) {
                     if (executeQryData.executeMeasures[i].filedName == filed.filedName &&
                         executeQryData.executeMeasures[i].condition == row.name) {
                         isFoundCnd = true;
                         //alert('duplicate record found in object...');
-                        privateFun.fireMessage('0','duplicate record found in object...');
+                        privateFun.fireMessage('0', 'duplicate record found in object...');
                         $scope.isPendingRequest = false;
                         return;
                     }
@@ -633,13 +646,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 $("#togglePanelColumns").hide(200);
                 $scope.isPendingRequest = true;
                 $scope.eventHndler.isToggleColumns = false;
-                
+
                 var isFoundCnd = false;
                 for (i in executeQryData.executeColumns) {
                     if (executeQryData.executeColumns[i].filedName == column.filedName) {
                         isFoundCnd = true;
                         //alert('duplicate record found in object...');
-                        privateFun.fireMessage('0','duplicate record found in object...');
+                        privateFun.fireMessage('0', 'duplicate record found in object...');
                         $scope.isPendingRequest = false;
                         return;
                     }
@@ -654,7 +667,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                     } else {
                         //alert("First select atleast one measure");
-                        privateFun.fireMessage('0','First select atleast one measure');
+                        privateFun.fireMessage('0', 'First select atleast one measure');
                         $scope.isPendingRequest = false;
                     }
 
@@ -663,7 +676,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
             onClickRmvCondition: function(condition, measure) {
                 //alert('record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
-                privateFun.fireMessage('0','record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
+                privateFun.fireMessage('0', 'record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
                 $scope.isPendingRequest = false;
             },
             onClickApply: function() {
@@ -808,17 +821,16 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 this.openSettingToggle[1].isQueryBuilder = false;
             },
             onClickSelectedChart: function(data, onSelect) {
-                
+
                 //remove highcharts related configs
-                if(onSelect.chartType != 'metric' && onSelect.chartType != 'highCharts'){
+                if (onSelect.chartType != 'metric' && onSelect.chartType != 'highCharts') {
                     $scope.dynFlex = 90;
                     $scope.chartWrapStyle.height = 'calc(91vh)';
-                }                
-                else {
+                } else {
                     $scope.dynFlex = 70;
                     $scope.chartWrapStyle.height = 'calc(55vh)';
                 }
-                
+
                 var i;
                 var chartInData = data;
                 for (i = 0; i < chartInData.length; i++) {
@@ -836,19 +848,19 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 eval("$scope." + $scope.selectedChart.chartType + ".changeType()");
                 //privateFun.createHighchartsChart(onSelect.chart);
             },
-            onClickDownload: function(){
+            onClickDownload: function() {
                 // var htmlElement = document.getElementsByClassName("highcharts-container")[0];
                 var htmlElement = document.getElementById("d3Sunburst");
                 html2canvas(htmlElement, {
-                  onrendered: function(canvas) {
-                    var button = document.getElementById('downloadImage');
-                    button.addEventListener('click', function (e) {
-                        var dataURL = canvas.toDataURL('image/png');
-                        button.href = dataURL;
-                    });
-                  },
-                  width: 1000,
-                  height: 1000
+                    onrendered: function(canvas) {
+                        var button = document.getElementById('downloadImage');
+                        button.addEventListener('click', function(e) {
+                            var dataURL = canvas.toDataURL('image/png');
+                            button.href = dataURL;
+                        });
+                    },
+                    width: 1000,
+                    height: 1000
                 });
             }
         } //end event function
@@ -858,15 +870,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
         var widgetLimit = 6;
 
-        if($rootScope.dashboard.widgets.length < widgetLimit){
+        if ($rootScope.dashboard.widgets.length < widgetLimit) {
 
             widget.widName = $scope.widget.widName;
             widget.dataCtrl = "widgetSettingsDataCtrl";
             widget.dataView = "views/ViewData.html";
             widget["selectedChart"] = $scope.selectedChart;
             widget.highchartsNG["size"] = {
-                    width: 300,
-                    height: 220
+                width: 300,
+                height: 220
             };
             if (typeof widget.commonSrc == "undefined") {
                 // widget.highchartsNG["size"] = {
@@ -900,9 +912,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 $scope.eventHndler.isMainLoading = false;
                 $state.go('home.Dashboards');
             }, 5000);
-        }
-        else{
-            privateFun.fireMessage('0','Maximum Widget Limit Exceeded');
+        } else {
+            privateFun.fireMessage('0', 'Maximum Widget Limit Exceeded');
         }
     };
 
@@ -911,13 +922,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         onInit: function(recon) {
             if (!recon)
                 $scope.highchartsNG = $scope.selectedChart.initObj;
-            else {            
+            else {
                 $scope.highchartsNG = $scope.widget.highchartsNG;
-                $scope.highchartsNG.series.forEach(function(key){
+                $scope.highchartsNG.series.forEach(function(key) {
                     $scope.recordedColors[key.origName] = key.color;
                 });
                 $scope.isDrilled = $scope.widget.widData.drilled;
-                if($scope.isDrilled) $scope.drillDownConf = $scope.widget.widData.drillConf;                
+                if ($scope.isDrilled) $scope.drillDownConf = $scope.widget.widData.drillConf;
                 $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
                 delete $scope.highchartsNG.size;
             }
@@ -926,27 +937,27 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
         },
         selectCondition: function() {
-            if(!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0){
+            if (!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0) {
                 $scope.getAggregation();
-            }else{
-                if($scope.executeQryData.executeMeasures.length >= 1){
+            } else {
+                if ($scope.executeQryData.executeMeasures.length >= 1) {
                     $scope.getDrilledAggregation();
-                }else{
+                } else {
                     $scope.executeQryData.executeMeasures.pop();
                     eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
                     //alert("drilldown only supports single series");
-                    privateFun.fireMessage('0','drilldown only supports single series');
+                    privateFun.fireMessage('0', 'drilldown only supports single series');
                     $scope.isPendingRequest = false;
-                }                
+                }
             }
         },
         selectAttribute: function(fieldName) {
-            if(!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0){
-//                if($scope.executeQryData.executeColumns.length == 0){
-                    $scope.executeQryData.executeColumns = [{
-                        filedName: fieldName
-                    }];
-                    $scope.getGroupedAggregation(fieldName);                
+            if (!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0) {
+                //                if($scope.executeQryData.executeColumns.length == 0){
+                $scope.executeQryData.executeColumns = [{
+                    filedName: fieldName
+                }];
+                $scope.getGroupedAggregation(fieldName);
             }
             // else if($scope.executeQryData.executeColumns.length == 2){
             //     eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
@@ -954,13 +965,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             //     privateFun.fireMessage('0','drilldown only supports for two levels');
             //     $scope.isPendingRequest = false;               
             // }
-            else if($scope.executeQryData.executeColumns.length >= 1){
+            else if ($scope.executeQryData.executeColumns.length >= 1) {
                 $scope.executeQryData.executeColumns.push({
                     filedName: fieldName
                 });
                 $scope.getDrilledAggregation();
             }
-            
+
         },
         executeQuery: function(cat, res, query) {
             if (cat != "") {
@@ -968,11 +979,27 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     filedName: cat
                 }];
                 $scope.mapResult(cat, res, function(data) {
+                    $scope.highchartsNG.xAxis = {
+                        categories: []
+                    };
+                    $scope.highchartsNG.yAxis = {
+                        title: {
+                            text: 'Values'
+                        },
+                        plotLines: [{
+                            value: 0,
+                            width: 1,
+                            color: '#EC784B'
+                        }]
+                    };
+
+
                     $scope.highchartsNG.series = data;
-                    $scope.highchartsNG.series.forEach(function(key){
-                        if(key.data.length > 1000) 
+                    $scope.highchartsNG.series.forEach(function(key) {
+                        if (key.data.length > 1000)
                             key['turboThreshold'] = key.data.length;
                     });
+
                     $scope.eventHndler.isLoadingChart = false;
                     $scope.receivedQuery = query;
                     $scope.queryEditState = false;
@@ -991,35 +1018,35 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             }
         },
         removeCat: function() {
-            if($scope.isDrilled) $scope.getDrilledAggregation();
+            if ($scope.isDrilled) $scope.getDrilledAggregation();
             else $scope.getAggregation();
         },
         onGetAggData: function(res) {
             $scope.isPendingRequest = false;
             $scope.setMeasureData(res);
         },
-        onGetGrpAggData: function(){
+        onGetGrpAggData: function() {
             $scope.isPendingRequest = false;
         },
         saveWidget: function(wid) {
             wid.highchartsNG = $scope.highchartsNG;
             wid.widData['drilled'] = $scope.isDrilled;
-            if($scope.isDrilled) wid.widData['drillConf'] = $scope.drillDownConf;
+            if ($scope.isDrilled) wid.widData['drillConf'] = $scope.drillDownConf;
             wid.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
             wid.initCtrl = "elasticInit";
             $scope.saveChart(wid);
         }
     };
-    
-    
+
+
     $scope.forecast = {
-        onInit: function(recon){
+        onInit: function(recon) {
             $scope.highchartsNG = $scope.widget.highchartsNG;
             $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
             delete $scope.highchartsNG.size;
         },
         changeType: function() {
-            var mergedArr = $scope.sourceData.fMeaArr.concat( $scope.sourceData.fAttArr);
+            var mergedArr = $scope.sourceData.fMeaArr.concat($scope.sourceData.fAttArr);
             var field_d, field_f = "";
             var fObj = {
                 model: "Additive",
@@ -1035,14 +1062,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 m: 7,
                 interval: "Daily"
             };
-            mergedArr.forEach(function(k){
-                if(k.dataType == "TIMESTAMP" || k.dataType == "datetime"){
+            mergedArr.forEach(function(k) {
+                if (k.dataType == "TIMESTAMP" || k.dataType == "datetime") {
                     $scope.forecastObj.paramObj.field_name_d = k.name;
-                }else{
+                } else {
                     $scope.forecastObj.paramObj.field_name_f = k.name;
                 }
             });
-            
+
             $scope.generateForecast($scope.forecastObj.paramObj);
         },
         saveWidget: function(wid) {
@@ -1052,69 +1079,70 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             $scope.saveChart(wid);
         }
     };
-    
+
     $scope.$watch("forecastObj.paramObj", function(newValue, oldValue) {
-      if(newValue != oldValue){
-        $scope.generateForecast(newValue);
-      }      
+        if (newValue != oldValue) {
+            $scope.generateForecast(newValue);
+        }
     }, true);
-    
-    $scope.generateForecast = function(fObj){
+
+    $scope.generateForecast = function(fObj) {
         $scope.eventHndler.isLoadingChart = true;
-        $scope.client.getForcast(fObj, function(data, status){            
+        $scope.client.getForcast(fObj, function(data, status) {
             var mainSerObj = [];
             if (status) {
-                data.forEach(function(key){
-                    switch (key.target)
-                    {
+                data.forEach(function(key) {
+                    switch (key.target) {
                         case "RMSE":
                             break;
                         case "TotalForecastedVal":
                             break;
                         default:
                             var serObj = [];
-                            key.datapoints.forEach(function(val){
+                            key.datapoints.forEach(function(val) {
                                 var dArr = val[1].split('-');
                                 serObj.push([
-                                    Date.UTC(parseInt(dArr[0]), parseInt(dArr[1])-1, parseInt(dArr[2])),
+                                    Date.UTC(parseInt(dArr[0]), parseInt(dArr[1]) - 1, parseInt(dArr[2])),
                                     val[0]
                                 ]);
                             });
                             mainSerObj.push({
                                 name: key.target,
-                                data: serObj    
+                                data: serObj
                             });
                     }
                 });
                 console.log(JSON.stringify(mainSerObj));
-                $scope.highchartsNG = {};                
+                $scope.highchartsNG = {};
                 $scope.highchartsNG['options'] = {
                     chart: {
                         zoomType: 'x'
                     }
                 };
-                $scope.highchartsNG['xAxis'] = {type : 'datetime'};
+                $scope.highchartsNG['xAxis'] = {
+                    type: 'datetime'
+                };
                 $scope.highchartsNG.series = mainSerObj;
                 $scope.eventHndler.isLoadingChart = false;
-                
-                
-            }else{
-                
+
+
+            } else {
+
             }
         });
     };
-    
+
     $scope.boxplot = {
         changeType: function() {
             var meaArr = $scope.sourceData.fMeaArr;
             var dataTypeFlag = true;
-            meaArr.forEach(function(k){
-                if(k.dataType == "TIMESTAMP" || k.dataType == "datetime"){
+            meaArr.forEach(function(k) {
+                if (k.dataType == "TIMESTAMP" || k.dataType == "datetime") {
                     dataTypeFlag = false;
                 }
             });
-            
-            if(dataTypeFlag && $scope.sourceData.fAttArr.length==0){
+
+            if (dataTypeFlag && $scope.sourceData.fAttArr.length == 0) {
                 $scope.eventHndler.isLoadingChart = true;
 
                 var fieldArray = [];
@@ -1131,11 +1159,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     var hObj = {};
                     $scope.dataforeachBox = []
                     $scope.dataOutliers = [];
-                    
+
                     $scope.plotCategories = [];
                     $scope.observationsData = [];
-                    var i=0;
-                    
+                    var i = 0;
+
                     if (status) {
                         for (var key in data) {
                             if (Object.prototype.hasOwnProperty.call(data, key)) {
@@ -1147,13 +1175,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                     data[key].quartile_3,
                                     data[key].u_w
                                 ]);
-                                data[key].outliers.forEach(function(k){
-                                    $scope.dataOutliers.push([i,k]);
+                                data[key].outliers.forEach(function(k) {
+                                    $scope.dataOutliers.push([i, k]);
                                 });
                                 i++;
                             }
                         }
-                        
+
                         $scope.eventHndler.isLoadingChart = false;
                         $scope.widget.highchartsNG = {
                             options: {
@@ -1226,9 +1254,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         };
                     } else {}
                 });
-                
-            }else{
-                privateFun.fireMessage('0','Please select only numeric values to create bloxplot');
+
+            } else {
+                privateFun.fireMessage('0', 'Please select only numeric values to create bloxplot');
             }
         },
         saveWidget: function(wid) {
@@ -1236,7 +1264,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
-            
+
             wid.widView = "views/query/chart-views/BoxPlot.html";
             $scope.saveChart(wid);
         }
@@ -1266,7 +1294,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                     $scope.categories = fieldArray;
                     $scope.eventHndler.isLoadingChart = false;
-                      
+
                     $scope.widget.highchartsNG = {
                         options: {
                             chart: {
@@ -1286,7 +1314,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 text: 'Selected Fields'
                             }
                         },
-                        
+
                         yAxis: {
                             title: {
                                 text: 'Values'
@@ -1359,8 +1387,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             }]
                         }]
                     };
-                } else {
-                }
+                } else {}
             });
         },
         saveWidget: function(wid) {
@@ -1380,13 +1407,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         changeType: function() {
             var meaArr = $scope.sourceData.fMeaArr;
             var dataTypeFlag = true;
-            meaArr.forEach(function(k){
-                if(k.dataType == "TIMESTAMP" || k.dataType == "datetime"){
+            meaArr.forEach(function(k) {
+                if (k.dataType == "TIMESTAMP" || k.dataType == "datetime") {
                     dataTypeFlag = false;
                 }
             });
-            
-            if(dataTypeFlag && $scope.sourceData.fAttArr.length==0){
+
+            if (dataTypeFlag && $scope.sourceData.fAttArr.length == 0) {
                 $scope.eventHndler.isLoadingChart = true;
                 $scope.histogramPlot = []
 
@@ -1408,7 +1435,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                         for (var key in data) {
                             if (Object.prototype.hasOwnProperty.call(data, key)) {
-                                for(var k in data[key]){
+                                for (var k in data[key]) {
                                     if (Object.prototype.hasOwnProperty.call(data[key], k)) {
                                         $scope.histogramPlotcat.push(k);
                                         $scope.histogramPlotData.push(data[key][k]);
@@ -1434,8 +1461,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             },
 
                             xAxis: {
-                                 title: {
-                                    text:  fieldArray[0]
+                                title: {
+                                    text: fieldArray[0]
                                 },
                                 categories: $scope.histogramPlotcat,
                                 labels: {
@@ -1478,7 +1505,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             },
                             yAxis: {
                                 title: {
-                                    text:  'Count'
+                                    text: 'Count'
                                 },
                                 //maxPadding:0,
                                 gridLineColor: '#e9e9e9',
@@ -1492,16 +1519,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                             series: [{
                                 data: $scope.histogramPlotData,
-                                pointWidth: 70  
+                                pointWidth: 70
                             }]
                         };
-                    } else {
-                    }
+                    } else {}
                 });
-            }else{
-                privateFun.fireMessage('0','Please select only numeric values to create histogram');
-            }      
-       },
+            } else {
+                privateFun.fireMessage('0', 'Please select only numeric values to create histogram');
+            }
+        },
         saveWidget: function(wid) {
             wid["widData"] = {
                 value: $scope.selectedChart.initObj.value,
@@ -1514,9 +1540,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
 
     };
-    
+
     $scope.d3hierarchy = {
-        onInit: function(recon) {            
+        onInit: function(recon) {
             $scope.hierarData = $scope.widget.widData;
         },
         changeType: function() {
@@ -1542,11 +1568,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         if (status) {
                             $scope.hierarData = data;
                             $scope.eventHndler.isLoadingChart = false;
-                        } else {
-                        }
+                        } else {}
                     });
-                } else {
-                }
+                } else {}
             });
         },
 
@@ -1558,7 +1582,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     };
 
     $scope.d3sunburst = {
-        onInit: function(recon) {            
+        onInit: function(recon) {
             $scope.hierarData = $scope.widget.widData;
             $scope.$apply;
         },
@@ -1587,11 +1611,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         if (status) {
                             $scope.hierarData = data;
                             $scope.eventHndler.isLoadingChart = false;
-                        } else {
-                        }
+                        } else {}
                     });
-                } else {
-                }
+                } else {}
             });
         },
 
@@ -1698,7 +1720,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             };
             // $scope.highchartsNG = $scope.widget.highchartsNG;
             // $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
-            $scope.prevChartSize = { width: 300, height: 220 };
+            $scope.prevChartSize = {
+                width: 300,
+                height: 220
+            };
         },
         changeType: function() {
             //$scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
@@ -1709,14 +1734,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         selectAttribute: function(fieldName) {
             //$scope.getGroupedAggregation(fieldName);
             // alert("grouping in metric is not supported");
-            privateFun.fireMessage('0','grouping in metric is not supported');
+            privateFun.fireMessage('0', 'grouping in metric is not supported');
             $scope.isPendingRequest = false;
         },
-        executeQuery: function(cat, res, query) {            
+        executeQuery: function(cat, res, query) {
             for (var c in res[0]) {
                 if (Object.prototype.hasOwnProperty.call(res[0], c)) {
                     $scope.selectedChart.initObj.decValue = res[0][c];
-                    $scope.selectedChart.initObj.value = convertDecimals(res[0][c],2);
+                    $scope.selectedChart.initObj.value = convertDecimals(res[0][c], 2);
                     $scope.selectedChart.initObj.label = c;
                 }
             }
@@ -1735,12 +1760,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             $scope.getAggregation();
         },
         onGetAggData: function(res) {
-            
+
             for (var c in res) {
                 $scope.isPendingRequest = false;
                 if (Object.prototype.hasOwnProperty.call(res, c)) {
                     $scope.selectedChart.initObj.decValue = res[c];
-                    $scope.selectedChart.initObj.value = convertDecimals(res[c],parseInt($scope.selectedChart.initObj.dec));
+                    $scope.selectedChart.initObj.value = convertDecimals(res[c], parseInt($scope.selectedChart.initObj.dec));
                     $scope.selectedChart.initObj.label = c;
                 }
             }
@@ -1750,7 +1775,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             wid["widData"] = {
                 decValue: $scope.selectedChart.initObj.decValue,
                 dec: $scope.selectedChart.initObj.dec,
-                scale:$scope.selectedChart.initObj.scale,
+                scale: $scope.selectedChart.initObj.scale,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
@@ -1777,7 +1802,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 title: {
                     text: $scope.widget.widName
                 },
-                plotOptions: {}, 
+                plotOptions: {},
                 legend: {
                     layout: 'vertical',
                     align: 'right',
@@ -1813,7 +1838,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     $scope.receivedQuery = query;
                 } else {
                     // alert('request failed');
-                    privateFun.fireMessage('0','request failed');
+                    privateFun.fireMessage('0', 'request failed');
                     $scope.isPendingRequest = false;
                     $scope.eventHndler.isLoadingChart = false;
                 }
@@ -1833,7 +1858,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         $scope.serColor = "";
         for (var c in res) {
             if (Object.prototype.hasOwnProperty.call(res, c)) {
-                 typeof $scope.recordedColors[c] == "undefined" ? serColor = "#EC784B" : serColor = $scope.recordedColors[c];
+                typeof $scope.recordedColors[c] == "undefined" ? serColor = "#EC784B" : serColor = $scope.recordedColors[c];
                 $scope.highchartsNG.series.push({
                     name: c,
                     color: serColor,
@@ -1860,14 +1885,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
         $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res, status, query) {
             if (status) {
-//                console.log(JSON.stringify(res));
+                //                console.log(JSON.stringify(res));
                 $scope.mapResult($scope.selectedCat, res, function(data) {
+
                     $scope.highchartsNG.series = data;
-                    $scope.highchartsNG.series.forEach(function(key){
-                        if(key.data.length > 1000) 
+                    $scope.highchartsNG.series.forEach(function(key) {
+                        if (key.data.length > 1000)
                             key['turboThreshold'] = key.data.length;
                     });
-                    
+
                     $scope.eventHndler.isLoadingChart = false;
                     $scope.receivedQuery = query;
                     console.log(JSON.stringify($scope.highchartsNG));
@@ -1875,7 +1901,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 });
             } else {
                 //alert('request failed');
-                privateFun.fireMessage('0','request failed');
+                privateFun.fireMessage('0', 'request failed');
                 $scope.isPendingRequest = false;
                 $scope.eventHndler.isLoadingChart = false;
             }
@@ -1884,13 +1910,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     };
 
     /* <Async drilldown> */
-    $scope.getDrilledAggregation = function(){
+    $scope.getDrilledAggregation = function() {
         var fieldArr = [];
         var catArr = [];
         var drillOrderArr = [];
         $scope.eventHndler.isLoadingChart = true;
         $scope.highchartsNG.series = [];
-        $scope.highchartsNG['drilldown'] = {series: []};
+        $scope.highchartsNG['drilldown'] = {
+            series: []
+        };
 
         var measureArr = $scope.executeQryData.executeMeasures;
         measureArr.forEach(function(key) {
@@ -1899,58 +1927,60 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 agg: key.condition
             });
         });
-        
-        $scope.executeQryData.executeColumns.forEach(function(key){
-            catArr.push('"'+key.filedName+'"');
+
+        $scope.executeQryData.executeColumns.forEach(function(key) {
+            catArr.push('"' + key.filedName + '"');
         });
-        
-        $scope.client.getHighestLevel($scope.sourceData.tbl, catArr.toString(), function(res, status){
-            if(status){
+
+        $scope.client.getHighestLevel($scope.sourceData.tbl, catArr.toString(), function(res, status) {
+            if (status) {
                 var highestLevel = "";
-                for(i=0; i< res.length; i++){
-                    if(typeof res[i+1] != "undefined"){
+                for (i = 0; i < res.length; i++) {
+                    if (typeof res[i + 1] != "undefined") {
                         drillOrderArr.push({
                             name: res[i].value,
-                            nextLevel: res[i+1].value,
+                            nextLevel: res[i + 1].value,
                             level: res[i].level
-                        });                        
-                        
-                        if(res[i].level == 1) highestLevel = res[i].value;
-                        
-                    }else{
+                        });
+
+                        if (res[i].level == 1) highestLevel = res[i].value;
+
+                    } else {
                         drillOrderArr.push({
                             name: res[i].value,
                             level: res[i].level
                         });
-                    }                    
+                    }
                 }
-                
+
                 $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res, status, query) {
                     console.log(JSON.stringify(res));
                     var serObj = {};
                     for (var key in res[0]) {
                         if (Object.prototype.hasOwnProperty.call(res[0], key)) {
-                            if(key != highestLevel){
-                                serObj[key] = {name : key,
-                                               data : []};
+                            if (key != highestLevel) {
+                                serObj[key] = {
+                                    name: key,
+                                    data: []
+                                };
                             }
                         }
                     }
-                    
-                    for(i=0;i<res.length;i++) {
+
+                    for (i = 0; i < res.length; i++) {
                         for (var key in res[i]) {
                             if (Object.prototype.hasOwnProperty.call(res[i], key)) {
-                                if(key != highestLevel){
+                                if (key != highestLevel) {
                                     serObj[key].data.push({
                                         name: res[i][highestLevel],
                                         y: res[i][key],
                                         drilldown: true
                                     });
-                                }                                
+                                }
                             }
                         }
                     }
-                    
+
                     for (var key in serObj) {
                         if (Object.prototype.hasOwnProperty.call(serObj, key)) {
                             $scope.highchartsNG.series.push({
@@ -1977,62 +2007,64 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     };
                     $scope.highchartsNG.options['customVar'] = highestLevel;
                     $scope.highchartsNG.options.chart['events'] = {
-                        drilldown: function (e) {
+                        drilldown: function(e) {
                             if (!e.seriesOptions) {
                                 var srcTbl = $scope.sourceData.tbl,
-                                fields = fieldArr,
-                                drillOrdArr = drillOrderArr,
-                                chart = this,
-                                clientObj = $scope.client,
-                                clickedPoint = e.point.name,
-                                nextLevel = "",
-                                highestLvl = this.options.customVar,
-                                drillObj = {},
-                                isLastLevel = false;
-                                
+                                    fields = fieldArr,
+                                    drillOrdArr = drillOrderArr,
+                                    chart = this,
+                                    clientObj = $scope.client,
+                                    clickedPoint = e.point.name,
+                                    nextLevel = "",
+                                    highestLvl = this.options.customVar,
+                                    drillObj = {},
+                                    isLastLevel = false;
 
-                                for(i=0;i<drillOrdArr.length;i++){
-                                    if(drillOrdArr[i].name == highestLvl){
+
+                                for (i = 0; i < drillOrdArr.length; i++) {
+                                    if (drillOrdArr[i].name == highestLvl) {
                                         nextLevel = drillOrdArr[i].nextLevel;
-                                        if(!drillOrdArr[i+1].nextLevel) isLastLevel = true;
+                                        if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
                                     }
                                 }
-                                
+
                                 // Show the loading label
                                 chart.showLoading("Retrieving data for '" + clickedPoint.toLowerCase() + "' grouped by '" + nextLevel + "'");
-                                
+
                                 //aggregate method
                                 clientObj.getAggData(srcTbl, fields, function(res, status, query) {
-                    
-                                    if(status){
+
+                                    if (status) {
                                         for (var key in res[0]) {
                                             if (Object.prototype.hasOwnProperty.call(res[0], key)) {
-                                                if(key != nextLevel){
-                                                    drillObj = {name : key,
-                                                                data : []};
+                                                if (key != nextLevel) {
+                                                    drillObj = {
+                                                        name: key,
+                                                        data: []
+                                                    };
                                                 }
                                             }
                                         }
-                                        
-                                        res.forEach(function(key){
-                                            if(!isLastLevel){
+
+                                        res.forEach(function(key) {
+                                            if (!isLastLevel) {
                                                 drillObj.data.push({
                                                     name: key[nextLevel],
                                                     y: key[drillObj.name],
                                                     drilldown: true
                                                 });
-                                            }else{
+                                            } else {
                                                 drillObj.data.push({
                                                     name: key[nextLevel],
                                                     y: key[drillObj.name]
                                                 });
                                             }
-                                            
+
                                         });
-                                        
+
                                         chart.addSeriesAsDrilldown(e.point, drillObj);
-                                        
-                                    }else{
+
+                                    } else {
                                         alert('request failed due to :' + JSON.stringify(res));
                                         e.preventDefault();
                                     }
@@ -2042,29 +2074,29 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 }, nextLevel, highestLvl + "='" + clickedPoint + "'");
                             }
                         },
-                        drillup: function(e){
-                            
+                        drillup: function(e) {
+
                             var chart = this;
-                            $scope.drillDownConf.drillOrdArr.forEach(function(key){
-                                if(key.nextLevel && key.nextLevel == chart.options.customVar)
+                            $scope.drillDownConf.drillOrdArr.forEach(function(key) {
+                                if (key.nextLevel && key.nextLevel == chart.options.customVar)
                                     chart.options.customVar = key.name;
                             });
                         }
                     };
-                    
+
                     $scope.isPendingRequest = false;
                     $scope.eventHndler.isLoadingChart = false;
-                    
-                },highestLevel);
-                
-            }else{
-                privateFun.fireMessage('0',res);
+
+                }, highestLevel);
+
+            } else {
+                privateFun.fireMessage('0', res);
             }
         });
     };
     /* </Async drilldown> */
-    
-    $scope.getDrilledAggregation1 = function(){
+
+    $scope.getDrilledAggregation1 = function() {
         var fieldArr = [];
         var catArr = [];
         $scope.eventHndler.isLoadingChart = true;
@@ -2076,21 +2108,23 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 agg: key.condition
             });
         });
-        
-        $scope.executeQryData.executeColumns.forEach(function(key){
-            catArr.push('"'+key.filedName+'"');
+
+        $scope.executeQryData.executeColumns.forEach(function(key) {
+            catArr.push('"' + key.filedName + '"');
         });
-        
-        $scope.client.getHighestLevel($scope.sourceData.tbl, catArr.toString(), function(res, status){
-            if(status){                
+
+        $scope.client.getHighestLevel($scope.sourceData.tbl, catArr.toString(), function(res, status) {
+            if (status) {
                 var serArr = [];
                 var serMainArr = [];
                 var drillObj = {};
                 var drillSerMainArr = [];
-                var i = 0 , j= 0;
+                var i = 0,
+                    j = 0;
                 syncDrill(i, res);
-                function syncDrill(i, res){
-                    if(i<res.length){
+
+                function syncDrill(i, res) {
+                    if (i < res.length) {
                         $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res1, status, query) {
                             if (status) {
                                 console.log(JSON.stringify(res1));
@@ -2098,27 +2132,28 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 var serValKey = "";
                                 for (var key in res1[0]) {
                                     if (Object.prototype.hasOwnProperty.call(res1[0], key)) {
-                                        typeof res1[0][key] == "string" ? serNameKey = key : serValKey = key;                  
+                                        typeof res1[0][key] == "string" ? serNameKey = key : serValKey = key;
                                     }
                                 }
-                                
-                                for(k=0;k<res1.length;k++){
+
+                                for (k = 0; k < res1.length; k++) {
                                     serArr.push({
                                         name: res1[k][serNameKey],
                                         y: res1[k][serValKey],
                                         drilldown: res1[k][serNameKey]
                                     });
                                 }
-                                
+
                                 serMainArr.push({
                                     name: serValKey,
                                     data: serArr
                                 });
-                                
+
                                 console.log(JSON.stringify(serMainArr));
                                 syncAgg(j, res1);
-                                function syncAgg(j, res1){
-                                    if(j< res1.length){
+
+                                function syncAgg(j, res1) {
+                                    if (j < res1.length) {
                                         var con = res[i].value + "='" + res1[j][res[i].value] + "'";
                                         var drillSerArr = [];
                                         $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res2, status, query) {
@@ -2131,53 +2166,55 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                                     }
                                                 }
                                                 console.log(JSON.stringify(res2));
-                                                
-                                                for(k=0;k<res2.length;k++){
+
+                                                for (k = 0; k < res2.length; k++) {
                                                     drillSerArr.push({
                                                         name: res2[k][dserNameKey],
                                                         y: res2[k][dserValKey],
                                                         //drilldown: res2[k][dserNameKey]
                                                     });
                                                 }
-                                                
+
                                                 drillSerMainArr.push({
                                                     name: dserValKey,
                                                     id: res1[j][res[i].value],
                                                     data: drillSerArr
                                                 });
-                                                
+
                                                 console.log(JSON.stringify(drillSerMainArr));
-                                                syncAgg(j+1, res1);
-                                            }else{
+                                                syncAgg(j + 1, res1);
+                                            } else {
                                                 //alert('request failed');
-                                                privateFun.fireMessage('0','request failed');
+                                                privateFun.fireMessage('0', 'request failed');
                                                 $scope.isPendingRequest = false;
                                             }
-                                        }, res[i+1].value, con);
-                                    }else{
+                                        }, res[i + 1].value, con);
+                                    } else {
                                         $scope.highchartsNG.series = serMainArr;
-                                        $scope.highchartsNG['drilldown'] = {series:drillSerMainArr};
+                                        $scope.highchartsNG['drilldown'] = {
+                                            series: drillSerMainArr
+                                        };
                                         console.log(JSON.stringify($scope.highchartsNG));
                                         $scope.eventHndler.isLoadingChart = false;
                                         eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
                                     }
                                 };
-                                
+
                             } else {
                                 // alert('request failed');
-                                privateFun.fireMessage('0','request failed');
+                                privateFun.fireMessage('0', 'request failed');
                                 $scope.isPendingRequest = false;
                                 $scope.eventHndler.isLoadingChart = false;
                             }
 
                         }, res[i].value);
-                    }else{
-                        
+                    } else {
+
                     }
                 };
-            }else{
+            } else {
                 // alert('request failed');
-                privateFun.fireMessage('0','request failed');
+                privateFun.fireMessage('0', 'request failed');
                 $scope.isPendingRequest = false;
             }
         });
@@ -2186,41 +2223,41 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     //#customer query design
     $scope.getExecuteAgg = function(query) {
 
-       // privateFun.isQrySyntaxError(query);
+        // privateFun.isQrySyntaxError(query);
 
         if (typeof query != "undefined") {
-           $scope.eventHndler.isLoadingChart = true;
-           $scope.client.getExecQuery(query, function (res, status, query) {
-               var cat = "";
-               var measureArr = [];
-               if (status) {
-                   for (c in res[0]) {
-                       if (Object.prototype.hasOwnProperty.call(res[0], c)) {
-                           if (typeof res[0][c] == "string") cat = c;
-                           else {
-                               var m = c.split('_');
-                               measureArr.push({
-                                   filedName: m[1],
-                                   condition: m[0]
-                               });
-                           }
-                       }
-                   }
-                   $scope.executeQryData.executeMeasures = measureArr;
-                   eval("$scope." + $scope.selectedChart.chartType + ".executeQuery(cat, res, query)");
-               } else {
-                   //alert('request failed');
-                   privateFun.fireMessage('0', '<strong>Invalid query :</strong>please enter request failed ');
-                   $scope.isPendingRequest = false;
-                   $scope.eventHndler.isLoadingChart = false;
-               }
-           }, $scope.initRequestLimit.value);
+            $scope.eventHndler.isLoadingChart = true;
+            $scope.client.getExecQuery(query, function(res, status, query) {
+                var cat = "";
+                var measureArr = [];
+                if (status) {
+                    for (c in res[0]) {
+                        if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+                            if (typeof res[0][c] == "string") cat = c;
+                            else {
+                                var m = c.split('_');
+                                measureArr.push({
+                                    filedName: m[1],
+                                    condition: m[0]
+                                });
+                            }
+                        }
+                    }
+                    $scope.executeQryData.executeMeasures = measureArr;
+                    eval("$scope." + $scope.selectedChart.chartType + ".executeQuery(cat, res, query)");
+                } else {
+                    //alert('request failed');
+                    privateFun.fireMessage('0', '<strong>Invalid query :</strong>please enter request failed ');
+                    $scope.isPendingRequest = false;
+                    $scope.eventHndler.isLoadingChart = false;
+                }
+            }, $scope.initRequestLimit.value);
         } else {
-           // alert("enter a query");
-           $scope.isPendingRequest = false;
-           $scope.eventHndler.isLoadingChart = false;
-           privateFun.fireMessage('0', 'pelase enter a query');
-        
+            // alert("enter a query");
+            $scope.isPendingRequest = false;
+            $scope.eventHndler.isLoadingChart = false;
+            privateFun.fireMessage('0', 'pelase enter a query');
+
         }
     };
 
@@ -2295,23 +2332,23 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         $scope.queryEditState = !$scope.queryEditState;
         $scope.isPendingRequest = $scope.queryEditState;
     };
-    
+
     //drilling down from here...
-    $scope.toggleDrilled = function(state){
+    $scope.toggleDrilled = function(state) {
         $scope.isDrilled = state;
-        if(!state && $scope.executeQryData.executeColumns.length == 2){
+        if (!state && $scope.executeQryData.executeColumns.length == 2) {
             $scope.executeQryData.executeColumns.pop();
             $scope.getGroupedAggregation($scope.executeQryData.executeColumns[0].filedName);
         }
     };
-    
+
     //metric decimal change
-    $scope.changeDecimals = function(){
+    $scope.changeDecimals = function() {
         $scope.selectedChart.initObj.value = convertDecimals($scope.selectedChart.initObj.decValue, parseInt($scope.selectedChart.initObj.dec));
     };
-    
-    $scope.recordColor = function(ser){
-        $scope.recordedColors[ser.name]= ser.color;
+
+    $scope.recordColor = function(ser) {
+        $scope.recordedColors[ser.name] = ser.color;
     };
 
     //#damith

@@ -1632,10 +1632,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         changeType: function() {
             $scope.eventHndler.isLoadingChart = true;
             $scope.fieldArray = [];
-
-            for (var i = 0; i < $scope.commonData.measures.length; i++) {
-                $scope.fieldArray.push($scope.commonData.measures[i].filedName);
-            }
+ 
             for (var i = 0; i < $scope.commonData.columns.length; i++) {
                 $scope.fieldArray.push($scope.commonData.columns[i].filedName);
             }
@@ -1650,7 +1647,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 i++;
             });
 
-            var query = "SELECT " + $scope.fieldArray.toString() + " FROM Demo." + $scope.sourceData.tbl;
+            var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $scope.getNamespace() +"." + $scope.sourceData.tbl;
             $scope.client.getExecQuery(query, function(data, status) {
                 $scope.summaryData = data;
                 $scope.eventHndler.isLoadingChart = false;
@@ -1681,6 +1678,17 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     };
 
     $scope.selectedFields = [];
+
+    $scope.getNamespace = function() {
+
+        var authdata = JSON.parse(getCookie("authData"));
+        var namespace = authdata.Email.replace('@', '_');
+        namespace = namespace.replace(/\./g, '_');
+        return namespace;
+
+
+
+    }
 
     $scope.drawPivotSummary = function() {
 

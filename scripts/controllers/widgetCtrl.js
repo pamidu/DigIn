@@ -2004,7 +2004,7 @@ routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widId',
         }
         //complete config  
         $scope.fetch = function() {
-            $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
+            $scope.diginLogo = 'digin-logo-wrapper2';
             var wpapi = "http://public-api.wordpress.com/rest/v1/sites/";
             var choice = "/posts";
             var callbackString = '/?callback=JSON_CALLBACK';

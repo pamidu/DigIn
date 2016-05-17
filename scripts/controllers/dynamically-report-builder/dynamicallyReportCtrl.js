@@ -3,7 +3,7 @@
  */
 
 routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyReportSrv, $auth, $location,
-                                                        Digin_Report_Base, Digin_PostgreSql, $stateParams, ngToast, $sce, Digin_Tomcat_Base) {
+                                                        Digin_Report_Base, Digin_PostgreSql, $stateParams, ngToast, $sce, Digin_Tomcat_Base,$state) {
 
     $scope.isFiled = {
         loading: false,
@@ -24,7 +24,11 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
             msg: ''
         },
         isFiledData: false,
-        isDataFound: true
+        isDataFound: true,
+
+        onClickBack: function(){
+            $state.go('home.Dashboards');
+        }
     };
     $scope.eventHandler = eventHandler;
     //end

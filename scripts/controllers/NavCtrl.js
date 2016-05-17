@@ -749,6 +749,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.dashCloseWidgets = false;
             }
         };
+        
         //navigate
         $scope.navigate = function (routeName, ev) {
 
@@ -759,7 +760,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 case "Add Page":
                     $scope.currentView = "Dashboard";
                     $scope.showAddNewDashboard(ev);
-                    $state.go('home.' + routeName);
+                    $state.go('home.Dashboards');
                 break;
                 case "Social Media Analytics":
                     $scope.currentView = "Social Analysis";
@@ -781,12 +782,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $state.go('home.' + routeName);
                 break;
                 case "Data Source":
-                    $rootScope.currentView = "CommonData";
-                    if (!$mdSidenav('right').isOpen()) {
+                   $rootScope.currentView = "CommonData";
+                   $state.go("home.commonDataSource");
+                   //Comment by Gevindu on 2016/05/12 due to DUODIGIN-455 
+                /*   if (!$mdSidenav('right').isOpen()) {
                         $mdSidenav('right').toggle().then(function () {
                                 $log.debug("toggle right is done");
-                        });
-                    }
+                       });
+                    }*/
                 break;
                 case "Sales Forecast && Prediction":
                     $scope.showSalesForecastPrediction(ev);

@@ -154,6 +154,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     }
                 },
                 getAllFields: function(tbl, callback) {
+
                     $scope.commonUi.attribute = [];
                     $scope.commonUi.measures = [];
                     $scope.sourceUi.selectedAttribute = [];
@@ -463,6 +464,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 publicFun.clrTblSelectedObj($scope.sourceUi.tableData);
             },
             onSaveSource: function() {
+
+                
                 //if number of widgets are lesser than 6
                 var widgetLimit = 6;
                 if($rootScope.dashboard.widgets.length < widgetLimit)

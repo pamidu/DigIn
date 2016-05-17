@@ -1,7 +1,8 @@
 //var app = angular.module("diginLogin", ['ngMaterial']);
 
 routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
-    '$auth', '$state', '$rootScope', 'ngToast', 'focus',
+    '$auth', '$state', '$rootScope', 'ngToast', 'focus','dynamicallyReportSrv',
+     'Digin_Report_Base', 'Digin_Tomcat_Base',
     function ($scope, $http, $animate, $window, $auth, $state,
               $rootScope, ngToast, focus, dynamicallyReportSrv, Digin_Report_Base, Digin_Tomcat_Base) {
 

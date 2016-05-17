@@ -129,6 +129,7 @@
 <script type="text/javascript" src="http://code.highcharts.com/highcharts-3d.js"></script>
 <!-- <script type="text/javascript" src="scripts/vendor/Googleinitial.js"></script>  -->
 <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+<script type="text/javascript" src="https://rawgit.com/emeeks/3361332/raw/61cf57523fe8cf314333e5f60cc266351fec2017/d3.layout.cloud.js"></script>
 <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
 <script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
 <script type="text/javascript" src="scripts/config.js"></script>
@@ -212,7 +213,8 @@
 <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/d3PluginCtrl.js"></script>
  
-<script type="text/javascript" src="https://jardindesconnaissances.googlecode.com/svn-history/r82/trunk/public/js/d3.layout.cloud.js"></script>
+
+
 <script type="text/javascript" src="scripts/controllers/socialGraph/SocialAnalysisCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphFBCtrl.js"></script>
 <script type="text/javascript" src="scripts/directives/diginDirectives.js"></script>

@@ -153,6 +153,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
     $scope.onChangeSelected = function (filedName) {
 
         console.log(filedName);
+        console.log($scope.selectedVal);
 
         var selectedVal = $scope.selectedVal;
         //console.log($scope.reportFiledList.selectedDate);
@@ -500,6 +501,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                 var replaceTxt = privateFun.capitalise(filedName);
                                 replaceTxt = '${' + replaceTxt + '}';
                                 var nextQuery = nextQuery.replace(replaceTxt, "'" + selectedVal + "'");
+                                nextQuery = nextQuery.replace('All', selectedVal);
 
                                 serverRequest.getExecuteQuery(nextQuery, length, function (res) {
                                     if (res.data == 500) {
@@ -526,7 +528,11 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                                 });
                                             }
                                         }
-                                        reportFiledList.UIDropDown[foundArray].data = filed;
+                                        reportFiledList.UIDropDown[foundArray].data = [];
+                                        setTimeout(function () {
+                                            $scope.reportFiledList.UIDropDown[foundArray].data = filed;
+                                        }, 50);
+
                                     } else {
                                         privateFun.fireMsg('1', '<strong>Data not found..');
 
@@ -550,10 +556,9 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
         restrict: 'AC',
         require: 'ngModel',
         link: function (scope, element, attrs) {
-            console.log(attrs);
             $timeout(function () {
                 element.select2();
-                element.select2Initialized = true;
+                // element.select2Initialized = true;
             });
         }
     };

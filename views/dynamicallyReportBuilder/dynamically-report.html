@@ -24,8 +24,8 @@
             </div>
             <div flex="20" class="bg-lightskyblueh-2 p-l-20">
                 <!--<div class="digin-gb-b " ng-if="!eventHandler.isDataFound">-->
-                    <!--<span>Download Option</span>-->
-                    <!--<h5>Excel</h5>-->
+                <!--<span>Download Option</span>-->
+                <!--<h5>Excel</h5>-->
                 <!--</div>-->
             </div>
 
@@ -85,8 +85,10 @@
                         </div>
                         <div class="panel-filter" ng-if="reportFiledList.UIDropDown.length !=0"
                              ng-repeat="dropDown in reportFiledList.UIDropDown">
+                            <!--//{{dropDown.data}}-->
                             <label>{{dropDown.fieldname}}</label>
-                            <select class="form-control" select2 name="country"
+                            <select  class="form-control" name="{{dropDown.fieldname}}"
+                                    id="{{dropDown.fieldname}}"
                                     ng-model="selectedVal['value'.filed]"
                                     ng-change="onChangeSelected(dropDown.fieldname)"
                                     ng-options="filed as filed for filed in dropDown.data">

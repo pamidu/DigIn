@@ -567,20 +567,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 reqParameter.token = getCookie("securityToken");
             };
 
-            var startReportService = function () {
-                if (rptService == 0) {
-                    dynamicallyReportSrv.startReportServer(reqParameter).success(function (res) {
-                        $localStorage.erportServices = 1;
-                    }).error(function (err) {
-                        //false
-                    });
-                }
-            };//end
-
             return {
                 getAllReport: function () {
                     getSession();
-                    startReportService();
                     dynamicallyReportSrv.getAllReports(reqParameter).success(function (data) {
                         if (data.Is_Success) {
                             for (var i = 0; i < data.Result.length; i++) {
@@ -848,7 +837,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $scope.clearAllWidgets(ev);
                 break;
                 case "Common Source Algorithm":
-                    $state.go("home.commonSrcAlgorithm");
+                    $state.go("home.dataSource");
                 break;
                 default:
                     $state.go("home");

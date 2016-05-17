@@ -302,7 +302,10 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
     }).state('home.commonSrcAlgorithm', {
         url: '/common-src-algorithm',
         controller: 'sourceAlgorithmCtrl',
-        templateUrl: "views/sourceAlgorithm/common-src-algorithm.html"
+        templateUrl: "views/sourceAlgorithm/common-src-algorithm.html",
+        data: {
+            requireLogin: true
+        }
     }).state('videos', {
         url: '/help-videos',
         templateUrl: "views/help/videos/help-videos.html"

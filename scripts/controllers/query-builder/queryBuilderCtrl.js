@@ -833,7 +833,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
             onClickSelectedChart: function(data, onSelect) {
 
-<<<<<<< HEAD
                 //-- Added by Gevindu on 2016-05-16 due to DUODIGIN-496   
                 if (onSelect.chart =="pivotsummary" && $scope.executeQryData.executeMeasures.length >8) {
                     ngToast.create({
@@ -850,8 +849,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                 //-- Gevindu DUODIGIN-496 -end
 
-=======
->>>>>>> 16544354d5eb5bea2dac967fa418ee580b8e24cf
                 //remove highcharts related configs
                 if (onSelect.chartType != 'metric' && onSelect.chartType != 'highCharts') {
                     $scope.dynFlex = 90;

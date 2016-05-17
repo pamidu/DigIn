@@ -21,6 +21,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
     };
 
+    $scope.sayHi = function(){
+        alert("hi");
+    };
+
+
     $scope.widget = $stateParams.widObj;
     $scope.isDrilled = false;
     $scope.dynFlex = 70;
@@ -77,6 +82,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.requestLimits = [1000, 2000, 3000, 4000, 5000];
     $scope.chartType = 'bar';
 
+
     $scope.initHighchartObj = {
         options: {
             chart: {
@@ -90,6 +96,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             text: $scope.widget.widName,
             //            x: -20 //center
         },
+
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        
 
         xAxis: {
             categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -105,9 +116,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 width: 1,
                 color: '#EC784B'
             }]
-        },
-        tooltip: {
-            valueSuffix: '°C'
         },
         legend: {
             layout: 'vertical',
@@ -133,7 +141,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
 
     //#private function
+   
     var privateFun = (function() {
+
 
         return {
             checkToggleOpen: function(openWindow) {
@@ -820,7 +830,24 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }, 200);
                 this.openSettingToggle[1].isQueryBuilder = false;
             },
+
             onClickSelectedChart: function(data, onSelect) {
+
+                //-- Added by Gevindu on 2016-05-16 due to DUODIGIN-496   
+                if (onSelect.chart =="pivotsummary" && $scope.executeQryData.executeMeasures.length >8) {
+                    ngToast.create({
+                            className: 'warning',
+                            content: 'series should less than 8 to creat pivotsummary!',
+                            horizontalPosition: 'right',
+                            verticalPosition: 'bottom',
+                            timeout: 1500,
+                            dismissOnClick: true
+                        });
+
+                    return 0;
+                }
+
+                //-- Gevindu DUODIGIN-496 -end
 
                 //remove highcharts related configs
                 if (onSelect.chartType != 'metric' && onSelect.chartType != 'highCharts') {
@@ -844,9 +871,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     $scope.executeQryData.executeColumns = [];
                     $scope.executeQryData.executeMeasures = [];
                 }
+
                 $scope.selectedChart = onSelect;
                 eval("$scope." + $scope.selectedChart.chartType + ".changeType()");
                 //privateFun.createHighchartsChart(onSelect.chart);
+                
             },
             onClickDownload: function() {
                 // var htmlElement = document.getElementsByClassName("highcharts-container")[0];
@@ -1236,6 +1265,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 data: $scope.observationsData,
                                 tooltip: {
                                     headerFormat: '<em>Experiment No {point.key}</em><br/>'
+                                   
                                 }
                             }, {
                                 name: 'Outlier',
@@ -1248,7 +1278,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                     lineColor: Highcharts.getOptions().colors[0]
                                 },
                                 tooltip: {
-                                    pointFormat: 'Observation: {point.y}'
+                                   pointFormat: 'Observation: {point.y}'
+
                                 }
                             }]
                         };
@@ -1794,6 +1825,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
 
     $scope.getAggregation = function() {
+
+
         $scope.eventHndler.isLoadingChart = true;
         if (typeof $scope.highchartsNG["init"] == "undefined" || !$scope.highchartsNG.init) {
             $scope.highchartsNG["init"] = false;
@@ -1810,7 +1843,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 title: {
                     text: $scope.widget.widName
                 },
-                plotOptions: {},
+
+             tooltip: {
+                     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {}, 
                 legend: {
                     layout: 'vertical',
                     align: 'right',
@@ -1823,6 +1860,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 credits: {
                     enabled: false
                 },
+                
                 colors: ['#EC784B'],
                 series: []
             };
@@ -1892,6 +1930,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         });
 
         $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res, status, query) {
+
             if (status) {
                 //                console.log(JSON.stringify(res));
                 $scope.mapResult($scope.selectedCat, res, function(data) {

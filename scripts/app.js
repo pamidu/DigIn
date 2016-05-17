@@ -39,7 +39,8 @@ var routerApp = angular.module('DuoDiginRt', [
         "com.2fdevs.videogular",
         "com.2fdevs.videogular.plugins.controls",
         "info.vietnamcode.nampnq.videogular.plugins.youtube",
-        "ngTagsInput"
+        "ngTagsInput",
+
     ])
     ;
 
@@ -302,10 +303,21 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
     }).state('home.commonSrcAlgorithm', {
         url: '/common-src-algorithm',
         controller: 'sourceAlgorithmCtrl',
-        templateUrl: "views/sourceAlgorithm/common-src-algorithm.html"
+        templateUrl: "views/sourceAlgorithm/common-src-algorithm.html",
+        data: {
+            requireLogin: true
+        }
     }).state('videos', {
         url: '/help-videos',
         templateUrl: "views/help/videos/help-videos.html"
+
+    }).state('home.commonDataSource', {
+        url: '/commonDataSource',
+        controller: 'commonDataSrcInit',
+        templateUrl: "views/common-data-src/ViewCommonDataSrc.html"
+
+        //Added by Gevindu on 2016/05/12 due to DUODIGIN-455 
+
     }).state('home.dataSource', {
         url: '/data-source',
         templateUrl: "views/common-data-src/viewDataSource.html",

@@ -443,7 +443,8 @@ drb >> dynamically report builder
 .m-b-0 {
     margin-bottom: 0px !important;
 }
-.m-r-10{
+
+.m-r-10 {
     margin-right: 10px;
 }
 
@@ -1315,7 +1316,7 @@ span {
     display: block;
     position: absolute;
     top: 40%;
-    right: 40%;
+    right: 28%;
     margin: auto 0;
 }
 

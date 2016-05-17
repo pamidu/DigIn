@@ -82,10 +82,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.requestLimits = [1000, 2000, 3000, 4000, 5000];
     $scope.chartType = 'bar';
 
-<<<<<<< HEAD
-   
-=======
->>>>>>> 16544354d5eb5bea2dac967fa418ee580b8e24cf
+
     $scope.initHighchartObj = {
         options: {
             chart: {
@@ -99,14 +96,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             text: $scope.widget.widName,
             //            x: -20 //center
         },
-<<<<<<< HEAD
+
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
         },
         
-=======
 
->>>>>>> 16544354d5eb5bea2dac967fa418ee580b8e24cf
         xAxis: {
             categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'

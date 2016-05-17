@@ -311,14 +311,16 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         url: '/help-videos',
         templateUrl: "views/help/videos/help-videos.html"
 
-    }).state('home.commonDataSource', {
-        url: '/commonDataSource',
-        controller: 'commonDataSrcInit',
-        templateUrl: "views/common-data-src/ViewCommonDataSrc.html"
+    })
+    // .state('home.commonDataSource', {
+    //     url: '/commonDataSource',
+    //     controller: 'commonDataSrcInit',
+    //     templateUrl: "views/common-data-src/ViewCommonDataSrc.html"
 
-        //Added by Gevindu on 2016/05/12 due to DUODIGIN-455 
+    //     //Added by Gevindu on 2016/05/12 due to DUODIGIN-455 
 
-    }).state('home.dataSource', {
+    // })
+    .state('home.dataSource', {
         url: '/data-source',
         templateUrl: "views/common-data-src/viewDataSource.html",
         data: {

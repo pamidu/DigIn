@@ -778,13 +778,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 break;
                 case "Data Source":
                    $rootScope.currentView = "CommonData";
-                   $state.go("home.commonDataSource");
+                   // $state.go("home.commonDataSource");
                    //Comment by Gevindu on 2016/05/12 due to DUODIGIN-455 
-                /*   if (!$mdSidenav('right').isOpen()) {
+                   if (!$mdSidenav('right').isOpen()) {
                         $mdSidenav('right').toggle().then(function () {
                                 $log.debug("toggle right is done");
                        });
-                    }*/
+                    }
                 break;
                 case "Sales Forecast && Prediction":
                     $scope.showSalesForecastPrediction(ev);

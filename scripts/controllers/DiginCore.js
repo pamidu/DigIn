@@ -94,6 +94,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         /* update damith
          view current chart data source view
          currentSourceView ()
+         
          */
 
         $scope.showFace2 = function ($event, widget) {

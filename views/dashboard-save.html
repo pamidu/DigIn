@@ -49,6 +49,10 @@
                     </datepicker>
 -->
                 </md-input-container>
+                <md-input-container flex="50">
+                    <label>Refresh Interval</label>
+                    <input ng-model="refreshInterval" name="refreshInterval">
+                </md-input-container>
             </div>
         </div>
         <div class="md-actions" layout="row">
@@ -59,6 +63,9 @@
             <md-button class=" md-primary" ng-click="saveDashboardDetails('saveAll')">
                 <!--                <ng-md-icon icon="arrow_forward" style="fill:whitesmoke"></ng-md-icon>-->
                 save the whole storyboard
+            </md-button>
+            <md-button class="md-primary" ng-click="saveDashboard()">
+                SAVE MemSql
             </md-button>
         </div>
     </md-content>

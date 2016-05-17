@@ -136,6 +136,8 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 $scope.reportFldLoading = false;
             },
             clearIframe: function () {
+                $scope.eventHandler.isDataFound = true;
+                $scope.eventHandler.isReportLoad = false;
                 var frame = $('#reportFram').get(0);
                 var frameDoc = frame.contentDocument || frame.contentWindow.document;
                 frameDoc.getElementsByTagName('body')[0].innerHTML = "";
@@ -155,6 +157,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
     $scope.onChangeSelected = function (filedName) {
 
         console.log(filedName);
+        console.log($scope.selectedVal);
 
         var selectedVal = $scope.selectedVal;
         //console.log($scope.reportFiledList.selectedDate);
@@ -274,6 +277,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 return getReportName();
             },
             getReportUIFromServer: function (eventHandler) {
+                privateFun.clearIframe();
                 getReportName();
                 getSession();
                 privateFun.clearAllUI();
@@ -287,17 +291,17 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
 
                             //update line
                             //check label value Is null
-                            var valLable=null;
-                            if(val.Label==null || val.Label==""){
-                               valLable=val.Fieldname.toLowerCase(); 
-                            }else{
-                                valLable=val.Label.toLowerCase();
+                            var valLable = null;
+                            if (val.Label == null || val.Label == "") {
+                                valLable = val.Fieldname.toLowerCase();
+                            } else {
+                                valLable = val.Label.toLowerCase();
                             }
 
                             //get filed data
                             var dynObject = {
                                 query: val.Query,
-                                label : val.Fieldname,
+                                label: val.Fieldname,
                                 fieldname: valLable,
                                 data: []
                             };
@@ -305,14 +309,14 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                             $scope.reportFiledList.selectedDrpFiled.push({
                                 'filedName': dynObject.fieldname,
                                 'value': '',
-                                'label':dynObject.label
+                                'label': dynObject.label
                             });
                             angular.forEach(val, function (value, key) {
                                 var executeQueryAryObj = {
                                     id: '',
                                     filedName: '',
                                     query: '',
-                                    label :'',
+                                    label: '',
                                     state: false,
                                 };
 
@@ -501,6 +505,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                 var replaceTxt = privateFun.capitalise(filedName);
                                 replaceTxt = '${' + replaceTxt + '}';
                                 var nextQuery = nextQuery.replace(replaceTxt, "'" + selectedVal + "'");
+                                nextQuery = nextQuery.replace('All', selectedVal);
 
                                 serverRequest.getExecuteQuery(nextQuery, length, function (res) {
                                     if (res.data == 500) {
@@ -527,7 +532,11 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                                 });
                                             }
                                         }
-                                        reportFiledList.UIDropDown[foundArray].data = filed;
+                                        reportFiledList.UIDropDown[foundArray].data = [];
+                                        setTimeout(function () {
+                                            $scope.reportFiledList.UIDropDown[foundArray].data = filed;
+                                        }, 50);
+
                                     } else {
                                         privateFun.fireMsg('1', '<strong>Data not found..');
 
@@ -545,15 +554,15 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
         };
     })();
 
+
 }).directive("select2", function ($timeout, $parse) {
     return {
         restrict: 'AC',
         require: 'ngModel',
         link: function (scope, element, attrs) {
-            console.log(attrs);
             $timeout(function () {
                 element.select2();
-                element.select2Initialized = true;
+                // element.select2Initialized = true;
             });
         }
     };

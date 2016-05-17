@@ -16,17 +16,19 @@
                     </h1>
                 </div>
             </div>
-            <div flex="20" class="bg-lightskyblueh-2 p-l-20">
-                <div class="digin-gb-b ">
-
-                </div>
-            </div>
             <div flex="20" class="bg-lightblue-h-1 p-l-20">
                 <div class="digin-gb-b">
                     <span>Report Name</span>
                     <h5>{{eventHandler.reportName}}</h5>
                 </div>
             </div>
+            <div flex="20" class="bg-lightskyblueh-2 p-l-20">
+                <!--<div class="digin-gb-b " ng-if="!eventHandler.isDataFound">-->
+                <!--<span>Download Option</span>-->
+                <!--<h5>Excel</h5>-->
+                <!--</div>-->
+            </div>
+
         </div>
     </div>
     <!-- body content main wrap -->
@@ -83,8 +85,10 @@
                         </div>
                         <div class="panel-filter" ng-if="reportFiledList.UIDropDown.length !=0"
                              ng-repeat="dropDown in reportFiledList.UIDropDown">
+                            <!--//{{dropDown.data}}-->
                             <label>{{dropDown.fieldname}}</label>
-                            <select class="form-control" select2 name="country"
+                            <select  class="form-control" name="{{dropDown.fieldname}}"
+                                    id="{{dropDown.fieldname}}"
                                     ng-model="selectedVal['value'.filed]"
                                     ng-change="onChangeSelected(dropDown.fieldname)"
                                     ng-options="filed as filed for filed in dropDown.data">
@@ -100,7 +104,7 @@
                             Render report
                         </span>
                         <span class="btn btn-block btn-default btn-close btn-font"
-                              ng-click="onClickRefesh()">
+                              ng-click="onClickRefresh()">
                                 refresh
                         </span>
                         </div>
@@ -123,13 +127,13 @@
             </div>
             <div flex="80">
                 <div class="digin-drb-wrap report">
-                        <!--<div class="report-download-opt">-->
-                        <!--<ul>-->
-                        <!--<li class="fa fa-cube p-r-20"></li>-->
-                        <!--<li class="fa fa-cube p-r-20"></li>-->
-                        <!--<li class="fa fa-cube"></li>-->
-                        <!--</ul>-->
-                        <!--</div>-->
+                    <!--<div class="report-download-opt">-->
+                    <!--<ul>-->
+                    <!--<li class="fa fa-cube p-r-20"></li>-->
+                    <!--<li class="fa fa-cube p-r-20"></li>-->
+                    <!--<li class="fa fa-cube"></li>-->
+                    <!--</ul>-->
+                    <!--</div>-->
                     <div class="data-state">
                         <div class="message"
                              ng-if="eventHandler.isDataFound">
@@ -147,6 +151,7 @@
                                     id="reportFram"
                                     allowfullscreen>
                             </iframe>
+
                         </div>
 
                     </div>

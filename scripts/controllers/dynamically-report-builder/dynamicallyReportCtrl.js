@@ -177,8 +177,21 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 $scope.reportFiledList.selectedDrpFiled[i].value = currentVal.value;
             }
         }
+
+        var executeQueryAry = $scope.executeQueryAry;
+
+        var findIndex = 0;
+        for (var loop = 0; loop < executeQueryAry.length; loop++) {
+            if (executeQueryAry[loop].filedName == filedName) {
+                findIndex = loop;
+                findIndex++;
+            }
+        }
+
         //get current filed data
-        executeQryHandler.executeNextQuery(filedName, currentVal.value);
+        if (findIndex < executeQueryAry.length) {
+            executeQryHandler.executeNextQuery(filedName, currentVal.value);
+        }
 
     };
 
@@ -488,7 +501,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 for (var i = 0; i < executeQueryAry.length; i++) {
                     var nextRequst = i;
                     nextRequst++;
-                    var length = $scope.reportFiledList.UIDropDown.length
+                    var length = $scope.reportFiledList.UIDropDown.length;
                     if (executeQueryAry[i].filedName == filedName &&
                         nextRequst != executeQueryAry.length) {
                         if (i != executeQueryAry.length) {

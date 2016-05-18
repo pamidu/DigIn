@@ -45,7 +45,7 @@ routerApp.directive('diginWordCloud', function () {
                 d3.layout.cloud().size([canvasWidth, canvasHeight])
                     .words(scope.words.map(function (d) {
                         console.log(d.name);
-                        return {text: d.name, size: d.val + 30};
+                        return {text: d.name, size: d.val + 20};
                     }))
                     .rotate(function () {
                         return ~~(Math.random() * 2) * 90;

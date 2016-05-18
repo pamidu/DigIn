@@ -19,7 +19,7 @@
             <div flex="20" class="bg-lightblue-h-1 p-l-20">
                 <div class="digin-gb-b">
                     <span>Report Name</span>
-                    <h5>{{eventHandler.reportName}}</h5>
+                    <h5>{{reportName}}</h5>
                 </div>
             </div>
             <div flex="20" class="bg-lightskyblueh-2 p-l-20">
@@ -87,11 +87,11 @@
                              ng-repeat="dropDown in reportFiledList.UIDropDown">
                             <!--//{{dropDown.data}}-->
                             <label>{{dropDown.fieldname}}</label>
-                            <select  class="form-control" name="{{dropDown.fieldname}}"
+                            <select class="form-control" name="{{dropDown.fieldname}}"
                                     id="{{dropDown.fieldname}}"
-                                    ng-model="selectedVal['value'.filed]"
+                                    ng-model="formData.parameters[dropDown.fieldname]"
                                     ng-change="onChangeSelected(dropDown.fieldname)"
-                                    ng-options="filed as filed for filed in dropDown.data">
+                                    ng-options="filed for filed in dropDown.data">
                                 <option value="">Select {{dropDown.fieldname}}</option>
                             </select>
                         </div>

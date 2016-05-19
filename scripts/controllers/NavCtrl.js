@@ -450,16 +450,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 reqParameter.token = getCookie("securityToken");
             };
 
-            var startReportService = function () {
-                if (rptService == 0) {
-                    dynamicallyReportSrv.startReportServer(reqParameter).success(function (res) {
-                        $localStorage.erportServices = 1;
-                    }).error(function (err) {
-                        //false
-                    });
-                }
-            };//end
-
             return {
                 getAllDashboards: function () {
                     
@@ -500,7 +490,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 },
                 getAllReports: function () {
                     getSession();
-                    startReportService();
                     dynamicallyReportSrv.getAllReports(reqParameter).success(function (data) {
                         if (data.Is_Success) {
                             for (var i = 0; i < data.Result.length; i++) {
@@ -537,6 +526,23 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $scope.imageUrl = $rootScope.image;
         }
+<<<<<<< HEAD
+=======
+        // hides and shows the dashboard tabs
+        $scope.manageTabs = function (dashboard) {
+            if (dashboard) {
+                console.log("manage tabs true");
+                $("md-tabs > md-tabs-wrapper").children().show();
+                // $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","rgba(0, 0, 0, 0.14)" );
+                $scope.dashCloseWidgets = false;
+            } else {
+                console.log("manage tabs false");
+                $("md-tabs > md-tabs-wrapper").children().hide();
+                // $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","#ECECEC" );
+                $scope.dashCloseWidgets = false;
+            }
+        };
+>>>>>>> ccd11680353e168d242982da2bdb1e03ee52522c
         
         //navigate
         $scope.navigate = function (routeName, ev) {
@@ -570,11 +576,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $state.go('home.' + routeName);
                 break;
                 case "Data Source":
-                    $rootScope.currentView = "CommonData";
-                    if (!$mdSidenav('right').isOpen()) {
+                   $rootScope.currentView = "CommonData";
+                   // $state.go("home.commonDataSource");
+                   //Comment by Gevindu on 2016/05/12 due to DUODIGIN-455 
+                   if (!$mdSidenav('right').isOpen()) {
                         $mdSidenav('right').toggle().then(function () {
                                 $log.debug("toggle right is done");
-                        });
+                       });
                     }
                 break;
                 case "Sales Forecast && Prediction":
@@ -631,7 +639,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $scope.clearAllWidgets(ev);
                 break;
                 case "Common Source Algorithm":
-                    $state.go("home.commonSrcAlgorithm");
+                    $state.go("home.dataSource");
                 break;
                 default:
                     $state.go("home");

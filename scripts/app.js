@@ -39,8 +39,15 @@ var routerApp = angular.module('DuoDiginRt', [
         "com.2fdevs.videogular",
         "com.2fdevs.videogular.plugins.controls",
         "info.vietnamcode.nampnq.videogular.plugins.youtube",
+<<<<<<< HEAD
         "ngTagsInput"
 ]);
+=======
+        "ngTagsInput",
+
+    ])
+    ;
+>>>>>>> ccd11680353e168d242982da2bdb1e03ee52522c
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
 
@@ -269,6 +276,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             data: {
                 requireLogin: true
             }
+<<<<<<< HEAD
         })
         .state('home.DynamicallyReportBuilder', {
             url: '/dynamically-report-builder?reportNme',
@@ -293,6 +301,41 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: true
             }
         });
+=======
+        }).state('home.DynamicallyReportBuilder', {
+        url: '/dynamically-report-builder?reportNme',
+        templateUrl: "views/dynamicallyReportBuilder/dynamically-report.html",
+        data: {
+            requireLogin: true
+        }
+    }).state('home.commonSrcAlgorithm', {
+        url: '/common-src-algorithm',
+        controller: 'sourceAlgorithmCtrl',
+        templateUrl: "views/sourceAlgorithm/common-src-algorithm.html",
+        data: {
+            requireLogin: true
+        }
+    }).state('videos', {
+        url: '/help-videos',
+        templateUrl: "views/help/videos/help-videos.html"
+
+    })
+    // .state('home.commonDataSource', {
+    //     url: '/commonDataSource',
+    //     controller: 'commonDataSrcInit',
+    //     templateUrl: "views/common-data-src/ViewCommonDataSrc.html"
+
+    //     //Added by Gevindu on 2016/05/12 due to DUODIGIN-455 
+
+    // })
+    .state('home.dataSource', {
+        url: '/data-source',
+        templateUrl: "views/common-data-src/viewDataSource.html",
+        data: {
+            requireLogin: true
+        }
+    });
+>>>>>>> ccd11680353e168d242982da2bdb1e03ee52522c
 
     lkGoogleSettingsProvider.configure({
         apiKey: 'AIzaSyA9fv9lYQdt1XV6wooFtItxYlMF8Y9t1ao',

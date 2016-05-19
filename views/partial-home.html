@@ -54,8 +54,10 @@
     </ul>
     <!-- ui view end -->
     <!-- Common data source start -->
+
     <div class="commonDataSource" ng-include src="'views/common-data-src/ViewCommonDataSrc.html'" ng-controller="commonDataSrcInit">
     </div>
+    
     <!-- Common data source end -->
     <!-- search start -->
     <div class="overlay">
@@ -94,7 +96,14 @@
                         <table at-table at-paginated at-list="dashboards" at-config="configDashboards" class="m-l-15">
                                 <tbody>
                                     <tr>
+<<<<<<< HEAD
                                         <td at-implicit at-sortable at-attribute="dashboardName" at-initial-sorting="asc" layout="row" layout-align="start center" ng-click="goDashboard(item)">
+=======
+                                        <!-- <img style="width:35px;height:35px;"
+                                                     src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg"
+                                                     class="img-radius" alt=""> -->
+                                        <td at-implicit at-sortable at-attribute="splitName" at-initial-sorting="asc" layout="row" layout-align="start center" ng-click="goDashboard(item)">
+>>>>>>> ccd11680353e168d242982da2bdb1e03ee52522c
                                             <ng-md-icon icon="dashboard" style="fill:white" size="20" layout="row" class="m-r-10" layout-align="center center"></ng-md-icon>
                                         </td>
                                     </tr>
@@ -124,7 +133,14 @@
                         <table at-table at-paginated at-list="reports" at-config="configReports" class="m-l-15">
                                 <tbody>
                                     <tr>
+<<<<<<< HEAD
                                         <td at-implicit at-sortable at-attribute="splitName" at-initial-sorting="asc" layout="row" layout-align="start center" ng-click="goReport(item.splitName)">
+=======
+                                        <!-- <img style="width:35px;height:35px;"
+                                                     src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg"
+                                                     class="img-radius" alt=""> -->
+                                        <td at-implicit at-sortable at-attribute="splitName" at-initial-sorting="asc" layout="row" layout-align="start center" ng-click="goReport2(item.splitName)">
+>>>>>>> ccd11680353e168d242982da2bdb1e03ee52522c
                                             <ng-md-icon icon="assignment" style="fill:white" size="20" class="m-r-10" layout="row" layout-align="center center"></ng-md-icon>
                                         </td>
                                     </tr>

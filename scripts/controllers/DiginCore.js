@@ -849,7 +849,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                     var lim = i == 0 ? "" : "-" + i;
                                            
                     Upload.upload({
-                        url: 'http://192.168.0.34:8080/file_upload',
+                        url: Digin_Report_Base + 'file_upload',
                         headers: {
                             'Content-Type': 'multipart/form-data',                         
                         },           

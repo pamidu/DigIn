@@ -23,11 +23,11 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             name: "CSV/Excel",
             icon: "styles/icons/source/xlsx.svg",
             selected: false
-        }, {
+        },{
             name: "postgresql",
             icon: "styles/icons/source/api.svg",
             selected: false
-        }, {
+        },  {
             name: "MSSQL",
             icon: "styles/icons/source/mssql.svg",
             selected: false
@@ -42,10 +42,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         $scope.pendingColumns = true;
         
         //data base field type
-        $scope.dataBaseFiledTypes = [
-
-
-        {
+        $scope.dataBaseFiledTypes = [{
             'type': 'nvarchar',
             'category': 'att'
         }, {
@@ -84,9 +81,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         }, {
             'type': 'INTEGER',
             'category': 'mes'
-        }, {
-            'type': 'FLOAT',
-            'category': 'mes'
         },
         {
             'type': 'integer',
@@ -95,10 +89,16 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         {
             'type': 'character varying',
             'category': 'att'
-        }
+        },
 
 
-        ];
+
+
+
+        {
+            'type': 'FLOAT',
+            'category': 'mes'
+        }];
 
 
         var chartTypes = [];
@@ -160,28 +160,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             }
                             break;
 
-                        case "MSSQL":
-                            if (localStorage.getItem("MSSQL") === null || localStorage.getItem("MSSQL") == "null" ||
-                                localStorage.getItem("MSSQL") == "undefined") {
-                                $scope.client.getTables(function(res, status) {
-                                    // console.log("get tables result", res.length);
-                                    // console.log("status", status);
-                                    if (typeof res === 'object' && status) {
-                                        callback(res, status);
-                                        localStorage.setItem("MSSQL", res);
-                                    }
-                                    if(!status){//if status false
-                                        commonUi.isDataLoading = false;
-                                        publicFun.fireMessage('0', 'No tables available');
-                                    }
-                                });
-                            } else {
-                                var BigQueryTablesString = localStorage.getItem("MSSQL");
-                                var res = BigQueryTablesString.split(',');
-                                callback(res, true);
-                            }
-                            break;
-
                         default:
                             $scope.client.getTables(function(res, status) {
                                 callback(res, status);
@@ -190,7 +168,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     }
                 },
                 getAllFields: function(tbl, callback) {
-
                     $scope.commonUi.attribute = [];
                     $scope.commonUi.measures = [];
                     $scope.sourceUi.selectedAttribute = [];
@@ -200,36 +177,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     switch ($scope.sourceUi.selectedSource) {
                         case "BigQuery":
                             var saveName = "BigQuery" + tbl;
-                            if (localStorage.getItem(saveName) === null ||
-                                localStorage.getItem(saveName) === "undefined") {
-                                $scope.client.getFields(tbl, function(data, status) {
-                                    callback(data, status);
-                                    localStorage.setItem(saveName, JSON.stringify(data));
-                                });
-                            } else {
-                                var BigQueryFieldsString = localStorage.getItem(saveName);
-                                console.log(BigQueryFieldsString);
-                                callback(JSON.parse(BigQueryFieldsString), true);
-                            }
-                            break;
-
-                        case "MSSQL":
-                            var saveName = "MSSQL" + tbl;
-                            if (localStorage.getItem(saveName) === null ||
-                                localStorage.getItem(saveName) === "undefined") {
-                                $scope.client.getFields(tbl, function(data, status) {
-                                    callback(data, status);
-                                    localStorage.setItem(saveName, JSON.stringify(data));
-                                });
-                            } else {
-                                var BigQueryFieldsString = localStorage.getItem(saveName);
-                                console.log(BigQueryFieldsString);
-                                callback(JSON.parse(BigQueryFieldsString), true);
-                            }
-                            break;
-
-                        case "postgresql":
-                            var saveName = "postgresql" + tbl;
                             if (localStorage.getItem(saveName) === null ||
                                 localStorage.getItem(saveName) === "undefined") {
                                 $scope.client.getFields(tbl, function(data, status) {
@@ -530,11 +477,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 publicFun.clrTblSelectedObj($scope.sourceUi.tableData);
             },
             onSaveSource: function() {
-
-                
                 //if number of widgets are lesser than 6
                 var widgetLimit = 6;
-                if($rootScope.dashboard.widgets.length < widgetLimit)
+                if($rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.length < widgetLimit)
                 {
                     var length = $scope.sourceUi.sourceRcrd.length++;
                     var currentQry = $scope.sourceUi.selectedSource + '-' + length;
@@ -587,7 +532,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         dataname: "",
                         d3plugin: "",
                         divider: false,
-                        id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
+                        id: Math.floor(Math.random() * (100 - 10 + 1) + 10),
                         type: "Visualization",
                         width: '370px',
                         height: '300px',
@@ -606,7 +551,11 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     publicFun.clearAll(function(status) {
                         if (status) {
                             $state.go("home.QueryBuilder", {
-                                widObj: $scope.currWidget
+                                widObj: {   
+                                            "widgetID": null,
+                                            "widgetName": $scope.currWidget.widName,
+                                            "widgetData": $scope.currWidget
+                                        }
                             });
                             $mdSidenav('right').close();
                         }

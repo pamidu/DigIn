@@ -28,7 +28,7 @@
                 getFields: function(tbl, cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "/GetFields?dataSetName=" + getNamespace() + "&tableName=" + tbl + "&db=" + database);
+                    }, $diginurls.diginengine + "/GetFields?dataSetName=" + getNamespace() + "&tableName=" + tbl + "&db=" + database + "&schema=public");
                 },
                 getHighestLevel: function(tbl, fieldstr, cb) {
                     if (database == "BigQuery") {
@@ -37,6 +37,12 @@
                         }, $diginurls.diginengine + "/gethighestlevel?tablename=[" + getNamespace() + "." + tbl + "]&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
                     }
                     if (database == "MSSQL") {
+
+                        $servicehelpers.httpSend("get", function(data, status, msg) {
+                            cb(data, status);
+                        }, $diginurls.diginengine + "/gethighestlevel?tablename=" + tbl + "&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
+                    }
+                    if (database == "postgresql") {
 
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
@@ -61,9 +67,16 @@
                     }
                     if (database == "MSSQL") {
                         if (gb === undefined) {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}";
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id="+Math.floor((Math.random() * 10) + 1);
                         } else {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={}";
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={}&id="+Math.floor((Math.random() * 10) + 1);
+                        }
+                    }
+                    if (database == "postgresql") {
+                        if (gb === undefined) {
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id="+Math.floor((Math.random() * 10) + 1);
+                        } else {
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={}&id="+Math.floor((Math.random() * 10) + 1);
                         }
 
                     }
@@ -222,8 +235,8 @@
         var host = getHost();
         return {
             //diginengine: "http://" + host + ":8080",
-            diginengine: "http://104.155.236.85:8080",
-            // diginengine: "http://192.168.2.33:8080",
+            //diginengine: "http://104.155.236.85:8080",
+             diginengine: "http://192.168.2.33:8080",
             diginenginealt: "http://" + host + ":8081",
             getNamespace : function getNamespace() {
                 var authdata = JSON.parse(getCookie("authData"));

@@ -1,9 +1,10 @@
 //var app = angular.module("diginLogin", ['ngMaterial']);
 
 routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
-    '$auth', '$state', '$rootScope', 'ngToast', 'focus',
+    '$auth', '$state', '$rootScope', 'ngToast', 'focus','dynamicallyReportSrv',
+     'Digin_Report_Base', 'Digin_Tomcat_Base',
     function ($scope, $http, $animate, $window, $auth, $state,
-              $rootScope, ngToast, focus) {
+              $rootScope, ngToast, focus, dynamicallyReportSrv, Digin_Report_Base, Digin_Tomcat_Base) {
 
         $scope.isLoggedin = false;
         $scope.error = {
@@ -24,6 +25,23 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
 
 
         var privateFun = (function () {
+            var reqParameter = {
+                apiBase: Digin_Report_Base,
+                tomCatBase: Digin_Tomcat_Base,
+                token: '',
+                reportName: '',
+                queryFiled: ''
+            };
+            var getSession = function () {
+                reqParameter.token = getCookie("securityToken");
+            };
+            var startReportService = function () {
+                dynamicallyReportSrv.startReportServer(reqParameter).success(function (res) {
+                    return true;
+                }).error(function (err) {
+                    return false;
+                });
+            };//end
             return {
                 //Old login-----------------------------------
                 login: function () {
@@ -42,6 +60,9 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                         // localStorage.setItem('name', userInfo.Name);
                         // $rootScope.email = userInfo.Email;
                         // localStorage.setItem('email', userInfo.Email);
+                        getSession();
+                        startReportService();
+
                         $state.go('welcome');
 
                     });

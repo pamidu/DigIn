@@ -54,8 +54,10 @@
     </ul>
     <!-- ui view end -->
     <!-- Common data source start -->
+
     <div class="commonDataSource" ng-include src="'views/common-data-src/ViewCommonDataSrc.html'" ng-controller="commonDataSrcInit">
     </div>
+    
     <!-- Common data source end -->
     <!-- search start -->
     <div class="overlay">
@@ -94,6 +96,7 @@
                         <table at-table at-paginated at-list="dashboards" at-config="configDashboards" class="m-l-15">
                                 <tbody>
                                     <tr>
+                                   
                                         <td at-implicit at-sortable at-attribute="dashboardName" at-initial-sorting="asc" layout="row" layout-align="start center" ng-click="goDashboard(item)">
                                             <ng-md-icon icon="dashboard" style="fill:white" size="20" layout="row" class="m-r-10" layout-align="center center"></ng-md-icon>
                                         </td>
@@ -124,6 +127,7 @@
                         <table at-table at-paginated at-list="reports" at-config="configReports" class="m-l-15">
                                 <tbody>
                                     <tr>
+                                       
                                         <td at-implicit at-sortable at-attribute="splitName" at-initial-sorting="asc" layout="row" layout-align="start center" ng-click="goReport(item.splitName)">
                                             <ng-md-icon icon="assignment" style="fill:white" size="20" class="m-r-10" layout="row" layout-align="center center"></ng-md-icon>
                                         </td>

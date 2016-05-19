@@ -148,7 +148,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
 
     $scope.updateAccount = function(){          
         if($scope.image==""){
-            $rootScope.image = "styles/css/images/innerlogo.png";
+            $rootScope.image = "styles/css/images/DiginLogo.png";
         }
         else{
             $rootScope.image = $scope.image;

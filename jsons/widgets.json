@@ -43,7 +43,6 @@
             "type": "General",
             "Description": "Current user profile",
             "initTemplate": "views/InitConfigProfile.html",
-            "initController": "profileInit",
             "widView": "views/ViewProfile.html",
             "color": "#9C27B0",
             "sizeX": 4, "sizeY": 4, "row": 0, "col": 16

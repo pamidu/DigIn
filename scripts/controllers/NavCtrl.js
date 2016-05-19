@@ -1,11 +1,11 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', 'Fullscreen', '$http', 'Digin_ReportViewer',
     '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast',
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Report_Base', 'Digin_Tomcat_Base',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Report_Base', 'Digin_Tomcat_Base', 'ngToast',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
               Fullscreen, $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService,
               Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Report_Base, Digin_Tomcat_Base) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Report_Base, Digin_Tomcat_Base, ngToast) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -15,81 +15,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
 
         $scope.username=JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
-        $scope.imageUrl = "styles/css/images/innerlogo.png";
 
-        var $windowHeight = $(window).height(),
-            $windowWidth = $(window).width(),
-            $startingPoint = $('.starting-point');
-
-        // Calculate the diameter
-        var diameterValue = (Math.sqrt(Math.pow($windowHeight, 2) + Math.pow($windowWidth, 2)) * 2);
-
-        $startingPoint.children('span').css({
-            height: diameterValue + 'px',
-            width: diameterValue + 'px',
-            top: -(diameterValue / 2) + 'px',
-            left: -(diameterValue / 2) + 'px'
-        });
-
-        //initially hiding the tabs
-        $("md-tabs.footer-bar > md-tabs-wrapper").children().hide();
-        //configuring gridster
-        $scope.gridsterOpts = {
-            columns: 24, // number of columns in the grid
-            pushing: true, // whether to push other items out of the way
-            floating: true, // whether to automatically float items up so they stack
-            swapping: false, // whether or not to have items switch places instead of push down if they are the same size
-            width: 'auto', // width of the grid. "auto" will expand the grid to its parent container
-            colWidth: 'auto', // width of grid columns. "auto" will divide the width of the grid evenly among the columns
-            rowHeight: '/4', // height of grid rows. 'match' will make it the same as the column width, a numeric value will be interpreted as pixels, '/2' is half the column width, '*5' is five times the column width, etc.
-            margins: [5, 5], // margins in between grid items
-            outerMargin: true,
-            isMobile: false, // toggle mobile view
-            mobileBreakPoint: 600, // width threshold to toggle mobile mode
-            mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
-            minColumns: 1, // minimum amount of columns the grid can scale down to
-            minRows: 1, // minimum amount of rows to show if the grid is empty
-            maxRows: 100, // maximum amount of rows in the grid
-            defaultSizeX: 6, // default width of an item in columns
-            defaultSizeY: 8, // default height of an item in rows
-            minSizeX: 6, // minimum column width of an item
-            maxSizeX: null, // maximum column width of an item
-            minSizeY: 8, // minumum row height of an item
-            maxSizeY: null, // maximum row height of an item
-            saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
-            draggable: {
-                enabled: true
-            },
-            resizable: {
-                enabled: true,
-                handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw']
-            }
-        };
-        // maps the item from customItems in the scope to the gridsterItem options
-        $scope.customItemMap = {
-            sizeX: 'item.size.x',
-            sizeY: 'item.size.y',
-            row: 'item.position[0]',
-            col: 'item.position[1]',
-            minSizeY: 'item.minSizeY',
-            maxSizeY: 'item.maxSizeY'
-        };
-
-        $scope.dashCloseWidgets = false;
-
-        
-        getJSONData($http, 'menu', function (data) {
-            
-            localStorage.setItem("sidebarData", JSON.stringify(data));
-            $scope.sidebarItems = data;
-        });
-        
-        // headerbar 
-        $scope.headerbarPinned = false;
-
-        $scope.pinHeaderbar = function (state) {
-            $scope.headerbarPinned = state;
-        }
         $scope.adjustUI = function () {
             
             if($scope.headerbarPinned){
@@ -107,12 +33,48 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
             }  
         }
+        // hides and shows the dashboard tabs
+        $scope.showTabs = function (boolean) {
 
-        $scope.closeDialog = function () {
-            $mdDialog.hide();
+            if (boolean) {//show tabs
+                console.log("show tabs");
+                $("md-tabs > md-tabs-wrapper").children().show();
+            } else {//hide tabs
+                console.log("hide tabs");
+                $("md-tabs > md-tabs-wrapper").children().hide();
+            }
         };
+        //initially hiding the tabs
+        $scope.showTabs(true);
+        //set initial logo as Digin logo
+        $scope.imageUrl = "styles/css/images/DiginLogo.png";
+        //value for jquery of search panel overlay
+        var $windowHeight = $(window).height(),
+            $windowWidth = $(window).width(),
+            $startingPoint = $('.starting-point');
+            // Calculate the diameter of search panel overlay
+        var diameterValue = (Math.sqrt(Math.pow($windowHeight, 2) + Math.pow($windowWidth, 2)) * 2);
+        $startingPoint.children('span').css({
+            height: diameterValue + 'px',
+            width: diameterValue + 'px',
+            top: -(diameterValue / 2) + 'px',
+            left: -(diameterValue / 2) + 'px'
+        });
+        //get sidebar data from menu.json 
+        getJSONData($http, 'menu', function (data) {
+            
+            localStorage.setItem("sidebarData", JSON.stringify(data));
+            $scope.sidebarItems = data;
+        });
+        // headerbar 
+        $scope.headerbarPinned = false;
+
+        $scope.pinHeaderbar = function (state) {
+            $scope.headerbarPinned = state;
+        }
         //shows user profile in a dialog box
         $scope.showUserProfile = function (ev) {
+
             $mdDialog.show({
                 templateUrl: 'templates/profileDialogTemplate.html',
                 parent: angular.element(document.body),
@@ -138,7 +100,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             })
             .then(function (answer) {}, function () {});
         };
-
         //shows tennant dialog box
         $scope.showTennant = function (ev) {
 
@@ -232,6 +193,31 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }).then(function (answer) {}, function () {});
         };
 
+        $scope.dashboards = [];
+        $scope.reports = [];
+        $scope.analyzers = [];
+        $scope.favoriteDashboards = [];
+        $scope.favoriteReports = [];
+        $scope.favoriteAnalyzers = [];
+        $scope.ExistingDashboardDetails = [];
+        ////////// dashboard structure ////////
+        
+        $scope.defaultPage = {  
+                                "widgets": [], 
+                                "pageID": null,//default page id
+                                "pageName": "DEFAULT",
+                                "pageData": null 
+                            };
+        $scope.defaultDashboard = {
+            "pages": [$scope.defaultPage],
+            "compClass": null,
+            "compType": null,
+            "compCategory": null,
+            "compID": null,
+            "refreshInterval": null
+        }
+        // set initial selected page 
+        $rootScope.selectedPage = 1;
         // angular-table configuration 
         $scope.configDashboards = {
             itemsPerPage: 5,
@@ -241,83 +227,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             itemsPerPage: 5,
             fillLastPage: true
         }
-
-        // $scope.w = '320px';
-        // $scope.h = '300px';
-        // $scope.mh = '250px';
-
-        // $scope.resize = function (evt, ui, pos, widget) {
-
-        //     var width = ui.size.width;
-        //     var height = ui.size.height;
-        //     var mHeight = height - 50;
-        //     widget.top = pos.top + 'px';
-        //     widget.left = pos.left + 'px';
-
-        //     if (widget.initCtrl == "elasticInit") {
-        //         console.log('elastic');
-        //         widget.highchartsNG.size.width = width - 30;
-        //         widget.highchartsNG.size.height = mHeight - 30;
-        //         widget.width = (width + 10) + 'px';
-        //         widget.height = (height + 10) + 'px';
-        //         widget.mheight = (mHeight + 10) + 'px';
-        //     } else {
-        //         widget.width = width + 'px';
-        //         widget.height = height + 'px';
-        //         widget.mheight = mHeight + 'px';
-
-        //     }
-        // }
-
-        $rootScope.username = localStorage.getItem('username');
-
-        $rootScope.indexes = [];
-        $scope.toggle = true;
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth() + 1; //January is 0!
-        var yyyy = today.getFullYear();
-        if (dd < 10) {
-            dd = '0' + dd
+         $scope.configAnalyzers = {
+            itemsPerPage: 5,
+            fillLastPage: true
         }
-        if (mm < 10) {
-            mm = '0' + mm
-        }
-        $rootScope.dashboard = {
-            '1': {
-                widgets: []
-            }
-        };
-
-        // var client = $objectstore.getClient("com.duosoftware.com");
-        // client.onGetMany(function (data) {
-        //     data.forEach(function (entry) {
-        //         $rootScope.indexes.push({
-        //             value: entry,
-        //             display: entry
-        //         });
-        //     });
-        // });
-        // client.getClasses("com.duosoftware.com");
-
-        today = mm + '/' + dd + '/' + yyyy;
-        $rootScope.dashboard.dashboardName = "";
-        $rootScope.dashboard.dashboardDate = today;
-        $rootScope.dashboard.dashboardType = "System";
-        $rootScope.dashboard.dashboardCulture = "English";
-        $rootScope.indexes = [];
-        $rootScope.currentView = "";
-        $scope.ChartType = 'column';
-        $scope.count = 0;
-        $scope.incremenet = 0;
-        $scope.leftPosition = 110;
-        $scope.topPosition = 60;
-        $scope.chartSeries = [];
-        $scope.dashboard = [];
-        $scope.dashboard.widgets = $rootScope.dashboard["1"].widgets;
-
-
-        // $scope.menuPanels = [DashboardCtrl];
+        //adding the default dashboard to rootScope
+        $rootScope.dashboard = $scope.defaultDashboard;
 
         //change dates range in likes
         $scope.changeDatesRange = function (widId, sinceDay, untilDay) {
@@ -433,23 +348,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $rootScope.dashboard.widgets[objIndex].widData.viewData = $scope.chartConf;
             });
         };
-
-        $scope.goReport = function (report) {
-            $scope.manageTabs(false);
-            //closing the overlay
-            $(".overlay").removeClass("overlay-search active");
-            $(".nav-search").removeClass("active");
-            $(".search-layer").removeClass("activating active");
-
-            $state.go('home', {
-                param: report
-            });
-        }
-
-
         //On click report Event
-        $scope.goReport2 = function (report) {
-            $scope.manageTabs(false);
+        $scope.goReport = function (report) {
+            $scope.showTabs(false);
             //closing the overlay
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
@@ -458,78 +359,61 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $state.go('home.DynamicallyReportBuilder', {'reportNme': report});
         }
         $scope.goDashboard = function (dashboard) {
-            console.log("hit dashboard");
-            console.log(dashboard);
-            if (typeof dashboard.customDuoDash === "undefined") {
-                $state.go('home.DashboardViewer', {
-                    param: dashboard.name
-                });
-                $scope.manageTabs(false);
-            } else {
-                $scope.manageTabs(true);
-                if (dashboard.storyboard == undefined) {
-                    if (dashboard.data.title == undefined) {
-                        console.log("i got undefined");
-                        $rootScope.Dashboards = [{
-                            culture: dashboard.culture,
-                            date: dashboard.date,
-                            title: dashboard.name,
-                            type: dashboard.type,
-                            widgets: dashboard.data,
-                            dashboardId: dashboard.dashboardId
-                        }];
-                    } else {
-                        $rootScope.Dashboards = dashboard.data;
-                    }
-                } else {
-                    if (dashboard.storyboard == false) {
-                        // $('md-tabs-wrapper').css("display","block");
-                        console.log("im a single page");
-                        $rootScope.Dashboards = [{
-                            culture: dashboard.culture,
-                            date: dashboard.date,
-                            title: dashboard.name,
-                            type: dashboard.type,
-                            widgets: dashboard.data,
-                            dashboardId: dashboard.dashboardId
-                        }];
-                    } else {
-                        console.log("im a storyboard");
-                        $rootScope.Dashboards = dashboard.data;
-                    }
-                    $state.go('home.CustomDashboardViewer', {
-                        param: dashboard.name
-                    });
-                    $scope.dashboard.widgets = dashboard.data;
-                    $rootScope.clickedDash = dashboard;
-                    $(".dashboard-widgets-close").addClass("active");
-                }
-            }
 
-            $scope.tabs = $rootScope.Dashboards;
-            $rootScope.dashboard = $rootScope.Dashboards[0];
-            if ($rootScope.dashboard.widgets.length == 0)
-                $rootScope.dashboard.widgets = $rootScope.dashboardWidgetsCopy;
-            $scope.selectedIndex = 1;
-            $scope.$watch('selectedIndex', function (current, old) {
-                // var previous = selected;
-                // if($rootScope.Dashboards[current].widgets.length== 0)
-                //     selected = $rootScope.dashboardWidgetsCopy;
-                // else
-                selected = $rootScope.Dashboards[current];
-                if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
-                //if (current + 1) $log.debug('Hello ' + selected.title + '!');
-            });
-            console.log(dashboard);
+            console.log("dash item", dashboard);
+            
+            $http({
+                method: 'GET',
+                url: 'http://192.168.2.33:8080/get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken=abbb092d0627514d0fa08e3b589b6742&Domain=duosoftware'
+            })
+            .success(function(data){
+
+                if(data.Is_Success){
+                    
+                    console.log("$scope.dashboardObject", $scope.dashboardObject);
+                    $rootScope.dashboard = data.Result;
+
+                    ngToast.create({
+                        className: 'success',
+                        content: data.Custom_Message,
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
+
+                    $state.go('home.Dashboards');
+                }
+                else{
+
+                    ngToast.create({
+                        className: 'danger',
+                        content: data.Custom_Message,
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
+                    $mdDialog.hide();
+                }
+                console.log("data goDashboard", data);
+            })
+            .error(function(error){  
+
+                ngToast.create({
+                    className: 'danger',
+                    content: 'Failed retrieving Dashboard Details. Please refresh page to load data!',
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                    dismissOnClick: true
+                });
+                $mdDialog.hide()
+            });  
 
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
             $(".search-layer").removeClass("activating active");
-
         }
-
         $scope.goAnalyzer = function (report) {
-            $scope.manageTabs(false);
+            $scope.showTabs(false);
             //closing the overlay
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
@@ -539,7 +423,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 param: report
             });
         }
-        
         $scope.savePentaho = function (ev, dashboard) {
             $mdDialog.show({
                 controller: 'savePentahoCtrl',
@@ -578,7 +461,44 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             };//end
 
             return {
-                getAllReport: function () {
+                getAllDashboards: function () {
+                    
+                    $http({
+                        method: 'GET',
+                        url: 'http://192.168.2.33:8080/get_all_components?SecurityToken=abbb092d0627514d0fa08e3b589b6742&Domain=duosoftware'
+                    })
+                    .success(function(data){
+
+                            console.log("data getAllDashboards", data);
+
+                            for (var i = 0; i < data.Result.length; i++) {
+                                $scope.dashboards.push(
+                                    {dashboardID: data.Result[i].compID, dashboardName: data.Result[i].compName}
+                                );
+                            }
+
+                            ngToast.create({
+                                className: 'success',
+                                content: 'Retrieved Dashboard Details!',
+                                horizontalPosition: 'center',
+                                verticalPosition: 'top',
+                                dismissOnClick: true
+                            });
+                            $mdDialog.hide();
+                    })
+                    .error(function(error){  
+
+                            ngToast.create({
+                                className: 'danger',
+                                content: 'Failed retrieving Dashboard Details. Please refresh page to load data!',
+                                horizontalPosition: 'center',
+                                verticalPosition: 'top',
+                                dismissOnClick: true
+                            });
+                            $mdDialog.hide()
+                    });  
+                },
+                getAllReports: function () {
                     getSession();
                     startReportService();
                     dynamicallyReportSrv.getAllReports(reqParameter).success(function (data) {
@@ -595,166 +515,29 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
             }
         }());
-        privateFun.getAllReport();
 
-        $scope.ExistingDashboardDetails = [];
-        $scope.reports = [];
-        $scope.favoriteReports = [];
-        $scope.analyzers = [];
-        $scope.favoriteDashboards = [];
-        $scope.dashboards = [];
-        $scope.favoriteAnalyzers = [];
+        $scope.getSearchPanelDetails = function () {
+            
+            privateFun.getAllDashboards();
+            privateFun.getAllReports();
+            $scope.getAnalyzerDetails();
+        } 
 
-        $scope.GetDashboardDetails = function () {
-            $scope.dashboards = DashboardService.getDashboards();
-        };
-        $scope.GetReportDetails = function () {
-            $scope.GetDashboardDetails();
-            $scope.GetAnalyzerDetails();
-            //
-            //$http.get('http://104.155.236.85:8080/getreportnames?SecurityToken=0b4fac3276c5328db15e538590665d6a&Domain=duosoftware.com')
-            //.success(function(response){
-            //     // $scope.reportsData = response.Result;
-            //     $scope.reportsData = [{title: "marle (mr. bean)"}, {title: "sajee + hasini"}];
-            // });
+        $scope.getDashboardDetails = function(){
 
-        };
-        $scope.GetAnalyzerDetails = function () {
-
-        };
-        $scope.createuuid = function () {
-            return Math.floor((1 + Math.random()) * 0x10000)
-                .toString(16)
-                .substring(1);
-        };
-
-        function addToDashboards(obj) {
-            console.log("creating new dashboard");
-            var tempObj = {
-                dashboardId: $scope.createuuid(),
-                culture: "English",
-                date: new Date(),
-                title: obj.title,
-                type: obj.type,
-                widgets: []
-            };
-
-            console.log(tempObj);
-
-            $rootScope.Dashboards.push(tempObj);
-            if (obj.title != undefined) {
-    
-                $mdToast.show(
-                    $mdToast.simple()
-                    .content(obj.title + " created!")
-                    .position("bottom right")
-                    .hideDelay(3000)
-                );
-            }
-        };
-
-        $rootScope.selectCurrentDashboard = function (tab) {
-
-            console.log("$rootScope");
-            console.log($rootScope);
-
-            console.log("you selected :");
-            console.log(tab);
-
-            // for (a = 0; a < $rootScope.Dashboards.length; a++) {
-            //     if ($rootScope.dashboardId == $rootScope.Dashboards[a].dashboardId) {
-            //         $rootScope.Dashboards[a] = $rootScope.dashboard;
-            //     };
-            // };
-
-            for (a = 0; a < $rootScope.Dashboards.length; a++) {
-                if (tab.dashboardId == $rootScope.Dashboards[a].dashboardId) {
-                    $rootScope.dashboard = $rootScope.Dashboards[a];
-                    //$rootScope.globalDashboardIndex = a;
-                }
-                ;
-            }
-            ;
         }
-
-        //initial creation of default dashboard
-        function createDashboards() {
-
-            $rootScope.Dashboards = [{
-                culture: "English",
-                date: "09/25/2015",
-                title: "Default",
-                type: "System",
-                widgets: [],
-                dashboardId: $scope.createuuid()
-            }];
-
-            $scope.tabs = $rootScope.Dashboards;
-            $rootScope.dashboard = $rootScope.Dashboards[0];
-            $scope.selectedIndex = 1;
-            $scope.$watch('selectedIndex', function (current, old) {
-                //previous = selected;
-                selected = $rootScope.Dashboards[current];
-                //                if (old + 1 && (old != current)) $log.debug('Goodbye ' + previous.title + '!');
-                //                if (current + 1) $log.debug('Hello ' + selected.title + '!');
-            });
+        $scope.getReportDetails = function () {
 
         };
-
-        createDashboards();
-
-        $scope.addTab = function (title, view) {
-            view = view || title + " Content View";
-            tabs.push({
-                title: title,
-                content: view,
-                disabled: false
-            });
-        };
-        $scope.removeTab = function (tab) {
-            console.log("removing tab : ");
-            console.log(tab);
-            var index1 = $rootScope.Dashboards.indexOf(tab);
-            $rootScope.Dashboards.splice(index1, 1);
+        $scope.getAnalyzerDetails = function () {
 
         };
-        $scope.clickTabRemoveConfirmation = function () {
-
-            document.getElementById("TabRemoveConfirmation").click();
-        };
-        $scope.removeTabConfirmation = function (tab, ev) {
-
-            var confirm = $mdDialog.confirm()
-                .title('Would you like to delete dashboard ' + tab.title + '?')
-                .content('dashboard will be deleted from your collection')
-                .ariaLabel('Lucky day')
-                .targetEvent(ev)
-                .ok('Please do it!')
-                .cancel('Oh NO!');
-            $mdDialog.show(confirm).then(function () {
-                $scope.removeTab(tab);
-            }, function () {
-
-            });
-        };
-        //end of erangas space
+        
         $scope.getURL = function () {
+
             $scope.imageUrl = $rootScope.image;
         }
-        // hides and shows the dashboard tabs
-        $scope.manageTabs = function (dashboard) {
-            if (dashboard) {
-                console.log("manage tabs true");
-                $("md-tabs > md-tabs-wrapper").children().show();
-                // $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","rgba(0, 0, 0, 0.14)" );
-                $scope.dashCloseWidgets = false;
-            } else {
-                console.log("manage tabs false");
-                $("md-tabs > md-tabs-wrapper").children().hide();
-                // $( "md-tabs.footer-bar > md-tabs-wrapper" ).css( "background-color","#ECECEC" );
-                $scope.dashCloseWidgets = false;
-            }
-        };
+        
         //navigate
         $scope.navigate = function (routeName, ev) {
 
@@ -764,7 +547,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 break;
                 case "Add Page":
                     $scope.currentView = "Dashboard";
-                    $scope.showAddNewDashboard(ev);
+                    $scope.showAddNewPage(ev);
                     $state.go('home.Dashboards');
                 break;
                 case "Social Media Analytics":
@@ -857,6 +640,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
         //navigate functions start
         $scope.goHomeDialog = function (ev){
+
             $mdDialog.show({
                 controller: function goHomeCtrl($scope, $mdDialog) {
 
@@ -877,41 +661,57 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 clickOutsideToClose: true
             }).then(function (homeState) {
                 if(homeState){
-                    $scope.manageTabs(true);
+                    $scope.showTabs(true);
                     $scope.currentView = "Home";
                     $state.go('home');
                 }
             });
         }
-        $scope.showAddNewDashboard = function (ev) {
+        $scope.showAddNewPage = function (ev) {
+
             $mdDialog.show({
-                    templateUrl: 'templates/addNewDashboardTemplate.html',
+                    templateUrl: 'templates/addNewPageTemplate.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     clickOutsideToClose: true,
-                    controller: function addNewDashboardController($scope, $mdDialog) {
-                        //console.log($rootScope.dashboard);
-                        $scope.numOfDashboards = $rootScope.dashboard.length;
-                        $scope.createNewDashboard = function () {
-                            var obj = {
-                                title: $scope.dashboard.title,
-                                type: $scope.dashboard.type
-                            };
-                            $mdDialog.hide(obj);
+                    controller: function addNewPageController($scope, $mdDialog) {
+                        
+                        var numOfPages = $rootScope.dashboard.pages.length;
+
+                        if(numOfPages == 1){ $scope.message = numOfPages + " page"}
+                        else{ $scope.message = numOfPages + " pages"}
+
+                        $scope.createuuid = function () {
+                            return Math.floor((1 + Math.random()) * 0x10000)
+                                .toString(16)
+                                .substring(1);
+                        };
+                        $scope.createNewPage = function () {
+    
+                            var page = {   
+                                "widgets": [],
+                                "pageID": null,
+                                "pageName": $scope.title,
+                                "pageData":null
+                            }
+                            $rootScope.dashboard.pages.push(page);
+                            console.log("pages",$rootScope.pages);
+                            $mdDialog.hide();
                         };
                         $scope.close = function () {
+
                             $mdDialog.cancel();
                         };
                     }
                 })
                 .then(function (answer) {
-                    addToDashboards(answer);
+                    // addToDashboards(answer);
                 }, function () {
-
                 });
         };
         //load social analysis  
         $scope.showAddSocialAnalysis = function (ev) {
+
             $mdDialog.show({
                     templateUrl: 'views/socialGraph/socialAnalysis_TEMP.html',
                     controller: 'socialAnalysisCtrl',
@@ -926,6 +726,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 });
         };
         $scope.showAddNewWidgets = function (ev) {
+
             $mdDialog.show({
                 controller: 'addWidgetCtrl',
                 templateUrl: 'views/addWidget.html',
@@ -940,6 +741,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
         //load reports dialog  
         $scope.showReports = function (ev) {
+
             $mdDialog.show({
                     templateUrl: 'views/reports/reportsDialog.html',
                     parent: angular.element(document.body),
@@ -952,6 +754,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
         //load sales forecast and prediction  
         $scope.showSalesForecastPrediction = function (ev) {
+
             $mdDialog.show({
                     templateUrl: 'views/salesForecastPrediction.html',
                     parent: angular.element(document.body),
@@ -965,6 +768,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 });
         };
         $scope.openTheme = function (ev) {
+
             $mdDialog.show({
                 controller: 'ThemeCtrl',
                 templateUrl: 'views/change-theme.html',
@@ -993,6 +797,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             })
         }
         $scope.saveDashboard = function (ev, dashboard) {
+
             $mdDialog.show({
                 controller: 'saveCtrl',
                 templateUrl: 'views/dashboard-save.html',
@@ -1005,11 +810,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             })
         }
         $scope.clearAllWidgets = function (ev){
+
             $mdDialog.show({
                 controller: function clearWidgetsCtrl($scope, $mdDialog){
                     $scope.clear = function(){
-                        $rootScope.dashboardWidgetsCopy = angular.copy($rootScope.dashboard.widgets);
-                        $rootScope.dashboard.widgets = [];
+                        //$rootScope.dashboardWidgetsCopy = angular.copy($rootScope.dashboard.widgets);
+                        $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets = [];
                         $mdDialog.hide();
                     };
                     $scope.cancel = function () {
@@ -1025,26 +831,27 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
         //navigate functions end
 
-        var icons = ['dashboard', 'dashboard'];
-        var colors = ['#323232', '#262428'];
-        $scope.cnt = Math.floor(Math.random() * icons.length);
-        $scope.icon = icons[$scope.cnt];
-        $scope.fill = colors[0];
-        $scope.size = 48;
+        // var icons = ['dashboard', 'dashboard'];
+        // var colors = ['#323232', '#262428'];
+        // $scope.cnt = Math.floor(Math.random() * icons.length);
+        // $scope.icon = icons[$scope.cnt];
+        // $scope.fill = colors[0];
+        // $scope.size = 48;
 
-        setInterval(function () {
-            var random = Math.random();
-            if (random < 0.2) {
-                $scope.size = 28 + 4 * Math.floor(Math.random() * 9);
-            } else {
-                $scope.cnt++;
-                if ($scope.cnt >= icons.length)
-                    $scope.cnt = 0;
-                $scope.icon = icons[$scope.cnt];
-                $scope.fill = colors[Math.floor(Math.random() * colors.length)];
-            }
-            $scope.$apply();
-        }, 1700);
+        // setInterval(function () {
+        //     var random = Math.random();
+        //     if (random < 0.2) {
+        //         $scope.size = 28 + 4 * Math.floor(Math.random() * 9);
+        //     } else {
+        //         $scope.cnt++;
+        //         if ($scope.cnt >= icons.length)
+        //             $scope.cnt = 0;
+        //         $scope.icon = icons[$scope.cnt];
+        //         $scope.fill = colors[Math.floor(Math.random() * colors.length)];
+        //     }
+        //     $scope.$apply();
+        // }, 1700);
+
         // help 
         setTimeout(function () {
             $scope.CompletedEvent = function (scope) {

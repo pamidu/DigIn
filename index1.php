@@ -106,7 +106,7 @@
 <script type="text/javascript" src='scripts/vendor/jquery.js'></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" src="bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>
-<script type="text/javascript" src="http://mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script>
+<script type="text/javascript" src="scripts/controllers/jspdf.min.js"></script>
 <script type="text/javascript" src="http://html2canvas.hertzen.com/build/html2canvas.js"></script>
 <script type="text/javascript" src="scripts/vendor/jquery.jsPlumb-1.4.1-all-min.js"></script>
 <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -119,6 +119,9 @@
 <script src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
 
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
+<script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
+<script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
+<script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
 
 <script src="https://github.highcharts.com/highcharts.src.js"></script>
@@ -132,9 +135,6 @@
 <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
 <script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
 <script type="text/javascript" src="scripts/config.js"></script>
-<script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
-<script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
-<script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
 <script type="text/javascript" src="bower_components/hammerjs/hammer.js"></script>
 <script type="text/javascript" src="scripts/vendor/oauth.js"></script>
 <script type="text/javascript" src="scripts/vendor/zoom.js"></script>

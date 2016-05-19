@@ -40,8 +40,7 @@ var routerApp = angular.module('DuoDiginRt', [
         "com.2fdevs.videogular.plugins.controls",
         "info.vietnamcode.nampnq.videogular.plugins.youtube",
         "ngTagsInput"
-    ])
-    ;
+]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
 
@@ -102,7 +101,6 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 preLoader: true
             }
         })
-
         .state("home.Settings", {
             url: "/settings",
             controller: "dashboardSetupCtrl",
@@ -151,14 +149,6 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: true
             }
         })
-        // .state('home.Digin P Stack', {
-        //     url: "/Digin P Stack",
-        //     controller: 'ExtendedanalyticsCtrl',
-        //     templateUrl: "views/extended-analytics.html",
-        //     data: {
-        //         requireLogin: true
-        //     }
-        // })
         .state('home.Interactive Report', {
             url: "/Interactive Report",
             controller: 'ExtendedReportCtrl',
@@ -183,14 +173,6 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: true
             }
         })
-        // .state('home.D3plugins', {
-        //     url: "/D3plugins",
-        //     controller: 'd3PluginCtrl',
-        //     templateUrl: "views/D3Plugin/d3View.html",
-        //     data: {
-        //         requireLogin: true
-        //     }
-        // })
         .state('home.PivotTable', {
             url: "/PivotTable",
             controller: 'summarizeCtrl',
@@ -206,7 +188,6 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             data: {
                 requireLogin: true
             }
-
         })
         .state('home.DashboardViewer', {
             url: '/DashboardViewer:param',
@@ -215,7 +196,6 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             data: {
                 requireLogin: true
             }
-
         })
         .state('home.CustomDashboardViewer', {
             url: "/CustomDashboard:param",
@@ -232,7 +212,6 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             data: {
                 requireLogin: true
             }
-
         })
         .state('home.social-graph-fb', {
             url: '/social-graph-fb',
@@ -249,7 +228,6 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             data: {
                 requireLogin: true
             }
-
         })
         .state('home.SocialGraphFb', {
             url: '/social-graph-fb',
@@ -258,7 +236,6 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             data: {
                 requireLogin: true
             }
-
         })
         .state('home.SocialGraphTwitter', {
             url: '/social-graph-twitter',
@@ -267,7 +244,6 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             data: {
                 requireLogin: true
             }
-
         })
         .state('home.Sales Forecast', {
             url: '/sales-forecast',
@@ -293,26 +269,30 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             data: {
                 requireLogin: true
             }
-        }).state('home.DynamicallyReportBuilder', {
-        url: '/dynamically-report-builder?reportNme',
-        templateUrl: "views/dynamicallyReportBuilder/dynamically-report.html",
-        data: {
-            requireLogin: true
-        }
-    }).state('home.commonSrcAlgorithm', {
-        url: '/common-src-algorithm',
-        controller: 'sourceAlgorithmCtrl',
-        templateUrl: "views/sourceAlgorithm/common-src-algorithm.html"
-    }).state('videos', {
-        url: '/help-videos',
-        templateUrl: "views/help/videos/help-videos.html"
-    }).state('home.dataSource', {
-        url: '/data-source',
-        templateUrl: "views/common-data-src/viewDataSource.html",
-        data: {
-            requireLogin: true
-        }
-    });
+        })
+        .state('home.DynamicallyReportBuilder', {
+            url: '/dynamically-report-builder?reportNme',
+            templateUrl: "views/dynamicallyReportBuilder/dynamically-report.html",
+            data: {
+                requireLogin: true
+            }
+        })
+        .state('home.commonSrcAlgorithm', {
+            url: '/common-src-algorithm',
+            controller: 'sourceAlgorithmCtrl',
+            templateUrl: "views/sourceAlgorithm/common-src-algorithm.html"
+        })
+        .state('videos', {
+            url: '/help-videos',
+            templateUrl: "views/help/videos/help-videos.html"
+        })
+        .state('home.dataSource', {
+            url: '/data-source',
+            templateUrl: "views/common-data-src/viewDataSource.html",
+            data: {
+                requireLogin: true
+            }
+        });
 
     lkGoogleSettingsProvider.configure({
         apiKey: 'AIzaSyA9fv9lYQdt1XV6wooFtItxYlMF8Y9t1ao',
@@ -321,61 +301,34 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
     });
 
     var customPrimary = {
-        '50': '#10cefd',
-        '100': '#02c2f2',
-        '200': '#02aed9',
-        '300': '#019ac0',
-        '400': '#0185a6',
-        '500': '#01718D',
-        '600': '#015d74',
-        '700': '#01485a',
-        '800': '#003441',
-        '900': '#002028',
-        'A100': '#29d3fd',
-        'A200': '#43d8fe',
-        'A400': '#5cdefe',
-        'A700': '#000c0e'
+        '50': '#10cefd','100': '#02c2f2','200': '#02aed9','300': '#019ac0',
+        '400': '#0185a6','500': '#01718D','600': '#015d74','700': '#01485a',
+        '800': '#003441','900': '#002028','A100': '#29d3fd','A200': '#43d8fe',
+        'A400': '#5cdefe','A700': '#000c0e'
     };
+
     $mdThemingProvider
         .definePalette('customPrimary',
             customPrimary);
 
     var customAccent = {
-        '50': '#4285F4',
-        '100': '#4285F4',
-        '200': '#4285F4',
-        '300': '#4285F4',
-        '400': '#4285F4',
-        '500': '#4285F4',
-        '600': '#4285F4',
-        '700': '#4285F4',
-        '800': '#4285F4',
-        '900': '#4285F4',
-        'A100': '#4285F4',
-        'A200': '#4285F4',
-        'A400': '#4285F4',
-        'A700': '#4285F4'
+        '50': '#4285F4','100': '#4285F4','200': '#4285F4','300': '#4285F4',
+        '400': '#4285F4','500': '#4285F4','600': '#4285F4','700': '#4285F4',
+        '800': '#4285F4','900': '#4285F4','A100': '#4285F4','A200': '#4285F4',
+        'A400': '#4285F4','A700': '#4285F4'
     };
+
     $mdThemingProvider
         .definePalette('customAccent',
             customAccent);
 
     var customBackground = {
-        '50': '#ffffff',
-        '100': '#ffffff',
-        '200': '#ffffff',
-        '300': '#ffffff',
-        '400': '#ffffff',
-        '500': '#FFF',
-        '600': '#f2f2f2',
-        '700': '#e6e6e6',
-        '800': '#d9d9d9',
-        '900': '#cccccc',
-        'A100': '#ffffff',
-        'A200': '#ffffff',
-        'A400': '#ffffff',
-        'A700': '#bfbfbf'
+        '50': '#ffffff','100': '#ffffff','200': '#ffffff','300': '#ffffff',
+        '400': '#ffffff','500': '#FFF','600': '#f2f2f2','700': '#e6e6e6',
+        '800': '#d9d9d9','900': '#cccccc','A100': '#ffffff','A200': '#ffffff',
+        'A400': '#ffffff','A700': '#bfbfbf'
     };
+
     $mdThemingProvider
         .definePalette('customBackground',
             customBackground);
@@ -428,7 +381,6 @@ routerApp.run(function ($rootScope, $auth, $state, $csContainer) {
             }
         }
     });
-
 });
 
 
@@ -442,8 +394,6 @@ routerApp.controller('ReportViewerControl', ['$scope', '$rootScope', '$statePara
         $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
-
-
     }
 ]);
 routerApp.controller('DashboardViewerControl', ['$scope', '$rootScope', '$stateParams', 'Digin_DashboardViewer', '$sce',
@@ -456,8 +406,6 @@ routerApp.controller('DashboardViewerControl', ['$scope', '$rootScope', '$stateP
         $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
-
-
     }
 ]);
 routerApp.controller('AnalyzerViewerControl', ['$scope', '$rootScope', '$stateParams', 'Digin_AnalyzerViewer', '$sce', '$localStorage',
@@ -469,8 +417,6 @@ routerApp.controller('AnalyzerViewerControl', ['$scope', '$rootScope', '$statePa
         $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
-
-
     }
 ]);
 
@@ -513,7 +459,6 @@ routerApp.controller('savePentahoCtrl', ['$scope', '$http', '$objectstore', '$md
             client.insert([$rootScope.dashboard], {
                 KeyProperty: "dashboardName"
             });
-
         }
     }
 ]);
@@ -558,18 +503,12 @@ routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
                                 };
                                 $scope.days.push(obj);
                             }
-                            ;
                         }
-                        ;
                     }
-                    ;
                 }
-                ;
                 //console.log($scope.days);
             }
-            ;
-        };
-
+        }
         $scope.previousMonth = function () {
             if ($scope.month == 1) {
                 $scope.month = 12;
@@ -580,7 +519,6 @@ routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
             ;
             //createCal();
         };
-
         $scope.nextMonth = function () {
             if ($scope.month == 12) {
                 $scope.month = 1;
@@ -857,10 +795,10 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($
     this.getHistory = function () {
         return history;
     };
-
 }]);
 
 routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http, $rootScope, $q) {
+    
     var clientId = '33022835624-q3km776rl7dkitpinaj7pf2tlu75tfhg.apps.googleusercontent.com',
         apiKey = 'AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ',
         scopes = 'profile email https://www.googleapis.com/auth/plus.login',
@@ -878,7 +816,6 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
 
         return deferred.promise;
     };
-
     this.signout = function () {
         gapi.auth.signOut();
         console.log("logged out");
@@ -891,7 +828,6 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
         });
         window.setTimeout(checkAuth, 1);
     };
-
     this.checkAuth = function () {
         gapi.auth.authorize({
             client_id: clientId,
@@ -900,7 +836,6 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
             hd: domain
         }, this.handleAuthResult);
     };
-
     this.handleAuthResult = function (authResult) {
         if (authResult && !authResult.error) {
             var data = {};
@@ -915,7 +850,6 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
             deferred.reject('error');
         }
     };
-
     this.handleAuthClick = function (event) {
         gapi.auth.authorize({
             client_id: clientId,
@@ -925,7 +859,6 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
         }, this.handleAuthResult);
         return false;
     };
-
     this.getProfileData = function () {
 
         gapi.client.load('plus', 'v1', function () {
@@ -938,7 +871,6 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
         });
         return deferred.promise;
     };
-
     this.getPeopleData = function () {
 
         gapi.client.load('plus', 'v1', function () {
@@ -952,7 +884,6 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
         });
         return deferred.promise;
     };
-
     this.getActivityData = function () {
         gapi.client.load('plus', 'v1', function () {
             var request = gapi.client.plus.activities.list({
@@ -967,8 +898,8 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
 
         return deferred.promise;
     };
-
 }]);
+
 routerApp.service('generatePDF1', function ($timeout) {
     this.generate = function (htmlElement, config, tableDataString) {
 
@@ -980,10 +911,9 @@ routerApp.service('generatePDF1', function ($timeout) {
         doc.fromHTML(htmlObject, config.tableLeft, config.tableTop, {});
         var pdfName = config.title.toString() + '.pdf';
         doc.save(pdfName);
-
     };
-
 });
+
 routerApp.service('generatePDF2', function ($timeout) {
     this.generate = function (Element, config) {
 

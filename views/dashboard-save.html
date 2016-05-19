@@ -2,7 +2,7 @@
     <md-content layout-align="center center" layout-padding>
         <div class="md-toolbar-tools" flex layout="row" layout-align="end center">
             <p style="color:lightgrey;margin:0px;">SAVE</p>
-            <md-button ng-click="closeDialog()">
+            <md-button ng-click="close()">
                 <md-icon style="color:whitesmoke;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
             </md-button>
 
@@ -17,18 +17,6 @@
                 <md-input-container flex="50">
                     <label>Name</label>
                     <input ng-model="dashboardName" name="dashboardName">
-                </md-input-container>
-                <md-input-container flex="50">
-                    <!-- <label>Dashboard Culture:</label>
-                                 <input ng-model="dashboardCulture" name="dashboardCulture"> -->
-                    <label>Culture</label>
-                    <md-select ng-model="dashboardCulture" name="dashboardCulture" ng-change="">
-                        <md-option value="ENGLISH">ENGLISH</md-option>
-                        <md-option value="SINHALA">SINHALA</md-option>
-                        <md-option value="TAMIL">TAMIL</md-option>
-                        <md-option value="FRENCH">FRENCH</md-option>
-                        <md-option value="SPANISH">SPANISH</md-option>
-                    </md-select>
                 </md-input-container>
                 <md-input-container flex="50">
                     <!-- <label>Dashboard Type:</label>

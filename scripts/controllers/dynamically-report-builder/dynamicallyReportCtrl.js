@@ -138,6 +138,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
             clearIframe: function () {
                 $scope.eventHandler.isDataFound = true;
                 $scope.eventHandler.isReportLoad = false;
+                $scope.reportURL = $sce.trustAsResourceUrl('');
                 var frame = $('#reportFram').get(0);
                 var frameDoc = frame.contentDocument || frame.contentWindow.document;
                 frameDoc.getElementsByTagName('body')[0].innerHTML = "";
@@ -159,10 +160,8 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
     //#dropDown change selected
     //drop down on change event select
     $scope.onChangeSelected = function (filedName) {
-
         var e = document.getElementById(filedName);
         var select_value = e.options[e.selectedIndex].text;
-
         //console.log($scope.reportFiledList.selectedDate);
         var currentVal = {
             data: $scope.reportFiledList.selectedDrpFiled,
@@ -190,7 +189,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
 
         //get current filed data
         if (findIndex < executeQueryAry.length) {
-            executeQryHandler.executeNextQuery(filedName, currentVal.value);
+            //  executeQryHandler.executeNextQuery(filedName, currentVal.value);
         }
 
     };
@@ -350,42 +349,42 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                         executeQueryAryObj.id = loop;
                                         executeQueryAryObj.filedName = val.Label.toLowerCase();
                                         executeQueryAryObj.query = val.Query;
-                                        if (loop == 1) {
-                                            executeQueryAryObj.state = true;
-                                        } else {
-                                            executeQueryAryObj.state = false;
-                                        }
+                                        //if (loop == 1) {
+                                        //    executeQueryAryObj.state = true;
+                                        //} else {
+                                        //    executeQueryAryObj.state = false;
+                                        //}
                                         $scope.executeQueryAry.push(executeQueryAryObj);
 
-                                        if (val.Query != "" && loop == 1) {
-                                            privateFun.waitLoadingFiled(val.Label.toLowerCase());
-                                            getExecuteQuery(val.Query, length, function (res) {
-                                                if (res.data == 500) {
-                                                    privateFun.fireMsg('0', '<strong>Error 500 :' +
-                                                        ' </strong>Report filed load error...');
-                                                    return;
-                                                }
-                                                var jsonObj = JSON.parse(res.data);
-                                                var filed = [];
-                                                for (var c in jsonObj.Result) {
-                                                    if (Object.prototype.hasOwnProperty.call(jsonObj.Result, c)) {
-                                                        val = jsonObj.Result[c];
-                                                        angular.forEach(val, function (value, key) {
-                                                            //  console.log(key + "," + value);
-                                                            for (var lop = 0; lop < reportFiledList.UIDropDown.length; lop++) {
-                                                                if (reportFiledList.UIDropDown[lop].fieldname ==
-                                                                    key) {
-                                                                    filed.push(value);
-                                                                }
+                                        //if (val.Query != "" && loop == 1) {
+                                        privateFun.waitLoadingFiled(val.Label.toLowerCase());
+                                        getExecuteQuery(val.Query, length, function (res) {
+                                            if (res.data == 500) {
+                                                privateFun.fireMsg('0', '<strong>Error 500 :' +
+                                                    ' </strong>Report filed load error...');
+                                                return;
+                                            }
+                                            var jsonObj = JSON.parse(res.data);
+                                            var filed = [];
+                                            for (var c in jsonObj.Result) {
+                                                if (Object.prototype.hasOwnProperty.call(jsonObj.Result, c)) {
+                                                    val = jsonObj.Result[c];
+                                                    angular.forEach(val, function (value, key) {
+                                                        //  console.log(key + "," + value);
+                                                        for (var lop = 0; lop < reportFiledList.UIDropDown.length; lop++) {
+                                                            if (reportFiledList.UIDropDown[lop].fieldname ==
+                                                                key) {
+                                                                filed.push(value);
                                                             }
+                                                        }
 
-                                                        });
-                                                    }
+                                                    });
                                                 }
-                                                privateFun.doneLoadedFiled();
-                                                reportFiledList.UIDropDown[res.length].data = filed;
-                                            });
-                                        }
+                                            }
+                                            privateFun.doneLoadedFiled();
+                                            reportFiledList.UIDropDown[res.length].data = filed;
+                                        });
+                                        //  }
                                         break;
                                 }
                             });

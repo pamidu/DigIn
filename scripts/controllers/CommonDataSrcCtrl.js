@@ -465,7 +465,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             onSaveSource: function() {
                 //if number of widgets are lesser than 6
                 var widgetLimit = 6;
-                if($rootScope.dashboard.widgets.length < widgetLimit)
+                if($rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.length < widgetLimit)
                 {
                     var length = $scope.sourceUi.sourceRcrd.length++;
                     var currentQry = $scope.sourceUi.selectedSource + '-' + length;
@@ -518,7 +518,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         dataname: "",
                         d3plugin: "",
                         divider: false,
-                        id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
+                        id: Math.floor(Math.random() * (100 - 10 + 1) + 10),
                         type: "Visualization",
                         width: '370px',
                         height: '300px',
@@ -537,7 +537,11 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     publicFun.clearAll(function(status) {
                         if (status) {
                             $state.go("home.QueryBuilder", {
-                                widObj: $scope.currWidget
+                                widObj: {   
+                                            "widgetID": null,
+                                            "widgetName": $scope.currWidget.widName,
+                                            "widgetData": $scope.currWidget
+                                        }
                             });
                             $mdSidenav('right').close();
                         }

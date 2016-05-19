@@ -46,16 +46,16 @@ routerApp.controller('widgetSettingsCtrl', ['$scope',
             $mdDialog.hide();
         };
 
-        $scope.clear = function() {
-            $rootScope.dashboard.widgets = [];
-        };
+        // $scope.clear = function() {
+        //     $rootScope.dashboard.pages[$rootScope.selectePage-1].widgets = [];
+        // };
 
-        $scope.remove = function(widget) {
-            $rootScope.dashboard.widgets.splice($rootScope.dashboard.widgets.indexOf(widget), 1);
-        };
+        // $scope.remove = function(widget) {
+        //     $rootScope.dashboard.widgets.splice($rootScope.dashboard.widgets.indexOf(widget), 1);
+        // };
 
         // init dashboard
-        $scope.selectedDashboardId = '1';
+        // $scope.selectedDashboardId = '1';
 
     }
 ]);
@@ -68,54 +68,51 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
             itemsPerPage: 7,
             fillLastPage: false
         }
-
-        // ====== Json data to array ======  
-        var JSONData = {};
-
-        function JsonToArray() {
-
-            var queue = [];
-            for (var i = 0; i < JSONData.length; i++) {
-
-                queue.push({
-                    name: JSONData[i].templateParameter.name,
-                    field1: JSONData[i].templateParameter.field1,
-                    field2: JSONData[i].templateParameter.field2
-                });
-            }
-            $scope.dataTable = queue;
-            $scope.originalList = $scope.dataTable;
-        }
-
         $scope.eventHndler = {
                 isLoadingChart: true,
                 message: "Data Loading..."
             }
 
-        $scope.initialize = function(){
-                        
-            //if widget is google maps
-            switch($rootScope.widget.uniqueType){
+        publicFun = {
+            getDrilledLevel: function(){
+
+                switch($rootScope.widget.widgetData.widData.drillConf.currentLevel){
+
+                    case 1: var query = $rootScope.widget.widgetData.widData.drillConf.level1Query;
+                    break;
+                    case 2: var query = $rootScope.widget.widgetData.widData.drillConf.level2Query;
+                    break;
+                    case 3: var query = $rootScope.widget.widgetData.widData.drillConf.level3Query;
+                    break;
+                }
+
+                return query;
+            }
+        }
+
+        $scope.initialize = function(){  
+
+            var query;
+            switch($rootScope.widget.widgetData.uniqueType){
 
                 case "Dynamic Visuals":
-                    
-                    //var query = $rootScope.widget.commonSrc.query;
-                    switch($rootScope.widget.widData.drillConf.currentLevel){
-                        case 1: var query = $rootScope.widget.widData.drillConf.level1Query;
-                        break;
-                        case 2: var query = $rootScope.widget.widData.drillConf.level2Query;
-                        break;
-                        case 3: var query = $rootScope.widget.widData.drillConf.level3Query;
-                        break;
+
+                    if($rootScope.widget.widgetData.widData.drilled){//drilled
+
+                        query = publicFun.getDrilledLevel();
+                    }
+                    else{
+                        query = $rootScope.widget.widgetData.commonSrc.query;
                     }
                     
-                    $scope.client = $diginengine.getClient($rootScope.widget.commonSrc.src.src);
+                    console.log("$rootScope", $rootScope);
+                    $scope.client = $diginengine.getClient($rootScope.widget.widgetData.commonSrc.src.src);
 
                     if( $localStorage.tableData === null || 
                         $localStorage.tableData == undefined ||
                         $localStorage.query != query || 
                         $localStorage.query == undefined ){
-                            console.log("$rootScope.widget", $rootScope.widget);
+                        console.log("$rootScope.widget", $rootScope.widget);
                             $scope.client.getExecQuery(query, function(data, status){
                                 
                                 $scope.fieldData = [];
@@ -150,22 +147,15 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                             $scope.originalList = $localStorage.originalList;
                             $scope.fieldData = $localStorage.fieldData;
                     }
-
                 break;
-                case "Google Maps Branches":
-                    JSONData = ScopeShare.get('gmapsControllerBranch');
-                    if (JSONData) {
-                        JsonToArray();
-                    }
+                case "Google Maps Branches":  
                 break;
                 case "Pivot Summary":
                     $scope.tableData = $rootScope.widget.widData.summary;
                     $scope.originalList = $scope.tableData;
                     $scope.fieldData = $rootScope.widget.widData.fieldArray;
-
                 break;
                 default:
-
                 break;
             }
         }
@@ -239,139 +229,133 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter',
 
     function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter) {
-        $scope.closeDialog = function() {
-            // Easily hides most recent dialog shown...
-            // no specific instance reference is needed.
+
+        $scope.close = function() {
+
             $mdDialog.hide();
         };
-        if(typeof $rootScope.clickedDash != "undefined"){
 
-            typeof $rootScope.clickedDash.name != "undefined" ? $scope.dashboardName = $rootScope.clickedDash.name : $scope.dashboardName = ""
-            typeof $rootScope.clickedDash.type != "undefined" ? $scope.dashboardType = $rootScope.clickedDash.type : $scope.dashboardType = "";
-            typeof $rootScope.clickedDash.date != "undefined" ? $scope.dashboardDate = new Date($rootScope.clickedDash.date) : $scope.dashboardDate = "";
-            typeof $rootScope.clickedDash.culture != "undefined" ? $scope.dashboardCulture = $rootScope.clickedDash.culture : $scope.dashboardCulture = "";
-        }
-        // $scope.saveDashboardDetails = function(type) {
+        // if(typeof $rootScope.clickedDash != "undefined"){
 
-        //     if($scope.dashboardName){
-        //         $rootScope.dashboard.dashboardName = $scope.dashboardName;
-        //         var dashboardObj = {
-        //             name: $scope.dashboardName,
-        //             type: $scope.dashboardType,
-        //             culture: $scope.dashboardCulture,
-        //             date: $scope.dashboardDate,
-        //             customDuoDash: true, //will be useful when filtering these dashboards with pentaho dashboards
-        //             data: $rootScope.dashboard.widgets,
-        //             storyboard: false,
-        //         };
-
-
-        //         if (type == "saveAll") {
-        //             console.log("saving the whole story board");
-        //             dashboardObj.data = $rootScope.Dashboards;
-        //             dashboardObj.storyboard = true;
-        //         };
-
-        //         //console.log(dashboardObj);
-
-        //         var client = ObjectStoreService.initialize("duodigin_dashboard");
-
-        //         ObjectStoreService.saveObject(client, dashboardObj, "name", function(data) {
-        //             if (data.state === 'error') {
-        //                 ngToast.create({
-        //                     className: 'danger',
-        //                     content: 'Failed Saving Dashboard. Please Try Again!',
-        //                     horizontalPosition: 'center',
-        //                     verticalPosition: 'top',
-        //                     dismissOnClick: true
-        //                 });
-        //                 $mdDialog.hide();
-    
-        //             } else {
-        //                 DashboardService.getDashboards(dashboardObj);
-        //                 ngToast.create({
-        //                     className: 'success',
-        //                     content: 'Successfuly Saved Dashboard',
-        //                     horizontalPosition: 'center',
-        //                     verticalPosition: 'top',
-        //                     dismissOnClick: true
-        //                 });
-        //                 $mdDialog.hide();
- 
-        //             }
-        //         });
-        //     } else {
-        //         alert('please insert a dashboard name');
-        //     }
+        //     typeof $rootScope.clickedDash.name != "undefined" ? $scope.dashboardName = $rootScope.clickedDash.name : $scope.dashboardName = ""
+        //     typeof $rootScope.clickedDash.type != "undefined" ? $scope.dashboardType = $rootScope.clickedDash.type : $scope.dashboardType = "";
+        //     typeof $rootScope.clickedDash.date != "undefined" ? $scope.dashboardDate = new Date($rootScope.clickedDash.date) : $scope.dashboardDate = "";
+        //     typeof $rootScope.clickedDash.culture != "undefined" ? $scope.dashboardCulture = $rootScope.clickedDash.culture : $scope.dashboardCulture = "";
         // }
+        
+        $scope.saveDashboard = function() {  
 
-        $scope.saveDashboard = function() {          
             if($scope.dashboardName){
+                console.log("rootScope", $rootScope);
+                //get pages here
+                var pagesArray = [];
+                var pages = $rootScope.dashboard.pages;
+                for(var i = 0; i < pages.length; i++){
+                        //get widgets here
+                        var widgetsArray = [];
+                        var widgets = $rootScope.dashboard.pages[i].widgets;
+                        for (var j = 0; j < widgets.length; ++j) {
 
-                var widgestArr = [];
-                for (i = 0, len = $rootScope.dashboard.widgets.length; i < len; ++i) {
-                        switch($rootScope.dashboard.widgets[i].uniqueType){
-                            case 'Dynamic Visuals':
-                                widgestArr.push(
-                                    {   
-                                        "DiginCompWidgetID":$rootScope.dashboard.widgets[i].id,
-                                        "DiginCompWidgetData":{ 
-                                                                query:$rootScope.dashboard.widgets[i].commonSrc.query,
-                                                                type:$rootScope.dashboard.widgets[i].uniqueType
-                                                            }
-                                    });      
-                            break;
-                            default:
-                                widgestArr.push(
-                                    {   
-                                        "DiginCompWidgetID":$rootScope.dashboard.widgets[i].id,
-                                        "DiginCompWidgetData":{ 
-                                                                query:null,
-                                                                type:$rootScope.dashboard.widgets[i].uniqueType
-                                                            }
-                                    }); 
-                            break;
+                                    var widgetObject;
+                                    if($rootScope.dashboard.pages[i].widgets[j].widgetID == null){
+
+                                        widgetObject = {   
+                                            "widgetID": null,
+                                            "widgetName": widgets[j].widgetName,
+                                            "widgetData": widgets[j].widgetData
+                                        }
+                                    }
+                                    else{
+
+                                        widgetObject = {   
+                                            "widgetID": widgets[j].widgetID,
+                                            "widgetName": widgets[j].widgetName,
+                                            "widgetData": widgets[j].widgetData
+                                        }
+                                    }
+                                    widgetsArray.push(widgetObject); 
                         }
+
+                        var pageObject;
+                        if($rootScope.dashboard.pages[i].pageID == null){
+
+                            pageObject = {
+                                            "widgets": widgetsArray,
+                                            "pageID": null,
+                                            "pageName": pages[i].pageName,
+                                            "pageData": null 
+                            }
+                        }
+                        else{
+
+                            pageObject = {
+                                            "widgets": widgetsArray,
+                                            "pageID": pages[i].pageID,
+                                            "pageName": pages[i].pageName,
+                                            "pageData": pages[i].pageData 
+                            }
+                        }
+                        pagesArray.push(pageObject);
                 }
 
-                $scope.components = {
+                var dashboardObject;
+                if($rootScope.dashboard.compID == null){
 
-                    "widgets":widgestArr,
-                    "DiginCompClass":$rootScope.dashboard.type,
-                    "DiginCompType":"Dashboard",
-                    "DiginCompCategory":"Admin",
-                    "DigInCompID":$rootScope.dashboard.dashboardId,
-                    "Namespace":"duoworld",
-                    "Tenant":3
-                };
+                    dashboardObject = {
 
-                console.log(JSON.stringify($scope.components));
-                console.log(angular.toJson($scope.components));
-                    
+                        "pages" : pagesArray,
+                        "compClass": null,
+                        "compType": null,
+                        "compCategory": null,
+                        "compID": null,
+                        "compName": $scope.dashboardName,
+                        "refreshInterval": null
+                    }
+                }
+                else{
+
+                    dashboardObject = {
+
+                        "pages" : pagesArray,
+                        "compClass": $rootScope.dashboard.compClass,
+                        "compType": $rootScope.dashboard.compType,
+                        "compCategory": $rootScope.dashboard.compCategory,
+                        "compID": $rootScope.dashboard.compID,
+                        "compName": $scope.dashboardName,
+                        "refreshInterval": $rootScope.dashboard.refreshInterval
+                    }
+                }
+                
+                console.log("dashboardObject", dashboardObject);    
                 $http({
                     method: 'POST',
                     url: 'http://192.168.2.33:8080/store_component',
-                    data: angular.toJson($scope.components),
-                    headers: {'Content-Type': 'application/json'}
+                    data: angular.toJson(dashboardObject),
+                    headers: {  
+                                'Content-Type': 'application/json',
+                    }
                 })
                 .success(function(response){
+
+                    console.log("response", response);
+
                     ngToast.create({
-                    className: 'success',
-                    content: 'Successfuly Saved Dashboard',
-                    horizontalPosition: 'center',
-                    verticalPosition: 'top',
-                    dismissOnClick: true
+                        className: 'success',
+                        content: 'Successfuly Saved Dashboard',
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
                     });
                     $mdDialog.hide();
-
                 })
-                .error(function(error){   
+                .error(function(error){  
+
                     ngToast.create({
-                    className: 'danger',
-                    content: 'Failed Saving Dashboard. Please Try Again!',
-                    horizontalPosition: 'center',
-                    verticalPosition: 'top',
-                    dismissOnClick: true
+                        className: 'danger',
+                        content: 'Failed Saving Dashboard. Please Try Again!',
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
                     });
                     $mdDialog.hide()
                 });   
@@ -410,16 +394,13 @@ routerApp.controller('shareCtrl', ['$scope', '$rootScope', '$objectstore', '$mdD
         icon: "styles/css/images/icons/email.svg"
     }];
 
-    $scope.closeDialog = function() {
-        // Easily hides most recent dialog shown...
-        // no specific instance reference is needed.
+    $scope.close = function() {
+
         $mdDialog.hide();
     };
+    $scope.openProvider = function(provider) {
 
-       $scope.openProvider = function(provider) {
-
-        if(provider=="email")
-        {
+        if(provider=="email"){
             $mdDialog.show({
                 controller: 'emailCtrl',
                 templateUrl: 'views/loginEmail.html',
@@ -428,113 +409,107 @@ routerApp.controller('shareCtrl', ['$scope', '$rootScope', '$objectstore', '$mdD
                 }
             })
         }
-        else if (provider=="")
-        {
-        }
-        
-    };
-}]);
-
-
-routerApp.controller('ExportCtrl', ['$scope', '$objectstore', '$mdDialog', '$rootScope', function($scope,
-
-    $objectstore, $mdDialog, $rootScope) {
-    $scope.dashboard = [];
-    $scope.dashboard = {
-        widgets: []
-    };
-    $scope.dashboard.widgets = $rootScope.dashboard["1"].widgets;
-
-    $scope.closeDialog = function() {
-        // Easily hides most recent dialog shown...
-        // no specific instance reference is needed.
-        $mdDialog.hide();
-    };
-    $scope.export = function(widget) {
-        var chart = $('#' + widget.id).highcharts();
-        chart.exportChart();
-    };
-
-}]);
-
-routerApp.controller('ThemeCtrl', ['$scope', '$rootScope', '$objectstore', '$mdDialog', function($scope, $rootScope,
-    $objectstore, $mdDialog) {
-
-    $scope.panels = ["Side Panel", "Background"];
-
-    $scope.themeArr = [{
-        name: 'alt',
-        primary: '#3F51B5',
-        lightPrimary: '#C5CAE9',
-        darkPrimary: '#303F9F',
-        accent: '#448AFF'
-    }, {
-        name: 'alt1',
-        primary: '#673AB7',
-        lightPrimary: '#D1C4E9',
-        darkPrimary: '#512DA8',
-        accent: '#FF5252'
-    }, {
-        name: 'alt2',
-        primary: '#4CAF50',
-        lightPrimary: '#C8E6C9',
-        darkPrimary: '#388E3C',
-        accent: '#FFC107'
-    }, {
-        name: 'alt3',
-        primary: '#607D8B',
-        lightPrimary: '#CFD8DC',
-        darkPrimary: '#455A64',
-        accent: '#009688'
-    }];
-
-    $scope.changeTheme = function(theme, themeId) {
-        $rootScope.dynamicTheme = theme;
-
-        //common styles
-        $(".sidebaricons").css('color', '#000', 'important');
-
-        if (themeId != -1) {
-            $(".nav-menu").css('background-color', $scope.themeArr[themeId].lightPrimary);
-            $(".nav-menu-active").css('background-color', $scope.themeArr[themeId].darkPrimary);
-            $(".logo-background").css('background-color', $scope.themeArr[themeId].lightPrimary);
-        } else {
-            $(".nav-menu").css('background-color', '#fff');
-            $(".logo-background").css('background-color', '#fff');
+        else if (provider==""){
         }
     };
-
-    $scope.closeDialog = function() {
-        // Easily hides most recent dialog shown...
-        // no specific instance reference is needed.
-        $mdDialog.hide();
-    };
-
-    $scope.applyIndigoCSS = function() {
-        cssInjector.removeAll();
-        cssInjector.add("/Digin12/styles/css/style1.css");
-
-    };
-
-    $scope.applyMinimalCSS = function() {
-        cssInjector.removeAll();
-        cssInjector.add("/Digin12/styles/css/style3.css");
-
-    };
-
-    $scope.applyVioletCSS = function() {
-        cssInjector.removeAll();
-        cssInjector.add("/Digin12/styles/css/style.css");
-
-    };
-
 }]);
 
 
+routerApp.controller('ExportCtrl', ['$scope', '$objectstore', '$mdDialog', '$rootScope', 
+    function( $scope, $objectstore, $mdDialog, $rootScope) {
+
+        $scope.dashboard = [];
+        $scope.dashboard = {
+            widgets: []
+        };
+        $scope.dashboard.widgets = $rootScope.dashboard["1"].widgets;
+
+        $scope.closeDialog = function() {
+            // Easily hides most recent dialog shown...
+            // no specific instance reference is needed.
+            $mdDialog.hide();
+        };
+        $scope.export = function(widget) {
+            var chart = $('#' + widget.id).highcharts();
+            chart.exportChart();
+        };
+}]);
+
+routerApp.controller('ThemeCtrl', ['$scope', '$rootScope', '$objectstore', '$mdDialog', 
+    function($scope, $rootScope, $objectstore, $mdDialog) {
+
+        $scope.panels = ["Side Panel", "Background"];
+
+        $scope.themeArr = [{
+            name: 'alt',
+            primary: '#3F51B5',
+            lightPrimary: '#C5CAE9',
+            darkPrimary: '#303F9F',
+            accent: '#448AFF'
+        }, {
+            name: 'alt1',
+            primary: '#673AB7',
+            lightPrimary: '#D1C4E9',
+            darkPrimary: '#512DA8',
+            accent: '#FF5252'
+        }, {
+            name: 'alt2',
+            primary: '#4CAF50',
+            lightPrimary: '#C8E6C9',
+            darkPrimary: '#388E3C',
+            accent: '#FFC107'
+        }, {
+            name: 'alt3',
+            primary: '#607D8B',
+            lightPrimary: '#CFD8DC',
+            darkPrimary: '#455A64',
+            accent: '#009688'
+        }];
+
+        $scope.changeTheme = function(theme, themeId) {
+            $rootScope.dynamicTheme = theme;
+
+            //common styles
+            $(".sidebaricons").css('color', '#000', 'important');
+
+            if (themeId != -1) {
+                $(".nav-menu").css('background-color', $scope.themeArr[themeId].lightPrimary);
+                $(".nav-menu-active").css('background-color', $scope.themeArr[themeId].darkPrimary);
+                $(".logo-background").css('background-color', $scope.themeArr[themeId].lightPrimary);
+            } else {
+                $(".nav-menu").css('background-color', '#fff');
+                $(".logo-background").css('background-color', '#fff');
+            }
+        };
+
+        $scope.closeDialog = function() {
+            // Easily hides most recent dialog shown...
+            // no specific instance reference is needed.
+            $mdDialog.hide();
+        };
+
+        $scope.applyIndigoCSS = function() {
+            cssInjector.removeAll();
+            cssInjector.add("/Digin12/styles/css/style1.css");
+
+        };
+
+        $scope.applyMinimalCSS = function() {
+            cssInjector.removeAll();
+            cssInjector.add("/Digin12/styles/css/style3.css");
+
+        };
+
+        $scope.applyVioletCSS = function() {
+            cssInjector.removeAll();
+            cssInjector.add("/Digin12/styles/css/style.css");
+
+        };
+
+}]);
 
 
 routerApp.controller('DataCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'DashboardService', 'dashboard',
-
     function($scope, $http, $objectstore, $mdDialog, $rootScope, DashboardService, dashboard) {
         $scope.saveDashboard = [];
         $scope.ExistingDashboardDetails = [];
@@ -570,166 +545,151 @@ routerApp.controller('DataCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
     }
 ]);
 
+routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generatePDF3','$http','ngToast','$pdfString','$uploader','$helpers','$mdToast','$v6urls', 
+    function($scope, $rootScope, $mdDialog, generatePDF3,$http,ngToast,$pdfString,$uploader,$helpers,$mdToast,$v6urls) {
 
-routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generatePDF3','$http','ngToast','$pdfString','$uploader','$helpers','$mdToast','$v6urls', function($scope, $rootScope, $mdDialog, generatePDF3,$http,ngToast,$pdfString,$uploader,$helpers,$mdToast,$v6urls) {
+        $scope.generateSnapshot = function() {
+            //alert("core2");
+            //document.getElementById("canvasTest").appendChild($rootScope.a);
 
-    $scope.generateSnapshot = function() {
-        //alert("core2");
-        //document.getElementById("canvasTest").appendChild($rootScope.a);
+            var htmlElement = $("#mainContainer");
+            var title = "Dashboard";
+            var config = {
+                        title:"Dashboard",
+                        titleLeft: 50, 
+                        titleTop: 20,
+                        tableLeft: 0,
+                        tableTop: 30
+            };
+            generatePDF3.generate(htmlElement, config);
 
-        var htmlElement = $("#mainContainer");
-        var title = "Dashboard";
-        var config = {
-                    title:"Dashboard",
-                    titleLeft: 50, 
-                    titleTop: 20,
-                    tableLeft: 0,
-                    tableTop: 30
         };
-        generatePDF3.generate(htmlElement, config);
+        $scope.getMailDetail = function(sendState){
+            $scope.sendMailState = true;
+        };
+        $scope.sendMail = function(sendState){
+            $scope.sendMailState = false;
 
-    };
+            var decodeUrl = $pdfString.returnPdf();
+            var blobFile = dataURItoBlob(decodeUrl) 
+            blobFile.name = 'dashboard.pdf'
+            $scope.uploadPdfName = 'dashboard.pdf'; 
 
+            $uploader.uploadMedia("diginDashboard",blobFile,blobFile.name);
+            $uploader.onSuccess(function (e, data) {
+                $scope.deliverMail($scope.emailTo);
+                console.log("upload success")
+            });
+            $uploader.onError(function (e, data) { 
+                var toast = $mdToast.simple()
+                .content('There was an error, please upload!')
+                .action('OK')
+                .highlightAction(false)
+                .position("bottom right");
+                $mdToast.show(toast).then(function () {
+                    //whatever
+                }); 
+            });
 
-    $scope.getMailDetail = function(sendState){
-        $scope.sendMailState = true;
-    };
+            $mdDialog.hide();
+        };
+        function dataURItoBlob(dataURI, callback) {
+            // convert base64 to raw binary data held in a string
+            // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+            var byteString = atob(dataURI.split(',')[1]);
 
-    $scope.sendMail = function(sendState){
-        $scope.sendMailState = false;
+            // separate out the mime component
+            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
 
-        var decodeUrl = $pdfString.returnPdf();
-        var blobFile = dataURItoBlob(decodeUrl) 
-        blobFile.name = 'dashboard.pdf'
-        $scope.uploadPdfName = 'dashboard.pdf'; 
+            // write the bytes of the string to an ArrayBuffer
+            var ab = new ArrayBuffer(byteString.length);
+            var ia = new Uint8Array(ab);
+            for (var i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
 
-        $uploader.uploadMedia("diginDashboard",blobFile,blobFile.name);
-        $uploader.onSuccess(function (e, data) {
-            $scope.deliverMail($scope.emailTo);
-            console.log("upload success")
-        });
-        $uploader.onError(function (e, data) { 
-            var toast = $mdToast.simple()
-            .content('There was an error, please upload!')
-            .action('OK')
-            .highlightAction(false)
-            .position("bottom right");
-            $mdToast.show(toast).then(function () {
-                //whatever
-            }); 
-        });
-
-        
-        $mdDialog.hide();
-
-    };
-
-    function dataURItoBlob(dataURI, callback) {
-        // convert base64 to raw binary data held in a string
-        // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-        var byteString = atob(dataURI.split(',')[1]);
-
-        // separate out the mime component
-        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-
-        // write the bytes of the string to an ArrayBuffer
-        var ab = new ArrayBuffer(byteString.length);
-        var ia = new Uint8Array(ab);
-        for (var i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
+            // write the ArrayBuffer to a blob, and you're done
+            var bb = new Blob([ab]);
+            return bb;
         }
-
-        // write the ArrayBuffer to a blob, and you're done
-        var bb = new Blob([ab]);
-        return bb;
-    }
-
-
-
-    $scope.validateEmail=function (email) {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email);
-    }
-
-
-     $scope.fireMsg=function (msgType, content) {
-        ngToast.dismiss();
-
-        var _className;
-        if (msgType == '0') {
-            _className = 'danger';
-        } else if (msgType == '1') {
-            _className = 'success';
+        $scope.validateEmail=function (email) {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
         }
-            ngToast.create({
-                className: _className,
-                content: content,
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-                dismissOnClick: true
-                });
-    }
+        $scope.fireMsg=function (msgType, content) {
+            ngToast.dismiss();
 
-
-    $scope.closeDialog = function() {
-        $mdDialog.hide();
-    };
-
-    $scope.deliverMail=function (mailTo) {
-        // $helpers.getHost()
-        
-        // var path =  $v6urls.mediaLib +"/apis/media/tenant/diginDashboard/dashboard.pdf"
-        var path =  "http://"+$helpers.getHost()+"/apis/media/tenant/diginDashboard/dashboard.pdf"
-        
-        // var path =  "http://sachilagmailcom.space.test.12thdoor.com/apis/media/tenant/diginDashboard/dashboard.pdf"
-        $scope.mailData ={
-                "type": "email",
-                "to": mailTo,
-                "subject": "Confirmation",
-                "from": "Digin <noreply-digin@duoworld.com>",
-                "Namespace": "com.duosoftware.com",
-                "TemplateID": "T_Email_GENERAL",
-                "attachments": [{
-                              "filename": $scope.uploadPdfName,
-                              "path": path
-                             }],
-                "DefaultParams": {
-                    "@@CNAME@@": "",
-                    "@@TITLE@@": "Dash board mail delivery",
-                    "@@MESSAGE@@": "Dash Board Mail Dilivery System",
-                    "@@CNAME@@": "",
-                    "@@APPLICATION@@": "Digin.io",
-                    "@@FOOTER@@": "Copyright 2016",
-                    "@@LOGO@@": ""
-                },
-                "CustomParams": {
-                    "@@CNAME@@": "",
-                    "@@TITLE@@": "Dash board mail delivery",
-                    "@@MESSAGE@@": "Dash Board Mail Dilivery System",
-                    "@@CNAME@@": "",
-                    "@@APPLICATION@@": "Digin.io",
-                    "@@FOOTER@@": "Copyright 2016",
-                    "@@LOGO@@": ""
-                }
+            var _className;
+            if (msgType == '0') {
+                _className = 'danger';
+            } else if (msgType == '1') {
+                _className = 'success';
+            }
+                ngToast.create({
+                    className: _className,
+                    content: content,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                    dismissOnClick: true
+                    });
+        }
+        $scope.closeDialog = function() {
+            $mdDialog.hide();
+        };
+        $scope.deliverMail=function (mailTo) {
+            // $helpers.getHost()
+            
+            // var path =  $v6urls.mediaLib +"/apis/media/tenant/diginDashboard/dashboard.pdf"
+            var path =  "http://"+$helpers.getHost()+"/apis/media/tenant/diginDashboard/dashboard.pdf"
+            
+            // var path =  "http://sachilagmailcom.space.test.12thdoor.com/apis/media/tenant/diginDashboard/dashboard.pdf"
+            $scope.mailData =   {
+                    "type": "email",
+                    "to": mailTo,
+                    "subject": "Confirmation",
+                    "from": "Digin <noreply-digin@duoworld.com>",
+                    "Namespace": "com.duosoftware.com",
+                    "TemplateID": "T_Email_GENERAL",
+                    "attachments": [{
+                                  "filename": $scope.uploadPdfName,
+                                  "path": path
+                                 }],
+                    "DefaultParams": {
+                        "@@CNAME@@": "",
+                        "@@TITLE@@": "Dash board mail delivery",
+                        "@@MESSAGE@@": "Dash Board Mail Dilivery System",
+                        "@@CNAME@@": "",
+                        "@@APPLICATION@@": "Digin.io",
+                        "@@FOOTER@@": "Copyright 2016",
+                        "@@LOGO@@": ""
+                    },
+                    "CustomParams": {
+                        "@@CNAME@@": "",
+                        "@@TITLE@@": "Dash board mail delivery",
+                        "@@MESSAGE@@": "Dash Board Mail Dilivery System",
+                        "@@CNAME@@": "",
+                        "@@APPLICATION@@": "Digin.io",
+                        "@@FOOTER@@": "Copyright 2016",
+                        "@@LOGO@@": ""
+                    }
             };
 
             $http({
-                method: 'POST',
-                url: 'http://104.197.27.7:3500/command/notification',
-                data: angular.toJson($scope.mailData),
-                headers:{'Content-Type': 'application/json',
-                        'securitytoken': '1234567890'
-                        }
-                })
-                .success(function(response){
-                    alert("Mail Sent...!");                        
-                })
-                .error(function(error){   
-                    alert("Fail !");                        
-                });     
+                    method: 'POST',
+                    url: 'http://104.197.27.7:3500/command/notification',
+                    data: angular.toJson($scope.mailData),
+                    headers:{'Content-Type': 'application/json',
+                            'securitytoken': '1234567890'
+                            }
+            })
+            .success(function(response){
+                        alert("Mail Sent...!");                        
+            })
+            .error(function(error){   
+                        alert("Fail !");                        
+            });     
         }
-    }]);
-
+}]);
 
 routerApp.controller('errorCtrl', ['$scope', '$objectstore', '$mdDialog', function($scope,
 
@@ -742,7 +702,6 @@ routerApp.controller('errorCtrl', ['$scope', '$objectstore', '$mdDialog', functi
 
 
 }]);
-
 
 routerApp.controller('errorCtrl', ['$scope', '$objectstore', '$mdDialog', function($scope,
 
@@ -766,7 +725,6 @@ routerApp.controller('successCtrl', ['$scope', '$objectstore', '$mdDialog', func
     };
 
 }]);
-
 
 routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdDialog', '$sce', '$http', '$objectstore', 'dashboard', '$log', 'ngToast',
     function($scope, $timeout, $rootScope, $mdDialog, $sce, $http, $objectstore, dashboard, $log, ngToast) {
@@ -801,10 +759,6 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
             console.log($scope.Widgets);
         });
 
-        $scope.hideDialog = function() {
-            $mdDialog.hide();
-        };
-
         $scope.filterWidgets = function(item) {
             if (item == null) {
                 item.title = "Visualization";
@@ -827,15 +781,16 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
                     }
                 })
                 .then(function() {
-                    //$mdDialog.hide();
                 }, function() {
-                    //$mdDialog.hide();
                 });
             }
-            
         };
 
         $scope.closeDialog = function() {
+            $mdDialog.hide();
+        };
+
+        $scope.cancelDialog = function() {
             $mdDialog.cancel();
         };
 
@@ -843,7 +798,7 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
 
             var widgetLimit = 6;
 
-            if($rootScope.dashboard.widgets.length < widgetLimit){
+            if($rootScope.dashboard.pages[0].widgets.length < widgetLimit){
 
                 $scope.currWidget = {
 
@@ -872,17 +827,13 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
                     d3plugin: "",
                     divider: false,
                     chartSeries: $scope.chartSeries,
-                    id: "chart" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
+                    id: Math.floor(Math.random() * (100 - 10 + 1) + 10),
                     type: widget.type,
                     width: '370px',
                     left: '0px',
                     top: '0px',
                     height: '300px',
                     mheight: '100%',
-                    // sizeX: ,
-                    // sizeY: ,
-                    // row: ,
-                    // col: ,
                     chartStack: [{
                         "id": '',
                         "title": "No"
@@ -893,57 +844,7 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
                         "id": "percent",
                         "title": "Percent"
                     }],
-                    highchartsNG: {
-                        exporting: {
-                            enabled: false
-                        },
-                        options: {
-                            chart: {
-                                type: $scope.ChartType
-                            },
-
-                            plotOptions: {
-                                series: {
-                                    borderWidth: 0,
-                                    depth: 35,
-                                    dataLabels: {
-                                        enabled: true,
-                                    },
-                                    cursor: 'pointer',
-                                    point: {
-                                        events: {
-                                            click: function() {
-                                               
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        series: $scope.chartSeries,
-                        title: {
-                            text: widget.title,
-                            style: {
-                                display: 'none'
-                            }
-                        },
-                        subtitle: {
-                            text: '',
-                            style: {
-                                display: 'none'
-                            }
-                        },
-                        credits: {
-                            enabled: false,
-
-                        },
-
-                        loading: false,
-                        size: {
-                            height: 220,
-                            width: 300
-                        }
-                    }
+                    highchartsNG: null
 
                 }
 
@@ -955,11 +856,16 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
                 var msg = new SpeechSynthesisUtterance(+$rootScope.username + ' you are adding' + widget.title + ' widget');
                 window.speechSynthesis.speak(msg);
 
-                $rootScope.dashboard.widgets.push($scope.currWidget);
+                var widgetObj = {   
+                                        "widgetID": null,
+                                        "widgetName": $scope.currWidget.widName,
+                                        "widgetData": $scope.currWidget
+                                }
+                $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.push(widgetObj);
                 $scope.openInitialConfig(ev, $scope.currWidget.id);
                 $rootScope.widgetType = widget.title;
 
-                console.log("$rootScope.dashboard.widgets", $rootScope.dashboard.widgets);
+                console.log("$rootScope.dashboard.pages[0].widgets", $rootScope.dashboard.pages[0].widgets);
             }
             else{
                 privateFun.fireMessage('0','Maximum Widget Limit Exceeded');
@@ -989,7 +895,6 @@ routerApp.controller('InputNameCtrl', [ '$scope', '$mdDialog', '$rootScope', fun
 
         $mdDialog.hide();
     };
-
 }]);
 
 routerApp.controller('sunburstCtrl', [ '$scope', '$mdDialog', '$rootScope', 

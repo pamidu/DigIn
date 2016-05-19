@@ -1821,9 +1821,11 @@
 					var y = scope.gridsterItem.getElementSizeY();
 					var w = scope.gridsterItem.getElementSizeX();
                    
-                    scope.widget.highchartsNG.size.height = y-50;
-					scope.widget.highchartsNG.size.width = w-10;
-					
+                   	if(!(scope.widget.widgetData.highchartsNG == null)){
+                   		scope.widget.widgetData.highchartsNG.size.height = y-50;
+						scope.widget.widgetData.highchartsNG.size.width = w-10;
+                   	}
+                  					
 					var oldRow = item.row,
 					oldCol = item.col,
 					oldSizeX = item.sizeX,

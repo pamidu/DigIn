@@ -1,9 +1,9 @@
-<md-content ng-init="syncWidget(widget)" ng-show="widget.syncState" style="height:100%;width:100%;" flex>
+<md-content ng-init="syncWidget(widget)" ng-show="widget.widgetData.syncState" style="height:100%;width:100%;" flex>
     <div style="height:100%;width:100%;" layout="column" layout-align='center center'>
-        <h1>  {{widget.widData.value}}&nbsp;{{widget.widData.scale}}</h1>
-        <h2>  {{widget.widData.label}} </h2>
+        <h1>  {{widget.widgetData.widData.value}}&nbsp;{{widget.widgetData.widData.scale}}</h1>
+        <h2>  {{widget.widgetData.widData.label}} </h2>
     </div>
 </md-content>
-<div ng-hide="widget.syncState" layout="row" layout-sm="column" layout-align="center center" style="height:100%;width:100%;">
+<div ng-hide="widget.widgetData.syncState" layout="row" layout-sm="column" layout-align="center center" style="height:100%;width:100%;">
     <img src="styles/css/images/preloaders/facebook.gif" alt="Washed Out">
 </div>

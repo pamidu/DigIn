@@ -1,9 +1,9 @@
 routerApp.service('$qbuilder',function($diginengine){
-    this.sync = function(wid, cb){        
-        var chartType = wid.selectedChart.chartType;
+    this.sync = function(widgetData, cb){        
+        var chartType = widgetData.selectedChart.chartType;
         var widType = eval('new ' + chartType.toUpperCase() + '();');
         widProt = new Widget(widType);
-        widProt.sync(wid, cb);
+        widProt.sync(widgetData, cb);
     }
     
     var Widget = function(wid) {

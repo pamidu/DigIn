@@ -2012,7 +2012,7 @@ routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widId',
             var message = $http.jsonp(wpapi + $scope.wpdomain + choice + callbackString).
             success(function(data, status) {
 
-                var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+                var objIndex = getRootObjectById(widId, $rootScope.dashboard.pages[0].widgets);
                 var posts = data.posts;
                 var trimmedPosts = [];
                 var tempTitle = "";
@@ -2035,7 +2035,7 @@ routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widId',
                 }
                 var trimmedObj = {};
                 trimmedObj.posts = trimmedPosts;
-                $rootScope.dashboard.widgets[objIndex].widData = trimmedObj;
+                $rootScope.dashboard.pages[0].widgets[objIndex].widData = trimmedObj;
                 $scope.showFinishButton = true;
                 $scope.diginLogo = 'digin-logo-wrapper2';
             }).error(function(data, status) {
@@ -3143,6 +3143,8 @@ routerApp.controller('clockInit', ['$scope', '$mdDialog',
                 format: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
         }];
         $scope.clockComponentformatChange = function (data) {
+
+                console.log("$('#clockmonthDay')", $('#clockmonthDay'));
 
                 if(data){
                     var monthDay = dateFormat(data);

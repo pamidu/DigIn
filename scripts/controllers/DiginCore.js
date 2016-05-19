@@ -18,19 +18,19 @@
 routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
 
     $scope.widget = angular.copy(widget);
-    $scope.dHeight = $scope.widget.height + 100;
+    $scope.dHeight = $scope.widget.widgetData.height + 100;
 
     $scope.returnWidth = function (width, height) {
         console.log("width here", width, height);
-        if ($scope.widget.initCtrl == "elasticInit") {
+        if ($scope.widget.widgetData.initCtrl == "elasticInit") {
             console.log('elastic');
-            $scope.widget.highchartsNG.size.width = parseInt(width);
-            $scope.widget.highchartsNG.size.height = parseInt(height);
+            $scope.widget.widgetData.highchartsNG.size.width = parseInt(width);
+            $scope.widget.widgetData.highchartsNG.size.height = parseInt(height);
         }
     };
     var reSizeWidget = function () {
-        $scope.widget.highchartsNG.size.width = parseInt(700);
-        $scope.widget.highchartsNG.size.height = parseInt(400);
+        $scope.widget.widgetData.highchartsNG.size.width = parseInt(700);
+        $scope.widget.widgetData.highchartsNG.size.height = parseInt(400);
     }
 
     $scope.setChartSize = function (data) {
@@ -44,13 +44,11 @@ routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
         $mdDialog.hide();
     };
 });
+
 routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', 'DynamicVisualization','$csContainer','$state','$qbuilder','$diginengine',
     function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, DynamicVisualization, $csContainer, $state, $qbuilder, $diginengine) {
-
-        $('#pagePreLoader').hide();
-
-        localStorage.setItem('username', "admin");
         
+        //code to keep widget fixed on pivot summary drag events
         $('#content1').on('mousedown', function(e) {
             if(e.target.className == "pvtAttr"){
                 
@@ -61,6 +59,47 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 }   
             }
         });
+        //configuring gridster
+        $scope.gridsterOpts = {
+            columns: 24, // number of columns in the grid
+            pushing: true, // whether to push other items out of the way
+            floating: true, // whether to automatically float items up so they stack
+            swapping: false, // whether or not to have items switch places instead of push down if they are the same size
+            width: 'auto', // width of the grid. "auto" will expand the grid to its parent container
+            colWidth: 'auto', // width of grid columns. "auto" will divide the width of the grid evenly among the columns
+            rowHeight: '/4', // height of grid rows. 'match' will make it the same as the column width, a numeric value will be interpreted as pixels, '/2' is half the column width, '*5' is five times the column width, etc.
+            margins: [5, 5], // margins in between grid items
+            outerMargin: true,
+            isMobile: false, // toggle mobile view
+            mobileBreakPoint: 600, // width threshold to toggle mobile mode
+            mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
+            minColumns: 1, // minimum amount of columns the grid can scale down to
+            minRows: 1, // minimum amount of rows to show if the grid is empty
+            maxRows: 100, // maximum amount of rows in the grid
+            defaultSizeX: 6, // default width of an item in columns
+            defaultSizeY: 8, // default height of an item in rows
+            minSizeX: 6, // minimum column width of an item
+            maxSizeX: null, // maximum column width of an item
+            minSizeY: 8, // minumum row height of an item
+            maxSizeY: null, // maximum row height of an item
+            saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
+            draggable: {
+                enabled: true
+            },
+            resizable: {
+                enabled: true,
+                handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw']
+            }
+        };
+        // maps the item from customItems in the scope to the gridsterItem options
+        $scope.customItemMap = {
+            sizeX: 'item.size.x',
+            sizeY: 'item.size.y',
+            row: 'item.position[0]',
+            col: 'item.position[1]',
+            minSizeY: 'item.minSizeY',
+            maxSizeY: 'item.maxSizeY'
+        };
 
         // if($rootScope.tempDashboard.length != 0)
         $rootScope.tempDashboard = angular.copy($rootScope.dashboard);
@@ -70,11 +109,11 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         $scope.adjustTitleLength = function(){
 
             var titleLength = 0;
-            for(var i=0; i < $rootScope.dashboard.widgets.length; i++){
+            for(var i=0; i < $rootScope.dashboard.pages[0].widgets.length; i++){
 
-                if(titleLength < $rootScope.dashboard.widgets[i].widName.length){
+                if(titleLength < $rootScope.dashboard.pages[0].widgets[i].widgetData.widName.length){
 
-                    titleLength = $rootScope.dashboard.widgets[i].widName.length;
+                    titleLength = $rootScope.dashboard.pages[0].widgets[i].widgetData.widName.length;
                     if(titleLength <= 35){
                         $scope.widgetTitleClass = 'widget-title-35';
                     }
@@ -89,6 +128,17 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     }        
                 }
             }
+        }
+
+        $scope.selectPage = function (page) {
+
+            console.log("page", page);
+            for (var i = 0; i < $rootScope.dashboard.pages.length; i++) {
+                if(page.pageID == $rootScope.dashboard.pages[i].pageID){
+                    $rootScope.selectedPage = i+1;
+                }
+            }
+            console.log("$rootScope", $rootScope);
         }
 
         /* update damith
@@ -215,14 +265,14 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         };
 
         $scope.widgetSettings = function (ev, widget) {
-            if(typeof widget.commonSrc == "undefined"){
+            if(typeof widget.widgetData.commonSrc == "undefined"){
                 $mdDialog.show({
-                    controller: widget.initCtrl,
-                    templateUrl: widget.initTemplate,
+                    controller: widget.widgetData.initCtrl,
+                    templateUrl: widget.widgetData.initTemplate,
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     locals: {
-                        widId: widget.id
+                        widId: widget.widgetData.id
                     }
                 })
                 .then(function () {
@@ -231,69 +281,50 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     //$mdDialog.hide();
                 });
             }else{
-                $csContainer.fillCSContainer(widget.commonSrc.src);
+                $csContainer.fillCSContainer(widget.widgetData.commonSrc.src);
                 $state.go("home.QueryBuilder", {widObj:widget});
             }
             $rootScope.widget = widget;
         };
 
-        $scope.showWidget = function (ev, wid) {
+        $scope.showWidget = function (ev, widget) {
             
-            $scope.tempWidth = wid.highchartsNG.size.width;
-            $scope.tempHeight = wid.highchartsNG.size.height;
+            $scope.tempWidth = widget.widgetData.highchartsNG.size.width;
+            $scope.tempHeight = widget.widgetData.highchartsNG.size.height;
             $mdDialog.show({
                     controller: 'showWidgetCtrl',
                     templateUrl: 'views/ViewShowWidget.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     locals: {
-                        widget: wid
+                        widget: widget
                     }
                 })
                 .then(function () {
-                    $scope.widget.highchartsNG.size.width = $scope.tempWidth;
-                    $scope.widget.highchartsNG.size.height = $scope.tempHeight;
+                    $scope.widget.widgetData.highchartsNG.size.width = $scope.tempWidth;
+                    $scope.widget.widgetData.highchartsNG.size.height = $scope.tempHeight;
                     //$mdDialog.hide();
                 }, function () {
-                    $scope.widget.highchartsNG.size.width = $scope.tempWidth;
-                    $scope.widget.highchartsNG.size.height = $scope.tempHeight;
+                    $scope.widget.widgetData.highchartsNG.size.width = $scope.tempWidth;
+                    $scope.widget.widgetData.highchartsNG.size.height = $scope.tempHeight;
                     //$mdDialog.hide();
                 });
         };
-
-        $scope.showData = function (ev, widget) {
-            
-            $mdDialog.show({
-                controller: widget.dataCtrl,
-                templateUrl: 'views/ViewWidgetSettingsData.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                locals: {
-                wid: widget
-                }
-            })
-            .then(function () {
-                    //
-            });
-
-            $rootScope.widget = widget;
-        };
-
         $scope.showFullView = function(widget){
 
             var showFullView = null;
             //if not dynamic visuals
-            if(widget.selectedChart == undefined){
+            if(widget.widgetData.selectedChart == undefined){
                 showFullView = false;
             }
             else{
             //if dynamic visuals
-                switch(widget.selectedChart.chartType){
+                switch(widget.widgetData.selectedChart.chartType){
                 case 'metric':
                     showFullView = false;
                 break;
                 default:
-                    if(widget.uniqueType=='Dynamic Visuals'){
+                    if(widget.widgetData.uniqueType=='Dynamic Visuals'){
                         showFullView = true;
                     }
                     else{
@@ -305,62 +336,48 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
             return showFullView;
         }
-
+        //dispaly or hide show data view icon according to necessity
         $scope.showDataView = function(widget){
 
             var showDataView = null;
             //if not dynamic visuals
-            if(widget.selectedChart == undefined){
-                showDataView = false;
+            if(widget.widgetData.selectedChart == undefined){ 
+                showDataView = false; //do not show data view option
             }
-            else{
-            //if dynamic visuals
-                switch(widget.selectedChart.chartType){
-                case 'metric':
+            else{ //if dynamic visuals
+            
+                switch(widget.widgetData.selectedChart.chartType){
+                case 'metric': // if type metric do not show data view option
                     showDataView = false;
                 break;
-                default:
-                    if(widget.dataCtrl != undefined){
-                        showDataView = true;
-                    }
-                    else{
-                        showDataView = false;
-                    }
+                default: // for other dynamic visuals show data view option
+                    if(widget.widgetData.dataCtrl != undefined){ showDataView = true; }
+                    else{ showDataView = false; }
                 break;
                 }
             }
             
             return showDataView;
         }
+        $scope.showData = function (ev, widget) {
+            
+            $mdDialog.show({
+                controller: widget.widgetData.dataCtrl,
+                templateUrl: 'views/ViewWidgetSettingsData.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: { wid: widget }
+            })
+            .then(function () {});
 
+            $rootScope.widget = widget;
+        };
         $scope.convertCSVtoJson = function (src) {
+
             AsTorPlotItems.then(function (data) {
                 $scope.items = data;
             });
         }
-        // $scope.showAdvanced = function (ev, widget) {
-        //     if(typeof widget.commonSrc == "undefined"){
-        //         $mdDialog.show({
-        //             controller: widget.initCtrl,
-        //             templateUrl: widget.initTemplate,
-        //             parent: angular.element(document.body),
-        //             targetEvent: ev,
-        //             locals: {
-        //                 widId: widget.id
-        //             }
-        //         })
-        //         .then(function () {
-        //             //$mdDialog.hide();
-        //         }, function () {
-        //             //$mdDialog.hide();
-        //         });
-        //     }else{
-        //         $csContainer.fillCSContainer(widget.commonSrc.src);
-        //         $state.go("home.QueryBuilder");
-        //     }
-            
-        //     $rootScope.widget = widget;
-        // };
 
         /*Summary:
          synchronizes data per widget
@@ -369,29 +386,29 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         $scope.syncWidget = function (widget) {
             
             console.log('syncing...');
-            if (typeof widget.widConfig != 'undefined') {
+            if (typeof widget.widgetData.widConfig != 'undefined') {
                 DynamicVisualization.syncWidget(widget, function (data) {
-                    widget.syncState = true;
+                    widget.widgetData.syncState = true;
                     widget = data;
                 });
-            }else if(typeof(widget.commonSrc) != "undefined"){
-                widget.syncState = false;
-                $qbuilder.sync(widget, function(data){
-                    widget.syncState = true;
+            }else if(typeof(widget.widgetData.commonSrc) != "undefined"){
+                widget.widgetData.syncState = false;
+                $qbuilder.sync(widget.widgetData, function(data){
+                    widget.widgetData.syncState = true;
                     widget = data;
-                    if(typeof wid.widData.drilled != "undefined" && wid.widData.drilled)
+                    if(typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
                         $scope.widInit();
                 });
             }
         };
 
-        $scope.widInit = function(wid){
-            if(typeof wid.widData.drilled != "undefined" && wid.widData.drilled)
+        $scope.widInit = function(widget){
+            if(typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
             {
-                var drillConf = wid.widData.drillConf;
+                var drillConf = widget.widgetData.widData.drillConf;
                 var client = $diginengine.getClient(drillConf.dataSrc);
-                wid.highchartsNG.options['customVar'] = drillConf.highestLvl;
-                wid.highchartsNG.options.chart['events'] ={
+                widget.widgetData.highchartsNG.options['customVar'] = drillConf.highestLvl;
+                widget.widgetData.highchartsNG.options.chart['events'] ={
                     drilldown: function (e) {
                                                 
                             if (!e.seriesOptions) {
@@ -419,17 +436,17 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                 //aggregate method
                                 clientObj.getAggData(srcTbl, fields, function(res, status, query) {
                                     
-                                    wid.widData.drillConf.currentLevel++;
-                                    switch(wid.widData.drillConf.currentLevel){
+                                    widget.widgetData.widData.drillConf.currentLevel++;
+                                    switch(widget.widgetData.widData.drillConf.currentLevel){
                                         case 2:
-                                            wid.widData.drillConf.level2Query = query;
+                                            widget.widgetData.widData.drillConf.level2Query = query;
                                         break;
                                         case 3:
-                                            wid.widData.drillConf.level3Query = query;
+                                            widget.widgetData.widData.drillConf.level3Query = query;
                                         break;
                                     }
-                                    wid.widData.drillConf.previousQuery = wid.widData.drillConf.currentQuery;
-                                    wid.widData.drillConf.currentQuery = query;
+                                    widget.widgetData.widData.drillConf.previousQuery = widget.widgetData.widData.drillConf.currentQuery;
+                                    widget.widgetData.widData.drillConf.currentQuery = query;
                                     
                                     if(status){
                                         for (var key in res[0]) {
@@ -470,7 +487,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         },
                         drillup: function(e){
 
-                            wid.widData.drillConf.currentLevel--;
+                            widget.widgetData.widData.drillConf.currentLevel--;
                             var chart = this;
                             drillConf.drillOrdArr.forEach(function(key){
                                 if(key.nextLevel && key.nextLevel == chart.options.customVar)
@@ -510,35 +527,40 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             $mdDialog.hide();
         };
         $scope.clear = function () {
-            $rootScope.dashboard.widgets = [];
+            $rootScope.dashboard.pages[$rootScope.selectePage-1].widgets = [];
         };
 
         $scope.remove = function (widget, ev) {
             $mdDialog.show({
-                controller: closeWidgetCtrl,
+                controller: function closeWidgetCtrl($scope, $mdDialog) {
+
+                    var closeWidget = null;
+                    $scope.close = function(){
+
+                        $mdDialog.hide();
+                        closeWidget = true;
+                    }
+                    $scope.cancel = function () {
+
+                        $mdDialog.cancel();
+                        closeWidget = false;
+                    };
+
+                    return closeWidget;
+                },
                 templateUrl: 'views/closeWidget.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 clickOutsideToClose: true
+
             }).then(function (closeWidget) {
+
                 if(closeWidget){
-                    $rootScope.dashboard.widgets.splice($rootScope.dashboard.widgets.indexOf(widget), 1);
+
+                    var widgets = $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets;
+                    widgets.splice(widgets.indexOf(widget), 1);
                 }
             });
-        };
-
-        function closeWidgetCtrl($scope, $mdDialog) {
-
-            var closeWidget = null;
-            $scope.close = function(){
-                $mdDialog.hide();
-                closeWidget = true;
-            }
-            $scope.cancel = function () {
-                $mdDialog.cancel();
-                closeWidget = false;
-            };
-            return closeWidget;
         };
 
         $scope.showWidgetSettings = false;

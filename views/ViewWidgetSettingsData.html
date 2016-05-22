@@ -22,16 +22,16 @@
       
       <div id="canvas" ng-if="eventHndler.isLoadingChart==false">
           <div class="table-body">
-              <div class="widget-data-loading" ng-if="isTableSourceLoading">
+              <!-- <div class="widget-data-loading" ng-if="isTableSourceLoading">
                   Please wait..
-              </div>
+              </div> -->
               <div class="layout-row" layout="row">
                       <div class="widget0m-mapped-data2">
                           <md-content>
                             <div layout="row" class="margin-top-20" layout-align="center center">
                                 <md-input-container class="md-icon-float md-block width80percent">
                                         <label>Search</label>
-                                        <input type="text" ng-model="query" ng-change="updateFilteredList(query)">
+                                        <input type="text" ng-model="search" ng-change="updateFilteredList(search)">
                                 </md-input-container>
                             </div>
                             <div class="table-area" layout-margin>

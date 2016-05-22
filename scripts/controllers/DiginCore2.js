@@ -71,7 +71,8 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
         $scope.eventHndler = {
                 isLoadingChart: true,
                 message: "Data Loading..."
-            }
+        }
+        $scope.defaultFileName = "file name";
 
         publicFun = {
             getDrilledLevel: function(){
@@ -105,7 +106,6 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                         query = $rootScope.widget.widgetData.commonSrc.query;
                     }
                     
-                    console.log("$rootScope", $rootScope);
                     $scope.client = $diginengine.getClient($rootScope.widget.widgetData.commonSrc.src.src);
 
                     if( $localStorage.tableData === null || 
@@ -138,8 +138,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                                 $localStorage.tableData = newTableData;
                                 $localStorage.originalList = newTableData;
                                 $localStorage.fieldData = $scope.fieldData;
-                                $localStorage.query = query;   
-
+                                $localStorage.query = query;
                             });
                     }
                     else{   //retrieve from $localStorage
@@ -160,8 +159,8 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
             }
         }
 
-        $scope.updateFilteredList = function(query) {
-            $scope.tableData = $filter("filter")($scope.originalList, query);
+        $scope.updateFilteredList = function(search) {
+            $scope.tableData = $filter("filter")($scope.originalList, search);
         };
 
         $scope.downloadPDF = function(ev){
@@ -309,7 +308,7 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                         "compCategory": null,
                         "compID": null,
                         "compName": $scope.dashboardName,
-                        "refreshInterval": null
+                        "refreshInterval": $scope.refreshInterval
                     }
                 }
                 else{
@@ -329,7 +328,7 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                 console.log("dashboardObject", dashboardObject);    
                 $http({
                     method: 'POST',
-                    url: 'http://192.168.2.33:8080/store_component',
+                    url: 'http://104.155.236.85:8080/store_component',
                     data: angular.toJson(dashboardObject),
                     headers: {  
                                 'Content-Type': 'application/json',
@@ -880,13 +879,10 @@ routerApp.controller('InputNameCtrl', [ '$scope', '$mdDialog', '$rootScope', fun
     
     $scope.setFileName = function(){
         if($scope.filename === undefined){
-            $rootScope.pdfFilename = "Data";
+            $rootScope.pdfFilename = $rootScope.widget.widgetData.uniqueType;
         }
         else if($scope.filename.length > 0){
             $rootScope.pdfFilename = $scope.filename;
-        }
-        else{
-            $rootScope.pdfFilename = "Data";
         }
         $scope.close();
     }

@@ -2,7 +2,7 @@
  * Created by Damith on 2/12/2016.
  */
 
-routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast) {
+routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls) {
 
     $scope.goDashboard = function() {
         $state.go('home.Dashboards');
@@ -868,28 +868,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     width: 300,
                     height: 220
             };
-            if (typeof widget.widgetData.commonSrc == "undefined") {
-                // widget.highchartsNG["size"] = {
-                //     width: 300,
-                //     height: 220
-                // };
-                widget.widgetData["commonSrc"] = {
+            widget.widgetData["commonSrc"] = {
                     src: $scope.sourceData,
                     mea: $scope.executeQryData.executeMeasures,
                     att: $scope.executeQryData.executeColumns,
                     query: $scope.receivedQuery
-                };
+            };
+
+            var objIndex = getRootObjectById(widget.widgetData.id, widgets);
+            //objIndex is integer if widget exists, o'wise returns undefined
+            if(objIndex === parseInt(objIndex, 10)){//if objindex is integer -> widget exists 
+            //-> user is updating widget
+                widgets[objIndex] = widget;
+            }
+            if(objIndex == null){//new widget
                 widgets.push(widget);
-            } else {
-                // $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
-                $scope.widget.widgetData["commonSrc"] = {
-                    src: $scope.sourceData,
-                    mea: $scope.executeQryData.executeMeasures,
-                    att: $scope.executeQryData.executeColumns,
-                    query: $scope.receivedQuery
-                };
-                var objIndex = getRootObjectById(widget.widgetData.id, widgets);
-                widget.widgetData[objIndex] = widget;
             }
 
             $scope.eventHndler.isMainLoading = true;
@@ -1612,9 +1605,17 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             for (var i = 0; i < $scope.commonData.measures.length; i++) {
                 $scope.fieldArray.push($scope.commonData.measures[i].filedName);
             }
-            for (var i = 0; i < $scope.commonData.columns.length; i++) {
-                $scope.fieldArray.push($scope.commonData.columns[i].filedName);
+            //remove repeating fields from columns
+            var filteredColumnArray = [];
+            filteredColumnArray = $scope.commonData.columns.filter( function( element ) {
+                if($scope.commonData.measures.indexOf( element ) < 0){
+                    return element;
+                }
+            });
+            for (var i = 0; i < filteredColumnArray.length; i++) {
+                $scope.fieldArray.push(filteredColumnArray[i].filedName);
             }
+            
             console.log($scope.fieldArray);
             var parameter;
             $scope.fieldArray.forEach(function(entry) {
@@ -1626,7 +1627,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 i++;
             });
 
-            var query = "SELECT " + $scope.fieldArray.toString() + " FROM Demo." + $scope.sourceData.tbl;
+            var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl;
             $scope.client.getExecQuery(query, function(data, status) {
                 $scope.summaryData = data;
                 $scope.eventHndler.isLoadingChart = false;

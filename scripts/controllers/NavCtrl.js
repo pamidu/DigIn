@@ -364,7 +364,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             
             $http({
                 method: 'GET',
-                url: 'http://192.168.2.33:8080/get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken=abbb092d0627514d0fa08e3b589b6742&Domain=duosoftware'
+                url: 'http://104.155.236.85:8080/get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken=abbb092d0627514d0fa08e3b589b6742&Domain=duosoftware'
             })
             .success(function(data){
 
@@ -465,7 +465,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     
                     $http({
                         method: 'GET',
-                        url: 'http://192.168.2.33:8080/get_all_components?SecurityToken=abbb092d0627514d0fa08e3b589b6742&Domain=duosoftware'
+                        url: 'http://104.155.236.85:8080/get_all_components?SecurityToken=abbb092d0627514d0fa08e3b589b6742&Domain=duosoftware'
                     })
                     .success(function(data){
 
@@ -510,7 +510,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             }
                         }
                     }).error(function (respose) {
-                        console.error('error request getAllReports...');
+                        console.log('error request getAllReports...');
                     });
                 }
             }
@@ -541,23 +541,38 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //navigate
         $scope.navigate = function (routeName, ev) {
 
+            var widgetLimit = 6;
+            var selectedPage = $rootScope.selectedPage;
+            var pageCount = $rootScope.dashboard.pages.length;
+            var pageWidgetCount = $rootScope.dashboard.pages[selectedPage-1].widgets.length;
             switch(routeName){
                 case "home":
                     $scope.goHomeDialog(ev);
                 break;
                 case "Add Page":
                     $scope.currentView = "Dashboard";
-                    $scope.showAddNewPage(ev);
-                    $state.go('home.Dashboards');
+                        $scope.showAddNewPage(ev);
+                        $state.go('home.Dashboards');
                 break;
                 case "Social Media Analytics":
                     $scope.currentView = "Social Analysis";
                     $scope.showAddSocialAnalysis(ev);
                 break;
                 case "Add Widgets":
-                    $scope.currentView = "Dashboard";
-                    $scope.showAddNewWidgets(ev);
-                    $state.go("home.Dashboards");
+                    if(pageWidgetCount < widgetLimit){
+                        $scope.currentView = "Dashboard";
+                        $scope.showAddNewWidgets(ev);
+                        $state.go("home.Dashboards");
+                    }
+                    else{//give message widget limit exceeded
+                        ngToast.create({
+                            className: 'danger',
+                            content: 'maximum widget limit exceeded',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
+                        });
+                    }
                 break;
                 case "Reports":
                     $scope.showReports(ev);
@@ -570,10 +585,22 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $state.go('home.' + routeName);
                 break;
                 case "Data Source":
-                    $rootScope.currentView = "CommonData";
-                    if (!$mdSidenav('right').isOpen()) {
-                        $mdSidenav('right').toggle().then(function () {
-                                $log.debug("toggle right is done");
+                    if(pageWidgetCount < widgetLimit){
+                        $rootScope.currentView = "CommonData";
+                        //open sidepanel if it is closed
+                        if (!$mdSidenav('right').isOpen()) {
+                            $mdSidenav('right').toggle().then(function () {
+                                    $log.debug("toggle right is done");
+                            });
+                        }
+                    }
+                    else{//give message maximum widget limit exceeded
+                        ngToast.create({
+                            className: 'danger',
+                            content: 'maximum widget limit exceeded',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
                         });
                     }
                 break;
@@ -615,8 +642,19 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     }, 0);
                 break;
                 case "Save":
-                    if($state.current.name == 'home.Dashboards' || $state.current.name == 'home.CustomDashboardViewer')
-                    $scope.saveDashboard(ev);
+                    $state.go('home.Dashboards');
+                    if(pageCount > 0){
+                        $scope.saveDashboard(ev);
+                    }
+                    else{// 
+                        ngToast.create({
+                            className: 'danger',
+                            content: 'At least one page required to save a dashboard',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
+                        });
+                    }
                 break;
                 case "Settings":
                     $scope.currentView = "Settings";

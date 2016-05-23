@@ -290,6 +290,8 @@
 
 
 
+        
+        <!-- User settings -->
         <md-tab>
             <md-tab-label>
                 <i class="setup-tab-label fa fa-clock-o"></i>
@@ -297,32 +299,39 @@
             
             <div class="md-padding">
                 <div layout="column" layout-align="space-between center" flex>
-                    <span class="setup-font-theme setup-user-heading">Widget Settings</span>
+                    <span class="setup-font-theme setup-user-heading">Settings</span>
                 </div>
             
-                <!-- <div class="md-padding"  layout-align="center center" ng-cloak  > -->
                 <div layout="column" layout-align="center center">
-                      <md-input-container style="width:200px;">
-                        <label>Refresh Interval (min)</label>
-                        <md-select ng-model="refreshInterval">
-                          <md-option ng-repeat="size in sizes" value="{{size}}">{{size}}</md-option>
-                        </md-select>
-                      </md-input-container>
+                
+                     <div layout="row">
+                       <md-input-container style="width:250px;">  
+                          <label>Cache Lifetime (Sec)</label>
+                          <!-- <ng-md-icon icon="autorenew" style="fill:blue" size="24"></ng-md-icon> -->
+                          <input ng-model="cacheLifetime" type="number" step="1">
+                        </md-input-container>
+                    </div>
 
-                      <md-input-container style="width:200px;">
+                    <div layout="row">
+                      <md-input-container style="width:250px;">
                         <label>Number of Widgets</label>
+                        <!-- <ng-md-icon icon="dashboard" style="fill:blue" size="24"></ng-md-icon> -->
                         <md-select ng-model="noOfWidget">
                         <md-option ng-value="topping.name" ng-repeat="topping in toppings">{{topping.name}}</md-option>
                         </md-select>
                       </md-input-container> 
-
-                      <md-input-container style="width:200px;">
+                    </div>
+                    
+                    <div layout="row"> 
+                      <md-input-container style="width:250px;">
                         <label>Request Limit</label>
+                        <!-- <ng-md-icon icon="short_text" style="fill:blue" size="24"></ng-md-icon> -->
                         <md-select ng-model="reqLimit">
                         <md-option ng-value="request.name" ng-repeat="request in requests">{{request.name}}</md-option>
                         </md-select>
                       </md-input-container> 
-
+                    </div>
+                      
                       <md-button class="setup-button md-raised md-primary" ng-click="updateSettings()">
                         <span class="setup-font-theme">UPDATE SETTINGS</span>
                       </md-button>

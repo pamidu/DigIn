@@ -165,8 +165,7 @@
 <script type="text/javascript" src="scripts/vendor/fullcalendar.js"></script>
 <script type="text/javascript" src="scripts/directives/calendar.js"></script>
 <!-- filesaver -->
-<script type="text/javascript"
-        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/98887/angular-fullscreen.js"></script>
+ 
 <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
 <script type="text/javascript" src="bower_components/ngstorage/ngStorage.js"></script>
@@ -286,7 +285,7 @@
 <script type="text/javascript" src="scripts/directives/directives.js"></script>
 <!--hight charts update damith -->
 <!-- // <script type="text/javascript" src="bower_components/highcharts/highcharts.js"></script> -->
-<script type="text/javascript" src="bower_components/highcharts/highcharts-more.js"></script>
+<script src="http://code.highcharts.com/highcharts-more.js"></script>
 <!-- customize angular gridster -->
 <script type="text/javascript" src="scripts/controllers/angular-gridster.js"></script>
 <script type="text/javascript"

@@ -11,7 +11,6 @@ var routerApp = angular.module('DuoDiginRt', [
         'angular.css.injector',
         'ui.router',
         '720kb.socialshare',
-        'FBAngular',
         'ngStorage',
         'configuration',
         'directivelibrary',

@@ -214,7 +214,7 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
     //#refresh
     //refresh all data
     $scope.onClickRefresh = function() {
-        serverRequest.getReportUIFromServer(eventHandler);
+        serverRequest.refresh();
     };
 
     //#onclick cancel filed load
@@ -435,11 +435,27 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                     UIDate: $scope.reportFiledList.UIDate
                 };
 
-                if (selDrpDwnObj.length == 0 || selDrpDwnObj == 'undefined') {
+                 if (typeof datePickerObj.fromdate === 'undefined' || typeof datePickerObj.todate == 'undefined') {
                     privateFun.fireMsg('0', '<strong>Error :' +
-                        ' </strong>please select the report data...');
+                        ' </strong>please select the report date parameter...');
+                    privateFun.doneReportLoad();
                     return;
+                } else {
+                    var validationState = false;
+                    for (var loop = 2; loop < selDrpDwnObj.length; loop++) {
+                        if (selDrpDwnObj[loop].value != "") {
+                            validationState = true;
+                        }
+                    }
+
+                    if (!validationState) {
+                        privateFun.fireMsg('0', '<strong>Error :' +
+                            ' </strong>please select the report data...');
+                        privateFun.doneReportLoad();
+                        return;
+                    }
                 }
+				
                 getReportName();
                 getSession();
                 reqParameter.rptParameter = '';
@@ -482,7 +498,17 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                     privateFun.doneReportLoad();
 
                 });
-            }
+            },
+             refresh: function () {
+                privateFun.clearIframe();
+                var selDrpDwnObj = $scope.reportFiledList.selectedDrpFiled;
+                $scope.reportFiledList.selectedDate.fromdate = "";
+                $scope.reportFiledList.selectedDate.todate = "";
+                for (var loop = 0; loop < selDrpDwnObj.length; loop++) {
+                    $scope.reportFiledList.selectedDrpFiled[loop].value = "";
+                }
+                $("select").val("");
+            } 
         }
     })();
     serverRequest.getReportUIFromServer(eventHandler);

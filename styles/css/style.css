@@ -2361,3 +2361,6 @@ md-tab-content > div{
     background-color: white !important;
     font-size: 30px;
 }
+.overflow-auto{
+    overflow: auto;
+}

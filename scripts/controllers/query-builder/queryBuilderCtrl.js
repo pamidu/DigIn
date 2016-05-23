@@ -904,9 +904,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 $scope.highchartsNG = $scope.selectedChart.initObj;
             else {            
                 $scope.highchartsNG = $scope.widget.widgetData.highchartsNG;
-                $scope.highchartsNG.series.forEach(function(key){
-                    $scope.recordedColors[key.origName] = key.color;
-                });
+                // $scope.highchartsNG.series.forEach(function(key){
+                //     $scope.recordedColors[key.origName] = key.color;
+                // });
                 $scope.isDrilled = $scope.widget.widgetData.widData.drilled;
                 if($scope.isDrilled) $scope.drillDownConfig = $scope.widget.widgetData.widData.drillConf;                
                 $scope.prevChartSize = angular.copy($scope.highchartsNG.size);

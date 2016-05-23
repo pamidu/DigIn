@@ -719,11 +719,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         if(numOfPages == 1){ $scope.message = numOfPages + " page"}
                         else{ $scope.message = numOfPages + " pages"}
 
-                        $scope.createuuid = function () {
-                            return Math.floor((1 + Math.random()) * 0x10000)
-                                .toString(16)
-                                .substring(1);
-                        };
                         $scope.createNewPage = function () {
     
                             var page = {   
@@ -990,5 +985,4 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     }
 
 ]);
-
 

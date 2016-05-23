@@ -49,7 +49,7 @@
     returns {a single object}*/
  function getRootObjectById(id,obj){
     for(i=0;i<obj.length;i++){
-      if(obj[i].id== id) return i;
+      if(obj[i].widgetData.id== id) return i;
     }
  };
 

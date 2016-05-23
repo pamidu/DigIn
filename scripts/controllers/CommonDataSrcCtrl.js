@@ -9,8 +9,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         $mdDialog, $rootScope, $http, Digin_Engine_API,
         Digin_Engine_API_Namespace, $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout) {
 
-        $rootScope.dashboard2 = [];
-
         $scope.datasources = [{
             name: "DuoStore",
             icon: "styles/icons/source/duo-store.svg",
@@ -286,21 +284,13 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 commonUi.selectedIndex = 1;
                 publicFun.clearAll(function(state) {
                     if (state) {
-                        ngToast.create({
-                            className: 'success',
-                            content: 'Please wait...',
-                            horizontalPosition: 'right',
-                            verticalPosition: 'bottom',
-                            timeout: 1500,
-                            dismissOnClick: true
-                        });
+                        $mdSidenav('right')
+                        .close()
+                        .then(function() {
+                            console.log('right sidepanel closed');
+                        });  
                     }
                 });
-                $mdSidenav('right')
-                    .close()
-                    .then(function() {
-                        $log.debug('right sidepanel closed');
-                    });
             },
             onClickNext: function(index) {
                 commonUi.isServiceError = false;
@@ -532,7 +522,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         dataname: "",
                         d3plugin: "",
                         divider: false,
-                        id: Math.floor(Math.random() * (100 - 10 + 1) + 10),
+                        id: Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1),
                         type: "Visualization",
                         width: '370px',
                         height: '300px',

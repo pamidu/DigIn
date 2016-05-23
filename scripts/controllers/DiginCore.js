@@ -266,27 +266,30 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         };
 
         $scope.widgetSettings = function (ev, widget) {
-            if(typeof widget.widgetData.commonSrc == "undefined"){
+
+            if(typeof widget.widgetData.commonSrc == "undefined"){//new widget
                 $mdDialog.show({
                     controller: widget.widgetData.initCtrl,
                     templateUrl: widget.widgetData.initTemplate,
                     parent: angular.element(document.body),
-                    targetEvent: ev,
-                    locals: {
-                        widId: widget.widgetData.id
-                    }
+                    targetEvent: ev
                 })
                 .then(function () {
                     //$mdDialog.hide();
                 }, function () {
                     //$mdDialog.hide();
                 });
-            }else{
+            }else{//user is updating widget, open query builder
                 $csContainer.fillCSContainer(widget.widgetData.commonSrc.src);
                 $state.go("home.QueryBuilder", {widObj:widget});
             }
-            $rootScope.widget = widget;
         };
+
+        $scope.createuuid = function () {
+                            return Math.floor((1 + Math.random()) * 0x10000)
+                                .toString(16)
+                                .substring(1);
+        }
 
         $scope.showWidget = function (ev, widget) {
             
@@ -361,17 +364,15 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             return showDataView;
         }
         $scope.showData = function (ev, widget) {
-            
+            //saving widget in $rootScope for use in widget data view
+            $rootScope.widget = widget;
             $mdDialog.show({
                 controller: widget.widgetData.dataCtrl,
                 templateUrl: 'views/ViewWidgetSettingsData.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
-                locals: { wid: widget }
             })
             .then(function () {});
-
-            $rootScope.widget = widget;
         };
         $scope.convertCSVtoJson = function (src) {
 

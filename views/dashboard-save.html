@@ -1,17 +1,16 @@
-<md-dialog style="min-width:50vw;">
-    <md-content layout-align="center center" layout-padding>
-        <div class="md-toolbar-tools" flex layout="row" layout-align="end center">
-            <p style="color:lightgrey;margin:0px;">SAVE</p>
-            <md-button ng-click="close()">
-                <md-icon style="color:whitesmoke;width: 10px;height: 10px;" md-svg-src="styles/css/images/icons/close.svg"></md-icon>
-            </md-button>
-
-        </div>
-        <!-- <div class="dashcontent" > -->
-        <div layout="row" layout-wrap>
-            <div layout="row" layout-align="start start" flex="30" style="padding:20px;">
-                <img src="styles/css/images/icons/material alperbert/avatar_tile_d_28.png" style="border-radius:100%;">
-                <p style="margin: 5px 20px; color:black;font-size:large;">Dashboard</p>
+<md-dialog plumb-item class="dialog-1 b-r-0">
+  <md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">
+      <div layout="row" layout-align="center center" class="digin-logo-wrapper2">
+        <img ng-src="styles/css/images/DiginLogo.png" class="digin-image">
+      </div>  
+      <div class="dialog-title">SAVE DASHBOARD</div>         
+      <md-button class="buttonMinwidth38 b-r-0" ng-click="close();">      
+        <ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>   
+      </md-button>            
+  </md-toolbar>
+  <md-content class="dialog-content-1" layout-padding>
+            <div layout="row" layout-align="start start">
+                <p style="font-size:large">Dashboard Details</p>
             </div>
             <div layout="row" flex layout-wrap>
                 <md-input-container flex="50">
@@ -19,10 +18,8 @@
                     <input ng-model="dashboardName" name="dashboardName">
                 </md-input-container>
                 <md-input-container flex="50">
-                    <!-- <label>Dashboard Type:</label>
-                                 <input ng-model="dashboardType" name="dashboardType" > -->
                     <label>Type</label>
-                    <md-select ng-model="dashboardType" name="dashboardType" ng-change="" style="color:black">
+                    <md-select ng-model="dashboardType" name="dashboardType">
                         <md-option value="SYSTEM">SYSTEM</md-option>
                         <md-option value="TYPE1">TYPE1</md-option>
                         <md-option value="TYPE2">TYPE2</md-option>
@@ -30,31 +27,23 @@
                     </md-select>
                 </md-input-container>
                 <md-input-container flex="50">
-                    <input ng-model="dashboardDate" type="date">
-                    <!--this shows  a huge mess on the ui
-                    <datepicker>
-                        <input ng-model="dashboardDate" type="text" style="padding-top:26px;width:400px;" class="angular-datepicker-input" />
-                    </datepicker>
--->
-                </md-input-container>
-                <md-input-container flex="50">
                     <label>Refresh Interval</label>
-                    <input ng-model="refreshInterval" name="refreshInterval">
+                    <md-select ng-model="refreshInterval" name="refreshInterval">
+                        <md-option value="30">30 Seconds</md-option>
+                        <md-option value="60">1 minute</md-option>
+                        <md-option value="120">2 minutes</md-option>
+                        <md-option value="300">5 minutes</md-option>
+                    </md-select>
                 </md-input-container>
             </div>
-        </div>
-        <div class="md-actions" layout="row">
-            <md-button class=" md-primary" ng-click="saveDashboardDetails('savePageOnly')">
-                <!--                <ng-md-icon icon="arrow_forward" style="fill:whitesmoke"></ng-md-icon>-->
-                save only the selected page
-            </md-button>
-            <md-button class=" md-primary" ng-click="saveDashboardDetails('saveAll')">
-                <!--                <ng-md-icon icon="arrow_forward" style="fill:whitesmoke"></ng-md-icon>-->
-                save the whole storyboard
-            </md-button>
-            <md-button class="md-primary" ng-click="saveDashboard()">
-                SAVE MemSql
-            </md-button>
-        </div>
-    </md-content>
+            <div class="md-actions" layout="row">
+                <span flex></span>
+                <md-button class="btn-dialog b-r-0" ng-click="saveDashboard()">
+                    Save
+                </md-button>
+                <md-button class="btn-dialog b-r-0" ng-click="close()">
+                    Cancel
+                </md-button>
+            </div>
+  </md-content>
 </md-dialog>

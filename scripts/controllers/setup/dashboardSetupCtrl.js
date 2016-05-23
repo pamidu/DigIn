@@ -613,8 +613,31 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
 
     //------TESTING END
 
-    //update refresh widget settings
+//update refresh widget settings
     $scope.updateSettings = function() {
+
+        if($scope.cacheLifetime==undefined)
+        {
+            fireMsg('0', 'Invalid cache lifetime settings!');
+            return;
+        }
+        else if($scope.noOfWidget==undefined)
+        {
+            fireMsg('0', 'Invalid widgets settings!');
+            return;
+        }
+        else if($scope.reqLimit==undefined)
+        {
+            fireMsg('0', 'Invalid request limit settings!');
+            return;
+        }
+        else if($scope.cacheLifetime<=0)
+        {
+            fireMsg('0', 'Invalid cache lifetime settings!');
+            return;
+        }
+        else
+        {}
 
         var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
 
@@ -626,7 +649,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
           // "refresh_interval":parseInt($scope.refreshInterval),
           // "widget_limit":parseInt($scope.noOfWidget),
           // "query_limit":parseInt($scope.reqLimit),
-          "refresh_interval":$scope.refreshInterval,
+          "cache_lifetime":$scope.cacheLifetime,
           "widget_limit":$scope.noOfWidget,
           "query_limit":$scope.reqLimit,
           "image_path":"/var",
@@ -651,5 +674,6 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
     };
 
 });
+
 
 

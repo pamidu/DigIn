@@ -70,7 +70,7 @@
                                 <div class="inline-date" ng-if="reportFiledList.UIDate.length !=0"
                                      ng-repeat="picker in reportFiledList.UIDate">
                                     <label>{{picker.fieldname}}</label>
-                                    <input type="text" class="form-control" datepicker
+                                    <input type="text" class="form-control datep" datepicker
                                            ng-model="reportFiledList.selectedDate[picker.fieldname]"
                                            placeholder="{{picker.fieldname}}"/>
                                 </div>
@@ -105,21 +105,23 @@
                         </span>
                         <span class="btn btn-block btn-default btn-close btn-font"
                               ng-click="onClickRefresh()">
-                                refresh
+                                clear
                         </span>
                         </div>
                     </div>
                     <!-- file data loading -->
                     <div class="btn-wrap">
                         <div class="filed-data-loading"
-                             ng-if="eventHandler.isFiledData">
+                             id="filedDataLoad"
+                             ng-class="eventHandler.isFiledData?'displayBlock':'displayNone'">
                             <h2> Please wait..</h2>
-                            <span class="btn btn-default btn-sm m-top-30" ng-click="onClickStLoading();">
+                            <span class="btn btn-default btn-sm m-top-30"
+                                  ng-click="onClickStLoading();">
                                 cancel
                             </span>
                         </div>
                         <div class="filed-data-loading"
-                             ng-if="reportFldLoading">
+                             ng-hide="!reportFldLoading">
                             <h2> report loading..</h2>
                         </div>
                     </div>

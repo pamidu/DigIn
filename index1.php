@@ -288,6 +288,7 @@
 <!--hight charts update damith -->
 <!-- // <script type="text/javascript" src="bower_components/highcharts/highcharts.js"></script> -->
 <script type="text/javascript" src="bower_components/highcharts/highcharts-more.js"></script>
+<script src="http://code.highcharts.com/highcharts-more.js"></script>
 <!-- customize angular gridster -->
 <script type="text/javascript" src="scripts/controllers/angular-gridster.js"></script>
 <script type="text/javascript"

@@ -42,23 +42,46 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
         UIElement: [],
         selectedDrpFiled: [],
         selectedDate: [],
+        isDateFound: false,
+        isDropDownFound: false,
         fromDate: '',
         toDate: '',
         cafDate: '',
-        tags: [
-            {id: 0, name: "SKY"},
-            {id: 1, name: "SKY2"}],
-        customerNames: [
-            {id: 0, name: 'RAJESWARI N'},
-            {id: 1, name: 'CHANDRASEKAR K'},
-            {id: 2, name: 'ANITHA B'},
-            {id: 3, name: 'ANANDALATCHOUMY S'},
-            {id: 4, name: 'ANURADHA R'},
-            {id: 5, name: 'VENKATESAN A'},
-            {id: 6, name: 'MURUGESAN S'},
-            {id: 7, name: 'GANESAN S'},
-            {id: 8, name: 'THIRUMANGAI G'}
-        ]
+        tags: [{
+            id: 0,
+            name: "SKY"
+        }, {
+            id: 1,
+            name: "SKY2"
+        }],
+        customerNames: [{
+            id: 0,
+            name: 'RAJESWARI N'
+        }, {
+            id: 1,
+            name: 'CHANDRASEKAR K'
+        }, {
+            id: 2,
+            name: 'ANITHA B'
+        }, {
+            id: 3,
+            name: 'ANANDALATCHOUMY S'
+        }, {
+            id: 4,
+            name: 'ANURADHA R'
+        }, {
+            id: 5,
+            name: 'VENKATESAN A'
+        }, {
+            id: 6,
+            name: 'MURUGESAN S'
+        }, {
+            id: 7,
+            name: 'GANESAN S'
+        }, {
+            id: 8,
+            name: 'THIRUMANGAI G'
+        }]
     };
     $scope.reportFiledList = reportFiledList;
 
@@ -86,30 +109,26 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
             capitalise: function (string) {
                 return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
             },
-            waitLoadingFiled: function (filedName) {
+            waitLoadingFiled: function () {
                 $scope.eventHandler.isFiledData = true;
-                // $scope.isFiled.found = false;
-                $scope.filedName = filedName;
-            }
-            ,
+                //$scope.isFiled.found = false;
+            },
             doneLoadedFiled: function () {
-                $scope.eventHandler.isFiledData = false;
-                // $scope.eventHandler.isDataFound = false;
-                // $scope.isFiled.found = true;
-            }
-            ,
+                $scope.$apply(function () {
+                    $scope.eventHandler.isFiledData = false;
+                    $scope.isFiled.found = true;
+                });
+            },
             waitParameterRender: function () {
                 $scope.isFiled.loading = true;
                 $scope.isFiled.found = false;
                 $scope.eventHandler.error.isGetError = false;
-            }
-            ,
+            },
             doneParameterRender: function () {
                 $scope.isFiled.loading = false;
                 $scope.isFiled.found = true;
                 $scope.eventHandler.error.isGetError = false;
-            }
-            ,
+            },
             gotParameterRenderError: function () {
                 $scope.isFiled.loading = false;
                 $scope.eventHandler.error.isGetError = true;
@@ -142,6 +161,46 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 var frame = $('#reportFram').get(0);
                 var frameDoc = frame.contentDocument || frame.contentWindow.document;
                 frameDoc.getElementsByTagName('body')[0].innerHTML = "";
+            },
+            getNumberOfMonth: function (month) {
+                switch (month.toLowerCase()) {
+                    case "january":
+                        return '01';
+                        break;
+                    case "february":
+                        return '02';
+                        break;
+                    case "march":
+                        return '03';
+                        break;
+                    case "april":
+                        return '04';
+                        break;
+                    case "may":
+                        return '05';
+                        break;
+                    case "june":
+                        return '06';
+                        break;
+                    case "july":
+                        return '07';
+                        break;
+                    case "august":
+                        return '08';
+                        break;
+                    case "september":
+                        return '09';
+                        break;
+                    case "october":
+                        return '10';
+                        break;
+                    case "november":
+                        return '11';
+                        break;
+                    case "December":
+                        return '12';
+                        break;
+                }
             }
         }
     })();
@@ -163,6 +222,14 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
         var e = document.getElementById(filedName);
         var select_value = e.options[e.selectedIndex].text;
         //console.log($scope.reportFiledList.selectedDate);
+
+
+        //this function work on filedname must need month or months
+        //get number of month
+        if (filedName == 'month' || filedName == "months") {
+            select_value = privateFun.getNumberOfMonth(select_value);
+        }
+
         var currentVal = {
             data: $scope.reportFiledList.selectedDrpFiled,
             length: $scope.reportFiledList.selectedDrpFiled.length,
@@ -197,7 +264,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
     //#refresh
     //refresh all data
     $scope.onClickRefresh = function () {
-        serverRequest.getReportUIFromServer(eventHandler);
+        serverRequest.refresh();
     };
 
     //#onclick cancel filed load
@@ -238,9 +305,15 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (xhttp.readyState == 4 && xhttp.status == 200) {
-                    response({'code': xhttp.status, 'data': xhttp.responseText});
+                    response({
+                        'code': xhttp.status,
+                        'data': xhttp.responseText
+                    });
                 } else {
-                    response({'code': xhttp.status, 'data': xhttp.responseText});
+                    response({
+                        'code': xhttp.status,
+                        'data': xhttp.responseText
+                    });
                 }
             };
             xhttp.open("GET", reqParameter.apiBase + 'getQueries?SecurityToken=' + reqParameter.token +
@@ -255,16 +328,26 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
             xhr.onreadystatechange = function (e) {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        data({'code': 200, 'length': length - 1, 'data': xhr.response});
+                        data({
+                            'code': 200,
+                            'length': length - 1,
+                            'data': xhr.response
+                        });
                     } else {
                         console.error("XHR didn't work: ", xhr.status);
-                        data({'code': xhr.status, 'data': xhr.status});
+                        data({
+                            'code': xhr.status,
+                            'data': xhr.status
+                        });
                     }
                 }
             };
             xhr.ontimeout = function () {
                 console.error("request timedout: ", xhr);
-                data({'code': 500, 'data': 'request timedout'});
+                data({
+                    'code': 500,
+                    'data': 'request timedout'
+                });
             };
             xhr.open("GET", Digin_PostgreSql + "executeQuery?query=" + encodeURIComponent(queryString) + "&SecurityToken=" + reqParameter.token + "" +
                 "&Domain=duosoftware.com&db=PostgreSQL", /*async*/ true);
@@ -337,6 +420,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                 switch (value) {
                                     case 'datepicker':
                                         reportFiledList.UIDate.push(dynObject);
+                                        reportFiledList.isDateFound = true;
                                         break;
                                     case 'textbox':
                                         reportFiledList.UITextBox.push(dynObject);
@@ -344,6 +428,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                     case 'dropdown':
                                         loop++;
                                         reportFiledList.UIDropDown.push(dynObject);
+                                        reportFiledList.isDropDownFound = true;
                                         length = reportFiledList.UIDropDown.length;
 
                                         executeQueryAryObj.id = loop;
@@ -357,7 +442,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                         $scope.executeQueryAry.push(executeQueryAryObj);
 
                                         //if (val.Query != "" && loop == 1) {
-                                        privateFun.waitLoadingFiled(val.Label.toLowerCase());
+                                        privateFun.waitLoadingFiled();
                                         getExecuteQuery(val.Query, length, function (res) {
                                             if (res.data == 500) {
                                                 privateFun.fireMsg('0', '<strong>Error 500 :' +
@@ -366,22 +451,25 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                             }
                                             var jsonObj = JSON.parse(res.data);
                                             var filed = [];
+                                            privateFun.doneLoadedFiled();
                                             for (var c in jsonObj.Result) {
                                                 if (Object.prototype.hasOwnProperty.call(jsonObj.Result, c)) {
                                                     val = jsonObj.Result[c];
                                                     angular.forEach(val, function (value, key) {
                                                         //  console.log(key + "," + value);
-                                                        for (var lop = 0; lop < reportFiledList.UIDropDown.length; lop++) {
-                                                            if (reportFiledList.UIDropDown[lop].fieldname ==
-                                                                key) {
-                                                                filed.push(value);
-                                                            }
+                                                        if (value != "sort" && value != "1" && value != "2" && value != "3" && value != "4"
+                                                            && value != "5" && value != "6" && value != "7" && value != "8"
+                                                            && value != "9" && value != "10" && value != "11" && value != "12"
+                                                            && value != "01" && value != "02" && value != "03" && value != "05"
+                                                            && value != "04" && value != "13" && value != "00"
+                                                            && value != "06" && value != "07" && value != "08" && value != "09") {
+                                                            filed.push(value);
                                                         }
 
                                                     });
                                                 }
                                             }
-                                            privateFun.doneLoadedFiled();
+
                                             reportFiledList.UIDropDown[res.length].data = filed;
                                         });
                                         //  }
@@ -396,6 +484,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
             },
             reportCreate: function () {
                 $scope.reportFldLoading = true;
+                $('iframe').contents().find("body").css("background-color", "#fff");
                 privateFun.clearIframe();
                 $scope.reportURL = $sce.trustAsResourceUrl('');
                 var selDrpDwnObj = $scope.reportFiledList.selectedDrpFiled;
@@ -405,11 +494,50 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                     UIDate: $scope.reportFiledList.UIDate
                 };
 
-                if (selDrpDwnObj.length == 0 || selDrpDwnObj == 'undefined') {
+                //if (typeof datePickerObj.fromdate === 'undefined' || typeof datePickerObj.todate == 'undefined') {
+                //    privateFun.fireMsg('0', '<strong>Error :' +
+                //        ' </strong>please select the report date parameter...');
+                //    privateFun.doneReportLoad();
+                //    return;
+                //} else {
+                //var validationState = false;
+                //for (var loop = 2; loop < selDrpDwnObj.length; loop++) {
+                //    if (selDrpDwnObj[loop].value != "") {
+                //        validationState = true;
+                //    }
+                //    // }
+                //}
+
+                //#report validation
+                // date validation
+                if ($scope.reportFiledList.isDateFound) {
+                    if (typeof datePickerObj.fromdate === 'undefined' || typeof datePickerObj.todate == 'undefined'
+                        || datePickerObj.fromdate === "" || datePickerObj.todate === "") {
+                        privateFun.fireMsg('0', '<strong>Error :' +
+                            ' </strong>please select the report date parameter...');
+                        privateFun.doneReportLoad();
+                        return;
+                    }
+                }
+                //drop down validation
+                var validationState = false;
+                var loop;
+                loop = $scope.reportFiledList.isDateFound ? 2 : 0;
+                if ($scope.reportFiledList.isDropDownFound) {
+                    for (loop; loop < selDrpDwnObj.length; loop++) {
+                        if (selDrpDwnObj[loop].value != "") {
+                            validationState = true;
+                        }
+                    }
+                }
+
+                if (!validationState) {
                     privateFun.fireMsg('0', '<strong>Error :' +
-                        ' </strong>please select the report data...');
+                        ' </strong>please select the report  parameter...');
+                    privateFun.doneReportLoad();
                     return;
                 }
+
                 getReportName();
                 getSession();
                 reqParameter.rptParameter = '';
@@ -429,12 +557,11 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                     if (i == 0) {
                         reqParameter.rptParameter = '{"' + selDrpDwnObj[i]['label'] + '" : ' +
                             '"' + selDrpDwnObj[i]['value'] + '"}';
-                    }
-                    else {
+                    } else {
                         reqParameter.rptParameter = reqParameter.rptParameter + ',{"' + selDrpDwnObj[i]['label'] + '" : ' +
                             '"' + selDrpDwnObj[i]['value'] + '"}';
                     }
-                }//end
+                } //end
 
                 //HTTP get report
                 $scope.eventHandler = {
@@ -453,6 +580,18 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                     privateFun.doneReportLoad();
 
                 });
+            },
+            refresh: function () {
+                privateFun.clearIframe();
+                var selDrpDwnObj = $scope.reportFiledList.selectedDrpFiled;
+                $scope.reportFiledList.selectedDate.fromdate = "";
+                $scope.reportFiledList.selectedDate.todate = "";
+                for (var loop = 0; loop < selDrpDwnObj.length; loop++) {
+                    $scope.reportFiledList.selectedDrpFiled[loop].value = "";
+                }
+                $("select").val("");
+                $('.datep').val("");
+                $('iframe').contents().find("body").css("background-color", "#fff");
             }
         }
     })();

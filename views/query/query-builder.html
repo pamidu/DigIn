@@ -324,18 +324,18 @@
                     <div class="query-view-warp">
                         <div class="query-viewer">
                             <div class="query-view-not-fund"
-                                 ng-if="!receivedQuery">
+                                 ng-if="!dataToBeBind.receivedQuery">
                                 <h5>
                                     <i class="ti-paint-bucket"></i>
                                     design query
                                 </h5>
                             </div>
                             <div class="editable-query">
-                                <span ng-hide="queryEditState">{{receivedQuery}}</span>
+                                <span ng-hide="queryEditState">{{dataToBeBind.receivedQuery}}</span>
                                 <div layout="row" ng-show="queryEditState">
                                     <md-input-container class="md-block" flex>
                                         <label>Query</label>
-                                        <textarea ng-model="receivedQuery" md-select-on-focus></textarea>
+                                        <textarea ng-model="dataToBeBind.receivedQuery" md-select-on-focus></textarea>
                                     </md-input-container>
                                     <md-input-container>
                                         <label>Limit</label>
@@ -349,7 +349,7 @@
                                         <label>Query</label>
                                         <input ng-model="receivedQuery">
                                     </md-input-container> -->
-                                    <md-button md-no-ink ng-click="getExecuteAgg(receivedQuery)" class="md-primary">go
+                                    <md-button md-no-ink ng-click="getExecuteAgg(dataToBeBind.receivedQuery)" class="md-primary">go
                                     </md-button>
                                 </div>
                             </div>

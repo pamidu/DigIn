@@ -96,7 +96,7 @@ routerApp.service('$qbuilder',function($diginengine){
                                 }
                             },
                             click: function(){
-                                alert('test');
+                                //alert('test');
                             }
                         }
                     }

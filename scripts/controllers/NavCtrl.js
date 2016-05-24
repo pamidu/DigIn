@@ -204,7 +204,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         
         $scope.defaultPage = {  
                                 "widgets": [], 
-                                "pageID": null,//default page id
+                                "pageID": "temp1111",//default page id
                                 "pageName": "DEFAULT",
                                 "pageData": null 
                             };
@@ -719,17 +719,33 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         if(numOfPages == 1){ $scope.message = numOfPages + " page"}
                         else{ $scope.message = numOfPages + " pages"}
 
+                        $scope.createuuid = function () {
+                            return Math.floor((1 + Math.random()) * 0x10000)
+                                .toString(16)
+                                .substring(1);
+                        }
                         $scope.createNewPage = function () {
-    
-                            var page = {   
-                                "widgets": [],
-                                "pageID": null,
-                                "pageName": $scope.title,
-                                "pageData":null
+                            
+                            if($scope.title){
+                                var page = {   
+                                    "widgets": [],
+                                    "pageID": "temp" + $scope.createuuid(),
+                                    "pageName": $scope.title,
+                                    "pageData":null
+                                }
+                                $rootScope.dashboard.pages.push(page);
+                                console.log("pages",$rootScope.pages);
+                                $mdDialog.hide();
                             }
-                            $rootScope.dashboard.pages.push(page);
-                            console.log("pages",$rootScope.pages);
-                            $mdDialog.hide();
+                            else{
+                                ngToast.create({
+                                    className: 'danger',
+                                    content: 'Please fill the name field',
+                                    horizontalPosition: 'center',
+                                    verticalPosition: 'top',
+                                    dismissOnClick: true
+                                });
+                            }
                         };
                         $scope.close = function () {
 

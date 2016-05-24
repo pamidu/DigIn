@@ -1,4 +1,4 @@
-<md-dialog plumb-item class="dialog-1 b-r-0">
+<md-dialog plumb-item class="dialog-1 b-r-0" ng-init="initialize()">
   <md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">
       <div layout="row" layout-align="center center" class="digin-logo-wrapper2">
         <img ng-src="styles/css/images/DiginLogo.png" class="digin-image">
@@ -20,7 +20,7 @@
                 <md-input-container flex="50">
                     <label>Type</label>
                     <md-select ng-model="dashboardType" name="dashboardType">
-                        <md-option value="SYSTEM">SYSTEM</md-option>
+                        <md-option value="SYSTEM" ng-selected>SYSTEM</md-option>
                         <md-option value="TYPE1">TYPE1</md-option>
                         <md-option value="TYPE2">TYPE2</md-option>
                         <md-option value="TYPE3">TYPE3</md-option>
@@ -29,7 +29,7 @@
                 <md-input-container flex="50">
                     <label>Refresh Interval</label>
                     <md-select ng-model="refreshInterval" name="refreshInterval">
-                        <md-option value="30">30 Seconds</md-option>
+                        <md-option value="30" ng-selected>30 Seconds</md-option>
                         <md-option value="60">1 minute</md-option>
                         <md-option value="120">2 minutes</md-option>
                         <md-option value="300">5 minutes</md-option>

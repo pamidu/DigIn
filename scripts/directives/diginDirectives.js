@@ -1,22 +1,27 @@
-routerApp.directive('getWidth', ['$timeout', '$location', function ($timeout, $location) {
+routerApp.directive('getWidth', ['$timeout', '$location', function($timeout, $location) {
     return {
         scope: {
             callbackFn: "&"
         },
-        link: function (scope, elem, attrs) {
-            scope.callbackFn({width: elem[0].clientWidth, height: elem[0].clientHeight});
+        link: function(scope, elem, attrs) {
+            scope.callbackFn({
+                width: elem[0].clientWidth,
+                height: elem[0].clientHeight
+            });
         }
     }
 }]);
 
 
 //ng enter directive
-routerApp.directive('ngEnter', function () {
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function (event) {
+routerApp.directive('ngEnter', function() {
+    return function(scope, element, attrs) {
+        element.bind("keydown keypress", function(event) {
             if (event.which === 13) {
-                scope.$apply(function () {
-                    scope.$eval(attrs.ngEnter, {'event': event});
+                scope.$apply(function() {
+                    scope.$eval(attrs.ngEnter, {
+                        'event': event
+                    });
                 });
 
                 event.preventDefault();
@@ -26,7 +31,7 @@ routerApp.directive('ngEnter', function () {
 });
 
 //word cloud
-routerApp.directive('diginWordCloud', function () {
+routerApp.directive('diginWordCloud', function() {
     return {
         restrict: 'E',
         transclude: true,
@@ -36,25 +41,28 @@ routerApp.directive('diginWordCloud', function () {
             height: '=',
         },
         template: '<div id="wordCanvas" style="height:100%;width:100%;"></div>',
-        link: function (scope, element) {
-            scope.wordCloudInit = function () {
+        link: function(scope, element) {
+            scope.wordCloudInit = function() {
                 var fill = d3.scale.category20();
-                var canvasWidth = 525;
+                var canvasWidth = 800;
                 var canvasHeight = 320;
-//         alert('width:'+canvasWidth+' height:'+canvasHeight); 
+                //         alert('width:'+canvasWidth+' height:'+canvasHeight); 
                 d3.layout.cloud().size([canvasWidth, canvasHeight])
-                    .words(scope.words.map(function (d) {
+                    .words(scope.words.map(function(d) {
                         console.log(d.name);
-                        return {text: d.name, size: d.val + 20};
+                        return {
+                            text: d.name,
+                            size: d.val + 20
+                        };
                     }))
-                    .rotate(function () {
+                    .rotate(function() {
                         return ~~(Math.random() * 2) * 90;
                     })
                     .font("Impact")
-                    .text(function (d) {
+                    .text(function(d) {
                         return d.text;
                     })
-                    .fontSize(function (d) {
+                    .fontSize(function(d) {
                         return d.size;
                     })
                     .on("end", draw)
@@ -64,41 +72,44 @@ routerApp.directive('diginWordCloud', function () {
                     var aspect = canvasWidth / canvasHeight,
                         chart = d3.select('#wordCanvas');
                     d3.select(window)
-                        .on("resize", function () {
+                        .on("resize", function() {
                             var targetWidth = chart.node().getBoundingClientRect().width;
                             chart.attr("width", targetWidth);
                             chart.attr("height", targetWidth / aspect);
                         });
+                    var svg = document.getElementById("wordCanvas");
+                    if (svg.childNodes.length == 0) {
 
-                    d3.select("#wordCanvas").append("svg")
-                        .attr("width", canvasWidth)
-                        .attr("height", canvasHeight)
-                        .append("g")
-                        .attr("transform", "translate(225,160)")
-                        .selectAll("text")
-                        .data(words)
-                        .enter().append("text")
-                        .style("font-size", function (d) {
-                            return d.size + "px";
-                        })
-                        .style("font-family", "Impact")
-                        .style("fill", function (d, i) {
-                            return fill(i);
-                        })
-                        //.style("margin", function(d) {return d.size + "px"})
-                        .attr("text-anchor", "middle")
-                        .attr("transform", function (d) {
-                            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                        })
-                        .text(function (d) {
-                            //console.log(d.text);
-                            return d.text;
-                        });
+                        d3.select("#wordCanvas").append("svg")
+                            .attr("width", canvasWidth)
+                            .attr("height", canvasHeight)
+                            .append("g")
+                            .attr("transform", "translate(505,120)")
+                            .selectAll("text")
+                            .data(words)
+                            .enter().append("text")
+                            .style("font-size", function(d) {
+                                return d.size + "px";
+                            })
+                            .style("font-family", "Impact")
+                            .style("fill", function(d, i) {
+                                return fill(i);
+                            })
+                            //.style("margin", function(d) {return d.size + "px"})
+                            .attr("text-anchor", "middle")
+                            .attr("transform", function(d) {
+                                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                            })
+                            .text(function(d) {
+                                //console.log(d.text);
+                                return d.text;
+                            });
+                    }
 
                 }
             };
 
-            scope.$on('getWordCloudData', function (event, data) {
+            scope.$on('getWordCloudData', function(event, data) {
                 //console.log('word cloud data:' + JSON.stringify(data.wordData));
                 scope.words = data.wordData;
                 scope.wordCloudInit();
@@ -109,7 +120,7 @@ routerApp.directive('diginWordCloud', function () {
 
 
 //pivot summary
-routerApp.directive('pivotSummary', function () {
+routerApp.directive('pivotSummary', function() {
 
     return {
         restrict: 'E',
@@ -119,16 +130,16 @@ routerApp.directive('pivotSummary', function () {
             fields: '='
         },
         template: '<div id="grid" style="height:100%; overflow:scroll"></div>',
-        link: function (scope, element) {
+        link: function(scope, element) {
             scope.selectedFields = scope.summary;
 
-            scope.$watch('summary', function (newValue, oldValue) {
+            scope.$watch('summary', function(newValue, oldValue) {
                 if (newValue) {
                     scope.drawSummary(newValue);
                 }
             });
 
-            scope.drawSummary = function (summaryData) {
+            scope.drawSummary = function(summaryData) {
                 scope.selectedFields = summaryData;
                 scope.products = [];
                 product = {};
@@ -155,7 +166,7 @@ routerApp.directive('pivotSummary', function () {
             if (typeof scope.selectedFields != "undefined")
                 scope.drawSummary(scope.selectedFields);
 
-            scope.$on('getPivotSummaryData', function (event, data) {
+            scope.$on('getPivotSummaryData', function(event, data) {
                 console.log('word cloud data:' + JSON.stringify(data.wordData));
                 scope.selectedFields = data.sumData;
                 scope.fields = data.fields;

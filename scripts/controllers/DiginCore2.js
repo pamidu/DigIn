@@ -234,18 +234,28 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
             $mdDialog.hide();
         };
 
-        // if(typeof $rootScope.clickedDash != "undefined"){
+        $scope.initialize = function(){
+            //if dashboard is already saved one get its name and display
+            if($rootScope.dashboard.compID){// dashboard is a saved one
 
-        //     typeof $rootScope.clickedDash.name != "undefined" ? $scope.dashboardName = $rootScope.clickedDash.name : $scope.dashboardName = ""
-        //     typeof $rootScope.clickedDash.type != "undefined" ? $scope.dashboardType = $rootScope.clickedDash.type : $scope.dashboardType = "";
-        //     typeof $rootScope.clickedDash.date != "undefined" ? $scope.dashboardDate = new Date($rootScope.clickedDash.date) : $scope.dashboardDate = "";
-        //     typeof $rootScope.clickedDash.culture != "undefined" ? $scope.dashboardCulture = $rootScope.clickedDash.culture : $scope.dashboardCulture = "";
-        // }
+                $scope.dashboardName = $rootScope.dashboard.compName;
+                $scope.dashboardType = $rootScope.dashboard.compType;
+                $scope.refreshInterval = $rootScope.dashboard.refreshInterval;
+            }
+        }
         
         $scope.saveDashboard = function() {  
 
-            if($scope.dashboardName){
-                console.log("rootScope", $rootScope);
+            if($scope.dashboardName && $scope.dashboardType && $scope.refreshInterval){
+
+                //if dashboard name type refreshinterval should be assigned to proceed
+                ngToast.create({
+                        className: 'info',
+                        content: 'Saving Dashboard...',
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                });
                 //get pages here
                 var pagesArray = [];
                 var pages = $rootScope.dashboard.pages;
@@ -276,7 +286,8 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                         }
 
                         var pageObject;
-                        if($rootScope.dashboard.pages[i].pageID == null){
+                        //if the page is a temporary page
+                        if($rootScope.dashboard.pages[i].pageID.substr(0, 4) == "temp"){
 
                             pageObject = {
                                             "widgets": widgetsArray,
@@ -324,19 +335,29 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                         "refreshInterval": $rootScope.dashboard.refreshInterval
                     }
                 }
-                
-                console.log("dashboardObject", dashboardObject);    
+                console.log("dashboardObject", dashboardObject);
+                //id fields are accepted close dialog
+                $mdDialog.hide();
+                    
                 $http({
                     method: 'POST',
-                    url: 'http://104.155.236.85:8080/store_component',
+                    url: 'http://192.168.2.33:8080/store_component',
                     data: angular.toJson(dashboardObject),
                     headers: {  
                                 'Content-Type': 'application/json',
+                                'SecurityToken':'1e9fe96bb7a42eb87342b44a6b82f03c',
+                                'Domain':'duosoftware'
                     }
                 })
                 .success(function(response){
 
                     console.log("response", response);
+                    //assign the id name type refresh interval to dashboard
+                    var selectedPage = $rootScope.selectedPage;
+                    $rootScope.dashboard.compID = response.Result;
+                    $rootScope.dashboard.compName = $scope.dashboardName;
+                    $rootScope.dashboard.compType = $scope.dashboardType;
+                    $rootScope.dashboard.refreshInterval = $scope.refreshInterval;
 
                     ngToast.create({
                         className: 'success',
@@ -345,7 +366,6 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                         verticalPosition: 'top',
                         dismissOnClick: true
                     });
-                    $mdDialog.hide();
                 })
                 .error(function(error){  
 
@@ -359,8 +379,14 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                     $mdDialog.hide()
                 });   
 
-            }else{
-                alert('please insert a dashboard name');
+            }else{ // one of the fields not filled
+                ngToast.create({
+                        className: 'danger',
+                        content: 'Please fill all the fields and try again!',
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
             }
         }
     }

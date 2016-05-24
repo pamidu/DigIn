@@ -447,7 +447,8 @@ drb >> dynamically report builder
 .m-r-10 {
     margin-right: 10px;
 }
-.m-l-15{
+
+.m-l-15 {
     margin-left: 15px;
 }
 
@@ -2830,4 +2831,27 @@ li:active {
     height: 300px;
     padding-top: 97px;
     z-index: 100;
+}
+
+/*welcome search bar*/
+.digin-welcome-sch-wrap {
+    width: 100%;
+    height: 100%;
+    margin: 6% 10%;
+}
+
+.font-ek-mukta {
+    font-family: 'Ek Mukta', sans-serif;
+}
+
+.font300 {
+    font-weight: 300;
+}
+
+.font200 {
+    font-weight: 200;
+}
+
+.search-bar-header {
+    color: rgb(185, 182, 182);
 }

@@ -2,8 +2,8 @@
  * Created by Damith on 2/24/2016.
  */
 
-routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReportSrv, $auth, $location,
-    Digin_Report_Base, Digin_PostgreSql, $stateParams, ngToast, $sce, Digin_Tomcat_Base, $state) {
+routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyReportSrv, $auth, $location,
+                                                        Digin_Report_Base, Digin_PostgreSql, $stateParams, ngToast, $sce, Digin_Tomcat_Base, $state) {
 
     $scope.isFiled = {
         loading: false,
@@ -26,7 +26,7 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
         isFiledData: false,
         isDataFound: true,
 
-        onClickBack: function() {
+        onClickBack: function () {
             $state.go('home.Dashboards');
         }
     };
@@ -42,6 +42,8 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
         UIElement: [],
         selectedDrpFiled: [],
         selectedDate: [],
+        isDateFound: false,
+        isDropDownFound: false,
         fromDate: '',
         toDate: '',
         cafDate: '',
@@ -85,9 +87,9 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
 
     //#private function
     //controller private function
-    var privateFun = (function() {
+    var privateFun = (function () {
         return {
-            fireMsg: function(msgType, content) {
+            fireMsg: function (msgType, content) {
                 ngToast.dismiss();
                 var _className;
                 if (msgType == '0') {
@@ -104,41 +106,41 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                     timeout: 3000,
                 });
             },
-            capitalise: function(string) {
+            capitalise: function (string) {
                 return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
             },
-            waitLoadingFiled: function(filedName) {
+            waitLoadingFiled: function () {
                 $scope.eventHandler.isFiledData = true;
-                // $scope.isFiled.found = false;
-                $scope.filedName = filedName;
+                //$scope.isFiled.found = false;
             },
-            doneLoadedFiled: function() {
-                $scope.eventHandler.isFiledData = false;
-                // $scope.eventHandler.isDataFound = false;
-                // $scope.isFiled.found = true;
+            doneLoadedFiled: function () {
+                $scope.$apply(function () {
+                    $scope.eventHandler.isFiledData = false;
+                    $scope.isFiled.found = true;
+                });
             },
-            waitParameterRender: function() {
+            waitParameterRender: function () {
                 $scope.isFiled.loading = true;
                 $scope.isFiled.found = false;
                 $scope.eventHandler.error.isGetError = false;
             },
-            doneParameterRender: function() {
+            doneParameterRender: function () {
                 $scope.isFiled.loading = false;
                 $scope.isFiled.found = true;
                 $scope.eventHandler.error.isGetError = false;
             },
-            gotParameterRenderError: function() {
+            gotParameterRenderError: function () {
                 $scope.isFiled.loading = false;
                 $scope.eventHandler.error.isGetError = true;
             },
-            clearAllUI: function() {
+            clearAllUI: function () {
                 $scope.reportFiledList.UIDate = [];
                 $scope.reportFiledList.UITextBox = [];
                 $scope.reportFiledList.UIDropDown = [];
                 $scope.reportFiledList.selectedDrpFiled = [];
                 $scope.reportFiledList.selectedDate = [];
             },
-            doneReportLoad: function() {
+            doneReportLoad: function () {
                 $scope.eventHandler = {
                     isDataFound: false,
                     isReportLoad: false,
@@ -152,20 +154,60 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                 }
                 $scope.reportFldLoading = false;
             },
-            clearIframe: function() {
+            clearIframe: function () {
                 $scope.eventHandler.isDataFound = true;
                 $scope.eventHandler.isReportLoad = false;
                 $scope.reportURL = $sce.trustAsResourceUrl('');
                 var frame = $('#reportFram').get(0);
                 var frameDoc = frame.contentDocument || frame.contentWindow.document;
                 frameDoc.getElementsByTagName('body')[0].innerHTML = "";
+            },
+            getNumberOfMonth: function (month) {
+                switch (month.toLowerCase()) {
+                    case "january":
+                        return '01';
+                        break;
+                    case "february":
+                        return '02';
+                        break;
+                    case "march":
+                        return '03';
+                        break;
+                    case "april":
+                        return '04';
+                        break;
+                    case "may":
+                        return '05';
+                        break;
+                    case "june":
+                        return '06';
+                        break;
+                    case "july":
+                        return '07';
+                        break;
+                    case "august":
+                        return '08';
+                        break;
+                    case "september":
+                        return '09';
+                        break;
+                    case "october":
+                        return '10';
+                        break;
+                    case "november":
+                        return '11';
+                        break;
+                    case "December":
+                        return '12';
+                        break;
+                }
             }
         }
     })();
     //end
 
     //#oncreate #report
-    $scope.onCreateReport = function() {
+    $scope.onCreateReport = function () {
         serverRequest.reportCreate();
     };
 
@@ -176,10 +218,18 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
 
     //#dropDown change selected
     //drop down on change event select
-    $scope.onChangeSelected = function(filedName) {
+    $scope.onChangeSelected = function (filedName) {
         var e = document.getElementById(filedName);
         var select_value = e.options[e.selectedIndex].text;
         //console.log($scope.reportFiledList.selectedDate);
+
+
+        //this function work on filedname must need month or months
+        //get number of month
+        if (filedName == 'month' || filedName == "months") {
+            select_value = privateFun.getNumberOfMonth(select_value);
+        }
+
         var currentVal = {
             data: $scope.reportFiledList.selectedDrpFiled,
             length: $scope.reportFiledList.selectedDrpFiled.length,
@@ -213,12 +263,12 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
 
     //#refresh
     //refresh all data
-    $scope.onClickRefresh = function() {
+    $scope.onClickRefresh = function () {
         serverRequest.refresh();
     };
 
     //#onclick cancel filed load
-    $scope.onClickStLoading = function() {
+    $scope.onClickStLoading = function () {
         privateFun.doneLoadedFiled();
     };
 
@@ -226,7 +276,7 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
     //#server request
     //Main function
     $scope.reportName = null;
-    var serverRequest = (function() {
+    var serverRequest = (function () {
         var reqParameter = {
             apiBase: Digin_Report_Base,
             reportServer: Digin_PostgreSql,
@@ -237,10 +287,10 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
             rptParameter: ''
 
         };
-        var getSession = function() {
+        var getSession = function () {
             reqParameter.token = getCookie("securityToken");
         };
-        var getReportName = function() {
+        var getReportName = function () {
             var reportName = $stateParams['reportNme'];
             if (reportName == null || reportName == '') {
                 alert('invalid report name');
@@ -251,9 +301,9 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
             }
         };
         //get queries
-        var getQueries = function(reqParameter, response) {
+        var getQueries = function (reqParameter, response) {
             var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
+            xhttp.onreadystatechange = function () {
                 if (xhttp.readyState == 4 && xhttp.status == 200) {
                     response({
                         'code': xhttp.status,
@@ -273,9 +323,9 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
         };
 
         //Execute query
-        var getExecuteQuery = function(queryString, length, data) {
+        var getExecuteQuery = function (queryString, length, data) {
             var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function(e) {
+            xhr.onreadystatechange = function (e) {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         data({
@@ -292,7 +342,7 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                     }
                 }
             };
-            xhr.ontimeout = function() {
+            xhr.ontimeout = function () {
                 console.error("request timedout: ", xhr);
                 data({
                     'code': 500,
@@ -305,7 +355,7 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
         };
 
 
-        var bindingToData = function(res, filedName, list, length) {
+        var bindingToData = function (res, filedName, list, length) {
             if (res.code == 200) {
                 switch (list) {
                     case 'dropDown':
@@ -317,19 +367,19 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
             }
         };
         return {
-            getExecuteQuery: function(queryString, length, data) {
+            getExecuteQuery: function (queryString, length, data) {
                 return getExecuteQuery(queryString, length, data);
             },
-            getReportName: function() {
+            getReportName: function () {
                 return getReportName();
             },
-            getReportUIFromServer: function(eventHandler) {
+            getReportUIFromServer: function (eventHandler) {
                 privateFun.clearIframe();
                 getReportName();
                 getSession();
                 privateFun.clearAllUI();
                 privateFun.waitParameterRender();
-                dynamicallyReportSrv.getReportUI(reqParameter).success(function(data) {
+                dynamicallyReportSrv.getReportUI(reqParameter).success(function (data) {
                     privateFun.doneParameterRender();
                     var loop = 0;
                     for (var d in data) {
@@ -358,7 +408,7 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                                 'value': '',
                                 'label': dynObject.label
                             });
-                            angular.forEach(val, function(value, key) {
+                            angular.forEach(val, function (value, key) {
                                 var executeQueryAryObj = {
                                     id: '',
                                     filedName: '',
@@ -370,6 +420,7 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                                 switch (value) {
                                     case 'datepicker':
                                         reportFiledList.UIDate.push(dynObject);
+                                        reportFiledList.isDateFound = true;
                                         break;
                                     case 'textbox':
                                         reportFiledList.UITextBox.push(dynObject);
@@ -377,6 +428,7 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                                     case 'dropdown':
                                         loop++;
                                         reportFiledList.UIDropDown.push(dynObject);
+                                        reportFiledList.isDropDownFound = true;
                                         length = reportFiledList.UIDropDown.length;
 
                                         executeQueryAryObj.id = loop;
@@ -390,8 +442,8 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                                         $scope.executeQueryAry.push(executeQueryAryObj);
 
                                         //if (val.Query != "" && loop == 1) {
-                                        privateFun.waitLoadingFiled(val.Label.toLowerCase());
-                                        getExecuteQuery(val.Query, length, function(res) {
+                                        privateFun.waitLoadingFiled();
+                                        getExecuteQuery(val.Query, length, function (res) {
                                             if (res.data == 500) {
                                                 privateFun.fireMsg('0', '<strong>Error 500 :' +
                                                     ' </strong>Report filed load error...');
@@ -399,19 +451,25 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                                             }
                                             var jsonObj = JSON.parse(res.data);
                                             var filed = [];
+                                            privateFun.doneLoadedFiled();
                                             for (var c in jsonObj.Result) {
                                                 if (Object.prototype.hasOwnProperty.call(jsonObj.Result, c)) {
                                                     val = jsonObj.Result[c];
-                                                    angular.forEach(val, function(value, key) {
+                                                    angular.forEach(val, function (value, key) {
                                                         //  console.log(key + "," + value);
-                                                        if (value != "sort" && value != "1" && value != "2"  && value != "3"  ) {
+                                                        if (value != "sort" && value != "1" && value != "2" && value != "3" && value != "4"
+                                                            && value != "5" && value != "6" && value != "7" && value != "8"
+                                                            && value != "9" && value != "10" && value != "11" && value != "12"
+                                                            && value != "01" && value != "02" && value != "03" && value != "05"
+                                                            && value != "04" && value != "13" && value != "00"
+                                                            && value != "06" && value != "07" && value != "08" && value != "09") {
                                                             filed.push(value);
                                                         }
 
                                                     });
                                                 }
                                             }
-                                            privateFun.doneLoadedFiled();
+
                                             reportFiledList.UIDropDown[res.length].data = filed;
                                         });
                                         //  }
@@ -420,12 +478,13 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                             });
                         }
                     }
-                }).error(function(respose) {
+                }).error(function (respose) {
                     privateFun.gotParameterRenderError();
                 });
             },
-            reportCreate: function() {
+            reportCreate: function () {
                 $scope.reportFldLoading = true;
+                $('iframe').contents().find("body").css("background-color", "#fff");
                 privateFun.clearIframe();
                 $scope.reportURL = $sce.trustAsResourceUrl('');
                 var selDrpDwnObj = $scope.reportFiledList.selectedDrpFiled;
@@ -435,27 +494,50 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                     UIDate: $scope.reportFiledList.UIDate
                 };
 
-                 if (typeof datePickerObj.fromdate === 'undefined' || typeof datePickerObj.todate == 'undefined') {
-                    privateFun.fireMsg('0', '<strong>Error :' +
-                        ' </strong>please select the report date parameter...');
-                    privateFun.doneReportLoad();
-                    return;
-                } else {
-                    var validationState = false;
-                    for (var loop = 2; loop < selDrpDwnObj.length; loop++) {
-                        if (selDrpDwnObj[loop].value != "") {
-                            validationState = true;
-                        }
-                    }
+                //if (typeof datePickerObj.fromdate === 'undefined' || typeof datePickerObj.todate == 'undefined') {
+                //    privateFun.fireMsg('0', '<strong>Error :' +
+                //        ' </strong>please select the report date parameter...');
+                //    privateFun.doneReportLoad();
+                //    return;
+                //} else {
+                //var validationState = false;
+                //for (var loop = 2; loop < selDrpDwnObj.length; loop++) {
+                //    if (selDrpDwnObj[loop].value != "") {
+                //        validationState = true;
+                //    }
+                //    // }
+                //}
 
-                    if (!validationState) {
+                //#report validation
+                // date validation
+                if ($scope.reportFiledList.isDateFound) {
+                    if (typeof datePickerObj.fromdate === 'undefined' || typeof datePickerObj.todate == 'undefined'
+                        || datePickerObj.fromdate === "" || datePickerObj.todate === "") {
                         privateFun.fireMsg('0', '<strong>Error :' +
-                            ' </strong>please select the report data...');
+                            ' </strong>please select the report date parameter...');
                         privateFun.doneReportLoad();
                         return;
                     }
                 }
-				
+                //drop down validation
+                var validationState = false;
+                var loop;
+                loop = $scope.reportFiledList.isDateFound ? 2 : 0;
+                if ($scope.reportFiledList.isDropDownFound) {
+                    for (loop; loop < selDrpDwnObj.length; loop++) {
+                        if (selDrpDwnObj[loop].value != "") {
+                            validationState = true;
+                        }
+                    }
+                }
+
+                if (!validationState) {
+                    privateFun.fireMsg('0', '<strong>Error :' +
+                        ' </strong>please select the report  parameter...');
+                    privateFun.doneReportLoad();
+                    return;
+                }
+
                 getReportName();
                 getSession();
                 reqParameter.rptParameter = '';
@@ -490,16 +572,16 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                         found: false
                     }
                 };
-                dynamicallyReportSrv.getRenderReport(reqParameter).success(function(data) {
+                dynamicallyReportSrv.getRenderReport(reqParameter).success(function (data) {
                     var reportLink = data;
                     privateFun.doneReportLoad();
                     $scope.reportURL = $sce.trustAsResourceUrl(reportLink);
-                }).error(function(res) {
+                }).error(function (res) {
                     privateFun.doneReportLoad();
 
                 });
             },
-             refresh: function () {
+            refresh: function () {
                 privateFun.clearIframe();
                 var selDrpDwnObj = $scope.reportFiledList.selectedDrpFiled;
                 $scope.reportFiledList.selectedDate.fromdate = "";
@@ -508,11 +590,13 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                     $scope.reportFiledList.selectedDrpFiled[loop].value = "";
                 }
                 $("select").val("");
-            } 
+                $('.datep').val("");
+                $('iframe').contents().find("body").css("background-color", "#fff");
+            }
         }
     })();
     serverRequest.getReportUIFromServer(eventHandler);
-    $scope.toggle = function(item, list) {
+    $scope.toggle = function (item, list) {
         var idx = list.indexOf(item);
         if (idx > -1) list.splice(idx, 1);
         else list.push(item);
@@ -521,15 +605,15 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
 
     //test code
     $scope.noResultsTag = null;
-    $scope.addTag = function() {
+    $scope.addTag = function () {
         $scope.tags.push({
             id: $scope.tags.length,
             name: $scope.noResultsTag
         });
     };
-    $scope.$watch('noResultsTag', function(newVal, oldVal) {
+    $scope.$watch('noResultsTag', function (newVal, oldVal) {
         if (newVal && newVal !== oldVal) {
-            $timeout(function() {
+            $timeout(function () {
                 var noResultsLink = $('.select2-no-results');
                 console.log(noResultsLink.contents());
                 $compile(noResultsLink.contents())($scope);
@@ -544,9 +628,9 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
 
     //#execute query handler
     $scope.executeQueryAry = [];
-    var executeQryHandler = (function() {
+    var executeQryHandler = (function () {
         return {
-            executeNextQuery: function(filedName, selectedVal) {
+            executeNextQuery: function (filedName, selectedVal) {
                 //console.log(filedName);
                 //console.log(selectedVal);
                 var executeQueryAry = $scope.executeQueryAry;
@@ -570,7 +654,7 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                                 var nextQuery = nextQuery.replace(replaceTxt, "'" + selectedVal + "'");
                                 nextQuery = nextQuery.replace('All', selectedVal);
 
-                                serverRequest.getExecuteQuery(nextQuery, length, function(res) {
+                                serverRequest.getExecuteQuery(nextQuery, length, function (res) {
                                     if (res.data == 500) {
                                         privateFun.fireMsg('0', '<strong>Error 500 :' +
                                             ' </strong>Report filed load error...');
@@ -583,7 +667,7 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                                         for (var c in jsonObj.Result) {
                                             if (Object.prototype.hasOwnProperty.call(jsonObj.Result, c)) {
                                                 val = jsonObj.Result[c];
-                                                angular.forEach(val, function(value, key) {
+                                                angular.forEach(val, function (value, key) {
                                                     //console.log(key + "," + value);
                                                     for (var lop = 0; lop < reportFiledList.UIDropDown.length; lop++) {
                                                         if (reportFiledList.UIDropDown[lop].fieldname ==
@@ -596,7 +680,7 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
                                             }
                                         }
                                         reportFiledList.UIDropDown[foundArray].data = [];
-                                        setTimeout(function() {
+                                        setTimeout(function () {
                                             $scope.reportFiledList.UIDropDown[foundArray].data = filed;
                                         }, 50);
 
@@ -618,21 +702,21 @@ routerApp.controller('dynamicallyReportCtrl', function($scope, dynamicallyReport
     })();
 
 
-}).directive("select2", function($timeout, $parse) {
+}).directive("select2", function ($timeout, $parse) {
     return {
         restrict: 'AC',
         require: 'ngModel',
-        link: function(scope, element, attrs) {
-            $timeout(function() {
+        link: function (scope, element, attrs) {
+            $timeout(function () {
                 element.select2();
                 // element.select2Initialized = true;
             });
         }
     };
-}).directive("datepicker", function() {
+}).directive("datepicker", function () {
     return {
         restrict: "A",
-        link: function(scope, el, attr) {
+        link: function (scope, el, attr) {
             el.datepicker({
                 dateFormat: 'yy-mm-dd'
             });

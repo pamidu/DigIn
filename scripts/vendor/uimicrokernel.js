@@ -626,19 +626,27 @@
                 data: {Username : username, Password: password}
             }).
             success(function (data, status, headers, config) {
-                userName = data.Data.AuthData.Username;
-                loginResult.details = data.Data.AuthData;
-                loginResult.securityToken = data.Data.AuthData.SecurityToken;
 
-                sessionInfo = data;
-                securityToken = data.Data.AuthData.SecurityToken;
+                if(data.Success === false){
+                    loginResult.isSuccess = false;
+                    loginResult.message = data;
+                    $backdoor.log("Auth service returned an error when logging in.");
+                    $backdoor.log(data);
+                    $rootScope.$emit("auth_onLoginError", loginResult);           
+                }else{
+                    userName = data.Data.AuthData.Username;
+                    loginResult.details = data.Data.AuthData;
+                    loginResult.securityToken = data.Data.AuthData.SecurityToken;
 
-                document.cookie = "securityToken=" + securityToken;
-                _cookMan.set("securityToken", securityToken, 1);
-                _cookMan.set("authData", JSON.stringify(loginResult.details), 1);
+                    sessionInfo = data;
+                    securityToken = data.Data.AuthData.SecurityToken;
 
-                $rootScope.$emit("auth_onLogin", loginResult);
+                    document.cookie = "securityToken=" + securityToken;
+                    _cookMan.set("securityToken", securityToken, 1);
+                    _cookMan.set("authData", JSON.stringify(loginResult.details), 1);
 
+                    $rootScope.$emit("auth_onLogin", loginResult);
+                }              
             }).
             error(function (data, status, headers, config) {
                 loginResult.isSuccess = false;

@@ -22,8 +22,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
         $scope.onClickSignUp = function () {
             $state.go('signup');
         };
-
-
+     
         var privateFun = (function () {
             var reqParameter = {
                 apiBase: Digin_Report_Base,
@@ -46,7 +45,13 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                 //Old login-----------------------------------
                 login: function () {
                     $scope.error.isLoading = true;
+
+                    //check first time login or not
+                    var DetailExist=decodeURIComponent(getCookie('authData'));
+
+
                     $auth.login($scope.txtUname, $scope.txtPwd, "duoworld.duoweb.info");
+                    
                     $auth.onLoginResult(function () {
                         $scope.isLoggedin = true;
 
@@ -63,11 +68,19 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                         getSession();
                         startReportService();
 
-                        $state.go('welcome');
+                        
+                        if(DetailExist=="undefined")
+                        {
+                            $state.go('welcome');
+                        }
+                        else
+                        {
+                            $state.go('home');
+                        }
 
                     });
 
-                    $auth.onLoginError(function (event, data) {
+                    $auth.onLoginError(function (event, data) { 
                         $scope.error.isLoading = false;
                         privateFun.fireMsg('0', '<strong>Error : </strong>invalid login user name or password..');
                         $scope.error.isUserName = true;
@@ -135,6 +148,18 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
             }
         })();
 
+
+        $scope.isUserExist=function (email, cb) {  
+            $http.get('http://104.197.27.7:3048/GetUser/'+email)
+            .success(function(response){
+                cb(true);  
+            }).error(function(error){   
+                //alert("Fail !"); 
+                cb(false);
+            });     
+        };
+
+
         //on click login  button - Login user
         $scope.login = function () {
             privateFun.validationClear();
@@ -158,8 +183,20 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                 $scope.error.isPwd = true;
                 focus('password');
                 return;
-            } else {
-                privateFun.login();
+            } 
+            else {
+                //privateFun.login();
+                $scope.isUserExist(loginDetails.userName, function(data){
+                    if(data){
+                         privateFun.login();    
+                    }else{
+                       
+                        privateFun.fireMsg('0', '<strong>Error : </strong>Invalid login username. Please check.');
+                        $scope.error.isUserName = true;
+                        focus('txtUname');
+                        return;
+                    }
+                });
             }
         };
 

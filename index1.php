@@ -225,6 +225,7 @@
 <script type="text/javascript" src="scripts/factories/CommonSrcFact.js"></script>
 <script type="text/javascript" src="scripts/controllers/query-builder/queryBuilderCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/dynamically-report-builder/dynamicallyReportCtrl.js"></script>
+<script type="text/javascript" src="scripts/controllers/help/welcomeSearchBarCtrl.js"></script>
 <script type="text/javascript" src="scripts/services/QueryBuilderService.js"></script>
 <script type="text/javascript" src="scripts/factories/dynamicallyReport/dynamicallyReportFact.js"></script>
 

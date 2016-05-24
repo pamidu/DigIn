@@ -153,7 +153,27 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                 callback(res, true);
                             }
                             break;
-
+                            case "MSSQL":
+                            if (localStorage.getItem("MSSQL") === null || localStorage.getItem("MSSQL") == "null" ||
+                                localStorage.getItem("MSSQL") == "undefined") {
+                                $scope.client.getTables(function(res, status) {
+                                    // console.log("get tables result", res.length);
+                                    // console.log("status", status);
+                                    if (typeof res === 'object' && status) {
+                                        callback(res, status);
+                                        localStorage.setItem("MSSQL", res);
+                                    }
+                                    if(!status){//if status false
+                                        commonUi.isDataLoading = false;
+                                        publicFun.fireMessage('0', 'No tables available');
+                                    }
+                                });
+                            } else {
+                                var BigQueryTablesString = localStorage.getItem("MSSQL");
+                                var res = BigQueryTablesString.split(',');
+                                callback(res, true);
+                            }
+                            break;
                         default:
                             $scope.client.getTables(function (res, status) {
                                 callback(res, status);
@@ -183,7 +203,35 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                 callback(JSON.parse(BigQueryFieldsString), true);
                             }
                             break;
+                            case "MSSQL":
+                            var saveName = "MSSQL" + tbl;
+                            if (localStorage.getItem(saveName) === null ||
+                                localStorage.getItem(saveName) === "undefined") {
+                                $scope.client.getFields(tbl, function(data, status) {
+                                    callback(data, status);
+                                    localStorage.setItem(saveName, JSON.stringify(data));
+                                });
+                            } else {
+                                var BigQueryFieldsString = localStorage.getItem(saveName);
+                                console.log(BigQueryFieldsString);
+                                callback(JSON.parse(BigQueryFieldsString), true);
+                            }
+                            break;
 
+                        case "postgresql":
+                            var saveName = "postgresql" + tbl;
+                            if (localStorage.getItem(saveName) === null ||
+                                localStorage.getItem(saveName) === "undefined") {
+                                $scope.client.getFields(tbl, function(data, status) {
+                                    callback(data, status);
+                                    localStorage.setItem(saveName, JSON.stringify(data));
+                                });
+                            } else {
+                                var BigQueryFieldsString = localStorage.getItem(saveName);
+                                console.log(BigQueryFieldsString);
+                                callback(JSON.parse(BigQueryFieldsString), true);
+                            }
+                            break;
                         default:
                             $scope.client.getFields(tbl, function (data, status) {
                                 callback(data, status);

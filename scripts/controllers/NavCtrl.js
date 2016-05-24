@@ -350,6 +350,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
         //On click report Event
         $scope.goReport = function (report) {
+            // --- Add by Gevindu on 5/23/2016 - DUODIGIN-509
+            $mdSidenav('right')
+                    .close()
+                    .then(function() {
+                        $log.debug('right sidepanel closed');
+                    });
+            //----------
             $scope.showTabs(false);
             //closing the overlay
             $(".overlay").removeClass("overlay-search active");

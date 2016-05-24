@@ -3,10 +3,10 @@
  --- commonSrcInit
  */
 routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log',
-    'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API',
+    'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API','Digin_FileUploader',
     'Digin_Engine_API_Namespace', '$diginengine', 'ngToast', '$window', '$state', '$csContainer', 'Upload', '$timeout',
     function($scope, $controller, $mdSidenav, $log, CommonDataSrc,
-        $mdDialog, $rootScope, $http, Digin_Engine_API,
+        $mdDialog, $rootScope, $http, Digin_Engine_API,Digin_FileUploader,
         Digin_Engine_API_Namespace, $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout) {
 
         $scope.datasources = [{
@@ -426,8 +426,10 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                         for (var i = 0; i < files.length; i++) {
                                             var lim = i == 0 ? "" : "-" + i;
                                            
+                                            //url:'http://192.168.0.34:8080/file_upload',
+
                                             Upload.upload({
-                                                 url: 'http://192.168.0.34:8080/file_upload',
+                                                  url: Digin_FileUploader+'file_upload',
                                                   headers: {
                                                  'Content-Type': 'multipart/form-data',
                                                   

@@ -109,7 +109,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
             //.textContent('Inspect ' + person)
             .ariaLabel('Person inspect demo')
             .ok('Neat!')
-            .targetEvent(event)
+            .targetEvendt(event)
         );
     };
   
@@ -141,7 +141,13 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         { name: '5000' },
       ];
 
-    
+  $scope.clearDetails = [
+        { name: "Clear Cache" }
+      ];
+
+
+
+
 
     //-----------------
     $scope.headerbar = true;
@@ -673,7 +679,48 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         });   
     };
 
-});
 
+
+//Clear cache
+    $scope.clearCache = function() {
+        var confirm = $mdDialog.confirm()
+            .title('Do you want to clear cache ?')
+            .targetEvent(event)
+            .ok('Yes!')
+            .cancel('No!');
+            $mdDialog.show(confirm).then(function () {
+                var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
+                    if($scope.clearDetail==undefined)
+                    {
+                        fireMsg('0', 'Select cache clear option !');
+                        return;
+                    }
+                    else
+                    {}
+                                
+                        $http({
+                            method: 'POST',
+                            url: 'http://192.168.2.33:8080/clear_cache',
+                            headers: {'Content-Type': 'Content-Type:application/json',
+                            'SecurityToken':userInfo.SecurityToken,
+                            'Domain':userInfo.Domain
+                        }
+                        })
+                        .success(function(response){
+                            fireMsg('1', 'Cache Cleared Successfully !');
+                        })
+                        .error(function(error){   
+                            fireMsg('0', 'Please select the cache clear option !');
+                        });  
+            }, function () {              
+                           
+            });           
+    };
+
+
+
+
+
+});
 
 

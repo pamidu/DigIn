@@ -139,9 +139,6 @@
         </md-tab>
 
 
-
-
-
         <!-- User group creation -->
         <md-tab md-on-select="getAllGroups()">
 
@@ -336,6 +333,28 @@
                         <span class="setup-font-theme">UPDATE SETTINGS</span>
                       </md-button>
                 </div>
+                </br>
+                <div layout="column" layout-align="center center"> 
+
+                    <div layout="row"> 
+                      <md-input-container style="width:250px;">
+                        <label>Clear Cache</label>
+                        <md-select ng-model="clearDetail">
+                        <md-select-label>{{ clearDetail.name }}</md-select-label>
+                        <md-option ng-value="clearDetail.name" ng-repeat="clearDetail in clearDetails">{{clearDetail.name}}</md-option>
+                        </md-select>
+                      </md-input-container> 
+                    </div>
+                      
+
+                      <md-button class="setup-button md-raised md-primary" ng-click="clearCache()">
+                        <span class="setup-font-theme">CLEAR CACHE</span>
+                      </md-button>
+                </div>
+
+
+
+
             </div>
         </md-tab>
 

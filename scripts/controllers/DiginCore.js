@@ -77,10 +77,10 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             minRows: 1, // minimum amount of rows to show if the grid is empty
             maxRows: 100, // maximum amount of rows in the grid
             defaultSizeX: 6, // default width of an item in columns
-            defaultSizeY: 8, // default height of an item in rows
+            defaultSizeY: 20, // default height of an item in rows
             minSizeX: 6, // minimum column width of an item
             maxSizeX: null, // maximum column width of an item
-            minSizeY: 8, // minumum row height of an item
+            minSizeY: 20, // minumum row height of an item
             maxSizeY: null, // maximum row height of an item
             saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
             draggable: {
@@ -153,7 +153,6 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             $(this).parent().toggleClass('expand');
             $(this).parent().children().toggleClass('expand');
         }
-
         $scope.currentSourceView = function (ev, widget) {
             $scope.isTableSourceLoading = false;
             $mdDialog.show({
@@ -264,7 +263,6 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 }
             );
         };
-
         $scope.widgetSettings = function (ev, widget) {
 
             if(typeof widget.widgetData.commonSrc == "undefined"){//new widget
@@ -284,13 +282,11 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 $state.go("home.QueryBuilder", {widObj:widget});
             }
         };
-
         $scope.createuuid = function () {
                             return Math.floor((1 + Math.random()) * 0x10000)
                                 .toString(16)
                                 .substring(1);
         }
-
         $scope.showWidget = function (ev, widget) {
             
             $scope.tempWidth = widget.widgetData.highchartsNG.size.width;
@@ -499,7 +495,10 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 }
             }
         };
-
+        $scope.removeTabConfirmation = function(page, ev){
+            var selectedPage = $rootScope.selectedPage;
+            $rootScope.dashboard.pages.splice(selectedPage-1, 1);
+        }
         $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
@@ -572,15 +571,6 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
         $scope.config = {}; // use defaults
         $scope.model = {};
-
-
-//   $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
-//   if (newVal !== oldVal) {
-//     $scope.dashboard = $scope.dashboard[newVal];
-//   } else {
-//     $scope.dashboard = $scope.dashboard[1];
-//   }
-// });
 
 // init dashboard
         $scope.selectedDashboardId = '1';

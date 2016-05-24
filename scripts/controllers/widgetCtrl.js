@@ -2274,7 +2274,7 @@ routerApp.controller('calendarInit',['widId', '$scope', '$http', '$rootScope', '
 
     /* Change View */
     $scope.changeView = function(view, calendar) {
-        alert('tset');
+        //alert('tset');
         uiCalendarConfig.calendars[calendar].fullCalendar('changeView', view);
     };
     /* Change View */

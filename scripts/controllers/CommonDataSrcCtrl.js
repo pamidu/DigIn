@@ -1,13 +1,14 @@
+
 /*controllers
  --- commonDataSrcInit
  --- commonSrcInit
  */
 routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log',
-    'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API',
+    'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API','Digin_FileUploader',
     'Digin_Engine_API_Namespace', '$diginengine', 'ngToast', '$window', '$state', '$csContainer', 'Upload', '$timeout',
-    function ($scope, $controller, $mdSidenav, $log, CommonDataSrc,
-              $mdDialog, $rootScope, $http, Digin_Engine_API,
-              Digin_Engine_API_Namespace, $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout) {
+    function($scope, $controller, $mdSidenav, $log, CommonDataSrc,
+        $mdDialog, $rootScope, $http, Digin_Engine_API,Digin_FileUploader,
+        Digin_Engine_API_Namespace, $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout) {
 
         $scope.datasources = [{
             name: "DuoStore",
@@ -21,11 +22,11 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             name: "CSV/Excel",
             icon: "styles/icons/source/xlsx.svg",
             selected: false
-        }, {
+        },{
             name: "postgresql",
             icon: "styles/icons/source/api.svg",
             selected: false
-        }, {
+        },  {
             name: "MSSQL",
             icon: "styles/icons/source/mssql.svg",
             selected: false
@@ -33,11 +34,12 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             name: "Spreadsheet",
             icon: "styles/icons/source/spread-sheet.svg",
             selected: false
+
         }];
 
         //ng-disabled model of save button
         $scope.pendingColumns = true;
-
+        
         //data base field type
         $scope.dataBaseFiledTypes = [{
             'type': 'nvarchar',
@@ -79,20 +81,23 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             'type': 'INTEGER',
             'category': 'mes'
         },
-            {
-                'type': 'integer',
-                'category': 'mes'
-            },
-            {
-                'type': 'character varying',
-                'category': 'att'
-            },
+        {
+            'type': 'integer',
+            'category': 'mes'
+        },
+        {
+            'type': 'character varying',
+            'category': 'att'
+        },
 
 
-            {
-                'type': 'FLOAT',
-                'category': 'mes'
-            }];
+
+
+
+        {
+            'type': 'FLOAT',
+            'category': 'mes'
+        }];
 
 
         var chartTypes = [];
@@ -100,24 +105,24 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         //UI version 1.0
         //select source tab
         //comment UI
-        var publicFun = (function () {
+        var publicFun = (function() {
             return {
                 //clear all class Obj
-                clrTblSelectedObj: function (obj) {
+                clrTblSelectedObj: function(obj) {
                     var sourceInData = obj;
                     for (i = 0; i < sourceInData.length; i++) {
                         sourceInData[i].selected = false;
                     }
 
                 },
-                clrMainSelectedSource: function (obj) {
+                clrMainSelectedSource: function(obj) {
                     //clear main source when click each source
                     var sourceInData = obj;
                     for (i = 0; i < sourceInData.length; i++) {
                         sourceInData[i].selected = false;
                     }
                 },
-                clearAll: function (callBack) {
+                clearAll: function(callBack) {
                     publicFun.clrTblSelectedObj($scope.sourceUi.tableData);
                     publicFun.clrMainSelectedSource($scope.datasources);
                     $scope.sourceUi.selectedSource = '';
@@ -126,7 +131,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     commonUi.onRefresh(2);
                     callBack(true);
                 },
-                getAllTbl: function (src, callback) {
+                getAllTbl: function(src, callback) {
                     $scope.sourceUi.tableData = [];
                     commonUi.isDataLoading = true;
                     commonUi.isServiceError = false;
@@ -135,14 +140,14 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         case "BigQuery":
                             if (localStorage.getItem("BigQueryTables") === null || localStorage.getItem("BigQueryTables") == "null" ||
                                 localStorage.getItem("BigQueryTables") == "undefined") {
-                                $scope.client.getTables(function (res, status) {
+                                $scope.client.getTables(function(res, status) {
                                     // console.log("get tables result", res.length);
                                     // console.log("status", status);
                                     if (typeof res === 'object' && status) {
                                         callback(res, status);
                                         localStorage.setItem("BigQueryTables", res);
                                     }
-                                    if (!status) {//if status false
+                                    if(!status){//if status false
                                         commonUi.isDataLoading = false;
                                         publicFun.fireMessage('0', 'No tables available');
                                     }
@@ -155,13 +160,13 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             break;
 
                         default:
-                            $scope.client.getTables(function (res, status) {
+                            $scope.client.getTables(function(res, status) {
                                 callback(res, status);
                             });
                             break;
                     }
                 },
-                getAllFields: function (tbl, callback) {
+                getAllFields: function(tbl, callback) {
                     $scope.commonUi.attribute = [];
                     $scope.commonUi.measures = [];
                     $scope.sourceUi.selectedAttribute = [];
@@ -173,7 +178,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             var saveName = "BigQuery" + tbl;
                             if (localStorage.getItem(saveName) === null ||
                                 localStorage.getItem(saveName) === "undefined") {
-                                $scope.client.getFields(tbl, function (data, status) {
+                                $scope.client.getFields(tbl, function(data, status) {
                                     callback(data, status);
                                     localStorage.setItem(saveName, JSON.stringify(data));
                                 });
@@ -185,13 +190,13 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             break;
 
                         default:
-                            $scope.client.getFields(tbl, function (data, status) {
+                            $scope.client.getFields(tbl, function(data, status) {
                                 callback(data, status);
                             });
                             break;
                     }
                 },
-                creteTableObj: function (status, res) {
+                creteTableObj: function(status, res) {
                     if (status) {
                         commonUi.isServiceError = false;
                         for (var i = 0; i < res.length; i++) {
@@ -206,7 +211,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     }
                     commonUi.isDataLoading = false;
                 },
-                getRandomNo: function () {
+                getRandomNo: function() {
                     function s4() {
                         return Math.floor((1 + Math.random()) * 0x1000000)
                             .toString(16)
@@ -215,7 +220,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
 
                     return s4();
                 },
-                fireMessage: function (msgType, msg) {
+                fireMessage: function(msgType, msg) {
                     var _className;
                     if (msgType == '0') {
                         _className = 'danger';
@@ -242,7 +247,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             isRefMeasures: false,
             isServiceError: false,
             isDone: 0,
-            onClickTab: function (index) {
+            onClickTab: function(index) {
                 switch (index) {
                     case '1':
                         //selected source
@@ -259,7 +264,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         break;
                 }
             },
-            onClickBack: function (index) {
+            onClickBack: function(index) {
                 commonUi.isServiceError = false;
                 switch (index) {
                     case '1':
@@ -276,19 +281,19 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         break;
                 }
             },
-            onClickClose: function () {
+            onClickClose: function() {
                 commonUi.selectedIndex = 1;
-                publicFun.clearAll(function (state) {
+                publicFun.clearAll(function(state) {
                     if (state) {
                         $mdSidenav('right')
-                            .close()
-                            .then(function () {
-                                console.log('right sidepanel closed');
-                            });
+                        .close()
+                        .then(function() {
+                            console.log('right sidepanel closed');
+                        });  
                     }
                 });
             },
-            onClickNext: function (index) {
+            onClickNext: function(index) {
                 commonUi.isServiceError = false;
                 switch (index) {
                     case '1':
@@ -296,7 +301,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         commonUi.selectedIndex = 2;
                         var selectedSrc = $scope.sourceUi.selectedSource;
                         if (selectedSrc != null) {
-                            publicFun.getAllTbl(selectedSrc, function (res, state) {
+                            publicFun.getAllTbl(selectedSrc, function(res, state) {
                                 publicFun.creteTableObj(state, res);
                             });
                         }
@@ -307,7 +312,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         var selectedTbl = $scope.sourceUi.selectedNameSpace;
                         if (selectedTbl != null) {
                             $scope.pendingColumns = true;
-                            publicFun.getAllFields(selectedTbl, function (res, status) {
+                            publicFun.getAllFields(selectedTbl, function(res, status) {
                                 if (status) {
                                     var dataTypes = $scope.dataBaseFiledTypes;
                                     //eable save button
@@ -315,7 +320,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                     for (var c in res) {
                                         if (Object.prototype.hasOwnProperty.call(res, c)) {
                                             var val = res[c];
-                                            angular.forEach(val, function (value, key) {
+                                            angular.forEach(val, function(value, key) {
                                                 if (key == 'FieldType') {
                                                     for (var i = 0; i < dataTypes.length; i++) {
                                                         if (value == dataTypes[i].type) {
@@ -359,7 +364,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         break;
                 }
             },
-            onSelectClassRow: function (data) {
+            onSelectClassRow: function(data) {
                 var i;
                 var sourceInData = $scope.sourceUi.tableData;
                 for (i = 0; i < sourceInData.length; i++) {
@@ -374,7 +379,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 $scope.sourceUi.selectedNameSpace = data.name;
                 localStorage.setItem("lastSelectedTable", $scope.sourceUi.selectedNameSpace);
             },
-            onClickSelectedSrc: function (onSelect, data, ev) {
+            onClickSelectedSrc: function(onSelect, data, ev) {
                 commonUi.clearTblData();
                 var i;
                 var sourceInData = data;
@@ -390,57 +395,59 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     commonUi.openFileUploadWindow(ev);
                 }
             },
-            openFileUploadWindow: function (ev) {
+            openFileUploadWindow: function(ev) {
                 if (typeof ev != "undefined" && ev.type == 'click') {
                     $mdDialog.show({
                             controller: function fileUploadCtrl($scope, $mdDialog, fileUpload, $http, Upload) {
 
                                 $scope.diginLogo = 'digin-logo-wrapper2';
                                 $scope.preloader = false;
-                                $scope.finish = function () {
+                                $scope.finish = function() {
                                     $mdDialog.hide();
                                 }
-                                $scope.cancel = function () {
-                                    $mdDialog.cancel();
-                                }
-                                /* file upload */
-                                $scope.$watch('files', function () {
+                                $scope.cancel = function() {
+                                        $mdDialog.cancel();
+                                    }
+                                    /* file upload */
+                                $scope.$watch('files', function() {
                                     $scope.upload($scope.files);
                                 });
-                                $scope.$watch('file', function () {
+                                $scope.$watch('file', function() {
                                     if ($scope.file != null) {
                                         $scope.files = [$scope.file];
                                     }
                                 });
                                 $scope.log = '';
 
-                                $scope.upload = function (files) {
-
+                                $scope.upload = function(files) {
+                                    
                                     if (files && files.length) {
                                         $scope.preloader = true;
                                         $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
                                         for (var i = 0; i < files.length; i++) {
                                             var lim = i == 0 ? "" : "-" + i;
+                                           
+                                            //url:'http://192.168.0.34:8080/file_upload',
 
                                             Upload.upload({
-                                                url: 'http://192.168.0.34:8080/file_upload',
-                                                headers: {
-                                                    'Content-Type': 'multipart/form-data',
-
-                                                },
-                                                data: {
+                                                  url: Digin_FileUploader+'file_upload',
+                                                  headers: {
+                                                 'Content-Type': 'multipart/form-data',
+                                                  
+                                                  },           
+                                                  data: {
                                                     file: files[i],
                                                     db: 'BigQuery',
                                                     SecurityToken: 'e1f2e6f8c7a511a48b6add5c2ef24147',
                                                     Domain: 'duosoftware'
-                                                }
-
-                                            }).success(function (data) {
+                                                 }
+                                                
+                                            }).success(function(data){                                                 
                                                 fireMsg('1', 'Successfully uploaded!Analyse your data by picking it on bigquery!');
                                                 $scope.preloader = false;
                                                 $scope.diginLogo = 'digin-logo-wrapper2';
                                                 $mdDialog.hide();
-                                            }).error(function (data) {
+                                            }).error(function(data) {
                                                 fireMsg('0', 'There was an error while uploading data !');
                                                 $scope.preloader = false;
                                                 $scope.diginLogo = 'digin-logo-wrapper2';
@@ -455,18 +462,18 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             clickOutsideToClose: true,
                             targetEvent: ev
                         })
-                        .then(function (answer) {
-                        });
+                        .then(function(answer) {});
                 }
 
             },
-            clearTblData: function () {
+            clearTblData: function() {
                 publicFun.clrTblSelectedObj($scope.sourceUi.tableData);
             },
-            onSaveSource: function () {
+            onSaveSource: function() {
                 //if number of widgets are lesser than 6
                 var widgetLimit = 6;
-                if ($rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets.length < widgetLimit) {
+                if($rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.length < widgetLimit)
+                {
                     var length = $scope.sourceUi.sourceRcrd.length++;
                     var currentQry = $scope.sourceUi.selectedSource + '-' + length;
                     $scope.sourceUi.sourceRcrd.push({
@@ -534,14 +541,14 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         fMeaArr: $scope.sourceUi.mearsuresObj
                     });
 
-                    publicFun.clearAll(function (status) {
+                    publicFun.clearAll(function(status) {
                         if (status) {
                             $state.go("home.QueryBuilder", {
-                                widObj: {
-                                    "widgetID": null,
-                                    "widgetName": $scope.currWidget.widName,
-                                    "widgetData": $scope.currWidget
-                                }
+                                widObj: {   
+                                            "widgetID": null,
+                                            "widgetName": $scope.currWidget.widName,
+                                            "widgetData": $scope.currWidget
+                                        }
                             });
                             $mdSidenav('right').close();
                         }
@@ -549,48 +556,48 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     //after saving get back to first tab
                     commonUi.selectedIndex = 1;
                 }
-                else {
-
+                else{
+                    
                     fireMsg('0', 'Maximum Widget Limit Exceeded')
                 }
             },
-            onRemoveAtt: function (onSelected, data) {
+            onRemoveAtt: function(onSelected, data) {
                 var attrObj = onSelected;
                 var index = attrObj.indexOf(data);
                 if (data.isRemove) {
                     $scope.sourceUi.selectedAttribute[index].
-                        isRemove = false;
+                    isRemove = false;
                     $scope.sourceUi.attrObj[index].
-                        isRemove = false;
+                    isRemove = false;
                 } else {
                     $scope.sourceUi.selectedAttribute[index].
-                        isRemove = true;
+                    isRemove = true;
                     $scope.sourceUi.attrObj[index].
-                        isRemove = true;
+                    isRemove = true;
                 }
             },
-            onRemoveMeasures: function (onSelected, data) {
+            onRemoveMeasures: function(onSelected, data) {
                 var attrObj = onSelected;
                 var index = attrObj.indexOf(data);
                 if (data.isRemove) {
                     $scope.sourceUi.selectedMeasures[index].
-                        isRemove = false;
+                    isRemove = false;
                     $scope.sourceUi.mearsuresObj[index].
-                        isRemove = false;
+                    isRemove = false;
                 } else {
                     $scope.sourceUi.selectedMeasures[index].
-                        isRemove = true;
+                    isRemove = true;
                     $scope.sourceUi.mearsuresObj[index].
-                        isRemove = true;
+                    isRemove = true;
                 }
             },
-            onRefresh: function (index) {
+            onRefresh: function(index) {
                 switch (index) {
                     case 1:
                         //refresh attribute data
                         commonUi.isRefAttribute = true;
                         var attributes = $scope.commonUi.attribute;
-                        setTimeout(function () {
+                        setTimeout(function() {
                             $scope.sourceUi.selectedAttribute = angular.
                             copy(attributes);
                             commonUi.isRefAttribute = false;
@@ -600,14 +607,14 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         //refresh measures data
                         commonUi.isRefMeasures = true;
                         var measures = $scope.commonUi.measures;
-                        setTimeout(function () {
+                        setTimeout(function() {
                             $scope.sourceUi.selectedMeasures = angular.
                             copy(measures);
                             commonUi.isRefMeasures = false;
                         }, 100);
                         break;
                     case 3:
-                        publicFun.clearAll(function (state) {
+                        publicFun.clearAll(function(state) {
                             if (state) {
                                 ngToast.create({
                                     className: 'success',
@@ -625,7 +632,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         commonUi.isServiceError = false;
                         var selectedSrc = $scope.sourceUi.selectedSource;
                         if (selectedSrc != null) {
-                            publicFun.getAllTbl(selectedSrc, function (res, status) {
+                            publicFun.getAllTbl(selectedSrc, function(res, status) {
                                 publicFun.creteTableObj(status, res);
                             });
                         }
@@ -639,16 +646,16 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         //selected main source UI
         //Data source
         $scope.sourceUi = {
-            sourceRcrd: [],
-            selectedSource: '',
-            selectedNameSpace: '',
-            tableData: [],
-            selectedAttribute: [],
-            selectedMeasures: [],
-            search: ''
-        }
-        /* initialize tabs */
-        $scope.initTabSource = function (ev) {
+                sourceRcrd: [],
+                selectedSource: '',
+                selectedNameSpace: '',
+                tableData: [],
+                selectedAttribute: [],
+                selectedMeasures: [],
+                search: ''
+            }
+            /* initialize tabs */
+        $scope.initTabSource = function(ev) {
 
             for (var i = 0; i < $scope.datasources.length; i++) {
                 if ($scope.datasources[i].name == localStorage.getItem("lastSelectedSource")) {
@@ -663,22 +670,22 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             }
 
         }
-
+        
         function fireMsg(msgType, content) {
-            ngToast.dismiss();
-            var _className;
-            if (msgType == '0') {
-                _className = 'danger';
-            } else if (msgType == '1') {
-                _className = 'success';
-            }
-            ngToast.create({
-                className: _className,
-                content: content,
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-                dismissOnClick: true
-            });
+                    ngToast.dismiss();
+                    var _className;
+                    if (msgType == '0') {
+                        _className = 'danger';
+                    } else if (msgType == '1') {
+                        _className = 'success';
+                    }
+                    ngToast.create({
+                        className: _className,
+                        content: content,
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
         }
     }
 ]);

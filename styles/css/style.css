@@ -2269,6 +2269,7 @@ md-tab-content > div{
     width: 100%;
     z-index: 0;
     opacity: 0.8;
+    padding: 8px;
 }
 .dialog-title{
     font-family: 'Ek Mukta', sans-serif;

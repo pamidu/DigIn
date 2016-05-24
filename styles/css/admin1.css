@@ -1019,7 +1019,10 @@ a.thumbnail.active {
 .alert-info {
     background-color: #FFB300;
     border-color: #FFB300;
-    color: #fff;
+    color: #ffffff;
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 200;
+    font-size: 20px;
 }
 
 .alert-info hr {

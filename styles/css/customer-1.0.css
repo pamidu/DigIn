@@ -365,7 +365,11 @@ drb >> dynamically report builder
     width: 100%;
     color: #ffffff;
 }
-
+.processing {
+    background: #F5AC28 !important;
+    width: 100%;
+    color: #ffffff;
+}
 .info {
     background: #FFB300 !important;
     width: 100%;

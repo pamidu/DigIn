@@ -2384,6 +2384,41 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     //#customer query design
     $scope.getExecuteAgg = function(query) {
 
+         //-- Gevindu on 5/23/2016 due to DUODIGIN-434 
+        var str = query; 
+        var index;
+        var nameSpTbl; 
+        var nameSpTblArr;
+        var regX = new RegExp("FROM|From|from");    
+
+        var frmState = regX.exec(str);
+        var res = str.split(" ");  
+
+        for(var i =0 ; i<res.length;i++){
+         
+         if( res[i]  == frmState) 
+             index=i+1;
+        }
+
+        nameSpTbl = res[index];
+        nameSpTblArr= nameSpTbl.split(".");
+
+        var nameSpace = nameSpTblArr[0];
+        var tabl = nameSpTblArr[1];
+ 
+        if(typeof query == "undefined" || $diginurls.getNamespace() != nameSpace || $scope.sourceData.tbl != tabl){
+            ngToast.create({
+                        className: 'danger',
+                        content: "You're trying to query unauthorized namespace or a table!",
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
+           return;
+        }
+
+        //------ End
+        
         // privateFun.isQrySyntaxError(query);
 
         if (typeof query != "undefined") {

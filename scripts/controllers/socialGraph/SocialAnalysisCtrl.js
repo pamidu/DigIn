@@ -1,4 +1,4 @@
-routerApp.controller('socialAnalysisCtrl', function ($scope,$mdDialog,$location,$http,$state) {
+routerApp.controller('socialAnalysisCtrl', function ($scope,$mdDialog,$location,$http,$state,ngToast) {
 
 	getJSONData($http,'widgets',function(data){
      $scope.Widgets=data;
@@ -11,7 +11,16 @@ routerApp.controller('socialAnalysisCtrl', function ($scope,$mdDialog,$location,
 		if(state != undefined){
 			$state.go(state);
 			$mdDialog.hide();
-		}		
+		}	
+		else{
+			ngToast.create({
+                    className: 'danger',
+                    content: 'This feature is under development !',
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                    dismissOnClick: true
+            });
+		}
 	}
 
     $scope.close = function () {

@@ -681,7 +681,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                 if (!isFoundCnd) {
                     var seriesArr = $scope.executeQryData.executeMeasures;
-                    if (seriesArr.length > 0) {
+                    if (seriesArr.length > 0 || $scope.chartType =="pie") {
 
                         eval("$scope." + $scope.selectedChart.chartType + ".selectAttribute(column.filedName)");
 
@@ -844,6 +844,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             },
             onClickSelectedChart: function(data, onSelect) {
 
+                //-- Added by Gevindu on 2016-05-16 due to DUODIGIN-496   
+                if (onSelect.chart =="pivotsummary" && $scope.executeQryData.executeMeasures.length >5) {
+                    ngToast.create({
+                            className: 'warning',
+                            content: 'series should less than 8 to creat pivotsummary!',
+                            horizontalPosition: 'right',
+                            verticalPosition: 'bottom',
+                            timeout: 1500,
+                            dismissOnClick: true
+                        });
+
+                    return 0;
+                }
+
+                //-- Gevindu DUODIGIN-496 -end
                 //remove highcharts related configs
 
                 if (onSelect.chartType != 'metric' && onSelect.chartType != 'highCharts') {
@@ -1967,12 +1982,22 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         $scope.eventHndler.isLoadingChart = true;
 
         var measureArr = $scope.executeQryData.executeMeasures;
-        measureArr.forEach(function(key) {
+        
+        if(measureArr.length==0 && $scope.chartType =="pie")
+         {
+            fieldArr.push({
+                field: $scope.selectedCat,
+                agg: "percentage"
+            });
+         }
+         else{
+            measureArr.forEach(function(key) {
             fieldArr.push({
                 field: key.filedName,
                 agg: key.condition
             });
-        });
+          });
+         } 
 
         $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res, status, query) {
             if (status) {
@@ -2417,24 +2442,25 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }
             }
         }
-        // --- Added by Gevindu on 5/23/2016 DUODIGIN-436--> 
+// --- Added by Gevindu on 5/23/2016 DUODIGIN-436--> 
         var val, date, year, month, date;
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        if (cat == "Date") {
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var regX = new RegExp("DATE|Date|date|_DATE|_date|_Date");
+        if(regX.test(cat)){
+            
+             res.forEach(function(key){
 
-            res.forEach(function(key) {
-
-                date = new Date(key[cat] * 1000);
+                date = new Date(key[cat]*1000);
                 year = date.getFullYear();
                 month = months[date.getMonth()];
                 date = date.getDate();
-                val = year + "/" + month + "/" + date;
+                val= year+"/"+month +"/"+date;
 
                 key[cat] = val;
             });
 
         }
-        // ---- END ---
+        // ---- END --- 
         //fill the series array
         res.forEach(function(key) {
             serArr.forEach(function(ser) {

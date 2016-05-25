@@ -156,11 +156,11 @@
             }
         }
     });
-    dsh.factory('$servicehelpers', function($http, $auth) {
+    dsh.factory('$servicehelpers', function($http, $auth, Digin_Domain) {
         return {
             httpSend: function(method, cb, reqUrl, obj) {
                 if (method == "get") {
-                    $http.get(reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=duosoftware.com', {
+                    $http.get(reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain='+Digin_Domain, {
                         headers: {}
                     }).
                     success(function(data, status, headers, config) {
@@ -174,7 +174,7 @@
             sendWorker: function(wSrc, wData, cb) {
                 var w = new Worker(wSrc);
                 
-                wData.rUrl = wData.rUrl + "&SecurityToken=" + getCookie("securityToken") + "&Domain=duosoftware.com";
+                wData.rUrl = wData.rUrl + "&SecurityToken=" + getCookie("securityToken") + "&Domain="+Digin_Domain;
                 w.postMessage(JSON.stringify(wData));
                 w.addEventListener('message', function(event) {
                     if(event.data.state){
@@ -249,3 +249,4 @@
         };
     });
 })(angular.module('diginServiceHandler', []))
+

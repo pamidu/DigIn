@@ -23,10 +23,10 @@
             </div>
             <div flex="50">
                 <div class="digin-qb-header-text">
-                    <h1>
+                    
                         Query Builder
-                        <small>{{queryStr.crntQryBuildNme}}</small>
-                    </h1>
+                       <!--  <small>{{queryStr.crntQryBuildNme}}</small> -->
+                    
                 </div>
             </div>
             <div flex="20" class="bg-lightskyblueh-2 p-l-20">
@@ -218,7 +218,7 @@
                     </div> -->
                 </div>
 
-                <div ng-show="!isDrilled" class="digin-gb-row"
+                <div ng-disabled="!isDrilled" class="digin-gb-row"
                      ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric'">
                     <div class="panel-header inline-panel-header p-b-0">
                         <h3 class="font-weight-300">

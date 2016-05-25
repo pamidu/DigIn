@@ -5,11 +5,11 @@
 //service details
 //var parameter ={apiBase:'',reportName:'',token:''}
 //getReportUI(parameter)
-routerApp.factory('dynamicallyReportSrv', function ($http) {
+routerApp.factory('dynamicallyReportSrv', function ($http, Digin_Domain) {
     return {
         getReportUI: function (parameter) {
             return $http.get(parameter.apiBase + 'getLayout?SecurityToken=' + parameter.token +
-                '&Domain=duosoftware.com&Reportname=' + parameter.reportName + '', {
+                '&Domain='+Digin_Domain+'&Reportname=' + parameter.reportName + '', {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -18,7 +18,7 @@ routerApp.factory('dynamicallyReportSrv', function ($http) {
         },
         getAllReports: function (parameter) {
             return $http.get(parameter.apiBase + 'getreportnames?SecurityToken=' + parameter.token +
-                '&Domain=duosoftware.com', {
+                '&Domain='+Digin_Domain, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'

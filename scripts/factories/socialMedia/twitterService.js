@@ -3,7 +3,7 @@
  */
 
 //login with twitter
-routerApp.factory('twitterService', function ($q, ngToast, $http) {
+routerApp.factory('twitterService', function ($q, ngToast, $http, Digin_Domain) {
     var authorizationResult = false;
 
 
@@ -92,7 +92,7 @@ routerApp.factory('twitterService', function ($q, ngToast, $http) {
                 '' + parameter.key.access_token + ',' +
                 '' + parameter.key.access_token_secret + '}' +
                 '&hash_tag=earthquake&unique_id=1&source=twitter' +
-                '&SecurityToken=' + parameter.authToken + '&Domain=duosoftware');
+                '&SecurityToken=' + parameter.authToken + '&Domain='+Digin_Domain);
         },
         getSentimentAnalysis: function (parameter) {
             return $http.get(parameter.apiBase + 'sentimentanalysis?' +
@@ -101,7 +101,7 @@ routerApp.factory('twitterService', function ($q, ngToast, $http) {
                 '' + parameter.key.access_token + ',' +
                 '' + parameter.key.access_token_secret + '}' +
                 '&hash_tag=earthquake&unique_id=1&source=twitter' +
-                '&SecurityToken=' + parameter.authToken + '&Domain=duosoftware');
+                '&SecurityToken=' + parameter.authToken + '&Domain='+Digin_Domain);
         },
         getProfileInfo: function (parameter) {
             return $http.get(parameter.apiBase + 'sentimentanalysis?' +
@@ -110,7 +110,7 @@ routerApp.factory('twitterService', function ($q, ngToast, $http) {
                 '' + parameter.key.access_token + ',' +
                 '' + parameter.key.access_token_secret + '}' +
                 '&hash_tag=earthquake&unique_id=1&source=twitter' +
-                '&SecurityToken=' + parameter.authToken + '&Domain=duosoftware');
+                '&SecurityToken=' + parameter.authToken + '&Domain='+Digin_Domain);
         },
         getWorkCloud: function (parameter) {
             return $http.get(parameter.apiBase + 'buildwordcloudtwitter?' +
@@ -119,7 +119,7 @@ routerApp.factory('twitterService', function ($q, ngToast, $http) {
                 '' + parameter.key.access_token + ',' +
                 '' + parameter.key.access_token_secret + '}' +
                 '&hash_tag=earthquake&unique_id=1&source=twitter' +
-                '&SecurityToken=' + parameter.authToken + '&Domain=duosoftware');
+                '&SecurityToken=' + parameter.authToken + '&Domain='+Digin_Domain);
         }
     }
 })

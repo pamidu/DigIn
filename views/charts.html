@@ -2,23 +2,14 @@
     <md-tab ng-repeat="page in $root.dashboard.pages" md-on-select="selectPage(page)">
         <md-tab-label>
             <div layout="row" layout-align="center center">
-                <div>{{page.pageName}}</div>
-                <md-button ng-click="removeTabConfirmation(page, $event)" ng-disabled="$root.dashboard.pages.length <= 1" class="buttonMinwidth38 b-r-0" ng-click="cancel();">      
-                    <ng-md-icon icon="close" style="fill:#3F51B5" size="24" layout="row"></ng-md-icon>   
+                <div class="pageName">{{page.pageName}}</div>
+                <md-button ng-click="removePage(page, $event)" ng-disabled="$root.dashboard.pages.length <= 1" class="pageCloseButton b-r-0" ng-click="cancel();">      
+                    <ng-md-icon icon="close" style="fill:#ABABAB" size="24" layout="row"></ng-md-icon>   
                 </md-button>  
             </div>
         </md-tab-label>
-       <!--  <div class="demo-tab tab{{$index%4}}"> -->
-       <md-tab-body>
+        <md-tab-body>
             <div class="tab-style" gridster="gridsterOpts">
-                <!-- <div style="position: fixed;width: 100%;top: 0px;" layout="row" layout-align="end center">
-                    <md-button ng-click="removeTabConfirmation( page, $event)" 
-                    ng-disabled="$root.dashboard.pages.length <= 1"
-                               style="border-radius: 100%;">
-                        <md-icon style="color:darkgrey;width: 10px;height: 10px;"
-                                 md-svg-src="styles/css/images/icons/close.svg"></md-icon>
-                    </md-button>
-                </div> -->
                 <li class="digin-widget" 
                 ng-repeat="widget in $root.dashboard.pages[$root.selectedPage-1].widgets" 
                 gridster-item="widget" layout="column"
@@ -80,9 +71,7 @@
                         </div>
                     </div>
                 </li>
-                <!--<common-data-src></common-data-src>-->
             </div>
-        <!-- </div> -->
         </md-tab-body>
     </md-tab>
 </md-tabs>

@@ -2365,3 +2365,20 @@ md-tab-content > div{
 .overflow-auto{
     overflow: auto;
 }
+/* page tab */
+#footerBar > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item{
+    padding: 5px;
+    padding-left: 8px;
+}
+/* page close button */
+.pageCloseButton{
+    margin: 0px;
+    min-width: 10px;
+}
+.pageCloseButton > ng-md-icon:hover{
+    fill: #3F51B5 !important;
+}
+/* page name */
+.pageName{
+    font-size: 16px;
+}

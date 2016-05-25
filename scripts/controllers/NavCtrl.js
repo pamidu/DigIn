@@ -1,11 +1,11 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http', 'Digin_ReportViewer',
     '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast',
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Report_Base', 'Digin_Tomcat_Base', 'ngToast',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Report_Base', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
               $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService,
               Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Report_Base, Digin_Tomcat_Base, ngToast) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Report_Base, Digin_Tomcat_Base, ngToast, Digin_Domain) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -214,7 +214,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             "compType": null,
             "compCategory": null,
             "compID": null,
-            "refreshInterval": null
+            "refreshInterval": null,
+            "deletions":{
+                "componentIDs":[],
+                "pageIDs":[],
+                "widgetIDs":[]
+            }
         }
         // set initial selected page 
         $rootScope.selectedPage = 1;
@@ -368,10 +373,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.goDashboard = function (dashboard) {
 
             console.log("dash item", dashboard);
+
+            var userInfo = JSON.parse(getCookie("authData"));
             
             $http({
                 method: 'GET',
-                url: 'http://104.155.236.85:8080/get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken=abbb092d0627514d0fa08e3b589b6742&Domain=duosoftware'
+                url: 'http://192.168.2.33:8080/get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken='+userInfo.SecurityToken+'&Domain='+Digin_Domain
             })
             .success(function(data){
 
@@ -469,10 +476,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             return {
                 getAllDashboards: function () {
+
+                    var userInfo = JSON.parse(getCookie("authData"));
                     
                     $http({
                         method: 'GET',
-                        url: 'http://104.155.236.85:8080/get_all_components?SecurityToken=abbb092d0627514d0fa08e3b589b6742&Domain=duosoftware'
+                        url: 'http://192.168.2.33:8080/get_all_components?SecurityToken='+userInfo.SecurityToken+'&Domain='+Digin_Domain
                     })
                     .success(function(data){
 

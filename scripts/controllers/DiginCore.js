@@ -495,7 +495,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 }
             }
         };
-        $scope.removeTabConfirmation = function(page, ev){
+        $scope.removePage = function(page, ev){
             var selectedPage = $rootScope.selectedPage;
             $rootScope.dashboard.pages.splice(selectedPage-1, 1);
         }
@@ -768,8 +768,8 @@ routerApp.controller('ReportsDevCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportS
             $scope.toggleSidenav('left');
         }
 }]);
-routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Report_Base', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast',
-    function ($scope, dynamicallyReportSrv, $localStorage, Digin_Report_Base, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast) {
+routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Report_Base', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain',
+    function ($scope, dynamicallyReportSrv, $localStorage, Digin_Report_Base, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain) {
                 // update damith
         // get all reports details
         var privateFun = (function () {
@@ -847,8 +847,8 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                         data: {
                             file: files[i],
                             db: 'BigQuery',
-                            SecurityToken: 'e1f2e6f8c7a511a48b6add5c2ef24147',
-                            Domain: 'duosoftware'
+                            SecurityToken: userInfo.SecurityToken,
+                            Domain: 'Digin_Domain'
                         }                         
                     }).success(function(data){                                                 
                         fireMsg('1', 'Successfully uploaded!');

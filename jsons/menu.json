@@ -6,11 +6,7 @@
           {
             "title": "Reports",
             "icon2": "assignment"
-          }, 
-          {
-            "title": "Analytics",
-            "icon2": "assessment"
-          }, 
+          },  
           {
             "title": "RealTime",
             "icon2": "access_time"

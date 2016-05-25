@@ -225,9 +225,9 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
     }
 ]);
 
-routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter',
+routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter', 'Digin_Domain',
 
-    function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter) {
+    function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter, Digin_Domain) {
 
         $scope.close = function() {
 
@@ -332,12 +332,15 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                         "compCategory": $rootScope.dashboard.compCategory,
                         "compID": $rootScope.dashboard.compID,
                         "compName": $scope.dashboardName,
-                        "refreshInterval": $rootScope.dashboard.refreshInterval
+                        "refreshInterval": $rootScope.dashboard.refreshInterval,
+                        "deletions": $rootScope.dashboard.deletions
                     }
                 }
                 console.log("dashboardObject", dashboardObject);
                 //id fields are accepted close dialog
                 $mdDialog.hide();
+
+                var userInfo = JSON.parse(getCookie("authData"));
                     
                 $http({
                     method: 'POST',
@@ -345,8 +348,8 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                     data: angular.toJson(dashboardObject),
                     headers: {  
                                 'Content-Type': 'application/json',
-                                'SecurityToken':'1e9fe96bb7a42eb87342b44a6b82f03c',
-                                'Domain':'duosoftware'
+                                'SecurityToken':userInfo.SecurityToken,
+                                'Domain':'digin.io'
                     }
                 })
                 .success(function(response){
@@ -704,7 +707,7 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
                     url: 'http://104.197.27.7:3500/command/notification',
                     data: angular.toJson($scope.mailData),
                     headers:{'Content-Type': 'application/json',
-                            'securitytoken': '1234567890'
+                            'securitytoken': userInfo.SecurityToken
                             }
             })
             .success(function(response){

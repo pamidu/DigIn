@@ -507,6 +507,14 @@ drb >> dynamically report builder
     font-weight: 200;
 }
 
+.digin-qb-header-text{
+    color: #DAD2BF;
+    padding-top: 6px;
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 200;
+    font-size: 32px;
+}
+
 .digin-qb-header-text h1 > small {
     font-family: 'Ek Mukta', sans-serif;
     color: #026689;

@@ -935,10 +935,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
             var objIndex = getRootObjectById(widget.widgetData.id, widgets);
             //objIndex is integer if widget exists, o'wise returns undefined
-            if (objIndex === parseInt(objIndex, 10)) { //if objindex is integer -> widget exists 
+            //if (objIndex === parseInt(objIndex, 10)) { //if objindex is integer -> widget exists 
                 //-> user is updating widget
-                widgets[objIndex] = widget;
-            }
+            //    widgets[objIndex] = widget;
+            //}
             if (objIndex == null) { //new widget
                 widgets.push(widget);
             } else {
@@ -950,7 +950,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     query: $scope.dataToBeBind.receivedQuery
                 };
                 var objIndex = getRootObjectById(widget.widgetData.id, widgets);
-                widget.widgetData[objIndex] = widget;
+                widgets[objIndex] = $scope.widget;
             }
 
             $scope.eventHndler.isMainLoading = true;

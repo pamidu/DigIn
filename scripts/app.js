@@ -1,44 +1,44 @@
 var routerApp = angular.module('DuoDiginRt', [
-        'ngMaterial',
-        'uiMicrokernel',
-        'diginServiceHandler',
-        'ngAnimate',
-        'DiginD3.filters',
-        'DiginD3.services',
-        'DiginD3.directives',
-        'DiginD3.controllers',
-        'highcharts-ng',
-        'angular.css.injector',
-        'ui.router',
-        '720kb.socialshare',
-        'ngStorage',
-        'configuration',
-        'directivelibrary',
-        'ngMdIcons',
-        'nvd3',
-        'gridster',
-        'ui.calendar',
-        'mgcrea.ngStrap',
-        'ui',
-        'lk-google-picker',
-        'angularUtils.directives.dirPagination',
-        'ngSanitize',
-        'ngCsv',
-        'angular-intro',
-        'uiGmapgoogle-maps',
-        'angularMoment',
-        'googleplus',
-        'rzModule',
-        'angular-table',
-        'ngToast',
-        'vAccordion',
-        'ngDraggable',
-        'ngMessages',
-        'ngFileUpload',
-        "com.2fdevs.videogular",
-        "com.2fdevs.videogular.plugins.controls",
-        "info.vietnamcode.nampnq.videogular.plugins.youtube",
-        "ngTagsInput"
+    'ngMaterial',
+    'uiMicrokernel',
+    'diginServiceHandler',
+    'ngAnimate',
+    'DiginD3.filters',
+    'DiginD3.services',
+    'DiginD3.directives',
+    'DiginD3.controllers',
+    'highcharts-ng',
+    'angular.css.injector',
+    'ui.router',
+    '720kb.socialshare',
+    'ngStorage',
+    'configuration',
+    'directivelibrary',
+    'ngMdIcons',
+    'nvd3',
+    'gridster',
+    'ui.calendar',
+    'mgcrea.ngStrap',
+    'ui',
+    'lk-google-picker',
+    'angularUtils.directives.dirPagination',
+    'ngSanitize',
+    'ngCsv',
+    'angular-intro',
+    'uiGmapgoogle-maps',
+    'angularMoment',
+    'googleplus',
+    'rzModule',
+    'angular-table',
+    'ngToast',
+    'vAccordion',
+    'ngDraggable',
+    'ngMessages',
+    'ngFileUpload',
+    "com.2fdevs.videogular",
+    "com.2fdevs.videogular.plugins.controls",
+    "info.vietnamcode.nampnq.videogular.plugins.youtube",
+    "ngTagsInput"
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
@@ -291,7 +291,13 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             data: {
                 requireLogin: true
             }
-        });
+        }).state('home.welcomeSearch', {
+        url: '/welcome-search',
+        templateUrl: "views/help/welcomeSearchBar.html",
+        data: {
+            requireLogin: true
+        }
+    });
 
     lkGoogleSettingsProvider.configure({
         apiKey: 'AIzaSyA9fv9lYQdt1XV6wooFtItxYlMF8Y9t1ao',
@@ -300,10 +306,10 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
     });
 
     var customPrimary = {
-        '50': '#10cefd','100': '#02c2f2','200': '#02aed9','300': '#019ac0',
-        '400': '#0185a6','500': '#01718D','600': '#015d74','700': '#01485a',
-        '800': '#003441','900': '#002028','A100': '#29d3fd','A200': '#43d8fe',
-        'A400': '#5cdefe','A700': '#000c0e'
+        '50': '#10cefd', '100': '#02c2f2', '200': '#02aed9', '300': '#019ac0',
+        '400': '#0185a6', '500': '#01718D', '600': '#015d74', '700': '#01485a',
+        '800': '#003441', '900': '#002028', 'A100': '#29d3fd', 'A200': '#43d8fe',
+        'A400': '#5cdefe', 'A700': '#000c0e'
     };
 
     $mdThemingProvider
@@ -311,10 +317,10 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             customPrimary);
 
     var customAccent = {
-        '50': '#4285F4','100': '#4285F4','200': '#4285F4','300': '#4285F4',
-        '400': '#4285F4','500': '#4285F4','600': '#4285F4','700': '#4285F4',
-        '800': '#4285F4','900': '#4285F4','A100': '#4285F4','A200': '#4285F4',
-        'A400': '#4285F4','A700': '#4285F4'
+        '50': '#4285F4', '100': '#4285F4', '200': '#4285F4', '300': '#4285F4',
+        '400': '#4285F4', '500': '#4285F4', '600': '#4285F4', '700': '#4285F4',
+        '800': '#4285F4', '900': '#4285F4', 'A100': '#4285F4', 'A200': '#4285F4',
+        'A400': '#4285F4', 'A700': '#4285F4'
     };
 
     $mdThemingProvider
@@ -322,10 +328,10 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             customAccent);
 
     var customBackground = {
-        '50': '#ffffff','100': '#ffffff','200': '#ffffff','300': '#ffffff',
-        '400': '#ffffff','500': '#FFF','600': '#f2f2f2','700': '#e6e6e6',
-        '800': '#d9d9d9','900': '#cccccc','A100': '#ffffff','A200': '#ffffff',
-        'A400': '#ffffff','A700': '#bfbfbf'
+        '50': '#ffffff', '100': '#ffffff', '200': '#ffffff', '300': '#ffffff',
+        '400': '#ffffff', '500': '#FFF', '600': '#f2f2f2', '700': '#e6e6e6',
+        '800': '#d9d9d9', '900': '#cccccc', 'A100': '#ffffff', 'A200': '#ffffff',
+        'A400': '#ffffff', 'A700': '#bfbfbf'
     };
 
     $mdThemingProvider
@@ -508,6 +514,7 @@ routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
                 //console.log($scope.days);
             }
         }
+
         $scope.previousMonth = function () {
             if ($scope.month == 1) {
                 $scope.month = 12;
@@ -797,7 +804,7 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($
 }]);
 
 routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http, $rootScope, $q) {
-    
+
     var clientId = '33022835624-q3km776rl7dkitpinaj7pf2tlu75tfhg.apps.googleusercontent.com',
         apiKey = 'AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ',
         scopes = 'profile email https://www.googleapis.com/auth/plus.login',

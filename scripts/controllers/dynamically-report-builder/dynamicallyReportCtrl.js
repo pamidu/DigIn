@@ -12,6 +12,9 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
 
     //#event handler
     //report event handler
+    $scope.onClickBack = function () {
+        $state.go('home.Dashboards');
+    };
     var eventHandler = {
         reportName: '',
         isReportLoad: false,
@@ -197,8 +200,11 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                     case "november":
                         return '11';
                         break;
-                    case "December":
+                    case "december":
                         return '12';
+                        break;
+                    case "all":
+                        return '00';
                         break;
                 }
             }
@@ -511,14 +517,25 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 //#report validation
                 // date validation
                 if ($scope.reportFiledList.isDateFound) {
-                    if (typeof datePickerObj.fromdate === 'undefined' || typeof datePickerObj.todate == 'undefined'
-                        || datePickerObj.fromdate === "" || datePickerObj.todate === "") {
+                    var dateSelectEmpty = 0;
+                    for (var c in datePickerObj) {
+                        var temp = datePickerObj[c];
+                        console.log(temp);
+                        if (temp == null || temp == "") {
+                            if (dateSelectEmpty != 2) {
+                                dateSelectEmpty++;
+                            }
+                        }
+                    }
+
+                    if (dateSelectEmpty == 2 || dateSelectEmpty == 1) {
                         privateFun.fireMsg('0', '<strong>Error :' +
                             ' </strong>please select the report date parameter...');
                         privateFun.doneReportLoad();
                         return;
                     }
                 }
+
                 //drop down validation
                 var validationState = false;
                 var loop;
@@ -529,14 +546,14 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                             validationState = true;
                         }
                     }
+                    if (!validationState) {
+                        privateFun.fireMsg('0', '<strong>Error :' +
+                            ' </strong>please select the report  parameter...');
+                        privateFun.doneReportLoad();
+                        return;
+                    }
                 }
 
-                if (!validationState) {
-                    privateFun.fireMsg('0', '<strong>Error :' +
-                        ' </strong>please select the report  parameter...');
-                    privateFun.doneReportLoad();
-                    return;
-                }
 
                 getReportName();
                 getSession();

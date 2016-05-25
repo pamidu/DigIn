@@ -39,3 +39,4 @@ routerApp.factory('dynamicallyReportSrv', function ($http, Digin_Domain) {
 });
 
 
+

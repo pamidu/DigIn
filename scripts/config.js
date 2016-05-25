@@ -22,5 +22,5 @@ angular.module('configuration', [])
 
     .constant('Digin_FileUploader', 'http://192.168.0.34:8080/')
     .constant('Digin_Domain', 'digin.io')
-    
+
     .constant('DevStudio',false)

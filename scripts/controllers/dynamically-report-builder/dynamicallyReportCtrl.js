@@ -740,3 +740,4 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
         }
     };
 })
+

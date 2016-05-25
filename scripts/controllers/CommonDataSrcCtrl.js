@@ -5,10 +5,10 @@
  */
 routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log',
     'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API','Digin_FileUploader',
-    'Digin_Engine_API_Namespace', '$diginengine', 'ngToast', '$window', '$state', '$csContainer', 'Upload', '$timeout',
+    'Digin_Engine_API_Namespace', '$diginengine', 'ngToast', '$window', '$state', '$csContainer', 'Upload', '$timeout','Digin_Domain',
     function($scope, $controller, $mdSidenav, $log, CommonDataSrc,
         $mdDialog, $rootScope, $http, Digin_Engine_API,Digin_FileUploader,
-        Digin_Engine_API_Namespace, $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout) {
+        Digin_Engine_API_Namespace, $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout,Digin_Domain) {
 
         $scope.datasources = [{
             name: "DuoStore",
@@ -439,7 +439,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                                     file: files[i],
                                                     db: 'BigQuery',
                                                     SecurityToken: 'e1f2e6f8c7a511a48b6add5c2ef24147',
-                                                    Domain: 'duosoftware'
+                                                    Domain: Digin_Domain
                                                  }
                                                 
                                             }).success(function(data){                                                 

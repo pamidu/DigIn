@@ -1,11 +1,11 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http', 'Digin_ReportViewer',
     '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast',
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Report_Base', 'Digin_Tomcat_Base', 'ngToast',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Report_Base', 'Digin_Tomcat_Base', 'ngToast','Digin_Domain',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
               $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService,
               Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Report_Base, Digin_Tomcat_Base, ngToast) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Report_Base, Digin_Tomcat_Base, ngToast,Digin_Domain) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -364,7 +364,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             
             $http({
                 method: 'GET',
-                url: 'http://104.155.236.85:8080/get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken=abbb092d0627514d0fa08e3b589b6742&Domain=duosoftware'
+                url: 'http://104.155.236.85:8080/get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken=abbb092d0627514d0fa08e3b589b6742&Domain='+Digin_Domain
             })
             .success(function(data){
 
@@ -465,7 +465,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     
                     $http({
                         method: 'GET',
-                        url: 'http://104.155.236.85:8080/get_all_components?SecurityToken=abbb092d0627514d0fa08e3b589b6742&Domain=duosoftware'
+                        url: 'http://104.155.236.85:8080/get_all_components?SecurityToken=abbb092d0627514d0fa08e3b589b6742&Domain='+Digin_Domain
                     })
                     .success(function(data){
 

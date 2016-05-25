@@ -3,7 +3,7 @@
  */
 
 routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyReportSrv, $auth, $location,
-                                                        Digin_Report_Base, Digin_PostgreSql, $stateParams, ngToast, $sce, Digin_Tomcat_Base, $state) {
+                                                        Digin_Report_Base, Digin_PostgreSql, $stateParams, ngToast, $sce, Digin_Tomcat_Base, $state,Digin_Domain) {
 
     $scope.isFiled = {
         loading: false,
@@ -317,7 +317,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 }
             };
             xhttp.open("GET", reqParameter.apiBase + 'getQueries?SecurityToken=' + reqParameter.token +
-                '&Domain=duosoftware.com&Reportname=' + reqParameter.reportName +
+                '&Domain='+Digin_Domain+'&Reportname=' + reqParameter.reportName +
                 '&fieldnames={' + reqParameter.queryFiled + '}', true);
             xhttp.send();
         };
@@ -350,7 +350,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 });
             };
             xhr.open("GET", Digin_PostgreSql + "executeQuery?query=" + encodeURIComponent(queryString) + "&SecurityToken=" + reqParameter.token + "" +
-                "&Domain=duosoftware.com&db=PostgreSQL", /*async*/ true);
+                "&Domain="+Digin_Domain+"&db=PostgreSQL", /*async*/ true);
             xhr.send();
         };
 

@@ -225,9 +225,9 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
     }
 ]);
 
-routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter',
+routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter','Digin_Domain',
 
-    function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter) {
+    function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter,Digin_Domain) {
 
         $scope.close = function() {
 
@@ -346,7 +346,7 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                     headers: {  
                                 'Content-Type': 'application/json',
                                 'SecurityToken':'1e9fe96bb7a42eb87342b44a6b82f03c',
-                                'Domain':'duosoftware'
+                                'Domain':Digin_Domain
                     }
                 })
                 .success(function(response){

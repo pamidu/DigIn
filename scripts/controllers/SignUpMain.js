@@ -1,9 +1,9 @@
 // var app = angular.module('Fsignup', ['uiMicrokernel', 'ngMaterial']);
 
 routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
-    '$http', '$objectstore', '$state', 'ngToast', 'focus', '$diginurls',
+    '$http', '$objectstore', '$state', 'ngToast', 'focus', '$diginurls','Digin_Domain',
     function ($scope, $mdToast, $animate, $http, $objectstore, $state,
-              ngToast, focus, $diginurls) {
+              ngToast, focus, $diginurls,Digin_Domain) {
 
         $scope.onClickSignIn = function () {
             $scope.isLoggedin = false; 
@@ -46,7 +46,7 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
 
             //var userInfo = JSON.parse(getCookie("authData"));
             //$http.get($diginurls.diginengine + '/createDataset?dataSetName='+UserName+'&tableName='+UserName+'&db=BigQuery&SecurityToken=75809dbaff8548441d6ae64431670ec5&Domain=duosoftware.com')
-            $http.get($diginurls.diginengine + '/createDataset?dataSetName='+dtSetName+'&tableName='+dtSetName+'&db=BigQuery&Domain=duosoftware.com')
+            $http.get($diginurls.diginengine + '/createDataset?dataSetName='+dtSetName+'&tableName='+dtSetName+'&db=BigQuery&Domain='+Digin_Domain)
                 .success(function(response){
                     //$scope.userDtSet=response; 75809dbaff8548441d6ae64431670ec5
                     //alert(JSON.stringify(response.Result));  
@@ -154,7 +154,7 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                         "Password": signUpUsr.pwd,
                         "ConfirmPassword": signUpUsr.cnfrPwd,
                         //"Domain": signUpUsr.domainName + "" + signUpUsr.namespace
-                        "Domain": signUpUsr.firstName + "" + "digin.io"
+                        "Domain": signUpUsr.firstName + "" + Digin_Domain
                     };
                     $scope.error.isLoading = true;
 
@@ -187,7 +187,7 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                         if (!data.Active) {
                             $scope.error.isLoading = false;
                             //setting the userdetails
-                            var client = $objectstore.getClient("duosoftware.com", "profile", true);
+                            var client = $objectstore.getClient("digin.io", "profile", true);
                             client.onError(function (data) {
                                 $state.go('login');
                                 //mainFun.fireMsg('1', 'Successfully created your profile,Please check your Email for verification!');

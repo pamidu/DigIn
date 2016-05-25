@@ -339,13 +339,15 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                 //id fields are accepted close dialog
                 $mdDialog.hide();
                     
+                var userInfo = JSON.parse(getCookie("authData"));
+
                 $http({
                     method: 'POST',
                     url: 'http://192.168.2.33:8080/store_component',
                     data: angular.toJson(dashboardObject),
                     headers: {  
                                 'Content-Type': 'application/json',
-                                'SecurityToken':'1e9fe96bb7a42eb87342b44a6b82f03c',
+                                'SecurityToken':userInfo.SecurityToken,
                                 'Domain':Digin_Domain
                     }
                 })
@@ -666,6 +668,7 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
             
             // var path =  $v6urls.mediaLib +"/apis/media/tenant/diginDashboard/dashboard.pdf"
             var path =  "http://"+$helpers.getHost()+"/apis/media/tenant/diginDashboard/dashboard.pdf"
+            var userInfo = JSON.parse(getCookie("authData"));
             
             // var path =  "http://sachilagmailcom.space.test.12thdoor.com/apis/media/tenant/diginDashboard/dashboard.pdf"
             $scope.mailData =   {
@@ -704,7 +707,7 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
                     url: 'http://104.197.27.7:3500/command/notification',
                     data: angular.toJson($scope.mailData),
                     headers:{'Content-Type': 'application/json',
-                            'securitytoken': '1234567890'
+                            'securitytoken': userInfo.SecurityToken
                             }
             })
             .success(function(response){

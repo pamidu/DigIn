@@ -368,10 +368,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.goDashboard = function (dashboard) {
 
             console.log("dash item", dashboard);
-            
+
+            var userInfo = JSON.parse(getCookie("authData"));
+
             $http({
                 method: 'GET',
-                url: 'http://104.155.236.85:8080/get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken=abbb092d0627514d0fa08e3b589b6742&Domain='+Digin_Domain
+                url: 'http://104.155.236.85:8080/get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken='+userInfo.SecurityToken+'&Domain='+Digin_Domain
             })
             .success(function(data){
 
@@ -470,9 +472,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             return {
                 getAllDashboards: function () {
                     
+                    var userInfo = JSON.parse(getCookie("authData"));
+
                     $http({
                         method: 'GET',
-                        url: 'http://104.155.236.85:8080/get_all_components?SecurityToken=abbb092d0627514d0fa08e3b589b6742&Domain='+Digin_Domain
+                        url: 'http://104.155.236.85:8080/get_all_components?SecurityToken='+userInfo.SecurityToken+'&Domain='+Digin_Domain
                     })
                     .success(function(data){
 

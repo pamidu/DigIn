@@ -831,7 +831,9 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
         $scope.log = '';
 
         $scope.upload = function(files) {
-                                    
+               
+            var userInfo = JSON.parse(getCookie("authData"));
+
             if (files && files.length) {
                 $scope.preloader = true;
                 $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
@@ -847,7 +849,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                         data: {
                             file: files[i],
                             db: 'BigQuery',
-                            SecurityToken: 'e1f2e6f8c7a511a48b6add5c2ef24147',
+                            SecurityToken: userInfo.SecurityToken,
                             Domain: Digin_Domain
                         }                         
                     }).success(function(data){                                                 

@@ -462,6 +462,11 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                                 if (Object.prototype.hasOwnProperty.call(jsonObj.Result, c)) {
                                                     val = jsonObj.Result[c];
                                                     angular.forEach(val, function (value, key) {
+                                                        if (key == "value") {
+                                                            if (value == "All") {
+                                                                value = "00";
+                                                            }
+                                                        }
                                                         //  console.log(key + "," + value);
                                                         if (value != "sort" && value != "1" && value != "2" && value != "3" && value != "4"
                                                             && value != "5" && value != "6" && value != "7" && value != "8"
@@ -518,12 +523,17 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 // date validation
                 if ($scope.reportFiledList.isDateFound) {
                     var dateSelectEmpty = 0;
-                    for (var c in datePickerObj) {
-                        var temp = datePickerObj[c];
-                        console.log(temp);
-                        if (temp == null || temp == "") {
-                            if (dateSelectEmpty != 2) {
-                                dateSelectEmpty++;
+                    if (Object.keys(datePickerObj).length == 0) {
+                        dateSelectEmpty = 2;
+                    } else if (Object.keys(datePickerObj).length == 1) {
+                        dateSelectEmpty = 2;
+                    } else {
+                        for (var c in datePickerObj) {
+                            var temp = datePickerObj[c];
+                            if (temp == null || temp == "") {
+                                if (dateSelectEmpty != 2) {
+                                    dateSelectEmpty++;
+                                }
                             }
                         }
                     }

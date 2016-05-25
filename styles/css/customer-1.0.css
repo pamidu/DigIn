@@ -365,11 +365,13 @@ drb >> dynamically report builder
     width: 100%;
     color: #ffffff;
 }
+
 .processing {
     background: #F5AC28 !important;
     width: 100%;
     color: #ffffff;
 }
+
 .info {
     background: #FFB300 !important;
     width: 100%;
@@ -2849,7 +2851,7 @@ li:active {
 .digin-welcome-sch-wrap {
     width: 100%;
     height: 100%;
-    margin: 6% 10%;
+    margin: 6% 8%;
 }
 
 .font-ek-mukta {
@@ -2866,4 +2868,10 @@ li:active {
 
 .search-bar-header {
     color: rgb(185, 182, 182);
+    font-size: 25px;
+}
+
+.search-bar-header > i {
+    font-size: 20px;
+    padding-right: 10px;
 }

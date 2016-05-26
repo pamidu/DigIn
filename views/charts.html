@@ -11,7 +11,7 @@
         <md-tab-body>
             <div class="tab-style" gridster="gridsterOpts">
                 <li class="digin-widget" 
-                ng-repeat="widget in $root.dashboard.pages[$root.selectedPage-1].widgets" 
+                ng-repeat="widget in page.widgets" 
                 gridster-item="widget" layout="column"
                     layout-align="none stretch">
                     <div ng-init="widInit(widget)" class="digin-widget-content dashboard-widget" ng-style="{'height':widget.widgetData.mheight}" layout="row">

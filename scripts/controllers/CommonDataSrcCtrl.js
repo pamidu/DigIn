@@ -89,11 +89,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             'type': 'character varying',
             'category': 'att'
         },
-
-
-
-
-
         {
             'type': 'FLOAT',
             'category': 'mes'

@@ -20,7 +20,7 @@ angular.module('configuration', [])
     .constant('Digin_PostgreSql', 'http://192.168.2.33:8080/')
     .constant('Digin_Twitter_API', 'http://192.168.2.33:8080/')
 
-    .constant('Digin_FileUploader', 'http://192.168.0.34:8080/')
+    .constant('Digin_FileUploader', 'http://192.168.2.33:8080/')
     .constant('Digin_Domain', 'digin.io')
 
     .constant('DevStudio',false)

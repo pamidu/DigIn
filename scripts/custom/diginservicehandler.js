@@ -153,6 +153,8 @@
                     }, $diginurls.diginengine + "/generatebubble?&table=[" + getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + x + "&dbtype=" + database);
                 },
                 getForcast: function(fObj, cb, gb) {
+                    if(database == "BigQuery")
+                    {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
                         }, $diginurls.diginengine + "/forecast?model=" + fObj.model +
@@ -168,6 +170,28 @@
                         "&m=" + fObj.m +
                         "&interval=" + fObj.interval +
                         "&dbtype=" + database);
+                      }
+                      else
+                      {
+                          $servicehelpers.httpSend("get", function(data, status, msg) {
+                            cb(data, status);
+                        }, $diginurls.diginengine + "/forecast?model=" + fObj.model +
+                        "&pred_error_level=" + fObj.pred_error_level +
+                        "&alpha=" + fObj.alpha +
+                        "&beta=" + fObj.beta +
+                        "&gamma=" + fObj.gamma +
+                        "&fcast_days=" + fObj.fcast_days +
+                        "&table_name= "+ fObj.tbl +
+                        "&field_name_d=" + fObj.field_name_d +
+                        "&field_name_f=" + fObj.field_name_f +
+                        "&steps_pday=" + fObj.steps_pday +
+                        "&m=" + fObj.m +
+                        "&interval=" + fObj.interval +
+                        "&dbtype=" + database);
+
+
+                      }
+
                 }
             }
         }

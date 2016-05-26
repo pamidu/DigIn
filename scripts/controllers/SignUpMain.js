@@ -154,7 +154,7 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
                         "Password": signUpUsr.pwd,
                         "ConfirmPassword": signUpUsr.cnfrPwd,
                         //"Domain": signUpUsr.domainName + "" + signUpUsr.namespace
-                        "Domain": signUpUsr.firstName + "" + Digin_Domain
+                        "Domain": signUpUsr.firstName + "." + Digin_Domain
                     };
                     $scope.error.isLoading = true;
 

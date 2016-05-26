@@ -874,6 +874,34 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
             })
         }
+
+        //Rename dashboard's pages
+
+   $scope.renamePage = function(pageName, pageID) {      
+            $mdDialog.show({
+                    controller: renameCtrl,
+                    templateUrl: 'templates/renamePage.html',
+                    resolve: {},
+                    locals:{pageID:pageID,pageName: pageName}, 
+            });     
+    };
+
+    var renameCtrl = function($scope, pageName, pageID){   
+        $scope.existPageName = pageName;
+
+        $scope.close = function() {
+            $mdDialog.hide();
+        };
+
+        $scope.renameNew = function() {
+            console.log($rootScope);
+            var selectedIndex=$rootScope.selectedPage-1;
+            $rootScope.dashboard.pages[selectedIndex].pageName=$scope.existPageName;
+            $mdDialog.hide();
+        };
+    };
+       
+
         $scope.clearAllWidgets = function (ev){
 
             $mdDialog.show({

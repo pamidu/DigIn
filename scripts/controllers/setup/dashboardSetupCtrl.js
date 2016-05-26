@@ -361,8 +361,11 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
             //alert("Fail...!");                        
         });   
 
-        $scope.groups.push($scope.groupName);
-        //$scope.getAllGroups();
+        $scope.getAllGroups();
+        $scope.groups.push($scope.grpDtl);
+        
+        $scope.grpName='';
+        
     };
 
     //------------Delete  group
@@ -376,12 +379,14 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
             //$http.get('http://digin.io/apis/usercommon/removeUserGroup/'+ group)
             $http.get('http://192.168.2.33/apis/usercommon/removeUserGroup/'+ group)
             .success(function (response) {
-                alert('Deleted...!');
+                //alert('Deleted...!');
                 $scope.getAllGroups();
             });
         },function(){
 
         });
+
+        $scope.getAllGroups();
     };
 
 
@@ -590,7 +595,9 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
                 //alert("Fail...!");                        
             });  
 
-            $scope.getAllGroups();    
+            //$scope.getAllGroups();
+           
+
         };
 
 

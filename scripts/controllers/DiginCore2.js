@@ -319,7 +319,8 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                         "compCategory": null,
                         "compID": null,
                         "compName": $scope.dashboardName,
-                        "refreshInterval": $scope.refreshInterval
+                        "refreshInterval": $scope.refreshInterval,
+                        "deletions": $rootScope.dashboard.deletions
                     }
                 }
                 else{
@@ -333,7 +334,11 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                         "compID": $rootScope.dashboard.compID,
                         "compName": $scope.dashboardName,
                         "refreshInterval": $rootScope.dashboard.refreshInterval,
-                        "deletions": $rootScope.dashboard.deletions
+                        "deletions": {
+                                        "componentIDs":[],
+                                        "pageIDs":[],
+                                        "widgetIDs":[]
+                                    }
                     }
                 }
                 console.log("dashboardObject", dashboardObject);

@@ -47,16 +47,16 @@ routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
 
 routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', 'DynamicVisualization','$csContainer','$state','$qbuilder','$diginengine',
     function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, DynamicVisualization, $csContainer, $state, $qbuilder, $diginengine) {
-        
+
         //code to keep widget fixed on pivot summary drag events
         $('#content1').on('mousedown', function(e) {
             if(e.target.className == "pvtAttr"){
-                
+
                 var widgetsCount = $('.gridster-item').length;
                 for(var i = 0; i < widgetsCount; i++){
-                
+
                     $('.gridster-item')[i].className = "digin-widget ng-scope gridster-item";
-                }   
+                }
             }
         });
         //configuring gridster
@@ -122,10 +122,10 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     }
                     if(titleLength > 60 && titleLength <= 80){
                         $scope.widgetTitleClass = 'widget-title-80';
-                    } 
+                    }
                     if(titleLength > 80){
                         $scope.widgetTitleClass = 'widget-title-long';
-                    }        
+                    }
                 }
             }
         }
@@ -144,7 +144,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         /* update damith
          view current chart data source view
          currentSourceView ()
-         
+
          */
 
         $scope.showFace2 = function ($event, widget) {
@@ -164,7 +164,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     }
                     ,
                     controller: function dataSourceCtrl($scope, $mdDialog, items, generatePDF1) {
-                        
+
                         var isCommonSrc = angular.isUndefined(items.widCsc);
                         var selectedSourceData = {};
                         // if (isCommonSrc) {
@@ -221,7 +221,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                             }
                             $("#dataBody").append("<tr>" + rows + "</tr>");
                             oneRow = '';
-                        
+
                             for (var i = 0; i < selectedSourceData.length; i++) {
                                 for (var b = 0; b < selectedSourceData.mappedData[i].length; b++) {
                                     var rows = '';
@@ -241,11 +241,11 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         $scope.widget = selectedSourceData;
 
                         $scope.downloadPDF = function(){
-            
+
                             var htmlElement = $(".widget0m-mapped-data").get(0);
                             var config = {
                                 title:"Sales Forecast Data Summary",
-                                titleLeft: 50, 
+                                titleLeft: 50,
                                 titleTop: 20,
                                 tableLeft: 20,
                                 tableTop: 30
@@ -288,7 +288,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                 .substring(1);
         }
         $scope.showWidget = function (ev, widget) {
-            
+
             $scope.tempWidth = widget.widgetData.highchartsNG.size.width;
             $scope.tempHeight = widget.widgetData.highchartsNG.size.height;
             $mdDialog.show({
@@ -341,11 +341,11 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
             var showDataView = null;
             //if not dynamic visuals
-            if(widget.widgetData.selectedChart == undefined){ 
+            if(widget.widgetData.selectedChart == undefined){
                 showDataView = false; //do not show data view option
             }
             else{ //if dynamic visuals
-            
+
                 switch(widget.widgetData.selectedChart.chartType){
                 case 'metric': // if type metric do not show data view option
                     showDataView = false;
@@ -356,7 +356,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 break;
                 }
             }
-            
+
             return showDataView;
         }
         $scope.showData = function (ev, widget) {
@@ -382,7 +382,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
          @widget : widget that need to get updated
          */
         $scope.syncWidget = function (widget) {
-            
+
             console.log('syncing...');
             if (typeof widget.widgetData.widConfig != 'undefined') {
                 DynamicVisualization.syncWidget(widget, function (data) {
@@ -408,7 +408,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 widget.widgetData.highchartsNG.options['customVar'] = drillConf.highestLvl;
                 widget.widgetData.highchartsNG.options.chart['events'] ={
                     drilldown: function (e) {
-                                                
+
                             if (!e.seriesOptions) {
                                 var srcTbl = drillConf.srcTbl,
                                 fields = drillConf.fields,
@@ -420,20 +420,20 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                 highestLvl = this.options.customVar,
                                 drillObj = {},
                                 isLastLevel = false;
-                                
+
                                 for(i=0;i<drillOrdArr.length;i++){
                                     if(drillOrdArr[i].name == highestLvl){
                                         nextLevel = drillOrdArr[i].nextLevel;
                                         if(!drillOrdArr[i+1].nextLevel) isLastLevel = true;
                                     }
                                 }
-                                
+
                                 // Show the loading label
                                 chart.showLoading("Retrieving data for '" + clickedPoint.toLowerCase() + "' grouped by '" + nextLevel + "'");
-                                
+
                                 //aggregate method
                                 clientObj.getAggData(srcTbl, fields, function(res, status, query) {
-                                    
+
                                     widget.widgetData.widData.drillConf.currentLevel++;
                                     switch(widget.widgetData.widData.drillConf.currentLevel){
                                         case 2:
@@ -445,7 +445,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                     }
                                     widget.widgetData.widData.drillConf.previousQuery = widget.widgetData.widData.drillConf.currentQuery;
                                     widget.widgetData.widData.drillConf.currentQuery = query;
-                                    
+
                                     if(status){
                                         for (var key in res[0]) {
                                             if (Object.prototype.hasOwnProperty.call(res[0], key)) {
@@ -455,7 +455,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                                 }
                                             }
                                         }
-                                        
+
                                         res.forEach(function(key){
                                             if(!isLastLevel){
                                                 drillObj.data.push({
@@ -470,9 +470,9 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                                 });
                                             }
                                         });
-                                        
+
                                         chart.addSeriesAsDrilldown(e.point, drillObj);
-                                        
+
                                     }else{
                                         alert('request failed due to :' + JSON.stringify(res));
                                         e.preventDefault();
@@ -584,8 +584,6 @@ function hnbClaimsCtrl($scope, $mdDialog, wid, $http) {
     $scope.closeDialog = function () {
         $mdDialog.hide();
     };
-
-
     $http.get('jsons/hnbForceData.json').success(function (data) {
 
         $scope.arr = data;
@@ -630,7 +628,7 @@ function sltQueuedCtrl($scope, $mdDialog, wid, $http) {
 function sltConnectedCtrl($scope, $mdDialog, wid, $http) {
     $scope.arr = [];
     $scope.closeDialog = function () {
-        
+
         $mdDialog.hide();
     };
 
@@ -671,7 +669,7 @@ function sltQueueDetailsCtrl($scope, $mdDialog, wid, $http) {
 };
 
 function googleMapsCtrl($scope, $mdDialog, wid, $http) {
-    
+
     $scope.closeDialog = function () {
         $mdDialog.hide();
     };
@@ -831,26 +829,26 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
         $scope.log = '';
 
         $scope.upload = function(files) {
-                                    
+
             if (files && files.length) {
                 $scope.preloader = true;
                 $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
 
                 for (var i = 0; i < files.length; i++) {
                     var lim = i == 0 ? "" : "-" + i;
-                                           
+
                     Upload.upload({
                         url: Digin_Report_Base + 'file_upload',
                         headers: {
-                            'Content-Type': 'multipart/form-data',                         
-                        },           
+                            'Content-Type': 'multipart/form-data',
+                        },
                         data: {
                             file: files[i],
                             db: 'BigQuery',
                             SecurityToken: userInfo.SecurityToken,
                             Domain: 'Digin_Domain'
-                        }                         
-                    }).success(function(data){                                                 
+                        }
+                    }).success(function(data){
                         fireMsg('1', 'Successfully uploaded!');
                         $scope.preloader = false;
                         $scope.diginLogo = 'digin-logo-wrapper2';
@@ -1324,15 +1322,15 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
         var outOfSLArray = [];
 
         $scope.markers = [];
-        $scope.map = { center: { latitude: 7.2964, longitude: 80.6350 }, 
-                        zoom: 8, 
+        $scope.map = { center: { latitude: 7.2964, longitude: 80.6350 },
+                        zoom: 8,
                         bounds: {},
                         options: {
                             maxZoom: 15,
                             minZoom: 1
                         }
                         ,
-                        events: {   
+                        events: {
                             mouseover: function (map) {
                                 $scope.$apply(function () {
                                     google.maps.event.trigger(map, "resize");
@@ -1344,12 +1342,12 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
                             //         google.maps.event.trigger(map, "resize");
                             //     });
                             // }
-                        } 
-                    };       
-        
+                        }
+                    };
+
         // ======== initializing map at google map loading =========
         $scope.initGmap = function(){
-            
+
             queue = [];
             markers = [];
             delay = 100;
@@ -1357,23 +1355,23 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
 
             JSONData = $scope.JSONDataBranch;
 
-            JsonToArray(); 
-            setTimeout(function(){theNext();},400);  
-        }   
-    
+            JsonToArray();
+            setTimeout(function(){theNext();},400);
+        }
+
         // ====== Json data to array ======    
         function JsonToArray() {
             for(var key in JSONData){
                 if( JSONData[key].Address[0]!=undefined && // adding only defined value to queue
                     JSONData[key].Address[1]!=undefined &&
                     key!=undefined){
-                    queue.push({    name: key, 
-                                    address: JSONData[key].Address, 
+                    queue.push({    name: key,
+                                    address: JSONData[key].Address,
                                     val1: JSONData[key].val1,
-                                    val2: JSONData[key].val2 
+                                    val2: JSONData[key].val2
                                 });
                 }
-                else{ //counting undefined values 
+                else{ //counting undefined values
                     undefinedErrors++;
                 }
             }
@@ -1385,21 +1383,21 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
                     console.log(nextAddress + " < " + queue.length);
                     setTimeout(function(){
 
-                            createMarker(queue[nextAddress],nextAddress);                          
+                            createMarker(queue[nextAddress],nextAddress);
                             theNext();
                     }, delay);
                     nextAddress++;
                 } else {
-                    // We're done. 
+                    // We're done.
                     console.log("Done!");
-                    
+
                     $scope.markers = markers;
 
                     //sharing markers with widgetSettingsCtrl using Scopes factory
                     ScopeShare.store('gmapsControllerBranch', $scope.markers);
-                    
+
                 }
-                
+
                 $scope.markers = markers;
         }
 
@@ -1414,11 +1412,11 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
             if( between(queueItem.address[0],5,10) &&   // in between 5 and 10 and
                 between(queueItem.address[1],79,82)){   // in between 79 and 82
 
-                var marker = {  
-                                latitude: queueItem.address[0], 
-                                longitude: queueItem.address[1], 
+                var marker = {
+                                latitude: queueItem.address[0],
+                                longitude: queueItem.address[1],
                                 id: id,
-                                // icon: 'styles/css/images/hnb3.png', 
+                                // icon: 'styles/css/images/hnb3.png',
                                 show: false,
                                 templateUrl:'views/googleMaps/infoWindow.html',
                                 templateParameter: {
@@ -1450,11 +1448,11 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
                             };
 
                 markers.push(marker);
-                $scope.syncState = true;               
+                $scope.syncState = true;
             }
             else
             {
-                
+
                 console.log("****** out of sri lanka range ******");
                 outOfSriLanka++;
                 outOfSLArray.push(queueItem.name);

@@ -386,6 +386,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     
                     console.log("$scope.dashboardObject", $scope.dashboardObject);
                     $rootScope.dashboard = data.Result;
+                    //deletions attribute is missing from dashboard
+                    //so adding that attribute with all arrays inside empty
+                    $rootScope.dashboard["deletions"] = {
+                                                        "componentIDs":[],
+                                                        "pageIDs":[],
+                                                        "widgetIDs":[]
+                                                    };
 
                     ngToast.create({
                         className: 'success',
@@ -741,7 +748,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 .substring(1);
                         }
                         $scope.createNewPage = function () {
-                            
+                            //adding temp infront of id for a new / temp page till it gets saved in backend
+                            //after saved in backend it will be assigned a different id
                             if($scope.title){
                                 var page = {   
                                     "widgets": [],
@@ -751,7 +759,16 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 }
                                 $rootScope.dashboard.pages.push(page);
                                 console.log("pages",$rootScope.pages);
+                                console.log("rootscope creatnewpage", $rootScope);
                                 $mdDialog.hide();
+
+                                ngToast.create({
+                                    className: 'success',
+                                    content: 'New page added successfully',
+                                    horizontalPosition: 'center',
+                                    verticalPosition: 'top',
+                                    dismissOnClick: true
+                                });
                             }
                             else{
                                 ngToast.create({
@@ -1045,5 +1062,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     }
 
 ]);
+
 
 

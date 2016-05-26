@@ -557,6 +557,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
     $scope.executeQryData = executeQryData;
 
+    $scope.pivotSummaryField1 = [];
+    $scope.pivotSummaryField2 = [];
+
     $scope.uiSource = {};
 
     $scope.eventHndler = {
@@ -657,9 +660,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         condition: row.name
                     };
                     executeQryData.executeMeasures.push(obj);
+                    //for pivot summary
+                    $scope.pivotSummaryField1.push(obj);
                     eval("$scope." + $scope.selectedChart.chartType + ".selectCondition()");
                 }
-
             },
             onClickColumn: function(column) {
                 $("#togglePanelColumns").hide(200);
@@ -848,7 +852,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 if (onSelect.chart =="pivotsummary" && $scope.executeQryData.executeMeasures.length >5) {
                     ngToast.create({
                             className: 'warning',
-                            content: 'series should less than 8 to creat pivotsummary!',
+                            content: 'series should less than 5 to creat pivotsummary!',
                             horizontalPosition: 'right',
                             verticalPosition: 'bottom',
                             timeout: 1500,
@@ -909,59 +913,49 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
     $scope.saveChart = function(widget) {
 
-        var widgetLimit = 6;
-
         var widgets = $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets;
-        if (widgets.length < widgetLimit) {
 
-            widget.widgetData.widName = $scope.widget.widgetData.widName;
-            widget.widgetData.dataCtrl = "widgetSettingsDataCtrl";
-            widget.widgetData.dataView = "views/ViewData.html";
-            widget.widgetData["selectedChart"] = $scope.selectedChart;
-            widget.widgetData.highchartsNG["size"] = {
+        widget.widgetData.widName = $scope.widget.widgetData.widName;
+        widget.widgetData.dataCtrl = "widgetSettingsDataCtrl";
+        widget.widgetData.dataView = "views/ViewData.html";
+        widget.widgetData["selectedChart"] = $scope.selectedChart;
+        widget.widgetData.highchartsNG["size"] = {
 
-                width: 300,
-                height: 220
-            };
+            width: 300,
+            height: 220
+        };
 
-            widget.widgetData["commonSrc"] = {
+        widget.widgetData["commonSrc"] = {
+            src: $scope.sourceData,
+            mea: $scope.executeQryData.executeMeasures,
+            att: $scope.executeQryData.executeColumns,
+
+            query: $scope.dataToBeBind.receivedQuery
+        };
+
+        var objIndex = getRootObjectById(widget.widgetData.id, widgets);
+        if (objIndex == null) { //new widget
+            widgets.push(widget);
+            console.log("widget", widget);
+        } else {
+            
+            $scope.widget.widgetData["commonSrc"] = {
                 src: $scope.sourceData,
                 mea: $scope.executeQryData.executeMeasures,
                 att: $scope.executeQryData.executeColumns,
-
                 query: $scope.dataToBeBind.receivedQuery
-
             };
-
             var objIndex = getRootObjectById(widget.widgetData.id, widgets);
-            //objIndex is integer if widget exists, o'wise returns undefined
-            //if (objIndex === parseInt(objIndex, 10)) { //if objindex is integer -> widget exists 
-                //-> user is updating widget
-            //    widgets[objIndex] = widget;
-            //}
-            if (objIndex == null) { //new widget
-                widgets.push(widget);
-            } else {
-                // $scope.widget.highchartsNG["size"] = $scope.prevChartSize;
-                $scope.widget.widgetData["commonSrc"] = {
-                    src: $scope.sourceData,
-                    mea: $scope.executeQryData.executeMeasures,
-                    att: $scope.executeQryData.executeColumns,
-                    query: $scope.dataToBeBind.receivedQuery
-                };
-                var objIndex = getRootObjectById(widget.widgetData.id, widgets);
-                widgets[objIndex] = $scope.widget;
-            }
-
-            $scope.eventHndler.isMainLoading = true;
-            $scope.eventHndler.message = $scope.eventHndler.messageAry[0];
-            setTimeout(function() {
-                $scope.eventHndler.isMainLoading = false;
-                $state.go('home.Dashboards');
-            }, 5000);
-        } else {
-            privateFun.fireMessage('0', 'Maximum Widget Limit Exceeded');
+            widgets[objIndex] = $scope.widget;
+            console.log("$scope.widget", $scope.widget);
         }
+
+        $scope.eventHndler.isMainLoading = true;
+        $scope.eventHndler.message = $scope.eventHndler.messageAry[0];
+        setTimeout(function() {
+            $scope.eventHndler.isMainLoading = false;
+            $state.go('home.Dashboards');
+        }, 5000);
     };
 
     //chart functions
@@ -1027,6 +1021,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 $scope.getDrilledAggregation();
             }
 
+            //for pivot summary
+            $scope.pivotSummaryField2.push({
+                filedName: fieldName
+            });
         },
         executeQuery: function(cat, res, query) {
             if (cat != "") {
@@ -1701,20 +1699,36 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
         },
         changeType: function() {
+            
+            console.log("$scope.pivotSummaryField1", $scope.pivotSummaryField1);
+            console.log("$scope.pivotSummaryField2", $scope.pivotSummaryField2);
             $scope.eventHndler.isLoadingChart = true;
             $scope.fieldArray = [];
 
-            for (var i = 0; i < $scope.commonData.measures.length; i++) {
-                $scope.fieldArray.push($scope.commonData.measures[i].filedName);
+            // for (var i = 0; i < $scope.commonData.measures.length; i++) {
+            //     $scope.fieldArray.push($scope.commonData.measures[i].filedName);
+            // }
+            for (var i = 0; i < $scope.pivotSummaryField1.length; i++) {
+                $scope.fieldArray.push($scope.pivotSummaryField1[i].filedName);
             }
+            //limiting fieldArray to 10
+            // if($scope.fieldArray.length > 5){
+            //     $scope.fieldArray = $scope.fieldArray.slice(0, 5);
+            // }
 
             //remove repeating fields from columns
             var filteredColumnArray = [];
-            filteredColumnArray = $scope.commonData.columns.filter(function(element) {
-                if ($scope.commonData.measures.indexOf(element) < 0) {
+            filteredColumnArray = $scope.pivotSummaryField2.filter(function(element) {
+                if ($scope.pivotSummaryField2.indexOf(element) < 0) {
                     return element;
                 }
             });
+
+            //limiting filteredcolumnarray to 10
+            // if(filteredColumnArray.length > 5){
+            //     filteredColumnArray = filteredColumnArray.slice(0, 5);
+            // }
+
             for (var i = 0; i < filteredColumnArray.length; i++) {
                 $scope.fieldArray.push(filteredColumnArray[i].filedName);
             }
@@ -1730,8 +1744,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 i++;
             });
 
-
             var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl;
+            console.log("query", query);
             $scope.client.getExecQuery(query, function(data, status) {
                 $scope.summaryData = data;
                 $scope.eventHndler.isLoadingChart = false;

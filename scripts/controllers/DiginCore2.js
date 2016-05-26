@@ -288,7 +288,7 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                         }
 
                         var pageObject;
-                        //if the page is a temporary page
+                        //if the page is a temporary / new page 
                         if($rootScope.dashboard.pages[i].pageID.substr(0, 4) == "temp"){
 
                             pageObject = {
@@ -336,11 +336,12 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                         "compID": $rootScope.dashboard.compID,
                         "compName": $scope.dashboardName,
                         "refreshInterval": $rootScope.dashboard.refreshInterval,
-                        "deletions": {
-                                        "componentIDs":[],
-                                        "pageIDs":[],
-                                        "widgetIDs":[]
-                                    }
+                        // "deletions": {
+                        //                 "componentIDs":[],
+                        //                 "pageIDs":[],
+                        //                 "widgetIDs":[]
+                        //             }
+                        "deletions": $rootScope.dashboard.deletions
                     }
                 }
                 console.log("dashboardObject", dashboardObject);
@@ -832,7 +833,7 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
         $scope.addAllinOne = function(widget, ev) {
 
             var widgetLimit = 6;
-
+            alert("oki");
             if($rootScope.dashboard.pages[0].widgets.length < widgetLimit){
 
                 $scope.currWidget = {

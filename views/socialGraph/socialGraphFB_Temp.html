@@ -1,4 +1,4 @@
-<div   ng-controller="socialGraphFBCtrl">
+<div ng-controller="socialGraphFBCtrl">
 
     <!-- search fb page -->
     <div id="fbPageSearch" ng-class="{'block' : activePageSearch,'hidden' : !activePageSearch}">
@@ -181,9 +181,6 @@
                     <div flex="40">
                         <md-card class="graph-map overflow-none fb-graph-bg">
                             <div class="graph-fb-wrap wrap-overflow ">
-                                <div class="graph-map-content">
-                                    <digin-map map-data="{{arrAdds}}"></digin-map>
-                                </div>
                                 <div class="text-left col-sm-6" layout-margin>
                                     <h2 class="graph-h2">
                                         Location
@@ -193,14 +190,16 @@
                                             ></i>
                                         </div>
                                     </h2>
-
+                                </div>
+                                <div class="graph-map-content">
+                                    <digin-map map-data="{{arrAdds}}"></digin-map>
                                 </div>
                             </div>
                         </md-card>
                     </div>
                 </div>
-               
-               <div layout="row" layout-wrap>
+
+                <div layout="row" layout-wrap>
                     <div flex="50">
                         <md-card class="md-default-theme overflow-none fb-graph-bg">
                             <div class="graph-fb-wrap">

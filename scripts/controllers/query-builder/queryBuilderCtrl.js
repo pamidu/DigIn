@@ -848,7 +848,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 if (onSelect.chart =="pivotsummary" && $scope.executeQryData.executeMeasures.length >5) {
                     ngToast.create({
                             className: 'warning',
-                            content: 'series should less than 8 to creat pivotsummary!',
+                            content: 'series should less than 5 to creat pivotsummary!',
                             horizontalPosition: 'right',
                             verticalPosition: 'bottom',
                             timeout: 1500,

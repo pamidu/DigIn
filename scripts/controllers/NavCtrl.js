@@ -1,11 +1,11 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http', 'Digin_ReportViewer',
     '$localStorage', '$window', 'ObjectStoreService', 'Digin_Base_URL', 'DashboardService', '$log', '$mdToast',
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Report_Base', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Report_Base', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain','$filter',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
               $http, Digin_ReportViewer, $localStorage, $window, ObjectStoreService,
               Digin_Base_URL, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Report_Base, Digin_Tomcat_Base, ngToast, Digin_Domain) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Report_Base, Digin_Tomcat_Base, ngToast, Digin_Domain,$filter) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -239,6 +239,17 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //adding the default dashboard to rootScope
         $rootScope.dashboard = $scope.defaultDashboard;
 
+        $scope.test =function() {
+           // console.log("scope.sortedList", $scope.sortedAndPaginatedList);
+        };
+
+        $scope.originalDashboardsList = $scope.dashboards;
+        $scope.originalReportssList =$scope.reports;
+        $scope.updateFilteredList = function() {
+            $scope.dashboards = $filter("filter")($scope.originalDashboardsList, $scope.searchText);
+            $scope.reports = $filter("filter")($scope.originalReportssList, $scope.searchText);
+         };
+
         //change dates range in likes
         $scope.changeDatesRange = function (widId, sinceDay, untilDay) {
 
@@ -371,6 +382,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $state.go('home.DynamicallyReportBuilder', {'reportNme': report});
         }
         $scope.goDashboard = function (dashboard) {
+
 
             console.log("dash item", dashboard);
 

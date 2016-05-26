@@ -80,25 +80,68 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         }, {
             'type': 'INTEGER',
             'category': 'mes'
-        },
-        {
-            'type': 'integer',
-            'category': 'mes'
-        },
-        {
-            'type': 'character varying',
-            'category': 'att'
-        },
-
-
-
-
-
-        {
+        }, {
             'type': 'FLOAT',
             'category': 'mes'
-        }];
+        }, {
+            'type': 'smallint',
+            'category': 'mes'
+        }, {
+            'type': 'integer',
+            'category': 'mes'
+        }, {
+            'type': 'bigint',
+            'category': 'mes'
+        }, {
+            'type': 'decimal',
+            'category': 'mes'
+        }, {
+            'type': 'numeric',
+            'category': 'mes'
+        }, {
+            'type': 'real',
+            'category': 'mes'
+        }, {
+            'type': 'double precision',
+            'category': 'mes'
+        }, {
 
+            'type': 'smallserial',
+            'category': 'mes'
+        }, {
+
+            'type': 'serial',
+            'category': 'mes'
+        }, {
+
+            'type': 'bigserial',
+            'category': 'mes'
+        },
+
+        {
+
+            'type': 'character varying',
+            'category': 'att'
+        }, {
+
+            'type': 'varchar',
+            'category': 'att'
+        }, {
+
+            'type': 'character',
+            'category': 'att'
+        }, {
+
+            'type': 'char',
+            'category': 'att'
+        }, {
+
+            'type': 'numeric',
+            'category': 'mes'
+        }
+
+
+    ];
 
         var chartTypes = [];
         //Update damith

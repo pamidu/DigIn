@@ -2,7 +2,7 @@
  * Created by Damith on 5/2/2016.
  */
 'use strict';
-routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $diginengine, ngToast) {
+routerApp.controller('dataSourceCtrl', function($scope, $rootScope, $state, $diginengine, ngToast) {
 
 
     //#pop message
@@ -17,7 +17,7 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
     //#pop message
     popUpMessage.prototype = {
         constructor: popUpMessage,
-        fire: function (msgType, msg) {
+        fire: function(msgType, msg) {
             ngToast.dismiss();
             this.msgType = msgType;
             this.msg = msg;
@@ -63,48 +63,106 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
 
     //data base field type
     $scope.dataBaseFiledTypes = [{
-        'type': 'nvarchar',
-        'category': 'att'
-    }, {
-        'type': 'varchar',
-        'category': 'att'
-    }, {
-        'type': 'char',
-        'category': 'att'
-    }, {
-        'type': 'char',
-        'category': 'att'
-    }, {
-        'type': 'bit',
-        'category': 'att'
-    }, {
-        'type': 'STRING',
-        'category': 'att'
-    }, {
-        'type': 'int',
-        'category': 'mes'
-    }, {
-        'type': 'decimal',
-        'category': 'mes'
-    }, {
-        'type': 'float',
-        'category': 'mes'
-    }, {
-        'type': 'datetime',
-        'category': 'mes'
-    }, {
-        'type': 'TIMESTAMP',
-        'category': 'mes'
-    }, {
-        'type': 'money',
-        'category': 'mes'
-    }, {
-        'type': 'INTEGER',
-        'category': 'mes'
-    }, {
-        'type': 'FLOAT',
-        'category': 'mes'
-    }];
+            'type': 'nvarchar',
+            'category': 'att'
+        }, {
+            'type': 'varchar',
+            'category': 'att'
+        }, {
+            'type': 'char',
+            'category': 'att'
+        }, {
+            'type': 'char',
+            'category': 'att'
+        }, {
+            'type': 'bit',
+            'category': 'att'
+        }, {
+            'type': 'STRING',
+            'category': 'att'
+        }, {
+            'type': 'int',
+            'category': 'mes'
+        }, {
+            'type': 'decimal',
+            'category': 'mes'
+        }, {
+            'type': 'float',
+            'category': 'mes'
+        }, {
+            'type': 'datetime',
+            'category': 'mes'
+        }, {
+            'type': 'TIMESTAMP',
+            'category': 'mes'
+        }, {
+            'type': 'money',
+            'category': 'mes'
+        }, {
+            'type': 'INTEGER',
+            'category': 'mes'
+        }, {
+            'type': 'FLOAT',
+            'category': 'mes'
+        }, {
+            'type': 'smallint',
+            'category': 'mes'
+        }, {
+            'type': 'integer',
+            'category': 'mes'
+        }, {
+            'type': 'bigint',
+            'category': 'mes'
+        }, {
+            'type': 'decimal',
+            'category': 'mes'
+        }, {
+            'type': 'numeric',
+            'category': 'mes'
+        }, {
+            'type': 'real',
+            'category': 'mes'
+        }, {
+            'type': 'double precision',
+            'category': 'mes'
+        }, {
+
+            'type': 'smallserial',
+            'category': 'mes'
+        }, {
+
+            'type': 'serial',
+            'category': 'mes'
+        }, {
+
+            'type': 'bigserial',
+            'category': 'mes'
+        },
+
+        {
+
+            'type': 'character varying',
+            'category': 'att'
+        }, {
+
+            'type': 'varchar',
+            'category': 'att'
+        }, {
+
+            'type': 'character',
+            'category': 'att'
+        }, {
+
+            'type': 'char',
+            'category': 'att'
+        }, {
+
+            'type': 'numeric',
+            'category': 'mes'
+        }
+
+
+    ];
 
 
     //form Element handler
@@ -135,12 +193,12 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
     //#getTable
     //#getTableFiled
     var serverRequest = {
-        getTables: function (src, callback) {
+        getTables: function(src, callback) {
             $scope.formElement.isLoadingTbl = true;
             $scope.client = $diginengine.getClient(src);
             switch (src) {
                 case "BigQuery":
-                    $scope.client.getTables(function (res, status) {
+                    $scope.client.getTables(function(res, status) {
                         if (typeof res === 'object' && status) {
                             callback(res, status);
                             $scope.formElement.isLoadingTbl = false;
@@ -153,23 +211,23 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
                     break;
             }
         },
-        getTblFiled: function (src, tbl, callback) {
+        getTblFiled: function(src, tbl, callback) {
             switch (src) {
                 case "BigQuery":
                     $scope.formElement.isLoadingFiled = true;
-                    $scope.client.getFields(tbl, function (data, status) {
+                    $scope.client.getFields(tbl, function(data, status) {
                         callback(data, status);
                     });
                     break;
             }
         }
 
-    };//end
+    }; //end
 
     //main function
-    var mainFunction = (function () {
+    var mainFunction = (function() {
         //go to main screen
-        var goToMainScreen = function () {
+        var goToMainScreen = function() {
             $scope.formElement.isSource = true;
             $scope.formElement.isTableFiled = false;
             $scope.formElement.isTable = false;
@@ -183,7 +241,7 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
             //todo
         };
         //go to table screen
-        var goToTblScreen = function (state) {
+        var goToTblScreen = function(state) {
             if ($scope.synData.sourceName == 'BigQuery') {
                 $scope.formElement.isSource = false;
                 $scope.formElement.isTableFiled = false;
@@ -192,7 +250,7 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
                 if (state == 1) {
                     $scope.synData.tables = [];
                     //todo
-                    serverRequest.getTables($scope.synData.sourceName, function (res, status) {
+                    serverRequest.getTables($scope.synData.sourceName, function(res, status) {
                         if (status) {
                             for (var i = 0; i < res.length; i++) {
                                 $scope.synData.tables.push({
@@ -211,7 +269,7 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
             }
         };
         //go to table filed screen
-        var goToTblFiledScreen = function () {
+        var goToTblFiledScreen = function() {
             if ($scope.synData.tableName == null ||
                 typeof $scope.synData.tableName === "object") {
                 message.fire('0', '<strong> ERROR :</strong> please select table....');
@@ -228,13 +286,14 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
             $scope.synData.measures = [];
 
             serverRequest.getTblFiled($scope.synData.sourceName,
-                $scope.synData.tableName, function (res, status) {
+                $scope.synData.tableName,
+                function(res, status) {
                     if (status) {
                         var dataTypes = $scope.dataBaseFiledTypes;
                         for (var c in res) {
                             if (Object.prototype.hasOwnProperty.call(res, c)) {
                                 var val = res[c];
-                                angular.forEach(val, function (value, key) {
+                                angular.forEach(val, function(value, key) {
                                     if (key == 'FieldType') {
                                         for (var i = 0; i < dataTypes.length; i++) {
                                             if (value == dataTypes[i].type) {
@@ -266,22 +325,20 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
                 });
         };
         //go to final screen
-        var goToFinalScreen = function () {
+        var goToFinalScreen = function() {
             $scope.synData.selectMeasures = [];
             $scope.synData.selectAttribute = [];
             $rootScope.algoSource = [];
             //choose selected attribute
             for (var i = 0; i < $scope.synData.attribute.length; i++) {
                 if ($scope.synData.attribute[i].isRemove) {
-                    $scope.synData.selectAttribute.push
-                    ($scope.synData.attribute[i]);
+                    $scope.synData.selectAttribute.push($scope.synData.attribute[i]);
                 }
             }
             //choose selected measures
             for (var i = 0; i < $scope.synData.measures.length; i++) {
                 if ($scope.synData.measures[i].isRemove) {
-                    $scope.synData.selectMeasures.push
-                    ($scope.synData.measures[i]);
+                    $scope.synData.selectMeasures.push($scope.synData.measures[i]);
                 }
             }
 
@@ -305,11 +362,11 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
 
         };
         return {
-            onLoad: function () {
+            onLoad: function() {
                 // all element onLoad event setting
                 $scope.formElement = formElement;
             },
-            goToNextScreen: function () {
+            goToNextScreen: function() {
                 if (formElement.isSource) {
                     goToTblScreen(1);
                     return;
@@ -324,7 +381,7 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
                     return;
                 }
             },
-            goToBackScreen: function () {
+            goToBackScreen: function() {
                 if (formElement.isTableFiled) {
                     goToTblScreen(0);
                     return;
@@ -335,7 +392,7 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
                 }
 
             },
-            goToFinalScreen: function () {
+            goToFinalScreen: function() {
                 goToFinalScreen();
                 return;
             }
@@ -355,7 +412,7 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
 
     ChangeSource.prototype = {
         constructor: ChangeSource,
-        change: function () {
+        change: function() {
             for (var i = 0; i < this.dataSource.length; i++) {
                 this.dataSource[i].selected = false;
                 if (this.source.name == this.dataSource[i].name) {
@@ -365,7 +422,7 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
             $scope.datasources[this.selectIndex].selected = true;
             $scope.synData.sourceName = this.dataSource[this.selectIndex].name;
         }
-    };//end
+    }; //end
 
     //#table
     function ChangeTbl(selectTbl, tblSource) {
@@ -376,7 +433,7 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
 
     ChangeTbl.prototype = {
         constructor: ChangeTbl,
-        change: function () {
+        change: function() {
             for (var i = 0; i < this.tblSource.length; i++) {
                 this.tblSource[i].selected = false;
                 if (this.selectTbl.name == this.tblSource[i].name) {
@@ -386,7 +443,7 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
             $scope.synData.tables[this.selectIndex].selected = true;
             $scope.synData.tableName = this.tblSource[this.selectIndex].name;
         }
-    };//end
+    }; //end
 
     //#attribute #measure
     function ChangeTableFiled(crtFiled, proSource, proName) {
@@ -398,7 +455,7 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
 
     ChangeTableFiled.prototype = {
         constructor: ChangeTableFiled,
-        change: function () {
+        change: function() {
             var selectFiled = null;
             if (this.fileType == 'attr') {
                 selectFiled = $scope.synData.attribute;
@@ -417,29 +474,29 @@ routerApp.controller('dataSourceCtrl', function ($scope, $rootScope, $state, $di
                 }
             }
         }
-    };//end
+    }; //end
 
     //main event handler
     $scope.eventHandler = {
-        goToNextScreen: function (state) {
-            mainFunction.goToNextScreen();
-        },
-        goToBackScreen: function () {
-            mainFunction.goToBackScreen();
-        },
-        onClickSource: function (newSource, dataSource) {
-            var changeSource = new ChangeSource(newSource, dataSource);
-            changeSource.change();
-        },
-        onClickTbl: function (selectTbl, tblSource) {
-            var changeTbl = new ChangeTbl(selectTbl, tblSource);
-            changeTbl.change();
-        },
-        onClickTbleFiled: function (crtSelect, proSource, proName) {
-            var changeTblPro = new ChangeTableFiled(crtSelect, proSource, proName);
-            changeTblPro.change();
-        }
-    }//end
+            goToNextScreen: function(state) {
+                mainFunction.goToNextScreen();
+            },
+            goToBackScreen: function() {
+                mainFunction.goToBackScreen();
+            },
+            onClickSource: function(newSource, dataSource) {
+                var changeSource = new ChangeSource(newSource, dataSource);
+                changeSource.change();
+            },
+            onClickTbl: function(selectTbl, tblSource) {
+                var changeTbl = new ChangeTbl(selectTbl, tblSource);
+                changeTbl.change();
+            },
+            onClickTbleFiled: function(crtSelect, proSource, proName) {
+                var changeTblPro = new ChangeTableFiled(crtSelect, proSource, proName);
+                changeTblPro.change();
+            }
+        } //end
 
 
-});//end main controller
+}); //end main controller

@@ -266,6 +266,7 @@
 <script src="scripts/charts/treemap.js"></script>
 <script src="scripts/controllers/prediction/prediction.js"></script>
 <script src="scripts/charts/d3Force.js"></script>
+ 
 <script src="scripts/charts/streamgraph.js"></script>
 <script src="scripts/charts/scatterPlot.js"></script>
 <script src="scripts/charts/packing.js"></script>

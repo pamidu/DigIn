@@ -68,11 +68,17 @@ routerApp.directive('linearChart', function() {
                 startVis();
 
                 function update() {
-                    console.log(nodes)
-                    var nodes = flatten(root),
-                        links = d3.layout.tree().links(nodes);
+                    console.log(nodes)  
+                    var nodes = flatten(root),                    
+                    links = d3.layout.tree().links(nodes);
+                    if(nodes[0].children == null)
+                    {
+                    var nodes = flatten(rootData),                    
+                    links = d3.layout.tree().links(nodes);
+                    }
+
                     console.log(links)
-                        // Restart the force layout.
+                     
                     force.nodes(nodes)
                         .links(links)
                         .start();
@@ -150,6 +156,7 @@ routerApp.directive('linearChart', function() {
                     } else {
                         d.children = d._children;
                         d._children = null;
+
                     }
                     update();
                 }

@@ -50,7 +50,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                     var DetailExist=decodeURIComponent(getCookie('authData'));
 
 
-                    $auth.login($scope.txtUname, $scope.txtPwd, "duoworld.duoweb.info");
+                    $auth.login($scope.txtUname, $scope.txtPwd, "digin.io");
                     
                     $auth.onLoginResult(function () {
                         $scope.isLoggedin = true;
@@ -99,7 +99,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                  $scope.error.isLoading = true;
                  var req = {
                  method: 'POST',
-                 url: 'http://digin.io/apis/authorization/userauthorization/login',
+x                 url: 'http://digin.io/apis/authorization/userauthorization/login',
                  headers: {
                  'Content-Type': "application/json"
                  },

@@ -511,20 +511,6 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                     UIDate: $scope.reportFiledList.UIDate
                 };
 
-                //if (typeof datePickerObj.fromdate === 'undefined' || typeof datePickerObj.todate == 'undefined') {
-                //    privateFun.fireMsg('0', '<strong>Error :' +
-                //        ' </strong>please select the report date parameter...');
-                //    privateFun.doneReportLoad();
-                //    return;
-                //} else {
-                //var validationState = false;
-                //for (var loop = 2; loop < selDrpDwnObj.length; loop++) {
-                //    if (selDrpDwnObj[loop].value != "") {
-                //        validationState = true;
-                //    }
-                //    // }
-                //}
-
                 //#report validation
                 // date validation
                 if ($scope.reportFiledList.isDateFound) {

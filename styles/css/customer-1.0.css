@@ -509,7 +509,7 @@ drb >> dynamically report builder
     font-weight: 200;
 }
 
-.digin-qb-header-text{
+.digin-qb-header-text {
     color: #DAD2BF;
     padding-top: 6px;
     font-family: 'Ek Mukta', sans-serif;
@@ -2851,7 +2851,7 @@ li:active {
 .digin-welcome-sch-wrap {
     width: 100%;
     height: 100%;
-    margin: 6% 8%;
+    margin: 5% 11%;
 }
 
 .font-ek-mukta {
@@ -2867,11 +2867,111 @@ li:active {
 }
 
 .search-bar-header {
-    color: rgb(185, 182, 182);
-    font-size: 25px;
+    color: #13b6b3;
+    font-size: 28px;
 }
 
 .search-bar-header > i {
-    font-size: 20px;
+    font-size: 25px;
     padding-right: 10px;
+}
+
+/* custom pagination*/
+.welcome-bar-page-customer {
+    display: inline-block;
+    padding-left: 0;
+    margin: 0px 0;
+    border-radius: 2px;
+}
+
+.welcome-bar-page-customer > .custom-pagination > li {
+    display: inline;
+}
+
+.welcome-bar-page-customer > .custom-pagination > li > a,
+.welcome-bar-page-customer > .custom-pagination > li > span {
+    position: relative;
+    float: left;
+    padding: 4px 16px;
+    line-height: 1.618;
+    text-decoration: none;
+    z-index: 2;
+    color: #999;
+    background-color: transparent !important;
+    border-color: #ddd;
+    font-size: 15px;
+    font-weight: 400;
+    font-family: 'Ek Mukta', sans-serif !important;
+}
+
+.welcome-bar-page-customer > .custom-pagination > li:first-child > a,
+.welcome-bar-page-customer > .custom-pagination > li:first-child > span {
+    margin-left: 0;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+}
+
+.welcome-bar-page-customer > .custom-pagination > li:last-child > a,
+.welcome-bar-page-customer > .custom-pagination > li:last-child > span {
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.welcome-bar-page-customer > .custom-pagination > li > a:hover,
+.welcome-bar-page-customer > .custom-pagination > li > span:hover,
+.welcome-bar-page-customer > .custom-pagination > li > a:focus,
+.welcome-bar-page-customer > .custom-pagination > li > span:focus {
+    color: #ffffff;
+    background-color: transparent !important;
+    border-color: #4B77BE;
+    /*font-weight: 800;
+    font-size: 16px;*/
+}
+
+.welcome-bar-page-customer > .custom-pagination > .active > a,
+.welcome-bar-page-customer > .custom-pagination > .active > span,
+.welcome-bar-page-customer > .custom-pagination > .active > a:hover,
+.welcome-bar-page-customer > .custom-pagination > .active > span:hover,
+.welcome-bar-page-customer > .custom-pagination > .active > a:focus,
+.welcome-bar-page-customer > .custom-pagination > .active > span:focus {
+    color: #000000;
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    cursor: default;
+    /*font-size: 16px;
+    font-weight: 800;*/
+}
+
+.welcome-bar-page-customer > .custom-pagination > .disabled > span,
+.welcome-bar-page-customer > .custom-pagination > .disabled > span:hover,
+.welcome-bar-page-customer > .custom-pagination > .disabled > span:focus,
+.welcome-bar-page-customer > .custom-pagination > .disabled > a,
+.welcome-bar-page-customer > .custom-pagination > .disabled > a:hover,
+.welcome-bar-page-customer > .custom-pagination > .disabled > a:focus {
+    color: #999;
+    background-color: transparent !important;
+    border-color: #ddd;
+    cursor: not-allowed;
+    /*font-size: 16px;
+    font-weight: 600;*/
+}
+
+.welcome-search-wrap {
+    height: 400px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.welcome-data > tbody > tr > td {
+    font-size: 16px;
+    font-weight: 600;
+    color: #757f93;
+    font-family: 'Ek Mukta', sans-serif !important;
+    text-transform: capitalize;
+    cursor: pointer;
+    outline: none !important;
+}
+
+.welcome-data > tbody > tr > td:hover {
+    color: #13b6b3;
+    outline: none !important;
 }

@@ -4,7 +4,7 @@
 
 'use strict'
 ;
-routerApp.controller('videoCtrl', function ($scope, $sce) {
+routerApp.controller('videoCtrl', function ($scope, $sce, $state) {
 
     //help video obj
     $scope.videosObj = [
@@ -111,5 +111,9 @@ routerApp.controller('videoCtrl', function ($scope, $sce) {
             url: "http://www.videogular.com/styles/themes/default/latest/videogular.css"
         }
     };
+
+    $scope.goWelcomeScreen = function () {
+        $state.go('home.welcomeSearch');
+    }
 
 });

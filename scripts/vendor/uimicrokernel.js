@@ -615,7 +615,8 @@
                 return;
             }
 
-            domain = username.split("@")[1];
+            //domain = username.split("@")[1];
+            domain =domain;
 
             $http({
                 method: 'POST',

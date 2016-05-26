@@ -2,9 +2,9 @@
 
 routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
     '$auth', '$state', '$rootScope', 'ngToast', 'focus','dynamicallyReportSrv',
-     'Digin_Report_Base', 'Digin_Tomcat_Base',
+     'Digin_Report_Base', 'Digin_Tomcat_Base','Digin_Domain',
     function ($scope, $http, $animate, $window, $auth, $state,
-              $rootScope, ngToast, focus, dynamicallyReportSrv, Digin_Report_Base, Digin_Tomcat_Base) {
+              $rootScope, ngToast, focus, dynamicallyReportSrv, Digin_Report_Base, Digin_Tomcat_Base,Digin_Domain) {
 
         $scope.isLoggedin = false;
         $scope.error = {
@@ -50,7 +50,8 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                     var DetailExist=decodeURIComponent(getCookie('authData'));
 
 
-                    $auth.login($scope.txtUname, $scope.txtPwd, "digin.io");
+                    //$auth.login($scope.txtUname, $scope.txtPwd, "duoworld.duoweb.info");
+                    $auth.login($scope.txtUname, $scope.txtPwd, Digin_Domain);
                     
                     $auth.onLoginResult(function () {
                         $scope.isLoggedin = true;
@@ -99,7 +100,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                  $scope.error.isLoading = true;
                  var req = {
                  method: 'POST',
-x                 url: 'http://digin.io/apis/authorization/userauthorization/login',
+                 url: 'http://digin.io/apis/authorization/userauthorization/login',
                  headers: {
                  'Content-Type': "application/json"
                  },

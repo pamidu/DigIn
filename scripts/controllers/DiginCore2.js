@@ -225,6 +225,8 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
     }
 ]);
 
+
+
 routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter', 'Digin_Domain',
 
     function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter, Digin_Domain) {

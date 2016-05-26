@@ -5,11 +5,11 @@
 //service details
 //var parameter ={apiBase:'',reportName:'',token:''}
 //getReportUI(parameter)
-routerApp.factory('dynamicallyReportSrv', function ($http, Digin_Domain) {
+routerApp.factory('dynamicallyReportSrv', function ($http, Report_Domain) {
     return {
         getReportUI: function (parameter) {
             return $http.get(parameter.apiBase + 'getLayout?SecurityToken=' + parameter.token +
-                '&Domain='+Digin_Domain+'&Reportname=' + parameter.reportName + '', {
+                '&Domain=' + Report_Domain + '&Reportname=' + parameter.reportName + '', {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -18,7 +18,7 @@ routerApp.factory('dynamicallyReportSrv', function ($http, Digin_Domain) {
         },
         getAllReports: function (parameter) {
             return $http.get(parameter.apiBase + 'getreportnames?SecurityToken=' + parameter.token +
-                '&Domain='+Digin_Domain, {
+                '&Domain=' + Report_Domain, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -27,7 +27,7 @@ routerApp.factory('dynamicallyReportSrv', function ($http, Digin_Domain) {
         },
         getCurrentQry: function (parameter) {
             return $http.get(parameter.apiBase + 'getQueries?Reportname=' + parameter.reportName +
-                    '&fieldnames={' + parameter.queryFiled + '}')
+                '&fieldnames={' + parameter.queryFiled + '}')
         },
         getRenderReport: function (parameter) {
             return $http.get(parameter.tomCatBase + 'DigIn-Report/ReportService/Reports/getreport/' + parameter.reportName + '/[' + parameter.rptParameter + ']');

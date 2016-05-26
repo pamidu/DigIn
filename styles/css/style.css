@@ -1469,7 +1469,7 @@ md-tab-content {
 
 /*override digind3 css*/
 md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
-    color: rgb(63, 81, 181) !important;
+    background-color: rgba(66,133,244,0.2);
 }
 
 .sidebar-btn {
@@ -1810,6 +1810,7 @@ md-backdrop.md-sidenav-backdrop {
     padding-left: 0;
     margin: 0px 0;
     border-radius: 2px;
+    margin-top: 30px;
 }
 
 .custom-pagination > li {
@@ -2375,10 +2376,16 @@ md-tab-content > div{
     margin: 0px;
     min-width: 10px;
 }
+.pageCloseButton:hover{
+    background-color: transparent !important;
+}
 .pageCloseButton > ng-md-icon:hover{
     fill: #3F51B5 !important;
 }
 /* page name */
 .pageName{
     font-size: 16px;
+}
+.card-body > p{
+    color: #999;
 }

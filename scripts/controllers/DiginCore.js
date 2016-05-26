@@ -45,8 +45,8 @@ routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
     };
 });
 
-routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', 'DynamicVisualization','$csContainer','$state','$qbuilder','$diginengine',
-    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, DynamicVisualization, $csContainer, $state, $qbuilder, $diginengine) {
+routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', 'DynamicVisualization','$csContainer','$state','$qbuilder','$diginengine', 'ngToast',
+    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, DynamicVisualization, $csContainer, $state, $qbuilder, $diginengine, ngToast) {
         
         //code to keep widget fixed on pivot summary drag events
         $('#content1').on('mousedown', function(e) {
@@ -132,13 +132,11 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
         $scope.selectPage = function (page) {
 
-            console.log("page", page);
             for (var i = 0; i < $rootScope.dashboard.pages.length; i++) {
                 if(page.pageID == $rootScope.dashboard.pages[i].pageID){
                     $rootScope.selectedPage = i+1;
                 }
             }
-            console.log("$rootScope", $rootScope);
         }
 
         /* update damith
@@ -496,8 +494,55 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             }
         };
         $scope.removePage = function(page, ev){
-            var selectedPage = $rootScope.selectedPage;
-            $rootScope.dashboard.pages.splice(selectedPage-1, 1);
+
+            $mdDialog.show({
+                controller: function removePageCtrl($scope, $mdDialog, ngToast) {
+
+                    var removePage = null;
+                    $scope.close = function(){
+
+                        $mdDialog.hide();
+                        removePage = true;
+                    }
+                    $scope.cancel = function () {
+
+                        $mdDialog.cancel();
+                        removePage = false;
+                    };
+
+                    return removePage;
+                },
+                templateUrl: 'views/removePage.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true
+
+            }).then(function (removePage) {
+
+                if(removePage){
+
+                    var pages = $rootScope.dashboard.pages;
+                    for(var i=0; i < pages.length; i++){
+                        //check for the specific page in pages array
+                        if(pages[i].pageID == page.pageID) {
+                           pages.splice(i, 1);
+                            //if removed page is not a new page push it
+                            if(page.pageID.substr(0, 4) != "temp"){
+                                $rootScope.dashboard.deletions.pageIDs.push(page.pageID);
+                            }
+                            console.log("$rootScope.dashboard.deletions", $rootScope.dashboard.deletions);
+                        }
+                    }
+
+                    ngToast.create({
+                        className: 'success',
+                        content: 'page removal succussful',
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
+                }
+            });
         }
         $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
@@ -831,6 +876,8 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
         $scope.log = '';
 
         $scope.upload = function(files) {
+
+            var userInfo = JSON.parse(getCookie("authData"));
                                     
             if (files && files.length) {
                 $scope.preloader = true;
@@ -1462,5 +1509,6 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
         }
     }
 ]);
+
 
 

@@ -42,7 +42,6 @@
             "icon": "styles/css/images/icons/motion_detector.svg",
             "type": "General",
             "Description": "Current user profile",
-            "initTemplate": "views/InitConfigProfile.html",
             "widView": "views/ViewProfile.html",
             "color": "#9C27B0",
             "sizeX": 4, "sizeY": 4, "row": 0, "col": 16

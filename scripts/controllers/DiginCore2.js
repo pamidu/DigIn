@@ -831,7 +831,7 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
         $scope.addAllinOne = function(widget, ev) {
 
             var widgetLimit = 6;
-
+            alert("oki");
             if($rootScope.dashboard.pages[0].widgets.length < widgetLimit){
 
                 $scope.currWidget = {

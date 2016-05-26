@@ -260,9 +260,12 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
             }
         }
 
-        //get current filed data
+        //check next query isHierarchy
+        //then true execute query
         if (findIndex < executeQueryAry.length) {
-            //  executeQryHandler.executeNextQuery(filedName, currentVal.value);
+            if (executeQueryAry[findIndex].isHierarchy) {
+                executeQryHandler.executeNextQuery(filedName, currentVal.value);
+            }
         }
 
     };
@@ -323,7 +326,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 }
             };
             xhttp.open("GET", reqParameter.apiBase + 'getQueries?SecurityToken=' + reqParameter.token +
-                '&Domain='+Digin_Domain+'&Reportname=' + reqParameter.reportName +
+                '&Domain=' + Digin_Domain + '&Reportname=' + reqParameter.reportName +
                 '&fieldnames={' + reqParameter.queryFiled + '}', true);
             xhttp.send();
         };
@@ -356,7 +359,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 });
             };
             xhr.open("GET", Digin_PostgreSql + "executeQuery?query=" + encodeURIComponent(queryString) + "&SecurityToken=" + reqParameter.token + "" +
-                "&Domain="+Digin_Domain+"&db=PostgreSQL", /*async*/ true);
+                "&Domain=" + Digin_Domain + "&db=PostgreSQL", /*async*/ true);
             xhr.send();
         };
 
@@ -406,13 +409,15 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                 query: val.Query,
                                 label: val.Fieldname,
                                 fieldname: valLable,
+                                isHierarchy: val.isHierarchy,
                                 data: []
                             };
 
                             $scope.reportFiledList.selectedDrpFiled.push({
                                 'filedName': dynObject.fieldname,
                                 'value': '',
-                                'label': dynObject.label
+                                'label': dynObject.label,
+                                'isHierarchy': dynObject.isHierarchy
                             });
                             angular.forEach(val, function (value, key) {
                                 var executeQueryAryObj = {
@@ -421,6 +426,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                     query: '',
                                     label: '',
                                     state: false,
+                                    isHierarchy: val.isHierarchy
                                 };
 
                                 switch (value) {
@@ -504,20 +510,6 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 var UI = {
                     UIDate: $scope.reportFiledList.UIDate
                 };
-
-                //if (typeof datePickerObj.fromdate === 'undefined' || typeof datePickerObj.todate == 'undefined') {
-                //    privateFun.fireMsg('0', '<strong>Error :' +
-                //        ' </strong>please select the report date parameter...');
-                //    privateFun.doneReportLoad();
-                //    return;
-                //} else {
-                //var validationState = false;
-                //for (var loop = 2; loop < selDrpDwnObj.length; loop++) {
-                //    if (selDrpDwnObj[loop].value != "") {
-                //        validationState = true;
-                //    }
-                //    // }
-                //}
 
                 //#report validation
                 // date validation
@@ -679,7 +671,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                 var replaceTxt = privateFun.capitalise(filedName);
                                 replaceTxt = '${' + replaceTxt + '}';
                                 var nextQuery = nextQuery.replace(replaceTxt, "'" + selectedVal + "'");
-                                nextQuery = nextQuery.replace('All', selectedVal);
+                                //nextQuery = nextQuery.replace('All', selectedVal);
 
                                 serverRequest.getExecuteQuery(nextQuery, length, function (res) {
                                     if (res.data == 500) {

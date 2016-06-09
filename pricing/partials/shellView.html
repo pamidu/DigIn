@@ -1,0 +1,116 @@
+<div layout="column" layout-align="start start">
+    <md-toolbar style="min-height:48px;max-height:48px;z-index:10;background-color:{{config.shellConfiguration.themeconfiguration.primarypalette}}" layout="row" layout-align="space-between center">
+        <div layout="row" layout-align="start center" ng-click="toggleLeftMenu()">
+            <img ng-src="{{myCroppedImage}}" style="width:122px;height:32px;margin:5px;">
+        </div>
+        <div class="tool-bar-control-set right" layout="row" layout-align="end center" flex>
+
+
+            <div class="serachBox" ng-show="searchBarRevealed">
+                <md-input-container md-no-float class="md-block">
+                    <input ng-model="globalSearchKeyword" placeholder="Search">
+                </md-input-container>
+            </div>
+
+            <md-button aria-label="Search" ng-click="revealSearchBar()">
+                <md-icon md-svg-icon="icons/ic_search_24px.svg" alt="Search" ng-hide="searchBarRevealed"></md-icon>
+                <md-icon md-svg-icon="icons/ic_close_24px.svg" alt="Close Search" ng-show="searchBarRevealed"></md-icon>
+            </md-button>
+
+            <md-menu md-offset="0 48" ng-hide="searchBarRevealed" style="margin:0px;">
+                <md-button ng-click="showNotifications($mdOpenMenu);" style="line-height:0px;" aria-label="show notifications">
+                    <md-icon md-svg-icon="icons/ic_notifications_none_24px.svg"></md-icon>
+                    <div ng-if="unseenNotificationCount > 0" class="latestNotificationCount" layout="row" layout-align="center center">{{unseenNotificationCount}}</div>
+
+                </md-button>
+                <md-menu-content layout="column" layout-align="start center" width="5" class="notification-dropdown-container">
+
+                    <div class="notification-dropdown-container-box" layout="row" layout-align="start center" ng-repeat="n in shellNotifications | orderBy:'-timestamp'" ng-if="n.viewstatus">
+                        <img ng-src="data:image/png;base64,{{n.user.profile_pic}}" err-src="images/appIcons/contacts.png" class="notification-box-image" />
+                        <div layout="column" layout-align="start start" class="notification-box-content" flex>
+                            <p>{{n.message}}</p>
+                            <span>{{n.timestamp | date:'medium'}}</span>
+                        </div>
+                        <md-icon md-svg-icon="icons/ic_flash_on_24px.svg" alt="previous actions" class="notifiaction-box-icon"></md-icon>
+                    </div>
+                    <md-menu-item style="width:100%" ng-if="isNotificationeEmpty()">
+                        <md-button aria-label="no new notifications">
+                            <md-icon md-svg-icon="icons/ic_error_24px.svg" alt="User Profile"></md-icon>
+                            No new Notifications!
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-divider></md-menu-divider>
+                    <md-menu-item style="width:100%">
+                        <md-button ng-click="toggleNotifications()" aria-label="see all">
+                            <md-icon md-svg-icon="icons/ic_turned_in_not_24px.svg" alt="User Profile"></md-icon>
+                            See All
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+            <md-menu md-position-mode="target-right target" style="margin:0px;">
+                <md-button class="md-accent md-icon-button" ng-click="$mdOpenMenu()" style="line-height:0px;" aria-label="profile">
+                    <img ng-src="{{profilePicture}}" err-src="images/appIcons/contacts.png" width="32" height="32" style="border-radius:50%;">
+                </md-button>
+                <md-menu-content style="height:100%;max-height:400px;  padding:0px !important;" width="4" class="md-primary" layout="column" layout-align="start start">
+                    <div class="userInfoSummary" style="width:100%;background:#333; height:200px;">
+                        <div class="userInfoProfileBannerSection" layout="column" layout-align="start start">
+                            <bgblur-component blurimg-src="{{profilePicture}}" blurimg-intensity="50" blurimage-class="bg-blur"></bgblur-component>
+                            <img id="profilePic" src="{{profilePicture}}" err-src="images/appIcons/contacts.png" width="90" height="90">
+                        </div>
+
+                        <div class="userInfoProfileDetailsSection" layout="column" layout-align="center center">
+                            <span>Clark Kent</span>
+                            <span>superman@duoworld.com</span>
+                        </div>
+                    </div>
+
+                    <div class="profileWidgetControls" layout="row" layout-align="space-around center" style="background-color:{{config.shellConfiguration.themeconfiguration.primarypalette}}">
+                        <md-button class="md-accent" ng-click="dwFrameworkBuiltinAppNavigation('user profile');" aria-label="profile">
+                            <md-icon md-svg-icon="icons/ic_account_box_24px.svg" alt="User Profile"></md-icon>
+                            <md-tooltip>Profile</md-tooltip>
+                        </md-button>
+                        <md-button class="md-accent" ng-click="dwFrameworkBuiltinAppNavigation('settings');" aria-label="settings">
+                            <md-icon md-svg-icon="icons/ic_settings_applications_24px.svg" alt="Settings"></md-icon>
+                            <md-tooltip>Settings</md-tooltip>
+                        </md-button>
+                        <md-button class="md-accent" ng-click="quitApplication($event);" aria-label="signout">
+                            <md-icon md-svg-icon="icons/ic_exit_to_app_24px.svg" alt="Signout"></md-icon>
+                            <md-tooltip>Signout</md-tooltip>
+                        </md-button>
+                    </div>
+                </md-menu-content>
+            </md-menu>
+
+        </div>
+    </md-toolbar>
+
+    <div class="design-view" layout="column" layout-align="start start" ng-if="state == 'theme'">
+        <md-toolbar style="min-height:48px;max-height:48px;background-color:{{config.shellConfiguration.themeconfiguration.accentpalette}}" layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <img src="images/appIcons/settings.png" style="width:30px;height:30px;margin:5px;">
+                <p style="font-size: 18px;
+    font-weight: 300;color:white;
+    margin-left: 5px;">Settings App</p>
+            </div>
+
+        </md-toolbar>
+        <div class="design-view-layer2" style="background:{{config.shellConfiguration.themeconfiguration.accentpalette}}"></div>
+        <div class="design-view-layer3"></div>
+        <div class="design-view-layer4"></div>
+        <div></div>
+    </div>
+
+    <ks-swiper-container override-parameters="{'effect':config.shellConfiguration.docklayoutconfiguration.dockoptions.transitioneffect, 'keyboardControl':'true', 'fade':{'crossFade':'true'}}" initial-slide="0" direction="{{config.shellConfiguration.docklayoutconfiguration.dockoptions.layoutdirection}}" loop="config.shellConfiguration.docklayoutconfiguration.dockoptions.looppannels" pagination-is-active="config.shellConfiguration.docklayoutconfiguration.dockoptions.pagination" slides-per-view="" space-between="300" pagination-clickable="true">
+        <ks-swiper-slide class="swiper-slide" ng-repeat="panel in config.shellConfiguration.docklayoutconfiguration.pannelcollection | orderBy:'panelArrangement'">
+            <div class="dockPanels">
+                <div class="sliderPanelContainer" ng-include="panel.pannnelDirectiveContentTemplate"></div>
+                <panneltitle-component title="panel.panelTitle"></panneltitle-component>
+            </div>
+        </ks-swiper-slide>
+    </ks-swiper-container>
+
+
+
+</div>
+</div>

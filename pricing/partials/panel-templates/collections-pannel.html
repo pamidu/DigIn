@@ -1,0 +1,40 @@
+<!-- This is the collection panel template -->
+<style>
+    .md-framework-parent-panel-layout {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .md-framework-panel-content-container {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .whiteFrameContainer {
+        height: 35%;
+        width: 35%;
+    }
+
+</style>
+<div class="md-framework-parent-panel-layout">
+    <div class="md-framework-panel-content-container" layout="column" layout-align="start start">
+        <!-- <panelcontrol-component></panelcontrol-component> -->
+        <perfect-scrollbar class="systemTrayScroller" wheel-propagation="false" wheel-speed="2" suppressScrollX="true">
+            <div gridster="collectionpanelOpts" class="md-framework-pannel-apptray" style="height:1085px !important;max-width:100vw !important;" on-long-press="showPanelEditTray($event,panel)" ng-dblclick="showPanelEditTray($event,panel)">
+                <ul>
+                    <li gridster-item="widgetItemMap" ng-repeat="componentdata in panel.panelComponents | filter:globalSearchKeyword">
+                        <div component-generator component="componentdata.comp_Type" componentdata="componentdata.comp_Data" class="wh-inherit"></div>
+                    </li>
+                </ul>
+            </div>
+        </perfect-scrollbar>
+    </div>
+    <!-- editing tray openning button -->
+    <!--
+    <md-button style="position:fixed;left:15px;top:15px;z-index:10;" ng-click="showPanelEditTray($event,panel)" aria-label="show edit panel">
+    <md-icon md-svg-icon="icons/ic_edit_24px.svg" alt="edit" style="color:lightgrey"></md-icon>
+</md-button>
+-->
+</div>

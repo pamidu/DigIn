@@ -69,9 +69,8 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                         getSession();
                         startReportService();
 
-                        //window.location.href = "/";
-                        //$state.go('pricing');
-                        
+                        //window.location.href = "/git/digin/";
+                      
                         if(DetailExist=="undefined")
                         {
                             $state.go('welcome');

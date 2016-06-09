@@ -99,13 +99,15 @@ function getURI(){
 		    			}
 		    			else
 		    			{
-		    				header("Location: payapi/shell.php");
+		    				// header("Location: payapi/shell.php");
+		    				header("Location: pricing/");
 		    				exit();
 		    			}
 		    		}
 		    		else
 		    		{
-		    				header("Location: payapi/shell.php");
+		    				// header("Location: payapi/shell.php");
+		    				header("Location: pricing/");
 		    				exit();
 		    		}
 		    		
@@ -122,13 +124,15 @@ function getURI(){
 		    			}
 		    			else
 		    			{
-		    				header("Location: payapi/shell.php");
+		    				// header("Location: payapi/shell.php");
+		    				header("Location: pricing/");
 		    			}
 		    		}
 		    	}	
 		    }else{
 		    	//include("t.php");
 		    }
-		    header("Location: payapi/shell.php");
+		    //header("Location: payapi/shell.php");
+		    header("Location: pricing/");
 }
 ?>

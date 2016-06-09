@@ -601,9 +601,28 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
     function($scope, $rootScope, $mdDialog, generatePDF3,$http,ngToast,$pdfString,$uploader,$helpers,$mdToast,$v6urls) {
 
         $scope.generateSnapshot = function() {
-            //alert("core2");
-            //document.getElementById("canvasTest").appendChild($rootScope.a);
 
+            // var htmlElement = $("#mainContainer");
+            // var title = "Dashboard";
+            // var config = {
+            //             title:"Dashboard",
+            //             titleLeft: 50, 
+            //             titleTop: 20,
+            //             tableLeft: 0,
+            //             tableTop: 30
+            // };
+            // generatePDF3.generate(htmlElement, config);
+
+        };
+
+        // $scope.getMailDetail = function(sendState){
+        //     $scope.sendMailState = true;
+        // };
+
+        $scope.sendMail = function(sendState){
+            //$scope.sendMailState = false;
+
+            // ----generate pdf---------------
             var htmlElement = $("#mainContainer");
             var title = "Dashboard";
             var config = {
@@ -614,13 +633,7 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
                         tableTop: 30
             };
             generatePDF3.generate(htmlElement, config);
-
-        };
-        $scope.getMailDetail = function(sendState){
-            $scope.sendMailState = true;
-        };
-        $scope.sendMail = function(sendState){
-            $scope.sendMailState = false;
+            // -------------------
 
             var decodeUrl = $pdfString.returnPdf();
             var blobFile = dataURItoBlob(decodeUrl) 
@@ -629,6 +642,7 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
 
             $uploader.uploadMedia("diginDashboard",blobFile,blobFile.name);
             $uploader.onSuccess(function (e, data) {
+                cosole.log(data)
                 $scope.deliverMail($scope.emailTo);
                 console.log("upload success")
             });
@@ -689,10 +703,9 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
             $mdDialog.hide();
         };
         $scope.deliverMail=function (mailTo) {
-            // $helpers.getHost()
-            
-            // var path =  $v6urls.mediaLib +"/apis/media/tenant/diginDashboard/dashboard.pdf"
-            var path =  "http://"+$helpers.getHost()+"/apis/media/tenant/diginDashboard/dashboard.pdf"
+
+            var path =  "http://digin.io/apis/media/tenant/diginDashboard/dashboard.pdf"
+             
             
             // var path =  "http://sachilagmailcom.space.test.12thdoor.com/apis/media/tenant/diginDashboard/dashboard.pdf"
             $scope.mailData =   {

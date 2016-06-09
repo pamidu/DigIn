@@ -127,6 +127,16 @@
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script type="text/javascript" src="scripts/controllers/highchartsCustom.js"></script>
 <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
+
+<!-- pdf -->
+<script type="text/javascript" src="scripts/pdf/html2canvas.js"></script>
+<script type="text/javascript" src="scripts/pdf/canvas2image.js"></script>
+<script type="text/javascript" src="scripts/pdf/jspdf.debug.js"></script>
+<script type="text/javascript" src="scripts/pdf/canvg.js"></script>
+<script type="text/javascript" src="scripts/pdf/exporting.js"></script>
+<script type="text/javascript" src="scripts/pdf/base64.js"></script>
+
+
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
 <script type="text/javascript" src="scripts/vendor/google-picker.min.js"></script>

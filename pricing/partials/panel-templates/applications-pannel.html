@@ -1,0 +1,12 @@
+<div class="md-framework-parent-panel-layout">
+    <div class="md-framework-panel-content-container" style="width:100%; height:100%;" layout="row" layout-align="start start">
+
+        <div ng-repeat="app in config.defaultAppConfiguration" flex-sm="30" flex-md="20" flex-lg="20" flex-gt-lg="20" style="padding:10px;height:200px;" layout="column" layout-align="center center">
+            <img src="{{app.icon}}" style="width:38px;height:38px;">
+            <p style="color:white;"> {{app.title}}</p>
+        </div>
+
+
+
+    </div>
+</div>

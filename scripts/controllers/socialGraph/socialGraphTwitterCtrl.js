@@ -6,7 +6,7 @@
  /* socialGraphTwitterCtrl - Main controller
  */
 
-routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootScope, twitterService, ngToast, Digin_Twitter_API) {
+routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootScope, twitterService, ngToast, Digin_Engine_API) {
 
     $scope.isLoginTwitter = false;
     $scope.isLoadingTwitter = false;
@@ -16,7 +16,7 @@ routerApp.controller('socialGraphTwitterCtrl', function ($scope, config, $rootSc
     //main function
     var mainFunc = (function () {
         var parameter = {
-            apiBase: Digin_Twitter_API,
+            apiBase: Digin_Engine_API,
             authToken: '',
             key: {
                 consumer_key: "'consumer_key':" + "'Uz6KhfZsmlaACDJfxO3E4E9cT'",

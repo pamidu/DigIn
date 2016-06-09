@@ -47,9 +47,12 @@
     parameters {id: id of the root object,
                 obj: root object}
     returns {a single object}*/
+//send the id and root object
+//function checks for objects inside root object for id and 
+//returns the index of the object with similar id (if one exists)
  function getRootObjectById(id,obj){
     for(i=0;i<obj.length;i++){
-      if(obj[i].widgetData.id== id) return i;
+      if(obj[i].widgetID == id) return i;
     }
  };
 

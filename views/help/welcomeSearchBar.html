@@ -1,57 +1,30 @@
 <div ng-controller="welcomeSearchBarCtl" class="digin-welcome-sch-wrap" ng-init="onLoaded()">
-        <div class="row">
-            <div class="col-lg-12">
-
-                <!-- dashboard wrap -->
-                <div class="col-lg-4">
-                    <h1 class="font-ek-mukta font300 search-bar-header">
-                        <i class="fa fa-area-chart"></i> DASHBOARDS
-                    </h1>
-                    <div class="welcome-search-wrap">
-                        <table at-table at-paginated class="welcome-data" at-list="dashboards" at-config="pageConfig"
-                               class="m-l-15">
-                            <tbody>
-                            <tr>
-                                <td at-implicit at-sortable at-attribute="dashboardName" at-initial-sorting="asc"
-                                    layout="row"
-                                    ng-click="goDashboard(item)"
-                                    layout-align="start center">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <at-pagination class="welcome-bar-page-customer"
-                                   ng-hide="dashboards.length <= pageConfig.itemsPerPage"
-                                   at-list="dashboards" at-config="pageConfig">
-                    </at-pagination>
-                </div>
-
-                <!-- report wrap -->
-                <div class="col-lg-6">
-                    <h1 class="font-ek-mukta font300 search-bar-header">
-                        <i class="fa fa-file"></i>REPORTS
-                    </h1>
-                    <div class="welcome-search-wrap">
-                        <table class="welcome-data" at-table at-paginated at-list="reports" at-config="pageConfig"
-                               class="m-l-15">
-                            <tbody>
-                            <tr>
-                                <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" layout="row"
-                                    layout-align="start center" ng-click="goReport(item.name)">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <at-pagination class="welcome-bar-page-customer"
-                                   ng-hide="reports.length <= pageConfig.itemsPerPage"
-                                   at-list="reports" at-config="pageConfig">
-                    </at-pagination>
-                </div>
-
-
-            </div>
+    <div class="row">
+        <!-- dashboard -->
+        <!--ng-repeat="dashboard in dashboards"-->
+        <h1 class="search-header dashboard">Dashboards </h1>
+        <div ng-repeat="dashboard in dashboards | filter:{state:'!!'}"
+             class="col-lg-2 welcome-search dashboard hvr-pop">
+            <i class="fa fa-signal"></i>
+            <h2>{{dashboard.dashboardName}}</h2>
+            <a href="javascript:void(0)"
+               ng-click="goDashboard(dashboard)">view</a>
         </div>
+    </div>
+
+    <div class="row">
+        <!-- dashboard -->
+        <!--ng-repeat="dashboard in dashboards"-->
+        <h1 class="search-header report">Reports</h1>
+        <div ng-repeat="report in reports | filter:{state:''}"
+             class="col-lg-2 welcome-search report hvr-pop">
+            <i class="fa fa-suitcase"></i>
+
+            <h2>{{report.splitName}}</h2>
+            <a href="javascript:void(0)"
+               ng-click="goReport(report.splitName)">view</a>
+        </div>
+
+
+    </div>
 </div>

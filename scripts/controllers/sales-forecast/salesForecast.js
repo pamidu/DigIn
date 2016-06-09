@@ -1,4 +1,4 @@
-routerApp.controller('salesForecastCtrl', function($scope, $mdDialog, $location, $http, Digin_Engine_API1, $state) {
+routerApp.controller('salesForecastCtrl', function($scope, $mdDialog, $location, $http, Digin_Engine_API, $state) {
 
     $scope.goDashboard = function() {
         $state.go('home.Dashboards');
@@ -535,7 +535,7 @@ routerApp.controller('salesForecastCtrl', function($scope, $mdDialog, $location,
 
 
     $scope.getPageDetails = function(name) {
-        var serviceUrl = Digin_Engine_API1 + "forecast?model=" + name.name + "&pred_error_level=0.01&alpha=0&beta=53&gamma=34&fcast_days=" + $scope.slider.businessGrowth.value + "&table_name=[Demo.forcast_superstoresales]&field_name_d=Date&field_name_f=Sales&steps_pday=1&m=" + $scope.slider.movingvalue.value + "&interval=Daily";
+        var serviceUrl = Digin_Engine_API + "forecast?model=" + name.name + "&pred_error_level=0.01&alpha=0&beta=53&gamma=34&fcast_days=" + $scope.slider.businessGrowth.value + "&table_name=[Demo.forcast_superstoresales]&field_name_d=Date&field_name_f=Sales&steps_pday=1&m=" + $scope.slider.movingvalue.value + "&interval=Daily";
         http: //localhost:8080/forecast?model=Additive&pred_error_level=0.0001&alpha=0&beta=53&gamma=34&fcast_days=30&table_name=[Demo.forcast_superstoresales]&field_name_d=Date&field_name_f=Sales&steps_pday=1&m=7&interval=Daily
             getServiceResponse(serviceUrl, function(data) {
 

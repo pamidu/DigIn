@@ -4,10 +4,10 @@
  --- commonSrcInit
  */
 routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log',
-    'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API','Digin_FileUploader',
+    'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API',
     'Digin_Engine_API_Namespace', '$diginengine', 'ngToast', '$window', '$state', '$csContainer', 'Upload', '$timeout', 'Digin_Domain',
     function($scope, $controller, $mdSidenav, $log, CommonDataSrc,
-        $mdDialog, $rootScope, $http, Digin_Engine_API,Digin_FileUploader,
+        $mdDialog, $rootScope, $http, Digin_Engine_API,
         Digin_Engine_API_Namespace, $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout, Digin_Domain) {
 
         $scope.datasources = [{
@@ -300,6 +300,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     } else {
                         commonUi.isServiceError = true;
                     }
+                    $rootScope.tableData = $scope.sourceUi.tableData;
                     commonUi.isDataLoading = false;
                 },
                 getRandomNo: function() {
@@ -498,11 +499,11 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                 }
                                 $scope.cancel = function() {
                                         $mdDialog.cancel();
-                                    }
+                                }
                                     /* file upload */
-                                $scope.$watch('files', function() {
-                                    $scope.upload($scope.files);
-                                });
+                                // $scope.$watch('files', function() {
+                                //     $scope.upload($scope.files);
+                                // });
                                 $scope.$watch('file', function() {
                                     if ($scope.file != null) {
                                         $scope.files = [$scope.file];
@@ -510,7 +511,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                 });
                                 $scope.log = '';
 
-                                $scope.upload = function(files) {
+                                $scope.upload = function(files, event) {
+
+                                    var userInfo = JSON.parse(getCookie("authData"));
                                     
                                     if (files && files.length) {
                                         $scope.preloader = true;
@@ -521,7 +524,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                             //url:'http://192.168.0.34:8080/file_upload',
 
                                             Upload.upload({
-                                                  url: Digin_FileUploader+'file_upload',
+                                                  url: Digin_Engine_API+'file_upload',
                                                   headers: {
                                                  'Content-Type': 'multipart/form-data',
                                                   
@@ -529,8 +532,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                                   data: {
                                                     file: files[i],
                                                     db: 'BigQuery',
-                                                    SecurityToken: 'e1f2e6f8c7a511a48b6add5c2ef24147',
-                                                    Domain: Digin_Domain                                                    
+                                                    SecurityToken: userInfo.SecurityToken,
+                                                    Domain: Digin_Domain,
+                                                    other_data: 'datasource'                                                    
                                                  }
                                                 
                                             }).success(function(data){                                                 
@@ -543,6 +547,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                                 $scope.preloader = false;
                                                 $scope.diginLogo = 'digin-logo-wrapper2';
                                             });
+
+                                            files = null;
 
                                         }
                                     }
@@ -602,8 +608,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
 
                     $scope.currWidget = {
                         widData: {},
-                        widView: "",
-                        widName: "Dynamic Visuals",
+                        widView: "",                       
                         dataView: "ViewElasticData",
                         dataCtrl: "elasticDataCtrl",
                         initTemplate: "",

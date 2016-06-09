@@ -1620,7 +1620,6 @@ md-checkbox.md-checked .md-icon {
     font-family: 'Ek Mukta', sans-serif;
     font-weight: 400;
     font-size: 15px;
-    text-transform: uppercase;
     float: left;
     width: 100%;
 }
@@ -2851,7 +2850,7 @@ li:active {
 .digin-welcome-sch-wrap {
     width: 100%;
     height: 100%;
-    margin: 5% 11%;
+    margin: 15px 10px 30px 82px;
 }
 
 .font-ek-mukta {
@@ -2974,4 +2973,105 @@ li:active {
 .welcome-data > tbody > tr > td:hover {
     color: #13b6b3;
     outline: none !important;
+}
+
+.welcome-search {
+    height: 100px;
+    overflow: hidden;
+    padding: 10px;
+    margin: 7px;
+
+    border-radius: 5px;
+
+}
+
+.welcome-search.dashboard {
+    background: #1b7b97;
+}
+
+.welcome-search.dashboard > h2 {
+    font-size: 16px;
+    font-weight: 300;
+    font-family: 'Ek Mukta', sans-serif !important;
+    color: #c0ced1;
+    text-transform: capitalize;
+    position: relative;
+
+}
+
+.welcome-search.dashboard > a {
+    color: #ffffff;
+    background: #13b6b3;
+    padding: 1px 8px 1px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 200;
+    font-family: 'Ek Mukta', sans-serif !important;
+    cursor: pointer;
+}
+
+.welcome-search.dashboard > i {
+    position: absolute;
+    font-size: 99px;
+    color: rgba(19, 182, 179, 0.29);
+    right: 6px;
+}
+
+.welcome-search.report {
+    background: #13b6b3;
+}
+
+.welcome-search.report > h2 {
+    color: #fff;
+    font-weight: 300;
+    font-family: 'Ek Mukta', sans-serif !important;
+    text-transform: capitalize;
+    position: relative;
+    font-size: 16px;
+}
+
+.welcome-search.report > i {
+    position: absolute;
+    font-size: 99px;
+    color: rgba(27, 123, 151, 0.17);
+    right: 6px;
+}
+
+.search-header {
+    font-weight: 600;
+    font-family: 'Ek Mukta', sans-serif !important;
+    text-transform: uppercase;
+    position: relative;
+    font-size: 25px;
+}
+
+.search-header.dashboard {
+    color: #1b7b97;
+    padding-bottom: 11px;
+    border-bottom: 2px solid #757f93;
+    width: 88%;
+}
+
+.search-header.report {
+    color: #13b6b3;
+    padding-bottom: 11px;
+    border-bottom: 2px solid #757f93;
+    width: 88%;
+}
+
+.welcome-search.report > a {
+    color: #ffffff;
+    background: #1B7B97;
+    padding: 1px 8px 1px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 200;
+    font-family: 'Ek Mukta', sans-serif !important;
+    cursor: pointer;
+}
+
+
+.dashbord-save-loader{
+    position: absolute;
+    right: 129px;
 }

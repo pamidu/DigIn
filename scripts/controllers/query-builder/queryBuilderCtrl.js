@@ -6,7 +6,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         $state.go('home.Dashboards');
     }
 
-
     $scope.initQueryBuilder = function() {
         if (typeof($scope.widget.widgetData.commonSrc) == "undefined") {
             $scope.selectedChart = $scope.commonData.chartTypes[0];
@@ -50,7 +49,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             name: 'kg',
             val: "kg"
         }],
-        decimals: [0, 1, 2, 3, 4]
+        decimals: [0, 1, 2, 3, 4],
+        scalePositions: ["front","back"]
     };
     $scope.forecastObj = {
 
@@ -84,59 +84,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.initHighchartObj = {
         options: {
             chart: {
-                type: $scope.chartType,
-                // Explicitly tell the width and height of a chart
+                type: $scope.chartType,               
                 width: null,
-
                 height: 367
             }
         },
         title: {
-            text: $scope.widget.widgetData.widName,
+            text: '',
+          
+               
+            
+           
+        }  
 
-            //            x: -20 //center
-        },
-
-        xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-
-                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-            ]
-        },
-        yAxis: {
-            title: {
-                text: 'Temperature (°C)'
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#EC784B'
-            }]
-        },
-        tooltip: {
-
-            pointFormat: "Value: {point.y:.2f}"
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
-        },
-        colors: ['#EC784B'],
-        series: [{
-            name: 'Tokyo',
-            color: '#EC784B',
-            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-        }, {
-            name: 'series II',
-            color: '#01718D',
-            data: [13.19, 17.23, 25.74, 28.5, 33.9, 35.62, 37.0, 36.6, 34.82]
-        }, {
-            name: 'series I',
-            color: '#DED7C6',
-            data: [17.4, 16.1, 19.45, 24.15, 28.44, 33.15, 37.2, 41.25, 43.3]
-        }, ]
+        
+        
     };
 
 
@@ -163,6 +125,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             createHighchartsChart: function(type) {
                 //high charts config
                 $scope.chartType = type;
+               
                 $scope.highchartsNG = $scope.initHighchartObj;
             },
             fireMessage: function(msgType, msg) {
@@ -444,7 +407,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     decValue: 33852,
                     scale: "",
                     dec: 2,
-                    label: "Sales Average"
+                    label: "Sales Average",
+                    scalePosition: "back"
                 },
                 settingsView: 'views/query/settings-views/metricSettings.html'
             }, {
@@ -466,7 +430,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 chart: 'histogram',
                 selected: false,
                 chartType: 'histogram',
-                view: 'views/query/chart-views/histogram.html',
+                view: 'views/query/chart-views/Histogram.html',
                 initObj: {},
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
@@ -896,6 +860,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
         var widgets = $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets;
 
+        if(widget.widgetID == null){// new widget, so a temp id is assigned
+            widget.widgetID = "temp" + Math.floor(Math.random() * (100 - 10 + 1) + 10);
+        }
+
         widget.widgetData.widName = $scope.widget.widgetData.widName;
         widget.widgetData.dataCtrl = "widgetSettingsDataCtrl";
         widget.widgetData.dataView = "views/ViewData.html";
@@ -914,7 +882,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             query: $scope.dataToBeBind.receivedQuery
         };
 
-        var objIndex = getRootObjectById(widget.widgetData.id, widgets);
+        var objIndex = getRootObjectById( widget.widgetID, widgets);
         if (objIndex == null) { //new widget
             widgets.push(widget);
             console.log("widget", widget);
@@ -926,7 +894,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 att: $scope.executeQryData.executeColumns,
                 query: $scope.dataToBeBind.receivedQuery
             };
-            var objIndex = getRootObjectById(widget.widgetData.id, widgets);
+            var objIndex = getRootObjectById( widget.widgetID, widgets);
             widgets[objIndex] = $scope.widget;
             console.log("$scope.widget", $scope.widget);
         }
@@ -936,7 +904,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         setTimeout(function() {
             $scope.eventHndler.isMainLoading = false;
             $state.go('home.Dashboards');
-        }, 5000);
+        }, 1000);
     };
 
     //chart functions
@@ -1009,10 +977,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         },
         executeQuery: function(cat, res, query) {
             if (cat != "") {
+
                 $scope.executeQryData.executeColumns = [{
                     filedName: cat
                 }];
                 $scope.mapResult(cat, res, function(data) {
+                    $scope.highchartsNG.series = {};
+                    $scope.$apply();
                     $scope.highchartsNG.series = data;
 
                     $scope.highchartsNG.series.forEach(function(key) {
@@ -1020,9 +991,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             key['turboThreshold'] = key.data.length;
                     });
                     $scope.eventHndler.isLoadingChart = false;
-
                     $scope.dataToBeBind.receivedQuery = query;
-                    $scope.$apply();
                     $scope.queryEditState = false;
                 });
             } else {
@@ -1114,7 +1083,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
 
     $scope.generateForecast = function(fObj) {
-        $scope.eventHndler.isLoadingChart = true;
+       
 
         $scope.client.getForcast(fObj, function(data, status) {
             var mainSerObj = [];
@@ -1170,7 +1139,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         changeType: function() {
             var meaArr = $scope.sourceData.fMeaArr;
             var dataTypeFlag = true;
-           
+            $scope.eventHndler.isLoadingChart = true;
             meaArr.forEach(function(k) {
                 if (k.dataType == "TIMESTAMP" || k.dataType == "datetime") {
                     dataTypeFlag = false;
@@ -1179,7 +1148,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
 
             if (dataTypeFlag && $scope.sourceData.fAttArr.length == 0) {
-                $scope.eventHndler.isLoadingChart = true;
+                 
                 var fieldArray = [];
 
                 for (var i = 0; i < $scope.commonData.measures.length; i++) {
@@ -1191,18 +1160,20 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                 //get highest level
                 $scope.client.generateboxplot($scope.sourceData.tbl, fieldArray.toString(), function(data, status) {
-                    $scope.eventHndler.isLoadingChart = false;
+                  
                     var hObj = {};
                     $scope.dataforeachBox = []
                     $scope.dataOutliers = [];
 
                     $scope.plotCategories = [];
                     $scope.observationsData = [];
-
+                    $scope.widget.widgetData.highchartsNG = {};
                     var i = 0;
 
                     if (status) {
+                         $scope.eventHndler.isLoadingChart = false;
                         for (var key in data) {
+ 
                             if (Object.prototype.hasOwnProperty.call(data, key)) {
                                 $scope.plotCategories.push(key);
                                 $scope.observationsData.push([
@@ -1221,7 +1192,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         }
  
 
-                        $scope.widget.widgetData.highchartsNG = {
+                        $scope.widget.widgetData.highchartsNG1 = {
                             options: {
                                 chart: {
                                     type: 'boxplot',
@@ -1241,11 +1212,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 }
                             },
 
-                            yAxis: {
-                                title: {
-                                    text: 'Observations'
-                                },
-                            },
+                            
                             credits: {
                                 enabled: false
                             },
@@ -1270,7 +1237,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 }
                             },
                             series: [{
-                                name: 'Observations',
+                                
                                 data: $scope.observationsData,
                                 tooltip: {
                                     headerFormat: '<em>Experiment No {point.key}</em><br/>'
@@ -1302,7 +1269,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
-            widget.widgetData.highchartsNG =  $scope.widget.widgetData.highchartsNG;
+             
+            widget.widgetData.highchartsNG1["size"] = {
+
+            width: 300,
+            height: 220
+        };
             widget.widgetData.widView = "views/query/chart-views/BoxPlot.html";
             $scope.saveChart(widget);
         }
@@ -1333,7 +1305,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     $scope.categories = fieldArray;
                     $scope.eventHndler.isLoadingChart = false;
 
-                    $scope.widget.widgetData.highchartsNG = {
+                    $scope.widget.widgetData.highchartsNG3 = {
                         options: {
                             chart: {
                                 type: 'bubble',
@@ -1433,7 +1405,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
-            widget.widgetData.highchartsNG =  $scope.widget.widgetData.highchartsNG;
+             widget.widgetData.highchartsNG1["size"] = {
+
+            width: 300,
+            height: 220
+        };
+            widget.widgetData.highchartsNG3 =  $scope.widget.widgetData.highchartsNG;
             widget.widgetData.widView = "views/query/chart-views/bubble.html";
             $scope.saveChart(widget);
         }
@@ -1443,6 +1420,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
     $scope.histogram = {
         changeType: function() {
+            $scope.eventHndler.isLoadingChart = true;
             var meaArr = $scope.sourceData.fMeaArr;
             var dataTypeFlag = true;
 
@@ -1454,7 +1432,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
 
             if (dataTypeFlag && $scope.sourceData.fAttArr.length == 0) {
-                $scope.eventHndler.isLoadingChart = true;
+                
                 $scope.histogramPlot = []
 
                 var fieldArray = [];
@@ -1468,8 +1446,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                 //get highest level
                 $scope.client.generatehist($scope.sourceData.tbl, fieldArray.toString(), function(data, status) {
+                    
                     var hObj = {};
                     if (status) {
+                         $scope.eventHndler.isLoadingChart = false;
                         $scope.histogramPlotcat = [];
                         $scope.histogramPlotData = [];
 
@@ -1486,9 +1466,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         }
 
                         $scope.categories = fieldArray;
-                        $scope.eventHndler.isLoadingChart = false;
-
-                        $scope.widget.widgetData.highchartsNG = {
+                   
+                        $scope.widget.widgetData.highchartsNG2 = {
                             options: {
                                 chart: {
                                     type: 'column',
@@ -1497,9 +1476,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                     height: 367,
                                 }
                             },
-                            title: {
-                                text: 'Basic drilldown'
-                            },
+                             
 
                             xAxis: {
 
@@ -1578,7 +1555,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
-             widget.widgetData.highchartsNG =  $scope.widget.widgetData.highchartsNG;
+             widget.widgetData.highchartsNG2["size"] = {
+
+            width: 300,
+            height: 220
+        };
+              
             widget.widgetData.widView = "views/query/chart-views/histogram.html";
             $scope.saveChart(widget);
         }
@@ -1671,6 +1653,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         saveWidget: function(widget) {
             widget.widgetData.widView = "views/ViewHnbMonth.html";
             widget.widgetData.widData = $scope.hierarData;
+          
             $scope.saveChart(widget);
         }
 
@@ -1855,7 +1838,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 if (Object.prototype.hasOwnProperty.call(res, c)) {
                     $scope.selectedChart.initObj.decValue = res[c];
 
-                    $scope.selectedChart.initObj.value = convertDecimals(res[c], parseInt($scope.selectedChart.initObj.dec));
+                    $scope.selectedChart.initObj.value = convertDecimals(parseFloat(res[c]), parseInt($scope.selectedChart.initObj.dec));
                     $scope.selectedChart.initObj.label = c;
                 }
             }
@@ -1868,7 +1851,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                 scale: $scope.selectedChart.initObj.scale,
                 value: $scope.selectedChart.initObj.value,
-                label: $scope.selectedChart.initObj.label
+                label: $scope.selectedChart.initObj.label,
+                scalePosition: $scope.selectedChart.initObj.scalePosition
             };
             widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrcMetric.html";
             $scope.saveChart(widget);
@@ -1905,7 +1889,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     },
                 },
                 title: {
-                    text: $scope.widget.widName
+                    text: ''
                 },
 
 
@@ -2166,7 +2150,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 }
 
                                 // Show the loading label
-                                chart.showLoading("Retrieving data for '" + clickedPoint.toLowerCase() + "' grouped by '" + nextLevel + "'");
+                                chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
 
                                 //aggregate method
                                 clientObj.getAggData(srcTbl, fields, function(res, status, query) {
@@ -2391,6 +2375,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         var nameSpTbl;
         var nameSpTblArr;
         var regX = new RegExp("FROM|From|from");
+        var tables =$rootScope.tableData;
+        var isAtabl = false;
 
         var frmState = regX.exec(str);
         var res = str.split(" ");
@@ -2407,7 +2393,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         var nameSpace = nameSpTblArr[0];
         var tabl = nameSpTblArr[1];
 
-        if (typeof query == "undefined" || $diginurls.getNamespace() != nameSpace || $scope.sourceData.tbl != tabl) {
+
+        for (var i = 0; i < tables.length; i++) {
+            if(tables[i].name == tabl)
+                isAtabl = true;
+        }
+
+        if (typeof query == "undefined" || $diginurls.getNamespace() != nameSpace || !isAtabl) {
             ngToast.create({
                 className: 'danger',
                 content: "You're trying to query unauthorized namespace or a table!",
@@ -2564,7 +2556,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     //metric decimal change
 
     $scope.changeDecimals = function() {
-        $scope.selectedChart.initObj.value = convertDecimals($scope.selectedChart.initObj.decValue, parseInt($scope.selectedChart.initObj.dec));
+        $scope.selectedChart.initObj.value = convertDecimals(parseFloat($scope.selectedChart.initObj.decValue), parseInt($scope.selectedChart.initObj.dec));
     };
 
 

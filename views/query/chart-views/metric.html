@@ -1,4 +1,10 @@
 <div style="height:100%;width:100%;" layout="column" layout-align='center center'>
+    <div ng-if="selectedChart.initObj.scalePosition==='front'">
+    <h1>  {{selectedChart.initObj.scale}}&nbsp;{{selectedChart.initObj.value}}</h1>
+    <h2>  {{selectedChart.initObj.label}}</h2>
+    </div>
+    <div ng-if="selectedChart.initObj.scalePosition==='back'">
     <h1>  {{selectedChart.initObj.value}}&nbsp;{{selectedChart.initObj.scale}}</h1>
-    <h2>  {{selectedChart.initObj.label}} </h2>
+    <h2>  {{selectedChart.initObj.label}}</h2>
+    </div>
 </div>

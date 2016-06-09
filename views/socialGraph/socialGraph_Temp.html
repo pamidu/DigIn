@@ -26,12 +26,20 @@
                                 </md-button>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div  class="col-md-6">
                             <!-- posts -->
-                            <md-input-container flex>
+                            <div class="row">
+                            <md-input-container layout="column" class="col-md-6">
                                 <label>Search page or group</label>
                                 <input ng-enter="searchPage(searchPage.query)" ng-model="searchPage.query">
                             </md-input-container>
+                             <div class="col-md-6">
+                              <md-button class="md-raised" ng-click="searchPage(searchPage.query)"
+                                >Search!
+                                </md-button>
+                                </div>
+                                </div>
+                               
                         </div>
                     </div>
                 </div>

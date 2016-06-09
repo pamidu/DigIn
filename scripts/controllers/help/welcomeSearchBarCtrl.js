@@ -2,11 +2,11 @@
 'use strict';
 
 routerApp.controller('welcomeSearchBarCtl', function ($scope, $rootScope, $http, dynamicallyReportSrv,
-                                                      Digin_Report_Base, Digin_Tomcat_Base, $state, Digin_Domain, ngToast) {
+                                                      Digin_Engine_API, Digin_Tomcat_Base, $state, Digin_Domain, ngToast) {
 
     var privateFun = (function () {
         var reqParameter = {
-            apiBase: Digin_Report_Base,
+            apiBase: Digin_Engine_API,
             tomCatBase: Digin_Tomcat_Base,
             token: '',
             reportName: '',
@@ -20,14 +20,14 @@ routerApp.controller('welcomeSearchBarCtl', function ($scope, $rootScope, $http,
                 var userInfo = JSON.parse(getCookie("authData"));
                 $http({
                     method: 'GET',
-                    url: 'http://192.168.2.33:8080/get_all_components?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain
+                    url: Digin_Engine_API + 'get_all_components?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain
                 }).success(function (data) {
                         console.log("data getAllDashboards", data);
-                        for (var i = 0; i < data.Result.length; i++) {
-                            $scope.dashboards.push(
-                                {dashboardID: data.Result[i].compID, dashboardName: data.Result[i].compName}
-                            );
-                        }
+                        // for (var i = 0; i < data.Result.length; i++) {
+                        //     $scope.dashboards.push(
+                        //         {dashboardID: data.Result[i].compID, dashboardName: data.Result[i].compName}
+                        //     );
+                        // }
                     })
                     .error(function (error) {
                         console.log("error get dashboard...!");
@@ -50,12 +50,7 @@ routerApp.controller('welcomeSearchBarCtl', function ($scope, $rootScope, $http,
         }
     })();
 
-    //controller on load
-    // function
-    $scope.onLoaded = function () {
-        privateFun.getAllReports();
-        privateFun.getAllDashboards();
-    };
+
 
     //pagination  option
     $scope.pageConfig = {
@@ -76,7 +71,7 @@ routerApp.controller('welcomeSearchBarCtl', function ($scope, $rootScope, $http,
         var userInfo = JSON.parse(getCookie("authData"));
         $http({
             method: 'GET',
-            url: 'http://192.168.2.33:8080/get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain
+            url: Digin_Engine_API + 'get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain
         })
             .success(function (data) {
                 if (data.Is_Success) {

@@ -1,9 +1,9 @@
 /* Summary:
  note: some of the scope variables are initialized inside fbInterface
  */
-routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphServices,
-                                                  $http, Digin_Engine_API3,
-                                                  $rootScope, $mdDialog, $restFb, moment) {
+
+routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphServices,ngToast,
+                                                  $http, $rootScope, $mdDialog, $restFb, moment) {
 
     $scope.totalLikes = 0;
     $scope.totalEngagement = 0;
@@ -138,7 +138,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         var colorObj = {
             'page_views': '#00796B',
             'page_fans': '#B2DFDB',
-            'page_stories': '#FFFFFF'
+            'page_stories': '#FFC107'
         };
         data.forEach(function (entry) {
             $scope.configData = [];
@@ -304,7 +304,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                     type: 'line',
                     name: 'Overall Sentiment',
                     data: $scope.sentimentConfigData,
-                    color: '#fff'
+                    color: '#FFC107'
                 });
 
                 $scope.sentimentConfig['series'] = sentimentConfigSeries;
@@ -441,10 +441,25 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         var since = new Date($scope.sinceDate);
         var until = new Date($scope.untilDate);
         //alert(typeof(since));
+        if (since > until) {
+             ngToast.create({
+                    className: 'danger',
+                    content: "From Date should be less than the To Date",
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                    dismissOnClick: true
+                });
+             return;
+         }
+
+
+
         var timeObj = {
             sinceStamp: Math.floor(since / 1000),
             untilStamp: Math.floor(until / 1000)
         };
+   
+
         $scope.getPageDetails($scope.page, timeObj, $scope.defReqPool, true);
     };
 

@@ -18,7 +18,7 @@
 /*summary-
  fbInterface : (scripts/custom/fbInterface.js)
  */
-routerApp.controller('fbInit',['$scope', '$mdDialog', 'widId', '$rootScope',function ($scope, $mdDialog, widId, $rootScope) {
+routerApp.controller('fbInit',['$scope', '$mdDialog', 'widgetID', '$rootScope',function ($scope, $mdDialog, widgetID, $rootScope) {
 
     $scope.diginLogo = 'digin-logo-wrapper2';
     $scope.showFinishButton = false;
@@ -26,7 +26,7 @@ routerApp.controller('fbInit',['$scope', '$mdDialog', 'widId', '$rootScope',func
     //get fb initial login state
     //scope.actIndicator = "false";
     fbInterface.getFbLoginState($scope);
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+    var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
     //add or remove account from the scope
     $scope.addAccount = function() {
         if (fbInterface.state != 'connected')
@@ -221,7 +221,7 @@ routerApp.controller('fbInit',['$scope', '$mdDialog', 'widId', '$rootScope',func
 /*summary-
  linkedinInterface : (scripts/custom/linkedinInterface.js)
  */
- routerApp.controller('linkedInit',['$scope', '$mdDialog', 'widId', '$rootScope',function ($scope, $mdDialog, widId, $rootScope) {
+ routerApp.controller('linkedInit',['$scope', '$mdDialog', 'widgetID', '$rootScope',function ($scope, $mdDialog, widgetID, $rootScope) {
 
     $scope.diginLogo = 'digin-logo-wrapper2';
     $scope.showFinishButton = false;
@@ -250,7 +250,7 @@ routerApp.controller('fbInit',['$scope', '$mdDialog', 'widId', '$rootScope',func
     $scope.fetch = function() {
         $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
         linkedinInterface.getUserAccountOverview($scope, function(data) {
-            var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+            var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
             $rootScope.dashboard.widgets[objIndex].widData = data;
             $scope.diginLogo = 'digin-logo-wrapper2';
             $scope.showFinishButton = true;
@@ -258,7 +258,7 @@ routerApp.controller('fbInit',['$scope', '$mdDialog', 'widId', '$rootScope',func
     };
 }]);
 
-routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope', '$q', 'twitterService',function ($scope, $http, $mdDialog, widId, $rootScope, $q, twitterService) {
+routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope', '$q', 'twitterServiceWidget',function ($scope, $http, $mdDialog, widgetID, $rootScope, $q, twitterServiceWidget) {
 
     $scope.diginLogo = 'digin-logo-wrapper2';
     $scope.showFinishButton = false;
@@ -268,15 +268,20 @@ routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$r
         $mdDialog.hide();
     };
 
-    twitterService.initialize();
+    twitterServiceWidget.initialize();
 
     //using the OAuth authorization result get the latest 20 tweets from twitter for the user
     $scope.refreshTimeline = function(maxId) {
-        $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
-        twitterService.getLatestTweets(maxId).then(function(data) {
 
-            var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-            $rootScope.dashboard.widgets[objIndex].widData.tweets = data;
+        $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
+        twitterServiceWidget.getLatestTweets(maxId).then(function(data) {
+
+            var selectedPage = $rootScope.selectedPage;
+            var pages = $rootScope.dashboard.pages;
+            var objIndex = getRootObjectById(widgetID, pages[selectedPage-1].widgets);
+
+            pages[selectedPage-1].widgets[objIndex].widgetData.widData.tweets = data;
+
             $scope.showFinishButton = true;
             $scope.diginLogo = 'digin-logo-wrapper2';
         }, function() {
@@ -287,8 +292,8 @@ routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$r
     //when the user clicks the connect twitter button, the popup authorization window opens
     $scope.signIn = function() {
         
-        twitterService.connectTwitter().then(function() {
-            if (twitterService.isReady()) {
+        twitterServiceWidget.connectTwitter().then(function() {
+            if (twitterServiceWidget.isReady()) {
                 //if the authorization is successful, hide the connect button and display the tweets
  
                     $scope.connectedTwitter = true;
@@ -303,7 +308,7 @@ routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$r
     //sign out clears the OAuth cache, the user will have to reauthenticate when returning
     $scope.signOut = function() {
 
-        twitterService.clearCache();
+        twitterServiceWidget.clearCache();
 
         $scope.connectedTwitter = false;
         $scope.showFinishButton = false;
@@ -317,9 +322,9 @@ routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widId', '$r
 
 }]);
 
-routerApp.controller('analyticsInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope',function ($scope, $http, $mdDialog, widId, $rootScope) {
+routerApp.controller('analyticsInit',['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope',function ($scope, $http, $mdDialog, widgetID, $rootScope) {
 
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+    var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
 
     $scope.cancel = function() {
         $mdDialog.hide();
@@ -408,7 +413,7 @@ routerApp.controller('analyticsInit',['$scope', '$http', '$mdDialog', 'widId', '
 
 }]);
 
-routerApp.controller('YoutubeInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope', '$log', 'VideosService',function ($scope, $http, $mdDialog, widId, $rootScope, $log, VideosService) {
+routerApp.controller('YoutubeInit',['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope', '$log', 'VideosService',function ($scope, $http, $mdDialog, widgetID, $rootScope, $log, VideosService) {
 
     $scope.diginLogo = 'digin-logo-wrapper2';
     $scope.showFinishButton = false;
@@ -461,8 +466,12 @@ routerApp.controller('YoutubeInit',['$scope', '$http', '$mdDialog', 'widId', '$r
         }).success(function(data) {
                 VideosService.listResults(data);
 
-                var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-                $rootScope.dashboard.widgets[objIndex].widData = data;
+                var selectedPage = $rootScope.selectedPage;
+                var pages = $rootScope.dashboard.pages;
+                var objIndex = getRootObjectById( widgetID, pages[selectedPage-1].widgets);
+
+                pages[selectedPage-1].widgets[objIndex].widgetData.widData = data;
+
                 $scope.showFinishButton = true;
                 $scope.diginLogo = 'digin-logo-wrapper2';
         }).error(function() {
@@ -478,12 +487,12 @@ routerApp.controller('YoutubeInit',['$scope', '$http', '$mdDialog', 'widId', '$r
 
 }]);
 //real time widget with python service
-routerApp.controller('realtimeInit',['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'widId', '$mdToast', '$timeout', 'DynamicVisualization',function ($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout, DynamicVisualization) {
+routerApp.controller('realtimeInit',['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'widgetID', '$mdToast', '$timeout', 'DynamicVisualization',function ($scope, $http, $objectstore, $mdDialog, $rootScope, widgetID, $mdToast, $timeout, DynamicVisualization) {
 
 
 }]);
 //new elastic controller
-routerApp.controller('elasticInit',['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'widId', '$mdToast', '$timeout', 'Digin_Engine_API',function ($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout, Digin_Engine_API) {
+routerApp.controller('elasticInit',['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'widgetID', '$mdToast', '$timeout', 'Digin_Engine_API',function ($scope, $http, $objectstore, $mdDialog, $rootScope, widgetID, $mdToast, $timeout, Digin_Engine_API) {
 
     $scope.filterAttributes = ['Sum', 'Average', 'Percentage', 'Count'];
     $scope.datasources = ['DuoStore', 'BigQuery', 'CSV/Excel', 'Rest/SOAP Service', 'SpreadSheet']; //temporary
@@ -533,7 +542,7 @@ routerApp.controller('elasticInit',['$scope', '$http', '$objectstore', '$mdDialo
     $scope.seriesAttributes = [];
 
     //getting the widget object
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+    var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
     $scope.widget = $rootScope.dashboard.widgets[objIndex];
 
     $scope.getTables = function() {
@@ -1458,7 +1467,7 @@ routerApp.controller('elasticInit',['$scope', '$http', '$objectstore', '$mdDialo
 
 }]);
 //metric controller
-routerApp.controller('metricInit',['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'widId', '$mdToast', '$timeout',function ($scope, $http, $objectstore, $mdDialog, $rootScope, widId, $mdToast, $timeout) {
+routerApp.controller('metricInit',['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'widgetID', '$mdToast', '$timeout',function ($scope, $http, $objectstore, $mdDialog, $rootScope, widgetID, $mdToast, $timeout) {
 
     $scope.filterAttributes = ['Sum', 'Average', 'Percentage', 'Count', 'Unique'];
     $scope.datasources = ['DuoStore', 'BigQuery', 'CSV/Excel', 'Rest/SOAP Service', 'SpreadSheet']; //temporary
@@ -1483,7 +1492,7 @@ routerApp.controller('metricInit',['$scope', '$http', '$objectstore', '$mdDialog
     $scope.seriesAttributes = [];
 
     //getting the widget object
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+    var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
     $scope.widget = $rootScope.dashboard.widgets[objIndex];
 
     $scope.getTables = function() {
@@ -1980,8 +1989,8 @@ routerApp.controller('metricInit',['$scope', '$http', '$objectstore', '$mdDialog
 
 }]);
 
-routerApp.controller('InitConfigD3',['$scope', '$mdDialog', 'widId', '$rootScope', '$sce', 'd3Service', '$timeout',
-    function ($scope, $mdDialog, widId, $rootScope, $sce, d3Service, $timeout) {
+routerApp.controller('InitConfigD3',['$scope', '$mdDialog', 'widgetID', '$rootScope', '$sce', 'd3Service', '$timeout',
+    function ($scope, $mdDialog, widgetID, $rootScope, $sce, d3Service, $timeout) {
 
         $scope.cancel = function() {
             $mdDialog.hide();
@@ -1989,8 +1998,8 @@ routerApp.controller('InitConfigD3',['$scope', '$mdDialog', 'widId', '$rootScope
     }
 ]);
 
-routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widId', '$rootScope',
-    function ($scope, $http, $mdDialog, widId, $rootScope) {
+routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope',
+    function ($scope, $http, $mdDialog, widgetID, $rootScope) {
 
         $scope.diginLogo = 'digin-logo-wrapper2';
         $scope.showFinishButton = false;
@@ -2012,7 +2021,7 @@ routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widId',
             var message = $http.jsonp(wpapi + $scope.wpdomain + choice + callbackString).
             success(function(data, status) {
 
-                var objIndex = getRootObjectById(widId, $rootScope.dashboard.pages[0].widgets);
+                var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.pages[0].widgets);
                 var posts = data.posts;
                 var trimmedPosts = [];
                 var tempTitle = "";
@@ -2047,8 +2056,8 @@ routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widId',
     }
 ]);
 
-routerApp.controller('rssInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope',
-    function ($scope, $http, $mdDialog, widId, $rootScope) {
+routerApp.controller('rssInit',['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope',
+    function ($scope, $http, $mdDialog, widgetID, $rootScope) {
 
         $scope.diginLogo = 'digin-logo-wrapper2';
         $scope.showFinishButton = false;
@@ -2072,8 +2081,9 @@ routerApp.controller('rssInit',['$scope', '$http', '$mdDialog', 'widId', '$rootS
 
                 if (!result.error) {
 
-                    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-                    $rootScope.dashboard.widgets[objIndex].widData.feeds = result.feed.entries;
+                    var ObjectIndex = getRootObjectById(widgetID,$rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);
+                    //var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
+                    $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[ObjectIndex].widData = result.feed.entries;
                     $scope.showFinishButton = true;
                     
                 }
@@ -2083,9 +2093,9 @@ routerApp.controller('rssInit',['$scope', '$http', '$mdDialog', 'widId', '$rootS
     }
 ]);
 
-routerApp.controller('spreadInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope', 'lkGoogleSettings',function ($scope, $http, $mdDialog, widId, $rootScope, lkGoogleSettings) {
+routerApp.controller('spreadInit',['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope', 'lkGoogleSettings',function ($scope, $http, $mdDialog, widgetID, $rootScope, lkGoogleSettings) {
 
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+    var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
     //cancel config
     $scope.cancel = function() {
         $mdDialog.hide();
@@ -2117,7 +2127,7 @@ routerApp.controller('spreadInit',['$scope', '$http', '$mdDialog', 'widId', '$ro
     }
 }]);
 
-routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope',function ($scope, $http, $mdDialog, widId, $rootScope) {
+routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope',function ($scope, $http, $mdDialog, widgetID, $rootScope) {
 
     $scope.diginLogo = 'digin-logo-wrapper2';
     $scope.showFinishButton = false;
@@ -2141,7 +2151,7 @@ routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widId', '$roo
 
             if (newsSearch.results && newsSearch.results.length > 0) {
 
-                var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+                var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
 
                 for (var i = 0; i < newsSearch.results.length; i++) {
 
@@ -2162,25 +2172,28 @@ routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widId', '$roo
     };
 }]);
 
-routerApp.controller('imInit',['$scope', '$http', '$rootScope', '$mdDialog', 'widId',function ($scope, $http, $rootScope, $mdDialog, widId) {
-
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+routerApp.controller('imInit',['$scope', '$http', '$rootScope', '$mdDialog', 'widgetID',function ($scope, $http, $rootScope, $mdDialog, widgetID) {
 
     $scope.cancel = function() {
         $mdDialog.hide();
     };
     //complete config  
     $scope.finish = function() {
+
+        var selectedPage = $rootScope.selectedPage;
+        var pages = $rootScope.dashboard.pages;
+        var objIndex = getRootObjectById( widgetID, pages[selectedPage-1].widgets);
+        
         $rootScope.image = $scope.image;
-        $rootScope.dashboard.widgets[objIndex].widIm = $rootScope.image;
-        // console.log(JSON.stringify($rootScope.image));
+        pages[selectedPage-1].widgets[objIndex].widgetData.widIm = $rootScope.image;
+        
         $mdDialog.hide();
     };
 }]);
 
-routerApp.controller('csvInit',['$scope', '$http', '$mdDialog', 'widId', '$rootScope',function ($scope, $http, $mdDialog, widId, $rootScope) {
+routerApp.controller('csvInit',['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope',function ($scope, $http, $mdDialog, widgetID, $rootScope) {
 
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+    var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
 
     $rootScope.myData = [58.13, 53.98, 67.00, 89.70, 99.00, 13.28, 66.70, 34.98];
     $rootScope.dashboard.widgets[objIndex].widCsc = $rootScope.myData;
@@ -2200,7 +2213,7 @@ routerApp.controller('csvInit',['$scope', '$http', '$mdDialog', 'widId', '$rootS
     };
 }]);
 
-routerApp.controller('weatherInit',['widId', '$scope', '$http', '$rootscope', '$mdDialog',function (widId, $scope, $http, $rootscope, $mdDialog) {
+routerApp.controller('weatherInit',['widgetID', '$scope', '$http', '$rootscope', '$mdDialog',function (widgetID, $scope, $http, $rootscope, $mdDialog) {
     //cancel config
     $scope.cancel = function() {
         $mdDialog.hide();
@@ -2212,7 +2225,7 @@ routerApp.controller('weatherInit',['widId', '$scope', '$http', '$rootscope', '$
 
         .success(function(data) {
 
-                var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+                var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
                 $rootScope.dashboard.widgets[objIndex].widData = data.query;
                 $mdDialog.hide();
             })
@@ -2222,7 +2235,7 @@ routerApp.controller('weatherInit',['widId', '$scope', '$http', '$rootscope', '$
     };
 }]);
 
-routerApp.controller('adsenseInit',['widId', '$scope', '$http', '$rootScope', '$mdDialog',function (widId, $scope, $http, $rootScope, $mdDialog) {
+routerApp.controller('adsenseInit',['widgetID', '$scope', '$http', '$rootScope', '$mdDialog',function (widgetID, $scope, $http, $rootScope, $mdDialog) {
     $scope.cancel = function() {
         $mdDialog.hide();
     }
@@ -2235,8 +2248,8 @@ routerApp.controller('adsenseInit',['widId', '$scope', '$http', '$rootScope', '$
     }
 }]);
 
-routerApp.controller('calendarInit',['widId', '$scope', '$http', '$rootScope', '$mdDialog', '$compile', '$timeout', 'uiCalendarConfig',function (widId, $scope, $http, $rootScope, $mdDialog, $compile, $timeout, uiCalendarConfig) {
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
+routerApp.controller('calendarInit',['widgetID', '$scope', '$http', '$rootScope', '$mdDialog', '$compile', '$timeout', 'uiCalendarConfig',function (widgetID, $scope, $http, $rootScope, $mdDialog, $compile, $timeout, uiCalendarConfig) {
+    var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
 
     var date = new Date();
     var d = date.getDate();
@@ -2357,8 +2370,8 @@ routerApp.controller('calendarInit',['widId', '$scope', '$http', '$rootScope', '
     }
 }]);
 
-routerApp.controller('googlePlusInit',['$scope', 'googleService', '$http', '$mdDialog', 'widId', '$rootScope',
-    function ($scope, googleService, $http, $mdDialog, widId, $rootScope) {
+routerApp.controller('googlePlusInit',['$scope', 'googleService', '$http', '$mdDialog', 'widgetID', '$rootScope',
+    function ($scope, googleService, $http, $mdDialog, widgetID, $rootScope) {
 
         $scope.diginLogo = 'digin-logo-wrapper2';
         $scope.showFinishButton = false;
@@ -2444,7 +2457,7 @@ routerApp.directive('formSectionTitle', function() {
     };
 });
 
-routerApp.controller('googleMapsInit',['widId', '$scope', '$http', '$rootScope', '$mdDialog',function (widId, $scope, $http, $rootScope, $mdDialog) {
+routerApp.controller('googleMapsInit',['widgetID', '$scope', '$http', '$rootScope', '$mdDialog',function (widgetID, $scope, $http, $rootScope, $mdDialog) {
 
     $scope.finish = function() {
         $mdDialog.hide();
@@ -2456,291 +2469,7 @@ routerApp.controller('googleMapsInit',['widId', '$scope', '$http', '$rootScope',
     };
 }]);
 
-routerApp.controller('d3SunBurst', function($rootScope, $scope, $http) {
-
-    $scope.loadData = function() {
-
-        try {
-            $scope.data1 = JSON.parse($rootScope.hierarchyData);
-
-        } catch (e) {
-            console.log(e);
-        }
-    };
-});
-
-routerApp.controller('D3ForceCtrl', function($rootScope, $scope, $http) {
-
-    $scope.loadData = function() {
-
-        try {
-            $scope.data = JSON.parse($rootScope.hierarchyData);
-
-        } catch (e) {
-            console.log(e);
-        }
-    };
-});
  
-
-routerApp.controller('hnbInit',['$scope', '$rootScope', '$http', '$mdDialog', 'widId', 'Digin_Engine_API1',function ($scope, $rootScope, $http, $mdDialog, widId, Digin_Engine_API1) {
-
-    $scope.datasources = ['BigQuery']; //temporary
-    $scope.widgetValidity = 'elasticValidation'; //validation message visibility                                             
-    $scope.query = {};
-    $scope.query.state = false;
-    $scope.query.drilled = false;
-    $scope.checkedFields = [];
-    $scope.dataIndicator = false;
-    $scope.dataIndicator1 = false;
-    $scope.categoryVal = "";
-    $scope.mappedArray = {};
-    $scope.tablename = ""
-    $scope.dataTab = true;
-    $scope.chartTab = true;
-    $scope.seriesAttributes = [];
-    $rootScope.hierarchyData = [];
-    //getting the widget object
-    var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-    $scope.widget = $rootScope.dashboard.widgets[objIndex];
-
-    $scope.getTables = function () {
-
-        if ($scope.datasource == "BigQuery") {
-
-            var xhr = new XMLHttpRequest();
-
-            xhr.onreadystatechange = function (e) {
-                console.log(this);
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        console.log('query response:' + JSON.parse(xhr.response));
-                        var res = JSON.parse(xhr.response);
-                        var tableArray = [];
-                        $scope.objClasses = res;
-                        console.log(res.length);
-                    } else {
-                        console.error("XHR didn't work: ", xhr.status);
-                    }
-                }
-            }
-            xhr.ontimeout = function () {
-                console.error("request timedout: ", xhr);
-            }
-            xhr.open("get", Digin_Engine_API1 + "GetTables?dataSetName=Demo&db=BigQuery", /*async*/ true);
-            xhr.send();
-        }
-    };
-
-
-    //check for selected classes
-    $scope.getFields = function () {
-        $scope.selectedFields = [];
-        if ($scope.datasource == "BigQuery") {
-            if ($scope.selectedClass != null) {
-                $scope.indexType = $scope.selectedClass;
-//                var fieldData = ($scope.selectedClass.split(':')[1]).split('.');
-                //$scope.bigQueryFieldDetails = fieldData;
-                $scope.dataIndicator1 = true;
-
-                getJSONDataByProperty($http, 'pythonServices', 'name', 'Python', function (data) {
-                    var requestObj = data[0].getFields;
-                    var namespace = localStorage.getItem('srcNamespace');
-                    console.log(JSON.stringify(requestObj));
-                    var xhr = new XMLHttpRequest();
-                    xhr.onreadystatechange = function (e) {
-                        console.log(this);
-                        if (xhr.readyState === 4) {
-                            if (xhr.status === 200) {
-                                console.log('query response:' + JSON.parse(xhr.response));
-                                var data = JSON.parse(xhr.response);
-                                if (data.length > 0) {
-                                    data.forEach(function (entry) {
-                                        $scope.selectedFields.push({
-                                            name: entry,
-                                            checked: false
-                                        });
-                                    });
-                                    $scope.toggleTab(1);
-                                } else console.log('There are no fields present in the class');
-                                $scope.dataIndicator1 = false;
-                            } else {
-                                console.error("XHR didn't work: ", xhr.status);
-                            }
-                        }
-                    }
-                    xhr.ontimeout = function () {
-                        console.error("request timedout: ", xhr);
-                    }
-                    xhr.open(requestObj.method, requestObj.host + requestObj.request + "?"
-                        + requestObj.params[0] + "=Demo&&" + requestObj.params[1] + "=" + $scope.selectedClass + "&" + requestObj.params[2] + "=BigQuery", /*async*/ true);
-                    xhr.send();
-                });
-
-//                $http({
-//                    method: 'GET',
-//                    url: Digin_Engine_API + 'GetFields?datasetName=Demo&&tableName=' + $scope.selectedClass,
-//                }).
-//                success(function(data, status) {
-//                    if (data.length > 0) {
-//                        data.forEach(function(entry) {
-//                            $scope.selectedFields.push({
-//                                name: entry,
-//                                checked: false
-//                            });
-//                        });
-//                        $scope.toggleTab(1);
-//
-//                    } else console.log('There are no fields present in the class');
-//                    $scope.dataIndicator1 = false;
-//                }).
-//                error(function(data, status) {
-//                    alert("Request failed");
-//
-//                });
-            } else {
-                $scope.widgetValidity = 'fade-in';
-                $scope.validationMessage = "Please select a class";
-            }
-
-        }
-    };
-    $scope.toggleTab = function (ind) {
-        var tabIndex = '';
-        if (typeof ind === 'undefined') tabIndex = $scope.selectedTabIndex;
-        else tabIndex = ind;
-
-        //manually switching between tabs
-        switch (tabIndex) {
-            case 0:
-                break;
-            case 1:
-                $scope.indexType != $scope.selectedClass && $scope.getFields();
-                $scope.dataTab = false;
-                $scope.selectedTabIndex = 1;
-                break;
-            case 2:
-                var classFields = $scope.checkedFields;
-                var classQuery = $scope.query.value;
-                if ($scope.query.state) {
-                    $scope.classQuery != $scope.query.value && $scope.getData();
-                } else {
-                    $scope.classFields != $scope.checkedFields && $scope.getData();
-                }
-
-                $scope.chartTab = false;
-                $scope.selectedTabIndex = 2;
-                break;
-        }
-    };
-
-    //selects fields for non-queried data retrieval
-    $scope.toggleCheck = function (index) {
-        index.checked = !index.checked;
-        if ($scope.checkedFields.indexOf(index) === -1) {
-            $scope.checkedFields.push(index);
-        } else {
-            $scope.checkedFields.splice($scope.checkedFields.indexOf(index), 1);
-        }
-    };
-
-    $scope.getData = function () {
-        var w1 = new Worker("scripts/webworkers/bigQueryWorker.js");
-
-        $rootScope.hierarchystring = '{';
-        if ($scope.checkedFields.length != 0 || typeof $scope.query.value != "undefined") {
-            $scope.classFields = $scope.checkedFields;
-            $scope.classQuery = $scope.query.value;
-            $scope.parameter = "";
-            if ($scope.query.state) {
-                $scope.parameter = $scope.classQuery;
-            } else {
-                for (param in $scope.classFields) {
-                    $scope.parameter += " " + $scope.classFields[param].name;
-                }
-                $scope.parameter += " " + $scope.categoryVal;
-            }
-
-            $scope.dataIndicator = true;
-
-            function mapRetrieved(event) {
-                var obj = JSON.parse(event.data);
-                console.log(JSON.stringify(obj));
-                $scope.dataIndicator = false;
-
-                //creating the array to map dynamically
-                $scope.arrayAttributes = [];
-                for (var key in obj) {
-                    $rootScope.hierarchystring += '"' + obj[key].value + "'" + ":" + obj[key].level + ",";
-                    $scope.arrayAttributes.push(obj[key].value);
-                }
-                $scope.toggleTab(2);
-            };
-
-            if ($scope.datasource == "BigQuery") {
-                w1.postMessage($scope.selectedClass + "," + Digin_Engine_API1 + "," + "HierarchyFields" + "," + $scope.parameter.toString());
-
-                w1.addEventListener('message', function (event) {
-                    mapRetrieved(event);
-                });
-
-                $scope.widgetValidity = 'fade-out';
-
-            }
-        } else {
-            if ($scope.query.state) $scope.validationMessage = "Please add a query for data retrieval";
-            else $scope.validationMessage = "Please select fields for data retrieval";
-            $scope.widgetValidity = 'fade-in';
-
-            function mapRetrieved(event) {
-                var obj = JSON.parse(event.data);
-                console.log(JSON.stringify(obj));
-                $scope.dataIndicator = false;
-
-                //creating the array to map dynamically
-                $scope.arrayAttributes = [];
-                for (var key in obj) {
-                    $rootScope.hierarchystring += '"' + obj[key].value + '"' + ":" + obj[key].level + ",";
-                    $scope.arrayAttributes.push(obj[key].value);
-                }
-
-                $rootScope.hierarchystring = $rootScope.hierarchystring.replace(/,\s*$/, "");
-                $rootScope.hierarchystring += "}";
-                $scope.toggleTab(2);
-            };
-        }
-
-    };
-
-
-    //builds the chart
-    $scope.buildchart = function (widget) {
-        var w2 = new Worker("scripts/webworkers/bigQueryWorker.js");
-        var objIndex = getRootObjectById(widId, $rootScope.dashboard.widgets);
-        $scope.widget = $rootScope.dashboard.widgets[objIndex];
-        w2.postMessage($scope.selectedClass + "," + Digin_Engine_API1 + "," + "Hierarchy" + "," + $rootScope.hierarchystring.toString());
-        w2.addEventListener('message', function (event) {
-            hierarchyRetrieved(event);
-        });
-
-        function hierarchyRetrieved(event) {
-
-            $rootScope.hierarchyData = event.data;
-            $scope.widget.widData = $rootScope.hierarchyData;
-            console.log($scope.widget.widData);
-            $mdDialog.hide();
-
-        };
-    };
-
-
-    $scope.cancel = function () {
-        $mdDialog.hide();
-    };
-
-
-}]);
-
 routerApp.controller('clockInit', ['$scope', '$mdDialog', 
     function ($scope, $mdDialog) {
 

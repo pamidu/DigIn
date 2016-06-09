@@ -69,24 +69,18 @@
                             <div class="date-filter">
                                 <div class="inline-date" ng-if="reportFiledList.UIDate.length !=0"
                                      ng-repeat="picker in reportFiledList.UIDate">
-                                    <label>{{picker.fieldname}}</label>
+                                    <label>{{picker.label}}</label>
                                     <input type="text" class="form-control datep" datepicker
                                            ng-model="reportFiledList.selectedDate[picker.fieldname]"
-                                           placeholder="{{picker.fieldname}}"/>
+                                           placeholder="{{picker.label}}"/>
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-filter" ng-if="reportFiledList.UITextBox.length !=0"
-                             ng-repeat="textBox in reportFiledList.UITextBox">
-                            <label>{{textBox.filedName}}</label>
-                            <input type="text" class="form-control"
-                                   ng-model="txt[textBox.filedName]"
-                                   placeholder="{{textBox.filedName}}">
-                        </div>
+
                         <div class="panel-filter" ng-if="reportFiledList.UIDropDown.length !=0"
                              ng-repeat="dropDown in reportFiledList.UIDropDown">
                             <!--//{{dropDown.data}}-->
-                            <label>{{dropDown.fieldname}}</label>
+                            <label>{{dropDown.label}}</label>
                             <select class="form-control" name="{{dropDown.fieldname}}"
                                     id="{{dropDown.fieldname}}"
                                     ng-model="formData.parameters[dropDown.fieldname]"

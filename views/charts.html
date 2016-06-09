@@ -9,11 +9,11 @@
             </div>
         </md-tab-label>
         <md-tab-body>
-            <div class="tab-style" gridster="gridsterOpts">
+            <div class="tab-style" gridster="gridsterOpts" >
                 <li class="digin-widget" 
                 ng-repeat="widget in page.widgets" 
                 gridster-item="widget" layout="column"
-                    layout-align="none stretch">
+                    layout-align="none stretch" >
                     <div ng-init="widInit(widget)" class="digin-widget-content dashboard-widget" ng-style="{'height':widget.widgetData.mheight}" layout="row">
                         <div style="height:100%;width:100%" class="dashoard-Wrapper" ng-include src="widget.widgetData.widView">
                         </div>
@@ -58,7 +58,7 @@
                             {{widget.widgetData.widName}}
                         </div>
                         <div class="widget-button-wrapper" layout="row" layout-align="end center" flex>
-                            <md-button class="widget-button" ng-click="remove(widget, $event)">
+                            <md-button class="widget-button" ng-click="removeWidget(widget, $event)">
                                 <ng-md-icon icon="close" style="fill:dimgrey" size="20" layout="column"
                                             layout-align="center center" flex></ng-md-icon>
                             </md-button>

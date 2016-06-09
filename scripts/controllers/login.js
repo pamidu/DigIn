@@ -2,9 +2,9 @@
 
 routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
     '$auth', '$state', '$rootScope', 'ngToast', 'focus','dynamicallyReportSrv',
-     'Digin_Report_Base', 'Digin_Tomcat_Base','Digin_Domain',
+     'Digin_Engine_API', 'Digin_Tomcat_Base','Digin_Domain',
     function ($scope, $http, $animate, $window, $auth, $state,
-              $rootScope, ngToast, focus, dynamicallyReportSrv, Digin_Report_Base, Digin_Tomcat_Base,Digin_Domain) {
+              $rootScope, ngToast, focus, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base,Digin_Domain) {
 
         $scope.isLoggedin = false;
         $scope.error = {
@@ -25,7 +25,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
      
         var privateFun = (function () {
             var reqParameter = {
-                apiBase: Digin_Report_Base,
+                apiBase: Digin_Engine_API,
                 tomCatBase: Digin_Tomcat_Base,
                 token: '',
                 reportName: '',
@@ -69,6 +69,8 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                         getSession();
                         startReportService();
 
+                        //window.location.href = "/";
+                        //$state.go('pricing');
                         
                         if(DetailExist=="undefined")
                         {

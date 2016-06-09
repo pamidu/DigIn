@@ -46,7 +46,7 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
 
             //var userInfo = JSON.parse(getCookie("authData"));
             //$http.get($diginurls.diginengine + '/createDataset?dataSetName='+UserName+'&tableName='+UserName+'&db=BigQuery&SecurityToken=75809dbaff8548441d6ae64431670ec5&Domain=duosoftware.com')
-            $http.get($diginurls.diginengine + '/createDataset?dataSetName='+dtSetName+'&tableName='+dtSetName+'&db=BigQuery&Domain='+Digin_Domain)
+            $http.get($diginurls.diginengine + 'createDataset?dataSetName='+dtSetName+'&tableName='+dtSetName+'&db=BigQuery&Domain='+Digin_Domain)
                 .success(function(response){
                     //$scope.userDtSet=response; 75809dbaff8548441d6ae64431670ec5
                     //alert(JSON.stringify(response.Result));  

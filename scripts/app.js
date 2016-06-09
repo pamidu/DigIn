@@ -3,10 +3,7 @@ var routerApp = angular.module('DuoDiginRt', [
     'uiMicrokernel',
     'diginServiceHandler',
     'ngAnimate',
-    'DiginD3.filters',
-    'DiginD3.services',
-    'DiginD3.directives',
-    'DiginD3.controllers',
+     
     'highcharts-ng',
     'angular.css.injector',
     'ui.router',

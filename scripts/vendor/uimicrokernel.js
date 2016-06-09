@@ -587,7 +587,7 @@
         }
     });
 
-    mkm.factory('$auth', function ($http, $v6urls, $backdoor, $rootScope, $helpers) {
+    mkm.factory('$auth', function ($http, $v6urls, $backdoor, $rootScope, $helpers,Digin_Auth) {
 
         var sessionInfo;
         var userName;
@@ -618,9 +618,10 @@
             //domain = username.split("@")[1];
             domain =domain;
 
+
             $http({
                 method: 'POST',
-                url: "http://192.168.2.33/apis/authorization/userauthorization/login",
+                url: Digin_Auth+"apis/authorization/userauthorization/login",
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -663,7 +664,6 @@
         }
 
         function logout() {
-
             $http({
                 method: 'GET',
                 url: $v6urls.auth + "/LogOut/" + securityToken,
@@ -2455,16 +2455,23 @@
 
     
 
-    mkm.factory('$v6urls', function () {
+    mkm.factory('$v6urls', function (Digin_Tenant,Digin_ObjStore) {
         var host = getHost();
         return {
-            auth: "http://104.197.27.7" + ":3048",
-            objectStore: "http://104.197.27.7" + ":3000",
+            // auth: "http://104.197.27.7" + ":3048",
+            // objectStore: "http://104.197.27.7" + ":3000",
+            // fws: "http://" + host + ":4000",
+            // processDispatcher: "http://" + host + ":5000",
+            // processManager: "http://" + host + ":8093",
+            // mediaLib: "http://" + host + "/apis/media",
+            // //mediaLib: "http://sachilagmailcom.space.test.12thdoor.com/apis/media",
+
+            auth: Digin_Tenant,    
+            objectStore: Digin_ObjStore,
             fws: "http://" + host + ":4000",
             processDispatcher: "http://" + host + ":5000",
             processManager: "http://" + host + ":8093",
             mediaLib: "http://" + host + "/apis/media",
-            //mediaLib: "http://sachilagmailcom.space.test.12thdoor.com/apis/media",
         };
     });
 

@@ -49,6 +49,7 @@ routerApp.directive('linearChart', function() {
                     node = svg.selectAll(".node");
                 root = rootData;
                 update();
+                 startVis();
                 console.log(svg);
                 scope.setSvg(svg[0][0].innerHTML);
 
@@ -65,17 +66,16 @@ routerApp.directive('linearChart', function() {
                     update();
                 }
 
-                startVis();
+               
 
                 function update() {
                     console.log(nodes)  
                     var nodes = flatten(root),                    
                     links = d3.layout.tree().links(nodes);
-                    if(nodes[0].children == null)
-                    {
+                  
                     var nodes = flatten(rootData),                    
                     links = d3.layout.tree().links(nodes);
-                    }
+                     
 
                     console.log(links)
                      
@@ -177,10 +177,7 @@ routerApp.directive('linearChart', function() {
                 }
             };
 
-            if (typeof scope.chartData != "undefined") {
-                scope.drawHierarchicalSummary(scope.chartData);
-            }
-
+           
 
 
        

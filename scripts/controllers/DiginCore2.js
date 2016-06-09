@@ -227,29 +227,35 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
 
 
-routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter', 'Digin_Domain',
+routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter', 'Digin_Domain', 'Digin_Engine_API',
 
-    function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter, Digin_Domain) {
+    function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter, Digin_Domain, Digin_Engine_API) {
 
         $scope.close = function() {
 
             $mdDialog.hide();
         };
 
+     
         $scope.initialize = function(){
+
             //if dashboard is already saved one get its name and display
-            if($rootScope.dashboard.compID){// dashboard is a saved one
+             if($rootScope.dashboard.compID){// dashboard is a saved one
 
                 $scope.dashboardName = $rootScope.dashboard.compName;
                 $scope.dashboardType = $rootScope.dashboard.compType;
                 $scope.refreshInterval = $rootScope.dashboard.refreshInterval;
-            }
+             }
         }
-        
+         
+        $scope.isLoadingDashBoardSave=false;
+        $scope.isButtonDashBoardSave=true;
+
         $scope.saveDashboard = function() {  
 
             if($scope.dashboardName && $scope.dashboardType && $scope.refreshInterval){
-
+                $scope.isLoadingDashBoardSave = true;
+                $scope.isButtonDashBoardSave=false;
                 //if dashboard name type refreshinterval should be assigned to proceed
                 ngToast.create({
                         className: 'info',
@@ -268,8 +274,10 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                         for (var j = 0; j < widgets.length; ++j) {
 
                                     var widgetObject;
-                                    if($rootScope.dashboard.pages[i].widgets[j].widgetID == null){
+                                    //if the widget is a temporary / new widget 
+                                    if($rootScope.dashboard.pages[i].widgets[j].widgetID.substr(0, 4) == "temp"){
 
+                                       
                                         widgetObject = {   
                                             "widgetID": null,
                                             "widgetName": widgets[j].widgetName,
@@ -277,7 +285,7 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                                         }
                                     }
                                     else{
-
+                                       
                                         widgetObject = {   
                                             "widgetID": widgets[j].widgetID,
                                             "widgetName": widgets[j].widgetName,
@@ -346,18 +354,18 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                 }
                 console.log("dashboardObject", dashboardObject);
                 //id fields are accepted close dialog
-                $mdDialog.hide();
-
+                //$mdDialog.hide();
+                
                 var userInfo = JSON.parse(getCookie("authData"));
                     
                 $http({
                     method: 'POST',
-                    url: 'http://192.168.2.33:8080/store_component',
-                    data: angular.toJson(dashboardObject),
+                    url: Digin_Engine_API+'store_component',
+                    data: angular.fromJson(angular.toJson(dashboardObject)),
                     headers: {  
                                 'Content-Type': 'application/json',
                                 'SecurityToken':userInfo.SecurityToken,
-                                'Domain':'digin.io'
+                                'Domain':Digin_Domain
                     }
                 })
                 .success(function(response){
@@ -370,6 +378,10 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                     $rootScope.dashboard.compType = $scope.dashboardType;
                     $rootScope.dashboard.refreshInterval = $scope.refreshInterval;
 
+                    $rootScope.privateFun.getAllDashboards();
+                    $scope.isLoadingDashBoardSave = false;
+                    $scope.isButtonDashBoardSave=true;
+                    $mdDialog.hide();
                     ngToast.create({
                         className: 'success',
                         content: 'Successfuly Saved Dashboard',
@@ -377,6 +389,8 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                         verticalPosition: 'top',
                         dismissOnClick: true
                     });
+
+
                 })
                 .error(function(error){  
 
@@ -387,6 +401,8 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                         verticalPosition: 'top',
                         dismissOnClick: true
                     });
+                    $scope.isLoadingDashBoardSave = false;
+                    $scope.isButtonDashBoardSave=true;
                     $mdDialog.hide()
                 });   
 
@@ -813,7 +829,7 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     locals: {
-                        widId: id
+                        widgetID : id
                     }
                 })
                 .then(function() {
@@ -833,7 +849,6 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
         $scope.addAllinOne = function(widget, ev) {
 
             var widgetLimit = 6;
-            alert("oki");
             if($rootScope.dashboard.pages[0].widgets.length < widgetLimit){
 
                 $scope.currWidget = {
@@ -884,21 +899,17 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
 
                 }
 
-                if ($rootScope.username == undefined || $rootScope.username == null) {
-
-                        $rootScope.username = "DemoUser";
-                }
-
                 var msg = new SpeechSynthesisUtterance(+$rootScope.username + ' you are adding' + widget.title + ' widget');
                 window.speechSynthesis.speak(msg);
 
                 var widgetObj = {   
-                                        "widgetID": null,
+                                        "widgetID": "temp" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
                                         "widgetName": $scope.currWidget.widName,
                                         "widgetData": $scope.currWidget
                                 }
+
                 $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.push(widgetObj);
-                $scope.openInitialConfig(ev, $scope.currWidget.id);
+                $scope.openInitialConfig( ev, widgetObj.widgetID);
                 $rootScope.widgetType = widget.title;
 
                 console.log("$rootScope.dashboard.pages[0].widgets", $rootScope.dashboard.pages[0].widgets);
@@ -948,7 +959,7 @@ routerApp.controller('sunburstCtrl', [ '$scope', '$mdDialog', '$rootScope',
 routerApp.controller('hierarchySummaryCtrl', [ '$scope', '$mdDialog', '$rootScope', 
     function( $scope, $mdDialog, $rootScope) {
         var svg;
-
+        
         $scope.onClickDownload = function(){
 
             // var svg = document.getElementById('d3Force').childNodes[1].innerHTML;
@@ -961,9 +972,7 @@ routerApp.controller('hierarchySummaryCtrl', [ '$scope', '$mdDialog', '$rootScop
             downloadBtn.href = dataURL;
         }
 
-        $scope.setSvg = function(svgString){
-            $rootScope.hierarchySvg = svgString;
-        }
+        
     }
 ]);
 

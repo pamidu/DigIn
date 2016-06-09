@@ -6,6 +6,7 @@
     <md-input-container>
         <label>Scale</label>
         <input ng-model="selectedChart.initObj.scale">
+        <!--Drop down giving options to position the scale-->
 <!--
             <md-select ng-model="selectedChart.initObj.scale">
           <md-option ng-repeat="s in metricObj.scales" value="{{s.val}}">
@@ -13,6 +14,14 @@
           </md-option>
         </md-select>
 -->
+    </md-input-container>
+    <md-input-container>
+            <label>Position</label>
+            <md-select ng-change="changePosition()" ng-model="selectedChart.initObj.scalePosition">
+                <md-option ng-repeat="position in metricObj.scalePositions" value="{{position}}">
+                    {{position}}
+                </md-option>
+            </md-select>
     </md-input-container>
     
     <md-input-container>

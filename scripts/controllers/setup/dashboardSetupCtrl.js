@@ -1,6 +1,6 @@
 
 routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location, $http,
- Digin_Engine_API1, ngToast,$rootScope,$apps,$objectstore) {
+ Digin_Engine_API, ngToast,$rootScope,$apps,$objectstore,Digin_LogoUploader,Upload,Digin_Domain,Digin_Tenant) {
     
     //theme colors array
     $scope.colorArr = [{value:'#F44336'},{value:'#E91E63'},{value:'#9C27B0'},{value:'#673AB7'},{value:'#3F51B5'},{value:'#2196F3'},{value:'#03A9F4'},{value:'#00BCD4'},{value:'#009688'},{value:'#4CAF50'},{value:'#8BC34A'},{value:'#CDDC39'},{value:'#FFEB3B'},{value:'#FFC107'},{value:'#FF9800'},{value:'#FF5722'},{value:'#795548'},{value:'#9E9E9E'},{value:'#607D8B'}];
@@ -10,6 +10,8 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         accentPalette: ""
     };
     
+
+
     //add user view state
     $scope.addUsrState = false;
     $scope.groups = []; 
@@ -25,7 +27,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         //$('#pagePreLoader').show();
         $scope.load=true;
         //$http.get('http://digin.io/apis/usercommon/getAllGroups')
-        $http.get('http://192.168.2.33/apis/usercommon/getAllGroups')
+        $http.get('http://'+Digin_Domain+'/apis/usercommon/getAllGroups')
             .success(function (response) {
                 $scope.groups = response;
                 //$('#pagePreLoader').hide();
@@ -50,14 +52,14 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
             //var userInfo = JSON.parse(getCookie("authData"));
             var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
             //-----Add user
-            $http.get('http://104.197.27.7:3048/tenant/AddUser/'+$scope.user.email+'/user', {
+            $http.get(Digin_Tenant+'/tenant/AddUser/'+$scope.user.email+'/user', {
                 headers: {'Securitytoken': userInfo.SecurityToken}
             })
               .success(function(response){
                   //alert(JSON.stringify(response));
                   //------if invited check invited or ----------
                   if(response){
-                    $http.get('http://104.197.27.7:3048/GetUser/'+$scope.user.email, {
+                    $http.get(Digin_Tenant+'/GetUser/'+$scope.user.email, {
                     })
                       .success(function (data) {
                           //alert(JSON.stringify(data)); 
@@ -70,26 +72,6 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
                    //console.log(error);
                     fireMsg('0', 'Invitation not sent !');
             });
-
-
-
-            /*  
-            if(response){
-                $http({
-                    method: 'GET',
-                    url: "http://104.197.27.7:3048/auth/GetUsers" + user.email,
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                }
-                }).
-                    success(function (response) {
-                });
-                
-            }
-            else{
-
-            }
-            */
 
         }
     };
@@ -113,6 +95,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         );
     };
   
+
     $scope.sizes = [
           "5",
           "10",
@@ -172,45 +155,145 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         }        
     };
 
+    //Update account
+    $scope.openLogoUploadWindow= function() {
+        $mdDialog.show({
+        controller: function fileUploadCtrl($scope,$rootScope, $mdDialog, fileUpload, $http, Upload) {
 
-    function fireMsg(msgType, content) {
-                    ngToast.dismiss();
-                    var _className;
-                    if (msgType == '0') {
-                        _className = 'danger';
-                    } else if (msgType == '1') {
-                        _className = 'success';
+        var userInfo = JSON.parse(getCookie("authData"));
+        var filename;
+
+        $scope.diginLogo = 'digin-logo-wrapper2';
+        $scope.preloader = false;
+        $scope.finish = function() {
+        $mdDialog.hide();
+                                }
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        }
+
+        $scope.$watch('files', function() {
+            $scope.upload($scope.files);
+        });
+
+        $scope.$watch('file', function() {
+            if ($scope.file != null) {
+                $scope.files = [$scope.file];
+            }
+        });
+
+        $scope.upload = function(files) {
+            if (files && files.length) {
+                $scope.preloader = true;
+                $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
+                    for (var i = 0; i < files.length; i++) {
+                        var lim = i == 0 ? "" : "-" + i;
+                        console.log(userInfo);
+                        filename=$scope.files[0].name;
+
+                        Upload.upload({
+                            url: Digin_LogoUploader+'file_upload',
+                            headers: {'Content-Type': 'multipart/form-data',},           
+                            data: { db: 'BigQuery',
+                                    SecurityToken: userInfo.SecurityToken,
+                                    Domain: Digin_Domain,
+                                    other_data:'userfile',
+                                    file: files[i] }
+                            }).success(function(data){  
+
+                            //store to user settings----------------------       
+                            $scope.settings = {
+                                            "email": userInfo.Email,
+                                            "components":"dashboard1",
+                                            "user_role":"admin",
+                                            "cache_lifetime":30,
+                                            "widget_limit":7,
+                                            "query_limit":1000,
+                                            "logo_name":filename,
+                                            "theme_config": "bla bla",
+                                            "SecurityToken":userInfo.SecurityToken,
+                                            "Domain":Digin_Domain 
+                                            }
+
+                            $http({
+                                method: 'POST',
+                                url: Digin_LogoUploader+'store_user_settings/',
+                                data: angular.toJson($scope.settings),
+                                headers:{'Content-Type': 'application/json',                                                      
+                                'SecurityToken':userInfo.SecurityToken,
+                                'Domain':Digin_Domain }
+                            })
+                            .success(function(response){
+                                $http.get(Digin_LogoUploader+'get_user_settings?SecurityToken='+userInfo.SecurityToken+'&Domain='+Digin_Domain)
+                                .success(function (data) {
+                                console.log(data);
+                                var logoPath=Digin_LogoUploader.split(":")[0]+":"+Digin_LogoUploader.split(":")[1];
+                                $rootScope.image = logoPath+data.Result.logo_path;
+                                $scope.preloader = false;
+                                $mdDialog.hide();
+                                fireMsg('1', 'Logo Successfully uploaded!');
+                                });
+                            })
+                            .error(function(data) {
+                                $rootScope.image = "styles/css/images/DiginLogo.png";
+                                fireMsg('0', 'There was an error while uploading logo !');
+                                $scope.preloader = false;
+                            });
+                        });            
                     }
-                    ngToast.create({
-                        className: _className,
-                        content: content,
-                        horizontalPosition: 'center',
-                        verticalPosition: 'top',
-                        dismissOnClick: true
-                    });
+                }
+            };
+        },
+        templateUrl: 'views/logoUpload.html',
+        parent: angular.element(document.body),
+        clickOutsideToClose: true,
+    })
+    .then(function(answer) {                  
+        $scope.getURL(); 
+    });                      
+};
+
+
+
+
+function fireMsg(msgType, content) {
+    ngToast.dismiss();
+    var _className;
+    if (msgType == '0') {
+        _className = 'danger';
+    } else if (msgType == '1') {
+        _className = 'success';
     }
+    ngToast.create({
+        className: _className,
+        content: content,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        dismissOnClick: true
+    });
+}
 
     //--------msg s------
-    var privateFun = (function () {
-        return {               
-            fireMsg: function (msgType, content) {
-            ngToast.dismiss();
-            var _className;
-                if (msgType == '0') {
-                        _className = 'danger';
-                } else if (msgType == '1') {
-                        _className = 'success';
-                }
-                ngToast.create({
-                    className: _className,
-                    content: content,
-                    horizontalPosition: 'center',
-                    verticalPosition: 'top',
-                    dismissOnClick: true
-                });
-            }
+var privateFun = (function () {
+    return {               
+    fireMsg: function (msgType, content) {
+    ngToast.dismiss();
+        var _className;
+        if (msgType == '0') {
+             _className = 'danger';
+        } else if (msgType == '1') {
+            _className = 'success';
         }
-    })();
+        ngToast.create({
+            className: _className,
+            content: content,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            dismissOnClick: true
+        });
+    }
+    }
+})();
     //---------msg e---------
 
 
@@ -256,8 +339,8 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
     //Get users in a specific group
     $scope.viewUsersInGroup=function(group,cb)
     {
-        //$http.get('http://digin.io/apis/usercommon/getUserFromGroup/'+group)
-        $http.get('http://192.168.2.33/apis/usercommon/getUserFromGroup/'+group)
+        $http.get('http://'+Digin_Domain+'/apis/usercommon/getUserFromGroup/'+group)
+        //$http.get('http://192.168.2.33/apis/usercommon/getUserFromGroup/'+group)
             .success(function (response) {
                 if(cb)cb(response);
                 else $scope.users = response;
@@ -277,7 +360,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
     $scope.viewGroupsInApp=function(app, event)
     {
         //$http.get('http://digin.io/apis/usercommon/getUserFromGroup/'+app)
-        $http.get('http://192.168.2.33/apis/usercommon/getUserFromGroup/'+app)
+        $http.get('http://'+Digin_Domain+'/apis/usercommon/getUserFromGroup/'+app)
             .success(function (response) {
                 $scope.users = response;
             });
@@ -289,7 +372,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         //$('#pagePreLoader').show();
         $scope.load=true;
         //$http.get('http://digin.io/apis/usercommon/getAllGroups')
-        $http.get('http://192.168.2.33/apis/usercommon/getAllGroups')
+        $http.get('http://'+Digin_Domain+'/apis/usercommon/getAllGroups')
             .success(function (response) {
                 $scope.groups = response;
                 //$('#pagePreLoader').hide();
@@ -301,7 +384,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
     $scope.getAllApps=function()
     {
         //$('#pagePreLoader').show();
-         $scope.load=true;
+        //$scope.load=true;
         $objectstore.getClient("duodigin_dashboard")
             .onGetMany(function (data) {
                 if (data) {
@@ -311,7 +394,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
                 }
                 $scope.apps=data;
                 //$('#pagePreLoader').hide();
-                $scope.load=false;
+                //$scope.load=false;
             })
             .getByKeyword("*");
 
@@ -321,7 +404,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
     //Get all contact in tenent
     $scope.getAllContacts=function()
     {
-        $http.get('http://104.197.27.7:3048/tenant/GetUsers/'+$mainDomain)
+        $http.get(Digin_Tenant+'/tenant/GetUsers/'+$mainDomain)
             .success(function (response) {
                 $scope.ContactDetails = response;
             });
@@ -339,7 +422,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         );
     };
 
-    //Add user group
+    //Add user group ***
     $scope.createGroup = function() {
         $scope.grpDtl ={
             "groupId":"-999",
@@ -350,8 +433,8 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         };
         $http({
                 method: 'POST',
-                //url: 'http://digin.io/apis/usercommon/addUserGroup',
-                url: 'http://192.168.2.33/apis/usercommon/addUserGroup',
+                url: 'http://'+Digin_Domain+'/apis/usercommon/addUserGroup',
+                //url: 'http://192.168.2.33/apis/usercommon/addUserGroup',
                 data: angular.toJson($scope.grpDtl)
         })
         .success(function(response){
@@ -361,15 +444,20 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
             //alert("Fail...!");                        
         });   
 
-        $scope.getAllGroups();
         $scope.groups.push($scope.grpDtl);
-        
-        $scope.grpName='';
+        $scope.groupName='';
+        ngToast.create({
+            className: 'success',
+            content: 'User group deleted Successfully...!',
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            dismissOnClick: true
+        });
         
     };
 
-    //------------Delete  group
-    $scope.deleteGroup = function(group,event) {
+    //------------Delete  group***
+    $scope.deleteGroup = function(group,event,index) {
         var confirm=$mdDialog.confirm()
             .title('Do you want to delete this group ?')                            
             .targetEvent(event)
@@ -377,20 +465,25 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
             .cancel('No!');
         $mdDialog.show(confirm).then(function(){
             //$http.get('http://digin.io/apis/usercommon/removeUserGroup/'+ group)
-            $http.get('http://192.168.2.33/apis/usercommon/removeUserGroup/'+ group)
+            $http.get('http://'+Digin_Domain+'/apis/usercommon/removeUserGroup/'+ group)
             .success(function (response) {
-                //alert('Deleted...!');
-                $scope.getAllGroups();
             });
+
+            $scope.groups.splice(index,1);
+                ngToast.create({
+                    className: 'success',
+                    content: 'User group deleted Successfully...!',
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                    dismissOnClick: true
+                });  
         },function(){
-
-        });
-
-        $scope.getAllGroups();
+            
+        }); 
     };
 
 
-       //------------Delete  group
+    //------------Delete user from group
     $scope.deleteUserFromGroup = function(group,user) {
         var confirm=$mdDialog.confirm()
             .title('Do you want to delete this this user form this group ?')                            
@@ -406,14 +499,14 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
             $http({
                 method: 'POST',
                 //url: 'http://digin.io/apis/usercommon/removeUserFromGroup',
-                url: 'http://192.168.2.33/apis/usercommon/removeUserFromGroup',
+                url: 'http://'+Digin_Domain+'/apis/usercommon/removeUserFromGroup',
                 data: angular.toJson($scope.UsrDtl)
             })
             .success(function(response){
-                alert("Success...!");                     
+                //alert("Success...!");                     
             })
             .error(function(error){   
-                alert("Fail...!");                        
+                //alert("Fail...!");                        
             }); 
 
         },function(){
@@ -472,7 +565,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
                         $http({
                                 method: 'POST',
                                 //url: 'http://digin.io/apis/usercommon/saveUiShareData',
-                                url: 'http://192.168.2.33/apis/usercommon/saveUiShareData',
+                                url: 'http://'+Digin_Domain+'/apis/usercommon/saveUiShareData',
                                 data: angular.toJson($scope.GrpDtl)
                         })
                         .success(function(response){
@@ -561,7 +654,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
 
             //*Remove all users group
             // $scope.UsrDtl ={
-            //     "groupId":group,
+            //     "groupId":grpId,
             //     "users":$scope.ContactChip
             // };
             // $http({
@@ -576,27 +669,62 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
             // }); 
 
 
-            //Add user to group
-            $scope.userDtl ={
-                "groupId":grpId,
-                "users":$scope.ContactChip
-            };
-            $http({
-                    method: 'POST',
-                    //url: 'http://digin.io/apis/usercommon/addUserToGroup',
-                    url: 'http://192.168.2.33/apis/usercommon/addUserToGroup',
-                    data: angular.toJson($scope.userDtl)
-            })
-            .success(function(response){
-                //alert("Success...!");   
-                                   
-            })
-            .error(function(error){   
-                //alert("Fail...!");                        
-            });  
+                    //Add user to group
+                    $scope.userDtl ={
+                        "groupId":grpId,
+                        "users":$scope.ContactChip
+                    };
+            
+                    $http({
+                            method: 'POST',
+                            //url: 'http://digin.io/apis/usercommon/addUserToGroup',
+                            url: 'http://'+Digin_Domain+'/apis/usercommon/addUserToGroup',
+                            data: angular.toJson($scope.userDtl)
+                    })
+                    .success(function(response){
+                        //alert("Success...!");  
+                    })
+                    .error(function(error){   
+                        //alert("Fail...!");                        
+                    });  
 
-            //$scope.getAllGroups();
-           
+
+                    // $scope.UsrDtl ={
+                    //     "groupId":grpId,
+                    //     "users":$scope.ContactChip
+                    // };
+
+                    // var ContaLen=parseInt($scope.ContactChip.length);
+                    // var result = [];
+                    // for(var i = 0; i < ContaLen; i++)
+                    // { 
+                    //     result.push($scope.UsrDtl.users[i].UserID);
+                    // };
+                    
+                    // $scope.userDtl2 ={
+                    //     "groupId":grpId,
+                    //     "users":result
+                    // };
+
+                    // $http({
+                    //         method: 'POST',
+                    //         //url: 'http://digin.io/apis/usercommon/addUserToGroup',
+                    //         url: 'http://'+Digin_Domain+'/apis/usercommon/addUserToGroup',
+                    //         //data: {"groupId":grpId,"users":$scope.userDtl.users[i].UserID}
+                    //         data: angular.toJson($scope.userDtl2)
+                    // })
+                    // .success(function(response){
+                    //     //alert("Success...!");  
+                       
+
+                    // })
+                    // .error(function(error){   
+                    //     //alert("Fail...!");                        
+                    // });  
+                    
+                    //  //$scope.getAllGroups();            
+
+                     $mdDialog.hide();
 
         };
 
@@ -655,17 +783,14 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
 
         $scope.settings ={
-          "user_id": userInfo.UserID,
+          //"user_id": userInfo.UserID,
           "email": userInfo.Email,
           "components":"dashboard1",
           "user_role":"admin",
-          // "refresh_interval":parseInt($scope.refreshInterval),
-          // "widget_limit":parseInt($scope.noOfWidget),
-          // "query_limit":parseInt($scope.reqLimit),
           "cache_lifetime":$scope.cacheLifetime,
           "widget_limit":$scope.noOfWidget,
           "query_limit":$scope.reqLimit,
-          "image_path":"/var",
+          "logo_name":"",
           "theme_config": "bla bla",
           "SecurityToken":userInfo.SecurityToken,
           "Domain":userInfo.Domain
@@ -673,9 +798,11 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
 
         $http({
                 method: 'POST',
-                url: 'http://192.168.2.33:8080/store_user_settings/',
+                url: Digin_LogoUploader+'store_user_settings/',
                 data: angular.toJson($scope.settings),
-                headers: {'Content-Type': 'application/javascript'}
+                headers: {'Content-Type': 'application/json',                                                      
+                          'SecurityToken':userInfo.SecurityToken,
+                          'Domain':Digin_Domain }
         })
         .success(function(response){
             //alert("Success...!"); 
@@ -707,7 +834,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
                                 
                         $http({
                             method: 'POST',
-                            url: 'http://192.168.2.33:8080/clear_cache',
+                            url: Digin_LogoUploader+'clear_cache',
                             headers: {'Content-Type': 'Content-Type:application/json',
                             'SecurityToken':userInfo.SecurityToken,
                             'Domain':userInfo.Domain

@@ -22,31 +22,31 @@
                 getTables: function(cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "/GetTables?dataSetName=" + getNamespace() + "&db=" + database);
+                    }, $diginurls.diginengine + "GetTables?dataSetName=" + getNamespace() + "&db=" + database);
                 },
 
                 getFields: function(tbl, cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "/GetFields?dataSetName=" + getNamespace() + "&tableName=" + tbl + "&db=" + database + "&schema=public");
+                    }, $diginurls.diginengine + "GetFields?dataSetName=" + getNamespace() + "&tableName=" + tbl + "&db=" + database + "&schema=public");
                 },
                 getHighestLevel: function(tbl, fieldstr, cb) {
                     if (database == "BigQuery") {
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "/gethighestlevel?tablename=[" + getNamespace() + "." + tbl + "]&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
+                        }, $diginurls.diginengine + "gethighestlevel?tablename=[" + getNamespace() + "." + tbl + "]&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
                     }
                     if (database == "MSSQL") {
 
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "/gethighestlevel?tablename=" + tbl + "&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
+                        }, $diginurls.diginengine + "gethighestlevel?tablename=" + tbl + "&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
                     }
                     if (database == "postgresql") {
 
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "/gethighestlevel?tablename=" + tbl + "&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
+                        }, $diginurls.diginengine + "gethighestlevel?tablename=" + tbl + "&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
                     }
 
                 },
@@ -83,7 +83,7 @@
 
                     // if (gb) params += "&group_by={'" + gb + "':1}";
                     if (con) params += "&cons=" + con;
-                    var reqUrl = $diginurls.diginengine + "/aggregatefields?" + params;
+                    var reqUrl = $diginurls.diginengine + "aggregatefields?" + params;
                     var wData = {
                         rUrl: reqUrl,
                         method: "get"
@@ -98,7 +98,7 @@
                     var wSrc = "scripts/webworkers/webWorker.js";
                     var limVal = 1000;
                     if (limit) limVal = limit;
-                    var reqUrl = $diginurls.diginengine + "/executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal;
+                    var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal;
 
                     var wData = {
                         rUrl: reqUrl,
@@ -113,13 +113,13 @@
                     if (database == "BigQuery") {
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "/hierarchicalsummary?h=" + h + "&tablename=[" + getNamespace() + "." + tbl + "]&id=19&db=" + database);
+                        }, $diginurls.diginengine + "hierarchicalsummary?h=" + h + "&tablename=[" + getNamespace() + "." + tbl + "]&id=19&db=" + database);
                     }
                      else
                      { 
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "/hierarchicalsummary?h=" + h + "&tablename=" + tbl + "&id=19&db=" + database);
+                        }, $diginurls.diginengine + "hierarchicalsummary?h=" + h + "&tablename=" + tbl + "&id=19&db=" + database);
 
                     }
                 },
@@ -127,13 +127,13 @@
                     if (database == "BigQuery") {
                                $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "/generateboxplot?q=[{'[" + getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);
+                    }, $diginurls.diginengine + "generateboxplot?q=[{'[" + getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);
                     }
                      else
                      { 
                               $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "/generateboxplot?q=[{'["+ tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);
+                    }, $diginurls.diginengine + "generateboxplot?q=[{'["+ tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);
 
                     }
 
@@ -145,19 +145,19 @@
                 generatehist: function(tbl, fieldstr, cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "/generatehist?q=[{'[" + getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);
+                    }, $diginurls.diginengine + "generatehist?q=[{'[" + getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);
                 },
                 generateBubble: function(tbl, x, y, c, cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "/generatebubble?&table=[" + getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + x + "&dbtype=" + database);
+                    }, $diginurls.diginengine + "generatebubble?&table=[" + getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + x + "&dbtype=" + database);
                 },
                 getForcast: function(fObj, cb, gb) {
                     if(database == "BigQuery")
                     {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "/forecast?model=" + fObj.model +
+                        }, $diginurls.diginengine + "forecast?model=" + fObj.model +
                         "&pred_error_level=" + fObj.pred_error_level +
                         "&alpha=" + fObj.alpha +
                         "&beta=" + fObj.beta +
@@ -175,7 +175,7 @@
                       {
                           $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "/forecast?model=" + fObj.model +
+                        }, $diginurls.diginengine + "forecast?model=" + fObj.model +
                         "&pred_error_level=" + fObj.pred_error_level +
                         "&alpha=" + fObj.alpha +
                         "&beta=" + fObj.beta +
@@ -247,28 +247,28 @@
                 getPageOverview: function(cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + '/pageoverview?metric_names=[%27page_views%27,%27page_fans%27,%27page_stories%27]&since=' + timestamp.sinceStamp + '&until=' + timestamp.untilStamp + '&token=' + pg.accessToken);
+                    }, $diginurls.diginengine + 'pageoverview?metric_names=[%27page_views%27,%27page_fans%27,%27page_stories%27]&since=' + timestamp.sinceStamp + '&until=' + timestamp.untilStamp + '&token=' + pg.accessToken);
                 },
                 getPostSummary: function(cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + '/fbpostswithsummary?since=' + timestamp.sinceStamp + '&until=' + timestamp.untilStamp + '&page=' + pg.id + '&token=' + pg.accessToken);
+                    }, $diginurls.diginengine + 'fbpostswithsummary?since=' + timestamp.sinceStamp + '&until=' + timestamp.untilStamp + '&page=' + pg.id + '&token=' + pg.accessToken);
                 },
                 getSentimentAnalysis: function(cb, post_ids) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + '/sentimentanalysis?source=facebook&post_ids=' + post_ids + '&token=' + pg.accessToken);
+                    }, $diginurls.diginengine + 'sentimentanalysis?source=facebook&post_ids=' + post_ids + '&token=' + pg.accessToken);
                 },
                 getWordCloud: function(cb) {
 
                     if ($rootScope.fbPageAdmin) {
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + '/buildwordcloudFB?since=' + timestamp.sinceStamp + '&until=' + timestamp.untilStamp + '&source=facebook&token=' + pg.accessToken);
+                        }, $diginurls.diginengine + 'buildwordcloudFB?since=' + timestamp.sinceStamp + '&until=' + timestamp.untilStamp + '&source=facebook&token=' + pg.accessToken);
                     } else {
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + '/buildwordcloudFB?since=' + timestamp.sinceStamp + '&until=' + timestamp.untilStamp + '&source=facebook&token=' + pg.accessToken + '&page=' + pg.id);
+                        }, $diginurls.diginengine + 'buildwordcloudFB?since=' + timestamp.sinceStamp + '&until=' + timestamp.untilStamp + '&source=facebook&token=' + pg.accessToken + '&page=' + pg.id);
                     }
 
 
@@ -276,7 +276,7 @@
                 getDemographicsinfo: function(cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + '/demographicsinfo?token=' + pg.accessToken);
+                    }, $diginurls.diginengine + 'demographicsinfo?token=' + pg.accessToken);
                 }
             }
         }
@@ -287,13 +287,13 @@
         }
     });
 
-    dsh.factory('$diginurls', function() {
+    dsh.factory('$diginurls', function(Digin_Engine_API) {
         var host = getHost();
         return {
             //diginengine: "http://" + host + ":8080",
 
-            // diginengine: "http://104.155.236.85:8080",
-            diginengine: "http://192.168.2.33:8080",
+            diginengine: Digin_Engine_API,
+            //diginengine: "http://192.168.2.33:8080",
             diginenginealt: "http://" + host + ":8081",
             getNamespace: function getNamespace() {
                 var authdata = JSON.parse(getCookie("authData"));

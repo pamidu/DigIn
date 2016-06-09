@@ -77,10 +77,10 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             minRows: 1, // minimum amount of rows to show if the grid is empty
             maxRows: 100, // maximum amount of rows in the grid
             defaultSizeX: 6, // default width of an item in columns
-            defaultSizeY: 20, // default height of an item in rows
+            defaultSizeY: 5, // default height of an item in rows
             minSizeX: 6, // minimum column width of an item
             maxSizeX: null, // maximum column width of an item
-            minSizeY: 20, // minumum row height of an item
+            minSizeY: 5, // minumum row height of an item
             maxSizeY: null, // maximum row height of an item
             saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
             draggable: {
@@ -109,11 +109,12 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         $scope.adjustTitleLength = function(){
 
             var titleLength = 0;
-            for(var i=0; i < $rootScope.dashboard.pages[0].widgets.length; i++){
+            var selectedPage = $rootScope.selectedPage;
+            for(var i=0; i < $rootScope.dashboard.pages[selectedPage-1].widgets.length; i++){
 
-                if(titleLength < $rootScope.dashboard.pages[0].widgets[i].widgetData.widName.length){
+                if(titleLength < $rootScope.dashboard.pages[selectedPage-1].widgets[i].widgetData.widName.length){
 
-                    titleLength = $rootScope.dashboard.pages[0].widgets[i].widgetData.widName.length;
+                    titleLength = $rootScope.dashboard.pages[selectedPage-1].widgets[i].widgetData.widName.length;
                     if(titleLength <= 35){
                         $scope.widgetTitleClass = 'widget-title-35';
                     }
@@ -299,6 +300,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     }
                 })
                 .then(function () {
+                    console.log($scope.widget);
                     $scope.widget.widgetData.highchartsNG.size.width = $scope.tempWidth;
                     $scope.widget.widgetData.highchartsNG.size.height = $scope.tempHeight;
                     //$mdDialog.hide();
@@ -544,6 +546,57 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 }
             });
         }
+        $scope.removeWidget = function (widget, ev) {
+
+            $mdDialog.show({
+                templateUrl: 'views/closeWidget.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                controller: function closeWidgetCtrl($scope, $mdDialog) {
+
+                    var removeWidget = null;
+                    $scope.close = function(){
+
+                        $mdDialog.hide();
+                        removeWidget = true;
+                    }
+                    $scope.cancel = function () {
+
+                        $mdDialog.cancel();
+                        removeWidget = false;
+                    };
+
+                    return removeWidget;
+                }
+            }).then(function (removeWidget) {
+
+                if(removeWidget){
+
+                    var selectedPage = $rootScope.selectedPage;
+                    var widgets = $rootScope.dashboard.pages[selectedPage-1].widgets;
+                    for(var i=0; i < widgets.length; i++){
+                        //check for the specific widget in widgets array
+                        if(widgets[i].widgetID == widget.widgetID) {
+                           widgets.splice(i, 1);
+                            //if removed widget is not a new widget push it
+                            if(widget.widgetID.substr(0, 4) != "temp"){
+                                $rootScope.dashboard.deletions.widgetIDs.push(widget.widgetID);
+                            }
+                            console.log("$rootScope.dashboard.deletions", $rootScope.dashboard.deletions);
+                        }
+                    }
+
+                    ngToast.create({
+                        className: 'success',
+                        content: 'widget removal succussful',
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
+                }
+            });
+        };
         $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
@@ -556,57 +609,19 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         value: entry,
                         display: entry
                     });
-
                 });
-
-
             });
             client.getClasses("com.duosoftware.com");
         }
         $scope.commentary = function (widget) {
             var comment = "";
             var chunks = [];
-
-
         }
         $scope.closeDialog = function () {
             $mdDialog.hide();
         };
         $scope.clear = function () {
             $rootScope.dashboard.pages[$rootScope.selectePage-1].widgets = [];
-        };
-
-        $scope.remove = function (widget, ev) {
-            $mdDialog.show({
-                controller: function closeWidgetCtrl($scope, $mdDialog) {
-
-                    var closeWidget = null;
-                    $scope.close = function(){
-
-                        $mdDialog.hide();
-                        closeWidget = true;
-                    }
-                    $scope.cancel = function () {
-
-                        $mdDialog.cancel();
-                        closeWidget = false;
-                    };
-
-                    return closeWidget;
-                },
-                templateUrl: 'views/closeWidget.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                clickOutsideToClose: true
-
-            }).then(function (closeWidget) {
-
-                if(closeWidget){
-
-                    var widgets = $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets;
-                    widgets.splice(widgets.indexOf(widget), 1);
-                }
-            });
         };
 
         $scope.showWidgetSettings = false;
@@ -624,96 +639,10 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 ])
 ;
 
-function hnbClaimsCtrl($scope, $mdDialog, wid, $http) {
-    $scope.arr = [];
-    $scope.closeDialog = function () {
-        $mdDialog.hide();
-    };
-
-
-    $http.get('jsons/hnbForceData.json').success(function (data) {
-
-        $scope.arr = data;
-
-        console.log("hnb distributed claims json");
-        console.log($scope.arr);
-    });
-
-
-};
-
-
-function hnbDistributedCtrl($scope, $mdDialog, wid, $http) {
-    $scope.arr = [];
-    $scope.closeDialog = function () {
-
-        $mdDialog.hide();
-    };
-
-    $http.get('jsons/hnbDistributedclaims.json').success(function (data) {
-        console.log(JSON.stringify(data));
-        $scope.arr = data;
-
-        console.log($scope.arr);
-    });
-};
-
-function sltQueuedCtrl($scope, $mdDialog, wid, $http) {
-    $scope.arr = [];
-    $scope.closeDialog = function () {
-        $mdDialog.hide();
-    };
-
-
-    $http.get('jsons/sltTotalqueued.json').success(function (data) {
-        console.log(JSON.stringify(data));
-        $scope.arr = data;
-    });
-
-};
-
-function sltConnectedCtrl($scope, $mdDialog, wid, $http) {
-    $scope.arr = [];
-    $scope.closeDialog = function () {
-        
-        $mdDialog.hide();
-    };
-
-
-    $http.get('jsons/sltConnectedCalls.json').success(function (data) {
-        console.log(JSON.stringify(data));
-        $scope.arr = data;
-
-    });
-};
-
-function hnbBoxCtrl($scope, $mdDialog, wid, $http) {
-    $scope.arr = [];
-    $scope.closeDialog = function () {
-        $mdDialog.hide();
-    };
-
-
-    $http.get('jsons/hnbBoxData.json').success(function (data) {
-        console.log(JSON.stringify(data));
-        $scope.arr = data;
-
-    });
-};
-
-function sltQueueDetailsCtrl($scope, $mdDialog, wid, $http) {
-    $scope.arr = [];
-    $scope.closeDialog = function () {
-        $mdDialog.hide();
-    };
-
-
-    $http.get('jsons/sltQueueDetails.json').success(function (data) {
-        console.log(JSON.stringify(data));
-        $scope.arr = data;
-
-    });
-};
+ 
+ 
+ 
+ 
 
 function googleMapsCtrl($scope, $mdDialog, wid, $http) {
     
@@ -722,58 +651,7 @@ function googleMapsCtrl($scope, $mdDialog, wid, $http) {
     };
 };
 
-routerApp.controller('elasticDataCtrl',['$scope', '$mdDialog', 'wid',function ($scope, $mdDialog, wid) {
-
-    $scope.closeDialog = function () {
-        $mdDialog.hide();
-    };
-
-    $scope.series = wid.highchartsNG.series;
-    $scope.categories = wid.highchartsNG.xAxis.categories;
-    $scope.mappedSeries = [];
-    for (i = 0; i < $scope.series.length; i++) {
-        var seriesObj = {
-            name: $scope.series[i].name,
-            data: []
-        };
-        for (j = 0; j < $scope.series[i].data.length; j++) {
-            var dataObj = {
-                val: $scope.series[i].data[j],
-                cat: $scope.categories[j]
-            };
-            seriesObj.data.push(dataObj);
-        }
-        $scope.mappedSeries.push(seriesObj);
-    }
-
-    //map data to eport to excel
-    //start dynamically creating the object array
-    $scope.dataArray = [];
-    $scope.dataObj = {};
-    $scope.dataObj['a'] = "Category";
-    var currChar = "a";
-    for (i = 0; i < $scope.series.length; i++) {
-        currChar = nextChar(currChar);
-        $scope.dataObj[currChar] = $scope.series[i].name;
-    }
-
-    $scope.dataArray.push($scope.dataObj);
-
-    for (i = 0; i < $scope.categories.length; i++) {
-        $scope.dataObj = {};
-        $scope.dataObj['a'] = $scope.categories[i];
-        currChar = 'a';
-        for (j = 0; j < $scope.series.length; j++) {
-            currChar = nextChar(currChar);
-            $scope.dataObj[currChar] = $scope.series[j].data[i];
-        }
-        $scope.dataArray.push($scope.dataObj);
-    }
-
-    $scope.fileName = wid.uniqueType;
-
-}]);
-
+ 
 routerApp.controller('ReportsDevCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportService',
     '$timeout', '$log', 'cssInjector',
     function ($scope, $mdSidenav, $sce, ReportService, $timeout,
@@ -813,14 +691,14 @@ routerApp.controller('ReportsDevCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportS
             $scope.toggleSidenav('left');
         }
 }]);
-routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Report_Base', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain',
-    function ($scope, dynamicallyReportSrv, $localStorage, Digin_Report_Base, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain) {
+routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain',
+    function ($scope, dynamicallyReportSrv, $localStorage, Digin_Engine_API, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain) {
                 // update damith
         // get all reports details
         var privateFun = (function () {
             var rptService = $localStorage.erportServices;
             var reqParameter = {
-                apiBase: Digin_Report_Base,
+                apiBase: Digin_Engine_API,
                 tomCatBase: Digin_Tomcat_Base,
                 token: '',
                 reportName: '',
@@ -887,7 +765,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                     var lim = i == 0 ? "" : "-" + i;
                                            
                     Upload.upload({
-                        url: Digin_Report_Base + 'file_upload',
+                        url: Digin_Engine_API + 'file_upload',
                         headers: {
                             'Content-Type': 'multipart/form-data',                         
                         },           
@@ -895,7 +773,8 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                             file: files[i],
                             db: 'BigQuery',
                             SecurityToken: userInfo.SecurityToken,
-                            Domain: 'Digin_Domain'
+                            Domain: Digin_Domain,
+                            other_data: 'prpt_reports'
                         }                         
                     }).success(function(data){                                                 
                         fireMsg('1', 'Successfully uploaded!');
@@ -929,39 +808,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
         }
     }
 ]);
-
-routerApp.controller('analyticsCtrl', ['$scope', '$sce', 'AnalyticsService', '$timeout', '$log', '$mdDialog',
-    function ($scope, $sce, AnalyticsService, $timeout, $log, mdDialog) {
-
-        $scope.products = [];
-        var allMuppets = [];
-        $scope.selected = null;
-        $scope.muppets = allMuppets;
-        $scope.selectMuppet = selectMuppet;
-
-        loadMuppets();
-        $scope.trustSrc = function (src) {
-            return $sce.trustAsResourceUrl(src);
-        }
-
-        function selectMuppet(muppet) {
-            $scope.selected = angular.isNumber(muppet) ? $scope.muppets[muppet] : muppet;
-
-            $scope.toggleSidenav('left');
-        }
-
-        function loadMuppets() {
-            AnalyticsService.loadAll()
-                .then(function (muppets) {
-                    allMuppets = muppets;
-                    $scope.muppets = [].concat(muppets);
-                    $scope.selected = $scope.muppets[0];
-                })
-        }
-
-
-    }])
-
+ 
 
 routerApp.controller('RealTimeController', ['$scope', '$sce', 'RealTimeService',
     '$timeout', '$log', '$mdDialog',
@@ -996,43 +843,8 @@ routerApp.controller('RealTimeController', ['$scope', '$sce', 'RealTimeService',
 
     }])
 
-routerApp.controller('ExtendedanalyticsCtrl', ['$scope', '$timeout', '$rootScope', '$mdDialog', '$sce', '$objectstore', 'Digin_Extended_Analytics',
-    function ($scope, $timeout, $rootScope, $mdDialog, $sce, $objectstore, Digin_Extended_Analytics) {
-
-        $scope.AnalyticsReportURL = Digin_Extended_Analytics;
-
-        $scope.trustSrc = function (src) {
-            return $sce.trustAsResourceUrl(src);
-        }
-
-
-    }
-]);
-routerApp.controller('ExtendedReportCtrl', ['$scope', '$timeout', '$rootScope', '$mdDialog', '$sce', '$objectstore', 'Digin_Extended_Reports',
-    function ($scope, $timeout, $rootScope, $mdDialog, $sce, $objectstore, Digin_Extended_Reports) {
-
-        $scope.AnalyticsReportURL = Digin_Extended_Reports;
-
-        $scope.trustSrc = function (src) {
-            return $sce.trustAsResourceUrl(src);
-        }
-
-
-    }
-]);
-
-routerApp.controller('ExtendedDashboardCtrl', ['$scope', '$timeout', '$rootScope', '$mdDialog', '$sce', '$objectstore', 'Digin_Extended_Dashboard',
-    function ($scope, $timeout, $rootScope, $mdDialog, $sce, $objectstore, Digin_Extended_Dashboard) {
-
-        $scope.AnalyticsDashboardURL = Digin_Extended_Dashboard;
-
-        $scope.trustSrc = function (src) {
-            return $sce.trustAsResourceUrl(src);
-        }
-
-
-    }
-]);
+ 
+ 
 
 routerApp.controller('summarizeCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', '$q', '$timeout',
     function ($scope, $http, $objectstore, $mdDialog, $rootScope, $q, $timeout) {
@@ -1118,8 +930,8 @@ routerApp.controller('summarizeCtrl', ['$scope', '$http', '$objectstore', '$mdDi
         }
     }]);
 
-routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state', '$mdDialog', 'Digin_Base_URL', '$objectstore', '$mdToast',
-    function ($scope, $rootScope, $http, $state, $mdDialog, Digin_Base_URL, $objectstore, $mdToast) {
+routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state', '$mdDialog', '$objectstore', '$mdToast',
+    function ($scope, $rootScope, $http, $state, $mdDialog, $objectstore, $mdToast) {
         var featureObj = localStorage.getItem("featureObject");
         $scope.User_Name = "";
         $scope.User_Email = "";
@@ -1314,38 +1126,7 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
     }
 ]);
 
-routerApp.controller('pStackCtrl', function ($scope, $mdDialog, $state) {
 
-    //p stack menus
-    $scope.Extendedmenu = [{
-        title: 'Analysis Report',
-        color: '#2196F3',
-        icon: 'styles/css/images/icons/ic_assignment_24px.svg'
-    }, {
-        title: 'Interactive Report',
-        color: '#FF9800',
-        icon: 'styles/css/images/icons/ic_assignment_24px.svg'
-    }, {
-        title: 'Dashboard',
-        color: '#CDDC39',
-        icon: 'styles/css/images/icons/ic_assignment_24px.svg'
-    }];
-
-    $scope.closeDialog = function () {
-        $mdDialog.hide();
-    };
-
-    $scope.doFunction = function (name) {
-
-        $('.dashboard-widgets-close').css("visibility", "hidden");
-        $('md-tabs-wrapper').css("visibility", "hidden");
-
-        $state.go('home.'+name);
-        $mdDialog.hide();
-    };
-
-
-});
 
 routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state', '$http', 'ScopeShare',
     function ($scope, $mdDialog, $state, $http, ScopeShare) {

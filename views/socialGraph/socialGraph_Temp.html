@@ -24,22 +24,16 @@
                         </div>
                         <div class="col-md-6">
                             <!-- posts -->
-                            <div class="row">
-                                <!--<md-input-container layout="column" class="col-md-6">-->
-                                <!--<label>Search page or group</label>-->
-                                <!--&lt;!&ndash;<input ng-enter="searchPage(searchPage.query)" ng-model="searchPage.query">&ndash;&gt;-->
-                                <!--</md-input-container>-->
-
-                                <div class="form-inline fb-search-wrap p-t-20">
-                                    <input type="text" class="form-control min-width-350"
+                            <div class="form-inline fb-search-wrap p-t-20">
+                                    <input type="text" ng-enter="searchPage(searchPage.query)"
+                                           class="form-control min-width-350"
+                                           ng-model="searchPage.query"
                                            placeholder="search page or group..">
-                                    <!--<md-button class="md-raised" ng-click="searchPage(searchPage.query)"-->
-                                    <!--&gt;Search!-->
+                                    <md-button class="md-raised" ng-click="searchPage(searchPage.query)">
+                                        Search
+                                    </md-button>
 
                                 </div>
-
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -83,6 +77,36 @@
                 <div class="col-lg-9">
                     <div class="row">
                         <div class="col-lg-3 max-width-250 m-r-25" ng-repeat="page in fbPages">
+                            <div class="page-view-wrap">
+                                <div class="page-top">
+                                    <div class="page-image round-img">
+                                        <page-image id="{{page.id}}"></page-image>
+                                    </div>
+                                    <h1>{{page.name}}</h1>
+                                </div>
+                                <!--<i class="fa fa-"-->
+
+                                <div class="fb-page-btn-wrap">
+                                    <div class="fb-page-details">
+                                        <div class="category">
+                                            <small>category
+                                                <h5> {{page.category}}</h5>
+                                            </small>
+
+                                        </div>
+                                    </div>
+                                    <div class="fb-btn-bottom">
+                                        <span class="btn-small fb-btn "
+                                              ng-click="viewPageDetails(page)">View</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-3 max-width-250 m-r-25" ng-repeat="page in searchedFbPages">
                             <div class="page-view-wrap">
                                 <div class="page-top">
                                     <div class="page-image round-img">

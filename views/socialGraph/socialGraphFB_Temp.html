@@ -27,11 +27,16 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <!-- posts -->
-                            <md-input-container flex>
-                                <label>Search page or group</label>
-                                <input ng-model="user.firstName">
-                            </md-input-container>
+                            <div class="form-inline fb-search-wrap p-t-20">
+                                    <input type="text" ng-enter="searchPage(searchPage.query)"
+                                           class="form-control min-width-350"
+                                           ng-model="searchPage.query"
+                                           placeholder="search page or group..">
+                                    <md-button class="md-raised" ng-click="searchPage(searchPage.query)">
+                                        Search
+                                    </md-button>
+
+                                </div>
                               
                         </div>
                     </div>

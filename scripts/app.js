@@ -932,108 +932,21 @@ routerApp.service('generatePDF2', function ($timeout) {
 
 });
 
-// //General PDF of dshboard snapshop inorder to share dashboard
-// routerApp.service('generatePDF3', function ($timeout, $pdfString) {
-//     this.generate = function (htmlElement, config) {
-
-//         var doc = new jsPDF('landscape');
-//         var options = {format: 'PNG'};
-
-//         doc.addHTML(htmlElement, config.tableLeft, config.tableTop, options, function () {
-//             var pdfName = config.title.toString() + '.pdf';
-//             doc.text(config.titleLeft, config.titleTop, config.title);
-//             var output = doc.output('datauristring')
-//             $pdfString.savePdf(output);
-//         });
-//     };
-// });
-
-
 //General PDF of dshboard snapshop inorder to share dashboard
 routerApp.service('generatePDF3', function ($timeout, $pdfString) {
-
-    // this.generate = function (htmlElement, config) {
-
-    //     var doc = new jsPDF('landscape');
-    //     var options = {format: 'PNG'};
-
-    //     doc.addHTML(htmlElement, config.tableLeft, config.tableTop, options, function () {
-    //         var pdfName = config.title.toString() + '.pdf';
-    //         doc.text(config.titleLeft, config.titleTop, config.title);
-    //         var output = doc.output('datauristring')
-    //         $pdfString.savePdf(output);
-    //     });
-    // };
-
-    ///-----------------------
-
     this.generate = function (htmlElement, config) {
 
-        html2canvas($("#content1"), {
-            onrendered: function(canvas) {                      
-            var imgData = canvas.toDataURL('image/jpeg');              
-            options = {
-                orientation: "0",
-                unit: "mm",
-                format: "a4"
-            };
-            var doc = new jsPDF(options, '', '', '');
-            doc.addImage(imgData, 'jpeg', 0, 0, 220, 0);
-            var corte = 1295; // configura tamanho do corte
-            var image = new Image();
-            image = Canvas2Image.convertToJPEG(canvas);
+        var doc = new jsPDF('landscape');
+        var options = {format: 'PNG'};
 
-            var croppingYPosition = corte;
-            var count = (image.height)/corte;
-            var i =1;
-
-            while ( i < count) {
-                    doc.addPage();
- 
-
-                    var sourceX = 0;
-                    var sourceY = croppingYPosition;
-                    var sourceWidth = image.width;
-                    var sourceHeight = corte;
-                    var destWidth = sourceWidth;
-                    var destHeight = sourceHeight;
-                    var destX = 0;
-                    var destY = 0;
-                    var canvas1 = canvas;
-                    canvas1.setAttribute('height', (image.height)-(corte*i));
-                    canvas1.setAttribute('width', destWidth);                         
-                    var ctx = canvas1.getContext("2d");
-                    ctx.drawImage(image, sourceX, 
-                                         sourceY,
-                                         sourceWidth,
-                                         sourceHeight, 
-                                         destX, 
-                                         destY, 
-                                         destWidth, 
-                                         destHeight);
-                    var image2 = new Image();
-                    image2 = Canvas2Image.convertToJPEG(canvas1);
-                    image2Data = image2.src;
-                    doc.addImage(image2Data, 'JPEG', 0, 0, 220, 0);
-                    croppingYPosition += destHeight; 
-
-                    count =  (image.height)/croppingYPosition; 
-                             
-                }
-                doc.save('sample.pdf')
-                //---
-                var output = doc.output('datauristring')
-                $pdfString.savePdf(output);
-
-
-            }
+        doc.addHTML(htmlElement, config.tableLeft, config.tableTop, options, function () {
+            var pdfName = config.title.toString() + '.pdf';
+            doc.text(config.titleLeft, config.titleTop, config.title);
+            var output = doc.output('datauristring')
+            $pdfString.savePdf(output);
         });
- 
-
     };
 });
-
-
 
 routerApp.factory("$pdfString", function () {
     var base64Pdf;

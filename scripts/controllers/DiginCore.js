@@ -80,7 +80,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             defaultSizeY: 5, // default height of an item in rows
             minSizeX: 6, // minimum column width of an item
             maxSizeX: null, // maximum column width of an item
-            minSizeY: 5, // minumum row height of an item
+            minSizeY: 15, // minumum row height of an item
             maxSizeY: null, // maximum row height of an item
             saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
             draggable: {
@@ -429,7 +429,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                 }
                                 
                                 // Show the loading label
-                                chart.showLoading("Retrieving data for '" + clickedPoint.toLowerCase() + "' grouped by '" + nextLevel + "'");
+                                chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
                                 
                                 //aggregate method
                                 clientObj.getAggData(srcTbl, fields, function(res, status, query) {
@@ -773,8 +773,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                             file: files[i],
                             db: 'BigQuery',
                             SecurityToken: userInfo.SecurityToken,
-                            Domain: Digin_Domain,
-                            other_data: 'prpt_reports'
+                            Domain: 'Digin_Domain'
                         }                         
                     }).success(function(data){                                                 
                         fireMsg('1', 'Successfully uploaded!');

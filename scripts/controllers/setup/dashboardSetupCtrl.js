@@ -36,7 +36,7 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
     };
 
     
-    //not used
+
     $scope.addNewUser = function(addState){
         $scope.addUsrState = addState;
         if(!addState){
@@ -44,7 +44,6 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         }
     };
 
-    //not used
     $scope.inviteNewUser = function(inviteState){
         $scope.inviteUsrState = inviteState;
         if(!inviteState){
@@ -77,36 +76,6 @@ routerApp.controller('dashboardSetupCtrl', function($scope, $mdDialog, $location
         }
     };
     
-    //invite user ***
-    $scope.inviteUser = function(){
-        
-            //var userInfo = JSON.parse(getCookie("authData"));
-            var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
-            //-----Add user
-            $http.get(Digin_Tenant+'/tenant/AddUser/'+$scope.user.email+'/user', {
-                headers: {'Securitytoken': userInfo.SecurityToken}
-            })
-              .success(function(response){
-                  //alert(JSON.stringify(response));
-                  //------if invited check invited or ----------
-                  if(response){
-                    $http.get(Digin_Tenant+'/GetUser/'+$scope.user.email, {
-                    })
-                      .success(function (data) {
-                          //alert(JSON.stringify(data)); 
-                          fireMsg('1', 'Successfully invited !');
-                          $scope.user.email='';
-                      });  
-                  }
-                  else{
-                  }
-              }).error(function(error){
-                   //console.log(error);
-                    fireMsg('0', 'Invitation not sent !');
-            });
-
-    };
-
 
     //----------------------
      $scope.people = [

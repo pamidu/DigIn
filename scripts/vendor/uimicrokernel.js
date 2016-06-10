@@ -1971,7 +1971,6 @@
             },
             uploadMedia: function(cls, file, customName) {
                 upload(getHost(), "tenant/" + cls, file, customName, true)
-                //upload("digin.io", "tenant/" + cls, file, customName, true)
             },
             onSuccess: function (func) {
                 var of = $rootScope.$on("uploader_success", function (e, data) {
@@ -2472,7 +2471,7 @@
             fws: "http://" + host + ":4000",
             processDispatcher: "http://" + host + ":5000",
             processManager: "http://" + host + ":8093",
-            mediaLib: "http://digin.io/apis/media",
+            mediaLib: "http://" + host + "/apis/media",
         };
     });
 

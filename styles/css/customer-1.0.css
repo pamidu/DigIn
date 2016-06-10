@@ -416,7 +416,7 @@ drb >> dynamically report builder
     z-index: 100;
 }
 
-/*padding */
+/*#padding */
 .p-t-b-30 {
     padding: 30px 0 30px 0px;
 }
@@ -427,6 +427,10 @@ drb >> dynamically report builder
 
 .p-t-15 {
     padding-top: 15px;
+}
+
+.p-t-20 {
+    padding-top: 20px;
 }
 
 .p0Delete {
@@ -456,6 +460,14 @@ drb >> dynamically report builder
 
 .m-l-15 {
     margin-left: 15px;
+}
+
+.m-r-25 {
+    margin-right: 25px;
+}
+
+.p-r-45 {
+    padding-right: 45px;
 }
 
 .timeline_icon {
@@ -1998,6 +2010,10 @@ md-checkbox.md-checked .md-icon {
     width: 250px;
 }
 
+.min-width-350 {
+    width: 350px;
+}
+
 .algo-footer-line-one {
     position: relative;
 }
@@ -3074,4 +3090,420 @@ li:active {
 .dashbord-save-loader{
     position: absolute;
     right: 129px;
+}
+
+/*update facebook page style*/
+.form-control {
+    background: transparent !important;
+    background-image: none !important;
+    border: 2px solid #F5F5F5;
+    border-radius: 7px;
+    height: 40px;
+}
+
+.main-fb-logo {
+    padding: 25px;
+}
+
+.fb-main-header {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 400;
+    color: #abb5c1;
+    font-size: 23px;
+}
+
+.form-control::-webkit-input-placeholder {
+    color: #ced7dc;
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 300;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    color: #ced7dc;
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 300;
+
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+    color: #ced7dc;
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 300;
+}
+
+:-ms-input-placeholder {
+    color: #ced7dc;
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 300;
+}
+
+.fb-search-wrap {
+    text-align: right;
+    margin-right: 84px;
+}
+
+.page-view-wrap {
+    width: 250px;
+    height: 300px;
+    background: #fff;
+    border-radius: 10px;
+    margin-bottom: 19px;
+}
+
+.page-view-wrap > .page-top {
+    height: 170px;
+    width: 100%;
+    background: #0072bc;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.page-view-wrap > .page-top > h1 {
+    color: #fff;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 15px;
+    padding-top: 119px;
+    font-weight: 300;
+
+}
+
+.page-view-wrap > .fb-page-btn-wrap {
+    padding-top: 12px;
+}
+
+.fb-page-btn-wrap > .fb-page-details {
+    padding: 0px 12px 12px 12px;
+    text-align: left;
+}
+
+.fb-page-btn-wrap > .fb-page-details > .category
+> small > h5 {
+    margin-top: 2px !important;
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 300;
+}
+
+.fb-page-btn-wrap > .fb-page-details > .category
+> small {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 500;
+    color: #8E9090;
+}
+
+.fb-page-btn-wrap > .fb-page-details > .category {
+    width: 100%;
+    height: 50px;
+    padding: 5px;
+    -webkit-box-shadow: 0px 2px 7px 0px rgba(50, 50, 50, 0.1);
+    -moz-box-shadow: 0px 2px 7px 0px rgba(50, 50, 50, 0.1);
+    box-shadow: 0px 2px 7px 0px rgba(50, 50, 50, 0.1);
+}
+
+.fb-profile {
+    width: 100%;
+    height: 390px;
+    background: rgb(37, 93, 109);
+    border-radius: 5px;
+}
+
+.fb-profile > .profile-details {
+    text-align: center;
+    padding: 15px;
+    overflow: hidden;
+}
+
+.fb-profile > .profile-details > h2 {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 500;
+    color: #d4d4d8;
+    margin-top: 14px;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.fb-profile > .profile-details > .profile-image {
+    border-radius: 50%;
+    width: 125px;
+    height: 125px;
+    overflow: hidden;
+    margin: 5px auto;
+}
+
+.fb-profile > .profile-details > .profile-name {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 300;
+    font-size: 20px;
+    margin-top: 5px;
+    color: #fff;
+}
+
+.fb-profile > .profile-details > .profile-email {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 300;
+    font-size: 12px;
+    margin-top: 5px;
+    color: #d4d4d8;
+}
+
+.fb-profile > .profile-details > .profile-verified {
+    margin-top: 5px;
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 300;
+    color: #61b13f;
+}
+
+.fb-profile > .profile-details > .profile-go-link {
+    margin-top: 15px;
+
+}
+
+.fb-profile > .profile-details > .profile-go-link > a {
+    color: #fff;
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 300;
+    cursor: pointer;
+}
+
+.fb-profile > .profile-details > .profile-go-link > a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.fb-profile > .profile-details > .profile-verified > i {
+    color: #61b13f;
+    font-size: 20px;
+}
+
+.fb-profile > .profile-details > .profile-image > img {
+    width: 150px;
+    height: 150px;
+
+}
+
+.fb-page-img {
+    position: absolute;
+    vertical-align: middle;
+    text-align: center;
+    width: 120px;
+    height: auto;
+    left: 0;
+}
+
+.round-img {
+    position: absolute;
+    overflow: hidden;
+    border-radius: 50%;
+    width: 115px;
+    height: 115px;
+    left: 66px;
+    top: 17px;
+    border: 5px solid rgba(255, 255, 255, 0.07);
+}
+
+.max-width-250 {
+    max-width: 250px;
+    min-width: 250px;
+}
+
+.fb-page-search-wrap {
+    overflow: hidden;
+}
+
+.fb-btn {
+    border: 2px solid #ECECEC;
+    border-radius: 21px;
+    padding: 5px 15px 5px 15px;
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 300;
+    text-transform: lowercase;
+    cursor: pointer;
+}
+
+.fb-btn:hover {
+    background: #255D6D;
+    border: 2px solid #255D6D;
+    color: #ffffff;
+}
+
+.fb-page-btn-wrap > .fb-btn-bottom {
+    margin-top: 15px;
+}
+
+.fb-sentiment {
+
+}
+
+.fb-sentiment > div > div > h2 {
+
+}
+
+.graph-h2 {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 400;
+    color: #DAD5D5;
+}
+
+.box-shadow-none {
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px 0px rgba(0, 0, 0, 0) !important;
+}
+
+.border-radius10 {
+    border-radius: 10px;
+}
+
+.widget-h130 {
+    height: 130px;
+}
+
+.widget-bg-blue900 {
+    background: #1d4074; /* Old browsers */
+    background: -moz-linear-gradient(45deg, #1d4074 0%, #415b94 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(45deg, #1d4074 0%, #415b94 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(45deg, #1d4074 0%, #415b94 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1d4074', endColorstr='#415b94', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+    border: 1px solid #1d4074;
+    overflow: hidden;
+}
+
+.widget-bg-blue600 {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#039b6a+0,2ba89c+100 */
+    background: #039b6a; /* Old browsers */
+    background: -moz-linear-gradient(45deg, #039b6a 0%, #2ba89c 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(45deg, #039b6a 0%, #2ba89c 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(45deg, #039b6a 0%, #2ba89c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#039b6a', endColorstr='#2ba89c', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+    border: 1px solid #039b6a;
+    overflow: hidden;
+}
+
+.widget-bg-yellow600 {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f8b01d+1,d48329+99 */
+    background: #f8b01d; /* Old browsers */
+    background: -moz-linear-gradient(top, #f8b01d 1%, #d48329 99%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #f8b01d 1%, #d48329 99%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #f8b01d 1%, #d48329 99%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8b01d', endColorstr='#d48329', GradientType=0);
+    border: 1px solid #f8b01d;
+    overflow: hidden;
+}
+
+.widget-bg-blue400 {
+    background: #365267; /* Old browsers */
+    background: -moz-linear-gradient(top, #365267 1%, #1b7b97 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #365267 1%, #1b7b97 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #365267 1%, #1b7b97 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#365267', endColorstr='#1b7b97', GradientType=0); /* IE6-9 */
+    border: 1px solid #365267;
+    overflow: hidden;
+}
+
+.widget-bg-gray400 {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4e5152+1,858d84+100 */
+    background: #4e5152; /* Old browsers */
+    background: -moz-linear-gradient(45deg, #4e5152 1%, #858d84 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(45deg, #4e5152 1%, #858d84 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(45deg, #4e5152 1%, #858d84 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e5152', endColorstr='#858d84', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+    border: 1px solid #4e5152;
+    overflow: hidden;
+}
+
+.fb-count-like {
+    color: #d4d4d8;
+    font-size: 110px;
+    position: absolute;
+}
+
+.fb-like-details,
+.fb-post,
+.average-engamnt,
+.total-engment,
+.fb-view {
+    font-family: 'Roboto', sans-serif !important;
+    text-align: center;
+}
+
+.fb-like-details > h2,
+.fb-post > h2,
+.total-engment > h2,
+.average-engamnt > h2,
+.fb-view > h2 {
+    font-weight: 600;
+    font-size: 52px;
+    color: #FFF;
+}
+
+.fb-like-details > p,
+.fb-post > p,
+.total-engment > p,
+.average-engamnt > p,
+.fb-view > p {
+    color: #f8b01d;
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 600;
+}
+
+.icon-color-yellow {
+    color: #F4AB1F !important;
+}
+
+.icon-color-green {
+    color: #2ba89c !important;
+}
+
+.top-layer-map {
+    position: absolute;
+    z-index: 124;
+    top: 15px;
+    right: 20px;
+}
+
+.top-layer-map > h2 {
+    color: #5A5E5D;
+}
+
+.top-layer-map > h2 > div > i {
+    padding-left: 15px;
+    color: #ECA121;
+}
+
+.post-view > table > thead {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 300;
+}
+
+.post-view > table > thead > tr > td {
+    color: #000000;
+    border-bottom: solid 2px #FFC107;
+}
+
+.post-view > table > tbody > tr {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.fb-post-body {
+
+}
+
+.fb-post-body > md-card {
+    padding: 10px;
+}
+
+.post-image {
+    border-radius: 50%;
+    border: 4px solid rgba(236, 236, 236, 0.29);
+}
+
+.fb-tbl-header {
+    background: rgb(32, 115, 142);
+    padding: 15px;
+    margin-left: 7px;
+    margin-right: 7px;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 500;
 }

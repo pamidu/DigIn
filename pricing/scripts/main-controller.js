@@ -1,4 +1,4 @@
-var app = angular.module('wizard', ['ngMaterial', 'ngImgCrop', 'ksSwiper', 'ui.router', 'ngAnimate','ngCookies']);
+var app = angular.module('wizard', ['ngMaterial', 'ngImgCrop', 'ksSwiper', 'ui.router', 'ngAnimate', 'ngCookies']);
 
 app.config(function ($mdThemingProvider) {
     $mdThemingProvider.theme('default')
@@ -6,7 +6,7 @@ app.config(function ($mdThemingProvider) {
         .accentPalette('deep-orange');
 });
 
-app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $state,$cookies,$http) {
+app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $state, $cookies, $http) {
     $scope.config = {
         "companyConfiguration": {
             "title": "",
@@ -26,7 +26,7 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
                         "row": 0,
                         "col": 0,
                         "panelType": "Applications"
-			},
+                    },
                     {
                         "shellRelationship": "DuoWorld Alpha Shell v 1.0",
                         "panelDescription": "Framework shell custom panel",
@@ -37,8 +37,8 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
                         "row": 0,
                         "col": 1,
                         "panelType": "Collections"
-			}
-		],
+                    }
+                ],
                 "dockoptions": {
                     "transitioneffect": "crossFade",
                     "layoutdirection": "horizontal",
@@ -56,7 +56,7 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
                     "backgroundtype": "solid",
                     "backgroundtypeactive": false,
                     "backgroundcolor": "#FF4081"
-		},
+                },
                 {
                     "backgroundtype": "gradient",
                     "backgroundtypeactive": false,
@@ -65,7 +65,7 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
                         "color2": "#3F51B5",
                         "orientation": "diagonalup"
                     }
-		},
+                },
                 {
                     "backgroundtype": "image",
                     "backgroundtypeactive": true,
@@ -78,8 +78,8 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
                         "textureoverlay": false,
                         "vignetteoverlay": false
                     }
-		}
-	]
+                }
+            ]
         },
         "defaultAppConfiguration": []
     };
@@ -89,106 +89,106 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
     $scope.device = "desktop";
 
     $scope.colors = ['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B'
-		];
+    ];
 
     $scope.wallpapers = [
         {
             imgUrl: 'images/shellassets/background/blur-background01.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background01.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background02.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background02.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background03.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background03.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background04.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background04.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background05.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background05.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background06.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background06.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background07.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background07.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background08.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background08.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background09.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background09.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background10.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background10.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background11.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background11.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background12.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background01.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background13.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background13.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background14.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background14.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background15.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background15.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background16.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background16.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background17.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background17.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background18.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background18.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background19.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background19.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background20.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background20.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background21.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background21.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background22.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background22.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background23.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background23.jpg'
-            },
+        },
         {
             imgUrl: 'images/shellassets/background/blur-background24.jpg',
             thumb: 'images/shellassets/background/250x250_blur-background24.jpg'
-            }
-		];
+        }
+    ];
     $scope.apps = [{
         title: "app1",
         icon: "images/appIcons/clock.png"
@@ -215,7 +215,8 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
             storage: "10 GB",
             price: "0",
             per: "/ Mo",
-            Description: "desc"
+            Description: "desc",
+            img: 'images/personal.png'
         },
         {
             id: "mini_team",
@@ -225,7 +226,8 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
             storage: "10 GB",
             price: "0",
             per: "/ Mo",
-            Description: "desc"
+            Description: "desc",
+            img: 'images/mini_team.png'
         },
         {
             id: "world",
@@ -235,7 +237,8 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
             storage: "10 GB",
             price: "4.99",
             per: "/ User",
-            Description: "desc"
+            Description: "desc",
+            img: 'images/world.png'
         }]
 
     $scope.assignPrimaryColor = function (b) {
@@ -327,12 +330,12 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
         console.log($scope.config);
         $mdDialog.show(
             $mdDialog.alert()
-            .clickOutsideToClose(true)
-            .title('Your Shell is ready to go live!')
-            .textContent('this is super easy right?')
-            .ariaLabel('Alert Dialog Demo')
-            .ok('Yeah!')
-            .targetEvent(ev)
+                .clickOutsideToClose(true)
+                .title('Your Shell is ready to go live!')
+                .textContent('this is super easy right?')
+                .ariaLabel('Alert Dialog Demo')
+                .ok('Yeah!')
+                .targetEvent(ev)
         );
     };
 
@@ -351,7 +354,7 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
     };
     $scope.isIndeterminate = function () {
         return ($scope.selected.length !== 0 &&
-            $scope.selected.length !== $scope.appss.length);
+        $scope.selected.length !== $scope.appss.length);
     };
     $scope.isChecked = function () {
         return $scope.selected.length === $scope.apps.length;
@@ -366,17 +369,17 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
     };
 
     $scope.createTenant = function (plan) {
-    //$state.go('step' + plan);
-    var userInfo=JSON.parse(decodeURIComponent($cookies.get('authData')));
+        //$state.go('step' + plan);
+        var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
 
-        $scope.tenantDtl ={
-            "TenantID": userInfo.Name.replace(' ','')+".digin.io",
-            "TenantType" : "Company",
-            "Name": userInfo.Name.replace(' ',''),
+        $scope.tenantDtl = {
+            "TenantID": userInfo.Name.replace(' ', '') + ".digin.io",
+            "TenantType": "Company",
+            "Name": userInfo.Name.replace(' ', ''),
             "Shell": "",
             "Statistic": {
-              "CompanyName": "Company",
-              "Plan":plan
+                "CompanyName": "Company",
+                "Plan": plan
             },
             "Private": true,
             "OtherData": {
@@ -387,25 +390,25 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
         };
 
         $http({
-                method: 'POST',
-                url: 'http://digin.io/apis/usertenant/tenant/',
-                data: angular.toJson($scope.tenantDtl),
-                headers: {'Content-Type': 'application/json'//,'SecurityToken':userInfo.SecurityToken,                                                      
-                          }
+            method: 'POST',
+            url: 'http://digin.io/apis/usertenant/tenant/',
+            data: angular.toJson($scope.tenantDtl),
+            headers: {
+                'Content-Type': 'application/json'//,'SecurityToken':userInfo.SecurityToken,
+            }
         })
-        .success(function(response){
-            if(response.Success==true){
-                window.location = "http://"+response.Data.TenantID;
-            }
-            else
-            {
-                console.log(response.Message);
-            }
+            .success(function (response) {
+                if (response.Success == true) {
+                    window.location = "http://" + response.Data.TenantID;
+                }
+                else {
+                    console.log(response.Message);
+                }
 
-        })
-        .error(function(error){   
-                                 
-        }); 
+            })
+            .error(function (error) {
+
+            });
     };
 
 });

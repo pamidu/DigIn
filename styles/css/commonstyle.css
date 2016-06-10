@@ -6,7 +6,8 @@
 }
 
 .left-main-wrap {
-    padding-top: 40px;
+    padding-top: 60px;
+    overflow: hidden;
     position: relative;
 }
 
@@ -36,10 +37,10 @@
 }
 
 .signup {
-    background: #EC784B; /* Old browsers */
-    background: -moz-linear-gradient(top, #F69563 0%, #F1702E 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, #F69563 0%, #F1702E 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, #F69563 0%, #F1702E 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    background: #037281; /* Old browsers */
+    background: -moz-linear-gradient(top, #03a699 0%, #037281 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #03a699 0%, #037281 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #03a699 0%, #037281 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00a9ed', endColorstr='#01718d', GradientType=0); /* IE6-9 */
 
 }
@@ -71,7 +72,7 @@
 }
 
 .header-login {
-    /*border-bottom: 3px solid #F5F5F5;*/
+    border-bottom: 3px solid #F5F5F5;
     height: 85px;
 }
 
@@ -107,19 +108,21 @@
 }
 
 .digin-login-card {
-    min-width: 352px;
+    min-width: 600px;
     height: 450px;
     position: relative;
-    margin-top: 30px;
-    -moz-box-shadow: 1px 1px 8px 0px #ccc;
-    -webkit-box-shadow: 1px 1px 8px 0px #ccc;
-    box-shadow: 1px 1px 8px 0px #ccc;
+    margin-top: calc(10vh);
 }
 
 .right-wrap {
-    /*border-radius: 10px;*/
+    height: 450px;
+    width: 100%;
+    background: #ffffff;
+    -moz-box-shadow: 1px 1px 8px 0px #ccc;
+    -webkit-box-shadow: 1px 1px 8px 0px #ccc;
+    box-shadow: 1px 1px 8px 0px #ccc;
+    border-radius: 10px;
     position: relative;
-
 }
 
 .digin-login-card .right-wrap .login-text-wrap {
@@ -129,13 +132,13 @@
 .login-text-wrap > h5 {
     font-family: 'Ek Mukta', sans-serif;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 35px;
     color: #01718d;
     -webkit-animation: slide 0.5s forwards;
     -webkit-animation-delay: 2s;
     animation: slide 0.5s forwards;
     animation-delay: 2s;
-    position: relative;
+    position: relative
 }
 
 .digin-lgn-wrap > .footer-wrap {
@@ -143,7 +146,7 @@
     padding-top: 8%;
     font-family: 'Ek Mukta', sans-serif;
     font-weight: 600;
-    color: #fff;
+    color: #44c5ae;
     margin-bottom: 20px;
 }
 
@@ -188,15 +191,14 @@
 }
 
 .login-bdy .disable:hover {
-    color: rgb(1, 113, 141);
-    background-color: #F5F5F5;
-    background-position: -100% 100%;
+    color: #fff;
+    background-color: #03a699;
+
 }
 
 .login-bdy .activeBtn:hover {
     color: rgba(255, 255, 255, 1);
-    background-color: #EC784B;
-    background-position: -100% 100%;
+    background-color: #03a699;
 }
 
 /* BUTTON CSS
@@ -205,20 +207,17 @@
 .login-bdy .login-btn {
     display: inline-block;
     text-decoration: none;
-    font: normal normal 200 1.3em 'Ek Mukta';
-    brackground-color: transparent;
-    /*border-radius: 100px;*/
-    padding: .3em 3em;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    padding: 7px 20px 7px 20px;
     margin: 5px;
+    font-size: 15px;
     background-size: 200% 100%;
     transition: background-position .3s cubic-bezier(0.19, 1, 0.22, 1) .1s, color .5s ease 0s, background-color .5s ease;
     color: #01718D;
-    border: 1px solid #01718D;
+    border: 2px solid #01718D;
     background-image: linear-gradient(to right, transparent 50%, #F5F5F5 50%);
-}
-
-.login-btn-font {
-    font: normal normal 200 1.3em 'Ek Mukta';
+    border-radius: 29px;
 }
 
 .wrapper {
@@ -339,7 +338,10 @@
     background-image: none !important;
     border: 2px solid #F5F5F5;
     border-radius: 7px;
+}
 
+.full-name > div > input {
+    width: 140px !important;
 }
 
 .txt-box-login.error > div > input,
@@ -373,7 +375,7 @@
 .namespace > div > input:focus,
 .full-name > div > input:focus,
 .form-group > div > input:focus {
-    border: 2px solid #EC784B !important;
+    border: 2px solid #03a699 !important;
 }
 
 .txt-box-login > div > input::-webkit-input-placeholder,
@@ -494,10 +496,6 @@
     width: 100px !important
 }
 
-.full-name > div > input {
-    width: 95% !important
-}
-
 .p-t-20 {
     padding-top: 20px;
 }
@@ -531,7 +529,7 @@
 .sign-in-link > a {
     color: #FFFBF9;
     border-radius: 15px;
-    border: 2px solid #F06F2D;
+    border: 2px solid #fff;
 }
 
 .welcome-link > a {
@@ -637,6 +635,15 @@
 
 .helpful {
     margin-top: 60px;
+}
+
+.login-loading {
+    width: 100%;
+    text-align: center;
+}
+
+.login-loading > i {
+    color: #2B87C4;
 }
 
 

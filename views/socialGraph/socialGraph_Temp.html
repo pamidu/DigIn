@@ -1,125 +1,123 @@
 <div ng-init="fbPageInit()" data-ng-controller="socialGraphCtrl">
 
-    <!-- search fb page -->
+    <!-- #show current pages-->
     <div id="fbPageSearch" ng-class="{'block' : activePageSearch,'hidden' : !activePageSearch}">
         <md-content class="md-default-theme overflow-none ">
             <div class="md-content__body">
                 <div class="home-mini-card">
                     <div class="row m-t-0">
                         <div class="col-md-1">
-                                <span class="circle-icon md bg-primary">
-                                  <md-icon class="color-white ng-isolate-scope md-default-theme
-                                  fa fa-facebook fa-3x"
-                                           aria-hidden="true">
-                                  </md-icon>
-                                </span>
+                            <div class="main-fb-logo">
+                                <img src="styles/css/images/fb_65x65.png"/>
+                            </div>
                         </div>
                         <div class="col-md-5">
                             <div class="graph-main-header-text">
                                 <!-- social page name-->
-                                <h2 class="color-primary graph-h1">
+                                <h2 class="fb-main-header">
                                     My Pages and Groups
                                 </h2>
-                                <md-button class="md-raised"
-                                           ng-click="loginWithFb()"
-                                >{{lblPageLogin}}
-                                </md-button>
+                                <a href="javascript:void(0);" ng-click="loginWithFb()">
+                                    {{lblPageLogin}}
+                                </a>
                             </div>
                         </div>
-                        <div  class="col-md-6">
+                        <div class="col-md-6">
                             <!-- posts -->
                             <div class="row">
-                            <md-input-container layout="column" class="col-md-6">
-                                <label>Search page or group</label>
-                                <input ng-enter="searchPage(searchPage.query)" ng-model="searchPage.query">
-                            </md-input-container>
-                             <div class="col-md-6">
-                              <md-button class="md-raised" ng-click="searchPage(searchPage.query)"
-                                >Search!
-                                </md-button>
+                                <!--<md-input-container layout="column" class="col-md-6">-->
+                                <!--<label>Search page or group</label>-->
+                                <!--&lt;!&ndash;<input ng-enter="searchPage(searchPage.query)" ng-model="searchPage.query">&ndash;&gt;-->
+                                <!--</md-input-container>-->
+
+                                <div class="form-inline fb-search-wrap p-t-20">
+                                    <input type="text" class="form-control min-width-350"
+                                           placeholder="search page or group..">
+                                    <!--<md-button class="md-raised" ng-click="searchPage(searchPage.query)"-->
+                                    <!--&gt;Search!-->
+
                                 </div>
-                                </div>
-                               
+
+                            </div>
+
                         </div>
                     </div>
                 </div>
 
             </div>
         </md-content>
-        <div class="fb-page-search-wrap">
-            <!-- <md-card ng-show="preloader" class="md-default-theme message-card" flex>
-                                        <div class="md-content__body" layout-margin>
-                                            <section class="home-mini-card">
-                                                <div>
-                                                    <div class="col-md-8" layout="row" layout-align="center center">
-                                                        <h4 ng-show="errorMessage" class=" graph-h5 color-accent error-message">
-                                                           Unexpected Error Occured. Please Try Again!
-                                                        </h4>
-                                                        <img class="social-graph-preloader" 
-                                                        ng-show="preloader && !errorMessage" src="styles/css/images/preloaders/facebook.gif" alt="Washed Out">
-                                                    </div>
-                                                </div>
-                                            </section>
-                                        </div>
-            </md-card> -->
-            <md-content class="md-default-theme overflow-none ">
-                <div layout="column" class="md-content__body">
-<!--
-                    <div class="fb-pages-loading" data-ng-if="isPageLoading">
-                        <md-progress-circular class="md-raised md-hue-1" md-mode="indeterminate">
-                        </md-progress-circular>
+
+
+        <div class="fb-page-search-wrap" ng-if="fbPages.length != 0">
+            <!-- #profile widget -->
+            <div class="col-lg-12">
+                <div class="col-lg-3">
+                    <div class="row">
+                        <div class="fb-profile">
+                            <div class="profile-details">
+                                <h2>Profile</h2>
+                                <div class="profile-image">
+                                    <img ng-src="{{profileImage.data.url}}">
+                                </div>
+                                <div class="profile-name">
+                                    {{profileDetails.name}}
+                                </div>
+                                <div class="profile-email">
+                                    {{profileDetails.email}}
+                                </div>
+                                <div class="profile-verified" ng-if="profileDetails.verified==true">
+                                    verified
+                                    <i class="fa fa-check-circle-o"></i>
+                                </div>
+
+                                <div class="profile-go-link">
+                                    <a ng-href="{{profileDetails.link}}" target="_blank">
+                                        go to profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
--->
-                    <md-card>
-                        <md-card-content>
-                            <h2 class="md-title">My Pages</h2>
-                            <md-list-item class="md-3-line md-no-proxy ng-scope" data-ng-repeat="page in fbPages"
-                                      role="listitem">
-                                <button class="md-fab   md-button
-                                    md-default-theme md-fab-md social-graph-fab" ng-click="viewPageDetails(page)"
-                                         aria-label="button">
-                                    <i class="ion-social-facebook-outline ion-30"></i>
-                                </button>
-
-                                <div class="md-list-item-text text-right">
-                                    <h3 class="graph-h2">{{page.name}}</h3>
-                                </div>
-                                <!-- ngIf: !$last -->
-                                <md-divider md-inset="" ng-if="!$last" class="ng-scope md-default-theme"></md-divider>
-                                <!-- end ngIf: !$last -->
-                            </md-list-item>
-                        </md-card-content>
-                    </md-card>
-                    
-                    <md-card ng-if="searchedFbPages.length > 0">
-                        <md-card-content>
-                            <h2 class="md-title">Searched Results</h2>
-                            <md-list-item class="md-3-line md-no-proxy ng-scope" data-ng-repeat="page in searchedFbPages"
-                                      role="listitem">
-                                <button class="md-fab   md-button
-                                    md-default-theme md-fab-md social-graph-fab" ng-click="viewPageDetails(page)"
-                                         aria-label="button">
-                                    <i class="ion-social-facebook-outline ion-30"></i>
-                                </button>
-
-                                <div class="md-list-item-text text-right">
-                                    <h3 class="graph-h2">{{page.name}}</h3>
-                                </div>
-                                <!-- ngIf: !$last -->
-                                <md-divider md-inset="" ng-if="!$last" class="ng-scope md-default-theme"></md-divider>
-                                <!-- end ngIf: !$last -->
-                            </md-list-item>
-                        </md-card-content>
-                    </md-card>
 
                 </div>
-            </md-content>
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-3 max-width-250 m-r-25" ng-repeat="page in fbPages">
+                            <div class="page-view-wrap">
+                                <div class="page-top">
+                                    <div class="page-image round-img">
+                                        <page-image id="{{page.id}}"></page-image>
+                                    </div>
+                                    <h1>{{page.name}}</h1>
+                                </div>
+                                <!--<i class="fa fa-"-->
 
+                                <div class="fb-page-btn-wrap">
+                                    <div class="fb-page-details">
+                                        <div class="category">
+                                            <small>category
+                                                <h5> {{page.category}}</h5>
+                                            </small>
+
+                                        </div>
+                                    </div>
+                                    <div class="fb-btn-bottom">
+                                        <span class="btn-small fb-btn "
+                                              ng-click="viewPageDetails(page)">View</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <!-- end -->
 
     <!-- graph -->
-    <div ng-class="{'block' : !activePageSearch,'hidden' : activePageSearch}" id="fbGraph">
+    <div ng-class="{'block' : !activePageSearch,'hidden' : activePageSearch}"
+         id="fbGraph">
         <!-- Top Header -->
         <md-content class="md-default-theme overflow-none ">
             <div class="md-content__body">
@@ -146,71 +144,52 @@
                             </div>
 
                             <div class="page-search-warp">
-<!--
-                                <div class="p-l-20 ">
-                                    <a href="javascript:void(0)" data-ng-click="onFilterData()" class="inline-block">
-                                        <small class="small-text">search page data</small>
-                                        <i class="ti-search pull-right"></i>
-                                    </a>
-                                </div>
--->
-<!--
-                                <div layout="row">
-                                   <div>
-                                    <md-date-picker model="sinceDate" label="Since" dialog-md-theme="datePickerTheme"/>
-                                   </div>
-                                   <div>
-                                    <md-date-picker model="untilDate" label="Until" dialog-md-theme="datePickerTheme"/>
-                                   </div>
-                                    <md-button class="md-primary" ng-click="changeTimeRange()">
-                                       <i class="ti-search pull-right"></i>
-                                    </md-button>
-                                </div>
--->
                             </div>
                         </div>
                         <div class="col-md-6">
-                           <div layout="row">
-                                   <div>
-                                    <md-date-picker model="sinceDate" label="Since" dialog-md-theme="datePickerTheme"/>
-                                   </div>
-                                   <div>
-                                    <md-date-picker model="untilDate" label="Until" dialog-md-theme="datePickerTheme"/>
-                                   </div>
-                                    <md-button class="md-primary" ng-click="changeTimeRange()">
-                                       <i class="ti-search pull-right"></i>
-                                    </md-button>
+                            <div layout="row">
+                                <div>
+                                    <md-date-picker model="sinceDate" label="Since"
+                                                    dialog-md-theme="datePickerTheme"/>
                                 </div>
+                                <div>
+                                    <md-date-picker model="untilDate" label="Until"
+                                                    dialog-md-theme="datePickerTheme"/>
+                                </div>
+                                <md-button class="md-primary" ng-click="changeTimeRange()">
+                                    <i class="ti-search pull-right"></i>
+                                </md-button>
+                            </div>
                             <!-- posts -->
-                        <!--    <ul class="list-justified text-center">
-                                <li>
-                                    <p class="size-h2 text-color-100 graph-h1">
-                                        {{postCount}}
-                                    </p>
+                            <!--    <ul class="list-justified text-center">
+                                    <li>
+                                        <p class="size-h2 text-color-100 graph-h1">
+                                            {{postCount}}
+                                        </p>
 
-                                    <p class="text-muted graph-h5">Posts</p>
-                                </li>
-                                <!-- commenters -->
-                          <!--      <li>
-                                    <p class="size-h2 text-color-100 graph-h1 font-weight-500">
-                                        {{totalViews}}
-                                    </p>
+                                        <p class="text-muted graph-h5">Posts</p>
+                                    </li>
+                                    <!-- commenters -->
+                            <!--      <li>
+                                      <p class="size-h2 text-color-100 graph-h1 font-weight-500">
+                                          {{totalViews}}
+                                      </p>
 
-                                    <p class="text-muted graph-h5 font-weight-500">Views</p>
-                                </li>
-                                <!-- likes-->
-                          <!--      <li class="last-icon">
-                                    <p class="size-h2 text-color-100 graph-h1 font-weight-500">
-                                        {{totalLikes}}
-                                    </p>
+                                      <p class="text-muted graph-h5 font-weight-500">Views</p>
+                                  </li>
+                                  <!-- likes-->
+                            <!--      <li class="last-icon">
+                                      <p class="size-h2 text-color-100 graph-h1 font-weight-500">
+                                          {{totalLikes}}
+                                      </p>
 
-                                    <p class="text-muted graph-h5">Likes</p>
-                                </li>
-                            </ul> -->
+                                      <p class="text-muted graph-h5">Likes</p>
+                                  </li>
+                              </ul> -->
                         </div>
                         <div class="col-md-1">
                             <div class="back p-l-20" ng-click="goBack()">
-                            <i class="ti-arrow-left fnt-s-24"></i>
+                                <i class="ti-arrow-left fnt-s-24"></i>
                             </div>
                         </div>
                     </div>
@@ -218,38 +197,141 @@
 
             </div>
         </md-content>
-
         <div class="graph-main-wrap">
             <!-- body chart wrap -->
             <div class="graph-body">
                 <div>
-                  <md-card class="md-default-theme overflow-none fb-graph-bg">
-                            <div class="graph-fb-wrap">
-                                <div class="text-left col-sm-6">
-                                    <h2 class="graph-h2">
-                                        Sentiment Analysis
-                                        <div class="md-card-toolbar-actions">
-                                            <i class="md-icon-1 ti-view-list-alt"
-                                               ng-click="onClickViewTable('sentiment')"
-                                            ></i>
-                                        </div>
-                                    </h2>
-                                </div>
-                                <div class="graph-chart-body">
-                                    <highchart id="fbChart" config="sentimentConfig"></highchart>
-                                </div>
+                    <md-card class="md-default-theme overflow-none fb-sentiment box-shadow-none border-radius10 ">
+                        <div class="graph-fb-wrap">
+                            <div class="text-left col-sm-6">
+                                <h2 class="graph-h2">
+                                    Sentiment Analysis
+                                    <div class="md-card-toolbar-actions">
+                                        <i class="md-icon-1 ti-view-list-alt icon-color-green "
+                                           ng-click="onClickViewTable('sentiment')"
+                                        ></i>
+                                    </div>
+                                </h2>
                             </div>
-                        </md-card>
+                            <div class="graph-chart-body">
+                                <highchart config="sentimentConfig"></highchart>
+                            </div>
+                        </div>
+                    </md-card>
+                </div>
+
+                <!--wrap post details -->
+                <div class="post-wrap">
+
+                    <div layout="row" layout-wrap>
+                        <div flex>
+                            <div layout="row" layout-align="center center" layout-wrap>
+                                <!-- Likes -->
+                                <div flex="20">
+                                    <md-card class="md-default-theme box-shadow-none widget-h130 widget-bg-blue900">
+                                        <div class="md-content__body">
+                                            <section class="home-mini-card">
+                                                <div class="fb-like-details">
+                                                    <h2 class=" graph-h1 color-accent">
+                                                        {{totalLikes}}
+                                                    </h2>
+                                                    <p class="font-color-100 ">
+                                                        likes
+                                                    </p>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </md-card>
+                                </div>
+
+                                <div flex="20">
+                                    <!-- shares -->
+                                    <md-card class="md-default-theme box-shadow-none widget-h130 widget-bg-blue600">
+                                        <div class="md-content__body">
+                                            <section class="home-mini-card">
+                                                <div class="fb-view">
+                                                    <h2 class=" graph-h1 color-accent">
+                                                        {{totalViews}}
+                                                    </h2>
+                                                    <p class="font-color-100">
+                                                        Views
+                                                    </p>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </md-card>
+                                </div>
+
+                                <div flex="20">
+                                    <!-- comments -->
+                                    <md-card class="md-default-theme box-shadow-none widget-h130 widget-bg-yellow600">
+                                        <div class="md-content__body">
+                                            <section class="home-mini-card">
+                                                <div class="fb-post">
+                                                    <h2 class=" graph-h1 color-accent">
+                                                        {{postCount}}
+                                                    </h2>
+                                                    <p class="font-color-100">
+                                                        Posts
+                                                    </p>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </md-card>
+                                </div>
+
+                                <div flex="20">
+                                    <!-- average engagement per week -->
+                                    <md-card class="md-default-theme box-shadow-none widget-h130 widget-bg-blue400">
+                                        <div class="md-content__body">
+                                            <section class="home-mini-card">
+                                                <div class="average-engamnt">
+                                                    <h2 class=" graph-h1 color-accent">
+                                                        {{totalEngagement/engageLikes| number:2}}
+                                                    </h2>
+
+                                                    <p class="font-color-100">
+                                                        Average Engagement Per Week
+                                                    </p>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </md-card>
+                                </div>
+
+                                <div flex="20">
+                                    <!-- total engagement this week -->
+                                    <md-card class="md-default-theme box-shadow-none widget-h130 widget-bg-gray400">
+                                        <div class="md-content__body">
+                                            <section class="home-mini-card">
+                                                <div class="total-engment">
+                                                    <h2 class=" graph-h1 color-accent">
+                                                        {{totalEngagement}}
+                                                    </h2>
+                                                    <p class="font-color-100">
+                                                        Total Engagement This Week
+                                                    </p>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </md-card>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- Post types -->
+
+                    </div>
                 </div>
                 <div layout="row" layout-wrap>
                     <div flex="60">
-                        <md-card class="md-default-theme overflow-none fb-graph-bg">
+                        <md-card class="md-default-theme overflow-none  box-shadow-none border-radius10">
                             <div class="graph-fb-wrap">
                                 <div class="text-left col-sm-6">
                                     <h2 class="graph-h2">
                                         Realtime performance feed
                                         <div class="md-card-toolbar-actions">
-                                            <i class="md-icon-1 ti-view-list-alt"
+                                            <i class="md-icon-1 ti-view-list-alt icon-color-yellow"
                                                ng-click="onClickViewTable('realtime')"
                                             ></i>
                                         </div>
@@ -262,29 +344,29 @@
                         </md-card>
                     </div>
                     <div flex="40">
-                        <md-card class="graph-map overflow-none fb-graph-bg">
+                        <md-card class="graph-map overflow-none  box-shadow-none">
                             <div class="graph-fb-wrap wrap-overflow ">
                                 <div class="graph-map-content">
                                     <digin-map map-data="{{arrAdds}}"></digin-map>
+                                    <div class="top-layer-map">
+                                        <h2 class="graph-h2">
+                                            Location
+                                            <div class="md-card-toolbar-actions">
+                                                <i class="md-icon-1 ti-view-list-alt "
+                                                   ng-click="onClickViewTable('map')"
+                                                ></i>
+                                            </div>
+                                        </h2>
+                                    </div>
                                 </div>
-                                <div class="text-left col-sm-6" layout-margin>
-                                    <h2 class="graph-h2">
-                                        Location
-                                        <div class="md-card-toolbar-actions">
-                                            <i class="md-icon-1 ti-view-list-alt"
-                                               ng-click="onClickViewTable('map')"
-                                            ></i>
-                                        </div>
-                                    </h2>
 
-                                </div>
                             </div>
                         </md-card>
                     </div>
                 </div>
                 <div layout="row" layout-wrap>
                     <div flex="100">
-                        <md-card class="md-default-theme overflow-none fb-graph-bg">
+                        <md-card class="md-default-theme overflow-none  box-shadow-none border-radius10">
                             <div class="graph-fb-wrap">
                                 <div class="text-left col-sm-6">
                                     <h2 class="graph-h2">
@@ -295,272 +377,190 @@
                             </div>
                         </md-card>
                     </div>
-                    
                 </div>
 
-                <!--wrap post details -->
-                <div class="post-wrap">
 
+                <div class="post-wrap">
                     <div layout="row" layout-wrap>
                         <div flex>
                             <div layout="row" layout-align="center center" layout-wrap>
-                                <!-- Likes -->
-                                <div flex="20">
-                                    <md-card class="md-default-theme">
-                                        <div class="md-content__body">
-                                            <section class="home-mini-card">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                    <span class="circle-icon md  bg-like m-l-10">
-                                                  <i class="color-white  ti-thumb-up"
-                                                     aria-hidden="true">
-                                                  </i>
-                                                 </span>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <h2 class=" graph-h1 color-accent">
-                                                            {{totalLikes}}
-                                                        </h2>
-
-                                                        <p class="font-color-100">
-                                                            likes
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </section>
+                                <div flex="90">
+                                    <md-card class="md-default-theme box-shadow-none">
+                                        <div class="md-content__body" layout-align="center center">
+                                            <digin-word-cloud words="wordArray"></digin-word-cloud>
                                         </div>
                                     </md-card>
                                 </div>
-
-                                <div flex="20">
-                                    <!-- shares -->
-                                    <md-card class="md-default-theme">
-                                        <div class="md-content__body">
-                                            <section class="home-mini-card">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                    <span class="circle-icon md  bg-like m-l-10">
-                                                  <i class="color-white ti-eye"
-                                                     aria-hidden="true">
-                                                  </i>
-                                                 </span>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <h2 class=" graph-h1 color-accent">
-                                                            {{totalViews}}
-                                                        </h2>
-
-                                                        <p class="font-color-100">
-                                                            Views
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </md-card>
-                                </div>
-
-                                <div flex="20">
-                                    <!-- comments -->
-                                    <md-card class="md-default-theme">
-                                        <div class="md-content__body">
-                                            <section class="home-mini-card">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                    <span class="circle-icon md  bg-like m-l-10">
-                                                  <i class="color-white ti-comment"
-                                                     aria-hidden="true">
-                                                  </i>
-                                                 </span>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <h2 class=" graph-h1 color-accent">
-                                                             {{postCount}}
-                                                        </h2>
-
-                                                        <p class="font-color-100">
-                                                            Posts
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </md-card>
-                                </div>
-
-                                <div flex="20">
-                                    <!-- average engagement per week -->
-                                    <md-card class="md-default-theme">
-                                        <div class="md-content__body">
-                                            <section class="home-mini-card">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                    <span class="circle-icon md  bg-like m-l-10">
-                                                  <i class="color-white ti-comment"
-                                                     aria-hidden="true">
-                                                  </i>
-                                                 </span>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <h2 class=" graph-h1 color-accent">
-                                                             {{totalEngagement/engageLikes| number:2}}
-                                                        </h2>
-
-                                                        <p class="font-color-100">
-                                                            Average Engagement Per Week
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </md-card>
-                                </div>
-
-                                <div flex="20">
-                                    <!-- total engagement this week -->
-                                    <md-card class="md-default-theme">
-                                        <div class="md-content__body">
-                                            <section class="home-mini-card">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                    <span class="circle-icon md  bg-like m-l-10">
-                                                  <i class="color-white ti-comment"
-                                                     aria-hidden="true">
-                                                  </i>
-                                                 </span>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <h2 class=" graph-h1 color-accent">
-                                                             {{totalEngagement}}
-                                                        </h2>
-
-                                                        <p class="font-color-100">
-                                                            Total Engagement This Week
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </md-card>
-                                </div>
-
-                           </div>
+                            </div>
                         </div>
-                        <!-- Post types -->
-                         
                     </div>
                 </div>
-                <div class="post-wrap">
-                   <div layout="row" layout-wrap>
-                       <div flex>
-                           <div layout="row" layout-align="center center" layout-wrap>
-                               <div flex="90">
-                                   <md-card class="md-default-theme">
-                                       <div class="md-content__body" layout-align="center center">
-                                          <digin-word-cloud words="wordArray"></digin-word-cloud>
-                                       </div>
-                                   </md-card>
-                               </div>
-                           </div>
-                       </div>        
-                   </div>
-               </div>   
             </div>
 
-            <!-- Posts details-->
             <div class="fb-posts-wrap">
-                <div layout="row" layout-wrap>
-                    <div flex>
-                        <md-card class="md-default-theme overflow-none">
-                            <div class="graph-fb-wrap-post">
-                                <div class="text-left col-sm-6">
-                                    <h2 class="graph-h2">
-                                        {{ chooseView.Post }}
-                                    </h2>
+                <div class="fb-post-header">
+                    <div layout="row" class="fb-tbl-header">
+                        <div flex="10">
+                            SENTIMENT
+                        </div>
+                        <div flex="20">
+                            CONTENT
+                        </div>
+                        <div flex="10">
+                            LIKES
+                        </div>
+                        <div flex="10">
+                            SHARES
+                        </div>
+                        <div flex="10">
+                            COMMENTS
+                        </div>
+                        <div flex="10">
+                            ENGAGEMENT
+                        </div>
+                        <div flex="20">
+                            CREATED
+                        </div>
+                        <div flex="10">
+                            SENTIMENT
+                        </div>
+                    </div>
+                    <div class="fb-post-body">
+                        <md-card class="md-default-theme overflow-none" data-ng-repeat="post in postsObj"
+                                 ng-click="viewSinglePost(post)">
+                            <div layout="row">
+                                <div flex="10">
+                                    <a ng-href=" {{post.url}}">
+                                        <i class="fa fa-link"></i>
+                                    </a>
                                 </div>
-                                <!-- view posts -->
-                                <div class="post-view" data-ng-if="viewLayout.isPost">
-                                    <table class="table table-border-none">
-                                        <thead>
-                                        <tr class="tbl-border-bottom">
-                                            <td>
-                                            </td>
-                                            <td class="tbl-width-450">
-                                                Content
-                                            </td>
-                                            <td>
-                                                Likes
-                                            </td>
-                                            <td>
-                                                Shares
-                                            </td>
-                                            <td>
-                                                Comments
-                                            </td>
-                                            <td>
-                                                Engagement
-                                            </td>
-                                            <td>
-                                                Created
-                                            </td>
-                                            <td>
-                                                Sentiment
-                                            </td>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr data-ng-repeat="post in postsObj" ng-click="viewSinglePost(post)">
-                                            <td>
-                                                <div data-ng-if="post.image_url==null">
-                                                    <i class="fa fa-link"></i>
-                                                </div>
-                                                <div data-ng-if="post.image_url!=null">
-                                                    <i class="fa fa-camera"></i>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <code class="post-message">{{post.message}}</code>
-
-                                                <div class="post-image">
-                                                    <div data-ng-if="post.image_url==null">
-                                                        {{post.url}}
-                                                    </div>
-                                                    <img class="post-image" style="width:80px;height:80px;" data-ng-src="{{post.picture}}">
-                                                </div>
-                                                <md-tooltip md-direction="bottom">{{post.message}}</md-tooltip>
-                                            </td>
-                                            <td>
-                                               <code>{{post.likes}}</code>
-                                            </td>
-                                            <td>
-                                                <code>{{post.shares}}</code>
-                                            </td>
-                                            <td>
-                                                <code>{{post.comments}}</code>
-                                            </td>
-                                            <td>
-                                                <code>{{post.comments+post.shares}}</code>
-                                            </td>
-                                            <td>
-                                                <code ng-bind="post.created_time | date:'dd MMM yyyy'">{{post.created_time}}</code>
-                                            </td>
-                                            <td>
-                                               <div layout="column" layout-align="center center">
-                                                 <img class="sentiment-emoticon" ng-src="{{post.sentiment.ico}}">
-                                                 <br>
-                                                 <div>{{post.sentiment.pol}}</div>  
-                                               </div>
-                                                
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                <div flex="20">
+                                    <img class="post-image" style="width:80px;height:80px;"
+                                         data-ng-src="{{post.picture}}">
+                                </div>
+                                <div flex="10">
+                                    <p>{{post.likes}}</p>
+                                </div>
+                                <div flex="10">
+                                    {{post.shares}}
+                                </div>
+                                <div flex="10">
+                                    {{post.comments}}
+                                </div>
+                                <div flex="10">
+                                    {{post.comments+post.shares}}
+                                </div>
+                                <div flex="20">
+                                    <p ng-bind="post.created_time | date:'dd MMM yyyy'">
+                                        {{post.created_time}}</p>
+                                </div>
+                                <div flex="10">
+                                    <div layout="column" layout-align="center center">
+                                        <img class="sentiment-emoticon" ng-src="{{post.sentiment.ico}}">
+                                        <div>{{post.sentiment.pol}}</div>
+                                    </div>
                                 </div>
                             </div>
                         </md-card>
                     </div>
                 </div>
             </div>
+
+            <!-- Posts details-->
+            <!--<div class="fb-posts-wrap">-->
+            <!--<div layout="row" layout-wrap>-->
+            <!--<div flex>-->
+            <!--<md-card class="md-default-theme overflow-none box-shadow-none">-->
+            <!--<div class="graph-fb-wrap-post">-->
+            <!--<div class="text-left col-sm-6">-->
+            <!--<h2 class="graph-h2">-->
+            <!--{{ chooseView.Post }}-->
+            <!--</h2>-->
+            <!--</div>-->
+            <!--&lt;!&ndash; view posts &ndash;&gt;-->
+            <!--<div class="post-view" data-ng-if="viewLayout.isPost">-->
+            <!--<table class="table table-border-none">-->
+            <!--<thead>-->
+            <!--<tr class="tbl-border-bottom">-->
+            <!--<td>-->
+            <!--</td>-->
+            <!--<td class="tbl-width-450">-->
+            <!--Content-->
+            <!--</td>-->
+            <!--<td>-->
+            <!--Likes-->
+            <!--</td>-->
+            <!--<td>-->
+            <!--Shares-->
+            <!--</td>-->
+            <!--<td>-->
+            <!--Comments-->
+            <!--</td>-->
+            <!--<td>-->
+            <!--Engagement-->
+            <!--</td>-->
+            <!--<td>-->
+            <!--Created-->
+            <!--</td>-->
+            <!--<td>-->
+            <!--Sentiment-->
+            <!--</td>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr data-ng-repeat="post in postsObj" ng-click="viewSinglePost(post)">-->
+            <!--<td>-->
+            <!--<div data-ng-if="post.image_url==null">-->
+            <!--<i class="fa fa-link"></i>-->
+            <!--</div>-->
+            <!--<div data-ng-if="post.image_url!=null">-->
+            <!--<i class="fa fa-camera"></i>-->
+            <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+            <!--<p class="post-message">{{post.message}}</p>-->
+
+            <!--<div class="post-image">-->
+            <!--<div data-ng-if="post.image_url==null">-->
+            <!--{{post.url}}-->
+            <!--</div>-->
+            <!--<img class="post-image" style="width:80px;height:80px;"-->
+            <!--data-ng-src="{{post.picture}}">-->
+            <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+            <!--<p>{{post.likes}}</p>-->
+            <!--</td>-->
+            <!--<td>-->
+            <!--<p>{{post.shares}}</p>-->
+            <!--</td>-->
+            <!--<td>-->
+            <!--<p>{{post.comments}}</p>-->
+            <!--</td>-->
+            <!--<td>-->
+            <!--<p>{{post.comments+post.shares}}</p>-->
+            <!--</td>-->
+            <!--<td>-->
+            <!--<p ng-bind="post.created_time | date:'dd MMM yyyy'">-->
+            <!--{{post.created_time}}</p>-->
+            <!--</td>-->
+            <!--<td>-->
+            <!--<div layout="column" layout-align="center center">-->
+            <!--<img class="sentiment-emoticon" ng-src="{{post.sentiment.ico}}">-->
+            <!--<br>-->
+            <!--<div>{{post.sentiment.pol}}</div>-->
+            <!--</div>-->
+
+            <!--</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+            <!--</table>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</md-card>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
 
 
         </div>

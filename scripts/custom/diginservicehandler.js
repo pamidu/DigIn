@@ -60,9 +60,9 @@
                     var wSrc = "scripts/webworkers/webWorker.js";
                     if (database == "BigQuery") {
                         if (!gb) {
-                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1);
+                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}";
                         } else {
-                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + gb + "%27:1}&id=" + Math.floor((Math.random() * 10) + 1);
+                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + gb + "%27:1}" ;
                         }
                     }
                     if (database == "MSSQL") {
@@ -119,7 +119,7 @@
                      { 
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "hierarchicalsummary?h=" + h + "&tablename=" + tbl + "&id=19&db=" + database);
+                        }, $diginurls.diginengine + "hierarchicalsummary?h=" + h + "&tablename=" + tbl + "&db=" + database);
 
                     }
                 },

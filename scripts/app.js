@@ -13,6 +13,7 @@ var routerApp = angular.module('DuoDiginRt', [
     'directivelibrary',
     'ngMdIcons',
     'nvd3',
+    'FBAngular',
     'gridster',
     'ui.calendar',
     'mgcrea.ngStrap',

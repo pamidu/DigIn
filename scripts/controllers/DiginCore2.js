@@ -281,7 +281,11 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                                         widgetObject = {   
                                             "widgetID": null,
                                             "widgetName": widgets[j].widgetName,
-                                            "widgetData": widgets[j].widgetData
+                                            "widgetData": widgets[j].widgetData,
+                                            sizeX: widgets[j].sizeX,
+                                            sizeY: widgets[j].sizeY,
+                                            row: 0,
+                                            col: 0                                            
                                         }
                                     }
                                     else{
@@ -289,7 +293,11 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                                         widgetObject = {   
                                             "widgetID": widgets[j].widgetID,
                                             "widgetName": widgets[j].widgetName,
-                                            "widgetData": widgets[j].widgetData
+                                            "widgetData": widgets[j].widgetData,
+                                            sizeX: widgets[j].sizeX,
+                                            sizeY: widgets[j].sizeY,
+                                            row: 0,
+                                            col: 0
                                         }
                                     }
                                     widgetsArray.push(widgetObject); 
@@ -360,6 +368,7 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                     
                 $http({
                     method: 'POST',
+                    
                     url: Digin_Engine_API+'store_component',
                     data: angular.toJson(dashboardObject),
                     headers: {  
@@ -905,7 +914,11 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
                 var widgetObj = {   
                                         "widgetID": "temp" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
                                         "widgetName": $scope.currWidget.widName,
-                                        "widgetData": $scope.currWidget
+                                        "widgetData": $scope.currWidget,
+                                        sizeX: 8,
+                                        sizeY: 6,
+                                        row: 0,
+                                        col: 0
                                 }
 
                 $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.push(widgetObj);

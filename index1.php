@@ -305,7 +305,8 @@
 <!-- filesaver -->
 <script type="text/javascript" src="bower_components/FileSaver/FileSaver.js"></script>
 <!-- zeroclipboard -->
-
+<script type="text/javascript"
+        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/98887/angular-fullscreen.js"></script>
 <script type="text/javascript" src="bower_components/angular-strap/dist/angular-strap.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-ui/build/angular-ui.min.js"></script>
 <script type="text/javascript"

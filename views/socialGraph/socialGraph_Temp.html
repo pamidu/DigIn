@@ -66,7 +66,7 @@
 
                                 <div class="profile-go-link">
                                     <a ng-href="{{profileDetails.link}}" target="_blank">
-                                        go to profile
+                                        Go to profile
                                     </a>
                                 </div>
                             </div>
@@ -104,7 +104,22 @@
                         </div>
                     </div>
                 </div>
-                 <div class="col-lg-9">
+                 
+                
+            
+            </div>
+              <div class="col-lg-12">
+                <div class="col-lg-3">
+                    <div class="row">
+                        <div class="fb-profile">
+                            <div class="profile-details">
+                                <h2>Public pages</h2>                             
+                            </div>
+                        </div>
+                    </div>
+
+                </d
+                      <div class="col-lg-9">
                     <div class="row">
                         <div class="col-lg-3 max-width-250 m-r-25" ng-repeat="page in searchedFbPages">
                             <div class="page-view-wrap">
@@ -134,6 +149,9 @@
                         </div>
                     </div>
                 </div>
+                 
+                
+            
             </div>
         </div>
     </div>
@@ -167,8 +185,7 @@
                                 </a>
                             </div>
 
-                            <div class="page-search-warp">
-                            </div>
+                         
                         </div>
                         <div class="col-md-6">
                             <div layout="row">
@@ -224,25 +241,7 @@
         <div class="graph-main-wrap">
             <!-- body chart wrap -->
             <div class="graph-body">
-                <div>
-                    <md-card class="md-default-theme overflow-none fb-sentiment box-shadow-none border-radius10 ">
-                        <div class="graph-fb-wrap">
-                            <div class="text-left col-sm-6">
-                                <h2 class="graph-h2">
-                                    Sentiment Analysis
-                                    <div class="md-card-toolbar-actions">
-                                        <i class="md-icon-1 ti-view-list-alt icon-color-green "
-                                           ng-click="onClickViewTable('sentiment')"
-                                        ></i>
-                                    </div>
-                                </h2>
-                            </div>
-                            <div class="graph-chart-body">
-                                <highchart config="sentimentConfig"></highchart>
-                            </div>
-                        </div>
-                    </md-card>
-                </div>
+               
 
                 <!--wrap post details -->
                 <div class="post-wrap">
@@ -347,6 +346,7 @@
 
                     </div>
                 </div>
+
                 <div layout="row" layout-wrap>
                     <div flex="60">
                         <md-card class="md-default-theme overflow-none  box-shadow-none border-radius10">
@@ -387,6 +387,25 @@
                             </div>
                         </md-card>
                     </div>
+                </div>
+                 <div>
+                    <md-card class="md-default-theme overflow-none fb-sentiment box-shadow-none border-radius10 ">
+                        <div class="graph-fb-wrap">
+                            <div class="text-left col-sm-6">
+                                <h2 class="graph-h2">
+                                    Sentiment Analysis
+                                    <div class="md-card-toolbar-actions">
+                                        <i class="md-icon-1 ti-view-list-alt icon-color-green "
+                                           ng-click="onClickViewTable('sentiment')"
+                                        ></i>
+                                    </div>
+                                </h2>
+                            </div>
+                            <div class="graph-chart-body">
+                                <highchart config="sentimentConfig"></highchart>
+                            </div>
+                        </div>
+                    </md-card>
                 </div>
                 <div layout="row" layout-wrap>
                     <div flex="100">

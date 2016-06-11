@@ -77,10 +77,10 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             minRows: 1, // minimum amount of rows to show if the grid is empty
             maxRows: 100, // maximum amount of rows in the grid
             defaultSizeX: 6, // default width of an item in columns
-            defaultSizeY: 20, // default height of an item in rows
+            defaultSizeY: 6, // default height of an item in rows
             minSizeX: 6, // minimum column width of an item
             maxSizeX: null, // maximum column width of an item
-            minSizeY: 20, // minumum row height of an item
+            minSizeY: 5, // minumum row height of an item
             maxSizeY: null, // maximum row height of an item
             saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
             draggable: {
@@ -90,15 +90,6 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 enabled: true,
                 handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw']
             }
-        };
-        // maps the item from customItems in the scope to the gridsterItem options
-        $scope.customItemMap = {
-            sizeX: 'item.size.x',
-            sizeY: 'item.size.y',
-            row: 'item.position[0]',
-            col: 'item.position[1]',
-            minSizeY: 'item.minSizeY',
-            maxSizeY: 'item.maxSizeY'
         };
 
         // if($rootScope.tempDashboard.length != 0)
@@ -300,6 +291,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     }
                 })
                 .then(function () {
+                    console.log($scope.widget);
                     $scope.widget.widgetData.highchartsNG.size.width = $scope.tempWidth;
                     $scope.widget.widgetData.highchartsNG.size.height = $scope.tempHeight;
                     //$mdDialog.hide();
@@ -428,7 +420,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                 }
                                 
                                 // Show the loading label
-                                chart.showLoading("Retrieving data for '" + clickedPoint.toLowerCase() + "' grouped by '" + nextLevel + "'");
+                                chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
                                 
                                 //aggregate method
                                 clientObj.getAggData(srcTbl, fields, function(res, status, query) {

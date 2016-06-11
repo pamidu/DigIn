@@ -86,3 +86,22 @@ routerApp.directive('diginMap', function($http) {
       }
    }
 });
+
+routerApp.directive("pageImage", function () {
+    return {
+        restrict: 'EA',
+        scope: {
+            id: "@"
+        },
+        template: "<img ng-src='{{cover}}' class='fb-page-img'/>",
+        link: function (scope, element, attributes) {
+            console.log(scope.id);
+            FB.api(scope.id + '/picture?width=150&height=150', function (response) {
+                if (response) {
+                    scope.cover = response.data.url;
+                }
+
+            });
+        }
+    }
+});

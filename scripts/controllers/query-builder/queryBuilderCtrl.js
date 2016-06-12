@@ -1,7 +1,7 @@
 // * Created by Damith on 2/12/2016.
 
 routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls) {
-    $rootScope.dashboard.deletions.widgetIDs = [];
+
     $scope.goDashboard = function() {
         $state.go('home.Dashboards');
     }
@@ -91,12 +91,17 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             }
         },
         title: {
-           text: '',
+            text: '',
 
 
 
 
-        }
+        },
+        series: [{
+
+            color: '#536DFE',
+
+        }]
 
 
 
@@ -455,8 +460,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/forecastSettings.html'
-            },
-             {
+            }, {
 
                 id: 'ct19',
                 icon: 'fa fa-line-chart',
@@ -467,8 +471,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
-            },
-            {
+            }, {
 
                 id: 'ct20',
                 icon: 'ti-panel',
@@ -1018,7 +1021,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     });
 
 
-                    $scope.highchartsNG.options =  {
+                    $scope.highchartsNG.options = {
                         chart: {
                             type: 'pie',
                             plotBackgroundColor: null,
@@ -1028,22 +1031,30 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         },
 
                         tooltip: {
-                           
+
                         },
 
                         plotOptions: {
-                             pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: true,
-                    color: '#000000',
-                    formatter: function() {
-                        return Highcharts.numberFormat(this.percentage, 2) + '% ' + this.point.name + '</b> | ' + Highcharts.numberFormat(this.y, 2);
-                    }
-                },
-                showInLegend: false
-            } 
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    color: '#000000',
+                                    formatter: function() {
+                                        return Highcharts.numberFormat(this.percentage, 2) + '% ' + this.point.name + '</b> | ' + Highcharts.numberFormat(this.y, 2);
+                                    }
+                                },
+                                showInLegend: false
+                            },
+                            series: {
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b> ({point.y:,.0f})',
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                                    softConnector: true
+                                }
+                            }
                         }
                     };
                     $scope.eventHndler.isLoadingChart = false;
@@ -1092,7 +1103,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
     $scope.forecast = {
         onInit: function(recon) {
-            $scope.highchartsNG =  $scope.initHighchartObj;
+            $scope.highchartsNG = $scope.initHighchartObj;
+            $scope.highchartsNG.
             $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
             delete $scope.highchartsNG.size;
         },
@@ -1142,7 +1154,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
     $scope.generateForecast = function(fObj) {
 
-          $scope.eventHndler.isLoadingChart = true;
+        $scope.eventHndler.isLoadingChart = true;
         $scope.client.getForcast(fObj, function(data, status) {
             var mainSerObj = [];
             if (status) {
@@ -1165,6 +1177,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 ]);
                             });
                             mainSerObj.push({
+
                                 name: key.target,
 
                                 data: serObj
@@ -1172,8 +1185,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     }
                 });
                 console.log(JSON.stringify(mainSerObj));
-
+               
                 $scope.highchartsNG = {};
+                $scope.highchartsNG['options'].title = {
+                    text: ''
+                },
+
                 $scope.highchartsNG['options'] = {
                     chart: {
                         zoomType: 'x'
@@ -1183,7 +1200,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 $scope.highchartsNG['xAxis'] = {
                     type: 'datetime'
                 };
-                 $scope.highchartsNG.series = mainSerObj;
+                $scope.highchartsNG.series = mainSerObj;
                 $scope.eventHndler.isLoadingChart = false;
             } else {
 
@@ -1259,7 +1276,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                     height: 367,
                                 }
                             },
-                            
+                            title: {
+                                text: '',
+                            },
+
+
 
                             xAxis: {
                                 categories: $scope.plotCategories,
@@ -1269,7 +1290,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             },
 
 
-                        
+
 
                             plotOptions: {
                                 boxplot: {
@@ -1483,7 +1504,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
 
             if (dataTypeFlag && $scope.sourceData.fAttArr.length == 0) {
-            $scope.eventHndler.isLoadingChart = true;
+                $scope.eventHndler.isLoadingChart = true;
 
                 $scope.histogramPlot = []
 
@@ -1926,40 +1947,46 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             $scope.highchartsNG = {};
             $scope.highchartsNG = {
                 options: {
-                         
-                        chart: {
-                            type: 'pie',
-                            plotBackgroundColor: null,
-                            plotBorderWidth: null,
-                            plotShadow: false
 
-                        },
-                        tooltip: {
-                            pointFormat: '{point.y}'
-                        },
+                    chart: {
+                        type: 'pie',
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false
 
-                        plotOptions: {
-                             pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: true,
-                    color: '#000000',
-                    formatter: function() {
-                        return Highcharts.numberFormat(this.percentage, 2) + '% ' + this.point.name + '</b> | ' + Highcharts.numberFormat(this.y, 2);
+                    },
+                    tooltip: {
+                        pointFormat: '{point.y}'
+                    },
+
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                color: '#000000',
+                                formatter: function() {
+                                    return Highcharts.numberFormat(this.percentage, 2) + '% ' + this.point.name + '</b> | ' + Highcharts.numberFormat(this.y, 2);
+                                }
+                            },
+                            series: {
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b> ({point.y:,.0f})',
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                                    softConnector: true
+                                }
+                            },
+                            showInLegend: false
+                        }
                     }
                 },
-                   
-            },
-                showInLegend: false
-            }
-                        }
-                                    },
                 title: {
                     text: ''
                 },
 
-                
+
                 legend: {
                     layout: 'vertical',
                     align: 'right',
@@ -2217,7 +2244,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 }
 
                                 // Show the loading label
-                                chart.showLoading("Retrieving data for '" +  clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
+                                chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
 
                                 //aggregate method
                                 clientObj.getAggData(srcTbl, fields, function(res, status, query) {

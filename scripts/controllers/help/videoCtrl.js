@@ -10,29 +10,19 @@ routerApp.controller('videoCtrl', function ($scope, $sce, $state) {
     $scope.videosObj = [
         {
             id: 'h1',
-            header: 'Google Drive on the web',
+            header: 'DigIn - Analyze your data from anywhere, anytime and any device',
             url: [{
-                src: $sce.trustAsResourceUrl("https://youtu.be/Y0YxYV6-9Bw"),
-            }], desc: "Lorem Ipsum is simply dummy text of the printing and " +
-        "typesetting industry. Lorem Ipsum has been the industry's standard" +
-        " dummy text ever since the 1500s, when an unknown printer took a galley" +
-        " of type and scrambled it to make a type specimen book. It has survived" +
-        " not only five centuries, but also the leap into" +
-        " electronic typesetting, remaining essentially unchanged.",
+                src: $sce.trustAsResourceUrl("https://www.youtube.com/watch?v=wRMesyynKFI"),
+            }], desc: "",
             isView: false,
             onClick: true
         },
         {
             id: 'h2',
-            header: 'Google Drive for your Mac/PC',
+            header: 'ETL using talend',
             url: [{
-                src: $sce.trustAsResourceUrl("https://youtu.be/9No-FiEInLA"),
-            }], desc: "Lorem Ipsum is simply dummy text of the printing and " +
-        "typesetting industry. Lorem Ipsum has been the industry's standard" +
-        " dummy text ever since the 1500s, when an unknown printer took a galley" +
-        " of type and scrambled it to make a type specimen book. It has survived" +
-        " not only five centuries, but also the leap into" +
-        " electronic typesetting, remaining essentially unchanged.",
+                src: $sce.trustAsResourceUrl("https://www.youtube.com/watch?v=R5nxTQjWdCA"),
+            }], desc: "",
             isView: false,
             onClick: false
         },
@@ -42,12 +32,7 @@ routerApp.controller('videoCtrl', function ($scope, $sce, $state) {
             url: [{
                 src: $sce.trustAsResourceUrl("https://youtu.be/tLE_zHc3oDE"),
             }],
-            desc: "Lorem Ipsum is simply dummy text of the printing and " +
-            "typesetting industry. Lorem Ipsum has been the industry's standard" +
-            " dummy text ever since the 1500s, when an unknown printer took a galley" +
-            " of type and scrambled it to make a type specimen book. It has survived" +
-            " not only five centuries, but also the leap into" +
-            " electronic typesetting, remaining essentially unchanged.",
+            desc: "",
             isView: false,
             onClick: false
         },

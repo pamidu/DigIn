@@ -108,7 +108,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     //controller start
                     controller: function showProfileController($rootScope, $scope, $mdDialog) {
                         //var userInfo = $auth.getSession();
-                        var userInfo = JSON.parse(getCookie("authData"));
+                       
+                         var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
                         $scope.user = {
                             fname: userInfo.Name,
                             lname: "",
@@ -145,7 +146,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                      $scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"');
                      */
 
-                    var userInfo = JSON.parse(getCookie("authData"));
+                   var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
                     $rootScope.username = userInfo.Username;
                     $http.get(Digin_Tenant+'tenant/GetTenants/' + userInfo.SecurityToken)
                         .success(function (response) {
@@ -462,7 +463,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             console.log("dash item", dashboard);
             
-            var userInfo = JSON.parse(getCookie("authData"));
+              var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
 
             $http({
                 method: 'GET',
@@ -573,7 +574,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             return {
                 getAllDashboards: function () {
 
-                    var userInfo = JSON.parse(getCookie("authData"));
+                    var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
 
                     $http({
                         method: 'GET',

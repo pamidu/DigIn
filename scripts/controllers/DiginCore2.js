@@ -327,6 +327,10 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                 }
 
                 var dashboardObject;
+                if($rootScope.dashboard.deletions == "undefined")
+                {
+                    $rootScope.dashboard.deletions = [];
+                }
                 if($rootScope.dashboard.compID == null){
 
                     dashboardObject = {

@@ -1,5 +1,5 @@
 angular.module('configuration', [])
-	.constant('Digin_Engine_API', 'http://localhost:8080/')
+	.constant('Digin_Engine_API', 'http://digin.io:8080/')
     //.constant('Digin_Engine_API', 'http://digin.io:8080/')
     .constant('Digin_Engine_API_Namespace', 'Demo')
     .constant('Digin_Tomcat_Base', 'http://192.168.2.33:9897/')

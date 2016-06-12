@@ -3,7 +3,7 @@
  */
 
 routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphServices,ngToast,
-                                                  $http, $rootScope, $mdDialog, $restFb, moment) {
+                                                  $http, $rootScope, $mdDialog, $restFb) {
 
     $scope.totalLikes = 0;
     $scope.totalEngagement = 0;

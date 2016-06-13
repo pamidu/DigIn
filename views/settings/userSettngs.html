@@ -1,0 +1,57 @@
+<div class="md-padding animated fadeIn">
+  <div layout="column" layout-align="space-between center" flex>
+      <span class="setup-font-theme setup-user-heading">Settings</span>
+  </div>
+
+  <div layout="column" layout-align="center center">
+  
+       <div layout="row">
+         <md-input-container style="width:250px;">  
+            <label>Cache Lifetime (Sec)</label>
+            <input ng-model="cacheLifetime" type="number" step="1">
+          </md-input-container>
+      </div>
+
+      <div layout="row">
+        <md-input-container style="width:250px;">
+          <label>Number of Widgets</label>
+          <md-select ng-model="noOfWidget">
+          <md-option ng-value="topping.name" ng-repeat="topping in toppings">{{topping.name}}</md-option>
+          </md-select>
+        </md-input-container> 
+      </div>
+      
+      <div layout="row"> 
+        <md-input-container style="width:250px;">
+          <label>Request Limit</label>
+          <md-select ng-model="reqLimit">
+          <md-option ng-value="request.name" ng-repeat="request in requests">{{request.name}}</md-option>
+          </md-select>
+        </md-input-container> 
+      </div>
+        
+        <md-button class="setup-button md-raised md-primary" ng-click="updateSettings()">
+          <span class="setup-font-theme">UPDATE SETTINGS</span>
+        </md-button>
+  </div>
+
+  </br>
+
+  <div layout="column" layout-align="center center"> 
+      <div layout="row"> 
+        <md-input-container style="width:250px;">
+          <label>Clear Cache</label>
+          <md-select ng-model="clearDetail">
+          <md-select-label>{{ clearDetail.name }}</md-select-label>
+          <md-option ng-value="clearDetail.name" ng-repeat="clearDetail in clearDetails">{{clearDetail.name}}</md-option>
+          </md-select>
+        </md-input-container> 
+      </div>
+        
+
+        <md-button class="setup-button md-raised md-primary" ng-click="clearCache()">
+          <span class="setup-font-theme">CLEAR CACHE</span>
+        </md-button>
+  </div>
+  
+</div>

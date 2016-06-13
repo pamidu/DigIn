@@ -3086,8 +3086,7 @@ li:active {
     cursor: pointer;
 }
 
-
-.dashbord-save-loader{
+.dashbord-save-loader {
     position: absolute;
     right: 129px;
 }
@@ -3506,4 +3505,128 @@ li:active {
     color: #fff;
     font-size: 17px;
     font-weight: 500;
+}
+
+/*new setting style*/
+.setup-wrapper {
+    background: #037281; /* Old browsers */
+    background: -moz-linear-gradient(top, #03a699 0%, #037281 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #03a699 0%, #037281 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #03a699 0%, #037281 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00a9ed', endColorstr='#01718d', GradientType=0); /* IE6-9 */
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+.setup-wrapper > div.setting-card {
+    display: inline-table;
+    margin-top: 150px;
+}
+
+.setup-wrapper > .setting-card > div > .setting-header > h3 {
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 32px;
+    font-weight: 300;
+    color: #ffffff;
+}
+
+.setting-tab-wrap {
+    margin-top: 50px;
+}
+
+.setting-tab-wrap > div > div > .setting-tab {
+    background: rgb(3, 128, 135);
+    width: 160px;
+    height: 160px;
+    border-radius: 10px;
+    border: 2px solid #037683;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.setting-tab > .group {
+    margin-top: 20px;
+
+}
+
+.setting-tab > .group > h5 {
+    color: #ffffff;
+}
+
+.setting-tab:hover {
+    box-shadow: 0 0 0 0px #9ACC5F inset, 0 0 0 150px rgba(0, 0, 0, 0.5) inset;
+    transition: .1s transform linear, .1s height linear .1s;
+}
+
+.setting-close {
+    padding: 30px;
+}
+
+.setting-close > i {
+    font-size: 25px;
+    background: #037683;
+    border-radius: 50%;
+    padding: 10px;
+    height: 39px;
+    line-height: 19px;
+    color: #03a699;
+    cursor: pointer;
+    outline: none;
+}
+
+/*account setting*/
+
+.setting-wrap {
+    background: #ffffff;
+    width: 100%;
+    height: 550px;
+    border-radius: 10px;
+    margin-top: 50px;
+    overflow: hidden;
+}
+
+.setting-card-header {
+    margin-top: 50px;
+}
+
+.setting-card-header > h5 {
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 32px;
+    font-weight: 400;
+    color: #037281;
+}
+
+.setting-text-wrap > p {
+    font-family: 'Roboto', sans-serif !important;
+    padding: 25px 10px 5px 10px;
+    font-weight: 300;
+}
+
+.setting-card-header > .setting-img-wrap {
+    padding-top: 20px;
+}
+
+.setup-info-container {
+    text-align: left;
+    margin-top: 70px;
+}
+
+.setup-button {
+    background-color: #037281 !important;
+    box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.26);
+    color: #fff !important;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 15px;
+    text-transform: lowercase;
+}
+
+.setup-button.md-button.md-raised:not([disabled]) {
+    box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.26);
+}
+
+.setup-button.md-button.md-raised:hover{
+    background-color: #03a498;
 }

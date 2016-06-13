@@ -1,0 +1,46 @@
+<div ng-init="getAllApps();" ng-show="true" class="md-padding animated fadeIn" layout="row" 
+ layout-align="center center">
+  <div layout="column" class="setup-info-container" flex="50">
+
+    <div layout="column" layout-align="space-between center">
+        <span class="setup-font-theme setup-user-heading">Share Dashboard</span>
+    </div>
+
+         <v-accordion onexpand="expandCallback(index, id)" class="vAccordion--default" multiple control="accordion">
+
+          <!-- add expanded attribute to open the section -->
+          <v-pane id="{{::app.name}}" ng-repeat="app in apps">
+            <v-pane-header>
+                     <div layout="row">
+                            <div ng-click="viewGroupsInApp(app.groupId,$event)" flex="90">
+                                <ng-md-icon icon="apps" style="fill:pink" size="24"></ng-md-icon>
+                                {{ app.name }}
+                            </div>
+                            <div ng-click="loadShareWindow(app.name)" flex="5">
+                                <ng-md-icon icon="share" style="fill:blue" size="24"></ng-md-icon>
+                            </div>
+                    </div>  
+                 
+            </v-pane-header>
+
+             <!-- View grops shared on this app -->
+            <v-pane-content>
+                <ul class="widget-collection">
+                    <li class="collection-item" ng-repeat="group in groups">
+                        <div layout="row">
+                           <div flex="80">
+                            <ng-md-icon icon="group" style="fill:blue" size="20"></ng-md-icon>
+                            {{ group.groupname }}
+                           </div>
+                            <div ng-click="deleteGroupFromApp(app.name,group.groupId)" flex="5">
+                                <ng-md-icon icon="clear" style="fill:red" size="20"></ng-md-icon>
+                            </div>
+                        </div>
+                    </li>
+                </ul> 
+            </v-pane-content>
+          </v-pane>
+    </v-accordion>
+
+  </div>
+</div>

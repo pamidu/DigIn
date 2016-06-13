@@ -3514,7 +3514,7 @@ li:active {
     background: -webkit-linear-gradient(top, #03a699 0%, #037281 100%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to bottom, #03a699 0%, #037281 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00a9ed', endColorstr='#01718d', GradientType=0); /* IE6-9 */
-    height: 100%;
+    height: calc(100vh);
     width: 100%;
     text-align: center;
 }
@@ -3532,7 +3532,7 @@ li:active {
 }
 
 .setting-tab-wrap {
-    margin-top: 50px;
+    margin-top: 0px;
 }
 
 .setting-tab-wrap > div > div > .setting-tab {
@@ -3611,7 +3611,7 @@ li:active {
 
 .setup-info-container {
     text-align: left;
-    margin-top: 70px;
+    margin-top: 20px;
 }
 
 .setup-button {
@@ -3627,6 +3627,48 @@ li:active {
     box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.26);
 }
 
-.setup-button.md-button.md-raised:hover{
+.setup-button.md-button.md-raised:hover {
     background-color: #03a498;
+}
+
+/*account info*/
+.account-info-wrap {
+    height: 900px;
+}
+
+/*share dashboard */
+.share-dashboard {
+    margin-top: 50px;
+}
+
+.share-dashboard > .header > h5 {
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 32px;
+    font-weight: 400;
+    color: #fff;
+}
+
+.share-dashboard {
+}
+
+.share-dashboard-view {
+    height: 200px;
+    background: #ffffff;
+    margin-top: 20px;
+    overflow: hidden;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.share-dashboard-view > h5 {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 400;
+    color: #038389;
+    padding-top: 50px;
+    height: 100px;
+}
+
+.user-setting-wrap {
+    padding-left: 65px;
+    padding-right: 65px;
 }

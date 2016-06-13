@@ -1078,9 +1078,9 @@ textarea {
     width: 300px;
 }
 
-div.container {
-    width: 800px;
-}
+/*div.container {*/
+    /*width: 800px;*/
+/*}*/
 
 #imgInp {
     display: none;

@@ -1,46 +1,77 @@
-<div ng-init="getAllApps();" ng-show="true" class="md-padding animated fadeIn" layout="row" 
- layout-align="center center">
-  <div layout="column" class="setup-info-container" flex="50">
-
-    <div layout="column" layout-align="space-between center">
-        <span class="setup-font-theme setup-user-heading">Share Dashboard</span>
+<div ng-init="getAllApps();" class="setup-wrapper animated fadeInDown">
+    <div layout="row" class="setting-close pull-right" ng-click="route('back')">
+        <i class="fa fa-close"></i>
+    </div>
+    <div class="share-dashboard">
+        <div class="header">
+            <h5>Share Dashboard</h5>
+        </div>
     </div>
 
-         <v-accordion onexpand="expandCallback(index, id)" class="vAccordion--default" multiple control="accordion">
+    <div class="dashboard-body">
+        <div style="margin-left: 20px;">
+            <div layout="row" align="center center">
+                <div flex="25" style="margin-right: 25px;" ng-repeat="app in apps">
+                    <div class="share-dashboard-view">
+                        <h5>{{app.name}}</h5>
 
-          <!-- add expanded attribute to open the section -->
-          <v-pane id="{{::app.name}}" ng-repeat="app in apps">
-            <v-pane-header>
-                     <div layout="row">
-                            <div ng-click="viewGroupsInApp(app.groupId,$event)" flex="90">
-                                <ng-md-icon icon="apps" style="fill:pink" size="24"></ng-md-icon>
-                                {{ app.name }}
-                            </div>
-                            <div ng-click="loadShareWindow(app.name)" flex="5">
-                                <ng-md-icon icon="share" style="fill:blue" size="24"></ng-md-icon>
-                            </div>
-                    </div>  
-                 
-            </v-pane-header>
 
-             <!-- View grops shared on this app -->
-            <v-pane-content>
-                <ul class="widget-collection">
-                    <li class="collection-item" ng-repeat="group in groups">
-                        <div layout="row">
-                           <div flex="80">
-                            <ng-md-icon icon="group" style="fill:blue" size="20"></ng-md-icon>
-                            {{ group.groupname }}
-                           </div>
-                            <div ng-click="deleteGroupFromApp(app.name,group.groupId)" flex="5">
-                                <ng-md-icon icon="clear" style="fill:red" size="20"></ng-md-icon>
-                            </div>
-                        </div>
-                    </li>
-                </ul> 
-            </v-pane-content>
-          </v-pane>
-    </v-accordion>
 
-  </div>
+                        <md-button class="setup-button md-raised md-primary" ng-click="updateAccount()">Share
+                        </md-button>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+<!--<div  ng-show="true" class="md-padding animated fadeIn" layout="row" -->
+<!--layout-align="center center">-->
+<!--<div layout="column" class="setup-info-container" flex="50">-->
+
+<!--<div layout="column" layout-align="space-between center">-->
+<!--<span class="setup-font-theme setup-user-heading">Share Dashboard</span>-->
+<!--</div>-->
+
+<!--<v-accordion onexpand="expandCallback(index, id)" class="vAccordion&#45;&#45;default" multiple control="accordion">-->
+
+<!--&lt;!&ndash; add expanded attribute to open the section &ndash;&gt;-->
+<!--<v-pane id="{{::app.name}}" ng-repeat="app in apps">-->
+<!--<v-pane-header>-->
+<!--<div layout="row">-->
+<!--<div ng-click="viewGroupsInApp(app.groupId,$event)" flex="90">-->
+<!--<ng-md-icon icon="apps" style="fill:pink" size="24"></ng-md-icon>-->
+<!--{{ app.name }}-->
+<!--</div>-->
+<!--<div ng-click="loadShareWindow(app.name)" flex="5">-->
+<!--<ng-md-icon icon="share" style="fill:blue" size="24"></ng-md-icon>-->
+<!--</div>-->
+<!--</div>  -->
+<!---->
+<!--</v-pane-header>-->
+
+<!--&lt;!&ndash; View grops shared on this app &ndash;&gt;-->
+<!--<v-pane-content>-->
+<!--<ul class="widget-collection">-->
+<!--<li class="collection-item" ng-repeat="group in groups">-->
+<!--<div layout="row">-->
+<!--<div flex="80">-->
+<!--<ng-md-icon icon="group" style="fill:blue" size="20"></ng-md-icon>-->
+<!--{{ group.groupname }}-->
+<!--</div>-->
+<!--<div ng-click="deleteGroupFromApp(app.name,group.groupId)" flex="5">-->
+<!--<ng-md-icon icon="clear" style="fill:red" size="20"></ng-md-icon>-->
+<!--</div>-->
+<!--</div>-->
+<!--</li>-->
+<!--</ul> -->
+<!--</v-pane-content>-->
+<!--</v-pane>-->
+<!--</v-accordion>-->
+
+<!--</div>-->
+<!--</div>-->

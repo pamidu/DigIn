@@ -3,10 +3,10 @@
         <i class="fa fa-close"></i>
     </div>
     <div class="md-padding animated fadeIn" layout="row" layout-align="center center">
-        <div class="setting-wrap" flex="40">
+        <div class="setting-wrap account-info-wrap"
+             flex="40">
             <div class="setting-card-header">
                 <h5>Account Information</h5>
-
                 <div class="setting-img-wrap">
                     <img src="styles/css/images/setting/invite_user.png"/>
                 </div>
@@ -15,7 +15,8 @@
                 </div>
             </div>
             <!-- setting tab wrap -->
-            <div class="setting-tab-wrap">
+            <div class="setting-tab-wrap"
+                >
                 <div class="md-padding animated fadeIn" layout="column">
                     <div layout="row" layout-align="center center">
 
@@ -26,7 +27,6 @@
                                 <label>Account owner</label>
                                 <input id="accOwner" ng-model="username">
                             </md-input-container>
-
                             <div>
                                 <md-input-container flex>
                                     <md-button ng-click="openLogoUploadWindow()"
@@ -35,10 +35,9 @@
                                             class="setup-font-theme" width="5px">Upload Logo</span>
                                     </md-button>
                                 </md-input-container>
-
-	            <span class="setup-font-theme">
-	                Please select a image from a location inorder to update account logo
-	            </span>
+                                <span class="setup-font-theme">
+                                    Please select a image from a location inorder to update account logo
+                                </span>
                             </div>
 
 
@@ -58,9 +57,11 @@
                                 <md-switch ng-model="headerbar" aria-label="switch-headerbar">
                                     Headerbar {{headerbar ? 'ON' : 'OFF'}}
                                 </md-switch>
+
                             </div>
-                            <md-button class="setup-button md-raised md-primary" ng-click="updateAccount()"><span
-                                    class="setup-font-theme">Update Account</span></md-button>
+
+                            <md-button class="setup-button md-raised md-primary" ng-click="updateAccount()">Update Account</md-button>
+
                         </div>
                     </div>
                 </div>

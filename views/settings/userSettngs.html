@@ -1,57 +1,79 @@
-<div class="md-padding animated fadeIn">
-  <div layout="column" layout-align="space-between center" flex>
-      <span class="setup-font-theme setup-user-heading">Settings</span>
-  </div>
+<div class="setup-wrapper  animated fadeIn">
+    <div layout="row" class="setting-close pull-right" ng-click="route('back')">
+        <i class="fa fa-close"></i>
+    </div>
 
-  <div layout="column" layout-align="center center">
-  
-       <div layout="row">
-         <md-input-container style="width:250px;">  
-            <label>Cache Lifetime (Sec)</label>
-            <input ng-model="cacheLifetime" type="number" step="1">
-          </md-input-container>
-      </div>
+    <div class="md-padding animated fadeIn" layout="row" layout-align="center center">
+        <div class="setting-wrap" style="height: 760px;"
+             flex="40">
+            <div class="setting-card-header">
+                <h5>User Setting</h5>
+                <div class="setting-img-wrap">
+                    <img src="styles/css/images/setting/invite_user.png"/>
+                </div>
+                <div class="setting-text-wrap">
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                </div>
+            </div>
 
-      <div layout="row">
-        <md-input-container style="width:250px;">
-          <label>Number of Widgets</label>
-          <md-select ng-model="noOfWidget">
-          <md-option ng-value="topping.name" ng-repeat="topping in toppings">{{topping.name}}</md-option>
-          </md-select>
-        </md-input-container> 
-      </div>
-      
-      <div layout="row"> 
-        <md-input-container style="width:250px;">
-          <label>Request Limit</label>
-          <md-select ng-model="reqLimit">
-          <md-option ng-value="request.name" ng-repeat="request in requests">{{request.name}}</md-option>
-          </md-select>
-        </md-input-container> 
-      </div>
-        
-        <md-button class="setup-button md-raised md-primary" ng-click="updateSettings()">
-          <span class="setup-font-theme">UPDATE SETTINGS</span>
-        </md-button>
-  </div>
 
-  </br>
+            <div class="user-setting-wrap">
+                <div layout="column">
+                    <md-input-container>
+                        <label>Cache Lifetime (Sec)</label>
+                        <input ng-model="cacheLifetime" type="number" step="1">
+                    </md-input-container>
+                </div>
+                <div layout="column">
+                    <md-input-container>
+                        <label>Number of Widgets</label>
+                        <md-select ng-model="noOfWidget">
+                            <md-option ng-value="topping.name" ng-repeat="topping in toppings">{{topping.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
 
-  <div layout="column" layout-align="center center"> 
-      <div layout="row"> 
-        <md-input-container style="width:250px;">
-          <label>Clear Cache</label>
-          <md-select ng-model="clearDetail">
-          <md-select-label>{{ clearDetail.name }}</md-select-label>
-          <md-option ng-value="clearDetail.name" ng-repeat="clearDetail in clearDetails">{{clearDetail.name}}</md-option>
-          </md-select>
-        </md-input-container> 
-      </div>
-        
+                <div layout="column">
+                    <md-input-container>
+                        <label>Request Limit</label>
+                        <md-select ng-model="reqLimit">
+                            <md-option ng-value="request.name" ng-repeat="request in requests">{{request.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
 
-        <md-button class="setup-button md-raised md-primary" ng-click="clearCache()">
-          <span class="setup-font-theme">CLEAR CACHE</span>
-        </md-button>
-  </div>
-  
+                <div layout="column">
+                    <md-button class="setup-button md-raised md-primary" ng-click="updateSettings()">
+                        <span class="setup-font-theme">UPDATE SETTINGS</span>
+                    </md-button>
+                </div>
+
+                <div layout="column">
+                    <md-input-container>
+                        <label>Clear Cache</label>
+                        <md-select ng-model="clearDetail">
+                            <md-select-label>{{ clearDetail.name }}</md-select-label>
+                            <md-option ng-value="clearDetail.name" ng-repeat="clearDetail in clearDetails">
+                                {{clearDetail.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-button class="setup-button md-raised md-primary" ng-click="clearCache()">
+                        <span class="setup-font-theme">CLEAR CACHE</span>
+                    </md-button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
 </div>
+
+
+
+

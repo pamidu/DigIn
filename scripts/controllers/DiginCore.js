@@ -606,7 +606,15 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         }
         $scope.commentary = function (widget) {
             var comment = "";
-            var chunks = [];
+            var chunks = []; 
+
+             var msg = new SpeechSynthesisUtterance("This is +" widget.widgetData.widName + widget.title + ' widget');
+             window.speechSynthesis.speak(msg);
+             var msg = new SpeechSynthesisUtterance(""+widget.widgetData.widData.label + 'is' +widget.widgetData.widData.value  +widget.widgetData.widData.scale  );
+             window.speechSynthesis.speak(msg);
+
+
+
         }
         $scope.closeDialog = function () {
             $mdDialog.hide();

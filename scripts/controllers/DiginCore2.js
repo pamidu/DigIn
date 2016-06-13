@@ -367,9 +367,8 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                 console.log("dashboardObject", dashboardObject);
                 //id fields are accepted close dialog
                 //$mdDialog.hide();
-                
-                var userInfo = JSON.parse(getCookie("authData"));
-                    
+                      var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
+            
                 $http({
                     method: 'POST',
                     

@@ -74,7 +74,19 @@
                         <input ng-model="searchText" type="text" class="searchText" ng-change="updateFilteredList()">
                     </md-input-container>
         </div>
-        <div class="results" layout="row" layout-align="space-around start" flex="80">
+
+         <!-- Delete confirmation -->
+        <div ng-show="confirmWin"  class="results" layout="column" layout-align="center center" flex>
+            <h2>Delete Dashboard</h2>
+            <h3>Do you want to delete this dashboard...?</h3>
+            <div layout="row" layout-align="center center">
+                <md-button class="setup-button md-raised md-primary" style="fill:white" ng-click="DeleteDashBoard()"><span class="setup-font-theme">YES</span></md-button> 
+                <md-button class="setup-button md-raised md-primary" style="fill:white" ng-click="ConfirmDashbordDeletion(false,true,item)"><span class="setup-font-theme">NO</span></md-button>                           
+            </div>
+        </div>  
+
+        <div ng-show="listWin" class="results" layout="row" layout-align="space-around start" flex="80">
+        <!-- <div class="results" layout="row" layout-align="space-around start" flex="80"> -->
                     <!-- dashboards -->                
                     <div layout="column" layout-align="center start">
                         <h2>DASHBOARDS
@@ -98,6 +110,10 @@
                                     <tr>
                                         <td at-implicit at-sortable at-attribute="dashboardName" at-initial-sorting="asc" layout="row" layout-align="start center" ng-click="goDashboard(item)">
                                             <ng-md-icon icon="dashboard" style="fill:white" size="20" layout="row" class="m-r-10" layout-align="center center"></ng-md-icon>
+                                        </td>
+                                        <!-- Delete Dashboard -->
+                                        <td>
+                                            <i class="fa fa-times" aria-hidden="true" ng-click="ConfirmDashbordDeletion(true,false,item)"></i>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -130,6 +146,7 @@
                                             ng-click="goReport(item.splitName)">
                                             <ng-md-icon icon="assignment" style="fill:white" size="20" class="m-r-10" layout="row" layout-align="center center"></ng-md-icon>
                                         </td>
+
                                     </tr>
                                 </tbody>
                         </table>

@@ -129,6 +129,9 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     $rootScope.selectedPage = i+1;
                 }
             }
+            //to keep the track of selectd tab
+            $rootScope.selectedPageIndx = $rootScope.selectedPage -1;
+            //and will set again in saveChart function in queryBuilderCtrl
         }
 
         /* update damith
@@ -291,7 +294,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     }
                 })
                 .then(function () {
-                    console.log($scope.widget);
+                    console.log("widget is "+$scope.widget);
                     $scope.widget.widgetData.highchartsNG.size.width = $scope.tempWidth;
                     $scope.widget.widgetData.highchartsNG.size.height = $scope.tempHeight;
                     //$mdDialog.hide();
@@ -606,7 +609,15 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         }
         $scope.commentary = function (widget) {
             var comment = "";
-            var chunks = [];
+            var chunks = []; 
+
+             var msg = new SpeechSynthesisUtterance("This is +" widget.widgetData.widName + widget.title + ' widget');
+             window.speechSynthesis.speak(msg);
+             var msg = new SpeechSynthesisUtterance(""+widget.widgetData.widData.label + 'is' +widget.widgetData.widData.value  +widget.widgetData.widData.scale  );
+             window.speechSynthesis.speak(msg);
+
+
+
         }
         $scope.closeDialog = function () {
             $mdDialog.hide();

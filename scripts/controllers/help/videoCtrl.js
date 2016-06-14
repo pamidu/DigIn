@@ -17,6 +17,15 @@ routerApp.controller('videoCtrl', function ($scope, $sce, $state) {
             isView: false,
             onClick: true
         },
+         {
+            id: 'h2',
+            header: 'Digin Team Bloopers',
+            url: [{
+                src: $sce.trustAsResourceUrl("https://www.youtube.com/watch?v=P8xuemsPM5k"),
+            }], desc: "",
+            isView: false,
+            onClick: false
+        },
         {
             id: 'h2',
             header: 'ETL using talend',

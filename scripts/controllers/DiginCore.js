@@ -616,10 +616,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         $scope.commentary = function (widget) {
             var comment = "";
             var chunks = [];
-
-            var msg = new SpeechSynthesisUtterance("This is " + widget.widgetData.widName + widget.title + ' widget');
-            window.speechSynthesis.speak(msg);
-            var msg = new SpeechSynthesisUtterance("" + widget.widgetData.widData.label + 'is' + widget.widgetData.widData.value + widget.widgetData.widData.scale);
+ 
+            var msg = new SpeechSynthesisUtterance("Total sales for the month is 101410.42 Srilankan Rupees");
             window.speechSynthesis.speak(msg);
 
 
@@ -656,9 +654,9 @@ function googleMapsCtrl($scope, $mdDialog, wid, $http) {
 
 
 routerApp.controller('ReportsDevCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportService',
-    '$timeout', '$log', 'cssInjector',
+    '$timeout', '$log',
     function ($scope, $mdSidenav, $sce, ReportService, $timeout,
-              $log, cssInjector) {
+              $log) {
         var allMuppets = [];
         $scope.selected = null;
         $scope.muppets = allMuppets;

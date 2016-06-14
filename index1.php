@@ -67,6 +67,7 @@
     <link rel="stylesheet" href="styles/css/hover.css" type='text/css'/>
     <link rel="stylesheet" href="bower_components/angular-ui/angular-ui-select2/select2-bootstrap.min.css"
           type='text/css'/>
+    <script src="https://code.highcharts.com/modules/funnel.js"></script>
     <link rel="stylesheet" href="bower_components/tag-input/ng-tags-input.min.css"/>
     <link rel="stylesheet" href="styles/css/customer.css" type='text/css'/>
     <link rel="stylesheet" href="bower_components/v-accordion/v-accordion.min.css" type='text/css'/>
@@ -214,7 +215,7 @@
 <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/d3PluginCtrl.js"></script>
  
-
+<script src="https://code.highcharts.com/modules/funnel.js"></script>
 
 <script type="text/javascript" src="scripts/controllers/socialGraph/SocialAnalysisCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphFBCtrl.js"></script>

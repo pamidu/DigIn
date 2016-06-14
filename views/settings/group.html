@@ -1,5 +1,12 @@
+<div layout="row" layout-align="end center">
+    <div layout="row" class="setting-close pull-right" ng-click="route('back')">
+        <i class="fa fa-close"></i>
+    </div>
+</div>
 
-<div ng-init="initSettings()" ng-show="true" class="md-padding animated fadeIn" layout="row" layout-align="center center" >
+<div ng-init="initSettings()" ng-show="true" class="md-padding animated fadeIn" layout="row"
+     layout-align="center center">
+
     <div layout="column" class="setup-info-container" flex="40">
 
         <div layout="column" layout-align="space-between center">
@@ -13,57 +20,57 @@
                     <label>Type group name here</label>
                     <input ng-model="groupName" name="grpName">
                 </md-input-container>
-            </div> 
-            <div flex="10">   
+            </div>
+            <div flex="10">
                 <ng-md-icon icon="group_add" style="fill:blue" size="40" ng-click="createGroup()"></ng-md-icon>
-            </div>     
-        </div>    
+            </div>
+        </div>
 
-    
+
         <div layout="column" layout-align="space-between center" flex>
             <span class="setup-font-theme setup-user-heading-secondary">Add users to group</span>
         </div>
 
-            <v-accordion onexpand="expandCallback(index, id)" class="vAccordion--default" multiple control="accordion">
-                  <!-- add expanded attribute to open the section -->
-                  <v-pane id="{{::group.groupId}}" ng-repeat="group in groups">
-                    <v-pane-header>
-                        <div layout="row">
-                            <div ng-click="viewUsersInGroup(group.groupId)" flex="5">
-                                <ng-md-icon icon="group" style="fill:blue" size="24"></ng-md-icon> 
-                            </div>
-                            <div ng-click="viewUsersInGroup(group.groupId)" flex="70">
-                                {{ group.groupname }}
-                            </div>        
-                               
-                            <!-- Delete group -->
-                            <div ng-click="deleteGroup(group.groupId,$event,$index)" flex="5">
-                                <ng-md-icon icon="delete" style="fill:blue" size="24"></ng-md-icon>
-                            </div>
-                                   
-                            <!-- Add users to group -->
-                            <div ng-click="loadAddUsersWindow(group.groupId)" flex="5">
-                                <ng-md-icon icon="person_add" style="fill:blue" size="24"></ng-md-icon>
-                            </div>         
-                        </div>    
+        <v-accordion onexpand="expandCallback(index, id)" class="vAccordion--default" multiple control="accordion">
+            <!-- add expanded attribute to open the section -->
+            <v-pane id="{{::group.groupId}}" ng-repeat="group in groups">
+                <v-pane-header>
+                    <div layout="row">
+                        <div ng-click="viewUsersInGroup(group.groupId)" flex="5">
+                            <ng-md-icon icon="group" style="fill:blue" size="24"></ng-md-icon>
+                        </div>
+                        <div ng-click="viewUsersInGroup(group.groupId)" flex="70">
+                            {{ group.groupname }}
+                        </div>
 
-                    </v-pane-header>
+                        <!-- Delete group -->
+                        <div ng-click="deleteGroup(group.groupId,$event,$index)" flex="5">
+                            <ng-md-icon icon="delete" style="fill:blue" size="24"></ng-md-icon>
+                        </div>
 
-                    <!-- VIEW USERS IN THE GROUP -->
-                    <v-pane-content >
-                        <ul class="widget-collection">
-                            <li class="collection-item" ng-repeat="user in users">
-                                <div layout="row">
-                                   <div flex="80">{{ user.Name }}</div>
-                                    <div ng-click="deleteUserFromGroup(group.groupId,user.UserID)" flex="5">
-                                        <ng-md-icon icon="clear" style="fill:red" size="20"></ng-md-icon>
-                                    </div>
+                        <!-- Add users to group -->
+                        <div ng-click="loadAddUsersWindow(group.groupId)" flex="5">
+                            <ng-md-icon icon="person_add" style="fill:blue" size="24"></ng-md-icon>
+                        </div>
+                    </div>
+
+                </v-pane-header>
+
+                <!-- VIEW USERS IN THE GROUP -->
+                <v-pane-content>
+                    <ul class="widget-collection">
+                        <li class="collection-item" ng-repeat="user in users">
+                            <div layout="row">
+                                <div flex="80">{{ user.Name }}</div>
+                                <div ng-click="deleteUserFromGroup(group.groupId,user.UserID)" flex="5">
+                                    <ng-md-icon icon="clear" style="fill:red" size="20"></ng-md-icon>
                                 </div>
-                            </li>
-                        </ul>
-                    </v-pane-content>
+                            </div>
+                        </li>
+                    </ul>
+                </v-pane-content>
 
-                  </v-pane>
-            </v-accordion>
+            </v-pane>
+        </v-accordion>
     </div>
 </div>

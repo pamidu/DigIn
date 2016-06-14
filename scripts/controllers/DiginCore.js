@@ -608,10 +608,10 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             var comment = "";
             var chunks = []; 
 
-             var msg = new SpeechSynthesisUtterance("This is +" widget.widgetData.widName + widget.title + ' widget');
-             window.speechSynthesis.speak(msg);
-             var msg = new SpeechSynthesisUtterance(""+widget.widgetData.widData.label + 'is' +widget.widgetData.widData.value  +widget.widgetData.widData.scale  );
-             window.speechSynthesis.speak(msg);
+            // var msg = new SpeechSynthesisUtterance(""+widget.widgetData.widData.label + 'is' +widget.widgetData.widData.value  +widget.widgetData.widData.scale + );
+            //  window.speechSynthesis.speak(msg);
+             var msg = new SpeechSynthesisUtterance(+$rootScope.username + ' you are adding' + widget.title + ' widget');
+                window.speechSynthesis.speak(msg);
 
 
 

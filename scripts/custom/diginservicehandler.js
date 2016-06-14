@@ -8,7 +8,7 @@
     }
 
     function getNamespace() {
-        var authdata = JSON.parse(getCookie("authData"));
+          var authdata=JSON.parse(decodeURIComponent(getCookie('authData')));        
         var namespace = authdata.Email.replace('@', '_');
         var namespace = authdata.Email.replace(/[@.]/g, '_');
         return namespace;

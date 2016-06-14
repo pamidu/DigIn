@@ -3,7 +3,7 @@
         <div flex="75">
             <div class="card-head">
                 <header class="graph-h1 text-uppercase">
-                    {{widget.widName}}
+                    {{widget.widgetName}}
                 </header>
             </div>
             <div class="widget0s-chart.wrap">
@@ -11,7 +11,7 @@
                     <div get-width callback-fn="setChartSize(this)"
                          id="settingChart"
                          ng-include
-                         src="widget.widView"></div>
+                         src="widget.widgetData.widView"></div>
                 </div>
             </div>
         </div>

@@ -893,8 +893,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
         widget.widgetData.highchartsNG["size"] = {
 
-            width: 300,
-            height: 220
+            width: 100,
+            height: 100
         };
         widget.widgetData.widName = $scope.widget.widgetData.widName;
         widget.widgetData.dataCtrl = "widgetSettingsDataCtrl";
@@ -931,6 +931,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         $scope.eventHndler.message = $scope.eventHndler.messageAry[0];
         setTimeout(function() {
             $scope.eventHndler.isMainLoading = false;
+            $rootScope.selectedPageIndx = $rootScope.selectedPage -1;
             $state.go('home.Dashboards');
         }, 1000);
     };

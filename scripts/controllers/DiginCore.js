@@ -45,18 +45,18 @@ routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
     };
 });
 
-routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log','$csContainer','$state','$qbuilder','$diginengine', 'ngToast',
+routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', '$state', '$qbuilder', '$diginengine', 'ngToast',
     function ($scope, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, $state, $qbuilder, $diginengine, ngToast) {
-        
+
         //code to keep widget fixed on pivot summary drag events
-        $('#content1').on('mousedown', function(e) {
-            if(e.target.className == "pvtAttr"){
-                
+        $('#content1').on('mousedown', function (e) {
+            if (e.target.className == "pvtAttr") {
+
                 var widgetsCount = $('.gridster-item').length;
-                for(var i = 0; i < widgetsCount; i++){
-                
+                for (var i = 0; i < widgetsCount; i++) {
+
                     $('.gridster-item')[i].className = "digin-widget ng-scope gridster-item";
-                }   
+                }
             }
         });
         //configuring gridster
@@ -97,27 +97,27 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
         $scope.widgetTitleClass = 'widget-title-35';
 
-        $scope.adjustTitleLength = function(){
+        $scope.adjustTitleLength = function () {
 
             var titleLength = 0;
             var selectedPage = $rootScope.selectedPage;
-            for(var i=0; i < $rootScope.dashboard.pages[selectedPage-1].widgets.length; i++){
+            for (var i = 0; i < $rootScope.dashboard.pages[selectedPage - 1].widgets.length; i++) {
 
-                if(titleLength < $rootScope.dashboard.pages[selectedPage-1].widgets[i].widgetData.widName.length){
+                if (titleLength < $rootScope.dashboard.pages[selectedPage - 1].widgets[i].widgetData.widName.length) {
 
-                    titleLength = $rootScope.dashboard.pages[selectedPage-1].widgets[i].widgetData.widName.length;
-                    if(titleLength <= 35){
+                    titleLength = $rootScope.dashboard.pages[selectedPage - 1].widgets[i].widgetData.widName.length;
+                    if (titleLength <= 35) {
                         $scope.widgetTitleClass = 'widget-title-35';
                     }
-                    if(titleLength > 35 && titleLength <= 60){
+                    if (titleLength > 35 && titleLength <= 60) {
                         $scope.widgetTitleClass = 'widget-title-60';
                     }
-                    if(titleLength > 60 && titleLength <= 80){
+                    if (titleLength > 60 && titleLength <= 80) {
                         $scope.widgetTitleClass = 'widget-title-80';
-                    } 
-                    if(titleLength > 80){
+                    }
+                    if (titleLength > 80) {
                         $scope.widgetTitleClass = 'widget-title-long';
-                    }        
+                    }
                 }
             }
         }
@@ -125,16 +125,19 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         $scope.selectPage = function (page) {
 
             for (var i = 0; i < $rootScope.dashboard.pages.length; i++) {
-                if(page.pageID == $rootScope.dashboard.pages[i].pageID){
-                    $rootScope.selectedPage = i+1;
+                if (page.pageID == $rootScope.dashboard.pages[i].pageID) {
+                    $rootScope.selectedPage = i + 1;
                 }
             }
+            //to keep the track of selectd tab
+            $rootScope.selectedPageIndx = $rootScope.selectedPage - 1;
+            //and will set again in saveChart function in queryBuilderCtrl
         }
 
         /* update damith
          view current chart data source view
          currentSourceView ()
-         
+
          */
 
         $scope.showFace2 = function ($event, widget) {
@@ -154,22 +157,22 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     }
                     ,
                     controller: function dataSourceCtrl($scope, $mdDialog, items, generatePDF1) {
-                        
+
                         var isCommonSrc = angular.isUndefined(items.widCsc);
                         var selectedSourceData = {};
                         // if (isCommonSrc) {
-                            //selected common data source
-                            selectedSourceData = {
-                                'uniqueType': items.uniqueType,
-                                'length': items.commonSrcConfig.fields.length,
-                                'attributes': items.commonSrcConfig.fields,
-                                'mappedData': [],
-                                'className': items.commonSrcConfig.tbl,
-                                'source': items.commonSrcConfig.src,
-                                'type': null,
-                                'groupBy': null,
-                                'data': items.highchartsNG.series[0].data
-                            };
+                        //selected common data source
+                        selectedSourceData = {
+                            'uniqueType': items.uniqueType,
+                            'length': items.commonSrcConfig.fields.length,
+                            'attributes': items.commonSrcConfig.fields,
+                            'mappedData': [],
+                            'className': items.commonSrcConfig.tbl,
+                            'source': items.commonSrcConfig.src,
+                            'type': null,
+                            'groupBy': null,
+                            'data': items.highchartsNG.series[0].data
+                        };
                         // } else {
                         //     selectedSourceData = {
                         //         'uniqueType': items.uniqueType,
@@ -184,14 +187,14 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         // }
                         for (var i = 0; i < selectedSourceData.length; i++) {
                             // if (isCommonSrc) {
-                                var _attr = selectedSourceData.attributes[i].trim().
-                                toString();
-                                console.log("_attr",_attr);
-                                console.log("mapped data in items", items.
-                                    winConfig.mappedData[_attr]);
-                                console.log("mapped data in selected source data", selectedSourceData.mappedData);
-                                selectedSourceData.mappedData.push(items.
-                                    winConfig.mappedData[_attr].data);
+                            var _attr = selectedSourceData.attributes[i].trim().
+                            toString();
+                            console.log("_attr", _attr);
+                            console.log("mapped data in items", items.
+                                winConfig.mappedData[_attr]);
+                            console.log("mapped data in selected source data", selectedSourceData.mappedData);
+                            selectedSourceData.mappedData.push(items.
+                                winConfig.mappedData[_attr].data);
                             // } else {
                             //     var _attr = selectedSourceData.attributes[i].trim().
                             //     toString();
@@ -211,7 +214,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                             }
                             $("#dataBody").append("<tr>" + rows + "</tr>");
                             oneRow = '';
-                        
+
                             for (var i = 0; i < selectedSourceData.length; i++) {
                                 for (var b = 0; b < selectedSourceData.mappedData[i].length; b++) {
                                     var rows = '';
@@ -230,12 +233,12 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
                         $scope.widget = selectedSourceData;
 
-                        $scope.downloadPDF = function(){
-            
+                        $scope.downloadPDF = function () {
+
                             var htmlElement = $(".widget0m-mapped-data").get(0);
                             var config = {
-                                title:"Sales Forecast Data Summary",
-                                titleLeft: 50, 
+                                title: "Sales Forecast Data Summary",
+                                titleLeft: 50,
                                 titleTop: 20,
                                 tableLeft: 20,
                                 tableTop: 30
@@ -255,30 +258,30 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         };
         $scope.widgetSettings = function (ev, widget) {
 
-            if(typeof widget.widgetData.commonSrc == "undefined"){//new widget
+            if (typeof widget.widgetData.commonSrc == "undefined") {//new widget
                 $mdDialog.show({
-                    controller: widget.widgetData.initCtrl,
-                    templateUrl: widget.widgetData.initTemplate,
-                    parent: angular.element(document.body),
-                    targetEvent: ev
-                })
-                .then(function () {
-                    //$mdDialog.hide();
-                }, function () {
-                    //$mdDialog.hide();
-                });
-            }else{//user is updating widget, open query builder
+                        controller: widget.widgetData.initCtrl,
+                        templateUrl: widget.widgetData.initTemplate,
+                        parent: angular.element(document.body),
+                        targetEvent: ev
+                    })
+                    .then(function () {
+                        //$mdDialog.hide();
+                    }, function () {
+                        //$mdDialog.hide();
+                    });
+            } else {//user is updating widget, open query builder
                 $csContainer.fillCSContainer(widget.widgetData.commonSrc.src);
-                $state.go("home.QueryBuilder", {widObj:widget});
+                $state.go("home.QueryBuilder", {widObj: widget});
             }
         };
         $scope.createuuid = function () {
-                            return Math.floor((1 + Math.random()) * 0x10000)
-                                .toString(16)
-                                .substring(1);
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
         }
         $scope.showWidget = function (ev, widget) {
-            
+
             $scope.tempWidth = widget.widgetData.highchartsNG.size.width;
             $scope.tempHeight = widget.widgetData.highchartsNG.size.height;
             $mdDialog.show({
@@ -291,7 +294,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     }
                 })
                 .then(function () {
-                    console.log($scope.widget);
+                    console.log("widget is " + $scope.widget);
                     $scope.widget.widgetData.highchartsNG.size.width = $scope.tempWidth;
                     $scope.widget.widgetData.highchartsNG.size.height = $scope.tempHeight;
                     //$mdDialog.hide();
@@ -301,65 +304,70 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     //$mdDialog.hide();
                 });
         };
-        $scope.showFullView = function(widget){
+        $scope.showFullView = function (widget) {
 
             var showFullView = null;
             //if not dynamic visuals
-            if(widget.widgetData.selectedChart == undefined){
+            if (widget.widgetData.selectedChart == undefined) {
                 showFullView = false;
             }
-            else{
-            //if dynamic visuals
-                switch(widget.widgetData.selectedChart.chartType){
-                case 'metric':
-                    showFullView = false;
-                break;
-                default:
-                    if(widget.widgetData.uniqueType=='Dynamic Visuals'){
-                        showFullView = true;
-                    }
-                    else{
+            else {
+                //if dynamic visuals
+                switch (widget.widgetData.selectedChart.chartType) {
+                    case 'metric':
                         showFullView = false;
-                    }
-                break;
+                        break;
+                    default:
+                        if (widget.widgetData.uniqueType == 'Dynamic Visuals') {
+                            showFullView = true;
+                        }
+                        else {
+                            showFullView = false;
+                        }
+                        break;
                 }
             }
 
             return showFullView;
         }
         //dispaly or hide show data view icon according to necessity
-        $scope.showDataView = function(widget){
+        $scope.showDataView = function (widget) {
 
             var showDataView = null;
             //if not dynamic visuals
-            if(widget.widgetData.selectedChart == undefined){ 
+            if (widget.widgetData.selectedChart == undefined) {
                 showDataView = false; //do not show data view option
             }
-            else{ //if dynamic visuals
-            
-                switch(widget.widgetData.selectedChart.chartType){
-                case 'metric': // if type metric do not show data view option
-                    showDataView = false;
-                break;
-                default: // for other dynamic visuals show data view option
-                    if(widget.widgetData.dataCtrl != undefined){ showDataView = true; }
-                    else{ showDataView = false; }
-                break;
+            else { //if dynamic visuals
+
+                switch (widget.widgetData.selectedChart.chartType) {
+                    case 'metric': // if type metric do not show data view option
+                        showDataView = false;
+                        break;
+                    default: // for other dynamic visuals show data view option
+                        if (widget.widgetData.dataCtrl != undefined) {
+                            showDataView = true;
+                        }
+                        else {
+                            showDataView = false;
+                        }
+                        break;
                 }
             }
-            
+
             return showDataView;
         }
         $scope.showData = function (ev, widget) {
             //saving widget in $rootScope for use in widget data view
             $rootScope.widget = widget;
             $mdDialog.show({
-                controller: widget.widgetData.dataCtrl,
-                templateUrl: 'views/ViewWidgetSettingsData.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-            })
-            .then(function () {});
+                    controller: widget.widgetData.dataCtrl,
+                    templateUrl: 'views/ViewWidgetSettingsData.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                })
+                .then(function () {
+                });
         };
         $scope.convertCSVtoJson = function (src) {
 
@@ -373,35 +381,34 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
          @widget : widget that need to get updated
          */
         $scope.syncWidget = function (widget) {
-            
+
             console.log('syncing...');
             if (typeof widget.widgetData.widConfig != 'undefined') {
                 DynamicVisualization.syncWidget(widget, function (data) {
                     widget.widgetData.syncState = true;
                     widget = data;
                 });
-            }else if(typeof(widget.widgetData.commonSrc) != "undefined"){
+            } else if (typeof(widget.widgetData.commonSrc) != "undefined") {
                 widget.widgetData.syncState = false;
-                $qbuilder.sync(widget.widgetData, function(data){
+                $qbuilder.sync(widget.widgetData, function (data) {
                     widget.widgetData.syncState = true;
                     widget = data;
-                    if(typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
+                    if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
                         $scope.widInit();
                 });
             }
         };
 
-        $scope.widInit = function(widget){
-            if(typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
-            {
+        $scope.widInit = function (widget) {
+            if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled) {
                 var drillConf = widget.widgetData.widData.drillConf;
                 var client = $diginengine.getClient(drillConf.dataSrc);
                 widget.widgetData.highchartsNG.options['customVar'] = drillConf.highestLvl;
-                widget.widgetData.highchartsNG.options.chart['events'] ={
+                widget.widgetData.highchartsNG.options.chart['events'] = {
                     drilldown: function (e) {
-                                                
-                            if (!e.seriesOptions) {
-                                var srcTbl = drillConf.srcTbl,
+
+                        if (!e.seriesOptions) {
+                            var srcTbl = drillConf.srcTbl,
                                 fields = drillConf.fields,
                                 drillOrdArr = drillConf.drillOrdArr,
                                 chart = this,
@@ -411,88 +418,90 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                 highestLvl = this.options.customVar,
                                 drillObj = {},
                                 isLastLevel = false;
-                                
-                                for(i=0;i<drillOrdArr.length;i++){
-                                    if(drillOrdArr[i].name == highestLvl){
-                                        nextLevel = drillOrdArr[i].nextLevel;
-                                        if(!drillOrdArr[i+1].nextLevel) isLastLevel = true;
-                                    }
+
+                            for (i = 0; i < drillOrdArr.length; i++) {
+                                if (drillOrdArr[i].name == highestLvl) {
+                                    nextLevel = drillOrdArr[i].nextLevel;
+                                    if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
                                 }
-                                
-                                // Show the loading label
-                                chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
-                                
-                                //aggregate method
-                                clientObj.getAggData(srcTbl, fields, function(res, status, query) {
-                                    
-                                    widget.widgetData.widData.drillConf.currentLevel++;
-                                    switch(widget.widgetData.widData.drillConf.currentLevel){
-                                        case 2:
-                                            widget.widgetData.widData.drillConf.level2Query = query;
+                            }
+
+                            // Show the loading label
+                            chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
+
+                            //aggregate method
+                            clientObj.getAggData(srcTbl, fields, function (res, status, query) {
+
+                                widget.widgetData.widData.drillConf.currentLevel++;
+                                switch (widget.widgetData.widData.drillConf.currentLevel) {
+                                    case 2:
+                                        widget.widgetData.widData.drillConf.level2Query = query;
                                         break;
-                                        case 3:
-                                            widget.widgetData.widData.drillConf.level3Query = query;
+                                    case 3:
+                                        widget.widgetData.widData.drillConf.level3Query = query;
                                         break;
-                                    }
-                                    widget.widgetData.widData.drillConf.previousQuery = widget.widgetData.widData.drillConf.currentQuery;
-                                    widget.widgetData.widData.drillConf.currentQuery = query;
-                                    
-                                    if(status){
-                                        for (var key in res[0]) {
-                                            if (Object.prototype.hasOwnProperty.call(res[0], key)) {
-                                                if(key != nextLevel){
-                                                    drillObj = {name : key,
-                                                                data : []};
-                                                }
+                                }
+                                widget.widgetData.widData.drillConf.previousQuery = widget.widgetData.widData.drillConf.currentQuery;
+                                widget.widgetData.widData.drillConf.currentQuery = query;
+
+                                if (status) {
+                                    for (var key in res[0]) {
+                                        if (Object.prototype.hasOwnProperty.call(res[0], key)) {
+                                            if (key != nextLevel) {
+                                                drillObj = {
+                                                    name: key,
+                                                    data: []
+                                                };
                                             }
                                         }
-                                        
-                                        res.forEach(function(key){
-                                            if(!isLastLevel){
-                                                drillObj.data.push({
-                                                    name: key[nextLevel],
-                                                    y: key[drillObj.name],
-                                                    drilldown: true
-                                                });
-                                            }else{
-                                                drillObj.data.push({
-                                                    name: key[nextLevel],
-                                                    y: key[drillObj.name]
-                                                });
-                                            }
-                                        });
-                                        
-                                        chart.addSeriesAsDrilldown(e.point, drillObj);
-                                        
-                                    }else{
-                                        alert('request failed due to :' + JSON.stringify(res));
-                                        e.preventDefault();
                                     }
-                                    console.log(JSON.stringify(res));
-                                    chart.options.customVar = nextLevel;
-                                    chart.hideLoading();
-                                }, nextLevel, highestLvl + "='" + clickedPoint + "'");
-                            }
-                        },
-                        drillup: function(e){
 
-                            widget.widgetData.widData.drillConf.currentLevel--;
-                            var chart = this;
-                            drillConf.drillOrdArr.forEach(function(key){
-                                if(key.nextLevel && key.nextLevel == chart.options.customVar)
-                                    chart.options.customVar = key.name;
-                            });
+                                    res.forEach(function (key) {
+                                        if (!isLastLevel) {
+                                            drillObj.data.push({
+                                                name: key[nextLevel],
+                                                y: key[drillObj.name],
+                                                drilldown: true
+                                            });
+                                        } else {
+                                            drillObj.data.push({
+                                                name: key[nextLevel],
+                                                y: key[drillObj.name]
+                                            });
+                                        }
+                                    });
+
+                                    chart.addSeriesAsDrilldown(e.point, drillObj);
+
+                                } else {
+                                    alert('request failed due to :' + JSON.stringify(res));
+                                    e.preventDefault();
+                                }
+                                console.log(JSON.stringify(res));
+                                chart.options.customVar = nextLevel;
+                                chart.hideLoading();
+                            }, nextLevel, highestLvl + "='" + clickedPoint + "'");
                         }
+                    },
+                    drillup: function (e) {
+
+                        widget.widgetData.widData.drillConf.currentLevel--;
+                        var chart = this;
+                        drillConf.drillOrdArr.forEach(function (key) {
+                            if (key.nextLevel && key.nextLevel == chart.options.customVar)
+                                chart.options.customVar = key.name;
+                        });
+                    }
                 }
             }
         };
-        $scope.removePage = function(page, ev){
+        $scope.removePage = function (page, ev) {
 
             $mdDialog.show({
                 controller: function removePageCtrl($scope, $mdDialog, ngToast) {
 
                     var removePage = null;
-                    $scope.close = function(){
+                    $scope.close = function () {
 
                         $mdDialog.hide();
                         removePage = true;
@@ -512,15 +521,15 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
             }).then(function (removePage) {
 
-                if(removePage){
+                if (removePage) {
 
                     var pages = $rootScope.dashboard.pages;
-                    for(var i=0; i < pages.length; i++){
+                    for (var i = 0; i < pages.length; i++) {
                         //check for the specific page in pages array
-                        if(pages[i].pageID == page.pageID) {
-                           pages.splice(i, 1);
+                        if (pages[i].pageID == page.pageID) {
+                            pages.splice(i, 1);
                             //if removed page is not a new page push it
-                            if(page.pageID.substr(0, 4) != "temp"){
+                            if (page.pageID.substr(0, 4) != "temp") {
                                 $rootScope.dashboard.deletions.pageIDs.push(page.pageID);
                             }
                             console.log("$rootScope.dashboard.deletions", $rootScope.dashboard.deletions);
@@ -547,7 +556,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 controller: function closeWidgetCtrl($scope, $mdDialog) {
 
                     var removeWidget = null;
-                    $scope.close = function(){
+                    $scope.close = function () {
 
                         $mdDialog.hide();
                         removeWidget = true;
@@ -562,16 +571,16 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 }
             }).then(function (removeWidget) {
 
-                if(removeWidget){
+                if (removeWidget) {
 
                     var selectedPage = $rootScope.selectedPage;
-                    var widgets = $rootScope.dashboard.pages[selectedPage-1].widgets;
-                    for(var i=0; i < widgets.length; i++){
+                    var widgets = $rootScope.dashboard.pages[selectedPage - 1].widgets;
+                    for (var i = 0; i < widgets.length; i++) {
                         //check for the specific widget in widgets array
-                        if(widgets[i].widgetID == widget.widgetID) {
-                           widgets.splice(i, 1);
+                        if (widgets[i].widgetID == widget.widgetID) {
+                            widgets.splice(i, 1);
                             //if removed widget is not a new widget push it
-                            if(widget.widgetID.substr(0, 4) != "temp"){
+                            if (widget.widgetID.substr(0, 4) != "temp") {
                                 $rootScope.dashboard.deletions.widgetIDs.push(widget.widgetID);
                             }
                             console.log("$rootScope.dashboard.deletions", $rootScope.dashboard.deletions);
@@ -606,13 +615,12 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         }
         $scope.commentary = function (widget) {
             var comment = "";
-            var chunks = []; 
+            var chunks = [];
 
-            // var msg = new SpeechSynthesisUtterance(""+widget.widgetData.widData.label + 'is' +widget.widgetData.widData.value  +widget.widgetData.widData.scale + );
-            //  window.speechSynthesis.speak(msg);
-             var msg = new SpeechSynthesisUtterance(+$rootScope.username + ' you are adding' + widget.title + ' widget');
-                window.speechSynthesis.speak(msg);
-
+            var msg = new SpeechSynthesisUtterance("This is " + widget.widgetData.widName + widget.title + ' widget');
+            window.speechSynthesis.speak(msg);
+            var msg = new SpeechSynthesisUtterance("" + widget.widgetData.widData.label + 'is' + widget.widgetData.widData.value + widget.widgetData.widData.scale);
+            window.speechSynthesis.speak(msg);
 
 
         }
@@ -620,7 +628,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             $mdDialog.hide();
         };
         $scope.clear = function () {
-            $rootScope.dashboard.pages[$rootScope.selectePage-1].widgets = [];
+            $rootScope.dashboard.pages[$rootScope.selectePage - 1].widgets = [];
         };
 
         $scope.showWidgetSettings = false;
@@ -638,19 +646,15 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 ])
 ;
 
- 
- 
- 
- 
 
 function googleMapsCtrl($scope, $mdDialog, wid, $http) {
-    
+
     $scope.closeDialog = function () {
         $mdDialog.hide();
     };
 };
 
- 
+
 routerApp.controller('ReportsDevCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportService',
     '$timeout', '$log', 'cssInjector',
     function ($scope, $mdSidenav, $sce, ReportService, $timeout,
@@ -689,10 +693,10 @@ routerApp.controller('ReportsDevCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportS
 
             $scope.toggleSidenav('left');
         }
-}]);
+    }]);
 routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain',
     function ($scope, dynamicallyReportSrv, $localStorage, Digin_Engine_API, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain) {
-                // update damith
+        // update damith
         // get all reports details
         var privateFun = (function () {
             var rptService = $localStorage.erportServices;
@@ -740,11 +744,11 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
 
         $scope.reports = [];
         $scope.preloader = false;
-                                            /* file upload */
-        $scope.$watch('files', function() {
+        /* file upload */
+        $scope.$watch('files', function () {
             $scope.upload($scope.files);
         });
-        $scope.$watch('file', function() {
+        $scope.$watch('file', function () {
             if ($scope.file != null) {
                 $scope.files = [$scope.file];
             }
@@ -752,34 +756,34 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
 
         $scope.log = '';
 
-        $scope.upload = function(files) {
+        $scope.upload = function (files) {
 
             var userInfo = JSON.parse(getCookie("authData"));
-                                    
+
             if (files && files.length) {
                 $scope.preloader = true;
                 $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
 
                 for (var i = 0; i < files.length; i++) {
                     var lim = i == 0 ? "" : "-" + i;
-                                           
+
                     Upload.upload({
                         url: Digin_Engine_API + 'file_upload',
                         headers: {
-                            'Content-Type': 'multipart/form-data',                         
-                        },           
+                            'Content-Type': 'multipart/form-data',
+                        },
                         data: {
                             file: files[i],
                             db: 'BigQuery',
                             SecurityToken: userInfo.SecurityToken,
                             Domain: 'Digin_Domain'
-                        }                         
-                    }).success(function(data){                                                 
+                        }
+                    }).success(function (data) {
                         fireMsg('1', 'Successfully uploaded!');
                         $scope.preloader = false;
                         $scope.diginLogo = 'digin-logo-wrapper2';
                         $mdDialog.hide();
-                    }).error(function(data) {
+                    }).error(function (data) {
                         fireMsg('0', 'There was an error while uploading data !');
                         $scope.preloader = false;
                         $scope.diginLogo = 'digin-logo-wrapper2';
@@ -789,24 +793,24 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
         };
 
         function fireMsg(msgType, content) {
-                    ngToast.dismiss();
-                    var _className;
-                    if (msgType == '0') {
-                        _className = 'danger';
-                    } else if (msgType == '1') {
-                        _className = 'success';
-                    }
-                    ngToast.create({
-                        className: _className,
-                        content: content,
-                        horizontalPosition: 'center',
-                        verticalPosition: 'top',
-                        dismissOnClick: true
-                    });
+            ngToast.dismiss();
+            var _className;
+            if (msgType == '0') {
+                _className = 'danger';
+            } else if (msgType == '1') {
+                _className = 'success';
+            }
+            ngToast.create({
+                className: _className,
+                content: content,
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                dismissOnClick: true
+            });
         }
     }
 ]);
- 
+
 
 routerApp.controller('RealTimeController', ['$scope', '$sce', 'RealTimeService',
     '$timeout', '$log', '$mdDialog',
@@ -841,8 +845,6 @@ routerApp.controller('RealTimeController', ['$scope', '$sce', 'RealTimeService',
 
     }])
 
- 
- 
 
 routerApp.controller('summarizeCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', '$q', '$timeout',
     function ($scope, $http, $objectstore, $mdDialog, $rootScope, $q, $timeout) {
@@ -1125,7 +1127,6 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
 ]);
 
 
-
 routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state', '$http', 'ScopeShare',
     function ($scope, $mdDialog, $state, $http, ScopeShare) {
 
@@ -1150,70 +1151,136 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
         var outOfSLArray = [];
 
         $scope.markers = [];
-        $scope.map = { center: { latitude: 7.2964, longitude: 80.6350 }, 
-                        zoom: 8, 
-                        bounds: {},
-                        options: {
-                            maxZoom: 15,
-                            minZoom: 1
-                        }
-                        ,
-                        events: {   
-                            mouseover: function (map) {
-                                $scope.$apply(function () {
-                                    google.maps.event.trigger(map, "resize");
-                                });
-                            }
-                            // ,
-                            // dragend: function (map) {
-                            //     $scope.$apply(function () {
-                            //         google.maps.event.trigger(map, "resize");
-                            //     });
-                            // }
-                        } 
-                    };       
-        
+        $scope.map = {
+            center: {latitude: 7.2964, longitude: 80.6350},
+            zoom: 8,
+            bounds: {},
+            options: {
+                maxZoom: 15,
+                minZoom: 1
+            }
+            ,
+            events: {
+                mouseover: function (map) {
+                    $scope.$apply(function () {
+                        google.maps.event.trigger(map, "resize");
+                    });
+                }
+                // ,
+                // dragend: function (map) {
+                //     $scope.$apply(function () {
+                //         google.maps.event.trigger(map, "resize");
+                //     });
+                // }
+            }
+        };
+
         // ======== initializing map at google map loading =========
-        $scope.initGmap = function(){
-            
+        $scope.initGmap = function () {
+
             queue = [];
             markers = [];
             delay = 100;
             nextAddress = 0;
 
-               JSONData = {"Mount Lavinia": {"val2": "Western Zone", "val1": "GC", "Address": [35.849233, -88.6608897]}, 
-"Vavuniya": {"val2": "North and East Zone", "val1": "GP", "Address": [8.7381572, 80.47714719999999]}, 
-"Manipay": {"val2": "North and East Zone", "val1": "GO", "Address": [9.7291062, 79.9925446]}, 
-"Kalutara": {"val2": "Southern Zone", "val1": "GL", "Address": [6.5853948, 79.96074]}, 
-"Maharagama": {"val2": "Western Zone", "val1": "GD", "Address": [6.8522148, 79.9248669]}, 
-"Batticaloa": {"val2": "North and East Zone", "val1": "GQ", "Address": [7.730997100000001, 81.6747295]}, 
-"Matara": {"val2": "Southern Zone", "val1": "GJ", "Address": [41.5381124, 2.4447406]}, 
-"Ambalantota": {"val2": "Southern Zone", "val1": "GM", "Address": [6.1302674, 81.0202533]}, 
-"Anuradhapura": {"val2": "Central  Zone", "val1": "GG", "Address": [8.3451852, 80.38813329999999]}, 
-"Unknown": {"val2": "Unknown", "val1": "Unknown", "Address": [42.230537, -83.7466403]}, 
-"Piliyandala": {"val2": "Western Zone", "val1": "GD", "Address": [6.8018027, 79.9226841]}, 
-"Trincomalee": {"val2": "North and East Zone", "val1": "GQ", "Address": [8.5922, 81.19679579999999]}, 
-"Kiribathgoda": {"val2": "Western Zone", "val1": "GB", "Address": [6.9778284, 79.9271523]}, "Galle": {"val2": "Southern Zone", "val1": "GJ", "Address": [6.0535185, 80.2209773]}, "Alternate Channel": {"val2": "Non Zone", "val1": "GR", "Address": [40.5075022, -83.9155701]}, "Bandarawela": {"val2": "Central  Zone", "val1": "GH", "Address": [6.825877999999999, 80.9981576]}, "BUSINESS DEVELOPMENT UNIT": {"val2": "Non Zone", "val1": "Non Regional", "Address": [8.9277211, 29.7889248]}, "Horana": {"val2": "Western Zone", "val1": "GD", "Address": [6.7229806, 80.0646682]}, "Matale": {"val2": "Central  Zone", "val1": "GE", "Address": [7.467465, 80.6234161]}, "Moneragala": {"val2": "Southern Zone", "val1": "GN", "Address": [6.890645399999999, 81.34544170000001]}, "Negombo": {"val2": "Western Zone", "val1": "GA", "Address": [7.2087984, 79.83802159999999]}, "Avissawella": {"val2": "Western Zone", "val1": "GD", "Address": [6.958560599999999, 80.1986649]}, "Embilipitiya": {"val2": "Southern Zone", "val1": "GN", "Address": [6.3162324, 80.8433145]}, "Kuliyapitiya": {"val2": "Western Zone", "val1": "GA", "Address": [7.472123000000001, 80.0446221]}, "Kalmunai": {"val2": "North and East Zone", "val1": "GQ", "Address": [7.414383099999999, 81.8306334]}, "Nelliadi": {"val2": "North and East Zone", "val1": "GO", "Address": [12.8359073, 75.40533669999999]}, "Puttalam": {"val2": "Western Zone", "val1": "GA", "Address": [8.0402828, 79.84087869999999]}, "Kilinochchi": {"val2": "North and East Zone", "val1": "GO", "Address": [9.3802886, 80.3769999]}, "Tissamaharama": {"val2": "Southern Zone", "val1": "GM", "Address": [6.2791538, 81.2876691]}, "Deniyaya": {"val2": "Southern Zone", "val1": "GK", "Address": [6.3424847, 80.5596582]}, "Chilaw": {"val2": "Western Zone", "val1": "GA", "Address": [7.561989400000001, 79.8016569]}, "Kandy": {"val2": "Central  Zone", "val1": "GE", "Address": [7.2905715, 80.6337262]}, "Ratnapura": {"val2": "Southern Zone", "val1": "GN", "Address": [6.7081032, 80.3769999]}, "Kegalle": {"val2": "Central  Zone", "val1": "GF", "Address": [7.251331700000001, 80.3463754]}, "Panadura": {"val2": "Southern Zone", "val1": "GL", "Address": [6.720229199999999, 79.9304633]}, "Colombo North": {"val2": "Western Zone", "val1": "GC", "Address": [22.5009081, 114.1558258]}, "Jaffna": {"val2": "North and East Zone", "val1": "GO", "Address": [9.6614981, 80.02554649999999]}, "Kurunegala": {"val2": "Central  Zone", "val1": "GF", "Address": [7.472981299999999, 80.3547286]}, "Colombo South": {"val2": "Western Zone", "val1": "GC", "Address": [44.4669941, -73.1709604]}, "CSC": {"val2": "Non Zone", "val1": "GR", "Address": [43.0763931, -89.4321717]}, "Hatton": {"val2": "Central  Zone", "val1": "GI", "Address": [34.5628707, -87.415301]}, "Head Office": {"val2": "Non Zone", "val1": "GR", "Address": [-1.2223978, 31.8086949]}, "COLOMBO WEST": {"val2": "Non Zone", "val1": "CLS Region", "Address": [5.4638158, 10.8000051]}, "Nuwara Eliya": {"val2": "Central  Zone", "val1": "GI", "Address": [32.0738016, 34.8865393]}, "Towers": {"val2": "Non Zone", "val1": "GR", "Address": [52.0429567, 0.7353643999999999]}, "Gampola": {"val2": "Central  Zone", "val1": "GE", "Address": [7.126777, 80.564677]}, "Ampara": {"val2": "Southern Zone", "val1": "GN", "Address": [7.301756300000001, 81.6747295]}, "Malabe": {"val2": "Western Zone", "val1": "GC", "Address": [6.9060787, 79.96962769999999]}, "Badulla": {"val2": "Central  Zone", "val1": "GH", "Address": [6.993400899999999, 81.0549815]}, "Balangoda": {"val2": "Southern Zone", "val1": "GN", "Address": [6.666861099999999, 80.70480839999999]}, "Polonaruwa": {"val2": "Central  Zone", "val1": "GG", "Address": [7.932635799999999, 81.00368209999999]}, "Ja Ela": {"val2": "Western Zone", "val1": "GB", "Address": [47.9032372, -91.8670873]}, "Dambulla": {"val2": "Central  Zone", "val1": "GG", "Address": [7.8985219, 80.6770787]}, "Mahiyangana": {"val2": "Central  Zone", "val1": "GH", "Address": [7.331610199999999, 81.00368209999999]}, "Gampaha": {"val2": "Western Zone", "val1": "GB", "Address": [7.0873101, 80.01436559999999]}, "Thambuttegama": {"val2": "Central  Zone", "val1": "GG", "Address": [8.1540797, 80.2938005]}, "Mannar": {"val2": "North and East Zone", "val1": "GP", "Address": [9.3171351, 76.5343721]}, "Ambalangoda": {"val2": "Southern Zone", "val1": "GK", "Address": [6.2441521, 80.0590804]}};
-            JsonToArray(); 
+            JSONData = {
+                "Mount Lavinia": {"val2": "Western Zone", "val1": "GC", "Address": [35.849233, -88.6608897]},
+                "Vavuniya": {"val2": "North and East Zone", "val1": "GP", "Address": [8.7381572, 80.47714719999999]},
+                "Manipay": {"val2": "North and East Zone", "val1": "GO", "Address": [9.7291062, 79.9925446]},
+                "Kalutara": {"val2": "Southern Zone", "val1": "GL", "Address": [6.5853948, 79.96074]},
+                "Maharagama": {"val2": "Western Zone", "val1": "GD", "Address": [6.8522148, 79.9248669]},
+                "Batticaloa": {"val2": "North and East Zone", "val1": "GQ", "Address": [7.730997100000001, 81.6747295]},
+                "Matara": {"val2": "Southern Zone", "val1": "GJ", "Address": [41.5381124, 2.4447406]},
+                "Ambalantota": {"val2": "Southern Zone", "val1": "GM", "Address": [6.1302674, 81.0202533]},
+                "Anuradhapura": {"val2": "Central  Zone", "val1": "GG", "Address": [8.3451852, 80.38813329999999]},
+                "Unknown": {"val2": "Unknown", "val1": "Unknown", "Address": [42.230537, -83.7466403]},
+                "Piliyandala": {"val2": "Western Zone", "val1": "GD", "Address": [6.8018027, 79.9226841]},
+                "Trincomalee": {"val2": "North and East Zone", "val1": "GQ", "Address": [8.5922, 81.19679579999999]},
+                "Kiribathgoda": {"val2": "Western Zone", "val1": "GB", "Address": [6.9778284, 79.9271523]},
+                "Galle": {"val2": "Southern Zone", "val1": "GJ", "Address": [6.0535185, 80.2209773]},
+                "Alternate Channel": {"val2": "Non Zone", "val1": "GR", "Address": [40.5075022, -83.9155701]},
+                "Bandarawela": {"val2": "Central  Zone", "val1": "GH", "Address": [6.825877999999999, 80.9981576]},
+                "BUSINESS DEVELOPMENT UNIT": {
+                    "val2": "Non Zone",
+                    "val1": "Non Regional",
+                    "Address": [8.9277211, 29.7889248]
+                },
+                "Horana": {"val2": "Western Zone", "val1": "GD", "Address": [6.7229806, 80.0646682]},
+                "Matale": {"val2": "Central  Zone", "val1": "GE", "Address": [7.467465, 80.6234161]},
+                "Moneragala": {
+                    "val2": "Southern Zone",
+                    "val1": "GN",
+                    "Address": [6.890645399999999, 81.34544170000001]
+                },
+                "Negombo": {"val2": "Western Zone", "val1": "GA", "Address": [7.2087984, 79.83802159999999]},
+                "Avissawella": {"val2": "Western Zone", "val1": "GD", "Address": [6.958560599999999, 80.1986649]},
+                "Embilipitiya": {"val2": "Southern Zone", "val1": "GN", "Address": [6.3162324, 80.8433145]},
+                "Kuliyapitiya": {"val2": "Western Zone", "val1": "GA", "Address": [7.472123000000001, 80.0446221]},
+                "Kalmunai": {"val2": "North and East Zone", "val1": "GQ", "Address": [7.414383099999999, 81.8306334]},
+                "Nelliadi": {"val2": "North and East Zone", "val1": "GO", "Address": [12.8359073, 75.40533669999999]},
+                "Puttalam": {"val2": "Western Zone", "val1": "GA", "Address": [8.0402828, 79.84087869999999]},
+                "Kilinochchi": {"val2": "North and East Zone", "val1": "GO", "Address": [9.3802886, 80.3769999]},
+                "Tissamaharama": {"val2": "Southern Zone", "val1": "GM", "Address": [6.2791538, 81.2876691]},
+                "Deniyaya": {"val2": "Southern Zone", "val1": "GK", "Address": [6.3424847, 80.5596582]},
+                "Chilaw": {"val2": "Western Zone", "val1": "GA", "Address": [7.561989400000001, 79.8016569]},
+                "Kandy": {"val2": "Central  Zone", "val1": "GE", "Address": [7.2905715, 80.6337262]},
+                "Ratnapura": {"val2": "Southern Zone", "val1": "GN", "Address": [6.7081032, 80.3769999]},
+                "Kegalle": {"val2": "Central  Zone", "val1": "GF", "Address": [7.251331700000001, 80.3463754]},
+                "Panadura": {"val2": "Southern Zone", "val1": "GL", "Address": [6.720229199999999, 79.9304633]},
+                "Colombo North": {"val2": "Western Zone", "val1": "GC", "Address": [22.5009081, 114.1558258]},
+                "Jaffna": {"val2": "North and East Zone", "val1": "GO", "Address": [9.6614981, 80.02554649999999]},
+                "Kurunegala": {"val2": "Central  Zone", "val1": "GF", "Address": [7.472981299999999, 80.3547286]},
+                "Colombo South": {"val2": "Western Zone", "val1": "GC", "Address": [44.4669941, -73.1709604]},
+                "CSC": {"val2": "Non Zone", "val1": "GR", "Address": [43.0763931, -89.4321717]},
+                "Hatton": {"val2": "Central  Zone", "val1": "GI", "Address": [34.5628707, -87.415301]},
+                "Head Office": {"val2": "Non Zone", "val1": "GR", "Address": [-1.2223978, 31.8086949]},
+                "COLOMBO WEST": {"val2": "Non Zone", "val1": "CLS Region", "Address": [5.4638158, 10.8000051]},
+                "Nuwara Eliya": {"val2": "Central  Zone", "val1": "GI", "Address": [32.0738016, 34.8865393]},
+                "Towers": {"val2": "Non Zone", "val1": "GR", "Address": [52.0429567, 0.7353643999999999]},
+                "Gampola": {"val2": "Central  Zone", "val1": "GE", "Address": [7.126777, 80.564677]},
+                "Ampara": {"val2": "Southern Zone", "val1": "GN", "Address": [7.301756300000001, 81.6747295]},
+                "Malabe": {"val2": "Western Zone", "val1": "GC", "Address": [6.9060787, 79.96962769999999]},
+                "Badulla": {"val2": "Central  Zone", "val1": "GH", "Address": [6.993400899999999, 81.0549815]},
+                "Balangoda": {"val2": "Southern Zone", "val1": "GN", "Address": [6.666861099999999, 80.70480839999999]},
+                "Polonaruwa": {
+                    "val2": "Central  Zone",
+                    "val1": "GG",
+                    "Address": [7.932635799999999, 81.00368209999999]
+                },
+                "Ja Ela": {"val2": "Western Zone", "val1": "GB", "Address": [47.9032372, -91.8670873]},
+                "Dambulla": {"val2": "Central  Zone", "val1": "GG", "Address": [7.8985219, 80.6770787]},
+                "Mahiyangana": {
+                    "val2": "Central  Zone",
+                    "val1": "GH",
+                    "Address": [7.331610199999999, 81.00368209999999]
+                },
+                "Gampaha": {"val2": "Western Zone", "val1": "GB", "Address": [7.0873101, 80.01436559999999]},
+                "Thambuttegama": {"val2": "Central  Zone", "val1": "GG", "Address": [8.1540797, 80.2938005]},
+                "Mannar": {"val2": "North and East Zone", "val1": "GP", "Address": [9.3171351, 76.5343721]},
+                "Ambalangoda": {"val2": "Southern Zone", "val1": "GK", "Address": [6.2441521, 80.0590804]}
+            };
+            JsonToArray();
 
 
-            
-            setTimeout(function(){theNext();},400);  
-        }   
-    
+            setTimeout(function () {
+                theNext();
+            }, 400);
+        }
+
         // ====== Json data to array ======    
         function JsonToArray() {
-            for(var key in JSONData){
-                if( JSONData[key].Address[0]!=undefined && // adding only defined value to queue
-                    JSONData[key].Address[1]!=undefined &&
-                    key!=undefined){
-                    queue.push({    name: key, 
-                                    address: JSONData[key].Address, 
-                                    val1: JSONData[key].val1,
-                                    val2: JSONData[key].val2 
-                                });
+            for (var key in JSONData) {
+                if (JSONData[key].Address[0] != undefined && // adding only defined value to queue
+                    JSONData[key].Address[1] != undefined &&
+                    key != undefined) {
+                    queue.push({
+                        name: key,
+                        address: JSONData[key].Address,
+                        val1: JSONData[key].val1,
+                        val2: JSONData[key].val2
+                    });
                 }
-                else{ //counting undefined values 
+                else { //counting undefined values
                     undefinedErrors++;
                 }
             }
@@ -1221,26 +1288,26 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
 
         // ====== Decides the next thing to do ======
         function theNext() {
-                if ((nextAddress+1) < queue.length) {
-                    console.log(nextAddress + " < " + queue.length);
-                    setTimeout(function(){
+            if ((nextAddress + 1) < queue.length) {
+                console.log(nextAddress + " < " + queue.length);
+                setTimeout(function () {
 
-                            createMarker(queue[nextAddress],nextAddress);                          
-                            theNext();
-                    }, delay);
-                    nextAddress++;
-                } else {
-                    // We're done. 
-                    console.log("Done!");
-                    
-                    $scope.markers = markers;
+                    createMarker(queue[nextAddress], nextAddress);
+                    theNext();
+                }, delay);
+                nextAddress++;
+            } else {
+                // We're done.
+                console.log("Done!");
 
-                    //sharing markers with widgetSettingsCtrl using Scopes factory
-                    ScopeShare.store('gmapsControllerBranch', $scope.markers);
-                    
-                }
-                
                 $scope.markers = markers;
+
+                //sharing markers with widgetSettingsCtrl using Scopes factory
+                ScopeShare.store('gmapsControllerBranch', $scope.markers);
+
+            }
+
+            $scope.markers = markers;
         }
 
         // ====== between function ======
@@ -1251,50 +1318,50 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
         // ======= Function to create a marker ========
         function createMarker(queueItem, id) {
 
-            if( between(queueItem.address[0],5,10) &&   // in between 5 and 10 and
-                between(queueItem.address[1],79,82)){   // in between 79 and 82
+            if (between(queueItem.address[0], 5, 10) &&   // in between 5 and 10 and
+                between(queueItem.address[1], 79, 82)) {   // in between 79 and 82
 
-                var marker = {  
-                                latitude: queueItem.address[0], 
-                                longitude: queueItem.address[1], 
-                                id: id,
-                                // icon: 'styles/css/images/hnb3.png', 
-                                show: false,
-                                templateUrl:'views/googleMaps/infoWindow.html',
-                                templateParameter: {
-                                    name: queueItem.name,
-                                    field1: queueItem.val1,
-                                    field2: queueItem.val2},
-                                windowOptions: {
-                                    boxClass: "infobox",
-                                    boxStyle: {
-                                        backgroundColor: "#FAA61A",
-                                        border: "2px solid #10297d",
-                                        borderRadius: "8px",
-                                        width: "140px",
-                                        height: "60px",
-                                        opacity: 0.9
-                                    },
-                                    // content: "Text",
-                                    disableAutoPan: false,
-                                    maxWidth: 0,
-                                    pixelOffset: new google.maps.Size(-60, -120),
-                                    zIndex: null,
-                                    closeBoxMargin: "3px",
-                                    closeBoxURL: "styles/css/images/close.svg",
-                                    infoBoxClearance: new google.maps.Size(1, 1),
-                                    isHidden: false,
-                                    pane: "floatPane",
-                                    enableEventPropagation: false
-                                }
-                            };
+                var marker = {
+                    latitude: queueItem.address[0],
+                    longitude: queueItem.address[1],
+                    id: id,
+                    // icon: 'styles/css/images/hnb3.png',
+                    show: false,
+                    templateUrl: 'views/googleMaps/infoWindow.html',
+                    templateParameter: {
+                        name: queueItem.name,
+                        field1: queueItem.val1,
+                        field2: queueItem.val2
+                    },
+                    windowOptions: {
+                        boxClass: "infobox",
+                        boxStyle: {
+                            backgroundColor: "#FAA61A",
+                            border: "2px solid #10297d",
+                            borderRadius: "8px",
+                            width: "140px",
+                            height: "60px",
+                            opacity: 0.9
+                        },
+                        // content: "Text",
+                        disableAutoPan: false,
+                        maxWidth: 0,
+                        pixelOffset: new google.maps.Size(-60, -120),
+                        zIndex: null,
+                        closeBoxMargin: "3px",
+                        closeBoxURL: "styles/css/images/close.svg",
+                        infoBoxClearance: new google.maps.Size(1, 1),
+                        isHidden: false,
+                        pane: "floatPane",
+                        enableEventPropagation: false
+                    }
+                };
 
                 markers.push(marker);
-                $scope.syncState = true;               
+                $scope.syncState = true;
             }
-            else
-            {
-                
+            else {
+
                 console.log("****** out of sri lanka range ******");
                 outOfSriLanka++;
                 outOfSLArray.push(queueItem.name);
@@ -1302,6 +1369,5 @@ routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state'
         }
     }
 ]);
-
 
 

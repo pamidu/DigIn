@@ -613,9 +613,28 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
     function($scope, $rootScope, $mdDialog, generatePDF3,$http,ngToast,$pdfString,$uploader,$helpers,$mdToast,$v6urls) {
 
         $scope.generateSnapshot = function() {
-            //alert("core2");
-            //document.getElementById("canvasTest").appendChild($rootScope.a);
 
+            // var htmlElement = $("#mainContainer");
+            // var title = "Dashboard";
+            // var config = {
+            //             title:"Dashboard",
+            //             titleLeft: 50, 
+            //             titleTop: 20,
+            //             tableLeft: 0,
+            //             tableTop: 30
+            // };
+            // generatePDF3.generate(htmlElement, config);
+
+        };
+
+        // $scope.getMailDetail = function(sendState){
+        //     $scope.sendMailState = true;
+        // };
+
+        $scope.sendMail = function(sendState){
+            //$scope.sendMailState = false;
+
+            // ----generate pdf---------------
             var htmlElement = $("#mainContainer");
             var title = "Dashboard";
             var config = {
@@ -626,21 +645,19 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
                         tableTop: 30
             };
             generatePDF3.generate(htmlElement, config);
-
-        };
-        $scope.getMailDetail = function(sendState){
-            $scope.sendMailState = true;
-        };
-        $scope.sendMail = function(sendState){
-            $scope.sendMailState = false;
+            // -------------------
 
             var decodeUrl = $pdfString.returnPdf();
             var blobFile = dataURItoBlob(decodeUrl) 
             blobFile.name = 'dashboard.pdf'
+            blobFile.type = 'application/pdf'
+            blobFile ["Content-Type"] =  "application/pdf"
+
             $scope.uploadPdfName = 'dashboard.pdf'; 
 
             $uploader.uploadMedia("diginDashboard",blobFile,blobFile.name);
             $uploader.onSuccess(function (e, data) {
+                console.log(data);
                 $scope.deliverMail($scope.emailTo);
                 console.log("upload success")
             });
@@ -660,10 +677,10 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
         function dataURItoBlob(dataURI, callback) {
             // convert base64 to raw binary data held in a string
             // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-            var byteString = atob(dataURI.split(',')[1]);
+            var byteString = atob(dataURI.split(",")[1]);
 
             // separate out the mime component
-            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+            var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0]
 
             // write the bytes of the string to an ArrayBuffer
             var ab = new ArrayBuffer(byteString.length);
@@ -701,57 +718,56 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
             $mdDialog.hide();
         };
         $scope.deliverMail=function (mailTo) {
-            // $helpers.getHost()
-            
-            // var path =  $v6urls.mediaLib +"/apis/media/tenant/diginDashboard/dashboard.pdf"
-            var path =  "http://"+$helpers.getHost()+"/apis/media/tenant/diginDashboard/dashboard.pdf"
+
+            var path =  "http://digin.io/apis/media/tenant/diginDashboard/dashboard.pdf"
+             
             
             // var path =  "http://sachilagmailcom.space.test.12thdoor.com/apis/media/tenant/diginDashboard/dashboard.pdf"
             $scope.mailData =   {
-                    "type": "email",
-                    "to": mailTo,
-                    "subject": "Confirmation",
-                    "from": "Digin <noreply-digin@duoworld.com>",
-                    "Namespace": "com.duosoftware.com",
-                    "TemplateID": "T_Email_GENERAL",
-                    "attachments": [{
-                                  "filename": $scope.uploadPdfName,
-                                  "path": path
-                                 }],
-                    "DefaultParams": {
-                        "@@CNAME@@": "",
-                        "@@TITLE@@": "Dash board mail delivery",
-                        "@@MESSAGE@@": "Dash Board Mail Dilivery System",
-                        "@@CNAME@@": "",
-                        "@@APPLICATION@@": "Digin.io",
-                        "@@FOOTER@@": "Copyright 2016",
-                        "@@LOGO@@": ""
-                    },
-                    "CustomParams": {
-                        "@@CNAME@@": "",
-                        "@@TITLE@@": "Dash board mail delivery",
-                        "@@MESSAGE@@": "Dash Board Mail Dilivery System",
-                        "@@CNAME@@": "",
-                        "@@APPLICATION@@": "Digin.io",
-                        "@@FOOTER@@": "Copyright 2016",
-                        "@@LOGO@@": ""
-                    }
+                "type": "email",
+                "to": mailTo,
+                "subject": "Confirmation",
+                "from": "Digin <noreply-digin@duoworld.com>",
+                "Namespace": "com.duosoftware.com",
+                "TemplateID": "T_Email_GENERAL",
+                "attachments": [{
+                              "filename": $scope.uploadPdfName,
+                              "path": path
+                             }],
+                "DefaultParams": {
+                    "@@CNAME@@": "",
+                    "@@TITLE@@": "Dash board mail delivery",
+                    "@@MESSAGE@@": "Dash Board Mail Dilivery System",
+                    "@@CNAME@@": "",
+                    "@@APPLICATION@@": "Digin.io",
+                    "@@FOOTER@@": "Copyright 2016",
+                    "@@LOGO@@": ""
+                },
+                "CustomParams": {
+                    "@@CNAME@@": "",
+                    "@@TITLE@@": "Dash board mail delivery",
+                    "@@MESSAGE@@": "Dash Board Mail Dilivery System",
+                    "@@CNAME@@": "",
+                    "@@APPLICATION@@": "Digin.io",
+                    "@@FOOTER@@": "Copyright 2016",
+                    "@@LOGO@@": ""
+                }
             };
 
+            var userInfo = JSON.parse(getCookie("authData"));
             $http({
-                    method: 'POST',
-                    url: 'http://104.197.27.7:3500/command/notification',
-                    data: angular.toJson($scope.mailData),
-                    headers:{'Content-Type': 'application/json',
-                            'securitytoken': userInfo.SecurityToken
-                            }
-            })
-            .success(function(response){
-                        alert("Mail Sent...!");                        
-            })
-            .error(function(error){   
-                        alert("Fail !");                        
-            });     
+                method: 'POST',
+                url: 'http://104.197.27.7:3500/command/notification',
+                data: $scope.mailData,
+                headers:{
+                    'Content-Type': 'application/json',
+                    'securitytoken': userInfo.SecurityToken
+                }
+            }).then(function(response){
+                console.log(response)
+            },function(response){
+                console.log(response)
+            })   
         }
 }]);
 

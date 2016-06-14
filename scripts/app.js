@@ -98,7 +98,47 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         .state("home.Settings", {
             url: "/settings",
             controller: "dashboardSetupCtrl",
-            templateUrl: "views/setup/dashboardSetup.html",
+            templateUrl: "views/settings/settingRoute.html",
+            data: {
+                requireLogin: true
+            }
+        })
+        .state("home.account", {
+            url: "/settings-account",
+            controller: "dashboardSetupCtrl",
+            templateUrl: "views/settings/accountSettings.html",
+            data: {
+                requireLogin: true
+            }
+        })
+        .state("home.group", {
+            url: "/settings-group",
+            controller: "dashboardSetupCtrl",
+            templateUrl: "views/settings/group.html",
+            data: {
+                requireLogin: true
+            }
+        })
+        .state("home.share", {
+            url: "/settings-share",
+            controller: "dashboardSetupCtrl",
+            templateUrl: "views/settings/shareDashboard.html",
+            data: {
+                requireLogin: true
+            }
+        })
+        .state("home.user", {
+            url: "/settings-user",
+            controller: "dashboardSetupCtrl",
+            templateUrl: "views/settings/user.html",
+            data: {
+                requireLogin: true
+            }
+        })
+        .state("home.userSettings", {
+            url: "/settings-userSettings",
+            controller: "dashboardSetupCtrl",
+            templateUrl: "views/settings/userSettngs.html",
             data: {
                 requireLogin: true
             }

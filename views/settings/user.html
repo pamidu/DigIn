@@ -1,0 +1,34 @@
+<div class="setup-wrapper">
+    <div layout="row" class="setting-close pull-right" ng-click="route('back')">
+        <i class="fa fa-close"></i>
+    </div>
+    <div class="md-padding animated fadeIn" layout="row" layout-align="center center">
+
+        <div class="setting-wrap" flex="30">
+            <div class="setting-card-header">
+                <h5>
+                    Invite User
+                </h5>
+
+                <div class="setting-img-wrap">
+                    <img src="styles/css/images/setting/invite_user.png"/>
+                </div>
+                <div class="setting-text-wrap">
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                </div>
+
+            </div>
+            <div layout="column" class="setup-info-container">
+                <md-input-container>
+                    <label>type email address here..</label>
+                    <input ng-model="user.email">
+                </md-input-container>
+                <md-button class="setup-button md-raised md-primary" ng-click="inviteUser()"><span
+                        class="setup-font-theme">Invite User</span>
+                </md-button>
+            </div>
+        </div>
+
+
+    </div>
+</div>

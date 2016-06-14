@@ -684,6 +684,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         $state.go("home.Dashboards");
                     }
                     else {//give message widget limit exceeded
+                        ngToast.dismiss();
                         ngToast.create({
                             className: 'danger',
                             content: 'maximum widget limit exceeded',

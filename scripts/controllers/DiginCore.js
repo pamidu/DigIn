@@ -383,6 +383,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             }else if(typeof(widget.widgetData.commonSrc) != "undefined"){
                 widget.widgetData.syncState = false;
                 $qbuilder.sync(widget.widgetData, function(data){
+                    console.log(data);
                     widget.widgetData.syncState = true;
                     widget = data;
                     if(typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
@@ -711,11 +712,14 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
 
             return {
                 getAllReport: function () {
+                    $scope.reports=[];
                     getSession();
                     startReportService();
                     dynamicallyReportSrv.getAllReports(reqParameter).success(function (data) {
+                        console.log(data);
                         if (data.Is_Success) {
                             for (var i = 0; i < data.Result.length; i++) {
+                                console.log($scope.reports);
                                 $scope.reports.push(
                                     {splitName: data.Result[i], path: '/dynamically-report-builder'}
                                 );
@@ -733,19 +737,19 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
         $scope.reports = [];
         $scope.preloader = false;
                                             /* file upload */
-        $scope.$watch('files', function() {
+        /*$scope.$watch('files', function() {
             $scope.upload($scope.files);
         });
         $scope.$watch('file', function() {
             if ($scope.file != null) {
                 $scope.files = [$scope.file];
             }
-        });
+        });*/
 
         $scope.log = '';
 
         $scope.upload = function(files) {
-
+            console.log(files);
             var userInfo = JSON.parse(getCookie("authData"));
                                     
             if (files && files.length) {
@@ -764,14 +768,19 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                             file: files[i],
                             db: 'BigQuery',
                             SecurityToken: userInfo.SecurityToken,
-                            Domain: 'Digin_Domain'
+                            Domain: Digin_Domain,
+                            other_data: 'prpt_reports'
                         }                         
-                    }).success(function(data){                                                 
+                    }).success(function(data){
+                        console.log(data);                                                 
                         fireMsg('1', 'Successfully uploaded!');
+                        console.log($scope.reports);
+                        privateFun.getAllReport();
                         $scope.preloader = false;
                         $scope.diginLogo = 'digin-logo-wrapper2';
                         $mdDialog.hide();
                     }).error(function(data) {
+                        console.log(data);
                         fireMsg('0', 'There was an error while uploading data !');
                         $scope.preloader = false;
                         $scope.diginLogo = 'digin-logo-wrapper2';

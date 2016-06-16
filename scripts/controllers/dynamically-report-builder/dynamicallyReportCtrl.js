@@ -236,9 +236,6 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
         if (filedName == 'month' || filedName == "months") {
             select_value = privateFun.getNumberOfMonth(select_value);
         }
-        if (select_value == 'All') {
-            select_value = privateFun.getNumberOfMonth(select_value);
-        }
 
         var currentVal = {
             data: $scope.reportFiledList.selectedDrpFiled,
@@ -580,7 +577,12 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 }
 
                 //create drop down report parameter
+                //retain the value of All as "00" only for month parameter.
                 for (var i = 0; i < selDrpDwnObj.length; i++) {
+                    if (selDrpDwnObj[i]['ParamName'] != "Month" && selDrpDwnObj[i]['value'] == "00")
+                        {
+                            selDrpDwnObj[i]['value'] = "All";
+                        }
                     if (i == 0) {
                         reqParameter.rptParameter = '{"' + selDrpDwnObj[i]['ParamName'] + '" : ' +
                             '"' + selDrpDwnObj[i]['value'] + '"}';
@@ -670,12 +672,12 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                         if (i != executeQueryAry.length) {
                             if (executeQueryAry[i].query != "") {
 
-                                privateFun.waitLoadingFiled(executeQueryAry.filedName);
+                                privateFun.waitLoadingFiled();
 
                                 //#nextquery
                                 var nextQuery = executeQueryAry[nextRequst].query;
-                                var replaceTxt = privateFun.capitalise(filedName);
-                                replaceTxt = '${' + replaceTxt + '}';
+                                //var replaceTxt = privateFun.capitalise(filedName);
+                                var replaceTxt = '${' + filedName + '}';
                                 var nextQuery = nextQuery.replace(replaceTxt, "'" + selectedVal + "'");
                                 //nextQuery = nextQuery.replace('All', selectedVal);
 

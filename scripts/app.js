@@ -840,8 +840,14 @@ routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($
 
 routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http, $rootScope, $q) {
 
-    var clientId = '33022835624-q3km776rl7dkitpinaj7pf2tlu75tfhg.apps.googleusercontent.com',
-        apiKey = 'AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ',
+    // var clientId = '33022835624-q3km776rl7dkitpinaj7pf2tlu75tfhg.apps.googleusercontent.com',
+    //     apiKey = 'AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ',
+    //     scopes = 'profile email https://www.googleapis.com/auth/plus.login',
+    //     domain = '',
+    //     deferred = $q.defer();
+
+     var clientId = '352719853010-1e2k3je9peuv42na7a2imsv21g89ca1o.apps.googleusercontent.com',
+        apiKey = 'AIzaSyBl3Tz2fIwKQNlf5w1RMH9w6VMgWUsok9Q',
         scopes = 'profile email https://www.googleapis.com/auth/plus.login',
         domain = '',
         deferred = $q.defer();

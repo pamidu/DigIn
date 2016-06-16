@@ -1,0 +1,75 @@
+{
+    "companyConfiguration": {
+        "title": "Superman.Inc",
+        "logo": "images/logo.png",
+        "banner": "images/logo.png"
+    },
+    "shellConfiguration": {
+        "docklayoutconfiguration": {
+            "pannelcollection": [
+                {
+                    "shellRelationship": "DuoWorld Alpha Shell v 1.0",
+                    "panelDescription": "Framework shell applications panel",
+                    "panelTitle": "applications",
+                    "pannnelDirectiveContentTemplate": "partials/panel-templates/applications-pannel.html",
+                    "panelArrangement": 0,
+                    "pannelContentCollectionType": "application-component",
+                    "row": 0,
+                    "col": 0,
+                    "panelType": "Applications"
+			},
+                {
+                    "shellRelationship": "DuoWorld Alpha Shell v 1.0",
+                    "panelDescription": "Framework shell custom panel",
+                    "panelTitle": "collection",
+                    "pannnelDirectiveContentTemplate": "partials/panel-templates/collections-pannel.html",
+                    "panelArrangement": 1,
+                    "pannelContentCollectionType": "various-component",
+                    "row": 0,
+                    "col": 1,
+                    "panelType": "Collections"
+			}
+		],
+            "dockoptions": {
+                "transitioneffect": "slide",
+                "layoutdirection": "horizontal",
+                "pagination": true,
+                "looppannels": false
+            }
+        },
+        "themeconfiguration": {
+            "palettename": "indigo",
+            "primarypalette": "#3F51B5",
+            "accentpalette": "#E91E63"
+        },
+        "backgroundconfiguration": [
+            {
+                "backgroundtype": "solid",
+                "backgroundtypeactive": false,
+                "backgroundcolor": "#FF4081"
+		},
+            {
+                "backgroundtype": "gradient",
+                "backgroundtypeactive": false,
+                "backgroundgradientconfig": {
+                    "color1": "#FF4081",
+                    "color2": "#3F51B5",
+                    "orientation": "diagonalup"
+                }
+		},
+            {
+                "backgroundtype": "image",
+                "backgroundtypeactive": true,
+                "backgroundimageconfig": {
+                    "imageurl": "images/shellassets/background/blur-background12.jpg",
+                    "imageblur": {
+                        "status": true,
+                        "amount": 10
+                    },
+                    "textureoverlay": false,
+                    "vignetteoverlay": false
+                }
+		}
+	]
+    }
+}

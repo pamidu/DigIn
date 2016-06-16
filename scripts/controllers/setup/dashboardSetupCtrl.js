@@ -6,7 +6,7 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     var slide = false;
     $scope.route = function (state) {
         if (state == "account") {
-            $state.go('home.account');
+            $state.go('home.user');
         }
         else if (state == "group") {
             $state.go('home.group');
@@ -15,7 +15,7 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
             $state.go('home.share');
         }
         else if (state == "user") {
-            $state.go('home.user');
+            $state.go('home.account');
         }
         else if (state == "userSettings") {
             $state.go('home.userSettings');
@@ -31,6 +31,7 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
 
     //theme colors array
     $scope.colorArr = [{value: '#F44336'}, {value: '#E91E63'}, {value: '#9C27B0'}, {value: '#673AB7'}, {value: '#3F51B5'}, {value: '#2196F3'}, {value: '#03A9F4'}, {value: '#00BCD4'}, {value: '#009688'}, {value: '#4CAF50'}, {value: '#8BC34A'}, {value: '#CDDC39'}, {value: '#FFEB3B'}, {value: '#FFC107'}, {value: '#FF9800'}, {value: '#FF5722'}, {value: '#795548'}, {value: '#9E9E9E'}, {value: '#607D8B'}];
+    $scope.apps=$scope.dashboards;
 
     $scope.selectedColorObj = {
         primaryPalette: "",
@@ -406,7 +407,7 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     };
 
 
-    //Get groups shared for specific apps
+    //Get groups shared for specific apps //***
     $scope.viewGroupsInApp = function (app, event) {
         //$http.get('http://digin.io/apis/usercommon/getUserFromGroup/'+app)
         $http.get('http://' + Digin_Domain + '/apis/usercommon/getUserFromGroup/' + app)
@@ -429,24 +430,22 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     };
 
     //Get all apps
-    $scope.getAllApps = function () {
-        //$('#pagePreLoader').show();
-        //$scope.load=true;
-        $objectstore.getClient("duodigin_dashboard")
-            .onGetMany(function (data) {
-                if (data) {
-                    allApps = data;
-                    // if (canCacheApps)
-                    //     localStorage.setItem("userDashboards", JSON.stringify(allApps));
-                }
-                $scope.apps = data;
-                //$('#pagePreLoader').hide();
-                //$scope.load=false;
-            })
-            .getByKeyword("*");
+    //$scope.getAllApps = function () {
+        //$scope.apps=$scope.dashboards;
+
+        // $objectstore.getClient("duodigin_dashboard")
+        //     .onGetMany(function (data) {
+        //         if (data) {
+        //             allApps = data;
+        //         }
+        //         $scope.apps = data;
+        //     })
+        //     .getByKeyword("*");
+    //};
 
 
-    };
+
+
 
     //Get all contact in tenent
     $scope.getAllContacts = function () {

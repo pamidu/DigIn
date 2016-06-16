@@ -1,0 +1,6 @@
+angular.module('configuration', [])
+	.constant('Digin_Engine_API', 'http://digin.io:8080/')
+    .constant('Digin_Domain', 'digin.io')
+    .constant('Digin_Auth', 'http://104.155.236.85/')
+    .constant('Digin_Tenant', 'http://104.197.27.7:3048/')
+    .constant('Digin_Mail', 'http://104.197.27.7:3500/')

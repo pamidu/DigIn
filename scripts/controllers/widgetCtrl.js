@@ -2369,9 +2369,12 @@ routerApp.controller('calendarInit',['widgetID', '$scope', '$http', '$rootScope'
         });
     }
 }]);
-
-routerApp.controller('googlePlusInit',['$scope', 'googleService', '$http', '$mdDialog', 'widgetID', '$rootScope',
-    function ($scope, googleService, $http, $mdDialog, widgetID, $rootScope) {
+// new developers please read this before you proceed : https://developers.google.com/+/web/people/#before_you_begin
+//client-id : 352719853010-1e2k3je9peuv42na7a2imsv21g89ca1o.apps.googleusercontent.com
+//client-secret : Y5GhVaBOlIpcrEYQOW1cxYQk
+//api key: AIzaSyBl3Tz2fIwKQNlf5w1RMH9w6VMgWUsok9Q
+routerApp.controller('googlePlusInit',['$scope', 'googleService', '$http', '$mdDialog','$rootScope',
+    function ($scope, googleService, $http, $mdDialog,$rootScope) {
 
         $scope.diginLogo = 'digin-logo-wrapper2';
         $scope.showFinishButton = false;

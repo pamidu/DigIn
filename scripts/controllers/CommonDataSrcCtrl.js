@@ -60,6 +60,12 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             'type': 'STRING',
             'category': 'att'
         }, {
+            'type': 'datetime',
+            'category': 'att'
+        }, {
+            'type': 'TIMESTAMP',
+            'category': 'att'
+        }, {
             'type': 'int',
             'category': 'mes'
         }, {
@@ -67,12 +73,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             'category': 'mes'
         }, {
             'type': 'float',
-            'category': 'mes'
-        }, {
-            'type': 'datetime',
-            'category': 'mes'
-        }, {
-            'type': 'TIMESTAMP',
             'category': 'mes'
         }, {
             'type': 'money',
@@ -144,6 +144,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
     ];
 
         var chartTypes = [];
+        var user = "";
+        var isBQInitial = true;
+        var isMSSQLInitial = true;
         //Update damith
         //UI version 1.0
         //select source tab
@@ -179,8 +182,15 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     commonUi.isDataLoading = true;
                     commonUi.isServiceError = false;
                     $scope.client = $diginengine.getClient(src);
+                    var userInfo = JSON.parse(getCookie("authData")).Username;
+                    console.log(user != userInfo);
                     switch (src) {
                         case "BigQuery":
+                            if (user != userInfo || isBQInitial){
+                                localStorage.setItem("BigQueryTables",null);
+                                user = userInfo;
+                                isBQInitial = false;
+                            }
                             if (localStorage.getItem("BigQueryTables") === null || localStorage.getItem("BigQueryTables") == "null" ||
                                 localStorage.getItem("BigQueryTables") == "undefined") {
                                 $scope.client.getTables(function(res, status) {
@@ -202,6 +212,11 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             }
                             break;
                             case "MSSQL":
+                                if (user != userInfo || isMSSQLInitial){
+                                    localStorage.setItem("MSSQL",null);
+                                    user = userInfo;
+                                    isMSSQLInitial = false;
+                                }
                             if (localStorage.getItem("MSSQL") === null || localStorage.getItem("MSSQL") == "null" ||
                                 localStorage.getItem("MSSQL") == "undefined") {
                                 $scope.client.getTables(function(res, status) {
@@ -313,6 +328,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     return s4();
                 },
                 fireMessage: function(msgType, msg) {
+                    ngToast.dismiss();
                     var _className;
                     if (msgType == '0') {
                         _className = 'danger';

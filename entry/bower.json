@@ -1,0 +1,31 @@
+{
+  "name": "diginentry",
+  "authors": [
+    "Damith <dpremakumara@gmail.com>"
+  ],
+  "description": "loginentry",
+  "main": "entry.js",
+  "keywords": [
+    "login"
+  ],
+  "license": "MIT",
+  "homepage": "index.html",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "angularjs#^1.5.6",
+    "angular-animate": "^1.5.6",
+    "ngstorage": "^0.3.10",
+    "angular-route": "^1.5.6",
+    "angular-ui-router": "^0.3.0",
+    "angular-sanitize": "^1.5.5",
+    "angular-material": "^1.0.9",
+    "ngToast": "ngtoast#^2.0.0"
+  }
+}

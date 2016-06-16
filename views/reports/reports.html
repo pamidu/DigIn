@@ -51,7 +51,7 @@
                         </div>
                         <!-- pages loading -->
                         <!-- view pages wrap -->
-                        <md-list-item class="md-3-line md-no-proxy ng-scope" ng-repeat="report in reports"
+                        <md-list-item class="md-3-line md-no-proxy ng-scope" ng-repeat="report in reports | filter : user.firstName"
                                       role="listitem">
                             <button class="md-fab md-button
                                 md-default-theme md-fab-md" ng-click="" aria-label="button">

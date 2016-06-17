@@ -263,7 +263,10 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         controller: widget.widgetData.initCtrl,
                         templateUrl: widget.widgetData.initTemplate,
                         parent: angular.element(document.body),
-                        targetEvent: ev
+                        targetEvent: ev,
+                        locals: {
+                        widgetID : widget.widgetID
+                    }
                     })
                     .then(function () {
                         //$mdDialog.hide();

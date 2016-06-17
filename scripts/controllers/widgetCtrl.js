@@ -250,8 +250,8 @@ routerApp.controller('fbInit',['$scope', '$mdDialog', 'widgetID', '$rootScope',f
     $scope.fetch = function() {
         $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
         linkedinInterface.getUserAccountOverview($scope, function(data) {
-            var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
-            $rootScope.dashboard.widgets[objIndex].widData = data;
+            var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);
+            $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[objIndex].widData = data;
             $scope.diginLogo = 'digin-logo-wrapper2';
             $scope.showFinishButton = true;
         });

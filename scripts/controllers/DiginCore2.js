@@ -284,8 +284,8 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                                             "widgetData": widgets[j].widgetData,
                                             sizeX: widgets[j].sizeX,
                                             sizeY: widgets[j].sizeY,
-                                            row: 0,
-                                            col: 0                                            
+                                            row: widgets[j].row,
+                                            col: widgets[j].col                                           
                                         }
                                     }
                                     else{
@@ -296,8 +296,8 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                                             "widgetData": widgets[j].widgetData,
                                             sizeX: widgets[j].sizeX,
                                             sizeY: widgets[j].sizeY,
-                                            row: 0,
-                                            col: 0
+                                            row: widgets[j].row,
+                                            col: widgets[j].col
                                         }
                                     }
                                     widgetsArray.push(widgetObject); 

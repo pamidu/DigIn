@@ -251,7 +251,7 @@ routerApp.controller('fbInit',['$scope', '$mdDialog', 'widgetID', '$rootScope',f
         $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
         linkedinInterface.getUserAccountOverview($scope, function(data) {
             var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);
-            $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[objIndex].widData = data;
+            $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[objIndex].widgetData.widData = data;
             $scope.diginLogo = 'digin-logo-wrapper2';
             $scope.showFinishButton = true;
         });
@@ -542,8 +542,8 @@ routerApp.controller('elasticInit',['$scope', '$http', '$objectstore', '$mdDialo
     $scope.seriesAttributes = [];
 
     //getting the widget object
-    var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
-    $scope.widget = $rootScope.dashboard.widgets[objIndex];
+    //var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
+    //$scope.widget = $rootScope.dashboard.widgets[objIndex];
 
     $scope.getTables = function() {
 
@@ -2083,7 +2083,7 @@ routerApp.controller('rssInit',['$scope', '$http', '$mdDialog', 'widgetID', '$ro
 
                     var ObjectIndex = getRootObjectById(widgetID,$rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);
                     //var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
-                    $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[ObjectIndex].widData = result.feed.entries;
+                    $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[ObjectIndex].widgetData.widData.feeds = result.feed.entries;
                     $scope.showFinishButton = true;
                     
                 }

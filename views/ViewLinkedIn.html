@@ -4,19 +4,19 @@
                 <div layout="column">
                     <div>
                         <h6>Profile Information</h6>
-                        <p><img style="width:50px;height:50px;" src="{{widget.widData.pictureUrl}}" /></p>
+                        <p><img style="width:50px;height:50px;" src="{{widget.widgetData.widData.pictureUrl}}" /></p>
                     </div>
                     <h6>Username</h6>
-                    <div>{{widget.widData.firstName}}&nbsp;{{widget.widData.lastName}}</div>
+                    <div>{{widget.widgetData.widData.firstName}}&nbsp;{{widget.widgetData.widData.lastName}}</div>
                     <br/>
                     <h6>User ID</h6>
-                    <div>{{widget.widData.id}}</div>
+                    <div>{{widget.widgetData.widData.id}}</div>
                     <br/>
                     <h6>Email</h6>
-                    <div>{{widget.widData.emailAddress}}</div>
+                    <div>{{widget.widgetData.widData.emailAddress}}</div>
                     <br/>
                     <h6>Headline</h6>
-                    <div>{{widget.widData.headline}}</div>
+                    <div>{{widget.widgetData.widData.headline}}</div>
                     <br/>
                 </div>
             </md-content>
@@ -25,7 +25,7 @@
             <md-content class="md-padding">
                 <div id="metric0" style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
                     <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
-                        <span class="ctotals_inner">{{widget.widData.numConnections}}</span>
+                        <span class="ctotals_inner">{{widget.widgetData.widData.numConnections}}</span>
                     </div>
                     <div style="font-size:10px;text-transform:uppercase;">
                         <div class="widget_legend" style="background:#ff5252;"></div>Connections
@@ -33,7 +33,7 @@
                 </div>
                 <div id="metric1" style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
                     <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
-                        <span class="ctotals_inner">{{widget.widData.current-share}}</span>
+                        <span class="ctotals_inner">{{widget.widgetData.widData.current-share}}</span>
                     </div>
                     <div style="font-size:10px;text-transform:uppercase;">
                         <div class="widget_legend" style="background:#c7b700;"></div>Shares
@@ -41,7 +41,7 @@
                 </div>
                   <div id="metric1" style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
                     <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
-                        <span class="ctotals_inner">{{widget.widData.numConnectionsCapped}}</span>
+                        <span class="ctotals_inner">{{widget.widgetData.widData.numConnectionsCapped}}</span>
                     </div>
                     <div style="font-size:10px;text-transform:uppercase;">
                         <div class="widget_legend" style="background:#c7b700;"></div>Connection capped

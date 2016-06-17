@@ -82,6 +82,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             maxSizeX: null, // maximum column width of an item
             minSizeY: 5, // minumum row height of an item
             maxSizeY: null, // maximum row height of an item
+            row: 0,
+            col: 0,
             saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
             draggable: {
                 enabled: true

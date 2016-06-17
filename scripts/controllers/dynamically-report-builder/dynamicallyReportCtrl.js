@@ -592,6 +592,14 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                     }
                 } //end
 
+                //enocde parameter string (/)
+                console.log(reqParameter.rptParameter);
+                var reqParam = reqParameter.rptParameter;
+                console.log(reqParam.indexOf('/') > -1);
+                if (reqParam.indexOf('/') > -1){
+                    reqParam = reqParam.split('/').join('%2F');
+                }
+                reqParameter.rptParameter = reqParam;
                 //HTTP get report
                 $scope.eventHandler = {
                     isDataFound: false,

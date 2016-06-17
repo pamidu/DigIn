@@ -13,6 +13,7 @@ routerApp.controller('socialAnalysisCtrl', function ($scope,$mdDialog,$location,
 			$mdDialog.hide();
 		}	
 		else{
+			ngToast.dismiss();
 			ngToast.create({
                     className: 'danger',
                     content: 'This feature is under development !',

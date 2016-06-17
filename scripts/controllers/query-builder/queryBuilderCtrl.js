@@ -823,16 +823,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                 //-- Added by Gevindu on 2016-05-16 due to DUODIGIN-496   
                 if (onSelect.chart == "pivotsummary" && $scope.executeQryData.executeMeasures.length > 5) {
-                    ngToast.create({
-                        className: 'warning',
-                        content: 'series should less than 5 to creat pivotsummary!',
-                        horizontalPosition: 'right',
-                        verticalPosition: 'bottom',
-                        timeout: 1500,
-                        dismissOnClick: true
-                    });
-
-                    return 0;
+                    privateFun.fireMessage('0', 'Series should be less than 5 to create pivot summary');
                 }
 
                 //-- Gevindu DUODIGIN-496 -end

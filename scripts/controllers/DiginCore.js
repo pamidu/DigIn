@@ -699,6 +699,8 @@ routerApp.controller('ReportsDevCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportS
     }]);
 routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain',
     function ($scope, dynamicallyReportSrv, $localStorage, Digin_Engine_API, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain) {
+
+
         // update damith
         // get all reports details
         var privateFun = (function () {
@@ -723,6 +725,8 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                     });
                 }
             };//end
+
+            
 
             return {
                 getAllReport: function () {

@@ -906,19 +906,24 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
         }, this.handleAuthResult);
         return false;
     };
-    this.getProfileData = function () {
+    this.getProfileData = function (widgetID) {
 
         gapi.client.load('plus', 'v1', function () {
             var request = gapi.client.plus.people.get({
                 'userId': 'me'
             });
             request.execute(function (resp) {
-                $rootScope.profileData = resp;
+
+                var ObjectIndex = getRootObjectById(widgetID,$rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);
+                $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[ObjectIndex].widgetData.widData.profileData = resp;
+                    
+
+                //$rootScope.profileData = resp;
             });
         });
         return deferred.promise;
     };
-    this.getPeopleData = function () {
+    this.getPeopleData = function (widgetID) {
 
         gapi.client.load('plus', 'v1', function () {
             var request = gapi.client.plus.people.list({
@@ -926,12 +931,17 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
                 'collection': 'visible'
             });
             request.execute(function (resp) {
-                $rootScope.peopleData = resp;
+
+                var ObjectIndex = getRootObjectById(widgetID,$rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);
+                $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[ObjectIndex].widgetData.widData.peopleData = resp;
+               
+
+                //$rootScope.peopleData = resp;
             });
         });
         return deferred.promise;
     };
-    this.getActivityData = function () {
+    this.getActivityData = function (widgetID) {
         gapi.client.load('plus', 'v1', function () {
             var request = gapi.client.plus.activities.list({
                 'userId': 'me',
@@ -939,7 +949,12 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
             });
 
             request.execute(function (resp) {
-                $rootScope.activityData = resp;
+
+                var ObjectIndex = getRootObjectById(widgetID,$rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);
+                $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[ObjectIndex].widgetData.widData.activityData = resp;
+               
+
+                //$rootScope.activityData = resp;
             });
         });
 

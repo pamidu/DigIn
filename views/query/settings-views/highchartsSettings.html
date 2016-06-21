@@ -12,11 +12,11 @@
                                                     aria-labelledby="{{ ::series.name }}-header">
                                         <md-input-container flex>
                                             <label>Name</label>
-                                            <input ng-model="series.name">
+                                            <input ng-model="series.name" ng-disabled="selectedChart.chart == 'pie'">
                                         </md-input-container>
                                         <md-input-container flex>
                                             <label>Color</label>
-                                            <input ng-model="series.color">
+                                            <input ng-model="series.color" ng-disabled="selectedChart.chart == 'pie'">
                                         </md-input-container>
                                     </v-pane-content>
                                 </v-pane>
@@ -29,10 +29,10 @@
 -->
                             <md-input-container flex>
                                 <label>Y axis</label>
-                                <input ng-model="highchartsNG.yAxis.title.text">
+                                <input ng-model="highchartsNG.yAxis.title.text" ng-disabled="selectedChart.chart == 'pie'">
                             </md-input-container>
                             <md-input-container flex>
                                 <label>X axis</label>
-                                <input ng-model="highchartsNG.xAxis.title.text">
+                                <input ng-model="highchartsNG.xAxis.title.text" ng-disabled="selectedChart.chart == 'pie'">
                             </md-input-container>    
                         </div>

@@ -597,7 +597,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                 var reqParam = reqParameter.rptParameter;
                 console.log(reqParam.indexOf('/') > -1);
                 if (reqParam.indexOf('/') > -1){
-                    reqParam = reqParam.split('/').join('%2F');
+                    reqParam = reqParam.split('/').join('%252F');
                 }
                 reqParameter.rptParameter = reqParam;
                 //HTTP get report

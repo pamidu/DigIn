@@ -133,24 +133,35 @@
                      { 
                               $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "generateboxplot?q=[{'["+ tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);
+                    }, $diginurls.diginengine + "generateboxplot?q=[{'"+ tbl + "':[" + fieldstr + "]}]&dbtype=" + database);
 
                     }
-
-
-
-
-
                             },
                 generatehist: function(tbl, fieldstr, cb) {
-                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                    if (database == "BigQuery") {
+                        $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "generatehist?q=[{'[" + getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);
+                        }, $diginurls.diginengine + "generatehist?q=[{'[" + getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);
+                    }
+                    else
+                    {
+                        $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + "generatehist?q=[{'["+ tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);     
+                    }
                 },
-                generateBubble: function(tbl, x, y, c, cb) {
+                generateBubble: function(tbl, x, y, s, c, cb) {
+                    if (database == "BigQuery") {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "generatebubble?&table=[" + getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + x + "&dbtype=" + database);
+                    }, $diginurls.diginengine + "generatebubble?&table=[" + getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database);
+                    }
+                    else
+                    {
+                                            $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + "generatebubble?&table=["+ tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database);
+                    }
                 },
                 getForcast: function(fObj, cb, gb) {
                     if(database == "BigQuery")

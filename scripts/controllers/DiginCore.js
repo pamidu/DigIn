@@ -591,7 +591,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                             console.log("$rootScope.dashboard.deletions", $rootScope.dashboard.deletions);
                         }
                     }
-
+                    ngToast.dismiss();
                     ngToast.create({
                         className: 'success',
                         content: 'widget removal succussful',

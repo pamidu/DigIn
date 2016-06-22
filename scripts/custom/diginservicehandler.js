@@ -156,9 +156,14 @@
                         cb(data, status);
                     }, $diginurls.diginengine + "generatebubble?&table=[" + getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database);
                     }
-                    else
+                    else if (database == "postgresql")
                     {
-                                            $servicehelpers.httpSend("get", function(data, status, msg) {
+                        $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + "generatebubble?&table="+ tbl + "&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database);
+                    }
+                    else{
+                        $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
                     }, $diginurls.diginengine + "generatebubble?&table=["+ tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database);
                     }

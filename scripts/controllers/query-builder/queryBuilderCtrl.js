@@ -1213,7 +1213,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }
             });
 
-
+            $scope.widget.widgetData.highchartsNG.options={};
+            $scope.widget.widgetData.highchartsNG.plotOptions={};
+            $scope.widget.widgetData.highchartsNG.series={};
+            $scope.widget.widgetData.highchartsNG.xAxis={};
+            $scope.widget.widgetData.highchartsNG.yAxis={};
             if (dataTypeFlag && $scope.sourceData.fAttArr.length == 0) {
 
                 var fieldArray = [];
@@ -1387,8 +1391,34 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         });
                     }
 
+                    var nameArray = [];
+
+                    for ( var i = 0; i < data.y.length; i++){
+                        nameArray[i] = data.c[i];
+                    }
+
+                    var dataArray = [];
+
+                    for ( var i = 0; i < data.y.length; i++){
+                        dataArray.push(
+                        {
+                            x : data.x[i],
+                            y : data.y[i],
+                            z : data.s[i]
+                        });
+                    }
+
+                    var seriesArray = [];
+                    for ( var i = 0; i < dataArray.length; i++){
+                        seriesArray.push(
+                        {
+                            name: nameArray[i],
+                            data: [dataArray[i]],
+                        });
+                    }
+
                     $scope.categories = fieldArray;
-                    $scope.eventHndler.isLoadingChart = true;
+                    $scope.eventHndler.isLoadingChart = false;
 
                     $scope.widget.widgetData.highchartsNG = {
                         options: {
@@ -1406,13 +1436,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         xAxis: {
                             categories: $scope.dataforbubble,
                             title: {
-                                text: 'Selected Fields'
+                                text: $scope.commonData.measures[0].filedName
                             }
                         },
 
                         yAxis: {
                             title: {
-                                text: 'Values'
+                                text: $scope.commonData.measures[1].filedName
                             }
                         },
                         credits: {
@@ -1437,67 +1467,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             }
                         },
 
-                        tooltip: {
-                            useHTML: true,
-                            headerFormat: '<table>',
-                            pointFormat: '<tr><th colspan="2"><h3>{point.name}</h3></th></tr>' +
-                                '<tr><th>x:</th><td>{point.x}g</td></tr>' +
-                                '<tr><th>y:</th><td>{point.y}g</td></tr>' +
-                                '<tr><th>z:</th><td>{point.z}%</td></tr>',
-                            footerFormat: '</table>',
-                            followPointer: true
-                        },
-
-                        series: [{ 
-                            data: testArray
-                            }]
-
-                        /*series: [{
-                            name: 'Women',
-                            marker: {
-                                fillColor: 'pink'
-                            },
-                            data: [{
-                                name: 'Alice',
-                                x: 3.5,
-                                y: 4,
-                                z: 5
-                            }, {
-                                name: 'Eve',
-                                x: 7,
-                                y: 7,
-                                z: 3
-                            }, {
-                                name: 'Carol',
-                                x: 4,
-                                y: 8,
-                                z: 6
-                            }]
-                        }, {
-                            name: 'Men',
-                            marker: {
-                                fillColor: 'lightblue'
-                            },
-                            data: [{
-                                name: 'Dan',
-                                x: 4,
-                                y: 3,
-                                z: 4
-                            }, {
-                                name: 'Bob',
-                                x: 5,
-                                y: 6,
-                                z: 3
-                            }, {
-                                name: 'Frank',
-                                x: 3,
-                                y: 2,
-                                z: 7
-                            }]
-                        }]*/
+                        series: seriesArray
                     };
-                    debugger;
-                    $scope.eventHndler.isLoadingChart = false;
                 } else {}
             });
         },
@@ -1506,14 +1477,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
-            widget.widgetData.highchartsNG3["size"] = {
+            widget.widgetData.highchartsNG["size"] = {
 
                 width: 300,
                 height: 220
             };
             widget.widgetName = "bubble";
             widget.widgetData.widName = $scope.highchartsNG.title.text;
-            widget.widgetData.highchartsNG3 = $scope.widget.widgetData.highchartsNG;
+            widget.widgetData.highchartsNG = $scope.widget.widgetData.highchartsNG;
             widget.widgetData.widView = "views/query/chart-views/bubble.html";
             $scope.saveChart(widget);
         }
@@ -1531,6 +1502,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     dataTypeFlag = false;
                 }
             });
+
+            $scope.widget.widgetData.highchartsNG.options={};
+            $scope.widget.widgetData.highchartsNG.plotOptions={};
+            $scope.widget.widgetData.highchartsNG.series={};
+            $scope.widget.widgetData.highchartsNG.xAxis={};
+            $scope.widget.widgetData.highchartsNG.yAxis={};
 
 
             if (dataTypeFlag && $scope.sourceData.fAttArr.length == 0) {
@@ -1650,7 +1627,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 });
 
             } else {
-                $scope.isPendingRequest = false;
+                $scope.isPendingRequest = false;http://localhost/digin_git/one/Digin/index1.phpv
                 $scope.eventHndler.isLoadingChart = false;
                 privateFun.fireMessage('0', 'Please select only numeric values to create histogram');
                 return;

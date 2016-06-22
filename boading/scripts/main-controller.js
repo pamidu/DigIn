@@ -371,9 +371,12 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
     $scope.createTenant = function (plan) {
         
         var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
+        var email=userInfo.Email;
+        var domainName = email.replace('@', "");
+            domainName = domainName.replace('.', "");
 
         $scope.tenantDtl = {
-            "TenantID": userInfo.Name.replace(' ', '') + ".digin.io",
+            "TenantID": domainName + ".digin.io",
             "TenantType": "Company",
             "Name": userInfo.Name.replace(' ', ''),
             "Shell": "",

@@ -305,6 +305,9 @@
 <script type="text/javascript" src="bower_components/canvas-toBlob.js/canvas-toBlob.js"></script>
 <!-- filesaver -->
 <script type="text/javascript" src="bower_components/FileSaver/FileSaver.js"></script>
+<!-- mdchip -->
+<script type="text/javascript" src="bower_components/mdchips/md-chips-select.js"></script>
+
 <!-- zeroclipboard -->
 <script type="text/javascript"
         src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/98887/angular-fullscreen.js"></script>

@@ -388,7 +388,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         $scope.syncWidget = function (widget) {
 
             console.log('syncing...');
-            if (typeof widget.widgetData.widConfig != 'undefined') {
+            if (typeof(widget.widgetData.widConfig) != 'undefined') {
                 DynamicVisualization.syncWidget(widget, function (data) {
                     widget.widgetData.syncState = true;
                     widget = data;

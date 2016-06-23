@@ -671,7 +671,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                     //-----------
 
-                     $http.get(baseUrl + "/apis/usercommon/getAllGroups")
+                    $http.get(baseUrl + "/apis/usercommon/getAllGroups")
                         .success(function(data) 
                         {
                             console.log(data); 
@@ -691,6 +691,20 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         });
 
                     //----------
+                    var array1 = ["test1", "test2","test3", "test4"];
+                    var array2 = ["test1", "test2","test3","test4", "test5", "test6"];
+
+                    var _array = new Array();
+
+                    _array = jQuery.grep(array2, function (item) {
+                         return jQuery.inArray(item, array1) < 0;
+                    });
+                    console.log(_array);
+                    //-----------------
+
+                  
+
+
                 }
 
             }
@@ -702,6 +716,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             privateFun.getAllDashboards();
             privateFun.getAllReports();
             $scope.getAnalyzerDetails();
+            privateFun.getAllSharableObj();
         }
 
         $scope.getDashboardDetails = function () {

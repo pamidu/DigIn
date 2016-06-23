@@ -4,38 +4,26 @@
       <div layout="row" layout-align="center center" class="digin-logo-wrapper2">
         <img ng-src="styles/css/images/icons/users2.svg" class="digin-image">
       </div>  
-      <div class="dialog-title">Add users to group</div>         
+      <div class="dialog-title">Share Dashboard -  {{appName}}</div>         
       <md-button class="buttonMinwidth38" ng-click="closeDialog();">      
         <ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>   
       </md-button>            
   </md-toolbar>
 
-                     <label>Select User Groups</label>
-                     <md-content style="height:100%; background-color: #ececee" flex>
-                            <md-chips ng-model="ContactChip" md-autocomplete-snap md-require-match="true" flex style="background: orange;">
-                               <md-autocomplete
-                                  md-selected-item="selectedItem"
-                                  md-search-text="searchText"
-                                  md-items="item in querySearch(searchText)"
-                                  md-item-text="item.groupname" >
-                                  <span md-highlight-text="searchText">{{item.groupname}}</span>
-                               </md-autocomplete>
-                               <md-chip-template>
-                                  <span>
-                                  <strong>{{$chip.groupname}}</strong>  
-                                  </span>
-                               </md-chip-template>
-                            </md-chips>
-                    </md-content>   
+  <md-dialog-content style="max-width:800px;max-height:810px; ">
+    <div>
+      <div>
+          <md-chips-select ng-model="pickedObj" select-items="sharableObj" main-title="name"></md-chips-select>
+      </div>
 
-    <div class="md-actions" layout="row">
-      <span flex></span>
-        <md-button class="btn-font btn-dialog" ng-click="shareAppToGroup()">
-        SHARE 
-        </md-button>
-        <md-button class="btn-font btn-dialog" ng-click="closeDialog()">
-          CANCEL
+      <div class="md-actions" layout="row">
+          <md-button class="btn-font btn-dialog" ng-click="shareApp(pickedUsers)"> SAVE</md-button>
+          <md-button class="btn-font btn-dialog" ng-click="closeDialog()"> CANCEL</md-button>   
+      </div>
     </div>
-
-
+  </md-dialog-content>  
+  
 </md-dialog>
+
+
+

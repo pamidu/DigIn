@@ -20,6 +20,10 @@
     <link rel="stylesheet" href="bower_components/bootstrap/less/glyphicons.less"/>
     <link rel="stylesheet" type="text/css" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+
+
+  
+
     <!-- <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css"> -->
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
     <!-- <link href="styles/css/material-wfont.css" rel="stylesheet">-->
@@ -29,6 +33,8 @@
     <link rel="stylesheet" type="text/css" href="styles/css/pivot.css"/>
     <!-- angular gridster -->
     <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
+    <!-- <link rel="stylesheet" type="text/css" src="bower_components/mdchips/md-chips-select.css"/> -->
+    
     <!-- angular slider -->
     <link rel="stylesheet" type="text/css" href="bower_components/angular-slider/rzslider.min.css">
     <link rel="stylesheet" type="text/css" href="styles/css/style.css">
@@ -76,7 +82,7 @@
     <link href='https://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
-
+    <!-- mdchip -->
 
     <!-- <link href="http://vjs.zencdn.net/5.8.0/video-js.css" rel="stylesheet"> -->
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
@@ -267,7 +273,7 @@
 <script src="scripts/charts/treemap.js"></script>
 <script src="scripts/controllers/prediction/prediction.js"></script>
 <script src="scripts/charts/d3Force.js"></script>
- 
+
 <script src="scripts/charts/streamgraph.js"></script>
 <script src="scripts/charts/scatterPlot.js"></script>
 <script src="scripts/charts/packing.js"></script>
@@ -305,6 +311,9 @@
 <script type="text/javascript" src="bower_components/canvas-toBlob.js/canvas-toBlob.js"></script>
 <!-- filesaver -->
 <script type="text/javascript" src="bower_components/FileSaver/FileSaver.js"></script>
+<!-- mdchip -->
+<script type="text/javascript" src="bower_components/mdchips/md-chips-select.js"></script>
+
 <!-- zeroclipboard -->
 <script type="text/javascript"
         src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/98887/angular-fullscreen.js"></script>

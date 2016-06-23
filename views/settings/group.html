@@ -4,73 +4,81 @@
     </div>
 </div>
 
-<div ng-init="initSettings()" ng-show="true" class="md-padding animated fadeIn" layout="row"
-     layout-align="center center">
+<div ng-show="true" class="md-padding animated fadeIn" layout="column" layout-align="center center">
+    <div  layout-align="space-between center">
+        <span class="setup-font-theme setup-user-heading">Create User Groups</span>
+    </div>
 
-    <div layout="column" class="setup-info-container" flex="40">
+    <div style="width: 800px; color: navy; background-color: lightgreen; border: 2px solid blue; padding: 5px;">
+        <div>  
+            <md-input-container>
+                <label>Group Name</label>
+                <input ng-model="groupName" name="grpName">
+            </md-input-container>  
+        </div>        
+        <div layout="row">  
+            <div>
+                <!-- <md-chips-select ng-model="selectedItems" select-items="listItems" main-title="name"></md-chips-select> -->
+                <md-chips-select ng-model="selectedUsers" select-items="sharableUsers" main-title="Name">
 
-        <div layout="column" layout-align="space-between center">
-            <span class="setup-font-theme setup-user-heading">Add user group</span>
-        </div>
-
-        <div layout="row" layout-align="center center">
-            <div flex="15">Group Name</div>
-            <div flex="70">
-                <md-input-container>
-                    <label>Type group name here</label>
-                    <input ng-model="groupName" name="grpName">
-                </md-input-container>
+           
+                </md-chips-select>
             </div>
-            <div flex="10">
-                <ng-md-icon icon="group_add" style="fill:blue" size="40" ng-click="createGroup()"></ng-md-icon>
+            <div>
+                <ng-md-icon icon="group_add" style="fill:blue" size="40" ng-click="createGroup()"></ng-md-icon>  
             </div>
-        </div>
+        </div>         
+    </div>
 
+    </br>
+    </br>
 
-        <div layout="column" layout-align="space-between center" flex>
-            <span class="setup-font-theme setup-user-heading-secondary">Add users to group</span>
-        </div>
+    <div>
+        <span>User Groups.... </span>
 
-        <v-accordion onexpand="expandCallback(index, id)" class="vAccordion--default" multiple control="accordion">
-            <!-- add expanded attribute to open the section -->
-            <v-pane id="{{::group.groupId}}" ng-repeat="group in groups">
-                <v-pane-header>
-                    <div layout="row">
-                        <div ng-click="viewUsersInGroup(group.groupId)" flex="5">
-                            <ng-md-icon icon="group" style="fill:blue" size="24"></ng-md-icon>
+        <!-- VIEW USERGROUPS --> 
+        <md-list-item ng-repeat="sharableGroupsDtl in sharableGroupsDtls">      
+            <table>
+                <tr>   
+                    <td>
+                        <ng-md-icon icon="group" style="fill:blue" size="24"></ng-md-icon>
+                    </td> 
+                    <td>   
+                        <div flex="70"> <!-- viewUsersInGroup(sharableGroup.Id) -->
+                            {{ sharableGroupsDtl.groupname }} 
                         </div>
-                        <div ng-click="viewUsersInGroup(group.groupId)" flex="70">
-                            {{ group.groupname }}
-                        </div>
-
+                    </td>
+                    <td>
                         <!-- Delete group -->
-                        <div ng-click="deleteGroup(group.groupId,$event,$index)" flex="5">
+                        <div ng-click="deleteGroup(sharableGroupsDtl.groupId,$index)">
                             <ng-md-icon icon="delete" style="fill:blue" size="24"></ng-md-icon>
                         </div>
-
-                        <!-- Add users to group -->
-                        <div ng-click="loadAddUsersWindow(group.groupId)" flex="5">
+                    </td>
+                    <td>
+                         <!-- Add users to group -->
+                        <div ng-click="loadAddUsersWindow(sharableGroupsDtl.groupId,sharableGroupsDtl.groupname,sharableGroupsDtl.users,sharableUsers)">
                             <ng-md-icon icon="person_add" style="fill:blue" size="24"></ng-md-icon>
                         </div>
-                    </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">   
+                        <div ng-repeat="user in sharableGroupsDtl.users" style="width: 800px; color: navy; background-color: pink; border: 2px solid blue; padding: 5px;" layout="row"> 
+                           <div style="width:200px;">{{user.Name}}</div> <div ng-click="deleteUserFromGroup(sharableGroupsDtl.groupId,user)">X</div>
 
-                </v-pane-header>
 
-                <!-- VIEW USERS IN THE GROUP -->
-                <v-pane-content>
-                    <ul class="widget-collection">
-                        <li class="collection-item" ng-repeat="user in users">
-                            <div layout="row">
-                                <div flex="80">{{ user.Name }}</div>
-                                <div ng-click="deleteUserFromGroup(group.groupId,user.UserID)" flex="5">
-                                    <ng-md-icon icon="clear" style="fill:red" size="20"></ng-md-icon>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </v-pane-content>
-
-            </v-pane>
-        </v-accordion>
-    </div>
+                        </div>
+                    </td>   
+                    
+                        
+                    
+                </tr> 
+            </table>                      
+        </md-list-item>                
+    </div>    
 </div>
+
+
+
+
+

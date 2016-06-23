@@ -630,7 +630,83 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     }).error(function (respose) {
                         console.log('error request getAllReports...');
                     });
+                },
+
+                //#added by chamila
+                //#to retrive all users and groups
+                getAllSharableObj: function () {
+                    var baseUrl = "http://" + window.location.hostname;
+                    //baseUrl="http://duotest.digin.io";
+                    baseUrl="http://chamiladuosoftwarecom.space.duoworld.com";
+
+                    $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+                    .success(function(data) 
+                    {
+                        console.log(data); 
+                        $scope.sharableObjs = [];
+                        $scope.sharableUsers = [];
+                        $scope.sharableGroups = [];
+
+                        for (var i = 0; i < data.length; i++) {
+                            if(data[i].Type=="User"){
+                                //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
+                                $scope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                                $scope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
+                            }
+                            else if(data[i].Type=="Group"){
+                                //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
+                                $scope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                                $scope.sharableGroups.push({groupId: data[i].Id, groupname: data[i].Name});
+                            }
+                        }
+                        console.log($scope.sharableObjs);
+                        console.log($scope.sharableUsers);
+                        console.log($scope.sharableGroups);
+
+                    }).error(function(){
+
+                        alert ("Oops! There was a problem retrieving the User");
+                    });
+
+
+                    //-----------
+
+                    $http.get(baseUrl + "/apis/usercommon/getAllGroups")
+                        .success(function(data) 
+                        {
+                            console.log(data); 
+                            $rootScope.sharableGroupsDtls = [];
+                            
+                            for (var i = 0; i < data.length; i++) {
+                                $scope.users=[];  //$scope.userNames=[];
+                                for (var j = 0; j < data[i].users.length; j++) {
+                                    $scope.users.push({Id: data[i].users[j].Id, Name: data[i].users[j].Name, mainTitle:data[i].users[j].mainTitle});     
+                                }    
+                                $rootScope.sharableGroupsDtls.push({groupId: data[i].groupId, groupname: data[i].groupname,users:$scope.users});
+                            }
+                                console.log($rootScope.sharableGroupsDtls);
+
+                        }).error(function(){
+                            alert ("Oops! There was a problem retrieving the groups");
+                        });
+
+                    //----------
+                    var array1 = ["test1", "test2","test3", "test4"];
+                    var array2 = ["test1", "test2","test3","test4", "test5", "test6"];
+
+                    var _array = new Array();
+
+                    _array = jQuery.grep(array2, function (item) {
+                         return jQuery.inArray(item, array1) < 0;
+                    });
+                    console.log(_array);
+                    //-----------------
+
+                  
+
+
                 }
+
             }
         }());
 
@@ -640,6 +716,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             privateFun.getAllDashboards();
             privateFun.getAllReports();
             $scope.getAnalyzerDetails();
+            privateFun.getAllSharableObj();
         }
 
         $scope.getDashboardDetails = function () {

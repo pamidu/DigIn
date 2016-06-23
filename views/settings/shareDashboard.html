@@ -13,12 +13,14 @@
             <div layout="row" align="center center">
                 <div flex="25" style="margin-right: 25px;" ng-repeat="app in apps">
                     <div class="share-dashboard-view">
-                        <h5>{{app.name}}</h5>
+                        <h5>{{app.dashboardName}}</h5>
 
 
-
-                        <md-button class="setup-button md-raised md-primary" ng-click="updateAccount()">Share
+                        <md-button class="setup-button md-raised md-primary" ng-click="loadShareWindow(app.dashboardID,app.dashboardName)">Share
                         </md-button>
+
+
+                        <ng-md-icon icon="view_headline" style="fill:blue" size="40" ng-click="viewSharedListWindow(app.dashboardID,app.dashboardName)"></ng-md-icon> 
                     </div>
 
 

@@ -135,6 +135,14 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: true
             }
         })
+        .state("home.createUser", {
+            url: "/settings-createUser",
+            controller: "dashboardSetupCtrl",
+            templateUrl: "views/settings/createNewUser.html",
+            data: {
+                requireLogin: true
+            }
+        })
         .state("home.userSettings", {
             url: "/settings-userSettings",
             controller: "dashboardSetupCtrl",

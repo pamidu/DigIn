@@ -57,7 +57,7 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     //# load from parent
     var baseUrl = "http://" + window.location.hostname;
     //baseUrl="http://duotest.digin.io";
-    //baseUrl="http://chamiladuosoftwarecom.space.duoworld.com";
+    baseUrl="http://chamiladuosoftwarecom.space.duoworld.com";
     $scope.domain=JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
 
 

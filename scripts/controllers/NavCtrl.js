@@ -637,7 +637,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 getAllSharableObj: function () {
                     var baseUrl = "http://" + window.location.hostname;
                     //baseUrl="http://duotest.digin.io";
-                    //baseUrl="http://chamiladuosoftwarecom.space.duoworld.com";
+                    baseUrl="http://chamiladuosoftwarecom.space.duoworld.com";
 
                     $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
                     .success(function(data) 

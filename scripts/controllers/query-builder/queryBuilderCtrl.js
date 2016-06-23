@@ -883,8 +883,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
         widget.widgetData.highchartsNG["size"] = {
 
-            width: 100,
-            height: 100
+            width: 600,
+            height: 400
         };
         widget.widgetData.widName = $scope.widget.widgetData.widName;
         widget.widgetData.dataCtrl = "widgetSettingsDataCtrl";
@@ -1082,7 +1082,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         saveWidget: function(widget) {
             widget.widgetData.highchartsNG = $scope.highchartsNG;
             widget.widgetData.widData['drilled'] = $scope.isDrilled;
-            widget.widgetData.widName = $scope.highchartsNG.title.text;
+            widget.widgetData.widName = $scope.widget.widgetData.widName;
             if ($scope.isDrilled) widget.widgetData.widData['drillConf'] = $scope.drillDownConfig;
             widget.widgetName = "highcharts";
             widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
@@ -1128,7 +1128,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         },
         saveWidget: function(widget) {
             widget.widgetData.highchartsNG = $scope.highchartsNG;
-            widget.widgetData.widName = $scope.highchartsNG.title.text;
+            widget.widgetData.widName = $scope.widget.widgetData.widName;
             widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
             widget.widgetData.initCtrl = "elasticInit";
             widget.widgetName = "forecast";
@@ -1346,7 +1346,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 height: 220
             };
             widget.widgetData.widView = "views/query/chart-views/BoxPlot.html";
-            widget.widgetData.widName = $scope.highchartsNG.title.text;
+            widget.widgetData.widName = $scope.widget.widgetData.widName;
             $scope.saveChart(widget);
         }
 
@@ -1483,7 +1483,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 height: 220
             };
             widget.widgetName = "bubble";
-            widget.widgetData.widName = $scope.highchartsNG.title.text;
+            widget.widgetData.widName = $scope.widget.widgetData.widName;
             widget.widgetData.highchartsNG = $scope.widget.widgetData.highchartsNG;
             widget.widgetData.widView = "views/query/chart-views/bubble.html";
             $scope.saveChart(widget);
@@ -1638,7 +1638,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
-            widget.widgetData.widName = $scope.highchartsNG.title.text;
+            widget.widgetData.widName = $scope.widget.widgetData.widName;
             widget.widgetName = "histogram";
             widget.widgetData.highchartsNG["size"] = {
 
@@ -1692,7 +1692,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         saveWidget: function(widget) {
             widget.widgetData.widView = "views/ViewHnbData.html";
             widget.widgetData.widData = $scope.hierarData;
-            widget.widgetData.widName = $scope.highchartsNG.title.text;
+            widget.widgetData.widName = $scope.widget.widgetData.widName;
             widget.widgetName = "hierarchy";
 
             $scope.saveChart(widget);
@@ -1742,7 +1742,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         saveWidget: function(widget) {
             widget.widgetData.widView = "views/ViewHnbMonth.html";
             widget.widgetData = $scope.fieldArray;
-            widget.widgetData.widName = $scope.highchartsNG.title.text;
+            widget.widgetData.widName = $scope.widget.widgetData.widName;
             widget.widgetName = "sunburst";
 
             $scope.saveChart(widget);
@@ -1806,7 +1806,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             widget.widgetData.widView = "views/ViewPivotSummary.html";
             widget.widgetData.widData.summary = $scope.summaryData;
             widget.widgetData.widData.fieldArray = $scope.fieldArray;
-            widget.widgetData.widName = $scope.highchartsNG.title.text;
+            widget.widgetData.widName = $scope.widget.widgetData.widName;
             widget.widgetData.uniqueType = "Pivot Summary";
             widget.widgetData.initCtrl = "";
             $scope.saveChart(widget);
@@ -1823,7 +1823,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         saveWidget: function(widget) {
             widget.widgetData.widView = "views/googleMaps/ViewGoogleMapsBranches.html";
             widget.widgetData.uniqueType = "Google Maps Branches";
-            widget.widgetData.widName = $scope.highchartsNG.title.text;
+            widget.widgetData.widName = $scope.widget.widgetData.widName;
             $scope.saveChart(widget);
         }
     };
@@ -1935,7 +1935,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 label: $scope.selectedChart.initObj.label,
                 scalePosition: $scope.selectedChart.initObj.scalePosition
             };
-            widget.widgetData.widName = $scope.highchartsNG.title.text;
+            widget.widgetData.widName = $scope.widget.widgetData.widName;
             widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrcMetric.html";
             widget.widgetName = "metric";
 
@@ -2194,7 +2194,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             }
                         }
                     }
-
+                    debugger;
                     for (var key in serObj) {
                         if (Object.prototype.hasOwnProperty.call(serObj, key)) {
                             $scope.highchartsNG.series.push({

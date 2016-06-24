@@ -58,19 +58,31 @@ routerApp.service('$qbuilder',function($diginengine){
             cb(serArr);
         }
 
-        function setMeasureData(res){
+        function setMeasureData(res,measureData){
             var series = [];
             var i = 0;
-            for (var c in res) {
-                if (Object.prototype.hasOwnProperty.call(res, c)) {
-                    series.push({
-                        name: c,
-                        data: [res[c]]
-                    })
-                    i++;
+            var cat = []
+                for ( var i = 0; i < measureData.length; i++){
+                    cat[i] = measureData[i].origName;
+                    measureData[i].data = [];
+                }
+
+            for ( c in res[0]){
+                if(cat.indexOf(c) == -1 ){
+                    var y = c;
                 }
             }
-            return series;
+
+            res.forEach(function (key) {
+                measureData.forEach(function(data){
+                    data.data.push({
+                        name: key[y],
+                        y: parseFloat(key[data.origName])
+                    });
+                })
+            })
+
+            return measureData;
         }
         
         this.sync = function(q, cl, widObj, cb) {            
@@ -82,17 +94,18 @@ routerApp.service('$qbuilder',function($diginengine){
                             if(typeof res[0][c] == "string") cat = c;
                         }
                     }
-                    var color = [];
-                    for ( var i = 0; i < widObj.highchartsNG.series.length; i++){
-                        color[i] = widObj.highchartsNG.series[i].color;
-                    }
 
                     if(cat != ""){
+                        var color = [];
+                        for ( var i = 0; i < widObj.highchartsNG.series.length; i++){
+                            color[i] = widObj.highchartsNG.series[i].color;
+                        }
                         mapResult(cat, res, widObj.widData.drilled, color, function(data){
                             widObj.highchartsNG.series = data;
                         });
                     }else{
-                        widObj.highchartsNG.series = setMeasureData(res[0]);
+                        var measureData = widObj.highchartsNG.series;
+                        widObj.highchartsNG.series = setMeasureData(res,measureData);
                     }
 
                     if(typeof widObj.widData.drilled != "undefined")

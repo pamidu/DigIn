@@ -24,7 +24,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.isDrilled = false;
     $scope.dynFlex = 70;
     $scope.chartWrapStyle = {
-        height: 'calc(55vh)'
+        height: 'calc(63vh)'
     };
     $scope.isPendingRequest = false;
     $scope.dataToBeBind = {};
@@ -832,7 +832,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                 } else {
                     $scope.dynFlex = 70;
-                    $scope.chartWrapStyle.height = 'calc(55vh)';
+                    $scope.chartWrapStyle.height = 'calc(63vh)';
                 }
 
                 //-- Gevindu DUODIGIN-496 -end
@@ -2473,6 +2473,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         var regX = new RegExp("FROM|From|from");
         var tables = $rootScope.tableData;
         var isAtabl = false;
+        var db = $scope.sourceData.src;
 
         var frmState = regX.exec(str);
         var res = str.split(" ");
@@ -2483,29 +2484,33 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 index = i + 1;
         }
 
+        //-- Modified by Dilani on 24/06/2015 due to DUODIGIN-737
         nameSpTbl = res[index];
-        nameSpTblArr = nameSpTbl.split(".");
+        if (db == "BigQuery"){
+            nameSpTblArr = nameSpTbl.split(".");
 
-        var nameSpace = nameSpTblArr[0];
-        var tabl = nameSpTblArr[1];
-
-
+            var nameSpace = nameSpTblArr[0];
+            var tabl = nameSpTblArr[1];           
+        }
+        else{
+            tabl = nameSpTbl;
+        }
         for (var i = 0; i < tables.length; i++) {
             if (tables[i].name == tabl)
                 isAtabl = true;
         }
-
-        if (typeof query == "undefined" || $diginurls.getNamespace() != nameSpace || !isAtabl) {
-            ngToast.create({
-                className: 'danger',
-                content: "You're trying to query unauthorized namespace or a table!",
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-                dismissOnClick: true
-            });
-            return;
+        if ( db == "BigQuery"){
+            if (typeof query == "undefined" || $diginurls.getNamespace() != nameSpace || !isAtabl){
+                privateFun.fireMessage('0',"You're trying to query unauthorized namespace or a table!");
+                return;
+            }
         }
-
+        else{
+            if (typeof query == "undefined" || !isAtabl){
+                privateFun.fireMessage('0',"You're trying to query unauthorized namespace or a table!");
+                return;
+            }
+        }
         //------ End
 
         // privateFun.isQrySyntaxError(query);

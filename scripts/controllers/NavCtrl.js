@@ -2,10 +2,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http',
     '$localStorage', '$window', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain','Digin_LogoUploader','Digin_Tenant','$filter',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
               $http, $localStorage, $window, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain,Digin_LogoUploader,Digin_Tenant,$filter) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -55,21 +55,21 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //      $scope.imageUrl = "styles/css/images/DiginLogo.png";
         // }
         // else{
-            var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
-            var logoPath=Digin_LogoUploader.split(":")[0]+":"+Digin_LogoUploader.split(":")[1];
-            //console.log(logPath);
+        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+        var logoPath = Digin_LogoUploader.split(":")[0] + ":" + Digin_LogoUploader.split(":")[1];
+        //console.log(logPath);
 
-            $http.get(Digin_LogoUploader+'get_user_settings?SecurityToken='+userInfo.SecurityToken+'&Domain='+Digin_Domain)
-                .success(function (data) {
-                    $rootScope.image = logoPath+data.Result.logo_path;
-                    //$rootScope.image = "http://192.168.2.33/user_data/9c42d3c4661182ca872b3b6878aa0429/logos/hnb.png";
-                    //$scope.imageUrl = "styles/css/images/DiginLogo.png";
-                    $scope.getURL();                                          
-                })
-                .error(function (data) {
-                     $scope.imageUrl = "styles/css/images/DiginLogo.png";
-                     $scope.getURL();
-                });
+        $http.get(Digin_LogoUploader + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
+            .success(function (data) {
+                $rootScope.image = logoPath + data.Result.logo_path;
+                //$rootScope.image = "http://192.168.2.33/user_data/9c42d3c4661182ca872b3b6878aa0429/logos/hnb.png";
+                //$scope.imageUrl = "styles/css/images/DiginLogo.png";
+                $scope.getURL();
+            })
+            .error(function (data) {
+                $scope.imageUrl = "styles/css/images/DiginLogo.png";
+                $scope.getURL();
+            });
         // }
 
 
@@ -108,8 +108,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     //controller start
                     controller: function showProfileController($rootScope, $scope, $mdDialog) {
                         //var userInfo = $auth.getSession();
-                       
-                         var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
+
+                        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
                         $scope.user = {
                             fname: userInfo.Name,
                             lname: "",
@@ -146,9 +146,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                      $scope.tennants = JSON.parse(userInfo.Otherdata.TenentsAccessible).replace('`', '"');
                      */
 
-                   var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
+                    var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
                     $rootScope.username = userInfo.Username;
-                    $http.get(Digin_Tenant+'tenant/GetTenants/' + userInfo.SecurityToken)
+                    $http.get(Digin_Tenant + 'tenant/GetTenants/' + userInfo.SecurityToken)
                         .success(function (response) {
                             $scope.tennants = response;
                         });
@@ -410,60 +410,62 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $state.go('home.DynamicallyReportBuilder', {'reportNme': report});
         }
 
-    //Function to Delete Dashbord
-    $scope.DeleteDashBoard=function(){
-        var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
-        $scope.Det =[{
-                "comp_id":$rootScope.dboard.dashboardID,
-                "permanent_delete":false
+        //Function to Delete Dashbord
+        $scope.DeleteDashBoard = function () {
+            var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+            $scope.Det = [{
+                "comp_id": $rootScope.dboard.dashboardID,
+                "permanent_delete": false
             }];
 
             $http({
                 method: 'DELETE',
-                url: Digin_Engine_API+'delete_components',
+                url: Digin_Engine_API + 'delete_components',
                 data: angular.toJson($scope.Det),
-                headers:{'Securitytoken': userInfo.SecurityToken,
-                        Domain:Digin_Domain}       
+                headers: {
+                    'Securitytoken': userInfo.SecurityToken,
+                    Domain: Digin_Domain
+                }
             })
-            .success(function(response){
-                privateFun.getAllDashboards();   
-                ngToast.create({
-                    className: 'success',
-                    content: "Dashbord deleted successfully...!",
-                    horizontalPosition: 'center',
-                    verticalPosition: 'top',
-                    dismissOnClick: true
-                });    
-                $scope.confirmWin = false;
-                $scope.listWin = true;  
-            })
-            .error(function(error){   
-                //alert("Fail...!");   
-                ngToast.create({
-                    className: 'danger',
-                    content: "Dashboard deletion fail...!",
-                    horizontalPosition: 'center',
-                    verticalPosition: 'top',
-                    dismissOnClick: true
-                });    
-                $scope.confirmWin = false;
-                $scope.listWin = true;                           
-            });         
-    }
-    
-    //Function to confirm Dashbord deletion
-    $scope.ConfirmDashbordDeletion=function(confmWin,lstWin,dashboard){
-        $scope.confirmWin = confmWin;
-        $scope.listWin = lstWin;
-        $rootScope.dboard=dashboard;
-    }
+                .success(function (response) {
+                    privateFun.getAllDashboards();
+                    ngToast.create({
+                        className: 'success',
+                        content: "Dashbord deleted successfully...!",
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
+                    $scope.confirmWin = false;
+                    $scope.listWin = true;
+                })
+                .error(function (error) {
+                    //alert("Fail...!");
+                    ngToast.create({
+                        className: 'danger',
+                        content: "Dashboard deletion fail...!",
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
+                    $scope.confirmWin = false;
+                    $scope.listWin = true;
+                });
+        }
+
+        //Function to confirm Dashbord deletion
+        $scope.ConfirmDashbordDeletion = function (confmWin, lstWin, dashboard) {
+            $scope.confirmWin = confmWin;
+            $scope.listWin = lstWin;
+            $rootScope.dboard = dashboard;
+        }
 
 
         $scope.goDashboard = function (dashboard) {
 
             console.log("dash item", dashboard);
-            
-              var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
+
+            var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
             $http({
                 method: 'GET',
@@ -547,7 +549,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
         // update damith
         // get all reports details
-       
+
         var privateFun = (function () {
             var rptService = $localStorage.erportServices;
             var reqParameter = {
@@ -574,11 +576,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             return {
                 getAllDashboards: function () {
 
-                    var userInfo=JSON.parse(decodeURIComponent(getCookie('authData')));
+                    var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
                     $http({
                         method: 'GET',
-                        
+
                         url: Digin_Engine_API + 'get_all_components?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain
                     })
                         .success(function (data) {
@@ -613,8 +615,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             });
                             $mdDialog.hide()
                         });
-                        $scope.confirmWin = false;
-                        $scope.listWin = true;
+                    $scope.confirmWin = false;
+                    $scope.listWin = true;
                 },
                 getAllReports: function () {
                     getSession();
@@ -636,73 +638,77 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 //#to retrive all users and groups
                 getAllSharableObj: function () {
                     var baseUrl = "http://" + window.location.hostname;
-                    //baseUrl="http://duotest.digin.io";
+                    //baseUrl = "http://duotest.digin.io";
                     baseUrl="http://chamiladuosoftwarecom.space.duoworld.com";
 
                     $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
-                    .success(function(data) 
-                    {
-                        console.log(data); 
-                        $scope.sharableObjs = [];
-                        $scope.sharableUsers = [];
-                        $scope.sharableGroups = [];
+                        .success(function (data) {
+                            console.log(data);
+                            $scope.sharableObjs = [];
+                            $scope.sharableUsers = [];
+                            $scope.sharableGroups = [];
 
-                        for (var i = 0; i < data.length; i++) {
-                            if(data[i].Type=="User"){
-                                //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
-                                $scope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
-                                $scope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
+                            for (var i = 0; i < data.length; i++) {
+                                if (data[i].Type == "User") {
+                                    //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
+                                    $scope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                                    $scope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
+                                }
+                                else if (data[i].Type == "Group") {
+                                    //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
+                                    $scope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                                    $scope.sharableGroups.push({groupId: data[i].Id, groupname: data[i].Name});
+                                }
                             }
-                            else if(data[i].Type=="Group"){
-                                //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
-                                $scope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
-                                $scope.sharableGroups.push({groupId: data[i].Id, groupname: data[i].Name});
-                            }
-                        }
-                        console.log($scope.sharableObjs);
-                        console.log($scope.sharableUsers);
-                        console.log($scope.sharableGroups);
+                            console.log($scope.sharableObjs);
+                            console.log($scope.sharableUsers);
+                            console.log($scope.sharableGroups);
 
-                    }).error(function(){
+                        }).error(function () {
 
-                        alert ("Oops! There was a problem retrieving the User");
+                        alert("Oops! There was a problem retrieving the User");
                     });
 
 
                     //-----------
 
                     $http.get(baseUrl + "/apis/usercommon/getAllGroups")
-                        .success(function(data) 
-                        {
-                            console.log(data); 
+                        .success(function (data) {
+                            console.log(data);
                             $rootScope.sharableGroupsDtls = [];
-                            
-                            for (var i = 0; i < data.length; i++) {
-                                $scope.users=[];  //$scope.userNames=[];
-                                for (var j = 0; j < data[i].users.length; j++) {
-                                    $scope.users.push({Id: data[i].users[j].Id, Name: data[i].users[j].Name, mainTitle:data[i].users[j].mainTitle});     
-                                }    
-                                $rootScope.sharableGroupsDtls.push({groupId: data[i].groupId, groupname: data[i].groupname,users:$scope.users});
-                            }
-                                console.log($rootScope.sharableGroupsDtls);
 
-                        }).error(function(){
-                            alert ("Oops! There was a problem retrieving the groups");
-                        });
+                            for (var i = 0; i < data.length; i++) {
+                                $scope.users = [];  //$scope.userNames=[];
+                                for (var j = 0; j < data[i].users.length; j++) {
+                                    $scope.users.push({
+                                        Id: data[i].users[j].Id,
+                                        Name: data[i].users[j].Name,
+                                        mainTitle: data[i].users[j].mainTitle
+                                    });
+                                }
+                                $rootScope.sharableGroupsDtls.push({
+                                    groupId: data[i].groupId,
+                                    groupname: data[i].groupname,
+                                    users: $scope.users
+                                });
+                            }
+                            console.log($rootScope.sharableGroupsDtls);
+
+                        }).error(function () {
+                        alert("Oops! There was a problem retrieving the groups");
+                    });
 
                     //----------
-                    var array1 = ["test1", "test2","test3", "test4"];
-                    var array2 = ["test1", "test2","test3","test4", "test5", "test6"];
+                    var array1 = ["test1", "test2", "test3", "test4"];
+                    var array2 = ["test1", "test2", "test3", "test4", "test5", "test6"];
 
                     var _array = new Array();
 
                     _array = jQuery.grep(array2, function (item) {
-                         return jQuery.inArray(item, array1) < 0;
+                        return jQuery.inArray(item, array1) < 0;
                     });
                     console.log(_array);
                     //-----------------
-
-                  
 
 
                 }
@@ -1105,15 +1111,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $scope.clear = function () {
                         //$rootScope.dashboardWidgetsCopy = angular.copy($rootScope.dashboard.widgets);
 
-                        for(var i =0 ; i < $rootScope.dashboard.pages.length ; i++ ){
+                        for (var i = 0; i < $rootScope.dashboard.pages.length; i++) {
                             $rootScope.dashboard.pages[i].widgets = [];
                         }
 
-                        for(var i =0 ; i < $rootScope.dashboard.pages.length ; i++ ){
-                            $rootScope.dashboard.pages.splice(i+1, 1);
+                        for (var i = 0; i < $rootScope.dashboard.pages.length; i++) {
+                            $rootScope.dashboard.pages.splice(i + 1, 1);
                         }
                         //$rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets = [];
-                        $rootScope.dashboard.compName="";
+                        $rootScope.dashboard.compName = "";
 
                         $mdDialog.hide();
                     };

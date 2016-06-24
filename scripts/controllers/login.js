@@ -1,10 +1,10 @@
 //var app = angular.module("diginLogin", ['ngMaterial']);
 
 routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
-    '$auth', '$state', '$rootScope', 'ngToast', 'focus','dynamicallyReportSrv',
-     'Digin_Engine_API', 'Digin_Tomcat_Base','Digin_Domain',
+    '$auth', '$state', '$rootScope', 'ngToast', 'focus', 'dynamicallyReportSrv',
+    'Digin_Engine_API', 'Digin_Tomcat_Base', 'Digin_Domain',
     function ($scope, $http, $animate, $window, $auth, $state,
-              $rootScope, ngToast, focus, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base,Digin_Domain) {
+              $rootScope, ngToast, focus, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, Digin_Domain) {
 
         $scope.isLoggedin = false;
         $scope.error = {
@@ -22,7 +22,7 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
         $scope.onClickSignUp = function () {
             $state.go('signup');
         };
-     
+
         var privateFun = (function () {
             var reqParameter = {
                 apiBase: Digin_Engine_API,
@@ -47,12 +47,12 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                     $scope.error.isLoading = true;
 
                     //check first time login or not
-                    var DetailExist=decodeURIComponent(getCookie('authData'));
+                    var DetailExist = decodeURIComponent(getCookie('authData'));
 
 
                     //$auth.login($scope.txtUname, $scope.txtPwd, "duoworld.duoweb.info");
                     $auth.login($scope.txtUname, $scope.txtPwd, Digin_Domain);
-                    
+
                     $auth.onLoginResult(function () {
                         $scope.isLoggedin = true;
 
@@ -71,19 +71,17 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
 
                         //window.location.href = "/";
                         //$state.go('pricing');
-                        
-                        if(DetailExist=="undefined")
-                        {
+
+                        if (DetailExist == "undefined") {
                             $state.go('welcome');
                         }
-                        else
-                        {
+                        else {
                             $state.go('home');
                         }
 
                     });
 
-                    $auth.onLoginError(function (event, data) { 
+                    $auth.onLoginError(function (event, data) {
                         $scope.error.isLoading = false;
                         privateFun.fireMsg('0', '<strong>Error : </strong>invalid login user name or password..');
                         $scope.error.isUserName = true;
@@ -152,14 +150,14 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
         })();
 
 
-        $scope.isUserExist=function (email, cb) {  
-            $http.get('http://104.197.27.7:3048/GetUser/'+email)
-            .success(function(response){
-                cb(true);  
-            }).error(function(error){   
+        $scope.isUserExist = function (email, cb) {
+            $http.get('http://104.197.27.7:3048/GetUser/' + email)
+                .success(function (response) {
+                    cb(true);
+                }).error(function (error) {
                 //alert("Fail !"); 
                 cb(false);
-            });     
+            });
         };
 
 
@@ -186,14 +184,14 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                 $scope.error.isPwd = true;
                 focus('password');
                 return;
-            } 
+            }
             else {
                 //privateFun.login();
-                $scope.isUserExist(loginDetails.userName, function(data){
-                    if(data){
-                         privateFun.login();    
-                    }else{
-                       
+                $scope.isUserExist(loginDetails.userName, function (data) {
+                    if (data) {
+                        privateFun.login();
+                    } else {
+
                         privateFun.fireMsg('0', '<strong>Error : </strong>Invalid login username. Please check.');
                         $scope.error.isUserName = true;
                         focus('txtUname');
@@ -201,6 +199,13 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
                     }
                 });
             }
+        };
+
+        //Go to
+
+        $scope.isLoadTermCondition = false;
+        $scope.goToTermCondition = function (state) {
+            $scope.isLoadTermCondition = state;
         };
 
 

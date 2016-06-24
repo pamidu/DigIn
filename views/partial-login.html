@@ -1,8 +1,27 @@
-<div class="digin-lgn-wrap"  ng-controller="LoginCtrl">
+<div class="digin-lgn-wrap" ng-controller="LoginCtrl">
     <toast></toast>
     <div class="auth-message-wrap"
          ng-if="error.isLoading">
+    </div>
 
+    <div class="team-condition" ng-if="isLoadTermCondition==true">
+        <div class="body">
+            <h2>Terms and condition</h2>
+            <p>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
+                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
+                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
+                software like Aldus PageMaker including versions of Lorem Ipsum.
+            </p>
+
+            <a href="javascript:void(0)"
+               ng-click="goToTermCondition(false)"
+               class="btn btn-default">
+                ok
+            </a>
+        </div>
     </div>
 
 
@@ -88,7 +107,11 @@
 
                                         <div class="login-help">
                                             <div class="remember-me">
-                                                Remember me
+                                                <input id="chkTerms" type="checkbox"/>
+                                                By Clicking sign up you agree to the
+                                                <a href="javascript:void(0);"
+                                                   ng-click="goToTermCondition(true)"
+                                                >terms and condition</a>
                                             </div>
                                             <div class="forget-pwd">
                                                 Forgot password?

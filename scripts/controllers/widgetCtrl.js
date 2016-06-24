@@ -2085,6 +2085,7 @@ routerApp.controller('rssInit',['$scope', '$http', '$mdDialog', 'widgetID', '$ro
                     //var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
                     $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[ObjectIndex].widgetData.widData.feeds = result.feed.entries;
                     $scope.showFinishButton = true;
+                    $scope.$apply();
                     
                 }
                 $scope.diginLogo = 'digin-logo-wrapper2';

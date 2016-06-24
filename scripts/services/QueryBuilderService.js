@@ -21,17 +21,18 @@ routerApp.service('$qbuilder',function($diginengine){
     };
     
     var HIGHCHARTS = function() {
-        function mapResult(cat, res, d, cb){
+        function mapResult(cat, res, d, color, cb){
             var serArr = [];
-
-            //dynamically building the series objects
+            var i = 0;
             for(c in res[0]){
                 if (Object.prototype.hasOwnProperty.call(res[0], c)) {
                     if(c != cat){
                         serArr.push({
                             name: c,
-                            data: []
+                            data: [],
+                            color: color[i]
                         });
+                        i++;
                     }                
                 }
             }
@@ -39,6 +40,7 @@ routerApp.service('$qbuilder',function($diginengine){
             //fill the series array
             res.forEach(function(key){
                 serArr.forEach(function(ser){
+
                     if(!d){
                         ser.data.push({
                             name: key[cat],
@@ -56,17 +58,31 @@ routerApp.service('$qbuilder',function($diginengine){
             cb(serArr);
         }
 
-        function setMeasureData(res){
+        function setMeasureData(res,measureData){
             var series = [];
-            for (var c in res) {
-                if (Object.prototype.hasOwnProperty.call(res, c)) {
-                    series.push({
-                        name: c,
-                        data: [res[c]]
-                    })
+            var i = 0;
+            var cat = []
+                for ( var i = 0; i < measureData.length; i++){
+                    cat[i] = measureData[i].origName;
+                    measureData[i].data = [];
+                }
+
+            for ( c in res[0]){
+                if(cat.indexOf(c) == -1 ){
+                    var y = c;
                 }
             }
-            return series;
+
+            res.forEach(function (key) {
+                measureData.forEach(function(data){
+                    data.data.push({
+                        name: key[y],
+                        y: parseFloat(key[data.origName])
+                    });
+                })
+            })
+
+            return measureData;
         }
         
         this.sync = function(q, cl, widObj, cb) {            
@@ -78,13 +94,18 @@ routerApp.service('$qbuilder',function($diginengine){
                             if(typeof res[0][c] == "string") cat = c;
                         }
                     }
-                    
+
                     if(cat != ""){
-                        mapResult(cat, res, widObj.widData.drilled, function(data){
+                        var color = [];
+                        for ( var i = 0; i < widObj.highchartsNG.series.length; i++){
+                            color[i] = widObj.highchartsNG.series[i].color;
+                        }
+                        mapResult(cat, res, widObj.widData.drilled, color, function(data){
                             widObj.highchartsNG.series = data;
                         });
                     }else{
-                        widObj.highchartsNG.series = setMeasureData(res[0]);
+                        var measureData = widObj.highchartsNG.series;
+                        widObj.highchartsNG.series = setMeasureData(res,measureData);
                     }
 
                     if(typeof widObj.widData.drilled != "undefined")

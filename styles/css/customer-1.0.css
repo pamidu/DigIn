@@ -606,7 +606,7 @@ drb >> dynamically report builder
     overflow-y: auto;
     display: block;
     margin-right: 19px;
-    margin-bottom: 35px;
+    margin-bottom: 46px;
 }
 
 .measures-body > .data-row,
@@ -677,7 +677,7 @@ drb >> dynamically report builder
 
 .panel-header {
     background: #fff;
-    padding: 15px;
+    padding-left: 10px;
 }
 
 .panel-header > h3 {
@@ -722,6 +722,7 @@ drb >> dynamically report builder
     width: 100%;
     /*    height: calc(55vh);*/
     background: #ffffff;
+    overflow-x: scroll;
 }
 
 .chart-config-panel {

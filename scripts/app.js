@@ -854,8 +854,8 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
     //     domain = '',
     //     deferred = $q.defer();
 
-     var clientId = '352719853010-1e2k3je9peuv42na7a2imsv21g89ca1o.apps.googleusercontent.com',
-        apiKey = 'AIzaSyBl3Tz2fIwKQNlf5w1RMH9w6VMgWUsok9Q',
+     var clientId = '1086483422092-87lkk72aa79svoais4g73f0qdcppv6d4.apps.googleusercontent.com',
+        apiKey = 'AIzaSyCOXBOMZF_PpEAvQfxiv7O8rA5VumFt2I8',
         scopes = 'profile email https://www.googleapis.com/auth/plus.login',
         domain = '',
         deferred = $q.defer();

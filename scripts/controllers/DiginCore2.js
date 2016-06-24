@@ -327,10 +327,17 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                 }
 
                 var dashboardObject;
+                
                 if(typeof $rootScope.dashboard.deletions == "undefined")
-                {
-                    $rootScope.dashboard.deletions = [];
-                }
+                    {
+                        $rootScope.dashboard.deletions = {
+                            "componentIDs":[],
+                            "pageIDs":[],
+                            "widgetIDs":[]
+
+                        }
+                    }
+
                 if($rootScope.dashboard.compID == null){
 
                     dashboardObject = {
@@ -934,7 +941,7 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
                                         "widgetID": "temp" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
                                         "widgetName": $scope.currWidget.widName,
                                         "widgetData": $scope.currWidget,
-                                        sizeX: 8,
+                                        sizeX: 6,
                                         sizeY: 6,
                                         row: 0,
                                         col: 0

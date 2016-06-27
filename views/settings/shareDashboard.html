@@ -10,20 +10,15 @@
 
     <div class="dashboard-body">
         <div style="margin-left: 20px;">
-            <div layout="row" align="center center">
-                <div flex="25" style="margin-right: 25px;" ng-repeat="app in apps">
+            <div layout="row" layout-wrap layout-align="center center">
+                <div flex="20" style="margin-right: 25px;" ng-repeat="app in apps">
                     <div class="share-dashboard-view">
-                        <h5>{{app.dashboardName}}</h5>
-
-
+                        <h5>{{app.dashboardName}}</h5> 
+                        <!-- {{app}} -->
                         <md-button class="setup-button md-raised md-primary" ng-click="loadShareWindow(app.dashboardID,app.dashboardName)">Share
                         </md-button>
-
-
                         <ng-md-icon icon="view_headline" style="fill:blue" size="40" ng-click="viewSharedListWindow(app.dashboardID,app.dashboardName)"></ng-md-icon> 
                     </div>
-
-
                 </div>
             </div>
         </div>

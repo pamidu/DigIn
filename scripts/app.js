@@ -2,8 +2,9 @@ var routerApp = angular.module('DuoDiginRt', [
     'ngMaterial',
     'uiMicrokernel',
     'diginServiceHandler',
-    'ngAnimate',     
-    'highcharts-ng',   
+    'ngAnimate',
+    'md.chips.select',
+    'highcharts-ng',
     'ui.router',
     '720kb.socialshare',
     'ngStorage',
@@ -21,13 +22,10 @@ var routerApp = angular.module('DuoDiginRt', [
     'ngCsv',
     'angular-intro',
     'uiGmapgoogle-maps',
-   
     'googleplus',
-     
     'angular-table',
     'ngToast',
     'vAccordion',
-     
     'ngMessages',
     'ngFileUpload',
     "com.2fdevs.videogular",
@@ -587,7 +585,7 @@ routerApp.controller('calenderWidgetController', ['$scope', function ($scope) {
 routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog', function ($scope, $http, $mdDialog) {
     $scope.loadWeather = function (data) {
         $scope.weatherComponentCity = data;
-        //complete config  
+        //complete config
         //            function () {
         $http.get('http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22' + data + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
             .success(function (data) {
@@ -854,8 +852,10 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
     //     domain = '',
     //     deferred = $q.defer();
 
-     var clientId = '352719853010-1e2k3je9peuv42na7a2imsv21g89ca1o.apps.googleusercontent.com',
-        apiKey = 'AIzaSyBl3Tz2fIwKQNlf5w1RMH9w6VMgWUsok9Q',
+    // var clientId = '352719853010-1e2k3je9peuv42na7a2imsv21g89ca1o.apps.googleusercontent.com',
+      //  apiKey = 'AIzaSyBl3Tz2fIwKQNlf5w1RMH9w6VMgWUsok9Q',
+     var clientId = '1086483422092-87lkk72aa79svoais4g73f0qdcppv6d4.apps.googleusercontent.com',
+        apiKey = 'AIzaSyCOXBOMZF_PpEAvQfxiv7O8rA5VumFt2I8',
         scopes = 'profile email https://www.googleapis.com/auth/plus.login',
         domain = '',
         deferred = $q.defer();
@@ -922,9 +922,9 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
             });
             request.execute(function (resp) {
 
-                var ObjectIndex = getRootObjectById(widgetID,$rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);
-                $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[ObjectIndex].widgetData.widData.profileData = resp;
-                    
+                var ObjectIndex = getRootObjectById(widgetID, $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets);
+                $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets[ObjectIndex].widgetData.widData.profileData = resp;
+
 
                 //$rootScope.profileData = resp;
             });
@@ -940,9 +940,9 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
             });
             request.execute(function (resp) {
 
-                var ObjectIndex = getRootObjectById(widgetID,$rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);
-                $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[ObjectIndex].widgetData.widData.peopleData = resp;
-               
+                var ObjectIndex = getRootObjectById(widgetID, $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets);
+                $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets[ObjectIndex].widgetData.widData.peopleData = resp;
+
 
                 //$rootScope.peopleData = resp;
             });
@@ -958,9 +958,9 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
 
             request.execute(function (resp) {
 
-                var ObjectIndex = getRootObjectById(widgetID,$rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);
-                $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[ObjectIndex].widgetData.widData.activityData = resp;
-               
+                var ObjectIndex = getRootObjectById(widgetID, $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets);
+                $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets[ObjectIndex].widgetData.widData.activityData = resp;
+
 
                 //$rootScope.activityData = resp;
             });
@@ -1120,7 +1120,7 @@ routerApp.directive('barsChart', function ($parse) {
                     return d + "%";
                 });
             //a little of magic: setting it's width based
-            //on the data value (d) 
+            //on the data value (d)
             //and text all with a smooth transition
         }
     };

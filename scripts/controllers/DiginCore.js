@@ -78,9 +78,9 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             maxRows: 100, // maximum amount of rows in the grid
             defaultSizeX: 6, // default width of an item in columns
             defaultSizeY: 6, // default height of an item in rows
-            minSizeX: 6, // minimum column width of an item
+            minSizeX: 8, // minimum column width of an item
             maxSizeX: null, // maximum column width of an item
-            minSizeY: 5, // minumum row height of an item
+            minSizeY: 20, // minumum row height of an item
             maxSizeY: null, // maximum row height of an item
             row: 0,
             col: 0,
@@ -529,6 +529,16 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
                 if (removePage) {
 
+                    if(typeof $rootScope.dashboard.deletions == "undefined")
+                {
+                     $rootScope.dashboard.deletions = {
+                            "componentIDs":[],
+                            "pageIDs":[],
+                            "widgetIDs":[]
+
+                     }
+                }
+
                     var pages = $rootScope.dashboard.pages;
                     for (var i = 0; i < pages.length; i++) {
                         //check for the specific page in pages array
@@ -576,6 +586,16 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     return removeWidget;
                 }
             }).then(function (removeWidget) {
+
+                if(typeof $rootScope.dashboard.deletions == "undefined")
+                {
+                     $rootScope.dashboard.deletions = {
+                            "componentIDs":[],
+                            "pageIDs":[],
+                            "widgetIDs":[]
+
+                     }
+                }
 
                 if (removeWidget) {
 

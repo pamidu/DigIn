@@ -56,8 +56,8 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     
     //# load from parent
     var baseUrl = "http://" + window.location.hostname;
-    //baseUrl="http://duotest.digin.io";
-    baseUrl="http://chamiladuosoftwarecom.space.duoworld.com";
+    baseUrl="http://duotest.digin.io";
+    //baseUrl="http://chamiladuosoftwarecom.space.duoworld.com";
     $scope.domain=JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
 
 
@@ -412,18 +412,18 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
    
 
     //Get all apps
-    //$scope.getAllApps = function () {
-        //$scope.apps=$scope.dashboards;
+    // $scope.getAllApps = function () {
+    //     $scope.apps=$scope.dashboards;
 
-        // $objectstore.getClient("duodigin_dashboard")
-        //     .onGetMany(function (data) {
-        //         if (data) {
-        //             allApps = data;
-        //         }
-        //         $scope.apps = data;
-        //     })
-        //     .getByKeyword("*");
-    //};
+    //     $objectstore.getClient("duodigin_dashboard")
+    //         .onGetMany(function (data) {
+    //             if (data) {
+    //                 allApps = data;
+    //             }
+    //             $scope.apps = data;
+    //         })
+    //         .getByKeyword("*");
+    // };
 
 
 
@@ -634,30 +634,39 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         $scope.pickedObj = pickedObj;
         $scope.sharableObj = sharableObj;
 
-
         $scope.shareApp = function () {
-            //Save group detail
-            var grpId = $scope.pickedObj[i].groupId;
-            var grpName = $scope.pickedObj[i].groupname;
-            $scope.GrpDtl = {
-                "id": grpId,
-                "image": "",
-                "name": grpName,
-                "type": "Group"
-            };
-            $http({
+
+            //*get all obj
+            $scope.dataArr=[];
+
+            for (var i = 0; i < pickedObj.length; i++) {
+                //Save all obj
+                var Id = pickedObj[i].id;
+                var Name = pickedObj[i].name;
+                $scope.Dtl = {
+                    "id": Id,
+                    "name": Name,
+                    "type": "Group"
+                };
+
+                $scope.dataArr.push($scope.Dtl);
+            }  
+
+            //*Save detail
+             $http({
                 method: 'POST',
                 url: baseUrl+'/apis/usercommon/saveUiShareData',
-                data: angular.toJson($scope.GrpDtl)
+                data: angular.toJson($scope.dataArr)
             })
-                .success(function (response) {
-                    alert("success...!");
+            .success(function (response) {
+                alert("success...!");
 
-                })
-                .error(function (error) {
-                    alert("Fail...!");
-                });
+            })
+            .error(function (error) {
+                alert("Fail...!");
+            });
         };
+
 
 
         $scope.closeDialog = function () {
@@ -669,34 +678,53 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
 
     //------------Add users to group
     $scope.loadAddUsersWindow = function (group,grpName, pickedUsers, allUsers) {
-        //$scope.viewUsersInGroup(group, function (data) {
+
+            //*get can sharable users
+
+            $scope.remainUsers=[]; 
+            for (var i=0; i< allUsers.length; i++) {
+                 var exist=false;
+                for(var j=0; j< pickedUsers.length; j++){
+                    if (allUsers[i].Id ==  pickedUsers[j].Id) { 
+                        exist=true;
+                    }
+                }   
+
+                if(exist==false) {
+                    $scope.remainUsers.push(allUsers[i]);  
+                }           
+            }   
+            console.log($scope.remainUsers);
+            //------------
+
+
             $mdDialog.show({
                 controller: dashboardgroupCtrl,
                 templateUrl: 'views/addUsersToGroup.html',
                 resolve: {},
-                locals: {grpId:group,grpName:grpName,pickedUsers:pickedUsers,allUsers:allUsers},
+                locals: {grpId:group,grpName:grpName,remainUsers:$scope.remainUsers},
             });
-        //});
-
     };
 
 
     //********
-    var dashboardgroupCtrl = function ($scope, grpId,grpName, pickedUsers, allUsers) {
+    var dashboardgroupCtrl = function ($scope, grpId,grpName,remainUsers) {
 
         $scope.grpId = grpId;
         $scope.grpName = grpName;
-        $scope.pickedUsers = pickedUsers;
-        $scope.allUsers = allUsers;
+        $scope.remainUsers = remainUsers;
+        $scope.newSelected=[];
     
         //------------Add users to group*******
-        $scope.addUsersToGroup = function () {
+        $scope.addUsersToGroup = function (newSelected) {
             //Add user to group
             $scope.userDtl = {
                 "groupId": grpId,
-                "users": pickedUsers
+                "users": newSelected
             };
 
+
+            if ($scope.userDtl==[]){return;}
             $http({
                 method: 'POST',
                 url: baseUrl+'/apis/usercommon/addUserToGroup',
@@ -704,13 +732,44 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
             })
                 .success(function (response) {
                     //alert("Success...!");
-                    fireMsg('1', 'User/s added successfully !');
+                    //for (var j = 0; j < newSelected.length; j++) {
+                        //$rootScope.sharableGroupsDtls.push({groupId: grpId, groupname: grpName,users:newSelected[j]});
+                    //}
+
+                    
+                      $http.get(baseUrl + "/apis/usercommon/getAllGroups")
+                        .success(function(data) 
+                        {
+                            console.log(data); 
+                            $rootScope.sharableGroupsDtls = [];
+                            
+                            for (var i = 0; i < data.length; i++) {
+                                $scope.users=[];  //$scope.userNames=[];
+                                for (var j = 0; j < data[i].users.length; j++) {
+                                    $scope.users.push({Id: data[i].users[j].Id, Name: data[i].users[j].Name, mainTitle:data[i].users[j].mainTitle});     
+                                }    
+                                $rootScope.sharableGroupsDtls.push({groupId: data[i].groupId, groupname: data[i].groupname,users:$scope.users});
+                            }
+                                console.log($rootScope.sharableGroupsDtls);
+
+
+                                 fireMsg('1', 'User/s added successfully !');
+                                 $mdDialog.hide();
+
+
+                        }).error(function(){
+                            //alert ("Oops! There was a problem retrieving the groups");
+                        });
+
+
+
+                   
                 })
                 .error(function (error) {
                     //alert("Fail...!");
                 });
 
-            $mdDialog.hide();
+            
         };
 
 
@@ -839,57 +898,57 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
 //----------New user registration controler
 
 
-        $scope.isUserExist=function (email, cb) {  
-            $http.get('http://104.197.27.7:3048/GetUser/'+email)
-            .success(function(response){
-                cb(true);  
-            }).error(function(error){   
-                //alert("Fail !"); 
-                cb(false);
-            });     
-        };
+        // $scope.isUserExist=function (email, cb) {  
+        //     $http.get('http://104.197.27.7:3048/GetUser/'+email)
+        //     .success(function(response){
+        //         cb(true);  
+        //     }).error(function(error){   
+        //         //alert("Fail !"); 
+        //         cb(false);
+        //     });     
+        // };
 
         //Send confirmation mail for registration
-         $scope.sendConfirmationMail=function (mailTo,fName,dtSetName) {
-            $scope.mailData ={
-                 "type": "email",
-                 "to": mailTo,
-                 "subject": "Digin-RegistrationConfirmation",
-                 "from": "Digin <noreply-digin@duoworld.com>",
-                 "Namespace": "com.duosoftware.com",
-                 "TemplateID": "registration_confirmation2",
-                 "DefaultParams": {
-                  "@@name@@": fName,
-                  "@@dataSet@@":dtSetName
-                 },
-                 "CustomParams": {
-                  "@@name@@": fName,
-                  "@@dataSet@@":dtSetName
-                 }
-                };
+        //  $scope.sendConfirmationMail=function (mailTo,fName,dtSetName) {
+        //     $scope.mailData ={
+        //          "type": "email",
+        //          "to": mailTo,
+        //          "subject": "Digin-RegistrationConfirmation",
+        //          "from": "Digin <noreply-digin@duoworld.com>",
+        //          "Namespace": "com.duosoftware.com",
+        //          "TemplateID": "registration_confirmation2",
+        //          "DefaultParams": {
+        //           "@@name@@": fName,
+        //           "@@dataSet@@":dtSetName
+        //          },
+        //          "CustomParams": {
+        //           "@@name@@": fName,
+        //           "@@dataSet@@":dtSetName
+        //          }
+        //         };
 
-                $http({
-                        method: 'POST',
-                        url: 'http://104.197.27.7:3500/command/notification',
-                        data: angular.toJson($scope.mailData),
-                        headers: {'Content-Type': 'application/json',
-                                  'securitytoken': '1234567890'
-                                }
-                })
-                .success(function(response){
-                    //alert(JSON.stringify(response)); 
-                    fireMsg('1', 'Profile  created successfully and, sent email for verification...!'); 
-                    $scope.fname='';
-                    $scope.lname='';
-                    $scope.email='';
-                    $scope.fname.focus;
+        //         $http({
+        //                 method: 'POST',
+        //                 url: 'http://104.197.27.7:3500/command/notification',
+        //                 data: angular.toJson($scope.mailData),
+        //                 headers: {'Content-Type': 'application/json',
+        //                           'securitytoken': '1234567890'
+        //                         }
+        //         })
+        //         .success(function(response){
+        //             //alert(JSON.stringify(response)); 
+        //             fireMsg('1', 'Profile  created successfully and, sent email for verification...!'); 
+        //             $scope.fname='';
+        //             $scope.lname='';
+        //             $scope.email='';
+        //             $scope.fname.focus;
 
-                })
-                .error(function(error){   
-                    //alert("Fail !");  
-                    fireMsg('0', 'Failed to create profile...!');                      
-                });     
-        };
+        //         })
+        //         .error(function(error){   
+        //             //alert("Fail !");  
+        //             fireMsg('0', 'Failed to create profile...!');                      
+        //         });     
+        // };
 
 
        
@@ -904,18 +963,21 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
             $scope.user = {
                 "EmailAddress": $scope.email,
                 "Name": fullname,
-                "Password": "user@123",
-                "ConfirmPassword": "user@123",
-                "Domain": $scope.domain
+                "Password": "password",
+                "ConfirmPassword": "password",
+                "Active": false
             };
+
             $scope.error.isLoading = true;
+            var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
             $http({
                 method: 'POST',
-                url: 'http://104.197.27.7:3048/UserRegistation/',
+                url: 'http://104.197.27.7:3048/RegisterTenantUser/',
                 data: angular.toJson($scope.user),
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Securitytoken':userInfo.SecurityToken
                 }
 
             }).success(function (data, status, headers, config) {
@@ -924,8 +986,8 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
                 var email=$scope.email;
                 var dtSetName = email.replace('@', "_");
                     dtSetName = dtSetName.replace('.', '_');
-                $scope.sendConfirmationMail($scope.email,$scope.fname,dtSetName);
-                //fireMsg('1', 'Successfully created your profile,Please check your Email for verification!');
+                //$scope.sendConfirmationMail($scope.email,$scope.fname,dtSetName);
+                fireMsg('1', 'Successfully created your profile,Please check your Email for verification!');
 
             }).error(function (data, status, headers, config) {
                 $scope.error.isLoading = false;
@@ -938,24 +1000,20 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
             //validation
             if ($scope.fname == '' || angular.isUndefined($scope.fname)) {
                 fireMsg  ('0', '<strong>Error : </strong>first name is required..');
-                //$scope.error.isFirstName = true;
                 focus('$scope.fname');
                 return;
             } else if ($scope.lname == '' || angular.isUndefined($scope.lname)) {
                 fireMsg('0', '<strong>Error : </strong>last name is required..');
-                //$scope.error.isLastName = true;
                 focus('$scope.lname');
                 return;
             }
             else if ($scope.email == '' || angular.isUndefined($scope.email)) {
                 fireMsg('0', '<strong>Error : </strong>email address is required..');
-                //$scope.error.isEmail = true;
                 focus('$scope.email');
                 return;
             }
             else if (!$scope.validateEmail($scope.email)) {
                 fireMsg('0', '<strong>Error : </strong>invalid email address is required..');
-                //$scope.error.isEmail = true;
                 focus('$scope.email');
                 return;
             } 
@@ -964,7 +1022,6 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
                     $scope.isUserExist($scope.email, function(data){
                     if(data){
                         fireMsg('0', '<strong>Error : </strong>User email already exist...');
-                        //$scope.error.isEmail = true;
                         focus('$scope.email');
                         return;
                     }else{

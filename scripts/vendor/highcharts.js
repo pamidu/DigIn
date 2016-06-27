@@ -1323,7 +1323,7 @@ defaultOptions = {
 		}
 	},
 	title: {
-		text: 'Chart title',
+		text: '',
 		align: 'center',
 		// floating: false,
 		margin: 15,

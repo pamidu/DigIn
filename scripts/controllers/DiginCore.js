@@ -104,21 +104,22 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             var titleLength = 0;
             var selectedPage = $rootScope.selectedPage;
             for (var i = 0; i < $rootScope.dashboard.pages[selectedPage - 1].widgets.length; i++) {
+                if (typeof($rootScope.dashboard.pages[selectedPage - 1].widgets[i].widgetData.widName) === undefined && $rootScope.dashboard.pages[selectedPage - 1].widgets[i].widgetData.widName != ""){
+                    if (titleLength < $rootScope.dashboard.pages[selectedPage - 1].widgets[i].widgetData.widName.length) {
 
-                if (titleLength < $rootScope.dashboard.pages[selectedPage - 1].widgets[i].widgetData.widName.length) {
-
-                    titleLength = $rootScope.dashboard.pages[selectedPage - 1].widgets[i].widgetData.widName.length;
-                    if (titleLength <= 35) {
-                        $scope.widgetTitleClass = 'widget-title-35';
-                    }
-                    if (titleLength > 35 && titleLength <= 60) {
-                        $scope.widgetTitleClass = 'widget-title-60';
-                    }
-                    if (titleLength > 60 && titleLength <= 80) {
-                        $scope.widgetTitleClass = 'widget-title-80';
-                    }
-                    if (titleLength > 80) {
-                        $scope.widgetTitleClass = 'widget-title-long';
+                        titleLength = $rootScope.dashboard.pages[selectedPage - 1].widgets[i].widgetData.widName.length;
+                        if (titleLength <= 35) {
+                            $scope.widgetTitleClass = 'widget-title-35';
+                        }
+                        if (titleLength > 35 && titleLength <= 60) {
+                            $scope.widgetTitleClass = 'widget-title-60';
+                        }
+                        if (titleLength > 60 && titleLength <= 80) {
+                            $scope.widgetTitleClass = 'widget-title-80';
+                        }
+                        if (titleLength > 80) {
+                            $scope.widgetTitleClass = 'widget-title-long';
+                        }
                     }
                 }
             }

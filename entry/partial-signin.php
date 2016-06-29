@@ -5,6 +5,7 @@
 
     </div>
 
+
     <!-- Update UI login form -->
     <div layout="column" layout-align="center center">
         <div class="digin-login-card animated flipInX">
@@ -46,6 +47,10 @@
                         <div class="header-login">
                             <div class="login-text-wrap pull-right ">
                                 <h5 id="sliderRight">Sign In</h5>
+								<font color="red"><b>
+								<p><br></br> </p>
+								<p id="sliderRight">This is a Pre-production site !</p></b>
+								</font>	
                             </div>
                         </div>
                         <form name="frmDiginLogin" autocomplete="off">
@@ -62,6 +67,7 @@
                                                        name="loginUserName"
                                                        ng-model="signindetails.Username"
                                                        placeholder="username@digin.io"
+
                                                        class="form-control">
                                             </div>
                                             <div class="ng-message" ng-messages="frmDiginLogin.loginUserName.$error">
@@ -75,6 +81,7 @@
                                                 <input type="password"
                                                        name="password"
                                                        id="password"
+
                                                        required
                                                        ng-model="signindetails.Password"
                                                        placeholder="***************"

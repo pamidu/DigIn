@@ -56,10 +56,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         // }
         // else{
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
-        var logoPath = Digin_LogoUploader.split(":")[0] + ":" + Digin_LogoUploader.split(":")[1];
+        var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
         //console.log(logPath);
 
-        $http.get(Digin_LogoUploader + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
+        $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
             .success(function (data) {
                 $rootScope.image = logoPath + data.Result.logo_path;
                 //$rootScope.image = "http://192.168.2.33/user_data/9c42d3c4661182ca872b3b6878aa0429/logos/hnb.png";
@@ -148,7 +148,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
                     $rootScope.username = userInfo.Username;
-                    $http.get(Digin_Tenant + 'tenant/GetTenants/' + userInfo.SecurityToken)
+                    $http.get(Digin_Tenant + '/tenant/GetTenants/' + userInfo.SecurityToken)
                         .success(function (response) {
                             $scope.tennants = response;
                         });
@@ -638,8 +638,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 //#to retrive all users and groups
                 getAllSharableObj: function () {
                     var baseUrl = "http://" + window.location.hostname;
-                    baseUrl = "http://duotest.digin.io";
-                    //baseUrl="http://chamiladuosoftwarecom.space.duoworld.com";
+                    //baseUrl = "http://duotest.digin.io";
+                    baseUrl="http://chamiladuosoftwarecom.space.duoworld.com";
 
                     $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
                         .success(function (data) {
@@ -699,15 +699,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     });
 
                     //----------
-                    var array1 = ["test1", "test2", "test3", "test4"];
-                    var array2 = ["test1", "test2", "test3", "test4", "test5", "test6"];
+                    // var array1 = ["test1", "test2", "test3", "test4"];
+                    // var array2 = ["test1", "test2", "test3", "test4", "test5", "test6"];
 
-                    var _array = new Array();
+                    // var _array = new Array();
 
-                    _array = jQuery.grep(array2, function (item) {
-                        return jQuery.inArray(item, array1) < 0;
-                    });
-                    console.log(_array);
+                    // _array = jQuery.grep(array2, function (item) {
+                    //     return jQuery.inArray(item, array1) < 0;
+                    // });
+                    // console.log(_array);
                     //-----------------
 
 

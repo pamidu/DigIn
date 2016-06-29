@@ -10731,7 +10731,7 @@
                      * @type {string}
                      * @constant
                      */
-                    MarkerClusterer.IMAGE_PATH = "http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/images/m";
+                    MarkerClusterer.IMAGE_PATH = "https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m";
 
 
                     /**

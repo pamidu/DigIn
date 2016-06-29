@@ -92,7 +92,7 @@ routerApp
                 data: $scope.signindetails
             }).success(function(data) {
                 if(data.Success) {
-                    document.cookie = "securityToken=" + data.Data.AuthData.SecurityToken + "; path=/";
+                    document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
                     document.cookie = "authData=" + JSON.stringify(data.Data.AuthData) + "; path=/";
                     //$scope.startReportService();
                     //window.location.href = "/"; 
@@ -197,6 +197,7 @@ routerApp
                     cb(false);
             });
         }
+
 
         //*Send confirmation mail for registration
         $scope.sendConfirmationMail = function (mailTo, fName, dtSetName) {

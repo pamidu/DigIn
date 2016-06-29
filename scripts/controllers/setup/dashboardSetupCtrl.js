@@ -56,7 +56,7 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     
     //# load from parent
     var baseUrl = "http://" + window.location.hostname;
-    baseUrl="http://duotest.digin.io";
+    //baseUrl="http://duotest.digin.io";
     //baseUrl="http://chamiladuosoftwarecom.space.duoworld.com";
     $scope.domain=JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
 
@@ -87,48 +87,50 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     $scope.chunkedColorArr = chunk($scope.colorArr, 6);
 
 
-//invite user ***
-    $scope.inviteUser = function () {
+//invite user ***  
+$scope.inviteUser = function () {
+    $scope.exist=false;
+    $http.get(baseUrl+'/devportal/project/share/getusers')
+    //$http.get('http://chamiladuosoftwarecom.space.duoworld.com/devportal/project/share/getusers')
+        .success(function (response) {
+            for(var i=0; i<response.length; i++){
+                if($scope.user.email==response[i].EmailAddress){
+                    $scope.exist=true;
+                }
+            };
 
-        //var userInfo = JSON.parse(getCookie("authData"));
+            if($scope.exist==true){
+                fireMsg('0', '<strong>Error : </strong>This user is already invited...');
+                return;
+            }
+            else{
+                $scope.invite();
+            }
+
+        }).error(function (error) {
+           
+        });
+}
+
+$scope.invite = function () {
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
-        //-----Add user
-        
-        //http://duotest.digin.io/auth/tenant/AddUser/chamila@duosoftware.com/user
         $http.get(baseUrl + '/auth/tenant/AddUser/' + $scope.user.email + '/user', {
                 headers: {'Securitytoken': userInfo.SecurityToken}
             })
             .success(function (response) {
-                //alert(JSON.stringify(response));
-                //------if invited check invited or ----------
-                if (response) {
-                    $http.get(Digin_Tenant + '/GetUser/' + $scope.user.email, {})
-                        .success(function (data) {
-                            //alert(JSON.stringify(data));
-                            fireMsg('1', 'Successfully invited !');
-                            $scope.user.email = '';
-                        });
+                if(response=="true"){
+                    fireMsg('1', '<strong>Success : </strong>Invitation sent successfully...!');
+                    $scope.user.email='';
                 }
-                else {
+                else{
+                    fireMsg('0', '<strong>Error : </strong>This user not registered for Digin...!');
                 }
             }).error(function (error) {
-            //console.log(error);
-            fireMsg('0', 'Invitation not sent !');
+                fireMsg('0', 'Invitation not sent !');
         });
-    };
+};
 
 
-
-    // $scope.goToPerson = function (person, event) {
-    //     $mdDialog.show(
-    //         $mdDialog.alert()
-    //             .title('Navigating')
-    //             //.textContent('Inspect ' + person)
-    //             .ariaLabel('Person inspect demo')
-    //             .ok('Neat!')
-    //             .targetEvendt(event)
-    //     );
-    // };
 
 //*User Settngs Page
     $scope.sizes = [
@@ -191,7 +193,7 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         $mdDialog.show({
                 controller: function fileUploadCtrl($scope, $rootScope, $mdDialog, fileUpload, $http, Upload) {
 
-                    var userInfo = JSON.parse(getCookie("authData"));
+                    var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
                     var filename;
 
                     $scope.diginLogo = 'digin-logo-wrapper2';
@@ -306,87 +308,9 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         });
     }
 
-    //--------msg s------
-    // var privateFun = (function () {
-    //     return {
-    //         fireMsg: function (msgType, content) {
-    //             ngToast.dismiss();
-    //             var _className;
-    //             if (msgType == '0') {
-    //                 _className = 'danger';
-    //             } else if (msgType == '1') {
-    //                 _className = 'success';
-    //             }
-    //             ngToast.create({
-    //                 className: _className,
-    //                 content: content,
-    //                 horizontalPosition: 'center',
-    //                 verticalPosition: 'top',
-    //                 dismissOnClick: true
-    //             });
-    //         }
-    //     }
-    // })();
-    //---------msg e---------
 
 
 //------TESTING START
-
-    // $scope.selectedItem = null;
-    // $scope.searchText = null;
-
-    // $scope.querySearch = querySearch;
-
-    // $scope.sharableUsers = [{
-    //     Name: 'Steve',
-    //     UserID: '500'
-    // }, {
-    //     Name: 'Shane',
-    //     UserID: '100'
-    // }, {
-    //     Name: 'Ryan',
-    //     UserID: '200'
-    // }, {
-    //     Name: 'Nick',
-    //     UserID: '300'
-    // }, {
-    //     Name: 'Iann',
-    //     UserID: '400'
-    // }];
-
-    // $scope.ContactChip = [];
-
-    // function querySearch(query) {
-    //     //$scope.getAllContacts();
-    //     var results = [];
-    //     for (i = 0, len = $scope.sharableUsers.length; i < len; ++i) {
-    //         //if ($scope.ContactDetails[i].groupname.indexOf(query.toLowerCase()) != -1) {
-    //         if ($scope.sharableUsers[i].name.indexOf(query) != -1) {
-    //             //if ($scope.ContactDetails[i].name.indexOf(query.toLowerCase()) != -1) {
-    //             results.push($scope.sharableUsers[i]);
-    //         }
-    //     }
-    //     return results;
-    // }
-
-    //Get users in a specific group
-    // $scope.viewUsersInGroup = function (group, cb) {
-    //     $http.get(baseUrl + '/apis/usercommon/getUserFromGroup/' + group)
-    //         .success(function (response) {
-    //             if (cb)cb(response);
-    //             else $scope.users = response;
-    //         });
-    // };
-
-
-
-
-    // $scope.expandCallback = function (index, id) {
-    //     console.log('expanded pane:', index, id);
-    //     if (typeof $scope.currentPane != null)
-    //         $scope.accordion.collapse($scope.currentPane)
-    //     $scope.currentPane = id;
-    // };
 
 
     //Get groups shared for specific apps //***
@@ -408,8 +332,6 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     //         });
     // };
 
-
-   
 
     //Get all apps
     // $scope.getAllApps = function () {
@@ -470,6 +392,49 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         return true;
     };
 
+    //------------
+    $scope.selectedItem = null;
+    $scope.searchText = null;
+    $scope.querySearch = querySearch;
+    
+    // $scope.ContactDetails = [{
+    //         Name : 'Steve',
+    //         UserID : '500',
+    //         Email : '500'
+    //     },{
+    //         Name : 'Shane',
+    //         UserID : '100',
+    //          Email : '500'
+    //     },{
+    //         Name : 'Ryan',
+    //         UserID : '200',
+    //          Email : '500'
+    //     },{
+    //         Name : 'Nick',
+    //         UserID : '300',
+    //          Email : '500'
+    //     },{
+    //         Name : 'Iann',
+    //         UserID : '400',
+    //          Email : '500'
+    //     }];
+
+
+    $scope.ContactChip = [];
+
+      function querySearch(query) {
+        var lowercaseQuery = angular.lowercase(query);
+        var results = [];
+        for (i = 0; i<$scope.sharableUsers.length;  i++) {
+            var uName=$scope.sharableUsers[i].Name.toLowerCase();
+            if (uName.indexOf(lowercaseQuery) != -1) {
+                results.push($scope.sharableUsers[i]);
+            }
+        }
+        return results;
+    }
+
+    //-----------
 
 
     //Add user group ***    
@@ -489,7 +454,8 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         $scope.grpDtl = {
             "groupId": "-999",
             "groupname": $scope.groupName,
-            "users":  $scope.selectedUsers,
+            //"users":  $scope.selectedUsers,
+            "users":  $scope.ContactChip,
             "parentId": ""
         };
         $http({
@@ -501,7 +467,8 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
             $scope.grpDtl = {
                 "groupId": response.Data[0].ID,
                 "groupname": $scope.groupName,
-                "users":  $scope.selectedUsers,
+                //"users":  $scope.selectedUsers,
+                "users":  $scope.ContactChip,
                 "parentId": ""
             };
             $rootScope.sharableGroupsDtls.push($scope.grpDtl);
@@ -512,8 +479,9 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
                 verticalPosition: 'top',
                 dismissOnClick: true
             }); 
-            $scope.selectedUsers = [];
+            //$scope.selectedUsers = [];
             $scope.groupName = '';
+            $scope.ContactChip = [];
             
         })
         .error(function (error) {
@@ -895,62 +863,7 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
 
 
 
-//----------New user registration controler
-
-
-        // $scope.isUserExist=function (email, cb) {  
-        //     $http.get('http://104.197.27.7:3048/GetUser/'+email)
-        //     .success(function(response){
-        //         cb(true);  
-        //     }).error(function(error){   
-        //         //alert("Fail !"); 
-        //         cb(false);
-        //     });     
-        // };
-
-        //Send confirmation mail for registration
-        //  $scope.sendConfirmationMail=function (mailTo,fName,dtSetName) {
-        //     $scope.mailData ={
-        //          "type": "email",
-        //          "to": mailTo,
-        //          "subject": "Digin-RegistrationConfirmation",
-        //          "from": "Digin <noreply-digin@duoworld.com>",
-        //          "Namespace": "com.duosoftware.com",
-        //          "TemplateID": "registration_confirmation2",
-        //          "DefaultParams": {
-        //           "@@name@@": fName,
-        //           "@@dataSet@@":dtSetName
-        //          },
-        //          "CustomParams": {
-        //           "@@name@@": fName,
-        //           "@@dataSet@@":dtSetName
-        //          }
-        //         };
-
-        //         $http({
-        //                 method: 'POST',
-        //                 url: 'http://104.197.27.7:3500/command/notification',
-        //                 data: angular.toJson($scope.mailData),
-        //                 headers: {'Content-Type': 'application/json',
-        //                           'securitytoken': '1234567890'
-        //                         }
-        //         })
-        //         .success(function(response){
-        //             //alert(JSON.stringify(response)); 
-        //             fireMsg('1', 'Profile  created successfully and, sent email for verification...!'); 
-        //             $scope.fname='';
-        //             $scope.lname='';
-        //             $scope.email='';
-        //             $scope.fname.focus;
-
-        //         })
-        //         .error(function(error){   
-        //             //alert("Fail !");  
-        //             fireMsg('0', 'Failed to create profile...!');                      
-        //         });     
-        // };
-
-
+//----------New user registration controler***
        
         $scope.validateEmail= function (email) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -987,8 +900,10 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
                 var dtSetName = email.replace('@', "_");
                     dtSetName = dtSetName.replace('.', '_');
                 //$scope.sendConfirmationMail($scope.email,$scope.fname,dtSetName);
-                fireMsg('1', 'Successfully created your profile,Please check your Email for verification!');
-
+                fireMsg('1', 'User profile created successfully and, sent email for account verification!');
+                $scope.fname = '';
+                $scope.lname = '';
+                $scope.email = '';
             }).error(function (data, status, headers, config) {
                 $scope.error.isLoading = false;
              
@@ -1045,8 +960,54 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
 //-----------------
 
 
+    // $scope.selectedItem = null;
+    // $scope.searchText = null;
+    // $scope.querySearch = querySearch;
+
+    // $scope.ContactDetails = [{
+    //         Name : 'Steve',
+    //         UserID : '500',
+    //         Email : '500'
+    //     },{
+    //         Name : 'Shane',
+    //         UserID : '100',
+    //          Email : '500'
+    //     },{
+    //         Name : 'Ryan',
+    //         UserID : '200',
+    //          Email : '500'
+    //     },{
+    //         Name : 'Nick',
+    //         UserID : '300',
+    //          Email : '500'
+    //     },{
+    //         Name : 'Iann',
+    //         UserID : '400',
+    //          Email : '500'
+    //     }];
 
 
+    // $scope.ContactChip = [];
+
+    //   function querySearch(query) {
+    //     var lowercaseQuery = angular.lowercase(query);
+    //     var results = [];
+    //     for (i = 0; i<$scope.ContactDetails.length;  i++) {
+    //         var uName=$scope.ContactDetails[i].Name.toLowerCase();
+    //         if (uName.indexOf(lowercaseQuery) != -1) {
+    //             results.push($scope.ContactDetails[i]);
+    //         }
+    //     }
+    //     return results;
+    // }
+
+
+
+  
+
+
+
+//-------------
 
 
 

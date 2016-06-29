@@ -59,12 +59,19 @@ angular.module('md.chips.select', [])
     scope: {
       ngModel: '=',
       selectItems: '=',
-      mainTitle: '@'
+      mainTitle: '@',
+      removeItem : '='
     },
     link: function (scope, element, attrs) {
+      console.log(scope.removeItem)
+      if (scope.removeItem) {
+          scope.ngModel = [];
+      }
 
       scope.mdChipItems = scope.ngModel;
       scope.mdSelectItems = scope.selectItems;
+
+
 
       if(scope.mainTitle == null) {
         scope.mainTitle = "title";

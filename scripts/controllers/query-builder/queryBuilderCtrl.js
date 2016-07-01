@@ -599,7 +599,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }
             },
             onClickCondition: function(row, filed) {
-                $("#togglePanel").hide(200);
+              $("#togglePanel").hide(200);
                 $scope.isPendingRequest = true;
                 $scope.eventHndler.isToggleMeasure = false;
 
@@ -630,9 +630,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             },
             onClickColumn: function(column) {
 
-
-
-                $("#togglePanelColumns").hide(200);
+            $("#togglePanelColumns").hide(200);
                 $scope.isPendingRequest = true;
                 $scope.eventHndler.isToggleColumns = false;
 
@@ -658,7 +656,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     } else {
                         //alert("First select atleast one measure");
 
-                        privateFun.fireMessage('0', 'First select atleast one measure or select pie chart');
+                        privateFun.fireMessage('0', 'First select atleast one measure');
                         $scope.isPendingRequest = false;
                     }
 
@@ -819,41 +817,33 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             },
             onClickSelectedChart: function(data, onSelect) {
 
-                $scope.chartType = onSelect.chart;
-                var seriesArr = $scope.executeQryData.executeMeasures;
-                if (seriesArr.length < 1 && $scope.chartType != "pie") {
+                if (onSelect.chartType != 'metric' && onSelect.chartType != 'highCharts') {
+                    $scope.dynFlex = 90;
+                    $scope.chartWrapStyle.height = 'calc(91vh)';
 
-                    privateFun.fireMessage('0', 'This feature is only available for pie chart ...');
-                    return 0;
-                } else{
-
-                        if (onSelect.chartType != 'metric' && onSelect.chartType != 'highCharts') {
-                            $scope.dynFlex = 90;
-                            $scope.chartWrapStyle.height = 'calc(91vh)';
-
-                        } else {
-                                $scope.dynFlex = 70;
-                                $scope.chartWrapStyle.height = 'calc(63vh)';
-                        }
-
-                        var i;
-                        var chartInData = data;
-                        for (i = 0; i < chartInData.length; i++) {
-                            chartInData[i].selected = false;
-                        }
-                        onSelect.selected = true;
-                        $scope.executeQryData.chartType = onSelect.chart;
-                        
-
-                        if ($scope.selectedChart.chartType != onSelect.chartType) {
-                            $scope.executeQryData.executeColumns = [];
-                            $scope.executeQryData.executeMeasures = [];
-                        }
-                        $scope.selectedChart = onSelect;
-                        eval("$scope." + $scope.selectedChart.chartType + ".changeType()");
-                        //privateFun.createHighchartsChart(onSelect.chart);
+                } else {
+                    $scope.dynFlex = 70;
+                    $scope.chartWrapStyle.height = 'calc(63vh)';
                 }
-               
+
+                //-- Gevindu DUODIGIN-496 -end
+                //remove highcharts related configs
+                var i;
+                var chartInData = data;
+                for (i = 0; i < chartInData.length; i++) {
+                    chartInData[i].selected = false;
+                }
+                onSelect.selected = true;
+                $scope.executeQryData.chartType = onSelect.chart;
+                $scope.chartType = onSelect.chart;
+
+                if ($scope.selectedChart.chartType != onSelect.chartType) {
+                    $scope.executeQryData.executeColumns = [];
+                    $scope.executeQryData.executeMeasures = [];
+                }
+                $scope.selectedChart = onSelect;
+                eval("$scope." + $scope.selectedChart.chartType + ".changeType()");
+                //privateFun.createHighchartsChart(onSelect.chart);
             },
 
             onClickDownload: function() {

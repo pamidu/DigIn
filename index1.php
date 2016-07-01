@@ -86,12 +86,12 @@
 
     <!-- <link href="http://vjs.zencdn.net/5.8.0/video-js.css" rel="stylesheet"> -->
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
-        api_key: 75gasspugsl6ow
+        api_key: 77brc4grx7n90a
         authorize: true
         scope: r_basicprofile
         r_emailaddress
     </script>
-     <script src="https://apis.google.com/js/client.js"></script> 
+    <script src="https://apis.google.com/js/client.js"></script> 
     <style type="text/css">
         .ui-resizable {
             position: absolute !important;

@@ -941,10 +941,9 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
                                         "widgetID": "temp" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
                                         "widgetName": $scope.currWidget.widName,
                                         "widgetData": $scope.currWidget,
-                                        sizeX: 6,
-                                        sizeY: 6,
-                                        row: 0,
-                                        col: 0
+                                        sizeX: 12,
+                                        sizeY: 14,
+                                       
                                 }
 
                 $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.push(widgetObj);

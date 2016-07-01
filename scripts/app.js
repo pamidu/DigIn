@@ -871,9 +871,19 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
 
         return deferred.promise;
     };
-    this.signout = function () {
+    this.signout = function (widgetID) {
         gapi.auth.signOut();
         console.log("logged out");
+
+        var ObjectIndex = getRootObjectById(widgetID, $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets);
+        $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets[ObjectIndex].widgetData.widData.profileData = [];
+
+        var ObjectIndex = getRootObjectById(widgetID, $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets);
+        $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets[ObjectIndex].widgetData.widData.activityData = [];
+
+        var ObjectIndex = getRootObjectById(widgetID, $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets);
+        $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets[ObjectIndex].widgetData.widData.peopleData = [];
+
 
         return deferred.promise;
     };
@@ -887,7 +897,7 @@ routerApp.service('googleService', ['$http', '$rootScope', '$q', function ($http
         gapi.auth.authorize({
             client_id: clientId,
             scope: scopes,
-            immediate: true,
+            immediate: false,
             hd: domain
         }, this.handleAuthResult);
     };

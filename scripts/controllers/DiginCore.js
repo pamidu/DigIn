@@ -61,6 +61,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         });
         //configuring gridster
         $scope.gridsterOpts = {
+           
             columns: 24, // number of columns in the grid
             pushing: true, // whether to push other items out of the way
             floating: true, // whether to automatically float items up so they stack
@@ -76,14 +77,12 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             minColumns: 1, // minimum amount of columns the grid can scale down to
             minRows: 1, // minimum amount of rows to show if the grid is empty
             maxRows: 100, // maximum amount of rows in the grid
-            defaultSizeX: 6, // default width of an item in columns
-            defaultSizeY: 6, // default height of an item in rows
+            defaultSizeX: 12, // default width of an item in columns
+            defaultSizeY: 14, // default height of an item in rows
             minSizeX: 8, // minimum column width of an item
             maxSizeX: null, // maximum column width of an item
             minSizeY: 20, // minumum row height of an item
             maxSizeY: null, // maximum row height of an item
-            row: 0,
-            col: 0,
             saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
             draggable: {
                 enabled: true

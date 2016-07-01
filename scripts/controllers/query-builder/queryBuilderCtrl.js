@@ -661,7 +661,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                 if (!isFoundCnd) {
                     var seriesArr = $scope.executeQryData.executeMeasures;
-                    if (seriesArr.length < 0 || $scope.chartType == "pie") {
+                    if (seriesArr.length > 0 || $scope.chartType == "pie") {
 
                         eval("$scope." + $scope.selectedChart.chartType + ".selectAttribute(column.filedName)");
 

@@ -141,13 +141,13 @@
                     if (database == "BigQuery") {
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                        }, $diginurls.diginengine + "generatehist?q=[{'[" + getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);
+                        }, $diginurls.diginengine /*"http://192.168.0.22:8080/"*/ + "generatehist?q=[{'[" + getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);
                     }
                     else
                     {
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "generatehist?q=[{'["+ tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);     
+                    }, $diginurls.diginengine /*"http://192.168.0.22:8080/"*/ + "generatehist?q=[{'["+ tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);     
                     }
                 },
                 generateBubble: function(tbl, x, y, s, c, cb) {

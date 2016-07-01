@@ -87,24 +87,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 type: $scope.chartType,
                 // Explicitly tell the width and height of a chart
                 width: null
-
             }
         },
         title: {
             text: '',
-
-
-
-
         },
         series: [{
-
             color: '#536DFE',
-
         }]
-
-
-
     };
 
 
@@ -1052,7 +1042,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             series: {
                                 dataLabels: {
                                     enabled: true,
-                                    format: '<b>{point.name}</b> ({point.y:,.0f})',
+                                    format: '({point.y:,.0f})',
                                     color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
                                     softConnector: true
                                 }
@@ -1519,7 +1509,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             $scope.widget.widgetData.highchartsNG.series={};
             $scope.widget.widgetData.highchartsNG.xAxis={};
             $scope.widget.widgetData.highchartsNG.yAxis={};
-
+            $scope.widget.widgetData.highchartsNG.title={};
 
             if (dataTypeFlag && $scope.sourceData.fAttArr.length == 0) {
                 $scope.eventHndler.isLoadingChart = true;
@@ -1538,7 +1528,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 //get highest level
                 $scope.client.generatehist($scope.sourceData.tbl, fieldArray.toString(), function(data, status) {
 
-                    var hObj = {};
+                    var hObj = {};  
                     if (status) {
                         $scope.eventHndler.isLoadingChart = false;
                         $scope.histogramPlotcat = [];
@@ -1556,19 +1546,35 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             }
                         }
 
+                        /*for ( var key in data){
+                            console.log(data[key]);
+                            $scope.histogramPlotData.push(data[key][0]);
+                                var category = key[1].splice(0, 1);
+                            console.log(data[key][1]);
+                        }*/
+
+
+
                         $scope.categories = fieldArray;
 
                         $scope.widget.widgetData.highchartsNG = {
                             options: {
                                 chart: {
                                     type: 'column',
-                                    // Explicitly tell the width and height of a chart
                                     width: null,
                                     height: 367,
+                                    },
+                                // hostogram should not have space between bars
+                                plotOptions: {
+                                    column:{
+                                    groupPadding: 0,
+                                    pointPadding: 0
+                                  }
                                 }
                             },
-
-
+                            title: {
+                                text: ''
+                            },
                             xAxis: {
 
                                 title: {
@@ -1589,30 +1595,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 tickLength: 70,
                                 tickColor: '#ccc',
                             },
-                            plotOptions: {
-                                column: {
-                                    shadow: false,
-                                    borderWidth: .5,
-                                    borderColor: '#666',
-                                    pointPadding: 0,
-                                    groupPadding: 0,
-                                    color: 'rgba(204,204,204,.85)'
-                                },
-                                spline: {
-                                    shadow: false,
-                                    marker: {
-                                        radius: 1
-                                    }
-                                },
-                                areaspline: {
-                                    color: 'rgb(69, 114, 167)',
-                                    fillColor: 'rgba(69, 114, 167,.25)',
-                                    shadow: false,
-                                    marker: {
-                                        radius: 1
-                                    }
-                                }
-                            },
                             yAxis: {
                                 title: {
                                     text: 'Count'
@@ -1626,11 +1608,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 tickInterval: 25,
                                 //endOnTick:false,
                             },
-
                             series: [{
-                                data: $scope.histogramPlotData,
-
-                                pointWidth: 70
+                                data: $scope.histogramPlotData
                             }]
                         };
 
@@ -1752,8 +1731,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
         saveWidget: function(widget) {
             widget.widgetData.widView = "views/ViewHnbMonth.html";
-            widget.widgetData = $scope.fieldArray;
+            //widget.widgetData = $scope.fieldArray;
             widget.widgetData.widName = $scope.widget.widgetData.widName;
+            widget.widgetData.widData = $scope.hierarData;
             widget.widgetName = "sunburst";
 
             $scope.saveChart(widget);
@@ -1940,7 +1920,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             widget.widgetData.widData = {
                 decValue: $scope.selectedChart.initObj.decValue,
                 dec: $scope.selectedChart.initObj.dec,
-
+                //initCtrl: "metricInit",
                 scale: $scope.selectedChart.initObj.scale,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label,
@@ -1949,7 +1929,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             widget.widgetData.widName = $scope.widget.widgetData.widName;
             widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrcMetric.html";
             widget.widgetName = "metric";
-
             $scope.saveChart(widget);
         }
     };

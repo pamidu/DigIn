@@ -2381,13 +2381,23 @@ routerApp.controller('googlePlusInit',['$scope', 'googleService', '$http', '$mdD
 
         $scope.diginLogo = 'digin-logo-wrapper2';
         $scope.showFinishButton = false;
-        $scope.connectedgplus = false;
+
+        if(typeof $rootScope.connectedgplusArr == "undefined"){
+            $rootScope.connectedgplusArr = [];
+            $scope.connectedgplus = false;
+        }
+        else{
+            
+            $scope.connectedgplus = $rootScope.connectedgplusArr[widgetID] ;
+        }
+       
         $scope.login = function() {
 
             $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
             googleService.signin().then(function(promise) {
                 if(promise){
                     $scope.connectedgplus = true;
+                    $rootScope.connectedgplusArr[widgetID] = true;
                     $scope.getData();
                     $scope.diginLogo = 'digin-logo-wrapper2';
                     $scope.showFinishButton = true;
@@ -2398,9 +2408,11 @@ routerApp.controller('googlePlusInit',['$scope', 'googleService', '$http', '$mdD
         };
         $scope.logout = function() {
 
-            googleService.signout().then(function(promise) {
+            googleService.signout(widgetID).then(function(promise) {
                 if(promise){
+                   
                     $scope.connectedgplus = false;
+                    $rootScope.connectedgplusArr[widgetID] = false;
                 }
             }, function(err) {
                 console.log('Failed: ' + err);

@@ -1,6 +1,6 @@
 <md-dialog class="widget0s-dialog">
     <div layout="row" layout-xs="column">
-        <div flex="75">
+        <div flex="70">
             <div class="card-head">
                 <header class="graph-h1 text-uppercase">
                     {{widget.widgetName}}
@@ -15,11 +15,11 @@
                 </div>
             </div>
         </div>
-        <div flex="25">
+        <div flex="30">
             <div class="widget0s-filter">
                 <div class="card-head">
                     <header class="graph-h1 text-uppercase">
-                        Filter
+                        chart details
                     </header>
                     <div class="tools">
                         <a href="javascript:void(0)" data-ng-click="closeDialog()">
@@ -29,10 +29,29 @@
                 </div>
 
                 <div class="widget0s-filter-body">
+                    <div class="widget0s-source">
+                        <header class="widget0s-h1 text-uppercase">
+                            Data Source
+                        </header>
+                        <div class="source">
+                            <i class="fa fa-database"></i>
+                            <span>
+                             {{widget.widgetData.commonSrc.src.src}}
+                            </span>
+                        </div>
+                        <div class="source">
+                            <i class="fa fa-table"></i>
+                            <span>
+                             {{widget.widgetData.commonSrc.src.tbl}}
+                            </span>
+                        </div>
+
+                    </div>
 
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 </md-dialog>

@@ -61,7 +61,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         });
         //configuring gridster
         $scope.gridsterOpts = {
-           
+
             columns: 24, // number of columns in the grid
             pushing: true, // whether to push other items out of the way
             floating: true, // whether to automatically float items up so they stack
@@ -103,7 +103,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             var titleLength = 0;
             var selectedPage = $rootScope.selectedPage;
             for (var i = 0; i < $rootScope.dashboard.pages[selectedPage - 1].widgets.length; i++) {
-                if (typeof($rootScope.dashboard.pages[selectedPage - 1].widgets[i].widgetData.widName) === undefined && $rootScope.dashboard.pages[selectedPage - 1].widgets[i].widgetData.widName != ""){
+                if (typeof($rootScope.dashboard.pages[selectedPage - 1].widgets[i].widgetData.widName) === undefined && $rootScope.dashboard.pages[selectedPage - 1].widgets[i].widgetData.widName != "") {
                     if (titleLength < $rootScope.dashboard.pages[selectedPage - 1].widgets[i].widgetData.widName.length) {
 
                         titleLength = $rootScope.dashboard.pages[selectedPage - 1].widgets[i].widgetData.widName.length;
@@ -267,8 +267,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         parent: angular.element(document.body),
                         targetEvent: ev,
                         locals: {
-                        widgetID : widget.widgetID
-                    }
+                            widgetID: widget.widgetID
+                        }
                     })
                     .then(function () {
                         //$mdDialog.hide();
@@ -286,20 +286,23 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 .substring(1);
         }
         $scope.showWidget = function (ev, widget) {
-
+            console.log("widget is " + JSON.stringify(widget));
             $scope.tempWidth = widget.widgetData.highchartsNG.size.width;
             $scope.tempHeight = widget.widgetData.highchartsNG.size.height;
+
+
             $mdDialog.show({
                     controller: 'showWidgetCtrl',
                     templateUrl: 'views/ViewShowWidget.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     locals: {
-                        widget: widget
+                        widget: widget,
+                        dataSource: widget.widgetData.commonSrc.src,
                     }
                 })
                 .then(function () {
-                    console.log("widget is " + $scope.widget);
+
                     $scope.widget.widgetData.highchartsNG.size.width = $scope.tempWidth;
                     $scope.widget.widgetData.highchartsNG.size.height = $scope.tempHeight;
                     //$mdDialog.hide();
@@ -528,15 +531,14 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
                 if (removePage) {
 
-                    if(typeof $rootScope.dashboard.deletions == "undefined")
-                {
-                     $rootScope.dashboard.deletions = {
-                            "componentIDs":[],
-                            "pageIDs":[],
-                            "widgetIDs":[]
+                    if (typeof $rootScope.dashboard.deletions == "undefined") {
+                        $rootScope.dashboard.deletions = {
+                            "componentIDs": [],
+                            "pageIDs": [],
+                            "widgetIDs": []
 
-                     }
-                }
+                        }
+                    }
 
                     var pages = $rootScope.dashboard.pages;
                     for (var i = 0; i < pages.length; i++) {
@@ -586,14 +588,13 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 }
             }).then(function (removeWidget) {
 
-                if(typeof $rootScope.dashboard.deletions == "undefined")
-                {
-                     $rootScope.dashboard.deletions = {
-                            "componentIDs":[],
-                            "pageIDs":[],
-                            "widgetIDs":[]
+                if (typeof $rootScope.dashboard.deletions == "undefined") {
+                    $rootScope.dashboard.deletions = {
+                        "componentIDs": [],
+                        "pageIDs": [],
+                        "widgetIDs": []
 
-                     }
+                    }
                 }
 
                 if (removeWidget) {
@@ -641,7 +642,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         $scope.commentary = function (widget) {
             var comment = "";
             var chunks = [];
- 
+
             var msg = new SpeechSynthesisUtterance("Total sales for the month is 101410.42 Srilankan Rupees");
             window.speechSynthesis.speak(msg);
 
@@ -746,11 +747,10 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                 }
             };//end
 
-            
 
             return {
                 getAllReport: function () {
-                    $scope.reports=[];
+                    $scope.reports = [];
                     getSession();
                     startReportService();
                     dynamicallyReportSrv.getAllReports(reqParameter).success(function (data) {
@@ -777,16 +777,16 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
 
         /* file upload */
         /*$scope.$watch('files', function () {
-            $scope.upload($scope.files);
-        });
-        $scope.$watch('file', function () {
-            if ($scope.file != null) {
-                $scope.files = [$scope.file];
-            }
-        });*/
+         $scope.upload($scope.files);
+         });
+         $scope.$watch('file', function () {
+         if ($scope.file != null) {
+         $scope.files = [$scope.file];
+         }
+         });*/
         $scope.log = '';
 
-        $scope.upload = function(files) {
+        $scope.upload = function (files) {
             console.log(files);
             var userInfo = JSON.parse(getCookie("authData"));
 
@@ -808,16 +808,16 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                             SecurityToken: userInfo.SecurityToken,
                             Domain: Digin_Domain,
                             other_data: 'prpt_reports'
-                        }                         
-                    }).success(function(data){
-                        console.log(data);                                                 
+                        }
+                    }).success(function (data) {
+                        console.log(data);
                         fireMsg('1', 'Successfully uploaded!');
                         console.log($scope.reports);
                         privateFun.getAllReport();
                         $scope.preloader = false;
                         $scope.diginLogo = 'digin-logo-wrapper2';
                         $mdDialog.hide();
-                    }).error(function(data) {
+                    }).error(function (data) {
                         console.log(data);
                         fireMsg('0', 'There was an error while uploading data !');
                         $scope.preloader = false;

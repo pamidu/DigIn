@@ -380,7 +380,7 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                     method: 'POST',
                     
                     url: Digin_Engine_API+'store_component',
-                    data: angular.toJson(dashboardObject),
+                    data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
                     headers: {  
                                 'Content-Type': 'application/json',
                                 'SecurityToken':userInfo.SecurityToken,
@@ -884,7 +884,7 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
         $scope.addAllinOne = function(widget, ev) {
 
             var widgetLimit = 6;
-            if($rootScope.dashboard.pages[0].widgets.length < widgetLimit){
+            // if($rootScope.dashboard.pages[0].widgets.length < widgetLimit){
 
                 $scope.currWidget = {
 
@@ -942,7 +942,7 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
                                         "widgetName": $scope.currWidget.widName,
                                         "widgetData": $scope.currWidget,
                                         sizeX: 12,
-                                        sizeY: 14,
+                                        sizeY: 22,
                                        
                                 }
 
@@ -951,10 +951,10 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
                 $rootScope.widgetType = widget.title;
 
                 console.log("$rootScope.dashboard.pages[0].widgets", $rootScope.dashboard.pages[0].widgets);
-            }
-            else{
-                privateFun.fireMessage('0','Maximum Widget Limit Exceeded');
-            }
+            // }
+            // else{
+            //     privateFun.fireMessage('0','Maximum Widget Limit Exceeded');
+            // }
 
             $mdDialog.hide();
         };

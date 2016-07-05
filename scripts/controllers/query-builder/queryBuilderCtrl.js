@@ -599,7 +599,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }
             },
             onClickCondition: function(row, filed) {
-              $("#togglePanel").hide(200);
+                 $("#togglePanel").hide(200);
                 $scope.isPendingRequest = true;
                 $scope.eventHndler.isToggleMeasure = false;
 
@@ -630,7 +630,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             },
             onClickColumn: function(column) {
 
-            $("#togglePanelColumns").hide(200);
+             $("#togglePanelColumns").hide(200);
                 $scope.isPendingRequest = true;
                 $scope.eventHndler.isToggleColumns = false;
 
@@ -656,7 +656,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     } else {
                         //alert("First select atleast one measure");
 
-                        privateFun.fireMessage('0', 'First select atleast one measure');
+                        privateFun.fireMessage('0', 'First select atleast one measure or select appropriate chart type..');
                         $scope.isPendingRequest = false;
                     }
 
@@ -817,33 +817,79 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             },
             onClickSelectedChart: function(data, onSelect) {
 
-                if (onSelect.chartType != 'metric' && onSelect.chartType != 'highCharts') {
-                    $scope.dynFlex = 90;
-                    $scope.chartWrapStyle.height = 'calc(91vh)';
+                 $scope.chartType = onSelect.chart;
 
-                } else {
-                    $scope.dynFlex = 70;
-                    $scope.chartWrapStyle.height = 'calc(63vh)';
+                var chartTypeTrue =true;
+
+                switch ($scope.chartType) {
+                    case 'boxplot':
+                        chartTypeTrue = false;
+                        break;
+
+                    case 'pivotsummary':
+                        chartTypeTrue = false;
+                        break;
+
+                    case 'histogram':
+                        chartTypeTrue = false;
+                        break;
+
+                    case 'bubble':
+                        chartTypeTrue = false;
+                        break;
+
+                    case 'forecast':
+                        chartTypeTrue = false;
+                        break;
+
+                    case 'sunburst':
+                        chartTypeTrue = false;
+                        break;
+
+                    case 'hierarchy':
+                        chartTypeTrue = false;
+                        break;
+
+                    case 'pie':
+                        chartTypeTrue = false;
+                        break;
+
                 }
 
-                //-- Gevindu DUODIGIN-496 -end
-                //remove highcharts related configs
-                var i;
-                var chartInData = data;
-                for (i = 0; i < chartInData.length; i++) {
-                    chartInData[i].selected = false;
-                }
-                onSelect.selected = true;
-                $scope.executeQryData.chartType = onSelect.chart;
-                $scope.chartType = onSelect.chart;
 
-                if ($scope.selectedChart.chartType != onSelect.chartType) {
-                    $scope.executeQryData.executeColumns = [];
-                    $scope.executeQryData.executeMeasures = [];
+                var seriesArr = $scope.executeQryData.executeMeasures;
+                if (seriesArr.length < 1 && chartTypeTrue) {
+
+                    privateFun.fireMessage('0', 'This feature is not available for selected chart type ...');
+                    return 0;
+                } else{
+
+                        if (onSelect.chartType != 'metric' && onSelect.chartType != 'highCharts') {
+                            $scope.dynFlex = 90;
+                            $scope.chartWrapStyle.height = 'calc(91vh)';
+
+                        } else {
+                                $scope.dynFlex = 70;
+                                $scope.chartWrapStyle.height = 'calc(63vh)';
+                        }
+
+                        var i;
+                        var chartInData = data;
+                        for (i = 0; i < chartInData.length; i++) {
+                            chartInData[i].selected = false;
+                        }
+                        onSelect.selected = true;
+                        $scope.executeQryData.chartType = onSelect.chart;
+                        
+
+                        if ($scope.selectedChart.chartType != onSelect.chartType) {
+                            $scope.executeQryData.executeColumns = [];
+                            $scope.executeQryData.executeMeasures = [];
+                        }
+                        $scope.selectedChart = onSelect;
+                        eval("$scope." + $scope.selectedChart.chartType + ".changeType()");
+                        //privateFun.createHighchartsChart(onSelect.chart);
                 }
-                $scope.selectedChart = onSelect;
-                eval("$scope." + $scope.selectedChart.chartType + ".changeType()");
-                //privateFun.createHighchartsChart(onSelect.chart);
             },
 
             onClickDownload: function() {
@@ -890,6 +936,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
             query: $scope.dataToBeBind.receivedQuery
         };
+
+        widget.sizeX =12;
+        widget.sizeY =22;
 
         var objIndex = getRootObjectById(widget.widgetID, widgets);
         if (objIndex == null) { //new widget

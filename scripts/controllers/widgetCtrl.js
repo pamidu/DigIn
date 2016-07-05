@@ -236,6 +236,8 @@ routerApp.controller('fbInit',['$scope', '$mdDialog', 'widgetID', '$rootScope',f
             linkedinInterface.loginToLinkedin($scope);
         else
             linkedinInterface.logoutFromLinkedin($scope);
+            var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);
+            $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[objIndex].widgetData.widData = [];
     };
     //cancel config
     $scope.cancel = function() {
@@ -254,6 +256,7 @@ routerApp.controller('fbInit',['$scope', '$mdDialog', 'widgetID', '$rootScope',f
             $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[objIndex].widgetData.widData = data;
             $scope.diginLogo = 'digin-logo-wrapper2';
             $scope.showFinishButton = true;
+            $scope.$apply();
         });
     };
 }]);

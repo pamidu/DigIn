@@ -743,7 +743,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //navigate
         $scope.navigate = function (routeName, ev) {
 
-            var widgetLimit = 6;
+            var widgetLimit = 4;
             var selectedPage = $rootScope.selectedPage;
             var pageCount = $rootScope.dashboard.pages.length;
             var pageWidgetCount = $rootScope.dashboard.pages[selectedPage - 1].widgets.length;

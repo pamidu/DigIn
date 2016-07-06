@@ -852,15 +852,18 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                     case 'pie':
                         chartTypeTrue = false;
-                        break;
+                        break; 
 
+                    case 'metric':
+                        chartTypeTrue = false;
+                        break;
                 }
 
 
                 var seriesArr = $scope.executeQryData.executeMeasures;
                 if (seriesArr.length < 1 && chartTypeTrue) {
 
-                    privateFun.fireMessage('0', 'This feature is not available for selected chart type ...');
+                    privateFun.fireMessage('0', "You can't generate "+$scope.chartType+" chart without selecting a series ...");
                     return 0;
                 } else{
 
@@ -896,7 +899,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 // var htmlElement = document.getElementsByClassName("highcharts-container")[0];
                 var htmlElement = document.getElementById("d3Sunburst");
                 html2canvas(htmlElement, {
-
                     onrendered: function(canvas) {
                         var button = document.getElementById('downloadImage');
                         button.addEventListener('click', function(e) {

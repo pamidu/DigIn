@@ -23,8 +23,7 @@
 .widget0s-chart-view {
     overflow: hidden;
     position: relative;
-    padding: 30px;
-    width: 777px;
+    width: 740px;
 }
 
 .widget0s-chart-view :hover {
@@ -35,8 +34,6 @@
     height: 550px;
     background: #fff;
     width: 100%;
-    margin-top: 10px;
-    border-top-left-radius: 1em;
     overflow: hidden;
     background: #fff;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
@@ -63,18 +60,19 @@
     /*height: 450px;*/
     overflow: hidden;
 }
+
 .widget0m-data-dialog2 {
     width: 50%;
     /*height: 450px;*/
     overflow: hidden;
-    max-height:98%;
+    max-height: 98%;
 }
+
 .widget0m-data-dialog-sm {
     width: 25%;
     height: 250px;
     overflow: hidden;
 }
-
 
 .widget0m-data-header {
     overflow: hidden !important;
@@ -97,13 +95,15 @@
 .widget0m-mapped-data:hover {
     overflow: auto;
 }
+
 .widget0m-mapped-data2 {
     overflow: hidden;
     max-height: 600px;
     min-height: 300px;
     width: 100%;
 }
-.mapped-details{
+
+.mapped-details {
     padding-left: 30px;
 }
 
@@ -116,11 +116,13 @@
     position: relative;
     padding: 0px;
 }
+
 .widget-collection .collection-item.avatar {
     height: 84px;
     padding-left: 0px;
     position: relative;
 }
+
 .widget-collection .collection-item {
     background-color: #fff;
     line-height: 1.5rem;
@@ -128,10 +130,12 @@
     margin: 0;
     border-bottom: 1px solid #e0e0e0;
 }
+
 #widget-collection .collection-header {
     font-size: 1.64rem;
     font-weight: 500;
 }
+
 .task-cat {
     padding: 2px 4px;
     color: #fff;
@@ -142,12 +146,46 @@
     border-radius: 2px;
     background-clip: padding-box;
 }
+
 .cyan {
     background-color: #00bcd4 !important;
 }
+
 .grey {
     background-color: #9e9e9e !important;
 }
+
 .light-green.darken-3 {
     background-color: #558b2f !important;
+}
+
+/*update style datmih*/
+
+.widget0s-source {
+    width: 100%;
+    height: 70px;
+    padding: 11px 17px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+}
+
+.widget0s-source > .source {
+    display: inline-block;
+}
+
+.widget0s-source > .source > i {
+    color: #9e9e9e;
+    padding-right: 5px;
+}
+
+.widget0s-source > .source > span {
+    font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    padding-right: 5px;
+}
+
+.widget0s-h1 {
+    font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
 }

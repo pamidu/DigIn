@@ -86,7 +86,9 @@
 
     <!-- <link href="http://vjs.zencdn.net/5.8.0/video-js.css" rel="stylesheet"> -->
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
-        api_key: 77brc4grx7n90a
+        
+        //api_key: 78itfewa96mm93   //2.33
+        api_key: 78itfewa96mm93
         authorize: true
         scope: r_basicprofile
         r_emailaddress
@@ -202,6 +204,9 @@
 <script type="application/javascript" src="scripts/directives/commonData.js"></script>
 <script type="application/javascript" src="scripts/directives/googleMaps.js"></script>
 <!--  directives end    -->
+
+<script type="text/javascript" src="bower_components/circular-json-master/build/circular-json.js"></script>
+
 <!-- controller -->
 <script type="text/javascript" src="scripts/controllers/NavCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/DiginCore.js"></script>

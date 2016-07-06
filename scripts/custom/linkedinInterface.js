@@ -15,6 +15,7 @@ var linkedinInterface = new function(){
 	        console.log('logged into linkedIn');
 	        linkedinInterface.setLoginButtonValue(true,scope);
         	linkedinInterface.getUserOverview(scope);
+           
 	    });
 	};
 
@@ -24,6 +25,7 @@ var linkedinInterface = new function(){
             scope.userAccountName = '';
             linkedinInterface.setLoginButtonValue(false,scope);
             console.log('logged out from linkedIn');
+            
         });
 	};
 
@@ -35,6 +37,7 @@ var linkedinInterface = new function(){
             scope.accounts.push(username);
             scope.userAccountName = username;
             scope.result = res;
+            
         });
 	};
 
@@ -49,6 +52,7 @@ var linkedinInterface = new function(){
 		this.state = state;
 		if(!state) scope.connectBtnLabel='Add Account';
         else scope.connectBtnLabel='Remove Account';
+        scope.$apply();
 	};
 
 }

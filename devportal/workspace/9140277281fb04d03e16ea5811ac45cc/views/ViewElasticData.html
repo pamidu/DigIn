@@ -1,0 +1,25 @@
+<md-dialog   plumb-item >
+  <md-toolbar class="modal-header" md-theme="teal">  
+    <h1>Data Explorer</h1>
+  </md-toolbar>
+  <md-content style="margin-top:15px;margin-left:15px;">
+  <md-button class="md-raised" ng-csv="dataArray" filename="{{fileName}}.csv" field-separator=",">Export to CSV</md-button>
+  <div layout="column"> 
+      <div layout="column" ng-repeat="s in mappedSeries">
+        <div layout="row">
+          <span flex="25"><b>Category</b></span>
+          <span flex="25"><b>{{s.name}}</b></span>
+        </div>
+        <div layout="row" ng-repeat="d in s.data">
+          <span flex="25">{{d.cat}}</span>
+          <span flex="25">{{d.val}}</span>
+        </div>
+        <md-divider ng-if="!$last" style="margin-right:15px;margin-bottom:10px;"></md-divider>
+      </div>
+    </div>  
+  </md-content>
+  <div class="md-actions" md-theme="indigo"  layout="row">
+    <md-button style="width:200px" ng-click="closeDialog()"   class="md-raised">Ok</md-button>
+    <md-button style="width:200px"  class="md-raised"   ng-click="closeDialog()" class=" md-default">Cancel</md-button>
+  </div>
+</md-dialog>

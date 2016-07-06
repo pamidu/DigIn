@@ -1,0 +1,70 @@
+<md-dialog class="dialogdemoBasicUsage" aria-label="Publish Workflow">
+    <div id="windowloading" layout="column" layout-align="center center">
+        <div>
+            <img src="images/loading.gif" />
+        </div>
+        <div id="busycontent">
+            <p>Loading publish details</p>
+        </div>
+    </div>
+    <md-toolbar md-theme="{{theme}}" md-theme-watch>
+        <div class="md-toolbar-tools">
+            <div class="dialogicon">
+                <ng-md-icon icon="forward" style="fill:white" size="32"></ng-md-icon>
+            </div>
+            <h2>
+              <span>Publish Workflow</span>
+            </h2>
+            <span flex></span>
+            <md-button md-theme="{{theme}}" md-theme-watch class="closebtn md-icon-button" aria-label="More">
+                <ng-md-icon ng-click="cancel()" icon="close" style="fill:white" size="32"></ng-md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content style="min-height:30vh;">
+        <div layout="row" layout-align="center start">
+            <div flex>
+                <p class="md-body-1">Select or enter a new process code to map this workflow.</p>
+                <md-input-container md-theme="{{theme}}" md-theme-watch flex>
+                    <label>Search process codes</label>
+                    <input ng-model="searchitem">
+                </md-input-container>
+                <md-list flex layout="row" layout-wrap layout-align="center center">
+                    <md-item ng-repeat="item in publishlist | filter :searchitem " flex="25">
+                        <md-item-content md-ink-ripple class="listselecter" ng-click="open(item)">
+                            <div class="md-tile-left">
+                                <ng-md-icon icon="{{item.Icon}}" class="bottomsheetbuttons" size="40"></ng-md-icon>
+                            </div>
+                            <div class="md-tile-content">
+                                <h4>{{item.ProcessCode}}</h4>
+                                <p>{{item.WorkflowID}}</p>
+                            </div>
+                        </md-item-content>
+                    </md-item>
+                </md-list>
+            </div>
+        </div>
+    </md-content>
+    <md-content style="min-height:200px;">
+        <form name="processForm" novalidate>
+            <div layout="row">
+                <md-input-container md-theme="{{theme}}" md-theme-watch flex>
+                    <label>Process Code</label>
+                    <input md-maxlength="50" required name="code" ng-model="publish.ProcessCode">
+                    <div ng-messages>
+                        <div ng-message="required" ng-if="processForm.code.$dirty && processForm.code.$invalid">This is required.</div>
+
+                    </div>
+
+
+                </md-input-container>
+            </div>
+    </md-content>
+
+    <div class="md-actions" layout="row">
+        <md-button md-theme="{{theme}}" md-theme-watch ng-click="cancel()" class="md-primary">Close</md-button>
+        <md-button md-theme="{{theme}}" md-theme-watch ng-click="publishWF(publish,$event)" ng-disabled="processForm.code.$invalid" class="md-primary">Publish</md-button>
+    </div>
+    </form>
+</md-dialog>

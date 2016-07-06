@@ -1,0 +1,53 @@
+<md-dialog plumb-item>
+    <md-whiteframe class="md-whiteframe-z1" layout layout-align="center center">  
+        <div class="md-toolbar-tools" flex layout="row">
+                      <div flex="30" flex-sm="20">
+                        <md-icon class=""></md-icon>
+                      </div>   
+                      <div flex="60" layout-align="end center" flex-sm="70">                        
+                                  <h1><span>Add Widget<span></h1>       
+                      </div>                           
+                      <div flex="10" flex-sm="10">
+                             <md-button  ng-click="hideDialog()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                            </md-button> 
+                      </div>
+        </div>
+    </md-whiteframe>
+    <md-content style="height:600px; min-width:550px;">
+        <md-sidenav id="toolbox" layout="column" class="md-sidenav-left" md-component-id="left" md-is-locked-open="true" style="overflow:hidden">
+            <md-list>
+                <md-divider ng-repeat="item in WidgetTypes">
+                    <md-item ng-init="filterWidgets(item)" ng-click="filterWidgets(item)">
+                        <a>
+                            <md-item-content md-ink-ripple layout="row" layout-align="start center">
+                                <div class="inset">
+                                    <md-icon md-svg-src="{{item.icon}}"></md-icon>
+                                    <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
+                                </div>
+                            </md-item-content>
+                        </a>
+                    </md-item>
+                </md-divider>
+            </md-list>
+        </md-sidenav>
+        <div layout="column" layout-margin style="min-width:460px;">
+            <div layout="row" class="animate-repeat" layout-align="center center" ng-repeat="widget in Widgets | filter : selected" style="padding:25px;">
+                <div flex="10">
+                    <img ng-src="{{widget.icon}}" class="md-avatar" alt="{{widget.title}}">
+                </div>
+                <div layout="column" flex="60">
+                    <h4>{{ widget.title }}</h4>
+                    <h5>{{ widget.Description }}</h5>
+                </div>
+                <div flex="10">
+                    <md-button style="width:100px" ng-click="addAllinOne(widget,$event)" class="md-raised">
+                        Add
+                    </md-button>
+                </div>
+            </div>
+
+        </div>
+        </div>
+    </md-content>
+</md-dialog>

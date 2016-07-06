@@ -1,0 +1,10 @@
+<md-content layout-margin flex>
+    <div>
+        <!-- <ng-analytics-view view-selector-container="view-selector-container" auth-container="embed-api-auth-container"></ng-analytics-view> -->
+        <ng-analytics-view view-selector-container="view-selector-container" auth-container="embed-api-auth-container"></ng-analytics-view>
+        <ng-analytics-report queries="widget.widAque" auth-container="embed-api-auth-container"></ng-analytics-report>
+        <ng-analytics-report queries="widget.widAque" auth-container="embed-api-auth-container" view-selector-container="view-selector-container"></ng-analytics-report>
+        <ng-analytics-chart chart="widget.widAexc" auth-container="embed-api-auth-container"></ng-analytics-chart>
+        <ng-analytics-chart ng-repeat="chart in widget.widAna" chart="chart" view-selector-container="view-selector-container" auth-container="embed-api-auth-container"></ng-analytics-chart>
+    </div>
+</md-content>

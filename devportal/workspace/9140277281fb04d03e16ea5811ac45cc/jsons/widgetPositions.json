@@ -1,0 +1,27 @@
+{
+    "d": [{
+        "leftPosition": 154,
+        "topPosition": 15,
+        "ChartType": "bar"
+    }, {
+        "leftPosition": 510,
+        "topPosition": 15,
+        "ChartType": "bar"
+    }, {
+        "leftPosition": 866,
+        "topPosition": 15,
+        "ChartType": "column"
+    }, {
+        "leftPosition": 154,
+        "topPosition": 350,
+        "ChartType": "pie"
+    }, {
+        "leftPosition": 510,
+        "topPosition": 350,
+        "ChartType": "spline"
+    }, {
+        "leftPosition": 866,
+        "topPosition": 350,
+        "ChartType": "pie"
+    }]
+}

@@ -1,0 +1,21 @@
+<div class="tophalf"></div>
+<md-toolbar>
+	<md-fab-actions class="md-toolbar-tools">
+		<md-button class="md-icon-button" ng-click="edit()">
+			<md-icon><ng-md-icon icon="developer_mode" size="32"></ng-md-icon></md-icon>
+			<md-tooltip>Edit</md-tooltip>
+		</md-button>
+		<md-button class="md-icon-button" ng-click="updateShares()">
+			<md-icon><ng-md-icon icon="save" size="32"></ng-md-icon></md-icon>
+			<md-tooltip>Save</md-tooltip>
+		</md-button>
+</md-toolbar>
+
+<div align="center" class="partialparent" ng-cloak>
+	<div class="partialcontent">
+		<md-content class="md-padding autocomplete" layout="column">
+		    <md-contact-chips ng-model="contacts" md-contacts="querySearch($query)" md-contact-name="name" md-contact-image="image" md-contact-email="email" md-require-match="true" md-highlight-flags="i" filter-selected="filterSelected" placeholder="Stakeholders">
+		    </md-contact-chips>
+	  	</md-content>
+	</div>
+</div>

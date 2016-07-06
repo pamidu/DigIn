@@ -1,0 +1,89 @@
+<md-dialog class="dialogdemoBasicUsage" aria-label="Open a workflow">
+    <div id="windowloading" layout="column" layout-align="center center">
+        <div>
+            <img src="images/loading.gif" />
+        </div>
+        <div id="busycontent">
+            <p>Loading workflow details</p>
+        </div>
+    </div>
+    <md-toolbar md-theme="{{theme}}" md-theme-watch>
+        <div class="md-toolbar-tools">
+            <div class="dialogicon">
+                <ng-md-icon icon="folder_open" style="fill:white" size="32"></ng-md-icon>
+            </div>
+            <h2>
+              <span>Open a Workflow</span>
+            </h2>
+            <span flex></span>
+            <md-button md-theme="{{theme}}" md-theme-watch class="closebtn md-icon-button" aria-label="More">
+                <ng-md-icon ng-click="cancel()" icon="close" style="fill:white" size="32"></ng-md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content ng-scrollbars>
+        <!--
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="Open workflow">
+-->
+        <div layout="row">
+            <div flex>
+                <div class="activitycolumn">
+                    <md-input-container md-theme="{{theme}}" md-theme-watch flex>
+                        <label>Search processes</label>
+                        <input ng-model="searchitem">
+                    </md-input-container>
+                    <md-list flex>
+                        <md-item ng-repeat="item in processlist | filter : searchitem" ng-click="setSelected(item);">
+                            <md-item-content md-ink-ripple class="listselecter {{selected}}">
+                                <div class="md-tile-left">
+                                    <ng-md-icon icon="archive" class="bottomsheetbuttons" size="40"></ng-md-icon>
+                                </div>
+                                <div class="md-tile-content">
+                                    <h4>{{item.DisplayName}}</h4>
+                                    <p>{{item.Description}}</p>
+                                </div>
+                            </md-item-content>
+                        </md-item>
+                    </md-list>
+                </div>
+            </div>
+        </div>
+        <!--
+            </md-tab>
+            <md-tab label="Open as Partial">
+                <div layout="row">
+                    <div flex>
+                        <div class="activitycolumn">
+                            <md-input-container md-theme="{{theme}}" md-theme-watch flex>
+                                <label>Search processes</label>
+                                <input ng-model="searchitem">
+                            </md-input-container>
+                            <md-list flex>
+                                <md-item ng-repeat="item in processlist | filter : searchitem">
+                                    <md-item-content md-ink-ripple class="listselecter" ng-click="openAsPartial(item,$event)">
+                                        <div class="md-tile-left">
+                                            <ng-md-icon icon="archive" class="bottomsheetbuttons" size="40"></ng-md-icon>
+                                        </div>
+                                        <div class="md-tile-content">
+                                            <h4>{{item.Name}}</h4>
+                                            <p>{{item.Description}}</p>
+                                        </div>
+                                    </md-item-content>
+                                </md-item>
+                            </md-list>
+                        </div>
+                    </div>
+                </div>
+            </md-tab>
+-->
+
+    </md-content>
+
+    <div class="md-actions" layout="row">
+        <md-button md-theme="{{theme}}" md-theme-watch ng-click="cancel()">Close</md-button>
+        <md-button md-theme="{{theme}}" md-theme-watch ng-click="getallProcessers()" class="md-primary">Re-fresh</md-button>
+        <md-button ng-click="openAsPartial(item,$event)" class="md-primary">Open As Partial</md-button>
+        <md-button ng-click="open(item,$event)" class="md-primary">Open</md-button>
+    </div>
+</md-dialog>

@@ -1,0 +1,29 @@
+<md-dialog id="analyticsDialog" plumb-item>
+    <md-toolbar layout="row" md-theme="teal">
+        <div class="md-toolbar-tools">
+            <div flex="95">
+                <h3>
+                          <span>Data summary</span>
+                         </h3>
+            </div>
+            <div flex="5">
+                <span>
+                                 <md-button class="md-primary md-raised" ng-click="remove()"  aria-label="Close">
+                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg"></md-icon>
+                                 </md-button>
+                             </span>
+            </div>
+        </div>
+    </md-toolbar>
+    <form name="userForm2" ng-init="getIndexes()">
+        <div layout="row" ng-controller="summarizeCtrl as ctrl" layout-align='left start'>
+            <md-autocomplete ng-disabled="ctrl.isDisabled" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem" md-search-text="ctrl.searchText" md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-selected-item-change="getFields(ctrl.selectedItem)" ng-model="item" ng-change="getFields()" placeholder="Type the index to play with!">
+                <span md-highlight-text="ctrl.searchText">{{item.display}}</span>
+            </md-autocomplete>
+        </div>
+        <div layout="row" layout-align='center start'>
+            <div style="margin-top: 20px;" id="tableoutput">
+            </div>
+        </div>
+    </form>
+</md-dialog>

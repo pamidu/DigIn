@@ -1,0 +1,15 @@
+{
+	"applicationKey":"APP_SHELL_MARKETPLACE",
+	"secretKey":"passwd",
+	"title":"App Marketplace",
+	"description" : "App Marketplace",
+	"author":"A Duo Software Employee",
+	"version":"1.0",
+	"type":"HTML5",
+	"jiraComponentId":"",
+	"icon" : "icon.png",
+	"data":{},
+	"resources":[],
+	"publishAllResources" : true,
+	"config":[]
+}

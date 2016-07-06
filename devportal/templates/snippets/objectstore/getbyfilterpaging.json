@@ -1,0 +1,5 @@
+{
+	"name" : "Get By Filtering With Paging",
+	"parameters":[{"Class" : "$1"},{"Query" : "$2"}, {"Skip" : "$3"}, {"Take" : "$4"}],
+	"code":"$objectstore.getClient(\"$1\").onGetMany(function(data){}).onError(function(err){}).skip($3).take($4).getByFiltering(\"$2\");"
+}

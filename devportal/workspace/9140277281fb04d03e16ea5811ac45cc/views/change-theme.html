@@ -1,0 +1,54 @@
+
+ <md-dialog plumb-item style="width:400px">  
+    <md-toolbar>
+                    <div class="md-toolbar-tools" flex layout="row">
+                      <div flex="10">
+                        <md-icon class="ion-paintbrush"></md-icon>
+                      </div>   
+                      <div flex="80">
+                              <h3>
+                                 <span> Theme Change </span>
+                              </h3>
+                      </div>                           
+                      <div flex="10">
+                             <md-button ng-click="closeDialog()" aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                            </md-button>
+                      </div>
+                    </div>
+                    
+   </md-toolbar>
+  <md-content layout-margin>
+   
+      <md-tabs md-dynamic-height md-border-bottom>
+              
+          <md-tab id="tab1" label="Side Panel">
+            <md-content class="md-padding">
+              
+              <div layout="row" flex  layout-align="space-around center" layout-margin>
+              <ng-md-icon icon="palette" style="fill:red" size="50" ng-click="applyMinimalCSS()"></ng-md-icon>
+               <ng-md-icon icon="palette" style="fill:blue" size="50" ng-click="applyVioletCSS()"></ng-md-icon>
+               <ng-md-icon icon="palette" style="fill:green" size="50" ng-click="applyIndigoCSS()"></ng-md-icon>
+               <ng-md-icon icon="palette" style="fill:yellow" size="50"></ng-md-icon>
+               <ng-md-icon icon="palette" style="fill:brown" size="50"></ng-md-icon>
+              </div>
+            </md-content>
+        </md-tab>
+                    
+        <md-tab id="tab2" label="Background">
+            <md-content class="md-padding">
+              
+              <div layout="row" flex  layout-align="space-around center" layout-margin>
+              <ng-md-icon icon="palette" style="fill:red" size="50"></ng-md-icon>
+              <ng-md-icon icon="palette" style="fill:yellow" size="50"></ng-md-icon>
+              <ng-md-icon icon="palette" style="fill:green" size="50"></ng-md-icon>
+              <ng-md-icon icon="palette" style="fill:blue" size="50"></ng-md-icon>
+              <ng-md-icon icon="palette" style="fill:brown" size="50"></ng-md-icon>
+              </div>
+            </md-content>
+        </md-tab>
+      </md-tabs>
+            
+</md-content>
+
+</md-dialog  >

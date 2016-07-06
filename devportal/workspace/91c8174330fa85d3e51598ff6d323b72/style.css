@@ -1,0 +1,21 @@
+html,
+body {
+  height: 100%
+}
+
+body {
+  background: hsla(000, 95%, 45%, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-image: linear-gradient(to right top, hsla(0, 5%, 5%, 0.5), hsla(260, 95%, 45%, 1));
+}
+
+div#img {
+  height: 400px;
+  width: 300px;
+  cursor:pointer;
+}

@@ -1,0 +1,32 @@
+<md-dialog plumb-item style="width:400px;">  
+        <md-toolbar>
+            <div class="md-toolbar-tools" flex layout="row">
+                <div flex="10">
+                    <md-icon class="ion-wrench"></md-icon>
+                </div>
+                <div flex="80">
+                    <h3>Configuration </h3>
+                </div>
+                <div flex="10"> 
+                        <md-button  ng-click="cancel()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                        </md-button> 
+                </div>
+            </div>
+        </md-toolbar>
+        <md-content layout-margin>            
+            <div>
+              <input type="file" file-reader="fileContent"/>
+            </div>
+            <label id="dislab">Please select a .csv file from a location, ex: data.csv</label>
+            <div class="md-actions" layout="row">
+                <span flex></span>
+                <md-button ng-click="cancel()">
+                    Cancel
+                </md-button>
+                <md-button ng-click="finish(fileContent)">
+                Finish
+                </md-button>
+            </div>
+        </md-content>
+</md-dialog>

@@ -1,0 +1,37 @@
+<div ng-cloak>
+	<style scoped>
+	    td {border-style:none;border-size:0px;} 
+	</style>
+	<table style='border-style:none;border-size:0px;height:100%;width:100%;' cellspacing="0" cellpadding="0">
+		<tr><td>
+				<md-toolbar>
+					<md-fab-actions class="md-toolbar-tools">
+						<md-button class="md-icon-button" ng-click="edit()">
+							<md-icon><ng-md-icon icon="developer_mode" size="32"></ng-md-icon></md-icon>
+							<md-tooltip>Edit</md-tooltip>
+						</md-button>
+						<md-button class="md-icon-button">
+						</md-button>
+				        <div>
+					        <md-select ng-model="displayType">
+				            	<md-option ng-value="dt" ng-repeat="dt in displayTypes">
+				            	<md-icon><ng-md-icon icon="{{dt.icon}}" size="24"></ng-md-icon></md-icon>
+				            	{{dt.name}}
+				            	</md-option>
+				        	</md-select>
+			        	</div>
+
+						<md-button class="md-icon-button" ng-click="openNewTab()">
+							<md-icon><ng-md-icon icon="open_in_new" size="32"></ng-md-icon></md-icon>
+							<md-tooltip>Open in New Tab</md-tooltip>
+						</md-button>
+					</md-fab-actions>
+				</md-toolbar>
+		</td></tr>
+		<tr style='border-style:none;border-size:0px;'><td><center>
+			<div style='background:#2C3134;align:center;padding:0px;'>
+			<iframe style='padding:0px;width:{{displayType.width}}px;height:{{displayType.height}}px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border-color:black;border-style: solid;border-width: 1px;border-radius: 5px;margin:40px;' id='idExecutorDisplay' src='{{exeUrl}}' ng-iframeload="executorLoaded()">
+			<br/>
+		</center></div></td></tr>
+	</table>
+</div>

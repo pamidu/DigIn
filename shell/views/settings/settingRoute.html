@@ -1,0 +1,28 @@
+<div class="data-source-up101 animated fadeIn">
+    <div class="row">
+        <div class="container">
+            <div class="col-lg-12">
+                <!--main header wrap-->
+                <div class="data-source-up102 header-wrap">
+                    <h2 class="roboto-font" style="color:#fff;">Choose Setting</h2>
+                    <small class="roboto-font animated fadeIn"></small>
+                </div>
+                <!-- #dataSource source resources -->
+                <div class="source-link-up102 animated fadeIn">
+                    <div class="resources-wrap icheck-inline up102-unSelect hvr-glow"
+                         ng-click="route(menu.route)"
+                         ng-repeat="menu in menuJson">
+                        <div class="link-img">
+                            <img ng-src="{{menu.icon}}">
+                        </div>
+                        <div class="link-footer roboto-font">
+                            {{menu.name}}
+                        </div>
+                    </div>
+                </div>
+                <!-- end source -->
+            </div>
+        </div>
+    </div>
+
+</div>

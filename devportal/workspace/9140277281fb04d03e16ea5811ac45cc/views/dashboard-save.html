@@ -1,0 +1,55 @@
+<md-dialog  plumb-item>
+  <md-toolbar>
+                     <div class="md-toolbar-tools" flex layout="row">
+                      <div flex="10">
+                        <md-icon class="ion-archive"></md-icon>
+                      </div>   
+                      <div flex="80">
+                              <h3>
+                                 <span> Save </span>
+                              </h3>
+                      </div>                           
+                      <div flex="10">
+                             <md-button  ng-click="closeDialog()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                            </md-button>
+                      </div>
+                    </div>
+   </md-toolbar>    
+         <md-content layout-margin layout-align="center center">
+               <form name="userForm">        
+                 <div class="dashcontent" >
+                     <div layout layout-sm="column">
+                            <md-input-container flex>
+                                 <label>Dashboard Name:</label>
+                                 <input ng-model="dashboardName" name="dashboardName" >
+                           </md-input-container>
+                           <md-input-container flex>
+                                 <label>Dashboard Culture:</label>
+                                 <input ng-model="dashboardCulture" name="dashboardCulture">
+                            </md-input-container>
+                     </div>
+                        <div  layout layout-sm="column">
+                            <md-input-container flex>
+                                 <label>Dashboard Type:</label>
+                                 <input ng-model="dashboardType" name="dashboardType" >
+                           </md-input-container>
+                           <md-input-container flex>
+                                 <label>Create Date:</label>
+                                 <input ng-model="dashboardDate" name="dashboardDate">
+                            </md-input-container>
+                     </div>
+                          
+               </form>
+        </md-content>
+        <div class="md-actions" layout="row">    
+          <md-button ng-click="closeDialog()">
+            Cancel
+          </md-button>
+          <md-button ng-click="saveDashboardDetails()">
+           Ok
+          </md-button>
+        </div>
+</md-dialog> 
+ 
+ 

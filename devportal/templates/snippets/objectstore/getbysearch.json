@@ -1,0 +1,5 @@
+{
+	"name" : "Get By Keyword",
+	"parameters":[{"Class" : "$1"},{"Keyword" : "$2"}],
+	"code":"$objectstore.getClient(\"$1\").onGetMany(function(data){}).onError(function(err){}).getByKeyword(\"$2\");"
+}

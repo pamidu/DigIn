@@ -1,0 +1,68 @@
+<md-dialog class="dialogdemoBasicUsage" aria-label="Publish Workflow" ng-controller="SettingsController" style="width:20vw">
+
+    <md-toolbar md-theme="{{theme}}" md-theme-watch>
+        <div class="md-toolbar-tools" >
+            <div class="dialogicon">
+                <ng-md-icon icon="forward" style="fill:white" size="32"></ng-md-icon>
+            </div>
+            <h2>
+              <span>Settings</span>
+            </h2>
+            <span flex></span>
+            <md-button class="closebtn md-icon-button" aria-label="More">
+                <ng-md-icon ng-click="cancel()" icon="close" style="fill:white" size="32"></ng-md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+        <div>
+  <md-content class="md-padding">
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="Canvas">
+        <md-content class="md-padding">
+        <div layout="column">
+            <md-switch ng-model="$root.settings.panning"  aria-label="Switch 1" ng-change="panning()">
+                Panning
+            </md-switch>
+            <md-switch ng-model="$root.settings.zooming"  aria-label="Switch 1" ng-change="zooming()">
+                Zooming
+            </md-switch>
+            <md-switch ng-model="$root.settings.breadcrumb"  aria-label="Switch 1" ng-change="breadcrumb()">
+                Breadcrumb
+            </md-switch>
+        </div>
+        </md-content>
+      </md-tab>
+      <md-tab label="Color">
+        <md-content class="md-padding" layout="row" layout-align="center center" layout-wrap>
+
+
+            <ng-md-icon id="abc" icon="{{clickIcon[1]}}" style="fill:red" size="52" options='{"duration": 375}' ng-click="clickIconMorph('red')" ></ng-md-icon>
+            <ng-md-icon icon="{{clickIcon[2]}}" style="fill:pink" size="52" options='{"duration": 375}' ng-click="clickIconMorph('pink')"></ng-md-icon>
+            <ng-md-icon icon="{{clickIcon[3]}}" style="fill:purple" size="52" options='{"duration": 375}' ng-click="clickIconMorph('purple')"></ng-md-icon>
+            <ng-md-icon icon="{{clickIcon[4]}}" style="fill:indigo" size="52" options='{"duration": 375}' ng-click="clickIconMorph('indigo')"></ng-md-icon>
+            <ng-md-icon icon="{{clickIcon[5]}}" style="fill:blue" size="52" options='{"duration": 375}' ng-click="clickIconMorph('blue')"></ng-md-icon>
+            <ng-md-icon icon="{{clickIcon[6]}}" style="fill:cyan" size="52" options='{"duration": 375}' ng-click="clickIconMorph('cyan')"></ng-md-icon>
+            <ng-md-icon icon="{{clickIcon[7]}}" style="fill:teal" size="52" options='{"duration": 375}' ng-click="clickIconMorph('teal')"></ng-md-icon>
+            <ng-md-icon icon="{{clickIcon[8]}}" style="fill:green" size="52" options='{"duration": 375}' ng-click="clickIconMorph('green')"></ng-md-icon>
+            <ng-md-icon icon="{{clickIcon[9]}}" style="fill:lime" size="52" options='{"duration": 375}' ng-click="clickIconMorph('lime')"></ng-md-icon>
+            <ng-md-icon icon="{{clickIcon[10]}}" style="fill:yellow" size="52" options='{"duration": 375}' ng-click="clickIconMorph('yellow')"></ng-md-icon>
+            <ng-md-icon icon="{{clickIcon[11]}}" style="fill:orange" size="52" options='{"duration": 375}' ng-click="clickIconMorph('orange')"></ng-md-icon>
+            <ng-md-icon icon="{{clickIcon[12]}}" style="fill:brown" size="52" options='{"duration": 375}' ng-click="clickIconMorph('brown')"></ng-md-icon>
+
+        </md-content>
+      </md-tab>
+      <md-tab label="Styles">
+        <md-content class="md-padding" flex layout="row" layout-align="space-around center"
+
+>
+          <ng-md-icon id="abc" icon="{{connection[1]}}" style="fill:red" size="52" options='{"duration": 375}' ng-click="changeCStyle(1)" ></ng-md-icon>
+            <ng-md-icon icon="{{connection[2]}}" style="fill:pink" size="52" options='{"duration": 375}' ng-click="changeCStyle(2)"></ng-md-icon>
+            <ng-md-icon icon="{{connection[3]}}" style="fill:purple" size="52" options='{"duration": 375}' ng-click="changeCStyle(3)"></ng-md-icon>
+
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</div>
+    </md-content>
+</md-dialog>

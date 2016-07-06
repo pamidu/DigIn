@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DuoDigin - For BigData Analytics</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google-signin-client_id" content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com"></meta>
+    <link rel="shortcut icon" href="http://duosoftware.atlassian.net/s/en_US-xr35dg/64005/22/_/favicon.ico">
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+    <link href="styles/css/material-wfont.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="styles/css/pivot.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/css/directive_library.css">
+    <link rel="stylsheet" type="text/css" href="styles/css/pivot.css" />
+    <link rel="stylesheet" type="text/css" href="styles/css/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/css/admin1.css">
+    <link rel="stylesheet" href="styles/css/nv.d3.css">
+   
+    <link rel="stylesheet" type="text/css" href="styles/css/accordion.css">
+    <link rel="stylesheet" type="text/css" href="styles/css/indicator.css">
+    <!-- angular gridster -->
+    <link rel="stylesheet" href="styles/angular-gridster.min.css" />
+    <link rel="apple-touch-icon" href="../../assets/globals/img/icons/apple-touch-icon.png">
+    <script type="text/javascript" src="scripts/vendor/calendar.js"></script>
+
+    <!-- <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script> -->
+    <script type="text/javascript" src="//platform.linkedin.com/in.js">
+    api_key: 75 mu4z7y428pty
+    authorize: true
+    scope: r_basicprofile r_emailaddress
+    </script>
+    <style type="text/css">
+    .ui-resizable {
+        position: absolute !important;
+    }
+    </style>
+</head>
+
+<body plumb-item ng-controller="NavCtrl" ng-app="DuoDiginRt" style="overflow:auto !important">
+    <script type="text/javascript" src="scripts/fbSDK.js"></script>
+    <script type="text/javascript" src="scripts/fbSDK.js"></script>
+    <div id="fb-root"></div>
+    <div ng-init="GetReportDetails()" class="nav-menu">
+        <div style="width:inherit; background-color: #4B77BE;">
+            <img ng-src="styles/css/images/logo2.png" class="md-avatar" id="digin-logo" alt="appLogo" style="width:inherit">
+        </div>
+        <md-divider style="padding-top:2px; "></md-divider>
+        <div class="sidebar-btn-container" style="margin-top:45px;">
+            <md-divider></md-divider>
+            <md-item ng-repeat="item in menu">
+                <md-button style="min-width:0px; font-size:26px;" md-ink-ripple ng-click="$parent.navigate(item.title)" layout="row" layout-align="start center">
+                    <md-icon style="height:100%;" class="{{item.icon}} sidebaricons"></md-icon>
+                    <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
+                </md-button>
+                <md-divider></md-divider>
+            </md-item>
+        </div>
+    </div>
+    <div ui-view layout="column" id="content1">
+        <div class="pre-loader-parent" id="pagePreLoader" layout="column" layout-align="center center">
+            <div class="pre-loader-child" layout="column" layout-align="center center">
+                <img src="styles/css/images/preloaders/Preloader_1/Preloader_1.gif" alt="Washed Out">
+                <span><b>Getting your environment ready..</b></span>
+                <md-progress-linear class="md-primary"></md-progress-linear>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-widgets-close">
+        <md-button id="dashboardwidgetsclose" class="md-fab" ng-click="closeAllWidgets()" aria-label="Close">
+        <md-icon class="ion-close"></md-icon>
+        </md-button>
+    </div>
+    <div class="nav-bar-border">
+    </div>
+    <div class="overlay">
+        <div class="starting-point">
+            <span></span>
+        </div>
+    </div>
+    <!-- start pulathisi 7/24/2015 -->
+    <!-- <div class="overlay-secondary"></div> -->
+    <!-- end pulathisi 7/24/2015 -->
+    <div class="nav-search">
+        <md-icon id="btnNavSearch" class="ion-search search sidebaricons"></md-icon>
+    </div>
+    <div class="search-layer">
+        <div class="search">
+            <form >
+                <div class="form-group" layout="row">
+                    <label id="postdomain" style="top: 20px"><img style="width:35px;height:35px;margin-top:10px;" src='styles/css/images/ic_search_white_24px.svg' /></label>
+                <md-input-container flex style="padding-bottom:0px">
+                    <input ng-model="searchText" type="text" id="input-search" style="background-color: #FFFFFF;height:50px;font-size: 30px;">
+                </md-input-container>
+            </div>
+            </form>
+        </div>
+        <div class="results">
+            <div class="row">
+                <div class="col-md-4">
+                    <!--button type="submit" class="btn btn-default" ng-click="GetDshboardDetails()"><i class="ion-search"></i></button---->
+                    <div class="result result-users">
+                        
+                        <h3 style="font-family:inherit;font-weight:300;font-size:23px;">DASHBOARDS <small>({{dashboards.length}})</small></h3>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg' />
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites <small>({{favoriteDashboards.length}})</small></h4>
+                            <ul class="list-material">
+                                <li class="has-action-left" ng-repeat="x in favoriteDashboards | filter:searchText">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left" style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
+                                            <img style="width:35px;height:35px;"  src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg" class="face-radius" alt="">
+                                            <span ng-click="goDashboard(x)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More <small>({{dashboards.length}})</small></h4>
+                            <ul class="list-material">
+                                <li class="has-action-left" ng-repeat="x in dashboards | filter:searchText">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left" style="border-bottom:rgba(0,0,0,0.5); font-size:16px; color:#FFFFFF">
+                                            <img style="width:35px;height:35px;" src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg" class="face-radius" alt="">
+                                            <span ng-click="goDashboard(x)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="result result-posts">
+                        <h3 style="font-family:inherit;font-weight:300;font-size:23px;">REPORTS <small>({{reports.length}})</small></h3>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg' />
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites <small>({{favoriteReports.length}})</small></h4>
+                            <ul class="list-material">
+                                <li class="has-action-left" ng-repeat="x in favoriteReports |filter:searchText">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
+                                            <img style="width:35px;height:35px;" src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg" class="img-radius" alt="">
+                                            <span ng-click="goReport(x.name)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More <small>({{reports.length}})</small></h4>
+                            <ul class="list-material">
+                                <li class="has-action-left" ng-repeat="x in reports |filter:searchText">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
+                                            <img style="width:35px;height:35px;" src="bower_components/material-design-icons/device/svg/production/ic_dvr_24px.svg" class="img-radius" alt="">
+                                            <span ng-click="goReport(x.name)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="result result-posts">
+                        <h3 style="font-family:inherit;font-weight:300;font-size:23px; ">ANALYZER <small>({{analyzers.length}})</small></h3>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px" src='bower_components/material-design-icons/action/svg/production/ic_star_rate_24px.svg' />
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">Favourites <small>({{favoriteAnalyzers.length}})</small></h4>
+                            <ul class="list-material">
+                            <li class="has-action-left" ng-repeat="x in favoriteAnalyzers |filter:searchText">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
+                                            <img style="width:35px;height:35px;" src="bower_components/material-design-icons/navigation/svg/production/ic_apps_24px.svg" class="img-radius" alt="">
+                                            <span ng-click="goAnalyzer(x.name)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="row">
+                            <img style="width:35px;height:35px;margin-top:-8px; " src='bower_components/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg' />
+                        
+                            <h4 class='liketext' style="font-family:inherit;font-weight:300;font-size:23px;">More <small>({{analyzers.length}})</small></h4>
+                            <ul class="list-material">
+                            <li class="has-action-left" ng-repeat="x in analyzers |filter:searchText">
+                                    <a href="#" class="hidden"><i class="ion-android-delete"></i></a>
+                                    <a href="#" class="visible">
+                                        <div class="list-action-left" style="color:#FFFFFF;border-bottom:rgba(0,0,0,0.5); font-size:16px;">
+                                            <img style="width:35px;height:35px;" src="bower_components/material-design-icons/navigation/svg/production/ic_apps_24px.svg" class="img-radius" alt="">
+                                            <span ng-click="goAnalyzer(x.name)" class="title">{{x.splitName}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="layer-container">
+        <div ng-repeat="pannel in menuPanels" ng-controller="pannel" class="menu-layer">
+            <div ng-if="currentView=='Dashboard' ">
+                <ul ng-repeat="item in dashboardmenu">
+                    <li ng-click="doFunction(item.title)">
+                        <a>{{item.title}} </a>
+                    </li>
+                </ul>
+            </div>
+            <div ng-if="currentView=='Reports'">
+            </div>
+            <div ng-if="currentView=='Analytics'">
+                <ul ng-repeat="item in analyticsmenu">
+                    <li ng-click="doFunction(item.title)">
+                        <a>{{item.title}} </a>
+                    </li>
+                </ul>
+            </div>
+            <div ng-if="currentView=='RealTime'">
+                <ul ng-repeat="item in realtimeMenu">
+                    <li ng-click="doFunction(item.title)">
+                        <a>{{item.title}} </a> </li>
+                </ul>
+            </div>
+            <div ng-if="currentView=='Digin P Stack'">
+                <ul ng-repeat="item in Extendedmenu">
+                    <li ng-click="doFunction(item.title)">
+                        <a>{{item.title}} </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <tts tts-text="Hello world" tts-lang="en"></tts>
+    <!--  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+    <script src="scripts/vendor/prefixfree.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+    <script src="http://code.highcharts.com/highcharts-more.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
+    
+    <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>-->
+    <script type="text/javascript" src="scripts/vendor/jquery.jsPlumb-1.4.1-all-min.js"></script>
+    <script type="text/javascript" src="scripts/vendor/twitteroauth.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
+
+     <script type="text/javascript" src="scripts/vendor/google-picker.min.js"></script>
+
+      <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
+
+     <script type="text/javascript" src="scripts/vendor/converter.js"></script>
+
+     <script type="text/javascript" src="scripts/vendor/twitterservice.js"></script>
+
+    <script type="text/javascript" src="scripts/vendor/ng-analytics.js"></script>
+    <script type="text/javascript" src="scripts/vendor/ng-analytics.min.js"></script>
+    <script>
+    document.write('<base href="' + document.location + '" />');
+    </script>
+    
+    <script data-require="jquery@*" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+    </script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="https://rawgit.com/barendb/highcharts-ng/master/src/highcharts-ng.js"></script>
+    <script src="http://code.highcharts.com/modules/drilldown.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    
+    <script type="text/javascript" src="scripts/config.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src=" bower_components/hammerjs/hammer.js"></script>
+    <script type="text/javascript" src="scripts/vendor/oauth.js"></script>
+    <script src="bower_components/d3/d3.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/ng-csv/build/ng-csv.js"></script>
+    <script type="text/javascript" src="scripts/vendor/global-vendors.js"></script>
+    <script type="text/javascript" src="scripts/vendor/pleasure.js"></script>
+    <script type="text/javascript" src="scripts/vendor/layout.js"></script>
+    <script type="text/javascript" src="scripts/vendor/respond.js"></script>
+    <script type="text/javascript" src="scripts/vendor/angular-socialshare.min.js"></script>
+    <script type="text/javascript" src="scripts/vendor/angular-css-injector.js">
+    </script>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/98887/angular-fullscreen.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
+    <script src="bower_components/ngstorage/ngStorage.js"></script>
+    <script type="text/javascript" src="scripts/vendor/pivot.js"></script>
+    <!-- html2canvas -->
+    <script type="text/javascript" src="build/html2canvas.js"></script>
+    <script type="text/javascript" src="scripts/custom/utility.js"></script>
+    <script type="text/javascript" src="scripts/app.js"></script>
+    <script type="text/javascript" src="scripts/services/ObjectStoreService.js"></script>
+    <script type="text/javascript" src="scripts/controllers/NavCtrl.js"></script>
+    <script type="text/javascript" src="scripts/controllers/DiginCore.js"></script>
+     <script type="text/javascript" src="scripts/controllers/DiginCore2.js"></script>
+
+    <script type="text/javascript" src="scripts/directives/plumbItem.js"></script>
+    <script type="text/javascript" src="scripts/directives/postRender.js"></script>
+    <script type="text/javascript" src="scripts/directives/accordion.js"></script>
+    <script type="text/javascript" src="scripts/controllers/chartSettingsCtrl.js"></script>
+    <script type="text/javascript" src="scripts/controllers/elasticController.js"></script>
+    <script type="text/javascript" src="scripts/directives/resizeable.js"></script>
+    <script type="text/javascript" src="scripts/directives/droppable.js"></script>
+    <script type="text/javascript" src="scripts/directives/draggable.js"></script>
+    <script type="text/javascript" src="scripts/directives/validNumber.js"></script>
+    <script type="text/javascript" src="scripts/directives/directivelibrary.js"></script>  
+    <script type="text/javascript" src="scripts/services/ReportService.js"></script>      
+    <script type="text/javascript" src="scripts/services/Dashboard.js"></script>
+    <script type="text/javascript" src="scripts/vendor/angular-count-to.min.js"></script>
+    <script type="text/javascript" src="scripts/factories/d3Data.js"></script>
+    <script type="text/javascript" src="scripts/factories/Dashboard.js"></script>
+    <script type="text/javascript" src="scripts/controllers/newWidgetCtrl.js"></script>
+    <script type="text/javascript" src="scripts/controllers/ShowTableCtrl.js"></script>
+    <script type="text/javascript" src="scripts/services/RealTimeService.js"></script>
+    <script type="text/javascript" src="scripts/services/AnalyticsService.js"></script>
+    <script type="text/javascript" src="scripts/custom/fbInterface.js"></script>
+    <script type="text/javascript" src="scripts/vendor/indicator.js"></script>
+    <script type="text/javascript" src="scripts/directives/indicatorWidget.js"></script>
+    <script type="text/javascript" src="scripts/custom/linkedinInterface.js"></script>
+    <script type="text/javascript" src="scripts/vendor/uimicrokernel.js"></script>
+    <script type="text/javascript" src="scripts/vendor/pjTextToSpeech.js"></script>
+    
+    <script type="text/javascript" src="scripts/controllers/widgetCtrl.js"></script>
+    
+    <script type="text/javascript" src="scripts/controllers/gridBottomSheetCtrl.js"></script>
+    <script type="text/javascript" src="scripts/controllers/ExcelCtrl.js"></script>
+    
+    <!-- Material Icons -->
+    <script src="//cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"></script>
+    <!-- svg to canvas -->
+    <script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script>
+    <script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
+    <script type="text/javascript" src="scripts/vendor/nv.d3.js"></script>
+    <!-- or use another assembly -->
+    <script type="text/javascript" src="scripts/vendor/angular-nvd3.js"></script>
+    <script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script>
+    <script type="text/javascript" src="scripts/controllers/ThemeCtrl.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+    <!-- excel directive -->
+    <script type="text/javascript" src="scripts/controllers/jszip.js"></script>
+    <script type="text/javascript" src="scripts/controllers/xlsx.js"></script>
+    <script type="text/javascript" src="scripts/controllers/xlsx-reader.js"></script>
+    <script type="text/javascript" src="scripts/controllers/excel.js"></script>
+    <script type="text/javascript" src="scripts/controllers/angular-touch.js"></script>
+    
+    <!-- angular gridster -->
+    <script src="scripts/angular-gridster.js"></script>
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+   
+    <script type="text/javascript">
+    google.load('search', '1');
+    </script>
+    <script type="text/javascript">
+    google.load("feeds", "1");
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?AIzaSyBs5gFF_1gQKf0LTMSf-YOxHJK4nF9FkTQ=API_KEY&callback=finish">
+    </script>
+    <script>
+    $(document).ready(function() {
+        Layout.init();
+    });
+    </script>
+
+   
+    <!-- linq for quering in elastic widget -->
+    <script type="text/javascript" src="scripts/vendor/linq/linq.js"></script>
+
+</body>
+
+</html>

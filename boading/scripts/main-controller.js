@@ -368,15 +368,17 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
         $scope.config.defaultAppConfiguration = $scope.selected;
     };
 
-    $scope.createTenant = function (plan) {
+    //#Tenent creation process
+	$scope.createTenant = function (plan) {
         
         var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
         var email=userInfo.Email;
         var domainName = email.replace('@', "");
             domainName = domainName.replace('.', "");
+			domainName = domainName.replace('.', "");
 
         $scope.tenantDtl = {
-            "TenantID": domainName + ".digin.io",
+            "TenantID": domainName,
             "TenantType": "Company",
             "Name": userInfo.Name.replace(' ', ''),
             "Shell": "",
@@ -403,11 +405,12 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
             }
         })
         .success(function (response) {
-            var res=decodeURIComponent(response);
+            //var res=decodeURIComponent(response);
             if (response.Success == true) {
-                window.location = "http://" + response.Data.TenantID ;
+                window.location = "http://" + response.Data.TenantID;
+				//window.location ="http://digin.io/entry";
             }
-            else {
+            else {	
                 console.log(response.Message);
             }
 
@@ -416,6 +419,7 @@ app.controller('main-controller', function ($scope, $mdSidenav, $mdDialog, $stat
 
         });
     };
+   
 
 });
 

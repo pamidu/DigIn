@@ -1,0 +1,46 @@
+<md-content style="min-height:200px;">
+    <md-tabs md-border-bottom>
+        <md-tab label="Profile">
+            <md-content class="md-padding">
+                <div layout="column" ng-model="InstaDetails">
+                <div>
+                        <h6>Profile Information</h6>
+                        <p><img style="width:50px;height:50px;" src="{{widget.widData.profilepic}}" /></p>
+                    </div><br/>
+                    <h6>Fullname</h6>
+                    <div>{{widget.widData.firstName}}</div><br/>
+                    <h6>Username</h6>
+                    <div>{{widget.widData.username}}</div>
+                </div>
+            </md-content>
+        </md-tab>
+      <md-tab label="Overview">
+            <md-content class="md-padding">
+                <div id="metric0" style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
+                    <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
+                        <span class="ctotals_inner">{{widget.widData.likes}}</span>
+                    </div>
+                    <div style="font-size:10px;text-transform:uppercase;">
+                        <div class="widget_legend" style="background:#ff5252;"></div>Likes
+                    </div>
+                </div>
+                <div id="metric1" style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
+                    <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
+                        <span class="ctotals_inner">{{widget.widData.followers}}</span>
+                    </div>
+                    <div style="font-size:10px;text-transform:uppercase;">
+                        <div class="widget_legend" style="background:#c7b700;"></div>Followers
+                    </div>
+                </div>
+                  <div id="metric1" style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
+                    <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
+                        <span class="ctotals_inner">{{widget.widData.follows}}</span>
+                    </div>
+                    <div style="font-size:10px;text-transform:uppercase;">
+                        <div class="widget_legend" style="background:#c7b700;"></div>Following
+                    </div>
+                </div>
+            </md-content>
+        </md-tab>
+    </md-tabs>
+</md-content>

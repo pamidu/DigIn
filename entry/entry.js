@@ -53,13 +53,6 @@ routerApp
             $state.go('signup');
         };
 
-        // $scope.startReportService = function () {
-        //     dynamicallyReportSrv.startReportServer(reqParameter).success(function (res) {
-        //             return true;
-        //         }).error(function (err) {
-        //             return false;
-        //     });
-        // };
 
         var mainFun = (function () {
             return {
@@ -79,9 +72,9 @@ routerApp
                         dismissOnClick: true,
                         animation: 'slide',
                         dismissOnClick: 'true'
-                    });
-                },               
-            }
+					});
+				}
+			}
         })();
 
         $scope.login = function () {
@@ -90,22 +83,22 @@ routerApp
                 url: 'http://digin.io/apis/authorization/userauthorization/login',
                 headers: {'Content-Type':'application/json'},
                 data: $scope.signindetails
+				
             }).success(function(data) {
-                if(data.Success) {
-                    document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
-                    document.cookie = "authData=" + JSON.stringify(data.Data.AuthData) + "; path=/";
+                if(data.Success === true) {
                     //$scope.startReportService();
                     //window.location.href = "/"; 
-                    window.location.href = "http://localhost:8080/git/digin/#/welcome";
+					$window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
                 }
                 else{
-                    mainFun.fireMsg('0', '<strong>Error : </strong> Invalid login detail...!');
+                    mainFun.fireMsg('0',data.Message);
                 }
             }).error(function(data) {
                 console.log(data);
-                mainFun.fireMsg('0', '<strong>Error : </strong> Invalid login detail...!');
+                mainFun.fireMsg('0',data.Message);
             }); 
         }
+
     }])
     
     .directive('keyEnter', function () {
@@ -131,7 +124,6 @@ routerApp
             });
         };
     });
-
 
 
 
@@ -174,69 +166,6 @@ routerApp
             isLoading: false
         };
 
-
-        $scope.createDataSet = function (mailTo, fName) {
-
-            var dtSetName = mailTo.replace('@', "_");
-            dtSetName = dtSetName.replace('.', '_');
-
-            $http.get(Digin_Engine_API+'createDataset?dataSetName=' + dtSetName + '&tableName=' + dtSetName + '&db=BigQuery&Domain=' + Digin_Domain)
-                .success(function (response) {
-                    $scope.sendConfirmationMail(mailTo, fName, dtSetName);
-                }).error(function (error) {
-                    //alert("Fail !");
-            });
-        }
-
-
-        $scope.isUserExist = function (email, cb) {
-            $http.get(Digin_Tenant+'GetUser/' + email)
-                .success(function (response) {
-                    cb(true);
-                }).error(function (error) {
-                    cb(false);
-            });
-        }
-
-
-        //*Send confirmation mail for registration
-        $scope.sendConfirmationMail = function (mailTo, fName, dtSetName) {
-            $scope.mailData = {
-                "type": "email",
-                "to": mailTo,
-                "subject": "Digin-RegistrationConfirmation",
-                "from": "Digin <noreply-digin@duoworld.com>",
-                "Namespace": "com.duosoftware.com",
-                "TemplateID": "registration_confirmation2",
-                "DefaultParams": {
-                    "@@name@@": fName,
-                    "@@dataSet@@": dtSetName
-                },
-                "CustomParams": {
-                    "@@name@@": fName,
-                    "@@dataSet@@": dtSetName
-                }
-            };
-
-            console.log($scope.mailData);
-
-            $http({
-                method: 'POST',
-                url: Digin_Mail+'command/notification',
-                data: angular.toJson($scope.mailData),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'securitytoken': '1234567890'
-                }
-            })
-                .success(function (response) {
-                    //alert(JSON.stringify(response));
-                })
-                .error(function (error) {
-                    //alert("Fail !");
-                });
-        }
-
         var mainFun = (function () {
             return {
                 fireMsg: function (msgType, content) {
@@ -267,7 +196,15 @@ routerApp
                         isRetypeCnfrm: false
                     };
                 },
-
+			
+				dataClear: function () {
+					signUpUsr.firstName = '';
+					signUpUsr.lastName = '';
+					signUpUsr.email = '';
+					signUpUsr.pwd = '';
+					signUpUsr.cnfrPwd = '';
+                },
+				
                 validateEmail: function (email) {
                     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                     return re.test(email);
@@ -279,89 +216,42 @@ routerApp
                         "EmailAddress": signUpUsr.email,
                         "Name": fullname,
                         "Password": signUpUsr.pwd,
-                        "ConfirmPassword": signUpUsr.cnfrPwd,
-                        "Domain": signUpUsr.firstName + "." + Digin_Domain
+                        "ConfirmPassword": signUpUsr.cnfrPwd
+						//,
+                        //"Domain": signUpUsr.firstName + "." + Digin_Domain
                     };
                     $scope.error.isLoading = true;
                     $http({
                         method: 'POST',
-
-                        url: Digin_Tenant+'UserRegistation/',
+                        url: 'http://digin.io/apis/authorization/userauthorization/userregistration',
                         data: angular.toJson($scope.user),
                         headers: {
                             'Content-Type': 'application/json'
                         }
-
-                    }).success(function (data, status, headers, config) {
-                        $scope.User_Name = data.Name;
-                        $scope.User_Email = data.EmailAddress;
-                        //*setting the name of the profile
-                        var userDetails = {
-                            name: fullname,
-                            phone: '',
-                            email: $scope.user.EmailAddress,
-                            company: $scope.user.Domain,
-                            country: "",
-                            zipcode: "",
-                            bannerPicture: 'fromObjectStore',
-                            id: "admin@duosoftware.com"
-                        };
-
+                    }).success(function (data, status) {
                         //*Create Data Set
-                        $scope.createDataSet(signUpUsr.email, signUpUsr.firstName);
+                        //$scope.createDataSet(signUpUsr.email, signUpUsr.firstName);
 
-                        if (!data.Active) {
                             $scope.error.isLoading = false;
-                            $state.go('signin');
-                            mainFun.fireMsg('1', 'Successfully created your profile,Please check your Email for verification!');
-
-                            
-                            //*setting userdetails
-                           // var client = $objectstore.getClient(Digin_Domain, "profile", true);
-                            // client.onError(function (data) {
-                            //     $state.go('signin');
-                            //     mainFun.fireMsg('1', 'Successfully created your profile,Please check your Email for verification!');
-
-                            // });
-                            // client.onComplete(function (data) {
-                            //     $state.go('signin');
-                            //     mainFun.fireMsg('1', 'Successfully created your profile,Please check your Email for verification!');
-                            // });
-                            // client.update(userDetails, {
-                            //     KeyProperty: "email"
-                            // });
-                            
-                            setTimeout(function () {
-                                //location.href = "http://duoworld.duoweb.info/successpage";
-                                $scope.showFailure = false;
-                                $scope.showRegistration = false;
-                                $scope.showSuccess = true;
-                            }, delay);
-                        } else {
-                            $scope.error.isLoading = false;
-                            mainFun.fireMsg('0', ' There is a problem in registering or you have already been registered!!');
-                            setTimeout(function () {
-                                $scope.showFailure = true;
-                                $scope.showRegistration = false;
-                                $scope.showSuccess = false;
-                                //location.href="http://duoworld.duoweb.info/signup/";
-                            }, 3000);
-                        }
-                    }).error(function (data, status, headers, config) {
+                            //$state.go('signin');
+							
+							if(data.Success===false){
+								mainFun.fireMsg('0', data.Message);
+							}
+							else
+							{
+								mainFun.fireMsg('1', 'You are succussfully registerd, Please check your email for verification...!');
+								mainFun.dataClear();
+							}
+                    }).error(function (data, status) {
                         $scope.error.isLoading = false;
                         mainFun.fireMsg('0', 'Please Try again !!');
-                        setTimeout(function () {
-                            //location.href = "http://duoworld.duoweb.info/login.php?r=http://dw.duoweb.info/s.php#/duoworld-framework/dock";
-                            $scope.showFailure = true;
-                            $scope.showRegistration = false;
-                            $scope.showSuccess = false;
-                        }, 4000)
-
                     });
                 },
             }
         })();
 
+		
         $scope.submit = function () {
             mainFun.validationClear();
             console.log(signUpUsr);
@@ -403,23 +293,15 @@ routerApp
                 return;
             }
             else {
-                //validation TRUE
-                $scope.isUserExist(signUpUsr.email, function (data) {
-                    if (data) {
-                        mainFun.fireMsg('0', '<strong>Error : </strong>User email already exist...');
-                        $scope.error.isEmail = true;
-                        focus('email');
-                        return;
-                    } else {
-                        mainFun.signUpUser();
-                        return;
-                    }
-                });
+				
+				mainFun.signUpUser();
+                //return;
+			
             }
         }
     }
-])
-;
+]);
+
 
 //*Password verification
 routerApp.directive('passwordVerify', function () {

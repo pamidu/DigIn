@@ -1,0 +1,62 @@
+<!--START OF FIRST CARD CONTAINER-->
+<div ng-controller="ViewCtrl as ctrl">
+
+	<!--START OF SECOND CARD CONTAINER-->
+	<div class="" style="padding-top:42px;padding-bottom:42px;">
+
+		<div layout="row"><!-- layout-align="center start" -->
+
+			<!--setting menu cards-->
+			<div flex="25" flex-sm="22">
+				<md-card style="box-shadow:0 5px 5px -3px rgba(0,0,0,.14),0 8px 10px 1px rgba(0,0,0,.098),0 3px 14px 2px rgba(0,0,0,.084); position:fixed;width: 24%; height:400px;">
+				<md-card-content>
+				<md-subheader class="md-no-sticky">App Sharing</md-subheader>
+				<accordion>
+					<accordion-panel title="Apps" ui-sref="main.two">
+				</accordion-panel>
+				<accordion-panel title="Add User" ui-sref="main.three">
+			</accordion-panel>
+		</accordion>
+	</md-card-content>
+</md-card>
+
+</div>  
+
+<div flex>
+	<div class="span12 ui-view-container" style="padding: 8px;">
+		<div class="container" style="width:90%" ui-view  viewcss></div>        
+	</div>
+</div>
+</div>
+
+</div>
+<!--END OF FIRST CARD CONTAINER-->
+
+<!--START OF SECOND CARD CONTAINER-->
+<div class="card_container" style="padding-top:117px">
+</div>
+<!--START OF SECOND CARD CONTAINER-->
+</div>		
+<div  class="lock-size" layout="row">
+	<div id="add" class="fab_button_animation" style="background:#2980b9;"></div>
+	<div id="viewDrafts" class="fab_button_animation" style="background:#f1c40f;"></div>
+
+	<md-fab-speed-dial md-open="demo.isOpen" md-direction="{{demo.selectedDirection}}"
+	ng-class="demo.selectedMode">
+	<!-- 20px -->
+	<md-fab-trigger>
+	<md-button aria-label="menu" class="md-fab " style="background-color:#db4437;" ng-click="addInvoice()">
+	<md-icon md-svg-src="img/ic_add_24px.svg" style="width:30px;" ></md-icon>
+</md-button>
+</md-fab-trigger>
+<md-fab-actions >
+            <!--div style="padding:5px;">
+                <md-button aria-label="twitter" class="md-fab md-raised md-mini" ng-click="add()" style="background-color:#2980b9; ">
+                    <md-icon md-svg-src="img/ic_note_add_24px.svg" ></md-icon>
+                    <md-tooltip md-direction="left">New Invoice</md-tooltip>
+                </md-button>
+            </div-->
+
+        </md-fab-actions>
+    </md-fab-speed-dial>
+</div>  

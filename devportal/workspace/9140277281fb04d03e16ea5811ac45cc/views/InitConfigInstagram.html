@@ -1,0 +1,37 @@
+<md-dialog plumb-item style="width:400px;">
+       <md-toolbar>
+            <div class="md-toolbar-tools" flex layout="row">
+                <div flex="10">
+                        <md-icon class="ion-wrench"></md-icon>
+                </div>   
+                <div flex="80">
+                              <h3>
+                                 <span> Configuration </span>
+                              </h3>
+                </div>                           
+                <div flex="10">
+                        <md-button  ng-click="cancel()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                        </md-button> 
+                </div>
+            </div>                   
+    </md-toolbar>  
+    <md-content layout-margin>
+            <div layout="row" layout-margin>
+                <md-input-container flex>
+                    <label id="postdomain">Domain:</label>
+                    <input name="tag-input" id="inputinstadomain" type="text" ng-model="formData.tagInput" required autofocus>
+                  </md-input-container>
+            </div>
+            <label id="dislab">Please enter a tag name to get data from instagram, ex: Vehicles</label>
+            <div class="md-actions" layout="row">
+                <span flex></span>
+                <md-button ng-click="submitForm();finish();">
+                    Finish
+                </md-button>
+                <md-button ng-click="cancel()">
+                    Cancel
+                </md-button>
+            </div>
+    </md-content>
+</md-dialog>

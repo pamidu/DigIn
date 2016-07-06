@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout xmlns="http://reporting.pentaho.org/namespaces/engine/classic/bundle/layout/1.0" xmlns:style="http://reporting.pentaho.org/namespaces/engine/classic/bundle/style/1.0" xmlns:core="http://reporting.pentaho.org/namespaces/engine/attributes/core" xmlns:html="http://reporting.pentaho.org/namespaces/engine/attributes/html" xmlns:swing="http://reporting.pentaho.org/namespaces/engine/attributes/swing" xmlns:pdf="http://reporting.pentaho.org/namespaces/engine/attributes/pdf" xmlns:wizard="http://reporting.pentaho.org/namespaces/engine/attributes/wizard" xmlns:designtime="http://reporting.pentaho.org/namespaces/report-designer/2.0" xmlns:crosstab="http://reporting.pentaho.org/namespaces/engine/attributes/crosstab" xmlns:pentaho="http://reporting.pentaho.org/namespaces/engine/attributes/pentaho" xmlns:table="http://reporting.pentaho.org/namespaces/engine/attributes/table" core:parameter-layout="flow" xmlns:internal="http://reporting.pentaho.org/namespaces/engine/attributes/internal" internal:compatibility-level="5.0.3" designtime:zoom="2.0" designtime:preview-dialog-bounds="226.0,80.0,844.0,700.0" designtime:HorizontalGuideLines="(true,53.7499885559082) (true,116.24996948242188) (true,179.3749542236328) (true,248.74993896484375) (true,305.62493896484375) (true,359.9999084472656) (true,409.3749084472656) (true,483.7498779296875) (true,549.3748779296875) (true,600.0) (true,698.0)">
+  <style:element-style>
+  </style:element-style>
+  <report-header>
+    <root-level-content designtime:visual-height="20.0">
+      <style:element-style>
+      </style:element-style>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="53.75" y="0" min-width="62.5" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Engagement Type</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="0" y="0" min-width="53.75" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Engagement Class</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="116.25" y="0" min-width="63.125" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Engagement Category</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="179.375" y="0" min-width="69.375" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Tag Level 1</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="305.625" y="0" min-width="54.375" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Tag Level 3</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="248.75" y="0" min-width="56.875" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Tag Level 2</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="549.192" y="0" min-width="50.808" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Created User</core:value>
+      </label>
+      <label wizard:allow-metadata-attributes="true">
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="600" y="0" min-width="98" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Created Date</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="409.375" y="0" min-width="74.192" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Customer Name</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="483.567" y="0" min-width="65.625" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Phone Number</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="360" y="0" min-width="49.375" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Remarks</core:value>
+      </label>
+    </root-level-content>
+  </report-header>
+  <group core:group-fields="">
+    <style:element-style>
+    </style:element-style>
+    <fields>
+    </fields>
+    <group-header>
+      <root-level-content designtime:hideInLayoutGUI="true">
+        <style:element-style>
+        </style:element-style>
+      </root-level-content>
+    </group-header>
+    <data-body>
+      <style:element-style>
+      </style:element-style>
+      <details-header designtime:hideInLayoutGUI="true">
+        <style:element-style>
+          <style:common-styles avoid-page-break="true"/>
+        </style:element-style>
+      </details-header>
+      <details>
+        <root-level-content designtime:visual-height="50.62500035762787">
+          <style:element-style>
+          </style:element-style>
+          <text-field core:field="engagementclass">
+            <style:element-style>
+              <style:spatial-styles x="0" y="0" min-width="53.75" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="tag1">
+            <style:element-style>
+              <style:spatial-styles x="179.375" y="0" min-width="69.375" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="tag2">
+            <style:element-style>
+              <style:spatial-styles x="248.75" y="0" min-width="56.875" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="tag3">
+            <style:element-style>
+              <style:spatial-styles x="305.625" y="0" min-width="54.375" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="createduser">
+            <style:element-style>
+              <style:spatial-styles x="549.192" y="0" min-width="50.808" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="engagementtype">
+            <style:element-style>
+              <style:spatial-styles x="53.75" y="0" min-width="62.5" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="engagementcategory">
+            <style:element-style>
+              <style:spatial-styles x="116.25" y="0" min-width="63.125" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="firstname">
+            <style:element-style>
+              <style:spatial-styles x="409.817" y="0" min-width="73.75" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="phonenumber">
+            <style:element-style>
+              <style:spatial-styles x="483.567" y="0" min-width="65.625" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="comment">
+            <style:element-style>
+              <style:spatial-styles x="360" y="0" min-width="49.375" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="createddatetime">
+            <style:element-style>
+              <style:spatial-styles x="600" y="0" min-width="98" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+        </root-level-content>
+      </details>
+      <no-data>
+        <root-level-content designtime:hideInLayoutGUI="true">
+          <style:element-style>
+          </style:element-style>
+        </root-level-content>
+      </no-data>
+      <details-footer designtime:hideInLayoutGUI="true">
+        <style:element-style>
+          <style:common-styles avoid-page-break="true"/>
+        </style:element-style>
+      </details-footer>
+    </data-body>
+    <group-footer>
+      <root-level-content designtime:hideInLayoutGUI="true">
+        <style:element-style>
+        </style:element-style>
+      </root-level-content>
+    </group-footer>
+  </group>
+  <report-footer>
+    <root-level-content designtime:visual-height="40.54167848825455">
+      <style:element-style>
+      </style:element-style>
+    </root-level-content>
+  </report-footer>
+</layout>

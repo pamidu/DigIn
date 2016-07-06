@@ -1,5 +1,7 @@
 <?php
+
 //include ("include/config.php");
+
 function createSessionDmian(){
 	$Host = strtolower($_SERVER['HTTP_HOST']);
 	//echo "$authURI";
@@ -40,6 +42,7 @@ function createSessionDmian(){
 		return false;
 	}
 }
+
 function getSession($securityToken,$domain){
 	$ch=curl_init();
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -49,12 +52,44 @@ function getSession($securityToken,$domain){
 	if($domain==""){
 		$domain="Nil";
 	}
+
 	curl_setopt($ch, CURLOPT_URL, SVC_AUTH_URL.'/GetSession/'.$securityToken.'/'.$domain.'');
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	$data = curl_exec($ch);
 	$obj = json_decode($data);
 	return $obj;
 }
+
+function INTS(){
+	if(isset($_COOKIE["securityToken"])){
+		$data=getSession($_COOKIE["securityToken"],"");
+		if(!isset($data)){
+			setcookie ("securityToken", "", time() - 3600);
+		    setcookie ("authData", "", time() - 3600);
+		    unset($_COOKIE["securityToken"]);
+		    unset($_COOKIE["authData"]);
+		    unset($_SESSION);
+		    if($mainDomain!=strtolower($_SERVER['HTTP_HOST'])){
+			header("Location: http://".$mainDomain."/");
+			exit();
+		    }
+		}else{
+			if(isset($data->Error)){
+			   	setcookie ("securityToken", "", time() - 3600);
+		    		setcookie ("authData", "", time() - 3600);
+		    		unset($_COOKIE["securityToken"]);
+		    		unset($_COOKIE["authData"]);
+			    	unset($_SESSION);
+			    	if($mainDomain!=strtolower($_SERVER['HTTP_HOST'])){
+					header("Location: http://".$mainDomain."/");
+					exit();
+			    	}
+			}
+		}
+	}
+}
+
+
 function getURI(){
 			if(!isset($_COOKIE["securityToken"])){
 				header("Location: s.php?r=index.php");
@@ -94,22 +129,33 @@ function getURI(){
 				    if(isset($obj))
 				    {
 				    	if($obj->TenantID!=""){
-				    		header("Location: http://".$obj->TenantID."/".$obj->Shell."");
-		    				exit();
+						if ($obj->TenantID==strtolower($_SERVER['HTTP_HOST'])){
+				    			//header("Location: http://".$obj->TenantID."/".str_replace("index.html","",$obj->Shell)."");
+								header("Location: http://".$obj->TenantID."/shell");
+		    					exit();
+						}else{
+							header("Location: http://".$obj->TenantID."/s.php?securityToken=".$_COOKIE["securityToken"]);
+		    					exit();	
+						}
 		    			}
 		    			else
 		    			{
-		    				header("Location: payapi/shell.php");
+		    				// header("Location: payapi/shell.php");
+		    				header("Location: boading/");
 		    				exit();
 		    			}
 		    		}
 		    		else
 		    		{
-		    				header("Location: payapi/shell.php");
+		    				// header("Location: payapi/shell.php");
+		    				header("Location: boading/");
 		    				exit();
 		    		}
+
+
 		    		
 		    	}else{
+
 		    		$ch=curl_init();
 		    		curl_setopt($ch, CURLOPT_URL, SVC_AUTH_URL.'/tenant/GetTenant/'.$serchfild);
 				    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -122,13 +168,19 @@ function getURI(){
 		    			}
 		    			else
 		    			{
-		    				header("Location: payapi/shell.php");
+		    				header("Location: boading/");
+		    				// header("Location: payapi/shell.php");
 		    			}
 		    		}
 		    	}	
+
 		    }else{
 		    	//include("t.php");
 		    }
-		    header("Location: payapi/shell.php");
+		    // header("Location: payapi/shell.php");
+		    header("Location: boading/");
 }
+
+
+
 ?>

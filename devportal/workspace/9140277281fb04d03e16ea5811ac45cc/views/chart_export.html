@@ -1,0 +1,44 @@
+<md-dialog  plumb-item style="width:400px">
+  <md-toolbar>
+                      <div class="md-toolbar-tools" flex layout="row">
+                      <div flex="10">
+                        <md-icon class="ion-paper-airplane"></md-icon>
+                      </div>   
+                      <div flex="80">
+                              <h3>
+                                 <span> Export </span>
+                              </h3>
+                      </div>                           
+                      <div  flex="10">
+                             <md-button ng-click="closeDialog()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                            </md-button>
+                      </div>
+
+                    </div>
+   </md-toolbar>    
+  <md-content ng-controller="ExportCtrl">
+        <div class="lookupdashboard"  md-theme="teal" ng-repeat="widget in dashboard.widgets" >
+                   <md-content theme="teal"  layout="row" layout-margin>
+                    <div flex="80">
+                     <md-button class="md-raised" ng-click="export(widget)"> 
+
+                      <md-icon class="iconchart"  md-svg-src="bower_components/material-design-icons/editor/svg/production/ic_insert_chart_24px.svg">
+                      </md-icon>
+                            <Label>{{widget.chartConfig.title.text}}</Label>
+                      </md-button>
+                  </div>   
+                 </md-content>
+        </div>           
+  
+        <div class="md-actions" layout="row">    
+            <md-button ng-click="closeDialog()">
+              Cancel
+            </md-button>
+            <md-button ng-click="closeDialog()">
+              Ok
+            </md-button>
+        </div>
+  </md-content>
+</md-dialog> 
+ 

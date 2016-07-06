@@ -1,0 +1,139 @@
+<md-dialog style="width: 80vw;">
+    <form name="argumentDialog" novalidate>
+        <md-toolbar md-theme="{{theme}}" md-theme-watch>
+            <div class="md-toolbar-tools">
+                <div class="dialogicon">
+                    <ng-md-icon icon="menu" style="fill:white" size="32"></ng-md-icon>
+                </div>
+                <h2>
+                  <span>Arguments</span>
+                </h2>
+                <span flex></span>
+                <md-button md-theme="{{theme}}" md-theme-watch class="closebtn md-icon-button" aria-label="More">
+                    <ng-md-icon ng-click="cancel()" icon="close" style="fill:white" size="32"></ng-md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-content class="md-padding" style="padding-top: 0px;">
+            <div layout="column">
+                <div layout="row" layout-wrap flex>
+                    <md-input-container flex>
+                        <label>Key property</label>
+                        <input ng-model="Key" name="key" required ng-blur="$root.checkForErrors($event);">
+                    </md-input-container>
+
+                    <md-select placeholder="Category" ng-model="Category" flex required name="type">
+                        <md-option ng-repeat="type in types" value="{{type}}">{{type}}</md-option>
+                    </md-select>
+
+                    <md-input-container flex>
+                        <label>Value</label>
+                        <input ng-model="Value">
+                    </md-input-container>
+
+                    <md-select placeholder="Data Type" ng-model="DataType" flex>
+                        <md-option ng-repeat="type in datatypes" value="{{type}}">{{type}}</md-option>
+                    </md-select>
+
+
+
+                    <md-button flex="10" class="md-primary" ng-click="addArguments();" type="submit" ng-disabled="argumentDialog.key.$invalid || argumentDialog.type.$invalid ">ADD</md-button>
+                </div>
+                <md-divider></md-divider>
+                <div layout="row" flex layout-md="column">
+                    <!--div flex layout-padding layout-wrap layout="column">
+                        <md-subheader class="md-primary">Custom Varibles</md-subheader>
+                        <div ng-repeat="a in arguments | filter:{ type: 'Custom Variables' }" layout="row" layout-wrap>
+
+                            <label class="md-primary" style="margin-top: 10px;">{{a.key}} : </label>
+
+                            <md-input-container flex style="padding-bottom: 2px;">
+                                <input ng-model="a.value">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div flex layout-padding layout-wrap>
+                        <md-subheader class="md-primary">In Arguments</md-subheader>
+                            <div ng-repeat="a in arguments  | filter:{ type: 'In Arguments' }" layout="row" layout-wrap>
+                                <label class="md-primary" style="margin-top: 10px;">{{a.key}} : </label>
+
+                                <md-input-container flex style="padding-bottom: 2px;">
+                                    <input ng-model="a.value">
+                                </md-input-container>
+                            </div>
+                    </div>
+                    <div flex layout-padding layout-wrap>
+                        <md-subheader class="md-primary">Out Arguments</md-subheader>
+                            <div ng-repeat="a in arguments  | filter:{ type: 'Out Arguments' }" layout="row" layout-wrap>
+                                <label class="md-primary" style="margin-top: 10px;">{{a.key}} : </label>
+
+                                <md-input-container flex style="padding-bottom: 2px;">
+                                    <input ng-model="a.value">
+                                </md-input-container>
+                            </div>
+                    </div-->
+                    <md-tabs>
+                        <md-tab label="Custom Variables">
+                            <md-content class="md-padding" style="overflow-y:scroll; height:40vh;">
+                                <div ng-repeat="a in arguments | filter:{ Category: 'Custom' } | filter:{ Key: Key } track by a.Key" layout="row" layout-wrap>
+                                    <ng-md-icon icon="close" style="padding:0px 5px;margin-top: 1.4em;" ng-click="removeArgument(a.Key);"></ng-md-icon>
+                                    <label flex="30" class="md-primary" style="margin-top: 1.4em;">{{a.Key}} </label>
+                                    <md-select placeholder="Data Type" ng-model="a.DataType" flex="15" style="font-size:small;">
+                                        <md-option ng-repeat="type in datatypes" value="{{type}}">{{type}}</md-option>
+                                    </md-select>
+
+                                    <!--
+                                    <md-input-container flex style="padding-bottom: 2px;">
+    <input ng-model="a.value">
+</md-input-container>
+-->
+                                    <md-autocomplete flex required md-selected-item="a.Value" md-search-text="a.Value" md-items="item in showData(a.Value)" md-item-text="item.Key">
+                                        <md-item-template>
+                                            <span md-highlight-text="a.Value">{{item.Key}}</span>
+                                        </md-item-template>
+
+                                    </md-autocomplete>
+
+                                </div>
+                            </md-content>
+                        </md-tab>
+                        <md-tab label="In Arguments">
+                            <md-content class="md-padding" style="overflow-y:scroll; height:40vh;">
+                                <div ng-repeat="a in arguments  | filter:{ Category: 'InArgument' } | filter:{ Key: Key } track by a.Key" layout="row" layout-wrap>
+                                    <ng-md-icon icon="close" style="padding:0px 5px;margin-top: 1.4em;" ng-click="removeArgument(a.Key);"></ng-md-icon>
+                                    <label flex="30" class="md-primary" style="margin-top: 1.4em;">{{a.Key}}</label>
+                                    <md-select placeholder="Data Type" ng-model="a.DataType" flex="15" style="font-size:small;">
+                                        <md-option ng-repeat="type in datatypes" value="{{type}}">{{type}}</md-option>
+                                    </md-select>
+
+                                    <md-input-container flex style="padding-bottom: 2px;">
+                                        <input ng-model="a.Value" type="a.DataType">
+                                    </md-input-container>
+                                </div>
+                            </md-content>
+                        </md-tab>
+                        <md-tab label="Out Arguments">
+                            <md-content class="md-padding" style="overflow-y:scroll; height:40vh;">
+                                <div ng-repeat="a in arguments  | filter:{ Category: 'OutArgument' } | filter:{ Key: Key } track by a.Key" layout="row" layout-wrap>
+                                    <ng-md-icon icon="close" style="padding:0px 5px;margin-top: 1.4em;" ng-click="removeArgument(a.Key);"></ng-md-icon>
+                                    <label flex="30" class="md-primary" style="margin-top: 1.4em;">{{a.Key}} </label>
+                                    <md-select placeholder="Data Type" ng-model="a.DataType" flex="15" style="font-size:small;">
+                                        <md-option ng-repeat="type in datatypes" value="{{type}}">{{type}}</md-option>
+                                    </md-select>
+
+                                    <md-autocomplete flex required md-selected-item="a.Value" md-search-text="a.Value" md-items="item in showData(a.Value)" md-item-text="item.Key">
+                                        <md-item-template>
+                                            <span md-highlight-text="a.Value">{{item.Key}}</span>
+                                        </md-item-template>
+
+                                    </md-autocomplete>
+                                </div>
+                            </md-content>
+                        </md-tab>
+                    </md-tabs>
+
+                </div>
+            </div>
+        </md-content>
+    </form>
+</md-dialog>

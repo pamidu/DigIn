@@ -1,0 +1,42 @@
+<md-dialog style="min-width:400px;">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <div flex="10">
+                    <md-icon class="md-avatar" md-svg-src="bower_components/material-design-icons/hardware/svg/production/ic_keyboard_24px.svg" style="color:#fff !important;float:left;border-radius:100%;"></md-icon>
+                </div>
+                <div flex="80">
+                    <h3>Configuration</h3>
+                </div>
+                <div flex="10">
+                    <span> 
+                                <md-button>
+                                   <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg" style="color:#fff !important;" ng-click="cancel()"></md-icon>
+                                   </md-button>
+                              </span>
+                </div>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-content>
+                <md-input-container flex>
+                    <label id="postdomain">Authorize to ur google drive to get spreadsheets</label>
+                </md-input-container>
+            </md-content>
+        </md-dialog-content>
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <div>
+                <a href="javascript:;" lk-google-picker on-picked="onPicked" on-loaded="onLoaded" on-cancel="onCancel" class="btn btn-2 btn-2c btn-blue">
+                    <span>Authorize</span>
+                </a>
+            </div>
+            <!--  <md-button ng-click="finish()" class="md-primary">
+                Finish
+            </md-button> -->
+            <md-button ng-click="cancel()" class="md-primary">
+                Cancel
+            </md-button>
+        </div>
+    </form>
+</md-dialog>

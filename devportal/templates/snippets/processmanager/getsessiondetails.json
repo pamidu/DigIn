@@ -1,0 +1,5 @@
+{
+	"name" : "Get Session Details",
+	"parameters":[{"Session ID" : "$1"},{"Process Type" : "$2"}],
+	"code":"$processManager.getClient().getprocessdetails(\"$1\",\"$2\").onComplete(function(){}).onError(function(){});"
+}

@@ -46,10 +46,10 @@
                     <div class="right-wrap">
                         <div class="header-login">
                             <div class="login-text-wrap pull-right ">
-                                <h5 id="sliderRight">Sign In</h5>
-								<font color="red"><b>
-								<p><br></br> </p>
-								<p id="sliderRight">This is a Pre-production site !</p></b>
+                                <!-- <h5 id="sliderRight">Sign In</h5>
+								     <font color="red"><b>
+								     <p><br></br> </p>
+								     <p id="sliderRight">This is a Pre-production site !</p></b> -->
 								</font>	
                             </div>
                         </div>

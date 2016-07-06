@@ -1,0 +1,79 @@
+<div class="bg-gradient-green"></div>
+<div class="setup-wrapper  animated fadeIn">
+    <div layout="row" class="setting-close pull-right" ng-click="route('back')">
+        <i class="fa fa-close"></i>
+    </div>
+    <div class="md-padding animated fadeIn" layout="row" layout-align="center center">
+        <div class="setting-wrap account-info-wrap"
+             flex="60">
+            <div class="setting-card-header">
+                <h5>Account Information</h5>
+                <div class="setting-img-wrap">
+                    <img src="styles/css/images/setting/invite_user.png"/>
+                </div>
+                <div class="setting-text-wrap">
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                </div>
+            </div>
+            <!-- setting tab wrap -->
+            <div class="setting-tab-wrap"
+            >
+                <div class="md-padding animated fadeIn" layout="column">
+                    <div layout="row" layout-align="center center">
+
+                        <div layout="column" class="setup-info-container" flex="70">
+
+                            <!-- Configure account logo -->
+                            <md-input-container>
+                                <label>Account owner</label>
+                                <input id="accOwner" ng-model="username" readonly="true">
+                            </md-input-container>
+                            <div>
+                                <md-input-container flex>
+                                    <md-button ng-click="openLogoUploadWindow()"
+                                               class="setup-button md-raised md-primary"><i
+                                            class="fa fa-file-image-o"></i>&nbsp;&nbsp;<span
+                                            class="setup-font-theme" width="5px">Upload Logo</span>
+                                    </md-button>
+                                </md-input-container>
+                                <span class="setup-font-theme">
+                                    Please select a image from a location inorder to update account logo
+                                </span>
+                            </div>
+
+
+                            <!-- Configure theme colour -->
+                            <div layout="column">
+                                <label id="dislab">Theme configuration (Pick two colors)</label>
+
+                                <div layout="column" class="setup-color-container">
+                                    <div layout="row" ng-repeat="colors in chunkedColorArr">
+                                        <div class="setup-color-stripes" ng-repeat="color in colors"
+                                             style="background-color:{{color.value}}"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div layout="row">
+                                <md-switch ng-model="headerbar" aria-label="switch-headerbar">
+                                    Headerbar {{headerbar ? 'ON' : 'OFF'}}
+                                </md-switch>
+
+                            </div>
+
+                            <md-button class="setup-button md-raised md-primary" ng-click="updateAccount()">Update
+                                Account
+                            </md-button>
+
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end -->
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+

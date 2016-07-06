@@ -1,0 +1,36 @@
+<md-dialog aria-label="Mango (Fruit)" style="width:800px;">
+<div class="card-container" style="padding:20px; overflow-y:auto; overflow-x:hidden;">
+	<form style="width:100%;" ng-submit="submit()">
+		<md-content flex>
+		<div layout layout-sm="column" layout-margin>
+			<div flex="5">
+				<img src="img/material alperbert/avatar_tile_c_28.png" style="margin-top:22px;border-radius:20px"/>
+			</div>
+			<div flex="20" style="margin-top:35px;">
+				<label style="font-weight:700">Create Group</label>
+			</div>
+			<md-input-container flex="40">
+			<label>Group Name</label>
+			<input ng-model="editgroup.groupname">
+		</md-input-container>
+	</div>
+	
+	<md-chips ng-model="editgroup.users">
+	<md-chip-template>
+	<strong>{{$chip}}</strong>
+</md-chip-template>
+</md-chips>
+
+</md-content>
+</form>
+</div>
+<div class="md-actions" layout="row">
+	<span flex></span>
+	<md-button ng-click="SaveGroup()">
+	Save Group
+</md-button>
+<md-button ng-click="cancel()" style="margin-right:20px;">
+Cancel
+</md-button>
+</div>
+</md-dialog>

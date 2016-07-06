@@ -1,0 +1,136 @@
+<md-dialog class="dialogdemoBasicUsage" aria-label="Manage Activities">
+    <div id="windowloading" layout="column" layout-align="center center">
+        <div>
+            <img src="images/loading.gif" />
+        </div>
+        <div id="busycontent">
+            <p>Retrieving workflow details</p>
+        </div>
+    </div>
+    <md-toolbar md-theme="{{theme}}" md-theme-watch>
+        <div class="md-toolbar-tools">
+            <div class="dialogicon">
+                <ng-md-icon icon="swap_vert_circle" style="fill:white" size="32"></ng-md-icon>
+            </div>
+            <h2>
+              <span>Manage Activities</span>
+            </h2>
+            <span flex></span>
+            <md-button md-theme="{{theme}}" md-theme-watch class="closebtn md-icon-button" aria-label="More">
+                <ng-md-icon ng-click="cancel()" icon="close" style="fill:white" size="32"></ng-md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <div layout="row" style="height:60vh;">
+        <md-content flex="40">
+            <div layout="row" layout-align="center start">
+                <div flex>
+                    <md-input-container md-theme="{{theme}}" md-theme-watch flex>
+                        <label>Search Activities</label>
+                        <input ng-model="searchitem">
+                    </md-input-container>
+                    <md-list flex>
+                        <md-item ng-repeat="item in activitylist | filter : searchitem">
+                            <md-item-content md-ink-ripple class="listselecter" ng-click="open(item)">
+                                <div class="md-tile-left">
+                                    <ng-md-icon icon="{{item.Icon}}" class="bottomsheetbuttons" size="40"></ng-md-icon>
+                                </div>
+                                <div class="md-tile-content">
+                                    <h4>{{item.Name}}</h4>
+                                    <p>{{item.Description}}</p>
+                                </div>
+                            </md-item-content>
+                        </md-item>
+                    </md-list>
+                </div>
+            </div>
+        </md-content>
+
+        <md-content style="min-height:200px; " layout="column" flex>
+
+            <div flex layout="column">
+                <form name="activityForm" novalidate>
+                    <div>
+                        <md-input-container md-theme="{{theme}}" md-theme-watch>
+                            <label>Activity Name</label>
+                            <input md-maxlength="50" required name="name" ng-model="activity.Name">
+                            <div ng-messages>
+                                <div ng-if="activityForm.name.$invalid && activityForm.name.$dirty" ng-message="required">Activity name is required.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div>
+                        <md-input-container md-theme="{{theme}}" md-theme-watch>
+                            <label>Description</label>
+                            <input required name="description" ng-model="activity.Description">
+                            <div ng-messages>
+                                <div ng-message="required" ng-if="activityForm.description.$invalid && activityForm.description.$dirty">A description is required.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div layout="row">
+                        <md-input-container md-theme="{{theme}}" md-theme-watch flex>
+                            <label>Author Name</label>
+                            <input ng-model="activity.OtherData.Name">
+
+                        </md-input-container>
+                        <md-input-container md-theme="{{theme}}" md-theme-watch flex>
+                            <label>Author Mobile</label>
+                            <input md-maxlength="10" ng-model="activity.OtherData.MobileNo">
+
+                        </md-input-container>
+                    </div>
+
+                    <div flex layout="column">
+                        <p>Arguments</p>
+
+                        <div flex layout="row">
+                            <md-input-container md-theme="{{theme}}" md-theme-watch flex style="font-size:small;">
+                                <label>Key</label>
+                                <input required ng-model="key" name="key" ng-keypress="$root.checkForErrors($event);">
+                            </md-input-container>
+                            <md-select placeholder="Type" name="type" ng-model="category" flex required style="font-size:small;">
+                                <md-option ng-repeat="type in types" value="{{type}}">{{type}}</md-option>
+                            </md-select>
+                            <md-select placeholder="Data Type" ng-model="DataType" flex style="font-size:small;">
+                                <md-option ng-repeat="type in datatypes" value="{{type}}">{{type}}</md-option>
+                            </md-select>
+                            <md-select placeholder="Priority" name="priority" ng-model="priority" flex style="font-size:small;">
+                                <md-option ng-repeat="priority in priorities" value="{{priority}}">{{priority}}</md-option>
+                            </md-select>
+                            <md-button ng-click="addArgument(activity.library_id);" ng-disabled="activityForm.key.$invalid || activityForm.type.$invalid" style="font-size:small;">ADD</md-button>
+                        </div>
+
+                        <md-item ng-repeat="argument in activity.Variables" layout="row">
+                            <md-item-content md-ink-ripple class="listselecter" style="width:100%;">
+                                <div class="md-tile-left">
+                                    <ng-md-icon icon="delete" class="bottomsheetbuttons" size="24" ng-click="deleteArgument(activity.library_id,argument.Key);"></ng-md-icon>
+                                </div>
+                                <div class="md-tile-content">
+                                    <h4>{{argument.Key}}</h4>
+                                    <p>{{argument.Category}}</p>
+                                </div>
+                                <div class="md-tile-right">
+                                    <md-select ng-model="argument.Priority" style="font-size:small;">
+                                        <md-option ng-repeat="priority in priorities" value="{{priority}}">{{priority}}</md-option>
+                                    </md-select>
+
+                                </div>
+                            </md-item-content>
+
+                        </md-item>
+                    </div>
+
+            </div>
+
+
+        </md-content>
+    </div>
+    <div class="md-actions" layout="row">
+        <md-button md-theme="{{theme}}" md-theme-watch ng-click="cancel()">Close</md-button>
+        <md-button md-theme="{{theme}}" name="remove" md-theme-watch class="md-warn" ng-click="remove(activity,$event)">Remove</md-button>
+        <md-button md-theme="{{theme}}" name="update" md-theme-watch ng-click="update(activity,$event)">Update</md-button>
+        <md-button md-theme="{{theme}}" name="save" md-theme-watch ng-click="save(activity,$event)" class="md-primary" ng-disabled="activityForm.name.$invalid || activityForm.description.$invalid">Insert</md-button>
+    </div>
+    </form>
+</md-dialog>

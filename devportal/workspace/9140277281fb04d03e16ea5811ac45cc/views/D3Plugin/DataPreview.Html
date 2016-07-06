@@ -1,0 +1,17 @@
+<md-dialog plumb-item>
+  <md-toolbar class="modal-header" md-theme="teal">  
+       <h1>Data Explorer</h1>
+  </md-toolbar>
+
+  <md-content>
+    <div style="width:400px" ng-init="convertCSVtoJson()">{{items}}</div>
+    <div class="md-actions" md-theme="indigo"  layout="row">  
+    <md-button ng-click="closeDialog()">
+      Ok
+    </md-button>
+    <md-button ng-click="closeDialog()">
+      Cancel
+    </md-button>
+    </div>
+  </md-content>
+</md-dialog  >

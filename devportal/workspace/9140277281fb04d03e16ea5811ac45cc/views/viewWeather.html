@@ -1,0 +1,27 @@
+<md-content layout-margin flex>                   
+  <div flex layout="column" layout-margin>
+            <div layout="row" layout-padding layout-align="center center">
+                          <h4> {{widget.widData.results.channel.location.country}}  {{ widget.widData.results.channel.location.city }}</h4>
+            </div>
+            <div layout="row" layout-margin layout-align="center center">                          
+                          <img class="img-thumbnail forecast-img" style="border: none;" src="http://l.yimg.com/a/i/us/we/52/{{widget.widData.results.channel.item.condition.code}}.gif" />
+                          <h4 id="count">{{widget.widData.results.channel.item.condition.temp}}{{widget.widData.results.channel.units.temperature}}  {{ widget.widData.results.channel.item.condition.text }}</h4>                         
+            </div>
+            <div layout="row" layout-margin layout-align="center center">
+                          <h4>{{ widget.widData.results.channel.item.condition.date }}</h4>
+            </div>                
+    </div>
+    <div flex layout="row" layout-align="center end" layout-margin>                      
+            <div flex="50" layout-margin style="text-align: -webkit-center">
+                          <h5><img style="height:25px;width:25px;" src="styles/css/images/Shining_sun_32 (2).png" />Sunrise {{widget.widData.results.channel.astronomy.sunrise}}</h5>
+                          <h5><img style="height:25px;width:25px;" src="styles/css/images/raindroRain_drop_32p2.png" /> Humidity {{widget.widData.results.channel.atmosphere.humidity}}%</h5>
+                          <h5><img style="height:25px;width:25px;" src="styles/css/images/Wind_sleeve_pointing_left_32 (2).png" />Wind Speed {{widget.widData.results.channel.wind.speed}}{{widget.widData.results.channel.units.speed}}</h5>
+            </div>
+            <div flex="50" layout-margin style="text-align: -webkit-center">
+                          <h5><img style="height:25px;width:25px;" src="styles/css/images/sun42.png" /> Sunset {{widget.widData.results.channel.astronomy.sunset}}</h5>
+                          <h5> <img style="height:25px;width:25px;" src="styles/css/images/Hot_thermometer_32 (2).png" />Pressure {{widget.widData.results.channel.atmosphere.pressure}} {{widget.widData.results.channel.units.pressure}}</h5>
+                          <h5><img style="height:25px;width:25px;" src="styles/css/images/Big_Compass_32 (1).png" />Wind Direction {{widget.widData.results.channel.wind.direction}}</h5>
+            </div>                     
+    </div>               
+</md-content>
+              

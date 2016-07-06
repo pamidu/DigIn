@@ -1,0 +1,67 @@
+<md-dialog aria-label="Mango (Fruit)">
+  <form>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Insert Code Snippet</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content style="max-width:800px;max-height:810px; ">
+	<md-input-container flex="">
+		<table>
+			<tr>
+				<td style="width:300px;">
+        <md-content layout-padding style="height: 250px;padding: 24px;background:#E8E9E8;">
+					<!--div ng-repeat="cat in categories" ng-click="selectCategory(cat)" style="width:200px;background:gray;">{{cat.name}}<br/></div-->
+  					<md-button ng-repeat="cat in categories" class="md-primary" ng-click="selectCategory(cat)" style="width:100%;text-align: left;vertical-align: middle;text-transform: none;">
+  						<!--img src="templates/projects/{{cat.folder}}/category.png" style="height:48px;width:48px;"/-->
+  						{{cat.name}}
+  					</md-button>
+          </md-content>
+
+				</td>
+				<td style="width:500px;">
+          <md-content layout-padding style="height: 250px;padding: 24px;"  ng-hide="template">
+					<!--label ng-repeat="tmp in catTemplates" ng-click="selectTemplate(tmp)" style="width:200px;background:gray;">{{tmp.name}}<br/></label-->
+					<md-button ng-repeat="tmp in catTemplates" class="md-primary" ng-click="selectTemplate(tmp)" style="width:100%;text-align: left;vertical-align: middle;text-transform: none;">
+						<!--img src="{{tmp.imageUrl}}" style="height:48px;width:48px;"/-->
+						{{tmp.name}}
+					</md-button>
+          </md-content>
+
+          <md-content layout-padding style="height: 250px;padding: 24px;" ng-show="template">
+
+            <md-button ng-click="unselectTemplate()" class="md-primary" style="margin-right:20px;width:100px;text-align:left;">
+              Back
+            </md-button>
+            <br/><br/>
+            <form name="paramForm" style="width:100%;">
+              <md-input-container md-no-float="" ng-repeat="param in template.parameters">
+                <div ng-repeat="(pKey, pVal) in param">
+                <input ng-model="userValues[pVal]" placeholder="{{pKey}}">
+                </div>
+              </md-input-container>
+            </form>
+            
+            </md-content>
+				</td>
+			</tr>
+		</table>
+	</md-input-container>
+  </md-dialog-content>
+
+  <div class="md-actions" layout="row">
+    <span flex></span>
+    <md-button ng-click="cancel()" style="width:100px;">
+     Cancel
+    </md-button>
+    <md-button ng-click="ok()" class="md-primary" style="margin-right:20px;width:100px;" ng-disabled="validate()">
+      Ok
+    </md-button>
+  </div>
+  </form>
+</md-dialog>
+

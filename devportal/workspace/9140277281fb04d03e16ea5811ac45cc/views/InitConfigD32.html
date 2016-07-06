@@ -1,0 +1,52 @@
+<md-dialog  >
+       <md-toolbar>
+            <div class="md-toolbar-tools">
+                <div flex="10">
+                    <md-icon class="md-avatar" md-svg-src="bower_components/material-design-icons/image/svg/production/ic_grain_24px.svg" style="color:#fff !important;" style="color:#fff !important;float:left;border-radius:100%;"></md-icon>
+                </div>
+                <div flex="80">
+                    <h3>Pick your favorite visualization</h3>
+                </div>
+                <div flex="10">
+                    <span> 
+                      <md-button>
+                          <md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_24px.svg" style="color:#fff !important;" ng-click="cancel()"></md-icon>
+                      </md-button>
+                    </span>
+                </div>
+            </div>
+        </md-toolbar>
+
+    <md-content>
+        <div layout="row" layout-align="center start" style="padding:15px;">
+            <div flex>
+                <md-input-container flex>
+                    <label><img src="bower_components/material-design-icons/action/svg/production/ic_search_24px.svg" class="face-radius" alt="">&nbsp;Search</label>
+                    <input ng-model="searchitem">
+                </md-input-container>
+                <md-list flex>
+                    <md-list-item class="md-2-line" ng-click="setPlugin(item)" ng-repeat="item in activitylist | filter : searchitem">
+                                  <image class="bottomsheetbuttons md-avatar" height="42" width="42" src="{{item.icon}}"></image>               
+                            <div class="md-list-item-text">
+                                <h3>{{item.Name}}</h3>
+                                <p>{{item.Description}}</p>
+                            </div>
+                        <md-divider></md-divider>
+                    </md-list-item>
+
+                     <md-divider></md-divider>
+                </md-list>
+            </div>
+        </div>
+    </md-content>
+   
+  <div class="md-actions" layout="row">
+    <span flex></span>
+    <md-button ng-click="cancel()">
+     Cancel
+    </md-button>
+    <md-button ng-click="setPlugin()">
+     Finish
+    </md-button>
+  </div>
+</md-dialog>

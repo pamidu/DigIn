@@ -1,0 +1,47 @@
+<md-dialog class="dialogdemoBasicUsage" aria-label="Publish Workflow" style="width:20vw">
+
+    <md-toolbar md-theme="{{theme}}" md-theme-watch>
+        <div class="md-toolbar-tools">
+            <div class="dialogicon">
+                <ng-md-icon icon="settings_input_composite" style="fill:white" size="32"></ng-md-icon>
+            </div>
+            <h2>
+      <span>Test Workflow</span>
+  </h2>
+            <span flex></span>
+            <md-button class="closebtn md-icon-button" aria-label="More">
+                <ng-md-icon ng-click="cancel()" icon="close" style="fill:white" size="32"></ng-md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content class="md-padding">
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="Input Arguments">
+                <md-content class="md-padding" layout="column" layout-wrap>
+
+                    <md-input-container flex style="padding-bottom:2px;" ng-repeat="a in arguments">
+                        <label>{{a.Key}}</label>
+                        <input ng-model="a.Value">
+                    </md-input-container>
+                    <div class="md-actions" layout="row">
+                        <md-button md-theme="{{theme}}" md-theme-watch ng-click="cancel()">Close</md-button>
+                        <md-button md-theme="{{theme}}" md-theme-watch class="md-primary" ng-click="test()">Test</md-button>
+                    </div>
+
+                </md-content>
+            </md-tab>
+            <md-tab label="JSON">
+                <md-content class="md-padding" layout="column" layout-wrap>
+                    <md-input-container flex style="padding-bottom: 2px;width:100%;">
+                        <textarea ng-model="jasonData" columns="1" md-maxlength="550"></textarea>
+                    </md-input-container>
+                    <div class="md-actions" layout="row">
+                        <md-button md-theme="{{theme}}" md-theme-watch ng-click="cancel()">Close</md-button>
+                        <md-button md-theme="{{theme}}" md-theme-watch class="md-primary" ng-click="testJason(jasonData)">Test</md-button>
+                    </div>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+
+    </md-content>
+</md-dialog>

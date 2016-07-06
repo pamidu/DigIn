@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mainApp">
+<head>
+	<link rel="stylesheet" type="text/css" href="/../bower_components/angular-material/angular-material.css">
+	<link rel="stylesheet" type="text/css" href="/../css/child_app_styles.min.css">
+	<link rel="stylesheet" type="text/css" href="css/accordion.css">
+	<link rel="stylesheet" href="/../css/directive_library.css">
+</head>
+<style type="text/css">
+	md-card{
+		background: #fff;
+	}
+
+	.card_container{
+		max-width: 100% !important;
+	}
+
+	.imgcircle{
+		background: #dddddd;
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+	}
+
+	.banner{
+		width: 100%;
+		height: 202px;
+		z-index: 10;
+		background-color: #4E4142;
+		position: fixed;
+	}
+
+	.md-menu{
+		padding: 5px 0px !important;
+	}
+	
+	.collapse-card.active{
+		margin: 0rem -0rem !important;
+	}
+	
+</style>
+
+<body ng-controller="ViewCtrl" ng-cloak>
+
+	<!--Background banner with parallax effect-->
+	<md-background-banner color="#EF5350" height="300px"> </md-background-banner>
+	
+	<!--START OF ALL CONTENT-->
+	<div id="md-childApp-contentContainerSection">
+
+		<!--START OF FIRST CARD CONTAINER-->
+		<div ui-view></div>
+	</div>
+
+	<script type="text/javascript" src="/../bower_components/angular/angular.min.js"></script>
+	<script src="/../bower_components/angular-animate/angular-animate.js"></script>
+	<script src="/../bower_components/angular-aria/angular-aria.js"></script>
+	<script src="/../bower_components/angular-material/angular-material.js"></script>
+	<script src="/../bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+
+	<script src="/../uimicrokernel/uimicrokernel.js"></script>
+	<script src="/../js/directivelibrary.js"></script>
+	<script src="js/controllers/appSharing.js"></script>
+
+</body>
+</html>

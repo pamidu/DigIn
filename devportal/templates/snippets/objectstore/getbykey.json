@@ -1,0 +1,5 @@
+{
+	"name" : "Get By Unique Key",
+	"parameters":[{"Class" : "$1"},{"Key" : "$2"}],
+	"code":"$objectstore.getClient(\"$1\").onGetOne(function(data){}).onError(function(err){}).getByKey(\"$2\");"
+}

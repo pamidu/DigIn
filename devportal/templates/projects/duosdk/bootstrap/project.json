@@ -1,0 +1,15 @@
+{
+	"appKey" : "",
+	"version":"1.0",
+	"type":"HTML5SDK",
+	"data":{
+		"mainView":"view.html",
+		"mainScript":"script.js",
+		"profile":"bootstrap"
+	},
+	"resources":[
+	    {"id":"script.js", "filename" : "script.js"},
+	    {"id":"view.html", "filename" : "view.html"}
+	],
+	"config":[]
+}

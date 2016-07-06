@@ -1,0 +1,51 @@
+<md-content style="overflow:hidden" flex>
+    <div layout="row" flex>
+        <div flex="50" layout-margin layout="column" layout-align="center center">
+            
+            <h4> Total calls</h4>
+            <h3 ng-controller="sltivrInit" count-to="{{countTo}}" value="{{countFrom}}" duration="2"></h3>
+             <div class="widget-container"
+                    data-expected="100"
+                    data-actual=".21" indicator-widget></div>
+            
+        </div>
+        <div flex="50" layout-margin layout="column" layout-align="center center">
+            
+            <h4> Current</h4>
+            <h3 ng-controller="sltivrInit" count-to="{{countToIvr}}" value="{{countFromIvr}}" duration="2"></h3>
+                   
+                <div class="widget-container"
+                    data-expected="1000"
+                    data-actual=".349" indicator-widget></div>
+            
+        </div>
+    </div>
+    <div layout-margin layout="column" layout-align="center center">
+        <h4> Longest call</h4>
+        <div layout="row" style="font-size:36px">
+        <span ng-controller="sltivrInit" count-to="{{countToIvr}}" value="{{countFromIvr}}" duration="2">
+        </span>
+        <span> seconds </span>
+        </div>
+    </div>
+</md-content>
+ 
+     <script type="text/ng-template" id="indicator.html">
+        <svg class="indicator-circle" 
+            width="150" height="150" 
+            version="1.1" 
+            xmlns="http://www.w3.org/2000/svg">
+            <g>
+                <circle cx="50%" cy="50%" r="45" />
+                <text class="progress-text actual" text-anchor="middle" alignment-baseline="middle" dx="50%" dy="50%">
+                    <tspan class="actual">{{ actual_formatted }}</tspan>
+                    <tspan class="percent">%</tspan>
+                </text>
+                <text class="progress-text" text-anchor="middle" alignment-baseline="middle" dx="50%" dy="60%">Progress</text>
+            </g>
+            <g path-group>
+                <path class="progress-bar inner-bar normal" stroke-linejoin="round" inner-path />
+                <path class="progress-bar outer-bar" stroke-linejoin="round" outer-path />
+            </g>
+        </svg>
+     </script>

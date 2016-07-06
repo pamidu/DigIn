@@ -1,0 +1,5 @@
+{
+	"name" : "Get By Filtering",
+	"parameters":[{"Class" : "$1"},{"Query" : "$2"}],
+	"code":"$objectstore.getClient(\"$1\").onGetMany(function(data){}).onError(function(err){}).getByFiltering(\"$2\");"
+}

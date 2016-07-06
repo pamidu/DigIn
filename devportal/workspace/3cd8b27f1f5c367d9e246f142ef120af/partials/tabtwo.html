@@ -1,0 +1,165 @@
+			<div layout="row" layout-align="center center" style="margin-top:25%" ng-if="headerInfo.Success == false">
+				<h1>Please add a Card or an Account.</h1>
+			</div>
+<!--START OF COLLAPSE CARDS-->
+			<div  class="collapse-card" ng-repeat="content in ['a','b', 'c','d'] | filter:ctrl.searchText||undefined" ng-class="{ active: $active }">
+			
+				<!--START OF COLLAPSE CARD HEADING-->
+				<div class="collapse-card__heading" layout="row" layout-align="start start">
+					<!--START OF CARD OPEN SECTION-->
+					<div class="collapse-card_header_content_info" layout="row" layout-align="center start" style="width:90%;" ng-click="$active = !$active; closeAll();">
+						<div flex="50">
+							<h4 class="collapse-card__title">
+								{{content.BankName}}
+							</h4>
+							<div>Card Number: {{content.Account.MaskCardOrAccountNo}}</div>
+						</div>
+						
+						<div flex="30" class="blankspace">
+							<h4 class="collapse-card__title" style="margin-top:8px;">
+								<span>Account Type: {{content.Account.CardOrAccount}}</span>
+							</h4>
+						</div>
+						<div flex>
+							<h4 class="collapse-card__title" style="margin-top:8px;float:right;">
+								<span style="color:{{content.StatusColor}}">{{content.AccountStatus}}</span>
+							</h4>
+						</div>
+					</div>
+					<!--END OF CARD OPEN SECTION-->
+					
+					<!--START OF CARD CONTROLS SECTION-->
+	
+					<div class="collapse-card_header_content_controls" style="width:10%; height:100%;" layout="column" layout-align="center start">
+			
+						<md-menu md-position-mode="target-right target">
+							<md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu()">
+								<md-icon md-svg-icon="img/ic_more_vert_24px.svg"></md-icon>
+							</md-button>
+							<md-menu-content width="4">
+								<md-menu-item>
+									<md-button ng-click="printDetails(content)">
+										<div layout="row">
+											<p flex>Print Letter to Bank</p>
+											<md-icon md-svg-icon="img/ic_print_24px.svg"></md-icon>
+										</div>
+									</md-button>
+								</md-menu-item>
+								<md-menu-item>
+									<md-button ng-click="showCode(content.AccountVerification)">
+										<div layout="row">
+											<p flex>Show Verification Code</p>
+											<md-icon md-svg-icon="img/ic_vpn_key_24px.svg" style="color:blue"></md-icon>
+										</div>
+									</md-button>
+								</md-menu-item>
+								<md-divider></md-divider>
+								<md-menu-item ng-if="acc.Status == 'Pending'">
+									<md-button ng-click="cancelRequest($index)">
+										<div layout="row">
+											<p flex>Cancel Request</p>
+											<md-icon md-svg-icon="img/ic_cancel_24px.svg" style="color:red"></md-icon>
+										</div>
+									</md-button>
+								</md-menu-item>
+								<md-menu-item ng-if="acc.Status == 'Active'">
+									<md-button ng-click="inactivate($index)">
+										<div layout="row">
+											<p flex>Inactivate Account</p>
+											<md-icon md-svg-icon="img/ic_block_24px.svg" style="color:red"></md-icon>
+										</div>
+									</md-button>
+								</md-menu-item>
+								<md-menu-item>
+									<md-button ng-click="shoeCode($index)">
+										<div layout="row">
+											<p flex>Remove Account</p>
+											<md-icon md-svg-icon="img/ic_remove_24px.svg" style="color:red"></md-icon>
+										</div>
+									</md-button>
+								</md-menu-item>
+							</md-menu-content>
+						</md-menu>
+					</div>
+					<!--END OF CARD CONTROLS SECTION-->
+				</div>
+				<!--END OF COLLAPSE CARD HEADING-->
+				
+				<!--START OF CARD BODY-->
+				<div class="collapse-card__body">
+					<form id="form" name="editForm">
+						
+						<md-divider></md-divider>
+						
+						<md-content flex>
+							<div layout layout-sm="column" layout-margin>
+								<div flex="5">
+									<img src="img/material alperbert/avatar_tile_a_28.png" style="margin-top:22px;border-radius:20px"/>
+								</div>
+								<div flex="20" style="margin-top:35px;">
+									<label style="font-weight:700">Account Details</label>
+								</div>
+								<md-input-container flex>
+									<label>Bank</label>
+									<input type="text" ng-model="content.BankName" ng-disabled="true"/> 
+								</md-input-container>
+								<md-input-container flex>
+									<label>{{content.Account.CardOrAccount}} #</label>
+									<input type="text" ng-model="content.Account.MaskCardOrAccountNo" ng-disabled="true"/> 
+								</md-input-container>
+								
+							</div>
+
+							<div layout layout-sm="column" layout-margin>
+								<div flex="5" class="blankspace">	
+								</div>
+								<div flex="20" class="blankspace">
+								</div>
+								<md-input-container flex>
+									<label>{{content.CardOrAccount}} Type</label>
+									<input type="text" ng-model="content.Account.CardOrAccountType" ng-disabled="true"/> 
+								</md-input-container>
+								<md-input-container flex>
+									<label>Name on {{content.CardOrAccount}}</label>
+									<input type="text" ng-model="content.Account.NameOnCardOrAccount" ng-disabled="true"/> 
+								</md-input-container>
+								
+							</div>
+							
+							<div layout layout-sm="column" layout-margin>
+								<div flex="5" class="blankspace">	
+								</div>
+								<div flex="20" class="blankspace">
+								</div>
+								<md-input-container flex ng-if="content.CardOrAccount=='Card'">
+									<label>Expiry</label>
+									<input type="text" ng-model="content.Account.Expiry" ng-disabled="true"/> 
+								</md-input-container>
+								<md-input-container flex>
+									<label>Display Name</label>
+									<input type="text" ng-model="content.Account.DisplayName" ng-disabled="true"/> 
+								</md-input-container>
+								
+							</div>
+							<md-divider></md-divider>
+							
+							<div layout layout-sm="column" layout-margin>
+								<div flex="5">
+									<img src="img/material alperbert/avatar_tile_s_28.png" style="margin-top:22px;border-radius:20px"/>
+								</div>
+								<div flex="20" style="margin-top:35px;">
+									<label style="font-weight:700">Status</label>
+								</div>
+								<md-input-container flex>
+									<label>Status</label>
+									<input type="text" ng-model="content.AccountStatus" ng-disabled="true"/> 
+								</md-input-container>
+			
+							</div>
+						
+						</md-content>
+					</form>
+				</div>
+				<!--END OF CARD BODY-->
+			</div>
+			<!--END OF COLLAPSE CARDS-->

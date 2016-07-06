@@ -1,0 +1,46 @@
+<!--center>
+	<ul class="bxslider">
+	  <li><img ng-src="img/slide1.png" /></li>
+	  <li><img ng-src="img/slide2.png" /></li>
+	  <li><img ng-src="img/slide3.png" /></li>
+	</ul>
+</center-->
+
+
+
+<div ng-repeat="(catogery, allApps) in allApps |  filter: categorySelection||undefined   | filter:{Paid:paidOrFree||undefined}  | filter:ctrl.actionSearchText||undefined | groupBy : 'catogery' " style="margin-top:30px;" class="my-animation">
+  
+				
+				<!--| freeFilter:cbfree | paidFilter:cbpaid-->
+				<div layout layout="row" layout-align="center center" layout-margin >
+					<img style="border-radius:20px"  ng-src="{{getCatLetter(catogery)}}">
+					<h2 style="font-size:25px;font-weight:300; margin-left:20px;">{{catogery}}</h2>
+				</div>
+			
+				<center id="inline" >
+			
+					<li ng-repeat="app in allApps" > 
+						<md-card style="width:200px;" id="cardApp" class="tint showbox scale" ng-click="open(app)">
+							<img src="{{app.iconUrl}}" style="min-width:128px;width:75%;height:150px;margin-top:5px;margin-bottom:5px;border-radius: 100px;box-shadow:0 3px 1px -2px rgba(0,0,0,.14),0 2px 2px 0 rgba(0,0,0,.098),0 1px 5px 0 rgba(0,0,0,.084)" alt="Washed Out"/>
+							<md-divider></md-divider>
+							<md-card-content style="padding:0px;padding-left:5px;background:#EAFFEA">
+							
+								<div layout="row" layout-align="start start" style="margin:0;padding:0">
+									<text  style="margin-top:3px;font-size:15px">{{app.name}}</text>
+								</div>
+								<div layout="row" layout-align="start start" style="margin:0;padding:0;margin-bottom:3px">
+									<text style="margin-top:2px;font-size:12px">BY: <span style="color:blue">{{app.developer}}</span></text>
+								</div>
+								<div style="height:30px;width:30px;line-height:30px;margin-top:-54px !important;border-radius:100px;margin-left:150px !important;background:#fac51c;font-weight:700;color:rgb(89, 89, 89);box-shadow:0px 3px 1px -2px rgba(0, 0, 0, 0.14), 0px 2px 2px 0px rgba(0, 0, 0, 0.098), 0px 1px 5px 0px rgba(0, 0, 0, 0.084);">
+									{{app.rating / app.voteCount | ceil}}
+									<!--md-icon md-svg-src="img/ic_favorite_outline_24px.svg" style="width:15px;color:rgb(89, 89, 89)"></md-icon-->
+								</div>
+								<div class="md-actions" layout="row" layout-align="end center">
+								<text style="padding-top:25px;padding-bottom:6px;margin-right:10px;color:green;font-weight:700;font-size:15px;"><span ng-if="app.price!='Free'">$</span>{{app.price}}</text>
+							</div>
+							</md-card-content>
+							
+						</md-card>
+					</li> 
+				</center>
+		</div>

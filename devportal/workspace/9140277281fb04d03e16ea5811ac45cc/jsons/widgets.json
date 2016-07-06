@@ -1,0 +1,415 @@
+{
+    "d": [{
+            "title": "Google SpreadSheets",
+            "icon": "styles/css/images/icons/ic_insert_chart_24px.svg",
+            "type": "Visualization",
+            "Description": "Line, Area, Bar, Pie, Table",
+            "initTemplate": "InitConfigspread",
+            "initController": "spreadInit",
+            "widView": "views/Viewspread.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "0"
+        }, {
+
+            "title": "Image",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "type": "Custom",
+            "Description": "Image",
+            "initTemplate": "InitConfigimage",
+            "initController": "imInit",
+            "widView": "views/Viewimage.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "1"
+        }, {
+
+            "title": "Weather",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "type": "Custom",
+            "Description": "Image",
+            "initTemplate": "InitConfigWeather",
+            "initController": "weatherInit",
+            "widView": "views/ViewWeather.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "2"
+        },  {
+
+            "title": "Google Calendar",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "type": "Custom",
+            "Description": "Upcoming events",
+            "initTemplate": "InitConfigCalendar",
+            "initController": "calendarInit",
+            "widView": "views/ViewCalendar.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "2"
+        }, {
+
+            "title": "Data Driven Document(D3) Plugin",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "type": "Visualization",
+            "Description": "Build your dream Visualization",
+            "initTemplate": "InitConfigD3",
+            "initController": "InitConfigD3",
+            "widView": "views/ViewD3.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "0"
+
+        }, {
+
+            "title": "Google AdSense",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Advertising",
+            "Description": "Earnings, Pageviews, Clicks",
+            "initTemplate": "InitConfigFacebook",
+            "initController": "fbInit",
+            "widView": "views/chartview.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "1"
+        }, {
+
+            "title": "Facebook Pages",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Social Media",
+            "Description": "Likes, Clicks, Active Users, Pageviews",
+            "initTemplate": "InitConfigFacebook",
+            "initController": "fbInit",
+            "widView": "views/ViewFacebook.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "2",
+            "widConfig": {
+                "options": {
+                    "chart": {
+                        "type": "area"
+                    },
+                    "plotOptions": {
+                        "series": {
+                            "stacking": ""
+                        }
+                    }
+                },
+                "series": [{
+                    "name": "Like Count",
+                    "data": [],
+                    "id": "series-0",
+                    "type": "line",
+                    "dashStyle": "ShortDashDot",
+                    "connectNulls": false
+                }],
+                "title": {
+                    "text": "Page Likes"
+                },
+                "credits": {
+                    "enabled": false
+                },
+                "loading": false,
+                "xAxis": {
+                    "type": "datetime",
+                    "currentMin": 0
+                },
+                "yAxis": {
+                    "min": 0
+                },
+                "size": {
+                    "height": "300"
+                }
+            }
+        }, {
+
+            "title": "Instagram search",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Social Media",
+            "Description": "Hash tags,Popular images,Followers, Other data",
+            "initTemplate": "InitConfigInstagram",
+            "initController": "instaInit",
+            "widView": "views/ViewInstagram.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "0"
+        }, {
+
+            "title": "Google+",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Social Media",
+            "Description": "Plus Ones, Circled By",
+            "initTemplate": "InitConfigGoogleplus",
+            "initController": "googlePlusInit",
+            "widView": "views/ViewGoogleplus.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "1"
+        }, {
+
+            "title": "Twitter",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Social Media",
+            "Description": "Timeline, Tags, Other data",
+            "initTemplate": "InitConfigTwitter",
+            "initController": "TwitterInit",
+            "widView": "views/ViewTwitter.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "1"
+        },{
+
+            "title": "LinkedIn",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Social Media",
+            "Description": "Connections, Network Updates",
+            "initTemplate": "InitConfigLinkedin",
+            "initController": "linkedInit",
+            "widView": "views/ViewLinkedIn.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "2"
+        }, {
+
+            "title": "Pinterest",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Social Media",
+            "Description": "Boards, Pins, Likes, Followers, Following",
+            "initTemplate": "fbInitConfig",
+            "initController": "fbInit",
+            "widView": "views/chartview.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "0",
+            "col": "3"
+
+        }, {
+            "title": "ElasticSearch",
+            "icon": "styles/css/images/icons/ic_av_timer_24px.svg",
+            "type": "Visualization",
+            "Description": "Line, Area, Bar, Pie, Table",
+            "initTemplate": "InitConfigElastic",
+            "initController": "elasticInit",
+            "widView": "views/ViewElasticSearch.html",
+            "dataView": "ViewElasticData",
+            "dataCtrl": "elasticDataCtrl",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "0"
+
+        }, {
+
+            "title": "CSV File",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Visualization",
+            "Description": "Line, Area, Bar, Pie, Table",
+            "initTemplate": "InitConfigcsv",
+            "initController": "csvInit",
+            "widView": "views/Viewcsv.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "1"
+
+        }, {
+
+            "title": "Youtube",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Social Media",
+            "Description": "Likes, Clicks, Active Users, Pageviews",
+            "initTemplate": "InitConfigyoutube",
+            "initController": "YoutubeInit",
+            "widView": "views/Viewyoutube.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "2"
+        }, {
+
+            "title": "WordPress",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Blogging",
+            "Description": "Users, Posts, Comments",
+            "initTemplate": "InitConfigWordpress",
+            "initController": "wordpressInit",
+            "widView": "views/ViewWordpress.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "1",
+            "col": "3"
+        }, {
+
+            "title": "RssFeeds",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Blogging",
+            "Description": "Feeds, News",
+            "initTemplate": "InitConfigRss",
+            "initController": "rssInit",
+            "widView": "views/ViewRss.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "2",
+            "col": "0"
+        }, {
+
+            "title": "Gnews",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Blogging",
+            "Description": "Google news",
+            "initTemplate": "InitConfiggnews",
+            "initController": "gnewsInit",
+            "widView": "views/ViewGnews.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "2",
+            "col": "0"
+
+        }, {
+
+            "title": "Google Analytics",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Web Analytics",
+            "Description": "Reports, Charts, Content, Queries",
+            "initTemplate": "InitConfiganalytics",
+            "initController": "analyticsInit",
+            "widView": "views/ViewAnalytics.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "2",
+            "col": "1"
+        }, {
+
+            "title": "Skill wise summary",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Sri Lanka Telecom",
+            "Description": "Analyze the calls for each skills",
+            "initTemplate": "InitSLT",
+            "initController": "SLTInit",
+            "widView": "views/ViewSLTSkill.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "2",
+            "col": "2"
+        }, {
+
+            "title": "Calls in IVR",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Sri Lanka Telecom",
+            "Description": "Check how many calls are in the Interactive Voice Response",
+            "initTemplate": "InitSLTIvr",
+            "initController": "sltivrInit",
+            "widView": "views/ViewSLTIvr.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "2",
+            "col": "3"
+        }, {
+
+            "title": "Calls in Queue",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Sri Lanka Telecom",
+            "Description": "Check how many calls are in the Queue",
+            "initTemplate": "InitS4LT",
+            "initController": "SLTInit",
+            "widView": "views/ViewSLTQueue.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "3",
+            "col": "0"
+        }, {
+
+            "title": "Calls at Agent",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Sri Lanka Telecom",
+            "Description": "Check who is handling calls",
+            "initTemplate": "InitSLT",
+            "initController": "SLTInit",
+            "widView": "views/ViewSLTAgent.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "3",
+            "col": "1"
+        }, {
+
+            "title": "Queue Details",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "Sri Lanka Telecom",
+            "Description": "See the calls which has not been responded",
+            "initTemplate": "InitSLT",
+            "initController": "SLTInit",
+            "widView": "views/ViewSLTQueueDetails.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "3",
+            "col": "2"
+        }, {
+
+            "title": "Google Maps",
+            "icon": "styles/css/images/icons/ic_assignment_24px.svg",
+            "type": "Custom",
+            "Description": "Google Maps",
+            "initTemplate": "InitConfigGoogleMaps",
+            "initController": "googleMapsInit",
+            "widView": "views/ViewGoogleMaps.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "4",
+            "col": "0"
+        }, {
+
+            "title": "Number of claims per vehicle type",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "HNB Assuarance",
+            "Description": "Force directive layout to show number of claims vehicle type",
+            "initTemplate": "InitConfighnb",
+            "initController": "hnbInit",
+            "widView": "views/ViewHnbData.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "3",
+            "col": "0"
+        },
+        {
+
+            "title": "Distributed claims",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "HNB Assuarance",
+            "Description": "Sunburst directive layout to show the data of claims",
+            "initTemplate": "InitConfighnb",
+            "initController": "hnbInit",
+            "widView": "views/ViewHnbMonth.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "3",
+            "col": "0"
+        },
+        {
+            "title": "Box plot for month wise",
+            "icon": "styles/css/images/icons/ic_dashboard_24px.svg",
+            "type": "HNB Assuarance",
+            "Description": "Box plot analysis to check month wise vehicle type claims",
+            "initTemplate": "InitConfighnb",
+            "initController": "hnbInit",
+            "widView": "views/ViewHnbBox.html",
+            "sizeX": "2",
+            "sizeY": "2",
+            "row": "3",
+            "col": "0"
+        }
+
+
+    ]
+}
+
+        

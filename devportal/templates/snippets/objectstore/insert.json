@@ -1,0 +1,5 @@
+{
+	"name" : "Insert to Object Store",
+	"parameters":[{"Class" : "$1"},{"Object Variable" : "$2"},{"Key Property" : "$3"}],
+	"code":"$objectstore.getClient(\"$1\").onComplete(function(){}).onError(function(err){}).insert([$2], {KeyProperty:\"$3\"});"
+}

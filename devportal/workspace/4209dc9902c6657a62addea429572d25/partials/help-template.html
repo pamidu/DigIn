@@ -1,0 +1,32 @@
+<style>
+    iframe[seamless] {
+    display: block;
+}
+
+    iframe {
+        height:100%;
+        width:100%;
+        min-height:300px;
+    }
+</style>
+<md-dialog  flex  class="dialogdemoBasicUsage" aria-label="Publish Workflow">
+    <md-toolbar md-theme="{{theme}}" md-theme-watch>
+        <div class="md-toolbar-tools">
+            <div class="dialogicon">
+                <ng-md-icon icon="forward" style="fill:white" size="32"></ng-md-icon>
+            </div>
+            <h2>
+              <span>Help</span>
+            </h2>
+            <span flex></span>
+            <md-button md-theme="{{theme}}" md-theme-watch class="closebtn md-icon-button" aria-label="More">
+                <ng-md-icon ng-click="cancel()" icon="close" style="fill:white" size="32"></ng-md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+<div>
+  <md-content class="md-padding">
+   <iframe src="https://duosoftware.atlassian.net/wiki/x/mwF2Ag"></iframe>
+  </md-content>
+</div>
+</md-dialog>

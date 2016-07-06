@@ -1,0 +1,26 @@
+<div>
+    
+    <md-card>
+      <md-whiteframe class="md-whiteframe-z5" layout layout-align="center center">
+      <div class="md-actions" layout="row" layout-align="start center">
+        <md-select placeholder="Book" ng-model="chapter">
+          <md-option  ng-value="chapter" ng-repeat="chapter in chapters">{{chapter.name}}</md-option>
+        </md-select>
+         <md-select ng-model="verse">
+          <md-option placeholder="Chapter" ng-value="verse" ng-repeat="verse in verses">{{verse}}</md-option>
+        </md-select>
+        
+      </div>
+      </md-whiteframe>
+       <md-card-content>
+           <div ng-show="isBusy"> Loading......</div>
+            <md-whiteframe ng-show="!isBusy" class="md-whiteframe-z5" layout layout-align="center center">
+                <p>
+                <span ng-repeat="(chapter,content) in bible.chapter"><b><font size="1">{{content.verse_nr}}</font> </b>{{content.verse}}</span>
+                </p>
+            </md-whiteframe>
+            <h2 class="md-title">{{bible.book_name}} {{bible.chapter_nr}}</h2>
+        </md-card-content>
+    <hr/>
+    </md-card>
+</div>

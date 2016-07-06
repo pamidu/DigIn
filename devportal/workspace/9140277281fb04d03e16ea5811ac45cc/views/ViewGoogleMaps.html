@@ -1,0 +1,58 @@
+<md-content layout-margin flex layout="column" style="overflow:hidden">
+<div layout="row" flex>
+<div id="map" style="border:solid 1px;" flex="75"></div>
+<div id="details" layout-margin flex="25">
+        
+        <md-input-container>
+            <label>Vehicle Type</label>
+            <md-select ng-model="filter_type" ng-change="changeMap()">
+              <md-option value="2WD TRACTOR">2WD TRACTOR</md-option>
+              <md-option value="4WD TRACTOR">4WD TRACTOR</md-option>
+              <md-option value="AMBULANCE">AMBULANCE</md-option>
+              <md-option value="BACHOE">BACHOE</md-option>
+              <md-option value="BOWSER">BOWSER</md-option>
+              <md-option value="BULLDOZER">BULLDOZER</md-option>
+              <md-option value="CATTEPILLER">CATTEPILLER</md-option>
+              <md-option value="COMBINE HARVESTER">COMBINE HARVESTER</md-option>
+              <md-option value="CREW CAB">CREW CAB</md-option>
+              <md-option value="FORK LIFTER">FORK LIFTER</md-option>
+              <md-option value="JEEP">JEEP</md-option>
+              <md-option value="MOTOR CAR">MOTOR CAR</md-option>
+              <md-option value="MOTOR CYCLE">MOTOR CYCLE</md-option>
+              <md-option value="MOTOR LORRY">MOTOR LORRY</md-option>
+              <md-option value="PASSENGER CARRYING BUS">PASSENGER CARRYING BUS</md-option>
+              <md-option value="PRIME MOVER">PRIME MOVER</md-option>
+              <md-option value="ROUTE BUS">ROUTE BUS</md-option>
+              <md-option value="SINGLE CAB">SINGLE CAB</md-option>
+              <md-option value="THREE WHEELER">THREE WHEELER</md-option>
+              <md-option value="TRADE PLATE">TRADE PLATE</md-option>
+              <md-option value="TRAILER">TRAILER</md-option>
+              <md-option value="VAN">VAN</md-option>
+            </md-select>
+            </md-input-container>
+
+        <md-input-container>
+            <label>Place</label>
+            <md-select ng-model="filter_type" ng-change="changeMap()">
+              <md-option value="Colombo">Colombo</md-option>
+              <md-option value="Kandy">Kandy</md-option>
+              <md-option value="Galle">Galle</md-option>
+              <md-option value="Trincomalee">Trincomalee</md-option>
+              <md-option value="Jaffna">Jaffna</md-option>
+            </md-select>
+          </md-input-container>
+
+          <md-input-container>
+            <label>Cost</label>
+            <md-select ng-model="filter_type" ng-change="changeMap()">
+              <md-option value="10000">10000-20000</md-option>
+              <md-option value="20000">20000-30000</md-option>
+              <md-option value="30000">30000-40000</md-option>
+              <md-option value="40000">40000-50000</md-option>
+            </md-select>
+          </md-input-container>
+
+          <md-button ng-click="changeMap()">View</md-button>
+</div>
+</div>
+</md-content>

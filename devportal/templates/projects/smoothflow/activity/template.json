@@ -1,0 +1,25 @@
+{
+	"name" : "Activity", 
+	"description":"This is the Activity template used to create Custom Activities.",
+	"settings" : {
+		"activityName":"",
+		"activityDescription" : "",
+		"activityType":"",
+		"InArguments":[{
+	                "DataType": "String",
+	                "Group": "default",
+	                "Key": "",
+	                "Priority": "Mandatory",
+	                "Type": "dynamic",
+	                "Value": ""
+		}],
+		"OutArguments":[{
+	                "DataType": "String",
+	                "Group": "default",
+	                "Key": "",
+	                "Priority": "Mandatory",
+	                "Type": "dynamic",
+	                "Value": ""
+		}]
+	}
+}

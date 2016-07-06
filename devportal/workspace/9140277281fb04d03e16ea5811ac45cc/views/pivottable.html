@@ -1,0 +1,29 @@
+     <div class="pivotContainer">
+
+             <div  layout="row"  ng-controller= "summarizeCtrl as ctrl"  layout-align='left start'> 
+
+                <md-autocomplete
+            style="margin:30px"
+          ng-disabled="ctrl.isDisabled"
+          md-no-cache="ctrl.noCache"
+          md-selected-item="ctrl.selectedItem"
+          md-search-text="ctrl.searchText"
+          md-items="item in ctrl.querySearch(ctrl.searchText)"
+          md-item-text="item.display"
+          md-selected-item-change="getFields(ctrl.selectedItem)"
+          ng-model="item"
+          ng-change = "getFields()"
+          placeholder="Type the index to play with!">
+        <span md-highlight-text="ctrl.searchText">{{item.display}}</span>
+      </md-autocomplete> 
+                               
+              <!--    <md-select  style="text-transform:capitalize" ng-change="getFields()" placeholder="Index" ng-model="ind"  flex="50">
+                           <md-option   style="text-transform:capitalize" ng-value="ind" ng-repeat=" ind in indexes">{{ ind }}</md-option>
+                 </md-select> -->
+             
+               </div>    
+                  <div  layout="row" layout-align='center start'>                   
+                    <div style="margin-top: 20px;" id="tableoutput">
+                    </div>
+                </div>
+              </div>

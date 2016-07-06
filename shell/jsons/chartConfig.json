@@ -1,0 +1,74 @@
+{
+    "d": [{
+        "name": "Area",
+        "type": "area",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/areaChart.png"
+    }, {
+        "name": "Smooth area",
+        "type": "areaspline",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/smoothAreaChart.png"
+    }, {
+        "name": "Line",
+        "type": "line",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/lineChart.png"
+    }, {
+        "name": "Smooth line",
+        "type": "spline",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/lineChart.png"
+    }, {
+        "name": "Column",
+        "type": "column",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/columnChart.png"
+    }, {
+        "name": "Bar",
+        "type": "bar",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/barChart.png"
+    }, {
+        "name": "Pie",
+        "type": "pie",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/pieChart.png"
+    }, {
+        "name": "Scatter",
+        "type": "scatter",
+        "configView": "views/common-data-src/init-configs/InitConfigCommonSrc.html",
+        "resView": "views/common-data-src/res-views/ViewCommonSrc.html",
+        "icon": "styles/css/images/charts/commonSrc/scatterPlot.png"
+    }, {
+       "name": "Metric",
+       "type": "metric",
+       "configView": "views/common-data-src/init-configs/InitConfigCommonSrcMetric.html",
+       "resView": "views/common-data-src/res-views/ViewCommonSrcMetric.html",
+       "icon": "styles/css/images/charts/commonSrc/metrics.png"
+    },
+    { 
+       "name": "Box Plot",
+       "type": "box plot",
+       "icon": "styles/css/images/charts/commonSrc/boxPlot.png"
+    }, { 
+       "name": "Hierarchy Visualization",
+       "type": "hierarchy visualization",
+       "icon": "styles/css/images/charts/commonSrc/hierarchy.png"
+    }, { 
+       "name": "Sunburst",
+       "type": "sunburst",
+       "icon": "styles/css/images/charts/commonSrc/sunburst.png"
+    }, { 
+       "name": "D3 Visualization",
+       "type": "d3 visualization",
+       "icon": "styles/css/images/charts/commonSrc/D3.png"
+    }]
+}

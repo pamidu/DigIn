@@ -1,0 +1,55 @@
+<div ng-cloak>
+		<md-content layout-padding="">
+		<form name="userForm">
+
+			<md-input-container flex="">
+				<label>App Title</label>
+				<input ng-model="appDesc.name" disabled="">
+			</md-input-container>
+
+			<div layout="" layout-sm="column">
+				<md-input-container flex="">
+					<label>App Key</label>
+					<input ng-model="appDesc.appKey" disabled="">
+				</md-input-container>
+				<md-input-container flex="">
+					<label>Secret Key</label>
+					<input ng-model="appDesc.secretKey" disabled="">
+				</md-input-container>
+			</div>
+
+			<div layout="" layout-sm="column">
+				<md-input-container flex="">
+					<label>Image</label>
+					<md-icon>
+						<img ng-src="{{imageSrc}}" ng-err-src="appicons/default.png"/>
+					</md-icon>
+				</md-input-container>
+			</div>
+
+			<md-input-container md-no-float="">
+				<label>Description</label>
+				<input ng-model="appDesc.description">
+
+			</md-input-container>
+
+			<div layout="" layout-sm="column">
+				<md-input-container flex="">
+					<label>Category</label>
+			        <md-select ng-model="appDesc.category">
+		            	<md-option ng-value="ct" ng-repeat="ct in appCategories">
+		            	{{ct}}
+		            	</md-option>
+		        	</md-select>
+				</md-input-container>
+				<!--md-input-container flex="">
+					<label>Type</label>
+					<input ng-model="appDesc.type">
+				</md-input-container-->
+			</div>
+				<md-input-container flex="">
+					<md-button class="md-primary" ng-click="update()">Update</md-button>
+				</md-input-container>
+		</form>
+		</md-content>
+</div>

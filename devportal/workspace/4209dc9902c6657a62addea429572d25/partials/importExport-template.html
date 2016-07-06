@@ -1,0 +1,67 @@
+<md-dialog>
+    <md-toolbar md-theme="{{theme}}" md-theme-watch>
+        <div class="md-toolbar-tools">
+            <div class="dialogicon">
+                <ng-md-icon icon="save" style="fill:white" size="32"></ng-md-icon>
+            </div>
+            <h2>
+                  <span>Import & Export Workflows</span>
+                </h2>
+            <span flex></span>
+            <md-button md-theme="{{theme}}" md-theme-watch class="closebtn md-icon-button" aria-label="More">
+                <ng-md-icon ng-click="cancel()" icon="close" style="fill:white" size="32"></ng-md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content>
+        <md-tabs md-border-bottom>
+            <md-tab label="Import">
+                <md-content class="md-padding" layout="column">
+                    <div ngf-select ng-model="pdFile" style="width: 100%;
+    background-color:lightgrey;
+    height: 100px;
+    border-radius: 5px;
+    border: #3F51B5 dashed 1px;
+    font-size: large;
+    color: darkgrey; text-align:center;" layout="row" layout-align="center center">Click here
+                        <br> to Select the Workflow </div>
+
+                    <div class="md-actions" layout="row">
+                        <md-button md-theme="{{theme}}" md-theme-watch ng-click="cancel()">Close</md-button>
+                        <md-button md-theme="{{theme}}" md-theme-watch class="md-primary" type="button" ng-click="importFile(pdFile)">Import</md-button>
+                    </div>
+                </md-content>
+            </md-tab>
+            <md-tab label="Export">
+                <md-content class="md-padding">
+                    <div layout="row">
+                        <div flex>
+                            <md-input-container md-theme="{{theme}}" md-theme-watch flex>
+                                <label>Workflow Name</label>
+                                <input md-maxlength="50" required name="name" ng-model="process.name">
+                                <div ng-messages>
+                                    <div ng-message="required" ng-if="savedialog.name.$invalid && savedialog.name.$dirty">Workflow name is required.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container md-theme="{{theme}}" md-theme-watch flex>
+                                <label>Workflow Version</label>
+                                <input name="version" ng-model="process.version">
+                            </md-input-container>
+                            <md-input-container md-theme="{{theme}}" md-theme-watch flex>
+                                <label>Description</label>
+                                <textarea ng-model="process.description"></textarea>
+                            </md-input-container>
+
+                        </div>
+                    </div>
+                </md-content>
+                <span flex></span>
+                <div class="md-actions" layout="row">
+                    <md-button md-theme="{{theme}}" md-theme-watch ng-click="cancel()">Close</md-button>
+                    <md-button md-theme="{{theme}}" md-theme-watch class="md-primary" type="submit" ng-click="exportFile();">Export</md-button>
+                </div>
+    </md-content>
+    </md-tab>
+    </md-tabs>
+    </md-content>
+</md-dialog>

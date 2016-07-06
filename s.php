@@ -32,31 +32,35 @@
 	
 
 	if (isset($_GET["securityToken"])){
-		//echo "string";
 		setcookie("securityToken", $_GET["securityToken"]);
-		//$_COOKIE["securityToken"] = $_GET["securityToken"];
 		if(createSessionDmian()){
+			//echo "chamila 0"; exit();
+			////when 1st, 2nd  login --2
 			if(isset($_COOKIE['h'])){
+				//echo "chamila 1"; exit();
 				header("Location: ".$_COOKIE['h']."?securityToken=".$_COOKIE["securityToken"]);
 				cookie_unset('h');
-				//echo $_COOKIE['h'];
 				exit();		
 			}
 			else{
-				//echo "no cookie";
+				////when 1st 2nd login --3
+				//echo "chamila 11"; exit();
 				header("Location: /");
 				exit();
 			}
 		}
 		else
 		{
+			//echo "chamila 111"; exit();
+			////when 1st, 2nd  login --1
 			header("Location: http://".$mainDomain."/login.php?r=http://".$_SERVER['HTTP_HOST']."/s.php");
 			exit();
 		}
 	}
 
-	//if(isset())
+
 	if(!isset($_COOKIE["securityToken"])){
+		//echo "chamila 2"; exit();
 		if($mainDomain!=$_SERVER['HTTP_HOST'])
 		{
 			header("Location: http://".$mainDomain."/login.php?r=http://".$_SERVER['HTTP_HOST'].'/s.php');
@@ -66,15 +70,14 @@
 			header("Location: http://".$mainDomain."/login.php?r=http://".$_SERVER['HTTP_HOST'].'/s.php');
 
 		}
-		//echo "string";
 		exit();
 	}
 	else
 	{
+		//echo "chamila 3"; exit();	
 		if(isset($_COOKIE['h'])){
 			header("Location: ".$_COOKIE['h']."?securityToken=".$_COOKIE["securityToken"]);
 			cookie_unset('h');
-			//session_unset('r');
 			exit();		
 		}
 		else
@@ -85,11 +88,10 @@
 	}
 
 	
-	
 
-	//if(isset(var))
 	if(isset($_GET["l"]))
 	{
+		//echo "chamila 4"; exit();	
 		header("Location: http://".$_GET["l"]."/s.php?securityToken=".$_COOKIE["securityToken"]);
 		exit();
 	}

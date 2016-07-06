@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!--test-->
+<html lang="en" ng-app="mainApp">
+<head>
+
+<link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.css">
+<link rel="stylesheet" type="text/css" href="css/child_app_styles.min.css">
+<link rel="stylesheet" href="css/directive_library.css">
+<link rel="stylesheet" href="css/animate.css">
+    
+
+</head>
+
+<body ng-controller="AppCtrl" ng-cloak>
+
+	<!--Background banner with parallax effect-->
+	<md-background-banner color="#c0ca33" height="300px"> </md-background-banner>
+	
+	
+	
+	<!--START OF ALL CONTENT-->
+	<div id="md-childApp-contentContainerSection" >
+			
+			<!--CARD CONTAINER START-->
+<div class="card-container" style="padding:20px;" >
+	<!--WHITEFRAME START-->
+	<md-whiteframe class="md-whiteframe-z1" layout layout-align="center center" style="border:1px solid #ccc;max-width:960px;margin:0 auto;z-index:2"> 
+
+		<!--FORM START-->
+		<form name="editForm" ng-submit="submit()" style="width:100%">
+			<md-content flex>
+				<div layout layout-sm="column" layout-margin>
+					<div flex="5">
+						<img src="img/material alperbert/avatar_tile_a_28.png" style="margin-top:22px;border-radius:20px"/>
+					</div>
+					<div flex="20" style="margin-top:35px;">
+						<label style="font-weight:700">Account Details</label>
+					</div>
+					 <md-input-container id="accContainer" flex >
+						<label>Company Name</label>
+						<input id="accNo" ng-model="template.CompanyID" required></input>
+					</md-input-container>
+		
+					<md-input-container id="accContainer" flex >
+						<label>Tenant ID</label>
+						<input id="accNo" ng-model="template.TenantID" required></input>
+					</md-input-container>
+					
+				</div>
+			
+				
+				
+				
+				
+				
+				<div layout="row" layout-align="end start" layout-margin ng-init="submitted=false" >
+					<md-button id="accountSubmit" class="md-raised md-primary" style="width:100px;margin-right:10px !important; margin-left:20px !important" ng-disabled="submitted" type="submit">Submit</md-button>
+				</div>
+				
+				
+			
+			</md-content>
+		</form>
+
+	</md-whiteframe><br><br>
+	<!--WHITEFRAME END-->
+</div>
+<!--CARD CONTAINER END-->
+	
+<div  class="lock-size" layout="row">	
+    <div id="view" class="fab_button_animation" style="background:#2980b9;"></div>
+
+    <md-fab-speed-dial md-open="demo.isOpen" md-direction="{{demo.selectedDirection}}"
+         ng-class="demo.selectedMode">
+        <!-- 20px -->
+        <md-fab-trigger>
+            <md-button aria-label="menu" class="md-fab " style="background-color:#1abc9c;" ng-click="viewInvoice()">
+                <md-icon md-svg-src="img/ic_visibility_24px.svg" style="width:30px;" ></md-icon>
+            </md-button>
+        </md-fab-trigger>
+        <md-fab-actions >
+            <!--div style="padding:5px;">
+                <md-button aria-label="twitter" class="md-fab md-raised md-mini" ng-click="add()" style="background-color:#2980b9; ">
+                    <md-icon md-svg-src="img/ic_note_add_24px.svg" ></md-icon>
+                    <md-tooltip md-direction="left">New Invoice</md-tooltip>
+                </md-button>
+            </div-->
+
+        </md-fab-actions>
+    </md-fab-speed-dial>
+</div> 
+	</div>
+
+		
+<script src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-aria/angular-aria.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script>
+
+<script src="js/uimicrokernel.js"></script>
+<script src="js/directivelibrary.js"></script>
+<script src="js/controllers/add_companies.js"></script>
+
+</body>
+</html>

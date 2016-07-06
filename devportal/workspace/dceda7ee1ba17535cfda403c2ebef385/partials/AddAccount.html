@@ -1,0 +1,222 @@
+<!--CARD CONTAINER START-->
+<div class="card-container" style="padding:20px;" ng-controller="addAccountCtrl as ctrl" >
+	<!--WHITEFRAME START-->
+	<md-whiteframe class="md-whiteframe-z1" layout layout-align="center center" style="border:1px solid #ccc;max-width:960px;margin:0 auto;z-index:2"> 
+
+		<!--FORM START-->
+		<form name="editForm" ng-submit="submit()" style="width:100%">
+			<md-content flex>
+				<div layout layout-sm="column" layout-margin>
+	
+					<section-title title="Account Details"></section-title>
+
+					 <md-autocomplete flex
+						md-select-on-match
+						ng-keypress="enter($event)"
+						md-input-name="autocompleteField"
+						md-no-cache="ctrl.noCache"
+						md-selected-item="ctrl.selectedItem"
+						md-search-text="ctrl.searchText"
+						md-items="item in ctrl.querySearch(ctrl.searchText)"
+						md-item-text="item.display"
+						md-floating-label="Bank" style="margin-top:11px">
+					  <md-item-template>
+						<span md-highlight-text="ctrl.searchText">{{item.display}}</span>
+					  </md-item-template>
+
+					</md-autocomplete>
+			
+					 <md-input-container flex>
+						<label>Select Account Type</label>
+						<md-select ng-model="template.CardOrAccount">
+							<md-optgroup label="Select Account Type">
+							  <md-option  value="Card" flex >Card</md-option>
+							<md-option  value="Account" flex >Account</md-option>
+							</md-optgroup>
+						</md-select>
+					  </md-input-container>
+
+					
+				</div>
+			
+				<div layout layout-sm="column" layout-margin>
+					
+					<section-title title=""  ></section-title>
+					
+					<md-input-container id="accContainer" flex >
+						<label>{{template.CardOrAccount}} Number</label>
+						<input id="accNo" ng-model="template.CardOrAccountNo" required></input>
+					</md-input-container>
+					
+					
+					 <md-input-container flex>
+						<label>Select {{template.CardOrAccount}} Type</label>
+						<md-select ng-model="template.CardOrAccountType" required flex>
+							<div ng-if="template.CardOrAccount=='Account'">
+								<md-optgroup label="Select Account Type">
+								<md-option  value="Current" flex >Current</md-option>
+								<md-option  value="Savings" flex >Savings</md-option>
+							</div>
+   
+							<div ng-if="template.CardOrAccount=='Card'">
+								<md-optgroup label="Select Card Type">
+								<md-option  value="Debit Card" flex >Debit Card</md-option>
+								<md-option  value="Credit Card" flex >Credit Card</md-option>
+								<md-option  value="Commercial Card" flex >Commercial Card</md-option>
+								<md-option  value="Prepaid Card" flex >Prepaid Card</md-option>
+							 </div>
+						</md-select>						
+					</md-input-container>
+				</div>
+				
+				<div layout layout-sm="column" layout-margin>
+
+					 <section-title title=""  ></section-title>
+
+					<md-input-container flex>
+						<label>Address</label>
+						<textarea ng-model="template.address" columns="1" md-maxlength="150"></textarea>
+					  </md-input-container>
+				</div>
+				<md-divider></md-divider>
+				
+				
+				<div layout layout-sm="column" layout-margin>
+
+					<section-title title="Insane Controls" ></section-title>
+
+					   
+					<md-switch ng-model="template.receiveEmails" aria-label="Switch 2" ng-true-value="'yup'" ng-false-value="'nope'"  flex>
+						Receive Emails
+					  </md-switch>
+					  <md-switch ng-model="template.receiveNotifications" aria-label="Switch 2" ng-true-value="'yup'" ng-false-value="'nope'"  flex>
+						Receive Phone Notifications
+					  </md-switch>
+				</div>
+				
+				<div layout layout-sm="column" layout-margin>
+
+					<section-title title="" ></section-title>
+					
+					 <md-radio-group ng-model="template.gender" flex>
+					 <span class="md-body-1">Gender</span>
+					  <md-radio-button value="Male" class="md-primary">Male</md-radio-button>
+					  <md-radio-button value="Female"> Female </md-radio-button>
+					</md-radio-group>
+					
+					<md-radio-group ng-model="template.class" layout="row" flex>
+					  <md-radio-button value="Apple" class="md-primary">Apple</md-radio-button>
+					  <md-radio-button value="Banana"> Banana </md-radio-button>
+					  <md-radio-button value="Mango">Mango</md-radio-button>
+					</md-radio-group>
+				</div>
+				
+				<div layout layout-sm="column" layout-margin>
+
+					<section-title title="" ></section-title>
+					
+					<div flex="15" layout layout-align="center center">
+						<span class="md-body-1">Do I Even need this?</span>
+					  </div>
+					 <md-slider flex min="0" max="100" ng-model="template.frequency" aria-label="red" id="red-slider" class>
+					</md-slider>
+					 
+				</div>
+				
+				<div layout layout-sm="column" layout-margin>
+
+					<section-title title="" ></section-title>
+					
+					<div flex style="margin-top:23px;">
+					<md-checkbox ng-model="template.tick" aria-label="Checkbox 1">
+					  Active Customer
+					</md-checkbox>
+					</div>
+					 
+				</div>
+				
+				<div layout layout-sm="column" layout-margin>
+								
+					<section-title title="" ></section-title>
+					
+					<div flex="15" layout layout-align="center center">
+					<span class="md-body-1">Client Requirements</span>
+					</div>
+					<md-chips flex
+						ng-model="tags"
+						placeholder="Enter a tag"
+						delete-button-label="Remove Tag"
+						delete-hint="Press delete to remove tag"
+						secondary-placeholder="+Tag"></md-chips>
+																		
+				</div>
+				<md-divider></md-divider>
+				
+				<div layout layout-sm="column" layout-margin>
+
+					<section-title title="Other Controls" ></section-title>
+
+					
+					<md-input-container flex >
+						<label>Name On {{template.CardOrAccount}}</label>
+						<input ng-model="template.NameOnCardOrAccount" required></textarea>
+					</md-input-container>
+					
+					<div ng-if="template.CardOrAccount=='Card'" flex>
+						<md-date-picker model="template.Expiry" label="Pick the Expiry Date" dialog-md-theme="datePickerTheme"/>
+					</div>
+					
+				</div>
+				
+				<div layout layout-sm="column" layout-margin>
+
+					<section-title title="" ></section-title>
+
+					
+					<md-input-container flex >
+						<label>Display Name</label>
+						<input ng-model="template.DisplayName" required></textarea>
+					</md-input-container>
+					
+
+					
+				</div>
+				
+				
+				
+				<div layout="row" layout-align="end start" layout-margin ng-init="submitted=false" >
+					<md-button id="accountSubmit" class="md-raised md-primary" style="width:100px;margin-right:10px !important; margin-left:20px !important" ng-disabled="submitted" type="submit">Submit</md-button>
+				</div>
+				
+				
+			
+			</md-content>
+		</form>
+
+	</md-whiteframe><br><br>
+	<!--WHITEFRAME END-->
+</div>
+<!--CARD CONTAINER END-->
+	
+<div  class="lock-size" layout="row">	
+    <div id="view" class="fab_button_animation" style="background:#2980b9;"></div>
+
+    <md-fab-speed-dial md-open="demo.isOpen" md-direction="{{demo.selectedDirection}}"
+         ng-class="demo.selectedMode">
+        <!-- 20px -->
+        <md-fab-trigger>
+            <md-button aria-label="menu" class="md-fab " style="background-color:#1abc9c;" ng-click="viewInvoice()">
+                <md-icon md-svg-src="img/ic_visibility_24px.svg" style="width:30px;" ></md-icon>
+            </md-button>
+        </md-fab-trigger>
+        <md-fab-actions >
+            <!--div style="padding:5px;">
+                <md-button aria-label="twitter" class="md-fab md-raised md-mini" ng-click="add()" style="background-color:#2980b9; ">
+                    <md-icon md-svg-src="img/ic_note_add_24px.svg" ></md-icon>
+                    <md-tooltip md-direction="left">New Invoice</md-tooltip>
+                </md-button>
+            </div-->
+
+        </md-fab-actions>
+    </md-fab-speed-dial>
+</div> 

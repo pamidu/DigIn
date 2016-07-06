@@ -1,0 +1,127 @@
+<div class="tophalf"></div>
+<md-toolbar>
+	<md-fab-actions class="md-toolbar-tools">
+		<md-button class="md-icon-button" ng-click="edit()">
+			<md-icon><ng-md-icon icon="developer_mode" size="32"></ng-md-icon></md-icon>
+			<md-tooltip>Edit</md-tooltip>
+		</md-button>
+		<md-button class="md-icon-button" ng-click="publish()" ng-enabled="appDesc">
+			<md-icon><ng-md-icon icon="publish" size="32"></ng-md-icon></md-icon>
+			<md-tooltip>Publish</md-tooltip>
+		</md-button>
+</md-toolbar>
+<div align="center" class="partialparent" ng-cloak>
+	<div class="partialcontent">
+		<md-tabs style="min-height:500px;" md-selected="selectedTabIndex" md-align-tabs="{{data.bottom ? 'bottom' : 'top'}}">
+		  <md-tab>
+		    <md-tab-label>
+				App Description
+		    </md-tab-label>
+		    <md-tab-body >
+				<md-content layout-padding="">
+					<form name="userForm">
+					<md-input-container flex="">
+						<label>App Title</label>
+						<input ng-model="appDesc.name" disabled="disabled">
+					</md-input-container>
+
+					<div layout="" layout-sm="column" style="height:170px;">
+						<md-input-container flex="">
+							<div>
+								<table width="100%">
+									<tr style="vertical-align:top;">
+										<td rowspan="3" width="200">
+											<div>
+												<img src="./appicons/{{appKey}}.png" class="uploadthumbnail"/>
+											</div>
+										</td>
+									</tr>
+									<tr><td>
+										<div layout="" layout-sm="column">
+											<md-input-container flex="">
+												<label>App Key</label>
+												<input ng-model="appDesc.appKey" disabled="">
+											</md-input-container>
+										</div>
+									</td></tr>
+									<tr><td>
+										<div layout="" layout-sm="column">
+											<md-input-container flex="">
+												<label>Secret Key</label>
+												<input ng-model="appDesc.secretKey" disabled="">
+											</md-input-container>
+										</div>
+									</td></tr>
+								</table>
+							</div>
+						</md-input-container>
+					</div>
+
+					<md-input-container flex="">
+						<label>Category</label>
+						<input ng-model="appDesc.category" disabled="">
+					</md-input-container>
+
+					<md-input-container md-no-float="">
+						<label>Description</label>
+						<textarea rows="1" ng-model="appDesc.description" disabled="disabled"></textarea>
+					</md-input-container>
+
+					<div layout layout-sm="column" layout-margin>
+						<label>Version</label>
+						<md-input-container id="accContainer" flex >
+							<label>Major</label>
+							<input ng-model="appDesc.version.major" disabled="disabled"  placeholder="Major"/>
+						</md-input-container>
+						<md-input-container id="accContainer" flex >
+							<label>Minor</label>
+							<input ng-model="appDesc.version.minor" disabled="disabled"  placeholder="Minor"/>
+						</md-input-container>
+						<md-input-container id="accContainer" flex >
+							<label>Release</label>
+							<input ng-model="appDesc.version.release" disabled="disabled"  placeholder="Release">
+						</md-input-container>
+					</div>
+
+					</form>
+				</md-content>
+
+		    </md-tab-body>
+
+		  </md-tab>
+		  <md-tab>
+		    <md-tab-label>
+				Marketplace
+		    </md-tab-label>
+		    <md-tab-body >
+				<md-content layout-padding="">
+					<form name="marketForm">
+
+						<md-input-container flex="">
+					        <md-checkbox ng-model="publishMarket">
+					          Publish to Marketplace
+					        </md-checkbox>
+						</md-input-container>
+
+						<md-input-container flex="">
+							<label>Account ID</label>
+
+					        <md-select ng-model="selectedAccount">
+				            	<md-option ng-value="acc" ng-repeat="acc in publishAccounts">
+				            	{{acc}}
+				            	</md-option>
+				        	</md-select>
+						</md-input-container>
+
+						<md-input-container flex="">
+							<label>Price</label>
+							<input ng-model="appDesc.price">
+						</md-input-container>
+						
+					</form>
+				</md-content>
+		    </md-tab-body>
+		  </md-tab>
+		</md-tabs>
+	</div>
+</div>

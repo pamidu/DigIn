@@ -1,5 +1,6 @@
 <?php
-$mainDomain="localhost:8080";
+$mainDomain="digin.io";
+
 $authURI="http://104.197.27.7:3048/";
 $objURI="http://104.197.27.7:3000/";
 $fullhost=strtolower($_SERVER['HTTP_HOST']);
@@ -14,4 +15,8 @@ define("SVC_OS_BULK_URL", "http://104.197.27.7/transfer");
 define("SVC_AUTH_URL", "http://104.197.27.7:3048");
 define("SVC_CEB_URL", "http://104.197.27.7:3500");
 define("SVC_SMOOTHFLOW_URL", "http://smoothflow.io");
+
+define("Digin_Domain", "digin.io");
+define("Digin_Engine_API", "http://digin.io:1929/");
 ?>
+

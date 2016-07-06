@@ -1,0 +1,48 @@
+<md-dialog class="dialogdemoBasicUsage" aria-label="Save Workflow">
+    <form name="savedialog" novalidate>
+        <md-toolbar md-theme="{{theme}}" md-theme-watch>
+            <div class="md-toolbar-tools">
+                <div class="dialogicon">
+                    <ng-md-icon icon="save" style="fill:white" size="32"></ng-md-icon>
+                </div>
+                <h2>
+                  <span>Update Workflow</span>
+                </h2>
+                <span flex></span>
+                <md-button md-theme="{{theme}}" md-theme-watch class="closebtn md-icon-button" aria-label="More">
+                    <ng-md-icon ng-click="cancel()" icon="close" style="fill:white" size="32"></ng-md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-content>
+            <div layout="row">
+                <div flex>
+                    <md-input-container md-theme="{{theme}}" md-theme-watch flex>
+                        <label>Comment</label>
+                        <input md-maxlength="50" required name="name" ng-model="process.comment">
+                        <div ng-messages>
+                            <div ng-message="required" ng-if="savedialog.name.$invalid && savedialog.name.$dirty">Workflow comment is required.</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container md-theme="{{theme}}" md-theme-watch flex>
+                        <label>Version</label>
+                        <input required name="version" ng-model="process.version">
+                        <div ng-messages>
+                            <div ng-message="required" ng-if="savedialog.version.$invalid && savedialog.version.$dirty">Workflow version is required.</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container md-theme="{{theme}}" md-theme-watch flex>
+                        <label>Description</label>
+                        <textarea ng-model="process.description"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+        </md-content>
+        <span flex></span>
+        <div class="md-actions" layout="row">
+            <md-button md-theme="{{theme}}" md-theme-watch ng-click="cancel()">Close</md-button>
+
+            <md-button md-theme="{{theme}}" md-theme-watch class="md-primary" type="submit" ng-disabled="savedialog.name.$invalid" ng-click="update(process,$event)">Update</md-button>
+        </div>
+    </form>
+</md-dialog>

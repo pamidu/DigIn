@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mainApp">
+<head>
+
+<link rel="stylesheet" type="text/css" href="/bower_components/angular-material/angular-material.css">
+<link rel="stylesheet" type="text/css" href="css/child_app_styles.min.css">
+<link rel="stylesheet" href="css/directive_library.css">
+<link href="css/jquery.bxslider.css" rel="stylesheet" />
+
+
+<style>
+ .showbox.scale:hover
+ {
+  cursor:pointer;-webkit-transform:scale(1.03);
+  -moz-transform:scale(1.03);
+  -o-transform:scale(1.03);
+  -ms-transform:scale(1.03);
+  transform:scale(1.03)
+ }
+.showbox{
+  -webkit-transition:.3s ease-in-out;
+  -moz-transition:.3s ease-in-out;
+  -o-transition:.3s ease-in-out;
+  transition:.3s ease-in-out
+ }
+
+</style>
+
+</head>
+
+<body ng-controller="AppCtrl as ctrl" background="img/blur.jpg" ng-cloak>
+	<!--ALL CONTENT START-->
+	
+
+	<section layout="row" flex style="height:100%;">
+    	
+		<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" style="background-color: #EAFFEA;">
+		  <md-toolbar class="md-tall" style="background:-webkit-gradient(linear, left top, left bottom, color-stop(20%,rgba(68, 28, 181, 0.6)), color-stop(90%,rgba(70, 62, 208, 0.5))), url() no-repeat;background-image: url() ,    -moz-linear-gradient(top, #6cab26, #6ceb86); /* FF3.6+ */" ng-init="showTemplates=false">
+				<md-button id="backBtn" ng-click="goBack()"
+					ng-show="showTemplates"
+					 aria-label="Google.com"
+					 class="md-icon-button launch" >
+					<md-icon md-svg-icon="img/ic_chevron_left_24px.svg"></md-icon>
+				</md-button>
+			<h2 class="md-toolbar-tools"></h2>
+			</md-toolbar>
+			  
+			   
+			<center style="z-index:2"><img id="userProfilePic" width="110px" height="110px" src="img/appstore.png" style="margin-top: -55px; border-radius: 100px;"></img></center>
+			<div style="margin-top:0px;height:50px;width:100%">
+				<center> <text style="margin-top:20px;font-size:23px;color:rgba(0,0,0,0.54)">App Store</text></center>
+			</div>
+			
+			
+
+			 <div layout="row" layout-align="center center" layout-margin>
+				
+				<md-autocomplete flex
+					 ng-disabled="ctrl.isDisabled"
+					md-no-cache="ctrl.noCache"
+					md-selected-item="ctrl.actionSelectedItem"
+					md-search-text="ctrl.actionSearchText"
+					md-selected-item-change="ctrl.selectedActionItemChange(item)"
+					md-items="item in ctrl.actionQuerySearchView(ctrl.actionSearchText)"
+					md-min-length="0"
+					placeholder="Search Apps">
+					<!--md-item-template>
+					<span md-highlight-text="ctrl.actionSearchText" md-highlight-flags="^i">{{item.ProductCode}}</span>
+					</md-item-template-->
+						 
+				</md-autocomplete>
+				</div>
+		<div layout="column" layout-align="start start" style="margin-left:65px;">
+		  <div layout="row" layout-align="start start" layout-margin>
+			  <md-checkbox ng-model="showAllCategories" aria-label="Checkbox 1" ng-change="enableCategorySelection()">
+				  Show All Categories
+				</md-checkbox>
+
+			</div>
+			<div layout="row" layout-align="start start" layout-margin>
+			<md-input-container style="padding-bottom:0px;">
+				<label>Choose Category</label>
+				<md-select ng-model="categorySelection" ng-disabled="checkSelection">
+					<md-optgroup label="Choose Category">
+
+					<md-option ng-value="catogery" ng-repeat="(catogery, allApps) in allApps | groupBy : 'catogery'">{{catogery}}</md-option>
+				</md-select>
+			</md-input-container>
+			</div>
+
+			<md-radio-group ng-model="paidOrFree" flex="30" style="margin-left:8px">
+					  <md-checkbox ng-model="showAllapps" ng-change="enableRadioBtns()">
+						  Show All Apps
+						</md-checkbox>
+						<div style="border: 1px solid #D1D1D1;border-radius: 10px;margin-left: 13px;">
+						  <md-radio-button value="Free" ng-disabled="disablePriceSelection">Free Apps</md-radio-button>
+						  <md-radio-button value="Paid" ng-disabled="disablePriceSelection">Paid Apps</md-radio-button>
+						</div>
+			</md-radio-group>
+			</div>
+		</md-sidenav>
+		
+		<md-content flex style="overflow-x:hidden;background-image: url('img/blur2.jpg');">
+
+			<div ui-view></div>
+
+		</md-content>
+		
+    </section>
+	
+	<script src="js/jquery-2.1.3.min.js"></script>
+	<script src="js/socket.io-1.2.0.js"></script>
+	<script src="/bower_components/angular/angular.min.js"></script>
+	<script src="/bower_components/angular-animate/angular-animate.js"></script>
+	<script src="/bower_components/angular-aria/angular-aria.js"></script>
+	<script src="/bower_components/angular-material/angular-material.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script>
+	<script src="js/uimicrokernel.js"></script>
+	<script src="js/jquery.bxslider.min.js"></script>
+	<script src="js/directivelibrary.js"></script>
+	<script src="js/controllers/appmarket.js"></script>
+	<script type="text/javascript" src="https://js.stripe.com/v1/"></script>
+	<script data-require="angular-filter@*" data-semver="0.5.2" src="js/angular-filter.js"></script>
+</body>
+</html>

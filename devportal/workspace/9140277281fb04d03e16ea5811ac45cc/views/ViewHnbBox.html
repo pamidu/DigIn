@@ -1,0 +1,76 @@
+<md-content layout-margin flex>  
+<div id="container" style="height: 400px; margin: auto; min-width: 400px; max-width: 600px"></div>
+<script type="text/javascript">
+$(function() {
+   chart = new Highcharts.Chart({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    renderTo: 'container'
+                },
+       
+
+        title: {
+            text: 'Highcharts box plot styling'
+        },
+
+        legend: {
+            enabled: false
+        },
+
+        xAxis: {
+            categories: ['JEEP', 'THREE WHEELER', 'DOUBLE CAB', 'BACHOE', 'SINGLE CAB', 'PASSENGER CARRYING BUS', 'BOWSER', '4WD TRACTOR', 'BULLDOZER', 'PRIME MOVER', 'ROUTE BUS', 'CREW CAB', 'TRADE PLATE', 'VAN', 'MOTOR CAR', 'MOTOR CYCLE', 'MOTOR LORRY'],
+            title: {
+                text: 'Experiment No.'
+            }
+        },
+
+        yAxis: {
+            title: {
+                text: 'Observations'
+            }
+        },
+
+        plotOptions: {
+            boxplot: {
+                fillColor: '#F0F0E0',
+                lineWidth: 2,
+                medianColor: '#0C5DA5',
+                medianWidth: 3,
+                stemColor: '#A63400',
+                stemDashStyle: 'dot',
+                stemWidth: 1,
+                whiskerColor: '#3D9200',
+                whiskerLength: '20%',
+                whiskerWidth: 3
+            }
+        },
+
+        series: [{
+            name: 'Observations',
+            data: [
+                [920475.33, 797069.05, 848, 895, 965],
+                [8295353.11, 8582384.79, 939, 980, 1080],
+                [3271792.79, 1273731.12, 817, 870, 918],
+                [74100, 1273731.12, 806, 871, 950],
+                [3542015.29, 1273731.12, 864, 882, 910]
+                [957582.53, 1273731.121, 939, 980, 1080],
+                [50975, 762, 817, 870, 918],
+                [55258.75, 802, 806, 871, 950],
+                [39475, 853, 939, 980, 1080],
+                [526952, 762, 817, 870, 918],
+                [566512.5, 802, 806, 871, 950],
+                [333160, 762, 817, 870, 918],
+                [170436.62, 802, 806, 871, 950],
+                [8290077.54, 762, 817, 870, 918],
+                [58203021.79, 802, 806, 871, 950],
+                [862222.76, 802, 806, 871, 950],
+                [8719502.07, 802, 806, 871, 950]
+            ]
+        }]
+
+    });
+});
+</script>
+</md-content>

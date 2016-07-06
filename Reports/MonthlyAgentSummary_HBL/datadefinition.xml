@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data-definition xmlns="http://reporting.pentaho.org/namespaces/engine/classic/bundle/data/1.0">
+  <parameter-definition>
+    <plain-parameter name="username" mandatory="false" type="java.lang.String">
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="role">user</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="parameter-render-type">textbox</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="label">username</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="hidden">true</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="post-processor-formula">=ENV(&quot;username&quot;)</attribute>
+    </plain-parameter>
+    <list-parameter name="Year" allow-multi-selection="false" strict-values="true" mandatory="false" type="java.lang.String" query="Year" key-column="year" value-column="year" default-value="2015">
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="role">user</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="parameter-render-type">dropdown</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="re-evaluate-on-failed-values">false</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="autofill-selection">false</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="label">Year :</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="hidden">false</attribute>
+    </list-parameter>
+    <list-parameter name="Month" allow-multi-selection="false" strict-values="true" mandatory="false" type="java.lang.String" query="Month" key-column="value" value-column="month" default-value="All">
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="role">user</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="parameter-render-type">dropdown</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="re-evaluate-on-failed-values">false</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="autofill-selection">false</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="label">Month :</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="hidden">false</attribute>
+    </list-parameter>
+    <list-parameter name="Mode" allow-multi-selection="false" strict-values="true" mandatory="false" type="java.lang.String" query="Mode" key-column="a" value-column="a" default-value="All">
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="role">user</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="parameter-render-type">dropdown</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="re-evaluate-on-failed-values">false</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="autofill-selection">false</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="label">Mode :</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="hidden">false</attribute>
+    </list-parameter>
+    <list-parameter name="agent" allow-multi-selection="false" strict-values="true" mandatory="false" type="java.lang.String" query="Agent" key-column="resourcename" value-column="resourcename" default-value="All">
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="role">user</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="parameter-render-type">dropdown</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="re-evaluate-on-failed-values">false</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="autofill-selection">false</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="label">Agent :</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="hidden">false</attribute>
+    </list-parameter>
+  </parameter-definition>
+  <data-source report-query="AgentSummary" limit="-1" timout="0" ref="datasources/compound-ds.xml"/>
+  <expression name="PageFunction0" class="org.pentaho.reporting.engine.classic.core.function.PageFunction">
+    <properties>
+      <property name="pageIncrement">1</property>
+      <property name="startPage">1</property>
+    </properties>
+  </expression>
+  <expression name="DateExpression0" class="org.pentaho.reporting.engine.classic.core.function.date.DateExpression">
+    <properties>
+    </properties>
+  </expression>
+  <expression name="PageOfPagesFunction1" class="org.pentaho.reporting.engine.classic.core.function.PageOfPagesFunction">
+    <properties>
+      <property name="format">{0} / {1}</property>
+      <property name="pageIncrement">1</property>
+      <property name="startPage">1</property>
+    </properties>
+  </expression>
+</data-definition>

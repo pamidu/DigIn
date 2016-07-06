@@ -1,0 +1,22 @@
+{
+    "Space" : [
+        "APP_SHELL_MY_ACCOUNT",
+        "APP_SHELL_MY_TENANTS",
+        "APP_SHELL_SETTINGS",
+        "APP_SHELL_MARKETPLACE"
+    ],
+	"Developer" : [
+        "APP_SHELL_MY_ACCOUNT",
+        "APP_SHELL_SETTINGS",
+        "APP_SHELL_DEVSTUDIO",
+        "APP_SHELL_MARKETPLACE"
+      ],
+    "Company" : [
+        "APP_SHELL_MY_ACCOUNT",
+        "APP_SHELL_SETTINGS", 
+        "APP_TRANSACTION",
+        "APP_TRANSACTION_DETAILS",
+        "APP_COMPANY_ATTRIBUTES",
+        "APP_SHELL_MARKETPLACE"
+    ]
+}

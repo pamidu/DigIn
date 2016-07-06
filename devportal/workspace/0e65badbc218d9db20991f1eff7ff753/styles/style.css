@@ -1,0 +1,28 @@
+.digin-widget{
+  border-radius:0px;
+}
+
+.digin-widget:hover{
+  box-shadow: 2px 5px 3px 0px rgba(0, 0, 0, 0.14), 2px 4px 4px 2px rgba(0, 0, 0, 0.098), 2px 3px 7px 2px rgba(0, 0, 0, 0.084) !important;
+}
+
+main {
+  min-height: calc(300px - 50px);
+}
+
+.digin-widget-card{
+  margin-bottom: 0px;
+}
+
+.digin-widget-card-content{
+  padding: 0px;
+}
+
+.digin-widget-toolbar{
+  height: 50px !important;
+  min-height: 50px !important;
+  background-color: #fff !important;
+  border-top: 1px solid #000;
+    border-color:#E1E1E1;
+  color:#000;
+}

@@ -1,0 +1,36 @@
+<md-dialog>
+    <md-toolbar md-theme="{{theme}}" md-theme-watch>
+        <div class="md-toolbar-tools">
+            <div class="dialogicon">
+                <ng-md-icon icon="warning" style="fill:white" size="32"></ng-md-icon>
+            </div>
+            <h2>
+                  <span>Warning!</span>
+                </h2>
+            <span flex></span>
+            <md-button md-theme="{{theme}}" md-theme-watch class="closebtn md-icon-button" aria-label="More">
+                <ng-md-icon ng-click="cancel()" icon="close" style="fill:white" size="32"></ng-md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content>
+        <p style="color: #5F5F5F;
+    font-size: small;">{{errorCount}} <span ng-if="errorCount == 1">error</span> <span ng-if="errorCount > 1">errors</span> found!</p>
+        <md-item ng-repeat="error in errors track by $index" layout="row">
+            <md-item-content md-ink-ripple class="listselecter" style="width:100%;">
+                <div class="md-tile-left">
+                    <ng-md-icon icon="error" class="bottomsheetbuttons" size="24"></ng-md-icon>
+                </div>
+                <div class="md-tile-content">
+                    <h4><span style="color:red;">Validation Error</span></h4>
+                    <p>{{error}}</p>a inn
+                </div>
+            </md-item-content>
+            <md-divider></md-divider>
+        </md-item>
+        <div class="md-actions" layout="row">
+            <md-button md-theme="{{theme}}" md-theme-watch ng-click="skip()">Skip</md-button>
+            <md-button md-theme="{{theme}}" md-theme-watch class="md-primary" ng-click="cancel()">Fix them</md-button>
+        </div>
+    </md-content>
+</md-dialog>

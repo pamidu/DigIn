@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="dashApp">
+<head>
+	<meta charset="UTF-8">
+	<title>Digin Dashboard</title>
+	<link rel="shortcut icon" href="http://duosoftware.atlassian.net/s/en_US-xr35dg/64005/22/_/favicon.ico">
+	<link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+</head>
+
+<body ng-controller="mainCtrl">
+	<md-content style="background-color:#ECECEC;height:100%;width:100%;">
+        <digin-dashboard style="background-color:#ECECEC;"></digin-dashboard>
+    </md-content>
+</body>
+	<!-- start bower references -->
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+    <!-- end bower references -->
+
+    <!-- start vendor scripts references -->
+    <script type="text/javascript" src="scripts/vendors/uimicrokernel.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript" src="scripts/vendors/highcharts-ng.js"></script>
+    <script  type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/98887/angular-fullscreen.js"></script>
+    <!-- end vendor scripts references -->
+
+    <!-- start custom scripts references -->
+    <script type="text/javascript" src="scripts/app.js"></script>
+    <script type="text/javascript" src="scripts/services/dashboardModel.js"></script>
+    <script type="text/javascript" src="scripts/directives/digin-lib.js"></script>
+    <!-- end custom scripts references -->
+</html>

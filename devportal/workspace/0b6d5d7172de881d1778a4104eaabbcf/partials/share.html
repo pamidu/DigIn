@@ -1,0 +1,28 @@
+<div>
+	<md-content>
+	<md-content class="md-padding autocomplete" layout="column">
+	<!--<md-chips ng-model="Sharegetallgroup">-->
+	<!--         <md-chip-template>-->
+	<!--           <strong>{{$chip.groupname}}</strong>-->
+	<!--         </md-chip-template>-->
+	<!--   	</md-chips>    -->
+	
+	<md-contact-chips
+	ng-model="shareusers"
+	md-contacts="querySearch($query)"
+	md-contact-name="name"
+	md-contact-image="image"
+	md-contact-email="email"
+	md-require-match="true"
+	md-highlight-flags="i"
+	filter-selected="filterSelected"
+	placeholder="Stakeholders">
+</md-contact-chips>
+</md-content>
+
+<div layout="row" layout-align="center center" style="margin-bottom: 16px;">
+	<md-button class="md-raised md-primary" ng-click="shareUser(shareusers)">Update</md-button>
+</div>
+</md-content>
+</div>
+

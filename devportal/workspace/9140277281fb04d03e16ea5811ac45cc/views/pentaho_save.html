@@ -1,0 +1,41 @@
+<md-dialog   plumb-item >
+  <md-toolbar class="modal-header" md-theme="teal">  
+       <h1>Save Dashboard</h1>
+  </md-toolbar>
+         <md-content>
+               <form name="userForm">        
+                 <div class="dashcontent" >
+                     <div md-theme="teal" layout layout-sm="column">
+                            <md-input-container flex>
+                                 <label>Dashboard Name:</label>
+                                 <input   ng-model="dashboardName" name="dashboardName" >
+                           </md-input-container>
+                           <md-input-container flex>
+                                 <label>Dashboard Culture:</label>
+                                 <input  ng-model="dashboardCulture" name="dashboardCulture">
+                            </md-input-container>
+                     </div>
+                        <div  md-theme="teal" layout layout-sm="column">
+                            <md-input-container flex>
+                                 <label>Dashboard Type:</label>
+                                 <input   ng-model="dashboardType" name="dashboardType" >
+                           </md-input-container>
+                           <md-input-container flex>
+                                 <label>Dashboard Date:</label>
+                                 <input  ng-model="dashboardDate" name="dashboardDate">
+                            </md-input-container>
+                     </div>
+                          
+               </form>
+        </md-content>
+          <div class="md-actions" md-theme="indigo"  layout="row">    
+          <md-button style="width:200px"  ng-click="saveDashboardDetails()"  class="md-raised">
+           Ok
+         </md-button>
+          <md-button style="width:200px"  class="md-raised"   ng-click="closeDialog()" class=" md-default">
+            Cancel
+          </md-button>
+  </div>
+</md-dialog> 
+ 
+ 

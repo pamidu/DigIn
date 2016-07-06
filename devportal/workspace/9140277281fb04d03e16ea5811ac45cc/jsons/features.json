@@ -1,0 +1,41 @@
+{
+    "d": [{
+            "title": "Dashboards",
+            "icon1": "bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg",
+            "icon": "ion-easel",
+            "state": false,
+            "stateStr": "Disabled"
+        }, {
+
+            "title": "Reports",
+            "icon": "ion-ios-list",
+            "state": false,
+            "stateStr": "Disabled"
+        }, {
+
+            "title": "Analytics",
+            "icon": "ion-ios-pie",
+            "state": false,
+            "stateStr": "Disabled"
+        }, {
+
+            "title": "RealTime",
+            "icon": "ion-ios-pulse",
+            "state": false,
+            "stateStr": "Disabled"
+        }, {
+
+            "title": "Digin P Stack",
+            "icon": "ion-ios-albums",
+            "state": false,
+            "stateStr": "Disabled"
+        },
+        {
+
+            "title": "D3plugins",
+            "icon": "ion-disc",
+            "state": false,
+            "stateStr": "Disabled"
+        }
+    ]
+}

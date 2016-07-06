@@ -1,0 +1,35 @@
+{
+    "d": [{
+        "title": "Visualization",
+        "icon": "styles/css/images/icons/ic_insert_chart_24px.svg"
+    }, {
+
+        "title": "Blogging",
+        "icon": "styles/css/images/icons/ic_assignment_24px.svg"
+    }, {
+
+        "title": "Advertising",
+        "icon": "styles/css/images/icons/ic_av_timer_24px.svg"
+    }, {
+
+        "title": "Custom",
+        "icon": "styles/css/images/icons/ic_dashboard_24px.svg"
+    }, {
+
+        "title": "Social Media",
+        "icon": "styles/css/images/icons/ic_now_widgets_24px.svg"
+    }, {
+
+        "title": "Web Analytics",
+        "icon": "styles/css/images/icons/ic_gradient_24px.svg"
+    }, {
+
+        "title": "Sri Lanka Telecom",
+        "icon": "styles/css/images/icons/point-up.svg"
+    },{
+
+        "title": "HNB Assuarance",
+        "icon": "styles/css/images/icons/ic_dashboard_24px.svg"
+
+      }]
+}

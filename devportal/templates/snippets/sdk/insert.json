@@ -1,0 +1,5 @@
+{
+	"name" : "Click Event",
+	"parameters":[{"Name" : "$eName"}],
+	"code":"scope.$eName = function(){\n\n\n}"
+}

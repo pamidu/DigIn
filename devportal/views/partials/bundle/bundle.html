@@ -1,0 +1,44 @@
+<div ng-cloak>
+		<md-toolbar>
+			<md-fab-actions class="md-toolbar-tools">
+				<md-button class="md-icon-button" ng-click="save()">
+					<md-icon><ng-md-icon icon="save" size="32"></ng-md-icon></md-icon>
+					<md-tooltip>Save</md-tooltip>
+				</md-button>
+
+				<md-button class="md-icon-button" ng-click="publish()">
+					<md-icon><ng-md-icon icon="cloud_upload" size="32"></ng-md-icon></md-icon>
+					<md-tooltip>Publish</md-tooltip>
+				</md-button>
+
+				<md-button class="md-icon-button" ng-click="share()">
+					<md-icon><ng-md-icon icon="recent_actors" size="32"></ng-md-icon></md-icon>
+					<md-tooltip>Share</md-tooltip>
+				</md-button>
+
+				<md-button class="md-icon-button" ng-click="editDescription()">
+					<md-icon><ng-md-icon icon="description" size="32"></ng-md-icon></md-icon>
+					<md-tooltip>Edit Description</md-tooltip>
+				</md-button>
+				
+				<md-button class="md-icon-button" ng-click="openNewTab()">
+					<md-icon><ng-md-icon icon="open_in_new" size="32"></ng-md-icon></md-icon>
+					<md-tooltip>Open in New Tab</md-tooltip>
+				</md-button>
+
+		</md-toolbar>
+
+	<center>
+		<md-list style="max-width:800px;width:100%;">
+		    <md-subheader class="md-no-sticky">Select the apps you need to include with the bundle</md-subheader>
+		    <md-list-item ng-click="navigateTo(setting.extraScreen, $event)" ng-repeat="project in projects">
+		      <!--md-icon md-svg-icon="{{setting.icon}}"></md-icon-->
+		      <img ng-src="appicons/{{project.appKey}}.png" error-src="appicons/default.png" class="imgcircle" style="margin-right:40px;margin-bottom:10px;margin-top:10px;"/>
+		      <p> {{ project.name }} </p>
+		      <md-switch class="md-secondary" ng-model="appBundle.apps[project.appKey]"></md-switch>
+		    </md-list-item>
+	  	</md-list>
+    </center>
+
+
+</div>

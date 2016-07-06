@@ -1,0 +1,52 @@
+<div class="ui-sortable ui-sortable-handle" layout="" layout-sm="column" ui-droptarget="" ui-sortable="">
+	<md-input-container flex>
+	<label>SessionID</label>
+	<input type="text" ng-model="SessionID"/>  
+</md-input-container>
+</div>
+<div class="ui-sortable ui-sortable-handle" layout="" layout-sm="column" ui-droptarget="" ui-sortable="">
+	<md-button ng-click="getDataFromWF()" class="md-raised">Invoke process code</md-button>
+</div>
+<div class="ui-sortable ui-sortable-handle" layout="" layout-sm="column" ui-droptarget="" ui-sortable="">
+	<md-input-container flex>
+	<label>Workflow message</label>
+	<textarea ng-model="wfdata.Message">
+		
+	</textarea>  
+</md-input-container>
+</div>
+<div class="ui-sortable ui-sortable-handle" layout="" layout-sm="column" ui-droptarget="" ui-sortable="">
+	<md-button ng-click="getPESessionDetails()" class="md-raised">Worflow PE logs</md-button>
+</div>
+<div class="ui-sortable ui-sortable-handle" layout="" layout-sm="column" ui-droptarget="" ui-sortable="">
+	<md-input-container flex>
+	<label>Message</label>
+	<textarea ng-model="sessionmessage">
+		
+	</textarea>  
+</md-input-container>
+</div>
+<div class="ui-sortable ui-sortable-handle" layout="" layout-sm="column" ui-droptarget="" ui-sortable="">
+	<md-input-container flex>
+	<label>Workflow log</label>
+	<textarea ng-model="moreDetails">
+		
+	</textarea>  </md-input-container>
+</div>
+<div class="ui-sortable ui-sortable-handle" layout="" layout-sm="column" ui-droptarget="" ui-sortable="">
+	<md-button ng-click="getWFSessionDetails()" class="md-raised">Worflow WF logs</md-button>
+</div>
+<div class="ui-sortable ui-sortable-handle" layout="" layout-sm="column" ui-droptarget="" ui-sortable="">
+	<md-input-container flex>
+	<label>Message</label>
+	<textarea ng-model="WFMessage">
+		
+	</textarea>  </md-input-container>
+</div>
+<div class="ui-sortable ui-sortable-handle" layout="" layout-sm="column" ui-droptarget="" ui-sortable="">
+	<md-input-container flex>
+	<label>Workflow log</label>
+	<textarea ng-model="WFDetails">
+		
+	</textarea>  </md-input-container>
+</div>

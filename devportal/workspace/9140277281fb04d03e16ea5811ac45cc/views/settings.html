@@ -1,0 +1,44 @@
+<md-content layout="column" layout-align="space-around center" style = "height:100%;">
+    <md-card style="width:70%;box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 2px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);">
+        <md-toolbar class="md-toolbar-tools">
+           
+                <h2>Current User</h2>
+            
+        </md-toolbar>
+        <md-content>
+                <md-list-item class="md-2-line">
+                  <img alt="manuel" style="height:60px;width:60px;" ng-src="styles/css/images/person.png" class="md-avatar" />
+                    <div class="md-list-item-text">
+                      <h3>Manuel Sanders</h3>
+                        <p>Developer</p>
+                    </div>
+                  </md-list-item>
+        </md-content>            
+    </md-card>
+    <md-card style="width:70%;box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 2px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);">
+        <md-toolbar class="md-toolbar-tools">
+            
+                <h2>Change Features</h2>
+            
+        </md-toolbar>
+        <md-content layout-padding>
+            <div layout="column" layout-wrap>
+                <form>
+                    <div ng-repeat="item in features">
+                        <md-switch md-no-ink aria-label="Switch No Ink" ng-model="item.state" ng-change="toggle(item, selected)">
+            {{ item.title }} : {{ item.stateStr }}
+          </md-switch>
+                        <!-- <md-checkbox ng-checked="exists(item, selected)" ng-click="toggle(item, selected)">
+            {{ item.title }}
+          </md-checkbox> -->
+                    </div>
+                </form>
+        </md-content>
+            <div class="md-actions" layout="row">
+                <span flex></span>
+                <md-button ng-click="finish()">
+                Save Changes
+            </md-button>
+            </div>
+    </md-card>
+</md-content>

@@ -1,0 +1,288 @@
+<div ng-cloak>
+	<table style="width:100%;height:100%;" cellspacing="0" cellpadding="0">
+		<tr style="vertical-align:top;height:30px;">
+			<td colspan="2">
+
+
+				<md-toolbar class="md-menu-toolbar">
+		        <md-menu-bar>
+
+		          <md-menu md-offset="0 50">
+		            <md-button ng-mouseenter="checkifOpen($mdOpenMenu,$event)" ng-click="toggleMenu($mdOpenMenu,$event)">
+		              Project
+		            </md-button>
+
+		            <md-menu-content>
+						<md-menu-item><md-button ng-click="project.run()">
+							<md-icon><ng-md-icon icon="play_circle_outline" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Run</md-tooltip>
+							Run
+						</md-button></md-menu-item>
+		            	<md-menu-divider></md-menu-divider>
+						<md-menu-item><md-button ng-click="project.share()">
+							<md-icon><ng-md-icon icon="recent_actors" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Share</md-tooltip>
+							Share
+						</md-button></md-menu-item>
+						<md-menu-item><md-button ng-click="project.publish()">
+							<md-icon><ng-md-icon icon="cloud_upload" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Publish</md-tooltip>
+							Publish
+						</md-button></md-menu-item>
+						<md-menu-item><md-button ng-click="project.editDescription()">
+							<md-icon><ng-md-icon icon="description" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Edit Description</md-tooltip>
+							Edit Description
+						</md-button></md-menu-item>
+		            </md-menu-content>
+		          </md-menu>
+
+		          <md-menu md-offset="0 50">
+		            <md-button ng-mouseenter="checkifOpen($mdOpenMenu,$event)" ng-click="toggleMenu($mdOpenMenu,$event)">
+		              File
+		            </md-button>
+		            <md-menu-content>
+		              <!--md-menu-item>
+		                <md-menu>
+		                  <md-button ng-click="$mdOpenMenu()">New</md-button>
+		                  <md-menu-content>
+		                    <md-menu-item><md-button ng-click="sampleAction('New Document', $event)">Document</md-button></md-menu-item>
+		                    <md-menu-item><md-button ng-click="sampleAction('New Spreadsheet', $event)">Spreadsheet</md-button></md-menu-item>
+		                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Presentation', $event)">Presentation</md-button></md-menu-item>
+		                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Form', $event)">Form</md-button></md-menu-item>
+		                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Drawing', $event)">Drawing</md-button></md-menu-item>
+		                  </md-menu-content>
+		                </md-menu>
+		              </md-menu-item-->
+						<md-menu-item><md-button ng-click="sessions.current().save()">
+							<md-icon><ng-md-icon icon="save" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Save</md-tooltip>
+							Save
+						</md-button></md-menu-item>
+						<md-menu-item><md-button ng-click="sessions.saveAll()">
+							<md-icon>
+								<img height="16" width="16" style="height:16px;width:16px;" src="./views/images/saveall.png"/>
+							</md-icon>
+							<md-tooltip>Save All</md-tooltip>
+							Save All
+						</md-button></md-menu-item>
+						<md-menu-divider></md-menu-divider>
+						<md-menu-item><md-button ng-click="files.newFolder()">
+							<md-icon><ng-md-icon icon="folder" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>New Folder</md-tooltip>
+							New Folder
+						</md-button></md-menu-item>
+						<md-menu-item><md-button ng-click="files.newFile()">
+							<md-icon><ng-md-icon icon="insert_drive_file" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>New File</md-tooltip>
+							New File
+						</md-button></md-menu-item>
+		              
+						<md-menu-item><md-button ng-click="files.delete()">
+							<md-icon><ng-md-icon icon="delete" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Delete</md-tooltip>
+							Delete
+						</md-button></md-menu-item>
+						<md-menu-item><md-button ng-click="files.rename()">
+							<md-icon><ng-md-icon icon="swap_horiz" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Rename</md-tooltip>
+							Rename
+						</md-button></md-menu-item>
+			            <md-menu-divider></md-menu-divider>
+						<md-menu-item><md-button  ng-click="files.downloadFile()">
+							<md-icon><ng-md-icon icon="file_download" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Download File</md-tooltip>
+							Download Files
+						</md-button></md-menu-item>
+
+						<md-menu-item><md-button ng-click="files.uploadFile()">
+							<md-icon><ng-md-icon icon="file_upload" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Upload File</md-tooltip>
+							Upload File
+						</md-button></md-menu-item>
+		            </md-menu-content>
+		          </md-menu>
+
+
+		          <md-menu md-offset="0 50">
+		            <md-button ng-mouseenter="checkifOpen($mdOpenMenu,$event)" ng-click="toggleMenu($mdOpenMenu,$event)">
+		              Edit
+		            </md-button>
+		            <md-menu-content>
+		              <md-menu-item>
+						<md-button ng-click="sessions.current().cut()">
+							<md-icon><ng-md-icon icon="content_cut" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Cut</md-tooltip>
+							Cut
+						</md-button>
+		              </md-menu-item>
+		              <md-menu-item>
+						<md-button ng-click="sessions.current().copy()">
+							<md-icon><ng-md-icon icon="content_copy" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Copy</md-tooltip>
+							Copy
+						</md-button>
+		              </md-menu-item>
+		              <md-menu-item>
+						<md-button ng-click="sessions.current().paste()">
+							<md-icon><ng-md-icon icon="content_paste" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Paste</md-tooltip>
+							Paste
+						</md-button>
+		              </md-menu-item>
+
+		            </md-menu-content>
+		          </md-menu>
+
+		          <md-menu md-offset="0 50">
+		            <md-button ng-mouseenter="checkifOpen($mdOpenMenu,$event)" ng-click="toggleMenu($mdOpenMenu,$event)">
+		              Insert
+		            </md-button>
+		            <md-menu-content>
+		              <md-menu-item>
+						<md-button ng-click="sessions.current().snippet()">
+							<md-icon><ng-md-icon icon="note_add" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Cut</md-tooltip>
+							Code Snippet
+						</md-button>
+		              </md-menu-item>
+		            </md-menu-content>
+		          </md-menu>
+
+		          <!--md-menu>
+		            <md-button ng-click="$mdOpenMenu()">
+		              Team
+		            </md-button>
+
+		            <md-menu-content style="position:fixed;top:35px;">
+		            	<md-menu-divider></md-menu-divider>
+						<md-menu-item><md-button ng-click="files.checkIn()">
+							<md-icon><ng-md-icon icon="check" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Check In</md-tooltip>
+							Check In
+						</md-button></md-menu-item>
+
+						<md-menu-item><md-button ng-click="files.checkOut()">
+							<md-icon><ng-md-icon icon="expand_more" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Check Out</md-tooltip>
+							Check Out
+						</md-button></md-menu-item>
+
+						<md-menu-item><md-button ng-click="files.undoChanges()">
+							<md-icon><ng-md-icon icon="undo" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Undo Changes</md-tooltip>
+							Undo Changes
+						</md-button></md-menu-item>
+
+						<md-menu-item><md-button ng-click="files.getLatest()">
+							<md-icon><ng-md-icon icon="restore" size="16"></ng-md-icon></md-icon>
+							<md-tooltip>Get Latest</md-tooltip>
+							Get Latest
+						</md-button></md-menu-item>
+		            </md-menu-content>
+		          </md-menu-->
+
+		          </md-menu-bar>
+
+					<md-fab-actions class="md-toolbar-tools">
+						<md-button class="md-icon-button" ng-click="sessions.current().save()">
+							<md-icon><ng-md-icon icon="save" size="32"></ng-md-icon></md-icon>
+							<md-tooltip>Save</md-tooltip>
+						</md-button>
+						<md-button class="md-icon-button" ng-click="sessions.saveAll()">
+							<md-icon>
+								<img src="./views/images/saveall.png"/>
+							</md-icon>
+							<md-tooltip>Save All</md-tooltip>
+						</md-button>
+						<md-button class="md-icon-button" ng-click="sessions.current().undo()">
+							<md-icon><ng-md-icon icon="undo" size="32"></ng-md-icon></md-icon>
+							<md-tooltip>Undo</md-tooltip>
+						</md-button>
+						<md-button class="md-icon-button" ng-click="sessions.current().redo()">
+							<md-icon><ng-md-icon icon="redo" size="32"></ng-md-icon></md-icon>
+							<md-tooltip>Redo</md-tooltip>
+						</md-button>
+						<md-button class="md-icon-button" ng-click="sessions.current().cut()">
+							<md-icon><ng-md-icon icon="content_cut" size="32"></ng-md-icon></md-icon>
+							<md-tooltip>Cut</md-tooltip>
+						</md-button>
+						<md-button class="md-icon-button" ng-click="sessions.current().copy()">
+							<md-icon><ng-md-icon icon="content_copy" size="32"></ng-md-icon></md-icon>
+							<md-tooltip>Copy</md-tooltip>
+						</md-button>
+						<md-button class="md-icon-button" ng-click="sessions.current().paste()">
+							<md-icon><ng-md-icon icon="content_paste" size="32"></ng-md-icon></md-icon>
+							<md-tooltip>Paste</md-tooltip>
+						</md-button>
+						<md-button class="md-icon-button" ng-click="sessions.current().snippet()">
+							<md-icon><ng-md-icon icon="note_add" size="32"></ng-md-icon></md-icon>
+							<md-tooltip>Code Snippets</md-tooltip>
+						</md-button>
+						<md-button class="md-icon-button" ng-click="project.run()">
+							<md-icon><ng-md-icon icon="play_circle_outline" size="32"></ng-md-icon></md-icon>
+							<md-tooltip>Run</md-tooltip>
+						</md-button>
+						<!--md-button class="md-icon-button" ng-click="project.publish()">
+							<md-icon><ng-md-icon icon="bug_report" size="32"></ng-md-icon></md-icon>
+							<md-tooltip>Debug</md-tooltip>
+						</md-button-->
+
+						<md-button class="md-icon-button" ng-click="project.publish()">
+							<md-icon><ng-md-icon icon="cloud_upload" size="32"></ng-md-icon></md-icon>
+							<md-tooltip>Publish</md-tooltip>
+						</md-button>
+
+						<md-button class="md-icon-button" ng-click="project.share()">
+							<md-icon><ng-md-icon icon="recent_actors" size="32"></ng-md-icon></md-icon>
+							<md-tooltip>Share</md-tooltip>
+						</md-button>
+
+						<md-button class="md-icon-button" ng-click="project.editDescription()">
+							<md-icon><ng-md-icon icon="description" size="32"></ng-md-icon></md-icon>
+							<md-tooltip>Edit Description</md-tooltip>
+						</md-button>
+						
+						<md-button class="md-icon-button" ng-click="openNewTab()">
+							<md-icon><ng-md-icon icon="open_in_new" size="32"></ng-md-icon></md-icon>
+							<md-tooltip>Open in New Tab</md-tooltip>
+						</md-button>
+					</md-fab-actions>
+				</md-toolbar>
+			</td>
+		</tr>
+		<tr style="vertical-align:top;">
+			<td style="width:200px;vertical-align:top;background:#E8E9E8;">
+				<input type="file" id="idFileUpload" ng-file-select="uploadFile" style="visibility:collapse;"/>
+				
+				<div id="idFileList" class="noselect">
+					<treecontrol class="tree-classic" tree-model="fileList" options="settings.treeOptions" selected-node="node1">
+					   <label ng-dblclick="sessions.load(node)" ng-click="sessions.select(node)" >{{node.name}}</label>
+					</treecontrol>
+				</div>
+			</td>
+			<td style="vertical-align:top;">
+			  <md-content class="md-padding" style="position:relative;top:0px;left:0px;margin:0px 10px;padding:0px;height:100%;bottom:30px;">
+			    <md-tabs style="min-height: 100%; bottom: 30px;top:0px;height:100%;" md-selected="selectedTabIndex" md-align-tabs="{{data.bottom ? 'bottom' : 'top'}}">
+
+			      <md-tab ng-repeat="(fName,sess) in allSessions">
+			        <md-tab-label>
+		        		{{sess.getHeader()}}
+				        <md-button class="md-icon-button" aria-label="Use Android" ng-click="sessions.del(sess)">
+							<md-icon><ng-md-icon icon="clear" size="20"></ng-md-icon></md-icon>
+				        </md-button>
+			        </md-tab-label>
+			        <md-tab-body >
+			        	<div ng-switch="sess.getViewer()">
+				        	<div ng-switch-when="image"><img ng-src="data:image/JPEG;base64,{{binaryData[fName]}}">Cannot Display Image</div>
+							<div ng-switch-default style="width:100%;height:100%" ui-ace="sess.getSettings()"></div>
+						</div>
+			        </md-tab-body>
+			      </md-tab>
+			    </md-tabs>
+			  </md-content>
+				
+			</td>
+		</tr>
+	</table>
+</div>

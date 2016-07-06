@@ -1,0 +1,5 @@
+{
+	"name" : "Get All Objects With Paging",
+	"parameters":[{"Class" : "$1"}, {"Skip" : "$3"}, {"Take" : "$4"}],
+	"code":"$objectstore.getClient(\"$1\").onGetMany(function(data){}).onError(function(err){}).skip($3).take($4).getAll();"
+}

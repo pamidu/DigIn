@@ -1,0 +1,51 @@
+<md-dialog plumb-item style="min-width:400px;">
+       <md-toolbar>
+            <div class="md-toolbar-tools" flex layout="row">
+                      <div flex="10">
+                        <md-icon class="ion-wrench"></md-icon>
+                      </div>   
+                      <div flex="80">
+                              <h3>
+                                 <span> Configuration </span>
+                              </h3>
+                      </div>                           
+                      <div flex="10">
+                             <md-button ng-click="cancel()"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                            </md-button>
+                      </div>
+            </div>
+        </md-toolbar>
+    <md-content>
+        <div layout="row" layout-align="center start" style="padding:15px;">
+            <div flex>
+                <md-input-container flex>
+                    <label><img src="bower_components/material-design-icons/action/svg/production/ic_search_24px.svg" class="face-radius" alt="">&nbsp;Search</label>
+                    <input ng-model="searchitem">
+                </md-input-container>
+                <md-list flex>
+                    <md-list-item class="md-2-line" ng-click="setPlugin(item)" ng-repeat="item in activitylist | filter : searchitem">
+                                  <image class="bottomsheetbuttons md-avatar" height="42" width="42" src="{{item.icon}}"></image>               
+                            <div class="md-list-item-text">
+                                <h3>{{item.Name}}</h3>
+                                <p>{{item.Description}}</p>
+                            </div>
+                        <md-divider></md-divider>
+                    </md-list-item>
+
+                     <md-divider></md-divider>
+                </md-list>
+            </div>
+        </div>
+    </md-content>
+   
+  <div class="md-actions" layout="row">
+    <span flex></span>
+    <md-button ng-click="cancel()">
+     Cancel
+    </md-button>
+    <md-button ng-click="setPlugin()">
+     Finish
+    </md-button>
+  </div>
+</md-dialog>

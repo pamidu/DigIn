@@ -1,0 +1,66 @@
+<div class="bg-gradient-green"></div>
+<div class="setup-wrapper  animated fadeIn">
+    <div layout="row" class="setting-close pull-right" ng-click="route('back')">
+        <i class="fa fa-close"></i>
+    </div>
+
+    <div class="md-padding animated fadeIn" layout="row" layout-align="center center">
+        <div class="setting-wrap" style="height: 760px;"
+             flex="60">
+            <div class="setting-card-header">
+                <h5>Create New User</h5>
+                <div class="setting-img-wrap">
+                    <img src="styles/css/images/setting/invite_user.png"/>
+                </div>
+                <div class="setting-text-wrap">
+                    <p>Create new users belongs to your tenant</p>
+                </div>
+            </div>
+
+
+            <div class="user-setting-wrap">
+                
+                <div layout="column">
+                    <md-input-container>
+                        <label>First Name</label>
+                        <input ng-model="fname">
+                    </md-input-container>
+                </div>   
+                <div layout="column"> 
+                    <md-input-container>
+                        <label>Last Name</label>
+                        <input ng-model="lname">
+                    </md-input-container>
+                </div>     
+                <div layout="column">    
+                    <md-input-container>
+                        <label>Email</label>
+                        <input ng-model="email">
+                    </md-input-container>
+                </div>
+                <div layout="column">    
+                    <md-input-container>
+                        <label>Domain</label>
+                        <input ng-model="domain" readonly="true"> 
+                    </md-input-container>
+                </div>     
+                <div layout="column">    
+                    <span class="setup-font-theme">
+                        The user will be asked to set his password.
+                    </span>
+                </div>     
+                <md-button class="setup-button md-raised md-primary" ng-click="CreateUser()">
+                    <span class="setup-font-theme">CREATE USER</span>
+                </md-button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+        
+       

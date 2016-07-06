@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout xmlns="http://reporting.pentaho.org/namespaces/engine/classic/bundle/layout/1.0" xmlns:style="http://reporting.pentaho.org/namespaces/engine/classic/bundle/style/1.0" xmlns:core="http://reporting.pentaho.org/namespaces/engine/attributes/core" xmlns:html="http://reporting.pentaho.org/namespaces/engine/attributes/html" xmlns:swing="http://reporting.pentaho.org/namespaces/engine/attributes/swing" xmlns:pdf="http://reporting.pentaho.org/namespaces/engine/attributes/pdf" xmlns:wizard="http://reporting.pentaho.org/namespaces/engine/attributes/wizard" xmlns:designtime="http://reporting.pentaho.org/namespaces/report-designer/2.0" xmlns:crosstab="http://reporting.pentaho.org/namespaces/engine/attributes/crosstab" xmlns:pentaho="http://reporting.pentaho.org/namespaces/engine/attributes/pentaho" xmlns:table="http://reporting.pentaho.org/namespaces/engine/attributes/table" core:parameter-layout="flow" xmlns:internal="http://reporting.pentaho.org/namespaces/engine/attributes/internal" internal:compatibility-level="5.0.3" designtime:zoom="2.599999" designtime:preview-dialog-bounds="192.0,0.0,700.0,624.0" designtime:HorizontalGuideLines="(true,283.4616394042969) (true,396.9232482910156) (true,622.0) (true,668.0772094726562) (true,476.9910583496094) (true,268.0770263671875) (true,436.53863525390625)">
+  <style:element-style>
+  </style:element-style>
+  <report-header>
+    <root-level-content designtime:visual-height="43.5392">
+      <style:element-style>
+      </style:element-style>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="283.465" y="11.875" min-width="37.451" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Dropped %</core:value>
+        <swing:tooltip>Percentage of calls that are terminated while in the queue or ringing waiting to be answered for less than 10 seconds.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="436.536" y="11.875" min-width="41.455" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Avg Hold Time</core:value>
+        <swing:tooltip>Daily average of Hold time in seconds.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="153.071" y="11.875" min-width="45.354" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Abandoned Calls</core:value>
+        <swing:tooltip>No. of calls got disconnected waiting in the queue or ringing to an agent more than 10 sec.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="113.386" y="11.875" min-width="39.685" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Answered Calls</core:value>
+        <swing:tooltip>No. of calls answered by an agent.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="79.371" y="11.875" min-width="34.015" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Queued Calls</core:value>
+        <swing:tooltip>No. of calls queued.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="198.425" y="11.875" min-width="45.355" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Abandoned %</core:value>
+        <swing:tooltip>Percentage of calls that are terminated while in the queue or ringing waiting to be answered for more than 10 seconds.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="243.78" y="11.875" min-width="39.685" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Dropped Calls</core:value>
+        <swing:tooltip>No. of calls that are terminated while in the queue or ringing for less than 10 sec.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="512.237" y="11.875" min-width="39.685" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>ASA</core:value>
+        <swing:tooltip>Average waiting time for a caller before he is answered by an agent.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="477.991" y="11.875" min-width="34.246" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>AIVRT</core:value>
+        <swing:tooltip>Daily average of time that callers spent on IVR.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="591.542" y="11.875" min-width="36.081" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Handled Call %</core:value>
+        <swing:tooltip>Percentage of handled calls.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="0" y="11.875" min-width="51.024" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Date</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="51.024" y="11.875" min-width="28.347" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>IVR Calls</core:value>
+        <swing:tooltip>No. of calls that hit the IVR</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="551.922" y="11.875" min-width="39.62" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>ATT</core:value>
+        <swing:tooltip>Daily average of talktime</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="627.623" y="11.875" min-width="40.75" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>ACW</core:value>
+        <swing:tooltip>Daily average of acw time.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="668.373" y="11.875" min-width="30.127" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>SL</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="320.916" y="11.875" min-width="38.25" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Idle Time</core:value>
+        <swing:tooltip>Percentage of calls that are terminated while in the queue or ringing waiting to be answered for less than 10 seconds.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="359.166" y="11.875" min-width="37.685" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Avg Handle Time</core:value>
+        <swing:tooltip>Percentage of calls that are terminated while in the queue or ringing waiting to be answered for less than 10 seconds.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="396.851" y="11.875" min-width="39.685" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>TTT</core:value>
+        <swing:tooltip>Percentage of calls that are terminated while in the queue or ringing waiting to be answered for less than 10 seconds.</swing:tooltip>
+      </label>
+    </root-level-content>
+  </report-header>
+  <group core:name="DateGroup" core:group-fields="date">
+    <style:element-style>
+    </style:element-style>
+    <fields>
+      <field>date</field>
+    </fields>
+    <group-header>
+      <root-level-content designtime:visual-height="11.249517738819122">
+        <style:element-style>
+          <style:content-styles color="black"/>
+        </style:element-style>
+      </root-level-content>
+    </group-header>
+    <data-body>
+      <style:element-style>
+      </style:element-style>
+      <details-header designtime:hideInLayoutGUI="true">
+        <style:element-style>
+          <style:common-styles avoid-page-break="true"/>
+        </style:element-style>
+      </details-header>
+      <details>
+        <root-level-content designtime:visual-height="28.55765473842621">
+          <style:element-style>
+            <style:text-styles font-face="Tahoma" font-size="8"/>
+          </style:element-style>
+          <text-field core:field="date">
+            <style:element-style>
+              <style:common-styles alignment="center"/>
+              <style:spatial-styles x="0" y="0" min-width="51.024" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="ivrcalls">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="51.024" y="0" min-width="28.347" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="queuedcalls">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="79.371" y="0" min-width="34.015" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="answeredcalls">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="113.386" y="0" min-width="39.685" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="abandonedcalls">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="153.071" y="0" min-width="45.354" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="dropedcalls">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="243.78" y="0" min-width="39.685" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="aholdt">
+            <style:element-style>
+              <style:common-styles alignment="center"/>
+              <style:spatial-styles x="436.536" y="0" min-width="41.455" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="aivrt">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="477.991" y="0" min-width="34.246" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="asa">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="512.237" y="0" min-width="39.685" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="att">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="551.922" y="0" min-width="39.62" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="avgacw">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="627.623" y="0" min-width="40.75" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="sl">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="668.373" y="0" min-width="30.127" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="abandonedpercent">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="198.426" y="0" min-width="45.354" min-height="20"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="dropedcallspercent">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="283.465" y="0" min-width="37.451" min-height="20"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="handledcpercentage">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="591.542" y="0" min-width="36.081" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="avghandletime">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="359.166" y="0" min-width="37.685" min-height="20"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="ttt">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="396.851" y="0" min-width="39.685" min-height="20"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="idletime">
+            <style:element-style>
+              <style:common-styles alignment="right"/>
+              <style:spatial-styles x="320.916" y="0" min-width="38.25" min-height="20"/>
+            </style:element-style>
+          </text-field>
+        </root-level-content>
+      </details>
+      <no-data>
+        <root-level-content designtime:hideInLayoutGUI="true">
+          <style:element-style>
+          </style:element-style>
+        </root-level-content>
+      </no-data>
+      <details-footer designtime:hideInLayoutGUI="true">
+        <style:element-style>
+          <style:common-styles avoid-page-break="true"/>
+        </style:element-style>
+      </details-footer>
+    </data-body>
+    <group-footer>
+      <root-level-content designtime:visual-height="14.307681202888489">
+        <style:element-style>
+        </style:element-style>
+      </root-level-content>
+    </group-footer>
+  </group>
+  <report-footer>
+    <root-level-content designtime:visual-height="51.16667598485947">
+      <style:element-style>
+        <style:border-styles background-color="#9999ff"/>
+        <style:common-styles alignment="right"/>
+        <style:content-styles color="black"/>
+        <style:text-styles bold="true" font-size="8"/>
+      </style:element-style>
+      <text-field core:field="ivrfullsum">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="51.024" y="0" min-width="28.347" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="queuedfullsum">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="79.371" y="0" min-width="34.015" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="answeredfullsum">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="113.386" y="0" min-width="39.685" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="abandonedfullsum">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="153.071" y="0" min-width="45.354" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="abandonedpercentfull">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="198.426" y="0" min-width="45.354" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="droppedfullsum">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="243.78" y="0" min-width="39.685" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="droppedpercentfull">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="283.465" y="0" min-width="37.451" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="fullidle">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="320.916" y="0" min-width="38.25" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="fullaht">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="359.166" y="0" min-width="37.685" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="tttfullsum">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="396.851" y="0" min-width="39.685" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="fullaholdtime">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="436.536" y="0" min-width="41.455" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="aivrtfull">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="477.991" y="0" min-width="40.4" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="fullasa">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="518.391" y="0" min-width="39.685" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="attfull">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="558.076" y="0" min-width="39.62" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="fullhandledcpercentage">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="597.696" y="0" min-width="29.927" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="aacwtfull">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="627.623" y="0" min-width="40.75" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="fullsl">
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="668.373" y="0" min-width="30.127" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+      </text-field>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="0" y="0" min-width="51.024" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value> Summary :</core:value>
+      </label>
+    </root-level-content>
+  </report-footer>
+</layout>

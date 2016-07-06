@@ -1,0 +1,40 @@
+.accordion{
+	margin-bottom: 16px;
+}
+.accordion-panel{
+/*	border-bottom:1px solid rgba(0, 0, 0, 0.12);*/
+}
+.accordion-panel button{
+	width:100%;
+	height: 100%;
+}
+.accordion-panel-title{
+	padding:4px 6px 3px;
+    font-size: 0.9em;
+    font-weight: 400;
+    letter-spacing: 0.010em;
+    line-height: 1.6em;
+    text-transform: none;
+}
+.accordion-panel md-content{
+	background: inherit;
+    padding: 0px 16px;
+}
+.animate-show {
+  line-height: 20px;
+  opacity: 1;
+  padding: 10px;
+  background: white;
+}
+
+.animate-show.ng-hide-add.ng-hide-add-active,
+.animate-show.ng-hide-remove.ng-hide-remove-active {
+  -webkit-transition: all linear 0.2s;
+  transition: all linear 0.2s;
+}
+
+.animate-show.ng-hide {
+  line-height: 0px;
+  opacity: 0;
+  padding: 0 10px;
+}

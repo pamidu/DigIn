@@ -1,0 +1,6 @@
+{
+	"name" : "Invoke Process",
+	"parameters":[{"Process Code" : "$1"},{"App Code" : "$2"},{"InArguments" : "$3"}],
+	"code":"InArguments = {};
+	$processManager.getClient().invoke(\"$1\",\"$2\", $3).onComplete(function(){}).onError(function(){});"
+}

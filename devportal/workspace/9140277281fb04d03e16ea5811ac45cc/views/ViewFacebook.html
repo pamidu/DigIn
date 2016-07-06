@@ -1,0 +1,119 @@
+<md-content layout-margin flex>
+    <md-tabs md-dynamic-height md-border-bottom>
+    <!-- TAB OVERVIEW START -->
+      <md-tab label="Overview">
+        <md-content class="md-padding">
+            <div id="metric0" style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
+                <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
+                    <span class="ctotals_inner">{{widget.widData.pgData.likes}}</span>
+                </div>
+                <div style="font-size:10px;text-transform:uppercase;">
+                    <div class="widget_legend" style="background:#ff5252;"></div>Likes
+                </div>
+            </div>
+            <div id="metric1" style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
+                <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
+                    <span class="ctotals_inner">{{widget.widData.pgData.were_here_count}}</span>
+                </div>
+                <div style="font-size:10px;text-transform:uppercase;">
+                    <div class="widget_legend" style="background:#c7b700;"></div>Views
+
+                </div>
+            </div>
+            <div id="metric2"  style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
+                <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
+                    <span class="ctotals_inner">{{widget.widData.pgData.new_like_count}}</span>
+                </div>
+                <div style="font-size:10px;text-transform:uppercase;">
+                    <div class="widget_legend" style="background:#ff7e0e;"></div>New Likes
+                </div>
+            </div>
+            <div id="metric3"  style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
+                <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
+                    <span class="ctotals_inner">{{widget.widData.pgData.talking_about_count}}</span>
+                </div>
+                <div style="font-size:10px;text-transform:uppercase;">
+                    <div class="widget_legend" style="background:#52c4ff;"></div>Talking about
+
+                </div>
+            </div>
+            <div id="metric4"  style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
+                <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
+                    <span class="ctotals_inner">{{widget.widData.pgData.unread_message_count}}</span>
+                </div>
+                <div style="font-size:10px;text-transform:uppercase;">
+                    <div class="widget_legend" style="background:#2fd75b;"></div>Unread messages
+                </div>
+            </div>
+            <div id="metric5"  style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
+                <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
+                    <span class="ctotals_inner">{{widget.widData.pgData.unread_notif_count}}</span>
+                </div>
+                <div style="font-size:10px;text-transform:uppercase;">
+                    <div class="widget_legend" style="background:#2fd75b;"></div>Unread notif.
+                </div>
+            </div>
+            <div id="metric6"  style="width:19%;height:75px;display:inline-block;text-align:center;vertical-align:top;">
+                <div style="font-size:20px;font-weight:bold;margin-top:20px;margin-bottom:4px;">
+                    <span class="ctotals_inner">{{widget.widData.pgData.unseen_message_count}}</span>
+                </div>
+                <div style="font-size:10px;text-transform:uppercase;">
+                    <div class="widget_legend" style="background:#2fd75b;"></div>Unseen messages
+                </div>
+            </div>
+            <img src="{{widget.widData.pgData.cover.source}}" style="padding-top:10px;"/>
+        </md-content>
+      </md-tab>
+      <!-- TAB OVERVIEW END -->
+      <md-tab label="Likes">
+        <md-content class="md-padding">
+            <div layout="column">
+                
+                  <highchart id="widId1"  config="widget.widData.likeData"  ></highchart>  
+                
+                <accordion>
+                 <accordion-panel title="Configuration">
+                     <div layout="column">
+                         <div layout="row">
+                             <md-input-container flex>
+                                 <label>Since</label>
+                                 <input type="date" ng-model="sinceDay">
+                             </md-input-container>
+                             <md-input-container flex>
+                                 <label>Until</label>
+                                 <input type="date" ng-model="untilDay">
+                             </md-input-container>
+                         </div>
+                         <md-button ng-click="changeDatesRange(widget.id, sinceDay, untilDay)" class="md-raised">Generate Graph</md-button>
+                     </div>                     
+                    </accordion-panel>
+                </accordion>              
+            </div>
+        </md-content>
+      </md-tab>
+      <md-tab label="Views">
+        <md-content class="md-padding">
+            <div layout="column">                
+                  <highchart id="widId2"  config="widget.widData.viewData"  ></highchart>
+                  <accordion>
+                 <accordion-panel title="Configuration">
+                     <div layout="column">
+                         <div layout="row">
+                             <md-input-container flex>
+                                 <label>Since</label>
+                                 <input type="date" ng-model="sinceDay">
+                             </md-input-container>
+                             <md-input-container flex>
+                                 <label>Until</label>
+                                 <input type="date" ng-model="untilDay">
+                             </md-input-container>
+                         </div>
+                         <md-button ng-click="changeViewedDatesRange(widget.id, sinceDay, untilDay)" class="md-raised">Generate Graph</md-button>
+                     </div>                     
+                    </accordion-panel>
+                </accordion>
+            </div>  
+        </md-content>
+      </md-tab>
+    </md-tabs>   
+</md-content>

@@ -1,0 +1,14 @@
+{
+	"appKey" : "",
+	"version":"1.0",
+	"type":"wfactivity",
+	"jiraComponentId":"",
+	"data":{
+		"activityName":"",
+		"activityDescription" : "",
+		"activityType":""
+	},
+	"resources":[],
+	"publishAllResources" : true,
+	"config":[]
+}

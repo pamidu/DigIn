@@ -1,0 +1,131 @@
+<md-dialog plumb-item style="min-width:400px">
+    <md-toolbar>
+        <div class="md-toolbar-tools" flex layout="row">
+            <div flex="10">
+                <md-icon class="ion-wrench"></md-icon>
+            </div>
+            <div flex="80">
+                <h3>Configuration</h3>
+            </div>
+            <div flex="10"> 
+                <md-button  ng-click="cancel()"  aria-label="Close" layout-wrap>
+                   <md-icon class="ion-close"></md-icon>
+                </md-button> 
+            </div>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+    {{validationMessage}}
+    <md-tabs md-dynamic-height md-border-bottom md-selected="selectedTabIndex">
+      <md-tab label="Source">
+        <md-content class="md-padding">
+            <md-input-container flex>
+                <label>Widget Name:</label>
+                <input name="sizeX" placeholder="www.duosoftware.com/test" ng-model="widget.chartConfig.title.text">
+            </md-input-container>
+            <div layout="row" layout-align='center start'>
+                <md-select ng-model="datasource" placeholder="Object Store" flex="50">
+                    <md-option ng-value="opt" ng-repeat="opt in datasources">{{ opt }}</md-option>
+                </md-select>
+                <md-select style="text-transform:capitalize" ng-change="getFields()" placeholder="Index" ng-model="ind" flex="50">
+                    <md-option style="text-transform:capitalize" ng-value="ind" ng-repeat=" ind in indexes">{{ ind }}</md-option>
+                </md-select>
+            </div>
+            <div layout="row" layout-align="end center">
+                <md-button  ng-click="toggleTab(selectedTabIndex)"  aria-label="Close" layout-wrap>
+                    <span>next</span><md-icon class="ion-arrow-right-a" style="margin-bottom: 12px;"></md-icon>
+                </md-button>
+            </div>            
+        </md-content>
+      </md-tab>
+       <md-tab label="Selection" ng-disabled="dataTab">
+        <md-content class="md-padding">
+            <div layout="row" layout-align="center center">
+                <md-switch ng-model="query.state" aria-label="Switch 1">
+                    Queried: {{ query.state }}
+                </md-switch>
+            </div>
+            <div ng-show="!query.state">
+                <md-subheader class="md-primary">Select Series</md-subheader>            
+                <div layout="row" layout-wrap md-scroll-y flex>
+                    <md-checkbox flex='20' ng-repeat="field in selectedFields" layout="row" ng-click="toggleCheck(field)" style="text-transform:capitalize" aria-label={{field.name}}>
+                        {{field.name}}
+                    </md-checkbox>
+                </div>
+            </div>
+            <div ng-show="query.state" layout="column" flex>
+                <div>
+                    <span ng-repeat="field in selectedFields">{{field.name}}&nbsp;&nbsp;</span>
+                </div>
+                <md-input-container flex>
+                    <label>Query</label>
+                    <input name="dataQuery" placeholder="enter the query" ng-model="query.value">
+                </md-input-container>
+            </div>
+            <div layout="row" layout-align="end center">
+                <md-button  ng-click="getData()"  aria-label="Close" layout-wrap>
+                    <span>next</span><md-icon class="ion-arrow-right-a" style="margin-bottom: 12px;"></md-icon>
+                </md-button>
+            </div>
+        </md-content>
+      </md-tab>
+      <md-tab label="Mapping" ng-disabled="chartTab">
+        <md-content class="md-padding">
+            <div ng-show="dataIndicator" layout="row" layout-sm="column" layout-align="center center" style="z-index:10;position:absolute;height:100%;width:100%;">
+              <md-progress-circular md-mode="indeterminate" style"z-index:11"></md-progress-circular>
+              <span>Please wait...</span>
+            </div>
+            <div layout="column">
+                <md-select ng-model="chartCategory.groupField" ng-change="selectSer(chartCategory.groupField)" placeholder="Select a category">
+                    <md-option value="{{cat}}" ng-repeat="cat in arrayAttributes">{{ cat }}</md-option>
+                </md-select>
+                <md-switch ng-disabled="serSelected" ng-change="getDrillArray()" ng-model="query.drilled" aria-label="Switch 1">
+                    Drilled: {{ query.drilled }}
+                </md-switch>
+                <md-select ng-model="chartCategory.drilledField" placeholder="Select a series">
+                    <md-option value="{{item}}" ng-repeat="item in chartCategory.drilledArray">{{ item }}</md-option>
+                </md-select>
+               
+                <div layout="column" ng-repeat="ser in seriesArray">
+                      <accordion>                                                   
+                        <accordion-panel title="{{ser.name}}">
+                            <md-input-container>
+                              <label>Name</label>
+                              <input ng-model="ser.name">
+                            </md-input-container>
+                            <md-select ng-model="ser.serName" placeholder="Select a series">
+                                <md-option value="{{cat}}" ng-repeat="cat in arrayAttributes">{{ cat }}</md-option>
+                            </md-select>
+                             <md-select ng-model="chartFilter" placeholder="Select a filter">
+                                <md-option value="{{fil}}" ng-repeat="fil in filterAttributes">{{ fil }}</md-option>
+                            </md-select>
+                            <md-select ng-model="ser.type" placeholder="Select a chart type" flex>
+                              <md-optgroup label="Chart type">
+                                <md-option ng-value="chartType.type" ng-repeat="chartType in chartTypes">{{chartType.name}}</md-option>
+                              </md-optgroup>
+                            </md-select>
+                            <md-input-container>
+                              <label>Color</label>
+                              <input ng-model="ser.color">
+                            </md-input-container>
+                        </accordion-panel>
+                        <md-button  ng-click="removeSeries($index)"  aria-label="Close" layout-wrap>
+                                   <md-icon class="ion-close"></md-icon>
+                        </md-button>
+                       </accordion>                   
+                </div>
+                <div layout="row">
+                    <md-subheader class="md-primary">Add series</md-subheader>
+                    <md-button ng-click="addSeries()">Add</md-button>
+                </div>
+            </div>
+        </md-content>
+      </md-tab>     
+    </md-tabs>           
+        <div layout="row">
+            <md-input-container flex>
+                <md-button class="md-raised" ng-click="buildchart(widget)">Build Chart</md-button>
+            </md-input-container>
+        </div>
+    </md-dialog-content>
+</md-dialog>

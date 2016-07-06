@@ -1,0 +1,32 @@
+<md-dialog   plumb-item >
+  <md-toolbar class="modal-header" md-theme="teal">  
+       <h1>Dashboards</h1>
+  </md-toolbar>
+         <md-content>
+                    <md-card class="lookupdashboard" onload="LoadAll()" md-theme="teal" ng-repeat="x in ExistingDashboardDetails"        <md-content theme="teal"  layout="row" layout-margin>
+                                               <div flex="80">
+                                                    <md-button class="md-raised" ng-click="LoadSelected(x)"> 
+                                                
+                                                      <md-icon md-svg-src="bower_components/material-design-icons/action/svg/production/ic_dashboard_24px.svg"></md-icon>
+
+                                                            <Label>{{x.dashboardName}}</Label>
+                                                    </md-button>
+                                               </div>
+                                          
+                                            
+                                            
+                                           </md-content>
+                                 </md-card>
+           
+        </md-content>
+  <div class="md-actions" md-theme="teal"  layout="row">    
+          <md-button style="width:200px"  ng-click="closeDialog()"  class="md-raised">
+           Ok
+         </md-button>
+          <md-button style="width:200px"  class="md-raised"   ng-click="closeDialog()" class=" md-default">
+            Cancel
+          </md-button>
+  </div>
+</md-dialog> 
+ 
+ 

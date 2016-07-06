@@ -577,6 +577,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
                         $mdDialog.hide();
                         removeWidget = true;
+                        $scope.$apply();
                     }
                     $scope.cancel = function () {
 

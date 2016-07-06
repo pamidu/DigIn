@@ -583,6 +583,9 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                         {
                             selDrpDwnObj[i]['value'] = "All";
                         }
+                    if (selDrpDwnObj[i]['ParamName'] == "Month"){
+                        selDrpDwnObj[i]['value'] = privateFun.getNumberOfMonth(selDrpDwnObj[i]['value']);
+                    }
                     if (i == 0) {
                         reqParameter.rptParameter = '{"' + selDrpDwnObj[i]['ParamName'] + '" : ' +
                             '"' + selDrpDwnObj[i]['value'] + '"}';

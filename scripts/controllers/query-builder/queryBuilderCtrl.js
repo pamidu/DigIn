@@ -877,7 +877,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             width: 600,
             height: 400
         };
-        widget.widgetData.widName = $scope.widget.widgetData.widName;
         widget.widgetData.dataCtrl = "widgetSettingsDataCtrl";
         widget.widgetData.dataView = "views/ViewData.html";
         widget.widgetData["selectedChart"] = $scope.selectedChart;
@@ -1073,7 +1072,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         saveWidget: function(widget) {
             widget.widgetData.highchartsNG = $scope.highchartsNG;
             widget.widgetData.widData['drilled'] = $scope.isDrilled;
-            widget.widgetData.widName = $scope.widget.widgetData.widName;
+            if (typeof($scope.highchartsNG.options.exporting) != "undefined" ) {
+                widget.widgetData.widName = $scope.highchartsNG.options.exporting.filename;}
             if ($scope.isDrilled) widget.widgetData.widData['drillConf'] = $scope.drillDownConfig;
             widget.widgetName = "highcharts";
             widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
@@ -1119,7 +1119,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         },
         saveWidget: function(widget) {
             widget.widgetData.highchartsNG = $scope.highchartsNG;
-            widget.widgetData.widName = $scope.widget.widgetData.widName;
+            if (typeof($scope.highchartsNG.options.exporting) != "undefined" ) {
+                widget.widgetData.widName = $scope.widget.widgetData.highchartsNG.options.exporting.filename;}            
             widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
             widget.widgetData.initCtrl = "elasticInit";
             widget.widgetName = "forecast";
@@ -1204,7 +1205,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }
             });
 
-            $scope.widget.widgetData.highchartsNG.options={};
             $scope.widget.widgetData.highchartsNG.plotOptions={};
             $scope.widget.widgetData.highchartsNG.series={};
             $scope.widget.widgetData.highchartsNG.xAxis={};
@@ -1337,7 +1337,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 height: 220
             };
             widget.widgetData.widView = "views/query/chart-views/BoxPlot.html";
-            widget.widgetData.widName = $scope.widget.widgetData.widName;
+            if (typeof($scope.highchartsNG.options.exporting) != "undefined" ) {
+                widget.widgetData.widName = $scope.widget.widgetData.highchartsNG.options.exporting.filename;}
             $scope.saveChart(widget);
         }
 
@@ -1474,7 +1475,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 height: 220
             };
             widget.widgetName = "bubble";
-            widget.widgetData.widName = $scope.widget.widgetData.widName;
+            if (typeof($scope.highchartsNG.options.exporting) != "undefined" ) {
+                widget.widgetData.widName = $scope.widget.widgetData.highchartsNG.options.exporting.filename;}
             widget.widgetData.highchartsNG = $scope.widget.widgetData.highchartsNG;
             widget.widgetData.widView = "views/query/chart-views/bubble.html";
             $scope.saveChart(widget);
@@ -1494,13 +1496,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }
             });
 
-            $scope.widget.widgetData.highchartsNG.options={};
-            $scope.widget.widgetData.highchartsNG.plotOptions={};
-            $scope.widget.widgetData.highchartsNG.series={};
-            $scope.widget.widgetData.highchartsNG.xAxis={};
-            $scope.widget.widgetData.highchartsNG.yAxis={};
-            $scope.widget.widgetData.highchartsNG.title={};
-
             if (dataTypeFlag && $scope.sourceData.fAttArr.length == 0) {
                 $scope.eventHndler.isLoadingChart = true;
 
@@ -1515,8 +1510,19 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     fieldArray.push("'" + $scope.commonData.columns[i].filedName + "'");
                 }
 
+                var database = $scope.sourceData.src;
+                var tbl = $scope.sourceData.tbl;
+                if (database == "BigQuery") {
+                    var query = $diginurls.diginengine + "generatehist?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database;
+                }
+                else if (database == "MSSQL") {
+                    var query = $diginurls.diginengine + "generatehist?q=[{'["+ tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database;
+                }
+                else{
+                    var query = $diginurls.diginengine + "generatehist?q=[{'"+ tbl + "':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database;
+                }
                 //get highest level
-                $scope.client.generatehist($scope.sourceData.tbl, fieldArray.toString(), function(data, status) {
+                $scope.client.generatehist(query, function(data, status) {
 
                     var hObj = {};  
                     if (status) {
@@ -1524,27 +1530,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         $scope.histogramPlotcat = [];
                         $scope.histogramPlotData = [];
 
-                        for (var key in data) {
-                            if (Object.prototype.hasOwnProperty.call(data, key)) {
-
-                                for (var k in data[key]) {
-                                    if (Object.prototype.hasOwnProperty.call(data[key], k)) {
-                                        $scope.histogramPlotcat.push(k);
-                                        $scope.histogramPlotData.push(data[key][k]);
-                                    }
-                                }
-                            }
+                        for ( var key in data){
+                            console.log(data[key]); // the whole array (index)
+                            $scope.histogramPlotData.push(parseFloat(data[key][0]));
+                            var category = data[key].splice(0, 1);
+                            $scope.histogramPlotcat.push(data[key]);
                         }
-
-                        /*for ( var key in data){
-                            console.log(data[key]);
-                            $scope.histogramPlotData.push(data[key][0]);
-                                var category = key[1].splice(0, 1);
-                            console.log(data[key][1]);
-                        }*/
-
-
-
+                        console.log($scope.histogramPlotData);
                         $scope.categories = fieldArray;
 
                         $scope.widget.widgetData.highchartsNG = {
@@ -1554,12 +1546,28 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                     width: null,
                                     height: 367,
                                     },
-                                // hostogram should not have space between bars
                                 plotOptions: {
                                     column:{
-                                    groupPadding: 0,
-                                    pointPadding: 0
-                                  }
+                                    shadow: false,
+                                    borderWidth: 1,
+                                    borderColor: '#666',
+                                    pointPadding: 0,
+                                    groupPadding: 0
+                                  },
+                                spline: {
+                                    shadow: false,
+                                    marker: {
+                                        radius: 1
+                                    }
+                                },
+                                areaspline: {
+                                    color: 'rgb(69, 114, 167)',
+                                    fillColor: 'rgba(69, 114, 167,.25)',
+                                    shadow: false,
+                                    marker: {
+                                        radius: 1
+                                    }
+                                }                                  
                                 }
                             },
                             title: {
@@ -1602,12 +1610,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 data: $scope.histogramPlotData
                             }]
                         };
-
+                        $scope.dataToBeBind.receivedQuery = query;
                     } else {}
                 });
 
             } else {
-                $scope.isPendingRequest = false;http://localhost/digin_git/one/Digin/index1.phpv
+                $scope.isPendingRequest = false;
                 $scope.eventHndler.isLoadingChart = false;
                 privateFun.fireMessage('0', 'Please select only numeric values to create histogram');
                 return;
@@ -1618,7 +1626,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
-            widget.widgetData.widName = $scope.widget.widgetData.widName;
+            if (typeof($scope.highchartsNG.options.exporting) != "undefined" ) {
+                widget.widgetData.widName = $scope.widget.widgetData.highchartsNG.options.exporting.filename;}
             widget.widgetName = "histogram";
             widget.widgetData.highchartsNG["size"] = {
 

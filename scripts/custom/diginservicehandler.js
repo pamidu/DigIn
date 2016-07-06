@@ -137,18 +137,10 @@
 
                     }
                             },
-                generatehist: function(tbl, fieldstr, cb) {
-                    if (database == "BigQuery") {
+                generatehist: function(query, cb) {
                         $servicehelpers.httpSend("get", function(data, status, msg) {
-                        cb(data, status);
-                        }, $diginurls.diginengine /*"http://192.168.0.22:8080/"*/ + "generatehist?q=[{'[" + getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);
-                    }
-                    else
-                    {
-                        $servicehelpers.httpSend("get", function(data, status, msg) {
-                        cb(data, status);
-                    }, $diginurls.diginengine /*"http://192.168.0.22:8080/"*/ + "generatehist?q=[{'["+ tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);     
-                    }
+                            cb(data, status);
+                        }, query);
                 },
                 generateBubble: function(tbl, x, y, s, c, cb) {
                     if (database == "BigQuery") {

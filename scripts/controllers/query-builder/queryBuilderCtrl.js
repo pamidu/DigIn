@@ -1168,7 +1168,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         },
         saveWidget: function(widget) {
             widget.widgetData.highchartsNG = $scope.highchartsNG;
-            if (typeof($scope.highchartsNG.options.exporting) != "undefined" ) {
+            if (typeof($$scope.widget.widgetData.highchartsNG.options.exporting) != "undefined" ) {
                 widget.widgetData.widName = $scope.widget.widgetData.highchartsNG.options.exporting.filename;}            
             widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
             widget.widgetData.initCtrl = "elasticInit";
@@ -1386,7 +1386,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 height: 220
             };
             widget.widgetData.widView = "views/query/chart-views/BoxPlot.html";
-            if (typeof($scope.highchartsNG.options.exporting) != "undefined" ) {
+            if (typeof($scope.widget.widgetData.highchartsNG.options.exporting) != "undefined" ) {
                 widget.widgetData.widName = $scope.widget.widgetData.highchartsNG.options.exporting.filename;}
             $scope.saveChart(widget);
         }
@@ -1524,7 +1524,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 height: 220
             };
             widget.widgetName = "bubble";
-            if (typeof($scope.highchartsNG.options.exporting) != "undefined" ) {
+            if (typeof($scope.widget.widgetData.highchartsNG.options.exporting) != "undefined" ) {
                 widget.widgetData.widName = $scope.widget.widgetData.highchartsNG.options.exporting.filename;}
             widget.widgetData.highchartsNG = $scope.widget.widgetData.highchartsNG;
             widget.widgetData.widView = "views/query/chart-views/bubble.html";
@@ -1675,7 +1675,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label
             };
-            if (typeof($scope.highchartsNG.options.exporting) != "undefined" ) {
+            if (typeof($scope.widget.widgetData.highchartsNG.options.exporting) != "undefined" ) {
                 widget.widgetData.widName = $scope.widget.widgetData.highchartsNG.options.exporting.filename;}
             widget.widgetName = "histogram";
             widget.widgetData.highchartsNG["size"] = {

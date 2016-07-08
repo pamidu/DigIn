@@ -46,11 +46,7 @@
                     <div class="right-wrap">
                         <div class="header-login">
                             <div class="login-text-wrap pull-right ">
-                                <!-- <h5 id="sliderRight">Sign In</h5>
-								     <font color="red"><b>
-								     <p><br></br> </p>
-								     <p id="sliderRight">This is a Pre-production site !</p></b> -->
-								</font>	
+                               <h5 id="sliderRight">Sign In</h5>
                             </div>
                         </div>
                         <form name="frmDiginLogin" autocomplete="off">
@@ -70,7 +66,8 @@
 
                                                        class="form-control">
                                             </div>
-                                            <div class="ng-message" ng-messages="frmDiginLogin.loginUserName.$error">
+                                            <div  ng-show="frmDiginLogin.loginUserName.$invalid && !frmDiginLogin.loginUserName.$pristine"
+                                             class="ng-message" ng-messages="frmDiginLogin.loginUserName.$error">
                                                 <div ng-message="required">This is required.</div>
                                             </div>
                                         </div>
@@ -87,18 +84,21 @@
                                                        placeholder="***************"
                                                        class="form-control">
                                             </div>
-                                            <div class="ng-message" ng-messages="frmDiginLogin.password.$error">
+                                            <div ng-show="frmDiginLogin.password.$invalid && !frmDiginLogin.password.$pristine"
+                                            class="ng-message" ng-messages="frmDiginLogin.password.$error">
                                                 <div ng-message="required">This is required.</div>
                                             </div>
                                         </div>
 
                                         <div class="login-help">
                                             <div class="remember-me">
-                                                Remember me
-                                            </div>
-                                            <div class="forget-pwd">
+                                              <input id="chkTerms" type="checkbox">
+                                                  By Clicking sign up you agree to the
+                                                   <a href="javascript:void(0);" ng-click="goToTermCondition(true)">terms and condition</a>
+                                               </div>
+                                            <!--<div class="forget-pwd">
                                                 Forgot password?
-                                            </div>
+                                            </div>-->
 
                                         </div>
                                     </div>

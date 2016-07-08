@@ -1030,13 +1030,13 @@ a.thumbnail.active {
 }
 
 .alert-info .alert-link {
-    color: #012f44;
+    color: #fff;
 }
 
 .alert-warning {
     background-color: #ffe7a0;
     border-color: #ffcd86;
-    color: #866500;
+    color: #fff;
 }
 
 .alert-warning hr {
@@ -1044,13 +1044,14 @@ a.thumbnail.active {
 }
 
 .alert-warning .alert-link {
-    color: #533f00;
+    color: #fff;
 }
 
 .alert-danger {
-    background-color: #ffcbbb;
-    border-color: #ffa8a2;
-    color: #a22700;
+    background: #E53935 !important;
+    width: 100%;
+    color: #ffffff !important;
+    border-color: #E53935;
 }
 
 .alert-danger hr {
@@ -1058,7 +1059,7 @@ a.thumbnail.active {
 }
 
 .alert-danger .alert-link {
-    color: #6e1b00;
+    color: #fff;
 }
 
 @-webkit-keyframes progress-bar-stripes {

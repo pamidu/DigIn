@@ -363,7 +363,7 @@ drb >> dynamically report builder
 .success {
     background: #43A047 !important;
     width: 100%;
-    color: #ffffff;
+    color: #ffffff  !important;
 }
 
 .processing {
@@ -375,13 +375,13 @@ drb >> dynamically report builder
 .info {
     background: #FFB300 !important;
     width: 100%;
-    color: #ffffff;
+    color: #ffffff  !important;
 }
 
 .alert-danger {
     background: #E53935 !important;
     width: 100%;
-    color: #ffffff;
+    color: #ffffff !important;
     font-family: 'Ek Mukta', sans-serif;
     font-weight: 200;
     font-size: 18px;
@@ -392,7 +392,7 @@ drb >> dynamically report builder
     right: 500px;
     background: #E53935 !important;
     width: 100%;
-    color: #ffffff;
+    color: #ffffff  !important;
     font-family: 'Ek Mukta', sans-serif;
     font-weight: 100;
     font-size: 14px;

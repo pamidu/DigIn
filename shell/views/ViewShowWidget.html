@@ -48,10 +48,27 @@
 
                     </div>
 
+                    <div class="widget0s-source" style="height: 100%;">
+                        <header class="widget0s-h1 text-uppercase">
+                            OTHER
+                        </header>
+                        <div class="source attr" ng-repeat="att in widget.widgetData.commonSrc.att">
+                            <span>
+                             {{att.filedName}}
+                            </span>
+                        </div>
+
+                        <div class="source attr" ng-repeat="mea in widget.widgetData.commonSrc.mea">
+                            <span>
+                             {{mea.filedName}}({{mea.condition}})
+                            </span>
+                        </div>
+                    </div>
+                    <div class="widget0s-source widget0s-qry">
+                        {{widget.widgetData.commonSrc.query}}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
-
 </md-dialog>

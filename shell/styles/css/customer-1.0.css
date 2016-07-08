@@ -4127,3 +4127,8 @@ md-select-item-wrapper.active {
     box-shadow: inset 0 0 0 0px #ffffff, 0 0 0px rgba(0, 0, 0, 0);
     border-radius: 5px;
 }
+
+md-tab-content > div {
+    overflow-y: auto;
+    overflow-x: hidden;
+}

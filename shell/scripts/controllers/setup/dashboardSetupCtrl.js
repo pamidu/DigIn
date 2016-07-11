@@ -86,9 +86,6 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     $scope.selectedItems = [];
     $scope.selectedUsers = [];
 
-
-    //$scope.getdata();
-
     $scope.sharableObjs= $rootScope.sharableObjs;
     $scope.sharableUsers = $rootScope.sharableUsers;
     $scope.sharableGroups = $rootScope.sharableGroups;
@@ -135,8 +132,10 @@ $scope.invite = function () {
                     fireMsg('0', '<strong>Error : </strong>This user not registered for Digin...!');
                 }
                 else{
-                    $scope.sharableUsers.push();
-                    $scope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
+                    //privateFun.getAllSharableObj();
+                        //$scope.sharableObjs= $rootScope.sharableObjs;
+                        //$scope.sharableUsers = $rootScope.sharableUsers;
+                        //$scope.sharableGroups = $rootScope.sharableGroups;
                     fireMsg('1', '<strong>Success : </strong>Invitation sent successfully...!');
                     $scope.user.email='';
                 }

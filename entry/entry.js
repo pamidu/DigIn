@@ -86,12 +86,12 @@ routerApp
 
                 }).success(function (data) {
                     if (data.Success === true) {
-                        $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
+                        //$window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
 
                         //#Added for local host ------------------------------
-                        // document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
-                        // document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
-                        // window.location.href = "http://localhost:8080/git/digin/shell";
+                        document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
+                        document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
+                        window.location.href = "http://localhost:8080/git/digin/shell";
                         //#------------------------------
                     }
                     else {

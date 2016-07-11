@@ -130,7 +130,7 @@ input,select,textarea{
       </form>
   <md-divider></md-divider>
   <div class="md-actions" layout="row">
-	<div style="font-size: 12px;margin-top:30px">Powered by Cloud Charge</div>
+	<!-- <div style="font-size: 12px;margin-top:30px">Powered by Cloud Charge</div> -->
     <span flex></span>
     <md-button ng-click="answer('not useful')" >
      cancel

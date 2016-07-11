@@ -1,8 +1,8 @@
 routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $location, $http,
-                                                     Digin_Engine_API, ngToast, $rootScope, $apps, $objectstore, Upload,
+                                                     Digin_Engine_API, ngToast, $rootScope, $apps, $objectstore, Upload, 
                                                      Digin_Domain, Digin_Tenant, $state) {
-
-
+    
+    
     //main menu json
     $scope.menuJson = [{
         "name": "Account setting",
@@ -30,8 +30,8 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         "icon": "styles/css/images/setting/user_setting100x100.png"
     }];
 
-
-    //*Settings routing ----------------
+    
+    //*Settings routing ---------------- 
     var slide = false;
     $scope.route = function (state) {
         if (state == "account") {
@@ -64,16 +64,16 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
 
     //theme colors array
     $scope.colorArr = [{value: '#F44336'}, {value: '#E91E63'}, {value: '#9C27B0'}, {value: '#673AB7'}, {value: '#3F51B5'}, {value: '#2196F3'}, {value: '#03A9F4'}, {value: '#00BCD4'}, {value: '#009688'}, {value: '#4CAF50'}, {value: '#8BC34A'}, {value: '#CDDC39'}, {value: '#FFEB3B'}, {value: '#FFC107'}, {value: '#FF9800'}, {value: '#FF5722'}, {value: '#795548'}, {value: '#9E9E9E'}, {value: '#607D8B'}];
-
+    
     //# load from parent
     var baseUrl = "http://" + window.location.hostname;
     //baseUrl="http://duotest.digin.io";
     //baseUrl="http://chamiladuosoftwarecom.space.duoworld.com";
-    $scope.domain = JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
+    $scope.domain=JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
 
 
-    $scope.apps = $scope.dashboards;
-
+    $scope.apps=$scope.dashboards;
+   
     $scope.selectedColorObj = {
         primaryPalette: "",
         accentPalette: ""
@@ -82,13 +82,16 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
 
     //add user view state
     $scope.addUsrState = false;
-
+    
     $scope.selectedItems = [];
     $scope.selectedUsers = [];
 
-    $scope.sharableObjs = $scope.sharableObjs;
-    $scope.sharableUsers = $scope.sharableUsers;
-    $scope.sharableGroups = $scope.sharableGroups;
+
+    //$scope.getdata();
+
+    $scope.sharableObjs= $rootScope.sharableObjs;
+    $scope.sharableUsers = $rootScope.sharableUsers;
+    $scope.sharableGroups = $rootScope.sharableGroups;
     //$scope.sharableGroupsDtls = $scope.sharableGroupsDtls;
 
 
@@ -99,47 +102,49 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
 
 
 //invite user ***  
-    $scope.inviteUser = function () {
-        $scope.exist = false;
-        $http.get(baseUrl + '/devportal/project/share/getusers')
-            .success(function (response) {
-                for (var i = 0; i < response.length; i++) {
-                    if ($scope.user.email == response[i].EmailAddress) {
-                        $scope.exist = true;
-                    }
+$scope.inviteUser = function () {
+    $scope.exist=false;
+    $http.get(baseUrl+'/devportal/project/share/getusers')
+        .success(function (response) {
+            for(var i=0; i<response.length; i++){
+                if($scope.user.email==response[i].EmailAddress){
+                    $scope.exist=true;
                 }
-                ;
+            };
 
-                if ($scope.exist == true) {
-                    fireMsg('0', '<strong>Error : </strong>This user is already invited...');
-                    return;
-                }
-                else {
-                    $scope.invite();
-                }
+            if($scope.exist==true){
+                fireMsg('0', '<strong>Error : </strong>This user is already invited...');
+                return;
+            }
+            else{
+                $scope.invite();
+            }
 
-            }).error(function (error) {
-
+        }).error(function (error) {
+           
         });
-    }
+}
 
-    $scope.invite = function () {
+$scope.invite = function () {
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
         $http.get(baseUrl + '/auth/tenant/AddUser/' + $scope.user.email + '/user', {
                 headers: {'Securitytoken': userInfo.SecurityToken}
             })
             .success(function (response) {
-                if (response == "false") {
+                if(response=="false"){
                     fireMsg('0', '<strong>Error : </strong>This user not registered for Digin...!');
                 }
-                else {
+                else{
+                    $scope.sharableUsers.push();
+                    $scope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
                     fireMsg('1', '<strong>Success : </strong>Invitation sent successfully...!');
-                    $scope.user.email = '';
+                    $scope.user.email='';
                 }
             }).error(function (error) {
-            fireMsg('0', 'Invitation not sent !');
+                fireMsg('0', 'Invitation not sent !');
         });
-    };
+};
+
 
 
 //*User Settngs Page
@@ -210,64 +215,64 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
                             $scope.preloader = true;
                             $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
                             //for (var i = 0; i < files.length; i++) {
-                            var i = 0;
-                            var lim = i == 0 ? "" : "-" + i;
-                            console.log(userInfo);
-                            filename = $scope.files[0].name;
+                                var i=0;
+                                var lim = i == 0 ? "" : "-" + i;
+                                console.log(userInfo);
+                                filename = $scope.files[0].name;
 
-                            Upload.upload({
-                                url: Digin_Engine_API + 'file_upload',
-                                headers: {'Content-Type': 'multipart/form-data',},
-                                data: {
-                                    db: 'BigQuery',
-                                    SecurityToken: userInfo.SecurityToken,
-                                    Domain: Digin_Domain,
-                                    other_data: 'userfile',
-                                    file: files[0]
-                                }
-                            }).success(function (data) {
-
-                                //store to user settings----------------------
-                                $scope.settings = {
-                                    "email": userInfo.Email,
-                                    "components": "dashboard1",
-                                    "user_role": "admin",
-                                    "cache_lifetime": 30,
-                                    "widget_limit": 7,
-                                    "query_limit": 1000,
-                                    "logo_name": filename,
-                                    "theme_config": "bla bla",
-                                    "SecurityToken": userInfo.SecurityToken,
-                                    "Domain": Digin_Domain
-                                }
-
-                                $http({
-                                    method: 'POST',
-                                    url: Digin_Engine_API + 'store_user_settings/',
-                                    data: angular.toJson($scope.settings),
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'SecurityToken': userInfo.SecurityToken,
-                                        'Domain': Digin_Domain
+                                Upload.upload({
+                                    url: Digin_Engine_API + 'file_upload',
+                                    headers: {'Content-Type': 'multipart/form-data',},
+                                    data: {
+                                        db: 'BigQuery',
+                                        SecurityToken: userInfo.SecurityToken,
+                                        Domain: Digin_Domain,
+                                        other_data: 'userfile',
+                                        file: files[0]
                                     }
-                                })
-                                    .success(function (response) {
-                                        $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
-                                            .success(function (data) {
-                                                console.log(data);
-                                                var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
-                                                $rootScope.image = logoPath + data.Result.logo_path;
-                                                $scope.preloader = false;
-                                                $mdDialog.hide();
-                                                fireMsg('1', 'Logo Successfully uploaded!');
-                                            });
+                                }).success(function (data) {
+
+                                    //store to user settings----------------------
+                                    $scope.settings = {
+                                        "email": userInfo.Email,
+                                        "components": "dashboard1",
+                                        "user_role": "admin",
+                                        "cache_lifetime": 30,
+                                        "widget_limit": 7,
+                                        "query_limit": 1000,
+                                        "logo_name": filename,
+                                        "theme_config": "bla bla",
+                                        "SecurityToken": userInfo.SecurityToken,
+                                        "Domain": Digin_Domain
+                                    }
+
+                                    $http({
+                                        method: 'POST',
+                                        url: Digin_Engine_API + 'store_user_settings/',
+                                        data: angular.toJson($scope.settings),
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'SecurityToken': userInfo.SecurityToken,
+                                            'Domain': Digin_Domain
+                                        }
                                     })
-                                    .error(function (data) {
-                                        $rootScope.image = "styles/css/images/DiginLogo.png";
-                                        fireMsg('0', 'There was an error while uploading logo !');
-                                        $scope.preloader = false;
-                                    });
-                            });
+                                        .success(function (response) {
+                                            $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
+                                                .success(function (data) {
+                                                    console.log(data);
+                                                    var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
+                                                    $rootScope.image = logoPath + data.Result.logo_path;
+                                                    $scope.preloader = false;
+                                                    $mdDialog.hide();
+                                                    fireMsg('1', 'Logo Successfully uploaded!');
+                                                });
+                                        })
+                                        .error(function (data) {
+                                            $rootScope.image = "styles/css/images/DiginLogo.png";
+                                            fireMsg('0', 'There was an error while uploading logo !');
+                                            $scope.preloader = false;
+                                        });
+                                });
                             //}
                         }
                     };
@@ -310,23 +315,27 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     };
 
 
+
+
+
+
     //validate group exist or not****
-    $scope.isValidGroupName1 = function () {
-        if ($scope.groupName == "") {
+    $scope.isValidGroupName1=function(){
+        if($scope.groupName==""){
             fireMsg('0', 'Group name can not be empty... !');
             return false;
         }
-        else {
+        else{
             return true;
         }
     };
 
-    $scope.isValidGroupName2 = function () {
+    $scope.isValidGroupName2=function(){
         for (var i = 0; i < $rootScope.sharableGroupsDtls.length; i++) {
-            var groupName = $rootScope.sharableGroupsDtls[i].groupname;
-            if ($scope.groupName == groupName) {
-                return false;
-            }
+            var groupName=$rootScope.sharableGroupsDtls[i].groupname;
+                if($scope.groupName==groupName){
+                    return false;
+                }
         }
         return true;
     };
@@ -335,15 +344,16 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     $scope.selectedItem = null;
     $scope.searchText = null;
     $scope.querySearch = querySearch;
+    
 
 
     $scope.ContactChip = [];
 
-    function querySearch(query) {
+      function querySearch(query) {
         var lowercaseQuery = angular.lowercase(query);
         var results = [];
-        for (i = 0; i < $scope.sharableUsers.length; i++) {
-            var uName = $scope.sharableUsers[i].Name.toLowerCase();
+        for (i = 0; i<$scope.sharableUsers.length;  i++) {
+            var uName=$scope.sharableUsers[i].Name.toLowerCase();
             if (uName.indexOf(lowercaseQuery) != -1) {
                 results.push($scope.sharableUsers[i]);
             }
@@ -358,55 +368,53 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     $scope.createGroup = function () {
 
         //Validate group name
-        if ($scope.isValidGroupName1() == false) {
+        if($scope.isValidGroupName1()==false){
             fireMsg('0', 'User group can not be empty..!');
             return;
-        }
-        ;
+        };
 
-        if ($scope.isValidGroupName2() == false) {
+        if($scope.isValidGroupName2()==false){
             fireMsg('0', 'This user group is already created...!');
             return;
-        }
-        ;
+        };
 
         $scope.grpDtl = {
             "groupId": "-999",
             "groupname": $scope.groupName,
             //"users":  $scope.selectedUsers,
-            "users": $scope.ContactChip,
+            "users":  $scope.ContactChip,
             "parentId": ""
         };
         $http({
             method: 'POST',
-            url: baseUrl + '/apis/usercommon/addUserGroup',
+            url: baseUrl + '/apis/usercommon/addUserGroup',          
             data: angular.toJson($scope.grpDtl)
         })
-            .success(function (response) {
-                $scope.grpDtl = {
-                    "groupId": response.Data[0].ID,
-                    "groupname": $scope.groupName,
-                    //"users":  $scope.selectedUsers,
-                    "users": $scope.ContactChip,
-                    "parentId": ""
-                };
-                $rootScope.sharableGroupsDtls.push($scope.grpDtl);
-                ngToast.create({
-                    className: 'success',
-                    content: 'User group creates Successfully...!',
-                    horizontalPosition: 'center',
-                    verticalPosition: 'top',
-                    dismissOnClick: true
-                });
-                //$scope.selectedUsers = [];
-                $scope.groupName = '';
-                $scope.ContactChip = [];
-
-            })
-            .error(function (error) {
-                //alert("Fail...!");
-            });
-
+        .success(function (response) {
+            $scope.grpDtl = {
+                "groupId": response.Data[0].ID,
+                "groupname": $scope.groupName,
+                //"users":  $scope.selectedUsers,
+                "users":  $scope.ContactChip,
+                "parentId": ""
+            };
+            $rootScope.sharableGroupsDtls.push($scope.grpDtl);
+            ngToast.create({
+                className: 'success',
+                content: 'User group creates Successfully...!',
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                dismissOnClick: true
+            }); 
+            //$scope.selectedUsers = [];
+            $scope.groupName = '';
+            $scope.ContactChip = [];
+            
+        })
+        .error(function (error) {
+            //alert("Fail...!");
+        });
+  
     };
 
     //------------Delete  group***
@@ -418,7 +426,7 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
             .cancel('No!');
         $mdDialog.show(confirm).then(function () {
             //$http.get(baseUrl+'/apis/usercommon/removeUserGroup/'+group)
-            $http.get(baseUrl + '/apis/usercommon/removeUserGroup/' + group)
+            $http.get(baseUrl+'/apis/usercommon/removeUserGroup/'+group)
                 .success(function (response) {
                     $rootScope.sharableGroupsDtls.splice(index, 1);
                     ngToast.create({
@@ -429,7 +437,7 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
                         dismissOnClick: true
                     });
                 });
-        }, function () {
+            }, function () {
         });
     };
 
@@ -449,7 +457,7 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
             };
             $http({
                 method: 'POST',
-                url: baseUrl + '/apis/usercommon/removeUserFromGroup',
+                url: baseUrl+'/apis/usercommon/removeUserFromGroup',
                 data: angular.toJson($scope.UsrDtl)
             })
                 .success(function (response) {
@@ -468,64 +476,54 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     };
 
     //# Dashboard sharing 
-    $scope.loadShareWindow = function (appId, appName) {
+    $scope.loadShareWindow = function (appId, appName) {    
         $scope.chk = function (cb) {
-            $http.get(baseUrl + '/apis/usercommon/loadUiShareData/APP_SHELL_MY_ACCOUNT')//+appName
+            $http.get(baseUrl+'/apis/usercommon/loadUiShareData/APP_SHELL_MY_ACCOUNT')//+appName
                 .success(function (response) {
-                    $scope.pickedObj = response;
-                    cb(true);
+                    $scope.pickedObj=response;
+                     cb(true);
                 }).error(function (error) {
-                cb(false);
+                    cb(false);
             });
         }
 
-        $scope.chk(function (data) {
-            if (data) {
+        $scope.chk(function(data){
+            if(data){
                 $mdDialog.show({
                     controller: dashboardshareCtrl,
                     templateUrl: 'views/shareApp.html',
                     resolve: {},
-                    locals: {
-                        appId: appId,
-                        appName: appName,
-                        sharableObj: $scope.sharableObjs,
-                        pickedObj: $scope.pickedObj
-                    },
+                    locals: {appId:appId, appName:appName, sharableObj:$scope.sharableObjs,pickedObj:$scope.pickedObj},
                 });
             }
         });
     };
 
-    $scope.viewSharedListWindow = function (appId, appName) {
-        $scope.chked = function (cb) {
-            $http.get(baseUrl + '/apis/usercommon/loadUiShareData/APP_SHELL_MY_ACCOUNT')//+appName
+    $scope.viewSharedListWindow=function(appId, appName){
+         $scope.chked = function (cb) {
+            $http.get(baseUrl+'/apis/usercommon/loadUiShareData/APP_SHELL_MY_ACCOUNT')//+appName
                 .success(function (response) {
-                    $scope.pickedObj = response;
-                    cb(true);
+                    $scope.pickedObj=response;
+                     cb(true);
                 }).error(function (error) {
-                cb(false);
+                    cb(false);
             });
         }
 
-        $scope.chked(function (data) {
-            if (data) {
+        $scope.chked(function(data){
+            if(data){
                 $mdDialog.show({
                     controller: dashboardshareCtrl,
                     templateUrl: 'views/shareAppList.html',
                     resolve: {},
-                    locals: {
-                        appId: appId,
-                        appName: appName,
-                        sharableObj: $scope.sharableObjs,
-                        pickedObj: $scope.pickedObj
-                    },
+                    locals: {appId:appId, appName:appName, sharableObj:$scope.sharableObjs,pickedObj:$scope.pickedObj},
                 });
             }
         });
     }
 
 
-    var dashboardshareCtrl = function ($rootScope, $scope, appId, appName, sharableObj, pickedObj) {
+    var dashboardshareCtrl = function ($rootScope, $scope, appId, appName,sharableObj,pickedObj) {
         $scope.appId = appId;
         $scope.appName = appName;
         $scope.pickedObj = pickedObj;
@@ -534,7 +532,7 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         $scope.shareApp = function () {
 
             //*get all obj
-            $scope.dataArr = [];
+            $scope.dataArr=[];
 
             for (var i = 0; i < pickedObj.length; i++) {
                 //Save all obj
@@ -547,22 +545,23 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
                 };
 
                 $scope.dataArr.push($scope.Dtl);
-            }
+            }  
 
             //*Save detail
-            $http({
+             $http({
                 method: 'POST',
-                url: baseUrl + '/apis/usercommon/saveUiShareData',
+                url: baseUrl+'/apis/usercommon/saveUiShareData',
                 data: angular.toJson($scope.dataArr)
             })
-                .success(function (response) {
-                    alert("success...!");
+            .success(function (response) {
+                alert("success...!");
 
-                })
-                .error(function (error) {
-                    alert("Fail...!");
-                });
+            })
+            .error(function (error) {
+                alert("Fail...!");
+            });
         };
+
 
 
         $scope.closeDialog = function () {
@@ -573,44 +572,44 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
 
 
     //------------Add users to group
-    $scope.loadAddUsersWindow = function (group, grpName, pickedUsers, allUsers) {
+    $scope.loadAddUsersWindow = function (group,grpName, pickedUsers, allUsers) {
 
-        //*get can sharable users
+            //*get can sharable users
 
-        $scope.remainUsers = [];
-        for (var i = 0; i < allUsers.length; i++) {
-            var exist = false;
-            for (var j = 0; j < pickedUsers.length; j++) {
-                if (allUsers[i].Id == pickedUsers[j].Id) {
-                    exist = true;
-                }
-            }
+            $scope.remainUsers=[]; 
+            for (var i=0; i< allUsers.length; i++) {
+                 var exist=false;
+                for(var j=0; j< pickedUsers.length; j++){
+                    if (allUsers[i].Id ==  pickedUsers[j].Id) { 
+                        exist=true;
+                    }
+                }   
 
-            if (exist == false) {
-                $scope.remainUsers.push(allUsers[i]);
-            }
-        }
-        console.log($scope.remainUsers);
-        //------------
+                if(exist==false) {
+                    $scope.remainUsers.push(allUsers[i]);  
+                }           
+            }   
+            console.log($scope.remainUsers);
+            //------------
 
 
-        $mdDialog.show({
-            controller: dashboardgroupCtrl,
-            templateUrl: 'views/addUsersToGroup.html',
-            resolve: {},
-            locals: {grpId: group, grpName: grpName, remainUsers: $scope.remainUsers},
-        });
+            $mdDialog.show({
+                controller: dashboardgroupCtrl,
+                templateUrl: 'views/addUsersToGroup.html',
+                resolve: {},
+                locals: {grpId:group,grpName:grpName,remainUsers:$scope.remainUsers},
+            });
     };
 
 
     //********
-    var dashboardgroupCtrl = function ($scope, grpId, grpName, remainUsers) {
+    var dashboardgroupCtrl = function ($scope, grpId,grpName,remainUsers) {
 
         $scope.grpId = grpId;
         $scope.grpName = grpName;
         $scope.remainUsers = remainUsers;
-        $scope.newSelected = [];
-
+        $scope.newSelected=[];
+    
         //------------Add users to group*******
         $scope.addUsersToGroup = function (newSelected) {
             //Add user to group
@@ -620,59 +619,52 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
             };
 
 
-            if ($scope.userDtl == []) {
-                return;
-            }
+            if ($scope.userDtl==[]){return;}
             $http({
                 method: 'POST',
-                url: baseUrl + '/apis/usercommon/addUserToGroup',
+                url: baseUrl+'/apis/usercommon/addUserToGroup',
                 data: angular.toJson($scope.userDtl)
             })
                 .success(function (response) {
                     //alert("Success...!");
                     //for (var j = 0; j < newSelected.length; j++) {
-                    //$rootScope.sharableGroupsDtls.push({groupId: grpId, groupname: grpName,users:newSelected[j]});
+                        //$rootScope.sharableGroupsDtls.push({groupId: grpId, groupname: grpName,users:newSelected[j]});
                     //}
 
-
-                    $http.get(baseUrl + "/apis/usercommon/getAllGroups")
-                        .success(function (data) {
-                            console.log(data);
+                    
+                      $http.get(baseUrl + "/apis/usercommon/getAllGroups")
+                        .success(function(data) 
+                        {
+                            console.log(data); 
                             $rootScope.sharableGroupsDtls = [];
-
+                            
                             for (var i = 0; i < data.length; i++) {
-                                $scope.users = [];  //$scope.userNames=[];
+                                $scope.users=[];  //$scope.userNames=[];
                                 for (var j = 0; j < data[i].users.length; j++) {
-                                    $scope.users.push({
-                                        Id: data[i].users[j].Id,
-                                        Name: data[i].users[j].Name,
-                                        mainTitle: data[i].users[j].mainTitle
-                                    });
-                                }
-                                $rootScope.sharableGroupsDtls.push({
-                                    groupId: data[i].groupId,
-                                    groupname: data[i].groupname,
-                                    users: $scope.users
-                                });
+                                    $scope.users.push({Id: data[i].users[j].Id, Name: data[i].users[j].Name, mainTitle:data[i].users[j].mainTitle});     
+                                }    
+                                $rootScope.sharableGroupsDtls.push({groupId: data[i].groupId, groupname: data[i].groupname,users:$scope.users});
                             }
-                            console.log($rootScope.sharableGroupsDtls);
+                                console.log($rootScope.sharableGroupsDtls);
 
 
-                            fireMsg('1', 'User/s added successfully !');
-                            $mdDialog.hide();
+                                 fireMsg('1', 'User/s added successfully !');
+                                 $mdDialog.hide();
 
 
-                        }).error(function () {
-                        //alert ("Oops! There was a problem retrieving the groups");
-                    });
+                        }).error(function(){
+                            //alert ("Oops! There was a problem retrieving the groups");
+                        });
 
 
+
+                   
                 })
                 .error(function (error) {
                     //alert("Fail...!");
                 });
 
-
+            
         };
 
 
@@ -797,88 +789,91 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     //------------------
 
 
+
 //----------New user registration controler***
+       
+        $scope.validateEmail= function (email) {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        };
 
-    $scope.validateEmail = function (email) {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email);
-    };
+        $scope.registerUser= function () {
 
-    $scope.registerUser = function () {
+            var fullname = $scope.fname + " " + $scope.lname;
 
-        var fullname = $scope.fname + " " + $scope.lname;
-
-        $scope.user = {
+            $scope.user ={
             "EmailAddress": $scope.email,
             "Name": fullname,
             "Password": "password",
             "ConfirmPassword": "password",
             "Active": false
-        };
-
-
-        $scope.error.isLoading = true;
-        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
-
-        $http({
-            method: 'POST',
-            url: '/auth/RegisterTenantUser',
-            data: angular.toJson($scope.user),
-            headers: {
-                'Content-Type': 'application/json',
-                'Securitytoken': userInfo.SecurityToken
-            }
-        }).success(function (data) {
-
-            $scope.error.isLoading = false;
-            fireMsg('1', 'User profile created successfully and, sent email for account verification!');
-            $scope.fname = '';
-            $scope.lname = '';
-            $scope.email = '';
-        }).error(function (data) {
-            $scope.error.isLoading = false;
-        });
-    };
-
-
-    $scope.CreateUser = function () {
-        //validation
-        if ($scope.fname == '' || angular.isUndefined($scope.fname)) {
-            fireMsg('0', '<strong>Error : </strong>first name is required..');
-            focus('$scope.fname');
-            return;
-        } else if ($scope.lname == '' || angular.isUndefined($scope.lname)) {
-            fireMsg('0', '<strong>Error : </strong>last name is required..');
-            focus('$scope.lname');
-            return;
-        }
-        else if ($scope.email == '' || angular.isUndefined($scope.email)) {
-            fireMsg('0', '<strong>Error : </strong>email address is required..');
-            focus('$scope.email');
-            return;
-        }
-        else if (!$scope.validateEmail($scope.email)) {
-            fireMsg('0', '<strong>Error : </strong>invalid email address is required..');
-            focus('$scope.email');
-            return;
-        }
-        else {
-
-            $http.get('/auth/GetUser/' + $scope.email)
-                .success(function (response) {
-                    if (response.Error) {
-                        $scope.registerUser();
-                    }
-                    else {
-                        fireMsg('0', '<strong>Error : </strong>User email already exist...!');
-                    }
-                }).error(function (error) {
-                fireMsg('0', '<strong>Error : </strong>Please try again...!');
+            };
+            
+            
+            $scope.error.isLoading = true;
+            var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+            
+            $http({
+                method: 'POST',
+                url: '/auth/RegisterTenantUser',
+                data: angular.toJson($scope.user),
+                headers: {
+                     'Content-Type': 'application/json',
+                    'Securitytoken': userInfo.SecurityToken
+                }
+            }).success(function (data) {
+              
+                $scope.error.isLoading = false;
+                fireMsg('1', 'User profile created successfully and, sent email for account verification!');
+                $scope.fname = '';
+                $scope.lname = '';
+                $scope.email = '';
+            }).error(function (data) {
+                $scope.error.isLoading = false;            
             });
+        };
+       
 
-
+        $scope.CreateUser = function () {
+            //validation
+            if ($scope.fname == '' || angular.isUndefined($scope.fname)) {
+                fireMsg  ('0', '<strong>Error : </strong>first name is required..');
+                focus('$scope.fname');
+                return;
+            } else if ($scope.lname == '' || angular.isUndefined($scope.lname)) {
+                fireMsg('0', '<strong>Error : </strong>last name is required..');
+                focus('$scope.lname');
+                return;
+            }
+            else if ($scope.email == '' || angular.isUndefined($scope.email)) {
+                fireMsg('0', '<strong>Error : </strong>email address is required..');
+                focus('$scope.email');
+                return;
+            }
+            else if (!$scope.validateEmail($scope.email)) {
+                fireMsg('0', '<strong>Error : </strong>invalid email address is required..');
+                focus('$scope.email');
+                return;
+            } 
+            else {
+            
+                $http.get('/auth/GetUser/'+$scope.email)
+                .success(function(response){
+                    if(response.Error){
+                        $scope.registerUser(); 
+                    }
+                    else{
+                        fireMsg('0', '<strong>Error : </strong>User email already exist...!');
+                    }   
+                }).error(function(error){   
+                    fireMsg('0', '<strong>Error : </strong>Please try again...!');
+                });  
+                
+                
+            }
         }
-    }
+   
+   
 
 
     //update code damith
@@ -890,11 +885,17 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         $("#addNewUserGroup").animate({left: '-100%'});
     };
 
-    //change color theme
 
-    $scope.onClickColorTab = function (color) {
-        console.log(color);
-    }
+
+
+
+
+
+
+
+
+
+
 
 
 });

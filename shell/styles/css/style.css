@@ -2018,9 +2018,10 @@ md-tabs.setup-tabs md-tabs-wrapper md-tab-data {
 }
 
 .setup-color-stripes {
-    width: 70px;
-    height: 20px;
+    width: 40px;
+    height: 40px;
     margin: 10px;
+    border-radius: 100%;
 }
 
 .setup-subscription-card {

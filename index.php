@@ -7,7 +7,7 @@ $fullHost = strtolower($_SERVER['HTTP_HOST']);
 
 switch ($fullHost) {
     case $mainDomain: // digin.io
-        if(!isset($_COOKIE["securityToken"])){
+        if(isset($_COOKIE["securityToken"])){
 			//echo 'chamila4'; exit();
             include ("index1.php");
 		}

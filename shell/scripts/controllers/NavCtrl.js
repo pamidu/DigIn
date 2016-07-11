@@ -85,13 +85,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             top: -(diameterValue / 2) + 'px',
             left: -(diameterValue / 2) + 'px'
         });
-        //get sidebar data from menu.json 
+        //get sidebar data from menu.json
         getJSONData($http, 'menu', function (data) {
 
             localStorage.setItem("sidebarData", JSON.stringify(data));
             $scope.sidebarItems = data;
         });
-        // headerbar 
+        // headerbar
         $scope.headerbarPinned = false;
 
         $scope.pinHeaderbar = function (state) {
@@ -164,12 +164,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             //console.log(JSON.stringify(tennant));
                             $scope.status = 'Yes';
                             //window.location = "http://"+tennant;
+                            //window.open("http://" + tennant);
                             window.open("http://" + tennant+"/#/home");
                         }, function () {
                             //alert('No!');
                             $scope.status = 'No';
                         });
-
+                        //)
+                    };
                     $scope.close = function () {
                         $mdDialog.cancel();
                     };
@@ -208,9 +210,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 "widgetIDs": []
             }
         }
-        // set initial selected page 
+        // set initial selected page
         $rootScope.selectedPage = 1;
-        // angular-table configuration 
+        // angular-table configuration
         $scope.configDashboards = {
             itemsPerPage: 5,
             fillLastPage: true
@@ -504,11 +506,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
             })
         }
-		
-        $scope.getData=function(){
-            alert("Test");
-        }
-
 
         // update damith
         // get all reports details
@@ -622,7 +619,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             console.log($rootScope.sharableObjs);
                             console.log($rootScope.sharableUsers);
                             console.log($rootScope.sharableGroups);
-                    
+
                         }).error(function () {
                         //alert("Oops! There was a problem retrieving the User");
                     });
@@ -657,7 +654,64 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
         }());
 
-		
+        $scope.getSharableUsers=function(){
+            var baseUrl = "http://" + window.location.hostname;
+            $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+                .success(function (data) {
+                    console.log(data);
+                    $rootScope.sharableObjs = [];
+                    $rootScope.sharableUsers = [];
+                    $rootScope.sharableGroups = [];
+
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].Type == "User") {
+                            //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
+                            $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                            $rootScope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
+                        }
+                        else if (data[i].Type == "Group") {
+                            //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
+                            $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                            $rootScope.sharableGroups.push({groupId: data[i].Id, groupname: data[i].Name});
+                        }
+                    }
+                    console.log($rootScope.sharableObjs);
+                    console.log($rootScope.sharableUsers);
+                    console.log($rootScope.sharableGroups);
+
+                }).error(function () {
+                //alert("Oops! There was a problem retrieving the User");
+            });
+
+            //-----------
+            $http.get(baseUrl + "/apis/usercommon/getAllGroups")
+                .success(function (data) {
+                    console.log(data);
+                    $rootScope.sharableGroupsDtls = [];
+
+                    for (var i = 0; i < data.length; i++) {
+                        $scope.users = [];  //$scope.userNames=[];
+                        for (var j = 0; j < data[i].users.length; j++) {
+                            $scope.users.push({
+                                Id: data[i].users[j].Id,
+                                Name: data[i].users[j].Name,
+                                mainTitle: data[i].users[j].mainTitle
+                            });
+                        }
+                        $rootScope.sharableGroupsDtls.push({
+                            groupId: data[i].groupId,
+                            groupname: data[i].groupname,
+                            users: $scope.users
+                        });
+                    }
+                    console.log($rootScope.sharableGroupsDtls);
+
+                }).error(function () {
+                //alert("Oops! There was a problem retrieving the groups");
+            });
+        }
+
+
         $rootScope.privateFun = privateFun;
         $scope.getSearchPanelDetails = function () {
 
@@ -761,7 +815,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         .cancel('No!');
                     $mdDialog.show(confirm).then(function () {
                         //$scope.status = 'Yes';
-                        $window.location = "logout.php";
+                        $window.location = "/logout.php";
                     }, function () {
                         //$scope.status = 'No';
                     });
@@ -918,7 +972,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }, function () {
                 });
         };
-        //load social analysis  
+        //load social analysis
         $scope.showAddSocialAnalysis = function (ev) {
 
             $mdDialog.show({
@@ -948,7 +1002,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
             })
         };
-        //load reports dialog  
+        //load reports dialog
         $scope.showReports = function (ev) {
 
             $mdDialog.show({
@@ -961,7 +1015,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }, function () {
                 });
         };
-        //load sales forecast and prediction  
+        //load sales forecast and prediction
         $scope.showSalesForecastPrediction = function (ev) {
 
             $mdDialog.show({
@@ -1079,7 +1133,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //navigate functions end
 
 
-        // help 
+        // help
         setTimeout(function () {
             $scope.CompletedEvent = function (scope) {
                 console.log("Completed Event called");

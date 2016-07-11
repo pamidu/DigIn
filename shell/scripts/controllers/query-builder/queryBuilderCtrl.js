@@ -938,8 +938,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             query: $scope.dataToBeBind.receivedQuery
         };
 
-        widget.sizeX =12;
-        widget.sizeY =22;
+        widget.sizeX =8;
+        widget.sizeY =6;
 
         var objIndex = getRootObjectById(widget.widgetID, widgets);
         if (objIndex == null) { //new widget

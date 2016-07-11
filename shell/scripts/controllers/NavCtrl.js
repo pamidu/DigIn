@@ -886,6 +886,34 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $scope.goHome = function () {
                         $mdDialog.hide();
                         homeState = true;
+
+                          $scope.createuuid = function () {
+                            return Math.floor((1 + Math.random()) * 0x10000)
+                                .toString(16)
+                                .substring(1);
+                        }
+                        $rootScope.dashboard = [];
+                        $rootScope.dashboard ={
+
+                            "pages" : null,
+                            "compClass": null,
+                            "compType": null,
+                            "compCategory": null,
+                            "compID": null,
+                            "compName": null,
+                            "refreshInterval": null,
+                        }
+
+                        $rootScope.dashboard.pages=[];
+                        var page = {
+                                    "widgets": [],
+                                    "pageID": "temp" + $scope.createuuid(),
+                                    "pageName": "DEFAULT",
+                                    "pageData": null
+                                }
+                        $rootScope.dashboard.pages.push(page);
+                        
+                        
                     }
                     $scope.cancel = function () {
                         $mdDialog.cancel();
@@ -1105,17 +1133,31 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $mdDialog.show({
                 controller: function clearWidgetsCtrl($scope, $mdDialog) {
                     $scope.clear = function () {
-                        //$rootScope.dashboardWidgetsCopy = angular.copy($rootScope.dashboard.widgets);
+                        $scope.createuuid = function () {
+                            return Math.floor((1 + Math.random()) * 0x10000)
+                                .toString(16)
+                                .substring(1);
+                        }
+                        $rootScope.dashboard = [];
+                        $rootScope.dashboard ={
 
-                        for (var i = 0; i < $rootScope.dashboard.pages.length; i++) {
-                            $rootScope.dashboard.pages[i].widgets = [];
+                            "pages" : null,
+                            "compClass": null,
+                            "compType": null,
+                            "compCategory": null,
+                            "compID": null,
+                            "compName": null,
+                            "refreshInterval": null,
                         }
 
-                        for (var i = 0; i < $rootScope.dashboard.pages.length; i++) {
-                            $rootScope.dashboard.pages.splice(i + 1, 1);
-                        }
-                        //$rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets = [];
-                        $rootScope.dashboard.compName = "";
+                        $rootScope.dashboard.pages=[];
+                        var page = {
+                                    "widgets": [],
+                                    "pageID": "temp" + $scope.createuuid(),
+                                    "pageName": "DEFAULT",
+                                    "pageData": null
+                                }
+                        $rootScope.dashboard.pages.push(page);
 
                         $mdDialog.hide();
                     };

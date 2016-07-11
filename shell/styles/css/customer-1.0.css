@@ -4132,3 +4132,60 @@ md-tab-content > div {
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+
+
+/*update Gevindu
+d3- charts image,pdf download
+*/
+
+.d3-btn-wrap{
+    position: absolute;
+    right: 55px;
+    margin-top: 12px;
+    top: 20px;
+    z-index: 100;
+    text-align: left;
+}
+
+.d3-btn-wrap:hover{
+       border: 1px solid gray;
+       border-radius: 3px
+       background-color:gray;
+}
+
+.d3-setting-wrap{
+    position: absolute;
+    width: 156px;
+    height: 145px;
+    right: 0px;
+    box-shadow: rgb(136, 136, 136) 3px 3px 10px; 
+    border: 1px solid rgb(160, 160, 160); 
+    padding: 5px 0px;
+    background: rgb(255, 255, 255);
+}
+
+.print-chart-wrap{
+    cursor: pointer;
+    padding: 0px 10px;
+    color: rgb(48, 48, 48);
+    font-size: 11px;
+    background: none;
+}
+
+.print-opt-wrap{
+    cursor: pointer; 
+    padding: 0px 10px; 
+    color: rgb(48, 48, 48); 
+    font-size: 11px; 
+    background: none;
+}
+
+.print-opt-wrap:hover{
+
+    cursor: pointer; 
+    padding: 0px 10px; 
+    color: rgb(255, 255, 255); 
+    font-size: 11px; 
+    background: rgb(69, 114, 165);
+}

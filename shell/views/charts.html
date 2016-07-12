@@ -1,5 +1,5 @@
 <md-tabs id="footerBar" md-selected="selectedPageIndx" md-border-bottom md-autoselect md-align-tabs="bottom" ng-show="currentView=='Dashboard'" ng-mouseover="adjustTitleLength()">
-    <md-tab ng-repeat="page in $root.dashboard.pages" >
+    <md-tab ng-repeat="page in $root.dashboard.pages" md-on-select="selectPage(page)">
         <md-tab-label >
             <div layout="row" layout-align="center center" ng-dblclick="renamePage(page.pageName, page.pageID)" ng-click = "syncPage(page)">
                 <div class="pageName">{{page.pageName}}</div>

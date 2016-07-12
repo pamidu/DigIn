@@ -89,9 +89,9 @@ routerApp
                         $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
 
                         //#Added for local host ------------------------------
-                        // document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
-                        // document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
-                        // window.location.href = "http://localhost/digin_git/four/DigIn/shell";
+                         // document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
+                         // document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
+                         // window.location.href = "http://localhost/digin_git/four/DigIn/shell";
                         //#------------------------------
                     }
                     else {

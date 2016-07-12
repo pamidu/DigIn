@@ -620,6 +620,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     isFoundCnd = false;
                 }
 
+                if ( $scope.selectedChart.chart== 'pie' && executeQryData.executeMeasures.length != 0){
+                    privateFun.fireMessage('0', 'Cannot add multiple series for pie chart');
+                    $scope.isPendingRequest = false;                    
+                    return;
+                }
+
                 if (!isFoundCnd) {
                     var obj = {
                         filedName: filed.filedName,
@@ -649,6 +655,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     }
                     isFoundCnd = false;
                 }
+
+                if ( $scope.selectedChart.chart== 'pie' && executeQryData.executeMeasures.length > 1){
+                    privateFun.fireMessage('0', 'Cannot generate pie chart with multiple series');
+                    $scope.isPendingRequest = false;                    
+                    return;
+                }                
 
                 if (!isFoundCnd) {
                     var seriesArr = $scope.executeQryData.executeMeasures;
@@ -864,9 +876,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
 
                 var seriesArr = $scope.executeQryData.executeMeasures;
-                if (seriesArr.length < 1 && chartTypeTrue) {
 
-                    privateFun.fireMessage('0', "You can't generate "+$scope.chartType+" chart without selecting a series ...");
+                if ( seriesArr.length > 1 && $scope.chartType == 'pie' ){
+                    privateFun.fireMessage('0', "Cannot generate "+$scope.chartType+" chart with more than one series");
+                    return;
+                }
+
+                if (seriesArr.length < 1 && chartTypeTrue) {
+                    privateFun.fireMessage('0', "Cannot generate "+$scope.chartType+" chart without selecting a series ...");
                     return 0;
                 } else{
 
@@ -1058,7 +1075,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                     $scope.highchartsNG.options = {
                         chart: {
-                            type: 'pie',
+                            type: $scope.selectedChart.chart,
                             plotBackgroundColor: null,
                             plotBorderWidth: null,
                             plotShadow: false
@@ -2045,7 +2062,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 options: {
 
                     chart: {
-                        type: 'pie',
+                        type: $scope.selectedChart.chart,
                         plotBackgroundColor: null,
                         plotBorderWidth: null,
                         plotShadow: false

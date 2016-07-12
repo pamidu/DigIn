@@ -438,7 +438,6 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
         //sync widgets of a page when page is opened
         $scope.syncPage = function (page) {
-            $scope.selectPage(page);
             $scope.isPageSync = true;
             if ( !page.isSeen ){
                 for ( var i = 0; i < page.widgets.length; i++){ 
@@ -452,6 +451,10 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         {$rootScope.dashboard.pages[j]["isSeen"] = true}
                 }
             }
+        };
+
+        $scope.tabIdndexInit = function(){
+            console.log($rootScope.selectedPageIndx);
         };
 
         $scope.widInit = function (widget) {

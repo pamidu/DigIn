@@ -80,18 +80,19 @@ routerApp
             $scope.login = function () {
                 $http({
                     method: 'POST',
-                    url: 'http://digin.io/apis/authorization/userauthorization/login',
+                    //url: 'http://digin.io/apis/authorization/userauthorization/login',
+                    url: '/apis/authorization/userauthorization/login',
                     headers: {'Content-Type': 'application/json'},
                     data: $scope.signindetails
 
                 }).success(function (data) {
                     if (data.Success === true) {
-                        $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
+                        //$window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
 
                         //#Added for local host ------------------------------
-                        // document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
-                        // document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
-                        // window.location.href = "http://localhost:8080/newUpdateDigin/digin/shell";
+                        document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
+                        document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
+                        window.location.href = "http://localhost:8080/git/digin/shell";
                         //#------------------------------
                     }
                     else {
@@ -226,7 +227,8 @@ routerApp
                         $scope.error.isLoading = true;
                         $http({
                             method: 'POST',
-                            url: 'http://digin.io/apis/authorization/userauthorization/userregistration',
+                            //url: 'http://digin.io/apis/authorization/userauthorization/userregistration',
+                            url: '/apis/authorization/userauthorization/userregistration',
                             data: angular.toJson($scope.user),
                             headers: {
                                 'Content-Type': 'application/json'

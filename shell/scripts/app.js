@@ -141,6 +141,14 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: true
             }
         })
+        .state("home.userProfile", {
+            url: "/settings-userProfile",
+            controller: "dashboardSetupCtrl",
+            templateUrl: "views/settings/userProfile.html",
+            data: {
+                requireLogin: true
+            }
+        })
         .state("home.userSettings", {
             url: "/settings-userSettings",
             controller: "dashboardSetupCtrl",

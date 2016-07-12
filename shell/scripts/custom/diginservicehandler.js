@@ -109,57 +109,31 @@
                     });
                 },
 
-                getHierarchicalSummary: function(tbl, h, cb) {
-                    if (database == "BigQuery") {
+                getHierarchicalSummary: function(query, cb) {
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "hierarchicalsummary?h=" + h + "&tablename=[" + getNamespace() + "." + tbl + "]&id=19&db=" + database);
-                    }
-                     else
-                     { 
-                        $servicehelpers.httpSend("get", function(data, status, msg) {
-                            cb(data, status);
-                        }, $diginurls.diginengine + "hierarchicalsummary?h=" + h + "&tablename=" + tbl + "&db=" + database);
-
-                    }
+                        }, query);
                 },
-                generateboxplot: function(tbl, fieldstr, cb) {
-                    if (database == "BigQuery") {
-                               $servicehelpers.httpSend("get", function(data, status, msg) {
-                        cb(data, status);
-                    }, $diginurls.diginengine + "generateboxplot?q=[{'[" + getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database);
-                    }
-                     else
-                     { 
-                              $servicehelpers.httpSend("get", function(data, status, msg) {
-                        cb(data, status);
-                    }, $diginurls.diginengine + "generateboxplot?q=[{'"+ tbl + "':[" + fieldstr + "]}]&dbtype=" + database);
 
-                    }
-                            },
+                generateboxplot: function(query, cb) {
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, query);
+                },
+
+
                 generatehist: function(query, cb) {
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
                         }, query);
                 },
-                generateBubble: function(tbl, x, y, s, c, cb) {
-                    if (database == "BigQuery") {
+
+                generateBubble: function(query, cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
-                        cb(data, status);
-                    }, $diginurls.diginengine + "generatebubble?&table=[" + getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database);
-                    }
-                    else if (database == "postgresql")
-                    {
-                        $servicehelpers.httpSend("get", function(data, status, msg) {
-                        cb(data, status);
-                    }, $diginurls.diginengine + "generatebubble?&table="+ tbl + "&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database);
-                    }
-                    else{
-                        $servicehelpers.httpSend("get", function(data, status, msg) {
-                        cb(data, status);
-                    }, $diginurls.diginengine + "generatebubble?&table=["+ tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database);
-                    }
+                        cb(data, status);                        
+                    }, query);
                 },
+
                 getForcast: function(fObj, cb, gb) {
                     if(database == "BigQuery")
                     {

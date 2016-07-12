@@ -3351,7 +3351,8 @@ li:active {
 .graph-h2 {
     font-family: 'Roboto', sans-serif !important;
     font-weight: 400;
-    color: #DAD5D5;
+    color: #1f1a1a;
+    margin-left: 20px;
 }
 
 .box-shadow-none {

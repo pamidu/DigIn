@@ -63,6 +63,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             'type': 'datetime',
             'category': 'att'
         }, {
+            'type': 'DATE',
+            'category': 'att'
+        },{
             'type': 'TIMESTAMP',
             'category': 'att'
         }, {

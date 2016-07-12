@@ -1,7 +1,7 @@
 <md-tabs id="footerBar" md-selected="selectedPageIndx" md-border-bottom md-autoselect md-align-tabs="bottom" ng-show="currentView=='Dashboard'" ng-mouseover="adjustTitleLength()">
-    <md-tab ng-repeat="page in $root.dashboard.pages" md-on-select="selectPage(page)" >
+    <md-tab ng-repeat="page in $root.dashboard.pages" >
         <md-tab-label >
-            <div layout="row" layout-align="center center" ng-dblclick="renamePage(page.pageName, page.pageID)">
+            <div layout="row" layout-align="center center" ng-dblclick="renamePage(page.pageName, page.pageID)" ng-click = "syncPage(page)">
                 <div class="pageName">{{page.pageName}}</div>
                 <md-button ng-click="removePage(page, $event)" ng-disabled="$root.dashboard.pages.length <= 1" class="pageCloseButton b-r-0" ng-click="cancel();">      
                     <ng-md-icon icon="close" style="fill:#ABABAB" size="18" layout="row"></ng-md-icon>   
@@ -23,8 +23,7 @@
                                  data source details view
                             -->
                             <!-- mapped data view -->
-                            <md-button class="widget-button" ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'"
-                                       ng-click="syncWidget(widget)">
+                            <md-button class="widget-button" ng-click="syncWidget(widget)" ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
                                 <ng-md-icon icon="sync" style="fill:dimgrey" size="20" layout="column"
                                             layout-align="center center" flex></ng-md-icon>
                                 <md-tooltip md-direction="left">sync</md-tooltip>

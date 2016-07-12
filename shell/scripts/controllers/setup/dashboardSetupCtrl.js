@@ -28,6 +28,11 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         "name": "User setting",
         "route": "userSettings",
         "icon": "styles/css/images/setting/user_setting100x100.png"
+    },
+    {
+        "name": "User Profile",
+        "route": "userProfile",
+        "icon": "styles/css/images/setting/user100x100.png"
     }];
 
     
@@ -58,7 +63,9 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         else if (state == "back") {
             $state.go('home.Settings');
         }
-
+        else if (state == "userProfile") {
+            $state.go('home.userProfile');
+        }
     };
 
 
@@ -871,8 +878,7 @@ $scope.invite = function () {
                 
             }
         }
-   
-   
+     
 
 
     //update code damith
@@ -885,7 +891,46 @@ $scope.invite = function () {
     };
 
 
+    //#User Profile settings
+    // $scope.updateProfile= function () {
 
+    //         var fullname = $scope.fname + " " + $scope.lname;
+
+    //         $scope.userProfile ={
+    //              "BannerPicture":"img/cover.png",
+    //              "BillingAddress":$scope.address,
+    //              "Company":$scope.company,
+    //              "Country":$scope.country,
+    //              "Email":$scope.email,
+    //              "Name":$scope.name,
+    //              "PhoneNumber":$scope.phoneNo,
+    //              "ZipCode":$scope.zipCode
+    //         };
+            
+            
+    //         $scope.error.isLoading = true;
+    //         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+            
+    //         $http({
+    //             method: 'POST',
+    //             //url: 'http://test.digin.io/apis/profile/getuserprofile/dilani@duosoftware.com',
+    //             url: baseUrl+'/apis/profile/getuserprofile/dilani@duosoftware.com',
+    //             data: angular.toJson($scope.userProfile),
+    //             headers: {
+    //                  'Content-Type': 'application/json',
+    //                 'Securitytoken': userInfo.SecurityToken
+    //             }
+    //         }).success(function (data) {
+              
+    //             $scope.error.isLoading = false;
+    //             fireMsg('1', 'User profile created successfully and, sent email for account verification!');
+    //             $scope.fname = '';
+    //             $scope.lname = '';
+    //             $scope.email = '';
+    //         }).error(function (data) {
+    //             $scope.error.isLoading = false;            
+    //         });
+    //     };
 
 
 

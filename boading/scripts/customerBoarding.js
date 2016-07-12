@@ -281,7 +281,7 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
         $scope.tenantDtl = {
             "TenantID": TenantID,
             "TenantType": "Company",
-            "Name": userInfo.Name.replace(' ', ''),
+            "Name": userInfo.Name,
             "Shell": "",
             "Statistic": {
                 "CompanyName": "Company",
@@ -299,7 +299,8 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
 
         $http({
             method: 'POST',
-            url: 'http://digin.io/apis/usertenant/tenant/',
+            //url: 'http://digin.io/apis/usertenant/tenant/',
+            url: '/apis/usertenant/tenant/',
             data: angular.toJson($scope.tenantDtl),
             headers: {
                 'Content-Type': 'application/json'

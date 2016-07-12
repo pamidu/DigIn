@@ -1,4 +1,5 @@
 <?php
+
 $mainDomain="digin.io";
 //$mainDomain="localhost:8080";
 

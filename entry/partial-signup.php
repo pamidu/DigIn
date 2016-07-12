@@ -61,7 +61,8 @@
                                                            required
                                                            placeholder="first name">
                                                 </div>
-                                                <div class="ng-message" ng-messages="frmDiginSignUp.firstName.$error">
+                                                <div ng-show="frmDiginSignUp.firstName.$invalid && !frmDiginSignUp.firstName.$pristine"
+                                                 class="ng-message" ng-messages="frmDiginSignUp.firstName.$error">
                                                     <div ng-message="required">This is required.</div>
                                                 </div>
                                             </div>
@@ -76,7 +77,8 @@
                                                            ng-model="signUpUsr.lastName"
                                                            placeholder="last name">
                                                 </div>
-                                                <div class="ng-message" ng-messages="frmDiginSignUp.lastName.$error">
+                                                <div ng-show="frmDiginSignUp.lastName.$invalid && !frmDiginSignUp.lastName.$pristine"
+                                                class="ng-message" ng-messages="frmDiginSignUp.lastName.$error">
                                                     <div ng-message="required">This is required.</div>
                                                 </div>
                                             </div>
@@ -93,7 +95,8 @@
                                                        ng-model="signUpUsr.email"
                                                        placeholder="jane.doe@example.com">
                                             </div>
-                                            <div class="ng-message" ng-messages="frmDiginSignUp.email.$error">
+                                            <div ng-show="frmDiginSignUp.email.$invalid && !frmDiginSignUp.email.$pristine"
+                                            class="ng-message" ng-messages="frmDiginSignUp.email.$error">
                                                 <div ng-message="required">This is required.</div>
                                                 <div ng-message="pattern">Your email address is invalid</div>
                                             </div>
@@ -112,7 +115,8 @@
 
                                                            placeholder="password">
                                                 </div>
-                                                <div class="ng-message"
+                                                <div ng-show="frmDiginSignUp.password.$invalid && !frmDiginSignUp.password.$pristine"
+                                                class="ng-message"
                                                      ng-messages="frmDiginSignUp.password.$error">
                                                     <div ng-message="required">This is required.</div>
                                                 </div>
@@ -129,7 +133,8 @@
                                                            password-verify="signUpUsr.pwd"
                                                            placeholder="confirm password">
                                                 </div>
-                                                <div class="ng-message"
+                                                <div ng-show="frmDiginSignUp.cnfrmPwd.$invalid && !frmDiginSignUp.cnfrmPwd.$pristine"
+                                                class="ng-message"
                                                      ng-show=" frmDiginSignUp.cnfrmPwd.$invalid
                                                      && !frmDiginSignUp.cnfrmPwd.$pristine"
                                                 > Password not match

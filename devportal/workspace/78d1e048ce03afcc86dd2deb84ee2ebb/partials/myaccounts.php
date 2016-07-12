@@ -73,7 +73,7 @@ input,select,textarea{
 			<a style="color:blue;margin-top:10px;cursor: pointer;" ng-click="showaddcardPopup(account,$event)">Add New Card</a>
 		 </div>
 		 <div layout="row">
-			<span style="font-size: 12px;margin-top:5px">Powered by Cloud Charge</span>
+			<!-- <span style="font-size: 12px;margin-top:5px">Powered by Cloud Charge</span> -->
 		</div>
 	 </div>
 	 

@@ -77,11 +77,11 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             minColumns: 1, // minimum amount of columns the grid can scale down to
             minRows: 1, // minimum amount of rows to show if the grid is empty
             maxRows: 100, // maximum amount of rows in the grid
-            //defaultSizeX: 12, // default width of an item in columns
-            //defaultSizeY: 14, // default height of an item in rows
-            minSizeX: 12, // minimum column width of an item
+            defaultSizeX: 8, // default width of an item in columns
+            defaultSizeY: 6, // default height of an item in rows
+            minSizeX: 6, // minimum column width of an item
             maxSizeX: null, // maximum column width of an item
-            minSizeY: 22, // minumum row height of an item
+            minSizeY: 5, // minumum row height of an item
             maxSizeY: null, // maximum row height of an item
             saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
             draggable: {
@@ -123,8 +123,9 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 }
             }
         }
-
+       
         $scope.selectPage = function (page) {
+
 
             for (var i = 0; i < $rootScope.dashboard.pages.length; i++) {
                 if (page.pageID == $rootScope.dashboard.pages[i].pageID) {
@@ -406,6 +407,34 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 });
             }
         };
+        var getCanvas; 
+        $scope.d3ImgDownload = function (widget) {
+
+            var element = $("#d3Chart-wrap");
+            console.log("this element is :",element);
+            html2canvas(element, {
+            onrendered: function (canvas) {
+                $("#previewImage").append(canvas);
+                getCanvas = canvas;
+                console.log("this getCanvas is :",getCanvas);
+             }
+            });
+        }
+
+       $scope.finalDown = function(){
+         var imgageData = getCanvas.toDataURL("image/png");
+         console.log("this imgageData is :",imgageData);
+            // Now browser starts downloading it instead of just showing it
+            var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+            console.log("this newData is :",newData);
+            $("#btn-Convert-Html2Image").attr("download", "your_pic_name.png").attr("href", newData);
+        };
+
+        $scope.d3chartBtnClick =function (widget){
+
+            var d3btnTemp = widget.d3chartBtn;
+            widget.d3chartBtn = !d3btnTemp;
+        };
 
         //sync widgets of a page when page is opened
         $scope.syncPage = function (page) {
@@ -426,6 +455,21 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         };
 
         $scope.widInit = function (widget) {
+
+            widget.isD3chart = false;
+            widget.d3chartBtn = false;
+            switch (widget.widgetName) {
+                    
+                    case 'sunburst':
+                        widget.isD3chart = true;
+                        break;
+
+                    case 'hierarchy':
+                        widget.isD3chart = true;
+                        break;
+
+                }
+
             if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled) {
                 var drillConf = widget.widgetData.widData.drillConf;
                 var client = $diginengine.getClient(drillConf.dataSrc);
@@ -595,7 +639,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
                         $mdDialog.hide();
                         removeWidget = true;
-                        $scope.$apply();
+                        //$scope.$apply();
                     }
                     $scope.cancel = function () {
 

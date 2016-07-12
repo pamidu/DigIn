@@ -164,7 +164,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             //console.log(JSON.stringify(tennant));
                             $scope.status = 'Yes';
                             //window.location = "http://"+tennant;
-                            window.open("http://" + tennant);
+                            //window.open("http://" + tennant);
+                            window.open("http://" + tennant+"/#/home");
                         }, function () {
                             //alert('No!');
                             $scope.status = 'No';
@@ -527,7 +528,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
             })
         }
-		
+        
         // update damith
         // get all reports details
         var privateFun = (function () {
@@ -621,26 +622,26 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
                         .success(function (data) {
                             console.log(data);
-                            $scope.sharableObjs = [];
-                            $scope.sharableUsers = [];
-                            $scope.sharableGroups = [];
+                            $rootScope.sharableObjs = [];
+                            $rootScope.sharableUsers = [];
+                            $rootScope.sharableGroups = [];
 
                             for (var i = 0; i < data.length; i++) {
                                 if (data[i].Type == "User") {
                                     //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
-                                    $scope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
-                                    $scope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
+                                    $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                                    $rootScope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
                                 }
                                 else if (data[i].Type == "Group") {
                                     //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
-                                    $scope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
-                                    $scope.sharableGroups.push({groupId: data[i].Id, groupname: data[i].Name});
+                                    $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                                    $rootScope.sharableGroups.push({groupId: data[i].Id, groupname: data[i].Name});
                                 }
                             }
-                            console.log($scope.sharableObjs);
-                            console.log($scope.sharableUsers);
-                            console.log($scope.sharableGroups);
-
+                            console.log($rootScope.sharableObjs);
+                            console.log($rootScope.sharableUsers);
+                            console.log($rootScope.sharableGroups);
+                    
                         }).error(function () {
                         //alert("Oops! There was a problem retrieving the User");
                     });
@@ -675,7 +676,64 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
         }());
 
-		
+        $scope.getSharableUsers=function(){
+            var baseUrl = "http://" + window.location.hostname;
+                    $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+                        .success(function (data) {
+                            console.log(data);
+                            $rootScope.sharableObjs = [];
+                            $rootScope.sharableUsers = [];
+                            $rootScope.sharableGroups = [];
+
+                            for (var i = 0; i < data.length; i++) {
+                                if (data[i].Type == "User") {
+                                    //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
+                                    $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                                    $rootScope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
+                                }
+                                else if (data[i].Type == "Group") {
+                                    //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
+                                    $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                                    $rootScope.sharableGroups.push({groupId: data[i].Id, groupname: data[i].Name});
+                                }
+                            }
+                            console.log($rootScope.sharableObjs);
+                            console.log($rootScope.sharableUsers);
+                            console.log($rootScope.sharableGroups);
+                    
+                        }).error(function () {
+                        //alert("Oops! There was a problem retrieving the User");
+                    });
+
+                    //-----------
+                    $http.get(baseUrl + "/apis/usercommon/getAllGroups")
+                        .success(function (data) {
+                            console.log(data);
+                            $rootScope.sharableGroupsDtls = [];
+
+                            for (var i = 0; i < data.length; i++) {
+                                $scope.users = [];  //$scope.userNames=[];
+                                for (var j = 0; j < data[i].users.length; j++) {
+                                    $scope.users.push({
+                                        Id: data[i].users[j].Id,
+                                        Name: data[i].users[j].Name,
+                                        mainTitle: data[i].users[j].mainTitle
+                                    });
+                                }
+                                $rootScope.sharableGroupsDtls.push({
+                                    groupId: data[i].groupId,
+                                    groupname: data[i].groupname,
+                                    users: $scope.users
+                                });
+                            }
+                            console.log($rootScope.sharableGroupsDtls);
+
+                        }).error(function () {
+                        //alert("Oops! There was a problem retrieving the groups");
+                    });
+        }
+
+        
         $rootScope.privateFun = privateFun;
         $scope.getSearchPanelDetails = function () {
 
@@ -779,7 +837,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         .cancel('No!');
                     $mdDialog.show(confirm).then(function () {
                         //$scope.status = 'Yes';
-                        $window.location = "logout.php";
+                        $window.location = "/logout.php";
                     }, function () {
                         //$scope.status = 'No';
                     });
@@ -850,6 +908,34 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $scope.goHome = function () {
                         $mdDialog.hide();
                         homeState = true;
+
+                          $scope.createuuid = function () {
+                            return Math.floor((1 + Math.random()) * 0x10000)
+                                .toString(16)
+                                .substring(1);
+                        }
+                        $rootScope.dashboard = [];
+                        $rootScope.dashboard ={
+
+                            "pages" : null,
+                            "compClass": null,
+                            "compType": null,
+                            "compCategory": null,
+                            "compID": null,
+                            "compName": null,
+                            "refreshInterval": null,
+                        }
+
+                        $rootScope.dashboard.pages=[];
+                        var page = {
+                                    "widgets": [],
+                                    "pageID": "temp" + $scope.createuuid(),
+                                    "pageName": "DEFAULT",
+                                    "pageData": null
+                                }
+                        $rootScope.dashboard.pages.push(page);
+                        
+                        
                     }
                     $scope.cancel = function () {
                         $mdDialog.cancel();
@@ -1070,17 +1156,31 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $mdDialog.show({
                 controller: function clearWidgetsCtrl($scope, $mdDialog) {
                     $scope.clear = function () {
-                        //$rootScope.dashboardWidgetsCopy = angular.copy($rootScope.dashboard.widgets);
+                        $scope.createuuid = function () {
+                            return Math.floor((1 + Math.random()) * 0x10000)
+                                .toString(16)
+                                .substring(1);
+                        }
+                        $rootScope.dashboard = [];
+                        $rootScope.dashboard ={
 
-                        for (var i = 0; i < $rootScope.dashboard.pages.length; i++) {
-                            $rootScope.dashboard.pages[i].widgets = [];
+                            "pages" : null,
+                            "compClass": null,
+                            "compType": null,
+                            "compCategory": null,
+                            "compID": null,
+                            "compName": null,
+                            "refreshInterval": null,
                         }
 
-                        for (var i = 0; i < $rootScope.dashboard.pages.length; i++) {
-                            $rootScope.dashboard.pages.splice(i + 1, 1);
-                        }
-                        //$rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets = [];
-                        $rootScope.dashboard.compName = "";
+                        $rootScope.dashboard.pages=[];
+                        var page = {
+                                    "widgets": [],
+                                    "pageID": "temp" + $scope.createuuid(),
+                                    "pageName": "DEFAULT",
+                                    "pageData": null
+                                }
+                        $rootScope.dashboard.pages.push(page);
 
                         $mdDialog.hide();
                     };

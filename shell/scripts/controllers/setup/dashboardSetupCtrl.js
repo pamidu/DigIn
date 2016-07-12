@@ -2,8 +2,8 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
                                                      Digin_Engine_API, ngToast, $rootScope, $apps, $objectstore, Upload, 
                                                      Digin_Domain, Digin_Tenant, $state) {
     
-	
-	//main menu json
+    
+    //main menu json
     $scope.menuJson = [{
         "name": "Account setting",
         "route": "user",
@@ -30,8 +30,8 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         "icon": "styles/css/images/setting/user_setting100x100.png"
     }];
 
-	
-	//*Settings routing ---------------- 
+    
+    //*Settings routing ---------------- 
     var slide = false;
     $scope.route = function (state) {
         if (state == "account") {
@@ -86,9 +86,9 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     $scope.selectedItems = [];
     $scope.selectedUsers = [];
 
-    $scope.sharableObjs= $scope.sharableObjs;
-    $scope.sharableUsers = $scope.sharableUsers;
-    $scope.sharableGroups = $scope.sharableGroups;
+    $scope.sharableObjs= $rootScope.sharableObjs;
+    $scope.sharableUsers = $rootScope.sharableUsers;
+    $scope.sharableGroups = $rootScope.sharableGroups;
     //$scope.sharableGroupsDtls = $scope.sharableGroupsDtls;
 
 
@@ -128,10 +128,14 @@ $scope.invite = function () {
                 headers: {'Securitytoken': userInfo.SecurityToken}
             })
             .success(function (response) {
-				if(response=="false"){
+                if(response=="false"){
                     fireMsg('0', '<strong>Error : </strong>This user not registered for Digin...!');
                 }
                 else{
+                    //privateFun.getAllSharableObj();
+                        //$scope.sharableObjs= $rootScope.sharableObjs;
+                        //$scope.sharableUsers = $rootScope.sharableUsers;
+                        //$scope.sharableGroups = $rootScope.sharableGroups;
                     fireMsg('1', '<strong>Success : </strong>Invitation sent successfully...!');
                     $scope.user.email='';
                 }
@@ -183,7 +187,7 @@ $scope.invite = function () {
         $mdDialog.show({
                 controller: function fileUploadCtrl($scope, $rootScope, $mdDialog, fileUpload, $http, Upload) {
 
-					var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+                    var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
                     var filename;
 
                     $scope.diginLogo = 'digin-logo-wrapper2';
@@ -210,7 +214,7 @@ $scope.invite = function () {
                             $scope.preloader = true;
                             $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
                             //for (var i = 0; i < files.length; i++) {
-								var i=0;
+                                var i=0;
                                 var lim = i == 0 ? "" : "-" + i;
                                 console.log(userInfo);
                                 filename = $scope.files[0].name;
@@ -796,18 +800,18 @@ $scope.invite = function () {
 
             var fullname = $scope.fname + " " + $scope.lname;
 
-			$scope.user ={
-			"EmailAddress": $scope.email,
-			"Name": fullname,
-			"Password": "password",
-			"ConfirmPassword": "password",
-			"Active": false
-			};
-			
-			
+            $scope.user ={
+            "EmailAddress": $scope.email,
+            "Name": fullname,
+            "Password": "password",
+            "ConfirmPassword": "password",
+            "Active": false
+            };
+            
+            
             $scope.error.isLoading = true;
             var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
-			
+            
             $http({
                 method: 'POST',
                 url: '/auth/RegisterTenantUser',
@@ -820,9 +824,9 @@ $scope.invite = function () {
               
                 $scope.error.isLoading = false;
                 fireMsg('1', 'User profile created successfully and, sent email for account verification!');
-				$scope.fname = '';
-				$scope.lname = '';
-				$scope.email = '';
+                $scope.fname = '';
+                $scope.lname = '';
+                $scope.email = '';
             }).error(function (data) {
                 $scope.error.isLoading = false;            
             });
@@ -851,20 +855,20 @@ $scope.invite = function () {
                 return;
             } 
             else {
-			
-				$http.get('/auth/GetUser/'+$scope.email)
-				.success(function(response){
-					if(response.Error){
-						$scope.registerUser(); 
-					}
-					else{
-						fireMsg('0', '<strong>Error : </strong>User email already exist...!');
-					}	
-				}).error(function(error){   
-					fireMsg('0', '<strong>Error : </strong>Please try again...!');
-				});  
-				
-				
+            
+                $http.get('/auth/GetUser/'+$scope.email)
+                .success(function(response){
+                    if(response.Error){
+                        $scope.registerUser(); 
+                    }
+                    else{
+                        fireMsg('0', '<strong>Error : </strong>User email already exist...!');
+                    }   
+                }).error(function(error){   
+                    fireMsg('0', '<strong>Error : </strong>Please try again...!');
+                });  
+                
+                
             }
         }
    

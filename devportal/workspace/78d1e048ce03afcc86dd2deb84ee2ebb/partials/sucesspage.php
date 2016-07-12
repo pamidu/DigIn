@@ -72,7 +72,7 @@ input,select,textarea{
 	<div layout="column" layout-align="start start">
 		
 		 <div layout="row">
-			<span style="font-size: 12px;margin-top:5px;margin-left:15px;">Powered by Cloud Charge</span>
+			<!-- <span style="font-size: 12px;margin-top:5px;margin-left:15px;">Powered by Cloud Charge</span> -->
 		</div>
 	 </div>
 	 

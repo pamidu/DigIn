@@ -1,0 +1,50 @@
+<div class="main-container" layout="column" layout-align="center center">
+
+    <div layout="row" layout-align="center center">
+        <div ng-repeat="plan in companyPricePlans">
+            <div class="plan-main-wrap"
+                 ng-class="plan.number=='0'?'center-price-wrap':
+                 'side-price-wrap'">
+                <div class="price-img-wrap">
+                    <img ng-src="{{plan.img}}"/>
+                </div>
+                <div class="price-header font-dosis">
+                    {{plan.name}}
+                </div>
+
+                <!-- <div class="price-body">
+                    <b>Additional Storage</b>
+                    <p>25 GB/Month: 4.99</p>
+                    <p>100 GB/Month: 9.99</p>
+                    <p>1 TB/Month: 24.99</p>
+                </div> -->
+
+                <div class="price-body">    
+                    <p><b> {{plan.title1}}</b></p>
+                    <p>{{plan.features}}</p>
+
+                    <p><b>{{plan.title2}}</b></p>
+                    <!-- <p>storage: {{plan.storage}}</p>
+                    <p>Querry/Month: {{plan.QuerryPMonth}}</p> -->
+                    <p>Monthly/User: {{plan.Monthly_Susbcription_FeePUser}}</p>
+                    <!-- <p>Annual Fee/ User: {{plan.Annual_Subscription_FeePUser}}</p> -->
+
+                    <p><b>{{plan.title3}}</b></p>
+                    <!-- <p>25GB/ Month: {{plan.Storage_25_GBPMonth}}</p>
+                    <p>100GB/ Month: {{plan.Storage_100_GBPMonth}}</p>-->
+                    <!-- <p>1TB/ Month: {{plan.Storage_1_TBPMonth}}</p> -->
+                    <!-- <p>Querry 1TB/ Month:{{plan.Querry_1_TBPMonth}}</p> -->
+                </div>
+
+                <div class="price-btn-wrap">
+                    <span ng-click="selectPlan(plan.id)" class="btn btn-default-price hvr-pop">SELECT PLAN</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

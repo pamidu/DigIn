@@ -1,6 +1,7 @@
 <?php
 $mainDomain="digin.io";
-//$mainDomain="localhost:8080";
+//mainDomain="localhost:8080";
+>>>>>>> bda4d074da054c5c75182e06bd2d917b1b5305b1
 
 $authURI="http://104.197.27.7:3048/";
 $objURI="http://104.197.27.7:3000/";

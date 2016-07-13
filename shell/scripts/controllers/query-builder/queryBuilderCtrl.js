@@ -882,6 +882,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     return;
                 }
 
+                $scope.selectedChart = onSelect;
+                eval("$scope." + $scope.selectedChart.chartType + ".changeType()");
+
                 if (seriesArr.length < 1 && chartTypeTrue) {
                     privateFun.fireMessage('0', "Cannot generate "+$scope.chartType+" chart without selecting a series ...");
                     return 0;
@@ -1614,6 +1617,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                 var database = $scope.sourceData.src;
                 var tbl = $scope.sourceData.tbl;
+                console.log($diginurls.getNamespace());
                 if (database == "BigQuery") {
                     var query = $diginurls.diginengine + "generatehist?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database;
                 }

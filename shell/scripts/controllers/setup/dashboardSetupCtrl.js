@@ -892,6 +892,7 @@ $scope.invite = function () {
 
 
     //#User Profile settings
+<<<<<<< HEAD
         //#User Profile settings
     $scope.updateProfile= function () {
 
@@ -947,7 +948,47 @@ $scope.invite = function () {
                 //fireMsg('0', '<strong>Error : </strong>Please try again...!');
             });  
     };
+=======
+    // $scope.updateProfile= function () {
+>>>>>>> 505a7e583f43fe45aea8a3fc8d4a6ab86bf288e4
 
+    //         var fullname = $scope.fname + " " + $scope.lname;
+
+    //         $scope.userProfile ={
+    //              "BannerPicture":"img/cover.png",
+    //              "BillingAddress":$scope.address,
+    //              "Company":$scope.company,
+    //              "Country":$scope.country,
+    //              "Email":$scope.email,
+    //              "Name":$scope.name,
+    //              "PhoneNumber":$scope.phoneNo,
+    //              "ZipCode":$scope.zipCode
+    //         };
+            
+            
+    //         $scope.error.isLoading = true;
+    //         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+            
+    //         $http({
+    //             method: 'POST',
+    //             //url: 'http://test.digin.io/apis/profile/getuserprofile/dilani@duosoftware.com',
+    //             url: baseUrl+'/apis/profile/getuserprofile/dilani@duosoftware.com',
+    //             data: angular.toJson($scope.userProfile),
+    //             headers: {
+    //                  'Content-Type': 'application/json',
+    //                 'Securitytoken': userInfo.SecurityToken
+    //             }
+    //         }).success(function (data) {
+              
+    //             $scope.error.isLoading = false;
+    //             fireMsg('1', 'User profile created successfully and, sent email for account verification!');
+    //             $scope.fname = '';
+    //             $scope.lname = '';
+    //             $scope.email = '';
+    //         }).error(function (data) {
+    //             $scope.error.isLoading = false;            
+    //         });
+    //     };
 
 
 

@@ -45,12 +45,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             'type': 'nvarchar',
             'category': 'att'
         }, {
-            'type': 'varchar',
-            'category': 'att'
-        }, {
-            'type': 'char',
-            'category': 'att'
-        }, {
             'type': 'char',
             'category': 'att'
         }, {
@@ -96,9 +90,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             'type': 'bigint',
             'category': 'mes'
         }, {
-            'type': 'decimal',
-            'category': 'mes'
-        }, {
             'type': 'numeric',
             'category': 'mes'
         }, {
@@ -119,10 +110,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
 
             'type': 'bigserial',
             'category': 'mes'
-        },
-
-        {
-
+        }, {
             'type': 'character varying',
             'category': 'att'
         }, {
@@ -133,17 +121,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
 
             'type': 'character',
             'category': 'att'
-        }, {
-
-            'type': 'char',
-            'category': 'att'
-        }, {
-
-            'type': 'numeric',
-            'category': 'mes'
         }
-
-
     ];
 
         var chartTypes = [];

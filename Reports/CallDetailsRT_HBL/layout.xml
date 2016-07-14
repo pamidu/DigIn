@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout xmlns="http://reporting.pentaho.org/namespaces/engine/classic/bundle/layout/1.0" xmlns:style="http://reporting.pentaho.org/namespaces/engine/classic/bundle/style/1.0" xmlns:core="http://reporting.pentaho.org/namespaces/engine/attributes/core" xmlns:html="http://reporting.pentaho.org/namespaces/engine/attributes/html" xmlns:swing="http://reporting.pentaho.org/namespaces/engine/attributes/swing" xmlns:pdf="http://reporting.pentaho.org/namespaces/engine/attributes/pdf" xmlns:wizard="http://reporting.pentaho.org/namespaces/engine/attributes/wizard" xmlns:designtime="http://reporting.pentaho.org/namespaces/report-designer/2.0" xmlns:crosstab="http://reporting.pentaho.org/namespaces/engine/attributes/crosstab" xmlns:pentaho="http://reporting.pentaho.org/namespaces/engine/attributes/pentaho" xmlns:table="http://reporting.pentaho.org/namespaces/engine/attributes/table" core:parameter-layout="flow" xmlns:internal="http://reporting.pentaho.org/namespaces/engine/attributes/internal" internal:compatibility-level="5.0.3" designtime:zoom="1.25" designtime:preview-dialog-bounds="192.0,0.0,700.0,624.0" designtime:HorizontalGuideLines="(true,278.8235778808594) (true,400.7843933105469) (true,600.0001831054688) (true,149.8392791748047) (true,229.26052856445312)">
+  <style:element-style>
+    <style:text-styles direction="ltr"/>
+  </style:element-style>
+  <report-header>
+    <root-level-content designtime:visual-height="28.4444">
+      <style:element-style>
+      </style:element-style>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="left" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="0" y="0" min-width="56.437" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Phone No</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="left" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="56.437" y="0" min-width="77.119" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Resource</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="left" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="186.186" y="0" min-width="49.375" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Direction</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="left" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="235.561" y="0" min-width="50.679" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Start Time</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="left" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="286.24" y="0" min-width="56.482" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>End Time</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="left" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="342.722" y="0" min-width="63.236" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>IVR Time</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="left" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="405.958" y="0" min-width="63.236" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Queue Time</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="left" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="469.194" y="0" min-width="63.237" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Ring Time</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="left" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="532.431" y="0" min-width="63.236" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>TalkTime</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="left" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="595.667" y="0" min-width="48.75" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Hold Time</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="left" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="644.417" y="0" min-width="53.458" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>ACW Time</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="left" vertical-alignment="middle"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="133.556" y="0" min-width="52.63" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Skill</core:value>
+      </label>
+    </root-level-content>
+  </report-header>
+  <group core:group-fields="">
+    <style:element-style>
+    </style:element-style>
+    <fields>
+    </fields>
+    <group-header>
+      <root-level-content designtime:hideInLayoutGUI="true">
+        <style:element-style>
+        </style:element-style>
+      </root-level-content>
+    </group-header>
+    <data-body>
+      <style:element-style>
+      </style:element-style>
+      <details-header designtime:hideInLayoutGUI="true">
+        <style:element-style>
+          <style:common-styles avoid-page-break="true"/>
+        </style:element-style>
+      </details-header>
+      <details>
+        <root-level-content designtime:visual-height="48.66667640209198">
+          <style:element-style>
+          </style:element-style>
+          <text-field core:field="phonenumber">
+            <style:element-style>
+              <style:common-styles vertical-alignment="middle"/>
+              <style:spatial-styles x="0" y="0" min-width="56.437" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="direction">
+            <style:element-style>
+              <style:common-styles vertical-alignment="middle"/>
+              <style:spatial-styles x="186.186" y="0" min-width="49.375" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <date-field core:field="starttime" core:format-string="yyyy-MM-dd HH:mm:ss">
+            <style:element-style>
+              <style:common-styles vertical-alignment="middle"/>
+              <style:spatial-styles x="235.561" y="0" min-width="50.679" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </date-field>
+          <date-field core:field="endtime" core:format-string="yyyy-MM-dd HH:mm:ss">
+            <style:element-style>
+              <style:common-styles vertical-alignment="middle"/>
+              <style:spatial-styles x="286.24" y="0" min-width="56.482" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </date-field>
+          <text-field core:field="ivrtime">
+            <style:element-style>
+              <style:common-styles vertical-alignment="middle"/>
+              <style:spatial-styles x="342.722" y="0" min-width="63.236" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="queuetime">
+            <style:element-style>
+              <style:common-styles vertical-alignment="middle"/>
+              <style:spatial-styles x="405.958" y="0" min-width="63.236" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="ringtime">
+            <style:element-style>
+              <style:common-styles vertical-alignment="middle"/>
+              <style:spatial-styles x="469.194" y="0" min-width="63.237" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="talktime">
+            <style:element-style>
+              <style:common-styles vertical-alignment="middle"/>
+              <style:spatial-styles x="532.431" y="0" min-width="63.236" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="holdtime">
+            <style:element-style>
+              <style:common-styles vertical-alignment="middle"/>
+              <style:spatial-styles x="595.667" y="0" min-width="48.75" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="acwtime">
+            <style:element-style>
+              <style:common-styles vertical-alignment="middle"/>
+              <style:spatial-styles x="644.417" y="0" min-width="53.458" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="resource">
+            <style:element-style>
+              <style:common-styles vertical-alignment="middle"/>
+              <style:spatial-styles x="56.437" y="0" min-width="70.897" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="skillcode">
+            <style:element-style>
+              <style:common-styles vertical-alignment="middle"/>
+              <style:spatial-styles x="133.556" y="0" min-width="52.63" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+        </root-level-content>
+      </details>
+      <no-data>
+        <root-level-content designtime:hideInLayoutGUI="true">
+          <style:element-style>
+          </style:element-style>
+        </root-level-content>
+      </no-data>
+      <details-footer designtime:hideInLayoutGUI="true">
+        <style:element-style>
+          <style:common-styles avoid-page-break="true"/>
+        </style:element-style>
+      </details-footer>
+    </data-body>
+    <group-footer>
+      <root-level-content designtime:hideInLayoutGUI="true">
+        <style:element-style>
+        </style:element-style>
+      </root-level-content>
+    </group-footer>
+  </group>
+  <report-footer>
+    <root-level-content designtime:visual-height="20.0">
+      <style:element-style>
+      </style:element-style>
+    </root-level-content>
+  </report-footer>
+</layout>

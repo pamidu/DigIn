@@ -1545,14 +1545,6 @@ md-checkbox.md-checked .md-icon {
     margin-bottom: 20px;
 }
 
-.panel-text-label {
-    font-family: 'Ek Mukta', sans-serif;
-    font-weight: 400;
-    font-size: 15px;
-    float: left;
-    width: 100%;
-}
-
 .inline-date {
     display: inline-block;
     width: 100px;

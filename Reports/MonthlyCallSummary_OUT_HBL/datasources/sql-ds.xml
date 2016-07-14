@@ -1,0 +1,130 @@
+<data:sql-datasource xmlns:data="http://jfreereport.sourceforge.net/namespaces/datasources/sql">
+  <data:config/>
+  <data:connection>
+    <data:driver>org.postgresql.Driver</data:driver>
+    <data:url>jdbc:postgresql://192.168.2.106:5432/SingerDB</data:url>
+    <data:properties>
+      <data:property name="user">postgres</data:property>
+      <data:property name="password">encrypted:771b4a60055957</data:property>
+      <data:property name="::pentaho-reporting::port">5432</data:property>
+      <data:property name="::pentaho-reporting::name">ReportCon</data:property>
+      <data:property name="::pentaho-reporting::database-name">SingerDB</data:property>
+      <data:property name="::pentaho-reporting::hostname">192.168.2.106</data:property>
+      <data:property name="::pentaho-reporting::database-type">POSTGRESQL</data:property>
+    </data:properties>
+  </data:connection>
+  <data:query-definitions>
+    <data:query name="Years">
+      <data:static-query>Select  '2015' as year, 1 as sort 
+union
+Select  '2014' as year, 2 as sort  
+union
+Select  '2013' as year, 3 as sort 
+order by sort 
+
+</data:static-query>
+    </data:query>
+    <data:query name="Query 1">
+      <data:static-query>select 
+years,months,date,dialledcalls,att,notansweredcalls,answeredcalls,notansweredpercent,contactedpercent,tholdcount,totholdt,avghandletime,avgacw,tacwt,ttt,
+dialledcallsfullsum,attfull,tttfull,notansweredcallsfullsum,answeredcallsfullsum,notansweredpercentfull,contactedpercentfull,tholdcountfullsum,totholdtfullsum,fullaht,tidle,
+(sum(tacwt::interval) OVER ())::text as tacwfullsum,
+tidle,tbreak,
+(sum(tidle::interval) OVER ())::text  as idlefullsum,
+(sum(tbreak::interval) OVER ())::text  as breakfullsum
+
+ from 
+((SELECT
+     &quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;id&quot;,
+     &quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;year&quot; as years,
+     &quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;month&quot; as months,
+     &quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;month&quot; || '-' || &quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;year&quot; as date,
+     &quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;dialledcalls&quot;,
+     TO_CHAR(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;att&quot;::text::interval, 'HH24:MI:SS') as att,
+     &quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;notansweredcalls&quot;,
+     &quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;answeredcalls&quot;,
+     ROUND((&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;notansweredcalls&quot;::numeric*100/&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;dialledcalls&quot;::numeric) ,2) as notansweredpercent,
+     100 - (ROUND((&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;notansweredcalls&quot;::numeric*100/&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;dialledcalls&quot;::numeric) ,2)) as contactedpercent,
+     &quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;tholdcount&quot;::numeric::integer,
+     TO_CHAR(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;totholdt&quot;::text::interval, 'HH24:MI:SS') as totholdt,
+     TO_CHAR((ROUND(( (&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;ttt&quot;::numeric+&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;tacwt&quot;::numeric)/(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;answeredcalls&quot;::numeric)),2))::text::interval, 'HH24:MI:SS') as avghandletime,
+     TO_CHAR(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;avgacw&quot;::text::interval, 'HH24:MI:SS') as avgacw,
+     TO_CHAR(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;tacwt&quot;::text::interval, 'HH24:MI:SS') as tacwt,
+     TO_CHAR(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;ttt&quot;::text::interval, 'HH24:MI:SS') as ttt,
+     
+     &quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;company&quot;,
+     &quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;tenant&quot;,
+
+      (sum(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;dialledcalls&quot;::integer) OVER ())::text  as dialledcallsfullsum,
+      TO_CHAR((avg(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;ttt&quot;::numeric) OVER ())::text::interval , 'HH24:MI:SS' )as  attfull,
+      TO_CHAR((sum(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;ttt&quot;::numeric) OVER ())::text::interval , 'HH24:MI:SS' )as  tttfull,
+      (sum(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;notansweredcalls&quot;::integer) OVER ())::text  as notansweredcallsfullsum,
+      (sum(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;answeredcalls&quot;::integer) OVER ())::text  as answeredcallsfullsum,
+      ROUND((avg(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;notansweredcalls&quot;::numeric*100/&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;dialledcalls&quot;::numeric) OVER ()),2)::text as notansweredpercentfull,
+      ROUND((avg(100 -(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;notansweredcalls&quot;::numeric*100/&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;dialledcalls&quot;::numeric)) OVER ()),2)::text as contactedpercentfull,
+   (sum(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;tholdcount&quot;::numeric::integer) OVER ())::text  as tholdcountfullsum,
+       TO_CHAR((sum(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;totholdt&quot;::numeric) OVER ())::text::interval, 'HH24:MI:SS' )  as totholdtfullsum,
+    TO_CHAR((avg((&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;ttt&quot;::numeric+&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;tacwt&quot;::numeric)/(&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;answeredcalls&quot;::numeric)) OVER ())::text::interval, 'HH24:MI:SS' ) as fullaht
+FROM
+     &quot;public&quot;.&quot;cdr_monthlysummaryout&quot; 
+ Where
+	&quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;year&quot; =   ${Year} 
+	and  &quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;month&quot; IN (SELECT CASE WHEN(${Month}::text = '00' OR &quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;month&quot; IS NULL OR ${Month}::text = '') THEN &quot;public&quot;.&quot;cdr_monthlysummaryout&quot;.&quot;month&quot;  ELSE ${Month}::text  END)
+and company = '1' and tenant = '3')a
+
+Left outer join
+
+(select year, month,company,tenant, 
+sum(agent_monthlysummary.idleoutbound::interval)::text as tidle,
+sum(agent_monthlysummary.breakoutbound::interval)::text as tbreak
+
+
+from agent_monthlysummary
+
+ Where
+	&quot;public&quot;.&quot;agent_monthlysummary&quot;.&quot;year&quot; =   ${Year} 
+	and  &quot;public&quot;.&quot;agent_monthlysummary&quot;.&quot;month&quot; IN (SELECT CASE WHEN(${Month}::text = '00' OR &quot;public&quot;.&quot;agent_monthlysummary&quot;.&quot;month&quot; IS NULL OR ${Month}::text = '') THEN &quot;public&quot;.&quot;agent_monthlysummary&quot;.&quot;month&quot;  ELSE ${Month}::text  END)
+and company = '1' and tenant = '3'
+group by year, month,company,tenant
+ 
+)b
+
+ON a.years = b.year AND a.months = b.month and a.company = b.company and a.tenant = b.tenant
+
+)
+
+order by years desc, months desc
+
+
+</data:static-query>
+    </data:query>
+    <data:query name="Months">
+      <data:static-query>Select 'All' as month, '00' as value, 1 as sort
+union
+Select 'January' as month, '01' as value, 2 as sort
+union
+Select 'February' as month, '02' as value, 3 as sort
+union
+Select 'March' as month, '03' as value, 4 as sort
+union
+Select 'April' as month, '04' as value, 5 as sort
+union
+Select 'May' as month, '05' as value, 6 as sort
+union
+Select 'June' as month, '06' as value, 7 as sort
+union
+Select 'July' as month, '07' as value, 8 as sort
+union
+Select 'August' as month, '08' as value, 9 as sort
+union
+Select 'Sepetember' as month, '09' as value, 10 as sort
+union
+Select 'October' as month, '10' as value, 11 as sort
+union
+Select 'November' as month, '11' as value, 12 as sort
+union
+Select 'December' as month, '12' as value, 13 as sort
+order by sort </data:static-query>
+    </data:query>
+  </data:query-definitions>
+</data:sql-datasource>

@@ -136,8 +136,7 @@
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script type="text/javascript" src="scripts/controllers/highchartsCustom.js"></script>
 <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script> 
-<script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
 <script type="text/javascript" src="scripts/vendor/google-picker.min.js"></script>
 <script type="text/javascript" src="http://code.highcharts.com/highcharts-3d.js"></script>

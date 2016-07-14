@@ -1,0 +1,77 @@
+<data:sql-datasource xmlns:data="http://jfreereport.sourceforge.net/namespaces/datasources/sql">
+  <data:config/>
+  <data:connection>
+    <data:driver>org.postgresql.Driver</data:driver>
+    <data:url>jdbc:postgresql://192.168.2.106:5432/SingerDB</data:url>
+    <data:properties>
+      <data:property name="user">postgres</data:property>
+      <data:property name="password">encrypted:771b4a60055957</data:property>
+      <data:property name="::pentaho-reporting::port">5432</data:property>
+      <data:property name="::pentaho-reporting::name">ReportCon</data:property>
+      <data:property name="::pentaho-reporting::database-name">SingerDB</data:property>
+      <data:property name="::pentaho-reporting::hostname">192.168.2.106</data:property>
+      <data:property name="::pentaho-reporting::database-type">POSTGRESQL</data:property>
+    </data:properties>
+  </data:connection>
+  <data:query-definitions>
+    <data:query name="DS">
+      <data:static-query>select * from 
+((SELECT
+  sessionid
+, phonenumber
+, ivrtime::time::text as ivrtime
+, queuetime::time::text as queuetime
+, ringtime::time::text as ringtime
+, talktime::time::text as talktime
+, holdtime::time::text as holdtime
+, starttime::timestamp AS starttime
+, endtime::timestamp AS endtime
+, acwtime::time::text as acwtime
+, regexp_replace(resource,'[@_][A-Za-z0-9.-]+[._][A-Za-z0-9.-]..','' ) as resource
+, skills
+, direction
+, companyid
+, tenantid
+, viewobjectid
+, count(*) over () as reportsum
+FROM 
+  tmp_cdrdetail
+WHERE 
+starttime::date &gt;= ${FromDate} AND starttime::date &lt;= ${ToDate}
+AND (direction IN (SELECT CASE WHEN(${Direction}::text = 'All' OR ${Direction}::text IS NULL) THEN direction ELSE ${Direction}::text  END)) 
+AND (regexp_replace(resource,'[@_][A-Za-z0-9.-]+[._][A-Za-z0-9.-]..','' ) IN (SELECT CASE WHEN(${Agent}::text = 'All' OR ${Agent}::text IS NULL) THEN regexp_replace(resource,'[@_][A-Za-z0-9.-]+[._][A-Za-z0-9.-]..','' ) ELSE ${Agent}::text  END))
+AND type != 'PBX'
+ORDER BY starttime)a
+
+left outer join
+(Select distinct skillcode, guskillid from call_resourceregistrationdetails)b
+on a.skills = b.guskillid )z
+
+</data:static-query>
+    </data:query>
+    <data:query name="direction">
+      <data:static-query>SELECT 1 AS sort,
+'All' AS direction
+UNION 
+SELECT DISTINCT 2 AS sort,
+'INBOUND' AS direction
+UNION
+SELECT DISTINCT 3 AS sort,
+'OUTBOUND' AS direction
+
+    order by sort
+
+</data:static-query>
+    </data:query>
+    <data:query name="agents">
+      <data:static-query>SELECT 1 AS sort,
+'All' AS agents
+UNION 
+SELECT DISTINCT 2 AS sort,
+regexp_replace(resource,'[@_][A-Za-z0-9.-]+[._][A-Za-z0-9.-]..','' ) AS agents
+from call_cdrdetail where resource is null or resource != ''
+    order by sort
+</data:static-query>
+    </data:query>
+  </data:query-definitions>
+</data:sql-datasource>

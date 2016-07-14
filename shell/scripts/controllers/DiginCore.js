@@ -436,6 +436,27 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             widget.d3chartBtn = !d3btnTemp;
         };
 
+        //sync widgets of a page when page is opened
+        $scope.syncPage = function (page) {
+            $scope.isPageSync = true;
+            if ( !page.isSeen ){
+                for ( var i = 0; i < page.widgets.length; i++){ 
+                    if ( typeof page.widgets[i].widgetData.commonSrc != 'undefined'){
+                        $scope.syncWidget(page.widgets[i]);
+                }
+                }
+                $scope.isPageSync = false;
+                for (var j = 0; j < $rootScope.dashboard.pages.length; j++ ){
+                    if (page.pageID == $rootScope.dashboard.pages[j].pageID)
+                        {$rootScope.dashboard.pages[j]["isSeen"] = true}
+                }
+            }
+        };
+
+        $scope.tabIdndexInit = function(){
+            console.log($rootScope.selectedPageIndx);
+        };
+
         $scope.widInit = function (widget) {
 
             widget.isD3chart = false;
@@ -512,13 +533,13 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                         if (!isLastLevel) {
                                             drillObj.data.push({
                                                 name: key[nextLevel],
-                                                y: key[drillObj.name],
+                                                y: parseFloat(key[drillObj.name]),
                                                 drilldown: true
                                             });
                                         } else {
                                             drillObj.data.push({
                                                 name: key[nextLevel],
-                                                y: key[drillObj.name]
+                                                y: parseFloat(key[drillObj.name])
                                             });
                                         }
                                     });

@@ -12,9 +12,13 @@ routerApp.service('$qbuilder',function($diginengine){
     
     Widget.prototype = {
         sync: function(wid, cb) {
+            var q;
+            var db;
             //console.log("wid object:"+JSON.stringify(wid));
-            var q = wid.commonSrc.query;
-            var db = wid.commonSrc.src.src;
+            if (typeof wid.commonSrc.query != 'undefined'){
+            var q = wid.commonSrc.query;}
+            if (typeof wid.commonSrc.src.src != 'undefined'){
+            var db = wid.commonSrc.src.src;}
             var cl = $diginengine.getClient(db);    
             return this.widget.sync(q,cl,wid, cb);
         }
@@ -121,7 +125,7 @@ routerApp.service('$qbuilder',function($diginengine){
                             }
                         }
                     }
-                    
+                    widObj.syncState = true;
                     cb(widObj);
                 }
             });
@@ -145,12 +149,204 @@ routerApp.service('$qbuilder',function($diginengine){
                     widObj.widData.decValue = res[0];
                     widObj.widData.value = convertDecimals(setMeasureData(res[0]),parseInt(widObj.widData.dec));
                 }
+                widObj.syncState = true;
                 cb(widObj);
             });
         }
     };
-        
-        
-        
     
+    var D3SUNBURST = function(){
+
+        this.sync = function(q, cl, widObj, cb) {
+            cl.getHierarchicalSummary(q, function(data, status) {
+                if (status){
+                    widObj.widData.children = data.children;
+                    }
+                widObj.syncState = true;                    
+                cb(widObj);
+            });
+        }
+    }; 
+
+    var D3HIERARCHY = function(){
+
+        this.sync = function(q, cl, widObj, cb) {
+            cl.getHierarchicalSummary(q, function(data, status) {
+                if (status){
+                    widObj.widData.children = data.children;
+                    }
+                widObj.syncState = true;
+                cb(widObj);
+            });
+        }
+    }; 
+
+    var FORECAST = function(){
+        function mapResult(res){
+            var mainSerObj = [];
+            res.forEach(function(key) {
+                switch (key.target) {
+                    case "RMSE":
+                        break;
+                    case "TotalForecastedVal":
+                        break;
+                    default:
+                        var serObj = [];
+                        key.datapoints.forEach(function(val) {
+                        var dArr = val[1].split('-');
+                        serObj.push([
+                            Date.UTC(parseInt(dArr[0]), parseInt(dArr[1]) - 1, parseInt(dArr[2])),
+                            val[0]
+                            ]);
+                        });
+                        mainSerObj.push({
+                            name: key.target,
+                            data: serObj
+                        });
+                    }
+                });    
+            return mainSerObj;        
+        }
+
+        this.sync = function(q, cl, widObj, cb){
+            cl.getForcast(widObj.foreCastObj, function(data, status){
+                if (status){
+                    widObj.highchartsNG.series = mapResult(data)
+                }
+                widObj.syncState = true;
+                cb(widObj);
+            });
+        }
+    };
+
+
+    var BOXPLOT = function(){
+
+        function mapResult(data) {
+            var i = 0;
+            var observationsData = [];
+            var dataOutliers = [];
+            var plotCategories = [];
+            var dataArray =   [];
+            for (var key in data) {
+                if (Object.prototype.hasOwnProperty.call(data, key)) {
+                    plotCategories.push(key);
+                    observationsData.push([
+                        data[key].l_w,
+                        data[key].quartile_1,
+                        data[key].quartile_2,
+                        data[key].quartile_3,
+                        data[key].u_w
+                        ]);
+                    data[key].outliers.forEach(function(k) {
+                        dataOutliers.push([i, k]);
+                    });
+                    i++;
+                    }
+                }
+
+                dataArray[0] = observationsData;
+                dataArray[1] = dataOutliers;
+                dataArray[2] = plotCategories;
+                return dataArray;
+        }
+
+        this.sync = function(q, cl, widObj, cb){
+            cl.generateboxplot(q, function(data, status){
+                if(status){
+                    var dataArray = mapResult(data);
+                    widObj.highchartsNG.series[0].data = dataArray[0];
+                    widObj.highchartsNG.series[1].data = dataArray[1];
+                    widObj.highchartsNG.xAxis.categories = dataArray[2];
+
+                }
+                widObj.syncState = true;
+                cb(widObj);
+            });
+        }
+    };
+
+    var HISTOGRAM = function(){
+
+        function mapResult(data){
+            var dataArray = [];
+            var histogramPlotcat = [];
+            var histogramPlotData = [];
+            for ( var key in data){
+                console.log(data[key]);
+                histogramPlotData.push(parseFloat(data[key][0]));
+                var category = data[key].splice(0, 1);
+                histogramPlotcat.push(data[key]);
+                }
+                dataArray[0] = histogramPlotData;
+                dataArray[1] = histogramPlotcat;
+            return dataArray;         
+        }
+
+        this.sync = function(q, cl, widObj, cb){
+            cl.generatehist(q, function(data, status){
+                if (status){
+                    var dataArray = mapResult(data);
+                    widObj.highchartsNG.series[0].data = dataArray[0];
+                    widObj.highchartsNG.xAxis.categories = dataArray[1];
+                }
+                widObj.syncState = true;
+                cb(widObj);
+            });
+
+        }
+
+    };
+
+    var PIVOTSUMMARY = function(){
+        this.sync = function(q, cl, widObj, cb){
+                cl.getExecQuery(q, function(data, status) {
+                widObj.widData.summary = data;
+            }, widObj.limit);
+            widObj.syncState = true;
+            cb(widObj);
+        }
+    };
+
+    var BUBBLE = function(){
+        var mapResult = function(data){
+            var nameArray = [];
+
+            for ( var i = 0; i < data.y.length; i++){
+                nameArray[i] = data.c[i];
+            }
+            var dataArray = [];
+            for ( var i = 0; i < data.y.length; i++){
+                dataArray.push(
+                {
+                    x : data.x[i],
+                    y : data.y[i],
+                    z : data.s[i]
+                    });
+                }
+            var seriesArray = [];
+                for ( var i = 0; i < dataArray.length; i++){
+                seriesArray.push(
+                {
+                    name: nameArray[i],
+                    data: [dataArray[i]],
+                });
+                }
+                return seriesArray;
+        }
+
+        this.sync = function(q, cl, widObj, cb){
+            cl.generateBubble(q, function(data, status) {
+                if(status){
+                    widObj.highchartsNG.series = mapResult(data);
+                }
+            });
+            widObj.syncState = true;
+            cb(widObj);
+        }
+
+    }
+
+
+
 });

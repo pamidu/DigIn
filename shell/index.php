@@ -88,7 +88,7 @@
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
         
         //api_key: 78itfewa96mm93   //2.33
-        api_key: 78itfewa96mm93
+        api_key: 816rs443i7o0rf
         authorize: true
         scope: r_basicprofile
         r_emailaddress

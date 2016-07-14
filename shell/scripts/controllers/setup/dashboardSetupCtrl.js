@@ -28,6 +28,11 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         "name": "User setting",
         "route": "userSettings",
         "icon": "styles/css/images/setting/user_setting100x100.png"
+    },
+    {
+        "name": "User Profile",
+        "route": "userProfile",
+        "icon": "styles/css/images/setting/user100x100.png"
     }];
 
     
@@ -58,7 +63,9 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         else if (state == "back") {
             $state.go('home.Settings');
         }
-
+        else if (state == "userProfile") {
+            $state.go('home.userProfile');
+        }
     };
 
 
@@ -871,8 +878,7 @@ $scope.invite = function () {
                 
             }
         }
-   
-   
+     
 
 
     //update code damith
@@ -885,6 +891,62 @@ $scope.invite = function () {
     };
 
 
+    //#User Profile settings
+        //#User Profile settings
+    $scope.updateProfile= function () {
+
+            var fullname = $scope.fname + " " + $scope.lname;
+
+            $scope.userProfile ={
+                 "BannerPicture":"img/cover.png",
+                 "BillingAddress":$scope.address,
+                 "Company":$scope.company,
+                 "Country":$scope.country,
+                 "Email":$scope.email,
+                 "Name":$scope.name,
+                 "PhoneNumber":$scope.phoneNo,
+                 "ZipCode":$scope.zipCode
+            };
+            
+            
+            $scope.error.isLoading = true;
+
+            $http({
+                method: 'POST',
+                //url:'http://test.digin.io/apis/profile/userprofile',
+                url: baseUrl+'/apis/profile/userprofile',
+                data: angular.toJson($scope.userProfile),
+                headers: {
+                     'Content-Type': 'application/json',
+                }
+            }).success(function (data) {
+                $scope.error.isLoading = false;
+                fireMsg('1', 'User profile updated successfully !');
+                $scope.fname = '';
+                $scope.lname = '';
+                $scope.email = '';
+            }).error(function (data) {
+                $scope.error.isLoading = false;            
+            });
+     };
+
+
+    $scope.viewUserProfile=function(){
+        $http.get('http://test.digin.io/apis/profile/userprofile/test@duosoftware.com')
+        //$http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
+            .success(function(response){
+                //#load exisitging data
+                // $scope.address=BillingAddress
+                // $scope.company=Company
+                // $scope.country=Country
+                // $scope.email=Email
+                // $scope.name=Name
+                // $scope.phoneNo=PhoneNumber
+                // $scope.zipCode=ZipCode
+            }).error(function(error){   
+                //fireMsg('0', '<strong>Error : </strong>Please try again...!');
+            });  
+    };
 
 
 

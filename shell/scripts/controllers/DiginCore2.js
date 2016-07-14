@@ -227,9 +227,9 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
 
 
-routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter', 'Digin_Domain', 'Digin_Engine_API',
+routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter', 'Digin_Domain', 'Digin_Engine_API',
 
-    function($scope, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter, Digin_Domain, Digin_Engine_API) {
+    function($scope, $qbuilder, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter, Digin_Domain, Digin_Engine_API) {
 
         $scope.close = function() {
 
@@ -251,6 +251,59 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
         $scope.isLoadingDashBoardSave=false;
         $scope.isButtonDashBoardSave=true;
 
+        $scope.mapChartData = function(chartType,i,j,data){
+
+                switch (chartType) {
+                    case 'boxplot':
+                        $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.series[0].data = data[0];
+                        $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.series[1].data = data[1];
+                        $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.xAxis.categories = data[2];
+                        console.log("here");
+                        break;
+
+                    case 'pivotSummary':
+                        $rootScope.dashboard.pages[i].widgets[j].widgetData.widData.summary = data[0];
+                        console.log("here");
+                        break;
+
+                    case 'histogram':
+                        $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.series[0].data = data[0];
+                        $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.xAxis.categories = data[1];
+                        console.log("here");
+                        break;
+
+                    case 'bubble':
+                        $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.series = data[0];
+                        console.log("here");
+                        break;
+
+                    case 'forecast':
+                        $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.series = data[0];
+                        console.log("here");
+                        break;
+
+                    case 'sunburst':
+                        console.log("here");
+                        break;
+
+                    case 'hierarchy':
+                        console.log("here");
+                        break;
+
+                    case 'highCharts':
+                        $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.series = data[0];
+                        console.log("here");
+                        break; 
+
+                    case 'metric':
+                        $rootScope.dashboard.pages[i].widgets[j].widgetData.widData.decValue = data[0];
+                        $rootScope.dashboard.pages[i].widgets[j].widgetData.widData.value = data[1];                    
+                        console.log("here");
+                        break;
+                }
+
+        }
+
         $scope.saveDashboard = function() {  
 
             if($scope.dashboardName && $scope.dashboardType && $scope.refreshInterval){
@@ -266,14 +319,92 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                 });
                 //get pages here
                 var pagesArray = [];
+                var dynamicPages = [];
                 var pages = $rootScope.dashboard.pages;
                 for(var i = 0; i < pages.length; i++){
+                        var dynamicWidgets = [];
                         //get widgets here
                         var widgetsArray = [];
                         var widgets = $rootScope.dashboard.pages[i].widgets;
                         for (var j = 0; j < widgets.length; ++j) {
+                                var chart = "";
+                                var flag = false;
+                                var widgetObject;
+                                if (typeof(widgets[j].widgetData.selectedChart) != "undefined"){
+                                    var flag = true;
+                                    console.log(widgets[j].widgetData.selectedChart.chartType);
+                                    var dataArray = [];
+                                    chart = widgets[j].widgetData.selectedChart.chartType;
+                                switch (widgets[j].widgetData.selectedChart.chartType) {
+                                    case 'boxplot':
+                                        var seriesPlotData = widgets[j].widgetData.highchartsNG.series[0].data;
+                                        var seriesOutData = widgets[j].widgetData.highchartsNG.series[1].data;
+                                        var category = widgets[j].widgetData.highchartsNG.xAxis.categories;
+                                        widgets[j].widgetData.highchartsNG.series[0].data = [];
+                                        widgets[j].widgetData.highchartsNG.series[1].data = [];
+                                        widgets[j].widgetData.highchartsNG.xAxis.categories = [];
+                                        dataArray.push(seriesPlotData,seriesOutData,category);                                      
+                                        console.log("boxplot");
+                                        break;
 
-                                    var widgetObject;
+                                    case 'pivotSummary':
+                                        var summary = widgets[j].widgetData.widData.summary;
+                                        dataArray.push(summary);
+                                        widgets[j].widgetData.widData.summary = [];
+                                        console.log("pivotsummary");
+                                        break;
+
+                                    case 'histogram':
+                                        var data = widgets[j].widgetData.highchartsNG.series[0].data;
+                                        var category = widgets[j].widgetData.highchartsNG.xAxis.categories;
+                                        dataArray.push(data,category);                                        
+                                        widgets[j].widgetData.highchartsNG.series[0].data = [];
+                                        widgets[j].widgetData.highchartsNG.xAxis.categories = [];
+                                        console.log("histogram");
+                                        break;
+
+                                    case 'bubble':
+                                        var bubble = widgets[j].widgetData.highchartsNG.series;
+                                        dataArray.push(bubble);                                        
+                                        widgets[j].widgetData.highchartsNG.series = [];
+                                        console.log("bubble");
+                                        break;
+
+                                    case 'forecast':
+                                        var series = widgets[j].widgetData.highchartsNG.series;
+                                        dataArray.push(series);                                    
+                                        widgets[j].widgetData.highchartsNG.series = [];
+                                        console.log("forecast");
+                                        break;
+
+                                    case 'd3sunburst':
+                                        var flag = false;
+                                        console.log("d3sunburst");
+                                        break;
+
+                                    case 'd3hierarchy':
+                                        var flag = false;
+                                        console.log("d3hierarchy");
+                                        break;
+
+                                    case 'metric':
+                                        var decValue = widgets[j].widgetData.widData.decValue;
+                                        var value = widgets[j].widgetData.widData.value;                                        
+                                        dataArray.push(decValue,value);                                    
+                                        widgets[j].widgetData.widData.decValue = "";
+                                        widgets[j].widgetData.widData.value = "";
+                                        console.log("metric");
+                                        break;
+
+                                    case 'highCharts':
+                                        var series = widgets[j].widgetData.highchartsNG.series;
+                                        dataArray.push(series);                                    
+                                        widgets[j].widgetData.highchartsNG.series = [];
+                                        console.log("highCharts");
+                                        break;
+                                    
+                                    }
+                                }
                                     //if the widget is a temporary / new widget 
                                     if($rootScope.dashboard.pages[i].widgets[j].widgetID.substr(0, 4) == "temp"){
 
@@ -300,7 +431,13 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                                             col: widgets[j].col
                                         }
                                     }
-                                    widgetsArray.push(widgetObject); 
+                                    widgetsArray.push(widgetObject);
+                                    dynamicWidgets.push({
+                                        data: dataArray,
+                                        isChart: flag,
+                                        chart: chart
+                                    });
+                                   
                         }
 
                         var pageObject;
@@ -324,6 +461,10 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                             }
                         }
                         pagesArray.push(pageObject);
+                        dynamicPages.push({
+                            widgets : dynamicWidgets
+                        });
+
                 }
 
                 var dashboardObject;
@@ -389,6 +530,19 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
                 })
                 .success(function(response){
 
+                    for ( var i = 0; i < dynamicPages.length; i++){
+                        console.log(dynamicPages[i]);
+                        for ( var j = 0; j < dynamicPages[i].widgets.length; j++){
+
+                            console.log(dynamicPages[i].widgets[j]);
+                            if (dynamicPages[i].widgets[j].isChart){
+                                console.log($rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType);
+                                var chartType = $rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType;
+                                $scope.mapChartData(chartType,i,j,dynamicPages[i].widgets[j].data);
+                            }
+                        }
+                    }
+
                     console.log("response", response);
                     //assign the id name type refresh interval to dashboard
                     var selectedPage = $rootScope.selectedPage;
@@ -412,6 +566,19 @@ routerApp.controller('saveCtrl', ['$scope', '$http', '$objectstore', '$mdDialog'
 
                 })
                 .error(function(error){  
+
+                    for ( var i = 0; i < dynamicPages.length; i++){
+                        console.log(dynamicPages[i]);
+                        for ( var j = 0; j < dynamicPages[i].widgets.length; j++){
+
+                            console.log(dynamicPages[i].widgets[j]);
+                            if (dynamicPages[i].widgets[j].isChart){
+                                console.log($rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType);
+                                var chartType = $rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType;
+                                $scope.mapChartData(chartType,i,j,dynamicPages[i].widgets[j].data);
+                            }
+                        }
+                    }
 
                     ngToast.create({
                         className: 'danger',

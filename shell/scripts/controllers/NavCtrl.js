@@ -1,10 +1,10 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http',
-    '$localStorage', '$window', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
+    '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
     'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
-              $http, $localStorage, $window, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
+              $http, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
               $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter) {
 
         if (DevStudio) {
@@ -64,6 +64,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $rootScope.image = logoPath + data.Result.logo_path;
                 //$rootScope.image = "http://192.168.2.33/user_data/9c42d3c4661182ca872b3b6878aa0429/logos/hnb.png";
                 //$scope.imageUrl = "styles/css/images/DiginLogo.png";
+				
+				if(data.Result.logo_path==undefined)
+                    $rootScope.image = "styles/css/images/DiginLogo.png";
+                else
+                   $rootScope.image = logoPath + data.Result.logo_path;
+				
                 $scope.getURL();
             })
             .error(function (data) {
@@ -443,14 +449,36 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             "pageIDs": [],
                             "widgetIDs": []
                         };
+                        $rootScope.selectedPageIndx = 0;
+                        $rootScope.selectedPage = 1;
 
+                        var index = 0;
+                        console.log($rootScope.dashboard.pages[index].widgets);
+                        for ( var i = 0; i < $rootScope.dashboard.pages[index].widgets.length; i++){
+                            $rootScope.dashboard.pages[index]["isSeen"] = true;
+                            var widget = $rootScope.dashboard.pages[index].widgets[i];
+                            console.log('syncing...');
+                            if (typeof(widget.widgetData.commonSrc) != "undefined") {
+                                widget.widgetData.syncState = false;
+                                //widget.widgetData.syncState = false;
+                                if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst"){
+                                    $qbuilder.sync(widget.widgetData, function (data) {
+                                        //widget.widgetData.syncState = true; 
+                                        // if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
+                                        //     $qbuilder.widInit();
+                                        //widget.widgetData.syncState = true;                                    
+                                    });
+
+                                }
+                            }
+                        }
                         ngToast.create({
                             className: 'success',
                             content: data.Custom_Message,
                             horizontalPosition: 'center',
                             verticalPosition: 'top',
                             dismissOnClick: true
-                        });
+                        });                        
 
                         $state.go('home.Dashboards');
                     }
@@ -964,7 +992,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                     "widgets": [],
                                     "pageID": "temp" + $scope.createuuid(),
                                     "pageName": $scope.title,
-                                    "pageData": null
+                                    "pageData": null,
+                                    "isSeen": true
                                 }
                                 $rootScope.dashboard.pages.push(page);
                                 console.log("pages", $rootScope.pages);

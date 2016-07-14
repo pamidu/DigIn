@@ -1,5 +1,0 @@
-{
-	"name" : "Get All Objects",
-	"parameters":[{"Class" : "$1"}],
-	"code":"$objectstore.getClient(\"$1\").onGetMany(function(data){}).onError(function(err){}).getAll();"
-}

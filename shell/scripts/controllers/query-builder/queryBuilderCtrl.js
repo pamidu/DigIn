@@ -2648,6 +2648,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 } else {
                     //alert('request failed');
                     privateFun.fireMessage('0', '<strong>Invalid query :</strong>please enter request failed ');
+                    if ( $scope.selectedChart.chartType == 'highCharts'){
+                         $scope.highchartsNG.series = {};
+                    }                    
                     $scope.isPendingRequest = false;
                     $scope.eventHndler.isLoadingChart = false;
                 }

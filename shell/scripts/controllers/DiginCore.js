@@ -77,8 +77,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             minColumns: 1, // minimum amount of columns the grid can scale down to
             minRows: 1, // minimum amount of rows to show if the grid is empty
             maxRows: 100, // maximum amount of rows in the grid
-            defaultSizeX: 8, // default width of an item in columns
-            defaultSizeY: 6, // default height of an item in rows
+            defaultSizeX: 6, // default width of an item in columns
+            defaultSizeY: 21, // default height of an item in rows
             minSizeX: 6, // minimum column width of an item
             maxSizeX: null, // maximum column width of an item
             minSizeY: 5, // minumum row height of an item
@@ -407,28 +407,57 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 });
             }
         };
-        var getCanvas; 
+        
         $scope.d3ImgDownload = function (widget) {
 
-            var element = $("#d3Chart-wrap");
-            console.log("this element is :",element);
-            html2canvas(element, {
-            onrendered: function (canvas) {
-                $("#previewImage").append(canvas);
-                getCanvas = canvas;
-                console.log("this getCanvas is :",getCanvas);
-             }
-            });
+                 var element =null;
+            switch (widget.widgetName) {
+                
+                case 'sunburst':
+                    element =$("#d3Sunburst");
+                    break;
+
+                case 'hierarchy':
+                    element =$("#d3Force");
+                    break;
+
+            }
+
+            $("#svg-container").empty();
+            $("#svg-container").append(element[0].innerHTML);
+            var svgEle = $("#svg-container").children();
+            var svgElement = svgEle[0];
+            console.log(svgElement);
+            var svgString = new XMLSerializer().serializeToString(svgElement);
+
+            $("#canvas").empty();
+            var canvas = document.getElementById("canvas");
+            var ctx = null;
+            var ctx = canvas.getContext("2d");
+            var DOMURL = self.URL || self.webkitURL || self;
+            var img, svg =null;
+            var img = new Image();
+            var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+            var url = DOMURL.createObjectURL(svg);
+
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0);
+                var imgURL = canvas.toDataURL("image/png");
+                DOMURL.revokeObjectURL(imgURL);
+                var dlLink= null;
+                var dlLink = document.createElement('a');
+                dlLink.download = "image";
+                dlLink.href = imgURL;
+                dlLink.dataset.downloadurl = ["image/png", dlLink.download, dlLink.href].join(':');
+                document.body.appendChild(dlLink);
+                dlLink.click();
+                document.body.removeChild(dlLink);
+            }
+
+            img.src = url;
         }
 
-       $scope.finalDown = function(){
-         var imgageData = getCanvas.toDataURL("image/png");
-         console.log("this imgageData is :",imgageData);
-            // Now browser starts downloading it instead of just showing it
-            var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
-            console.log("this newData is :",newData);
-            $("#btn-Convert-Html2Image").attr("download", "your_pic_name.png").attr("href", newData);
-        };
+    
 
         $scope.d3chartBtnClick =function (widget){
 

@@ -15,7 +15,7 @@
                 gridster-item="widget" layout="column"
                     layout-align="none stretch" >
                     <div ng-init="widInit(widget)" class="digin-widget-content dashboard-widget" ng-style="{'height':widget.widgetData.mheight}" layout="row">
-                        <!-- <div class="d3-btn-wrap" ng-if="widget.isD3chart">
+                           <div class="d3-btn-wrap" ng-if="widget.isD3chart">
                             <span class="fa fa-bars" id="d3-btn-stn" ng-click="d3chartBtnClick(widget)"></span>
                             <div class="d3-setting-wrap" ng-if="widget.d3chartBtn">
                                 <div class="print-chart-wrap">Print chart</div>
@@ -24,10 +24,15 @@
                                 <div class="print-opt-wrap">Download JPEG image</div>
                                 <div class="print-opt-wrap">Download PDF document</div>
                             </div>
-                            <a id="btn-Convert-Html2Image" ng-click="finalDown()" href="#">Download</a>
-                            <div id="previewImage">
-                            </div>
-                        </div> -->
+                        </div>
+
+                        <div id="svg-container" style="display: none">
+                        </div>
+
+                            <canvas id="canvas"  width="800" height="400" style="display: none">
+                            </canvas>
+
+                            <div id="png-container"></div>
                         <div style="height:100%;width:100%" class="dashoard-Wrapper" id="d3Chart-wrap" ng-include src="widget.widgetData.widView">
                         </div>
                         <div class="widget-button-wrapper widget-button-wrapper2" layout="column" layout-align="end center" ng-show="showWidgetSettings" ng-mouseover="showWidgetSettings = true" 

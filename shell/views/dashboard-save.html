@@ -37,8 +37,14 @@
                 </md-input-container>
             </div>
             <div class="md-actions" layout="row">
-                <span flex></span>
-                <md-button class="btn-dialog b-r-0" ng-click="saveDashboard()">
+                 <span flex></span>
+                <div class="dashbord-save-loader" ng-if="isLoadingDashBoardSave">
+                    <svg class="circular-loader" height="50" width="50">
+                            <circle class="path" cx="25" cy="25.2" r="19.9"
+                                    fill="none" stroke-width="6" stroke-miterlimit="10"/>
+                    </svg>
+                </div>
+                <md-button class="btn-dialog b-r-0" ng-if="isButtonDashBoardSave" ng-click="saveDashboard()">
                     Save
                 </md-button>
                 <md-button class="btn-dialog b-r-0" ng-click="close()">

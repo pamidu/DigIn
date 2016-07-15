@@ -1108,8 +1108,8 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
                                         "widgetID": "temp" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
                                         "widgetName": $scope.currWidget.widName,
                                         "widgetData": $scope.currWidget,
-                                        sizeX: 8,
-                                        sizeY: 6,
+                                        sizeX: 6,
+                                        sizeY: 21,
                                        
                                 }
 

@@ -73,7 +73,18 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     $scope.colorArr = [{value: '#F44336'}, {value: '#E91E63'}, {value: '#9C27B0'}, {value: '#673AB7'}, {value: '#3F51B5'}, {value: '#2196F3'}, {value: '#03A9F4'}, {value: '#00BCD4'}, {value: '#009688'}, {value: '#4CAF50'}, {value: '#8BC34A'}, {value: '#CDDC39'}, {value: '#FFEB3B'}, {value: '#FFC107'}, {value: '#FF9800'}, {value: '#FF5722'}, {value: '#795548'}, {value: '#9E9E9E'}, {value: '#607D8B'}];
     
     //# load from parent
-    var baseUrl = "http://" + window.location.hostname;
+    //var baseUrl = "http://" + window.location.hostname;
+ //#to get tenant ID for logged user
+        $http.get(Digin_Tenant+'/tenant/GetTenants/'+getCookie('securityToken'))
+            .success(function (data) {
+                console.log(data);
+                $rootScope.TenantID = data[0].TenantID;
+            }).error(function () {
+                //alert("Oops! There was a problem retrieving the groups");
+        });
+
+
+    var baseUrl = "http://" + $rootScope.TenantID;
     //baseUrl="http://duotest.digin.io";
     //baseUrl="http://chamiladuosoftwarecom.space.duoworld.com";
     $scope.domain=JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
@@ -932,9 +943,10 @@ $scope.invite = function () {
 
 
     $scope.viewUserProfile=function(){
-        $http.get('http://test.digin.io/apis/profile/userprofile/test@duosoftware.com')
-        //$http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
+        //$http.get('http://test.digin.io/apis/profile/userprofile/test@duosoftware.com')
+        $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
             .success(function(response){
+                console.log(response);
                 //#load exisitging data
                 // $scope.address=BillingAddress
                 // $scope.company=Company

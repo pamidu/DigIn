@@ -68,7 +68,7 @@ class UserAuthorization {
                 $_SESSION['securityToken'] = $authDecoded->SecurityToken;
                 $_SESSION['userObject'] = $authDecoded;	
                 
-                echo '{"Success":true, "Message": "You have successfully logged in", "Data": {"SecurityToken": "'. $authDecoded->SecurityToken .'"}}'; return;
+                echo '{"Success":true, "Message": "You have successfully logged in", "Data": {"SecurityToken": "'. $authDecoded->SecurityToken .'","AuthData": '.$authObj.'}}'; return;
         }
 	}
 

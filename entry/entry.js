@@ -31,8 +31,8 @@ routerApp
 
 routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
-        '$rootScope', 'focus', 'ngToast', 'Digin_Auth',
-        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth) {
+        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain',
+        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain) {
 
             $scope.signindetails = {};
             $scope.isLoggedin = false;
@@ -80,19 +80,19 @@ routerApp
             $scope.login = function () {
                 $http({
                     method: 'POST',
-                    //url: 'http://digin.io/apis/authorization/userauthorization/login',
-                    url: '/apis/authorization/userauthorization/login',
+                    url: 'http://'+Digin_Domain+'/apis/authorization/userauthorization/login',
+                    //url: '/apis/authorization/userauthorization/login',
                     headers: {'Content-Type': 'application/json'},
                     data: $scope.signindetails
 
                 }).success(function (data) {
                     if (data.Success === true) {
-                        $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
+                        //$window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
 
                         //#Added for local host ------------------------------
-                         // document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
-                         // document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
-                         // window.location.href = "http://localhost/digin_git/four/DigIn/shell";
+                         document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
+                         document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
+                         window.location.href = "http://localhost:8080/git/digin/shell";
                     }
                     else {
                         mainFun.fireMsg('0', data.Message);
@@ -134,9 +134,9 @@ routerApp
 //#signup controller
 routerApp
     .controller('signup-ctrl', ['$scope', '$http', '$state', 'focus',
-        'Digin_Domain', 'Digin_Engine_API', 'Digin_Tenant', 'Digin_Mail', 'ngToast',
+        'Digin_Domain', 'Digin_Engine_API','ngToast',
         function ($scope, $http, $state, focus,
-                  Digin_Domain, Digin_Engine_API, Digin_Tenant, Digin_Mail, ngToast) {
+                  Digin_Domain, Digin_Engine_API, ngToast) {
 
             $scope.onClickSignIn = function () {
                 $scope.isLoggedin = false;
@@ -226,8 +226,8 @@ routerApp
                         $scope.error.isLoading = true;
                         $http({
                             method: 'POST',
-                            //url: 'http://digin.io/apis/authorization/userauthorization/userregistration',
-                            url: '/apis/authorization/userauthorization/userregistration',
+                            url: 'http://'+Digin_Domain+'/apis/authorization/userauthorization/userregistration',
+                            //url: '/apis/authorization/userauthorization/userregistration',
                             data: angular.toJson($scope.user),
                             headers: {
                                 'Content-Type': 'application/json'

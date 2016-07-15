@@ -16,6 +16,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         $scope.username = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
 
+       
+
         $scope.adjustUI = function () {
 
             if ($scope.headerbarPinned) {
@@ -44,6 +46,28 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $("md-tabs > md-tabs-wrapper").children().hide();
             }
         };
+
+
+         //#Added by Chamila
+        //#to get session detail for logged user
+        $http.get(Digin_Tenant+'/GetSession/'+getCookie('securityToken')+'/Nil')
+            .success(function (data) {
+                console.log(data);
+                $rootScope.SessionDetail = data;
+            }).error(function () {
+                //alert("Oops! There was a problem retrieving the groups");
+            });
+
+        //#to get tenant ID for logged user
+        $http.get(Digin_Tenant+'/tenant/GetTenants/'+getCookie('securityToken'))
+            .success(function (data) {
+                console.log(data);
+                $rootScope.TenantID = data[0].TenantID;
+            }).error(function () {
+                //alert("Oops! There was a problem retrieving the groups");
+        });
+
+
         //initially hiding the tabs
         $scope.showTabs(true);
 
@@ -621,10 +645,23 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     });
                 },
 
+
+
+                getTenantID :function(){
+                    $http.get(Digin_Tenant+'/tenant/GetTenants/'+getCookie('securityToken'))
+                    .success(function (data) {
+                        console.log(data);
+                        $rootScope.TenantID = data[0].TenantID;
+                    }).error(function () {
+                        //alert("Oops! There was a problem retrieving the groups");
+                    });
+                },
+
                 //#added by chamila
                 //#to retrive all users and groups
                 getAllSharableObj: function () {
-                    var baseUrl = "http://" + window.location.hostname;
+                    //var baseUrl = "http://" + window.location.hostname;
+                    var baseUrl = "http://" + $rootScope.TenantID;
                     $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
                         .success(function (data) {
                             console.log(data);
@@ -683,7 +720,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }());
 
         $scope.getSharableUsers=function(){
-            var baseUrl = "http://" + window.location.hostname;
+            //var baseUrl = "http://" + window.location.hostname;
+            var baseUrl = "http://" + $rootScope.TenantID;
                     $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
                         .success(function (data) {
                             console.log(data);
@@ -740,13 +778,16 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
 
         
+
+
         $rootScope.privateFun = privateFun;
         $scope.getSearchPanelDetails = function () {
-
+            privateFun.getTenantID();
             privateFun.getAllDashboards();
             privateFun.getAllReports();
             $scope.getAnalyzerDetails();
             privateFun.getAllSharableObj();
+            
         }
 
         $scope.getDashboardDetails = function () {

@@ -4190,3 +4190,16 @@ d3- charts image,pdf download
     font-size: 11px; 
     background: rgb(69, 114, 165);
 }
+
+
+/*update Gevindu
+close button
+*/
+
+#goHomeIcone{
+
+    color: white;
+    margin-left: 900px;
+    cursor: pointer;
+
+}

@@ -278,7 +278,7 @@
             //diginengine: "http://192.168.2.33:8080",
             diginenginealt: "http://" + host + ":8081",
             getNamespace: function getNamespace() {
-                var authdata = JSON.parse(getCookie("authData"));
+                var authdata = JSON.parse(decodeURIComponent(getCookie('authData')))
                 var namespace = authdata.Email.replace('@', '_');
                 namespace = namespace.replace(/\./g, '_');
 

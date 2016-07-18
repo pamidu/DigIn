@@ -89,7 +89,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 width: null
             },
             exporting: {
-                useHTML: true
+                useHTML: true,
+                sourceWidth: 600,
+                sourceHeight: 400                
             }
         },
         title: {
@@ -876,6 +878,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
 
                 var seriesArr = $scope.executeQryData.executeMeasures;
+        
+                $scope.selectedChart = onSelect;
+                eval("$scope." + $scope.selectedChart.chartType + ".changeType()");                
 
                 if ( seriesArr.length > 1 && $scope.chartType == 'pie' ){
                     privateFun.fireMessage('0', "Cannot generate "+$scope.chartType+" chart with more than one series");
@@ -909,8 +914,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             $scope.executeQryData.executeColumns = [];
                             $scope.executeQryData.executeMeasures = [];
                         }
-                        $scope.selectedChart = onSelect;
-                        eval("$scope." + $scope.selectedChart.chartType + ".changeType()");
+
                         //privateFun.createHighchartsChart(onSelect.chart);
                 }
             },
@@ -942,8 +946,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
         widget.widgetData.highchartsNG["size"] = {
 
-            width: 600,
-            height: 400
+            width: 300,
+            height: 200
         };
         widget.widgetData.dataCtrl = "widgetSettingsDataCtrl";
         widget.widgetData.dataView = "views/ViewData.html";
@@ -1085,6 +1089,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         tooltip: {
 
                         },
+
+                        exporting: {
+                            sourceWidth: 600,
+                            sourceHeight: 400
+                        },                        
 
                         plotOptions: {
                             pie: {
@@ -1250,6 +1259,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     }
                 },
 
+                $scope.highchartsNG['options'] =  {
+                    exporting: {
+                        sourceWidth: 600,
+                        sourceHeight: 400
+                    }                        
+                };                  
+
                 $scope.highchartsNG['options'] = {
                     chart: {
                         zoomType: 'x'
@@ -1347,8 +1363,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                     // Explicitly tell the width and height of a chart
                                     width: null,
                                     height: 367,
-                                }
+                                },
+
+                                exporting: {
+                                    sourceWidth: 600,
+                                    sourceHeight: 400
+                                }                            
                             },
+
                             title: {
                                 text: ''
                             },
@@ -1520,7 +1542,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 width: null,
                                 height: 367,
                                 zoomType: 'xy'
-                            }
+                            },
+                            exporting: {
+                                sourceWidth: 600,
+                                sourceHeight: 400
+                            }                               
                         },
                         title: {
                             text: ''
@@ -1648,6 +1674,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                     width: null,
                                     height: 367,
                                     },
+                                exporting: {
+                                    sourceWidth: 600,
+                                    sourceHeight: 400
+                                },                                    
                                 plotOptions: {
                                     column:{
                                     shadow: false,
@@ -2071,6 +2101,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     tooltip: {
                         pointFormat: '{point.y}'
                     },
+                    exporting: {
+                        sourceWidth: 600,
+                        sourceHeight: 400
+                    },                    
 
                     plotOptions: {
                         pie: {

@@ -201,12 +201,12 @@ routerApp.controller("LoginCtrl", ['$scope', '$http', '$animate', '$window',
             }
         };
 
-        //Go to
-
+        //Go to terms and conditon page
         $scope.isLoadTermCondition = false;
         $scope.goToTermCondition = function (state) {
             $scope.isLoadTermCondition = state;
         };
+
 
 
 //        //Register user??

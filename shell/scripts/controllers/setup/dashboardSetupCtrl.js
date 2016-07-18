@@ -1023,6 +1023,7 @@ $scope.invite = function () {
                     else{
                         console.log(response);
                         fireMsg('1', "Password changed successfully...!");
+                        $mdDialog.hide();
                     }
       
                 }).error(function(error){   

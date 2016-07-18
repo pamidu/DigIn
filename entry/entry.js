@@ -26,6 +26,14 @@ routerApp
                         requireLogin: false
                     }
                 })
+                .state("password", {
+                    url: "/password",
+                    controller: "signin-ctrl",
+                    templateUrl: "partial-forgerPw.php",
+                    data: {
+                        requireLogin: false
+                    }
+                })
 
         }]);
 
@@ -53,6 +61,13 @@ routerApp
                 $state.go('signup');
             };
 
+            $scope.onClickSignIn = function () {
+                $state.go('signin');
+            };
+
+            $scope.onClickForgetPw = function () {
+                $state.go('password');
+            };
 
             var mainFun = (function () {
                 return {
@@ -101,9 +116,57 @@ routerApp
                     console.log(data);
                     mainFun.fireMsg('0', data.Message);
                 });
-            }
+            };
 
-        }])
+
+            //#load forgot password
+            $scope.validateEmail=function(){
+                if($scope.email==undefined){
+                    mainFun.fireMsg('0', 'Email can not be a blank...!');
+                    return false;
+                }
+                else{
+                    $scope.ChangePassword();
+                }
+                return true;
+            };
+
+             $scope.ChangePassword=function(){
+                $http.get('http://'+Digin_Domain+'/auth/GetUser/'+$scope.email)
+                    .success(function(response){
+                        if(response.Error){
+                             mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address/ this email address not exist...!');
+                        }
+                        else{
+                            $scope.sendMail();
+                        }   
+                    }).error(function(error){   
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Please try again...!');
+                    });  
+            };
+
+            $scope.sendMail=function(){
+                $http.get('http://'+Digin_Domain+'/apis/authorization/userauthorization/forgotpassword/'+$scope.email)
+                //http://digin.io/apis/authorization/userauthorization/forgotpassword/chamila@duosoftware.com
+                .success(function(response){
+                    if(response.Success){
+                        console.log(response);
+                        mainFun.fireMsg('1', "succussfully reset your password, Please check your mail for new password...!");
+                        $scope.email='';
+                        $state.go('signin');
+                    }
+                    else{
+                        console.log(response);
+                        fireMsg('0', response.Message);
+                    }
+                }).error(function(error){   
+                    mainFun.fireMsg('0', error);
+                });     
+            };
+
+           
+
+    }])
 
     .directive('keyEnter', function () {
         return function (scope, element, attrs) {
@@ -301,7 +364,17 @@ routerApp
                     //return;
 
                 }
-            }
+            };
+
+
+            //Go to terms and conditon page
+            $scope.isLoadTermCondition = false;
+            $scope.goToTermCondition = function (state) {
+                $scope.isLoadTermCondition = state;
+            };
+
+
+
         }
     ]);
 

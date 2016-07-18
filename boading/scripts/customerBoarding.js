@@ -296,6 +296,7 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
         };
 
         console.log($scope.tenantDtl);
+        displayProgress('Tenant creation is processing, please wait...!');
 		
         $http({
             method: 'POST',
@@ -430,6 +431,24 @@ $scope.selectPlan = function (package) //This is the click event for adding a co
         });
     };
 
+    //#common pre loader
+    var displayProgress = function (message) {
+        $mdDialog.show({
+            template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="row" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + '           <span>'+message+'</span>' + '       </div>' + '   </md-dialog-content>' + '</md-dialog>'
+            , parent: angular.element(document.body)
+            , clickOutsideToClose: false
+        });
+    };
+
+    //#common success
+    // var displaySuccess = function (message) {
+    //     $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Failed to create company !').textContent('' + message + '').ariaLabel(''+ Successfully completed. +'');
+    // };
+
+    //#common error
+    var displayError = function (message) {
+        $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Failed to create company !').textContent('' + message + '').ariaLabel(''+ Fail to complete. +'').ok('Got it!'));
+    };
    
     // var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
     // $rootScope.SecurityToken =userInfo.securityToken;

@@ -1,7 +1,29 @@
 <div class="digin-lgn-wrap animated" ng-controller="signup-ctrl">
     <toast></toast>
 
-    <div layout="column" layout-align="center center">
+
+    <div class="team-condition" ng-if="isLoadTermCondition==true">
+        <div class="body">
+            <h2>Terms and condition</h2>
+            <p>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
+                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
+                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
+                software like Aldus PageMaker including versions of Lorem Ipsum.
+            </p>
+
+            <a href="javascript:void(0)"
+               ng-click="goToTermCondition(false)"
+               class="btn btn-default">
+                ok
+            </a>
+        </div>
+    </div>
+
+
+    <div layout="column" layout-align="center center" ng-if="isLoadTermCondition==false">
 
         <div class="digin-login-card animated flipInY">
             <div layout="row" layout-xs="column">
@@ -66,7 +88,7 @@
                                                     <div ng-message="required">This is required.</div>
                                                 </div>
                                             </div>
-                                            <div class=" text-domain-name full-name"
+                                            <div class="text-domain-name full-name"
                                                  ng-class="{error:error.isLastName,'':!error.isLastName}">
                                                 <label for="lastName">last name</label>
                                                 <div>
@@ -140,6 +162,23 @@
                                                 > Password not match
                                                 </div>
                                             </div>
+
+                                            <div class="login-help">
+                                                <div class="remember-me">
+                                                    <input id="chkTerms" type="checkbox"/>
+                                                    By Clicking sign up you agree to the
+                                                    <a href="javascript:void(0);"
+                                                       ng-click="goToTermCondition(true)"
+                                                    >terms and condition</a>
+                                                </div>
+                                            </div>
+
+                                            <!-- captcha -->
+                                            <div class="captcha-box p-t-20">
+                                                <div class="g-recaptcha" data-sitekey="6LexsRwTAAAAAKoBvtryHzBDfQAvPa9DtFIVIK9w"></div>
+                                                <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=en"></script>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>

@@ -127,6 +127,38 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.pinHeaderbar = function (state) {
             $scope.headerbarPinned = state;
         }
+
+          //close open pages and go to home
+        $scope.mainclose = function(){
+            
+                        $state.go('home.welcomeSearch');
+                          $scope.createuuid = function () {
+                            return Math.floor((1 + Math.random()) * 0x10000)
+                                .toString(16)
+                                .substring(1);
+                        }
+                        $rootScope.dashboard = [];
+                        $rootScope.dashboard ={
+
+                            "pages" : null,
+                            "compClass": null,
+                            "compType": null,
+                            "compCategory": null,
+                            "compID": null,
+                            "compName": null,
+                            "refreshInterval": null,
+                        }
+
+                        $rootScope.dashboard.pages=[];
+                        var page = {
+                                    "widgets": [],
+                                    "pageID": "temp" + $scope.createuuid(),
+                                    "pageName": "DEFAULT",
+                                    "pageData": null
+                                }
+                        $rootScope.dashboard.pages.push(page);
+        }
+
         //shows user profile in a dialog box
         $scope.showUserProfile = function (ev) {
 

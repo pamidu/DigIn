@@ -290,7 +290,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                     $scope.totalEngagement += $scope.postsObj[i].shares + $scope.postsObj[i].comments;
                     $scope.engageLikes += $scope.postsObj[i].likes;
 
-                    var x = $scope.postsObj[i].created_time.split('T')[0];
+                    var x = moment($scope.postsObj[i].created_time).format('YYYY-MM-DD');
 
                     var enDate = x.split('-');
 
@@ -456,7 +456,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
 
         var timeObj = {
             sinceStamp: Math.floor(since / 1000),
-            untilStamp: Math.floor(until / 1000)
+            untilStamp: Math.floor(until / 1000)+86400
         };
    
 

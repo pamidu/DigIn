@@ -958,8 +958,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             query: $scope.dataToBeBind.receivedQuery
         };
 
-        widget.sizeX =8;
-        widget.sizeY =6;
+        widget.sizeX =6;
+        widget.sizeY =21;
 
         var objIndex = getRootObjectById(widget.widgetID, widgets);
         if (objIndex == null) { //new widget
@@ -2605,11 +2605,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             tabl = nameSpTbl;
         }
         for (var i = 0; i < tables.length; i++) {
-            if (tables[i].name == tabl)
+            if (tables[i].name.ignoreCase == tabl.ignoreCase)
                 isAtabl = true;
         }
+        var x = $diginurls.getNamespace();
         if ( db == "BigQuery"){
-            if (typeof query == "undefined" || $diginurls.getNamespace() != nameSpace || !isAtabl){
+            if (typeof query == "undefined" || $diginurls.getNamespace()  != nameSpace || !isAtabl){
                 privateFun.fireMessage('0',"You're trying to query unauthorized namespace or a table!");
                 return;
             }
@@ -2648,6 +2649,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 } else {
                     //alert('request failed');
                     privateFun.fireMessage('0', '<strong>Invalid query :</strong>please enter request failed ');
+                    if ( $scope.selectedChart.chartType == 'highCharts'){
+                         $scope.highchartsNG.series = {};
+                    }                    
                     $scope.isPendingRequest = false;
                     $scope.eventHndler.isLoadingChart = false;
                 }

@@ -17,8 +17,8 @@
                 
                     <p>You have {{message}} in this dashboard</p>
                     <div layout="row" layout-wrap>
-                        <div ng-repeat="item in $root.dashboard.pages" layout="column">
-                            <md-icon md-svg-src="styles/css/images/icons/ic_dashboard_24px.svg" style="width:50px;height:50px;"></md-icon>
+                        <div ng-repeat="item in $root.dashboard.pages" layout="column" style="padding-left: 25px;">
+                            <md-icon md-svg-src="styles/css/images/icons/ic_dashboard_24px.svg" style="position: relative;width:50px;height:50px;"></md-icon>
                             <p class="page-name">{{item.pageName}}</p>
                         </div>
                     </div>

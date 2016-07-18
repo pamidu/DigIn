@@ -44,17 +44,6 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         yAxis: {
             title: {
                 text: "Polarity"
-            },
-            labels: {
-                style: {
-                    color: "#fff",
-                    fontSize: "12px",
-                    fontFamily: "Ek Mukta, sans-serif",
-                    fontWeight: "200"
-                },
-                formatter: function () {
-                    return this.value
-                }
             }
         },
         title: {
@@ -203,17 +192,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                 type: "datetime"
             },
             yAxis: {
-                labels: {
-                    style: {
-                        color: "#fff",
-                        fontSize: "12px",
-                        fontFamily: "Ek Mukta, sans-serif",
-                        fontWeight: "200"
-                    },
-                    formatter: function () {
-                        return this.value
-                    }
-                }
+
             },
             title: {
                 text: ""

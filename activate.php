@@ -14,7 +14,8 @@ curl_close ($curl);
 		$response = createDataSet($email);
 		if($response){
 			echo '{"success":true,"message":"Account ativated and DataSet created successfully."}';
-			header("Location: http://".$mainDomain."/entry/#/signin?activated=true");
+			//header("Location: http://".$mainDomain."/entry/#/signin?activated=true");
+			header("Location: http://wwww.digin.io");
 		}	
 
 	}

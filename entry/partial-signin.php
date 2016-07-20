@@ -90,17 +90,18 @@
                                             </div>
                                         </div>
 
-                                        <div class="login-help">
-                                            <div class="remember-me">
-                                              <input id="chkTerms" type="checkbox">
-                                                  By Clicking sign up you agree to the
-                                                   <a href="javascript:void(0);" ng-click="goToTermCondition(true)">terms and condition</a>
-                                               </div>
-                                            <!--<div class="forget-pwd">
-                                                Forgot password?
-                                            </div>-->
-
+                                       <!--  <div class="login-help">
+                                            <div class="forget-pwd">
+                                                <a href="#" onclick="javascript:onClickForgetPw()">Forgot Password?</a>
+                                            </div>
                                         </div>
+                                        -->
+
+                                        <div class="login-help">
+                                            <a href="javascript:void(0)" ng-click="onClickForgetPw()">Forgot Password?</a>
+                                        </div>
+
+
                                     </div>
                                 </div>
 
@@ -108,6 +109,7 @@
                                     <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
                                     <span class="sr-only">Loading...</span>
                                 </div>
+                                
                                 <div class="login-btn-wrap" ng-if="!error.isLoading">
                                     <a href="javascript:void(0  )"
                                        ng-click="login()"

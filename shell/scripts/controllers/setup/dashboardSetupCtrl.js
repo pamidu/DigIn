@@ -933,9 +933,6 @@ $scope.invite = function () {
             }).success(function (data) {
                 $scope.error.isLoading = false;
                 fireMsg('1', 'User profile updated successfully !');
-                $scope.fname = '';
-                $scope.lname = '';
-                $scope.email = '';
             }).error(function (data) {
                 $scope.error.isLoading = false;            
             });
@@ -948,26 +945,98 @@ $scope.invite = function () {
             .success(function(response){
                 console.log(response);
                 //#load exisitging data
-                // $scope.address=BillingAddress
-                // $scope.company=Company
-                // $scope.country=Country
-                // $scope.email=Email
-                // $scope.name=Name
-                // $scope.phoneNo=PhoneNumber
-                // $scope.zipCode=ZipCode
+                $scope.address=response.BillingAddress
+                $scope.company=response.Company
+                $scope.country=response.Country
+                $scope.email=response.Email
+                $scope.name=response.Name
+                $scope.phoneNo=response.PhoneNumber
+                $scope.zipCode=response.ZipCode
             }).error(function(error){   
                 //fireMsg('0', '<strong>Error : </strong>Please try again...!');
             });  
     };
 
 
+    $scope.myImage='';
+    $scope.myCroppedImage='';
+
+    var handleFileSelect=function(evt) {
+          var file=evt.currentTarget.files[0];
+          var reader = new FileReader();
+          reader.onload = function (evt) {
+            $scope.$apply(function($scope){
+                $scope.myImage=evt.target.result;
+            });
+          };
+          reader.readAsDataURL(file);
+    };
+    angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+ 
+
+    //#load password change window
+     $scope.loadPasswordChangeWindow = function () {
+            $mdDialog.show({
+                controller: passwordCtrl,
+                templateUrl: 'views/settings/changePassword.html',
+                resolve: {},
+                locals: {},
+            });
+    };
+
+    var passwordCtrl = function ($scope) {
+
+        $scope.close = function () {
+            $mdDialog.hide();
+        };
 
 
+        $scope.validate=function(){
+            if($scope.newPassword!=$scope.confirmPassword){
+                fireMsg('0', 'Password do not match, Please reenter...!');
+                return false;
+            }
+            else if($scope.newPassword==undefined){
+                fireMsg('0', 'New password can not be a blank...!');
+                return false;
+            }
+            else if($scope.oldPassword==undefined){
+                fireMsg('0', 'Old password can not be a blank...!');
+                return false;
+            }
+            else if($scope.confirmPassword==undefined){
+                fireMsg('0', 'Confirmed password can not be a blank...!');
+                return false;
+            }
+            return true;
+        };
+
+        $scope.ChangePassword=function(){
+            if($scope.validate()==true){
+                $http.get(baseUrl+'/auth/ChangePassword/'+$scope.oldPassword+'/'+$scope.newPassword)
+                //http://chamiladuosoftwarecom.space.duoworld.com/auth/ChangePassword/chamila@duo/chamila@duo
+                .success(function(response){
+                    if(response.Error){
+                        console.log(response);
+                        fireMsg('0', response.Message);
+                    }
+                    else{
+                        console.log(response);
+                        fireMsg('1', "Password changed successfully...!");
+                        $mdDialog.hide();
+                    }
+      
+                }).error(function(error){   
+                    fireMsg('0', error);
+                });     
+            }
+        };
+
+    };
 
 
-
-
-
+    //#password reset
+    //http://duoworld.com/apis/authorization/userauthorization/forgotpassword/chamila@duosoftware.com
 
 
 

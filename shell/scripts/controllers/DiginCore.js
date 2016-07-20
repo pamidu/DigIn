@@ -29,7 +29,7 @@ routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
         }
     };
     var reSizeWidget = function () {
-        $scope.widget.widgetData.highchartsNG.size.width = parseInt(700);
+        $scope.widget.widgetData.highchartsNG.size.width = parseInt(600);
         $scope.widget.widgetData.highchartsNG.size.height = parseInt(400);
     }
 

@@ -104,7 +104,7 @@
 }
 
 .sign-up-wrap {
-    height: 500px !important;
+    height: 550px !important;
 }
 
 .digin-login-card {
@@ -173,7 +173,7 @@
 }
 
 .sign-btn-wrap {
-    margin: 35px auto !important;
+    margin: 130px auto !important;
 }
 
 .disable {
@@ -645,6 +645,14 @@
 .login-loading > i {
     color: #2B87C4;
 }
+
+/*user setting page*/
+.main-wrap-user-group {
+    background: #ffffff;
+    height: 50px;
+}
+
+
 
 
 

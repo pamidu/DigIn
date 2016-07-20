@@ -4134,6 +4134,18 @@ md-tab-content > div {
     overflow-x: hidden;
 }
 
+/*Image crop in user profile */
+.cropArea {
+  background: #E4E4E4;
+  overflow: hidden;
+  width:500px;
+  height:350px;
+}
+
+.img-circle {
+    border-radius: 50%;
+}
+
 
 
 /*update Gevindu

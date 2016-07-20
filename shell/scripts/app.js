@@ -16,6 +16,7 @@ var routerApp = angular.module('DuoDiginRt', [
     'ui.calendar',
     'mgcrea.ngStrap',
     'ui',
+        'ngImgCrop',
     'lk-google-picker',
     'angularUtils.directives.dirPagination',
     'ngSanitize',

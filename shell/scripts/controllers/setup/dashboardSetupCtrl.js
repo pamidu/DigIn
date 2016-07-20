@@ -903,7 +903,34 @@ $scope.invite = function () {
 
 
     //#User Profile settings
-        //#User Profile settings
+
+    //-----------
+
+    $scope.myImage='';
+
+    $scope.myCroppedImage='styles/css/images/setting/invite_user.png';
+
+/*
+    var handleFileSelect=function(evt) {
+      var file=evt.currentTarget.files[0];
+      var reader = new FileReader();
+      reader.onload = function (evt) {
+        $scope.$apply(function($scope){
+          $scope.myImage=evt.target.result;
+        });
+      };
+      reader.readAsDataURL(file);
+    };
+    angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+
+*/
+    //--------------
+
+
+
+
+
+
     $scope.updateProfile= function () {
 
             var fullname = $scope.fname + " " + $scope.lname;
@@ -959,7 +986,7 @@ $scope.invite = function () {
 
 
     $scope.myImage='';
-    $scope.myCroppedImage='';
+    $scope.myCroppedImage="styles/css/images/setting/user100x100.png";
 
     var handleFileSelect=function(evt) {
           var file=evt.currentTarget.files[0];
@@ -973,6 +1000,42 @@ $scope.invite = function () {
     };
     angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
  
+
+
+    //#load select profile picture window
+     $scope.loadSelectProfilePictureWindow = function () {
+
+           
+            /*$mdDialog.show({
+                controller: selectProfilePictureCtrl,
+                templateUrl: 'views/settings/selectProfilePicture.html',
+                resolve: {},
+                locals: {},
+            });*/
+    };
+
+
+    var selectProfilePictureCtrl = function ($scope) {
+        $scope.close = function () {
+            $mdDialog.hide();
+        };
+
+        $scope.myImage='';
+        $scope.myCroppedImage='';
+
+        var handleFileSelect=function(evt) {
+              var file=evt.currentTarget.files[0];
+              var reader = new FileReader();
+              reader.onload = function (evt) {
+                $scope.$apply(function($scope){
+                    $scope.myImage=evt.target.result;
+                });
+              };
+              reader.readAsDataURL(file);
+        };
+        angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+    };
+  
 
     //#load password change window
      $scope.loadPasswordChangeWindow = function () {

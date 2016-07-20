@@ -85,14 +85,15 @@
     <!-- mdchip -->
 
     <!-- <link href="http://vjs.zencdn.net/5.8.0/video-js.css" rel="stylesheet"> -->
-    <script type="text/javascript" src="//platform.linkedin.com/in.js">
-        
-        //api_key: 78itfewa96mm93   //2.33
-        api_key: 816rs443i7o0rf
-        authorize: true
-        scope: r_basicprofile
-        r_emailaddress
-    </script>
+        <script type="text/javascript" src="//platform.linkedin.com/in.js">
+            
+            //api_key: 78itfewa96mm93   //2.33
+            api_key: 78itfewa96mm93
+            authorize: true
+            scope: r_basicprofile
+            r_emailaddress
+        </script>
+    
     <script src="https://apis.google.com/js/client.js"></script> 
     <style type="text/css">
         .ui-resizable {

@@ -1,7 +1,7 @@
 <?php
 
 //$mainDomain="prod.digin.io";
-$mainDomain="localhost:8080";
+$mainDomain="localhost:8081";
 
 $authURI="http://prod.auth.digin.io:3048/";
 $objURI="http://prod.auth.digin.io:3000/";

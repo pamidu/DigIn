@@ -92,7 +92,7 @@ routerApp
                         //#Added for local host ------------------------------
                          document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
                          document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
-                         window.location.href = "http://localhost:8080/git/digin/shell";
+                         window.location.href = "http://localhost:8081/digin/shell";
                     }
                     else {
                         mainFun.fireMsg('0', data.Message);

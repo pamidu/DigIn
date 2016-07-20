@@ -88,16 +88,18 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 // Explicitly tell the width and height of a chart
                 width: null
             },
-            exporting: {
-                useHTML: true
-            }
+             exporting: {
+                 filename: ''
+            }  
+            
         },
         title: {
             text: '',
         },
         series: [{
             color: '#536DFE',
-        }]
+        }],
+        
     };
 
 
@@ -1064,15 +1066,22 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 $scope.mapResult(cat, res, function(data) {
                     $scope.highchartsNG.series = {};
 
-                    $scope.$apply();
+                    $scope.xAxiscat =[];
                     $scope.highchartsNG.series = data;
-
+                    $scope.highchartsNG.xAxis ={};
+                    $scope.highchartsNG.xAxis.categories = [];
                     $scope.highchartsNG.series.forEach(function(key) {
                         if (key.data.length > 1000)
                             key['turboThreshold'] = key.data.length;
                     });
-
-
+                    $scope.highchartsNG.series.forEach(function(key) {
+                        key.data.forEach(function(value)
+                        {
+                              $scope.xAxiscat.push(value.name);
+                        });
+                      
+                    });
+                    $scope.highchartsNG.xAxis.categories = $scope.xAxiscat;
                     $scope.highchartsNG.options = {
                         chart: {
                             type: $scope.selectedChart.chart,
@@ -1099,7 +1108,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 },
                                 showInLegend: false
                             },
-                            series: {
+                            series: { 
                                 dataLabels: {
                                     enabled: true,
                                     format: '({point.y:,.0f})',
@@ -2392,7 +2401,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                             }
 
                                         });
-
+                                        $scope.dataToBeBind.receivedQuery = query;
                                         chart.addSeriesAsDrilldown(e.point, drillObj);
 
 
@@ -2526,7 +2535,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                                 });
 
                                                 console.log(JSON.stringify(drillSerMainArr));
-
+                                                $scope.dataToBeBind.receivedQuery = query;
                                                 syncAgg(j + 1, res1);
                                             } else {
                                                 //alert('request failed');
@@ -2544,6 +2553,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                         };
                                         console.log(JSON.stringify($scope.highchartsNG));
                                         $scope.eventHndler.isLoadingChart = false;
+                                         $scope.dataToBeBind.receivedQuery = query;
                                         eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
                                     }
                                 };

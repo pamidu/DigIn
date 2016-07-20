@@ -18,17 +18,17 @@ p_boarding_module.config(['$stateProvider', '$urlRouterProvider', function ($sp,
 
 
 
-p_boarding_module.controller("boarding-parent-ctrl", ["$scope", "$timeout", "$state", "$location", function ($scope, $timeout, $state, $location) {
-    $scope.navigateJoinCompanyProcess = function () {
-        $state.go('joincompany');
-    };
-    $scope.navigateCreateCompanyProcess = function () {
-        $state.go('createcompany');
-    };
-    $scope.navigateCustomerBoardingProcess = function () {
-        $state.go('main');
-    };
-}]);
+// p_boarding_module.controller("boarding-parent-ctrl", ["$scope", "$timeout", "$state", "$location", function ($scope, $timeout, $state, $location) {
+//     $scope.navigateJoinCompanyProcess = function () {
+//         $state.go('joincompany');
+//     };
+//     $scope.navigateCreateCompanyProcess = function () {
+//         $state.go('createcompany');
+//     };
+//     $scope.navigateCustomerBoardingProcess = function () {
+//         $state.go('main');
+//     };
+// }]);
 
 
 
@@ -271,6 +271,9 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
 	
 //#Tenent creation process
     $scope.createTenant = function (package) {
+
+        displayProgress('Tenant creation is processing, please wait...!');
+
         var userInfo ="";
         var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
         var email=userInfo.Email;
@@ -295,9 +298,7 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
             }
         };
 
-        console.log($scope.tenantDtl);
-        displayProgress('Tenant creation is processing, please wait...!');
-		
+        console.log($scope.tenantDtl);		
         $http({
             method: 'POST',
             //url: 'http://digin.io/apis/usertenant/tenant/',
@@ -310,10 +311,12 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
         .success(function (response) {
             //var res=decodeURIComponent(response);
             if (response.Success == true) {
+                $mdDialog.hide();
                 window.location = "http://" + response.Data.TenantID;
                 //window.location ="http://digin.io/entry";
             }
             else {  
+                $mdDialog.hide();
                 console.log(response.Message);
             }
 
@@ -327,6 +330,7 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
 $scope.selectPlan = function (package) //This is the click event for adding a company tenant in add.html
         {
             if(package=="FREE"){
+
                 $scope.createTenant(package);
             }
             else{
@@ -440,14 +444,14 @@ $scope.selectPlan = function (package) //This is the click event for adding a co
         });
     };
 
-    //#common success
-    // var displaySuccess = function (message) {
-    //     $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Failed to create company !').textContent('' + message + '').ariaLabel(''+ Successfully completed. +'');
-    // };
+    //#pre-loader success
+    var displaySuccess = function (message) {
+        $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process Completed !').textContent('' + message + '').ariaLabel('Successfully completed.').ok('OK'));
+    };
 
     //#common error
     var displayError = function (message) {
-        $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Failed to create company !').textContent('' + message + '').ariaLabel(''+ Fail to complete. +'').ok('Got it!'));
+        $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process fail !').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
     };
    
     // var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));

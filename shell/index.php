@@ -84,7 +84,7 @@
     <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
    
     <!-- image crop -->
-    <!-- <link rel="stylesheet" href="bower_components/ngimgcrop/ng-img-crop.css"/> -->
+    <link rel="stylesheet" href="bower_components/imgcrop/ng-img-crop.css"/> 
 
 
     <!-- <link href="http://vjs.zencdn.net/5.8.0/video-js.css" rel="stylesheet"> -->
@@ -160,7 +160,8 @@
 <!-- ng input tag -->
 
 <!-- image crop -->
-<!-- <script type="text/javascript" src="bower_components/ngimgcrop/ng-img-crop.js"></script> -->
+<script type="text/javascript" src="bower_components/imgcrop/ng-img-crop.js"></script>
+
 
 <script src="bower_components/tag-input/ng-tags-input.min.js"></script>
 

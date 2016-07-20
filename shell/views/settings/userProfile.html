@@ -7,73 +7,90 @@
     <div class="md-padding animated fadeIn" layout="row" layout-align="center center">
         <div class="setting-wrap" style="height: 760px;"
              flex="60">
+
             <div class="setting-card-header">
                 <h5>User Profile</h5>
-                <!-- <div class="setting-img-wrap">
-                    <img src="styles/css/images/setting/invite_user.png"/>
-                </div> -->
+                 <img src="styles/css/images/setting/user100x100.png" class="img-circle" style="width:20%;"/>
+                <!-- <img ng-src="{{myCroppedImage}}" class="img-circle" style="width:20%;"> -->
+            </div>
 
-                <div class="setting-text-wrap">
-                    <p>Update user profile and change password here</p>
+
+      <!--       <div ng-show=true>
+                  <div>Select an image file: <input type="file" id="fileInput" /></div>
+                    <div class="cropArea">
+                      <img-crop image="myImage" result-image="myCroppedImage" area-type="circle"></img-crop>
+                  </div>
+
+                   <div>Cropped Image:</div>
+                  <div><img ng-src="{{myCroppedImage}}" /></div> 
+            </div>
+ -->
+
+        
+
+            <div ng-show=true>
+                <div class="user-setting-wrap" >  
+                    <div layout="row">
+                        <md-button class="setup-button md-raised md-primary" ng-click="loadSelectProfilePictureWindow()">
+                            <span class="setup-font-theme">Set Profile Picture</span>
+                        </md-button>
+
+                        <md-button class="setup-button md-raised md-primary" ng-click="loadPasswordChangeWindow()">
+                            <span class="setup-font-theme">Change Password</span>
+                        </md-button>
+                    </div>
+
+                    <div layout="row"> 
+                        <md-input-container>
+                            <label>Email</label>
+                            <input ng-model="email" readonly="true"> 
+                        </md-input-container>
+
+                         <md-input-container>
+                            <label>Name</label>
+                            <input ng-model="name">
+                        </md-input-container>
+                    </div>   
+
+                    <div layout="row"> 
+                        <md-input-container>
+                            <label>Phone No</label>
+                            <input ng-model="phoneNo">
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Company</label>
+                            <input ng-model="company">
+                        </md-input-container>
+                    </div>     
+
+                    <div layout="row">    
+                        <md-input-container>
+                            <label>Country</label>
+                            <input ng-model="country"> 
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Zip Code</label>
+                            <input ng-model="zipCode"> 
+                        </md-input-container>      
+                    </div>   
+
+                    <div layout="column">    
+                        <md-input-container>
+                            <label>Billing Address</label>
+                            <input ng-model="address"> 
+                        </md-input-container>   
+                    </div>   
+
+       
+                    <md-button class="setup-button md-raised md-primary" ng-click="updateProfile()">
+                        <span class="setup-font-theme">UPDATE PROFILE</span>
+                    </md-button>
                 </div>
- 
-                <md-button class="setup-button md-raised md-primary" ng-click="loadPasswordChangeWindow()">
-                    <span class="setup-font-theme">Change Password</span>
-                </md-button>
-
             </div>
+        
 
-
-            <div class="user-setting-wrap">   
-
-                <div layout="column">    
-                    <md-input-container>
-                        <label>Email</label>
-                        <input ng-model="email" readonly="true"> 
-                    </md-input-container>
-
-                     <md-input-container>
-                        <label>Name</label>
-                        <input ng-model="name">
-                    </md-input-container>
-                </div>   
-
-                <div layout="row"> 
-                    <md-input-container>
-                        <label>Phone No</label>
-                        <input ng-model="phoneNo">
-                    </md-input-container>
-
-                    <md-input-container>
-                        <label>Company</label>
-                        <input ng-model="company">
-                    </md-input-container>
-                </div>     
-
-                <div layout="row">    
-                    <md-input-container>
-                        <label>Country</label>
-                        <input ng-model="country"> 
-                    </md-input-container>
-
-                    <md-input-container>
-                        <label>Zip Code</label>
-                        <input ng-model="zipCode"> 
-                    </md-input-container>      
-                </div>   
-
-                <div layout="column">    
-                    <md-input-container>
-                        <label>Billing Address</label>
-                        <input ng-model="address"> 
-                    </md-input-container>   
-                </div>   
-
-   
-                <md-button class="setup-button md-raised md-primary" ng-click="updateProfile()">
-                    <span class="setup-font-theme">UPDATE PROFILE</span>
-                </md-button>
-            </div>
 
         </div>
     </div>

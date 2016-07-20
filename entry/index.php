@@ -12,7 +12,8 @@
     <link rel="stylesheet" type="text/css" href="assets/css/animate.css">
     <link rel="stylesheet" type="text/css" href="assets/css/commonstyle.css">
     <link rel="stylesheet" type="text/css" href="assets/css/admin1.css">
-
+    <link rel="stylesheet" type="text/css" href="bower_components/ngToast/dist/ngToast.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/ngToast/dist/ngToast.min.css">
 
     <!-- google font -->
     <link href='https://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
@@ -28,21 +29,23 @@
 <!-- #script area -->
 </body>
 <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
 <script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
 <script type="text/javascript" src="bower_components/angular-route/angular-route.js"></script>
 <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
 <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
 <script type="text/javascript" src="bower_components/ngToast/dist/ngToast.min.js"></script>
+
+
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-sanitize.min.js"></script>
-<link rel="stylesheet" type="text/css" href="bower_components/ngToast/dist/ngToast.css">
-<link rel="stylesheet" type="text/css" href="bower_components/ngToast/dist/ngToast.min.css">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-messages.min.js"></script>
 
 <!-- #js -->
 <script type="text/javascript" src="assets/js/config.js"></script>
 <script type="text/javascript" src="assets/js/uimicrokernel.js"></script> 
 <script type="text/javascript" src="entry.js"></script>
 
-<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-messages.min.js"></script>
+
 
 </html>

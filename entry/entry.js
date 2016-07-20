@@ -1,8 +1,8 @@
 /**
  * Created by Damith on 6/10/2016.
  */
-var routerApp = angular.module('digin-entry', ['ngAnimate', 'ui.router', 'uiMicrokernel', 'configuration'
-    , 'ngToast', 'ngSanitize', 'ngMessages']);
+var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'uiMicrokernel', 'configuration'
+    , 'ngToast', 'ngSanitize', 'ngMessages','ngAria']);
 
 routerApp
     .config(["$httpProvider", "$stateProvider", "$urlRouterProvider",
@@ -39,8 +39,8 @@ routerApp
 
 routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
-        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain',
-        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain) {
+        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog',
+        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog) {
 
             $scope.signindetails = {};
             $scope.isLoggedin = false;
@@ -93,6 +93,7 @@ routerApp
             })();
 
             $scope.login = function () {
+                displayProgress();
                 $http({
                     method: 'POST',
                     url: 'http://'+Digin_Domain+'/apis/authorization/userauthorization/login',
@@ -110,13 +111,47 @@ routerApp
                          window.location.href = "http://localhost:8080/git/digin/shell";
                     }
                     else {
+                        $mdDialog.hide();
                         mainFun.fireMsg('0', data.Message);
                     }
                 }).error(function (data) {
                     console.log(data);
+                    $mdDialog.hide();
                     mainFun.fireMsg('0', data.Message);
                 });
             };
+
+
+            //#pre-loader progress - with message
+            var displayProgress = function (message) {
+                $mdDialog.show({
+                    template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="row" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + '           <span>'+message+'</span>' + '       </div>' + '   </md-dialog-content>' + '</md-dialog>'
+                    , parent: angular.element(document.body)
+                    , clickOutsideToClose: false
+                });
+            };
+
+            //#pre-loader progress - without message
+            var displayProgress = function () {
+                $mdDialog.show({
+                    template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="column" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' +  '       </div>' + '   </md-dialog-content>' + '</md-dialog>'
+                    , parent: angular.element(document.body)
+                    , clickOutsideToClose: false
+                });
+            };
+
+
+            //#pre-loader error
+            var displayError = function (message) {
+                $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process fail !').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
+            };
+
+            //#pre-loader success
+            var displaySuccess = function (message) {
+                $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process Completed !').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
+            };
+
+
 
 
             //#load forgot password
@@ -126,6 +161,7 @@ routerApp
                     return false;
                 }
                 else{
+                    displayProgress("Change password processing...")
                     $scope.ChangePassword();
                 }
                 return true;
@@ -135,12 +171,16 @@ routerApp
                 $http.get('http://'+Digin_Domain+'/auth/GetUser/'+$scope.email)
                     .success(function(response){
                         if(response.Error){
-                             mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address/ this email address not exist...!');
+                            $mdDialog.hide();
+                            mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address/ this email address not exist...!');
+                            //displayError('Invalid email address/ this email address not exist...');
+                            
                         }
                         else{
                             $scope.sendMail();
                         }   
-                    }).error(function(error){   
+                    }).error(function(error){  
+                        $mdDialog.hide(); 
                         mainFun.fireMsg('0', '<strong>Error : </strong>Please try again...!');
                     });  
             };
@@ -151,15 +191,19 @@ routerApp
                 .success(function(response){
                     if(response.Success){
                         console.log(response);
+                        $mdDialog.hide();
                         mainFun.fireMsg('1', "succussfully reset your password, Please check your mail for new password...!");
+                        //displaySuccess('uccussfully reset your password, Please check your mail for new password...');
                         $scope.email='';
                         $state.go('signin');
                     }
                     else{
                         console.log(response);
+                        $mdDialog.hide();
                         fireMsg('0', response.Message);
                     }
-                }).error(function(error){   
+                }).error(function(error){  
+                    $mdDialog.hide(); 
                     mainFun.fireMsg('0', error);
                 });     
             };
@@ -197,9 +241,9 @@ routerApp
 //#signup controller
 routerApp
     .controller('signup-ctrl', ['$scope', '$http', '$state', 'focus',
-        'Digin_Domain', 'Digin_Engine_API','ngToast',
+        'Digin_Domain', 'Digin_Engine_API','ngToast','$mdDialog',
         function ($scope, $http, $state, focus,
-                  Digin_Domain, Digin_Engine_API, ngToast) {
+                  Digin_Domain, Digin_Engine_API, ngToast,$mdDialog) {
 
             $scope.onClickSignIn = function () {
                 $scope.isLoggedin = false;
@@ -230,6 +274,16 @@ routerApp
                 isPassword: false,
                 isRetypeCnfrm: false,
                 isLoading: false
+            };
+
+
+            //#pre-loader progress
+            var displayProgress = function (message) {
+                $mdDialog.show({
+                    template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="row" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + '           <span>'+message+'</span>' + '       </div>' + '   </md-dialog-content>' + '</md-dialog>'
+                    , parent: angular.element(document.body)
+                    , clickOutsideToClose: false
+                });
             };
 
             var mainFun = (function () {
@@ -303,14 +357,17 @@ routerApp
                             //$state.go('signin');
 
                             if (data.Success === false) {
+                                $mdDialog.hide();
                                 mainFun.fireMsg('0', data.Message);
                             }
                             else {
+                                $mdDialog.hide();
                                 mainFun.fireMsg('1', 'You are succussfully registerd, Please check your email for verification...!');
                                 mainFun.dataClear();
                             }
                         }).error(function (data, status) {
                             $scope.error.isLoading = false;
+                            $mdDialog.hide();
                             mainFun.fireMsg('0', 'Please Try again !!');
                         });
                     },
@@ -359,7 +416,7 @@ routerApp
                     return;
                 }
                 else {
-
+                    displayProgress('User registration processing...');
                     mainFun.signUpUser();
                     //return;
 

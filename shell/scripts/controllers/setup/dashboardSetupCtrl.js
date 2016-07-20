@@ -986,7 +986,7 @@ $scope.invite = function () {
 
 
     $scope.myImage='';
-    $scope.myCroppedImage='';
+    $scope.myCroppedImage="styles/css/images/setting/user100x100.png";
 
     var handleFileSelect=function(evt) {
           var file=evt.currentTarget.files[0];
@@ -1004,16 +1004,18 @@ $scope.invite = function () {
 
     //#load select profile picture window
      $scope.loadSelectProfilePictureWindow = function () {
-            $mdDialog.show({
+
+           
+            /*$mdDialog.show({
                 controller: selectProfilePictureCtrl,
                 templateUrl: 'views/settings/selectProfilePicture.html',
                 resolve: {},
                 locals: {},
-            });
+            });*/
     };
 
 
-    var selectProfilePictureCtrl = function ($scope,$mdDialog, ngToast, Upload) {
+    var selectProfilePictureCtrl = function ($scope) {
         $scope.close = function () {
             $mdDialog.hide();
         };
@@ -1033,12 +1035,7 @@ $scope.invite = function () {
         };
         angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
     };
-
-
-    
-
-
-
+  
 
     //#load password change window
      $scope.loadPasswordChangeWindow = function () {

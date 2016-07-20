@@ -10,25 +10,25 @@
 
             <div class="setting-card-header">
                 <h5>User Profile</h5>
-                 <img src="styles/css/images/setting/user100x100.png" class="img-circle" style="width:20%;"/>
-                <!-- <img ng-src="{{myCroppedImage}}" class="img-circle" style="width:20%;"> -->
+                 <!-- <img src="styles/css/images/setting/user100x100.png" class="img-circle" style="width:18%;"/> -->
+                <img ng-src="{{myCroppedImage}}" class="img-circle" style="width:15%;">
             </div>
 
 
-      <!--       <div ng-show=true>
-                  <div>Select an image file: <input type="file" id="fileInput" /></div>
-                    <div class="cropArea">
-                      <img-crop image="myImage" result-image="myCroppedImage" area-type="circle"></img-crop>
-                  </div>
+           <div ng-show="true" align="center"><!-- selectImage-->
+                <div><input type="file" id="fileInput" /></div>
+                <div class="cropArea"  style="margin-top: 100px; margin-left: 100px;">
+                  <img-crop image="myImage" result-image="myCroppedImage" area-type="circle" ></img-crop>
+                </div>
 
-                   <div>Cropped Image:</div>
-                  <div><img ng-src="{{myCroppedImage}}" /></div> 
+                <!--<div>Cropped Image:</div>
+                <div class="selectArea"><img ng-src="{{myCroppedImage}}" /></div> -->
             </div>
- -->
+
 
         
 
-            <div ng-show=true>
+            <div ng-show="true"><!-- selectProfile-->
                 <div class="user-setting-wrap" >  
                     <div layout="row">
                         <md-button class="setup-button md-raised md-primary" ng-click="loadSelectProfilePictureWindow()">

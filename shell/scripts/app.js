@@ -32,7 +32,8 @@ var routerApp = angular.module('DuoDiginRt', [
     "com.2fdevs.videogular",
     "com.2fdevs.videogular.plugins.controls",
     "info.vietnamcode.nampnq.videogular.plugins.youtube",
-    "ngTagsInput"
+    "ngTagsInput",
+    'pouchdb'
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {

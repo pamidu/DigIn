@@ -227,9 +227,11 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
 
 
-routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter', 'Digin_Domain', 'Digin_Engine_API',
+routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter', 'Digin_Domain', 'Digin_Engine_API', 'pouchDB',
 
-    function($scope, $qbuilder, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter, Digin_Domain, Digin_Engine_API) {
+    function($scope, $qbuilder, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter, Digin_Domain, Digin_Engine_API, pouchDB) {
+
+        var db = new pouchDB('dashboard');
 
         $scope.close = function() {
 
@@ -250,6 +252,58 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
          
         $scope.isLoadingDashBoardSave=false;
         $scope.isButtonDashBoardSave=true;
+
+        var insertPouchDB = function(dashboardObject){
+            
+                var dashboard = angular.toJson(dashboardObject);
+                console.log(dashboard,true);
+                var dashboardDoc = {
+                    _id : dashboardObject.compID.toString(),
+                    dashboard : dashboard
+                }
+            
+                db.get( dashboardDoc._id , function(err, doc){
+                    if (err){
+                        if (err.status = '404') { // if the document does not exist
+                            //Inserting Document into pouchDB
+                            db.put(dashboardDoc, function(err, response) {
+                                if (err) {
+                                    return console.log(err);
+                                } else {
+                                    console.log("Document created Successfully");
+                                }
+                            });                          
+                          console.log("not found error status is" + err.status);
+                        }
+                       }                        
+                    else {
+                            dashboardDoc = {
+                                dashboard : dashboardDoc,
+                                _id : dashboardObject.compID.toString(),
+                                _rev : doc._rev
+                            }
+                            db.put(dashboardDoc, function(err, response) {
+                                if (err) {
+                                return console.log(err);
+                            } else {
+                                console.log("Document updated Successfully");
+                            }
+                        });   
+                        console.log(doc);
+                    }
+                });
+
+
+                db.allDocs({
+                    include_docs: true,
+                    attachments: true
+                  }).catch(function (err) {
+                    console.log(err);
+                  }).then(function (data) {
+                    console.log(data);
+                  });  
+
+        }
 
         $scope.mapChartData = function(chartType,i,j,data){
 
@@ -304,7 +358,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
         }
 
-        $scope.saveDashboard = function() {  
+        $scope.saveDashboard = function() {                                    
 
             if($scope.dashboardName && $scope.dashboardType && $scope.refreshInterval){
                 $scope.isLoadingDashBoardSave = true;
@@ -330,6 +384,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                                 var chart = "";
                                 var flag = false;
                                 var widgetObject;
+                                // Remove data from the charts when it is being saved
                                 if (typeof(widgets[j].widgetData.selectedChart) != "undefined"){
                                     var flag = true;
                                     console.log(widgets[j].widgetData.selectedChart.chartType);
@@ -512,11 +567,14 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                         "deletions": $rootScope.dashboard.deletions
                     }
                 }
-                console.log("dashboardObject", dashboardObject);
+
                 //id fields are accepted close dialog
                 //$mdDialog.hide();
-                      var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
-            
+
+                var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
+
+                insertPouchDB(dashboardObject);  
+
                 $http({
                     method: 'POST',
                     
@@ -529,7 +587,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                     }
                 })
                 .success(function(response){
-
+                    // map data to all charts
                     for ( var i = 0; i < dynamicPages.length; i++){
                         console.log(dynamicPages[i]);
                         for ( var j = 0; j < dynamicPages[i].widgets.length; j++){

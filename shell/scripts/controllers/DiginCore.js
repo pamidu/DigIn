@@ -407,10 +407,25 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 });
             }
         };
-        
-        $scope.d3ImgDownload = function (widget) {
 
-                 var element =null;
+
+        $scope.pngDownload = function(widget){
+
+            var type = "png";
+            $scope.d3ImgDownload(widget,type);
+
+        };
+
+        $scope.jpegDownload = function(widget){
+
+            var type = "jpeg";
+            $scope.d3ImgDownload(widget,type);
+
+        };
+        
+        $scope.d3ImgDownload = function (widget,type) {
+
+            var element =null;
             switch (widget.widgetName) {
                 
                 case 'sunburst':
@@ -419,6 +434,19 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
                 case 'hierarchy':
                     element =$("#d3Force");
+                    break;
+
+            }
+
+            var downType = null;
+            switch (type) {
+                
+                case 'png':
+                    downType ="image/png";
+                    break;
+
+                case 'jpeg':
+                    downType ="image/jpeg";
                     break;
 
             }
@@ -434,6 +462,9 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             var canvas = document.getElementById("canvas");
             var ctx = null;
             var ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, 400, 400);
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(0,0,400,400);
             var DOMURL = self.URL || self.webkitURL || self;
             var img, svg =null;
             var img = new Image();
@@ -442,13 +473,13 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
             img.onload = function() {
                 ctx.drawImage(img, 0, 0);
-                var imgURL = canvas.toDataURL("image/png");
+                var imgURL = canvas.toDataURL(downType);
                 DOMURL.revokeObjectURL(imgURL);
                 var dlLink= null;
                 var dlLink = document.createElement('a');
                 dlLink.download = "image";
                 dlLink.href = imgURL;
-                dlLink.dataset.downloadurl = ["image/png", dlLink.download, dlLink.href].join(':');
+                dlLink.dataset.downloadurl = [downType, dlLink.download, dlLink.href].join(':');
                 document.body.appendChild(dlLink);
                 dlLink.click();
                 document.body.removeChild(dlLink);
@@ -457,7 +488,65 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             img.src = url;
         }
 
-    
+        $scope.svg_to_pdf = function(widget){
+            
+            var element =null;
+            switch (widget.widgetName) {
+                
+                case 'sunburst':
+                    element =$("#d3Sunburst");
+                    break;
+
+                case 'hierarchy':
+                    element =$("#d3Force");
+                    break;
+
+            }
+
+            $("#svg-container").empty();
+            $("#svg-container").append(element[0].innerHTML);
+            var svgEle = $("#svg-container").children();
+            var svg = svgEle[0];
+           
+            svgAsDataUri(svg, {}, function(svg_uri) {
+                var image = document.createElement('img');
+
+                image.src = svg_uri;
+                image.style.background = "#FFFFFF";
+                image.style.backgroundColor = "#FFFFFF";
+
+                image.onload = function() {
+                  var canvas = document.getElementById("canvas");
+                  var context = canvas.getContext('2d');
+                  context.clearRect(0, 0, 400, 400);
+                  var doc = new jsPDF('portrait', 'pt');
+                  var dataUrl;
+
+                  canvas.width = image.width;
+                  canvas.height = image.height;
+                  context.drawImage(image, 0, 0, image.width, image.height);
+                  dataUrl = canvas.toDataURL('image/jpeg');
+                  doc.addImage(dataUrl, 'JPEG', 0, 0, image.width, image.height);
+                  doc.setFillColor = "#FFFFFF";
+
+                  var x = doc.output('dataurlstring');
+                  var link = document.createElement('a');
+                  link.addEventListener('click', function(ev) {
+                  link.href = doc.output('dataurlstring');
+                  link.download = "download";
+                  document.body.removeChild(link);
+
+                }, false);
+
+                document.body.appendChild(link);
+                link.click();
+                }
+            });
+
+
+            
+
+        }
 
         $scope.d3chartBtnClick =function (widget){
 

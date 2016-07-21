@@ -20,19 +20,20 @@
                             <div class="d3-setting-wrap" ng-if="widget.d3chartBtn">
                                 <div class="print-chart-wrap">Print chart</div>
                                 <hr>
-                                <div class="print-opt-wrap" ng-click="d3ImgDownload(widget)">Download PNG image</div>
-                                <div class="print-opt-wrap">Download JPEG image</div>
-                                <div class="print-opt-wrap">Download PDF document</div>
+                                <div class="print-opt-wrap" ng-click="pngDownload(widget)">Download PNG image</div>
+                                <div class="print-opt-wrap" ng-click="jpegDownload(widget)">Download JPEG image</div>
+                                <div class="print-opt-wrap" ng-click="svg_to_pdf(widget)">Download PDF document</div>
                             </div>
                         </div>
 
                         <div id="svg-container" style="display: none">
                         </div>
 
-                            <canvas id="canvas"  width="800" height="400" style="display: none">
+                            <canvas id="canvas"  width="400" height="400" style="display: none;">
                             </canvas>
 
                             <div id="png-container"></div>
+
                         <div style="height:100%;width:100%" class="dashoard-Wrapper" id="d3Chart-wrap" ng-include src="widget.widgetData.widView">
                         </div>
                         <div class="widget-button-wrapper widget-button-wrapper2" layout="column" layout-align="end center" ng-show="showWidgetSettings" ng-mouseover="showWidgetSettings = true" 

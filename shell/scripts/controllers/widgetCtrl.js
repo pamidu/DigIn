@@ -26,7 +26,14 @@ routerApp.controller('fbInit',['$scope', '$mdDialog', 'widgetID', '$rootScope',f
     //get fb initial login state
     //scope.actIndicator = "false";
     fbInterface.getFbLoginState($scope);
-    var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
+    var selectedPage = $rootScope.selectedPage;
+    var pages = $rootScope.dashboard.pages;
+    var objIndex = getRootObjectById( widgetID, pages[selectedPage-1].widgets);
+
+    
+
+
+
     //add or remove account from the scope
     $scope.addAccount = function() {
         if (fbInterface.state != 'connected')
@@ -261,23 +268,36 @@ routerApp.controller('fbInit',['$scope', '$mdDialog', 'widgetID', '$rootScope',f
     };
 }]);
 
-routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope', '$q', 'twitterServiceWidget',function ($scope, $http, $mdDialog, widgetID, $rootScope, $q, twitterServiceWidget) {
+routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope', '$q', 'twitterService',function ($scope, $http, $mdDialog, widgetID, $rootScope, $q, twitterService) {
+
+
+
+
+    if (twitterService.isReady()) {
+            $scope.showFinishButton = true;
+            $scope.connectedTwitter = true;
+    } else {
+
+          $scope.showFinishButton = false;
+          $scope.connectedTwitter = false;
+    }
 
     $scope.diginLogo = 'digin-logo-wrapper2';
-    $scope.showFinishButton = false;
-    $scope.connectedTwitter = false;
 
     $scope.cancel = function() {
         $mdDialog.hide();
     };
 
-    twitterServiceWidget.initialize();
+
+
+
+    twitterService.initialize();
 
     //using the OAuth authorization result get the latest 20 tweets from twitter for the user
     $scope.refreshTimeline = function(maxId) {
 
         $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
-        twitterServiceWidget.getLatestTweets(maxId).then(function(data) {
+        twitterService.getLatestTweets(maxId).then(function(data) {
 
             var selectedPage = $rootScope.selectedPage;
             var pages = $rootScope.dashboard.pages;
@@ -295,8 +315,8 @@ routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widgetID', 
     //when the user clicks the connect twitter button, the popup authorization window opens
     $scope.signIn = function() {
         
-        twitterServiceWidget.connectTwitter().then(function() {
-            if (twitterServiceWidget.isReady()) {
+        twitterService.connectTwitter().then(function() {
+            if (twitterService.isReady()) {
                 //if the authorization is successful, hide the connect button and display the tweets
  
                     $scope.connectedTwitter = true;
@@ -311,10 +331,15 @@ routerApp.controller('TwitterInit',['$scope', '$http', '$mdDialog', 'widgetID', 
     //sign out clears the OAuth cache, the user will have to reauthenticate when returning
     $scope.signOut = function() {
 
-        twitterServiceWidget.clearCache();
+        twitterService.clearCache();
 
         $scope.connectedTwitter = false;
         $scope.showFinishButton = false;
+        var selectedPage = $rootScope.selectedPage;
+        var pages = $rootScope.dashboard.pages;
+        var objIndex = getRootObjectById(widgetID, pages[selectedPage-1].widgets);
+
+        pages[selectedPage-1].widgets[objIndex].widgetData.widData.tweets = "";
     }
 
     // if (twitterService.isReady()) {

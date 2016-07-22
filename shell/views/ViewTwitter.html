@@ -3,7 +3,7 @@
         <img ng-src="styles/css/images/icons/twitter.svg" wdith="30" height="30">
         <div class="widget-header font-twitter-blue">Tweets</div>
     </div>
-    <div ng-repeat="item in widget.widData.tweets">
+    <div ng-repeat="item in widget.widgetData.widData.tweets">
             <md-list-item class="md-3-line p-0" flex>
                 <div layout="column" class="data-container1">
                     <div class="data-slot1 background-twitter-grey">{{item.text}}</div>

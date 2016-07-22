@@ -129,7 +129,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
 
           //close open pages and go to home
-        $scope.mainclose = function(){
+        $scope.mainclose = function(ev){
             
             $mdDialog.show({
 

@@ -203,6 +203,12 @@
 <script type="text/javascript" src="scripts/controllers/sourceAlgorithm/sourceAlgorithmCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/help/videoCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/data-source/dataSourceCtrl.js"></script>
+
+<!--download pdf-->
+<script src="https://rawgit.com/exupero/saveSvgAsPng/gh-pages/saveSvgAsPng.js"></script>
+<script src="https://rawgit.com/MrRio/jsPDF/master/dist/jspdf.debug.js"></script>
+
+
 <!-- services start -->
 <script type="text/javascript" src="scripts/services/DynamicRealTimeVis.js"></script>
 <script type="text/javascript" src="scripts/services/ObjectStoreService.js"></script>

@@ -398,7 +398,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
     $mdThemingProvider.alwaysWatchTheme(true);
 }]);
 
-routerApp.run(function ($rootScope, $auth, $state, $csContainer) {
+routerApp.run(function ($rootScope, $auth, $state, $csContainer, $window) {
 
     var requireLogin;
     var secToken;
@@ -437,6 +437,17 @@ routerApp.run(function ($rootScope, $auth, $state, $csContainer) {
             }
         }
     });
+
+    $rootScope.online = navigator.onLine;
+    $window.addEventListener("offline", function () {
+        $rootScope.online = false;
+        console.log($rootScope.online);            
+  }, false);
+    $window.addEventListener("online", function () {
+        $rootScope.online = true;
+        console.log($rootScope.online);      
+    }, false);    
+
 });
 
 

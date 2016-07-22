@@ -883,8 +883,9 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
 
         $scope.upload = function (files) {
             console.log(files);
-            var userInfo = JSON.parse(getCookie("authData"));
-
+            var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+            var uploadFlag;
+            var storeFlag;
             if (files && files.length) {
                 $scope.preloader = true;
                 $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
@@ -906,7 +907,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                         }
                     }).success(function (data) {
                         console.log(data);
-                        fireMsg('1', 'Successfully uploaded!');
+                        uploadFlag = true;
                         console.log($scope.reports);
                         privateFun.getAllReport();
                         $scope.preloader = false;
@@ -914,10 +915,52 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                         $mdDialog.hide();
                     }).error(function (data) {
                         console.log(data);
-                        fireMsg('0', 'There was an error while uploading data !');
+                        uploadFlag = false;
                         $scope.preloader = false;
                         $scope.diginLogo = 'digin-logo-wrapper2';
                     });
+
+                    var dashboardObject = {
+
+                        "pages" : [],
+                        "compClass": '' ,
+                        "compType": "Report",
+                        "compCategory": "",
+                        "compID": null ,
+                        "compName": files[i].name.replace(/\.[^/.]+$/, "") ,
+                        "refreshInterval": 0,
+                        "deletions": {
+                            "componentIDs":[],
+                            "pageIDs":[],
+                            "widgetIDs":[]
+                        }
+                    }
+
+                $http({
+                    method: 'POST',
+                    
+                    url: Digin_Engine_API+'store_component',
+                    data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
+                    headers: {  
+                                'Content-Type': 'application/json',
+                                'SecurityToken':userInfo.SecurityToken,
+                                'Domain':Digin_Domain
+                    }
+                }).success(function (data) {
+                    storeFlag = true;
+
+                }).error(function (data) {
+                    storeFlag = false;
+
+                })
+
+                if ( uploadFlag && storeFlag ){
+                    fireMsg('1', 'Successfully uploaded!');
+                }
+                else {
+                    fireMsg('0', 'There was an error while uploading data !');
+                }
+
                 }
             }
         };

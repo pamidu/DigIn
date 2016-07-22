@@ -1,5 +1,5 @@
 routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $location, $http,
-                                                     Digin_Engine_API, ngToast, $rootScope, $apps, $objectstore, Upload, 
+                                                     Digin_Engine_API, ngToast, $rootScope, $apps, $objectstore, Upload,
                                                      Digin_Domain, Digin_Tenant, $state) {
     
     
@@ -108,7 +108,8 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     $scope.sharableUsers = $rootScope.sharableUsers;
     $scope.sharableGroups = $rootScope.sharableGroups;
     //$scope.sharableGroupsDtls = $scope.sharableGroupsDtls;
-
+    //$scope.myCroppedImage=$rootScope.myCroppedImage;
+    $scope.profile_pic=$rootScope.profile_pic;
 
     $scope.currentPane = null;
 
@@ -117,6 +118,7 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
 
 
 //invite user ***  
+/*
 $scope.inviteUser = function () {
     $scope.exist=false;
     $http.get(baseUrl+'/devportal/project/share/getusers')
@@ -139,6 +141,29 @@ $scope.inviteUser = function () {
            
         });
 }
+*/
+
+//invite user ***  
+$scope.inviteUser = function () {
+    $scope.exist=false;
+    if($rootScope.sharableUsers.length>0){
+        for(var i=0; i<$rootScope.sharableUsers.length; i++){
+            if($scope.user.email==$rootScope.sharableUsers[i].Id){
+                $scope.exist=true;
+            }
+        };
+
+        if($scope.exist==true){
+            fireMsg('0', '<strong>Error : </strong>This user is already invited...');
+            return;
+        }
+        else{
+            $scope.invite();
+        }
+    }
+}
+
+
 
 $scope.invite = function () {
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
@@ -232,10 +257,15 @@ $scope.invite = function () {
                             $scope.preloader = true;
                             $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
                             //for (var i = 0; i < files.length; i++) {
+
+                                displayProgress('Uploading...'); 
+
                                 var i=0;
                                 var lim = i == 0 ? "" : "-" + i;
                                 console.log(userInfo);
                                 filename = $scope.files[0].name;
+
+
 
                                 Upload.upload({
                                     url: Digin_Engine_API + 'file_upload',
@@ -244,23 +274,35 @@ $scope.invite = function () {
                                         db: 'BigQuery',
                                         SecurityToken: userInfo.SecurityToken,
                                         Domain: Digin_Domain,
-                                        other_data: 'userfile',
+                                        other_data: 'logo',
                                         file: files[0]
                                     }
                                 }).success(function (data) {
 
-                                    //store to user settings----------------------
+                                    //#chk undefined values
+                                    var dp_name="";
+                                    var logo_name="";
+                                    if($rootScope.userSettings.components==undefined) {$rootScope.userSettings.components=""}
+                                    if($rootScope.userSettings.user_role==undefined) {$rootScope.userSettings.user_role=""}
+                                    if($rootScope.userSettings.cache_lifetime==undefined) {$rootScope.userSettings.cache_lifetime=""}
+                                    if($rootScope.userSettings.widget_limit==undefined) {$rootScope.userSettings.widget_limit=""}
+                                    if($rootScope.userSettings.dp_path==undefined) {$rootScope.userSettings.dp_path=""} else {dp_name=$rootScope.userSettings.dp_path.split("/").pop();}
+                                    if($rootScope.userSettings.logo_path==undefined) {$rootScope.userSettings.logo_path=""} else {logo_name=$rootScope.userSettings.logo_path.split("/").pop();}
+                                    if($rootScope.userSettings.theme_config==undefined) {$rootScope.userSettings.theme_config=""}    
+                                      
+                                    //#store to user settings----------------------                                   
                                     $scope.settings = {
                                         "email": userInfo.Email,
-                                        "components": "dashboard1",
-                                        "user_role": "admin",
-                                        "cache_lifetime": 30,
-                                        "widget_limit": 7,
-                                        "query_limit": 1000,
+                                        "components": $rootScope.userSettings.components,
+                                        "user_role": $rootScope.userSettings.user_role,
+                                        "cache_lifetime": $rootScope.userSettings.cache_lifetime,
+                                        "widget_limit": $rootScope.userSettings.widget_limit,
+                                        "query_limit": $rootScope.userSettings.query_limit,
                                         "logo_name": filename,
-                                        "theme_config": "bla bla",
-                                        "SecurityToken": userInfo.SecurityToken,
-                                        "Domain": Digin_Domain
+                                        "dp_name" : dp_name,
+                                        "theme_config": $rootScope.userSettings.theme_config
+                                        // "SecurityToken": userInfo.SecurityToken,
+                                        // "Domain": Digin_Domain
                                     }
 
                                     $http({
@@ -277,6 +319,7 @@ $scope.invite = function () {
                                             $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
                                                 .success(function (data) {
                                                     console.log(data);
+                                                    $rootScope.userSettings=data.Result;
                                                     var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
                                                     $rootScope.image = logoPath + data.Result.logo_path;
                                                     $scope.preloader = false;
@@ -286,6 +329,7 @@ $scope.invite = function () {
                                         })
                                         .error(function (data) {
                                             $rootScope.image = "styles/css/images/DiginLogo.png";
+                                            $mdDialog.hide();
                                             fireMsg('0', 'There was an error while uploading logo !');
                                             $scope.preloader = false;
                                         });
@@ -734,18 +778,31 @@ $scope.invite = function () {
 
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
+        //#chk undefined values
+        var dp_name="";
+        var logo_name="";
+        if($rootScope.userSettings.components==undefined) {$rootScope.userSettings.components=""}
+        if($rootScope.userSettings.user_role==undefined) {$rootScope.userSettings.user_role=""}
+        if($rootScope.userSettings.cache_lifetime==undefined) {$rootScope.userSettings.cache_lifetime=""}
+        if($rootScope.userSettings.widget_limit==undefined) {$rootScope.userSettings.widget_limit=""}
+        if($rootScope.userSettings.dp_path==undefined) {$rootScope.userSettings.dp_path=""} else {dp_name=$rootScope.userSettings.dp_path.split("/").pop();}
+        if($rootScope.userSettings.logo_path==undefined) {$rootScope.userSettings.logo_path=""} else {logo_name=$rootScope.userSettings.logo_path.split("/").pop();}
+        if($rootScope.userSettings.theme_config==undefined) {$rootScope.userSettings.theme_config=""}    
+                                      
+
         $scope.settings = {
             //"user_id": userInfo.UserID,
             "email": userInfo.Email,
-            "components": "dashboard1",
-            "user_role": "admin",
+            "components": $rootScope.userSettings.components,
+            "user_role": $rootScope.userSettings.user_role,
             "cache_lifetime": $scope.cacheLifetime,
             "widget_limit": $scope.noOfWidget,
             "query_limit": $scope.reqLimit,
-            "logo_name": "",
-            "theme_config": "bla bla",
-            "SecurityToken": userInfo.SecurityToken,
-            "Domain": userInfo.Domain
+            "logo_name": logo_name,
+            "dp_name" : dp_name,
+            "theme_config": $rootScope.userSettings.theme_config,
+            // "SecurityToken": userInfo.SecurityToken,
+            // "Domain": userInfo.Domain
         }
 
         $http({
@@ -903,44 +960,17 @@ $scope.invite = function () {
 
 
     //#User Profile settings
-
-    //-----------
-
-    $scope.myImage='';
-
-    $scope.myCroppedImage='styles/css/images/setting/invite_user.png';
-
-/*
-    var handleFileSelect=function(evt) {
-      var file=evt.currentTarget.files[0];
-      var reader = new FileReader();
-      reader.onload = function (evt) {
-        $scope.$apply(function($scope){
-          $scope.myImage=evt.target.result;
-        });
-      };
-      reader.readAsDataURL(file);
-    };
-    angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
-
-*/
-    //--------------
-
-
-
-
-
-
     $scope.updateProfile= function () {
 
             var fullname = $scope.fname + " " + $scope.lname;
+            var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
             $scope.userProfile ={
                  "BannerPicture":"img/cover.png",
                  "BillingAddress":$scope.address,
                  "Company":$scope.company,
                  "Country":$scope.country,
-                 "Email":$scope.email,
+                 "Email":userInfo.Email,//$scope.email,
                  "Name":$scope.name,
                  "PhoneNumber":$scope.phoneNo,
                  "ZipCode":$scope.zipCode
@@ -959,7 +989,17 @@ $scope.invite = function () {
                 }
             }).success(function (data) {
                 $scope.error.isLoading = false;
-                fireMsg('1', 'User profile updated successfully !');
+                console.log(data);
+ 
+                if(data.IsSuccess==false){
+                    fireMsg('0', 'Fail to update user profile!');
+                }
+                else
+                {
+                    fireMsg('1', 'User profile updated successfully !');
+                     $scope.viewUserProfile();
+                }
+                
             }).error(function (data) {
                 $scope.error.isLoading = false;            
             });
@@ -967,33 +1007,54 @@ $scope.invite = function () {
 
 
     $scope.viewUserProfile=function(){
-        //$http.get('http://test.digin.io/apis/profile/userprofile/test@duosoftware.com')
+        //http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com 
         $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
             .success(function(response){
                 console.log(response);
                 //#load exisitging data
-                $scope.address=response.BillingAddress
-                $scope.company=response.Company
-                $scope.country=response.Country
-                $scope.email=response.Email
-                $scope.name=response.Name
-                $scope.phoneNo=response.PhoneNumber
-                $scope.zipCode=response.ZipCode
+                $scope.address=response.BillingAddress;
+                $scope.company=response.Company;
+                $scope.country=response.Country;
+                $scope.email=response.Email;
+                $scope.name=response.Name;
+                $scope.phoneNo=response.PhoneNumber;
+                $scope.zipCode=response.ZipCode;
             }).error(function(error){   
                 //fireMsg('0', '<strong>Error : </strong>Please try again...!');
             });  
     };
 
 
-    $scope.myImage='';
-    $scope.myCroppedImage="styles/css/images/setting/user100x100.png";
+    //*Profile picture
+    $scope.selectImage=false;
+    $scope.selectProfile=true;
+
+    //#pre-loader progress - with message
+    var displayProgress = function (message) {
+        $mdDialog.show({
+            template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="row" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + '           <span>'+message+'</span>' + '       </div>' + '   </md-dialog-content>' + '</md-dialog>'
+            , parent: angular.element(document.body)
+            , clickOutsideToClose: false
+        });
+    };
+
+
+    $scope.selectProfileImg = function () {
+        $scope.selectProfile=false;
+        $scope.selectImage=true;
+    };
+
+
+    $rootScope.myImage='';
+    $scope.myCroppedImage='';
 
     var handleFileSelect=function(evt) {
           var file=evt.currentTarget.files[0];
           var reader = new FileReader();
           reader.onload = function (evt) {
             $scope.$apply(function($scope){
-                $scope.myImage=evt.target.result;
+                $rootScope.myImage=evt.target.result;
+                $rootScope.file=file;
             });
           };
           reader.readAsDataURL(file);
@@ -1002,16 +1063,108 @@ $scope.invite = function () {
  
 
 
+    $scope.saveImage = function () {
+        if($rootScope.file==undefined){
+            fireMsg('0', 'Please select profile picture to upload...!');
+        }
+        else{
+            $scope.upload($rootScope.file);
+            $scope.selectProfile=true;
+            $scope.selectImage=false;
+        }
+           
+    };
+
+
+    //#Function to save profile image
+    $scope.upload = function (file) {
+        displayProgress('Uploading...');
+        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+        Upload.upload({
+            url: Digin_Engine_API + 'file_upload',
+            headers: {'Content-Type': 'multipart/form-data',},
+            data: {
+                db: 'BigQuery',
+                SecurityToken: userInfo.SecurityToken,
+                Domain: Digin_Domain,
+                other_data:'dp',
+                file: file
+            }
+        }).success(function (data) {
+
+            //#chk undefined values
+            var dp_name="";
+            var logo_name="";
+            if($rootScope.userSettings.components==undefined) {$rootScope.userSettings.components=""}
+            if($rootScope.userSettings.user_role==undefined) {$rootScope.userSettings.user_role=""}
+            if($rootScope.userSettings.cache_lifetime==undefined) {$rootScope.userSettings.cache_lifetime=""}
+            if($rootScope.userSettings.widget_limit==undefined) {$rootScope.userSettings.widget_limit=""}
+            if($rootScope.userSettings.dp_path==undefined) {$rootScope.userSettings.dp_path=""} else {dp_name=$rootScope.userSettings.dp_path.split("/").pop();}
+            if($rootScope.userSettings.logo_path==undefined) {$rootScope.userSettings.logo_path=""} else {logo_name=$rootScope.userSettings.logo_path.split("/").pop();}
+            if($rootScope.userSettings.theme_config==undefined) {$rootScope.userSettings.theme_config=""}    
+                 
+
+            //#store to user settings---------------------
+            $scope.settings = {
+                "email": userInfo.Email,
+                "components": $rootScope.userSettings.components,
+                "user_role":$rootScope.userSettings.user_role,
+                "cache_lifetime":$rootScope.userSettings.cache_lifetime,
+                "widget_limit": $rootScope.userSettings.widget_limit,
+                "query_limit": $rootScope.userSettings.query_limit,
+                "logo_name": logo_name,
+                "dp_name" : file.name,
+                "theme_config": $rootScope.userSettings.theme_config
+                // "SecurityToken": userInfo.SecurityToken,
+                // "Domain": Digin_Domain
+            }
+
+            $http({
+                method: 'POST',
+                url: Digin_Engine_API + 'store_user_settings/',
+                data: angular.toJson($scope.settings),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'SecurityToken': userInfo.SecurityToken,
+                    'Domain': Digin_Domain
+                }
+            })
+                .success(function (response) {
+                    $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
+                        .success(function (data) {
+                            console.log(data);
+                            $rootScope.userSettings=data.Result;
+                            var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
+                            $scope.profile_pic = logoPath + data.Result.dp_path;
+                            $rootScope.profile_pic = logoPath + data.Result.dp_path;
+                            $mdDialog.hide();
+                            fireMsg('1', 'Profile picture uploaded successfully!');
+                        });
+                })
+                .error(function (data) {
+                    $scope.profile_pic = "styles/css/images/setting/user100x100.png";
+                    $rootScope.profile_pic = "styles/css/images/setting/user100x100.png";
+                    $mdDialog.hide();
+                    fireMsg('0', 'There was an error while uploading profile picture !');
+                });
+        });
+
+    };
+
+
+
+
+
     //#load select profile picture window
-     $scope.loadSelectProfilePictureWindow = function () {
+    /* $scope.loadSelectProfilePictureWindow = function () {
 
            
-            /*$mdDialog.show({
+            $mdDialog.show({
                 controller: selectProfilePictureCtrl,
                 templateUrl: 'views/settings/selectProfilePicture.html',
                 resolve: {},
                 locals: {},
-            });*/
+            });
     };
 
 
@@ -1034,7 +1187,7 @@ $scope.invite = function () {
               reader.readAsDataURL(file);
         };
         angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
-    };
+    };*/
   
 
     //#load password change window

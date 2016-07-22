@@ -42,8 +42,11 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-messages.min.js"></script>
 
 <!-- #js -->
-<script type="text/javascript" src="assets/js/config.js"></script>
-<script type="text/javascript" src="assets/js/uimicrokernel.js"></script> 
+<!-- <script type="text/javascript" src="assets/js/config.js"></script>
+<script type="text/javascript" src="assets/js/uimicrokernel.js"></script>  -->
+
+
+<script type="text/javascript" src="../shell/scripts/config.js"></script>
 <script type="text/javascript" src="entry.js"></script>
 
 

@@ -13,3 +13,7 @@ angular.module('configuration', [])
     .constant('Digin_Auth', 'http://prod.digin.io/')
    .constant('Digin_Tenant', 'http://prod.auth.digin.io:3048')
    .constant('Digin_ObjStore', 'http://prod.auth.digin.io:3000')
+
+    //#for loggin process
+    .constant('IsLocal', true)
+    .constant('Local_Shell_Path', 'http://localhost:8080/git/digin/shell')

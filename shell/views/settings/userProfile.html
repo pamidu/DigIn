@@ -11,27 +11,34 @@
             <div class="setting-card-header">
                 <h5>User Profile</h5>
                  <!-- <img src="styles/css/images/setting/user100x100.png" class="img-circle" style="width:18%;"/> -->
-                <img ng-src="{{myCroppedImage}}" class="img-circle" style="width:15%;">
+            </div>
+            
+            <div ng-show="selectProfile"  align="center">
+                <img ng-src="{{profile_pic}}" class="img-circle" style="width:18%;">
             </div>
 
 
-           <div ng-show="true" align="center"><!-- selectImage-->
+           <div ng-show="selectImage" align="center"><!-- selectImage-->
                 <div><input type="file" id="fileInput" /></div>
-                <div class="cropArea"  style="margin-top: 100px; margin-left: 100px;">
-                  <img-crop image="myImage" result-image="myCroppedImage" area-type="circle" ></img-crop>
+                <div class="cropArea" align="center">
+                  <img-crop image="myImage" result-image="myCroppedImage" area-type="circle" >
+                    <canvas width="350" height="200" style="margin-top: 0px; margin-left: 0px; cursor: default;"></canvas>
+                  </img-crop>
                 </div>
 
-                <!--<div>Cropped Image:</div>
-                <div class="selectArea"><img ng-src="{{myCroppedImage}}" /></div> -->
+                <div>Cropped Image:</div>
+                <div class="selectArea" align="center"><img ng-src="{{myCroppedImage}}" /></div>
+
+                <md-button class="setup-button md-raised md-primary" ng-click="saveImage()">
+                    <span class="setup-font-theme">Save Image</span>
+                </md-button>
             </div>
 
 
-        
-
-            <div ng-show="true"><!-- selectProfile-->
+            <div ng-show="selectProfile">
                 <div class="user-setting-wrap" >  
                     <div layout="row">
-                        <md-button class="setup-button md-raised md-primary" ng-click="loadSelectProfilePictureWindow()">
+                        <md-button class="setup-button md-raised md-primary" ng-click="selectProfileImg()">
                             <span class="setup-font-theme">Set Profile Picture</span>
                         </md-button>
 

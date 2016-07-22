@@ -1,8 +1,12 @@
 /**
  * Created by Damith on 6/10/2016.
  */
-var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'uiMicrokernel', 'configuration'
+// var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'uiMicrokernel', 'configuration'
+//     , 'ngToast', 'ngSanitize', 'ngMessages','ngAria']);
+
+var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'configuration'
     , 'ngToast', 'ngSanitize', 'ngMessages','ngAria']);
+
 
 routerApp
     .config(["$httpProvider", "$stateProvider", "$urlRouterProvider",
@@ -39,8 +43,8 @@ routerApp
 
 routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
-        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog',
-        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog) {
+        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal',
+        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal) {
 
             $scope.signindetails = {};
             $scope.isLoggedin = false;
@@ -100,15 +104,18 @@ routerApp
                     //url: '/apis/authorization/userauthorization/login',
                     headers: {'Content-Type': 'application/json'},
                     data: $scope.signindetails
-
                 }).success(function (data) {
                     if (data.Success === true) {
-                        //$window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
-
-                        //#Added for local host ------------------------------
-                         document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
-                         document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
-                         window.location.href = "http://localhost:8081/Digin/shell";
+                        if(IsLocal==false) { 
+                            //#Added for live servers ------------------------------
+                            $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
+                        }  
+                        else{
+                            //#Added for local host ------------------------------
+                             document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
+                             document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
+                             window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
+                        }
                     }
                     else {
                         $mdDialog.hide();

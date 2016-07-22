@@ -2,10 +2,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'pouchDB',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
               $http, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, pouchDB) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -16,7 +16,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         $scope.username = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
 
-       
+        var db = new pouchDB('dashboard');
 
         $scope.adjustUI = function () {
 
@@ -508,10 +508,49 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
 
         $scope.goDashboard = function (dashboard) {
-
+            console.log($scope.dashboards);
             console.log("dash item", dashboard);
-
+            $rootScope.page_id = "";
             var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+
+            if ( typeof(dashboard.dashboardID) == "undefined" ){
+                db.get( dashboard.pouchID , function(err, doc){
+                    if (err){
+                        ngToast.create({
+                            className: 'danger',
+                            content: 'Failed retrieving Dashboard Details. Please try again!',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
+                        });                        
+                       }                        
+                    else {
+                        var dashboard = CircularJSON.parse(doc.dashboard);
+                        $rootScope.dashboard = dashboard;
+                        $rootScope.page_id = doc._id;
+                        //deletions attribute is missing from dashboard
+                        //so adding that attribute with all arrays inside empty
+                        $rootScope.dashboard["deletions"] = {
+                            "componentIDs": [],
+                            "pageIDs": [],
+                            "widgetIDs": []
+                        };
+                        $rootScope.selectedPageIndx = 0;
+                        $rootScope.selectedPage = 1;                        
+                        ngToast.create({
+                            className: 'success',
+                            content: 'Retrieved dashboards from localStorage',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
+                        });   
+                    }
+                });  $state.go('home.Dashboards');              
+            }
+            else {
+                if ( typeof(dashboard.pouchID) != "undefined" ){
+                    $rootScope.page_id = dashboard.pouchID;
+                }
 
             $http({
                 method: 'GET',
@@ -587,7 +626,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     });
                     $mdDialog.hide()
                 });
-
+            }   
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
             $(".search-layer").removeClass("activating active");
@@ -646,6 +685,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
+                    $scope.dashboards = [];
                     $http({
                         method: 'GET',
 
@@ -670,19 +710,62 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 verticalPosition: 'top',
                                 dismissOnClick: true
                             });
+                            //fetch all saved dashboards from pouchdb
+                            db.allDocs({
+                                include_docs: true,
+                                attachments: true
+                              }).catch(function (err) {
+                                console.log(err);
+                              }).then(function (data) {                       
+                                angular.forEach(data.rows, function (row) {
+                                    console.log(typeof(row.doc.dashboard));
+                                    var records = CircularJSON.parse(row.doc.dashboard);
+                                    var isAvailble = false;
+                                    for ( var i = 0; i < $scope.dashboards.length; i++){
+                                        if ( $scope.dashboards[i].dashboardID == records.compID){
+                                            isAvailble = true;
+                                            $scope.dashboards[i]["pouchID"] =  row.doc._id;
+                                        }
+                                    }
+                                    if ( isAvailble == false ){
+                                        $scope.dashboards.push(
+                                            {pouchID: row.doc._id, dashboardName: records.compName}
+                                        );                                
+                                    }                            
+                                    });
+                                console.log($scope.dashboards);
+                              });                            
                             $mdDialog.hide();
                         })
                         .error(function (error) {
 
                             ngToast.create({
                                 className: 'danger',
-                                content: 'Failed retrieving Dashboard Details. Please refresh page to load data!',
+                                content: 'Retrieved Dashboard Details from localStorage!',
                                 horizontalPosition: 'center',
                                 verticalPosition: 'top',
                                 dismissOnClick: true
                             });
+                            //fetch all saved dashboards from pouchdb
+                            db.allDocs({
+                                include_docs: true,
+                                attachments: true
+                              }).catch(function (err) {
+                                console.log(err);
+                              }).then(function (data) {                       
+                                angular.forEach(data.rows, function (row) {
+                                    console.log(typeof(row.doc.dashboard));
+                                    var records = CircularJSON.parse(row.doc.dashboard);
+                                    var isAvailble = false;
+                                    $scope.dashboards.push(
+                                            {pouchID: row.doc._id, dashboardName: records.compName}
+                                        );                                                           
+                                    });
+                                console.log($scope.dashboards);
+                              });                            
                             $mdDialog.hide()
                         });
+
                     $scope.confirmWin = false;
                     $scope.listWin = true;
                 },
@@ -865,7 +948,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //navigate
         $scope.navigate = function (routeName, ev) {
 
-            var widgetLimit = 4;
+            var widgetLimit = 6;
             var selectedPage = $rootScope.selectedPage;
             var pageCount = $rootScope.dashboard.pages.length;
             var pageWidgetCount = $rootScope.dashboard.pages[selectedPage - 1].widgets.length;
@@ -1019,6 +1102,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 .substring(1);
                         }
                         $rootScope.dashboard = [];
+                        $rootScope.page_id = "";
                         $rootScope.dashboard ={
 
                             "pages" : null,
@@ -1097,7 +1181,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 console.log("pages", $rootScope.pages);
                                 console.log("rootscope creatnewpage", $rootScope);
                                 $mdDialog.hide();
-
                                 ngToast.create({
                                     className: 'success',
                                     content: 'New page added successfully',

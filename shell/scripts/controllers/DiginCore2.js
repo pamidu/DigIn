@@ -253,19 +253,29 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
         $scope.isLoadingDashBoardSave=false;
         $scope.isButtonDashBoardSave=true;
 
+        //insert records into pouchdb
         var insertPouchDB = function(dashboardObject){
             
                 var dashboard = angular.toJson(dashboardObject);
                 console.log(dashboard,true);
-                var dashboardDoc = {
-                    _id : dashboardObject.compID.toString(),
-                    dashboard : dashboard
+                
+                // set a new id to a new record to be inserted
+                if ( typeof($rootScope.page_id) == "undefined" || $rootScope.page_id == ""){
+                    var id = "temp" + Math.floor(Math.random() * 10000000);
                 }
-            
-                db.get( dashboardDoc._id , function(err, doc){
+                else {
+                    var id = $rootScope.page_id;
+                }
+                
+
+                db.get( id , function(err, doc){
                     if (err){
                         if (err.status = '404') { // if the document does not exist
                             //Inserting Document into pouchDB
+                            var dashboardDoc = {
+                                _id : id,
+                                dashboard : dashboard
+                            }                            
                             db.put(dashboardDoc, function(err, response) {
                                 if (err) {
                                     return console.log(err);
@@ -274,12 +284,14 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                                 }
                             });                          
                           console.log("not found error status is" + err.status);
+                          //update the rootscope with the corrent document id of pouchdb
+                          $rootScope.page_id = id;
                         }
                        }                        
                     else {
                             dashboardDoc = {
-                                dashboard : dashboardDoc,
-                                _id : dashboardObject.compID.toString(),
+                                dashboard : dashboard,
+                                _id : id,
                                 _rev : doc._rev
                             }
                             db.put(dashboardDoc, function(err, response) {
@@ -358,7 +370,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
         }
 
-        $scope.saveDashboard = function() {                                    
+        $scope.saveDashboard = function() {               
 
             if($scope.dashboardName && $scope.dashboardType && $scope.refreshInterval){
                 $scope.isLoadingDashBoardSave = true;
@@ -461,7 +473,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                                     }
                                 }
                                     //if the widget is a temporary / new widget 
-                                    if($rootScope.dashboard.pages[i].widgets[j].widgetID.substr(0, 4) == "temp"){
+                                    if($rootScope.dashboard.pages[i].widgets[j].widgetID.substr(0, 4) == "temp" && $rootScope.online){
 
                                        
                                         widgetObject = {   
@@ -497,7 +509,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
                         var pageObject;
                         //if the page is a temporary / new page 
-                        if($rootScope.dashboard.pages[i].pageID.substr(0, 4) == "temp"){
+                        if($rootScope.dashboard.pages[i].pageID.substr(0, 4) == "temp" && $rootScope.online ){
 
                             pageObject = {
                                             "widgets": widgetsArray,
@@ -572,9 +584,6 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                 //$mdDialog.hide();
 
                 var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
-
-                insertPouchDB(dashboardObject);  
-
                 $http({
                     method: 'POST',
                     
@@ -587,28 +596,16 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                     }
                 })
                 .success(function(response){
-                    // map data to all charts
-                    for ( var i = 0; i < dynamicPages.length; i++){
-                        console.log(dynamicPages[i]);
-                        for ( var j = 0; j < dynamicPages[i].widgets.length; j++){
-
-                            console.log(dynamicPages[i].widgets[j]);
-                            if (dynamicPages[i].widgets[j].isChart){
-                                console.log($rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType);
-                                var chartType = $rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType;
-                                $scope.mapChartData(chartType,i,j,dynamicPages[i].widgets[j].data);
-                            }
-                        }
-                    }
-
                     console.log("response", response);
                     //assign the id name type refresh interval to dashboard
                     var selectedPage = $rootScope.selectedPage;
                     $rootScope.dashboard.compID = response.Result;
+                    dashboardObject.compID = response.Result;
                     $rootScope.dashboard.compName = $scope.dashboardName;
                     $rootScope.dashboard.compType = $scope.dashboardType;
                     $rootScope.dashboard.refreshInterval = $scope.refreshInterval;
-
+                    // Insert data into pouchDb
+                    insertPouchDB(dashboardObject); 
                     $rootScope.privateFun.getAllDashboards();
                     $scope.isLoadingDashBoardSave = false;
                     $scope.isButtonDashBoardSave=true;
@@ -624,20 +621,8 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
                 })
                 .error(function(error){  
-
-                    for ( var i = 0; i < dynamicPages.length; i++){
-                        console.log(dynamicPages[i]);
-                        for ( var j = 0; j < dynamicPages[i].widgets.length; j++){
-
-                            console.log(dynamicPages[i].widgets[j]);
-                            if (dynamicPages[i].widgets[j].isChart){
-                                console.log($rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType);
-                                var chartType = $rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType;
-                                $scope.mapChartData(chartType,i,j,dynamicPages[i].widgets[j].data);
-                            }
-                        }
-                    }
-
+                    // Insert data into pouchDb
+                    insertPouchDB(dashboardObject);                     
                     ngToast.create({
                         className: 'danger',
                         content: 'Failed Saving Dashboard. Please Try Again!',
@@ -645,11 +630,20 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                         verticalPosition: 'top',
                         dismissOnClick: true
                     });
+                    $rootScope.privateFun.getAllDashboards();
                     $scope.isLoadingDashBoardSave = false;
                     $scope.isButtonDashBoardSave=true;
                     $mdDialog.hide()
                 });   
-
+                    // map data to all charts
+                for ( var i = 0; i < dynamicPages.length; i++){
+                    for ( var j = 0; j < dynamicPages[i].widgets.length; j++){
+                        if (dynamicPages[i].widgets[j].isChart){
+                            var chartType = $rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType;
+                            $scope.mapChartData(chartType,i,j,dynamicPages[i].widgets[j].data);
+                        }
+                    }
+                }                    
             }else{ // one of the fields not filled
                 ngToast.create({
                         className: 'danger',

@@ -29,8 +29,8 @@ routerApp.factory('dynamicallyReportSrv', function ($http, Digin_Engine_API, Dig
             return $http.get(parameter.apiBase + 'getQueries?Reportname=' + parameter.reportName +
                 '&fieldnames={' + parameter.queryFiled + '}')
         },
-        getRenderReport: function (parameter) {
-            return $http.get(parameter.tomCatBase + 'DigIn-Report/ReportService/Reports/getreport/' + parameter.reportName + '/[' + parameter.rptParameter + ']');
+        getRenderReport: function (parameter,nameSpace) {
+            return $http.get(parameter.tomCatBase + 'DigIn-Report/ReportService/Reports/getreport/' + parameter.reportName + '/'+nameSpace+'/[' + parameter.rptParameter + ']');
         },
         startReportServer: function (parameter) {
             return $http.get(parameter.tomCatBase + 'DigIn-Report/ReportService/Reports/command/start');

@@ -73,7 +73,7 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     $scope.colorArr = [{value: '#F44336'}, {value: '#E91E63'}, {value: '#9C27B0'}, {value: '#673AB7'}, {value: '#3F51B5'}, {value: '#2196F3'}, {value: '#03A9F4'}, {value: '#00BCD4'}, {value: '#009688'}, {value: '#4CAF50'}, {value: '#8BC34A'}, {value: '#CDDC39'}, {value: '#FFEB3B'}, {value: '#FFC107'}, {value: '#FF9800'}, {value: '#FF5722'}, {value: '#795548'}, {value: '#9E9E9E'}, {value: '#607D8B'}];
     
     //# load from parent
-    //var baseUrl = "http://" + window.location.hostname;
+    var baseUrl = "http://" + window.location.hostname;
  //#to get tenant ID for logged user
         $http.get(Digin_Tenant+'/tenant/GetTenants/'+getCookie('securityToken'))
             .success(function (data) {
@@ -84,10 +84,11 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         });
 
 
-    var baseUrl = "http://" + $rootScope.TenantID;
+    //var baseUrl = "http://" + $rootScope.TenantID;
     //baseUrl="http://duotest.digin.io";
     //baseUrl="http://chamiladuosoftwarecom.space.duoworld.com";
     $scope.domain=JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
+    //baseUrl="http://"+$scope.domain;
 
 
     $scope.apps=$scope.dashboards;
@@ -146,7 +147,11 @@ $scope.inviteUser = function () {
 //invite user ***  
 $scope.inviteUser = function () {
     $scope.exist=false;
-    if($rootScope.sharableUsers.length>0){
+
+    if($rootScope.sharableUsers==undefined){
+        $scope.invite();
+    }   
+    else if($rootScope.sharableUsers.length>0){
         for(var i=0; i<$rootScope.sharableUsers.length; i++){
             if($scope.user.email==$rootScope.sharableUsers[i].Id){
                 $scope.exist=true;
@@ -911,21 +916,21 @@ $scope.invite = function () {
         $scope.CreateUser = function () {
             //validation
             if ($scope.fname == '' || angular.isUndefined($scope.fname)) {
-                fireMsg  ('0', '<strong>Error : </strong>first name is required..');
+                fireMsg  ('0', '</strong>First name is required..');
                 focus('$scope.fname');
                 return;
-            } else if ($scope.lname == '' || angular.isUndefined($scope.lname)) {
-                fireMsg('0', '<strong>Error : </strong>last name is required..');
-                focus('$scope.lname');
-                return;
-            }
+             } //else if ($scope.lname == '' || angular.isUndefined($scope.lname)) {
+            //     fireMsg('0', '<strong>Error : </strong>Last name is required..');
+            //     focus('$scope.lname');
+            //     return;
+            // }
             else if ($scope.email == '' || angular.isUndefined($scope.email)) {
-                fireMsg('0', '<strong>Error : </strong>email address is required..');
+                fireMsg('0', '</strong>Email address is required..');
                 focus('$scope.email');
                 return;
             }
             else if (!$scope.validateEmail($scope.email)) {
-                fireMsg('0', '<strong>Error : </strong>invalid email address is required..');
+                fireMsg('0', '</strong>Invalid email address is required..');
                 focus('$scope.email');
                 return;
             } 
@@ -937,7 +942,7 @@ $scope.invite = function () {
                         $scope.registerUser(); 
                     }
                     else{
-                        fireMsg('0', '<strong>Error : </strong>User email already exist...!');
+                        fireMsg('0', '</strong>This user email already exist...!');
                     }   
                 }).error(function(error){   
                     fireMsg('0', '<strong>Error : </strong>Please try again...!');

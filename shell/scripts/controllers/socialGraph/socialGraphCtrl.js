@@ -8,13 +8,19 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     $scope.totalLikes = 0;
     $scope.totalEngagement = 0;
     $scope.engageLikes = 0;
+    $scope.postCount = 0;
     $scope.requestCount = 0;
+    $scope.postSummaryRequest = 0;
+    $scope.sentimentRequest = 0;
     $scope.failedPool = [];
+    $scope.sentimentConfigData = [];
+    $scope.sentimentConfigSeries = [];
+    $scope.postsObj = [];
     $scope.defReqPool = [{method: 'setPageOverview'},
-        {method: 'setPostSummary'},
         {method: 'setWordCloud'},
-        {method: 'setDemographicsinfo'}];
-
+        {method: 'setDemographicsinfo'},
+        {method: 'setPostSummary'}];
+    $scope.postState = false;
     $scope.sentimentConfig = {
         options: {
             chart: {
@@ -53,9 +59,18 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     };
 
     $scope.fbPageInit = function () {
-        fbInterface.getFbLoginState($scope, true);
+        fbInterface.getFbLoginState($scope, true);      
+    };
 
-    }
+    $scope.initCount = function() {
+        $scope.postSummaryRequest = 0;
+        $scope.sentimentRequest = 0;
+        $scope.sentimentConfigData = [];
+        $scope.sentimentConfigSeries = [];
+        $scope.postsObj = [];  
+    };
+
+
 
     $scope.searchPage = function (searchQuery) {
         fbInterface.getSearchedPages($scope, true, searchQuery);
@@ -228,69 +243,117 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         });
     };
 
+    $scope.paging = function (posts , length , index) {
+        if ( index < length ){
+            $scope.fbClient.getSentimentAnalysis(function (res, status) {
+            if (status){
+                $scope.setSentimentAnalysis(res);
+                index++;
+                $scope.paging(posts , length , index );                
+            }
+            else{
+                $scope.handleFailure({method: 'setSentimentAnalysis', error: data});
+            }
+            }, JSON.stringify(posts[index]));            
+        }
+    };
+
     $scope.setPostSummary = function () {
         $scope.fbClient.getPostSummary(function (data, status) {
             $scope.requestCount++;
             if (status) {
-                $scope.postsObj = data;
-                $scope.postCount = data.length;
-                $scope.postIds = [];
-                $scope.postsObj.forEach(function (postEntry) {
-                    $scope.postIds.push(postEntry.id);
-                });
-                $scope.setSentimentAnalysis();
+                var d = data;            
+                m = $scope.postSummaryRequest*25;                
+                for ( var i = 0; i < data.length; i++){
+                    $scope.postsObj.push(data[i]);
+                    $scope.totalEngagement += $scope.postsObj[i].shares + $scope.postsObj[i].comments;
+                    $scope.engageLikes += $scope.postsObj[i].likes;                    
+                }
+                $scope.postCount += data.length;
+                for ( var z = m; z < m + data.length; z++ ){
+                    $scope.postIds.push($scope.postsObj[z].id);
+                }
+                if ( d.length == 25 ){
+                    var timeObj = {
+                        sinceStamp : moment($scope.sinceDate).unix(),
+                        untilStamp : moment(d[24].created_time).unix() - 86400
+                    };
+                    $scope.fbClient = $restFb.getClient($scope.page, timeObj);
+                    $scope.postSummaryRequest++;   
+                    $scope.setPostSummary();
+                }
+                else {
+                    var postArray = [];
+                    if ( $scope.postIds.length <= 25){
+                        postArray[0] = $scope.postIds;                        
+                    }
+                    else {
+                        var index = 0;
+                        for ( var i = 25; i < $scope.postIds.length; i = i+ 25){
+                            var postId = [];
+                            for ( var j = i - 25; j< i; j++){
+                                postId.push($scope.postIds[j]);
+                            }
+                            postArray[index] = postId;
+                            index++;
+                        }
+                        if ( $scope.postIds.length - j > 0){                
+                            var postId = [];
+                            for ( var x = j; x < $scope.postIds.length; x++){
+                                postId.push($scope.postIds[x]);                                   
+                                console.log(x);
+                            }
+                            postArray[index] = postId;               
+                        }
+                    }
+                $scope.paging(postArray , postArray.length , 0 );
+            }
+               
             } else {
                 $scope.handleFailure({method: 'setPostSummary', error: data});
             }
         });
     };
 
-    $scope.setSentimentAnalysis = function () {
-        $scope.fbClient.getSentimentAnalysis(function (data, status) {
+    $scope.setSentimentAnalysis = function (data) {
             $scope.requestCount++;
-            if (status) {
-                $scope.sentimentConfigData = [];
-                var sentimentConfigSeries = [];
                 var sentIcons = {
                     'positive': 'styles/css/images/socialAnalysis/happyFace.png',
                     'negative': 'styles/css/images/socialAnalysis/sadFace.png',
                     'neutral': 'styles/css/images/socialAnalysis/neutralFace.png'
                 };
+                var j = $scope.sentimentRequest * 25;
+                for (var i = j; i < j + data.length; i++) {
 
-                for (i = 0; i < data.length; i++) {
-                    $scope.postsObj[i]['sentiment'] = {
-                        "res": data[i].sentiment,
-                        "pol": data[i].polarity,
-                        "ico": sentIcons[data[i].sentiment]
-                    };
-                    console.log("$scope.postsObj[i]['sentiment']");
-                    console.log($scope.postsObj[i]['sentiment']);
+                        $scope.postsObj[i]['sentiment'] = {
+                            "res": data[i-j].sentiment,
+                            "pol": data[i-j].polarity,
+                            "ico": sentIcons[data[i-j].sentiment]
+                        };
+                        console.log("$scope.postsObj[i]['sentiment']");
+                        console.log($scope.postsObj[i]['sentiment']);
 
-                    $scope.totalEngagement += $scope.postsObj[i].shares + $scope.postsObj[i].comments;
-                    $scope.engageLikes += $scope.postsObj[i].likes;
+                        var x = moment($scope.postsObj[i].created_time).format('YYYY-MM-DD');
 
-                    var x = moment($scope.postsObj[i].created_time).format('YYYY-MM-DD');
+                        var enDate = x.split('-');
 
-                    var enDate = x.split('-');
-
-                    $scope.sentimentConfigData.push([
-                        Date.UTC(enDate[0], enDate[1] - 1, enDate[2]),
-                        data[i].polarity
-                    ]); //
+                        $scope.sentimentConfigData.push([
+                            Date.UTC(enDate[0], enDate[1] - 1, enDate[2]),
+                            data[i-j].polarity
+                        ]); //
                 }
+                $scope.sentimentRequest++;
 
-                sentimentConfigSeries.push({
+                var dataArray = [{
                     type: 'line',
                     name: 'Overall Sentiment',
                     data: $scope.sentimentConfigData,
-                    color: '#FFC107'
-                });
+                    color: '#FFC107'                    
+                }];
 
-                $scope.sentimentConfig['series'] = sentimentConfigSeries;
-            } else {
-                $scope.handleFailure({method: 'setSentimentAnalysis', error: data});
-            }
-        }, JSON.stringify($scope.postIds));
+                $scope.sentimentConfigSeries = dataArray;
+
+                $scope.sentimentConfig['series'] = $scope.sentimentConfigSeries;
     };
 
     $scope.setWordCloud = function () {
@@ -387,7 +450,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
 
 
     $scope.getPageDetails = function (page, pageTimestamps, reqPool, changedTime) {
-
+        $scope.page  = page;
         //showing the page
         console.log('old page: '+JSON.stringify($scope.page));
         console.log('new page: '+JSON.stringify(page));
@@ -396,7 +459,13 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         $scope.activePageSearch = false;
 
         $scope.fbClient = $restFb.getClient(page, pageTimestamps);
-
+        $scope.postSummaryRequest = 0;
+        $scope.sentimentRequest = 0;
+        $scope.sentimentConfigData = [];
+        $scope.sentimentConfigSeries = [];
+        $scope.sentimentConfigData = [];        
+        $scope.postsObj = []; 
+        $scope.postIds = []; 
         reqPool.forEach(function (key) {
             eval("$scope." + key.method + "()");
         });
@@ -510,8 +579,6 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
             }
         });
     }
-
-
 });
 
 
@@ -632,6 +699,7 @@ function viewTableCtrl($scope, $mdDialog, jsonData, pageName) {
         $mdDialog.hide();
     }
 };
+
 
 //onScroll change table hader
 routerApp.directive("fixOnScroll", function () {

@@ -1066,6 +1066,67 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     filedName: cat
                 }];
                 $scope.mapResult(cat, res, function(data) {
+                    $scope.highchartsNG = {};
+                    $scope.highchartsNG = {
+                        options: {
+
+                            chart: {
+                                type: $scope.selectedChart.chart,
+                                plotBackgroundColor: null,
+                                plotBorderWidth: null,
+                                plotShadow: false
+
+                            },
+                            tooltip: {
+                                pointFormat: '{point.y}'
+                            },
+                            exporting: {
+                                sourceWidth: 600,
+                                sourceHeight: 400
+                            },                      
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: true,
+                                        color: '#000000',
+                                        formatter: function() {
+                                            return Highcharts.numberFormat(this.percentage, 2) + '% ' + this.point.name + '</b> | ' + Highcharts.numberFormat(this.y, 2);
+                                        }
+                                    },
+                                    series: {
+                                        dataLabels: {
+                                            enabled: true,
+                                            format: '<b>{point.name}</b> ({point.y:,.0f})',
+                                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                                            softConnector: true
+                                        }
+                                    },
+                                    showInLegend: false
+                                }
+                            }
+                        },
+                        title: {
+                            text: ''
+                        },
+
+
+                        legend: {
+                            layout: 'vertical',
+                            align: 'right',
+                            verticalAlign: 'middle',
+                            borderWidth: 0
+                        },
+                        xAxis: {
+                            type: 'category'
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        colors: ['#EC784B'],
+                        series: []
+                    };
                     $scope.highchartsNG.series = {};
 
                     $scope.xAxiscat =[];
@@ -1083,51 +1144,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         });
                       
                     });
-                    $scope.highchartsNG.xAxis.categories = $scope.xAxiscat;
-                    $scope.highchartsNG.options = {
-                        chart: {
-                            type: $scope.selectedChart.chart,
-                            plotBackgroundColor: null,
-                            plotBorderWidth: null,
-                            plotShadow: false
-
-                        },
-
-                        tooltip: {
-
-                        },
-
-                        exporting: {
-                            sourceWidth: 600,
-                            sourceHeight: 400
-                        },                         
-
-                        plotOptions: {
-                            pie: {
-                                allowPointSelect: true,
-                                cursor: 'pointer',
-                                dataLabels: {
-                                    enabled: true,
-                                    color: '#000000',
-                                    formatter: function() {
-                                        return Highcharts.numberFormat(this.percentage, 2) + '% ' + this.point.name + '</b> | ' + Highcharts.numberFormat(this.y, 2);
-                                    }
-                                },
-                                showInLegend: false
-                            },
-                            series: { 
-                                dataLabels: {
-                                    enabled: true,
-                                    format: '({point.y:,.0f})',
-                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
-                                    softConnector: true
-                                }
-                            }
-                        }
-                    };
+                    $scope.highchartsNG.xAxis.categories = $scope.xAxiscat;                    
                     $scope.eventHndler.isLoadingChart = false;
                     $scope.dataToBeBind.receivedQuery = query;
                     $scope.queryEditState = false;
+                    $scope.isPendingRequest = false;
                 });
             } else {
                 $scope.setMeasureData(res[0]);

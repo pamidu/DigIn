@@ -279,8 +279,10 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                             db.put(dashboardDoc, function(err, response) {
                                 if (err) {
                                     return console.log(err);
+                                    $rootScope.privateFun.getAllDashboards();
                                 } else {
                                     console.log("Document created Successfully");
+                                    $rootScope.privateFun.getAllDashboards();
                                 }
                             });                          
                           console.log("not found error status is" + err.status);
@@ -296,8 +298,10 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                             }
                             db.put(dashboardDoc, function(err, response) {
                                 if (err) {
+                                $rootScope.privateFun.getAllDashboards();                                    
                                 return console.log(err);
                             } else {
+                                $rootScope.privateFun.getAllDashboards();
                                 console.log("Document updated Successfully");
                             }
                         });   
@@ -606,7 +610,6 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                     $rootScope.dashboard.refreshInterval = $scope.refreshInterval;
                     // Insert data into pouchDb
                     insertPouchDB(dashboardObject); 
-                    $rootScope.privateFun.getAllDashboards();
                     $scope.isLoadingDashBoardSave = false;
                     $scope.isButtonDashBoardSave=true;
                     $mdDialog.hide();
@@ -630,7 +633,6 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                         verticalPosition: 'top',
                         dismissOnClick: true
                     });
-                    $rootScope.privateFun.getAllDashboards();
                     $scope.isLoadingDashBoardSave = false;
                     $scope.isButtonDashBoardSave=true;
                     $mdDialog.hide()

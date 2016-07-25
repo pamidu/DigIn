@@ -484,8 +484,12 @@
     border: 5px solid #fff;
 }
 
-.text-domain-name {
+/*.text-domain-name {
     display: inline-block;
+}*/
+
+.text-domain-name {
+    display: inline;
 }
 
 .domain-name > div > input {

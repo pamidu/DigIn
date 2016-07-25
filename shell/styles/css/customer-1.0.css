@@ -4138,8 +4138,15 @@ md-tab-content > div {
 .cropArea {
   background: #E4E4E4;
   overflow: hidden;
-  width:500px;
-  height:350px;
+  width:350px;
+  height:200px;
+}
+
+.selectArea {
+  background: #E4E4E4;
+  overflow: hidden;
+  width:150px;
+  height:150px;
 }
 
 .img-circle {

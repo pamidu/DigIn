@@ -68,13 +68,28 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         });
 
 
+        //#get user profile
+        
+        var baseUrl = "http://" + $rootScope.TenantID;
+        
+        //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
+        $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
+            .success(function(response){
+                console.log(response);
+                $rootScope.profile_Det=response;
+            }).error(function(error){   
+                //fireMsg('0', '<strong>Error : </strong>Please try again...!');
+            });     
+
+
         //initially hiding the tabs
         $scope.showTabs(true);
 
-        //set initial logo as Digin logo
+        //#set initial logo as Digin logo
         $scope.imageUrl = "styles/css/images/DiginLogo.png";
-
-
+        //$rootScope.myImage="styles/css/images/setting/user100x100.png";
+        $rootScope.myCroppedImage="styles/css/images/setting/user100x100.png";
+         $rootScope.profile_pic="styles/css/images/setting/user100x100.png";
         // if($scope.imageUrl==""){
         //      $scope.imageUrl = "styles/css/images/DiginLogo.png";
         // }
@@ -86,21 +101,39 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
             .success(function (data) {
                 $rootScope.image = logoPath + data.Result.logo_path;
+                //$rootScope.myimage = logoPath + data.Result.dp_path;
+                //$rootScope.myCroppedImage = logoPath + data.Result.dp_path;
+                $rootScope.profile_pic=data.Result.dp_path;
+                $rootScope.userSettings=data.Result;
                 //$rootScope.image = "http://192.168.2.33/user_data/9c42d3c4661182ca872b3b6878aa0429/logos/hnb.png";
                 //$scope.imageUrl = "styles/css/images/DiginLogo.png";
-				
-				if(data.Result.logo_path==undefined)
+                
+                if(data.Result.logo_path==undefined)
+                {
                     $rootScope.image = "styles/css/images/DiginLogo.png";
+                    //$rootScope.myImage="styles/css/images/setting/user100x100.png";
+                    $rootScope.myCroppedImage="styles/css/images/setting/user100x100.png";
+                    $rootScope.profile_pic="styles/css/images/setting/user100x100.png";
+                }
                 else
+                {
                    $rootScope.image = logoPath + data.Result.logo_path;
-				
+                   //$rootScope.myImage=logoPath + data.Result.dp_path;
+                   //$rootScope.myCroppedImage=logoPath + data.Result.dp_path;
+                   $rootScope.profile_pic=logoPath + data.Result.dp_path;
+                }
+                
                 $scope.getURL();
+                $scope.imageUrl = $rootScope.image;
+                $scope.profile_picURL = $rootScope.profile_pic;
             })
             .error(function (data) {
                 $scope.imageUrl = "styles/css/images/DiginLogo.png";
+                //$scope.myimageUrl = "styles/css/images/setting/user100x100.png";
+                //$scope.myCroppedImageUrl = "styles/css/images/setting/user100x100.png";
+                $scope.profile_pic = "styles/css/images/setting/user100x100.png";
                 $scope.getURL();
             });
-        // }
 
 
         //value for jquery of search panel overlay
@@ -186,7 +219,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         //shows user profile in a dialog box
         $scope.showUserProfile = function (ev) {
-
             $mdDialog.show({
                     templateUrl: 'templates/profileDialogTemplate.html',
                     parent: angular.element(document.body),
@@ -198,12 +230,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
                         $scope.user = {
-                            fname: userInfo.Name,
-                            lname: "",
-                            email: userInfo.Email,
-                            //location: "Colombo",
-                            //mobile: "077123123123",
-                            profile_pic: "styles/css/images/person.jpg"
+                            name: $rootScope.profile_Det.Name,  
+                            email:$rootScope.profile_Det.Email, 
+                            address: $rootScope.profile_Det.BillingAddress,
+                            mobile: $rootScope.profile_Det.PhoneNumber,
+                            profile_pic: $rootScope.profile_pic,
+                            company :$rootScope.profile_Det.company
+
                         };
                         $scope.close = function () {
                             $mdDialog.cancel();
@@ -215,6 +248,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }, function () {
                 });
         };
+        
         //shows tennant dialog box
         $scope.showTennant = function (ev) {
 
@@ -941,9 +975,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         $scope.getURL = function () {
-
             $scope.imageUrl = $rootScope.image;
-        }
+            //$scope.myCroppedImageURL = $rootScope.myCroppedImage;
+            $scope.profile_picURL = $rootScope.profile_pic;
+        };
 
         //navigate
         $scope.navigate = function (routeName, ev) {

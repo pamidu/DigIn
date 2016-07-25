@@ -55,7 +55,7 @@
                                     <div>
                                         <div class="txt-box-login"
                                              ng-class="{error:error.isUserName,'':!error.isUserName}">
-                                            <label>User Name</label>
+                                            <label>User name</label>
                                             <div>
                                                 <input type="text"
                                                        required

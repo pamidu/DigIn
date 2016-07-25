@@ -8,7 +8,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
     $scope.initQueryBuilder = function() {
         if (typeof($scope.widget.widgetData.commonSrc) == "undefined") {
-            $scope.selectedChart = $scope.commonData.chartTypes[0];
+            $scope.selectedChart = $scope.commonData.chartTypes[1];
             $scope.highCharts.onInit(false);
         } else {
             $scope.selectedChart = $scope.widget.widgetData.selectedChart;
@@ -2170,7 +2170,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 credits: {
                     enabled: false
                 },
-                colors: ['#EC784B'],
+                colors: ['#3b6982'],
                 series: []
             };
         }
@@ -2215,7 +2215,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         for (var c in res) {
             if (Object.prototype.hasOwnProperty.call(res, c)) {
 
-                typeof $scope.recordedColors[c] == "undefined" ? serColor = "#EC784B" : serColor = $scope.recordedColors[c];
+                typeof $scope.recordedColors[c] == "undefined" ? serColor = "#3b6982" : serColor = $scope.recordedColors[c];
                 $scope.highchartsNG.series.push({
                     name: c,
                     color: serColor,
@@ -2733,7 +2733,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         for (c in res[0]) {
             if (Object.prototype.hasOwnProperty.call(res[0], c)) {
                 if (c != cat) {
-                    typeof $scope.recordedColors[c] == "undefined" ? serColor = "#EC784B" : serColor = $scope.recordedColors[c];
+                    typeof $scope.recordedColors[c] == "undefined" ? serColor = "#3b6982" : serColor = $scope.recordedColors[c];
                     serArr.push({
                         name: c,
                         color: serColor,

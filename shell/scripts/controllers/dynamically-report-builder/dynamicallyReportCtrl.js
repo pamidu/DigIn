@@ -15,6 +15,13 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
     $scope.onClickBack = function () {
         $state.go('home.Dashboards');
     };
+
+    var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+    var res = userInfo.Username.replace("@", "_");
+    $scope.NameSpace = res.replace(".", "_");
+    console.log();
+
+
     var eventHandler = {
         reportName: '',
         isReportLoad: false,
@@ -612,7 +619,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                         found: false
                     }
                 };
-                dynamicallyReportSrv.getRenderReport(reqParameter).success(function (data) {
+                dynamicallyReportSrv.getRenderReport(reqParameter,$scope.NameSpace).success(function (data) {
                     var reportLink = data;
                     privateFun.doneReportLoad();
                     $scope.reportURL = $sce.trustAsResourceUrl(reportLink);

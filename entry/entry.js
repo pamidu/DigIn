@@ -1,8 +1,12 @@
 /**
  * Created by Damith on 6/10/2016.
  */
-var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'uiMicrokernel', 'configuration'
+// var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'uiMicrokernel', 'configuration'
+//     , 'ngToast', 'ngSanitize', 'ngMessages','ngAria']);
+
+var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'configuration'
     , 'ngToast', 'ngSanitize', 'ngMessages','ngAria']);
+
 
 routerApp
     .config(["$httpProvider", "$stateProvider", "$urlRouterProvider",
@@ -39,8 +43,8 @@ routerApp
 
 routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
-        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog',
-        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog) {
+        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal',
+        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal) {
 
             $scope.signindetails = {};
             $scope.isLoggedin = false;
@@ -100,19 +104,26 @@ routerApp
                     //url: '/apis/authorization/userauthorization/login',
                     headers: {'Content-Type': 'application/json'},
                     data: $scope.signindetails
-
                 }).success(function (data) {
                     if (data.Success === true) {
-                        //$window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
-
-                        //#Added for local host ------------------------------
-                         document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
-                         document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
-                         window.location.href = "http://localhost:8081/Digin/shell";
+                        if(IsLocal==false) { 
+                            //#Added for live servers ------------------------------
+                            $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
+                        }  
+                        else{
+                            //#Added for local host ------------------------------
+                             document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
+                             document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
+                             window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
+                        }
                     }
                     else {
                         $mdDialog.hide();
-                        mainFun.fireMsg('0', data.Message);
+                        if(data.Message=="Email Address is not varified."){
+                        mainFun.fireMsg('0', "This email address is not verified, Please verify your email...!");
+                        }else{
+                            mainFun.fireMsg('0', data.Message);
+                        }
                     }
                 }).error(function (data) {
                     console.log(data);
@@ -358,7 +369,11 @@ routerApp
 
                             if (data.Success === false) {
                                 $mdDialog.hide();
-                                mainFun.fireMsg('0', data.Message);
+                                if(data.Message=="Already Registered."){
+                                    mainFun.fireMsg('0','This email address you entered is already registered, Please try again...!');
+                                }else{
+                                    mainFun.fireMsg('0',data.Message);
+                                }                               
                             }
                             else {
                                 $mdDialog.hide();
@@ -380,30 +395,30 @@ routerApp
                 console.log(signUpUsr);
                 //*validation
                 if (signUpUsr.firstName == '' || angular.isUndefined(signUpUsr.firstName)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>first name is required..');
+                    mainFun.fireMsg('0', '<strong>Error : </strong>First name is required..');
                     $scope.error.isFirstName = true;
                     focus('firstName');
                     return;
                 } else if (signUpUsr.lastName == '' || angular.isUndefined(signUpUsr.lastName)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>last name is required..');
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Last name is required..');
                     $scope.error.isLastName = true;
                     focus('lastName');
                     return;
                 }
                 else if (signUpUsr.email == '' || angular.isUndefined(signUpUsr.email)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>email address is required..');
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Email address is required..');
                     $scope.error.isEmail = true;
                     focus('email');
                     return;
                 }
                 else if (!mainFun.validateEmail(signUpUsr.email)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>invalid email address is required..');
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address is required..');
                     $scope.error.isEmail = true;
                     focus('email');
                     return;
                 }
                 else if (signUpUsr.pwd == '' || angular.isUndefined(signUpUsr.pwd)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>password  is required..');
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Password is required..');
                     $scope.error.isPassword = true;
                     focus('password');
                     return;
@@ -416,7 +431,7 @@ routerApp
                     return;
                 }
                 else {
-                    displayProgress('User registration processing...');
+                    displayProgress('User registration is processing...');
                     mainFun.signUpUser();
                     //return;
 

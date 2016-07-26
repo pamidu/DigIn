@@ -35,7 +35,8 @@ routerApp.directive('sunburstChart', function() {
                         .attr("height", '100%')
                         .append("g")
                         .attr("transform", "translate(" + width / 2 + "," + (height / 2 + 10) + ") rotate(-90 0 0)");
-                    var div = d3.select("#SunBurstToolTip").append("div")
+                    
+                    var div = d3.select("#d3Sunburst").append("div")
                         .attr("class", "tooltip")
                         .style("opacity", 0);
 
@@ -74,11 +75,15 @@ routerApp.directive('sunburstChart', function() {
                                 .duration(200)
                                 .style("opacity", .9);
                             var sizeStr = "";
-                            if (typeof d.size != 'undefined') sizeStr = "<br/>Claims: " + d.size;
+                            if (typeof d.size != 'undefined') sizeStr = "<br/> <b> Size: " + d.size + "</b>";
                             div.html(d.name + sizeStr)
                                 .style("left", 100 + "px")
                                 .style("top", 300 + "px");
 
+                        })
+                        .on("mousemove", function(d) {
+                            div.style("top", (d3.event.pageY-10)+"px")
+                                .style("left", (d3.event.pageX+10)+"px");
                         })
                         .on("mouseout", function(d) {
                             div.transition()

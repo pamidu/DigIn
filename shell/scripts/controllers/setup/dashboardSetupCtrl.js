@@ -890,6 +890,7 @@ $scope.invite = function () {
             
             
             $scope.error.isLoading = true;
+            displayProgress('Processing...');
             var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
             
             $http({
@@ -903,12 +904,16 @@ $scope.invite = function () {
             }).success(function (data) {
               
                 $scope.error.isLoading = false;
-                fireMsg('1', 'User profile created successfully and, sent email for account verification!');
+                $mdDialog.hide();
+                fireMsg('1', 'User profile created successfully and, sent email for account verification!');  
+                $scope.frmNewUser.$setUntouched();
                 $scope.fname = '';
                 $scope.lname = '';
                 $scope.email = '';
             }).error(function (data) {
-                $scope.error.isLoading = false;            
+                $scope.error.isLoading = false; 
+                $mdDialog.hide();       
+                fireMsg('0', 'Registration process failed...');
             });
         };
        
@@ -930,7 +935,7 @@ $scope.invite = function () {
                 return;
             }
             else if (!$scope.validateEmail($scope.email)) {
-                fireMsg('0', '</strong>Invalid email address is required..');
+                fireMsg('0', '</strong>Invalid email address...');
                 focus('$scope.email');
                 return;
             } 

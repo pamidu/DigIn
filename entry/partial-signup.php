@@ -105,6 +105,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        
+                                        
                                         <div class="txt-box-login p-t-20"
                                              ng-class="{error:error.isEmail,'':!error.isEmail}">
                                             <label for="email">Email</label>
@@ -115,7 +117,7 @@
                                                        required
                                                        ng-pattern="regex.email"
                                                        ng-model="signUpUsr.email"
-                                                       placeholder="jane.doe@example.com">
+                                                       placeholder="jane.doe@example.com" ng-disabled={{freeze}}>
                                             </div>
                                             <div ng-show="frmDiginSignUp.email.$invalid && !frmDiginSignUp.email.$pristine"
                                             class="ng-message" ng-messages="frmDiginSignUp.email.$error">
@@ -123,6 +125,10 @@
                                                 <div ng-message="pattern">Your email address is invalid</div>
                                             </div>
                                         </div>
+                                        
+                                        
+                                        
+                                        
 
                                         <div class="form-inline">
                                             <div class="text-domain-name full-name p-t-20"

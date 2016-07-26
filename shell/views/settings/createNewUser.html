@@ -18,18 +18,18 @@
          
          
             <div class="user-setting-wrap">
-                <form name="frmNewUser" autocomplete="off">
+                <form name="frmNewUser" autocomplete="off" ng-submit="CreateUser()" novalidate>
+                
                     <table width="100%">
                         <tr>    
                             <td width="50%">    
-                                <div> 
-                                    <md-input-container>
-                                        <label>First Name</label>
-                                        <input ng-model="fname" required>
-                                    </md-input-container>
-                                    <div ng-messages="frmNewUser.fname.$error">
-                                        <div ng-message="required">This is required!</div>
-                                </div>
+                                <md-input-container>
+                                    <label>First Name</label>
+                                    <input ng-model="fname" name="fname" required>                                      
+                                    <div ng-messages="frmNewUser.fname.$error" ng-if='frmNewUser.fname.$touched' role="alert">
+                                        <div ng-message="required">This is required.</div>
+                                    </div>
+                                </md-input-container>
                             </td> 
                             <td width="50%">       
                                 <div> 
@@ -37,24 +37,19 @@
                                         <label>Last Name</label>
                                         <input ng-model="lname">
                                     </md-input-container>
-                                    <!-- <div ng-messages="frmNewUser.lname.$error">
-                                        <div ng-message="required">This is required!</div>
-                                    </div> -->
                                 </div> 
                            </td>    
                         </tr>        
                      
                         <tr>
-                            <td>
-                                <div>    
-                                    <md-input-container>
-                                        <label>Email</label>
-                                        <input ng-model="email" required>
-                                    </md-input-container>
-                                    <div ng-messages="frmNewUser.email.$error">
-                                        <div ng-message="required">This is required!</div>
+                            <td> 
+                                <md-input-container>
+                                    <label>Email</label>
+                                    <input ng-model="email" name="email" required>
+                                    <div ng-messages="frmNewUser.email.$error" ng-if='frmNewUser.email.$touched' role="alert">
+                                        <div ng-message="required">This is required.</div>
                                     </div>
-                                </div>
+                                </md-input-container>
                             </td>    
                             <td>    
                                 <div>    
@@ -73,8 +68,7 @@
                         </span>
                     </div> 
 
-
-                    <md-button class="setup-button md-raised md-primary" ng-click="CreateUser()">
+                    <md-button type="submit" class="setup-button md-raised md-primary">
                         <span class="setup-font-theme">CREATE USER</span>
                     </md-button>
                 </form>

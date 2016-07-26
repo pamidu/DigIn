@@ -49,6 +49,14 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         $rootScope = $injector.get("$rootScope");
         console.log("$location", $location);
 
+        /*
+        var firstLogin1 = localStorage.getItem('firstLogin');
+        console.log(firstLogin1);
+        localStorage.removeItem('firstLogin');
+        var firstLogin2 = localStorage.getItem('firstLogin');
+        console.log(firstLogin2);
+        */
+        
         if (localStorage.getItem("initialLogin") == undefined) {
 
             localStorage.setItem("initialLogin", false);
@@ -681,7 +689,10 @@ routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog',
 
 }])
 
-routerApp.controller('userprofileWidgetController', ['$scope', function ($scope) {
+routerApp.controller('userprofileWidgetController', ['$scope','ProfileService', function ($scope,ProfileService) {
+
+   $scope.userDetails = ProfileService.UserDataArr;
+
     (function () {
         var menu_trigger = $("[data-card-menu]");
         var back_trigger = $("[data-card-back]");
@@ -1199,15 +1210,13 @@ routerApp.directive('userprofileComponent', function () {
         restrict: 'E',
         controller: 'userprofileWidgetController',
         template: '<div class=" widget-card "><!-- Face 2 -->\
-  <div class=" card-face face-2"><!-- Back trigger -->\
-    <button data-card-back="data-card-back" class="card-face__back-button"><img src="http://imgh.us/arrow_1.svg" width="19" height="19" draggable="false"/></button><img src="http://imgh.us/Likes.png" width="100" height="100" draggable="false" class="card-face__stats"/><img src="http://imgh.us/Followers.png" width="100" height="100" draggable="false" class="card-face__stats"/><img src="http://imgh.us/Views.png" width="100" height="100" draggable="false" class="card-face__stats"/><!-- Settings Button --><img src="http://imgh.us/cog.svg" width="17" height="17" draggable="false" class="card-face__settings-button"/>\
-  </div><!-- Face 1 -->\
-  <div class="card-face face-1"><!-- Menu trigger -->\
+  <!-- Face 1 -->\
+  <div class="card-face face-1" style="overflow-y: scroll"><!-- Menu trigger -->\
 <div style="background-image:url(styles/css/images/+++++ofileComponentBg.jpg);background-size:cover;width: 100%;height: 45%;position: absolute;"></div>\
-    <button data-card-menu="data-card-menu" class="card-face__menu-button"><img src="http://imgh.us/dots_1.svg" width="5" height="23" draggable="false"/></button><!-- Avatar -->\
-    <div class="card-face__avatar"><!-- Bullet notification --><span class="card-face__bullet">2</span><!-- User avatar --><img src="http://i.imgur.com/gGdWosb.png" width="110" height="110" draggable="false"/></div><!-- Name -->\
-    <h2 class="card-face__name">' + localStorage.getItem("username") + '</h2><!-- Title --><span class="card-face__title">Graphic & Web Designer</span><!-- Cart Footer -->\
-    <div class="card-face-footer"><a href="#" target="_blank" class="card-face__social"><img src="http://imgh.us/dribbble.svg" width="36" height="36" draggable="false"/></a><a href="#"_blank" class="card-face__social"><img src="http://imgh.us/beh.svg" width="36" height="36" draggable="false"/></a><a href="#" target="_blank" class="card-face__social"><img src="http://imgh.us/plus_5.svg" width="36" height="36" draggable="false"/></a></div>\
+    <!--button data-card-menu="data-card-menu" class="card-face__menu-button"><img src="http://imgh.us/dots_1.svg" width="5" height="23" draggable="false"/></button--><!-- Avatar -->\
+    <div class="card-face__avatar"><!-- Bullet notification --><!--span class="card-face__bullet">2</span--><!-- User avatar --><img src="http://i.imgur.com/gGdWosb.png" width="110" height="110" draggable="false"/></div><!-- Name -->\
+    <h2 class="card-face__name"> {{userDetails.Name}} </h2><!-- Title --><span class="card-face__title">{{userDetails.Email}} </span><span class="card-face__title">{{userDetails.PhoneNumber}} </span><span class="card-face__title">{{userDetails.Company}} </span><!-- Cart Footer -->\
+    <!--div class="card-face-footer"><a href="#" target="_blank" class="card-face__social"><img src="http://imgh.us/dribbble.svg" width="36" height="36" draggable="false"/></a><a href="#"_blank" class="card-face__social"><img src="http://imgh.us/beh.svg" width="36" height="36" draggable="false"/></a><a href="#" target="_blank" class="card-face__social"><img src="http://imgh.us/plus_5.svg" width="36" height="36" draggable="false"/></a></div-->\
   </div>\
 </div>'
     };

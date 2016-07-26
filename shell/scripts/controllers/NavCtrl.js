@@ -2,10 +2,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'pouchDB',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter','ProfileService', 'pouchDB',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
               $http, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, pouchDB) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter,ProfileService, pouchDB) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -15,6 +15,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
 
         $scope.username = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
+        var baseUrl = "http://" + window.location.hostname;
 
         var db = new pouchDB('dashboard');
 
@@ -68,15 +69,16 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         });
 
 
-        //#get user profile
-        
-        var baseUrl = "http://" + $rootScope.TenantID;
-        
+        //#get user profile       
+        //var baseUrl = "http://" + $rootScope.TenantID;
+        var baseUrl = "http://" + window.location.hostname;
+
         //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
         $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
             .success(function(response){
                 console.log(response);
                 $rootScope.profile_Det=response;
+                ProfileService.InitProfileData(response);
             }).error(function(error){   
                 //fireMsg('0', '<strong>Error : </strong>Please try again...!');
             });     
@@ -833,8 +835,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 //#added by chamila
                 //#to retrive all users and groups
                 getAllSharableObj: function () {
-                    //var baseUrl = "http://" + window.location.hostname;
-                    var baseUrl = "http://" + $rootScope.TenantID;
+                    var baseUrl = "http://" + window.location.hostname;
+                    //var baseUrl = "http://" + $rootScope.TenantID;
+                    $scope.domain=JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
+                    //baseUrl="http://"+$scope.domain;
                     $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
                         .success(function (data) {
                             console.log(data);
@@ -893,8 +897,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }());
 
         $scope.getSharableUsers=function(){
-            //var baseUrl = "http://" + window.location.hostname;
-            var baseUrl = "http://" + $rootScope.TenantID;
+            var baseUrl = "http://" + window.location.hostname;
+
                     $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
                         .success(function (data) {
                             console.log(data);

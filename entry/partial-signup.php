@@ -74,7 +74,7 @@
                                         <div class="form-inline">
                                             <div class="text-domain-name full-name"
                                                  ng-class="{error:error.isFirstName,'':!error.isFirstName}">
-                                                <label for="firstName">first name</label>
+                                                <label for="firstName">First name</label>
                                                 <div>
                                                     <input type="text" class="form-control"
                                                            id="firstName"
@@ -85,12 +85,12 @@
                                                 </div>
                                                 <div ng-show="frmDiginSignUp.firstName.$invalid && !frmDiginSignUp.firstName.$pristine"
                                                  class="ng-message" ng-messages="frmDiginSignUp.firstName.$error">
-                                                    <div ng-message="required">This is required.</div>
+                                                    <div ng-message="required">*</div>
                                                 </div>
                                             </div>
                                             <div class="text-domain-name full-name"
                                                  ng-class="{error:error.isLastName,'':!error.isLastName}">
-                                                <label for="lastName">last name</label>
+                                                <label for="lastName">Last name</label>
                                                 <div>
                                                     <input type="text" class="form-control"
                                                            id="lastName"
@@ -101,13 +101,13 @@
                                                 </div>
                                                 <div ng-show="frmDiginSignUp.lastName.$invalid && !frmDiginSignUp.lastName.$pristine"
                                                 class="ng-message" ng-messages="frmDiginSignUp.lastName.$error">
-                                                    <div ng-message="required">This is required.</div>
+                                                    <div ng-message="required">*</div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="txt-box-login p-t-20"
                                              ng-class="{error:error.isEmail,'':!error.isEmail}">
-                                            <label for="email">email</label>
+                                            <label for="email">Email</label>
                                             <div>
                                                 <input type="email" class="form-control"
                                                        id="email"
@@ -119,7 +119,7 @@
                                             </div>
                                             <div ng-show="frmDiginSignUp.email.$invalid && !frmDiginSignUp.email.$pristine"
                                             class="ng-message" ng-messages="frmDiginSignUp.email.$error">
-                                                <div ng-message="required">This is required.</div>
+                                                <div ng-message="required">*</div>
                                                 <div ng-message="pattern">Your email address is invalid</div>
                                             </div>
                                         </div>
@@ -127,7 +127,7 @@
                                         <div class="form-inline">
                                             <div class="text-domain-name full-name p-t-20"
                                                  ng-class="{error:error.isPassword,'':!error.isPassword}">
-                                                <label for="password">password</label>
+                                                <label for="password">Password</label>
                                                 <div>
                                                     <input type="password" class="form-control"
                                                            id="password"
@@ -140,12 +140,12 @@
                                                 <div ng-show="frmDiginSignUp.password.$invalid && !frmDiginSignUp.password.$pristine"
                                                 class="ng-message"
                                                      ng-messages="frmDiginSignUp.password.$error">
-                                                    <div ng-message="required">This is required.</div>
+                                                    <div ng-message="required">*</div>
                                                 </div>
                                             </div>
                                             <div class="text-domain-name full-name"
                                                  ng-class="{error:error.isRetypeCnfrm,'':!error.isRetypeCnfrm}">
-                                                <label for="cnfrmPwd">confirm password</label>
+                                                <label for="cnfrmPwd">Confirm password</label>
                                                 <div>
                                                     <input type="password" class="form-control"
                                                            id="cnfrmPwd"
@@ -166,7 +166,7 @@
                                             <div class="login-help">
                                                 <div class="remember-me">
                                                     <input id="chkTerms" type="checkbox"/>
-                                                    By Clicking sign up you agree to the
+                                                    By clicking sign up you agree to the
                                                     <a href="javascript:void(0);"
                                                        ng-click="goToTermCondition(true)"
                                                     >terms and condition</a>

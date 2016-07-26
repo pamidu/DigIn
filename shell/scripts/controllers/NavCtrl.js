@@ -790,7 +790,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 angular.forEach(data.rows, function (row) {
                                     console.log(typeof(row.doc.dashboard));
                                     var records = CircularJSON.parse(row.doc.dashboard);
-                                    var isAvailble = false;
                                     $scope.dashboards.push(
                                             {pouchID: row.doc._id, dashboardName: records.compName}
                                         );                                                           

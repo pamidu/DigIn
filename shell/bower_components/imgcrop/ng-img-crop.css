@@ -7,11 +7,20 @@ img-crop {
   canvas {
     display:block;
     position:absolute;
-    top:50%;
-    left:50%;
-
     // Disable Outline
     outline: none;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0); /* mobile webkit */
   }
+}
+
+image-crop > canvas {
+    margin-top: 0px !important;
+    margin-left: 0px !important;
+}
+
+.cropArea {
+      background: #E4E4E4;
+      overflow: hidden;
+      width:500px;
+      height:350px;
 }

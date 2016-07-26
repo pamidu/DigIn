@@ -49,6 +49,14 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         $rootScope = $injector.get("$rootScope");
         console.log("$location", $location);
 
+        /*
+        var firstLogin1 = localStorage.getItem('firstLogin');
+        console.log(firstLogin1);
+        localStorage.removeItem('firstLogin');
+        var firstLogin2 = localStorage.getItem('firstLogin');
+        console.log(firstLogin2);
+        */
+        
         if (localStorage.getItem("initialLogin") == undefined) {
 
             localStorage.setItem("initialLogin", false);

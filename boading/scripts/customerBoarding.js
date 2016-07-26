@@ -312,6 +312,7 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
             //var res=decodeURIComponent(response);
             if (response.Success == true) {
                 $mdDialog.hide();
+                localStorage.setItem('firstLogin',true);
                 window.location = "http://" + response.Data.TenantID;
                 //window.location ="http://digin.io/entry";
             }

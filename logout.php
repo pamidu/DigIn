@@ -28,9 +28,11 @@
 		
 		unset($_SESSION);
 	
-		header("Location: /entry");
+		//header("Location: /entry");
+		header("Location: http://". $mainDomain . "/entry");
 	}else{
-		header("Location: /entry");
+		//header("Location: /entry");
+		header("Location: http://". $mainDomain . "/entry");
 	}
 			
 ?>

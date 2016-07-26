@@ -2281,7 +2281,7 @@ routerApp.controller('adsenseInit',['widgetID', '$scope', '$http', '$rootScope',
 
 routerApp.controller('calendarInit',['widgetID', '$scope', '$http', '$rootScope', '$mdDialog', '$compile', '$timeout', 'uiCalendarConfig',function (widgetID, $scope, $http, $rootScope, $mdDialog, $compile, $timeout, uiCalendarConfig) {
     var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
-
+           $scope.eventSources = [];
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
@@ -2409,7 +2409,7 @@ routerApp.controller('googlePlusInit',['$scope', 'googleService', '$http', '$mdD
 
         $scope.diginLogo = 'digin-logo-wrapper2';
         $scope.showFinishButton = false;
-
+ 
         if(typeof $rootScope.connectedgplusArr == "undefined"){
             $rootScope.connectedgplusArr = [];
             $scope.connectedgplus = false;

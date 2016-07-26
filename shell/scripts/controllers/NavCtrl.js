@@ -2,10 +2,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'pouchDB',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter','ProfileService', 'pouchDB',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
               $http, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, pouchDB) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter,ProfileService, pouchDB) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -72,11 +72,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         
         var baseUrl = "http://" + $rootScope.TenantID;
         
+
         //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
         $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
             .success(function(response){
                 console.log(response);
                 $rootScope.profile_Det=response;
+                ProfileService.InitProfileData(response);
             }).error(function(error){   
                 //fireMsg('0', '<strong>Error : </strong>Please try again...!');
             });     

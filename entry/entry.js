@@ -252,12 +252,13 @@ routerApp
 //#signup controller
 routerApp
     .controller('signup-ctrl', ['$scope', '$http', '$state', 'focus',
-        'Digin_Domain', 'Digin_Engine_API','ngToast','$mdDialog',
+        'Digin_Domain', 'Digin_Engine_API','ngToast','$mdDialog','$location',
         function ($scope, $http, $state, focus,
-                  Digin_Domain, Digin_Engine_API, ngToast,$mdDialog) {
+                  Digin_Domain, Digin_Engine_API, ngToast,$mdDialog,$location) {
 
             $scope.onClickSignIn = function () {
                 $scope.isLoggedin = false;
+                $scope.freeze=false;
                 $state.go('signin');
             };
 
@@ -287,7 +288,19 @@ routerApp
                 isLoading: false
             };
 
+            //-----invite user - Signup-----------
+            var email = ($location.search()).email;
+            $scope.freeze=false;
+            if(email==undefined){
+                $scope.freeze=false;
+            }
+            else{
+                signUpUsr.email=email;
+                $scope.freeze=true;
+            }
+            //------------------------------------
 
+            
             //#pre-loader progress
             var displayProgress = function (message) {
                 $mdDialog.show({
@@ -334,6 +347,7 @@ routerApp
                         signUpUsr.email = '';
                         signUpUsr.pwd = '';
                         signUpUsr.cnfrPwd = '';
+                        $scope.freeze=false;
                     },
 
                     validateEmail: function (email) {

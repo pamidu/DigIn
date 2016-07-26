@@ -223,6 +223,8 @@
 
 <script type="text/javascript" src="bower_components/circular-json-master/build/circular-json.js"></script>
 
+<script type="text/javascript" src="scripts/services/ProfileService.js"></script>
+
 <!-- controller -->
 <script type="text/javascript" src="scripts/controllers/NavCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/DiginCore.js"></script>
@@ -275,6 +277,9 @@
 <script type="text/javascript" src="scripts/controllers/widgetCtrl.js"></script>
 <script type="application/javascript" src="scripts/controllers/CommonDataSrcCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/ExcelCtrl.js"></script>
+
+
+
 <!-- Material Icons -->
 <script type="text/javascript"
         src="//cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"></script>

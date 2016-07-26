@@ -652,7 +652,7 @@ body.show-menu {
     border-radius: 50%;
 }
 .card-face__name {
-    font-size: 24px;
+       font-size: 24px;
     font-weight: 400;
     margin-top: 0;
     margin-bottom: 0;
@@ -670,16 +670,17 @@ body.show-menu {
     animation-fill-mode: both;
     -webkit-animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
     animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+    padding-bottom: 30px;
 }
 .card-face__title {
-    font-size: 18px;
+      font-size: 20px;
     color: #90a4ae;
-    white-space: nowrap;
-    display: block;
-    overflow: hidden;
+    /* white-space: nowrap; */
+    /* display: block; */
+    /* overflow: hidden; */
     text-overflow: ellipsis;
-    width: 100%;
-    padding: 0 20px;
+    /* width: 100%; */
+    /* padding: 0 20px; */
     text-align: center;
     box-sizing: border-box;
     font-weight: 300;
@@ -691,6 +692,7 @@ body.show-menu {
     animation-delay: 100ms;
     -webkit-animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
     animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+    margin-top: 8px;
 }
 .card-face__title:after {
     content: "";
@@ -705,7 +707,8 @@ body.show-menu {
     right: 0;
     position: absolute;
     text-align: center;
-    bottom: 20px;
+    /*bottom: 20px;*/
+    margin-top: 10px;
 }
 .card-face__social {
     display: inline-block;

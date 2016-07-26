@@ -510,7 +510,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
 
                                 $scope.upload = function(files, event) {
 
-                                    var userInfo = JSON.parse(getCookie("authData"));
+                                    var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
                                     
                                     if (files && files.length) {
                                         $scope.preloader = true;

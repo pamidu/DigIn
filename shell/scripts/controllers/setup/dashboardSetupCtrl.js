@@ -161,7 +161,7 @@ $scope.inviteUser = function () {
         };
 
         if($scope.exist==true){
-            fireMsg('0', '<strong>Error : </strong>This user is already invited...');
+            fireMsg('0', '</strong>This user is already invited');
             return;
         }
         else{
@@ -179,18 +179,18 @@ $scope.invite = function () {
             })
             .success(function (response) {
                 if(response=="false"){
-                    fireMsg('0', '<strong>Error : </strong>This user not registered for Digin...!');
+                    fireMsg('0', '</strong>This user has not been registered for DigIn.');
                 }
                 else{
                     //privateFun.getAllSharableObj();
                         //$scope.sharableObjs= $rootScope.sharableObjs;
                         //$scope.sharableUsers = $rootScope.sharableUsers;
                         //$scope.sharableGroups = $rootScope.sharableGroups;
-                    fireMsg('1', '<strong>Success : </strong>Invitation sent successfully...!');
+                    fireMsg('1', '</strong>Invitation sent successfully.');
                     $scope.user.email='';
                 }
             }).error(function (error) {
-                fireMsg('0', 'Invitation not sent !');
+                fireMsg('0', 'Invitation sending fail');
         });
 };
 
@@ -342,7 +342,7 @@ $scope.invite = function () {
                                         .error(function (data) {
                                             $rootScope.image = "styles/css/images/DiginLogo.png";
                                             $mdDialog.hide();
-                                            fireMsg('0', 'There was an error while uploading logo !');
+                                            fireMsg('0', 'There was an error while uploading logo.');
                                             $scope.preloader = false;
                                         });
                                 });                             
@@ -444,12 +444,12 @@ $scope.invite = function () {
 
         //Validate group name
         if($scope.isValidGroupName1()==false){
-            fireMsg('0', 'User group can not be empty..!');
+            fireMsg('0', 'User group name can not be empty.');
             return;
         };
 
         if($scope.isValidGroupName2()==false){
-            fireMsg('0', 'This user group is already created...!');
+            fireMsg('0', 'This user group is already created.');
             return;
         };
 
@@ -476,7 +476,7 @@ $scope.invite = function () {
             $rootScope.sharableGroupsDtls.push($scope.grpDtl);
             ngToast.create({
                 className: 'success',
-                content: 'User group creates Successfully...!',
+                content: 'User group created successfully.',
                 horizontalPosition: 'center',
                 verticalPosition: 'top',
                 dismissOnClick: true
@@ -506,7 +506,7 @@ $scope.invite = function () {
                     $rootScope.sharableGroupsDtls.splice(index, 1);
                     ngToast.create({
                         className: 'success',
-                        content: 'User group deleted Successfully...!',
+                        content: 'User group deleted successfully.',
                         horizontalPosition: 'center',
                         verticalPosition: 'top',
                         dismissOnClick: true
@@ -542,7 +542,7 @@ $scope.invite = function () {
                 })
                 .error(function (error) {
                     //alert("Fail...!");
-                    fireMsg('1', 'Deletion fail..., Please try again !');
+                    fireMsg('1', 'Deletion fail, please try again !');
                 });
 
         }, function () {
@@ -723,7 +723,7 @@ $scope.invite = function () {
                                 console.log($rootScope.sharableGroupsDtls);
 
 
-                                 fireMsg('1', 'User/s added successfully !');
+                                 fireMsg('1', 'User/s added successfully.');
                                  $mdDialog.hide();
 
 
@@ -772,7 +772,7 @@ $scope.invite = function () {
     $scope.updateSettings = function () {
 
         if ($scope.cacheLifetime == undefined) {
-            fireMsg('0', 'Invalid cache lifetime settings!');
+            fireMsg('0', 'Invalid cache lifetime settings.');
             return;
         }
         else if ($scope.noOfWidget == undefined) {
@@ -780,11 +780,11 @@ $scope.invite = function () {
             return;
         }
         else if ($scope.reqLimit == undefined) {
-            fireMsg('0', 'Invalid request limit settings!');
+            fireMsg('0', 'Invalid request limit settings.');
             return;
         }
         else if ($scope.cacheLifetime <= 0) {
-            fireMsg('0', 'Invalid cache lifetime settings!');
+            fireMsg('0', 'Invalid cache lifetime settings.');
             return;
         }
         else {
@@ -798,14 +798,13 @@ $scope.invite = function () {
         var components; var userRole; var cacheLifetime; var widgetLimit; var themeConfig; var queryLimit;
         if($rootScope.userSettings.components==undefined) {components=0;} else {components=$rootScope.userSettings.components}
         if($rootScope.userSettings.user_role==undefined) {userRole="";} else {userRole=$rootScope.userSettings.user_role}
-        if($rootScope.userSettings.cache_lifetime==undefined) {cacheLifetime=0;} else {cacheLifetime=$rootScope.userSettings.cache_lifetime}
-        if($rootScope.userSettings.widget_limit==undefined) {widgetLimit=0;} else {widgetLimit=$rootScope.userSettings.widget_limit}
-        if($rootScope.userSettings.query_limit==undefined) {queryLimit=0;} else {queryLimit=$rootScope.userSettings.query_limit}
+        if($scope.cacheLifetime==undefined) {cacheLifetime=0;} else {cacheLifetime=parseInt($scope.cacheLifetime)}
+        if($scope.noOfWidget==undefined) {widgetLimit=0;} else {widgetLimit=parseInt($scope.noOfWidget)}
+        if($scope.reqLimit==undefined) {queryLimit=0;} else {queryLimit=parseInt($scope.reqLimit)}
         if($rootScope.userSettings.dp_path==undefined) {dp_name="";} else {dp_name=$rootScope.userSettings.dp_path.split("/").pop();}
         if($rootScope.userSettings.logo_path==undefined) {logo_name="";} else {logo_name=$rootScope.userSettings.logo_path.split("/").pop();}
         if($rootScope.userSettings.theme_config==undefined) {themeConfig="";} else {themeConfig=$rootScope.userSettings.theme_config}     
-             
-
+        
         //#store to user settings---------------------
         $scope.settings = {
             "email": userInfo.Email,
@@ -833,15 +832,26 @@ $scope.invite = function () {
         })
             .success(function (response) {
                 //alert("Success...!");
-                fireMsg('1', 'User settings saved Successfully !');
+                fireMsg('1', 'User settings saved successfully.');
             })
             .error(function (error) {
-                fireMsg('0', 'Please re-check the settings !');
+                fireMsg('0', 'Please re-check the settings.');
             });
     };
 
+    //#View sittings detail
+        $scope.viewSettings=function(){
+        if($rootScope.userSettings==undefined)
+        {
+        }
+        else{
+            $scope.cacheLifetime=$rootScope.userSettings.cache_lifetime;
+            $scope.noOfWidget=$rootScope.userSettings.widget_limit;
+            $scope.reqLimit=$rootScope.userSettings.query_limit;
+        }
+    };
 
-//Clear cache
+    //#Clear cache
     $scope.clearCache = function () {
         var confirm = $mdDialog.confirm()
             .title('Do you want to clear cache ?')
@@ -859,7 +869,7 @@ $scope.invite = function () {
 
             $http({
                 method: 'POST',
-                url: Digin_LogoUploader + 'clear_cache',
+                url: Digin_Engine_API + 'clear_cache',
                 headers: {
                     'Content-Type': 'Content-Type:application/json',
                     'SecurityToken': userInfo.SecurityToken,
@@ -867,10 +877,10 @@ $scope.invite = function () {
                 }
             })
                 .success(function (response) {
-                    fireMsg('1', 'Cache Cleared Successfully !');
+                    fireMsg('1', 'Cache cleared successfully.');
                 })
                 .error(function (error) {
-                    fireMsg('0', 'Please select the cache clear option !');
+                    fireMsg('0', 'Please select the cache clear option');
                 });
         }, function () {
 
@@ -916,7 +926,7 @@ $scope.invite = function () {
               
                 $scope.error.isLoading = false;
                 $mdDialog.hide();
-                fireMsg('1', 'User profile created successfully and, sent email for account verification!');  
+                fireMsg('1', 'User profile created successfully and, sent email for account verification.');  
                 $scope.frmNewUser.$setUntouched();
                 $scope.fname = '';
                 $scope.lname = '';
@@ -924,7 +934,7 @@ $scope.invite = function () {
             }).error(function (data) {
                 $scope.error.isLoading = false; 
                 $mdDialog.hide();       
-                fireMsg('0', 'Registration process failed...');
+                fireMsg('0', 'Registration process failed.');
             });
         };
        
@@ -932,7 +942,7 @@ $scope.invite = function () {
         $scope.CreateUser = function () {
             //validation
             if ($scope.fname == '' || angular.isUndefined($scope.fname)) {
-                fireMsg  ('0', '</strong>First name is required..');
+                fireMsg  ('0', '</strong>First name is required.');
                 focus('$scope.fname');
                 return;
              } //else if ($scope.lname == '' || angular.isUndefined($scope.lname)) {
@@ -941,12 +951,12 @@ $scope.invite = function () {
             //     return;
             // }
             else if ($scope.email == '' || angular.isUndefined($scope.email)) {
-                fireMsg('0', '</strong>Email address is required..');
+                fireMsg('0', '</strong>Email address is required.');
                 focus('$scope.email');
                 return;
             }
             else if (!$scope.validateEmail($scope.email)) {
-                fireMsg('0', '</strong>Invalid email address...');
+                fireMsg('0', '</strong>Invalid email address.');
                 focus('$scope.email');
                 return;
             } 
@@ -958,10 +968,10 @@ $scope.invite = function () {
                         $scope.registerUser(); 
                     }
                     else{
-                        fireMsg('0', '</strong>This user email already exist...!');
+                        fireMsg('0', '</strong>This user email address already exist.');
                     }   
                 }).error(function(error){   
-                    fireMsg('0', '<strong>Error : </strong>Please try again...!');
+                    fireMsg('0', '</strong>Please try again.');
                 });  
                 
                 
@@ -979,10 +989,31 @@ $scope.invite = function () {
         $("#addNewUserGroup").animate({left: '-100%'});
     };
 
+    //#User Profile settings - data validation
+    $scope.updateProfile=function(){
+        if ($scope.address == '' || angular.isUndefined($scope.address)) {
+            fireMsg  ('0', '</strong>Billing address is required.');
+            focus('$scope.address');
+            return;
+        } 
+        else if ($scope.name == '' || angular.isUndefined($scope.name)) {
+            fireMsg  ('0', '</strong>Name is required.');
+            focus('$scope.name');
+            return;
+        } 
+        else if ($scope.phoneNo == '' || angular.isUndefined($scope.phoneNo)) {
+            fireMsg  ('0', '</strong>Contact number is required.');
+            focus('$scope.phoneNo');
+            return;
+        } 
+        else{
+             $scope.updateProfileData();
+        }
+    };
 
-    //#User Profile settings
-    $scope.updateProfile= function () {
 
+    //#Update User Profile settings
+    $scope.updateProfileData= function () {
             var fullname = $scope.fname + " " + $scope.lname;
             var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
@@ -1013,12 +1044,13 @@ $scope.invite = function () {
                 console.log(data);
  
                 if(data.IsSuccess==false){
-                    fireMsg('0', 'Fail to update user profile!');
+                    fireMsg('0', 'Fail to update user profile.');
                 }
                 else
                 {
-                    fireMsg('1', 'User profile updated successfully !');
-                     $scope.viewUserProfile();
+                    fireMsg('1', 'User profile updated successfully.');
+                    $scope.frmProfile.$setUntouched();
+                    $scope.viewUserProfile();
                 }
                 
             }).error(function (data) {
@@ -1086,7 +1118,7 @@ $scope.invite = function () {
 
     $scope.saveImage = function () {
         if($rootScope.file==undefined){
-            fireMsg('0', 'Please select profile picture to upload...!');
+            fireMsg('0', 'Please select profile picture to upload.');
         }
         else{
             $scope.upload($rootScope.file);
@@ -1095,6 +1127,14 @@ $scope.invite = function () {
         }
            
     };
+
+    $scope.cancelImage = function () {
+        $scope.selectProfile=true;
+        $scope.selectImage=false;       
+    };
+
+
+    
 
 
     //#Function to save profile image
@@ -1162,7 +1202,7 @@ $scope.invite = function () {
                             $rootScope.profile_pic = logoPath + data.Result.dp_path;
                             $scope.getURL();
                             $mdDialog.hide();
-                            fireMsg('1', 'Profile picture uploaded successfully!');
+                            fireMsg('1', 'Profile picture uploaded successfully.');
                         });
                 })
                 .error(function (data) {
@@ -1233,19 +1273,19 @@ $scope.invite = function () {
 
         $scope.validate=function(){
             if($scope.newPassword!=$scope.confirmPassword){
-                fireMsg('0', 'Password do not match, Please reenter...!');
+                fireMsg('0', 'Password do not match, Please reenter.');
                 return false;
             }
             else if($scope.newPassword==undefined){
-                fireMsg('0', 'New password can not be a blank...!');
+                fireMsg('0', 'New password can not be a blank.');
                 return false;
             }
             else if($scope.oldPassword==undefined){
-                fireMsg('0', 'Old password can not be a blank...!');
+                fireMsg('0', 'Old password can not be a blank.');
                 return false;
             }
             else if($scope.confirmPassword==undefined){
-                fireMsg('0', 'Confirmed password can not be a blank...!');
+                fireMsg('0', 'Confirmed password can not be a blank.');
                 return false;
             }
             return true;
@@ -1262,7 +1302,7 @@ $scope.invite = function () {
                     }
                     else{
                         console.log(response);
-                        fireMsg('1', "Password changed successfully...!");
+                        fireMsg('1', "Password changed successfully.");
                         $mdDialog.hide();
                     }
       

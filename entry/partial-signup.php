@@ -171,13 +171,14 @@
 
                                             <div class="login-help">
                                                 <div class="remember-me">
-                                                    <input id="chkTerms" type="checkbox"/>
-                                                    By clicking sign up you agree to the
+                                                    <input id="chkTerms" type="checkbox" ng-model="signUpUsr.agreed" name="agreed" required/>
+                                                    I have read and accept
                                                     <a href="javascript:void(0);"
                                                        ng-click="goToTermCondition(true)"
-                                                    >terms and condition</a>
+                                                    >the terms and conditions.</a> 
                                                 </div>
                                             </div>
+
 
                                             <!-- captcha -->
                                             <div class="captcha-box p-t-20">

@@ -1,5 +1,7 @@
 routerApp.service('ProfileService',function(){
 
+
+		
 		this.UserDataArr = {
 
 			Name:"",

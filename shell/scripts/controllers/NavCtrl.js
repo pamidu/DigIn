@@ -97,6 +97,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         // }
         // else{
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+        var res = userInfo.Username.replace("@", "_");
+        var NameSpace = res.replace(".", "_");
+
         var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
         //console.log(logPath);
 
@@ -107,6 +110,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 //$rootScope.myCroppedImage = logoPath + data.Result.dp_path;
                 $rootScope.profile_pic=data.Result.dp_path;
                 $rootScope.userSettings=data.Result;
+                ProfileService.UserDataArr.BannerPicture = 'http://'+NameSpace+'.'+'prod.digin.io'+data.Result.dp_path;
                 //$rootScope.image = "http://192.168.2.33/user_data/9c42d3c4661182ca872b3b6878aa0429/logos/hnb.png";
                 //$scope.imageUrl = "styles/css/images/DiginLogo.png";
                 

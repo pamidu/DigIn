@@ -35,6 +35,8 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         "icon": "styles/css/images/setting/user100x100.png"
     }];
 
+
+    
     
     //*Settings routing ---------------- 
     var slide = false;
@@ -287,29 +289,32 @@ $scope.invite = function () {
                                     //#chk undefined values
                                     var dp_name="";
                                     var logo_name="";
-                                    if($rootScope.userSettings.components==undefined) {$rootScope.userSettings.components=""}
-                                    if($rootScope.userSettings.user_role==undefined) {$rootScope.userSettings.user_role=""}
-                                    if($rootScope.userSettings.cache_lifetime==undefined) {$rootScope.userSettings.cache_lifetime=""}
-                                    if($rootScope.userSettings.widget_limit==undefined) {$rootScope.userSettings.widget_limit=""}
-                                    if($rootScope.userSettings.dp_path==undefined) {$rootScope.userSettings.dp_path=""} else {dp_name=$rootScope.userSettings.dp_path.split("/").pop();}
-                                    if($rootScope.userSettings.logo_path==undefined) {$rootScope.userSettings.logo_path=""} else {logo_name=$rootScope.userSettings.logo_path.split("/").pop();}
-                                    if($rootScope.userSettings.theme_config==undefined) {$rootScope.userSettings.theme_config=""}    
-                                      
-                                    //#store to user settings----------------------                                   
+                                    var components; var userRole; var cacheLifetime; var widgetLimit; var themeConfig; var queryLimit;
+                                    if($rootScope.userSettings.components==undefined) {components=0;} else {components=$rootScope.userSettings.components}
+                                    if($rootScope.userSettings.user_role==undefined) {userRole="";} else {userRole=$rootScope.userSettings.user_role}
+                                    if($rootScope.userSettings.cache_lifetime==undefined) {cacheLifetime=0;} else {cacheLifetime=$rootScope.userSettings.cache_lifetime}
+                                    if($rootScope.userSettings.widget_limit==undefined) {widgetLimit=0;} else {widgetLimit=$rootScope.userSettings.widget_limit}
+                                    if($rootScope.userSettings.query_limit==undefined) {queryLimit=0;} else {queryLimit=$rootScope.userSettings.query_limit}
+                                    if($rootScope.userSettings.dp_path==undefined) {dp_name="";} else {dp_name=$rootScope.userSettings.dp_path.split("/").pop();}
+                                    if($rootScope.userSettings.logo_path==undefined) {logo_name="";} else {logo_name=$rootScope.userSettings.logo_path.split("/").pop();}
+                                    if($rootScope.userSettings.theme_config==undefined) {themeConfig="";} else {themeConfig=$rootScope.userSettings.theme_config}     
+                                         
+
+                                    //#store to user settings---------------------
                                     $scope.settings = {
                                         "email": userInfo.Email,
-                                        "components": $rootScope.userSettings.components,
-                                        "user_role": $rootScope.userSettings.user_role,
-                                        "cache_lifetime": $rootScope.userSettings.cache_lifetime,
-                                        "widget_limit": $rootScope.userSettings.widget_limit,
-                                        "query_limit": $rootScope.userSettings.query_limit,
+                                        "components": components,
+                                        "user_role":userRole,
+                                        "cache_lifetime":cacheLifetime,
+                                        "widget_limit": widgetLimit,
+                                        "query_limit": queryLimit,
                                         "logo_name": filename,
                                         "dp_name" : dp_name,
-                                        "theme_config": $rootScope.userSettings.theme_config
+                                        "theme_config": themeConfig
                                         // "SecurityToken": userInfo.SecurityToken,
                                         // "Domain": Digin_Domain
                                     }
-
+                                
                                     $http({
                                         method: 'POST',
                                         url: Digin_Engine_API + 'store_user_settings/',
@@ -327,6 +332,8 @@ $scope.invite = function () {
                                                     $rootScope.userSettings=data.Result;
                                                     var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
                                                     $rootScope.image = logoPath + data.Result.logo_path;
+                                                    $scope.image=logoPath + data.Result.logo_path;
+                                                    $rootScope.imageUrl = logoPath + data.Result.logo_path;                                             
                                                     $scope.preloader = false;
                                                     $mdDialog.hide();
                                                     fireMsg('1', 'Logo Successfully uploaded!');
@@ -338,8 +345,8 @@ $scope.invite = function () {
                                             fireMsg('0', 'There was an error while uploading logo !');
                                             $scope.preloader = false;
                                         });
-                                });
-                            //}
+                                });                             
+                            //}     
                         }
                     };
                 },
@@ -348,8 +355,10 @@ $scope.invite = function () {
                 clickOutsideToClose: true,
             })
             .then(function (answer) {
-                $scope.getURL();
+                //$scope.getURL();
             });
+            
+            
     };
 
 
@@ -782,34 +791,36 @@ $scope.invite = function () {
         }
 
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
-
+        
         //#chk undefined values
         var dp_name="";
         var logo_name="";
-        if($rootScope.userSettings.components==undefined) {$rootScope.userSettings.components=""}
-        if($rootScope.userSettings.user_role==undefined) {$rootScope.userSettings.user_role=""}
-        if($rootScope.userSettings.cache_lifetime==undefined) {$rootScope.userSettings.cache_lifetime=""}
-        if($rootScope.userSettings.widget_limit==undefined) {$rootScope.userSettings.widget_limit=""}
-        if($rootScope.userSettings.dp_path==undefined) {$rootScope.userSettings.dp_path=""} else {dp_name=$rootScope.userSettings.dp_path.split("/").pop();}
-        if($rootScope.userSettings.logo_path==undefined) {$rootScope.userSettings.logo_path=""} else {logo_name=$rootScope.userSettings.logo_path.split("/").pop();}
-        if($rootScope.userSettings.theme_config==undefined) {$rootScope.userSettings.theme_config=""}    
-                                      
+        var components; var userRole; var cacheLifetime; var widgetLimit; var themeConfig; var queryLimit;
+        if($rootScope.userSettings.components==undefined) {components=0;} else {components=$rootScope.userSettings.components}
+        if($rootScope.userSettings.user_role==undefined) {userRole="";} else {userRole=$rootScope.userSettings.user_role}
+        if($rootScope.userSettings.cache_lifetime==undefined) {cacheLifetime=0;} else {cacheLifetime=$rootScope.userSettings.cache_lifetime}
+        if($rootScope.userSettings.widget_limit==undefined) {widgetLimit=0;} else {widgetLimit=$rootScope.userSettings.widget_limit}
+        if($rootScope.userSettings.query_limit==undefined) {queryLimit=0;} else {queryLimit=$rootScope.userSettings.query_limit}
+        if($rootScope.userSettings.dp_path==undefined) {dp_name="";} else {dp_name=$rootScope.userSettings.dp_path.split("/").pop();}
+        if($rootScope.userSettings.logo_path==undefined) {logo_name="";} else {logo_name=$rootScope.userSettings.logo_path.split("/").pop();}
+        if($rootScope.userSettings.theme_config==undefined) {themeConfig="";} else {themeConfig=$rootScope.userSettings.theme_config}     
+             
 
+        //#store to user settings---------------------
         $scope.settings = {
-            //"user_id": userInfo.UserID,
             "email": userInfo.Email,
-            "components": $rootScope.userSettings.components,
-            "user_role": $rootScope.userSettings.user_role,
-            "cache_lifetime": $scope.cacheLifetime,
-            "widget_limit": $scope.noOfWidget,
-            "query_limit": $scope.reqLimit,
+            "components": components,
+            "user_role":userRole,
+            "cache_lifetime":cacheLifetime,
+            "widget_limit": widgetLimit,
+            "query_limit": queryLimit,
             "logo_name": logo_name,
             "dp_name" : dp_name,
-            "theme_config": $rootScope.userSettings.theme_config,
+            "theme_config": themeConfig
             // "SecurityToken": userInfo.SecurityToken,
-            // "Domain": userInfo.Domain
+            // "Domain": Digin_Domain
         }
-
+    
         $http({
             method: 'POST',
             url: Digin_Engine_API + 'store_user_settings/',
@@ -1105,26 +1116,28 @@ $scope.invite = function () {
             //#chk undefined values
             var dp_name="";
             var logo_name="";
-            if($rootScope.userSettings.components==undefined) {$rootScope.userSettings.components=""}
-            if($rootScope.userSettings.user_role==undefined) {$rootScope.userSettings.user_role=""}
-            if($rootScope.userSettings.cache_lifetime==undefined) {$rootScope.userSettings.cache_lifetime=""}
-            if($rootScope.userSettings.widget_limit==undefined) {$rootScope.userSettings.widget_limit=""}
-            if($rootScope.userSettings.dp_path==undefined) {$rootScope.userSettings.dp_path=""} else {dp_name=$rootScope.userSettings.dp_path.split("/").pop();}
-            if($rootScope.userSettings.logo_path==undefined) {$rootScope.userSettings.logo_path=""} else {logo_name=$rootScope.userSettings.logo_path.split("/").pop();}
-            if($rootScope.userSettings.theme_config==undefined) {$rootScope.userSettings.theme_config=""}    
+            var components; var userRole; var cacheLifetime; var widgetLimit; var themeConfig; var queryLimit;
+            if($rootScope.userSettings.components==undefined) {components=0;} else {components=$rootScope.userSettings.components}
+            if($rootScope.userSettings.user_role==undefined) {userRole="";} else {userRole=$rootScope.userSettings.user_role}
+            if($rootScope.userSettings.cache_lifetime==undefined) {cacheLifetime=0;} else {cacheLifetime=$rootScope.userSettings.cache_lifetime}
+            if($rootScope.userSettings.widget_limit==undefined) {widgetLimit=0;} else {widgetLimit=$rootScope.userSettings.widget_limit}
+            if($rootScope.userSettings.query_limit==undefined) {queryLimit=0;} else {queryLimit=$rootScope.userSettings.query_limit}
+            if($rootScope.userSettings.dp_path==undefined) {dp_name="";} else {dp_name=$rootScope.userSettings.dp_path.split("/").pop();}
+            if($rootScope.userSettings.logo_path==undefined) {logo_name="";} else {logo_name=$rootScope.userSettings.logo_path.split("/").pop();}
+            if($rootScope.userSettings.theme_config==undefined) {themeConfig="";} else {themeConfig=$rootScope.userSettings.theme_config}     
                  
 
             //#store to user settings---------------------
             $scope.settings = {
                 "email": userInfo.Email,
-                "components": $rootScope.userSettings.components,
-                "user_role":$rootScope.userSettings.user_role,
-                "cache_lifetime":$rootScope.userSettings.cache_lifetime,
-                "widget_limit": $rootScope.userSettings.widget_limit,
-                "query_limit": $rootScope.userSettings.query_limit,
+                "components": components,
+                "user_role":userRole,
+                "cache_lifetime":cacheLifetime,
+                "widget_limit": widgetLimit,
+                "query_limit": queryLimit,
                 "logo_name": logo_name,
                 "dp_name" : file.name,
-                "theme_config": $rootScope.userSettings.theme_config
+                "theme_config": themeConfig
                 // "SecurityToken": userInfo.SecurityToken,
                 // "Domain": Digin_Domain
             }
@@ -1147,6 +1160,7 @@ $scope.invite = function () {
                             var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
                             $scope.profile_pic = logoPath + data.Result.dp_path;
                             $rootScope.profile_pic = logoPath + data.Result.dp_path;
+                            $scope.getURL();
                             $mdDialog.hide();
                             fireMsg('1', 'Profile picture uploaded successfully!');
                         });

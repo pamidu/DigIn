@@ -179,8 +179,10 @@
 <script type="text/javascript" src="bower_components/anuglar-drag-drop/drag/dragdrop.js"></script>
 <script type="text/javascript" src="bower_components/anuglar-drag-drop/ngDraggable.js"></script>
 <script type="text/javascript" src="bower_components/anuglar-drag-drop/ui-sortable-angular.js"></script>
-<script type="text/javascript" src="scripts/vendor/fullcalendar.js"></script>
 <script type="text/javascript" src="scripts/directives/calendar.js"></script>
+<script type="text/javascript" src="scripts/vendor/fullcalendar.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.0/gcal.js"></script>
+
 <!-- filesaver -->
 <script type="text/javascript"
         src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/98887/angular-fullscreen.js"></script>

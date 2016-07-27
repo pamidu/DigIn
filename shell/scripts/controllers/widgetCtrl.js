@@ -2197,6 +2197,7 @@ routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widgetID', '$
              
                 $scope.diginLogo = 'digin-logo-wrapper2';
                 $scope.showFinishButton = true;
+                $mdDialog.hide();
             })
             .error(function(err) {
               
@@ -2291,8 +2292,10 @@ routerApp.controller('calendarInit',['widgetID', '$scope', '$http', '$rootScope'
     var m = date.getMonth();
     var y = date.getFullYear();
 
+    $scope.events=[];
     $scope.uiConfig = {
         calendar: {
+            height: 550,
             editable: true,
             header: {
                 left: 'title',
@@ -2303,8 +2306,7 @@ routerApp.controller('calendarInit',['widgetID', '$scope', '$http', '$rootScope'
             eventRender: $scope.eventRender
         }
     };
-    $scope.events = [];
-    $rootScope.dashboard.pages[selectedPage-1].widgets[objIndex].widgetData.widData = [];
+    $rootScope.dashboard.pages[selectedPage-1].widgets[objIndex].widgetData.widData = $scope.events;
 
     /* alert on eventClick */
     $scope.alertOnEventClick = function(date, jsEvent, view) {

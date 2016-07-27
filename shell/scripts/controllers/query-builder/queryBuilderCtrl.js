@@ -877,7 +877,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         chartTypeTrue = false;
                         break;
                 }
-
+                        
+                $scope.selectedChart = onSelect;
+                eval("$scope." + $scope.selectedChart.chartType + ".changeType()");
+                //privateFun.createHighchartsChart(onSelect.chart);
 
                 var seriesArr = $scope.executeQryData.executeMeasures;
 
@@ -913,9 +916,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             $scope.executeQryData.executeColumns = [];
                             $scope.executeQryData.executeMeasures = [];
                         }
-                        $scope.selectedChart = onSelect;
-                        eval("$scope." + $scope.selectedChart.chartType + ".changeType()");
-                        //privateFun.createHighchartsChart(onSelect.chart);
                 }
             },
 

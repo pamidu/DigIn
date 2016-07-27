@@ -10,22 +10,22 @@ text {
 }
 /*add tooltip*/
 
-div.tooltip {
-    /*position: absolute;*/
+.tooltip {
+    position: absolute;
     /*            top: 200px;*/
     
-    left: 20%;
+    /*left: 20%;*/
     -moz-border-radius: 5px;
-    border-radius: 5px;
-    border: 2px solid #9E9E9E;
-    background: #fff;
+    border-radius: 3px;
+    border: 1px solid #9E9E9E;
+    background: rgba(249, 249, 249, .85);
     opacity: .9;
     color: black;
-    padding: 10px;
-    width: 400px;
+    padding: 8px;
+    /*width: 400px;*/
     font: 12px sans-serif;
-    font-size: 14px;
-    /*            z-index: 10;*/
+    font-size: 12px;
+    z-index: 10;
 }
 
 .tooltip .title {
@@ -51,8 +51,8 @@ div.tooltip {
     </div>
     <canvas id="canvas"  width="1000px" height="600px" style="display:none"></canvas>
     <div id="d3Sunburst" style="height:100vh;width:100%;" layout="column" layout-align='center center'>
-        <div id="SunBurstToolTip"></div>
         <sunburst-chart chart-data="hierarData"/>
+        <!-- <div id="SunBurstToolTip"></div> -->
     </div>
 </div>
 

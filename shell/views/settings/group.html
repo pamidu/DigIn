@@ -7,98 +7,100 @@
 </div>
 
 <div class="md-padding animated fadeIn" layout="row" layout-align="center center">
-    <div class="setting-wrap group-wrap"
-         flex="50">
-        <!-- create new user -->
-        <div id="addNewUserGroup" class="col-lg-12 new-user-group">
-
-            <div class="row">
-                <div class="col-lg-6 pull-left">
-                    <h3 class="setting-header">Add new user group</h3>
+    <div class="setting-wrap group-wrap" flex="50">
+        <!-- create new user group -->
+            <div id="addNewUserGroup" class="col-lg-12 new-user-group">
+                <div class="row">
+                    <div class="col-lg-6 pull-left">
+                        <h3 class="setting-header">Add new user group</h3>
+                    </div>
+                    <div class="col-lg-6">
+                        <md-button style="margin-top: 15px;" ng-click="addNewGroupClose()"
+                                   class="md-raised md-primary pull-right">Close
+                        </md-button>
+                    </div>
                 </div>
-                <div class="col-lg-6">
-                    <md-button style="margin-top: 15px;" ng-click="addNewGroupClose()"
-                               class="md-raised md-primary pull-right">Close
-                    </md-button>
+
+
+                <md-input-container flex>
+                    <label>Group Name</label>
+                    <input ng-model="groupName" name="grpName">
+                </md-input-container>
+                <md-chips ng-model="ContactChip" md-autocomplete-snap md-require-match="true">
+                    <md-autocomplete
+                            md-selected-item="selectedItem"
+                            md-search-text="searchText"
+                            md-items="item in querySearch(searchText)"
+                            md-item-text="item.Name"
+                            placeholder="Select users for group">
+                        <span md-highlight-text="searchText">{{item.Name}}</span>
+                    </md-autocomplete>
+                    <md-chip-template style="background: #037281; font-size:16px">
+                <span>
+                <strong>{{$chip.Name}}</strong>
+                </span>
+                    </md-chip-template>
+                </md-chips>
+                <div layout="row" class="p-t-30">
+                    <md-button ng-click="createGroup()" class="md-raised md-primary">Create group</md-button>
                 </div>
             </div>
 
+        
+        
+        <!-- View user groups -->
+        <div id="viewUserGroup" class="col-lg-12 view-user-group">
+            <div class="col-lg-12 view-user-group">
+                <div class="row">
+                    <div class="col-lg-6 pull-left">
+                        <h3 class="setting-header">User group</h3>
+                    </div>
+                    <div class="col-lg-6">
+                        <md-button style="margin-top: 15px;" ng-click="addNewGroup()"
+                                   class="md-raised md-primary pull-right">Add new
+                        </md-button>
+                    </div>
+                </div>
+            </div>
 
-            <md-input-container flex>
-                <label>Group Name</label>
-                <input ng-model="groupName" name="grpName">
-            </md-input-container>
-            <md-chips ng-model="ContactChip" md-autocomplete-snap md-require-match="true">
-                <md-autocomplete
-                        md-selected-item="selectedItem"
-                        md-search-text="searchText"
-                        md-items="item in querySearch(searchText)"
-                        md-item-text="item.Name"
-                        placeholder="Select users for group">
-                    <span md-highlight-text="searchText">{{item.Name}}</span>
-                </md-autocomplete>
-                <md-chip-template style="background: #037281; font-size:16px">
-            <span>
-            <strong>{{$chip.Name}}</strong>
-            </span>
-                </md-chip-template>
-            </md-chips>
-            <div layout="row" class="p-t-30">
-                <md-button ng-click="createGroup()" class="md-raised md-primary">Create group</md-button>
+            <div style='overflow:auto; width:550px;height:420px;'>
+                <md-content class="user-group-wrapper">
+                    <md-list-item ng-repeat="sharableGroupsDtl in sharableGroupsDtls">
+                        <table>
+                            <tr>
+                                <td>
+                                    <ng-md-icon icon="group" style="fill:blue" size="24"></ng-md-icon>
+                                </td>
+                                <td>
+                                    <div flex="70">
+                                        {{ sharableGroupsDtl.groupname }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div ng-click="deleteGroup(sharableGroupsDtl.groupId,$index)">
+                                        <ng-md-icon icon="delete" style="fill:blue" size="24"></ng-md-icon>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div ng-click="loadAddUsersWindow(sharableGroupsDtl.groupId,sharableGroupsDtl.groupname,sharableGroupsDtl.users,sharableUsers)">
+                                        <ng-md-icon icon="person_add" style="fill:blue" size="24"></ng-md-icon>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div ng-repeat="user in sharableGroupsDtl.users"
+                                         layout="row">
+                                        <div style="width:200px;">{{user.Name}}</div>
+                                        <div ng-click="deleteUserFromGroup(sharableGroupsDtl.groupId,user)">X</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </md-list-item>
+                </md-content>
             </div>
         </div>
-
-        <!-- user group -->
-        <div class="col-lg-12 view-user-group">
-            <div class="row">
-                <div class="col-lg-6 pull-left">
-                    <h3 class="setting-header">User group</h3>
-                </div>
-                <div class="col-lg-6">
-                    <md-button style="margin-top: 15px;" ng-click="addNewGroup()"
-                               class="md-raised md-primary pull-right">Add new
-                    </md-button>
-                </div>
-            </div>
-        </div>
-
-
-        <md-content class="user-group-wrapper">
-            <md-list-item ng-repeat="sharableGroupsDtl in sharableGroupsDtls">
-                <table>
-                    <tr>
-                        <td>
-                            <ng-md-icon icon="group" style="fill:blue" size="24"></ng-md-icon>
-                        </td>
-                        <td>
-                            <div flex="70">
-                                {{ sharableGroupsDtl.groupname }}
-                            </div>
-                        </td>
-                        <td>
-                            <div ng-click="deleteGroup(sharableGroupsDtl.groupId,$index)">
-                                <ng-md-icon icon="delete" style="fill:blue" size="24"></ng-md-icon>
-                            </div>
-                        </td>
-                        <td>
-                            <div ng-click="loadAddUsersWindow(sharableGroupsDtl.groupId,sharableGroupsDtl.groupname,sharableGroupsDtl.users,sharableUsers)">
-                                <ng-md-icon icon="person_add" style="fill:blue" size="24"></ng-md-icon>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <div ng-repeat="user in sharableGroupsDtl.users"
-                                 layout="row">
-                                <div style="width:200px;">{{user.Name}}</div>
-                                <div ng-click="deleteUserFromGroup(sharableGroupsDtl.groupId,user)">X</div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </md-list-item>
-    </div>
-</div>
 </div>
 </div>
 

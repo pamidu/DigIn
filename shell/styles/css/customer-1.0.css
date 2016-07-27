@@ -4151,8 +4151,9 @@ md-tab-content > div {
 
 .img-circle {
     border-radius: 50%;
+    height: 150px;
+    width: 150px;
 }
-
 
 
 /*update Gevindu

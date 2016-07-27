@@ -290,6 +290,7 @@ routerApp
 
             //-----invite user - Signup-----------
             var email = ($location.search()).email;
+            var token = ($location.search()).code;
             $scope.freeze=false;
             if(email==undefined){
                 $scope.freeze=false;
@@ -355,6 +356,28 @@ routerApp
                         return re.test(email);
                     },
 
+
+                    acceptRequest:function(email,token){
+                        $http.get('/apis/usertenant/tenant/request/accept/' + email + '/' + token, {
+                            headers: {'Content-Type':'application/json'}
+                        })
+                        .success(function (response) {
+                            if (response.Success === true) {
+                                $mdDialog.hide();
+                                mainFun.fireMsg('1', 'You are succussfully registerd, please check your email for verification...!');
+                                mainFun.dataClear();
+                                window.location = "http://"+Digin_Domain+"/entry";
+                            }
+                            else
+                            {
+                                mainFun.fireMsg('0',response.Message);
+                            }
+                        }).error(function (error) {
+                            mainFun.fireMsg('0','Tenant invitation is not accepted successfully...!');
+                        });
+                    },
+
+
                     signUpUser: function () {
                         var fullname = signUpUsr.firstName + " " + signUpUsr.lastName;
                         $scope.user = {
@@ -384,20 +407,27 @@ routerApp
                             if (data.Success === false) {
                                 $mdDialog.hide();
                                 if(data.Message=="Already Registered."){
-                                    mainFun.fireMsg('0','This email address you entered is already registered, Please try again...!');
+                                    mainFun.fireMsg('0','This email address you entered is already registered, please try again...!');
                                 }else{
                                     mainFun.fireMsg('0',data.Message);
                                 }                               
                             }
-                            else {
-                                $mdDialog.hide();
-                                mainFun.fireMsg('1', 'You are succussfully registerd, Please check your email for verification...!');
-                                mainFun.dataClear();
+                            else { 
+                                // For invited users---------
+                                if($scope.freeze==true){
+                                    mainFun.acceptRequest(email,token);
+                                }
+                                else{
+                                    $mdDialog.hide();
+                                    mainFun.fireMsg('1', 'You are succussfully registerd, please check your email for verification...!');
+                                    mainFun.dataClear();
+                                    window.location = "http://www.digin.io";
+                                }
                             }
                         }).error(function (data, status) {
                             $scope.error.isLoading = false;
                             $mdDialog.hide();
-                            mainFun.fireMsg('0', 'Please Try again !!');
+                            mainFun.fireMsg('0', 'Please Try again...!');
                         });
                     },
                 }

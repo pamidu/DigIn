@@ -122,7 +122,7 @@
                                             <div ng-show="frmDiginSignUp.email.$invalid && !frmDiginSignUp.email.$pristine"
                                             class="ng-message" ng-messages="frmDiginSignUp.email.$error">
                                                 <div ng-message="required">*</div>
-                                                <div ng-message="pattern">Your email address is invalid</div>
+                                                <div ng-message="pattern">Invalid email address</div>
                                             </div>
                                         </div>
                                         
@@ -165,7 +165,7 @@
                                                 class="ng-message"
                                                      ng-show=" frmDiginSignUp.cnfrmPwd.$invalid
                                                      && !frmDiginSignUp.cnfrmPwd.$pristine"
-                                                > Password not match
+                                                > Password does not match
                                                 </div>
                                             </div>
 
@@ -211,7 +211,7 @@
         </div>
     </div>
     <div class="footer-wrap">
-        copyright 2016 digin.io - All Rights Reserved
+        Copyright 2016 digin.io - All Rights Reserved
     </div>
 
 </div>

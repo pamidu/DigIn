@@ -2114,6 +2114,7 @@ routerApp.controller('rssInit',['$scope', '$http', '$mdDialog', 'widgetID', '$ro
                     $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[ObjectIndex].widgetData.widData.feeds = result.feed.entries;
                     $scope.showFinishButton = true;
                     $scope.$apply();
+                    $mdDialog.hide();
                     
                 }
                 $scope.diginLogo = 'digin-logo-wrapper2';
@@ -2280,8 +2281,11 @@ routerApp.controller('adsenseInit',['widgetID', '$scope', '$http', '$rootScope',
 }]);
 
 routerApp.controller('calendarInit',['widgetID', '$scope', '$http', '$rootScope', '$mdDialog', '$compile', '$timeout', 'uiCalendarConfig',function (widgetID, $scope, $http, $rootScope, $mdDialog, $compile, $timeout, uiCalendarConfig) {
-    var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.widgets);
-           $scope.eventSources = [];
+    
+    var selectedPage = $rootScope.selectedPage;
+    var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.pages[selectedPage-1].widgets);
+   
+
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
@@ -2300,7 +2304,7 @@ routerApp.controller('calendarInit',['widgetID', '$scope', '$http', '$rootScope'
         }
     };
     $scope.events = [];
-    $rootScope.dashboard.widgets[objIndex].widData = [];
+    $rootScope.dashboard.pages[selectedPage-1].widgets[objIndex].widgetData.widData = [];
 
     /* alert on eventClick */
     $scope.alertOnEventClick = function(date, jsEvent, view) {
@@ -2341,7 +2345,8 @@ routerApp.controller('calendarInit',['widgetID', '$scope', '$http', '$rootScope'
 
     $scope.authorize = function() {
         var config = {
-            'client_id': '140016159778-94lb00ckgkkcghbcclae8dg36r16mm4t.apps.googleusercontent.com',
+            //'client_id': '140016159778-94lb00ckgkkcghbcclae8dg36r16mm4t.apps.googleusercontent.com',
+            'client_id': '1086483422092-87lkk72aa79svoais4g73f0qdcppv6d4.apps.googleusercontent.com',
             'scope': 'https://www.googleapis.com/auth/calendar'
         };
         gapi.auth.authorize(config, function() {
@@ -2370,7 +2375,6 @@ routerApp.controller('calendarInit',['widgetID', '$scope', '$http', '$rootScope'
 
         request.execute(function(resp) {
             var events = resp.items;
-
 
             var evObj = [];
             if (events.length > 0) {

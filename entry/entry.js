@@ -120,7 +120,7 @@ routerApp
                     else {
                         $mdDialog.hide();
                         if(data.Message=="Email Address is not varified."){
-                        mainFun.fireMsg('0', "This email address is not verified, Please verify your email...!");
+                        mainFun.fireMsg('0', "This email address is not verified, please verify your email.");
                         }else{
                             mainFun.fireMsg('0', data.Message);
                         }
@@ -168,11 +168,11 @@ routerApp
             //#load forgot password
             $scope.validateEmail=function(){
                 if($scope.email==undefined){
-                    mainFun.fireMsg('0', 'Email can not be a blank...!');
+                    mainFun.fireMsg('0', 'Email can not be a blank.');
                     return false;
                 }
                 else{
-                    displayProgress("Change password processing...")
+                    displayProgress("Change password processing.")
                     $scope.ChangePassword();
                 }
                 return true;
@@ -183,7 +183,7 @@ routerApp
                     .success(function(response){
                         if(response.Error){
                             $mdDialog.hide();
-                            mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address/ this email address not exist...!');
+                            mainFun.fireMsg('0', '</strong>Invalid email address/ this email address not exist.');
                             //displayError('Invalid email address/ this email address not exist...');
                             
                         }
@@ -203,7 +203,7 @@ routerApp
                     if(response.Success){
                         console.log(response);
                         $mdDialog.hide();
-                        mainFun.fireMsg('1', "succussfully reset your password, Please check your mail for new password...!");
+                        mainFun.fireMsg('1', "succussfully reset your password, please check your mail for new password.");
                         //displaySuccess('uccussfully reset your password, Please check your mail for new password...');
                         $scope.email='';
                         $state.go('signin');
@@ -364,7 +364,7 @@ routerApp
                         .success(function (response) {
                             if (response.Success === true) {
                                 $mdDialog.hide();
-                                mainFun.fireMsg('1', 'You are succussfully registerd, please check your email for verification...!');
+                                mainFun.fireMsg('1', 'You are succussfully registerd, please check your email for verification.');
                                 mainFun.dataClear();
                                 window.location = "http://"+Digin_Domain+"/entry";
                             }
@@ -373,7 +373,7 @@ routerApp
                                 mainFun.fireMsg('0',response.Message);
                             }
                         }).error(function (error) {
-                            mainFun.fireMsg('0','Tenant invitation is not accepted successfully...!');
+                            mainFun.fireMsg('0','Tenant invitation is not accepted successfully.');
                         });
                     },
 
@@ -444,13 +444,13 @@ routerApp
                     focus('firstName');
                     return;
                 } else if (signUpUsr.lastName == '' || angular.isUndefined(signUpUsr.lastName)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Last name is required..');
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Last name is required.');
                     $scope.error.isLastName = true;
                     focus('lastName');
                     return;
                 }
                 else if (signUpUsr.email == '' || angular.isUndefined(signUpUsr.email)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Email address is required..');
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Email address is required.');
                     $scope.error.isEmail = true;
                     focus('email');
                     return;
@@ -462,20 +462,27 @@ routerApp
                     return;
                 }
                 else if (signUpUsr.pwd == '' || angular.isUndefined(signUpUsr.pwd)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Password is required..');
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Password is required.');
                     $scope.error.isPassword = true;
                     focus('password');
                     return;
                 }
                 else if (signUpUsr.pwd != signUpUsr.cnfrPwd) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Password not match..');
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Password does not match.');
                     $scope.error.isPassword = true;
                     $scope.error.isRetypeCnfrm = true;
                     focus('cnfrmPwd');
                     return;
                 }
+                else if(!signUpUsr.agreed)
+                {
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Please read and accept the terms and conditions.');
+                    $scope.error.isagreed = true;
+                    focus('agreed');
+                    return;
+                }
                 else {
-                    displayProgress('User registration is processing...');
+                    displayProgress('User registration is processing.');
                     mainFun.signUpUser();
                     //return;
 

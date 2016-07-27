@@ -32,11 +32,17 @@
                 <md-button class="setup-button md-raised md-primary" ng-click="saveImage()">
                     <span class="setup-font-theme">Save Image</span>
                 </md-button>
+
+                <md-button class="setup-button md-raised md-primary" ng-click="cancelImage()">
+                    <span class="setup-font-theme">Cancel</span>
+                </md-button>    
+
             </div>
 
 
             <div ng-show="selectProfile">
                 <div class="user-setting-wrap" >  
+
                     <table width="100%">
                         <tr>
                             <td style="padding: 0px;"></td>
@@ -50,61 +56,88 @@
                                 </md-button>
                             </td>
                         </tr>  
-                        <tr> 
-                            <td width="50%" style="padding: 0px;"> 
-                                    <md-input-container>
-                                        <label>Email</label>
-                                        <input ng-model="email" readonly="true"> 
-                                    </md-input-container>
-                            </td>
-                            <td width="50%" style="padding: 0px;">        
-                                     <md-input-container>
-                                        <label>Name</label>
-                                        <input ng-model="name">
-                                    </md-input-container>
-                            </td>         
-                        </tr>
-                        <tr>    
-                            <td style="padding: 0px;">
-                                <md-input-container>
-                                    <label>Phone No</label>
-                                    <input ng-model="phoneNo">
-                                </md-input-container>
-                            </td>    
-                            <td style="padding: 0px;">    
-                                <md-input-container>
-                                    <label>Company</label>
-                                    <input ng-model="company">
-                                </md-input-container>
-                            </td>     
-                        </tr>
-                        <tr>   
-                            <td style="padding: 0px;">    
-                                <md-input-container>
-                                    <label>Country</label>
-                                    <input ng-model="country"> 
-                                </md-input-container>
-                            </td>
-                            <td style="padding: 0px;">    
-                                <md-input-container>
-                                    <label>Zip Code</label>
-                                    <input ng-model="zipCode"> 
-                                </md-input-container>      
-                            </td>   
-                        </tr>
-                        <tr>    
-                            <td colspan="2" style="padding: 0px;">    
-                                <md-input-container>
-                                    <label>Billing Address</label>
-                                    <input ng-model="address"> 
-                                </md-input-container>   
-                            <td>   
-                        </tr>    
-                    </table>        
+                    </table>    
 
-                    <md-button class="setup-button md-raised md-primary" ng-click="updateProfile()">
-                        <span class="setup-font-theme">UPDATE PROFILE</span>
-                    </md-button>
+
+                    <form name="frmProfile" autocomplete="off" ng-submit="updateProfile()" novalidate>
+                                            <table width="100%">
+                                                <!-- <tr>
+                                                    <td style="padding: 0px;"></td>
+                                                    <td align="right" style="padding: 0px;">
+                                                        <md-button class="setup-button md-raised md-primary" ng-click="selectProfileImg()">
+                                                            <span class="setup-font-theme">Set Profile Picture</span>
+                                                        </md-button>
+
+                                                        <md-button class="setup-button md-raised md-primary" ng-click="loadPasswordChangeWindow()">
+                                                            <span class="setup-font-theme">Change Password</span>
+                                                        </md-button>
+                                                    </td>
+                                                </tr>   -->
+                                                <tr> 
+                                                    <td width="50%" style="padding: 0px;"> 
+                                                            <md-input-container>
+                                                                <label>Email</label>
+                                                                <input ng-model="email" readonly="true"> 
+                                                            </md-input-container>
+                                                    </td>
+                                                    <td width="50%" style="padding: 0px;">        
+                                                             <md-input-container>
+                                                                <label>Name</label>
+                                                                <input ng-model="name" name="name" required focus-me="true">
+                                                                    <div ng-messages="frmProfile.name.$error" ng-if='frmProfile.name.$touched' role="alert">
+                                                                    <div ng-message="required">This is required.</div>
+                                                                </div>
+                                                            </md-input-container>
+
+
+                                                    </td>         
+                                                </tr>
+                                                <tr>    
+                                                    <td style="padding: 0px;">
+                                                        <md-input-container>
+                                                            <label>Contact No</label>
+                                                            <input type="number" ng-model="phoneNo" name="phoneNo" required>
+                                                                 <div ng-messages="frmProfile.phoneNo.$error" ng-if='frmProfile.phoneNo.$touched' role="alert">
+                                                                <div ng-message="required">This is required.</div>
+                                                        </md-input-container>
+                                                    </td>    
+                                                    <td style="padding: 0px;">    
+                                                        <md-input-container>
+                                                            <label>Company</label>
+                                                            <input ng-model="company">
+                                                        </md-input-container>
+                                                    </td>     
+                                                </tr>
+                                                <tr>   
+                                                    <td style="padding: 0px;">    
+                                                        <md-input-container>
+                                                            <label>Country</label>
+                                                            <input ng-model="country"> 
+                                                        </md-input-container>
+                                                    </td>
+                                                    <td style="padding: 0px;">    
+                                                        <md-input-container>
+                                                            <label>Zip Code</label>
+                                                            <input ng-model="zipCode"> 
+                                                        </md-input-container>      
+                                                    </td>   
+                                                </tr>
+                                                <tr>    
+                                                    <td colspan="2" style="padding: 0px;">    
+                                                        <md-input-container>
+                                                            <label>Billing Address</label>
+                                                            <input ng-model="address" name="address" required> 
+                                                            <div ng-messages="frmProfile.address.$error" ng-if='frmProfile.address.$touched' role="alert">
+                                                                <div ng-message="required">This is required.</div>
+                                                        </md-input-container>   
+                                                    <td>   
+                                                </tr>    
+                                            </table>        
+
+                            <md-button class="setup-button md-raised md-primary">  <!-- ng-click="updateProfile()" -->
+                                <span class="setup-font-theme">UPDATE PROFILE</span>
+                            </md-button>
+                    </form>        
 
 
                 </div>

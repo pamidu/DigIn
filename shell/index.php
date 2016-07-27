@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html ng-app="DuoDiginRt" ng-controller="LoginCtrl">
 <head>
-    <title>Digin - Beyond BI</title>
+    <title>DigIn - Beyond BI</title>
+    <link rel="shortcut icon" href="./styles/css/images/innerlogo.ico" type="image/png">
+
+
     <link rel="stylesheet" href="styles/css/commonstyle.css">
     <link rel="stylesheet" href="styles/css/login.css">
     <!--  new changes  -->

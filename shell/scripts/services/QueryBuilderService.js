@@ -182,36 +182,38 @@ routerApp.service('$qbuilder',function($diginengine){
     }; 
 
     var FORECAST = function(){
-        function mapResult(res){
-            var mainSerObj = [];
-            res.forEach(function(key) {
-                switch (key.target) {
-                    case "RMSE":
+        function mapResult(data){
+            var serArr = [];
+            var catArr = [];
+            var dataArray = [];
+            angular.forEach(data, function(value, key) {
+                switch (key) {
+                    case "time":
+                        catArr = value;
                         break;
-                    case "TotalForecastedVal":
+                    case "actual":
+                        serArr.push({
+                            data: data[key]
+                        });
+                        break;                        
+                    case "forecast":
+                        serArr.push({
+                            data: data[key]
+                        });
                         break;
-                    default:
-                        var serObj = [];
-                        key.datapoints.forEach(function(val) {
-                        var dArr = val[1].split('-');
-                        serObj.push([
-                            Date.UTC(parseInt(dArr[0]), parseInt(dArr[1]) - 1, parseInt(dArr[2])),
-                            val[0]
-                            ]);
-                        });
-                        mainSerObj.push({
-                            name: key.target,
-                            data: serObj
-                        });
-                    }
-                });    
-            return mainSerObj;        
+                }
+            });
+            dataArray[0] = catArr;
+            dataArray[1] = serArr
+            return dataArray;        
         }
 
         this.sync = function(q, cl, widObj, cb){
             cl.getForcast(widObj.foreCastObj, function(data, status){
                 if (status){
-                    widObj.highchartsNG.series = mapResult(data)
+                    dataArray = mapResult(data);
+                    widObj.highchartsNG.series = dataArray[1];
+                    widObj.highchartsNG.xAxis.categories = dataArray[0];                    
                 }
                 widObj.syncState = true;
                 cb(widObj);

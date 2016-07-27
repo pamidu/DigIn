@@ -8,6 +8,14 @@
         </md-select>
     </md-input-container>
     <md-input-container>
+        <label>Method</label>
+        <md-select ng-model="forecastObj.paramObj.method">
+          <md-option ng-repeat="method in forecastObj.method" value="{{method}}">
+            {{method}}
+          </md-option>
+        </md-select>
+    </md-input-container>    
+    <md-input-container>
         <label>Interval</label>
         <md-select ng-model="forecastObj.paramObj.interval">
           <md-option ng-repeat="int in forecastObj.intervals" value="{{int}}">
@@ -21,14 +29,6 @@
     </md-input-container>
     <md-input-container>
         <label>Moving Average Period</label>
-        <input ng-model="forecastObj.paramObj.steps_pday">
-    </md-input-container>
-    <md-input-container>
-        <label>Error Level</label>
-        <md-select ng-model="forecastObj.paramObj.pred_error_level">
-          <md-option ng-repeat="lvl in forecastObj.errorLevels" value="{{lvl}}">
-            {{lvl}}
-          </md-option>
-        </md-select>
+        <input ng-model="forecastObj.paramObj.len_season">
     </md-input-container>
 </div>

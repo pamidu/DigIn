@@ -361,7 +361,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                         break;
 
                     case 'highCharts':
-                        $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.series = data[0];
+                        $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.series.data = data[0];
                         console.log("here");
                         break; 
 
@@ -468,9 +468,9 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                                         break;
 
                                     case 'highCharts':
-                                        var series = widgets[j].widgetData.highchartsNG.series;
+                                        var series = widgets[j].widgetData.highchartsNG.series.data;
                                         dataArray.push(series);                                    
-                                        widgets[j].widgetData.highchartsNG.series = [];
+                                        widgets[j].widgetData.highchartsNG.series.data = [];
                                         console.log("highCharts");
                                         break;
                                     

@@ -54,21 +54,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     };
     $scope.forecastObj = {
 
-        models: ["Additive", "Multiplicative", "Linear"],
+        method: ["Additive", "Multiplicative"],
+        models: ["double exponential smoothing", "triple exponential smoothing"],
         intervals: ["Daily", "Weekly", "Monthly", "Yearly"],
-        errorLevels: [0.001, 0.01, 0.025, 0.05, 0.1, 0.2, 0.25],
         paramObj: {
-            model: "Additive",
-            pred_error_level: 0.001,
-            alpha: 0,
-            beta: 53,
-            gamma: 34,
+            method: "Additive",
+            model: "triple exponential smoothing",
+            mod: "triple_exp",
+            alpha: 0.716,
+            beta: 0.029,
+            gamma: 0.993,
             fcast_days: 30,
             tbl: $scope.sourceData.tbl,
-            field_name_d: "",
-            field_name_f: "",
-            steps_pday: 1,
-            m: 7,
+            date_field: "",
+            f_field: "",
+            len_season: 7,
             interval: "Daily"
         }
     };
@@ -1200,28 +1200,25 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         },
         changeType: function() {
             var mergedArr = $scope.sourceData.fMeaArr.concat($scope.sourceData.fAttArr);
-            var field_d, field_f = "";
-            var fObj = {
-                model: "Additive",
-                pred_error_level: 0.0001,
-                alpha: 0,
-                beta: 53,
-                gamma: 34,
-                fcast_days: 30,
-                tbl: $scope.sourceData.tbl,
-                field_name_d: "",
-                field_name_f: "",
-                steps_pday: 1,
-                m: 7,
-                interval: "Daily"
-            };
             mergedArr.forEach(function(k) {
                 if (k.dataType == "TIMESTAMP" || k.dataType == "datetime") {
-                    $scope.forecastObj.paramObj.field_name_d = k.name;
+                    $scope.forecastObj.paramObj.date_field = k.name;
                 } else {
-                    $scope.forecastObj.paramObj.field_name_f = k.name;
+                    $scope.forecastObj.paramObj.f_field = k.name;
                 }
             });
+
+            switch($scope.forecastObj.paramObj.model){
+                case "double exponential smoothing":
+                    $scope.forecastObj.paramObj.mod = 'double_exp';
+                    break;
+                case "triple exponential smoothing":
+                    $scope.forecastObj.paramObj.mod = 'triple_exp';
+                    break;
+                default:
+                    $scope.forecastObj.paramObj.mod = 'triple_exp';
+                    break;
+            }
 
             $scope.generateForecast($scope.forecastObj.paramObj);
         },
@@ -1239,8 +1236,24 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
     $scope.$watch("forecastObj.paramObj", function(newValue, oldValue) {
 
-        if (newValue != oldValue) {
+        if (newValue !== oldValue) {
+            if (!(newValue.mod != oldValue.mod || newValue.date_field != oldValue.date_field || newValue.f_field != oldValue.f_field) ){
+            switch(newValue.model){
+                case "double exponential smoothing":
+                    newValue.mod = 'double_exp';
+                    $scope.forecastObj.paramObj.mod = 'double_exp';                    
+                    break;
+                case "triple exponential smoothing":
+                    newValue.mod = 'triple_exp';
+                    $scope.forecastObj.paramObj.mod = 'triple_exp';
+                    break;
+                default:
+                    newValue.mod = 'triple_exp';
+                    $scope.forecastObj.paramObj.mod = 'triple_exp';                    
+                    break;
+            }            
             $scope.generateForecast(newValue);
+        }
         }
     }, true);
 
@@ -1249,35 +1262,26 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
         $scope.eventHndler.isLoadingChart = true;
         $scope.client.getForcast(fObj, function(data, status) {
-            var mainSerObj = [];
             if (status) {
-
-                data.forEach(function(key) {
-                    switch (key.target) {
-                        case "RMSE":
+                var serArr = [];
+                var catArr = [];
+                angular.forEach(data, function(value, key) {
+                    switch (key) {
+                        case "time":
+                            catArr = value;
                             break;
-                        case "TotalForecastedVal":
+                        case "actual":
+                            serArr.push({
+                                data: data[key]
+                            });
+                            break;                        
+                        case "forecast":
+                            serArr.push({
+                                data: data[key]
+                            });
                             break;
-                        default:
-                            var serObj = [];
-
-                            key.datapoints.forEach(function(val) {
-                                var dArr = val[1].split('-');
-                                serObj.push([
-
-                                    Date.UTC(parseInt(dArr[0]), parseInt(dArr[1]) - 1, parseInt(dArr[2])),
-                                    val[0]
-                                ]);
-                            });
-                            mainSerObj.push({
-
-                                name: key.target,
-
-                                data: serObj
-                            });
                     }
                 });
-                console.log(JSON.stringify(mainSerObj));
                
                 $scope.highchartsNG = {};
 
@@ -1291,7 +1295,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     title: {
                         text: ''
                     }
-                },
+                };
 
                 $scope.highchartsNG['options'] = {
                     chart: {
@@ -1302,10 +1306,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 $scope.highchartsNG['xAxis'] = {
                     type: 'datetime'
                 };
-                $scope.highchartsNG.series = mainSerObj;
+                $scope.highchartsNG.series = serArr;
+                $scope.highchartsNG.xAxis.categories = catArr;
                 $scope.eventHndler.isLoadingChart = false;
             } else {
-
+                $scope.eventHndler.isLoadingChart = false;                
             }
         });
     };

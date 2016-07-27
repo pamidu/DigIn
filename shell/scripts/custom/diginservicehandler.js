@@ -139,39 +139,35 @@
                     {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "forecast?model=" + fObj.model +
-                        "&pred_error_level=" + fObj.pred_error_level +
+                        }, $diginurls.diginengine + "forecast?model=" + fObj.mod +
+                        "&method=" + fObj.method +
                         "&alpha=" + fObj.alpha +
                         "&beta=" + fObj.beta +
                         "&gamma=" + fObj.gamma +
-                        "&fcast_days=" + fObj.fcast_days +
-                        "&table_name=[" + getNamespace() + "." + fObj.tbl +
-                        "]&field_name_d=" + fObj.field_name_d +
-                        "&field_name_f=" + fObj.field_name_f +
-                        "&steps_pday=" + fObj.steps_pday +
-                        "&m=" + fObj.m +
-                        "&interval=" + fObj.interval +
+                        "&n_predict=" + fObj.fcast_days +
+                        "&table=[" + getNamespace() + "." + fObj.tbl + 
+                        "]&date_field=" + fObj.date_field +
+                        "&f_field=" + fObj.f_field +
+                        "&period=" + fObj.interval +
+                        "&len_season=" + fObj.len_season +
                         "&dbtype=" + database);
                       }
                       else
                       {
                           $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "forecast?model=" + fObj.model +
-                        "&pred_error_level=" + fObj.pred_error_level +
+                        }, $diginurls.diginengine + "forecast?model=" + fObj.mod +
+                        "&method=" + fObj.method +
                         "&alpha=" + fObj.alpha +
                         "&beta=" + fObj.beta +
                         "&gamma=" + fObj.gamma +
-                        "&fcast_days=" + fObj.fcast_days +
-                        "&table_name= "+ fObj.tbl +
-                        "&field_name_d=" + fObj.field_name_d +
-                        "&field_name_f=" + fObj.field_name_f +
-                        "&steps_pday=" + fObj.steps_pday +
-                        "&m=" + fObj.m +
-                        "&interval=" + fObj.interval +
+                        "&n_predict=" + fObj.fcast_days +
+                        "&table= "+ fObj.tbl +
+                        "&date_field=" + fObj.date_field +
+                        "&f_field=" + fObj.f_field +
+                        "&period=" + fObj.interval +
+                        "&len_season=" + fObj.len_season +
                         "&dbtype=" + database);
-
-
                       }
 
                 }

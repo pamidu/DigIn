@@ -68,6 +68,7 @@ routerApp.directive('sunburstChart', function() {
                         .style("fill", function(d) {
                             return color((d.children ? d : d.parent).name);
                         })
+                        .style("stroke", "#fff")
                         .on("click", click)
                         /*The following two '.on' attributes for tooltip*/
                         .on("mouseover", function(d) {

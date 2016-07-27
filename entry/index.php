@@ -2,7 +2,9 @@
 <html lang="en" ng-app="digin-entry">
 <head>
     <meta charset="UTF-8">
-    <title>Digin.io</title>
+    <title>DigIn - Beyond BI</title>
+    <link rel="shortcut icon" href="./image/login-logo.png" type="image/png">
+    
     <!-- #style area -->
     <link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.css">
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">

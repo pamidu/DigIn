@@ -726,6 +726,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
                     $scope.dashboards = [];
+                    $scope.reports = [];
                     $http({
                         method: 'GET',
 
@@ -736,11 +737,18 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             console.log("data getAllDashboards", data);
 
                             $scope.dashboards = [];
-
+                            // seperate reports and dashboards
                             for (var i = 0; i < data.Result.length; i++) {
-                                $scope.dashboards.push(
-                                    {dashboardID: data.Result[i].compID, dashboardName: data.Result[i].compName}
-                                );
+                                if ( data.Result[i].compType == "Report"){
+                                    $scope.reports.push(
+                                        {splitName: data.Result[i].compName, path: '/dynamically-report-builder'}
+                                    );
+                                }
+                                else {
+                                    $scope.dashboards.push(
+                                        {dashboardID: data.Result[i].compID, dashboardName: data.Result[i].compName}
+                                    );
+                                }
                             }
 
                             ngToast.create({
@@ -759,7 +767,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                               }).then(function (data) {                       
                                 angular.forEach(data.rows, function (row) {
                                     console.log(typeof(row.doc.dashboard));
-                                    var records = CircularJSON.parse(row.doc.dashboard);
+                                    //var records = CircularJSON.parse(row.doc.dashboard);
+                                    var records = row.doc.dashboard;
                                     var isAvailble = false;
                                     for ( var i = 0; i < $scope.dashboards.length; i++){
                                         if ( $scope.dashboards[i].dashboardID == records.compID){
@@ -780,7 +789,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         .error(function (error) {
 
                             ngToast.create({
-                                className: 'danger',
+                                className: 'success',
                                 content: 'Retrieved Dashboard Details from localStorage!',
                                 horizontalPosition: 'center',
                                 verticalPosition: 'top',
@@ -795,7 +804,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                               }).then(function (data) {                       
                                 angular.forEach(data.rows, function (row) {
                                     console.log(typeof(row.doc.dashboard));
-                                    var records = CircularJSON.parse(row.doc.dashboard);
+                                    //var records = CircularJSON.parse(row.doc.dashboard);
+                                    var records = row.doc.dashboard;
                                     $scope.dashboards.push(
                                             {pouchID: row.doc._id, dashboardName: records.compName}
                                         );                                                           
@@ -1343,7 +1353,64 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $mdDialog.show({
                 controller: 'saveCtrl',
-                templateUrl: 'views/dashboard-save.html',
+                // templateUrl: 'views/dashboard-save.html',
+                //template has been directly added here as it is needed for offline dashboard saving feature
+                template: 
+                    '<md-dialog plumb-item class="dialog-1 b-r-0" ng-init="initialize()">' +
+                      '<md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">' +
+                          '<div layout="row" layout-align="center center" class="digin-logo-wrapper2">' +
+                            '<img ng-src="styles/css/images/DiginLogo.png" class="digin-image">' +
+                          '</div>' +
+                          '<div class="dialog-title">SAVE DASHBOARD</div>' +
+                          '<md-button class="buttonMinwidth38 b-r-0" ng-click="close();">' +
+                            '<ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>' +
+                          '</md-button>' +
+                      '</md-toolbar>' +
+                      '<md-content class="dialog-content-1" layout-padding>' +
+                                '<div layout="row" layout-align="start start">' +
+                                    '<p style="font-size:large">Dashboard Details</p>' +
+                                '</div>' +
+                                '<div layout="row" flex layout-wrap>' +
+                                    '<md-input-container flex="50">' +
+                                        '<label>Name</label>' +
+                                        '<input ng-model="dashboardName" name="dashboardName">' +
+                                    '</md-input-container>' +
+                                    '<md-input-container flex="50">' +
+                                        '<label>Type</label>' +
+                                        '<md-select ng-model="dashboardType" name="dashboardType">' +
+                                            '<md-option value="SYSTEM" ng-selected>SYSTEM</md-option>' +
+                                            '<md-option value="TYPE1">TYPE1</md-option>' +
+                                            '<md-option value="TYPE2">TYPE2</md-option>' +
+                                            '<md-option value="TYPE3">TYPE3</md-option>' +
+                                        '</md-select>' +
+                                    '</md-input-container>' +
+                                    '<md-input-container flex="50">' +
+                                        '<label>Refresh Interval</label>' +
+                                        '<md-select ng-model="refreshInterval" name="refreshInterval">' +
+                                            '<md-option value="30" ng-selected>30 Seconds</md-option>' +
+                                            '<md-option value="60">1 minute</md-option>' +
+                                            '<md-option value="120">2 minutes</md-option>' +
+                                            '<md-option value="300">5 minutes</md-option>' +
+                                        '</md-select>' +
+                                    '</md-input-container>' +
+                                '</div>' +
+                                '<div class="md-actions" layout="row">' +
+                                     '<span flex></span>' +
+                                    '<div class="dashbord-save-loader" ng-if="isLoadingDashBoardSave">' +
+                                        '<svg class="circular-loader" height="50" width="50">' +
+                                                '<circle class="path" cx="25" cy="25.2" r="19.9"' +
+                                                        'fill="none" stroke-width="6" stroke-miterlimit="10"/>' +
+                                        '</svg>' +
+                                    '</div>' + 
+                                    '<md-button class="btn-dialog b-r-0" ng-if="isButtonDashBoardSave" ng-click="saveDashboard()">' +
+                                        'Save' +
+                                    '</md-button>' +
+                                    '<md-button class="btn-dialog b-r-0" ng-click="close()">' +
+                                        'Cancel' +
+                                    '</md-button>' +
+                                '</div>' +
+                      '</md-content>' +
+                    '</md-dialog>',            
                 targetEvent: ev,
                 resolve: {
                     widget: function () {

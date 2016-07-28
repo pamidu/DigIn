@@ -193,11 +193,13 @@ routerApp.service('$qbuilder',function($diginengine){
                         break;
                     case "actual":
                         serArr.push({
+                            name: 'actual values',                            
                             data: data[key]
                         });
                         break;                        
                     case "forecast":
                         serArr.push({
+                            name: 'forecasted values',
                             data: data[key]
                         });
                         break;

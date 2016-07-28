@@ -915,7 +915,8 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                 tomCatBase: Digin_Tomcat_Base,
                 token: '',
                 reportName: '',
-                queryFiled: ''
+                queryFiled: '',
+                userInfo: ''
             };
             var getSession = function () {
                 reqParameter.token = getCookie("securityToken");
@@ -934,6 +935,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
 
             return {
                 getAllReport: function () {
+                    reqParameter.userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
                     $scope.reports = [];
                     getSession();
                     startReportService();
@@ -950,6 +952,18 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                     }).error(function (respose) {
                         console.error('error request getAllReports...');
                     });
+                    dynamicallyReportSrv.getAllComponents(reqParameter).success(function (data){
+                        angular.forEach(data.Result, function (key){
+                            if (key.compType == "Report"){
+                                $scope.reports.push(
+                                    {splitName: key.compName, path: '/dynamically-report-builder'}
+                                );
+                            }
+                        });
+                    }).error(function (error) {
+
+                    });
+
                 }
             }
         }());
@@ -998,13 +1012,17 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                         console.log(data);
                         uploadFlag = true;
                         console.log($scope.reports);
-                        privateFun.getAllReport();
                         $scope.preloader = false;
                         $scope.diginLogo = 'digin-logo-wrapper2';
                         $mdDialog.hide();
+                        if ( uploadFlag && storeFlag ){
+                            fireMsg('1', 'Successfully uploaded!');
+                            privateFun.getAllReport();                            
+                        }                        
                     }).error(function (data) {
                         console.log(data);
                         uploadFlag = false;
+                        fireMsg('0', 'Error uploading file!');                        
                         $scope.preloader = false;
                         $scope.diginLogo = 'digin-logo-wrapper2';
                     });
@@ -1037,18 +1055,14 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                     }
                 }).success(function (data) {
                     storeFlag = true;
-
+                    if ( uploadFlag && storeFlag ){
+                        fireMsg('1', 'Successfully uploaded!');
+                        privateFun.getAllReport();
+                    }                    
                 }).error(function (data) {
                     storeFlag = false;
-
+                        fireMsg('2', 'Error uploading file!');
                 })
-
-                if ( uploadFlag && storeFlag ){
-                    fireMsg('1', 'Successfully uploaded!');
-                }
-                else {
-                    fireMsg('0', 'There was an error while uploading data !');
-                }
 
                 }
             }

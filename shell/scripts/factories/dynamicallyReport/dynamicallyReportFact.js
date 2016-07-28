@@ -25,6 +25,12 @@ routerApp.factory('dynamicallyReportSrv', function ($http, Digin_Engine_API, Dig
                 }
             });
         },
+        getAllComponents: function (parameter) {
+            return $http({
+                method: 'GET',
+                url: parameter.apiBase + 'get_all_components?SecurityToken=' + parameter.userInfo.SecurityToken + '&Domain=' + Digin_Domain
+                });
+        },
         getCurrentQry: function (parameter) {
             return $http.get(parameter.apiBase + 'getQueries?Reportname=' + parameter.reportName +
                 '&fieldnames={' + parameter.queryFiled + '}')

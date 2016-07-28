@@ -4150,13 +4150,13 @@ md-tab-content > div {
 .selectArea {
   background: #E4E4E4;
   overflow: hidden;
-  width:150px;
-  height:150px;
+  width:200px;
+  height:200px;
 }
 
 .img-circle {
     border-radius: 50%;
-    height: 120px;
+    height: 150px;
     width: 150px;
 }
 

@@ -49,7 +49,10 @@
                                <h5 id="sliderRight">Sign In</h5>
                             </div>
                         </div>
-                        <form name="frmDiginLogin" autocomplete="off">
+
+
+
+                        <form name="frmDiginLogin" autocomplete="off" ng-submit="login()">
                             <div class="login-bdy">
                                 <div class="text-wrap ">
                                     <div>
@@ -118,8 +121,15 @@
                                         Login
                                     </a>
                                 </div>
+
+                                <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
+
                             </div>
                         </form>
+
+
+
+                        
                     </div>
                 </div>
             </div>

@@ -24,6 +24,7 @@ curl_close ($curl);
 		header("Location: http://".$mainDomain."/entry/#/signin?activated=false");
 	}
 
+	
 	function createDataSet($email)
 	{	
 		$dtSetName=str_replace("@","_",$email);

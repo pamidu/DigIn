@@ -367,7 +367,7 @@
     font-family: 'Ek Mukta', sans-serif;
     font-weight: 400;
     font-size: 15px;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
 }
 
 .txt-box-login > div > input:focus,
@@ -467,7 +467,7 @@
     font-size: 13px;
     padding-top: 3px;
     padding-left: 2px;
-    text-transform: lowercase;
+    /*text-transform: lowercase;*/
 }
 
 /*#signup style */

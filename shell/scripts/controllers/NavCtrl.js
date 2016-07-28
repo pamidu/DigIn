@@ -241,7 +241,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             address: $rootScope.profile_Det.BillingAddress,
                             mobile: $rootScope.profile_Det.PhoneNumber,
                             profile_pic: $rootScope.profile_pic,
-                            company :$rootScope.profile_Det.company
+                            company :$rootScope.profile_Det.Company
 
                         };
                         $scope.close = function () {

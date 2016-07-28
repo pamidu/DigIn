@@ -2049,7 +2049,7 @@ routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widgetI
             var message = $http.jsonp(wpapi + $scope.wpdomain + choice + callbackString).
             success(function(data, status) {
 
-                var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.pages[0].widgets);
+                var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);
                 var posts = data.posts;
                 var trimmedPosts = [];
                 var tempTitle = "";
@@ -2072,9 +2072,11 @@ routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widgetI
                 }
                 var trimmedObj = {};
                 trimmedObj.posts = trimmedPosts;
-                $rootScope.dashboard.pages[0].widgets[objIndex].widData = trimmedObj;
+                $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[objIndex].widgetData.widData = trimmedObj;
+                $mdDialog.hide();
+                //$rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[ObjectIndex].widgetData.widData.feeds
                 $scope.showFinishButton = true;
-                $scope.diginLogo = 'digin-logo-wrapper2';
+                $scope.diginLogo = 'digin-logo-wraper2';
             }).error(function(data, status) {
                 console.log(message);
                 $scope.showFinishButton = false;
@@ -2197,6 +2199,7 @@ routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widgetID', '$
              
                 $scope.diginLogo = 'digin-logo-wrapper2';
                 $scope.showFinishButton = true;
+                $mdDialog.hide();
             })
             .error(function(err) {
               
@@ -2291,8 +2294,10 @@ routerApp.controller('calendarInit',['widgetID', '$scope', '$http', '$rootScope'
     var m = date.getMonth();
     var y = date.getFullYear();
 
+    $scope.events=[];
     $scope.uiConfig = {
         calendar: {
+            height: 550,
             editable: true,
             header: {
                 left: 'title',
@@ -2303,8 +2308,7 @@ routerApp.controller('calendarInit',['widgetID', '$scope', '$http', '$rootScope'
             eventRender: $scope.eventRender
         }
     };
-    $scope.events = [];
-    $rootScope.dashboard.pages[selectedPage-1].widgets[objIndex].widgetData.widData = [];
+    $rootScope.dashboard.pages[selectedPage-1].widgets[objIndex].widgetData.widData = $scope.events;
 
     /* alert on eventClick */
     $scope.alertOnEventClick = function(date, jsEvent, view) {

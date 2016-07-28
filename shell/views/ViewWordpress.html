@@ -4,7 +4,7 @@
         <div class="widget-header font-wp-grey">Posts</div>
     </div>
     <div>
-    <div ng-repeat="post in widget.widData.posts track by $index">
+    <div ng-repeat="post in widget.widgetData.widData.posts track by $index">
             <md-list-item class="md-3-line p-0" flex>
               <div layout="column" class="data-container1">
                 <div class="data-slot1 background-wp-grey" layout="row">{{post.title}}</div>

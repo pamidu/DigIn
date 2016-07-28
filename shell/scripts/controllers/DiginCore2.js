@@ -256,7 +256,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
         //insert records into pouchdb
         var insertPouchDB = function(dashboardObject){
             
-                var dashboard = angular.toJson(dashboardObject);
+                var dashboard = angular.fromJson(CircularJSON.stringify(dashboardObject));
                 console.log(dashboard,true);
                 
                 // set a new id to a new record to be inserted

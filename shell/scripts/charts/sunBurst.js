@@ -76,7 +76,7 @@ routerApp.directive('sunburstChart', function() {
                                 .duration(200)
                                 .style("opacity", .9);
                             var sizeStr = "";
-                            if (typeof d.size != 'undefined') sizeStr = "<br/> <b> Size: " + d.size + "</b>";
+                            if (typeof d.size != 'undefined') sizeStr = "<br/> <b> Count: " + d.size + "</b>";
                             div.html(d.name + sizeStr)
                                 .style("left", 100 + "px")
                                 .style("top", 300 + "px");

@@ -449,14 +449,20 @@ routerApp
                     focus('lastName');
                     return;
                 }
-                else if (signUpUsr.email == '' || angular.isUndefined(signUpUsr.email)) {
+                else if (signUpUsr.email == '') {
                     mainFun.fireMsg('0', '<strong>Error : </strong>Email address is required.');
                     $scope.error.isEmail = true;
                     focus('email');
                     return;
                 }
+                else if (angular.isUndefined(signUpUsr.email)) {
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address.');
+                    $scope.error.isEmail = true;
+                    focus('email');
+                    return;
+                }
                 else if (!mainFun.validateEmail(signUpUsr.email)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address is required..');
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address.');
                     $scope.error.isEmail = true;
                     focus('email');
                     return;

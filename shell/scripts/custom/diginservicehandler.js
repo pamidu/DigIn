@@ -141,9 +141,9 @@
                             cb(data, status);
                         }, $diginurls.diginengine + "forecast?model=" + fObj.mod +
                         "&method=" + fObj.method +
-                        "&alpha=" + fObj.alpha +
-                        "&beta=" + fObj.beta +
-                        "&gamma=" + fObj.gamma +
+                        "&alpha=" + fObj.a +
+                        "&beta=" + fObj.b +
+                        "&gamma=" + fObj.g +
                         "&n_predict=" + fObj.fcast_days +
                         "&table=[" + getNamespace() + "." + fObj.tbl + 
                         "]&date_field=" + fObj.date_field +
@@ -158,9 +158,9 @@
                             cb(data, status);
                         }, $diginurls.diginengine + "forecast?model=" + fObj.mod +
                         "&method=" + fObj.method +
-                        "&alpha=" + fObj.alpha +
-                        "&beta=" + fObj.beta +
-                        "&gamma=" + fObj.gamma +
+                        "&alpha=" + fObj.a +
+                        "&beta=" + fObj.b +
+                        "&gamma=" + fObj.g +
                         "&n_predict=" + fObj.fcast_days +
                         "&table= "+ fObj.tbl +
                         "&date_field=" + fObj.date_field +

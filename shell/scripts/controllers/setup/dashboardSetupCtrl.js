@@ -1065,13 +1065,14 @@ $scope.invite = function () {
             .success(function(response){
                 console.log(response);
                 //#load exisitging data
-                $scope.address=response.BillingAddress;
-                $scope.company=response.Company;
-                $scope.country=response.Country;
-                $scope.email=response.Email;
-                $scope.name=response.Name;
-                $scope.phoneNo=response.PhoneNumber;
-                $scope.zipCode=response.ZipCode;
+                $rootScope.profile_Det=response;
+                $rootScope.address=response.BillingAddress;
+                $rootScope.company=response.Company;
+                $rootScope.country=response.Country;
+                $rootScope.email=response.Email;
+                $rootScope.name=response.Name;
+                $rootScope.phoneNo=response.PhoneNumber;
+                $rootScope.zipCode=response.ZipCode;
             }).error(function(error){   
                 //fireMsg('0', '<strong>Error : </strong>Please try again...!');
             });  
@@ -1319,8 +1320,83 @@ $scope.invite = function () {
     //#password reset
     //http://duoworld.com/apis/authorization/userauthorization/forgotpassword/chamila@duosoftware.com
 
+}).directive('phoneInput', function($filter, $browser) {
+    return {
+        require: 'ngModel',
+        link: function($scope, $element, $attrs, ngModelCtrl) {
+            var listener = function() {
+                var value = $element.val().replace(/[^0-9]/g, '');
+                $element.val($filter('tel')(value, false));
+            };
 
+            // This runs when we update the text field
+            ngModelCtrl.$parsers.push(function(viewValue) {
+                return viewValue.replace(/[^0-9]/g, '').slice(0,10);
+            });
 
-});
+            // This runs when the model gets updated on the scope directly and keeps our view in sync
+            ngModelCtrl.$render = function() {
+                $element.val($filter('tel')(ngModelCtrl.$viewValue, false));
+            };
 
+            $element.bind('change', listener);
+            $element.bind('keydown', function(event) {
+                var key = event.keyCode;
+                // If the keys include the CTRL, SHIFT, ALT, or META keys, or the arrow keys, do nothing.
+                // This lets us support copy and paste too
+                if (key == 91 || (15 < key && key < 19) || (37 <= key && key <= 40)){
+                    return;
+                }
+                $browser.defer(listener); // Have to do this or changes don't get picked up properly
+            });
 
+            $element.bind('paste cut', function() {
+                $browser.defer(listener);
+            });
+        }
+
+    };
+}).filter('tel', function () {
+    return function (tel) {
+        console.log(tel);
+        if (!tel) { return ''; }
+
+        var value = tel.toString().trim().replace(/^\+/, '');
+
+        if (value.match(/[^0-9]/)) {
+            return tel;
+        }
+
+        var country, city, number;
+
+        switch (value.length) {
+            case 1:
+            case 2:
+            case 3:
+                city = value;
+                break;
+
+            default:
+                city = value.slice(0, 2);
+                number = value.slice(2);
+        }
+
+        if(number){
+            if(number.length>2){
+                number = number.slice(0, 2) + ' ' + number.slice(2,10);
+            }
+            if(number.length>6){
+                number = number.slice(0, 2) + ' ' + number.slice(2,7)+ ' ' + number.slice(7,11);
+            }
+            else{
+                number = number;
+            }
+
+            return ("+" + city + " " + number).trim();
+        }
+        else{
+            return "+" + city;
+        }
+
+    };
+});   //+31 42 1123 4567

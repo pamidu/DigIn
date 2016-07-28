@@ -22,5 +22,12 @@ image-crop > canvas {
       background: #E4E4E4;
       overflow: hidden;
       width:500px;
-      height:350px;
+      height:250px;
+}
+
+
+img-crop.style {
+    margin-top: 0px;
+    margin-left: 0px;
+    cursor: default;
 }

@@ -40,10 +40,13 @@ routerApp.factory('twitterService', function ($q, ngToast, $http, Digin_Domain) 
 
     return {
         initialize: function () {
+
             //initialize OAuth.io with public key of the application
+
             OAuth.initialize('19gVB-kbrzsJWQs5o7Ha2LIeX4I', {
                 cache: true
             });
+            
             //try to create an authorization result when the page loads,
             // this means a returning user won't have to click the twitter button again
             authorizationResult = OAuth.create("twitter");

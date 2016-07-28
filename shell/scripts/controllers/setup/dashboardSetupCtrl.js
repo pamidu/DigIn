@@ -1,6 +1,6 @@
 routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $location, $http,
                                                      Digin_Engine_API, ngToast, $rootScope, $apps, $objectstore, Upload,
-                                                     Digin_Domain, Digin_Tenant, $state) {
+                                                     Digin_Domain, Digin_Tenant, $state,ProfileService) {
     
     
     //main menu json
@@ -1200,6 +1200,7 @@ $scope.invite = function () {
                             var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
                             $scope.profile_pic = logoPath + data.Result.dp_path;
                             $rootScope.profile_pic = logoPath + data.Result.dp_path;
+                            ProfileService.UserDataArr.BannerPicture= $rootScope.profile_pic;
                             $scope.getURL();
                             $mdDialog.hide();
                             fireMsg('1', 'Profile picture uploaded successfully.');

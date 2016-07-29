@@ -15,8 +15,8 @@
 */
 routerApp.controller('widgetSettingsCtrl', ['$scope',
 
-    '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', '$http', 'ScopeShare', '$filter',
-    function($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http, ScopeShare, $filter) {
+    '$rootScope', '$mdDialog', '$objectstore', '$sce', 'AsTorPlotItems', '$log', '$http', 'ScopeShare', '$filter','DashboardService',
+    function($scope, $rootScope, $mdDialog, $objectstore, $sce, AsTorPlotItems, $log, $http, ScopeShare, $filter,DashboardService) {
 
         $scope.trustSrc = function(src) {
             return $sce.trustAsResourceUrl(src);
@@ -374,286 +374,308 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
         }
 
-        $scope.saveDashboard = function() {               
+        $scope.saveDashboard = function() {      
 
-            if($scope.dashboardName && $scope.dashboardType && $scope.refreshInterval){
-                $scope.isLoadingDashBoardSave = true;
-                $scope.isButtonDashBoardSave=false;
-                //if dashboard name type refreshinterval should be assigned to proceed
-                ngToast.create({
-                        className: 'info',
-                        content: 'Saving Dashboard...',
-                        horizontalPosition: 'center',
-                        verticalPosition: 'top',
-                        dismissOnClick: true
+
+            if($scope.dashboardName && $scope.dashboardType && $scope.refreshInterval ){
+
+                var noDuplicate = true;
+                //to check weather the newpage is allready exist 
+                DashboardService.dashboards.forEach(function(key){
+                    if(key.dashboardName.toUpperCase() == $scope.dashboardName.toUpperCase() ){
+                        noDuplicate = false;
+                    }
                 });
-                //get pages here
-                var pagesArray = [];
-                var dynamicPages = [];
-                var pages = $rootScope.dashboard.pages;
-                for(var i = 0; i < pages.length; i++){
-                        var dynamicWidgets = [];
-                        //get widgets here
-                        var widgetsArray = [];
-                        var widgets = $rootScope.dashboard.pages[i].widgets;
-                        for (var j = 0; j < widgets.length; ++j) {
-                                var chart = "";
-                                var flag = false;
-                                var widgetObject;
-                                // Remove data from the charts when it is being saved
-                                if (typeof(widgets[j].widgetData.selectedChart) != "undefined"){
-                                    var flag = true;
-                                    console.log(widgets[j].widgetData.selectedChart.chartType);
-                                    var dataArray = [];
-                                    chart = widgets[j].widgetData.selectedChart.chartType;
-                                switch (widgets[j].widgetData.selectedChart.chartType) {
-                                    case 'boxplot':
-                                        var seriesPlotData = widgets[j].widgetData.highchartsNG.series[0].data;
-                                        var seriesOutData = widgets[j].widgetData.highchartsNG.series[1].data;
-                                        var category = widgets[j].widgetData.highchartsNG.xAxis.categories;
-                                        widgets[j].widgetData.highchartsNG.series[0].data = [];
-                                        widgets[j].widgetData.highchartsNG.series[1].data = [];
-                                        widgets[j].widgetData.highchartsNG.xAxis.categories = [];
-                                        dataArray.push(seriesPlotData,seriesOutData,category);                                      
-                                        console.log("boxplot");
-                                        break;
 
-                                    case 'pivotSummary':
-                                        var summary = widgets[j].widgetData.widData.summary;
-                                        dataArray.push(summary);
-                                        widgets[j].widgetData.widData.summary = [];
-                                        console.log("pivotsummary");
-                                        break;
+                if(noDuplicate){
 
-                                    case 'histogram':
-                                        var data = widgets[j].widgetData.highchartsNG.series[0].data;
-                                        var category = widgets[j].widgetData.highchartsNG.xAxis.categories;
-                                        dataArray.push(data,category);                                        
-                                        widgets[j].widgetData.highchartsNG.series[0].data = [];
-                                        widgets[j].widgetData.highchartsNG.xAxis.categories = [];
-                                        console.log("histogram");
-                                        break;
+                    $scope.isLoadingDashBoardSave = true;
+                    $scope.isButtonDashBoardSave=false;
+                    //if dashboard name type refreshinterval should be assigned to proceed
+                    ngToast.create({
+                            className: 'info',
+                            content: 'Saving Dashboard...',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
+                    });
+                    //get pages here
+                    var pagesArray = [];
+                    var dynamicPages = [];
+                    var pages = $rootScope.dashboard.pages;
+                    for(var i = 0; i < pages.length; i++){
+                            var dynamicWidgets = [];
+                            //get widgets here
+                            var widgetsArray = [];
+                            var widgets = $rootScope.dashboard.pages[i].widgets;
+                            for (var j = 0; j < widgets.length; ++j) {
+                                    var chart = "";
+                                    var flag = false;
+                                    var widgetObject;
+                                    // Remove data from the charts when it is being saved
+                                    if (typeof(widgets[j].widgetData.selectedChart) != "undefined"){
+                                        var flag = true;
+                                        console.log(widgets[j].widgetData.selectedChart.chartType);
+                                        var dataArray = [];
+                                        chart = widgets[j].widgetData.selectedChart.chartType;
+                                    switch (widgets[j].widgetData.selectedChart.chartType) {
+                                        case 'boxplot':
+                                            var seriesPlotData = widgets[j].widgetData.highchartsNG.series[0].data;
+                                            var seriesOutData = widgets[j].widgetData.highchartsNG.series[1].data;
+                                            var category = widgets[j].widgetData.highchartsNG.xAxis.categories;
+                                            widgets[j].widgetData.highchartsNG.series[0].data = [];
+                                            widgets[j].widgetData.highchartsNG.series[1].data = [];
+                                            widgets[j].widgetData.highchartsNG.xAxis.categories = [];
+                                            dataArray.push(seriesPlotData,seriesOutData,category);                                      
+                                            console.log("boxplot");
+                                            break;
 
-                                    case 'bubble':
-                                        var bubble = widgets[j].widgetData.highchartsNG.series;
-                                        dataArray.push(bubble);                                        
-                                        widgets[j].widgetData.highchartsNG.series = [];
-                                        console.log("bubble");
-                                        break;
+                                        case 'pivotSummary':
+                                            var summary = widgets[j].widgetData.widData.summary;
+                                            dataArray.push(summary);
+                                            widgets[j].widgetData.widData.summary = [];
+                                            console.log("pivotsummary");
+                                            break;
 
-                                    case 'forecast':
-                                        var series = widgets[j].widgetData.highchartsNG.series;
-                                        dataArray.push(series);                                    
-                                        widgets[j].widgetData.highchartsNG.series = [];
-                                        console.log("forecast");
-                                        break;
+                                        case 'histogram':
+                                            var data = widgets[j].widgetData.highchartsNG.series[0].data;
+                                            var category = widgets[j].widgetData.highchartsNG.xAxis.categories;
+                                            dataArray.push(data,category);                                        
+                                            widgets[j].widgetData.highchartsNG.series[0].data = [];
+                                            widgets[j].widgetData.highchartsNG.xAxis.categories = [];
+                                            console.log("histogram");
+                                            break;
 
-                                    case 'd3sunburst':
-                                        var flag = false;
-                                        console.log("d3sunburst");
-                                        break;
+                                        case 'bubble':
+                                            var bubble = widgets[j].widgetData.highchartsNG.series;
+                                            dataArray.push(bubble);                                        
+                                            widgets[j].widgetData.highchartsNG.series = [];
+                                            console.log("bubble");
+                                            break;
 
-                                    case 'd3hierarchy':
-                                        var flag = false;
-                                        console.log("d3hierarchy");
-                                        break;
+                                        case 'forecast':
+                                            var series = widgets[j].widgetData.highchartsNG.series;
+                                            dataArray.push(series);                                    
+                                            widgets[j].widgetData.highchartsNG.series = [];
+                                            console.log("forecast");
+                                            break;
 
-                                    case 'metric':
-                                        var decValue = widgets[j].widgetData.widData.decValue;
-                                        var value = widgets[j].widgetData.widData.value;                                        
-                                        dataArray.push(decValue,value);                                    
-                                        widgets[j].widgetData.widData.decValue = "";
-                                        widgets[j].widgetData.widData.value = "";
-                                        console.log("metric");
-                                        break;
+                                        case 'd3sunburst':
+                                            var flag = false;
+                                            console.log("d3sunburst");
+                                            break;
 
-                                    case 'highCharts':
-                                        var series = widgets[j].widgetData.highchartsNG.series.data;
-                                        dataArray.push(series);                                    
-                                        widgets[j].widgetData.highchartsNG.series.data = [];
-                                        console.log("highCharts");
-                                        break;
-                                    
+                                        case 'd3hierarchy':
+                                            var flag = false;
+                                            console.log("d3hierarchy");
+                                            break;
+
+                                        case 'metric':
+                                            var decValue = widgets[j].widgetData.widData.decValue;
+                                            var value = widgets[j].widgetData.widData.value;                                        
+                                            dataArray.push(decValue,value);                                    
+                                            widgets[j].widgetData.widData.decValue = "";
+                                            widgets[j].widgetData.widData.value = "";
+                                            console.log("metric");
+                                            break;
+
+                                        case 'highCharts':
+                                            var series = widgets[j].widgetData.highchartsNG.series.data;
+                                            dataArray.push(series);                                    
+                                            widgets[j].widgetData.highchartsNG.series.data = [];
+                                            console.log("highCharts");
+                                            break;
+                                        
+                                        }
                                     }
+                                        //if the widget is a temporary / new widget 
+                                        if($rootScope.dashboard.pages[i].widgets[j].widgetID.substr(0, 4) == "temp" && $rootScope.online){
+
+                                           
+                                            widgetObject = {   
+                                                "widgetID": null,
+                                                "widgetName": widgets[j].widgetName,
+                                                "widgetData": widgets[j].widgetData,
+                                                sizeX: widgets[j].sizeX,
+                                                sizeY: widgets[j].sizeY,
+                                                row: widgets[j].row,
+                                                col: widgets[j].col                                           
+                                            }
+                                        }
+                                        else{
+                                           
+                                            widgetObject = {   
+                                                "widgetID": widgets[j].widgetID,
+                                                "widgetName": widgets[j].widgetName,
+                                                "widgetData": widgets[j].widgetData,
+                                                sizeX: widgets[j].sizeX,
+                                                sizeY: widgets[j].sizeY,
+                                                row: widgets[j].row,
+                                                col: widgets[j].col
+                                            }
+                                        }
+                                        widgetsArray.push(widgetObject);
+                                        dynamicWidgets.push({
+                                            data: dataArray,
+                                            isChart: flag,
+                                            chart: chart
+                                        });
+                                       
+                            }
+
+                            var pageObject;
+                            //if the page is a temporary / new page 
+                            if($rootScope.dashboard.pages[i].pageID.substr(0, 4) == "temp" && $rootScope.online ){
+
+                                pageObject = {
+                                                "widgets": widgetsArray,
+                                                "pageID": null,
+                                                "pageName": pages[i].pageName,
+                                                "pageData": null 
                                 }
-                                    //if the widget is a temporary / new widget 
-                                    if($rootScope.dashboard.pages[i].widgets[j].widgetID.substr(0, 4) == "temp" && $rootScope.online){
+                            }
+                            else{
 
-                                       
-                                        widgetObject = {   
-                                            "widgetID": null,
-                                            "widgetName": widgets[j].widgetName,
-                                            "widgetData": widgets[j].widgetData,
-                                            sizeX: widgets[j].sizeX,
-                                            sizeY: widgets[j].sizeY,
-                                            row: widgets[j].row,
-                                            col: widgets[j].col                                           
-                                        }
-                                    }
-                                    else{
-                                       
-                                        widgetObject = {   
-                                            "widgetID": widgets[j].widgetID,
-                                            "widgetName": widgets[j].widgetName,
-                                            "widgetData": widgets[j].widgetData,
-                                            sizeX: widgets[j].sizeX,
-                                            sizeY: widgets[j].sizeY,
-                                            row: widgets[j].row,
-                                            col: widgets[j].col
-                                        }
-                                    }
-                                    widgetsArray.push(widgetObject);
-                                    dynamicWidgets.push({
-                                        data: dataArray,
-                                        isChart: flag,
-                                        chart: chart
-                                    });
-                                   
-                        }
+                                pageObject = {
+                                                "widgets": widgetsArray,
+                                                "pageID": pages[i].pageID,
+                                                "pageName": pages[i].pageName,
+                                                "pageData": pages[i].pageData 
+                                }
+                            }
+                            pagesArray.push(pageObject);
+                            dynamicPages.push({
+                                widgets : dynamicWidgets
+                            });
 
-                        var pageObject;
-                        //if the page is a temporary / new page 
-                        if($rootScope.dashboard.pages[i].pageID.substr(0, 4) == "temp" && $rootScope.online ){
+                    }
 
-                            pageObject = {
-                                            "widgets": widgetsArray,
-                                            "pageID": null,
-                                            "pageName": pages[i].pageName,
-                                            "pageData": null 
+                    var dashboardObject;
+                    
+                    if(typeof $rootScope.dashboard.deletions == "undefined")
+                        {
+                            $rootScope.dashboard.deletions = {
+                                "componentIDs":[],
+                                "pageIDs":[],
+                                "widgetIDs":[]
+
                             }
                         }
-                        else{
 
-                            pageObject = {
-                                            "widgets": widgetsArray,
-                                            "pageID": pages[i].pageID,
-                                            "pageName": pages[i].pageName,
-                                            "pageData": pages[i].pageData 
-                            }
+                    if($rootScope.dashboard.compID == null){
+
+                        dashboardObject = {
+
+                            "pages" : pagesArray,
+                            "compClass": null,
+                            "compType": null,
+                            "compCategory": null,
+                            "compID": null,
+                            "compName": $scope.dashboardName,
+                            "refreshInterval": $scope.refreshInterval,
+                            "deletions": $rootScope.dashboard.deletions
                         }
-                        pagesArray.push(pageObject);
-                        dynamicPages.push({
-                            widgets : dynamicWidgets
+                    }
+                    else{
+
+                        dashboardObject = {
+
+                            "pages" : pagesArray,
+                            "compClass": $rootScope.dashboard.compClass,
+                            "compType": $rootScope.dashboard.compType,
+                            "compCategory": $rootScope.dashboard.compCategory,
+                            "compID": $rootScope.dashboard.compID,
+                            "compName": $scope.dashboardName,
+                            "refreshInterval": $rootScope.dashboard.refreshInterval,
+                            // "deletions": {
+                            //                 "componentIDs":[],
+                            //                 "pageIDs":[],
+                            //                 "widgetIDs":[]
+                            //             }
+                            "deletions": $rootScope.dashboard.deletions
+                        }
+                    }
+
+                    //id fields are accepted close dialog
+                    //$mdDialog.hide();
+
+                    var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
+                    $http({
+                        method: 'POST',
+                        
+                        url: Digin_Engine_API+'store_component',
+                        data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
+                        headers: {  
+                                    'Content-Type': 'application/json',
+                                    'SecurityToken':userInfo.SecurityToken,
+                                    'Domain':Digin_Domain
+                        }
+                    })
+                    .success(function(response){
+                        console.log("response", response);
+                        //assign the id name type refresh interval to dashboard
+                        var selectedPage = $rootScope.selectedPage;
+                        $rootScope.dashboard.compID = response.Result;
+                        dashboardObject.compID = response.Result;
+                        $rootScope.dashboard.compName = $scope.dashboardName;
+                        $rootScope.dashboard.compType = $scope.dashboardType;
+                        $rootScope.dashboard.refreshInterval = $scope.refreshInterval;
+                        // Insert data into pouchDb
+                        insertPouchDB(dashboardObject); 
+                        $scope.isLoadingDashBoardSave = false;
+                        $scope.isButtonDashBoardSave=true;
+                        $mdDialog.hide();
+                        ngToast.create({
+                            className: 'success',
+                            content: 'Successfuly Saved Dashboard',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
                         });
 
-                }
 
-                var dashboardObject;
-                
-                if(typeof $rootScope.dashboard.deletions == "undefined")
-                    {
-                        $rootScope.dashboard.deletions = {
-                            "componentIDs":[],
-                            "pageIDs":[],
-                            "widgetIDs":[]
-
+                    })
+                    .error(function(error){  
+                        // Insert data into pouchDb
+                        insertPouchDB(dashboardObject);                     
+                        ngToast.create({
+                            className: 'danger',
+                            content: 'Failed Saving Dashboard. Please Try Again!',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
+                        });
+                        $scope.isLoadingDashBoardSave = false;
+                        $scope.isButtonDashBoardSave=true;
+                        $mdDialog.hide()
+                    });   
+                        // map data to all charts
+                    for ( var i = 0; i < dynamicPages.length; i++){
+                        for ( var j = 0; j < dynamicPages[i].widgets.length; j++){
+                            if (dynamicPages[i].widgets[j].isChart){
+                                var chartType = $rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType;
+                                $scope.mapChartData(chartType,i,j,dynamicPages[i].widgets[j].data);
+                            }
                         }
-                    }
-
-                if($rootScope.dashboard.compID == null){
-
-                    dashboardObject = {
-
-                        "pages" : pagesArray,
-                        "compClass": null,
-                        "compType": null,
-                        "compCategory": null,
-                        "compID": null,
-                        "compName": $scope.dashboardName,
-                        "refreshInterval": $scope.refreshInterval,
-                        "deletions": $rootScope.dashboard.deletions
-                    }
-                }
-                else{
-
-                    dashboardObject = {
-
-                        "pages" : pagesArray,
-                        "compClass": $rootScope.dashboard.compClass,
-                        "compType": $rootScope.dashboard.compType,
-                        "compCategory": $rootScope.dashboard.compCategory,
-                        "compID": $rootScope.dashboard.compID,
-                        "compName": $scope.dashboardName,
-                        "refreshInterval": $rootScope.dashboard.refreshInterval,
-                        // "deletions": {
-                        //                 "componentIDs":[],
-                        //                 "pageIDs":[],
-                        //                 "widgetIDs":[]
-                        //             }
-                        "deletions": $rootScope.dashboard.deletions
-                    }
-                }
-
-                //id fields are accepted close dialog
-                //$mdDialog.hide();
-
-                var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
-                $http({
-                    method: 'POST',
-                    
-                    url: Digin_Engine_API+'store_component',
-                    data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
-                    headers: {  
-                                'Content-Type': 'application/json',
-                                'SecurityToken':userInfo.SecurityToken,
-                                'Domain':Digin_Domain
-                    }
-                })
-                .success(function(response){
-                    console.log("response", response);
-                    //assign the id name type refresh interval to dashboard
-                    var selectedPage = $rootScope.selectedPage;
-                    $rootScope.dashboard.compID = response.Result;
-                    dashboardObject.compID = response.Result;
-                    $rootScope.dashboard.compName = $scope.dashboardName;
-                    $rootScope.dashboard.compType = $scope.dashboardType;
-                    $rootScope.dashboard.refreshInterval = $scope.refreshInterval;
-                    // Insert data into pouchDb
-                    insertPouchDB(dashboardObject); 
-                    $scope.isLoadingDashBoardSave = false;
-                    $scope.isButtonDashBoardSave=true;
-                    $mdDialog.hide();
+                    }                    
+                }else{ // one of the fields not filled
                     ngToast.create({
-                        className: 'success',
-                        content: 'Successfuly Saved Dashboard',
-                        horizontalPosition: 'center',
-                        verticalPosition: 'top',
-                        dismissOnClick: true
-                    });
-
-
-                })
-                .error(function(error){  
-                    // Insert data into pouchDb
-                    insertPouchDB(dashboardObject);                     
-                    ngToast.create({
-                        className: 'danger',
-                        content: 'Failed Saving Dashboard. Please Try Again!',
-                        horizontalPosition: 'center',
-                        verticalPosition: 'top',
-                        dismissOnClick: true
-                    });
-                    $scope.isLoadingDashBoardSave = false;
-                    $scope.isButtonDashBoardSave=true;
-                    $mdDialog.hide()
-                });   
-                    // map data to all charts
-                for ( var i = 0; i < dynamicPages.length; i++){
-                    for ( var j = 0; j < dynamicPages[i].widgets.length; j++){
-                        if (dynamicPages[i].widgets[j].isChart){
-                            var chartType = $rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType;
-                            $scope.mapChartData(chartType,i,j,dynamicPages[i].widgets[j].data);
-                        }
-                    }
-                }                    
-            }else{ // one of the fields not filled
+                            className: 'danger',
+                            content: 'you cant duplicate the name..',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
+                        });
+                }
+            }
+            else{
                 ngToast.create({
-                        className: 'danger',
-                        content: 'Please fill all the fields and try again!',
-                        horizontalPosition: 'center',
-                        verticalPosition: 'top',
-                        dismissOnClick: true
-                    });
+                            className: 'danger',
+                            content: 'Please fill all the fields and try again!',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
+                        });
             }
         }
     }

@@ -56,7 +56,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
         method: ["Additive", "Multiplicative"],
         models: ["double exponential smoothing", "triple exponential smoothing"],
-        intervals: ["Daily", "Weekly", "Monthly", "Yearly"],
+        intervals: ["Daily", "Monthly", "Yearly"],
         paramObj: {
             method: "Additive",
             model: "triple exponential smoothing",
@@ -64,12 +64,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             alpha: 0.716,
             beta: 0.029,
             gamma: 0.993,
-            fcast_days: 30,
+            a: 0.716,
+            b: 0.029,
+            g: 0.993,
+            fcast_days: 12,
             tbl: $scope.sourceData.tbl,
             date_field: "",
             f_field: "",
-            len_season: 7,
-            interval: "Daily"
+            len_season: 12,
+            interval: "Monthly"
         }
     };
     $scope.recordedColors = {};
@@ -879,7 +882,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }
                         
                 $scope.selectedChart = onSelect;
-                eval("$scope." + $scope.selectedChart.chartType + ".changeType()");
+
                 //privateFun.createHighchartsChart(onSelect.chart);
 
                 var seriesArr = $scope.executeQryData.executeMeasures;
@@ -887,6 +890,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 if ( seriesArr.length > 1 && $scope.chartType == 'pie' ){
                     privateFun.fireMessage('0', "Cannot generate "+$scope.chartType+" chart with more than one series");
                     return;
+                }
+                else{
+                    eval("$scope." + $scope.selectedChart.chartType + ".changeType()");
                 }
 
                 if (seriesArr.length < 1 && chartTypeTrue) {
@@ -1237,7 +1243,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.$watch("forecastObj.paramObj", function(newValue, oldValue) {
 
         if (newValue !== oldValue) {
-            if (!(newValue.mod != oldValue.mod || newValue.date_field != oldValue.date_field || newValue.f_field != oldValue.f_field) ){
+            if (!(newValue.mod != oldValue.mod || newValue.date_field != oldValue.date_field || newValue.f_field != oldValue.f_field || newValue.alpha != oldValue.alpha || newValue.beta != oldValue.beta || newValue.gamma != oldValue.gamma) ){
             switch(newValue.model){
                 case "double exponential smoothing":
                     newValue.mod = 'double_exp';
@@ -1257,6 +1263,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
     }, true);
 
+    // change the value of those parameters seperately to prevent $watch from calling the service each time a value is changeds
+     $scope.setValue = function(obj) {
+        switch(obj){
+            case 'alpha':
+                $scope.forecastObj.paramObj.a = $scope.forecastObj.paramObj.alpha;
+                break;
+            case 'beta' : 
+                $scope.forecastObj.paramObj.b = $scope.forecastObj.paramObj.beta;
+                break;
+            case 'gamma' :
+                $scope.forecastObj.paramObj.g = $scope.forecastObj.paramObj.gamma;
+                break;
+        }
+    };
+
 
     $scope.generateForecast = function(fObj) {
 
@@ -1272,11 +1293,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             break;
                         case "actual":
                             serArr.push({
+                                name: 'actual values',
                                 data: data[key]
                             });
                             break;                        
                         case "forecast":
                             serArr.push({
+                                name: 'forecasted values',
                                 data: data[key]
                             });
                             break;
@@ -1295,6 +1318,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     title: {
                         text: ''
                     }
+                };
+
+                $scope.highchartsNG['title'] = {
+                    text: ''
                 };
 
                 $scope.highchartsNG['options'] = {

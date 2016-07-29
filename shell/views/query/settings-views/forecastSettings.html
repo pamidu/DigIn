@@ -24,11 +24,23 @@
         </md-select>
     </md-input-container>
     <md-input-container>
-        <label>Forcast days</label>
+        <label>Forcast Period ( {{forecastObj.paramObj.interval}} ) </label>
         <input ng-model="forecastObj.paramObj.fcast_days">
     </md-input-container>
     <md-input-container>
-        <label>Moving Average Period</label>
-        <input ng-model="forecastObj.paramObj.len_season">
+        <label>Length of season ( {{forecastObj.paramObj.interval}} )</label>
+        <input ng-model="forecastObj.paramObj.len_season" ng-disabled="forecastObj.paramObj.model == 'double exponential smoothing'">
     </md-input-container>
+    <md-input-container>
+        <label> Alpha </label>
+        <input ng-model="forecastObj.paramObj.alpha" ng-blur = "setValue('alpha')">
+    </md-input-container>
+    <md-input-container>
+        <label> Beta </label>
+        <input ng-model="forecastObj.paramObj.beta" ng-blur = "setValue('beta')">
+    </md-input-container>
+    <md-input-container>
+        <label> Gamma </label>
+        <input ng-model="forecastObj.paramObj.gamma" ng-blur = "setValue('gamma')">
+    </md-input-container>        
 </div>

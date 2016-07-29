@@ -2192,6 +2192,7 @@ routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widgetID', '$
              for (var i = 0; i < data.webPages.value.length; i++) {
 
                     var entry = data.webPages.value[i];
+                    entry.displayUrl = "http://"+entry.displayUrl;
                     $scope.entryArray.push(entry);
                     $scope.$apply();
                 }

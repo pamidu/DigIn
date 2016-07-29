@@ -2,10 +2,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter','ProfileService', 'pouchDB',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter','ProfileService', 'pouchDB','Fullscreen',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
               $http, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter,ProfileService, pouchDB) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter,ProfileService, pouchDB, Fullscreen) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -74,7 +74,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         var baseUrl = "http://" + window.location.hostname;
 
         //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
-        $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
+        $http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
             .success(function(response){
                 console.log(response);
                 $rootScope.profile_Det=response;
@@ -737,6 +737,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             console.log("data getAllDashboards", data);
 
                             $scope.dashboards = [];
+
                             // seperate reports and dashboards
                             for (var i = 0; i < data.Result.length; i++) {
                                 if ( data.Result[i].compType == "Report"){
@@ -745,9 +746,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                     );
                                 }
                                 else {
+
                                     $scope.dashboards.push(
                                         {dashboardID: data.Result[i].compID, dashboardName: data.Result[i].compName}
                                     );
+
+                                    DashboardService.dashboards = $scope.dashboards;
+
                                 }
                             }
 
@@ -1206,6 +1211,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                         var numOfPages = $rootScope.dashboard.pages.length;
 
+                      
+
                         if (numOfPages == 1) {
                             $scope.message = numOfPages + " page"
                         }
@@ -1219,9 +1226,18 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 .substring(1);
                         }
                         $scope.createNewPage = function () {
+
+                            var noDuplicate = true;
+                            //to check weather the newpage is allready exist 
+                            $rootScope.dashboard.pages.forEach(function(key){
+                                if(key.pageName.toUpperCase() == $scope.title.toUpperCase() ){
+                                    noDuplicate = false;
+                                }
+                            });
+
                             //adding temp infront of id for a new / temp page till it gets saved in backend
                             //after saved in backend it will be assigned a different id
-                            if ($scope.title) {
+                            if ($scope.title && noDuplicate) { 
                                 var page = {
                                     "widgets": [],
                                     "pageID": "temp" + $scope.createuuid(),
@@ -1242,13 +1258,28 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 });
                             }
                             else {
-                                ngToast.create({
-                                    className: 'danger',
-                                    content: 'Please fill the name field',
-                                    horizontalPosition: 'center',
-                                    verticalPosition: 'top',
-                                    dismissOnClick: true
-                                });
+
+                                if(noDuplicate){
+                                    ngToast.create({
+                                        className: 'danger',
+                                        content: 'Please fill the name field',
+                                        horizontalPosition: 'center',
+                                        verticalPosition: 'top',
+                                        dismissOnClick: true
+                                    });
+                                }
+                                else{
+
+                                     ngToast.create({
+                                        className: 'danger',
+                                        content: 'you cant duplicate the page name',
+                                        horizontalPosition: 'center',
+                                        verticalPosition: 'top',
+                                        dismissOnClick: true
+                                    });
+                                }
+
+                              
                             }
                         };
                         $scope.close = function () {
@@ -1439,12 +1470,36 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             };
 
             $scope.renameNew = function () {
-                console.log($rootScope);
-                var selectedIndex = $rootScope.selectedPage - 1;
-                $rootScope.dashboard.pages[selectedIndex].pageName = $scope.existPageName;
-                $mdDialog.hide();
+
+                    var noDuplicate = true;
+                                //to check weather the newpage is allready exist 
+                    $rootScope.dashboard.pages.forEach(function(key){
+                        if(key.pageName.toUpperCase() == $scope.existPageName.toUpperCase() ){
+                                noDuplicate = false;
+                        }
+                    });
+
+                    if(noDuplicate){
+                        console.log($rootScope);
+                        var selectedIndex = $rootScope.selectedPage - 1;
+                        $rootScope.dashboard.pages[selectedIndex].pageName = $scope.existPageName;
+                        $mdDialog.hide();
+                    }
+                    else{
+
+                          ngToast.create({
+                                        className: 'danger',
+                                        content: 'you cant duplicate the page name',
+                                        horizontalPosition: 'center',
+                                        verticalPosition: 'top',
+                                        dismissOnClick: true
+                           });
+                    }
+                }
+                    
+               
             };
-        };
+        
 
 
         $scope.clearAllWidgets = function (ev) {

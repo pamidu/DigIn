@@ -840,7 +840,7 @@ $scope.invite = function () {
     };
 
     //#View sittings detail
-        $scope.viewSettings=function(){
+    //$scope.viewSettings=function(){
         if($rootScope.userSettings==undefined)
         {
         }
@@ -849,7 +849,7 @@ $scope.invite = function () {
             $scope.noOfWidget=$rootScope.userSettings.widget_limit;
             $scope.reqLimit=$rootScope.userSettings.query_limit;
         }
-    };
+    //};
 
     //#Clear cache
     $scope.clearCache = function () {
@@ -1111,31 +1111,62 @@ $scope.invite = function () {
                 $rootScope.file=file;
             });
           };
-          reader.readAsDataURL(file);
+          reader.readAsDataURL(file);  
     };
     angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
- 
 
 
+    //#conver dataURL into base64
+    function base64ToBlob(base64Data, contentType) {
+        contentType = contentType || '';
+        var sliceSize = 1024;
+        var byteCharacters = atob(base64Data);
+        var bytesLength = byteCharacters.length;
+        var slicesCount = Math.ceil(bytesLength / sliceSize);
+        var byteArrays = new Array(slicesCount);
+
+        for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+            var begin = sliceIndex * sliceSize;
+            var end = Math.min(begin + sliceSize, bytesLength);
+
+            var bytes = new Array(end - begin);
+            for (var offset = begin, i = 0 ; offset < end; ++i, ++offset) {
+                bytes[i] = byteCharacters[offset].charCodeAt(0);
+            }
+            byteArrays[sliceIndex] = new Uint8Array(bytes);
+        }
+        return new Blob(byteArrays, { type: contentType });
+    };
+
+
+    //#validate image saving and call saving function
     $scope.saveImage = function () {
         if($rootScope.file==undefined){
             fireMsg('0', 'Please select profile picture to upload.');
         }
         else{
-            $scope.upload($rootScope.file);
+            //*Croped image
+                var name=$rootScope.file.name;
+                var file = base64ToBlob($scope.myCroppedImage.replace('data:image/png;base64,',''), 'image/jpeg');
+                file.name=name;
+                //uploader.addToQueue(file);
+                $scope.upload(file);
+
+            //*Original image
+                //$scope.upload($rootScope.file);
+                //$scope.upload();
+
             $scope.selectProfile=true;
             $scope.selectImage=false;
-        }
-           
+        }          
     };
+
 
     $scope.cancelImage = function () {
         $scope.selectProfile=true;
         $scope.selectImage=false;       
     };
 
-
-    
 
 
     //#Function to save profile image

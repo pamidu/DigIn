@@ -38,7 +38,7 @@ p_boarding_module.controller("boarding-main-ctrl", ["$scope", function ($scope) 
 
 
 //Create company view Controller - Start
-p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope", "$http", "$state", "$location", "$mdDialog", "$charge", "$rootScope","$cookies", function ($window, $scope, $http, $state, $location, $mdDialog, $charge, $rootScope, $cookies) {
+p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope", "$http", "$state", "$location", "$mdDialog", "$charge", "$rootScope","$cookies","Digin_Engine_API","Digin_Domain", function ($window, $scope, $http, $state, $location, $mdDialog, $charge, $rootScope, $cookies,"Digin_Engine_API","Digin_Domain") {
     
         $scope.companyPricePlans = [
             {
@@ -234,6 +234,7 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
             resetFormPrestine();
         });
     };
+
     $scope.submitCreateCompanyDetails = function () {
         console.log($rootScope.createCompanyDetails);
         var payload = angular.toJson(defaultDataInjection($rootScope.createCompanyDetails));
@@ -269,11 +270,11 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
     };
 
 	
+    
 //#Tenent creation process
     $scope.createTenant = function (package) {
-
         displayProgress('Tenant creation is processing, please wait...!');
-
+        
         var userInfo ="";
         var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
         var email=userInfo.Email;
@@ -298,7 +299,7 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
             }
         };
 
-        console.log($scope.tenantDtl);		
+        console.log($scope.tenantDtl);      
         $http({
             method: 'POST',
             //url: 'http://digin.io/apis/usertenant/tenant/',
@@ -327,59 +328,19 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
         });
     };    
 
-/*
-$scope.createDataSet = function () {
+    $scope.selectPlan = function (package) //This is the click event for adding a company tenant in add.html
+    {
+        if(package=="FREE"){
 
-        displayProgress('Tenant creation is processing, please wait...!');
-
-        var userInfo ="";
-        var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
-        var email=userInfo.Email;
-        var TenantID = email.replace('@', "");
-            TenantID = TenantID.replace('.', "");
-            TenantID = TenantID.replace('.', "");
-   
-        $http({
-            method: 'POST',
-            //url: 'http://digin.io/apis/usertenant/tenant/',
-            http://digin.io:1929/get_user_settings?SecurityToken=9641343f9b20e64213b2d1e5d9a4b740&Domain=digin.io
-
-            url: di'/apis/usertenant/tenant/',
-            data: angular.toJson($scope.tenantDtl),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .success(function (response) {
-            if (response.Success == true) {
-                $mdDialog.hide();
-                localStorage.setItem('firstLogin',true);
-                window.location = "http://" + response.Data.TenantID;
-                //window.location ="http://digin.io/entry";
-            }
-            else {  
-                $mdDialog.hide();
-                console.log(response.Message);
-            }
-
-        })
-        .error(function (error) {
-
-        });
-    };    
-*/
-
-
-$scope.selectPlan = function (package) //This is the click event for adding a company tenant in add.html
-        {
-            if(package=="FREE"){
-
-                $scope.createTenant(package);
-            }
-            else{
-                newCard(package);
-            }
+            $scope.createTenant(package);
         }
+        else{
+            newCard(package);
+        }
+    };
+    //-------------------
+ 
+
 /*
     $scope.selectPlan = function (package) //This is the click event for adding a company tenant in add.html
         {

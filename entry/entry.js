@@ -43,8 +43,8 @@ routerApp
 
 routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
-        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal',
-        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal) {
+        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API',
+        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API) {
 
             $scope.signindetails = {};
             $scope.isLoggedin = false;
@@ -106,16 +106,42 @@ routerApp
                     data: $scope.signindetails
                 }).success(function (data) {
                     if (data.Success === true) {
-                        if(IsLocal==false) { 
-                            //#Added for live servers ------------------------------
-                            $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
-                        }  
-                        else{
-                            //#Added for local host ------------------------------
-                             document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
-                             document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
-                             window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
-                        }
+
+                        var token=data.Data.SecurityToken;
+
+                        //#create Dataset
+                        $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + token + '&Domain=' + Digin_Domain)
+                        .success(function (result) {
+                            if(result.Is_Success==true){
+                                if(result.Custom_Message=="No user settings saved for given user and domain")
+                                    {
+                                        //console.og(result.Result);
+                                        $scope.createDataSet(token);
+                                    }
+
+                                    console.log(result.Result);
+
+                                //#loggin direct to shell
+                                if(IsLocal==false) { 
+                                    //#Added for live servers ------------------------------
+                                    $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
+                                }  
+                                else{
+                                    //#Added for local host ------------------------------
+                                     document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
+                                     document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
+                                     window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
+                                }
+                            }
+                        })
+                        .error(function (error) {
+                            console.log(error);
+                        });
+
+
+                        
+                        
+
                     }
                     else {
                         $mdDialog.hide();
@@ -131,6 +157,74 @@ routerApp
                     mainFun.fireMsg('0', data.Message);
                 });
             };
+
+            $scope.createDataSet = function (secToken) {
+                //displayProgress('Processing, please wait...!');
+                $http({
+                    method: 'POST',
+                    url: Digin_Engine_API+'set_init_user_settings',
+                    data: angular.toJson({"db":"bigquery"}),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'SecurityToken': secToken,
+                        'Content-Type': 'Content-Type:application/json'
+                    }
+                })
+                .success(function (response) {
+                    if (response.Success == true) {
+                        displaySuccess('Success...!');
+                        $mdDialog.hide();
+                        console.log(response.Message);
+                    }
+                    else {  
+                        displayError('Data set creation fail');
+                        mdDialog.hide();
+                        console.log(response.Message);
+                    }
+
+                })
+                .error(function (error) {
+                    displayError('Data set creation fail');
+                    $mdDialog.hide();
+                    console.log(error);
+                });
+            };    
+
+            /*
+            $scope.isDataSetNotExist=function (secToken, cb){
+                $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + secToken + '&Domain=' + Digin_Domain)
+                .success(function (res) {
+                    if(response.Is_Success==true && response.Custom_Message=='No user settings saved for given user and domain')     
+                    {
+                        cb(true);
+                    }
+                    else
+                    {
+                        
+                    }
+                })
+                .error(function (error) {
+                    cb(false);
+                });
+            };    
+            */
+
+
+
+
+
+
+
+        $scope.isUserExist = function (email, cb) {
+            $http.get('http://104.197.27.7:3048/GetUser/' + email)
+                .success(function (response) {
+                    cb(true);
+                }).error(function (error) {
+                //alert("Fail !"); 
+                cb(false);
+            });
+        }
+
 
 
             //#pre-loader progress - with message
@@ -163,8 +257,6 @@ routerApp
             };
 
 
-
-
             //#load forgot password
             $scope.validateEmail=function(){
                 if($scope.email==undefined){
@@ -178,7 +270,8 @@ routerApp
                 return true;
             };
 
-             $scope.ChangePassword=function(){
+
+            $scope.ChangePassword=function(){
                 $http.get('http://'+Digin_Domain+'/auth/GetUser/'+$scope.email)
                     .success(function(response){
                         if(response.Error){
@@ -219,7 +312,14 @@ routerApp
                 });     
             };
 
-           
+        
+
+
+
+
+
+
+
 
     }])
 

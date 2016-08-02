@@ -21,11 +21,11 @@ routerApp.directive('linearChart', function() {
 
             scope.$watch('chartData', function(newValue, oldValue) {
                 if (newValue) {
-                    scope.drawHierarchicalSummary(newValue);
+                    scope.drawHierarchicalSummary(newValue.data,newValue.id);
                 }
             });
 
-            scope.drawHierarchicalSummary = function(rootData) {
+            scope.drawHierarchicalSummary = function(rootData,divID) {
                 var width = 400,
                     height = 320,
                     root;
@@ -37,10 +37,11 @@ routerApp.directive('linearChart', function() {
                     .gravity(.05)
                     .size([width, height])
                     .on("tick", tick);
+                    
+                var divid = "#" + divID;
+                d3.select(divid).selectAll("*").remove();
 
-                d3.select("#d3Force").selectAll("*").remove();
-
-                svg = d3.select("#d3Force")
+                svg = d3.select(divid)
                     .append("svg").attr("viewBox", "0 0  490 490")
                     .attr("width", '100%')
                     .attr("height", '100%');

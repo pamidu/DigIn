@@ -1267,3 +1267,29 @@ routerApp.service('fileUpload', ['$http', function ($http) {
             });
     }
 }]);
+
+
+/*
+document.getElementById("myBtn").addEventListener("click", function(){
+    alert("Hello World!");
+});
+
+
+
+window.addEventListener("beforeunload", function (e) {
+    var url ="http://" + window.location.hostname+"/unload.php";
+    var win = window.open(url, '_blank');
+    win.focus();
+    
+    /*
+    if( get_cookie(securityToken) ) {
+        document.cookie = 'securityToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+
+    if( get_cookie(authData) ) {
+        document.cookie = 'authData=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+
+});
+*/  
+

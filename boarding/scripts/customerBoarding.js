@@ -38,7 +38,7 @@ p_boarding_module.controller("boarding-main-ctrl", ["$scope", function ($scope) 
 
 
 //Create company view Controller - Start
-p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope", "$http", "$state", "$location", "$mdDialog", "$charge", "$rootScope","$cookies", function ($window, $scope, $http, $state, $location, $mdDialog, $charge, $rootScope, $cookies) {
+p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope", "$http", "$state", "$location", "$mdDialog", "$charge", "$rootScope","$cookies","Digin_Engine_API","Digin_Domain", function ($window, $scope, $http, $state, $location, $mdDialog, $charge, $rootScope, $cookies,"Digin_Engine_API","Digin_Domain") {
     
         $scope.companyPricePlans = [
             {
@@ -234,6 +234,7 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
             resetFormPrestine();
         });
     };
+
     $scope.submitCreateCompanyDetails = function () {
         console.log($rootScope.createCompanyDetails);
         var payload = angular.toJson(defaultDataInjection($rootScope.createCompanyDetails));
@@ -269,11 +270,11 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
     };
 
 	
+    
 //#Tenent creation process
     $scope.createTenant = function (package) {
-
         displayProgress('Tenant creation is processing, please wait...!');
-
+        
         var userInfo ="";
         var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
         var email=userInfo.Email;
@@ -298,7 +299,7 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
             }
         };
 
-        console.log($scope.tenantDtl);		
+        console.log($scope.tenantDtl);      
         $http({
             method: 'POST',
             //url: 'http://digin.io/apis/usertenant/tenant/',
@@ -327,17 +328,19 @@ p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope"
         });
     };    
 
+    $scope.selectPlan = function (package) //This is the click event for adding a company tenant in add.html
+    {
+        if(package=="FREE"){
 
-$scope.selectPlan = function (package) //This is the click event for adding a company tenant in add.html
-        {
-            if(package=="FREE"){
-
-                $scope.createTenant(package);
-            }
-            else{
-                newCard(package);
-            }
+            $scope.createTenant(package);
         }
+        else{
+            newCard(package);
+        }
+    };
+    //-------------------
+ 
+
 /*
     $scope.selectPlan = function (package) //This is the click event for adding a company tenant in add.html
         {

@@ -263,6 +263,7 @@ routerApp.controller('fbInit',['$scope', '$mdDialog', 'widgetID', '$rootScope',f
             $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[objIndex].widgetData.widData = data;
             $scope.diginLogo = 'digin-logo-wrapper2';
             $scope.showFinishButton = true;
+            $mdDialog.hide();
             $scope.$apply();
         });
     };
@@ -502,6 +503,7 @@ routerApp.controller('YoutubeInit',['$scope', '$http', '$mdDialog', 'widgetID', 
 
                 $scope.showFinishButton = true;
                 $scope.diginLogo = 'digin-logo-wrapper2';
+                $mdDialog.hide();
         }).error(function() {
                 $log.info('Search error');
                 $scope.showFinishButton = false;
@@ -2190,6 +2192,7 @@ routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widgetID', '$
              for (var i = 0; i < data.webPages.value.length; i++) {
 
                     var entry = data.webPages.value[i];
+                    entry.displayUrl = "http://"+entry.displayUrl;
                     $scope.entryArray.push(entry);
                     $scope.$apply();
                 }
@@ -2441,6 +2444,7 @@ routerApp.controller('googlePlusInit',['$scope', 'googleService', '$http', '$mdD
             }, function(err) {
                 console.log('Failed: ' + err);
             });
+            $mdDialog.hide();
         };
         $scope.logout = function() {
 

@@ -196,7 +196,7 @@
                     </div>
                 </div>
             </div>
-            <div flex="dynFlex">
+            <div flex="dynFlex" style="overflow: hidden;">
                 <div class="digin-gb-chart-wrap" ng-style="chartGbMeaStyle">
                     <!-- chart loading wrap -->
                     <div class="digin-gb-chart-loading"
@@ -223,13 +223,13 @@
                     <div class="panel-header inline-panel-header p-b-0">
                         <h3 class="font-weight-300">
                             custom query design
-                            <div class="header-icon">
+                            <div class="header-icon" >
                                 <i class="ti-help"></i>
                             </div>
                             <div ng-click="changeEditState()" class="header-icon">
                                 <i class="ti-pencil"></i>
                             </div>
-                            <div class="header-icon">
+                            <div class="header-icon" style="display: none;">
                                 <i class="ti-paint-bucket"
                                    ng-click="eventHndler.onClickSetting('5')"></i>
                             </div>

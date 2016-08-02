@@ -382,6 +382,54 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     }
                 });
             },
+            onExecuteManualQuery: function(){
+                if ( $scope.sourceUi.selectedSource != null ){
+                    $csContainer.fillCSContainer({
+                        src: $scope.sourceUi.selectedSource,
+                        tbl: "",
+                        fAttArr: "",
+                        fMeaArr: ""
+                    });                    
+                    publicFun.clearAll(function(status) {            
+                        if (status) {
+                            $scope.currWidget = {
+                                widData: {},
+                                widView: "",                       
+                                dataView: "ViewElasticData",
+                                dataCtrl: "elasticDataCtrl",
+                                initTemplate: "",
+                                initCtrl: "commonSrcInit",
+                                uniqueType: "Dynamic Visuals",
+                                syncState: true,
+                                expanded: true,
+                                seriesname: "",
+                                externalDataURL: "",
+                                dataname: "",
+                                d3plugin: "",
+                                divider: false,
+                                id: Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1),
+                                type: "Visualization",
+                                width: '370px',
+                                height: '300px',
+                                mheight: '100%',
+                                highchartsNG: {}
+                            };                    
+                            $state.go("home.QueryBuilder", {
+                            widObj: {   
+                                "widgetID": null,
+                                "widgetName": $scope.currWidget.widName,
+                                "widgetData": $scope.currWidget
+                                }
+                            });
+                            $mdSidenav('right').close();
+                        }
+                    }); 
+                }
+                else{
+                    publicFun.fireMessage('0', 'Please select a source');
+                    return;
+                }                
+            },
             onClickNext: function(index) {
                 commonUi.isServiceError = false;
                 switch (index) {

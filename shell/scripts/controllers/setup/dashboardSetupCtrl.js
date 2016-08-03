@@ -146,55 +146,115 @@ $scope.inviteUser = function () {
 }
 */
 
-//invite user ***  
-$scope.inviteUser = function () {
-    $scope.exist=false;
-
-    if($rootScope.sharableUsers==undefined){
-        $scope.invite();
-    }   
-    else if($rootScope.sharableUsers.length>0){
-        for(var i=0; i<$rootScope.sharableUsers.length; i++){
-            if($scope.user.email==$rootScope.sharableUsers[i].Id){
-                $scope.exist=true;
-            }
-        };
-
-        if($scope.exist==true){
-            fireMsg('0', '</strong>This user is already invited');
-            return;
+    //invite user *** 
+    $scope.validateEmail1=function(email){
+        if(email==undefined){
+            mainFun.fireMsg('0', 'Email can not be a blank.');
+            return false;
+        }
+        else if(email==""){
+            mainFun.fireMsg('0', 'Email can not be a blank.');
+            return false;
         }
         else{
-            $scope.invite();
+            return true;
         }
+        return true;
     }
-}
+    
+    $scope.validateEmail2=function (email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
 
+    
+    $scope.inviteUser = function () {   
+        var mail=$scope.user.email;
+        if($scope.validateEmail1(mail)==false){return;}
+        else if ($scope.validateEmail2(mail)==false){fireMsg('0', 'Please enter valid email address to proceed.'); return;}
+        else{
+            
+            $scope.exist=false;
 
+            if($rootScope.sharableUsers==undefined){
+                $scope.invite();
+            }   
+            else if($rootScope.sharableUsers.length>0){
+                for(var i=0; i<$rootScope.sharableUsers.length; i++){
+                    if($scope.user.email==$rootScope.sharableUsers[i].Id){
+                        $scope.exist=true;
+                    }
+                };
 
-$scope.invite = function () {
-        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
-        $http.get(baseUrl + '/auth/tenant/AddUser/' + $scope.user.email + '/user', {
-                headers: {'Securitytoken': userInfo.SecurityToken}
-            })
-            .success(function (response) {
-                if(response=="false"){
-                    fireMsg('0', '</strong>This user has not been registered for DigIn.');
+                if($scope.exist==true){
+                    fireMsg('0', '</strong>This user is already invited');
+                    return;
                 }
                 else{
-                    //privateFun.getAllSharableObj();
-                        //$scope.sharableObjs= $rootScope.sharableObjs;
-                        //$scope.sharableUsers = $rootScope.sharableUsers;
-                        //$scope.sharableGroups = $rootScope.sharableGroups;
-                    fireMsg('1', '</strong>Invitation sent successfully.');
-                    $scope.user.email='';
+                    $scope.invite();
                 }
-            }).error(function (error) {
-                fireMsg('0', 'Invitation sending fail');
+            }
+        }   
+    }
+
+
+
+    $scope.invite = function () {
+            var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+            $http.get(baseUrl + '/auth/tenant/AddUser/' + $scope.user.email + '/user', {
+                    headers: {'Securitytoken': userInfo.SecurityToken}
+                })
+                .success(function (response) {
+                    if(response=="false"){
+                        fireMsg('0', '</strong>This user has not been registered for DigIn.');
+                    }
+                    else{
+                        //privateFun.getAllSharableObj();
+                            //$scope.sharableObjs= $rootScope.sharableObjs;
+                            //$scope.sharableUsers = $rootScope.sharableUsers;
+                            //$scope.sharableGroups = $rootScope.sharableGroups;
+                        fireMsg('1', '</strong>Invitation sent successfully.');
+                        $scope.getSharableObj();
+                        $scope.inviteForm.$setUntouched();
+                        $scope.user.email='';
+                    }
+                }).error(function (error) {
+                    fireMsg('0', 'Invitation sending fail');
+            });
+    };
+
+    
+    $scope.getSharableObj=function(){
+        var baseUrl = "http://" + window.location.hostname;
+        $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+            .success(function (data) {
+                console.log(data);
+                $rootScope.sharableObjs = [];
+                $rootScope.sharableUsers = [];
+                $rootScope.sharableGroups = [];
+
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].Type == "User") {
+                        $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                        $rootScope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
+                    }
+                    else if (data[i].Type == "Group") {
+                        $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                        $rootScope.sharableGroups.push({groupId: data[i].Id, groupname: data[i].Name});
+                    }
+                }
+                console.log($rootScope.sharableObjs);
+                console.log($rootScope.sharableUsers);
+                console.log($rootScope.sharableGroups);
+        
+            }).error(function () {
+            //alert("Oops! There was a problem retrieving the User");
         });
-};
-
-
+    }
+    
+    
+    
+    
 
 //*User Settngs Page
     $scope.sizes = [
@@ -400,6 +460,10 @@ $scope.invite = function () {
             fireMsg('0', 'Group name can not be empty... !');
             return false;
         }
+        else if($scope.groupName==undefined){
+            fireMsg('0', 'Group name can not be empty... !');
+            return false;
+        }
         else{
             return true;
         }
@@ -427,13 +491,19 @@ $scope.invite = function () {
       function querySearch(query) {
         var lowercaseQuery = angular.lowercase(query);
         var results = [];
-        for (i = 0; i<$scope.sharableUsers.length;  i++) {
-            var uName=$scope.sharableUsers[i].Name.toLowerCase();
-            if (uName.indexOf(lowercaseQuery) != -1) {
-                results.push($scope.sharableUsers[i]);
-            }
+        
+        if($scope.sharableUsers==undefined){
+              
         }
-        return results;
+        else{
+            for (i = 0; i<$scope.sharableUsers.length;  i++) {
+                var uName=$scope.sharableUsers[i].Name.toLowerCase();
+                if (uName.indexOf(lowercaseQuery) != -1) {
+                    results.push($scope.sharableUsers[i]);
+                }
+            }
+            return results;
+        }
     }
 
     //-----------
@@ -650,20 +720,27 @@ $scope.invite = function () {
     $scope.loadAddUsersWindow = function (group,grpName, pickedUsers, allUsers) {
 
             //*get can sharable users
-
+            $scope.newSelected=[]; 
             $scope.remainUsers=[]; 
-            for (var i=0; i< allUsers.length; i++) {
-                 var exist=false;
-                for(var j=0; j< pickedUsers.length; j++){
-                    if (allUsers[i].Id ==  pickedUsers[j].Id) { 
-                        exist=true;
-                    }
-                }   
+            
+            if(allUsers==undefined){
+              
+            }
+            else{
+                for (var i=0; i< allUsers.length; i++) {
+                     var exist=false;
+                    for(var j=0; j< pickedUsers.length; j++){
+                        if (allUsers[i].Id ==  pickedUsers[j].Id) { 
+                            exist=true;
+                        }
+                    }   
 
-                if(exist==false) {
-                    $scope.remainUsers.push(allUsers[i]);  
-                }           
-            }   
+                    if(exist==false) {
+                        $scope.remainUsers.push(allUsers[i]);  
+                    }           
+                }  
+            }
+            
             console.log($scope.remainUsers);
             //------------
 
@@ -684,7 +761,36 @@ $scope.invite = function () {
         $scope.grpName = grpName;
         $scope.remainUsers = remainUsers;
         $scope.newSelected=[];
-    
+
+        //------------
+        $scope.selectedItem = null;
+        $scope.searchText = null;
+        $scope.querySearch = querySearch;
+        
+        $scope.ContactChip = [];
+
+          function querySearch(query) {
+            var lowercaseQuery = angular.lowercase(query);
+            var results = [];
+            
+            if($scope.remainUsers==undefined){}
+            else{
+                for (i = 0; i<$scope.remainUsers.length;  i++) {
+                    var uName=$scope.remainUsers[i].Name.toLowerCase();
+                    if (uName.indexOf(lowercaseQuery) != -1) {
+                        results.push($scope.remainUsers[i]);
+                    }
+                }
+                return results;
+            }
+        }
+        //-----------
+
+
+
+
+
+
         //------------Add users to group*******
         $scope.addUsersToGroup = function (newSelected) {
             //Add user to group
@@ -693,8 +799,10 @@ $scope.invite = function () {
                 "users": newSelected
             };
 
-
-            if ($scope.userDtl==[]){return;}
+            
+            if ($scope.userDtl==[]){fireMsg('0', 'You have not selected any user.'); return;}
+            if ($scope.userDtl.users.length==0){fireMsg('0', 'You have not selected any user.'); return;}
+            
             $http({
                 method: 'POST',
                 url: baseUrl+'/apis/usercommon/addUserToGroup',
@@ -764,6 +872,9 @@ $scope.invite = function () {
         });
 
     };
+
+
+
 
 
     //------TESTING END

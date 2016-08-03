@@ -425,18 +425,9 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         
         $scope.d3ImgDownload = function (widget,type) {
 
-            var element =null;
-            switch (widget.widgetName) {
-                
-                case 'sunburst':
-                    element =$("#d3Sunburst");
-                    break;
-
-                case 'hierarchy':
-                    element =$("#d3Force");
-                    break;
-
-            }
+             
+            var id="#"+widget.widgetData.widData.id;
+            var element =$(""+id+"");
 
             var downType = null;
             switch (type) {
@@ -493,18 +484,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
         $scope.svg_to_pdf = function(widget){
             
-            var element =null;
-            switch (widget.widgetName) {
-                
-                case 'sunburst':
-                    element =$("#d3Sunburst");
-                    break;
-
-                case 'hierarchy':
-                    element =$("#d3Force");
-                    break;
-
-            }
+            var id="#"+widget.widgetData.widData.id;
+            var element =$(""+id+"");
 
             $("#svg-container").empty();
             $("#svg-container").append(element[0].innerHTML);
@@ -556,18 +537,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
         $scope.printD3Chart = function(widget){
 
-            var element =null;
-            switch (widget.widgetName) {
-                
-                case 'sunburst':
-                    element =$("#d3Sunburst");
-                    break;
-
-                case 'hierarchy':
-                    element =$("#d3Force");
-                    break;
-
-            }
+            var id="#"+widget.widgetData.widData.id;
+            var element =$(""+id+"");
 
             var printContents = element[0].innerHTML;
             var originalContents = document.body.innerHTML;

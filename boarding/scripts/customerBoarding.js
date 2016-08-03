@@ -38,7 +38,7 @@ p_boarding_module.controller("boarding-main-ctrl", ["$scope", function ($scope) 
 
 
 //Create company view Controller - Start
-p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope", "$http", "$state", "$location", "$mdDialog", "$charge", "$rootScope","$cookies","Digin_Engine_API","Digin_Domain", function ($window, $scope, $http, $state, $location, $mdDialog, $charge, $rootScope, $cookies,"Digin_Engine_API","Digin_Domain") {
+p_boarding_module.controller("boarding-createcompany-ctrl", ["$window", "$scope", "$http", "$state", "$location", "$mdDialog", "$charge", "$rootScope","$cookies", function ($window, $scope, $http, $state, $location, $mdDialog, $charge, $rootScope, $cookies) {
     
         $scope.companyPricePlans = [
             {

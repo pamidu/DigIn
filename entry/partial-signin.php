@@ -50,12 +50,16 @@
                             </div>
                         </div>
 
-
-
-                        <form name="frmDiginLogin" autocomplete="off" ng-submit="login()">
+                        <form name="frmDiginLogin" autocomplete="off" ng-submit="login()">             
                             <div class="login-bdy">
                                 <div class="text-wrap ">
                                     <div>
+
+                                        <div style="padding: 6px;background:#5ac55f;border-radius: 3px; align:center;" ng-show={{activated}}>   
+                                           <span style="padding-left: 0px;color:white;font-weight:700;font-size: 15px; margin: 0px; align:center;">Your acount is activated.</span>
+                                           <img src="image/check.png" style="width:30px;height:30px;">
+                                        </div>
+                                        </br>
                                         <div class="txt-box-login"
                                              ng-class="{error:error.isUserName,'':!error.isUserName}">
                                             <label>User name</label>
@@ -112,7 +116,7 @@
                                     <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
                                     <span class="sr-only">Loading...</span>
                                 </div>
-                                
+                                </br>
                                 <div class="login-btn-wrap" ng-if="!error.isLoading">
                                     <a href="javascript:void(0  )"
                                        ng-click="login()"

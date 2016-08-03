@@ -43,11 +43,12 @@ routerApp
 
 routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
-        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API',
-        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API) {
+        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location',
+        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location) {
 
             $scope.signindetails = {};
             $scope.isLoggedin = false;
+            $scope.activated=false;
 
             $scope.error = {
                 isUserName: false,
@@ -56,6 +57,18 @@ routerApp
                 isLoading: false
             };
 
+
+            //-----activated user - Signin-----------
+            var activated = ($location.search()).activated;
+            $scope.activated=false;
+            if(activated==undefined){
+                $scope.activated=false;
+            }
+            else{
+                $scope.activated=true;
+            }
+            //------------------------------------
+
             $scope.signup = function () {
                 $scope.isLoggedin = false;
                 $state.go('signup');
@@ -63,10 +76,12 @@ routerApp
 
             $scope.onClickSignUp = function () {
                 $state.go('signup');
+                $scope.activated=false;
             };
 
             $scope.onClickSignIn = function () {
                 $state.go('signin');
+                $scope.activated=false;
             };
 
             $scope.onClickForgetPw = function () {
@@ -360,6 +375,7 @@ routerApp
             $scope.onClickSignIn = function () {
                 $scope.isLoggedin = false;
                 $scope.freeze=false;
+                $scope.activated=false;
                 $state.go('signin');
             };
 

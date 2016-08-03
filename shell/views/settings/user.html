@@ -19,15 +19,51 @@
                 </div>
 
             </div>
-            <div layout="column" class="setup-info-container">
-                <md-input-container>
-                    <label>type email address here..</label>
-                    <input ng-model="user.email">
-                </md-input-container>
-                <md-button class="setup-button md-raised md-primary" ng-click="inviteUser()"><span
-                        class="setup-font-theme">Invite User</span>
-                </md-button>
-            </div>
+            
+            
+                <!--
+                <div layout="column" class="setup-info-container">
+                    <md-input-container>
+                        <label>type email address here..</label>
+                        <input ng-model="user.email" type="email">
+                    </md-input-container>
+                    
+                    <md-button class="setup-button md-raised md-primary" ng-click="inviteUser()">
+                        <span class="setup-font-theme">Invite User</span>
+                    </md-button>
+                </div>
+                <input name="user.email" type="mail" ng-model="user.email" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required>
+                -->
+                    <form name="inviteForm" ng-submit="inviteUser()">
+                        <div class="setup-info-container">
+                            <md-input-container>
+                              <label translate>Email Address</label>
+                              <input name="user.email" type="mail" ng-model="user.email" required>
+                              
+                              <div ng-messages="inviteForm.user.email.$error" ng-if='inviteForm.user.email.$touched' role="alert">
+                                <div ng-message="required">Please enter a valid email address!</div>
+                              </div>
+                             </md-input-container>
+                              
+                          
+                            
+                            
+                          
+                                                         
+                            <md-button type="submit" class="setup-button md-raised md-primary">
+                                <span class="setup-font-theme">INVITE USER</span>
+                            </md-button>
+                            
+                            
+                        </div>  
+                            
+                            
+                        
+                    </form>
+                
+                
+
+            
         </div>
 
 

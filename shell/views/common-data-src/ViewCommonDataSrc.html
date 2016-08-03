@@ -93,11 +93,7 @@
                         <span class="btn btn-block btn-default"
                               ng-click="commonUi.onClickNext('1')" ng-disabled="!sourceUi.selectedSource">
                             next
-                        </span>
-<!--                         <span class="btn btn-block btn-default btn-close"
-                              ng-click="commonUi.onExecuteManualQuery()" ng-disabled="!sourceUi.selectedSource">
-                            Manual Query
-                        </span>  -->                       
+                        </span>                     
                 <!-- <span class="btn btn-block btn-default btn-close"
                       ng-click="commonUi.onClickClose()">
                             close
@@ -167,7 +163,10 @@
             <!-- select table data -->
             <div class="digin-cmds-source digin-cmds-info"
                  ng-show="sourceUi.selectedSource!=''">
-
+                    <span class="btn btn-block btn-default"
+                          ng-click="commonUi.onExecuteManualQuery()" ng-disabled="!sourceUi.selectedSource">
+                        Custom Query
+                    </span> 
                 <div class="info-wrap">
                     <!-- Is data loading -->
                     <div class="digin-cmds-loading"
@@ -183,7 +182,7 @@
                         <md-input-container class="md-icon-float md-block width100percent">
                             <label>Search</label>
                             <input type="text" ng-model="sourceUi.search">
-                        </md-input-container>
+                        </md-input-container>                          
                     </div>
                     <!-- table data -->
                     <ui ng-repeat="row in sourceUi.tableData | filter : {name: sourceUi.search}">

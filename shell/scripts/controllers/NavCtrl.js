@@ -509,8 +509,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 url: Digin_Engine_API + 'delete_components',
                 data: angular.toJson($scope.Det),
                 headers: {
-                    'Securitytoken': userInfo.SecurityToken,
-                    Domain: Digin_Domain
+                    'Securitytoken': userInfo.SecurityToken
                 }
             })
                 .success(function (response) {

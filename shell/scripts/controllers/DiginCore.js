@@ -463,8 +463,10 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             var ctx = null;
             var ctx = canvas.getContext("2d");
             ctx.clearRect(0, 0, 400, 400);
-            ctx.fillStyle = "#FFFFFF";
-            ctx.fillRect(0,0,400,400);
+            if(type == "jpeg"){
+                 ctx.fillStyle = "#FFFFFF";
+                 ctx.fillRect(0,0,400,400);
+            }
             var DOMURL = self.URL || self.webkitURL || self;
             var img, svg =null;
             var img = new Image();
@@ -486,6 +488,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             }
 
             img.src = url;
+            $scope.d3chartBtnClick(widget);
         }
 
         $scope.svg_to_pdf = function(widget){
@@ -519,13 +522,15 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                   var canvas = document.getElementById("canvas");
                   var context = canvas.getContext('2d');
                   context.clearRect(0, 0, 400, 400);
-                  var doc = new jsPDF('portrait', 'pt');
+                  context.setFillColor = "#FFFFFF";
+                  context.fillRect(0,0,400,400);
+                  var doc = new jsPDF('landscape', 'pt');
                   var dataUrl;
 
                   canvas.width = image.width;
                   canvas.height = image.height;
                   context.drawImage(image, 0, 0, image.width, image.height);
-                  dataUrl = canvas.toDataURL('image/jpeg');
+                  dataUrl = canvas.toDataURL('image/JPEG');
                   doc.addImage(dataUrl, 'JPEG', 0, 0, image.width, image.height);
                   doc.setFillColor = "#FFFFFF";
 
@@ -544,9 +549,40 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             });
 
 
+                $scope.d3chartBtnClick(widget);    
             
 
         }
+
+        $scope.printD3Chart = function(widget){
+
+            var element =null;
+            switch (widget.widgetName) {
+                
+                case 'sunburst':
+                    element =$("#d3Sunburst");
+                    break;
+
+                case 'hierarchy':
+                    element =$("#d3Force");
+                    break;
+
+            }
+
+            var printContents = element[0].innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            var popupWin = window.open('', '_blank', 'width=800,height=500');
+            popupWin.document.open();
+            popupWin.document.write('');
+            popupWin.document.write('<html><head></head><body onload="window.print()">' + printContents + '</body></html>');
+            popupWin.document.close();
+
+            $scope.d3chartBtnClick(widget);
+
+
+        }
+
 
         $scope.d3chartBtnClick =function (widget){
 

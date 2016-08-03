@@ -12,9 +12,29 @@
 
   <md-dialog-content style="max-width:800px;max-height:810px; ">
     <div>
-      <div>
+
+     <!--  <div>
           <md-chips-select ng-model="newSelected" select-items="remainUsers" main-title="Name"></md-chips-select>
+      </div> -->
+    
+      <div>
+        <md-chips ng-model="newSelected" md-autocomplete-snap md-require-match="true">
+          <md-autocomplete
+                  md-selected-item="selectedItem"
+                  md-search-text="searchText"
+                  md-items="item in querySearch(searchText)"
+                  md-item-text="item.Name"
+                  placeholder="Add users to group here">
+              <span md-highlight-text="searchText">{{item.Name}}</span>
+          </md-autocomplete>
+          <md-chip-template style="background: #037281; font-size:16px">
+            <span><strong>{{$chip.Name}}</strong></span>
+          </md-chip-template>
+        </md-chips>
       </div>
+
+
+
 
       <div class="md-actions" layout="row">
           <md-button class="btn-font btn-dialog" ng-click="addUsersToGroup(newSelected)"> SAVE</md-button>

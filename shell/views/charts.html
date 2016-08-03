@@ -9,7 +9,7 @@
             </div>
         </md-tab-label>
         <md-tab-body>
-            <div class="tab-style" gridster="gridsterOpts" >
+            <div class="tab-style" gridster="gridsterOpts">
                 <li class="digin-widget" 
                 ng-repeat="widget in page.widgets | limitTo:6"" 
                 gridster-item="widget" layout="column"
@@ -18,7 +18,7 @@
                            <div class="d3-btn-wrap" ng-if="widget.isD3chart">
                             <span class="fa fa-bars" id="d3-btn-stn" ng-click="d3chartBtnClick(widget)"></span>
                             <div class="d3-setting-wrap" ng-if="widget.d3chartBtn">
-                                <div class="print-chart-wrap">Print chart</div>
+                                <div class="print-chart-wrap" ng-click="printD3Chart(widget)">Print chart</div>
                                 <hr>
                                 <div class="print-opt-wrap" ng-click="pngDownload(widget)">Download PNG image</div>
                                 <div class="print-opt-wrap" ng-click="jpegDownload(widget)">Download JPEG image</div>
@@ -34,7 +34,7 @@
 
                             <div id="png-container"></div>
 
-                        <div style="height:100%;width:100%" class="dashoard-Wrapper" id="d3Chart-wrap" ng-include src="widget.widgetData.widView">
+                        <div style="height:100%;width:100%" class="dashoard-Wrapper" id="d3Chart-wrap" ng-include src="widget.widgetData.widView" name="{{widget.widgetID}}">
                         </div>
                         <div class="widget-button-wrapper widget-button-wrapper2" layout="column" layout-align="end center" ng-show="showWidgetSettings" ng-mouseover="showWidgetSettings = true" 
                         ng-mouseleave="showWidgetSettings = false" flex>

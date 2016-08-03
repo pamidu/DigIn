@@ -90,7 +90,8 @@ routerApp
                             verticalPosition: 'top',
                             dismissOnClick: true,
                             animation: 'slide',
-                            dismissOnClick: 'true'
+                            dismissOnClick: 'true',
+                            timeout: 3000
                         });
                     }
                 }
@@ -428,7 +429,8 @@ routerApp
                             verticalPosition: 'top',
                             dismissOnClick: true,
                             animation: 'slide',
-                            dismissOnClick: 'true'
+                            dismissOnClick: 'true',
+                            timeout: 3000
                         });
                     },
                     validationClear: function () {
@@ -507,7 +509,7 @@ routerApp
                             if (data.Success === false) {
                                 $mdDialog.hide();
                                 if(data.Message=="Already Registered."){
-                                    mainFun.fireMsg('0','This email address you entered is already registered, please try again...!');
+                                    mainFun.fireMsg('0','This email address you entered is already registered, please try again!');
                                 }else{
                                     mainFun.fireMsg('0',data.Message);
                                 }                               
@@ -519,7 +521,7 @@ routerApp
                                 }
                                 else{
                                     $mdDialog.hide();
-                                    mainFun.fireMsg('1', 'You are succussfully registerd, please check your email for verification...!');
+                                    mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
                                     mainFun.dataClear();
                                     window.location = "http://www.digin.io";
                                 }

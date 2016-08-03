@@ -423,7 +423,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             });
                             $mdSidenav('right').close();
                         }
-                    }); 
+                    });
+                    commonUi.selectedIndex = 1; 
                 }
                 else{
                     publicFun.fireMessage('0', 'Please select a source');
@@ -436,6 +437,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     case '1':
                         //selected source
                         commonUi.selectedIndex = 2;
+                        $scope.sourceUi.selectedNameSpace = null;
                         var selectedSrc = $scope.sourceUi.selectedSource;
                         if (selectedSrc != null) {
                             publicFun.getAllTbl(selectedSrc, function(res, state) {
@@ -578,7 +580,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                                     file: files[i],
                                                     db: 'BigQuery',
                                                     SecurityToken: userInfo.SecurityToken,
-                                                    Domain: Digin_Domain,
                                                     other_data: 'datasource'                                                    
                                                  }
                                                 

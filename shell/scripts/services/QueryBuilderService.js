@@ -313,7 +313,7 @@ routerApp.service('$qbuilder',function($diginengine){
     };
 
     var BUBBLE = function(){
-        var mapResult = function(data){
+        var mapResult = function(data,a,b,c){
             var nameArray = [];
 
             for ( var i = 0; i < data.y.length; i++){
@@ -325,9 +325,12 @@ routerApp.service('$qbuilder',function($diginengine){
                 {
                     x : data.x[i],
                     y : data.y[i],
-                    z : data.s[i]
-                    });
-                }
+                    z : data.s[i],
+                    xName: a,
+                    yName: b,
+                    zName: c                      
+                });
+            }
             var seriesArray = [];
                 for ( var i = 0; i < dataArray.length; i++){
                 seriesArray.push(
@@ -342,7 +345,20 @@ routerApp.service('$qbuilder',function($diginengine){
         this.sync = function(q, cl, widObj, cb){
             cl.generateBubble(q, function(data, status) {
                 if(status){
-                    widObj.highchartsNG.series = mapResult(data);
+                        var a = [];
+                        var res = q.split("&");
+                        for ( var c in res) {
+                            if ( res[c].indexOf("x=") > -1 ) {
+                                var x = res[c].split("x=");
+                            }
+                            if ( res[c].indexOf("y=") > -1 ) {
+                                var y = res[c].split("y=");
+                            }
+                            if ( res[c].indexOf("s=") > -1 ) {
+                                var z = res[c].split("s=");
+                            }                                                
+                    }
+                    widObj.highchartsNG.series = mapResult(data,x[1],y[1],z[1]);
                 }
             });
             widObj.syncState = true;

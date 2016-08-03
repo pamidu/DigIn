@@ -568,7 +568,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
                             "pages" : pagesArray,
                             "compClass": null,
-                            "compType": null,
+                            "compType": $scope.dashboardType,
                             "compCategory": null,
                             "compID": null,
                             "compName": $scope.dashboardName,
@@ -607,8 +607,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                         data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
                         headers: {  
                                     'Content-Type': 'application/json',
-                                    'SecurityToken':userInfo.SecurityToken,
-                                    'Domain':Digin_Domain
+                                    'SecurityToken':userInfo.SecurityToken
                         }
                     })
                     .success(function(response){

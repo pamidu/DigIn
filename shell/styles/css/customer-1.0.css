@@ -752,7 +752,7 @@ drb >> dynamically report builder
 .chart-config-wrap {
     padding: 20px;
     overflow: scroll;
-    max-height: 380px;
+    max-height: 381px;
     margin-right: 15px;
 }
 
@@ -882,7 +882,7 @@ drb >> dynamically report builder
     position: absolute;
     right: -100%;
     width: 515px;
-    max-height: 560px;
+    max-height: 578px;
     background: #f1f1f1;
     border-radius: 10px;
     display: none;

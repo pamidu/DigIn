@@ -1005,7 +1005,6 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                             file: files[i],
                             db: 'BigQuery',
                             SecurityToken: userInfo.SecurityToken,
-                            Domain: Digin_Domain,
                             other_data: 'prpt_reports'
                         }
                     }).success(function (data) {
@@ -1014,7 +1013,6 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                         console.log($scope.reports);
                         $scope.preloader = false;
                         $scope.diginLogo = 'digin-logo-wrapper2';
-                        $mdDialog.hide();
                         if ( uploadFlag && storeFlag ){
                             fireMsg('1', 'Successfully uploaded!');
                             privateFun.getAllReport();                            
@@ -1050,8 +1048,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                     data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
                     headers: {  
                                 'Content-Type': 'application/json',
-                                'SecurityToken':userInfo.SecurityToken,
-                                'Domain':Digin_Domain
+                                'SecurityToken':userInfo.SecurityToken
                     }
                 }).success(function (data) {
                     storeFlag = true;

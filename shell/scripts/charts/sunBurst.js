@@ -9,11 +9,11 @@ routerApp.directive('sunburstChart', function() {
             
             scope.$watch('chartData', function(newValue, oldValue) {
                 if (newValue){
-                    scope.drawSunburstSummary(newValue);
+                    scope.drawSunburstSummary(newValue.data,newValue.id);
                 }
             });
             
-            scope.drawSunburstSummary = function(rootData){
+            scope.drawSunburstSummary = function(rootData,divID){
                 var width = 500,
                         height = 500,
                         radius = Math.min(width, height) / 2;
@@ -27,16 +27,17 @@ routerApp.directive('sunburstChart', function() {
                     var color = d3.scale.category10();
                     console.log("s", elem)
                     
-                    d3.select("#d3Sunburst").selectAll("*").remove();
+                    var divid = "#" + divID;
+                    d3.select(divid).selectAll("*").remove();
                     
-                    svg = d3.select("#d3Sunburst")
+                    svg = d3.select(divid)
                         .append("svg").attr("viewBox", "0 0  500 600")
                         .attr("width", '100%')
                         .attr("height", '100%')
                         .append("g")
                         .attr("transform", "translate(" + width / 2 + "," + (height / 2 + 10) + ") rotate(-90 0 0)");
                     
-                    var div = d3.select("#d3Sunburst").append("div")
+                    var div = d3.select(divid).append("div")
                         .attr("class", "tooltip")
                         .style("opacity", 0);
 
@@ -186,7 +187,7 @@ routerApp.directive('sunburstChart', function() {
             };
             
             if(typeof scope.chartData != "undefined"){
-                scope.drawSunburstSummary(scope.chartData);
+                scope.drawSunburstSummary(scope.chartData.data, scope.chartData.id);
             }
             
 

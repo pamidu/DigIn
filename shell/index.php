@@ -224,6 +224,7 @@
 <!--  directives start  -->
 <script type="application/javascript" src="scripts/directives/commonData.js"></script>
 <script type="application/javascript" src="scripts/directives/googleMaps.js"></script>
+
 <!--  directives end    -->
 
 <script type="text/javascript" src="bower_components/circular-json-master/build/circular-json.js"></script>

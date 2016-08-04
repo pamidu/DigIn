@@ -12,7 +12,8 @@ curl_close ($curl);
 	
 	if($status==true){
 			echo '{"success":true,"message":"Account ativated successfully."}';
-			header("Location: http://www.digin.io");
+			//header("Location: http://www.digin.io");
+			header("Location:http://".$mainDomain."/entry/#/signin?activated=true");
 
 		/*
 		$response = createDataSet($email);

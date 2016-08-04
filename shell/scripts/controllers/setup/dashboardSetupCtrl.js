@@ -381,8 +381,8 @@ $scope.inviteUser = function () {
                                         data: angular.toJson($scope.settings),
                                         headers: {
                                             'Content-Type': 'application/json',
-                                            'SecurityToken': userInfo.SecurityToken,
-                                            'Domain': Digin_Domain
+                                            'SecurityToken': userInfo.SecurityToken
+                                            //'Domain': Digin_Domain
                                         }
                                     })
                                         .success(function (response) {
@@ -937,13 +937,20 @@ $scope.inviteUser = function () {
             data: angular.toJson($scope.settings),
             headers: {
                 'Content-Type': 'application/json',
-                'SecurityToken': userInfo.SecurityToken,
-                'Domain': Digin_Domain
+                'SecurityToken': userInfo.SecurityToken
+                //'Domain': Digin_Domain
             }
         })
             .success(function (response) {
                 //alert("Success...!");
                 fireMsg('1', 'User settings saved successfully.');
+                var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+                $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
+                .success(function (data) {
+                $rootScope.userSettings=data.Result;        
+                })
+                .error(function (data) {        
+                });
             })
             .error(function (error) {
                 fireMsg('0', 'Please re-check the settings.');
@@ -951,6 +958,9 @@ $scope.inviteUser = function () {
     };
 
     //#View sittings detail
+    
+    
+    
     //$scope.viewSettings=function(){
         if($rootScope.userSettings==undefined)
         {
@@ -983,8 +993,8 @@ $scope.inviteUser = function () {
                 url: Digin_Engine_API + 'clear_cache',
                 headers: {
                     'Content-Type': 'Content-Type:application/json',
-                    'SecurityToken': userInfo.SecurityToken,
-                    'Domain': userInfo.Domain
+                    'SecurityToken': userInfo.SecurityToken
+                    //'Domain': userInfo.Domain
                 }
             })
                 .success(function (response) {
@@ -1331,8 +1341,8 @@ $scope.inviteUser = function () {
                 data: angular.toJson($scope.settings),
                 headers: {
                     'Content-Type': 'application/json',
-                    'SecurityToken': userInfo.SecurityToken,
-                    'Domain': Digin_Domain
+                    'SecurityToken': userInfo.SecurityToken
+                    //'Domain': Digin_Domain
                 }
             })
                 .success(function (response) {

@@ -2528,9 +2528,8 @@ routerApp.controller('googleMapsInit',['widgetID', '$scope', '$http', '$rootScop
 }]);
 
  
-routerApp.controller('clockInit', ['$scope', '$mdDialog', 'widgetID',
-    function ($scope, $mdDialog, widgetID) {
-
+routerApp.controller('clockInit', ['widgetID','$scope', '$mdDialog', 
+    function ( widgetID, $scope, $mdDialog) {
 
 
         $scope.showFinishButton = false;

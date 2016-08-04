@@ -382,9 +382,24 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                 var noDuplicate = true;
                 //to check weather the newpage is allready exist 
                 DashboardService.dashboards.forEach(function(key){
-                    if(key.dashboardName.toUpperCase() == $scope.dashboardName.toUpperCase() ){
-                        noDuplicate = false;
-                    }
+                   if(key.dashboardName.toUpperCase() ==  $scope.dashboardName.toUpperCase()){
+
+                            if($rootScope.dashboard.compID == null){
+                                noDuplicate = false;
+                            }  
+                            else{
+
+                                DashboardService.dashboards.forEach(function(key){ 
+                                    if(key.dashboardName.toUpperCase() == $scope.dashboardName.toUpperCase() ){
+
+                                        if(key.dashboardID != $rootScope.dashboard.compID)
+                                            noDuplicate = false;
+                                    }
+
+                                });
+                            }
+                        }
+                   
                 });
 
                 if(noDuplicate){
@@ -660,7 +675,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                 }else{ // one of the fields not filled
                     ngToast.create({
                             className: 'danger',
-                            content: 'you cant duplicate the name..',
+                            content: 'You can not duplicate the name..',
                             horizontalPosition: 'center',
                             verticalPosition: 'top',
                             dismissOnClick: true

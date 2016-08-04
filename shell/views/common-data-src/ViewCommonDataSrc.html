@@ -113,6 +113,10 @@
                 <small class="text-color-grey-600">
                     what do you want to connect to?
                 </small>
+                    <span class="btn btn-block btn-default"
+                          ng-click="commonUi.onExecuteManualQuery()" ng-disabled="!sourceUi.selectedSource">
+                        Custom Query
+                    </span>                 
             </h3>
 
             <div layout="row">
@@ -163,10 +167,6 @@
             <!-- select table data -->
             <div class="digin-cmds-source digin-cmds-info"
                  ng-show="sourceUi.selectedSource!=''">
-                    <span class="btn btn-block btn-default"
-                          ng-click="commonUi.onExecuteManualQuery()" ng-disabled="!sourceUi.selectedSource">
-                        Custom Query
-                    </span> 
                 <div class="info-wrap">
                     <!-- Is data loading -->
                     <div class="digin-cmds-loading"

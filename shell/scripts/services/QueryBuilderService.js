@@ -200,7 +200,8 @@ routerApp.service('$qbuilder',function($diginengine){
                     case "forecast":
                         serArr.push({
                             name: 'forecasted values',
-                            data: data[key]
+                            data: data[key],
+                            dashStyle: 'dash'
                         });
                         break;
                 }

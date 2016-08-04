@@ -377,7 +377,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
         $scope.saveDashboard = function() {      
 
 
-            if($scope.dashboardName && $scope.dashboardType && $scope.refreshInterval ){
+            if($scope.dashboardName && $scope.refreshInterval ){
 
                 var noDuplicate = true;
                 //to check weather the newpage is allready exist 
@@ -568,7 +568,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
                             "pages" : pagesArray,
                             "compClass": null,
-                            "compType": $scope.dashboardType,
+                            "compType": 'dashboard',
                             "compCategory": null,
                             "compID": null,
                             "compName": $scope.dashboardName,
@@ -582,7 +582,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
                             "pages" : pagesArray,
                             "compClass": $rootScope.dashboard.compClass,
-                            "compType": $rootScope.dashboard.compType,
+                            "compType": 'dashboard',
                             "compCategory": $rootScope.dashboard.compCategory,
                             "compID": $rootScope.dashboard.compID,
                             "compName": $scope.dashboardName,

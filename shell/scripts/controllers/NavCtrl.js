@@ -1401,20 +1401,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                     '<p style="font-size:large">Dashboard Details</p>' +
                                 '</div>' +
                                 '<div layout="row" flex layout-wrap>' +
-                                    '<md-input-container flex="50">' +
+                                    '<md-input-container flex="100">' +
                                         '<label>Name</label>' +
                                         '<input ng-model="dashboardName" name="dashboardName">' +
                                     '</md-input-container>' +
-                                    '<md-input-container flex="50">' +
-                                        '<label>Type</label>' +
-                                        '<md-select ng-model="dashboardType" name="dashboardType">' +
-                                            '<md-option value="SYSTEM" ng-selected>SYSTEM</md-option>' +
-                                            '<md-option value="TYPE1">TYPE1</md-option>' +
-                                            '<md-option value="TYPE2">TYPE2</md-option>' +
-                                            '<md-option value="TYPE3">TYPE3</md-option>' +
-                                        '</md-select>' +
-                                    '</md-input-container>' +
-                                    '<md-input-container flex="50">' +
+                                    '<md-input-container flex="100">' +
                                         '<label>Refresh Interval</label>' +
                                         '<md-select ng-model="refreshInterval" name="refreshInterval">' +
                                             '<md-option value="30" ng-selected>30 Seconds</md-option>' +

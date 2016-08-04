@@ -481,7 +481,7 @@
                     <div class="chart-config-wrap-rw1 animated fadeIn">
                         <md-input-container flex>
                             <label>Widget Title</label>
-                             <input ng-if = "selectedChart.chartType == 'highCharts'" ng-model="widget.widgetData.widName" ng-blur="highchartsNG.options.exporting.chartOptions.title.text=widget.widgetData.widName" >
+                             <input ng-if = "selectedChart.chartType == 'highCharts' " ng-model="widget.widgetData.widName" ng-blur="highchartsNG.options.exporting.chartOptions.title.text=widget.widgetData.widName" >
                             <input ng-if = "selectedChart.chartType == 'boxplot' || selectedChart.chartType ==  'histogram' || selectedChart.chartType ==  'bubble' || selectedChart.chartType ==  'forecast' " ng-model="widget.widgetData.widName" 
                             ng-blur="widget.widgetData.highchartsNG.options.exporting.chartOptions.title.text=widget.widgetData.widName" > 
                             <input ng-if = "selectedChart.chartType == 'd3hierarchy' || selectedChart.chartType ==  'd3sunburst' || selectedChart.chartType ==  'pivotSummary' || selectedChart.chartType ==  'metric' " ng-model="widget.widgetData.widName" >                            

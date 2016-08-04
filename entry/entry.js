@@ -106,7 +106,7 @@ routerApp
                             dismissOnClick: true,
                             animation: 'slide',
                             dismissOnClick: 'true',
-                            timeout: 3000
+                            timeout: 30000
                         });
                     }
                 }
@@ -136,6 +136,12 @@ routerApp
                                     }
 
                                     console.log(result.Result);
+
+
+                                //#Expire existing cookies
+                                document.cookie = 'authData=; Path=/;  Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                                document.cookie = 'securityToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                                document.cookie = 'tenantData=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 
                                 //#loggin direct to shell
                                 if(IsLocal==false) { 
@@ -176,14 +182,14 @@ routerApp
 
             $scope.createDataSet = function (secToken) {
                 //displayProgress('Processing, please wait...!');
+                $scope.data = {"db": "bigquery"}
+
                 $http({
                     method: 'POST',
                     url: Digin_Engine_API+'set_init_user_settings',
-                    data: angular.toJson({"db":"bigquery"}),
+                    data: angular.toJson($scope.data),
                     headers: {
-                        'Content-Type': 'application/json',
-                        'SecurityToken': secToken,
-                        'Content-Type': 'Content-Type:application/json'
+                        'SecurityToken': secToken
                     }
                 })
                 .success(function (response) {
@@ -482,7 +488,7 @@ routerApp
                         .success(function (response) {
                             if (response.Success === true) {
                                 $mdDialog.hide();
-                                mainFun.fireMsg('1', 'You are succussfully registerd, please check your email for verification.');
+                                mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
                                 mainFun.dataClear();
                                 window.location = "http://"+Digin_Domain+"/entry";
                             }
@@ -539,7 +545,8 @@ routerApp
                                     $mdDialog.hide();
                                     mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
                                     mainFun.dataClear();
-                                    window.location = "http://www.digin.io";
+                                    window.location = "http://"+Digin_Domain+"/entry";
+                                    //window.location = "http://www.digin.io";
                                 }
                             }
                         }).error(function (data, status) {

@@ -893,7 +893,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 // CHART VALIDATIONS
                 // allow to select only one measure for sunburst
                 if ( $scope.chartType == "sunburst" && $scope.commonData.measures.length > 1 ){
-                    privateFun.fireMessage('0', "Cannot generate "+$scope.chartType+" chart with more than one measure");
+                    privateFun.fireMessage('0', "Can not generate "+$scope.chartType+" chart with more than one measure");
                     return;
                 }
 
@@ -917,7 +917,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 var seriesArr = $scope.executeQryData.executeMeasures;             
                 // do not allow pie charts with more than one series
                 if ( seriesArr.length > 1 && $scope.chartType == 'pie' ){
-                    privateFun.fireMessage('0', "Cannot generate "+$scope.chartType+" chart with more than one series");
+                    privateFun.fireMessage('0', "Can not generate "+$scope.chartType+" chart with more than one series");
                     return;
                 }
                 else{
@@ -925,7 +925,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }
                 // do not allow charts to be generated without selecting series
                 if (seriesArr.length < 1 && chartTypeTrue) {
-                    privateFun.fireMessage('0', "Cannot generate "+$scope.chartType+" chart without selecting a series ...");
+                    privateFun.fireMessage('0', "Can not generate "+$scope.chartType+" chart without selecting a series ...");
                     return 0;
                 } else{
 

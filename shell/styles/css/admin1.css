@@ -9941,12 +9941,7 @@ h6 {
     position: relative;
     left: 0;
     top: 0;
-    z-index: 4;
-    width: 100px;
     height: 100px;
-    -webkit-box-shadow: 2px 0 3px -2px #888;
-    box-shadow: 2px 0 3px -2px #888;
-    height: 100%;
     width: 48px;
     cursor: pointer;
 }
@@ -10193,11 +10188,12 @@ h6 {
 .nav-bar-border {
     position: relative;
     left: 0;
-    top: 0;
-    width: 40px;
-    height: calc(100vh);
+    top: 27px;
+    width: 44px;
+    height: calc(103vh);
     background: #fff;
-    /*border-right: 1px solid #f0f0f0;*/
+    z-index: 1500;
+    border-right: 1px solid #f4f4f4;
 }
 
 /*
@@ -13104,4 +13100,8 @@ md-tooltip {
     top: 1px;
     border-top: 12px solid rgba(47, 52, 162, 0.5);
     border-left: 12px solid transparent;
+}
+
+#mainHeadbar:hover {
+    transform: translateY(0);
 }

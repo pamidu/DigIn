@@ -1,0 +1,110 @@
+{
+  "d": [
+    {
+      "settings": [
+        {
+          "name": "New user",
+          "icon": "ti-user",
+          "link": "home.account"
+        },
+        {
+          "name": "Share",
+          "icon": "ti-share",
+          "link": "home.account"
+        },
+        {
+          "name": "User setting",
+          "icon": "ti-pencil",
+          "link": "home.account"
+        },
+        {
+          "name": "Account setting",
+          "icon": "ti-settings",
+          "link": "home.account"
+        }
+      ]
+    },
+    {
+      "share": [
+        {
+          "name": "Facebook",
+          "icon": "ti-facebook",
+          "link": "home.account"
+        },
+        {
+          "name": "Google+",
+          "icon": "ti-google",
+          "link": "home.account"
+        },
+        {
+          "name": "Twitter",
+          "icon": "ti-twitter-alt",
+          "link": "home.account"
+        },
+        {
+          "name": "Linkedin",
+          "icon": "ti-linkedin",
+          "link": "home.account"
+        },
+        {
+          "name": "Pinterest",
+          "icon": "ti-pinterest-alt",
+          "link": "home.account"
+        },
+        {
+          "name": "Tumbler",
+          "icon": "ti-tumblr",
+          "link": "home.account"
+        },
+        {
+          "name": "ti-email",
+          "icon": "ti-settings",
+          "link": "home.account"
+        }
+      ]
+    },
+    {
+      "socialMedia": [
+        {
+          "name": "Facebook",
+          "icon": "ti-facebook",
+          "link": "home.account"
+        },
+        {
+          "name": "Google+",
+          "icon": "ti-google",
+          "link": "home.account"
+        },
+        {
+          "name": "Twitter",
+          "icon": "ti-twitter-alt",
+          "link": "home.account"
+        },
+        {
+          "name": "Linkedin",
+          "icon": "ti-linkedin",
+          "link": "home.account"
+        },
+        {
+          "name": "YouTube",
+          "icon": "ti-youtube",
+          "link": "home.account"
+        }
+      ]
+    },
+    {
+      "reports": [
+        {
+          "name": "Report Development",
+          "icon": "ti-filter",
+          "link": "home.account"
+        },
+        {
+          "name": "Report",
+          "icon": "ti-notepad",
+          "link": "home.account"
+        }
+      ]
+    }
+  ]
+}

@@ -533,6 +533,9 @@
     line-height: 100%;
     background-color: #fff;
     overflow: hidden;
+    -webkit-box-shadow: -2px 7px 28px 0px rgba(0,0,0,0.20);
+    -moz-box-shadow:  -2px 7px 28px 0px rgba(0,0,0,0.20);
+    box-shadow: -2px 7px 28px 0px rgba(0,0,0,0.20);
 }
 
 .gridster-he {
@@ -1286,7 +1289,7 @@ md-tab-content {
 
 /* dashboard widget */
 .dashboard-widget {
-    overflow: auto;
+    overflow: hidden;
 }
 
 /*widget current source view */
@@ -1619,7 +1622,7 @@ rzslider .rz-bubble {
 }
 
 .m-top-60 {
-    margin-top: 60px;
+    margin-top: 60px !important;
 }
 
 .sf-table-header {
@@ -1660,6 +1663,7 @@ ul.none-border > li {
     overflow: hidden;
     padding: 0;
     background: #fff;
+    z-index: 2000;
 }
 
 .slider-r-tab {

@@ -1,24 +1,41 @@
 <md-list>
-    <!-- logo -->
-    <md-item>
-        <a>
-            <md-item-content md-ink-ripple class="sidebar-btn digin-logo" 
-            layout="column" layout-align="center center" ng-click="$parent.navigate('home')"> 
-                <div class="digin-logo-wrapper" layout="row" layout-align="center center">
-                    <img ng-src="{{image}}" alt="Upload Image" class="md-avatar" 
-                    id="digin-logo" style="width:80%;">
-                    <md-tooltip md-direction="right">DigIn v3.0.0.4.1</md-tooltip>
-                </div> 
-            </md-item-content>
-        </a>
-    </md-item>
+
     <!-- sidebar items -->
     <md-item ng-repeat="item in sidebarItems">
         <a ng-click="$parent.navigate(item.title)">
-            <md-item-content md-ink-ripple class="sidebar-btn" layout="column" layout-align="center center">
-                <ng-md-icon icon="{{item.icon2}}" style="fill:#026689" size="20" layout="column" layout-align="center center" flex></ng-md-icon>
-                <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
-            </md-item-content>
+            <i ng-mouseover="menuMouseHover(item)"
+
+               class="blut-left-menu  {{item.icon2}} " layout="column"
+               layout-align="center center"
+               flex></i>
+            <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
         </a>
     </md-item>
+
 </md-list>
+<div class="left-menu-toggle" ng-click="leftMenuToggle()">
+    <i ng-hide="leftMenuToggleState" class="ti-angle-right"></i>
+    <i ng-show="leftMenuToggleState" class="ti-angle-left"></i>
+</div>
+
+<div ng-show="isEnableSubMenu" ng-mouseleave="menuMouseLeave()" class="blut-sub-panel-wrapper blut-setting">
+    <div class="blut-wrap">
+        <div class="header-wrap">
+            <ul>
+                <li>{{currentSubMenu.header}}</li>
+                <li class="sub-menu-close" ng-click="subMenu.close()">
+                    <i class="icon-cancel"></i>
+                </li>
+            </ul>
+        </div>
+        <div class="body-wrap">
+            <ul>
+                <li ng-repeat="menu in currentSubMenu.data">
+                    <i class="{{menu.icon}}"></i>
+                    {{menu.name}}
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>

@@ -886,6 +886,10 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 // init dashboard
         $scope.selectedDashboardId = '1';
 
+        //update new UI damith
+        //mouse over enable scroler bar
+        $scope.chatWidgetscrollEnabled = false;
+
     }
 ])
 ;

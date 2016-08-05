@@ -63,6 +63,7 @@
         -- ng tag input
         -->
     <link rel="stylesheet" href="styles/fonts/font-awesome/font-awesome.min.css" type='text/css'/>
+    <link rel="stylesheet" href="styles/fonts/digin-main/digin-main.css" type='text/css'/>
     <link rel="stylesheet" href="bower_components/angular-ui/angular-ui-select2/select2.min.css" type="text/css"/>
     <link rel="stylesheet"
           href="bower_components/angular-ui/anuglar-bootstrap-datepicker/angular-bootstrap-datepicker.css"
@@ -160,7 +161,7 @@
 <script type="text/javascript" src="scripts/vendor/angular-css-injector.js"></script>
 <script type="text/javascript" src="bower_components/notification/ng-Toast/ngToast.min.js"></script>
 <script type="text/javascript" src="bower_components/v-accordion/v-accordion.min.js"></script>
-<!-- ng input tag -->
+<script type="text/javascript" src="bower_components/ngSlimscroll/src/js/ngSlimscroll.js"></script>
 
 <!-- image crop -->
 <script type="text/javascript" src="bower_components/imgcrop/ng-img-crop.js"></script>
@@ -264,6 +265,10 @@
 <script type="text/javascript" src="scripts/controllers/help/welcomeSearchBarCtrl.js"></script>
 <script type="text/javascript" src="scripts/services/QueryBuilderService.js"></script>
 <script type="text/javascript" src="scripts/factories/dynamicallyReport/dynamicallyReportFact.js"></script>
+
+<!-- profile
+<script type="text/javascript" src="scripts/factories/profile/profileFact.js"></script> -->
+<script type="text/javascript" src="scripts/controllers/profile-settings/userProfileCtrl.js"></script>
 
 <!--  controllers end   -->
 <!-- zeroclipboard -->

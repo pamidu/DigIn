@@ -52,7 +52,7 @@
 
 
 
-                        <form name="frmDiginLogin" autocomplete="off" ng-submit="login()">
+                        <form name="frmDiginLogin" autocomplete="off"  novalidate>
                             <div class="login-bdy">
                                 <div class="text-wrap ">
                                     <div>
@@ -66,6 +66,7 @@
                                                        name="loginUserName"
                                                        ng-model="signindetails.Username"
                                                        placeholder="username@digin.io"
+                                                       autocomplete="off"
 
                                                        class="form-control">
                                             </div>
@@ -81,7 +82,7 @@
                                                 <input type="password"
                                                        name="password"
                                                        id="password"
-
+                                                       autocomplete="off"
                                                        required
                                                        ng-model="signindetails.Password"
                                                        placeholder="***************"

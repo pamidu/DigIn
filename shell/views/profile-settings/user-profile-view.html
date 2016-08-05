@@ -1,0 +1,242 @@
+<div ng-controller="userProfileCtrl">
+
+    <!-- profile view mode -->
+    <div layout-align="center center" layout="row" flex="80">
+        <div flex="33">
+            <div class="blut-profile-wrapper profile-view ">
+                <i class="icon-cancel" ng-click="profile.closeSetting()"></i>
+                <h2 class="blut-sub-header">Profile Settings</h2>
+                <div class="profile-img">
+                    <img src="styles/css/images/signup-user.png"/>
+                </div>
+
+                <div class="profile-details">
+                    <div class="header-card left">
+                        Public details
+                    </div>
+                    <div class="profile-wrapper">
+                        <!-- company & name -->
+                        <div layout="row">
+                            <div flex>
+                                <label>Company </label>
+                                <input type="text"
+                                       readonly
+                                       id="txtCompany"
+                                       class="form-control">
+                            </div>
+                            <div flex style="padding-left: 5px;">
+                                <label>Name</label>
+                                <input type="text"
+                                       readonly
+                                       id="txtName"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <!-- email -->
+                        <div layout="row" style="margin-top: 5px">
+                            <div flex="60">
+                                <label>Email </label>
+                                <input type="text"
+                                       readonly
+                                       id="txtEmail"
+                                       class="form-control">
+                            </div>
+                            <div flex="40" style="padding-left: 5px;">
+                                <label>Contact no </label>
+                                <input type="text"
+                                       readonly
+                                       id="txtContactNo"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <!-- address details -->
+                        <div layout="row" style="margin-top: 5px">
+                            <div flex="40">
+                                <label>Street </label>
+                                <input type="text"
+                                       readonly
+                                       id="txtStreet"
+                                       class="form-control">
+                            </div>
+                            <div flex="40" style="padding-left: 5px;">
+                                <label>Country</label>
+                                <input type="text"
+                                       readonly
+                                       id="txtCountry"
+                                       class="form-control">
+                            </div>
+                            <div flex="20" style="padding-left: 5px;">
+                                <label>ZIP code</label>
+                                <input type="text"
+                                       readonly
+                                       id="txtZip"
+                                       class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security -->
+                    <div class="header-card left">
+                        Security
+                    </div>
+                    <!-- Password -->
+                    <div class="profile-wrapper">
+                        <div layout="row" style="margin-top: 5px">
+                            <div flex>
+                                <label>Password </label>
+                                <input type="text"
+                                       readonly
+                                       id="txtPassword"
+                                       class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-click="profile.clickEdit()" class="blut-edit-btn">
+                        Edit profile
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end -->
+
+    <!--  profile edit mode -->
+
+    <div ng-hide="!editModeState" class="blut-profile-edit-wrapper">
+        <div layout="row" layout-align="center center"
+             flex="60">
+            <div layout="row" layout-align="center center" flex="60">
+                <h1 class="blut-header m-top-60">Personal settings </h1>
+                <div class="blut-close-btn">
+                    <i class="icon-cancel pull-right" ng-click="profile.closeEdit()"></i>
+                </div>
+
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div layout="row" layout-align="center center"
+             flex="60" class="blut-edit-wrap">
+
+            <div flex="20">
+                <div class="blut-profile-img left">
+                    <h1 class="blut-sub-header">Profile picture</h1>
+                    <div class="profile-img">
+                        <img src="styles/css/images/signup-user.png"/>
+                    </div>
+                    <div ng-click="profile.clickEdit()" class="blut-edit-btn">
+                        Upload new picture
+                    </div>
+                </div>
+            </div>
+            <div flex="40" layout="row" layout-align="start center">
+                <div class="blut-profile-details right">
+                    <md-content>
+                        <md-tabs class="blut-tab" md-dynamic-height md-border-bottom>
+                            <md-tab label="Public profile">
+                                <md-content class="md-padding">
+                                    <div id="editPublicDetails" class="profile-wrapper">
+                                        <!-- company & name -->
+                                        <div layout="row">
+                                            <div flex>
+                                                <label>Company </label>
+                                                <input type="text"
+                                                       id="txtCompany"
+                                                       class="form-control">
+                                            </div>
+                                            <div flex style="padding-left: 5px;">
+                                                <label>Name</label>
+                                                <input type="text"
+                                                       id="txtName"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                        <!-- email -->
+                                        <div layout="row" style="margin-top: 5px">
+                                            <div flex>
+                                                <label>Email </label>
+                                                <input type="text"
+                                                       id="txtEmail"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <!-- email -->
+                                        <div layout="row" style="margin-top: 5px">
+                                            <div flex="40" style="padding-left: 5px;">
+                                                <label>Contact no </label>
+                                                <input type="text"
+                                                       id="txtContactNo"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                        <!-- address details -->
+                                        <div layout="row" style="margin-top: 5px">
+                                            <div flex="40">
+                                                <label>Street </label>
+                                                <input type="text"
+                                                       id="txtStreet"
+                                                       class="form-control">
+                                            </div>
+                                            <div flex="40" style="padding-left: 5px;">
+                                                <label>Country</label>
+                                                <input type="text"
+                                                       id="txtCountry"
+                                                       class="form-control">
+                                            </div>
+                                            <div flex="20" style="padding-left: 5px;">
+                                                <label>ZIP code</label>
+                                                <input type="text"
+                                                       id="txtZip"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="blut-edit-btn block  m-top-30">
+                                            Update
+                                        </div>
+                                    </div>
+                                </md-content>
+                            </md-tab>
+                            <md-tab label="Security">
+                                <md-content class="md-padding">
+                                    <!-- Password -->
+                                    <div id="editSecurity" class="profile-wrapper">
+                                        <div layout="row" style="margin-top: 5px">
+                                            <div flex>
+                                                <label>Old password </label>
+                                                <input type="text"
+                                                       id="txtPassword"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                        <div layout="row" style="margin-top: 5px">
+                                            <div flex>
+                                                <label>New password </label>
+                                                <input type="text"
+                                                       id="txtPassword"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                        <div layout="row" style="margin-top: 5px">
+                                            <div flex>
+                                                <label>Confirm password </label>
+                                                <input type="text"
+                                                       id="txtPassword"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="blut-edit-btn block  m-top-30">
+                                            Update
+                                        </div>
+                                    </div>
+                                </md-content>
+                            </md-tab>
+
+                        </md-tabs>
+                    </md-content>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

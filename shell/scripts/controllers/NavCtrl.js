@@ -1465,6 +1465,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 //to check weather the newpage is allready exist 
                     $rootScope.dashboard.pages.forEach(function(key){
                         if(key.pageName.toUpperCase() == $scope.existPageName.toUpperCase() ){
+                            if(key.pageID != $rootScope.dashboard.pages[$rootScope.selectedPage-1].pageID)
                                 noDuplicate = false;
                         }
                     });

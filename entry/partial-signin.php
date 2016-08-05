@@ -50,13 +50,9 @@
                             </div>
                         </div>
 
-<<<<<<< HEAD
-
 
                         <form name="frmDiginLogin" autocomplete="off"  novalidate>
-=======
-                        <form name="frmDiginLogin" autocomplete="off" ng-submit="login()">             
->>>>>>> bc53470534f444867bf5d9c8ca81d708abe990a3
+                        <form name="frmDiginLogin" autocomplete="off" ng-submit="login()">
                             <div class="login-bdy">
                                 <div class="text-wrap ">
                                     <div>

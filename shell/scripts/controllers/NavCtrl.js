@@ -1384,7 +1384,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 controller: 'saveCtrl',
                 // templateUrl: 'views/dashboard-save.html',
                 //template has been directly added here as it is needed for offline dashboard saving feature
-<<<<<<< HEAD
                 template: '<md-dialog plumb-item class="dialog-1 b-r-0" ng-init="initialize()">' +
                 '<md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">' +
                 '<div layout="row" layout-align="center center" class="digin-logo-wrapper2">' +
@@ -1440,8 +1439,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 '</div>' +
                 '</md-content>' +
                 '</md-dialog>',
-=======
-                template: 
+                template:
                     '<md-dialog plumb-item class="dialog-1 b-r-0" ng-init="initialize()">' +
                       '<md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">' +
                           '<div layout="row" layout-align="center center" class="digin-logo-wrapper2">' +
@@ -1488,7 +1486,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 '</div>' +
                       '</md-content>' +
                     '</md-dialog>',            
->>>>>>> bc53470534f444867bf5d9c8ca81d708abe990a3
                 targetEvent: ev,
                 resolve: {
                     widget: function () {

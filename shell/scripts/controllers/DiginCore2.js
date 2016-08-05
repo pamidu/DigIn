@@ -377,14 +377,29 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
         $scope.saveDashboard = function() {      
 
 
-            if($scope.dashboardName && $scope.dashboardType && $scope.refreshInterval ){
+            if($scope.dashboardName && $scope.refreshInterval ){
 
                 var noDuplicate = true;
                 //to check weather the newpage is allready exist 
                 DashboardService.dashboards.forEach(function(key){
-                    if(key.dashboardName.toUpperCase() == $scope.dashboardName.toUpperCase() ){
-                        noDuplicate = false;
-                    }
+                   if(key.dashboardName.toUpperCase() ==  $scope.dashboardName.toUpperCase()){
+
+                            if($rootScope.dashboard.compID == null){
+                                noDuplicate = false;
+                            }  
+                            else{
+
+                                DashboardService.dashboards.forEach(function(key){ 
+                                    if(key.dashboardName.toUpperCase() == $scope.dashboardName.toUpperCase() ){
+
+                                        if(key.dashboardID != $rootScope.dashboard.compID)
+                                            noDuplicate = false;
+                                    }
+
+                                });
+                            }
+                        }
+                   
                 });
 
                 if(noDuplicate){
@@ -568,7 +583,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
                             "pages" : pagesArray,
                             "compClass": null,
-                            "compType": null,
+                            "compType": 'dashboard',
                             "compCategory": null,
                             "compID": null,
                             "compName": $scope.dashboardName,
@@ -582,7 +597,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
                             "pages" : pagesArray,
                             "compClass": $rootScope.dashboard.compClass,
-                            "compType": $rootScope.dashboard.compType,
+                            "compType": 'dashboard',
                             "compCategory": $rootScope.dashboard.compCategory,
                             "compID": $rootScope.dashboard.compID,
                             "compName": $scope.dashboardName,
@@ -607,8 +622,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                         data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
                         headers: {  
                                     'Content-Type': 'application/json',
-                                    'SecurityToken':userInfo.SecurityToken,
-                                    'Domain':Digin_Domain
+                                    'SecurityToken':userInfo.SecurityToken
                         }
                     })
                     .success(function(response){
@@ -661,7 +675,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                 }else{ // one of the fields not filled
                     ngToast.create({
                             className: 'danger',
-                            content: 'you cant duplicate the name..',
+                            content: 'You can not duplicate the name..',
                             horizontalPosition: 'center',
                             verticalPosition: 'top',
                             dismissOnClick: true

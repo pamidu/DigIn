@@ -511,8 +511,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 url: Digin_Engine_API + 'delete_components',
                 data: angular.toJson($scope.Det),
                 headers: {
-                    'Securitytoken': userInfo.SecurityToken,
-                    Domain: Digin_Domain
+                    'Securitytoken': userInfo.SecurityToken
                 }
             })
                 .success(function (response) {
@@ -1385,6 +1384,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 controller: 'saveCtrl',
                 // templateUrl: 'views/dashboard-save.html',
                 //template has been directly added here as it is needed for offline dashboard saving feature
+<<<<<<< HEAD
                 template: '<md-dialog plumb-item class="dialog-1 b-r-0" ng-init="initialize()">' +
                 '<md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">' +
                 '<div layout="row" layout-align="center center" class="digin-logo-wrapper2">' +
@@ -1440,6 +1440,55 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 '</div>' +
                 '</md-content>' +
                 '</md-dialog>',
+=======
+                template: 
+                    '<md-dialog plumb-item class="dialog-1 b-r-0" ng-init="initialize()">' +
+                      '<md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">' +
+                          '<div layout="row" layout-align="center center" class="digin-logo-wrapper2">' +
+                            '<img ng-src="styles/css/images/DiginLogo.png" class="digin-image">' +
+                          '</div>' +
+                          '<div class="dialog-title">SAVE DASHBOARD</div>' +
+                          '<md-button class="buttonMinwidth38 b-r-0" ng-click="close();">' +
+                            '<ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>' +
+                          '</md-button>' +
+                      '</md-toolbar>' +
+                      '<md-content class="dialog-content-1" layout-padding>' +
+                                '<div layout="row" layout-align="start start">' +
+                                    '<p style="font-size:large">Dashboard Details</p>' +
+                                '</div>' +
+                                '<div layout="row" flex layout-wrap>' +
+                                    '<md-input-container flex="100">' +
+                                        '<label>Name</label>' +
+                                        '<input ng-model="dashboardName" name="dashboardName">' +
+                                    '</md-input-container>' +
+                                    '<md-input-container flex="100">' +
+                                        '<label>Refresh Interval</label>' +
+                                        '<md-select ng-model="refreshInterval" name="refreshInterval">' +
+                                            '<md-option value="30" ng-selected>30 Seconds</md-option>' +
+                                            '<md-option value="60">1 minute</md-option>' +
+                                            '<md-option value="120">2 minutes</md-option>' +
+                                            '<md-option value="300">5 minutes</md-option>' +
+                                        '</md-select>' +
+                                    '</md-input-container>' +
+                                '</div>' +
+                                '<div class="md-actions" layout="row">' +
+                                     '<span flex></span>' +
+                                    '<div class="dashbord-save-loader" ng-if="isLoadingDashBoardSave">' +
+                                        '<svg class="circular-loader" height="50" width="50">' +
+                                                '<circle class="path" cx="25" cy="25.2" r="19.9"' +
+                                                        'fill="none" stroke-width="6" stroke-miterlimit="10"/>' +
+                                        '</svg>' +
+                                    '</div>' + 
+                                    '<md-button class="btn-dialog b-r-0" ng-if="isButtonDashBoardSave" ng-click="saveDashboard()">' +
+                                        'Save' +
+                                    '</md-button>' +
+                                    '<md-button class="btn-dialog b-r-0" ng-click="close()">' +
+                                        'Cancel' +
+                                    '</md-button>' +
+                                '</div>' +
+                      '</md-content>' +
+                    '</md-dialog>',            
+>>>>>>> bc53470534f444867bf5d9c8ca81d708abe990a3
                 targetEvent: ev,
                 resolve: {
                     widget: function () {

@@ -425,18 +425,9 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         
         $scope.d3ImgDownload = function (widget,type) {
 
-            var element =null;
-            switch (widget.widgetName) {
-                
-                case 'sunburst':
-                    element =$("#d3Sunburst");
-                    break;
-
-                case 'hierarchy':
-                    element =$("#d3Force");
-                    break;
-
-            }
+             
+            var id="#"+widget.widgetData.widData.id;
+            var element =$(""+id+"");
 
             var downType = null;
             switch (type) {
@@ -493,18 +484,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
         $scope.svg_to_pdf = function(widget){
             
-            var element =null;
-            switch (widget.widgetName) {
-                
-                case 'sunburst':
-                    element =$("#d3Sunburst");
-                    break;
-
-                case 'hierarchy':
-                    element =$("#d3Force");
-                    break;
-
-            }
+            var id="#"+widget.widgetData.widData.id;
+            var element =$(""+id+"");
 
             $("#svg-container").empty();
             $("#svg-container").append(element[0].innerHTML);
@@ -556,18 +537,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
         $scope.printD3Chart = function(widget){
 
-            var element =null;
-            switch (widget.widgetName) {
-                
-                case 'sunburst':
-                    element =$("#d3Sunburst");
-                    break;
-
-                case 'hierarchy':
-                    element =$("#d3Force");
-                    break;
-
-            }
+            var id="#"+widget.widgetData.widData.id;
+            var element =$(""+id+"");
 
             var printContents = element[0].innerHTML;
             var originalContents = document.body.innerHTML;
@@ -1045,7 +1016,6 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                             file: files[i],
                             db: 'BigQuery',
                             SecurityToken: userInfo.SecurityToken,
-                            Domain: Digin_Domain,
                             other_data: 'prpt_reports'
                         }
                     }).success(function (data) {
@@ -1054,7 +1024,6 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                         console.log($scope.reports);
                         $scope.preloader = false;
                         $scope.diginLogo = 'digin-logo-wrapper2';
-                        $mdDialog.hide();
                         if ( uploadFlag && storeFlag ){
                             fireMsg('1', 'Successfully uploaded!');
                             privateFun.getAllReport();                            
@@ -1090,8 +1059,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                     data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
                     headers: {  
                                 'Content-Type': 'application/json',
-                                'SecurityToken':userInfo.SecurityToken,
-                                'Domain':Digin_Domain
+                                'SecurityToken':userInfo.SecurityToken
                     }
                 }).success(function (data) {
                     storeFlag = true;

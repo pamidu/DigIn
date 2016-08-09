@@ -2528,9 +2528,8 @@ routerApp.controller('googleMapsInit',['widgetID', '$scope', '$http', '$rootScop
 }]);
 
  
-routerApp.controller('clockInit', ['widgetID','$scope', '$mdDialog', 
-    function ( widgetID, $scope, $mdDialog) {
-
+routerApp.controller('clockInit', ['$scope', '$mdDialog', 
+    function ($scope, $mdDialog) {
 
         $scope.showFinishButton = false;
         var dateFormat = function ($scope) {
@@ -2645,37 +2644,22 @@ routerApp.controller('clockInit', ['widgetID','$scope', '$mdDialog',
                 var sdegree = seconds * 6;
                 var srotate = "rotate(" + sdegree + "deg)";
 
-                var Z = document.getElementsByName(widgetID)[0].children[0].children[1].children[0].children[0];
-                var clocksec = document.getElementsByName(widgetID)[0].children[0].children[1].children[0].children[0].children[2];
-
-                 clocksec.style.transform = srotate;
-                // $("#clocksec").css({
-                //     "transform": srotate
-                // });
+                $("#clocksec").css({
+                    "transform": srotate
+                });
 
             }, 1000);
             setInterval(function () {
                 var hours = new Date().getHours();
-
-                var x = document.getElementsByName(widgetID)[0].children[0].children[1].children[0].children[1];
-                var clockHours = document.getElementsByName(widgetID)[0].children[0].children[1].children[0].children[1].children[0].children[0];
-                var clockMins = document.getElementsByName(widgetID)[0].children[0].children[1].children[0].children[1].children[0].children[1];
-
-
-                var x = document.getElementsByName(widgetID)[0].children[0].children[1].children[0].children[0];
-                var clockHour = document.getElementsByName(widgetID)[0].children[0].children[1].children[0].children[0].children[0];
-
-                clockHours.innerText =hours;
+                $('#clockHours').text(hours);
                 var mins = new Date().getMinutes();
-                clockMins.innerText=mins;
+                $('#clockMins').text(mins);
                 var hdegree = hours * 30 + (mins / 2);
                 var hrotate = "rotate(" + hdegree + "deg)";
 
-                clockHour.style.transform = hrotate;
-
-                // $("#clockhour").css({
-                //     "transform": hrotate
-                // });
+                $("#clockhour").css({
+                    "transform": hrotate
+                });
 
             }, 1000);
             setInterval(function () {
@@ -2685,14 +2669,9 @@ routerApp.controller('clockInit', ['widgetID','$scope', '$mdDialog',
                 var mdegree = mins * 6;
                 var mrotate = "rotate(" + mdegree + "deg)";
 
-                var x = document.getElementsByName(widgetID)[0].children[0].children[1].children[0].children[0];
-                var clockMins = document.getElementsByName(widgetID)[0].children[0].children[1].children[0].children[0].children[1];
-
-                clockMins.style.transform = mrotate;
-
-                // $("#clockmin").css({
-                //     "transform": mrotate
-                // });
+                $("#clockmin").css({
+                    "transform": mrotate
+                });
 
             }, 1000);
         });
@@ -2733,14 +2712,10 @@ routerApp.controller('clockInit', ['widgetID','$scope', '$mdDialog',
         $scope.clockComponentformatChange = function (data) {
 
                 console.log("$('#clockmonthDay')", $('#clockmonthDay'));
-                var x = document.getElementsByName(widgetID)[0].children[0].children[1].children[0].children[0];
-                var y = document.getElementsByName(widgetID)[0].children[0].children[1].children[0].children[1];
-
-                var clockmonthDay = document.getElementsByName(widgetID)[0].children[0].children[1].children[0].children[1].children[1];
 
                 if(data){
                     var monthDay = dateFormat(data);
-                    clockmonthDay.innerText=monthDay;
+                    $('#clockmonthDay').text(monthDay);
 
                     var year = dateFormat('yyyy');
                     $('#clockyear').append(year);

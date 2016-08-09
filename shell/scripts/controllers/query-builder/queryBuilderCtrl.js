@@ -2085,6 +2085,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
     $scope.pivotSummary = {
         onInit: function(recon) {
 
+            $scope.fieldArray =$scope.widget.widgetData.widData.fieldArray;
+            $scope.summaryData=$scope.widget.widgetData.widData.summary;
+
         },
         changeType: function() {
             $scope.eventHndler.isLoadingChart = true;

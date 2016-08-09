@@ -2,7 +2,7 @@
 
     <!-- sidebar items -->
     <md-item ng-repeat="item in sidebarItems">
-        <a ng-click="$parent.navigate(item.title)">
+        <a ng-click="goTORout(item)">
             <i ng-mouseover="menuMouseHover(item)"
 
                class="blut-left-menu  {{item.icon2}} " layout="column"
@@ -17,7 +17,6 @@
     <i ng-hide="leftMenuToggleState" class="ti-angle-right"></i>
     <i ng-show="leftMenuToggleState" class="ti-angle-left"></i>
 </div>
-
 <div ng-show="isEnableSubMenu" ng-mouseleave="menuMouseLeave()" class="blut-sub-panel-wrapper blut-setting">
     <div class="blut-wrap">
         <div class="header-wrap">
@@ -30,7 +29,7 @@
         </div>
         <div class="body-wrap">
             <ul>
-                <li ng-repeat="menu in currentSubMenu.data">
+                <li ng-repeat="menu in currentSubMenu.data" ng-click="goTORout(menu)">
                     <i class="{{menu.icon}}"></i>
                     {{menu.name}}
                 </li>

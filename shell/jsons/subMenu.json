@@ -5,17 +5,17 @@
         {
           "name": "New user",
           "icon": "ti-user",
-          "link": "home.account"
+          "link": "home.createUser"
         },
         {
           "name": "Share",
           "icon": "ti-share",
-          "link": "home.account"
+          "link": "home.share"
         },
         {
           "name": "User setting",
           "icon": "ti-pencil",
-          "link": "home.account"
+          "link": "home.userSettings"
         },
         {
           "name": "Account setting",

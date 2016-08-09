@@ -1002,6 +1002,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         //navigate
+        
         $scope.navigate = function (routeName, ev) {
 
             var widgetLimit = 6;
@@ -1142,6 +1143,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
         };
         //navigate functions start
+        
         $scope.goHomeDialog = function (ev) {
 
             $mdDialog.show({
@@ -1229,7 +1231,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             //to check weather the newpage is allready exist 
                             $rootScope.dashboard.pages.forEach(function (key) {
                                 if (key.pageName.toUpperCase() == $scope.title.toUpperCase()) {
-                                    noDuplicate = false;
+                                        noDuplicate = false;
                                 }
                             });
 
@@ -1518,7 +1520,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 //to check weather the newpage is allready exist
                 $rootScope.dashboard.pages.forEach(function (key) {
                     if (key.pageName.toUpperCase() == $scope.existPageName.toUpperCase()) {
-                        noDuplicate = false;
+                        if(key.pageID != $rootScope.dashboard.pages[$rootScope.selectedPage-1].pageID)
+                                noDuplicate = false;
                     }
                 });
 
@@ -1873,8 +1876,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         //search bar option
         $scope.isSarchScorllBar = false;
-    }
-]);
+
+        $scope.goTORout = function(menu){
+
+            console.log(menu);
+           $state.go(menu.link);
+
+        }
+
+ }]);
 
 
 

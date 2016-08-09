@@ -133,7 +133,6 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                                 
                                 $scope.tableData = newTableData;
                                 $scope.originalList = newTableData;
-                
                                 //save in $localStorage
                                 $localStorage.tableData = newTableData;
                                 $localStorage.originalList = newTableData;

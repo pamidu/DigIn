@@ -425,10 +425,9 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
         
         $scope.d3ImgDownload = function (widget,type) {
 
-             
+
             var id="#"+widget.widgetData.widData.id;
             var element =$(""+id+"");
-
             var downType = null;
             switch (type) {
                 
@@ -486,7 +485,6 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             
             var id="#"+widget.widgetData.widData.id;
             var element =$(""+id+"");
-
             $("#svg-container").empty();
             $("#svg-container").append(element[0].innerHTML);
             var svgEle = $("#svg-container").children();
@@ -539,7 +537,6 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
             var id="#"+widget.widgetData.widData.id;
             var element =$(""+id+"");
-
             var printContents = element[0].innerHTML;
             var originalContents = document.body.innerHTML;
 
@@ -616,6 +613,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                 highestLvl = this.options.customVar,
                                 drillObj = {},
                                 isLastLevel = false;
+                                selectedSeries = e.point.series.name;
 
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
@@ -623,6 +621,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                     if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
                                 }
                             }
+                            chart.options.lang.drillUpText = "◁ Back to " + highestLvl;
 
                             // Show the loading label
                             chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
@@ -645,7 +644,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                 if (status) {
                                     for (var key in res[0]) {
                                         if (Object.prototype.hasOwnProperty.call(res[0], key)) {
-                                            if (key != nextLevel) {
+                                            if (key != nextLevel && key == selectedSeries ) {
                                                 drillObj = {
                                                     name: key,
                                                     data: []
@@ -676,6 +675,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                                     e.preventDefault();
                                 }
                                 console.log(JSON.stringify(res));
+                                chart.xAxis[0].update({title: {text: nextLevel}}, true);
+                                chart.yAxis[0].update({title: {text: selectedSeries}}, true);                                                                
                                 chart.options.customVar = nextLevel;
                                 chart.hideLoading();
                             }, nextLevel, highestLvl + "='" + clickedPoint + "'");
@@ -688,7 +689,19 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         drillConf.drillOrdArr.forEach(function (key) {
                             if (key.nextLevel && key.nextLevel == chart.options.customVar)
                                 chart.options.customVar = key.name;
+                                chart.xAxis[0].update({title: {text: chart.options.customVar}}, true);
                         });
+                        // set x and y axis titles (DUODIGIN-914)
+                        var flag = false;
+                        drillConf.drillOrdArr.forEach(function(key) {
+                            if (chart.options.customVar == key.nextLevel){
+                                chart.options.lang.drillUpText = "◁ Back to " + key.name;
+                                flag = true;
+                            }
+                        });
+                        if (!flag){
+                            chart.yAxis[0].update({title: {text: ''}}, true);
+                        }                         
                     }
                 }
             }

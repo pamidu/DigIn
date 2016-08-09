@@ -10,8 +10,11 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     $scope.engageLikes = 0;
     $scope.postCount = 0;
     $scope.requestCount = 0;
+    $scope.totalViews = 0;
     $scope.postSummaryRequest = 0;
     $scope.sentimentRequest = 0;
+    $scope.fbWordCloud = true;
+    $scope.sentimentSync = true;
     $scope.failedPool = [];
     $scope.sentimentConfigData = [];
     $scope.sentimentConfigSeries = [];
@@ -73,7 +76,9 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
 
 
     $scope.searchPage = function (searchQuery) {
+        console.log("returned now" + new Date() );
         fbInterface.getSearchedPages($scope, true, searchQuery);
+        console.log("returned now" + new Date() );
     };
 
     //getting the service response
@@ -159,7 +164,12 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
 
                 if (entry.name == 'page_fans') {
                     seriesName = 'Page Likes';
-                    $scope.totalLikes = value[1];
+                    if ( value[1] == null ){
+                        $scope.totalLikes = 0;
+                    }
+                    else {
+                        $scope.totalLikes = value[1];
+                    }
                 }
 
                 if (entry.name == 'page_stories') seriesName = 'Page Stories';
@@ -259,6 +269,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     };
 
     $scope.setPostSummary = function () {
+        $scope.sentimentSync = false;
         $scope.fbClient.getPostSummary(function (data, status) {
             $scope.requestCount++;
             if (status) {
@@ -307,6 +318,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                         }
                     }
                 $scope.paging(postArray , postArray.length , 0 );
+                $scope.sentimentSync = true;
             }
                
             } else {
@@ -316,7 +328,6 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     };
 
     $scope.setSentimentAnalysis = function (data) {
-            $scope.requestCount++;
                 var sentIcons = {
                     'positive': 'styles/css/images/socialAnalysis/happyFace.png',
                     'negative': 'styles/css/images/socialAnalysis/sadFace.png',
@@ -357,6 +368,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     };
 
     $scope.setWordCloud = function () {
+        $scope.fbWordCloud = false;
         $scope.fbClient.getWordCloud(function (data, status) {
             $scope.requestCount++;
             if (status) {
@@ -380,6 +392,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
             } else {
                 $scope.handleFailure({method: 'setWordCloud', error: data});
             }
+            $scope.fbWordCloud = true;
         });
     };
 
@@ -457,15 +470,24 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         $scope.page = page;
         $scope.timestamps = pageTimestamps;
         $scope.activePageSearch = false;
-
+        $scope.fbWordCloud = true;
+        $scope.sentimentSync = true;
         $scope.fbClient = $restFb.getClient(page, pageTimestamps);
         $scope.postSummaryRequest = 0;
         $scope.sentimentRequest = 0;
+        $scope.totalLikes = 0;
+        $scope.totalEngagement = 0;
+        $scope.engageLikes = 0;
+        $scope.postCount = 0;
+        $scope.requestCount = 0;
+        $scope.totalViews = 0;    
         $scope.sentimentConfigData = [];
         $scope.sentimentConfigSeries = [];
         $scope.sentimentConfigData = [];        
         $scope.postsObj = []; 
-        $scope.postIds = []; 
+        $scope.postIds = [];
+        $scope.highchartsNG['series'] = [];
+        $scope.sentimentConfig['series'] = [];
         reqPool.forEach(function (key) {
             eval("$scope." + key.method + "()");
         });
@@ -479,10 +501,10 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         $scope.errorMessage = false;
         $scope.untilDate = new Date();
         var secondDate = new Date();
-        secondDate.setDate($scope.untilDate.getDate() - 60);
+        secondDate.setDate($scope.untilDate.getDate() - 30);
         $scope.sinceDate = secondDate;
         $scope.preloader = true;
-        $scope.getPageDetails(page, getBoundaryTimestamps(60, new Date()), $scope.defReqPool);
+        $scope.getPageDetails(page, getBoundaryTimestamps(30, new Date()), $scope.defReqPool);
     };
 
     $scope.changeTimeRange = function () {

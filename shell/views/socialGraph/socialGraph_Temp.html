@@ -401,9 +401,12 @@
                                     </div>
                                 </h2>
                             </div>
-                            <div class="graph-chart-body">
+                            <div class="graph-chart-body" ng-show="sentimentSync">
                                 <highchart config="sentimentConfig"></highchart>
                             </div>
+                            <div ng-hide="sentimentSync" layout="row" layout-sm="row" layout-align="center center" style="height:100%;width:100;">
+                                <img src="styles/css/images/preloaders/facebook.gif" alt="Washed Out" layout-align="center center" style="height:15%;width:5%;">
+                            </div>                               
                         </div>
                     </md-card>
                 </div>
@@ -416,8 +419,13 @@
                                         Word Cloud
                                     </h2>
                                 </div>
-                                <digin-word-cloud words="wordArray"></digin-word-cloud>
-                            </div>
+                                <div ng-show="fbWordCloud" layout="row">
+                                    <digin-word-cloud words="wordArray" ></digin-word-cloud>
+                                </div>
+                                <div ng-hide="fbWordCloud" layout="row" layout-sm="row" layout-align="center center" style="height:100%;width:100%;">
+                                    <img src="styles/css/images/preloaders/facebook.gif" alt="Washed Out" layout-align="center center" style="height:15%;width:5%;">
+                                </div>                                 
+                            </div>                             
                         </md-card>
                     </div>
                 </div>

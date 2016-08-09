@@ -23,27 +23,24 @@
                         <div ng-class="widgetTitleClass" flex="80">
                             {{widget.widgetData.widName}}
                         </div>
+
                         <div class="widget-button-wrapper" layout="row" layout-align="end center" flex>
-                            <md-button class="widget-button"
-                                       ng-mouseover="showWidgetSettings = true"
-                                       ng-mouseleave="showWidgetSettings = false">
-                                <ng-md-icon icon="more_vert" style="fill:#82b8d7" size="20" layout="column"
-                                            layout-align="center center" flex></ng-md-icon>
+                            <md-button class="widget-button">
+                                <i class="ti-more blut-widget-icon" layout="column"
+                                   ng-mouseover="showWidgetSettings = true"
+                                   ng-mouseleave="showWidgetSettings = false"
+                                   layout-align="center center" flex></i>
                             </md-button>
-                            <md-button class="widget-button" ng-click="commentary(widget)">
-                                <ng-md-icon icon="volume_up" style="fill:#82b8d7" size="20" layout="column"
-                                            layout-align="center center" flex></ng-md-icon>
-                                <md-tooltip md-direction="left">commentary</md-tooltip>
-                            </md-button>
+
                             <!-- mapped data view -->
                             <md-button class="widget-button" ng-click="syncWidget(widget)"
                                        ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
-                                <ng-md-icon icon="sync" style="fill:#82b8d7" size="20" layout="column"
-                                            layout-align="center center" flex></ng-md-icon>
+                                <i class="ti-reload blut-widget-icon" layout="column"
+                                   layout-align="center center" flex></i>
                                 <md-tooltip md-direction="left">sync</md-tooltip>
                             </md-button>
                             <md-button class="widget-button" ng-click="removeWidget(widget, $event)">
-                                <i class="ti-close"  layout="column"
+                                <i class="ti-close blut-widget-icon" layout="column"
                                    layout-align="center center" flex></i>
                             </md-button>
                         </div>

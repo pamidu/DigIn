@@ -31,7 +31,7 @@
                      layout-align="space-between center">
                     <div flex="60" class="nav-search" layout="row" layout-align="center center">
                         <div flex="70">
-                            <div class="blut-search-wrapper">
+                            <div class="blut-search-wrapper" ng-click="toggelDownSearch()">
                                 <i class="icon-search"></i>
                                 Search
                             </div>
@@ -130,7 +130,98 @@
         </div>
 
         <!--  #SearchMainWrap search main container -->
-        <div class="blut-search-layer-wrapper" ng-click="toggelDownSearch(false)" id="searchLayer">
+        <div id="searchLayer" class="blut-search-layer-wrapper">
+            <div class="blut-search-header">
+                <div class="header-text">
+                    <h5>Dashboard and report</h5>
+                </div>
+                <div class="search-box">
+                    <input class="form-control txt-sm-search-header" placeholder="search dashboard or report...">
+                </div>
+                <div class="blut-close-btn" ng-click="toggelDownSearch()">
+                    <i class="icon-cancel"></i>
+                </div>
+            </div>
+
+            <div class="blut-search-body">
+                <div class="dashboard-wrapper">
+                    <h5>Dashboard</h5>
+                </div>
+                <div class="blut-dashboard-view"
+                     ng-slimscroll
+                     opacity="0.1"
+                     distance="10px"
+                     height="230px"
+                     ng-mouseover="isSarchScorllBar = true"
+                     ng-mouseleave="isSarchScorllBar = false"
+                     enabled="{{ isSarchScorllBar }}"
+                >
+                    <ul class="dashboard-wrap">
+                        <li class="pull-left dashboard-name">Test 01</li>
+                        <li class="pull-right view-more-btn">view</li>
+                        <li class="pull-right delete-btn">delete</li>
+                    </ul>
+                    <ul class="dashboard-wrap">
+                        <li class="pull-left dashboard-name">Test 01</li>
+                        <li class="pull-right view-more-btn">view</li>
+                        <li class="pull-right delete-btn">delete</li>
+                    </ul>
+                    <ul class="dashboard-wrap">
+                        <li class="pull-left dashboard-name">Test 01</li>
+                        <li class="pull-right view-more-btn">view</li>
+                        <li class="pull-right delete-btn">delete</li>
+                    </ul>
+                    <ul class="dashboard-wrap">
+                        <li class="pull-left dashboard-name">Test 01</li>
+                        <li class="pull-right view-more-btn">view</li>
+                        <li class="pull-right delete-btn">delete</li>
+                    </ul>
+                    <ul class="dashboard-wrap">
+                        <li class="pull-left dashboard-name">Test 01</li>
+                        <li class="pull-right view-more-btn">view</li>
+                        <li class="pull-right delete-btn">delete</li>
+                    </ul>
+                </div>
+
+                <div class="dashboard-wrapper">
+                    <h5>Report</h5>
+                </div>
+                <div class="blut-dashboard-view"
+                     ng-slimscroll
+                     opacity="0.1"
+                     distance="10px"
+                     height="230px"
+                     ng-mouseover="isSarchScorllBar = true"
+                     ng-mouseleave="isSarchScorllBar = false"
+                     enabled="{{ isSarchScorllBar }}">
+                    <ul class="dashboard-wrap">
+                        <li class="pull-left dashboard-name">Test 01</li>
+                        <li class="pull-right view-more-btn">view</li>
+                    </ul>
+                    <ul class="dashboard-wrap">
+                        <li class="pull-left dashboard-name">Test 01</li>
+                        <li class="pull-right view-more-btn">view</li>
+                    </ul>
+                    <ul class="dashboard-wrap">
+                        <li class="pull-left dashboard-name">Test 01</li>
+                        <li class="pull-right view-more-btn">view</li>
+                    </ul>
+                    <ul class="dashboard-wrap">
+                        <li class="pull-left dashboard-name">Test 01</li>
+                        <li class="pull-right view-more-btn">view</li>
+                    </ul>
+                    <ul class="dashboard-wrap">
+                        <li class="pull-left dashboard-name">Test 01</li>
+                        <li class="pull-right view-more-btn">view</li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div ng-click="toggelDownSearch(false)">
             <div class="search" flex="60" layout="row" layout-align="center center">
                 <h1> dashboard and reports</h1>
                 <!--<input type="text" class="form-control"-->

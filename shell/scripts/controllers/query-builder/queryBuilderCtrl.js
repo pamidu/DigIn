@@ -1833,8 +1833,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         for ( var key in data){
                             console.log(data[key]); // the whole array (index)
                             $scope.histogramPlotData.push(parseFloat(data[key][0]));
-                            var category = data[key].splice(0, 1);
-                            $scope.histogramPlotcat.push(data[key]);
+                            //var category = data[key][].splice(1, 1);
+                            var category = data[key][1];
+                            $scope.histogramPlotcat.push(category);
                         }
                         console.log($scope.histogramPlotData);
                         $scope.categories = fieldArray;
@@ -1844,7 +1845,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 chart: {
                                     type: 'column',
                                     width: null,
-                                    height: 367,
+                                    height: 500,
                                     events: {
                                         beforePrint: function() {
                                             this.setTitle({
@@ -1925,7 +1926,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                 tickLength: 3,
                                 tickColor: '#ccc',
                                 lineColor: '#ccc',
-                                tickInterval: 25,
+                                //tickInterval: 25,
                                 //endOnTick:false,
                             },
                             series: [{
@@ -2088,6 +2089,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
     $scope.pivotSummary = {
         onInit: function(recon) {
+
+            $scope.fieldArray =$scope.widget.widgetData.widData.fieldArray;
+            $scope.summaryData=$scope.widget.widgetData.widData.summary;
 
         },
         changeType: function() {

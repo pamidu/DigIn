@@ -3609,6 +3609,11 @@ li:active {
     margin-top: 50px;
 }
 
+md-select
+{
+	margin: 0 !important;
+}
+
 .setting-card-header {
     margin-top: 50px;
     text-align: center;

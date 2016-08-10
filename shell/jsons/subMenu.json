@@ -21,6 +21,11 @@
           "name": "Account setting",
           "icon": "ti-settings",
           "link": "home.account"
+        },
+	    	{
+          "name": "Groups",
+          "icon": "ti-settings",
+          "link": "home.group"
         }
       ]
     },

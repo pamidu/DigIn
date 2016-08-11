@@ -1,0 +1,103 @@
+<md-dialog class="widget0s-dialog" ng-init="setAttributes()">
+    <div layout="row" layout-xs="column">
+        <div flex="55">
+            <div class="card-head">
+                <header class="graph-h1 text-uppercase">
+                    {{widget.widgetData.widName}}
+                </header>
+            </div>
+            <div class="widget0s-chart.wrap">
+                <div class="widget0s-chart-view">
+                    <div get-width callback-fn="setChartSize(this)"
+                         id="settingChart"
+                         ng-include
+                         src="widget.widgetData.widView"></div>
+                </div>
+            </div>
+        </div>
+        <div flex="45">
+            <div class="widget0s-filter" layout="column">
+                <div class="card-head" flex="10">
+                    <header class="graph-h1 text-uppercase">
+                        Chart Filters
+                    </header>
+                    <div class="tools">
+                        <a href="javascript:void(0)" data-ng-click="closeDialog()">
+                            <i class="ti-close"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="widget0s-filter-body" flex="90" layout="column">
+                    <div layout="row" layout-xs="column" flex="100">
+                        <div flex="50">
+                            <div class = "blut-login-user card-head">
+                                &nbsp  SERIES
+                            </div>
+                            <md-checkbox ng-checked="isChecked()" md-indeterminate="isIndeterminate" ng-click="toggleAll()">
+                              <span ng-if="isChecked()">Un-</span>Select All
+                            </md-checkbox>                            
+                            <ul ng-repeat="s in series">
+                                <li>
+                                    <md-checkbox ng-checked="s.status" ng-click="setSeriesFilter(s)">{{s.name}}</md-checkbox>
+                                </li>
+                            </ul>                            
+                        </div>
+                        <div flex="50">
+                            <div class = "blut-login-user card-head">
+                                &nbsp  CATEGORIES
+                            </div>
+                            <md-checkbox ng-checked="isChecked()" md-indeterminate="isIndeterminate" ng-click="toggleAll()">
+                              <span ng-if="isChecked()">Un-</span>Select All
+                            </md-checkbox>                            
+                            <ul ng-repeat="c in categories">
+                                <li>                           
+                                    <md-checkbox >{{c}}</md-checkbox>
+                                </li>                            
+                            </ul>                           
+
+                        </div>
+                    </div>
+<!--                     <div class="widget0s-source">
+                        <header class="widget0s-h1 text-uppercase">
+                            Data Source
+                        </header>
+                        <div class="source">
+                            <i class="fa fa-database"></i>
+                            <span>
+                             {{widget.widgetData.commonSrc.src.src}}
+                            </span>
+                        </div>
+                        <div class="source">
+                            <i class="fa fa-table"></i>
+                            <span>
+                             {{widget.widgetData.commonSrc.src.tbl}}
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="widget0s-source" style="height: 100%;">
+                        <header class="widget0s-h1 text-uppercase">
+                            OTHER
+                        </header>
+                        <div class="source attr" ng-repeat="att in widget.widgetData.commonSrc.att">
+                            <span>
+                             {{att.filedName}}
+                            </span>
+                        </div>
+
+                        <div class="source attr" ng-repeat="mea in widget.widgetData.commonSrc.mea">
+                            <span>
+                             {{mea.filedName}}({{mea.condition}})
+                            </span>
+                        </div>
+                    </div>
+                    <div class="widget0s-source widget0s-qry">
+                        {{widget.widgetData.commonSrc.query}}
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</md-dialog>

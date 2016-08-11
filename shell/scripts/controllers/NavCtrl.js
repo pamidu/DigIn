@@ -549,6 +549,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
 
         $scope.goDashboard = function (dashboard) {
+
+            
             console.log($scope.dashboards);
             console.log("dash item", dashboard);
             $rootScope.page_id = "";
@@ -1879,10 +1881,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         $scope.goTORout = function(menu){
 
-            console.log(menu);
+           console.log(menu);
            $state.go(menu.link);
 
         }
+
+        
+        $scope.test = function(state){
+          $scope.showWidgetSettings=state;
+        };
 
  }]);
 

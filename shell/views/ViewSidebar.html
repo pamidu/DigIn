@@ -2,7 +2,7 @@
 
     <!-- sidebar items -->
     <md-item ng-repeat="item in sidebarItems">
-        <a ng-click="goTORout(item)">
+        <a ng-click="navigate(item.click)">
             <i ng-mouseover="menuMouseHover(item)"
 
                class="blut-left-menu  {{item.icon2}} " layout="column"

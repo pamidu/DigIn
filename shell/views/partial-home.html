@@ -44,19 +44,19 @@
                     </div>
                     <div flex="40" layout-align="center center" layout="row" class="blut-search-right-wrapper">
 
-                        <div flex="10" class="blut-header-icon">
+                        <div flex="10" class="blut-header-icon" ng-click="mainclose()">
                             <i class="icon-house-outline"></i>
                         </div>
-                        <div flex="10" class="blut-header-icon">
+                        <div flex="10" class="blut-header-icon" ng-click="navigate('TV Mode')">
                             <i class="icon-full-size"></i>
                         </div>
-                        <div flex="10" class="blut-header-icon">
+                        <div flex="10" class="blut-header-icon" ng-click="navigate('Clear Widgets')">
                             <i class="icon-broom"></i>
                         </div>
-                        <div flex="10" class="blut-header-icon">
+                        <div flex="10" class="blut-header-icon" ng-click="navigate('Save')">
                             <i class="ti-save"></i>
                         </div>
-                        <div flex="10" class="blut-header-icon">
+                        <div flex="10" class="blut-header-icon" ng-click="navigate('Help')">
                             <i class="ti-help-alt"></i>
                         </div>
 
@@ -136,7 +136,7 @@
                     <h5>Dashboard and report</h5>
                 </div>
                 <div class="search-box">
-                    <input class="form-control txt-sm-search-header" placeholder="search dashboard or report...">
+                    <input class="form-control txt-sm-search-header" placeholder="search dashboard or report..." ng-model="SearchText">
                 </div>
                 <div class="blut-close-btn" ng-click="toggelDownSearch()">
                     <i class="icon-cancel"></i>
@@ -155,30 +155,12 @@
                      ng-mouseover="isSarchScorllBar = true"
                      ng-mouseleave="isSarchScorllBar = false"
                      enabled="{{ isSarchScorllBar }}"
+
                 >
-                    <ul class="dashboard-wrap">
-                        <li class="pull-left dashboard-name">Test 01</li>
-                        <li class="pull-right view-more-btn">view</li>
-                        <li class="pull-right delete-btn">delete</li>
-                    </ul>
-                    <ul class="dashboard-wrap">
-                        <li class="pull-left dashboard-name">Test 01</li>
-                        <li class="pull-right view-more-btn">view</li>
-                        <li class="pull-right delete-btn">delete</li>
-                    </ul>
-                    <ul class="dashboard-wrap">
-                        <li class="pull-left dashboard-name">Test 01</li>
-                        <li class="pull-right view-more-btn">view</li>
-                        <li class="pull-right delete-btn">delete</li>
-                    </ul>
-                    <ul class="dashboard-wrap">
-                        <li class="pull-left dashboard-name">Test 01</li>
-                        <li class="pull-right view-more-btn">view</li>
-                        <li class="pull-right delete-btn">delete</li>
-                    </ul>
-                    <ul class="dashboard-wrap">
-                        <li class="pull-left dashboard-name">Test 01</li>
-                        <li class="pull-right view-more-btn">view</li>
+                    <ul class="dashboard-wrap" ng-repeat="dashboard in dashboards | filter : SearchText">
+                        {{x}}
+                        <li class="pull-left dashboard-name">{{dashboard.dashboardName}}</li>
+                        <li class="pull-right view-more-btn" ng-click="goDashboard(dashboard)">view</li>
                         <li class="pull-right delete-btn">delete</li>
                     </ul>
                 </div>
@@ -194,25 +176,9 @@
                      ng-mouseover="isSarchScorllBar = true"
                      ng-mouseleave="isSarchScorllBar = false"
                      enabled="{{ isSarchScorllBar }}">
-                    <ul class="dashboard-wrap">
-                        <li class="pull-left dashboard-name">Test 01</li>
-                        <li class="pull-right view-more-btn">view</li>
-                    </ul>
-                    <ul class="dashboard-wrap">
-                        <li class="pull-left dashboard-name">Test 01</li>
-                        <li class="pull-right view-more-btn">view</li>
-                    </ul>
-                    <ul class="dashboard-wrap">
-                        <li class="pull-left dashboard-name">Test 01</li>
-                        <li class="pull-right view-more-btn">view</li>
-                    </ul>
-                    <ul class="dashboard-wrap">
-                        <li class="pull-left dashboard-name">Test 01</li>
-                        <li class="pull-right view-more-btn">view</li>
-                    </ul>
-                    <ul class="dashboard-wrap">
-                        <li class="pull-left dashboard-name">Test 01</li>
-                        <li class="pull-right view-more-btn">view</li>
+                    <ul class="dashboard-wrap" ng-repeat="report in reports | filter : SearchText">
+                        <li class="pull-left dashboard-name">{{report.splitName}}</li>
+                        <li class="pull-right view-more-btn" ng-click="goReport(report.splitName)">view</li>
                     </ul>
                 </div>
 

@@ -3,7 +3,8 @@
     {
       "title": "Add Page",
       "icon2": "icon-add-page",
-      "type": "menu"
+      "type": "menu",
+      "click":"Add Page"
     },
     {
       "title": "Reports",
@@ -14,17 +15,20 @@
     {
       "title": "RealTime",
       "icon2": "icon-clock",
-      "type": "menu"
+      "type": "menu",
+      "click":"RealTime"
     },
     {
       "title": "Data Source",
       "icon2": "icon-database",
-      "type": "menu"
+      "type": "menu",
+      "click":"Data Source"
     },
     {
       "title": "Add Widgets",
       "icon2": "icon-plugin",
-      "type": "menu"
+      "type": "menu",
+      "click":"Add Widgets"
     },
     {
       "title": "Social Media",

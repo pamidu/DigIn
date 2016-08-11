@@ -27,10 +27,11 @@
                         <div class="widget-button-wrapper" layout="row" layout-align="end center" flex>
                             <md-button class="widget-button">
                                 <i class="ti-more blut-widget-icon" layout="column"
-                                   ng-mouseover="showWidgetSettings = true"
-                                   ng-mouseleave="showWidgetSettings = false"
+                                   ng-mouseover="test(true)"
+                                   ng-mouseleave="test(false)"
                                    layout-align="center center" flex></i>
                             </md-button>
+                            {{showWidgetSettings}}
 
                             <!-- mapped data view -->
                             <md-button class="widget-button" ng-click="syncWidget(widget)"
@@ -77,10 +78,11 @@
                         <div style="height:100%;width:100%" class="dashoard-Wrapper" id="d3Chart-wrap" ng-include
                              src="widget.widgetData.widView">
                         </div>
+
                         <div class="widget-button-wrapper widget-button-wrapper2" layout="column"
-                             layout-align="end center" ng-show="showWidgetSettings"
-                             ng-mouseover="showWidgetSettings = true"
-                             ng-mouseleave="showWidgetSettings = false" flex>
+                             layout-align="end center" ng-if="showWidgetSettings"
+                             ng-mouseover="test(true)"
+                             ng-mouseleave="test(false)" flex>
 
                             <!-- update damith
                                  data source details view

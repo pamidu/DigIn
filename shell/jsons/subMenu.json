@@ -13,14 +13,19 @@
           "link": "home.share"
         },
         {
-          "name": "User setting",
+          "name": "User settings",
           "icon": "ti-pencil",
           "link": "home.userSettings"
         },
         {
-          "name": "Account setting",
+          "name": "Account settings",
           "icon": "ti-settings",
           "link": "home.account"
+        },
+        {
+          "name": "Groups",
+          "icon": "ti-settings",
+          "link": "home.group"
         }
       ]
     },
@@ -68,27 +73,12 @@
         {
           "name": "Facebook",
           "icon": "ti-facebook",
-          "link": "home.account"
-        },
-        {
-          "name": "Google+",
-          "icon": "ti-google",
-          "link": "home.account"
+          "link": "home.social-graph-fb"
         },
         {
           "name": "Twitter",
           "icon": "ti-twitter-alt",
-          "link": "home.account"
-        },
-        {
-          "name": "Linkedin",
-          "icon": "ti-linkedin",
-          "link": "home.account"
-        },
-        {
-          "name": "YouTube",
-          "icon": "ti-youtube",
-          "link": "home.account"
+          "link": "home.SocialGraphTwitter"
         }
       ]
     },
@@ -97,12 +87,12 @@
         {
           "name": "Report Development",
           "icon": "ti-filter",
-          "link": "home.account"
+          "link": "home.ReportsDev"
         },
         {
           "name": "Report",
           "icon": "ti-notepad",
-          "link": "home.account"
+          "link": "home.Reports"
         }
       ]
     }

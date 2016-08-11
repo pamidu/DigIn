@@ -887,9 +887,9 @@ routerApp.controller('ReportsDevCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportS
         $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
         }
-        $scope.applyCSS = function () {
-            cssInjector.add("/styles/css/style1.css");
-        }
+        // $scope.applyCSS = function () {
+        //   //  cssInjector.add("/styles/css/style1.css");
+        // }
         //*******************
         // Internal Methods
         //*******************

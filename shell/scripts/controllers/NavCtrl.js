@@ -1886,10 +1886,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         }
 
-        
-        $scope.test = function(state){
-          $scope.showWidgetSettings=state;
-        };
+
 
  }]);
 

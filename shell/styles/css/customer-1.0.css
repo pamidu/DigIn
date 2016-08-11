@@ -4,6 +4,17 @@ cmds >> common data source style
 drb >> dynamically report builder
 */
 
+body
+{
+	background: rgba(230, 230, 230, 1) !important;
+}
+
+.ng-cloak,
+[ng-cloak],
+[ng\:cloak] {
+    display: none!important
+}
+
 /*cmds >> common data source style*/
 .digin-cmds-source {
     display: block;

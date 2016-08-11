@@ -683,6 +683,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
         $scope.widInit = function (widget) {
 
+
             widget.isD3chart = false;
             widget.d3chartBtn = false;
             switch (widget.widgetName) {
@@ -945,7 +946,14 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
             $rootScope.dashboard.pages[$rootScope.selectePage - 1].widgets = [];
         };
 
-        $scope.showWidgetSettings = false;
+
+        $scope.setShowWidgetSettings = function(widget){
+            widget.showWidgetSettings = false;   
+        }
+
+        $scope.showWidgetSettingsDiv = function(widget,state){
+            widget.showWidgetSettings = state;
+        }
 
         $scope.alert = '';
 

@@ -728,7 +728,7 @@ body {
 }
 
 .digin-style {
-    background: rgba(230, 230, 230, 1) !important;
+   /* background: rgba(230, 230, 230, 1) !important;*/
 }
 
 .tabsdemoStaticTabs {
@@ -1348,12 +1348,12 @@ h6 small {
 }
 
 /* wordpress widget image size */
-
+/*
 md-list-item > .md-avatar:first-child,
 md-list-item .md-list-item-inner > .md-avatar:first-child {
     width: 100px;
     height: 100px;
-}
+}*/
 
 .digin-widget {
     font-family: 'Ek Mukta', sans-serif;
@@ -1514,8 +1514,8 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
 .widget-button-wrapper2 {
     background-color: white;
     position: absolute;
-    bottom: 35px;
-    right: 0px;
+    right: 21px;
+    top:-5px;
     -webkit-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);

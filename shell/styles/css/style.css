@@ -1348,12 +1348,12 @@ h6 small {
 }
 
 /* wordpress widget image size */
-
+/*
 md-list-item > .md-avatar:first-child,
 md-list-item .md-list-item-inner > .md-avatar:first-child {
     width: 100px;
     height: 100px;
-}
+}*/
 
 .digin-widget {
     font-family: 'Ek Mukta', sans-serif;

@@ -1,3 +1,33 @@
+<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="notifications" style="overflow-y:hidden;z-index:1501;">
+
+		<md-toolbar style="min-height: 42px;height:42px;background:#02b5e2">
+			<div layout="row" layout-align="space-between center">
+
+				<h1 class="md-toolbar-tools" style="color:white">Notifications</h1>
+				<md-button class="md-icon-button"  ng-click="openNotifications()" style="margin-top:10px">
+					<ng-md-icon icon="close" style="fill:white;margin-top:10px" size="24px"></ng-md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-content style="overflow-y:scroll;height:calc(100% - 130px);padding:0" ng-if="notifications.length >= 1">
+			<md-list style="padding:0">
+				<md-list-item class="md-3-line" ng-repeat="notification in notifications" ng-click="viewNotifications(notification)">
+					<div class="md-list-item-text" layout="column">
+						<div layout="row" layout-align="start start" > <h3 style="width: 155px;">{{notification.title}}</h3></div>
+						<p style="margin-top:6px;"><b style="letter-spacing:0px">{{notification.description}}</p>
+					</div>
+					<md-button class="md-icon-button launch" ng-click="deleteProduct($event,notification.$id)" style="margin-top: 10px !important" aria-label="delete" ng-if="notification.email == useremail">
+						<ng-md-icon icon="close" style="fill:#979797" size="18px"></ng-md-icon>
+					</md-button>
+				</md-list-item>
+			</md-list>
+		</md-content>
+		<md-content style="padding:0;height:calc(100% - 130px)" ng-if="notifications.length < 1" layout="column" layout-align="center center">
+			<p>There are no Notifications</p>
+		</md-content>
+		
+
+	</md-sidenav>
 <div class="digin-style" ng-init="getSearchPanelDetails()">
     <toast></toast>
     <!-- preloader start -->
@@ -58,6 +88,10 @@
                         </div>
                         <div flex="10" class="blut-header-icon" ng-click="navigate('Help')">
                             <i class="ti-help-alt"></i>
+                        </div>
+						<div flex="10" class="blut-header-icon" ng-click="openNotifications()" ng-init="allWishes = 3">
+							<ng-md-icon icon="notifications_none" style="fill:#02b5e2;cursor:pointer" size="26px"></ng-md-icon>
+							<div style="width:15px;height:15px;border-radius:16px;background:#02b5e2;color:white;margin-top:-34px;margin-left:16px;font-size:10px;font-weight:700;position:absolute"><div style="margin-left:4px;margin-top:1px;" ng-if="allWishes <=9">{{allWishes}}</div><div style="margin-left:1px;margin-top:3px;" ng-if="allWishes > 9">{{allWishes}}</div></div>
                         </div>
 
 

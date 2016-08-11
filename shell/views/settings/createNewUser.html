@@ -1,88 +1,47 @@
-<div class="bg-gradient-green"></div>
 <div class="setup-wrapper  animated fadeIn">
-    <div layout="row" class="setting-close pull-right" ng-click="route('back')">
-        <i class="fa fa-close"></i>
-    </div>
 
-    <div class="md-padding animated fadeIn" layout="row" layout-align="center center">
-        <div class="setting-wrap" style="height: 760px;"
-             flex="60">
-            <div class="setting-card-header">
+        <div class="setting-wrap" style="max-width:960px;margin:0 auto;paddding:20px; margin-top: 20px;box-shadow:0 1px 5px 0 rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.12)">
+            <div layout="row" layout-align="end end">
+				<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route('back')"></md-button>
+			</div>
+			
+			<div class="setting-card-header">
                 <h5>Create New User</h5>
                 <div class="setting-img-wrap">
                     <img src="styles/css/images/setting/invite_user.png"/>
                 </div>
-                <div class="setting-text-wrap">
-                    <p>Create new users belongs to your tenant</p>
-                </div>
-         
-         
-            <div class="user-setting-wrap">
-                <form name="frmNewUser" autocomplete="off" ng-submit="CreateUser()" novalidate>
-                
-                    <table width="100%">
-                        <tr>    
-                            <td width="50%">    
-                                <md-input-container>
-                                    <label>First Name</label>
-                                    <input ng-model="fname" name="fname" required>                                      
-                                    <div ng-messages="frmNewUser.fname.$error" ng-if='frmNewUser.fname.$touched' role="alert">
-                                        <div ng-message="required">This is required.</div>
-                                    </div>
-                                </md-input-container>
-                            </td> 
-                            <td width="50%">       
-                                <div> 
-                                    <md-input-container>
-                                        <label>Last Name</label>
-                                        <input ng-model="lname">
-                                    </md-input-container>
-                                </div> 
-                           </td>    
-                        </tr>        
-                     
-                        <tr>
-                            <td> 
-                                <md-input-container>
-                                    <label>Email</label>
-                                    <input ng-model="email" name="email" required>
-                                    <div ng-messages="frmNewUser.email.$error" ng-if='frmNewUser.email.$touched' role="alert">
-                                        <div ng-message="required">This is required.</div>
-                                    </div>
-                                </md-input-container>
-                            </td>    
-                            <td>    
-                                <div>    
-                                    <md-input-container>
-                                        <label>Domain</label>
-                                        <input ng-model="domain" readonly="true"> 
-                                    </md-input-container>
-                                </div>      
-                            </td>    
-                        </tr>       
-                    </table>     
-                     <input ng-model="email" name="email" required>         
-
-                    <div>    
-                        <span class="setup-font-theme">
-                            The user will be asked to set his password.
-                        </span>
-                    </div> 
-
-                    <md-button type="submit" class="setup-button md-raised md-primary">
-                        <span class="setup-font-theme">CREATE USER</span>
-                    </md-button>
-                </form>
-            </div>
-          
-
-        </div>
-    </div>
-</div>
-
-
-
-
-
-        
+			</div>
+			<div layout="row" layout-align="start start">
+			<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Profile details</div>
+			</div>
        
+            <form name="frmNewUser" autocomplete="off" ng-submit="CreateUser()">
+					<div layout="row">
+						<div layout="column" layout-align="start start" flex style="padding: 10px 5px 10px 10px;">
+							<label>First Name</label>
+							<input type="text" id="txtCompany" class="form-control" ng-model="fname" />
+						</div>
+						<div layout="column" layout-align="start start" flex style="padding: 10px 10px 10px 5px;">
+							<label>Last Name</label>
+							<input type="text" id="txtName" class="form-control" ng-model="lname" />
+						</div>
+                    </div>
+					<div layout="row">
+						<div layout="column" layout-align="start start" flex style="padding: 10px 5px 10px 10px;">
+							<label>Email</label>
+							<input type="email" class="form-control" ng-model="email" />
+						</div>
+						<div layout="column" layout-align="start start" flex style="padding: 10px 10px 10px 5px;">
+							<label>Domain</label>
+							<input type="text" class="form-control" ng-model="domain" ng-disabled="true" />
+						</div>
+                    </div>
+					<div layout="row" layout-align="center center" style="margin-top:20px;">
+						<md-button type="submit"><span style="color:#f9a626;font-weight:700;font-size: 18px;letter-spacing: 1px;">Save</span></md-button>
+						<md-button  type = button ng-click="showAlert($event)"><span style="color:#afb6bcfont-weight:700;font-size: 18px;letter-spacing: 1px;">Cancel</span></md-button>
+					</center>
+             </form>
+
+    </div>
+
+</div>

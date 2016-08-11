@@ -1594,6 +1594,20 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
         };
         //navigate functions end
+        
+        $scope.openNotifications = function()
+		{
+			console.log('t')
+			$mdSidenav('notifications').toggle().then(function () {
+				$log.debug("toggle right is done");
+			});
+		
+		}
+		//temp notifications array
+		$scope.notifications = 
+			[{title:"Dilshan",description:"Description one"},
+			 {title:"Gevindu",description:"Description two"},
+			 {title:"Binara",description:"Description three"}];
 
 
         // help 

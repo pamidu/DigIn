@@ -135,10 +135,10 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script> -->
 <script src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
 
-<script type="text/javascript" src="dilshan_comp/angular/angular.min.js"></script>
-<script type="text/javascript" src="dilshan_comp/angular-animate/angular-animate.js"></script>
-<script type="text/javascript" src="dilshan_comp/angular-aria/angular-aria.js"></script>
-<script type="text/javascript" src="dilshan_comp/angular-material/angular-material.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
+<script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
+<script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
 
 <script src="http://code.highcharts.com/highcharts.js"></script>

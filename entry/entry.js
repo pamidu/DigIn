@@ -38,6 +38,14 @@ routerApp
                         requireLogin: false
                     }
                 })
+                .state("termsNconditions", {
+                    url: "/termsNconditions",
+                    controller: "signup-ctrl",
+                    templateUrl: "termsconditions.php",
+                    data: {
+                        requireLogin: false
+                    }
+                })
 
         }]);
 
@@ -49,6 +57,7 @@ routerApp
             $scope.signindetails = {};
             $scope.isLoggedin = false;
             $scope.activated=false;
+            localStorage.setItem('termsNconditions',false);
 
             $scope.error = {
                 isUserName: false,
@@ -56,7 +65,6 @@ routerApp
                 event: 0,
                 isLoading: false
             };
-
 
             //-----activated user - Signin-----------
             var activated = ($location.search()).activated;
@@ -130,13 +138,16 @@ routerApp
                         .success(function (result) {
                             if(result.Is_Success==true){
                                 if(result.Custom_Message=="No user settings saved for given user and domain")
-                                    {
+                                {
                                         //console.og(result.Result);
+                                        localStorage.setItem('initialLogin',true);
                                         $scope.createDataSet(token);
-                                    }
-
-                                    console.log(result.Result);
-
+                                }
+                                else
+                                {
+                                    localStorage.setItem('initialLogin',false);   
+                                }
+                                //console.log(result.Result);
 
                                 //#Expire existing cookies
                                 document.cookie = 'authData=; Path=/;  Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -194,19 +205,19 @@ routerApp
                 })
                 .success(function (response) {
                     if (response.Success == true) {
-                        displaySuccess('Success...!');
+                        //displaySuccess('Success...!');
                         $mdDialog.hide();
                         console.log(response.Message);
                     }
                     else {  
-                        displayError('Data set creation fail');
-                        mdDialog.hide();
+                        //displayError('Data set creation fail');
+                        $mdDialog.hide();
                         console.log(response.Message);
                     }
 
                 })
                 .error(function (error) {
-                    displayError('Data set creation fail');
+                    //displayError('Data set creation fail');
                     $mdDialog.hide();
                     console.log(error);
                 });
@@ -230,10 +241,6 @@ routerApp
                 });
             };    
             */
-
-
-
-
 
 
 
@@ -382,12 +389,46 @@ routerApp
                 $scope.isLoggedin = false;
                 $scope.freeze=false;
                 $scope.activated=false;
+
+                localStorage.setItem('termsNconditions',false);
+                localStorage.setItem('fname',"");
+                localStorage.setItem('lname',"");
+                localStorage.setItem('email',"");
+                localStorage.setItem('fpw',"");
+                localStorage.setItem('spw',"");
+
                 $state.go('signin');
             };
+
+            $scope.clickAgreed = function () {
+                localStorage.setItem('termsNconditions',true);
+                $state.go('signup');
+            };
+
+            $scope.clickNotAgreed = function () {
+                localStorage.setItem('termsNconditions',false)
+                $state.go('signup');
+            };
+
+            $scope.change = function(agree) {
+                localStorage.setItem('termsNconditions',agree);
+                alert(agree);
+            };
+
+            $scope.onClickTermConditions = function () {
+                localStorage.setItem('fname',signUpUsr.firstName);
+                localStorage.setItem('lname',signUpUsr.lastName);
+                localStorage.setItem('email',signUpUsr.email);
+                localStorage.setItem('fpw',signUpUsr.pwd);
+                localStorage.setItem('spw',signUpUsr.cnfrPwd);
+                $state.go('termsNconditions');
+            };
+
 
             var delay = 2000;
             $scope.User_Name = "";
             $scope.User_Email = "";
+
 
             var signUpUsr = {
                 firstName: '',
@@ -423,8 +464,18 @@ routerApp
                 $scope.freeze=true;
             }
             //------------------------------------
+            $scope.agreed=localStorage.getItem('termsNconditions');
 
+
+            if(localStorage.getItem('fname')==null){signUpUsr.firstName="";}else{signUpUsr.firstName=localStorage.getItem('fname')};
+            if(localStorage.getItem('lname')==null){signUpUsr.lastName="";}else{signUpUsr.lastName=localStorage.getItem('lname')};
+            if(localStorage.getItem('email')==null){signUpUsr.email="";} else if(localStorage.getItem('email')=="undefined"){signUpUsr.email="";} else {signUpUsr.email=localStorage.getItem('email')};
+            if(localStorage.getItem('fpw')==null){signUpUsr.pwd="";}else{signUpUsr.pwd=localStorage.getItem('fpw')};
+            if(localStorage.getItem('spw')==null){signUpUsr.cnfrPwd="";}else{signUpUsr.cnfrPwd=localStorage.getItem('spw')}; 
             
+        
+
+
             //#pre-loader progress
             var displayProgress = function (message) {
                 $mdDialog.show({
@@ -561,6 +612,7 @@ routerApp
 
             $scope.submit = function () {
                 mainFun.validationClear();
+
                 console.log(signUpUsr);
                 //*validation
                 if (signUpUsr.firstName == '' || angular.isUndefined(signUpUsr.firstName)) {
@@ -605,7 +657,7 @@ routerApp
                     focus('cnfrmPwd');
                     return;
                 }
-                else if(!signUpUsr.agreed)
+                else if(localStorage.getItem('termsNconditions')=="false")
                 {
                     mainFun.fireMsg('0', '<strong>Error : </strong>Please read and accept the terms and conditions.');
                     $scope.error.isagreed = true;
@@ -615,19 +667,8 @@ routerApp
                 else {
                     displayProgress('User registration is processing.');
                     mainFun.signUpUser();
-                    //return;
-
                 }
             };
-
-
-            //Go to terms and conditon page
-            $scope.isLoadTermCondition = false;
-            $scope.goToTermCondition = function (state) {
-                $scope.isLoadTermCondition = state;
-            };
-
-
 
         }
     ]);

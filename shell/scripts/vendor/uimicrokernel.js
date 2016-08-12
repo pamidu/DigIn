@@ -4,6 +4,7 @@
 
     function getHost() {
         var host = window.location.hostname;
+        //host = 'omalduosoftwarecom.prod.digin.io';
 
         if (host.indexOf("127.0.0.1") != -1 || host.indexOf("digin-sajeetharan.c9users.io") != -1)
             host = "digin.io"; //adminduowebinfo.space.duoworld.duoweb.info //admin.srilankanvotes.com12thdoor.duoweb.info

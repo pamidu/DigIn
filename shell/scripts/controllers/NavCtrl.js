@@ -74,7 +74,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         var baseUrl = "http://" + window.location.hostname;
 
         //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
-        $http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
+        $http.get(baseUrl+'/apis/profile/userprofile/'+JSON.parse(decodeURIComponent(getCookie('authData'))).Username)
             .success(function(response){
                 console.log(response);
                 $rootScope.profile_Det=response;

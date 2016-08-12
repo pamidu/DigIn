@@ -213,6 +213,11 @@
 <script src="https://rawgit.com/exupero/saveSvgAsPng/gh-pages/saveSvgAsPng.js"></script>
 <script src="https://rawgit.com/MrRio/jsPDF/master/dist/jspdf.debug.js"></script>
 
+<script type="text/javascript" src="bower_components/pdf/canvas2image.js"></script>
+<script type="text/javascript" src="bower_components/pdf/base64.js"></script>
+<script type="text/javascript" src="bower_components/pdf/html2canvas.js"></script>
+<script type="text/javascript" src="bower_components/pdf/jspdf.debug.js"></script>
+
 
 <!-- services start -->
 <script type="text/javascript" src="scripts/services/DynamicRealTimeVis.js"></script>

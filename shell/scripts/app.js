@@ -57,13 +57,15 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         console.log(firstLogin2);
         */
         
-        if (localStorage.getItem("initialLogin") == undefined) {
-
-            localStorage.setItem("initialLogin", false);
-            state = 'welcome';
+        if (localStorage.getItem('initialLogin') == undefined) {
+            localStorage.setItem('initialLogin', false);
+            state = "welcome";
+        }
+        else if(localStorage.getItem('initialLogin') == false){
+           state = "welcome";
         }
         else {
-            state = 'welcome';
+             state = "home";
         }
 
         return state;
@@ -1041,11 +1043,49 @@ routerApp.service('generatePDF3', function ($timeout, $pdfString) {
         doc.addHTML(htmlElement, config.tableLeft, config.tableTop, options, function () {
             var pdfName = config.title.toString() + '.pdf';
             doc.text(config.titleLeft, config.titleTop, config.title);
+            //doc.save(pdfName);
             var output = doc.output('datauristring')
             $pdfString.savePdf(output);
+
+            var file = base64ToBlob(output.replace('data:application/pdf;base64,',''), 'image/png');
+
         });
     };
 });
+
+
+function base64ToBlob( base64, type ) {
+    var bytes = atob( base64 ), len = bytes.length;
+    var buffer = new ArrayBuffer( len ), view = new Uint8Array( buffer );
+    for ( var i=0 ; i < len ; i++ )
+      view[i] = bytes.charCodeAt(i) & 0xff;
+    return new Blob( [ buffer ], { type: type } );
+}       
+
+//#conver dataURL into base64
+/*
+function base64ToBlob(base64Data, contentType) {
+    contentType = contentType || '';
+    var sliceSize = 1024;
+    var byteCharacters = atob(base64Data);
+    var bytesLength = byteCharacters.length;
+    var slicesCount = Math.ceil(bytesLength / sliceSize);
+    var byteArrays = new Array(slicesCount);
+
+    for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+        var begin = sliceIndex * sliceSize;
+        var end = Math.min(begin + sliceSize, bytesLength);
+
+        var bytes = new Array(end - begin);
+        for (var offset = begin, i = 0 ; offset < end; ++i, ++offset) {
+            bytes[i] = byteCharacters[offset].charCodeAt(0);
+        }
+        byteArrays[sliceIndex] = new Uint8Array(bytes);
+    }
+    return new Blob(byteArrays, { type: contentType });
+};
+*/
+
 
 routerApp.factory("$pdfString", function () {
     var base64Pdf;
@@ -1293,3 +1333,14 @@ window.addEventListener("beforeunload", function (e) {
 });
 */  
 
+
+/*
+window.onunload = function (e) {
+
+    //#Expire existing cookies
+    document.cookie = 'authData=; Path=/;  Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'securityToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'tenantData=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';  
+};
+
+*/

@@ -13105,3 +13105,11 @@ md-tooltip {
     border-top: 12px solid rgba(47, 52, 162, 0.5);
     border-left: 12px solid transparent;
 }
+
+
+.termsCondition{
+    background-color:#eee;
+   color:#1dd;
+
+   align:center;
+}

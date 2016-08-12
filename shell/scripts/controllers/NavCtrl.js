@@ -1077,7 +1077,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     break;
                 case "Logout":
                     var confirm = $mdDialog.confirm()
-                        .title('Do you want to logout ?')
+                        .title('Are you sure you want to logout?'')
                         .targetEvent(event)
                         .ok('Yes!')
                         .cancel('No!');
@@ -1139,12 +1139,37 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 case "Common Source Algorithm":
                     $state.go("home.commonSrcAlgorithm");
                     break;
-                default:
+                case "invite":      
+			$mdDialog.show({
+			  controller: "inviteUserCtrl",
+			  templateUrl: 'views/settings/user.html',
+			  parent: angular.element(document.body),
+			  targetEvent: ev,
+			  clickOutsideToClose:true
+			})
+			.then(function(answer) {
+				console.log(answer);
+			});
+			break;
+		default:
                     $state.go("home");
                     break;
             }
         };
-        //navigate functions start
+        //navigate functions end
+        
+        $scope.openNotifications = function()
+	{
+		$mdSidenav('notifications').toggle().then(function () {
+			$log.debug("toggle right is done");
+		});
+		
+	}
+		
+	$scope.notifications = 
+		[{title:"User Segregation",description:"omal@duosoftare.com has invited you to jon his tenant."},
+		 {title:"Dashboard",description:"Sales for the month has exceeded the treshold value"},
+		 {title:"DigIn",description:"DigInCache server is down."}];
         
         $scope.goHomeDialog = function (ev) {
 
@@ -1904,5 +1929,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
  }]);
 
+ routerApp.controller('inviteUserCtrl',['$scope','$mdDialog', function ($scope,$mdDialog) {
 
+  $scope.cancel = function() {
+    $mdDialog.cancel();
+  };
+  $scope.submit = function()
+  {
+		$mdDialog.hide($scope.email);
+  }
+}])
 

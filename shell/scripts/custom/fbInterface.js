@@ -247,7 +247,7 @@ var fbInterface = new function () {
     this.searchFromFb = function (scope, type, token, query) {
         console.log('access token:' + token);
         var xhr = new XMLHttpRequest();
-
+        console.log("started "+ new Date());
         xhr.onreadystatechange = function (e) {
             console.log(this);
             if (xhr.readyState === 4) {
@@ -268,6 +268,7 @@ var fbInterface = new function () {
                 } else {
                     console.error("XHR didn't work: ", xhr.status);
                 }
+                console.log("Ended "+ new Date());
             }
         }
         xhr.ontimeout = function () {

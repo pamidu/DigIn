@@ -1,71 +1,36 @@
-<div class="bg-gradient-green"></div>
-<div class="setup-wrapper">
-    <div layout="row" class="setting-close pull-right" ng-click="route('back')">
-        <i class="fa fa-close"></i>
+<md-dialog aria-label="Invite User"  ng-cloak>
+  <form name="editForm" ng-submit="editForm.$valid && submit()">
+  <md-toolbar style="min-height:48px;height:48px;background:#02b5e2">
+    <div class="md-toolbar-tools">
+      <h2 style="color:white">Invite User</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()" aria-label="Close">
+        <ng-md-icon icon="close" style="fill:white;" size="24px" style="color:#8D8D8D"></ng-md-icon>
+      </md-button>
     </div>
-    <div class="md-padding animated fadeIn" layout="row" layout-align="center center">
-
-        <div class="setting-wrap" flex="50">
-            <div class="setting-card-header">
-                <h5>
-                    Invite User
-                </h5>
-
-                <div class="setting-img-wrap">
-                    <img src="styles/css/images/setting/invite_user.png"/>
-                </div>
-                <div class="setting-text-wrap">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                </div>
-
-            </div>
-            
-            
-                <!--
-                <div layout="column" class="setup-info-container">
-                    <md-input-container>
-                        <label>type email address here..</label>
-                        <input ng-model="user.email" type="email">
-                    </md-input-container>
-                    
-                    <md-button class="setup-button md-raised md-primary" ng-click="inviteUser()">
-                        <span class="setup-font-theme">Invite User</span>
-                    </md-button>
-                </div>
-                <input name="user.email" type="mail" ng-model="user.email" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required>
-                -->
-                    <form name="inviteForm" ng-submit="inviteUser()">
-                        <div class="setup-info-container">
-                            <md-input-container>
-                              <label translate>Email Address</label>
-                              <input name="user.email" type="mail" ng-model="user.email" required>
-                              
-                              <div ng-messages="inviteForm.user.email.$error" ng-if='inviteForm.user.email.$touched' role="alert">
-                                <div ng-message="required">Please enter a valid email address!</div>
-                              </div>
-                             </md-input-container>
-                              
-                          
-                            
-                            
-                          
-                                                         
-                            <md-button type="submit" class="setup-button md-raised md-primary">
-                                <span class="setup-font-theme">INVITE USER</span>
-                            </md-button>
-                            
-                            
-                        </div>  
-                            
-                            
-                        
-                    </form>
-                
-                
-
-            
-        </div>
-
-
+  </md-toolbar>
+  <md-dialog-content style="max-width:800px;max-height:810px; ">
+    <div class="md-dialog-content">
+		<div layout-gt-sm="row">
+			
+			 <div layout="column" class="md-block" flex-gt-sm>
+				<label>Email</label>
+				<input required ng-model="email" class="form-control" ng-pattern="/^.+@.+\..+$/">
+				<div ng-messages="editForm.filename.$error" role="alert">
+					<div ng-message="required">
+						Please specify a valid email address
+					</div>
+				</div>
+			 </div>
+		</div>
     </div>
-</div>
+	  <div layout="row">
+
+		<button class="blut-edit-btn" role="button" type="submit">
+			Invite
+        </button>
+	  </div>
+  </md-dialog-content>
+
+  </form>
+</md-dialog>

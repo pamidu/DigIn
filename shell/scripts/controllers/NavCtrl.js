@@ -1077,7 +1077,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     break;
                 case "Logout":
                     var confirm = $mdDialog.confirm()
-                        .title('Are you sure you want to logout?'')
+                        .title('Are you sure you want to logout?')
                         .targetEvent(event)
                         .ok('Yes!')
                         .cancel('No!');
@@ -1167,9 +1167,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 	}
 		
 	$scope.notifications = 
-		[{title:"User Segregation",description:"omal@duosoftare.com has invited you to jon his tenant."},
-		 {title:"Dashboard",description:"Sales for the month has exceeded the treshold value"},
-		 {title:"DigIn",description:"DigInCache server is down."}];
+		 [{title:"User Segregation",description:"omal@duosoftare.com has invited you to jon his tenant."},
+    {title:"Dashboard",description:"Sales for the month has exceeded the treshold value"},
+    {title:"DigIn",description:"DigInCache server is down."}];
         
         $scope.goHomeDialog = function (ev) {
 
@@ -1619,21 +1619,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
         };
         //navigate functions end
-        
-        $scope.openNotifications = function()
-		{
-			console.log('t')
-			$mdSidenav('notifications').toggle().then(function () {
-				$log.debug("toggle right is done");
-			});
-		
-		}
-		//temp notifications array
-		$scope.notifications = 
-			[{title:"Dilshan",description:"Description one"},
-			 {title:"Gevindu",description:"Description two"},
-			 {title:"Binara",description:"Description three"}];
-
 
         // help 
         setTimeout(function () {

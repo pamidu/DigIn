@@ -22,12 +22,12 @@
 
 .widget0s-chart-view {
     overflow: hidden;
-    position: relative;
-    width: 740px;
+    /*position: relative;*/
+    width: 600px;
 }
 
 .widget0s-chart-view :hover {
-    overflow: auto;
+    overflow: hidden;
 }
 
 .widget0s-filter {

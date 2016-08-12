@@ -4599,6 +4599,8 @@ label {
     text-transform: uppercase;
     cursor: pointer;
     text-align: center;
+    outline: none;
+    border: none;
 }
 
 .blut-edit-btn.block {

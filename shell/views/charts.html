@@ -23,6 +23,12 @@
                             {{widget.widgetData.widName}}
                         </div>
                         <div class="widget-button-wrapper" layout="row" layout-align="end center" flex>
+                            <md-button class="widget-button" ng-click="filterWidget($event,widget)"
+                                       ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
+                                <i class="ti-filter blut-widget-icon" layout="column"
+                                   layout-align="center center" flex></i>
+                                <md-tooltip md-direction="left">filter</md-tooltip>
+                            </md-button>                         
                             <md-button class="widget-button">
                                 <i class="ti-more blut-widget-icon" layout="column"
                                    ng-mouseover="showWidgetSettingsDiv(widget,true)"

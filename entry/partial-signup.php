@@ -179,7 +179,7 @@
 
                                             <div class="login-help">
                                                 <div class="remember-me">
-                                                    <input type="checkbox"  ng-click="change(agreed)" ng-checked={{agreed}} ng-model="agreed" disabled> 
+                                                    <input type="checkbox"  ng-click="change(agreed)" ng-checked={{agreed}} ng-model="agreed"> 
                                                     I have read and accept
                                                     <a href="javascript:void(0);"
                                                        ng-click="onClickTermConditions()"

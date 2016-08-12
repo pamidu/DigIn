@@ -412,7 +412,7 @@ routerApp
 
             $scope.change = function(agree) {
                 localStorage.setItem('termsNconditions',agree);
-                alert(agree);
+                //alert(agree);
             };
 
             $scope.onClickTermConditions = function () {

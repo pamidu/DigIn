@@ -1,29 +1,37 @@
+
+
+
+
+
+
+
+
 <div class="digin-lgn-wrap animated" ng-controller="signup-ctrl">
     <toast></toast>
 
+    <!--
+     <div class="team-condition" ng-if="isLoadTermCondition==true">
+            <div style="height:100px;width:500px; align:center; ">
+                <h2>Terms and condition</h2>
+                <p>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
+                    into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
+                    release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
+                    software like Aldus PageMaker including versions of Lorem Ipsum.
+                </p>
 
-    <div class="team-condition" ng-if="isLoadTermCondition==true">
-        <div class="body">
-            <h2>Terms and condition</h2>
-            <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
-                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
-                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-                software like Aldus PageMaker including versions of Lorem Ipsum.
-            </p>
-
-            <a href="javascript:void(0)"
-               ng-click="goToTermCondition(false)"
-               class="btn btn-default">
-                ok
-            </a>
+                <a href="javascript:void(0)"
+                   ng-click="goToTermCondition(false)"
+                   class="btn btn-default">
+                    OK
+                </a>
+            </div>
         </div>
-    </div>
+    -->
 
-
-    <div layout="column" layout-align="center center" ng-if="isLoadTermCondition==false">
+    <div layout="column" layout-align="center center">
 
         <div class="digin-login-card animated flipInY">
             <div layout="row" layout-xs="column">
@@ -171,11 +179,11 @@
 
                                             <div class="login-help">
                                                 <div class="remember-me">
-                                                    <input id="chkTerms" type="checkbox" ng-model="signUpUsr.agreed" name="agreed" required/>
+                                                    <input type="checkbox"  ng-click="change(agreed)" ng-checked={{agreed}} ng-model="agreed"> 
                                                     I have read and accept
                                                     <a href="javascript:void(0);"
-                                                       ng-click="goToTermCondition(true)"
-                                                    >the terms and conditions.</a> 
+                                                       ng-click="onClickTermConditions()"
+                                                    >the terms and conditions.</a>  
                                                 </div>
                                             </div>
 

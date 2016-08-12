@@ -4,8 +4,8 @@
 // var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'uiMicrokernel', 'configuration'
 //     , 'ngToast', 'ngSanitize', 'ngMessages','ngAria']);
 
-var routerApp = angular.module('digin-entry', ['ngMaterial', 'ngAnimate', 'ui.router', 'configuration'
-    , 'ngToast', 'ngSanitize', 'ngMessages', 'ngAria']);
+var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'configuration'
+    , 'ngToast', 'ngSanitize', 'ngMessages','ngAria']);
 
 
 routerApp
@@ -38,16 +38,26 @@ routerApp
                         requireLogin: false
                     }
                 })
+                .state("termsNconditions", {
+                    url: "/termsNconditions",
+                    controller: "signup-ctrl",
+                    templateUrl: "termsconditions.php",
+                    data: {
+                        requireLogin: false
+                    }
+                })
 
         }]);
 
 routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
-        '$rootScope', 'focus', 'ngToast', 'Digin_Auth', 'Digin_Domain', '$mdDialog', 'Local_Shell_Path', 'IsLocal', 'Digin_Engine_API',
-        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth, Digin_Domain, $mdDialog, Local_Shell_Path, IsLocal, Digin_Engine_API) {
+        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location',
+        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location) {
 
             $scope.signindetails = {};
             $scope.isLoggedin = false;
+            $scope.activated=false;
+            localStorage.setItem('termsNconditions',false);
 
             $scope.error = {
                 isUserName: false,
@@ -56,6 +66,17 @@ routerApp
                 isLoading: false
             };
 
+            //-----activated user - Signin-----------
+            var activated = ($location.search()).activated;
+            $scope.activated=false;
+            if(activated==undefined){
+                $scope.activated=false;
+            }
+            else{
+                $scope.activated=true;
+            }
+            //------------------------------------
+
             $scope.signup = function () {
                 $scope.isLoggedin = false;
                 $state.go('signup');
@@ -63,10 +84,12 @@ routerApp
 
             $scope.onClickSignUp = function () {
                 $state.go('signup');
+                $scope.activated=false;
             };
 
             $scope.onClickSignIn = function () {
                 $state.go('signin');
+                $scope.activated=false;
             };
 
             $scope.onClickForgetPw = function () {
@@ -90,7 +113,8 @@ routerApp
                             verticalPosition: 'top',
                             dismissOnClick: true,
                             animation: 'slide',
-                            dismissOnClick: 'true'
+                            dismissOnClick: 'true',
+                            timeout: 30000
                         });
                     }
                 }
@@ -100,65 +124,63 @@ routerApp
                 displayProgress();
                 $http({
                     method: 'POST',
-                    url: 'http://' + Digin_Domain + '/apis/authorization/userauthorization/login',
+                    url: 'http://'+Digin_Domain+'/apis/authorization/userauthorization/login',
                     //url: '/apis/authorization/userauthorization/login',
                     headers: {'Content-Type': 'application/json'},
                     data: $scope.signindetails
                 }).success(function (data) {
                     if (data.Success === true) {
 
-                        var token = data.Data.SecurityToken;
-
-                        //test only #####################
-                        //#loggin direct to shell
-                        if (IsLocal == false) {
-                            //#Added for live servers ------------------------------
-                            $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
-                        }
-                        else {
-                            //#Added for local host ------------------------------
-                            document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
-                            document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
-                            window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
-                        }
-                        //################################################
+                        var token=data.Data.SecurityToken;
 
                         //#create Dataset
-                        //$http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + token + '&Domain=' + Digin_Domain)
-                        //    .success(function (result) {
-                        //        if (result.Is_Success == true) {
-                        //            if (result.Custom_Message == "No user settings saved for given user and domain") {
-                        //                //console.og(result.Result);
-                        //                $scope.createDataSet(token);
-                        //            }
-                        //
-                        //            console.log(result.Result);
-                        //
-                        //            //#loggin direct to shell
-                        //            if (IsLocal == false) {
-                        //                //#Added for live servers ------------------------------
-                        //                $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
-                        //            }
-                        //            else {
-                        //                //#Added for local host ------------------------------
-                        //                document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
-                        //                document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
-                        //                window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
-                        //            }
-                        //        }
-                        //    })
-                        //    .error(function (error) {
-                        //        $mdDialog.hide();
-                        //        mainFun.fireMsg('0', 'Invalid login.');
-                        //    });
+                        $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + token + '&Domain=' + Digin_Domain)
+                        .success(function (result) {
+                            if(result.Is_Success==true){
+                                if(result.Custom_Message=="No user settings saved for given user and domain")
+                                {
+                                        //console.og(result.Result);
+                                        localStorage.setItem('initialLogin',true);
+                                        $scope.createDataSet(token);
+                                }
+                                else
+                                {
+                                    localStorage.setItem('initialLogin',false);   
+                                }
+                                //console.log(result.Result);
 
+                                //#Expire existing cookies
+                                document.cookie = 'authData=; Path=/;  Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                                document.cookie = 'securityToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                                document.cookie = 'tenantData=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
+                                //#loggin direct to shell
+                                if(IsLocal==false) { 
+                                    //#Added for live servers ------------------------------
+                                    $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
+                                }  
+                                else{
+                                    //#Added for local host ------------------------------
+                                     document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
+                                     document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
+                                     window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
+                                }
+                            }
+                        })
+                        .error(function (error) {
+                            console.log(error);
+                        });
+
+
+                        
+                        
 
                     }
                     else {
                         $mdDialog.hide();
-                        if (data.Message == "Email Address is not varified.") {
-                            mainFun.fireMsg('0', "This email address is not verified, please verify your email.");
-                        } else {
+                        if(data.Message=="Email Address is not varified."){
+                        mainFun.fireMsg('0', "This email address is not verified, please verify your email.");
+                        }else{
                             mainFun.fireMsg('0', data.Message);
                         }
                     }
@@ -171,71 +193,73 @@ routerApp
 
             $scope.createDataSet = function (secToken) {
                 //displayProgress('Processing, please wait...!');
+                $scope.data = {"db": "bigquery"}
+
                 $http({
                     method: 'POST',
-                    url: Digin_Engine_API + 'set_init_user_settings',
-                    data: angular.toJson({"db": "bigquery"}),
+                    url: Digin_Engine_API+'set_init_user_settings',
+                    data: angular.toJson($scope.data),
                     headers: {
-                        'Content-Type': 'application/json',
-                        'SecurityToken': secToken,
-                        'Content-Type': 'Content-Type:application/json'
+                        'SecurityToken': secToken
                     }
                 })
-                    .success(function (response) {
-                        if (response.Success == true) {
-                            displaySuccess('Success...!');
-                            $mdDialog.hide();
-                            console.log(response.Message);
-                        }
-                        else {
-                            displayError('Data set creation fail');
-                            mdDialog.hide();
-                            console.log(response.Message);
-                        }
-
-                    })
-                    .error(function (error) {
-                        displayError('Data set creation fail');
+                .success(function (response) {
+                    if (response.Success == true) {
+                        //displaySuccess('Success...!');
                         $mdDialog.hide();
-                        console.log(error);
-                    });
-            };
+                        console.log(response.Message);
+                    }
+                    else {  
+                        //displayError('Data set creation fail');
+                        $mdDialog.hide();
+                        console.log(response.Message);
+                    }
+
+                })
+                .error(function (error) {
+                    //displayError('Data set creation fail');
+                    $mdDialog.hide();
+                    console.log(error);
+                });
+            };    
 
             /*
-             $scope.isDataSetNotExist=function (secToken, cb){
-             $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + secToken + '&Domain=' + Digin_Domain)
-             .success(function (res) {
-             if(response.Is_Success==true && response.Custom_Message=='No user settings saved for given user and domain')
-             {
-             cb(true);
-             }
-             else
-             {
-
-             }
-             })
-             .error(function (error) {
-             cb(false);
-             });
-             };
-             */
-
-
-            $scope.isUserExist = function (email, cb) {
-                $http.get('http://104.197.27.7:3048/GetUser/' + email)
-                    .success(function (response) {
+            $scope.isDataSetNotExist=function (secToken, cb){
+                $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + secToken + '&Domain=' + Digin_Domain)
+                .success(function (res) {
+                    if(response.Is_Success==true && response.Custom_Message=='No user settings saved for given user and domain')     
+                    {
                         cb(true);
-                    }).error(function (error) {
-                    //alert("Fail !");
+                    }
+                    else
+                    {
+                        
+                    }
+                })
+                .error(function (error) {
                     cb(false);
                 });
-            }
+            };    
+            */
+
+
+
+        $scope.isUserExist = function (email, cb) {
+            $http.get('http://104.197.27.7:3048/GetUser/' + email)
+                .success(function (response) {
+                    cb(true);
+                }).error(function (error) {
+                //alert("Fail !"); 
+                cb(false);
+            });
+        }
+
 
 
             //#pre-loader progress - with message
             var displayProgress = function (message) {
                 $mdDialog.show({
-                    template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="row" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + '           <span>' + message + '</span>' + '       </div>' + '   </md-dialog-content>' + '</md-dialog>'
+                    template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="row" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + '           <span>'+message+'</span>' + '       </div>' + '   </md-dialog-content>' + '</md-dialog>'
                     , parent: angular.element(document.body)
                     , clickOutsideToClose: false
                 });
@@ -244,7 +268,7 @@ routerApp
             //#pre-loader progress - without message
             var displayProgress = function () {
                 $mdDialog.show({
-                    template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="column" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + '       </div>' + '   </md-dialog-content>' + '</md-dialog>'
+                    template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="column" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' +  '       </div>' + '   </md-dialog-content>' + '</md-dialog>'
                     , parent: angular.element(document.body)
                     , clickOutsideToClose: false
                 });
@@ -263,12 +287,12 @@ routerApp
 
 
             //#load forgot password
-            $scope.validateEmail = function () {
-                if ($scope.email == undefined) {
+            $scope.validateEmail=function(){
+                if($scope.email==undefined){
                     mainFun.fireMsg('0', 'Email can not be a blank.');
                     return false;
                 }
-                else {
+                else{
                     displayProgress("Change password processing.")
                     $scope.ChangePassword();
                 }
@@ -276,49 +300,57 @@ routerApp
             };
 
 
-            $scope.ChangePassword = function () {
-                $http.get('http://' + Digin_Domain + '/auth/GetUser/' + $scope.email)
-                    .success(function (response) {
-                        if (response.Error) {
+            $scope.ChangePassword=function(){
+                $http.get('http://'+Digin_Domain+'/auth/GetUser/'+$scope.email)
+                    .success(function(response){
+                        if(response.Error){
                             $mdDialog.hide();
                             mainFun.fireMsg('0', '</strong>Invalid email address/ this email address not exist.');
                             //displayError('Invalid email address/ this email address not exist...');
-
+                            
                         }
-                        else {
+                        else{
                             $scope.sendMail();
-                        }
-                    }).error(function (error) {
-                    $mdDialog.hide();
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Please try again...!');
-                });
+                        }   
+                    }).error(function(error){  
+                        $mdDialog.hide(); 
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Please try again...!');
+                    });  
             };
 
-            $scope.sendMail = function () {
-                $http.get('http://' + Digin_Domain + '/apis/authorization/userauthorization/forgotpassword/' + $scope.email)
-                    //http://digin.io/apis/authorization/userauthorization/forgotpassword/chamila@duosoftware.com
-                    .success(function (response) {
-                        if (response.Success) {
-                            console.log(response);
-                            $mdDialog.hide();
-                            mainFun.fireMsg('1', "succussfully reset your password, please check your mail for new password.");
-                            //displaySuccess('uccussfully reset your password, Please check your mail for new password...');
-                            $scope.email = '';
-                            $state.go('signin');
-                        }
-                        else {
-                            console.log(response);
-                            $mdDialog.hide();
-                            fireMsg('0', response.Message);
-                        }
-                    }).error(function (error) {
-                    $mdDialog.hide();
+            $scope.sendMail=function(){
+                $http.get('http://'+Digin_Domain+'/apis/authorization/userauthorization/forgotpassword/'+$scope.email)
+                //http://digin.io/apis/authorization/userauthorization/forgotpassword/chamila@duosoftware.com
+                .success(function(response){
+                    if(response.Success){
+                        console.log(response);
+                        $mdDialog.hide();
+                        mainFun.fireMsg('1', "succussfully reset your password, please check your mail for new password.");
+                        //displaySuccess('uccussfully reset your password, Please check your mail for new password...');
+                        $scope.email='';
+                        $state.go('signin');
+                    }
+                    else{
+                        console.log(response);
+                        $mdDialog.hide();
+                        fireMsg('0', response.Message);
+                    }
+                }).error(function(error){  
+                    $mdDialog.hide(); 
                     mainFun.fireMsg('0', error);
-                });
+                });     
             };
 
+        
 
-        }])
+
+
+
+
+
+
+
+    }])
 
     .directive('keyEnter', function () {
         return function (scope, element, attrs) {
@@ -349,19 +381,54 @@ routerApp
 //#signup controller
 routerApp
     .controller('signup-ctrl', ['$scope', '$http', '$state', 'focus',
-        'Digin_Domain', 'Digin_Engine_API', 'ngToast', '$mdDialog', '$location',
+        'Digin_Domain', 'Digin_Engine_API','ngToast','$mdDialog','$location',
         function ($scope, $http, $state, focus,
-                  Digin_Domain, Digin_Engine_API, ngToast, $mdDialog, $location) {
+                  Digin_Domain, Digin_Engine_API, ngToast,$mdDialog,$location) {
 
             $scope.onClickSignIn = function () {
                 $scope.isLoggedin = false;
-                $scope.freeze = false;
+                $scope.freeze=false;
+                $scope.activated=false;
+
+                localStorage.setItem('termsNconditions',false);
+                localStorage.setItem('fname',"");
+                localStorage.setItem('lname',"");
+                localStorage.setItem('email',"");
+                localStorage.setItem('fpw',"");
+                localStorage.setItem('spw',"");
+
                 $state.go('signin');
             };
+
+            $scope.clickAgreed = function () {
+                localStorage.setItem('termsNconditions',true);
+                $state.go('signup');
+            };
+
+            $scope.clickNotAgreed = function () {
+                localStorage.setItem('termsNconditions',false)
+                $state.go('signup');
+            };
+
+            $scope.change = function(agree) {
+                localStorage.setItem('termsNconditions',agree);
+                //alert(agree);
+            };
+
+            $scope.onClickTermConditions = function () {
+                localStorage.setItem('fname',signUpUsr.firstName);
+                localStorage.setItem('lname',signUpUsr.lastName);
+                localStorage.setItem('email',signUpUsr.email);
+                localStorage.setItem('fpw',signUpUsr.pwd);
+                localStorage.setItem('spw',signUpUsr.cnfrPwd);
+                $state.go('termsNconditions');
+            };
+
 
             var delay = 2000;
             $scope.User_Name = "";
             $scope.User_Email = "";
+
 
             var signUpUsr = {
                 firstName: '',
@@ -388,21 +455,31 @@ routerApp
             //-----invite user - Signup-----------
             var email = ($location.search()).email;
             var token = ($location.search()).code;
-            $scope.freeze = false;
-            if (email == undefined) {
-                $scope.freeze = false;
+            $scope.freeze=false;
+            if(email==undefined){
+                $scope.freeze=false;
             }
-            else {
-                signUpUsr.email = email;
-                $scope.freeze = true;
+            else{
+                signUpUsr.email=email;
+                $scope.freeze=true;
             }
             //------------------------------------
+            $scope.agreed=localStorage.getItem('termsNconditions');
+
+
+            if(localStorage.getItem('fname')==null){signUpUsr.firstName="";}else{signUpUsr.firstName=localStorage.getItem('fname')};
+            if(localStorage.getItem('lname')==null){signUpUsr.lastName="";}else{signUpUsr.lastName=localStorage.getItem('lname')};
+            if(localStorage.getItem('email')==null){signUpUsr.email="";} else if(localStorage.getItem('email')=="undefined"){signUpUsr.email="";} else {signUpUsr.email=localStorage.getItem('email')};
+            if(localStorage.getItem('fpw')==null){signUpUsr.pwd="";}else{signUpUsr.pwd=localStorage.getItem('fpw')};
+            if(localStorage.getItem('spw')==null){signUpUsr.cnfrPwd="";}else{signUpUsr.cnfrPwd=localStorage.getItem('spw')}; 
+            
+        
 
 
             //#pre-loader progress
             var displayProgress = function (message) {
                 $mdDialog.show({
-                    template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="row" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + '           <span>' + message + '</span>' + '       </div>' + '   </md-dialog-content>' + '</md-dialog>'
+                    template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="row" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + '           <span>'+message+'</span>' + '       </div>' + '   </md-dialog-content>' + '</md-dialog>'
                     , parent: angular.element(document.body)
                     , clickOutsideToClose: false
                 });
@@ -425,7 +502,8 @@ routerApp
                             verticalPosition: 'top',
                             dismissOnClick: true,
                             animation: 'slide',
-                            dismissOnClick: 'true'
+                            dismissOnClick: 'true',
+                            timeout: 3000
                         });
                     },
                     validationClear: function () {
@@ -445,7 +523,7 @@ routerApp
                         signUpUsr.email = '';
                         signUpUsr.pwd = '';
                         signUpUsr.cnfrPwd = '';
-                        $scope.freeze = false;
+                        $scope.freeze=false;
                     },
 
                     validateEmail: function (email) {
@@ -454,22 +532,23 @@ routerApp
                     },
 
 
-                    acceptRequest: function (email, token) {
+                    acceptRequest:function(email,token){
                         $http.get('/apis/usertenant/tenant/request/accept/' + email + '/' + token, {
-                                headers: {'Content-Type': 'application/json'}
-                            })
-                            .success(function (response) {
-                                if (response.Success === true) {
-                                    $mdDialog.hide();
-                                    mainFun.fireMsg('1', 'You are succussfully registerd, please check your email for verification.');
-                                    mainFun.dataClear();
-                                    window.location = "http://" + Digin_Domain + "/entry";
-                                }
-                                else {
-                                    mainFun.fireMsg('0', response.Message);
-                                }
-                            }).error(function (error) {
-                            mainFun.fireMsg('0', 'Tenant invitation is not accepted successfully.');
+                            headers: {'Content-Type':'application/json'}
+                        })
+                        .success(function (response) {
+                            if (response.Success === true) {
+                                $mdDialog.hide();
+                                mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
+                                mainFun.dataClear();
+                                window.location = "http://"+Digin_Domain+"/entry";
+                            }
+                            else
+                            {
+                                mainFun.fireMsg('0',response.Message);
+                            }
+                        }).error(function (error) {
+                            mainFun.fireMsg('0','Tenant invitation is not accepted successfully.');
                         });
                     },
 
@@ -487,7 +566,7 @@ routerApp
                         $scope.error.isLoading = true;
                         $http({
                             method: 'POST',
-                            url: 'http://' + Digin_Domain + '/apis/authorization/userauthorization/userregistration',
+                            url: 'http://'+Digin_Domain+'/apis/authorization/userauthorization/userregistration',
                             //url: '/apis/authorization/userauthorization/userregistration',
                             data: angular.toJson($scope.user),
                             headers: {
@@ -502,22 +581,23 @@ routerApp
 
                             if (data.Success === false) {
                                 $mdDialog.hide();
-                                if (data.Message == "Already Registered.") {
-                                    mainFun.fireMsg('0', 'This email address you entered is already registered, please try again...!');
-                                } else {
-                                    mainFun.fireMsg('0', data.Message);
-                                }
+                                if(data.Message=="Already Registered."){
+                                    mainFun.fireMsg('0','This email address you entered is already registered, please try again!');
+                                }else{
+                                    mainFun.fireMsg('0',data.Message);
+                                }                               
                             }
-                            else {
+                            else { 
                                 // For invited users---------
-                                if ($scope.freeze == true) {
-                                    mainFun.acceptRequest(email, token);
+                                if($scope.freeze==true){
+                                    mainFun.acceptRequest(email,token);
                                 }
-                                else {
+                                else{
                                     $mdDialog.hide();
-                                    mainFun.fireMsg('1', 'You are succussfully registerd, please check your email for verification...!');
+                                    mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
                                     mainFun.dataClear();
-                                    window.location = "http://www.digin.io";
+                                    window.location = "http://"+Digin_Domain+"/entry";
+                                    //window.location = "http://www.digin.io";
                                 }
                             }
                         }).error(function (data, status) {
@@ -532,6 +612,7 @@ routerApp
 
             $scope.submit = function () {
                 mainFun.validationClear();
+
                 console.log(signUpUsr);
                 //*validation
                 if (signUpUsr.firstName == '' || angular.isUndefined(signUpUsr.firstName)) {
@@ -576,7 +657,8 @@ routerApp
                     focus('cnfrmPwd');
                     return;
                 }
-                else if (!signUpUsr.agreed) {
+                else if(localStorage.getItem('termsNconditions')=="false")
+                {
                     mainFun.fireMsg('0', '<strong>Error : </strong>Please read and accept the terms and conditions.');
                     $scope.error.isagreed = true;
                     focus('agreed');
@@ -585,18 +667,8 @@ routerApp
                 else {
                     displayProgress('User registration is processing.');
                     mainFun.signUpUser();
-                    //return;
-
                 }
             };
-
-
-            //Go to terms and conditon page
-            $scope.isLoadTermCondition = false;
-            $scope.goToTermCondition = function (state) {
-                $scope.isLoadTermCondition = state;
-            };
-
 
         }
     ]);

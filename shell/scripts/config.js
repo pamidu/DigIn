@@ -16,4 +16,4 @@ angular.module('configuration', [])
 
     //#for loggin process
     .constant('IsLocal', true)
-    .constant('Local_Shell_Path', 'http://localhost:8081/2016-8-9/Digin-new/Digin/shell')
+    .constant('Local_Shell_Path', 'http://localhost:8080/git/DiginNewUI/shell')

@@ -801,16 +801,15 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     var removePage = null;
                     $scope.close = function () {
 
-                        $mdDialog.hide();
+                        
                         removePage = true;
+						$mdDialog.hide(removePage);
                     }
                     $scope.cancel = function () {
 
                         $mdDialog.cancel();
                         removePage = false;
                     };
-
-                    return removePage;
                 },
                 templateUrl: 'views/removePage.html',
                 parent: angular.element(document.body),
@@ -865,8 +864,10 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     var removeWidget = null;
                     $scope.close = function () {
 
-                        $mdDialog.hide();
+                       
+						
                         removeWidget = true;
+						 $mdDialog.hide(removeWidget);
                         //$scope.$apply();
                     }
                     $scope.cancel = function () {
@@ -875,7 +876,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                         removeWidget = false;
                     };
 
-                    return removeWidget;
+                    
                 }
             }).then(function (removeWidget) {
 

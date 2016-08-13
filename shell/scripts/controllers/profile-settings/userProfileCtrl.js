@@ -2,7 +2,7 @@
  * Created by Damith on 7/26/2016.
  */
 
-routerApp.controller('userProfileCtrl', function ($scope,$state) {
+routerApp.controller('userProfileCtrl', function ($scope,$state, $mdDialog) {
 
     console.log('user profile ctrl load');
 
@@ -22,8 +22,16 @@ routerApp.controller('userProfileCtrl', function ($scope,$state) {
 				console.log($scope.user);
 				$scope.editModeOn = true;
 			},
-            closeEdit: function () {
-                $scope.editModeOn = false;
+            changePassword: function (ev) {
+                $mdDialog.show({
+				  controller: "changePasswordCtrl",
+				  templateUrl: 'views/profile-settings/change-password.html',
+				  parent: angular.element(document.body),
+				  targetEvent: ev,
+				  clickOutsideToClose:true
+				})
+				.then(function(answer) {
+				})
             },
             closeSetting: function () {
                 $state.go('home');
@@ -50,3 +58,14 @@ routerApp.controller('userProfileCtrl', function ($scope,$state) {
 
 
 });
+
+routerApp.controller('changePasswordCtrl',['$scope','$mdDialog', function ($scope,$mdDialog) {
+
+  $scope.cancel = function() {
+    $mdDialog.cancel();
+  };
+  $scope.submit = function()
+  {
+		$mdDialog.hide($scope.email);
+  }
+}])

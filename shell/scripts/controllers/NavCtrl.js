@@ -1140,37 +1140,69 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $state.go("home.commonSrcAlgorithm");
                     break;
                 case "invite":      
-			$mdDialog.show({
-			  controller: "inviteUserCtrl",
-			  templateUrl: 'views/settings/user.html',
-			  parent: angular.element(document.body),
-			  targetEvent: ev,
-			  clickOutsideToClose:true
-			})
-			.then(function(answer) {
-				var exist = false;
-				console.log(answer);
-				
-				if($rootScope.sharableUsers==undefined){
-					inviteUser();
-				}
-				else if($rootScope.sharableUsers.length>0){
-					for(var i=0; i<$rootScope.sharableUsers.length; i++){
-						if(answer==$rootScope.sharableUsers[i].Id){
-							exist = true;
+					$mdDialog.show({
+					  controller: "inviteUserCtrl",
+					  templateUrl: 'views/settings/user.html',
+					  parent: angular.element(document.body),
+					  targetEvent: ev,
+					  clickOutsideToClose:true
+					})
+					.then(function(answer) {
+						var exist = false;
+						console.log(answer);
+						
+						if($rootScope.sharableUsers==undefined){
+							inviteUser();
 						}
-					};
+						else if($rootScope.sharableUsers.length>0){
+							for(var i=0; i<$rootScope.sharableUsers.length; i++){
+								if(answer==$rootScope.sharableUsers[i].Id){
+									exist = true;
+								}
+							};
 
-					if(exist==true){
-						fireMsg('0', '</strong>This user is already invited');
-						return;
-					}
-					else{
-						inviteUser();
-					}
-				}
-			});
-			break;
+							if(exist==true){
+								fireMsg('0', '</strong>This user is already invited');
+								return;
+							}
+							else{
+								inviteUser();
+							}
+						}
+					});
+				break;
+			case "switch tenant": 
+			$mdDialog.show({
+					  controller: "inviteUserCtrl",
+					  templateUrl: 'views/settings/switchTenant.html',
+					  parent: angular.element(document.body),
+					  targetEvent: ev,
+					  clickOutsideToClose:true
+					})
+					.then(function(answer) {
+						var exist = false;
+						console.log(answer);
+						
+						if($rootScope.sharableUsers==undefined){
+							inviteUser();
+						}
+						else if($rootScope.sharableUsers.length>0){
+							for(var i=0; i<$rootScope.sharableUsers.length; i++){
+								if(answer==$rootScope.sharableUsers[i].Id){
+									exist = true;
+								}
+							};
+
+							if(exist==true){
+								fireMsg('0', '</strong>This user is already invited');
+								return;
+							}
+							else{
+								inviteUser();
+							}
+						}
+					});
+					break;
 			default:
 				$state.go("home");
 				break;

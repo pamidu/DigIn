@@ -1456,6 +1456,7 @@ md-tabs-content-wrapper {
     min-height: 100vh;
     width: calc(100vw - 40px);
     float: right;
+	position: fixed;
 }
 
 md-tab-content {

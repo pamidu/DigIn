@@ -359,6 +359,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         }
     }).state('home.profileSetting', {
         url: '/user-profile?user',
+		controller: 'userProfileCtrl',
         templateUrl: "views/profile-settings/user-profile-view.html",
         data: {
             requireLogin: true

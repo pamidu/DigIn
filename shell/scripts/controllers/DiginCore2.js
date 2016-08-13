@@ -1198,8 +1198,8 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
                                         "widgetID": "temp" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
                                         "widgetName": $scope.currWidget.widName,
                                         "widgetData": $scope.currWidget,
-                                        sizeX: 6,
-                                        sizeY: 21,
+                                        sizeX: 7,
+                                        sizeY: 23,
                                        
                                 }
 
@@ -1270,7 +1270,6 @@ routerApp.controller('hierarchySummaryCtrl', [ '$scope', '$mdDialog', '$rootScop
         
     }
 ]);
-
 
 
 

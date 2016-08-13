@@ -6,7 +6,7 @@ drb >> dynamically report builder
 
 body
 {
-	background: rgba(230, 230, 230, 1) !important;
+    background: rgba(230, 230, 230, 1) !important;
 }
 
 .ng-cloak,
@@ -579,10 +579,9 @@ body
 .digin-gb-measures {
     overflow: hidden;
     position: relative;
-    /*    height: calc(31vh);*/
+    height: calc(51vh);
     background: #fff;
 }
-
 .toggle-icon {
     text-align: right;
     display: inline-block;
@@ -3622,7 +3621,7 @@ li:active {
 
 md-select
 {
-	margin: 0 !important;
+    margin: 0 !important;
 }
 
 .setting-card-header {
@@ -4599,8 +4598,6 @@ label {
     text-transform: uppercase;
     cursor: pointer;
     text-align: center;
-    outline: none;
-    border: none;
 }
 
 .blut-edit-btn.block {
@@ -4693,7 +4690,7 @@ label {
 }
 
 md-tabs-canvas {
-    height: 30px;
+    height: 40px;
 }
 
 .blut-tab > .tab-blue.active {
@@ -5013,8 +5010,3 @@ i.icon-cancel:hover {
 .blut-widget-icon:hover{
     color: #f9a525 ;
 }
-
-md-tooltip
- {
-  background: rgba(0,0,0,.6) !important;
- }

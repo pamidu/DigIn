@@ -124,7 +124,7 @@
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" src="bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>
 <script type="text/javascript" src="scripts/controllers/jspdf.min.js"></script>
-<script type="text/javascript" src="http://html2canvas.hertzen.com/build/html2canvas.js"></script>
+
 <script type="text/javascript" src="scripts/vendor/jquery.jsPlumb-1.4.1-all-min.js"></script>
 <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="bower_components/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
@@ -142,7 +142,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
 
 <script src="http://code.highcharts.com/highcharts.js"></script>
-<script type="text/javascript" src="scripts/controllers/highchartsCustom.js"></script>
+
 <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
@@ -370,12 +370,12 @@
 <script type="text/javascript" src="bower_components/google-map/angular-simple-logger.js"></script>
 <script src="bower_components/google-map/angular-google-maps.js"></script>
 <!-- marker clusterer -->
-<script src="https://raw.githubusercontent.com/PeterTheOne/js-marker-clusterer/gh-pages/src/markerclusterer_compiled.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-marker-clusterer/1.0.0/markerclusterer_compiled.js"></script>
 <!-- angular google plus -->
 <script src="bower_components/angular-google-plus/dist/angular-google-plus.min.js"></script>
 <!-- angular at-table -->
 <script src="bower_components/at-table/dist/angular-table.js"></script>
-<script src="scripts/vendor/markerclusterer.js"></script>
+ 
 <!-- canvg -->
 <script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script> 
 <script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>

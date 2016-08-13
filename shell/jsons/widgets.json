@@ -45,7 +45,11 @@
             "widView": "views/ViewProfile.html",
             "color": "#9C27B0",
             "sizeX": 4, "sizeY": 4, "row": 0, "col": 16
-        }, {
+        },
+        
+
+
+         {
             "title": "Facebook Pages",
             "icon": "styles/css/images/icons/facebook.svg",
             "type": "Social Media",
@@ -166,13 +170,11 @@
             "color": "#3F51B5",
             "sizeX": 4, "sizeY": 4, "row": 2, "col": 16
         }, {
-            "title": "Google Maps Branches",
+            "title": "Top 10 customers ",
             "icon": "styles/css/images/icons/google.svg",
             "type": "Custom",
             "Description": "Google Maps",
-            "widView": "views/googleMaps/ViewGoogleMapsBranches.html",
-            "dataView": "views/googleMaps/ViewDataGoogleMaps.html",
-            "dataCtrl": "widgetSettingsDataCtrl",
+            "widView": "views/googleMaps/ViewGoogleMaps.html",           
             "color": "#8BC34A",
             "sizeX": 4, "sizeY": 4, "row": 3, "col": 16
         }, {

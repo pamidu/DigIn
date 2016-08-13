@@ -1518,246 +1518,27 @@ routerApp.controller('settingsCtrl', ['$scope', '$rootScope', '$http', '$state',
 ]);
 
 
-routerApp.controller('gmapsControllerBranches', ['$scope', '$mdDialog', '$state', '$http', 'ScopeShare',
-    function ($scope, $mdDialog, $state, $http, ScopeShare) {
+routerApp.controller('gmapsController', ['$scope', '$mdDialog', '$state', '$http',
+    function ($scope, $mdDialog, $state, $http) {
 
-        // ====== Create map objects ======
-        $scope.syncState = false;
-        var delay = 100;
-        var map = null;
-        var bounds = null;
-        var latlng = new google.maps.LatLng(7.2964, 80.6350);
-        var infowindow = new google.maps.InfoWindow();
-        var geo = null;
-        var queue = [];
-        var nextAddress = 0;
-        var markers = [];
-        //var windows = [];
-        var markerCluster;
-        var mcOptions = {gridSize: 50, maxZoom: 15};
-        var count = 1;
-        var undefinedErrors = 0;
-        var outOfSriLanka = 0;
-        var JSONData = null;
-        var outOfSLArray = [];
+        $scope.arrAdds =
+         [
+         {"add":"Colombo, Western Province, Sri Lanka","total_sales":936698,"customername":
+         "Maryann Huddleston" },
+         {"add":"Jafna, Northern Province, Sri Lanka","total_sales":807523,"customername":
+         "Sointu Savonheimo"},
+         {"add":"Ambalangoda, Southern Province, Sri Lanka","total_sales":32367,"customername":
+         "Maryann Huddleston"},
+         {"add":"Kurunegala, North Western Province, Sri Lanka","total_sales":156281,"customername":
+         "Anindya Ghatak"},
+         {"add":"Jaffna, Northern Province, Sri Lanka","total_sales":279327,"customername":
+         "Jai Lamble"},
+         {"add":"Gampaha, Western Province, Sri Lanka","total_sales":16995,"customername":
+         "  Radha Barua"}];
 
-        $scope.markers = [];
-        $scope.map = {
-            center: {latitude: 7.2964, longitude: 80.6350},
-            zoom: 8,
-            bounds: {},
-            options: {
-                maxZoom: 15,
-                minZoom: 1
-            }
-            ,
-            events: {
-                mouseover: function (map) {
-                    $scope.$apply(function () {
-                        google.maps.event.trigger(map, "resize");
-                    });
-                }
-                // ,
-                // dragend: function (map) {
-                //     $scope.$apply(function () {
-                //         google.maps.event.trigger(map, "resize");
-                //     });
-                // }
-            }
-        };
-
-        // ======== initializing map at google map loading =========
-        $scope.initGmap = function () {
-
-            queue = [];
-            markers = [];
-            delay = 100;
-            nextAddress = 0;
-
-            JSONData = {
-                "Mount Lavinia": {"val2": "Western Zone", "val1": "GC", "Address": [35.849233, -88.6608897]},
-                "Vavuniya": {"val2": "North and East Zone", "val1": "GP", "Address": [8.7381572, 80.47714719999999]},
-                "Manipay": {"val2": "North and East Zone", "val1": "GO", "Address": [9.7291062, 79.9925446]},
-                "Kalutara": {"val2": "Southern Zone", "val1": "GL", "Address": [6.5853948, 79.96074]},
-                "Maharagama": {"val2": "Western Zone", "val1": "GD", "Address": [6.8522148, 79.9248669]},
-                "Batticaloa": {"val2": "North and East Zone", "val1": "GQ", "Address": [7.730997100000001, 81.6747295]},
-                "Matara": {"val2": "Southern Zone", "val1": "GJ", "Address": [41.5381124, 2.4447406]},
-                "Ambalantota": {"val2": "Southern Zone", "val1": "GM", "Address": [6.1302674, 81.0202533]},
-                "Anuradhapura": {"val2": "Central  Zone", "val1": "GG", "Address": [8.3451852, 80.38813329999999]},
-                "Unknown": {"val2": "Unknown", "val1": "Unknown", "Address": [42.230537, -83.7466403]},
-                "Piliyandala": {"val2": "Western Zone", "val1": "GD", "Address": [6.8018027, 79.9226841]},
-                "Trincomalee": {"val2": "North and East Zone", "val1": "GQ", "Address": [8.5922, 81.19679579999999]},
-                "Kiribathgoda": {"val2": "Western Zone", "val1": "GB", "Address": [6.9778284, 79.9271523]},
-                "Galle": {"val2": "Southern Zone", "val1": "GJ", "Address": [6.0535185, 80.2209773]},
-                "Alternate Channel": {"val2": "Non Zone", "val1": "GR", "Address": [40.5075022, -83.9155701]},
-                "Bandarawela": {"val2": "Central  Zone", "val1": "GH", "Address": [6.825877999999999, 80.9981576]},
-                "BUSINESS DEVELOPMENT UNIT": {
-                    "val2": "Non Zone",
-                    "val1": "Non Regional",
-                    "Address": [8.9277211, 29.7889248]
-                },
-                "Horana": {"val2": "Western Zone", "val1": "GD", "Address": [6.7229806, 80.0646682]},
-                "Matale": {"val2": "Central  Zone", "val1": "GE", "Address": [7.467465, 80.6234161]},
-                "Moneragala": {
-                    "val2": "Southern Zone",
-                    "val1": "GN",
-                    "Address": [6.890645399999999, 81.34544170000001]
-                },
-                "Negombo": {"val2": "Western Zone", "val1": "GA", "Address": [7.2087984, 79.83802159999999]},
-                "Avissawella": {"val2": "Western Zone", "val1": "GD", "Address": [6.958560599999999, 80.1986649]},
-                "Embilipitiya": {"val2": "Southern Zone", "val1": "GN", "Address": [6.3162324, 80.8433145]},
-                "Kuliyapitiya": {"val2": "Western Zone", "val1": "GA", "Address": [7.472123000000001, 80.0446221]},
-                "Kalmunai": {"val2": "North and East Zone", "val1": "GQ", "Address": [7.414383099999999, 81.8306334]},
-                "Nelliadi": {"val2": "North and East Zone", "val1": "GO", "Address": [12.8359073, 75.40533669999999]},
-                "Puttalam": {"val2": "Western Zone", "val1": "GA", "Address": [8.0402828, 79.84087869999999]},
-                "Kilinochchi": {"val2": "North and East Zone", "val1": "GO", "Address": [9.3802886, 80.3769999]},
-                "Tissamaharama": {"val2": "Southern Zone", "val1": "GM", "Address": [6.2791538, 81.2876691]},
-                "Deniyaya": {"val2": "Southern Zone", "val1": "GK", "Address": [6.3424847, 80.5596582]},
-                "Chilaw": {"val2": "Western Zone", "val1": "GA", "Address": [7.561989400000001, 79.8016569]},
-                "Kandy": {"val2": "Central  Zone", "val1": "GE", "Address": [7.2905715, 80.6337262]},
-                "Ratnapura": {"val2": "Southern Zone", "val1": "GN", "Address": [6.7081032, 80.3769999]},
-                "Kegalle": {"val2": "Central  Zone", "val1": "GF", "Address": [7.251331700000001, 80.3463754]},
-                "Panadura": {"val2": "Southern Zone", "val1": "GL", "Address": [6.720229199999999, 79.9304633]},
-                "Colombo North": {"val2": "Western Zone", "val1": "GC", "Address": [22.5009081, 114.1558258]},
-                "Jaffna": {"val2": "North and East Zone", "val1": "GO", "Address": [9.6614981, 80.02554649999999]},
-                "Kurunegala": {"val2": "Central  Zone", "val1": "GF", "Address": [7.472981299999999, 80.3547286]},
-                "Colombo South": {"val2": "Western Zone", "val1": "GC", "Address": [44.4669941, -73.1709604]},
-                "CSC": {"val2": "Non Zone", "val1": "GR", "Address": [43.0763931, -89.4321717]},
-                "Hatton": {"val2": "Central  Zone", "val1": "GI", "Address": [34.5628707, -87.415301]},
-                "Head Office": {"val2": "Non Zone", "val1": "GR", "Address": [-1.2223978, 31.8086949]},
-                "COLOMBO WEST": {"val2": "Non Zone", "val1": "CLS Region", "Address": [5.4638158, 10.8000051]},
-                "Nuwara Eliya": {"val2": "Central  Zone", "val1": "GI", "Address": [32.0738016, 34.8865393]},
-                "Towers": {"val2": "Non Zone", "val1": "GR", "Address": [52.0429567, 0.7353643999999999]},
-                "Gampola": {"val2": "Central  Zone", "val1": "GE", "Address": [7.126777, 80.564677]},
-                "Ampara": {"val2": "Southern Zone", "val1": "GN", "Address": [7.301756300000001, 81.6747295]},
-                "Malabe": {"val2": "Western Zone", "val1": "GC", "Address": [6.9060787, 79.96962769999999]},
-                "Badulla": {"val2": "Central  Zone", "val1": "GH", "Address": [6.993400899999999, 81.0549815]},
-                "Balangoda": {"val2": "Southern Zone", "val1": "GN", "Address": [6.666861099999999, 80.70480839999999]},
-                "Polonaruwa": {
-                    "val2": "Central  Zone",
-                    "val1": "GG",
-                    "Address": [7.932635799999999, 81.00368209999999]
-                },
-                "Ja Ela": {"val2": "Western Zone", "val1": "GB", "Address": [47.9032372, -91.8670873]},
-                "Dambulla": {"val2": "Central  Zone", "val1": "GG", "Address": [7.8985219, 80.6770787]},
-                "Mahiyangana": {
-                    "val2": "Central  Zone",
-                    "val1": "GH",
-                    "Address": [7.331610199999999, 81.00368209999999]
-                },
-                "Gampaha": {"val2": "Western Zone", "val1": "GB", "Address": [7.0873101, 80.01436559999999]},
-                "Thambuttegama": {"val2": "Central  Zone", "val1": "GG", "Address": [8.1540797, 80.2938005]},
-                "Mannar": {"val2": "North and East Zone", "val1": "GP", "Address": [9.3171351, 76.5343721]},
-                "Ambalangoda": {"val2": "Southern Zone", "val1": "GK", "Address": [6.2441521, 80.0590804]}
-            };
-            JsonToArray();
-
-
-            setTimeout(function () {
-                theNext();
-            }, 400);
-        }
-
-        // ====== Json data to array ======    
-        function JsonToArray() {
-            for (var key in JSONData) {
-                if (JSONData[key].Address[0] != undefined && // adding only defined value to queue
-                    JSONData[key].Address[1] != undefined &&
-                    key != undefined) {
-                    queue.push({
-                        name: key,
-                        address: JSONData[key].Address,
-                        val1: JSONData[key].val1,
-                        val2: JSONData[key].val2
-                    });
-                }
-                else { //counting undefined values
-                    undefinedErrors++;
-                }
-            }
-        }
-
-        // ====== Decides the next thing to do ======
-        function theNext() {
-            if ((nextAddress + 1) < queue.length) {
-                console.log(nextAddress + " < " + queue.length);
-                setTimeout(function () {
-
-                    createMarker(queue[nextAddress], nextAddress);
-                    theNext();
-                }, delay);
-                nextAddress++;
-            } else {
-                // We're done.
-                console.log("Done!");
-
-                $scope.markers = markers;
-
-                //sharing markers with widgetSettingsCtrl using Scopes factory
-                ScopeShare.store('gmapsControllerBranch', $scope.markers);
-
-            }
-
-            $scope.markers = markers;
-        }
-
-        // ====== between function ======
-        function between(x, min, max) {
-            return x >= min && x <= max;
-        }
-
-        // ======= Function to create a marker ========
-        function createMarker(queueItem, id) {
-
-            if (between(queueItem.address[0], 5, 10) &&   // in between 5 and 10 and
-                between(queueItem.address[1], 79, 82)) {   // in between 79 and 82
-
-                var marker = {
-                    latitude: queueItem.address[0],
-                    longitude: queueItem.address[1],
-                    id: id,
-                    // icon: 'styles/css/images/hnb3.png',
-                    show: false,
-                    templateUrl: 'views/googleMaps/infoWindow.html',
-                    templateParameter: {
-                        name: queueItem.name,
-                        field1: queueItem.val1,
-                        field2: queueItem.val2
-                    },
-                    windowOptions: {
-                        boxClass: "infobox",
-                        boxStyle: {
-                            backgroundColor: "#FAA61A",
-                            border: "2px solid #10297d",
-                            borderRadius: "8px",
-                            width: "140px",
-                            height: "60px",
-                            opacity: 0.9
-                        },
-                        // content: "Text",
-                        disableAutoPan: false,
-                        maxWidth: 0,
-                        pixelOffset: new google.maps.Size(-60, -120),
-                        zIndex: null,
-                        closeBoxMargin: "3px",
-                        closeBoxURL: "styles/css/images/close.svg",
-                        infoBoxClearance: new google.maps.Size(1, 1),
-                        isHidden: false,
-                        pane: "floatPane",
-                        enableEventPropagation: false
-                    }
-                };
-
-                markers.push(marker);
-                $scope.syncState = true;
-            }
-            else {
-
-                console.log("****** out of sri lanka range ******");
-                outOfSriLanka++;
-                outOfSLArray.push(queueItem.name);
-            }
-        }
+          $rootScope.$broadcast('getLocations', {
+            addData: $scope.arrAdds
+        });
     }
 ]);
 

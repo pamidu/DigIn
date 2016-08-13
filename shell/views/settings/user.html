@@ -1,35 +1,37 @@
-<md-dialog aria-label="Invite User"  ng-cloak>
-  <form name="editForm" ng-submit="editForm.$valid && submit()">
-  <md-toolbar style="min-height:48px;height:48px;background:#02b5e2">
-    <div class="md-toolbar-tools">
-      <h2 style="color:white">Invite User</h2>
-      <span flex></span>
-      <md-button class="md-icon-button" ng-click="cancel()" aria-label="Close">
-        <ng-md-icon icon="close" style="fill:white;" size="24px" style="color:#8D8D8D"></ng-md-icon>
-      </md-button>
-    </div>
+<md-dialog aria-label="Invite User" plumb-item class="dialog-1 b-r-0">
+  <form md-theme="default" name="editForm" ng-submit="editForm.$valid && submit()">
+  <md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">
+      <div layout="row" layout-align="center center" class="digin-logo-wrapper2">
+        <img ng-src="styles/css/images/DiginLogo.png" class="digin-image">
+      </div>  
+      <div class="dialog-title">Invite User</div>         
+      <md-button class="buttonMinwidth38 b-r-0" ng-click="cancel();">      
+        <ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>   
+      </md-button>            
   </md-toolbar>
   <md-dialog-content style="max-width:800px;max-height:810px; ">
     <div class="md-dialog-content">
 		<div layout-gt-sm="row">
 			
-			 <div layout="column" class="md-block" flex-gt-sm>
+			 <md-input-container layout="column" class="md-block" flex-gt-sm>
 				<label>Email</label>
-				<input required ng-model="email" class="form-control" ng-pattern="/^.+@.+\..+$/">
-				<div ng-messages="editForm.filename.$error" role="alert">
-					<div ng-message="required">
-						Please specify a valid email address
+				<input required ng-model="email" name="email" ng-pattern="/^.+@.+\..+$/">
+				<div ng-messages="editForm.email.$error">
+					<div ng-message-exp="['required', 'pattern']">
+						Please enter a valid email
 					</div>
 				</div>
-			 </div>
+			 </md-input-container>
 		</div>
     </div>
-	  <div layout="row">
-
-		<button class="blut-edit-btn" role="button" type="submit">
-			Invite
-        </button>
-	  </div>
+	
+	<div class="md-actions" layout="row">
+			<span flex></span>
+			<md-button class="btn-dialog b-r-0" type="submit">
+				Invite User
+			</md-button>
+	</div>
+	  
   </md-dialog-content>
 
   </form>

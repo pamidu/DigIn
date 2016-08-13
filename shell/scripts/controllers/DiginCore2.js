@@ -1094,8 +1094,12 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
             }
         })();
 
+		$scope.selected = {};
+		
         getJSONData($http, 'widgetType', function(data) {
             $scope.WidgetTypes = data;
+			$scope.selected.type = data[0].title;
+            $rootScope.widgetType = $data[0].selected.type;
         });
 
         getJSONData($http, 'widgets', function(data) {
@@ -1130,11 +1134,7 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
             }
         };
 
-        $scope.closeDialog = function() {
-            $mdDialog.hide();
-        };
-
-        $scope.cancelDialog = function() {
+        $scope.cancel = function() {
             $mdDialog.cancel();
         };
 

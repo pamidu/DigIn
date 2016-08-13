@@ -74,22 +74,22 @@
                     </div>
                     <div flex="40" layout-align="center center" layout="row" class="blut-search-right-wrapper">
 
-                        <div flex="10" class="blut-header-icon" ng-click="mainclose()">
+                        <div style="width:60px" class="blut-header-icon" ng-click="mainclose()">
                             <i class="icon-house-outline"></i>
                         </div>
-                        <div flex="10" class="blut-header-icon" ng-click="navigate('TV Mode')">
+                        <div style="width:60px" class="blut-header-icon" ng-click="navigate('TV Mode')">
                             <i class="icon-full-size"></i>
                         </div>
-                        <div flex="10" class="blut-header-icon" ng-click="navigate('Clear Widgets')">
+                        <div style="width:60px" class="blut-header-icon" ng-click="navigate('Clear Widgets')">
                             <i class="icon-broom"></i>
                         </div>
-                        <div flex="10" class="blut-header-icon" ng-click="navigate('Save')">
+                        <div style="width:60px" class="blut-header-icon" ng-click="navigate('Save')">
                             <i class="ti-save"></i>
                         </div>
-                        <div flex="10" class="blut-header-icon" ng-click="navigate('Help')">
+                        <!--div flex="10" class="blut-header-icon" ng-click="navigate('Help')">
                             <i class="ti-help-alt"></i>
-                        </div>
-						<div flex="10" class="blut-header-icon" ng-click="openNotifications()" ng-init="allWishes = 3">
+                        </div-->
+						<div style="width:60px" class="blut-header-icon" ng-click="openNotifications()" ng-init="allWishes = 3">
 							<ng-md-icon icon="notifications_none" style="fill:#02b5e2;cursor:pointer" size="26px"></ng-md-icon>
 							<div style="width:15px;height:15px;border-radius:16px;background:#02b5e2;color:white;margin-top:-34px;margin-left:16px;font-size:10px;font-weight:700;position:absolute"><div style="margin-left:4px;margin-top:1px;" ng-if="allWishes <=9">{{allWishes}}</div><div style="margin-left:1px;margin-top:3px;" ng-if="allWishes > 9">{{allWishes}}</div></div>
                         </div>

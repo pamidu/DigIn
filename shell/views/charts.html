@@ -22,71 +22,47 @@
                         <div ng-class="widgetTitleClass" flex="80" style="color: #02b5e2; padding-left: 50px;">
                             {{widget.widgetData.widName}}
                         </div>
-                        <div class="widget-button-wrapper" layout="row" layout-align="end center" flex>
-                            <md-button class="widget-button" ng-click="filterWidget($event,widget)"
-                                       ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
-                                <i class="ti-filter blut-widget-icon" layout="column"
-                                   layout-align="center center" flex></i>
-                                <md-tooltip md-direction="left">filter</md-tooltip>
-                            </md-button>                         
-                            <md-button class="widget-button">
-                                <i class="ti-more blut-widget-icon" layout="column"
-                                   ng-mouseover="showWidgetSettingsDiv(widget,true)"
-                                   ng-mouseleave="showWidgetSettingsDiv(widget,false)"
-                                   layout-align="center center" style="height: 48px;"flex></i>
+                        <div class="" layout="row" layout-align="end center" >
+                           
+                             <md-button class="widget-button" ng-if="showDataView(widget)"
+                                       ng-click="showData($event,widget)" style="margin-top: 4px;">
+                                <ng-md-icon icon="format_list_numbered" class="widicons" size="20"></ng-md-icon>
+                                <md-tooltip >data</md-tooltip>
                             </md-button>
 
-                            <div class="widget-button-wrapper widget-button-wrapper2" layout="column"
-                             layout-align="end center" ng-show="widget.showWidgetSettings"
-                             ng-mouseleave="showWidgetSettingsDiv(widget,false)" ng-mouseover="showWidgetSettingsDiv(widget,true)" flex>
+                             <md-button class="widget-button" ng-click="commentary(widget)" style="margin-top: 4px;">
+                                <ng-md-icon icon="volume_up" class="widicons" size="20"></ng-md-icon>
+                                <md-tooltip>commentary</md-tooltip>
+                            </md-button>
 
-                            <!-- update damith
-                                 data source details view
-                            -->
-                            <!-- mapped data view -->
-                            <md-button class="widget-button" ng-if="showDataView(widget)"
-                                       ng-click="showData($event,widget)">
-                                <ng-md-icon icon="format_list_numbered" style="fill:dimgrey" size="20" layout="column"
-                                            layout-align="center center" flex></ng-md-icon>
-                                <md-tooltip md-direction="left">data</md-tooltip>
+                            <md-button class="widget-button" ng-if="showFullView(widget)"
+                                       ng-click="showWidget($event,widget)" style="margin-top: 4px;">
+                                <ng-md-icon icon="fullscreen" class="widicons" size="20"></ng-md-icon>
+                                <md-tooltip>full view</md-tooltip>
                             </md-button>
-                               <md-button class="widget-button" ng-click="commentary(widget)">
-                                <ng-md-icon icon="volume_up" style="fill:dimgrey" size="20" layout="column"
-                                            layout-align="center center" flex></ng-md-icon>
-                                <md-tooltip md-direction="left">commentary</md-tooltip>
-                            </md-button>
-                             <md-button class="widget-button" ng-if="showFullView(widget)"
-                                       ng-click="showWidget($event,widget)">
-                                <ng-md-icon icon="fullscreen" style="fill:dimgrey" size="20"
-                                            layout="column" layout-align="center center" flex></ng-md-icon>
-                                <md-tooltip md-direction="left">full view</md-tooltip>
-                            </md-button>
-                             <md-button class="widget-button"
+
+                            <md-button class="widget-button"
                                        ng-show="widget.widgetData.initTemplate!=undefined ||
-                            widget.widgetData.commonSrc!=undefined" ng-click="widgetSettings($event,widget)">
-                                <ng-md-icon icon="settings" style="fill:dimgrey" size="20" layout="column"
-                                            layout-align="center center" flex></ng-md-icon>
-                                <md-tooltip md-direction="left">settings</md-tooltip>
+                            widget.widgetData.commonSrc!=undefined" ng-click="widgetSettings($event,widget)" style="margin-top: 4px;">
+                                <ng-md-icon icon="settings" class="widicons"  size="20"></ng-md-icon>
+                                <md-tooltip>settings</md-tooltip>
                             </md-button>
-                            <md-button class="widget-button" ng-click="syncWidget(widget)"
-                                       ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
-                                <ng-md-icon icon="sync" style="fill:dimgrey" size="20" layout="column"
-                                            layout-align="center center" flex></ng-md-icon>
-                                <md-tooltip md-direction="left">sync</md-tooltip>
-                            </md-button>
-                        </div>
 
-                            <!-- mapped data view -->
+                              <md-button class="widget-button" ng-click="filterWidget($event,widget)"
+                                       ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
+                                <i class="ti-filter blut-widget-icon"></i>
+                                <md-tooltip>filter</md-tooltip>
+                            </md-button> 
                             <md-button class="widget-button" ng-click="syncWidget(widget)"
                                        ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
-                                <i class="ti-reload blut-widget-icon" layout="column"
-                                   layout-align="center center" flex></i>
-                                <md-tooltip md-direction="left">sync</md-tooltip>
+                                <i class="ti-reload blut-widget-icon"></i>
+                                <md-tooltip>sync</md-tooltip>
                             </md-button>
+
                             <md-button class="widget-button" ng-click="removeWidget(widget, $event)">
-                                <i class="ti-close blut-widget-icon" layout="column"
-                                   layout-align="center center" flex></i>
+                                <i class="ti-close blut-widget-icon"></i>
                             </md-button>
+
                         </div>
                     </div>
 

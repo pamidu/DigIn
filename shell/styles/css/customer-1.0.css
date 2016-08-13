@@ -5012,3 +5012,11 @@ i.icon-cancel:hover {
 .blut-widget-icon:hover{
     color: #f9a525 ;
 }
+
+.widicons{
+    fill:#82b8d7;
+}
+
+.widicons :hover {
+    fill:#f9a525 !important;
+}

@@ -1933,6 +1933,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.menuMouseHover = function (item) {
             if (item.type == "sub-menu") {
                 $scope.isEnableSubMenu = true;
+                 $scope.currentTitle = item.title;
                 $scope.subMenu.view(item.menuName)
             }
             if (item.type == "menu") {

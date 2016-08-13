@@ -34,37 +34,37 @@
         {
           "name": "Facebook",
           "icon": "ti-facebook",
-          "link": "home.account"
+          "provider": "facebook"
         },
         {
           "name": "Google+",
           "icon": "ti-google",
-          "link": "home.account"
+           "provider": "google+"
         },
         {
           "name": "Twitter",
           "icon": "ti-twitter-alt",
-          "link": "home.account"
+          "provider": "twitter"
         },
         {
           "name": "Linkedin",
           "icon": "ti-linkedin",
-          "link": "home.account"
+          "provider": "linkedin"
         },
         {
           "name": "Pinterest",
           "icon": "ti-pinterest-alt",
-          "link": "home.account"
+          "provider": "pinterest"
         },
         {
           "name": "Tumbler",
           "icon": "ti-tumblr",
-          "link": "home.account"
+          "provider": "tumbler"
         },
         {
           "name": "ti-email",
           "icon": "ti-settings",
-          "link": "home.account"
+          "provider": "email"
         }
       ]
     },

@@ -1148,28 +1148,71 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 			  clickOutsideToClose:true
 			})
 			.then(function(answer) {
+				var exist = false;
 				console.log(answer);
+				
+				if($rootScope.sharableUsers==undefined){
+					inviteUser();
+				}
+				else if($rootScope.sharableUsers.length>0){
+					for(var i=0; i<$rootScope.sharableUsers.length; i++){
+						if(answer==$rootScope.sharableUsers[i].Id){
+							exist = true;
+						}
+					};
+
+					if(exist==true){
+						fireMsg('0', '</strong>This user is already invited');
+						return;
+					}
+					else{
+						inviteUser();
+					}
+				}
 			});
 			break;
-		default:
-                    $state.go("home");
-                    break;
+			default:
+				$state.go("home");
+				break;
             }
         };
         //navigate functions end
-        
-        $scope.openNotifications = function()
-	{
-		$mdSidenav('notifications').toggle().then(function () {
-			$log.debug("toggle right is done");
-		});
+        function inviteUser()
+		{
+			var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+            $http.get(baseUrl + '/auth/tenant/AddUser/' + $scope.user.email + '/user', {
+                    headers: {'Securitytoken': userInfo.SecurityToken}
+                })
+                .success(function (response) {
+                    if(response=="false"){
+                        fireMsg('0', '</strong>This user has not been registered for DigIn.');
+                    }
+                    else{
+                        //privateFun.getAllSharableObj();
+                            //$scope.sharableObjs= $rootScope.sharableObjs;
+                            //$scope.sharableUsers = $rootScope.sharableUsers;
+                            //$scope.sharableGroups = $rootScope.sharableGroups;
+                        fireMsg('1', '</strong>Invitation sent successfully.');
+                        $scope.getSharableObj();
+                        $scope.inviteForm.$setUntouched();
+                        $scope.user.email='';
+                    }
+                }).error(function (error) {
+                    fireMsg('0', 'Invitation sending fail');
+            });
+		}
 		
-	}
+        $scope.openNotifications = function()
+		{
+			$mdSidenav('notifications').toggle().then(function () {
+				$log.debug("toggle right is done");
+			});
+		}
 		
 	$scope.notifications = 
 		 [{title:"User Segregation",description:"omal@duosoftare.com has invited you to jon his tenant."},
-    {title:"Dashboard",description:"Sales for the month has exceeded the treshold value"},
-    {title:"DigIn",description:"DigInCache server is down."}];
+		{title:"Dashboard",description:"Sales for the month has exceeded the treshold value"},
+		{title:"DigIn",description:"DigInCache server is down."}];
         
         $scope.goHomeDialog = function (ev) {
 

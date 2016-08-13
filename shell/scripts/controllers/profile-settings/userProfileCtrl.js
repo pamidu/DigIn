@@ -6,15 +6,24 @@ routerApp.controller('userProfileCtrl', function ($scope,$state) {
 
     console.log('user profile ctrl load');
 
+	
     //profile view mode
-    $scope.editModeState = false;
+    $scope.editModeOn = true;
+	
+	$scope.user = {name: "Dilshan",company: "Duo", email:"nelly.dil@hotmail.com",contactNo:"0767124324",street:"Thalapathpitiya",country:"Sri Lanka",zip:"04215"};
+	
+	
     $scope.profile = (function () {
         return {
             clickEdit: function () {
-                $scope.editModeState = true;
+                $scope.editModeOn = false;
             },
+			changeUserProfile: function (){
+				console.log($scope.user);
+				$scope.editModeOn = true;
+			},
             closeEdit: function () {
-                $scope.editModeState = false;
+                $scope.editModeOn = false;
             },
             closeSetting: function () {
                 $state.go('home');
@@ -23,6 +32,7 @@ routerApp.controller('userProfileCtrl', function ($scope,$state) {
     })();
 
     //UI animation
+	
     var uiAnimation = (function () {
         return {
             openEditPanel: function (id, status) {

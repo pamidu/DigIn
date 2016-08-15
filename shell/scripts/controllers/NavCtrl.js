@@ -1808,28 +1808,28 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             opacity: 0,
                             zIndex: '0',
                             top: '-100%'
-                        }, 500);
+                        }, 300);
                     } else {
                         $scope.dropDownbtnStatus = true;
                         $('#profileDropDown').animate({
                             opacity: '1',
                             top: '45px',
                             zIndex: '1000'
-                        }, 500);
+                        }, 300);
                     }
                 },
                 headerMenuToggle: function (status) {
                     if (status) {
                         $('.main-headbar-slide').animate({
                             top: '-43px'
-                        }, 500);
+                        }, 300);
                         //  $('.blut-search-toggele').removeClass('go-up').addClass('go-down');
                         $('#content1').removeClass('content-m-top40').addClass('content-m-top0');
                         $scope.headerMenuToggle = false;
                     } else {
                         $('.main-headbar-slide').animate({
                             top: '0px'
-                        }, 500);
+                        }, 300);
                         //$('.blut-search-toggele').removeClass('go-down').addClass('go-up');
                         $('#content1').removeClass('content-m-top0').addClass('content-m-top40');
                         $scope.headerMenuToggle = true;
@@ -1856,13 +1856,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     if (status) {
                         $('.left-menu-bar').animate({
                             left: '-45px'
-                        }, 500);
+                        }, 300);
                         $scope.leftMenuToggleState = false;
                         $('#content1').removeClass('content-m-left-0').addClass('content-m-left-40');
                     } else {
                         $('.left-menu-bar').animate({
                             left: '0px'
-                        }, 500);
+                        }, 300);
                         $scope.leftMenuToggleState = true;
                         $('#content1').removeClass('content-m-left-40').addClass('content-m-left-0');
                     }
@@ -1982,6 +1982,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.goTORout = function(menu){
 
            console.log(menu);
+		   layoutManager.closeHeaderMenu();
            $state.go(menu.link);
 
         }

@@ -114,8 +114,8 @@
                         </div>
                     </div>
                     <div class="blut-search-toggele" ng-click="topMenuToggle()">
-                        <i ng-hide="headerMenuToggle" class="ti-angle-down"></i>
-                        <i ng-show="headerMenuToggle" class="ti-angle-up"></i>
+                        <span ng-if="!headerMenuToggle" class="ti-angle-down"></span>
+                        <span ng-if="headerMenuToggle" class="ti-angle-up"></span>
                     </div>
                 </div>
 

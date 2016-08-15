@@ -14,8 +14,8 @@
 
 </md-list>
 <div class="left-menu-toggle" ng-click="leftMenuToggle()">
-    <i ng-hide="leftMenuToggleState" class="ti-angle-right"></i>
-    <i ng-show="leftMenuToggleState" class="ti-angle-left"></i>
+    <span ng-if="!leftMenuToggleState" class="ti-angle-right"></span>
+    <span ng-if="leftMenuToggleState" class="ti-angle-left"></span>
 </div>
 <div ng-show="isEnableSubMenu" ng-mouseleave="menuMouseLeave()" class="blut-sub-panel-wrapper blut-setting">
     <div class="blut-wrap">

@@ -175,21 +175,23 @@ function passwordStrengthIndicator() {
 }
 //Password Strength Directive - End
 
+
 window.directiveResources = {};
 	
-routerApp.service('notifications',['$mdToast','$mdDialog', function($mdToast,$mdDialog){
+
+    
+routerApp.service('notifications',['ngToast','$mdDialog', function(ngToast,$mdDialog){
 
 	this.toast = function(content,status, delay) {
 		
-		window.directiveResources.toastRef = $mdToast;
-		
-		if(!delay)
-			delay = 2000;
-		 $mdToast.show({
-			template: '<md-toast class="md-toast-'+status+'"><span flex>'+content+' </span> <md-button  style="margin-left: 20px !important;" onclick="(function(e){ window.directiveResources.toastRef.hide() })(event)">Close</md-button></md-toast>',
-			hideDelay: delay,
-			position: 'bottom right'
-		});
+		ngToast.create({
+            className: _className,
+            content: content,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            dismissOnClick: true,
+            dismissButton:true
+        });
 	};
 	
 	this.alertDialog = function(title, content){

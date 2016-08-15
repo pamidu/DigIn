@@ -38,6 +38,12 @@ v-pane-content
 }
 
 
+/*ng-toast*/
+.ng-toast
+{
+ z-index: 1600 !important;
+}
+
 /*cmds >> common data source style*/
 .digin-cmds-source {
     display: block;

@@ -1,38 +1,39 @@
 <md-dialog aria-label="Invite User" plumb-item class="dialog-1 b-r-0">
-  <form md-theme="default" name="editForm" ng-submit="editForm.$valid && submit()">
-  <md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">
-      <div layout="row" layout-align="center center" class="digin-logo-wrapper2">
-        <img ng-src="styles/css/images/DiginLogo.png" class="digin-image">
-      </div>  
-      <div class="dialog-title">Invite User</div>         
-      <md-button class="buttonMinwidth38 b-r-0" ng-click="cancel();">      
-        <ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>   
-      </md-button>            
-  </md-toolbar>
-  <md-dialog-content style="max-width:800px;max-height:810px; ">
-    <div class="md-dialog-content">
-		<div layout-gt-sm="row">
-			
-			 <md-input-container layout="column" class="md-block" flex-gt-sm>
-				<label>Email</label>
-				<input required ng-model="email" name="email" ng-pattern="/^.+@.+\..+$/">
-				<div ng-messages="editForm.email.$error">
-					<div ng-message-exp="['required', 'pattern']">
-						Please enter a valid email
-					</div>
-				</div>
-			 </md-input-container>
-		</div>
-    </div>
-	
-	<div class="md-actions" layout="row">
-			<span flex></span>
-			<md-button class="btn-dialog b-r-0" type="submit">
-				Invite User
-			</md-button>
-	</div>
-	  
-  </md-dialog-content>
+  
+ <!-- <form md-theme="default" name="editForm" ng-submit="editForm.$valid && submit()"> -->
+	  <md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">
+	      <div layout="row" layout-align="center center" class="digin-logo-wrapper2">
+	        <img ng-src="styles/css/images/DiginLogo.png" class="digin-image">
+	      </div>  
+	      <div class="dialog-title">Invite User</div>         
+	      <md-button class="buttonMinwidth38 b-r-0" ng-click="cancel();">      
+	        <ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>   
+	      </md-button>            
+	  </md-toolbar>
 
-  </form>
+
+
+     
+	<form name="inviteForm" ng-submit="inviteUser()">
+        <div class="setup-info-container" layout="column">
+            <md-input-container>
+              <label translate>Email Address</label>
+              <input name="user.email" type="mail" ng-model="user.email" required>
+              
+              <div ng-messages="inviteForm.user.email.$error" ng-if='inviteForm.user.email.$touched' role="alert">
+                <div ng-message="required">Please enter a valid email address!</div>
+              </div>
+            </md-input-container>                                         
+        </div>  
+
+            <md-button type="submit" class="setup-button md-raised md-primary">
+                <span class="setup-font-theme">INVITE USER</span>
+            </md-button>
+
+    </form>
+
+
+
+
+
 </md-dialog>

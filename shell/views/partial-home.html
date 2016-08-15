@@ -4,7 +4,7 @@
             <div layout="row" layout-align="space-between center">
 
                 <h1 class="md-toolbar-tools" style="color:white">Notifications</h1>
-                <md-button class="md-icon-button"  ng-click="openNotifications()" style="margin-top:10px">
+                <md-button class="md-icon-button"  ng-click="openNotifications()">
                     <ng-md-icon icon="close" style="fill:white;margin-top:10px" size="24px"></ng-md-icon>
                 </md-button>
             </div>
@@ -90,8 +90,8 @@
                             <i class="ti-help-alt"></i>
                         </div-->
                         <div flex="10" class="blut-header-icon" ng-click="openNotifications()" ng-init="allWishes = 3">
-                            <ng-md-icon icon="notifications_none" style="fill:#02b5e2;cursor:pointer" size="26px"></ng-md-icon>
-                            <div style="width:15px;height:15px;border-radius:16px;background:#02b5e2;color:white;margin-top:-34px;margin-left:16px;font-size:10px;font-weight:700;position:absolute"><div style="margin-left:4px;margin-top:1px;" ng-if="allWishes <=9">{{allWishes}}</div><div style="margin-left:1px;margin-top:3px;" ng-if="allWishes > 9">{{allWishes}}</div></div>
+                            <ng-md-icon icon="notifications_none" style="fill:#02b5e2;cursor:pointer" class="widicons" size="26px"></ng-md-icon>
+                            <div style="width:15px;height:15px;border-radius:16px;background:#02b5e2;color:white;margin-top:-34px;margin-left:16px;font-size:10px;font-weight:700;position:absolute"><div style="margin-left:4px;margin-top:1px;" ng-if="notifications.length <=9">{{notifications.length}}</div><div style="margin-left:1px;margin-top:3px;" ng-if="notifications.length > 9">{{notifications.length}}</div></div>
                         </div>
 
 

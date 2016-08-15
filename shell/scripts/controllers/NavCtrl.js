@@ -1991,14 +1991,44 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
  }]);
 
- routerApp.controller('inviteUserCtrl',['$scope','$mdDialog', function ($scope,$mdDialog) {
+ routerApp.controller('inviteUserCtrl',['$scope','$mdDialog','$http','Digin_Tenant', function ($scope,$mdDialog,$http,Digin_Tenant) {
 
-  $scope.cancel = function() {
+    //$http.get(Digin_Tenant + '/tenant/GetTenants/' + '15430a361f730ec5ea2d79f60d0fa78e')
+    $http.get(Digin_Tenant + '/tenant/GetTenants/' + getCookie('securityToken'))
+    .success(function (response) {
+        $scope.tennants = response;
+    });
+
+    $scope.cancel = function() {
     $mdDialog.cancel();
-  };
-  $scope.submit = function()
-  {
-		$mdDialog.hide($scope.email);
-  }
+    };
+
+    $scope.submit = function()
+    {
+
+    }
+
+    $scope.showConfirmation = function (tennant, event) {
+        var confirm = $mdDialog.confirm()
+            .title('Do you want to switching to ' + tennant)
+            .targetEvent(event)
+            .ok('Yes!')
+            .cancel('No!');
+        $mdDialog.show(confirm).then(function () {
+            $scope.status = 'Yes';
+            window.open("http://" + tennant + "/#/home");
+        }, function () {
+            $scope.status = 'No';
+        });
+    };
+    $scope.close = function () {
+        $mdDialog.cancel();
+    };
+
+
+
 }])
+
+
+
 

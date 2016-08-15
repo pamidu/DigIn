@@ -25,12 +25,22 @@
 					</v-pane-header>
 
 					<v-pane-content id="Store-content" aria-labelledby="Store-header">
+						<div layout="row" layout-align="end end">
+				
+							<md-button  aria-label="delete user" ng-click="addUser($event)" layout="row">
+								<span style="text-transform:none;color:#f9a525">Add User</span>
+							</md-button>
+							<md-button  aria-label="delete user" ng-click="deleteGroup($event)">
+								<span style="text-transform:none;color:#f9a525">Delete Group</span>
+							</md-button>
+						
+						</div>
 						<md-list ng-cloak>
 				
 							<md-list-item class="secondary-button-padding" ng-repeat="groupMemeber in group.users">
 								<p>{{groupMemeber.name}}</p>
 								<md-button class="md-icon-button md-secondary" aria-label="delete user" ng-click="deleteUser($event)">
-									<ng-md-icon icon="delete" style="fill:grey;" size="20px" ng-click="close()" ></ng-md-icon>
+									<ng-md-icon icon="delete" style="fill:grey;" size="20px" ></ng-md-icon>
 								</md-button>
 							</md-list-item>
 			

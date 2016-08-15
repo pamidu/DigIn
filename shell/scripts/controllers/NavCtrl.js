@@ -1982,7 +1982,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.goTORout = function(menu){
 
            console.log(menu);
-		   layoutManager.closeHeaderMenu();
+		   layoutManager.headerMenuToggle(true);
            $state.go(menu.link);
 
         }

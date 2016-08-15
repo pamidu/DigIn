@@ -8,7 +8,7 @@
 			<div class="setting-card-header">
                 <h5>User Setting</h5>
                 <div class="setting-img-wrap">
-                    <img src="styles/css/images/setting/invite_user.png"/>
+                    <img src="styles/css/images/setting/user_settings.png"/>
                 </div>
 			</div>
 			
@@ -40,7 +40,9 @@
 				</div>
 				
 				<div layout="row" layout-align="center center" style="margin-top:20px;">
-						<md-button type="button" ng-click="updateSettings()"><span style="color:#f9a626;font-weight:700;font-size: 18px;letter-spacing: 1px;">UPDATE SETTINGS</span></md-button>
+					<button type="button" class="blut-edit-btn" style="margin:10px 10px 10px 10px" ng-click="updateSettings()">
+						UPDATE SETTINGS
+					</button>
 				</div>
 			</form>
 				
@@ -59,7 +61,9 @@
 					</md-select>
 				</div>
 				<div layout="row" layout-align="center center" style="margin-top:20px;">
-					<md-button type="button" ng-click="clearCache()"><span style="color:#f9a626;font-weight:700;font-size: 18px;letter-spacing: 1px;">CLEAR CACHE</span></md-button>
+					<button type="button" class="blut-edit-btn" style="margin:10px 10px 10px 10px" ng-click="clearCache()">
+						CLEAR CACHE
+					</button>
 				</div>
             </form>
      </div>

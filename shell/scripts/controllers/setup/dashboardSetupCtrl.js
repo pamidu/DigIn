@@ -1525,3 +1525,93 @@ $scope.inviteUser = function () {
 
     };
 });   //+31 42 1123 4567
+
+
+routerApp.controller('userGroupsCtrl',['$scope', '$mdDialog', function ($scope, $mdDialog) {
+	
+	console.log("start of userGroupsCtrl");
+	
+	$scope.groups = [
+						{name: "Group 1",users:[{name:"Dilshan", groupId:"1", description: "DigIn Team"},{name:"Gevindu", groupId:"1", description: "DigIn Team"}]},
+						{name: "Group 2",users:[{name:"Lasitha", groupId:"2", description: "Duoworld Team"},{name:"Gevindu", groupId:"2", description: "Duoworld Team"}]}
+					];
+					
+	$scope.addGroup = function(ev)
+	{
+		$mdDialog.show({
+					  controller: "addGroupCtrl",
+					  templateUrl: 'views/settings/addGroup.html',
+					  parent: angular.element(document.body),
+					  targetEvent: ev,
+					  clickOutsideToClose:true
+					})
+					.then(function(answer) {
+					})
+	}
+	
+	$scope.addUser = function(ev)
+	{
+		$mdDialog.show({
+			  controller: "addUserCtrl",
+			  templateUrl: 'views/settings/addUser.html',
+			  parent: angular.element(document.body),
+			  targetEvent: ev,
+			  clickOutsideToClose:true
+			})
+			.then(function(answer) {
+			})
+		  
+	}
+	
+	$scope.deleteUser = function(ev)
+	{
+		   var confirm = $mdDialog.confirm()
+			  .title('Delete User')
+			  .textContent('Are you sure you want to delete this user')
+			  .ariaLabel('Delete User')
+			  .targetEvent(ev)
+			  .ok('Delete')
+			  .cancel('Cancel');
+		$mdDialog.show(confirm).then(function() {
+			console.log("User Deleted");
+		})
+	}
+	
+	$scope.deleteGroup = function(ev)
+	{
+		   var confirm = $mdDialog.confirm()
+			  .title('Delete Group')
+			  .textContent('Are you sure you want to delete this group')
+			  .ariaLabel('Delete Group')
+			  .targetEvent(ev)
+			  .ok('Delete')
+			  .cancel('Cancel');
+		$mdDialog.show(confirm).then(function() {
+			console.log("User Deleted");
+		})
+	}
+}]);
+
+routerApp.controller('addGroupCtrl',['$scope', '$mdDialog', function ($scope, $mdDialog) {
+	
+	$scope.cancel = function() {
+		$mdDialog.cancel();
+	};
+	$scope.submit = function()
+	{
+		$mdDialog.hide();
+	}
+	
+}])
+
+routerApp.controller('addUserCtrl',['$scope', '$mdDialog', function ($scope, $mdDialog) {
+	
+	$scope.cancel = function() {
+		$mdDialog.cancel();
+	};
+	$scope.submit = function()
+	{
+		$mdDialog.hide();
+	}
+	
+}])

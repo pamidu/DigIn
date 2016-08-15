@@ -15,6 +15,29 @@ body
     display: none!important
 }
 
+/*v accordian changes*/
+v-pane-header
+{
+	margin: 0px !important;
+}
+
+v-pane-content
+{
+	border-radius: 0px 0px 8px 8px;
+}
+
+.vAccordion--default v-pane-content > div
+{
+	padding: 0px !important;
+	border-radius: 0px 0px 8px 8px;
+}
+
+.vAccordion--default v-pane-header::after, .vAccordion--default v-pane-header::before
+{
+	width:12px;
+}
+
+
 /*cmds >> common data source style*/
 .digin-cmds-source {
     display: block;

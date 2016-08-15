@@ -122,7 +122,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         })
         .state("home.group", {
             url: "/settings-group",
-            controller: "dashboardSetupCtrl",
+            controller: "userGroupsCtrl",
             templateUrl: "views/settings/group.html",
             data: {
                 requireLogin: true

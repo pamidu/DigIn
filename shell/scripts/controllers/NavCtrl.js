@@ -499,10 +499,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
 
         //Function to Delete Dashbord
-        $scope.DeleteDashBoard = function () {
+        $scope.DeleteDashBoard = function (dashboard) {
             var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
             $scope.Det = [{
-                "comp_id": $rootScope.dboard.dashboardID,
+                "comp_id": dashboard.dashboardID,
                 "permanent_delete": false
             }];
 
@@ -547,10 +547,24 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $rootScope.dboard = dashboard;
         }
 
+        $scope.deleteDashBoard = function(dashboard,ev){
+            var confirm = $mdDialog.confirm()
+                  .title('Delete Dashboard')
+                  .textContent('Do you want to delete this dashboard...?')
+                  .ariaLabel('Lucky day')
+                  .targetEvent(ev)
+                  .ok('yes')
+                  .cancel('no');
+                    $mdDialog.show(confirm).then(function() {
+                      $scope.DeleteDashBoard(dashboard);
+                    }, function() {
+                      
+            });
 
+        }
         $scope.goDashboard = function (dashboard) {
 
-            
+            $scope.openSearchBar(); 
             console.log($scope.dashboards);
             console.log("dash item", dashboard);
             $rootScope.page_id = "";
@@ -1241,6 +1255,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 				$log.debug("toggle right is done");
 			});
 		}
+
+        $scope.openSearchBar = function()
+        {
+            $mdSidenav('searchBar').toggle().then(function () {
+                $log.debug("toggle left is done");
+            });
+        }
 		
 	$scope.notifications = 
 		 [{title:"User Segregation",description:"omal@duosoftare.com has invited you to jon his tenant."},

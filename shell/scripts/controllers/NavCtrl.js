@@ -741,6 +741,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             console.log("data getAllDashboards", data);
 
                             $scope.dashboards = [];
+                            DashboardService.dashboards = $scope.dashboards;
 
                             // seperate reports and dashboards
                             for (var i = 0; i < data.Result.length; i++) {

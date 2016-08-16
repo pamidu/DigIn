@@ -16,5 +16,5 @@ angular.module('configuration', [])
 
     //#for loggin process
     .constant('IsLocal', true)
-    .constant('Local_Shell_Path', 'http://localhost:8081/2016-8-15/Digin/shell')
+    .constant('Local_Shell_Path', 'http://localhost:8081/Digin/shell')
     .constant('report_Widget_Iframe', 'http://www.w3schools.com')

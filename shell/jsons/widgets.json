@@ -46,9 +46,15 @@
             "color": "#9C27B0",
             "sizeX": 4, "sizeY": 4, "row": 0, "col": 16
         },
-        
-
-
+        {
+            "title": "report",
+            "icon": "styles/css/images/icons/reports.svg",
+            "type": "reports",
+            "Description": "View reports from a iFrame",
+            "widView": "views/viewReportWidget.html",
+            "color": "#9C27B0",
+            "sizeX": 4, "sizeY": 4, "row": 0, "col": 16
+        },
          {
             "title": "Facebook Pages",
             "icon": "styles/css/images/icons/facebook.svg",
@@ -171,7 +177,7 @@
             "sizeX": 4, "sizeY": 4, "row": 2, "col": 16
         }, {
             "title": "Top 10 customers ",
-            "icon": "styles/css/images/icons/google.svg",
+            "icon": "styles/css/images/icons/topten.svg",
             "type": "Custom",
             "Description": "Google Maps",
             "widView": "views/googleMaps/ViewGoogleMaps.html",           

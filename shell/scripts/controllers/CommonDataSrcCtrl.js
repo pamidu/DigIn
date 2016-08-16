@@ -613,6 +613,13 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 publicFun.clrTblSelectedObj($scope.sourceUi.tableData);
             },
             onSaveSource: function() {
+
+                $('.main-headbar-slide').animate({
+                            top: '-43px'
+                        }, 300);
+                        //  $('.blut-search-toggele').removeClass('go-up').addClass('go-down');
+                        $('#content1').removeClass('content-m-top40').addClass('content-m-top0');
+                        $scope.headerMenuToggle = false;
                 //if number of widgets are lesser than 6
                 var widgetLimit = 6;
                 if($rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.length < widgetLimit)

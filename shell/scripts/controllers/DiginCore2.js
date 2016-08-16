@@ -641,7 +641,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                         $mdDialog.hide();
                         ngToast.create({
                             className: 'success',
-                            content: 'Successfuly Saved Dashboard',
+                            content: 'Dashboard Saved Successful',
                             horizontalPosition: 'center',
                             verticalPosition: 'top',
                             dismissOnClick: true
@@ -1094,7 +1094,10 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
             }
         })();
 
+
 		$scope.selected = {};
+
+      
 		
         getJSONData($http, 'widgetType', function(data) {
             $scope.WidgetTypes = data;

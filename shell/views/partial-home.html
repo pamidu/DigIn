@@ -16,7 +16,7 @@
                         <div layout="row" layout-align="start start" > <h3 style="width: 155px;">{{notification.title}}</h3></div>
                         <p style="margin-top:6px;">{{notification.description}}</p>
                     </div>
-                    <md-button class="md-icon-button launch" ng-click="deleteProduct($event,notification.$id)" style="margin-top: 10px !important" aria-label="delete" ng-if="notification.email == useremail">
+                    <md-button class="md-icon-button launch" ng-click="removeNotification($event,notification)" style="margin-top: 10px !important" aria-label="delete" ng-if="notification.email == useremail">
                         <ng-md-icon icon="close" style="fill:#979797" size="18px"></ng-md-icon>
                     </md-button>
                 </md-list-item>
@@ -108,7 +108,10 @@
         <!-- #SerchBar -->
         <div class="blut-log-wrapper">
             <div class="left-toggle-wrapper">
-                <img src="styles/css/images/digin43x43.png">
+                <img src="styles/css/images/digin43x43.png"/>
+                 <md-tooltip md-direction="right">
+                  v3.1.0.0
+                </md-tooltip>
             </div>
         </div>
 
@@ -185,7 +188,7 @@
                 <li ng-click="navigate('switch tenant')">switch tenant</li>
                 <li ng-click="navigate('invite')">invite user</li>
                 <li ng-click="profileDownMenu.clickProfileSetting()">profile settings</li>
-                <li style="padding-bottom: 17px;">help</li>
+                <li style="padding-bottom: 17px;">&nbsp</li>
                 <li class="inline-block logout" ng-click="navigate('Logout')">logout
                     <i class="ti-shift-right"></i>
                 </li>

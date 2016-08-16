@@ -38,48 +38,48 @@
                 <div class="search-box">
                     <input class="form-control txt-sm-search-header" placeholder="search dashboard or report..." ng-model="SearchText">
                 </div>
-                <div class="blut-close-btn" ng-click="openSearchBar()">
-                    <i class="icon-cancel"></i>
-                </div>
+				<md-button class="md-icon-button"  ng-click="openSearchBar()">
+                    <ng-md-icon icon="close" style="fill:white;margin-top:10px" size="24px"></ng-md-icon>
+                </md-button>
             </div>
         </md-toolbar>
         <md-content style="overflow-y:scroll;height:calc(100% - 130px);padding:0">
-           <div class="dashboard-wrapper">
-                    <h5>Dashboard</h5>
-                </div>
-                <div class="blut-dashboard-view"
-                     ng-slimscroll
-                     opacity="0.1"
-                     distance="10px"
-                     height="230px"
-                     ng-mouseover="isSarchScorllBar = true"
-                     ng-mouseleave="isSarchScorllBar = false"
-                     enabled="{{ isSarchScorllBar }}">
+			<div class="dashboard-wrapper">
+				<h3 style="color: #9a9a9a;">Dashboards</h3>
+			</div>
+			<div class="blut-dashboard-view"
+				 ng-slimscroll
+				 opacity="0.1"
+				 distance="10px"
+				 height="230px"
+				 ng-mouseover="isSarchScorllBar = true"
+				 ng-mouseleave="isSarchScorllBar = false"
+				 enabled="{{ isSarchScorllBar }}">
 
-                    <ul class="dashboard-wrap" ng-repeat="dashboard in dashboards | filter : SearchText">
-                        {{x}}
-                        <li class="pull-left dashboard-name">{{dashboard.dashboardName}}</li>
-                        <li class="pull-right view-more-btn" ng-click="goDashboard(dashboard)">view</li>
-                        <li class="pull-right delete-btn" ng-click="deleteDashBoard(dashboard,$event)">delete</li>
-                    </ul>
-                </div>
+				<ul class="dashboard-wrap" ng-repeat="dashboard in dashboards | filter : SearchText">
+					{{x}}
+					<li class="pull-left dashboard-name">{{dashboard.dashboardName}}</li>
+					<li class="pull-right view-more-btn" ng-click="goDashboard(dashboard)">view</li>
+					<li class="pull-right delete-btn" ng-click="deleteDashBoard(dashboard,$event)">delete</li>
+				</ul>
+			</div>
 
-                 <div class="dashboard-wrapper">
-                    <h5>Report</h5>
-                </div>
-                <div class="blut-dashboard-view"
-                     ng-slimscroll
-                     opacity="0.1"
-                     distance="10px"
-                     height="230px"
-                     ng-mouseover="isSarchScorllBar = true"
-                     ng-mouseleave="isSarchScorllBar = false"
-                     enabled="{{ isSarchScorllBar }}">
-                    <ul class="dashboard-wrap" ng-repeat="report in reports | filter : SearchText">
-                        <li class="pull-left dashboard-name">{{report.splitName}}</li>
-                        <li class="pull-right view-more-btn" ng-click="goReport(report.splitName)">view</li>
-                    </ul>
-                </div>
+			 <div class="dashboard-wrapper">
+				<h3 style="color: #9a9a9a;">Reports</h3>
+			</div>
+			<div class="blut-dashboard-view"
+				 ng-slimscroll
+				 opacity="0.1"
+				 distance="10px"
+				 height="230px"
+				 ng-mouseover="isSarchScorllBar = true"
+				 ng-mouseleave="isSarchScorllBar = false"
+				 enabled="{{ isSarchScorllBar }}">
+				<ul class="dashboard-wrap" ng-repeat="report in reports | filter : SearchText">
+					<li class="pull-left dashboard-name">{{report.splitName}}</li>
+					<li class="pull-right view-more-btn" ng-click="goReport(report.splitName)">view</li>
+				</ul>
+			</div>
         </md-content>
         
 

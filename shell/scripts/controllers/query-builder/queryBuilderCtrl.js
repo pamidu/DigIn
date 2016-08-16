@@ -483,7 +483,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
-
                 id: 'ct20',
                 icon: 'ti-panel',
                 name: 'pyramid',
@@ -491,6 +490,17 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 selected: false,
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            },
+             {
+                id: 'ct21',
+                icon: 'ti-panel',
+                name: 'googlemap',
+                chart: 'googlemap',
+                selected: false,
+                chartType: 'GoogleMaps',
+                view: 'views/query/chart-views/GoogleMap.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }
@@ -900,6 +910,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 if ( $scope.chartType == "sunburst" && $scope.commonData.measures.length > 1 ){
                     privateFun.fireMessage('0', "Cannot generate "+$scope.chartType+" chart with more than one measure");
                     return;
+                }
+                if($scope.chartType == "googlemap")
+                {
+                        
+
                 }
 
                 if ($scope.chartType == "forecast"){

@@ -47,55 +47,17 @@
                             <div class = "blut-login-user card-head">
                                 &nbsp  CATEGORIES
                             </div>
-                            <md-checkbox ng-checked="isChecked()" md-indeterminate="isIndeterminate" ng-click="toggleAll()">
-                              <span ng-if="isChecked()">Un-</span>Select All
+                            <md-checkbox ng-checked="isCatChecked()" md-indeterminate="isIndeterminate" ng-click="toggleCatAll()">
+                              <span ng-if="isCatChecked()">Un-</span>Select All
                             </md-checkbox>                            
                             <ul ng-repeat="c in categories">
                                 <li>                           
-                                    <md-checkbox >{{c}}</md-checkbox>
+                                    <md-checkbox ng-checked="c.status" ng-click="setCategoriesFilter(c)">{{c.name}}</md-checkbox>
                                 </li>                            
                             </ul>                           
 
                         </div>
                     </div>
-<!--                     <div class="widget0s-source">
-                        <header class="widget0s-h1 text-uppercase">
-                            Data Source
-                        </header>
-                        <div class="source">
-                            <i class="fa fa-database"></i>
-                            <span>
-                             {{widget.widgetData.commonSrc.src.src}}
-                            </span>
-                        </div>
-                        <div class="source">
-                            <i class="fa fa-table"></i>
-                            <span>
-                             {{widget.widgetData.commonSrc.src.tbl}}
-                            </span>
-                        </div>
-
-                    </div>
-
-                    <div class="widget0s-source" style="height: 100%;">
-                        <header class="widget0s-h1 text-uppercase">
-                            OTHER
-                        </header>
-                        <div class="source attr" ng-repeat="att in widget.widgetData.commonSrc.att">
-                            <span>
-                             {{att.filedName}}
-                            </span>
-                        </div>
-
-                        <div class="source attr" ng-repeat="mea in widget.widgetData.commonSrc.mea">
-                            <span>
-                             {{mea.filedName}}({{mea.condition}})
-                            </span>
-                        </div>
-                    </div>
-                    <div class="widget0s-source widget0s-qry">
-                        {{widget.widgetData.commonSrc.query}}
-                    </div> -->
                 </div>
             </div>
         </div>

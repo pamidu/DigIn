@@ -301,15 +301,15 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
               var chartSeries = chart.get(s.id);
               if (chartSeries) {
                 if (!angular.equals(prevSeriesOptions[s.id], chartOptionsWithoutEasyOptions(s))) {
-                  chartSeries.update(angular.copy(s), false);
+                  chartSeries.update(angular.copy(s), true);
                 } else {
                   if (s.visible !== undefined && chartSeries.visible !== s.visible) {
-                    chartSeries.setVisible(s.visible, false);
+                    chartSeries.setVisible(s.visible, true);
                   }
-                  chartSeries.setData(angular.copy(s.data), false);
+                  chartSeries.setData(angular.copy(s.data), true);
                 }
               } else {
-                chart.addSeries(angular.copy(s), false);
+                chart.addSeries(angular.copy(s), true);
               }
               prevSeriesOptions[s.id] = chartOptionsWithoutEasyOptions(s);
             });
@@ -338,10 +338,21 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           for(i = chart.series.length - 1; i >= 0; i--) {
             var s = chart.series[i];
             if (s.options.id !== 'highcharts-navigator-series' && highchartsNGUtils.indexOf(ids, s.options.id) < 0) {
-              s.remove(false);
+              s.remove(true);
+            }
+            for (var j=0; j< chart.series[i].data.length; j++){
+              if(chart.series[i].data[j].x != j){
+                chart.series[i].data[j].update({
+                    x: j
+                });                
+              }
+              if(chart.series[i].data[j].category != chart.series[i].data[j].name){
+                chart.series[i].data[j].update({
+                    category: name
+                });                   
+              }
             }
           }
-
           return true;
         };
 
@@ -384,8 +395,20 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
             if(needsRedraw) {
               chart.redraw();
             }
+            if (chart.series.length > 0){
+                var cat = [];
+                for (var i=0; i< chart.series[0].data.length;i++){
+                  cat.push(chart.series[0].data[i].name);
+                }
+                chart.xAxis[0].setCategories(cat);                        
+                chart.redraw();
+            }
           }, true);
         }
+
+        scope.$watch('config.filer', function (newTitle) {
+          chart.setTitle(newTitle, true);
+        }, true);        
 
         scope.$watch('config.title', function (newTitle) {
           chart.setTitle(newTitle, true);

@@ -1102,7 +1102,6 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
         getJSONData($http, 'widgetType', function(data) {
             $scope.WidgetTypes = data;
 			$scope.selected.type = data[0].title;
-            $rootScope.widgetType = data[0].selected.type;
         });
 
         getJSONData($http, 'widgets', function(data) {

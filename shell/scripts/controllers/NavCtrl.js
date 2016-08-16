@@ -13,14 +13,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             var sessionInfo = $helpers.getCookie('securityToken');
             // if(sessionInfo==null) location.href = 'index.php';
         }
+        $scope.firstName = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
+        
+        // $scope.username = JSON.parse(decodeURIComponent(getCookie('authData'))).Name;
+        // var baseUrl = "http://" + window.location.hostname;
 
-        $scope.username = JSON.parse(decodeURIComponent(getCookie('authData'))).Name;
-        var baseUrl = "http://" + window.location.hostname;
-
-        if ($scope.username && $scope.username.length > 0) {
-            var fullName = $scope.username.split(' ');
-            $scope.firstName = fullName[0];
-        }
+        // if ($scope.username && $scope.username.length > 0) {
+        //     var fullName = $scope.username.split(' ');
+        //     $scope.firstName = fullName[0];
+        // }
 
         var db = new pouchDB('dashboard');
         $scope.adjustUI = function () {
@@ -481,6 +482,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //On click report Event
         $scope.goReport = function (report) {
             // --- Add by Gevindu on 5/23/2016 - DUODIGIN-509
+            $scope.openSearchBar(); 
             $mdSidenav('right')
                 .close()
                 .then(function () {
@@ -562,6 +564,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
         $scope.goDashboard = function (dashboard) {
 
+            layoutManager.headerMenuToggle(true);
+            $scope.currentView = dashboard.dashboardName;
             $scope.openSearchBar(); 
             console.log($scope.dashboards);
             console.log("dash item", dashboard);
@@ -648,13 +652,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                     }
                                 }
                             }
-                            ngToast.create({
-                                className: 'success',
-                                content: data.Custom_Message,
-                                horizontalPosition: 'center',
-                                verticalPosition: 'top',
-                                dismissOnClick: true
-                            });
+                            
 
                             $state.go('home.Dashboards');
                         }
@@ -1207,6 +1205,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 		 [{title:"User Segregation",description:"omal@duosoftare.com has invited you to jon his tenant."},
 		{title:"Dashboard",description:"Sales for the month has exceeded the treshold value"},
 		{title:"DigIn",description:"DigInCache server is down."}];
+
+       $scope.removeNotification = function(ev,notification) {
+             for (i = 0, len = $scope.notifications.length; i<len; ++i){
+                    if($scope.notifications[i].title == notification.title)
+                        $scope.notifications.splice(i, 1);
+
+                }
+
+       }
         
         $scope.goHomeDialog = function (ev) {
 
@@ -1901,10 +1908,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             {name: "Facebook", icon: "ti-facebook",provider: "facebook"},
                             {name: "Google+", icon: "ti-google", provider: "google+"},
                             {name: "Twitter", icon: "ti-twitter-alt", provider: "twitter"},
-                            {name: "Linkedin", icon: "ti-linkedin", provider: "linkedin"},
-                            {name: "Pinterest", icon: "ti-pinterest-alt", provider: "pinterest"},
-                            {name: "Tumbler", icon: "ti-tumblr", provider: "tumbler"},
-                            {name: "Email", icon: "ti-email", provider: "email"}
+                            {name: "Linkedin", icon: "ti-linkedin", provider: "linkedin"}
+                           // {name: "Pinterest", icon: "ti-pinterest-alt", provider: "pinterest"},
+                            //{name: "Tumbler", icon: "ti-tumblr", provider: "tumbler"},
+                            //{name: "Email", icon: "ti-email", provider: "email"}
                         ];
         var socialMediaSub =    [
                                     {name: "Facebook", icon: "ti-facebook", link: "home.social-graph-fb"},
@@ -1967,7 +1974,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.goTORout = function(menu){
 
            console.log(menu);
-		   layoutManager.closeHeaderMenu();
+           layoutManager.headerMenuToggle(true);
            $state.go(menu.link);
            $scope.currentView = $scope.currentSubMenu.header;
 

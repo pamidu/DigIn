@@ -1,5 +1,10 @@
-<md-content flex layout="column" class="gmap-widget" ng-controller="gmapsController" 
- > 
-   <digin-map map-data="{{arrAdds}}"></digin-map>
-</md-content>
+<md-card class="graph-map overflow-none  box-shadow-none">
+                            <div class="graph-fb-wrap wrap-overflow ">
+                                <div class="graph-map-content" ng-controller="gmapsController"
+                                 ng-init="setMap()">
+                                    <digin-map map-data="{{arrAdds}}"></digin-map>
+                                    
+                                </div>
 
+                            </div>
+                        </md-card>

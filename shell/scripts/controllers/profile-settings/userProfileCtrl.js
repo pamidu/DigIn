@@ -44,8 +44,8 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
 
             $http({
                 method: 'POST',
-                //url:'http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile',
-                url: baseUrl+'/apis/profile/userprofile',
+                url:'http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile',
+                //url: baseUrl+'/apis/profile/userprofile',
                 data: angular.toJson($scope.userProfile),
                 headers: {
                      'Content-Type': 'application/json',
@@ -92,6 +92,18 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
 				.then(function(answer) {
 				})
             },
+			uploadProfilePicture: function(ev)
+			{
+				$mdDialog.show({
+				  controller: "uploadProfilePictureCtrl",
+				  templateUrl: 'views/profile-settings/uploadProfilePicture.html',
+				  parent: angular.element(document.body),
+				  targetEvent: ev,
+				  clickOutsideToClose:true
+				})
+				.then(function(answer) {
+				})
+			},
             closeSetting: function () {
                 $state.go('home');
             }
@@ -151,6 +163,17 @@ routerApp.controller('changePasswordCtrl',['$scope','$mdDialog','$http','notific
         }
 		//$mdDialog.hide($scope.email);
   }
+}])
+
+routerApp.controller('uploadProfilePictureCtrl',['$scope','$mdDialog','$http','notifications' ,function ($scope,$mdDialog,$http,notifications) {
+	$scope.cancel = function() {
+		$mdDialog.cancel();
+	};
+	
+	$scope.submit = function()
+	{
+		
+	}
 }])
 
 //Password Strength Directive - Start
@@ -293,8 +316,8 @@ routerApp.service('profile',['$rootScope','$http', function($rootScope,$http){
 
     this.getProfile = function() {
         var baseUrl = "http://" + window.location.hostname;
-        //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com') 
-        $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
+        $http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com') 
+        //$http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
             .success(function(response){
                 console.log(response);
                 //#load exisitging data

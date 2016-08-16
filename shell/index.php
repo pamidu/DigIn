@@ -363,14 +363,16 @@
 <script type="text/javascript" src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-ui/angular-ui-select2/select2.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.3/ng-csv.min.js"></script>
-<!-- angular google maps -->
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
+
 <script src="bower_components/google-map/lodash.min.js"></script>
 <script type="text/javascript" src="bower_components/google-map/angular-simple-logger.js"></script>
-<script src="bower_components/google-map/angular-google-maps.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-maps/2.3.3/angular-google-maps.min.js"></script>
 <!-- marker clusterer -->
-<script src="https://raw.githubusercontent.com/PeterTheOne/js-marker-clusterer/gh-pages/src/markerclusterer_compiled.js"></script>
+<!-- angular google maps -->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+ 
+<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyANY96AhQijBZgSXQ6RWkYUlO5fxCh6OMU&sensor=false'></script>
+<script src="https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/src/markerclusterer.js"></script>
 <!-- angular google plus -->
 <script src="bower_components/angular-google-plus/dist/angular-google-plus.min.js"></script>
 <!-- angular at-table -->

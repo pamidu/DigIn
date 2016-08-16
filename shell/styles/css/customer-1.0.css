@@ -555,6 +555,7 @@ v-pane-content
 }
 
 .digin-qb-header-text h1 {
+    margin: 0;
     color: #DAD2BF;
     padding-top: 6px;
     font-family: 'Ek Mukta', sans-serif;
@@ -3684,6 +3685,7 @@ md-select
 .setting-card-header > .setting-img-wrap {
     padding-top: 20px;
     text-align: center;
+    margin: 0 auto;
 }
 
 .setup-info-container {

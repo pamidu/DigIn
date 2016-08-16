@@ -1,4 +1,3 @@
-
 angular.module('configuration', [])
 	.constant('Digin_Engine_API', 'http://prod.digin.io:1929/')
     //.constant('Digin_Engine_API', 'http://digin.io:1929/')
@@ -17,4 +16,5 @@ angular.module('configuration', [])
 
     //#for loggin process
     .constant('IsLocal', true)
-    .constant('Local_Shell_Path', 'http://localhost:8080/git/Digin/shell')
+    .constant('Local_Shell_Path', 'http://localhost:8081/Digin/shell')
+    .constant('report_Widget_Iframe', 'http://www.w3schools.com')

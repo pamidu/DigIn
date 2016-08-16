@@ -1130,7 +1130,6 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                         console.log(data);
                         uploadFlag = true;
                         console.log($scope.reports);
-                        $scope.preloader = false;
                         $scope.diginLogo = 'digin-logo-wrapper2';
                         if ( uploadFlag && storeFlag ){
                             fireMsg('1', 'Successfully uploaded!');
@@ -1173,11 +1172,13 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                     storeFlag = true;
                     if ( uploadFlag && storeFlag ){
                         fireMsg('1', 'Successfully uploaded!');
+						$scope.preloader = false;
                         privateFun.getAllReport();
                     }                    
                 }).error(function (data) {
                     storeFlag = false;
-                        fireMsg('2', 'Error uploading file!');
+					$scope.preloader = false;
+					fireMsg('2', 'Error uploading file!');
                 })
 
                 }

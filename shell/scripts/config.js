@@ -1,3 +1,4 @@
+
 angular.module('configuration', [])
 	.constant('Digin_Engine_API', 'http://prod.digin.io:1929/')
     //.constant('Digin_Engine_API', 'http://digin.io:1929/')

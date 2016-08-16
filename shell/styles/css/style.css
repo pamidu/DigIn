@@ -2254,20 +2254,19 @@ md-tab-content > div {
 
 .drop-box {
     background: #F8F8F8;
-    border: 5px dashed #DDD;
-    width: 200px;
-    height: 65px;
+    border: 2px dashed #DDD;
+    width: 100%;
+    min-height: 150px;
     text-align: center;
     padding-top: 5px;
-    margin: 10px;
 }
 
 .dragover {
-    border: 5px dashed blue;
+    border: 2px dashed #f9a624;
 }
 
 .custom-file-upload {
-    overflow: scroll;
+
 }
 
 .width80percent {

@@ -3641,6 +3641,12 @@ li:active {
 
 /*account setting*/
 
+.setup-wrapper
+{
+	margin-right: 5px; 
+	margin-left: 10px;
+}
+
 .setting-wrap {
     background: #ffffff;
     width: 100%;
@@ -3648,6 +3654,7 @@ li:active {
 	max-width:960px;
 	margin:0 auto;
 	margin-top: 40px;
+	margin-bottom: 20px;
 	box-shadow:0 1px 5px 0 rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.12);
 }
 

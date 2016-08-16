@@ -27,7 +27,64 @@
         </md-content>
         
 
+</md-sidenav>
+
+<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="searchBar" style="overflow-y:hidden;z-index:1501;">
+
+
+        <md-toolbar style="min-height: 42px;height:42px;background:#02b5e2">
+            <div layout="row" layout-align="space-between center">
+
+                <div class="search-box">
+                    <input class="form-control txt-sm-search-header" placeholder="search dashboard or report..." ng-model="SearchText">
+                </div>
+                <div class="blut-close-btn" ng-click="openSearchBar()">
+                    <i class="icon-cancel"></i>
+                </div>
+            </div>
+        </md-toolbar>
+        <md-content style="overflow-y:scroll;height:calc(100% - 130px);padding:0">
+           <div class="dashboard-wrapper">
+                    <h5>Dashboard</h5>
+                </div>
+                <div class="blut-dashboard-view"
+                     ng-slimscroll
+                     opacity="0.1"
+                     distance="10px"
+                     height="230px"
+                     ng-mouseover="isSarchScorllBar = true"
+                     ng-mouseleave="isSarchScorllBar = false"
+                     enabled="{{ isSarchScorllBar }}">
+
+                    <ul class="dashboard-wrap" ng-repeat="dashboard in dashboards | filter : SearchText">
+                        {{x}}
+                        <li class="pull-left dashboard-name">{{dashboard.dashboardName}}</li>
+                        <li class="pull-right view-more-btn" ng-click="goDashboard(dashboard)">view</li>
+                        <li class="pull-right delete-btn" ng-click="deleteDashBoard(dashboard,$event)">delete</li>
+                    </ul>
+                </div>
+
+                 <div class="dashboard-wrapper">
+                    <h5>Report</h5>
+                </div>
+                <div class="blut-dashboard-view"
+                     ng-slimscroll
+                     opacity="0.1"
+                     distance="10px"
+                     height="230px"
+                     ng-mouseover="isSarchScorllBar = true"
+                     ng-mouseleave="isSarchScorllBar = false"
+                     enabled="{{ isSarchScorllBar }}">
+                    <ul class="dashboard-wrap" ng-repeat="report in reports | filter : SearchText">
+                        <li class="pull-left dashboard-name">{{report.splitName}}</li>
+                        <li class="pull-right view-more-btn" ng-click="goReport(report.splitName)">view</li>
+                    </ul>
+                </div>
+        </md-content>
+        
+
     </md-sidenav>
+
 <div class="digin-style" ng-init="getSearchPanelDetails()">
     <toast></toast>
     <!-- preloader start -->
@@ -61,7 +118,7 @@
                      layout-align="space-between center">
                     <div flex="60" class="nav-search" layout="row" layout-align="center center">
                         <div flex="70">
-                            <div class="blut-search-wrapper" ng-click="toggelDownSearch()">
+                            <div class="blut-search-wrapper" ng-click="openSearchBar()">
                                 <i class="icon-search"></i>
                                 Search
                             </div>
@@ -161,64 +218,5 @@
                 <!--</div>-->
             </div>
         </div>
-
- 
-        <div id="searchLayer" class="blut-search-layer-wrapper">
-            <div class="blut-search-header">
-                <div class="header-text">
-                    <h5>Dashboard and report</h5>
-                </div>
-                <div class="search-box">
-                    <input class="form-control txt-sm-search-header" placeholder="search dashboard or report..." ng-model="SearchText">
-                </div>
-                <div class="blut-close-btn" ng-click="toggelDownSearch()">
-                    <i class="icon-cancel"></i>
-                </div>
-            </div>
-
-            <div class="blut-search-body">
-                <div class="dashboard-wrapper">
-                    <h5>Dashboard</h5>
-                </div>
-                <div class="blut-dashboard-view"
-                     ng-slimscroll
-                     opacity="0.1"
-                     distance="10px"
-                     height="230px"
-                     ng-mouseover="isSarchScorllBar = true"
-                     ng-mouseleave="isSarchScorllBar = false"
-                     enabled="{{ isSarchScorllBar }}"
-
-                >
-                    <ul class="dashboard-wrap" ng-repeat="dashboard in dashboards | filter : SearchText">
-                        {{x}}
-                        <li class="pull-left dashboard-name">{{dashboard.dashboardName}}</li>
-                        <li class="pull-right view-more-btn" ng-click="goDashboard(dashboard)">view</li>
-                        <li class="pull-right delete-btn">delete</li>
-                    </ul>
-                </div>
-
-                <div class="dashboard-wrapper">
-                    <h5>Report</h5>
-                </div>
-                <div class="blut-dashboard-view"
-                     ng-slimscroll
-                     opacity="0.1"
-                     distance="10px"
-                     height="230px"
-                     ng-mouseover="isSarchScorllBar = true"
-                     ng-mouseleave="isSarchScorllBar = false"
-                     enabled="{{ isSarchScorllBar }}">
-                    <ul class="dashboard-wrap" ng-repeat="report in reports | filter : SearchText">
-                        <li class="pull-left dashboard-name">{{report.splitName}}</li>
-                        <li class="pull-right view-more-btn" ng-click="goReport(report.splitName)">view</li>
-                    </ul>
-                </div>
-
-            </div>
-
-        </div> 
-
-
     </div>
 </div>

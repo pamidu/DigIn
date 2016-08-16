@@ -1047,7 +1047,9 @@ $scope.inviteUser = function () {
 
 
     $scope.viewUserProfile=function(){
+        var baseUrl = "http://" + window.location.hostname;
         //http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com 
+
         $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
             .success(function(response){
                 console.log(response);
@@ -1479,6 +1481,8 @@ routerApp.controller('userGroupsCtrl',['$scope','$http','$rootScope', '$mdDialog
 
     //#Delete  group
     $scope.deleteGroup = function (index,group,event) {
+         var baseUrl = "http://" + window.location.hostname;
+
         var confirm = $mdDialog.confirm()
              .title('Delete User Group')
               .textContent('Are you sure, you want to delete this user group')
@@ -1487,8 +1491,8 @@ routerApp.controller('userGroupsCtrl',['$scope','$http','$rootScope', '$mdDialog
             .ok('Yes!')
             .cancel('No!');
         $mdDialog.show(confirm).then(function () {
-            $http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/removeUserGroup/'+group)
-            //$http.get(baseUrl+'/apis/usercommon/removeUserGroup/'+group)
+            //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/removeUserGroup/'+group)
+            $http.get(baseUrl+'/apis/usercommon/removeUserGroup/'+group)
                 .success(function (response) {
                     $rootScope.sharableGroupsDtls.splice(index, 1);
                     $rootScope.groups.splice(index, 1);
@@ -1507,6 +1511,8 @@ routerApp.controller('userGroupsCtrl',['$scope','$http','$rootScope', '$mdDialog
 
 routerApp.controller('addGroupCtrl',['$scope','$rootScope','$http', '$mdDialog','notifications','sharableObjs', function ($scope,$rootScope,$http, $mdDialog,notifications,sharableObjs) {
 	
+     var baseUrl = "http://" + window.location.hostname;
+
 	$scope.cancel = function() {
 		$mdDialog.cancel();
 	};
@@ -1558,8 +1564,8 @@ routerApp.controller('addGroupCtrl',['$scope','$rootScope','$http', '$mdDialog',
         };
         $http({
             method: 'POST',
-            url: 'http://omalduosoftwarecom.prod.digin.io/apis/usercommon/addUserGroup', 
-            //url: baseUrl + '/apis/usercommon/addUserGroup',          
+            //url: 'http://omalduosoftwarecom.prod.digin.io/apis/usercommon/addUserGroup', 
+            url: baseUrl + '/apis/usercommon/addUserGroup',          
             data: angular.toJson($scope.grpDtl)
         })
         .success(function (response) {
@@ -1607,8 +1613,8 @@ routerApp.service('sharableObjs',['$rootScope','$http', function($rootScope,$htt
 
     this.getSharableObjects = function() {
 
-        $http.get("http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects")
-        //$http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+        //$http.get("http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects")
+        $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
             .success(function (data) {
                 console.log(data);
                 $rootScope.sharableObjs = [];
@@ -1635,9 +1641,9 @@ routerApp.service('sharableObjs',['$rootScope','$http', function($rootScope,$htt
     };
 
 
-    this.getAllGroups=function(){
-        $http.get("http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups")
-        //$http.get(baseUrl + "/apis/usercommon/getAllGroups")
+    this.getAllGroups=function(){       
+        //$http.get("http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups")
+        $http.get(baseUrl + "/apis/usercommon/getAllGroups")
                 .success(function (data) {
                     console.log(data);
                     $rootScope.sharableGroupsDtls = [];
@@ -1666,3 +1672,12 @@ routerApp.service('sharableObjs',['$rootScope','$http', function($rootScope,$htt
 
 
 }]);
+
+
+
+
+
+routerApp.controller('emailShareCtrl',['$scope','notifications', function ($scope,notifications) {
+    
+    
+}])

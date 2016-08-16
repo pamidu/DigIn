@@ -871,8 +871,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     //var baseUrl = "http://" + $rootScope.TenantID;
                     $scope.domain = JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
                     //baseUrl="http://"+$scope.domain;
-                    $http.get("omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects")
-                    //$http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+                    //$http.get("omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects")
+                    $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
                         .success(function (data) {
                             console.log(data);
                             $rootScope.sharableObjs = [];
@@ -902,8 +902,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     //-----------
                     
 
-                    //$http.get(baseUrl + "/apis/usercommon/getAllGroups")
-                    $http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups')
+                    $http.get(baseUrl + "/apis/usercommon/getAllGroups")
+                    //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups')
                         .success(function (data) {
                             console.log(data);
                             $rootScope.sharableGroupsDtls = [];
@@ -934,8 +934,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         $scope.getSharableUsers = function () {
             var baseUrl = "http://" + window.location.hostname;
-            $http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects')
-            //$http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+            //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects')
+            $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
                 .success(function (data) {
                     console.log(data);
                     $rootScope.sharableObjs = [];
@@ -963,8 +963,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
 
             //-----------
-            $http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups')
-            //$http.get(baseUrl + "/apis/usercommon/getAllGroups")
+            //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups')
+            $http.get(baseUrl + "/apis/usercommon/getAllGroups")
                 .success(function (data) {
                     console.log(data);
                     $rootScope.sharableGroupsDtls = [];
@@ -1908,10 +1908,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             {name: "Facebook", icon: "ti-facebook",provider: "facebook"},
                             {name: "Google+", icon: "ti-google", provider: "google+"},
                             {name: "Twitter", icon: "ti-twitter-alt", provider: "twitter"},
-                            {name: "Linkedin", icon: "ti-linkedin", provider: "linkedin"}
+                            {name: "Linkedin", icon: "ti-linkedin", provider: "linkedin"},
                            // {name: "Pinterest", icon: "ti-pinterest-alt", provider: "pinterest"},
                             //{name: "Tumbler", icon: "ti-tumblr", provider: "tumbler"},
-                            //{name: "Email", icon: "ti-email", provider: "email"}
+                            {name: "Email", icon: "ti-email"}
                         ];
         var socialMediaSub =    [
                                     {name: "Facebook", icon: "ti-facebook", link: "home.social-graph-fb"},
@@ -1919,7 +1919,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 ];
         var reportsSub =    [
                                 { name: "Report Development", icon: "ti-filter", link: "home.ReportsDev"},
-                                { name: "Report", icon: "ti-notepad", link: "home.Reports"}
+                                { name: "Reports", icon: "ti-notepad", link: "home.Reports"}
                             ];
         
         $scope.subMenu = (function () {
@@ -1974,9 +1974,24 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.goTORout = function(menu){
 
            console.log(menu);
-           layoutManager.headerMenuToggle(true);
-           $state.go(menu.link);
-           $scope.currentView = $scope.currentSubMenu.header;
+            layoutManager.headerMenuToggle(true);
+           if(menu.name ==  "Email")
+           {
+                    //console.log("email");
+
+                    $mdDialog.show({
+                      controller: "emailCtrl",
+                      templateUrl: 'views/loginEmail.html',
+                      parent: angular.element(document.body),
+                      clickOutsideToClose:true
+                    })
+                    .then(function(answer) {
+                    })
+
+           }else{
+               $state.go(menu.link);
+               $scope.currentView = $scope.currentSubMenu.header;
+           }
 
         }
 
@@ -2131,8 +2146,8 @@ routerApp.controller('inviteUserCtrl',['$scope','$mdDialog','$http','Digin_Tenan
     $scope.getSharableObj=function(){
         var baseUrl = "http://" + window.location.hostname;
         
-        $http.get("omalduosoftwarecom.prod./apis/usercommon/getSharableObjects")
-        //$http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+        //$http.get("omalduosoftwarecom.prod./apis/usercommon/getSharableObjects")
+        $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
             .success(function (data) {
                 console.log(data);
                 $rootScope.sharableObjs = [];

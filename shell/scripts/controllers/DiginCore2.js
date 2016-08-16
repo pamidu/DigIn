@@ -896,6 +896,14 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
         // };
 
         $scope.sendMail = function(sendState){
+            var mail=$scope.emailTo;
+            if($scope.validateEmail1(mail)==false){return;}
+            else if ($scope.validateEmail2(mail)==false){$scope.fireMsg('0', 'Please enter valid email address to proceed.'); return;}
+            else{ $scope.proceedMail(sendState);}
+        };         
+
+
+        $scope.proceedMail = function(sendState){
             //$scope.sendMailState = false;
 
             // ----generate pdf---------------
@@ -908,36 +916,55 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
                         tableLeft: 0,
                         tableTop: 30
             };
-            generatePDF3.generate(htmlElement, config);
-            // -------------------
+            //generatePDF3.generate(htmlElement, config);
+  
+                    var doc = new jsPDF('landscape');
+                    var options = {format: 'PNG'};
 
-            var decodeUrl = $pdfString.returnPdf();
-            var blobFile = dataURItoBlob(decodeUrl) 
-            blobFile.name = 'dashboard.pdf'
-            blobFile.type = 'application/pdf'
-            blobFile ["Content-Type"] =  "application/pdf"
+                    doc.addHTML(htmlElement, config.tableLeft, config.tableTop, options, function () {
+                        var pdfName = config.title.toString() + '.pdf';
+                        doc.text(config.titleLeft, config.titleTop, config.title);
+                        //doc.save(pdfName);
+                        var output = doc.output('datauristring')
+                        $pdfString.savePdf(output);
 
-            $scope.uploadPdfName = 'dashboard.pdf'; 
+                        //var file = base64ToBlob(output.replace('data:application/pdf;base64,',''), 'image/png');
 
-            $uploader.uploadMedia("diginDashboard",blobFile,blobFile.name);
-            $uploader.onSuccess(function (e, data) {
-                console.log(data);
-                $scope.deliverMail($scope.emailTo);
-                console.log("upload success")
-            });
-            $uploader.onError(function (e, data) { 
-                var toast = $mdToast.simple()
-                .content('There was an error, please upload!')
-                .action('OK')
-                .highlightAction(false)
-                .position("bottom right");
-                $mdToast.show(toast).then(function () {
-                    //whatever
-                }); 
-            });
 
-            $mdDialog.hide();
+                        //#---------------------------------------  
+            
+                            var decodeUrl = $pdfString.returnPdf();
+                            var blobFile = dataURItoBlob(decodeUrl) 
+                            blobFile.name = 'dashboard.pdf'
+                            blobFile.type = 'application/pdf'
+                            blobFile ["Content-Type"] =  "application/pdf"
+
+                            $scope.uploadPdfName = 'dashboard.pdf'; 
+
+                            $uploader.uploadMedia("diginDashboard",blobFile,blobFile.name);
+                            $uploader.onSuccess(function (e, data) {
+                                console.log(data);
+                                $scope.deliverMail($scope.emailTo);
+                                console.log("upload success")
+                            });
+                            $uploader.onError(function (e, data) { 
+                                var toast = $mdToast.simple()
+                                .content('There was an error, please upload!')
+                                .action('OK')
+                                .highlightAction(false)
+                                .position("bottom right");
+                                $mdToast.show(toast).then(function () {
+                                    //whatever
+                                }); 
+                            });
+                            
+                            //$scope.deliverMail($scope.emailTo);
+                            $mdDialog.hide();                   
+                        }); 
+            
         };
+
+
         function dataURItoBlob(dataURI, callback) {
             // convert base64 to raw binary data held in a string
             // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
@@ -957,7 +984,23 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
             var bb = new Blob([ab]);
             return bb;
         }
-        $scope.validateEmail=function (email) {
+
+        $scope.validateEmail1=function(email){
+            if(email==undefined){
+                $scope.fireMsg('0', 'Email can not be a blank.');
+                return false;
+            }
+            else if(email==""){
+                $scope.fireMsg('0', 'Email can not be a blank.');
+                return false;
+            }
+            else{
+                return true;
+            }
+            return true;
+        }
+    
+        $scope.validateEmail2=function (email) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
         }
@@ -978,59 +1021,66 @@ routerApp.controller('emailCtrl', ['$scope', '$rootScope', '$mdDialog','generate
                     dismissOnClick: true
                     });
         }
+
         $scope.closeDialog = function() {
-            $mdDialog.hide();
+            $mdDialog.hide();  
         };
+
+
+
+
         $scope.deliverMail=function (mailTo) {
 
-            var path =  "http://digin.io/apis/media/tenant/diginDashboard/dashboard.pdf"
-             
+            var host = window.location.hostname;
             
-            // var path =  "http://sachilagmailcom.space.test.12thdoor.com/apis/media/tenant/diginDashboard/dashboard.pdf"
+            var path =  "http://prod.digin.io/apis/media/tenant/diginDashboard/dashboard.pdf"
+            
             $scope.mailData =   {
                 "type": "email",
                 "to": mailTo,
-                "subject": "Confirmation",
+                "subject": "Dashboard mail delivery",
                 "from": "Digin <noreply-digin@duoworld.com>",
                 "Namespace": "com.duosoftware.com",
                 "TemplateID": "T_Email_GENERAL",
                 "attachments": [{
-                              "filename": $scope.uploadPdfName,
+                              "filename": "dashboard.pdf",
                               "path": path
                              }],
                 "DefaultParams": {
                     "@@CNAME@@": "",
-                    "@@TITLE@@": "Dash board mail delivery",
-                    "@@MESSAGE@@": "Dash Board Mail Dilivery System",
+                    "@@TITLE@@": "Dashboard mail delivery",
+                    "@@MESSAGE@@": "Please find the attachment here",
                     "@@CNAME@@": "",
                     "@@APPLICATION@@": "Digin.io",
-                    "@@FOOTER@@": "Copyright 2016",
+                    "@@FOOTER@@": "Copyright DigIn 2016",
                     "@@LOGO@@": ""
                 },
                 "CustomParams": {
                     "@@CNAME@@": "",
-                    "@@TITLE@@": "Dash board mail delivery",
-                    "@@MESSAGE@@": "Dash Board Mail Dilivery System",
+                    "@@TITLE@@": "Dashboard mail delivery",
+                    "@@MESSAGE@@": "Please find the attachment here",
                     "@@CNAME@@": "",
                     "@@APPLICATION@@": "Digin.io",
-                    "@@FOOTER@@": "Copyright 2016",
+                    "@@FOOTER@@": "Copyright DigIn 2016",
                     "@@LOGO@@": ""
                 }
             };
 
-            var userInfo = JSON.parse(getCookie("authData"));
+            var token =getCookie("securityToken");
             $http({
                 method: 'POST',
                 url: 'http://104.197.27.7:3500/command/notification',
                 data: $scope.mailData,
                 headers:{
                     'Content-Type': 'application/json',
-                    'securitytoken': userInfo.SecurityToken
+                    'securitytoken': token
                 }
             }).then(function(response){
                 console.log(response)
+                $scope.fireMsg('1', 'Mail sent successfully!');
             },function(response){
                 console.log(response)
+                $scope.fireMsg('0', 'Mail sending fail!');
             })   
         }
 }]);

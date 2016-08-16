@@ -7,6 +7,11 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
     console.log('user profile ctrl load');
     var baseUrl = "http://" + window.location.hostname;
 	
+    //*Profile picture
+    $scope.selectImage=false;
+    $scope.selectProfile=true;
+
+
     //profile view mode
     $scope.intProfile=function(){
         profile.getProfile();
@@ -44,8 +49,8 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
 
             $http({
                 method: 'POST',
-                url:'http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile',
-                //url: baseUrl+'/apis/profile/userprofile',
+                //url:'http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile',
+                url: baseUrl+'/apis/profile/userprofile',
                 data: angular.toJson($scope.userProfile),
                 headers: {
                      'Content-Type': 'application/json',
@@ -71,43 +76,223 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
 
 
 	
-    $scope.profile = (function () {
-        return {
-            clickEdit: function () {
-                $scope.editModeOn = false;
-            },
-			changeUserProfile: function (){
-				console.log($scope.user);
-				$scope.editModeOn = true;
-                $scope.updateProfileData();
-			},
-            changePassword: function (ev) {
-                $mdDialog.show({
-				  controller: "changePasswordCtrl",
-				  templateUrl: 'views/profile-settings/change-password.html',
-				  parent: angular.element(document.body),
-				  targetEvent: ev,
-				  clickOutsideToClose:true
-				})
-				.then(function(answer) {
-				})
-            },
-			uploadProfilePicture: function(ev)
-			{
-				$mdDialog.show({
-				  controller: "uploadProfilePictureCtrl",
-				  templateUrl: 'views/profile-settings/uploadProfilePicture.html',
-				  parent: angular.element(document.body),
-				  targetEvent: ev,
-				  clickOutsideToClose:true
-				})
-				.then(function(answer) {
-				})
-			},
-            closeSetting: function () {
-                $state.go('home');
+        $scope.profile = (function () {
+            return {
+                clickEdit: function () {
+                    $scope.editModeOn = false;
+                },
+    			changeUserProfile: function (){
+    				console.log($scope.user);
+    				$scope.editModeOn = true;
+                    $scope.updateProfileData();
+    			},
+                changePassword: function (ev) {
+                    $mdDialog.show({
+    				  controller: "changePasswordCtrl",
+    				  templateUrl: 'views/profile-settings/change-password.html',
+    				  parent: angular.element(document.body),
+    				  targetEvent: ev,
+    				  clickOutsideToClose:true
+    				})
+    				.then(function(answer) {
+    				})
+                },
+    			uploadProfilePicture: function(ev)
+    			{
+    				// $mdDialog.show({
+    				//   controller: "uploadProfilePictureCtrl",
+    				//   templateUrl: 'views/profile-settings/uploadProfilePicture.html',
+    				//   parent: angular.element(document.body),
+    				//   targetEvent: ev,
+    				//   clickOutsideToClose:true
+    				// })
+    				// .then(function(answer) {
+    				// })
+                     $scope.selectProfile=false;
+                     $scope.selectImage=true;
+
+    			},
+                closeSetting: function () {
+                    $state.go('home');
+                }
+        };
+
+
+
+    //#pre-loader progress - with message
+    var displayProgress = function (message) {
+        $mdDialog.show({
+            template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="row" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + '           <span>'+message+'</span>' + '       </div>' + '   </md-dialog-content>' + '</md-dialog>'
+            , parent: angular.element(document.body)
+            , clickOutsideToClose: false
+        });
+    };
+
+
+    $scope.selectProfileImg = function () {
+        $scope.selectProfile=false;
+        $scope.selectImage=true;
+    };
+
+
+    $rootScope.myImage='';
+    $scope.myCroppedImage='';
+
+    var handleFileSelect=function(evt) {
+
+          var file=evt.currentTarget.files[0];
+          console.log(file);
+          var reader = new FileReader();
+          reader.onload = function (evt) {
+            $scope.$apply(function($scope){
+                $rootScope.myImage=evt.target.result;
+                $rootScope.file=file;
+            });
+          };
+          reader.readAsDataURL(file);  
+    };
+    angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+
+
+    //#conver dataURL into base64
+    function base64ToBlob(base64Data, contentType) {
+        contentType = contentType || '';
+        var sliceSize = 1024;
+        var byteCharacters = atob(base64Data);
+        var bytesLength = byteCharacters.length;
+        var slicesCount = Math.ceil(bytesLength / sliceSize);
+        var byteArrays = new Array(slicesCount);
+
+        for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+            var begin = sliceIndex * sliceSize;
+            var end = Math.min(begin + sliceSize, bytesLength);
+
+            var bytes = new Array(end - begin);
+            for (var offset = begin, i = 0 ; offset < end; ++i, ++offset) {
+                bytes[i] = byteCharacters[offset].charCodeAt(0);
             }
+            byteArrays[sliceIndex] = new Uint8Array(bytes);
         }
+        return new Blob(byteArrays, { type: contentType });
+    };
+
+
+    //#validate image saving and call saving function
+    $scope.saveImage = function () {
+        if($rootScope.file==undefined){
+            fireMsg('0', 'Please select profile picture to upload.');
+        }
+        else{
+            //*Croped image
+                var name=$rootScope.file.name;
+                var file = base64ToBlob($scope.myCroppedImage.replace('data:image/png;base64,',''), 'image/jpeg');
+                file.name=name;
+                //uploader.addToQueue(file);
+                $scope.upload(file);
+
+            //*Original image
+                //$scope.upload($rootScope.file);
+                //$scope.upload();
+
+            $scope.selectProfile=true;
+            $scope.selectImage=false;
+        }          
+    };
+
+
+    $scope.cancelImage = function () {
+        $scope.selectProfile=true;
+        $scope.selectImage=false;       
+    };
+
+
+
+    //#Function to save profile image
+    $scope.upload = function (file) {
+        displayProgress('Uploading...');
+        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+        Upload.upload({
+            url: Digin_Engine_API + 'file_upload',
+            headers: {'Content-Type': 'multipart/form-data',},
+            data: {
+                db: 'BigQuery',
+                SecurityToken: userInfo.SecurityToken,
+                Domain: Digin_Domain,
+                other_data:'dp',
+                file: file
+            }
+        }).success(function (data) {
+
+            //#chk undefined values
+            var dp_name="";
+            var logo_name="";
+            var components; var userRole; var cacheLifetime; var widgetLimit; var themeConfig; var queryLimit;
+            if($rootScope.userSettings.components==undefined) {components=0;} else {components=$rootScope.userSettings.components}
+            if($rootScope.userSettings.user_role==undefined) {userRole="";} else {userRole=$rootScope.userSettings.user_role}
+            if($rootScope.userSettings.cache_lifetime==undefined) {cacheLifetime=0;} else {cacheLifetime=$rootScope.userSettings.cache_lifetime}
+            if($rootScope.userSettings.widget_limit==undefined) {widgetLimit=0;} else {widgetLimit=$rootScope.userSettings.widget_limit}
+            if($rootScope.userSettings.query_limit==undefined) {queryLimit=0;} else {queryLimit=$rootScope.userSettings.query_limit}
+            if($rootScope.userSettings.dp_path==undefined) {dp_name="";} else {dp_name=$rootScope.userSettings.dp_path.split("/").pop();}
+            if($rootScope.userSettings.logo_path==undefined) {logo_name="";} else {logo_name=$rootScope.userSettings.logo_path.split("/").pop();}
+            if($rootScope.userSettings.theme_config==undefined) {themeConfig="";} else {themeConfig=$rootScope.userSettings.theme_config}     
+                 
+
+            //#store to user settings---------------------
+            $scope.settings = {
+                "email": userInfo.Email,
+                "components": components,
+                "user_role":userRole,
+                "cache_lifetime":cacheLifetime,
+                "widget_limit": widgetLimit,
+                "query_limit": queryLimit,
+                "logo_name": logo_name,
+                "dp_name" : file.name,
+                "theme_config": themeConfig
+                // "SecurityToken": userInfo.SecurityToken,
+                // "Domain": Digin_Domain
+            }
+
+            $http({
+                method: 'POST',
+                url: Digin_Engine_API + 'store_user_settings/',
+                data: angular.toJson($scope.settings),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'SecurityToken': userInfo.SecurityToken
+                    //'Domain': Digin_Domain
+                }
+            })
+                .success(function (response) {
+                    $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
+                        .success(function (data) {
+                            console.log(data);
+                            $rootScope.userSettings=data.Result;
+                            var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
+                            $scope.profile_pic = logoPath + data.Result.dp_path;
+                            $rootScope.profile_pic = logoPath + data.Result.dp_path;
+                            ProfileService.UserDataArr.BannerPicture= $rootScope.profile_pic;
+                            $scope.getURL();
+                            $mdDialog.hide();
+                            fireMsg('1', 'Profile picture uploaded successfully.');
+                        });
+                })
+                .error(function (data) {
+                    $scope.profile_pic = "styles/css/images/setting/user100x100.png";
+                    $rootScope.profile_pic = "styles/css/images/setting/user100x100.png";
+                    $mdDialog.hide();
+                    fireMsg('0', 'There was an error while uploading profile picture !');
+                });
+        });
+
+    };
+
+
+
+
+
+
+
+
     })();
 
     //UI animation
@@ -316,8 +501,8 @@ routerApp.service('profile',['$rootScope','$http', function($rootScope,$http){
 
     this.getProfile = function() {
         var baseUrl = "http://" + window.location.hostname;
-        $http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com') 
-        //$http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
+        //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com') 
+        $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
             .success(function(response){
                 console.log(response);
                 //#load exisitging data

@@ -4,19 +4,71 @@
 				<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="closeWindow()"></md-button>
 			</div>
 			
-			<div class="setting-card-header">
-                <h5>Profile Settings</h5>
-                <div class="setting-img-wrap">
-                    
-					<img src="styles/css/images/signup-user.png" style="cursor:pointer;	width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()">
-					<md-tooltip md-direction="bottom">
-						Upload Profile Picture
-					</md-tooltip>
-					</img>
-					
-                </div>
-			</div>
 
+			
+
+           <div ng-show="selectImage" align="center"><!-- selectImage-->
+                <div><input type="file" id="fileInput" /></div>
+                <div class="cropArea" align="center">
+                    <img-crop class="cropArea"  image="myImage" result-image="myCroppedImage" area-type="circle" >
+                    </img-crop>
+                </div>
+
+                <br>
+
+                <div>Cropped Image:</div>               
+                <div align="center">
+                    <!-- <img ng-src="{{myCroppedImage}}"/> -->
+                    <img ng-src="{{myCroppedImage}}" class="img-circle">
+                </div>
+
+                <md-button class="setup-button md-raised md-primary" ng-click="cancelImage()">
+                    <span class="setup-font-theme">Cancel</span>
+                </md-button> 
+
+                <md-button class="setup-button md-raised md-primary" ng-click="saveImage()">
+                    <span class="setup-font-theme">Save Image</span>
+                </md-button>
+
+            </div>
+
+
+            
+
+
+
+
+
+
+
+
+			<!-- ------------ -->
+			<div ng-show="selectProfile">
+
+				<div class="setting-card-header">
+	                <h5>Profile Settings</h5>
+	                <div class="setting-img-wrap">
+	                    
+						<img src="styles/css/images/signup-user.png" style="cursor:pointer;	width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()">
+
+						<!-- <div ng-show="selectProfile">  
+			                <div align="center">
+			                    <img ng-src="{{profile_pic}}" class="img-circle">
+			                </div>
+			            </div>     -->
+
+						
+						<md-tooltip md-direction="bottom">
+						<md-tooltip md-direction="bottom">
+
+							Upload Profile Picture
+						</md-tooltip>
+						</img>
+						
+	                </div>
+				</div>
+
+			
 
                <form name="frmProfile" autocomplete="off" ng-submit="profile.changeUserProfile()">
 					<div layout="row" layout-align="start start">
@@ -95,17 +147,19 @@
 							Save changes
 						</button>
 					</div>
-            </form>
-			<form name="frmNewUser" autocomplete="off">
-				<div layout="row" layout-align="start start">
-					<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Security</div>
-				</div>
-				<div layout="row" layout-align="start start" style="margin:10px;">
-					<button type="button" class="btn btn-default" ng-click="profile.changePassword($event)">
-					  Change Password
-					</button>
-				</div>
-			</form>
-		</div>
+            	</form>
+				<form name="frmNewUser" autocomplete="off">
+					<div layout="row" layout-align="start start">
+						<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Security</div>
+					</div>
+					<div layout="row" layout-align="start start" style="margin:10px;">
+						<button type="button" class="btn btn-default" ng-click="profile.changePassword($event)">
+						  Change Password
+						</button>
+					</div>
+				</form>
+			</div> 	
+
+	</div>
 </div>
 <!-- end -->

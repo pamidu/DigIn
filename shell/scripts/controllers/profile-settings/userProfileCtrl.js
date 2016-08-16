@@ -2,16 +2,75 @@
  * Created by Damith on 7/26/2016.
  */
 
-routerApp.controller('userProfileCtrl', function ($scope,$state, $mdDialog) {
+routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $mdDialog,notifications,profile,$http) {
 
     console.log('user profile ctrl load');
-
+    var baseUrl = "http://" + window.location.hostname;
 	
     //profile view mode
+    $scope.intProfile=function(){
+        profile.getProfile();
+    };
+
     $scope.editModeOn = true;
 	
-	$scope.user = {name: "Dilshan",company: "Duo", email:"nelly.dil@hotmail.com",contactNo:"0767124324",street:"Thalapathpitiya",country:"Sri Lanka",zip:"04215"};
-	
+    	$scope.user = {
+            name:  $rootScope.profile_Det.Name,
+            company:  $rootScope.profile_Det.Company, 
+            email: $rootScope.profile_Det.Email,
+            contactNo: $rootScope.profile_Det.PhoneNumber,
+            street: $rootScope.profile_Det.BillingAddress,
+            country: $rootScope.profile_Det.Country,
+            zip: $rootScope.profile_Det.ZipCode
+        };
+
+        $scope.closeWindow=function(){
+            $state.go('home.welcomeSearch');
+        };
+
+
+        $scope.updateProfileData= function () {
+          
+            $scope.userProfile ={
+                 "BannerPicture":"img/cover.png",
+                 "BillingAddress":$scope.user.street,
+                 "Company":$scope.user.company,
+                 "Country":$scope.user.country,
+                 "Email":$scope.user.email,
+                 "Name":$scope.user.name,
+                 "PhoneNumber":$scope.user.contactNo,
+                 "ZipCode":$scope.user.zip
+            };
+        
+
+            $http({
+                method: 'POST',
+                //url:'http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile',
+                url: baseUrl+'/apis/profile/userprofile',
+                data: angular.toJson($scope.userProfile),
+                headers: {
+                     'Content-Type': 'application/json',
+                }
+            }).success(function (data) {
+                $scope.error.isLoading = false;
+                console.log(data);
+ 
+                if(data.IsSuccess==false){
+                    notifications.toast('0', 'Fail to update user profile.');
+                }
+                else
+                {
+                    notifications.toast('1', 'User profile updated successfully.');
+                    $scope.frmProfile.$setUntouched();
+                    profile.getProfile();
+                }
+                
+            }).error(function (data) {
+                $scope.error.isLoading = false;            
+            });
+        };
+
+
 	
     $scope.profile = (function () {
         return {
@@ -21,6 +80,7 @@ routerApp.controller('userProfileCtrl', function ($scope,$state, $mdDialog) {
 			changeUserProfile: function (){
 				console.log($scope.user);
 				$scope.editModeOn = true;
+                $scope.updateProfileData();
 			},
             changePassword: function (ev) {
                 $mdDialog.show({
@@ -76,17 +136,14 @@ routerApp.controller('changePasswordCtrl',['$scope','$mdDialog','$http','notific
                     if (data == "true") {
 						console.log("Passoword Successfully Changed");
                         notifications.toast("Passoword Successfully Changed", "success");
-						//fireMsg('0', 'Passoword Successfully Changed');
                         $mdDialog.hide();
                     } else {
 						console.log("Error");
                         notifications.toast(data, "error");
-					   //fireMsg('0', 'error Changed');
                     }
 
                 }).error(function () {
 					console.log("Error occurred while changing the password");
-					//fireMsg('0', 'error Changed');
                     notifications.toast("Error occurred while changing the password", "error", 3000);
                 });
 
@@ -182,9 +239,15 @@ window.directiveResources = {};
     
 routerApp.service('notifications',['ngToast','$mdDialog', function(ngToast,$mdDialog){
 
-	this.toast = function(content,status, delay) {
-		
-		ngToast.create({
+    this.toast=function (msgType, content) {
+        ngToast.dismiss();
+        var _className;
+        if (msgType == '0') {
+            _className = 'danger';
+        } else if (msgType == '1') {
+            _className = 'success';
+        }
+        ngToast.create({
             className: _className,
             content: content,
             horizontalPosition: 'center',
@@ -192,7 +255,7 @@ routerApp.service('notifications',['ngToast','$mdDialog', function(ngToast,$mdDi
             dismissOnClick: true,
             dismissButton:true
         });
-	};
+    }
 	
 	this.alertDialog = function(title, content){
 		$mdDialog.show(
@@ -224,4 +287,30 @@ routerApp.service('notifications',['ngToast','$mdDialog', function(ngToast,$mdDi
 	this.finishLoading = function(){
 		$mdDialog.hide();
 	}
+}]);
+
+
+routerApp.service('profile',['$rootScope','$http', function($rootScope,$http){
+
+    this.getProfile = function() {
+        var baseUrl = "http://" + window.location.hostname;
+        //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com') 
+        $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
+            .success(function(response){
+                console.log(response);
+                //#load exisitging data
+                $rootScope.profile_Det=response;
+                $rootScope.address=response.BillingAddress;
+                $rootScope.company=response.Company;
+                $rootScope.country=response.Country;
+                $rootScope.email=response.Email;
+                $rootScope.name=response.Name;
+                $rootScope.phoneNo=response.PhoneNumber;
+                $rootScope.zipCode=response.ZipCode;
+        }).
+        error(function(error){   
+        });  
+    }
+
+
 }]);

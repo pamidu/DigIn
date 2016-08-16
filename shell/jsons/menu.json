@@ -10,7 +10,7 @@
       "title": "Reports",
       "icon2": "icon-report",
       "type": "sub-menu",
-      "menuName":"reports"
+      "menuName":"Reports"
     },
     {
       "title": "RealTime",
@@ -34,13 +34,13 @@
       "title": "Social Media",
       "icon2": "icon-profile",
       "type": "sub-menu",
-      "menuName":"socialmedia"
+      "menuName":"Social Media"
     },
     {
       "title": "Share",
       "icon2": "icon-share",
       "type": "sub-menu",
-      "menuName":"share"
+      "menuName":"Share"
     },
     {
       "title": "Settings",

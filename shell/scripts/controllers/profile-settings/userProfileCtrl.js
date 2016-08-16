@@ -28,7 +28,6 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
             $state.go('home.welcomeSearch');
         };
 
-
         $scope.updateProfileData= function () {
           
             $scope.userProfile ={

@@ -429,28 +429,28 @@ $scope.inviteUser = function () {
     };
 
     //------------Delete  group***
-    $scope.deleteGroup = function (group, index) {
-        var confirm = $mdDialog.confirm()
-            .title('Do you want to delete this group ?')
-            .targetEvent(event)
-            .ok('Yes!')
-            .cancel('No!');
-        $mdDialog.show(confirm).then(function () {
-            //$http.get(baseUrl+'/apis/usercommon/removeUserGroup/'+group)
-            $http.get(baseUrl+'/apis/usercommon/removeUserGroup/'+group)
-                .success(function (response) {
-                    $rootScope.sharableGroupsDtls.splice(index, 1);
-                    ngToast.create({
-                        className: 'success',
-                        content: 'User group deleted successfully.',
-                        horizontalPosition: 'center',
-                        verticalPosition: 'top',
-                        dismissOnClick: true
-                    });
-                });
-            }, function () {
-        });
-    };
+    // $scope.deleteGroup = function (group, index,event) {
+    //     var confirm = $mdDialog.confirm()
+    //         .title('Do you want to delete this group ?')
+    //         .targetEvent(event)
+    //         .ok('Yes!')
+    //         .cancel('No!');
+    //     $mdDialog.show(confirm).then(function () {
+    //         //$http.get(baseUrl+'/apis/usercommon/removeUserGroup/'+group)
+    //         $http.get(baseUrl+'/apis/usercommon/removeUserGroup/'+group)
+    //             .success(function (response) {
+    //                 $rootScope.sharableGroupsDtls.splice(index, 1);
+    //                 ngToast.create({
+    //                     className: 'success',
+    //                     content: 'User group deleted successfully.',
+    //                     horizontalPosition: 'center',
+    //                     verticalPosition: 'top',
+    //                     dismissOnClick: true
+    //                 });
+    //             });
+    //         }, function () {
+    //     });
+    // };
 
 
     //------------Delete user from group ****
@@ -1420,14 +1420,20 @@ $scope.inviteUser = function () {
 });   //+31 42 1123 4567
 
 
-routerApp.controller('userGroupsCtrl',['$scope', '$mdDialog', function ($scope, $mdDialog) {
+routerApp.controller('userGroupsCtrl',['$scope','$http','$rootScope', '$mdDialog','sharableObjs','$state','notifications', function ($scope,$http,$rootScope, $mdDialog,sharableObjs,$state,notifications) {
 	
 	console.log("start of userGroupsCtrl");
-	
-	$scope.groups = [
-						{name: "Group 1",users:[{name:"Dilshan", groupId:"1", description: "DigIn Team"},{name:"Gevindu", groupId:"1", description: "DigIn Team"}]},
-						{name: "Group 2",users:[{name:"Lasitha", groupId:"2", description: "Duoworld Team"},{name:"Gevindu", groupId:"2", description: "Duoworld Team"}]}
-					];
+
+    $scope.route = function () {
+          $state.go('home.welcomeSearch');
+    };
+
+    sharableObjs.getSharableObjects();
+    sharableObjs.getAllGroups();
+
+    $rootScope.groups = [];
+    $rootScope.groups =$rootScope.sharableGroupsDtls;
+
 					
 	$scope.addGroup = function(ev)
 	{
@@ -1470,30 +1476,115 @@ routerApp.controller('userGroupsCtrl',['$scope', '$mdDialog', function ($scope, 
 		})
 	}
 	
-	$scope.deleteGroup = function(ev)
-	{
-		   var confirm = $mdDialog.confirm()
-			  .title('Delete Group')
-			  .textContent('Are you sure you want to delete this group')
-			  .ariaLabel('Delete Group')
-			  .targetEvent(ev)
-			  .ok('Delete')
-			  .cancel('Cancel');
-		$mdDialog.show(confirm).then(function() {
-			console.log("User Deleted");
-		})
-	}
+
+    //#Delete  group
+    $scope.deleteGroup = function (index,group,event) {
+        var confirm = $mdDialog.confirm()
+             .title('Delete User Group')
+              .textContent('Are you sure, you want to delete this user group')
+              .ariaLabel('Delete user group')
+              .targetEvent(event)
+            .ok('Yes!')
+            .cancel('No!');
+        $mdDialog.show(confirm).then(function () {
+            $http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/removeUserGroup/'+group)
+            //$http.get(baseUrl+'/apis/usercommon/removeUserGroup/'+group)
+                .success(function (response) {
+                    $rootScope.sharableGroupsDtls.splice(index, 1);
+                    $rootScope.groups.splice(index, 1);
+                    notifications.toast('1','User group deleted successfully.');
+                });
+            }, function () {
+        });
+	    
+    }
+
+
 }]);
 
-routerApp.controller('addGroupCtrl',['$scope', '$mdDialog', function ($scope, $mdDialog) {
+
+
+
+routerApp.controller('addGroupCtrl',['$scope','$rootScope','$http', '$mdDialog','notifications','sharableObjs', function ($scope,$rootScope,$http, $mdDialog,notifications,sharableObjs) {
 	
 	$scope.cancel = function() {
 		$mdDialog.cancel();
 	};
+
+    //#validate group exist or not****
+    $scope.isValidGroupName1=function(){
+        if($scope.groupName==""){
+            notifications.toast('0', 'Group name can not be empty... !');
+            return false;
+        }
+        else if($scope.groupName==undefined){
+            notifications.toast('0', 'Group name can not be empty... !');
+            return false;
+        }
+        else{
+            return true;
+        }
+    };
+
+    $scope.isValidGroupName2=function(){
+        for (var i = 0; i < $rootScope.sharableGroupsDtls.length; i++) {
+            var groupName=$rootScope.sharableGroupsDtls[i].groupname;
+                if($scope.groupName==groupName){
+                    return false;
+                }
+        }
+        return true;
+    };
+
+
 	$scope.submit = function()
 	{
+        //Validate group name
+        if($scope.isValidGroupName1()==false){
+            notifications.toast('0', 'User group name can not be empty.');
+            return;
+        };
+
+        if($scope.isValidGroupName2()==false){
+            notifications.toast('0', 'This user group is already created.');
+            return;
+        };
+
+        $scope.grpDtl = {
+            "groupId": "-999",
+            "groupname": $scope.groupName,
+            "users":  [],
+            "parentId": ""
+        };
+        $http({
+            method: 'POST',
+            url: 'http://omalduosoftwarecom.prod.digin.io/apis/usercommon/addUserGroup', 
+            //url: baseUrl + '/apis/usercommon/addUserGroup',          
+            data: angular.toJson($scope.grpDtl)
+        })
+        .success(function (response) {
+            $scope.grpDtl = {
+                "groupId": response.Data[0].ID,
+                "groupname": $scope.groupName,
+                "users":  [],
+                "parentId": ""
+            };
+            $rootScope.sharableGroupsDtls.push($scope.grpDtl);
+            $rootScope.groups.push($scope.grpDtl);
+            notifications.toast('1','User group created successfully !');
+            $scope.groupName = '';
+            
+        })
+        .error(function (error) {
+            //alert("Fail...!");
+        });
+
+
 		$mdDialog.hide();
 	}
+
+
+
 	
 }])
 
@@ -1508,3 +1599,70 @@ routerApp.controller('addUserCtrl',['$scope', '$mdDialog', function ($scope, $md
 	}
 	
 }])
+
+
+routerApp.service('sharableObjs',['$rootScope','$http', function($rootScope,$http){
+
+    var baseUrl = "http://" + window.location.hostname;
+
+    this.getSharableObjects = function() {
+
+        $http.get("http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects")
+        //$http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+            .success(function (data) {
+                console.log(data);
+                $rootScope.sharableObjs = [];
+                $rootScope.sharableUsers = [];
+                $rootScope.sharableGroups = [];
+
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].Type == "User") {
+                        $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                        $rootScope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
+                    }
+                    else if (data[i].Type == "Group") {
+                        $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                        $rootScope.sharableGroups.push({groupId: data[i].Id, groupname: data[i].Name});
+                    }
+                }
+                console.log($rootScope.sharableObjs);
+                console.log($rootScope.sharableUsers);
+                console.log($rootScope.sharableGroups);
+        
+            }).error(function () {
+            //alert("Oops! There was a problem retrieving the User");
+        });
+    };
+
+
+    this.getAllGroups=function(){
+        $http.get("http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups")
+        //$http.get(baseUrl + "/apis/usercommon/getAllGroups")
+                .success(function (data) {
+                    console.log(data);
+                    $rootScope.sharableGroupsDtls = [];
+
+                    for (var i = 0; i < data.length; i++) {
+                        $rootScope.users = [];  
+                        for (var j = 0; j < data[i].users.length; j++) {
+                           $rootScope.users.push({
+                                Id: data[i].users[j].Id,
+                                Name: data[i].users[j].Name,
+                                mainTitle: data[i].users[j].mainTitle
+                            });
+                        }
+                        $rootScope.sharableGroupsDtls.push({
+                            groupId: data[i].groupId,
+                            groupname: data[i].groupname,
+                            users: $rootScope.users
+                        });
+                    }
+                    console.log($rootScope.sharableGroupsDtls);
+
+                }).error(function () {
+                //alert("Oops! There was a problem retrieving the groups");
+            });
+    }
+
+
+}]);

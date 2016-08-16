@@ -52,7 +52,7 @@ var linkedinInterface = new function(){
 		this.state = state;
 		if(!state) scope.connectBtnLabel='Add Account';
         else scope.connectBtnLabel='Remove Account';
-        scope.$apply();
+        //scope.$apply();
 	};
 
 }

@@ -25,11 +25,11 @@ routerApp.controller('welcomeSearchBarCtl', function ($scope, $rootScope, $http,
                     url: Digin_Engine_API + 'get_all_components?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain
                 }).success(function (data) {
                         console.log("data getAllDashboards", data);
-                        // for (var i = 0; i < data.Result.length; i++) {
-                        //     $scope.dashboards.push(
-                        //         {dashboardID: data.Result[i].compID, dashboardName: data.Result[i].compName}
-                        //     );
-                        // }
+                        for (var i = 0; i < data.Result.length; i++) {
+                            $scope.dashboards.push(
+                                {dashboardID: data.Result[i].compID, dashboardName: data.Result[i].compName}
+                            );
+                        }
                     })
                     .error(function (error) {
                         console.log("error get dashboard...!");

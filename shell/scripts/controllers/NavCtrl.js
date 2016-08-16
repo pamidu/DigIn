@@ -499,10 +499,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
 
         //Function to Delete Dashbord
-        $scope.DeleteDashBoard = function () {
+        $scope.DeleteDashBoard = function (dashboard) {
             var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
             $scope.Det = [{
-                "comp_id": $rootScope.dboard.dashboardID,
+                "comp_id": dashboard.dashboardID,
                 "permanent_delete": false
             }];
 
@@ -547,10 +547,24 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $rootScope.dboard = dashboard;
         }
 
+        $scope.deleteDashBoard = function(dashboard,ev){
+            var confirm = $mdDialog.confirm()
+                  .title('Delete Dashboard')
+                  .textContent('Do you want to delete this dashboard...?')
+                  .ariaLabel('Lucky day')
+                  .targetEvent(ev)
+                  .ok('yes')
+                  .cancel('no');
+                    $mdDialog.show(confirm).then(function() {
+                      $scope.DeleteDashBoard(dashboard);
+                    }, function() {
+                      
+            });
 
+        }
         $scope.goDashboard = function (dashboard) {
 
-            
+            $scope.openSearchBar(); 
             console.log($scope.dashboards);
             console.log("dash item", dashboard);
             $rootScope.page_id = "";
@@ -1139,68 +1153,29 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 case "Common Source Algorithm":
                     $state.go("home.commonSrcAlgorithm");
                     break;
-                case "invite":      
+                case "invite":    
+
 					$mdDialog.show({
 					  controller: "inviteUserCtrl",
 					  templateUrl: 'views/settings/user.html',
 					  parent: angular.element(document.body),
 					  targetEvent: ev,
-					  clickOutsideToClose:true
+					  clickOutsideToClose:false
 					})
-					.then(function(answer) {
-						var exist = false;
-						console.log(answer);
-						
-						if($rootScope.sharableUsers==undefined){
-							inviteUser();
-						}
-						else if($rootScope.sharableUsers.length>0){
-							for(var i=0; i<$rootScope.sharableUsers.length; i++){
-								if(answer==$rootScope.sharableUsers[i].Id){
-									exist = true;
-								}
-							};
-
-							if(exist==true){
-								fireMsg('0', '</strong>This user is already invited');
-								return;
-							}
-							else{
-								inviteUser();
-							}
-						}
+					.then(function(answer) {						
 					});
+                    
 				break;
+
 			case "switch tenant": 
-			$mdDialog.show({
-					  controller: "inviteUserCtrl",
+			        $mdDialog.show({
+					  controller: "tenantCtrl",
 					  templateUrl: 'views/settings/switchTenant.html',
 					  parent: angular.element(document.body),
 					  targetEvent: ev,
-					  clickOutsideToClose:true
+					  clickOutsideToClose:false
 					})
 					.then(function(answer) {
-						var exist = false;
-						console.log(answer);
-						
-						if($rootScope.sharableUsers==undefined){
-							inviteUser();
-						}
-						else if($rootScope.sharableUsers.length>0){
-							for(var i=0; i<$rootScope.sharableUsers.length; i++){
-								if(answer==$rootScope.sharableUsers[i].Id){
-									exist = true;
-								}
-							};
-
-							if(exist==true){
-								fireMsg('0', '</strong>This user is already invited');
-								return;
-							}
-							else{
-								inviteUser();
-							}
-						}
 					});
 					break;
 			default:
@@ -1208,31 +1183,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 				break;
             }
         };
-        //navigate functions end
-        function inviteUser()
-		{
-			var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
-            $http.get(baseUrl + '/auth/tenant/AddUser/' + $scope.user.email + '/user', {
-                    headers: {'Securitytoken': userInfo.SecurityToken}
-                })
-                .success(function (response) {
-                    if(response=="false"){
-                        fireMsg('0', '</strong>This user has not been registered for DigIn.');
-                    }
-                    else{
-                        //privateFun.getAllSharableObj();
-                            //$scope.sharableObjs= $rootScope.sharableObjs;
-                            //$scope.sharableUsers = $rootScope.sharableUsers;
-                            //$scope.sharableGroups = $rootScope.sharableGroups;
-                        fireMsg('1', '</strong>Invitation sent successfully.');
-                        $scope.getSharableObj();
-                        $scope.inviteForm.$setUntouched();
-                        $scope.user.email='';
-                    }
-                }).error(function (error) {
-                    fireMsg('0', 'Invitation sending fail');
-            });
-		}
+
+
 		
         $scope.openNotifications = function()
 		{
@@ -1240,6 +1192,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 				$log.debug("toggle right is done");
 			});
 		}
+
+        $scope.openSearchBar = function()
+        {
+            $mdSidenav('searchBar').toggle().then(function () {
+                $log.debug("toggle left is done");
+            });
+        }
 		
 	$scope.notifications = 
 		 [{title:"User Segregation",description:"omal@duosoftare.com has invited you to jon his tenant."},
@@ -1808,28 +1767,28 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             opacity: 0,
                             zIndex: '0',
                             top: '-100%'
-                        }, 500);
+                        }, 300);
                     } else {
                         $scope.dropDownbtnStatus = true;
                         $('#profileDropDown').animate({
                             opacity: '1',
                             top: '45px',
                             zIndex: '1000'
-                        }, 500);
+                        }, 300);
                     }
                 },
                 headerMenuToggle: function (status) {
                     if (status) {
                         $('.main-headbar-slide').animate({
                             top: '-43px'
-                        }, 500);
+                        }, 300);
                         //  $('.blut-search-toggele').removeClass('go-up').addClass('go-down');
                         $('#content1').removeClass('content-m-top40').addClass('content-m-top0');
                         $scope.headerMenuToggle = false;
                     } else {
                         $('.main-headbar-slide').animate({
                             top: '0px'
-                        }, 500);
+                        }, 300);
                         //$('.blut-search-toggele').removeClass('go-down').addClass('go-up');
                         $('#content1').removeClass('content-m-top0').addClass('content-m-top40');
                         $scope.headerMenuToggle = true;
@@ -1856,13 +1815,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     if (status) {
                         $('.left-menu-bar').animate({
                             left: '-45px'
-                        }, 500);
+                        }, 300);
                         $scope.leftMenuToggleState = false;
                         $('#content1').removeClass('content-m-left-0').addClass('content-m-left-40');
                     } else {
                         $('.left-menu-bar').animate({
                             left: '0px'
-                        }, 500);
+                        }, 300);
                         $scope.leftMenuToggleState = true;
                         $('#content1').removeClass('content-m-left-40').addClass('content-m-left-0');
                     }
@@ -1925,34 +1884,57 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
         })();
 
-        //enable sub menu
+            //enable sub menu
         $scope.isEnableSubMenu = false;
-
+        
+        var settingsSub = [
+                                {name: "New user",icon: "ti-user", link: "home.createUser"},
+                                {name: "Share", icon: "ti-share", link: "home.share"},
+                                {name: "User settings",icon: "ti-pencil",link: "home.userSettings"},
+                                {name: "Account settings",icon: "ti-settings",link: "home.account"},
+                                {name: "Groups",icon: "ti-settings",link: "home.group"}
+                            ];
+         var shareSub = [
+                            {name: "Facebook", icon: "ti-facebook",provider: "facebook"},
+                            {name: "Google+", icon: "ti-google", provider: "google+"},
+                            {name: "Twitter", icon: "ti-twitter-alt", provider: "twitter"},
+                            {name: "Linkedin", icon: "ti-linkedin", provider: "linkedin"},
+                            {name: "Pinterest", icon: "ti-pinterest-alt", provider: "pinterest"},
+                            {name: "Tumbler", icon: "ti-tumblr", provider: "tumbler"},
+                            {name: "Email", icon: "ti-email", provider: "email"}
+                        ];
+        var socialMediaSub =    [
+                                    {name: "Facebook", icon: "ti-facebook", link: "home.social-graph-fb"},
+                                    {name: "Twitter", icon: "ti-twitter-alt", link: "home.SocialGraphTwitter"}
+                                ];
+        var reportsSub =    [
+                                { name: "Report Development", icon: "ti-filter", link: "home.ReportsDev"},
+                                { name: "Report", icon: "ti-notepad", link: "home.Reports"}
+                            ];
+        
         $scope.subMenu = (function () {
             return {
-                view: function (menuName) {
+                view: function (subMenuTitle) {
                     //get sidebar data from menu.json
-                    getJSONData($http, 'subMenu', function (data) {
-                        $scope.currentSubMenu = [
+                   $scope.currentSubMenu = [
                             {"header": ''},
                             {"data": ''}
                         ];
-                        data.map(function (item) {
-                            $scope.currentSubMenu.header = menuName;
-                            if (item.settings && menuName == "settings") {
-                                $scope.currentSubMenu.data = item.settings;
-                            }
-                            if (item.share && menuName == "share") {
-                                $scope.currentSubMenu.data = item.share;
-                            }
-                            if (item.socialMedia && menuName == "socialmedia") {
-                                $scope.currentSubMenu.data = item.socialMedia;
-                            }
-                            if (item.reports && menuName == "reports") {
-                                $scope.currentSubMenu.data = item.reports;
-                            }
-                        });
-                    });
+                    $scope.currentSubMenu.header = subMenuTitle;
+
+                    if(subMenuTitle == "reports")
+                    {
+                        $scope.currentSubMenu.data = reportsSub;
+                    }else if(subMenuTitle == "socialmedia")
+                    {
+                        $scope.currentSubMenu.data = socialMediaSub;
+                    }else if(subMenuTitle == "share")
+                    {
+                        $scope.currentSubMenu.data = shareSub;
+                    }else if(subMenuTitle == "settings")
+                    {
+                        $scope.currentSubMenu.data = settingsSub;
+                    }
                 },
                 close: function () {
                     $scope.isEnableSubMenu = false;
@@ -1982,7 +1964,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.goTORout = function(menu){
 
            console.log(menu);
+		   layoutManager.closeHeaderMenu();
            $state.go(menu.link);
+           $scope.currentView = $scope.currentSubMenu.header;
 
         }
 
@@ -1990,14 +1974,177 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
  }]);
 
- routerApp.controller('inviteUserCtrl',['$scope','$mdDialog', function ($scope,$mdDialog) {
+ routerApp.controller('tenantCtrl',['$scope','$mdDialog','$http','Digin_Tenant', function ($scope,$mdDialog,$http,Digin_Tenant) {
 
-  $scope.cancel = function() {
+    //$http.get(Digin_Tenant + '/tenant/GetTenants/' + '15430a361f730ec5ea2d79f60d0fa78e')
+    $http.get(Digin_Tenant + '/tenant/GetTenants/' + getCookie('securityToken'))
+    .success(function (response) {
+        $scope.tennants = response;
+    });
+
+    $scope.cancel = function() {
     $mdDialog.cancel();
-  };
-  $scope.submit = function()
-  {
-		$mdDialog.hide($scope.email);
-  }
+    };
+
+    $scope.submit = function()
+    {
+
+    }
+
+    $scope.showConfirmation = function (tennant, event) {
+        var confirm = $mdDialog.confirm()
+            .title('Do you want to switching to ' + tennant)
+            .targetEvent(event)
+            .ok('Yes!')
+            .cancel('No!');
+        $mdDialog.show(confirm).then(function () {
+            $scope.status = 'Yes';
+            window.open("http://" + tennant + "/#/home");
+        }, function () {
+            $scope.status = 'No';
+        });
+    };
+    $scope.close = function () {
+        $mdDialog.cancel();
+    };
+
+
+
 }])
 
+
+
+routerApp.controller('inviteUserCtrl',['$scope','$mdDialog','$http','Digin_Tenant','ngToast','$rootScope', function ($scope,$mdDialog,$http,Digin_Tenant,ngToast,$rootScope) {
+
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
+
+
+    // create a toast with settings:
+    // ngToast.create({
+    //   className: 'warning',
+    //   content: '<a href="#" class="ng-toast-msg">a message</a>'
+    // });
+
+
+    function fireMsg(msgType, content) {
+        ngToast.dismiss();
+        var _className;
+        if (msgType == '0') {
+            _className = 'danger';
+        } else if (msgType == '1') {
+            _className = 'success';
+        }
+        ngToast.create({
+            className: _className,
+            content: content,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            dismissOnClick: true,
+            dismissButton:true
+        });
+    }
+
+
+    $scope.validateEmail1=function(email){
+
+        if(email==undefined){
+            fireMsg('0', 'Email can not be a blank.');
+            return false;
+        }
+        else if(email==""){
+            fireMsg('0', 'Email can not be a blank.');
+            return false;
+        }
+        else{
+            return true;
+        }
+        return true;
+    }
+    
+    $scope.validateEmail2=function (email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+    
+    $scope.inviteUser = function () {   
+        var mail=$scope.user.email;
+        if($scope.validateEmail1(mail)==false){return;}
+        else if ($scope.validateEmail2(mail)==false){fireMsg('0', 'Please enter valid email address to proceed.'); return;}
+        else{
+            
+            $scope.exist=false;
+
+            if($rootScope.sharableUsers==undefined){
+                $scope.invite();
+            } 
+
+            else if($rootScope.sharableUsers.length>0){
+                for(var i=0; i<$rootScope.sharableUsers.length; i++){
+                    if($scope.user.email==$rootScope.sharableUsers[i].Id){
+                        $scope.exist=true;
+                    }
+                };
+
+                if($scope.exist==true){
+                    fireMsg('0', '</strong>This user is already invited');
+                    return;
+                }
+                else{
+                    $scope.invite();
+                }
+            }
+        }   
+    }
+
+    $scope.invite = function () {
+        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+        $http.get(baseUrl + '/auth/tenant/AddUser/' + $scope.user.email + '/user', {
+                headers: {'Securitytoken': userInfo.SecurityToken}
+            })
+            .success(function (response) {
+                if(response=="false"){
+                    fireMsg('0', '</strong>This user has not been registered for DigIn.');
+                }
+                else{
+                    fireMsg('1', '</strong>Invitation sent successfully.');
+                    $scope.getAllSharableObj();
+                    $scope.inviteForm.$setUntouched();
+                    $scope.user.email='';
+                }
+            }).error(function (error) {
+                fireMsg('0', 'Invitation sending fail');
+        });
+    };
+   
+    $scope.getSharableObj=function(){
+        var baseUrl = "http://" + window.location.hostname;
+        $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+            .success(function (data) {
+                console.log(data);
+                $rootScope.sharableObjs = [];
+                $rootScope.sharableUsers = [];
+                $rootScope.sharableGroups = [];
+
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].Type == "User") {
+                        $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                        $rootScope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
+                    }
+                    else if (data[i].Type == "Group") {
+                        $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                        $rootScope.sharableGroups.push({groupId: data[i].Id, groupname: data[i].Name});
+                    }
+                }
+                console.log($rootScope.sharableObjs);
+                console.log($rootScope.sharableUsers);
+                console.log($rootScope.sharableGroups);
+        
+            }).error(function () {
+            
+        });
+    }
+
+
+}])

@@ -119,113 +119,6 @@ $scope.inviteUser = function () {
 }
 */
 
-    //invite user *** 
-    $scope.validateEmail1=function(email){
-        if(email==undefined){
-            mainFun.fireMsg('0', 'Email can not be a blank.');
-            return false;
-        }
-        else if(email==""){
-            mainFun.fireMsg('0', 'Email can not be a blank.');
-            return false;
-        }
-        else{
-            return true;
-        }
-        return true;
-    }
-    
-    $scope.validateEmail2=function (email) {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email);
-    }
-
-    
-    $scope.inviteUser = function () {   
-        var mail=$scope.user.email;
-        if($scope.validateEmail1(mail)==false){return;}
-        else if ($scope.validateEmail2(mail)==false){fireMsg('0', 'Please enter valid email address to proceed.'); return;}
-        else{
-            
-            $scope.exist=false;
-
-            if($rootScope.sharableUsers==undefined){
-                $scope.invite();
-            }   
-            else if($rootScope.sharableUsers.length>0){
-                for(var i=0; i<$rootScope.sharableUsers.length; i++){
-                    if($scope.user.email==$rootScope.sharableUsers[i].Id){
-                        $scope.exist=true;
-                    }
-                };
-
-                if($scope.exist==true){
-                    fireMsg('0', '</strong>This user is already invited');
-                    return;
-                }
-                else{
-                    $scope.invite();
-                }
-            }
-        }   
-    }
-
-
-
-    $scope.invite = function () {
-            var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
-            $http.get(baseUrl + '/auth/tenant/AddUser/' + $scope.user.email + '/user', {
-                    headers: {'Securitytoken': userInfo.SecurityToken}
-                })
-                .success(function (response) {
-                    if(response=="false"){
-                        fireMsg('0', '</strong>This user has not been registered for DigIn.');
-                    }
-                    else{
-                        //privateFun.getAllSharableObj();
-                            //$scope.sharableObjs= $rootScope.sharableObjs;
-                            //$scope.sharableUsers = $rootScope.sharableUsers;
-                            //$scope.sharableGroups = $rootScope.sharableGroups;
-                        fireMsg('1', '</strong>Invitation sent successfully.');
-                        $scope.getSharableObj();
-                        $scope.inviteForm.$setUntouched();
-                        $scope.user.email='';
-                    }
-                }).error(function (error) {
-                    fireMsg('0', 'Invitation sending fail');
-            });
-    };
-
-    
-    $scope.getSharableObj=function(){
-        var baseUrl = "http://" + window.location.hostname;
-        $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
-            .success(function (data) {
-                console.log(data);
-                $rootScope.sharableObjs = [];
-                $rootScope.sharableUsers = [];
-                $rootScope.sharableGroups = [];
-
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].Type == "User") {
-                        $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
-                        $rootScope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
-                    }
-                    else if (data[i].Type == "Group") {
-                        $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
-                        $rootScope.sharableGroups.push({groupId: data[i].Id, groupname: data[i].Name});
-                    }
-                }
-                console.log($rootScope.sharableObjs);
-                console.log($rootScope.sharableUsers);
-                console.log($rootScope.sharableGroups);
-        
-            }).error(function () {
-            //alert("Oops! There was a problem retrieving the User");
-        });
-    }
-    
-    
     
     
 
@@ -1525,3 +1418,93 @@ $scope.inviteUser = function () {
 
     };
 });   //+31 42 1123 4567
+
+
+routerApp.controller('userGroupsCtrl',['$scope', '$mdDialog', function ($scope, $mdDialog) {
+	
+	console.log("start of userGroupsCtrl");
+	
+	$scope.groups = [
+						{name: "Group 1",users:[{name:"Dilshan", groupId:"1", description: "DigIn Team"},{name:"Gevindu", groupId:"1", description: "DigIn Team"}]},
+						{name: "Group 2",users:[{name:"Lasitha", groupId:"2", description: "Duoworld Team"},{name:"Gevindu", groupId:"2", description: "Duoworld Team"}]}
+					];
+					
+	$scope.addGroup = function(ev)
+	{
+		$mdDialog.show({
+					  controller: "addGroupCtrl",
+					  templateUrl: 'views/settings/addGroup.html',
+					  parent: angular.element(document.body),
+					  targetEvent: ev,
+					  clickOutsideToClose:true
+					})
+					.then(function(answer) {
+					})
+	}
+	
+	$scope.addUser = function(ev)
+	{
+		$mdDialog.show({
+			  controller: "addUserCtrl",
+			  templateUrl: 'views/settings/addUser.html',
+			  parent: angular.element(document.body),
+			  targetEvent: ev,
+			  clickOutsideToClose:true
+			})
+			.then(function(answer) {
+			})
+		  
+	}
+	
+	$scope.deleteUser = function(ev)
+	{
+		   var confirm = $mdDialog.confirm()
+			  .title('Delete User')
+			  .textContent('Are you sure you want to delete this user')
+			  .ariaLabel('Delete User')
+			  .targetEvent(ev)
+			  .ok('Delete')
+			  .cancel('Cancel');
+		$mdDialog.show(confirm).then(function() {
+			console.log("User Deleted");
+		})
+	}
+	
+	$scope.deleteGroup = function(ev)
+	{
+		   var confirm = $mdDialog.confirm()
+			  .title('Delete Group')
+			  .textContent('Are you sure you want to delete this group')
+			  .ariaLabel('Delete Group')
+			  .targetEvent(ev)
+			  .ok('Delete')
+			  .cancel('Cancel');
+		$mdDialog.show(confirm).then(function() {
+			console.log("User Deleted");
+		})
+	}
+}]);
+
+routerApp.controller('addGroupCtrl',['$scope', '$mdDialog', function ($scope, $mdDialog) {
+	
+	$scope.cancel = function() {
+		$mdDialog.cancel();
+	};
+	$scope.submit = function()
+	{
+		$mdDialog.hide();
+	}
+	
+}])
+
+routerApp.controller('addUserCtrl',['$scope', '$mdDialog', function ($scope, $mdDialog) {
+	
+	$scope.cancel = function() {
+		$mdDialog.cancel();
+	};
+	$scope.submit = function()
+	{
+		$mdDialog.hide();
+	}
+	
+}])

@@ -4,7 +4,7 @@
             <div layout="row" layout-align="space-between center">
 
                 <h1 class="md-toolbar-tools" style="color:white">Notifications</h1>
-                <md-button class="md-icon-button"  ng-click="openNotifications()" style="margin-top:10px">
+                <md-button class="md-icon-button"  ng-click="openNotifications()">
                     <ng-md-icon icon="close" style="fill:white;margin-top:10px" size="24px"></ng-md-icon>
                 </md-button>
             </div>
@@ -27,7 +27,64 @@
         </md-content>
         
 
+</md-sidenav>
+
+<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="searchBar" style="overflow-y:hidden;z-index:1501;">
+
+
+        <md-toolbar style="min-height: 42px;height:42px;background:#02b5e2">
+            <div layout="row" layout-align="space-between center">
+
+                <div class="search-box">
+                    <input class="form-control txt-sm-search-header" placeholder="search dashboard or report..." ng-model="SearchText">
+                </div>
+                <div class="blut-close-btn" ng-click="openSearchBar()">
+                    <i class="icon-cancel"></i>
+                </div>
+            </div>
+        </md-toolbar>
+        <md-content style="overflow-y:scroll;height:calc(100% - 130px);padding:0">
+           <div class="dashboard-wrapper">
+                    <h5>Dashboard</h5>
+                </div>
+                <div class="blut-dashboard-view"
+                     ng-slimscroll
+                     opacity="0.1"
+                     distance="10px"
+                     height="230px"
+                     ng-mouseover="isSarchScorllBar = true"
+                     ng-mouseleave="isSarchScorllBar = false"
+                     enabled="{{ isSarchScorllBar }}">
+
+                    <ul class="dashboard-wrap" ng-repeat="dashboard in dashboards | filter : SearchText">
+                        {{x}}
+                        <li class="pull-left dashboard-name">{{dashboard.dashboardName}}</li>
+                        <li class="pull-right view-more-btn" ng-click="goDashboard(dashboard)">view</li>
+                        <li class="pull-right delete-btn" ng-click="deleteDashBoard(dashboard,$event)">delete</li>
+                    </ul>
+                </div>
+
+                 <div class="dashboard-wrapper">
+                    <h5>Report</h5>
+                </div>
+                <div class="blut-dashboard-view"
+                     ng-slimscroll
+                     opacity="0.1"
+                     distance="10px"
+                     height="230px"
+                     ng-mouseover="isSarchScorllBar = true"
+                     ng-mouseleave="isSarchScorllBar = false"
+                     enabled="{{ isSarchScorllBar }}">
+                    <ul class="dashboard-wrap" ng-repeat="report in reports | filter : SearchText">
+                        <li class="pull-left dashboard-name">{{report.splitName}}</li>
+                        <li class="pull-right view-more-btn" ng-click="goReport(report.splitName)">view</li>
+                    </ul>
+                </div>
+        </md-content>
+        
+
     </md-sidenav>
+
 <div class="digin-style" ng-init="getSearchPanelDetails()">
     <toast></toast>
     <!-- preloader start -->
@@ -61,7 +118,7 @@
                      layout-align="space-between center">
                     <div flex="60" class="nav-search" layout="row" layout-align="center center">
                         <div flex="70">
-                            <div class="blut-search-wrapper" ng-click="toggelDownSearch()">
+                            <div class="blut-search-wrapper" ng-click="openSearchBar()">
                                 <i class="icon-search"></i>
                                 Search
                             </div>
@@ -90,8 +147,8 @@
                             <i class="ti-help-alt"></i>
                         </div-->
                         <div flex="10" class="blut-header-icon" ng-click="openNotifications()" ng-init="allWishes = 3">
-                            <ng-md-icon icon="notifications_none" style="fill:#02b5e2;cursor:pointer" size="26px"></ng-md-icon>
-                            <div style="width:15px;height:15px;border-radius:16px;background:#02b5e2;color:white;margin-top:-34px;margin-left:16px;font-size:10px;font-weight:700;position:absolute"><div style="margin-left:4px;margin-top:1px;" ng-if="allWishes <=9">{{allWishes}}</div><div style="margin-left:1px;margin-top:3px;" ng-if="allWishes > 9">{{allWishes}}</div></div>
+                            <ng-md-icon icon="notifications_none" style="fill:#02b5e2;cursor:pointer" class="widicons" size="26px"></ng-md-icon>
+                            <div style="width:15px;height:15px;border-radius:16px;background:#02b5e2;color:white;margin-top:-34px;margin-left:16px;font-size:10px;font-weight:700;position:absolute"><div style="margin-left:4px;margin-top:1px;" ng-if="notifications.length <=9">{{notifications.length}}</div><div style="margin-left:1px;margin-top:3px;" ng-if="notifications.length > 9">{{notifications.length}}</div></div>
                         </div>
 
 
@@ -114,8 +171,8 @@
                         </div>
                     </div>
                     <div class="blut-search-toggele" ng-click="topMenuToggle()">
-                        <i ng-hide="headerMenuToggle" class="ti-angle-down"></i>
-                        <i ng-show="headerMenuToggle" class="ti-angle-up"></i>
+                        <span ng-if="!headerMenuToggle" class="ti-angle-down"></span>
+                        <span ng-if="headerMenuToggle" class="ti-angle-up"></span>
                     </div>
                 </div>
 
@@ -161,64 +218,5 @@
                 <!--</div>-->
             </div>
         </div>
-
- 
-        <div id="searchLayer" class="blut-search-layer-wrapper">
-            <div class="blut-search-header">
-                <div class="header-text">
-                    <h5>Dashboard and report</h5>
-                </div>
-                <div class="search-box">
-                    <input class="form-control txt-sm-search-header" placeholder="search dashboard or report..." ng-model="SearchText">
-                </div>
-                <div class="blut-close-btn" ng-click="toggelDownSearch()">
-                    <i class="icon-cancel"></i>
-                </div>
-            </div>
-
-            <div class="blut-search-body">
-                <div class="dashboard-wrapper">
-                    <h5>Dashboard</h5>
-                </div>
-                <div class="blut-dashboard-view"
-                     ng-slimscroll
-                     opacity="0.1"
-                     distance="10px"
-                     height="230px"
-                     ng-mouseover="isSarchScorllBar = true"
-                     ng-mouseleave="isSarchScorllBar = false"
-                     enabled="{{ isSarchScorllBar }}"
-
-                >
-                    <ul class="dashboard-wrap" ng-repeat="dashboard in dashboards | filter : SearchText">
-                        {{x}}
-                        <li class="pull-left dashboard-name">{{dashboard.dashboardName}}</li>
-                        <li class="pull-right view-more-btn" ng-click="goDashboard(dashboard)">view</li>
-                        <li class="pull-right delete-btn">delete</li>
-                    </ul>
-                </div>
-
-                <div class="dashboard-wrapper">
-                    <h5>Report</h5>
-                </div>
-                <div class="blut-dashboard-view"
-                     ng-slimscroll
-                     opacity="0.1"
-                     distance="10px"
-                     height="230px"
-                     ng-mouseover="isSarchScorllBar = true"
-                     ng-mouseleave="isSarchScorllBar = false"
-                     enabled="{{ isSarchScorllBar }}">
-                    <ul class="dashboard-wrap" ng-repeat="report in reports | filter : SearchText">
-                        <li class="pull-left dashboard-name">{{report.splitName}}</li>
-                        <li class="pull-right view-more-btn" ng-click="goReport(report.splitName)">view</li>
-                    </ul>
-                </div>
-
-            </div>
-
-        </div> 
-
-
     </div>
 </div>

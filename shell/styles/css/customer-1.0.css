@@ -15,6 +15,35 @@ body
     display: none!important
 }
 
+/*v accordian changes*/
+v-pane-header
+{
+	margin: 0px !important;
+}
+
+v-pane-content
+{
+	border-radius: 0px 0px 8px 8px;
+}
+
+.vAccordion--default v-pane-content > div
+{
+	padding: 0px !important;
+	border-radius: 0px 0px 8px 8px;
+}
+
+.vAccordion--default v-pane-header::after, .vAccordion--default v-pane-header::before
+{
+	width:12px;
+}
+
+
+/*ng-toast*/
+.ng-toast
+{
+ z-index: 1600 !important;
+}
+
 /*cmds >> common data source style*/
 .digin-cmds-source {
     display: block;
@@ -3612,11 +3641,21 @@ li:active {
 
 /*account setting*/
 
+.setup-wrapper
+{
+	margin-right: 5px; 
+	margin-left: 10px;
+}
+
 .setting-wrap {
     background: #ffffff;
     width: 100%;
     border-radius: 10px;
-    margin-top: 50px;
+	max-width:960px;
+	margin:0 auto;
+	margin-top: 40px;
+	margin-bottom: 20px;
+	box-shadow:0 1px 5px 0 rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.12);
 }
 
 md-select
@@ -3625,7 +3664,6 @@ md-select
 }
 
 .setting-card-header {
-    margin-top: 50px;
     text-align: center;
 }
 
@@ -4426,7 +4464,7 @@ close button
 }
 
 .blut-search-wrapper:hover, .blut-search-wrapper > i:hover {
-    color: #14d0a0;
+    color: #f9a525;
 }
 
 /*main search layer*/

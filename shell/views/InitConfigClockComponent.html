@@ -9,9 +9,9 @@
       </md-button>            
   </md-toolbar>
   <md-content class="dialog-content-1" layout-padding>
-            <md-input-container flex>
-                <label>Date Format</label>
-                <md-select ng-model="format" ng-change="clockComponentformatChange(format)">
+            <md-input-container flex="100" layout="row">
+                <label flex="100" layout="row">Date Format</label>
+                <md-select flex="100" layout="row" ng-model="format" ng-change="clockComponentformatChange(format)">
                     <md-option ng-repeat="item in formats" value="{{item.format}}">{{item.name}}
                     </md-option>
                 </md-select>

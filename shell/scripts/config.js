@@ -1,5 +1,6 @@
-    angular.module('configuration', [])
-    .constant('Digin_Engine_API', 'http://prod.digin.io:1929/')
+
+angular.module('configuration', [])
+	.constant('Digin_Engine_API', 'http://prod.digin.io:1929/')
     //.constant('Digin_Engine_API', 'http://digin.io:1929/')
     .constant('Digin_Engine_API_Namespace', 'Demo')
     .constant('Digin_Tomcat_Base', 'http://prod.digin.io:9897/')
@@ -16,4 +17,4 @@
 
     //#for loggin process
     .constant('IsLocal', true)
-    .constant('Local_Shell_Path', 'http://localhost:8081/Digin/shell')
+    .constant('Local_Shell_Path', 'http://localhost:8080/git/Digin/shell')

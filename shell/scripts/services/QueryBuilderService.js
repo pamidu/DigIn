@@ -25,14 +25,15 @@ routerApp.service('$qbuilder',function($diginengine){
     };
     
     var HIGHCHARTS = function() {
-        function mapResult(cat, res, d, color, cb){
+        function mapResult(cat, res, d, color, name, cb){
             var serArr = [];
             var i = 0;
             for(c in res[0]){
                 if (Object.prototype.hasOwnProperty.call(res[0], c)) {
                     if(c != cat){
                         serArr.push({
-                            name: c,
+                            temp: c,
+                            name: name[i],
                             data: [],
                             color: color[i]
                         });
@@ -48,16 +49,19 @@ routerApp.service('$qbuilder',function($diginengine){
                     if(!d){
                         ser.data.push({
                             name: key[cat],
-                            y: parseFloat(key[ser.name])
+                            y: parseFloat(key[ser.temp])
                         });
                     }else{
                         ser.data.push({
                             name: key[cat],
-                            y: parseFloat(key[ser.name]),
+                            y: parseFloat(key[ser.temp]),
                             drilldown: true
                         });
                     }                    
                 });
+            });
+            serArr.forEach(function(ser){
+                delete ser.temp;
             });
             cb(serArr);
         }
@@ -101,10 +105,12 @@ routerApp.service('$qbuilder',function($diginengine){
 
                     if(cat != ""){
                         var color = [];
+                        var name = [];
                         for ( var i = 0; i < widObj.highchartsNG.series.length; i++){
-                            color[i] = widObj.highchartsNG.series[i].color;
+                            color.push(widObj.highchartsNG.series[i].color);
+                            name.push(widObj.highchartsNG.series[i].name);
                         }
-                        mapResult(cat, res, widObj.widData.drilled, color, function(data){
+                        mapResult(cat, res, widObj.widData.drilled, color, name, function(data){
                             widObj.highchartsNG.series = data;
                         });
                     }else{
@@ -147,7 +153,7 @@ routerApp.service('$qbuilder',function($diginengine){
             cl.getExecQuery(q, function(res, status, query){
                 if(status){
                     widObj.widData.decValue = res[0];
-                    widObj.widData.value = convertDecimals(setMeasureData(res[0]),parseInt(widObj.widData.dec));
+                    widObj.widData.value = convertDecimals(setMeasureData(res[0]),parseInt(widObj.widData.dec)).toLocaleString();
                 }
                 widObj.syncState = true;
                 cb(widObj);
@@ -186,26 +192,17 @@ routerApp.service('$qbuilder',function($diginengine){
             var serArr = [];
             var catArr = [];
             var dataArray = [];
-            angular.forEach(data, function(value, key) {
-                switch (key) {
-                    case "time":
-                        catArr = value;
-                        break;
-                    case "actual":
-                        serArr.push({
-                            name: 'actual values',                            
-                            data: data[key]
-                        });
-                        break;                        
-                    case "forecast":
-                        serArr.push({
-                            name: 'forecasted values',
-                            data: data[key],
-                            dashStyle: 'dash'
-                        });
-                        break;
-                }
-            });
+            data.forecast = data.forecast.slice(data.actual.length);
+            serArr.push({
+                data: data.actual.concat(data.forecast),
+                zoneAxis: 'x',
+                zones: [{
+                    value: data.actual.length - 1
+                }, {
+                    dashStyle: 'dash'
+                }]                    
+            })
+            catArr = data.time;            
             dataArray[0] = catArr;
             dataArray[1] = serArr
             return dataArray;        
@@ -305,11 +302,11 @@ routerApp.service('$qbuilder',function($diginengine){
 
     var PIVOTSUMMARY = function(){
         this.sync = function(q, cl, widObj, cb){
-                cl.getExecQuery(q, function(data, status) {
+            cl.getExecQuery(q, function(data, status) {
                 widObj.widData.summary = data;
+                widObj.syncState = true;
+                cb(widObj);                
             }, widObj.limit);
-            widObj.syncState = true;
-            cb(widObj);
         }
     };
 
@@ -361,9 +358,9 @@ routerApp.service('$qbuilder',function($diginengine){
                     }
                     widObj.highchartsNG.series = mapResult(data,x[1],y[1],z[1]);
                 }
+                widObj.syncState = true;
+                cb(widObj);
             });
-            widObj.syncState = true;
-            cb(widObj);
         }
 
     }

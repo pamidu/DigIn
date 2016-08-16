@@ -1,18 +1,24 @@
-<div class="setup-wrapper  animated fadeIn">
+<div class="setup-wrapper  animated fadeIn" init="intProfile()">
 	<div class="setting-wrap" style="max-width:960px;margin:0 auto;padding-bottom:10px; margin-top: 20px;box-shadow:0 1px 5px 0 rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.12)">
             <div layout="row" layout-align="end end">
-				<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route('back')"></md-button>
+				<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="closeWindow()"></md-button>
 			</div>
 			
 			<div class="setting-card-header">
                 <h5>Profile Settings</h5>
                 <div class="setting-img-wrap">
-                    <img src="styles/css/images/signup-user.png"/>
+                    
+					<img src="styles/css/images/signup-user.png" style="cursor:pointer;	width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()">
+					<md-tooltip md-direction="bottom">
+						Upload Profile Picture
+					</md-tooltip>
+					</img>
+					
                 </div>
 			</div>
 
 
-               <form name="frmNewUser" autocomplete="off" ng-submit="profile.changeUserProfile()">
+               <form name="frmProfile" autocomplete="off" ng-submit="profile.changeUserProfile()">
 					<div layout="row" layout-align="start start">
 						<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Public details</div>
 					</div>
@@ -43,7 +49,7 @@
 								   id="txtEmail"
 								   ng-model="user.email"
 								   ng-disabled="editModeOn"
-								   class="form-control">
+								   class="form-control" readonly>
 						</div>
 						<div flex="40" style="padding-left: 5px;">
 							<label>Contact no </label>
@@ -57,7 +63,7 @@
 					<!-- address details -->
 					<div layout="row" style="padding:0px 10px 0px 10px">
 						<div flex="40">
-							<label>Street </label>
+							<label>Billing Address </label>
 							<input type="text"
 								   id="txtStreet"
 								   ng-model="user.street"

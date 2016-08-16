@@ -74,11 +74,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
 
         //#get user profile       
-        //var baseUrl = "http://" + $rootScope.TenantID;
         var baseUrl = "http://" + window.location.hostname;
-
         //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
-        $http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
+        $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
             .success(function (response) {
                 console.log(response);
                 $rootScope.profile_Det = response;

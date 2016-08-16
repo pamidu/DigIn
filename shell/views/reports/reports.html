@@ -1,105 +1,48 @@
-<!-- search report -->
-<div id="fbPageSearch">
-        <md-content class="md-default-theme overflow-none ">
-            <div class="md-content__body">
-                <div class="home-mini-card">
-                    <div class="row m-t-0">
-                        <div class="col-md-1">
-                                <span class="circle-icon md bg-primary">
-                                  <md-icon class="color-white ng-isolate-scope md-default-theme
-                                  fa fa-file-text fa-3x"
-                                           aria-hidden="true">
-                                  </md-icon>
-                                </span>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="graph-main-header-text">
-                                <!-- social page name-->
-                                <h2 class="color-primary graph-h1">
-                                    Reports
-                                </h2>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <!-- posts -->
-                            <md-input-container flex>
-                                <label>Search Report</label>
-                                <input ng-model="user.firstName">
-                            </md-input-container>
-                        </div>
-                    </div>
+<div class="setup-wrapper  animated fadeIn">
+
+        <div class="setting-wrap">
+            <div layout="row" layout-align="end end">
+				<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route('back')"></md-button>
+			</div>
+			
+			<div class="setting-card-header">
+                <h5>Reports</h5>
+                <div class="setting-img-wrap">
+                    <img src="styles/css/images/reports/reports.png"/>
                 </div>
+			</div>
+			<div layout="row" layout-align="start start">
+			<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Upload Report Here</div>
+			</div>
+       
+            <form name="frmNewUser" autocomplete="off" ng-submit="CreateUser()">
+			
+				<div class="custom-file-upload"  style="padding:20px">
+					<div ngf-drop="upload($files)" ngf-select="upload($files)" ng-model="files" class="drop-box"
+						 ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
+						 ngf-pattern="'.zip,.rar'" accept=".zip,.rar"  layout="column" layout-align="center center">
+						 
+						 <img ng-if='!preloader' style='width:200px;height:93px;margin: 0 auto;margin-bottom:12px' src="data:image/png;base64,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"/>  
+						 <md-progress-circular md-mode="indeterminate" md-diameter="96" ng-if='preloader'></md-progress-circular>
+						 Drop Zip files here or click to upload
+						 <span ng-if="files" style="margin-top:20px" layout="row">File : <div ng-repeat="f in files"> {{f.name}} {{f.$error}} {{f.$errorParam}}</div></span>
+					</div>
+					<div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+				
 
-            </div>
-        </md-content>
-        <div class="fb-page-search-wrap">
-            <md-content class="md-default-theme overflow-none ">
-                <div class="md-content__body">
-                    <div class="fb-pages-loading" data-ng-if="isPageLoading">
-                        <md-progress-circular class="md-raised md-hue-1" md-mode="indeterminate">
-                        </md-progress-circular>
-                    </div>
-                    <div layout="row">
-                        <div class="home-mini-card load-page-wrap overflow-auto" flex>
-                        <div class="row m-t-0" layout="row" layout-align="center center">
-                                <div class="graph-main-header-text">
-                                    <!-- social page name-->
-                                    <h2 class="color-primary graph-h2">
-                                        Reports ({{reports.length}})
-                                    </h2>
-                                </div>
-                        </div>
-                        <!-- pages loading -->
-                        <!-- view pages wrap -->
-                        <md-list-item class="md-3-line md-no-proxy ng-scope" ng-repeat="report in reports | filter : user.firstName"
-                                      role="listitem">
-                            <button class="md-fab md-button
-                                md-default-theme md-fab-md" ng-click="goReport(report.splitName)" aria-label="button">
-                                <i class="fa fa-cogs fa-lg"></i>
-                            </button>
+				</div>
+				<div layout="row" layout-align="start start" ng-if="reports">
+					<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Uploaded Reports</div>
+				</div>
+				 <md-list-item class="md-no-proxy ng-scope" ng-repeat="report in reports | filter : user.firstName" role="listitem" ng-click="goReport(report.splitName)">
+				
+					<span>{{report.splitName}}</span>
+					<md-divider md-inset="" ng-if="!$last" class="ng-scope md-default-theme"></md-divider>
+		  
+				</md-list-item>
+				
+             </form>
 
-                            <div class="md-list-item-text text-right">
-                                <h3 class="graph-h2">{{report.splitName}}</h3>
-                            </div>
-                            <!-- ngIf: !$last -->
-                            <md-divider md-inset="" ng-if="!$last" class="ng-scope md-default-theme"></md-divider>
-                            <!-- end ngIf: !$last -->
-                        </md-list-item>
-
-                        </div>
-                        <div class="home-mini-card load-page-wrap" flex>
-                            <div class="row m-t-0">
-                                <div class="graph-main-header-text">
-                                    <!-- social page name-->
-                                    <h2 class="color-primary graph-h2">
-                                        File Upload
-                                    </h2>
-                                </div>
-                            </div>
-                            <!-- file upload -->
-                            <div class="custom-file-upload" layout="column" layout-align="center center">
-                                        <div ngf-drop="upload($files)" ngf-select="upload($files)" ng-model="files" class="drop-box"
-                                             ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
-                                             ngf-pattern="'.zip,.rar'" accept=".zip,.rar">Drop Zip files here or click to upload
-                                        </div>
-                                        <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
-                                        <div style="display:inline-flex;">
-                                        Files : <div ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}
-                                                </div>
-                                        </div>
-                                              
-                                        <!-- <div class="digin-gb-chart-loading m-l-50"
-                                         ng-show="preloader">
-                                          <svg class="circular-loader" height="50" width="50">
-                                              <circle class="path" cx="25" cy="25.2" r="19.9"
-                                                      fill="none" stroke-width="6" stroke-miterlimit="10"/>
-                                          </svg>
-                                        </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </md-content>
-
-        </div>
     </div>
+
+</div>

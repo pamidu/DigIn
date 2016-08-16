@@ -1019,7 +1019,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     ngToast.dismiss();
                     ngToast.create({
                         className: 'success',
-                        content: ''+widget.widgetName+' widget removal succussful',
+                        content: ''+widget.widgetName+' widget removed successfully',
                         horizontalPosition: 'center',
                         verticalPosition: 'top',
                         dismissOnClick: true

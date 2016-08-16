@@ -482,6 +482,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //On click report Event
         $scope.goReport = function (report) {
             // --- Add by Gevindu on 5/23/2016 - DUODIGIN-509
+            layoutManager.headerMenuToggle(true);
             $scope.openSearchBar(); 
             $mdSidenav('right')
                 .close()

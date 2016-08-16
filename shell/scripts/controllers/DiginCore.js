@@ -120,8 +120,8 @@ routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
 
 });
 
-routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', '$state', '$qbuilder', '$diginengine', 'ngToast',
-    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, $state, $qbuilder, $diginengine, ngToast) {
+routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', '$state', '$qbuilder', '$diginengine', 'ngToast','report_Widget_Iframe','$sce',
+    function ($scope, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, $state, $qbuilder, $diginengine, ngToast,report_Widget_Iframe,$sce) {
 
         //code to keep widget fixed on pivot summary drag events
         $('#content1').on('mousedown', function (e) {
@@ -170,6 +170,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
         // if($rootScope.tempDashboard.length != 0)
         $rootScope.tempDashboard = angular.copy($rootScope.dashboard);
+
+        $scope.reportWidgetURL =$sce.trustAsResourceUrl(report_Widget_Iframe);
 
         $scope.widgetTitleClass = 'widget-title-35';
 
@@ -867,7 +869,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                        
 						
                         removeWidget = true;
-						 $mdDialog.hide(removeWidget);
+						 $mdDialog.hide(removeWidget,widget);
                         //$scope.$apply();
                     }
                     $scope.cancel = function () {
@@ -907,7 +909,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     ngToast.dismiss();
                     ngToast.create({
                         className: 'success',
-                        content: 'widget removal succussful',
+                        content: ''+widget.widgetName+' widget removal succussful',
                         horizontalPosition: 'center',
                         verticalPosition: 'top',
                         dismissOnClick: true

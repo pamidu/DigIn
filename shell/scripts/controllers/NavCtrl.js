@@ -13,14 +13,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             var sessionInfo = $helpers.getCookie('securityToken');
             // if(sessionInfo==null) location.href = 'index.php';
         }
+        $scope.firstName = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
+        
+        // $scope.username = JSON.parse(decodeURIComponent(getCookie('authData'))).Name;
+        // var baseUrl = "http://" + window.location.hostname;
 
-        $scope.username = JSON.parse(decodeURIComponent(getCookie('authData'))).Name;
-        var baseUrl = "http://" + window.location.hostname;
-
-        if ($scope.username && $scope.username.length > 0) {
-            var fullName = $scope.username.split(' ');
-            $scope.firstName = fullName[0];
-        }
+        // if ($scope.username && $scope.username.length > 0) {
+        //     var fullName = $scope.username.split(' ');
+        //     $scope.firstName = fullName[0];
+        // }
 
         var db = new pouchDB('dashboard');
         $scope.adjustUI = function () {
@@ -563,6 +564,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }
         $scope.goDashboard = function (dashboard) {
 
+            layoutManager.headerMenuToggle(true);
+            $scope.currentView = dashboard.dashboardName;
             $scope.openSearchBar(); 
             console.log($scope.dashboards);
             console.log("dash item", dashboard);

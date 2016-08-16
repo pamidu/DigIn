@@ -1,12 +1,12 @@
-<div class="setup-wrapper  animated fadeIn">
+<div class="setup-wrapper  animated fadeIn" init="getSharableObjects()">
 
 	<div class="setting-wrap">
 		<div layout="row" layout-align="end end">
-			<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route('back')"></md-button>
+			<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route()"></md-button>
 		</div>
 		
 		<div class="setting-card-header">
-			<h5>User Gruops</h5>
+			<h5>User Groups</h5>
 			<div class="setting-img-wrap">
 				<img src="styles/css/images/setting/groups.png"/>
 				<div layout="row" layout-align="end center" style="margin-right:20px">
@@ -18,10 +18,10 @@
 		</div>
 		
 		<div style="padding:20px">
-		<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
+		<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)">
 				<v-pane id="Cards" expanded="$first" ng-repeat="group in groups"> 
 					<v-pane-header id="Store-header" aria-controls="Store-content">
-						<h5 style="margin-top:0px;">{{group.name}}</h5>
+						<h5 style="margin-top:0px;">{{group.groupname}}</h5> 
 					</v-pane-header>
 
 					<v-pane-content id="Store-content" aria-labelledby="Store-header">
@@ -30,7 +30,7 @@
 							<md-button  aria-label="delete user" ng-click="addUser($event)" layout="row">
 								<span style="text-transform:none;color:#f9a525">Add User</span>
 							</md-button>
-							<md-button  aria-label="delete user" ng-click="deleteGroup($event)">
+							<md-button  aria-label="delete user" ng-click="deleteGroup($index,group.groupId,$event)">
 								<span style="text-transform:none;color:#f9a525">Delete Group</span>
 							</md-button>
 						
@@ -38,7 +38,7 @@
 						<md-list ng-cloak>
 				
 							<md-list-item class="secondary-button-padding" ng-repeat="groupMemeber in group.users">
-								<p>{{groupMemeber.name}}</p>
+								<p>{{groupMemeber.Name}}</p>
 								<md-button class="md-icon-button md-secondary" aria-label="delete user" ng-click="deleteUser($event)">
 									<ng-md-icon icon="delete" style="fill:grey;" size="20px" ></ng-md-icon>
 								</md-button>

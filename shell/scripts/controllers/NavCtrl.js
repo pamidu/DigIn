@@ -1933,16 +1933,16 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         ];
                     $scope.currentSubMenu.header = subMenuTitle;
 
-                    if(subMenuTitle == "reports")
+                    if(subMenuTitle == "Reports")
                     {
                         $scope.currentSubMenu.data = reportsSub;
-                    }else if(subMenuTitle == "socialmedia")
+                    }else if(subMenuTitle == "Social Media")
                     {
                         $scope.currentSubMenu.data = socialMediaSub;
-                    }else if(subMenuTitle == "share")
+                    }else if(subMenuTitle == "Share")
                     {
                         $scope.currentSubMenu.data = shareSub;
-                    }else if(subMenuTitle == "settings")
+                    }else if(subMenuTitle == "Settings")
                     {
                         $scope.currentSubMenu.data = settingsSub;
                     }

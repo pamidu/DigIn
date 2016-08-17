@@ -2194,7 +2194,7 @@ routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widgetID', '$
                     var entry = data.webPages.value[i];
                     entry.displayUrl = "http://"+entry.displayUrl;
                     $scope.entryArray.push(entry);
-                    $scope.$apply();
+                    //$scope.$apply();
                 }
 
                 var ObjectIndex = getRootObjectById(widgetID,$rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);

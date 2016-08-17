@@ -16,7 +16,7 @@
 			</div>
        
             <form name="frmNewUser" autocomplete="off" ng-submit="CreateUser()">
-					<div layout="row">
+					<div layout-gt-sm="row">
 						<div layout="column" layout-align="start start" flex style="padding: 10px 5px 10px 10px;">
 							<label>First Name</label>
 							<input type="text" id="txtCompany" class="form-control" ng-model="fname" />
@@ -26,7 +26,7 @@
 							<input type="text" id="txtName" class="form-control" ng-model="lname" />
 						</div>
                     </div>
-					<div layout="row">
+					<div layout-gt-sm="row">
 						<div layout="column" layout-align="start start" flex style="padding: 10px 5px 10px 10px;">
 							<label>Email</label>
 							<input type="email" class="form-control" ng-model="email" />

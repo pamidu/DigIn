@@ -46,7 +46,7 @@
       "title": "Settings",
       "icon2": "icon-settings",
       "type": "sub-menu",
-      "menuName":"settings"
+      "menuName":"Settings"
     }
   ]
 }

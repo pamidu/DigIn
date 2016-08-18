@@ -45,7 +45,7 @@
         </md-toolbar>
         <md-content style="overflow-y:scroll;height:calc(100% - 130px);padding:0">
 			<div class="dashboard-wrapper">
-				<h3 style="color: #9a9a9a;">Dashboards</h3>
+				<h3 style="color: #9a9a9a;margin-left:10px">Dashboards</h3>
 			</div>
 			<div class="blut-dashboard-view"
 				 ng-slimscroll
@@ -65,7 +65,7 @@
 			</div>
 
 			 <div class="dashboard-wrapper">
-				<h3 style="color: #9a9a9a;">Reports</h3>
+				<h3 style="color: #9a9a9a;margin-left:10px">Reports</h3>
 			</div>
 			<div class="blut-dashboard-view"
 				 ng-slimscroll
@@ -115,46 +115,45 @@
             </div>
         </div>
 
-        <div id="mainHeadbar" class="main-headbar-wrapper" layout="row">
-            <div class="main-headbar" flex>
-                <div class="main-headbar-slide md-theme-light" layout="row" layout-align="space-between center">
-                    <div flex="60" class="nav-search" layout="row" layout-align="center center">
-                        <div flex="70">
-                            <div class="blut-search-wrapper" ng-click="openSearchBar()">
-                                <i class="icon-search"></i>
-                                Search
-                            </div>
-                        </div>
-                        <div flex="30" layout-align="end center">
-                            <div class="blut-current-view">
-                                {{currentView}}
-                            </div>
-                        </div>
-                    </div>
-                    <div flex="40" layout-align="center center" layout="row" class="blut-search-right-wrapper">
 
-                        <div flex="10" class="blut-header-icon" ng-click="mainclose()">
+    
+                <div class="main-headbar-slide md-theme-light" layout="row" layout-align="space-between center">
+               
+                    
+					<div class="blut-search-wrapper" ng-click="openSearchBar()" layout="row" flex>
+						<i class="icon-search"></i>
+						Search
+					</div>
+                     
+               
+                 
+					<div class="blut-current-view" flex hide-xs hide-sm>
+						{{currentView}}
+					</div>
+                    <div layout="row" layout-align="end center" class="blut-search-right-wrapper" style="width: 495px;">
+
+                        <div class="blut-header-icon" ng-click="mainclose()">
                             <i class="icon-house-outline"></i>
                         </div>
-                        <div flex="10" class="blut-header-icon" ng-click="navigate('TV Mode')">
+                        <div class="blut-header-icon" ng-click="navigate('TV Mode')">
                             <i class="icon-full-size"></i>
                         </div>
-                        <div flex="10" class="blut-header-icon" ng-click="navigate('Clear Widgets')">
+                        <div class="blut-header-icon" ng-click="navigate('Clear Widgets')">
                             <i class="icon-broom"></i>
                         </div>
-                        <div flex="10" class="blut-header-icon" ng-click="navigate('Save')">
+                        <div class="blut-header-icon" ng-click="navigate('Save')">
                             <i class="ti-save"></i>
                         </div>
                         <!--div flex="10" class="blut-header-icon" ng-click="navigate('Help')">
                             <i class="ti-help-alt"></i>
                         </div-->
-                        <div flex="10" class="blut-header-icon" ng-click="openNotifications()" ng-init="allWishes = 3">
+                        <div class="blut-header-icon" ng-click="openNotifications()">
                             <ng-md-icon icon="notifications_none" style="fill:#02b5e2;cursor:pointer" class="widicons" size="26px"></ng-md-icon>
                             <div style="width:15px;height:15px;border-radius:16px;background:#02b5e2;color:white;margin-top:-34px;margin-left:16px;font-size:10px;font-weight:700;position:absolute"><div style="margin-left:4px;margin-top:1px;" ng-if="notifications.length <=9">{{notifications.length}}</div><div style="margin-left:1px;margin-top:3px;" ng-if="notifications.length > 9">{{notifications.length}}</div></div>
                         </div>
 
 
-                        <div flex="50" class="blut-profile-wrapper-header">
+                        <div class="blut-profile-wrapper-header">
                             <div layout="row" class="blut-login-user pull-right">
                                 <p ng-model="username" ng-mouseover="profileMouseHover()"  ng-mouseleave="profileMouseLeave()">
                                     {{firstName }}</p>
@@ -177,8 +176,8 @@
                     </div>
                 </div>
 
-            </div>
-        </div>
+          
+     
         <!-- user setting drop down -->
         <div ng-show="dropDownbtnStatus" class="blut-user-drp-setting"  ng-mouseleave="profileMouseLeave()">
             <div class="yellow-line"></div>

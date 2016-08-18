@@ -771,13 +771,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 }
                             }
 
-                            ngToast.create({
-                                className: 'success',
-                                content: 'Retrieved Dashboard Details!',
-                                horizontalPosition: 'center',
-                                verticalPosition: 'top',
-                                dismissOnClick: true
-                            });
+                          
                             //fetch all saved dashboards from pouchdb
                             db.allDocs({
                                 include_docs: true,

@@ -108,7 +108,7 @@
         <!-- #SerchBar -->
         <div class="blut-log-wrapper">
             <div class="left-toggle-wrapper">
-                <img src="styles/css/images/digin43x43.png"/>
+                <img src="{{image}}"/>
                  <md-tooltip md-direction="right">
                   v3.1.0.0
                 </md-tooltip>
@@ -158,8 +158,9 @@
                             <div layout="row" class="blut-login-user pull-right">
                                 <p ng-model="username" ng-mouseover="profileMouseHover()"  ng-mouseleave="profileMouseLeave()">
                                     {{firstName }}</p>
-                                <div class="login-img">
-                                    <img src="styles/css/images/signup-user.png"/>
+                                <div class="login-img"> 
+                                    <!-- <img src="styles/css/images/signup-user.png"/> -->
+                                    <img src="{{profile_pic}}"/>
                                 </div>
                                 <div class="blut-user-setting" ng-click="onClickViewProfileSetting()" ng-mouseover="profileMouseHover()">
                                     <div>

@@ -3,7 +3,7 @@ update UI version 1.0
 cmds >> common data source style
 drb >> dynamically report builder
 */
-
+.amcharts-chart-div a {display:none !important;}
 body
 {
     background: rgba(230, 230, 230, 1) !important;

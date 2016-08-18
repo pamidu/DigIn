@@ -28,13 +28,73 @@
             </ul>
         </div>
         <div class="body-wrap">
-            <ul>
-                <li ng-repeat="menu in currentSubMenu.data" ng-click="goTORout(menu)">
+            <ul ng-if="currentItem == 'Social Media'">
+                <!--li ng-repeat="menu in currentSubMenu.data" ng-click="goTORout(menu)">
                     <i class="{{menu.icon}}"></i>
                     <a ng-if="currentTitle == 'Share'" socialshare socialshare-provider="{{menu.provider}}" ng-src="{{menu.icon}}" socialshare-text="Share this dashboard" socialshare-url="#" style="color:rgba(0, 0, 0, 0.87)">
                     {{menu.name}}</a>
                     <span ng-if="currentTitle != 'Share'"> {{menu.name}}</span>
-                </li>
+                </li-->
+				
+				<li ng-click="goTORout('home.social-graph-fb')">
+					<i class="ti-facebook"></i>Facebook
+				</li>
+				<li ng-click="goTORout('home.SocialGraphTwitter')">
+					<i class="ti-twitter-alt"></i>Twitter
+				</li>
+            </ul>
+
+			<ul ng-if="currentItem == 'Reports'">		
+				<li ng-click="goTORout('home.ReportsDev')">
+					<i class="ti-filter"></i>Report Development
+				</li>
+				<li ng-click="goTORout('home.Reports')">
+					<i class="ti-notepad"></i>Published Reports
+				</li>
+            </ul>
+		
+			<ul ng-if="currentItem == 'Share'">		
+				<li>
+					<i class="ti-facebook"></i>
+					<a socialshare socialshare-provider="facebook" ng-src="ti-facebook" socialshare-text="Share this dashboard" socialshare-url="#" style="color:rgba(0, 0, 0, 0.87)">
+                   Facebook</a>
+				</li>
+				<li>
+					<i class="ti-google"></i>
+					<a socialshare socialshare-provider="google+" ng-src="ti-google" socialshare-text="Share this dashboard" socialshare-url="#" style="color:rgba(0, 0, 0, 0.87)">
+                   Google+</a>
+				</li>
+				<li>
+					<i class="ti-twitter-alt"></i>
+					<a socialshare socialshare-provider="twitter" ng-src="ti-twitter-alt" socialshare-text="Share this dashboard" socialshare-url="#" style="color:rgba(0, 0, 0, 0.87)">
+                   Twitter</a>
+				</li>
+				<li>
+					<i class="ti-linkedin"></i>
+					<a socialshare socialshare-provider="linkedin" ng-src="ti-linkedin" socialshare-text="Share this dashboard" socialshare-url="#" style="color:rgba(0, 0, 0, 0.87)">
+                   Linkedin</a>
+				</li>
+				<li ng-click="goTORout('Email')">
+					<i class="ti-email"></i>
+					<span> Email</span>
+				</li>
+            </ul>
+			<ul ng-if="currentItem == 'Settings'">	
+				<li ng-click="goTORout('home.createUser')">
+					<i class="ti-user"></i>New user
+				</li>
+				<li ng-click="goTORout('home.share')">
+					<i class="ti-share"></i>Share
+				</li>
+				<li ng-click="goTORout('home.userSettings')">
+					<i class="ti-pencil"></i>User settings
+				</li>
+				<li ng-click="goTORout('home.account')">
+					<i class="ti-settings"></i>Account settings
+				</li>
+				<li ng-click="goTORout('home.group')">
+					<i class="ti-settings"></i>Groups
+				</li>
             </ul>
         </div>
 

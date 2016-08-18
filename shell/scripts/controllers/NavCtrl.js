@@ -1932,7 +1932,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 ];
         var reportsSub =    [
                                 { name: "Report Development", icon: "ti-filter", link: "home.ReportsDev"},
-                                { name: "Reports", icon: "ti-notepad", link: "home.Reports"}
+                                { name: "Published Reports", icon: "ti-notepad", link: "home.Reports"}
                             ];
         
         $scope.subMenu = (function () {
@@ -1945,9 +1945,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         ];
                     $scope.currentSubMenu.header = subMenuTitle;
 
-                    if(subMenuTitle == "Reports")
+					$scope.currentItem = subMenuTitle;
+                   /* if(subMenuTitle == "Reports")
                     {
-                        $scope.currentSubMenu.data = reportsSub;
+                        $scope.currentItem = ;
                     }else if(subMenuTitle == "Social Media")
                     {
                         $scope.currentSubMenu.data = socialMediaSub;
@@ -1957,7 +1958,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     }else if(subMenuTitle == "Settings")
                     {
                         $scope.currentSubMenu.data = settingsSub;
-                    }
+                    }*/
                 },
                 close: function () {
                     $scope.isEnableSubMenu = false;
@@ -1988,7 +1989,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
            console.log(menu);
             layoutManager.headerMenuToggle(true);
-           if(menu.name ==  "Email")
+           //if(menu.name ==  "Email")
+		if(menu ==  "Email")
            {
                     //console.log("email");
 
@@ -2002,7 +2004,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     })
 
            }else{
-               $state.go(menu.link);
+               //$state.go(menu.link);
+			   $state.go(menu);
                $scope.currentView = $scope.currentSubMenu.header;
            }
 

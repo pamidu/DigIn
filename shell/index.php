@@ -371,6 +371,7 @@
 
 <script src="bower_components/google-map/lodash.min.js"></script>
 <script type="text/javascript"  src="scripts/vendor/ammap.js"> </script>
+<script src="http://www.ammap.com/lib/maps/js/worldLow.js" type="text/javascript"></script>
 <script type="text/javascript"  src="scripts/vendor/sriLankaLow.js"> </script>
 <script type="text/javascript" src="bower_components/google-map/angular-simple-logger.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-maps/2.3.3/angular-google-maps.min.js"></script>

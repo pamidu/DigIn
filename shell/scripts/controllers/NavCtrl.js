@@ -89,8 +89,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         //#get user profile       
         var baseUrl = "http://" + window.location.hostname;
-        $http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
-        //$http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
+        //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
+        $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
             .success(function (response) {
                 console.log(response);
                 $rootScope.profile_Det = response;
@@ -784,13 +784,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 }
                             }
 
-                            ngToast.create({
-                                className: 'success',
-                                content: 'Retrieved Dashboard Details!',
-                                horizontalPosition: 'center',
-                                verticalPosition: 'top',
-                                dismissOnClick: true
-                            });
+                          
                             //fetch all saved dashboards from pouchdb
                             db.allDocs({
                                 include_docs: true,
@@ -884,8 +878,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     var baseUrl = "http://" + window.location.hostname;
                     //var baseUrl = "http://" + $rootScope.TenantID;
                     $scope.domain = JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
-                    $http.get("omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects")
-                    //$http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+                    //$http.get("http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects")
+                    $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
                         .success(function (data) {
                             console.log(data);
                             $rootScope.sharableObjs = [];
@@ -915,12 +909,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     //-----------
                     
 
-                    //$http.get(baseUrl + "/apis/usercommon/getAllGroups")
-                    $http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups')
+                    $http.get(baseUrl + "/apis/usercommon/getAllGroups")
+                    //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups')
                         .success(function (data) {
                             console.log(data);
                             $rootScope.sharableGroupsDtls = [];
-
+                            $rootScope.groups= [];
                             for (var i = 0; i < data.length; i++) {
                                 $scope.users = [];  //$scope.userNames=[];
                                 for (var j = 0; j < data[i].users.length; j++) {
@@ -935,6 +929,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                     groupname: data[i].groupname,
                                     users: $scope.users
                                 });
+
+                                 $rootScope.groups.push({
+                                    groupId: data[i].groupId,
+                                    groupname: data[i].groupname,
+                                    users: $scope.users
+                                });
+
                             }
                             console.log($rootScope.sharableGroupsDtls);
 
@@ -947,13 +948,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         $scope.getSharableUsers = function () {
             var baseUrl = "http://" + window.location.hostname;
-            $http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects')
-            //$http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+            //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects')
+            $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
                 .success(function (data) {
                     console.log(data);
                     $rootScope.sharableObjs = [];
                     $rootScope.sharableUsers = [];
                     $rootScope.sharableGroups = [];
+                    $rootScope.groups = [];
 
                     for (var i = 0; i < data.length; i++) {
                         if (data[i].Type == "User") {
@@ -976,12 +978,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
 
             //-----------
-            $http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups')
-            //$http.get(baseUrl + "/apis/usercommon/getAllGroups")
+            //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups')
+            $http.get(baseUrl + "/apis/usercommon/getAllGroups")
                 .success(function (data) {
                     console.log(data);
                     $rootScope.sharableGroupsDtls = [];
-
+                    $rootScope.groups= [];
                     for (var i = 0; i < data.length; i++) {
                         $scope.users = [];  //$scope.userNames=[];
                         for (var j = 0; j < data[i].users.length; j++) {
@@ -992,6 +994,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             });
                         }
                         $rootScope.sharableGroupsDtls.push({
+                            groupId: data[i].groupId,
+                            groupname: data[i].groupname,
+                            users: $scope.users
+                        });
+                        $rootScope.groups.push({
                             groupId: data[i].groupId,
                             groupname: data[i].groupname,
                             users: $scope.users
@@ -1932,7 +1939,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 ];
         var reportsSub =    [
                                 { name: "Report Development", icon: "ti-filter", link: "home.ReportsDev"},
-                                { name: "Reports", icon: "ti-notepad", link: "home.Reports"}
+                                { name: "Published Reports", icon: "ti-notepad", link: "home.Reports"}
                             ];
         
         $scope.subMenu = (function () {
@@ -1945,9 +1952,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         ];
                     $scope.currentSubMenu.header = subMenuTitle;
 
-                    if(subMenuTitle == "Reports")
+					$scope.currentItem = subMenuTitle;
+                   /* if(subMenuTitle == "Reports")
                     {
-                        $scope.currentSubMenu.data = reportsSub;
+                        $scope.currentItem = ;
                     }else if(subMenuTitle == "Social Media")
                     {
                         $scope.currentSubMenu.data = socialMediaSub;
@@ -1957,7 +1965,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     }else if(subMenuTitle == "Settings")
                     {
                         $scope.currentSubMenu.data = settingsSub;
-                    }
+                    }*/
                 },
                 close: function () {
                     $scope.isEnableSubMenu = false;
@@ -1988,7 +1996,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
            console.log(menu);
             layoutManager.headerMenuToggle(true);
-           if(menu.name ==  "Email")
+           //if(menu.name ==  "Email")
+		if(menu ==  "Email")
            {
                     //console.log("email");
 
@@ -2002,7 +2011,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     })
 
            }else{
-               $state.go(menu.link);
+               //$state.go(menu.link);
+			   $state.go(menu);
                $scope.currentView = $scope.currentSubMenu.header;
            }
 
@@ -2159,8 +2169,8 @@ routerApp.controller('inviteUserCtrl',['$scope','$mdDialog','$http','Digin_Tenan
     $scope.getSharableObj=function(){
         var baseUrl = "http://" + window.location.hostname;
         
-        $http.get("omalduosoftwarecom.prod./apis/usercommon/getSharableObjects")
-        //$http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+        //$http.get("http://omalduosoftwarecom.prod./apis/usercommon/getSharableObjects")
+        $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
             .success(function (data) {
                 console.log(data);
                 $rootScope.sharableObjs = [];

@@ -16,5 +16,7 @@ angular.module('configuration', [])
 
     //#for loggin process
     .constant('IsLocal', true)
-    .constant('Local_Shell_Path', 'http://localhost/digin_git/eleven/Digin/shell')
+    .constant('Local_Shell_Path', 'http://localhost:8080/git/Digin/shell')
     .constant('report_Widget_Iframe', 'http://www.w3schools.com')
+	.constant('digind3', 'http://digin.io/digind3/')
+	

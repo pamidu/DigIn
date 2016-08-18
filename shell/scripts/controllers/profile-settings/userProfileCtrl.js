@@ -222,8 +222,8 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
 
             $http({
                 method: 'POST',
-                url:'http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile',
-                //url: baseUrl+'/apis/profile/userprofile',
+                //url:'http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile',
+                url: baseUrl+'/apis/profile/userprofile',
                 data: angular.toJson($scope.userProfile),
                 headers: {
                      'Content-Type': 'application/json',
@@ -508,8 +508,8 @@ routerApp.service('profile',['$rootScope','$http', function($rootScope,$http){
 
     this.getProfile = function() {
         var baseUrl = "http://" + window.location.hostname;
-        $http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com') 
-        //$http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
+        //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com') 
+        $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
             .success(function(response){
                 console.log(response);
                 //#load exisitging data

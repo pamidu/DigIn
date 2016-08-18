@@ -502,6 +502,16 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 view: 'views/query/chart-views/GoogleMap.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct22',
+                icon: 'ti-panel',
+                name: 'D3 visualization',
+                chart: 'D3 visualization',
+                selected: false,
+                chartType: 'D3 Visualization',
+                view: 'views/query/chart-views/GoogleMap.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }
 
 
@@ -942,12 +952,16 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             "id": event.mapObject.id,
                             "color": "#264F7F"
                         });
-                        
+
                     }
 
 
                 }
+                if ($scope.chartType == "D3 visualization") {
 
+                     window.alert("D3 pop up");
+
+                }
                 if ($scope.chartType == "forecast") {
                     if ($scope.sourceData.fAttArr.length == 1 && $scope.sourceData.fMeaArr.length == 1) {
                         if (!($scope.sourceData.fAttArr[0].dataType == "TIMESTAMP" || $scope.sourceData.fAttArr[0].dataType == "datetime")) {

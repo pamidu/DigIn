@@ -1,6 +1,6 @@
 // * Created by Damith on 2/12/2016.
 
-routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls) {
+routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, notifications) {
 
     $scope.goDashboard = function() {
         $state.go('home.Dashboards');
@@ -911,6 +911,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     case 'metric':
                         chartTypeTrue = false;
                         break;
+
+                     case 'googlemap':
+                        chartTypeTrue = false;
+                        $scope.chartWrapStyle = {
+                         height: 'calc(103vh)'
+                        };
+                        break;
                 }
 
                 // CHART VALIDATIONS
@@ -922,9 +929,110 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 if ($scope.chartType == "googlemap") {
 
                     $scope.area = [{
-                        "id": "LK-11",
-                        "color": "#264F7F"
-                    }];
+                            "id": "LK-11",
+                            "color": "#D32F2F"
+                        },
+                        {
+                            "id":"LK-12",
+                            "color": "#F44336"
+                        },
+                        {
+                            "id":"LK-13",
+                            "color": "#E64A19"
+                        },
+                        {
+                            "id":"LK-21",
+                            "color": "#C2185B"
+                        },
+                        {
+                            "id":"LK-22",
+                            "color": "#E91E63"
+                        },
+                        {
+                            "id":"LK-23",
+                            "color": "#FF5252"
+                        },
+                        {
+                            "id":"LK-31",
+                            "color": "#1976D2"
+                        },
+                        {
+                            "id":"LK-32",
+                            "color": "#00BCD4"
+                        },
+                        {
+                            "id":"LK-33",
+                            "color": "#303F9F"
+                        },
+                        {
+                            "id":"LK-41",
+                            "color": "#FFEB3B"
+                        },
+                        {
+                            "id":"LK-42",
+                            "color": "#F57C00"
+                        },
+                        {
+                            "id":"LK-43",
+                            "color": "#FF9800"
+                        },
+                        {
+                            "id":"LK-44",
+                            "color": "#FFC107"
+                        },
+                        {
+                            "id":"LK-45",
+                            "color": "#FF5722"
+                        },
+                        {
+                            "id":"LK-51",
+                            "color": "#5D4037"
+                        },
+                        {
+                            "id":"LK-52",
+                            "color": "#795548"
+                        },
+                        {
+                            "id":"LK-53",
+                            "color": "#FF5722"
+                        },
+                        {
+                            "id":"LK-61",
+                            "color": "#0288D1"
+                        },
+                        {
+                            "id":"LK-62",
+                            "color": "#03A9F4"
+                        },
+                        {
+                            "id":"LK-71",
+                            "color": "#448AFF"
+                        },
+                        {
+                            "id":"LK-72",
+                            "color": "#009688"
+                        },
+                        {
+                            "id":"LK-81",
+                            "color": "#536DFE"
+                        },
+                        {
+                            "id":"LK-82",
+                            "color": "#3F51B5"
+                        },
+                        {
+                            "id":"LK-91",
+                            "color": "#388E3C"
+                        },
+                        {
+                            "id":"LK-92",
+                            "color": "#4CAF50"
+                        }
+
+
+
+
+                    ];
                     AmCharts.makeChart("mapdiv", {
                         "type": "map",
                         "dataProvider": {
@@ -933,7 +1041,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             "areas": $scope.area
                         },
                         "listeners": [{
-
+							"event": "clickMapObject",
+							"method": districtClick
+                   
                         }],
                         "areasSettings": {
                             "autoZoom": false,
@@ -946,7 +1056,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                     function districtClick(event) {
 
-                        getDistrictByID(event.mapObject.id)
+                        getDistrictByID(event.mapObject.title)
                         $scope.area = [];
                         $scope.area.push({
                             "id": event.mapObject.id,
@@ -954,12 +1064,58 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         });
 
                     }
+					
+					var districts =[{District:"Gampaha",f0_:"1.0692726095000002E8"},
+						{District:"Hambanthota",f0_:"3.0021887890000004E7"},
+						{District:"Mullativu",f0_:"2160869.130000001"},
+						{District:"Anuradhapura",f0_:"5.462298085999999E7"},
+						{District:"Kurunagala",f0_:"9.217755252000001E7"},
+						{District:"Badulla",f0_:"4.817429579E7"},
+						{District:"Batticaloa",f0_:"6.786490195E7"},
+						{District:"Mannar",f0_:"4262008.129999999"},
+						{District:"Polonnaruwa",f0_:"3.0545677269999996E7"},
+						{District:"Jaffna",f0_:"1.295798956E7"},
+						{District:"Kilinochchi",f0_:"6551934.62"},
+						{District:"Colombo",f0_:"3.9187614298E8"},
+						{District:"Matale",f0_:"4.2969575300000004E7"},
+						{District:"Kandy",f0_:"1.0338308772E8"},
+						{District:"Matara",f0_:"6.0270031080000006E7"},
+						{District:"Nuwara Eliya",f0_:"2.5525292579999994E7"},
+						{District:"Kegalle",f0_:"3.780547114E7"},
+						{District:"Puttalam",f0_:"2.583396303E7"},
+						{District:"Ratnapura",f0_:"2.757293697E7"},
+						{District:"Monaragala",f0_:"2.4146062279999997E7"},
+						{District:"Vavuniya",f0_:"2062680.2199999997"},
+						{District:"Kalutara",f0_:"7.678809762E7"},
+						{District:"Galle",f0_:"8.318399742999999E7"},
+						{District:"Ampara",f0_:"2.990633667E7"},
+						{District:"Trincomalee",f0_:"3.858721745E7"}];
+					
+					function getDistrictByID(title)
+					{
+						for (i = 0, len = districts.length; i<len; ++i){
+							
+							if(title == districts[i].District)
+							{
+								notifications.alertDialog(districts[i].District,districts[i].f0_);
+							}
+						}
+					}
 
 
                 }
                 if ($scope.chartType == "D3 visualization") {
 
-                     window.alert("D3 pop up");
+                     //window.alert("D3 pop up");
+					 
+					 $mdDialog.show({
+    				  controller: "openDthreeCtrl",
+    				  templateUrl: 'views/query/digind3.html',
+    				  parent: angular.element(document.body),
+    				  clickOutsideToClose:true
+    				})
+    				.then(function(answer) {
+    				})
 
                 }
                 if ($scope.chartType == "forecast") {
@@ -1093,6 +1249,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             $state.go('home.Dashboards');
         }, 1000);
     };
+
+
+
+
+
 
     //chart functions
     $scope.highCharts = {
@@ -2197,7 +2358,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
     };
 
-    $scope.googleMap = {
+    $scope.GoogleMaps = {
         onInit: function(recon) {
 
         },
@@ -3120,3 +3281,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
     };
 });
+
+routerApp.controller('openDthreeCtrl',['$scope','$mdDialog','$http','digind3', '$sce' ,function ($scope,$mdDialog,$http,digind3, $sce) {
+	$scope.d3ref = $sce.trustAsResourceUrl(digind3);
+
+  $scope.cancel = function() {
+    $mdDialog.cancel();
+  };
+
+}])

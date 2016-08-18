@@ -2,7 +2,8 @@
  * Created by Damith on 7/26/2016.
  */
 
-routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $mdDialog,notifications,profile,$http) {
+routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $mdDialog,notifications,profile,$http, Upload,
+                                                     Digin_Domain, Digin_Tenant,$mdDialog, $location,Digin_Engine_API, $apps,ProfileService) {
 
     console.log('user profile ctrl load');
     var baseUrl = "http://" + window.location.hostname;
@@ -17,109 +18,8 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
         profile.getProfile();
     };
 
-    $scope.editModeOn = true;
-	
-    	$scope.user = {
-            name:  $rootScope.profile_Det.Name,
-            company:  $rootScope.profile_Det.Company, 
-            email: $rootScope.profile_Det.Email,
-            contactNo: $rootScope.profile_Det.PhoneNumber,
-            street: $rootScope.profile_Det.BillingAddress,
-            country: $rootScope.profile_Det.Country,
-            zip: $rootScope.profile_Det.ZipCode
-        };
 
-        $scope.closeWindow=function(){
-            $state.go('home.welcomeSearch');
-        };
-
-        $scope.updateProfileData= function () {
-          
-            $scope.userProfile ={
-                 "BannerPicture":"img/cover.png",
-                 "BillingAddress":$scope.user.street,
-                 "Company":$scope.user.company,
-                 "Country":$scope.user.country,
-                 "Email":$scope.user.email,
-                 "Name":$scope.user.name,
-                 "PhoneNumber":$scope.user.contactNo,
-                 "ZipCode":$scope.user.zip
-            };
-        
-
-            $http({
-                method: 'POST',
-                //url:'http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile',
-                url: baseUrl+'/apis/profile/userprofile',
-                data: angular.toJson($scope.userProfile),
-                headers: {
-                     'Content-Type': 'application/json',
-                }
-            }).success(function (data) {
-                $scope.error.isLoading = false;
-                console.log(data);
- 
-                if(data.IsSuccess==false){
-                    notifications.toast('0', 'Fail to update user profile.');
-                }
-                else
-                {
-                    notifications.toast('1', 'User profile updated successfully.');
-                    $scope.frmProfile.$setUntouched();
-                    profile.getProfile();
-                }
-                
-            }).error(function (data) {
-                $scope.error.isLoading = false;            
-            });
-        };
-
-
-	
-        $scope.profile = (function () {
-            return {
-                clickEdit: function () {
-                    $scope.editModeOn = false;
-                },
-    			changeUserProfile: function (){
-    				console.log($scope.user);
-    				$scope.editModeOn = true;
-                    $scope.updateProfileData();
-    			},
-                changePassword: function (ev) {
-                    $mdDialog.show({
-    				  controller: "changePasswordCtrl",
-    				  templateUrl: 'views/profile-settings/change-password.html',
-    				  parent: angular.element(document.body),
-    				  targetEvent: ev,
-    				  clickOutsideToClose:true
-    				})
-    				.then(function(answer) {
-    				})
-                },
-    			uploadProfilePicture: function(ev)
-    			{
-    				// $mdDialog.show({
-    				//   controller: "uploadProfilePictureCtrl",
-    				//   templateUrl: 'views/profile-settings/uploadProfilePicture.html',
-    				//   parent: angular.element(document.body),
-    				//   targetEvent: ev,
-    				//   clickOutsideToClose:true
-    				// })
-    				// .then(function(answer) {
-    				// })
-                     $scope.selectProfile=false;
-                     $scope.selectImage=true;
-
-    			},
-                closeSetting: function () {
-                    $state.go('home');
-                }
-        };
-
-
-
-    //#pre-loader progress - with message
+     //#pre-loader progress - with message
     var displayProgress = function (message) {
         $mdDialog.show({
             template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="row" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + '           <span>'+message+'</span>' + '       </div>' + '   </md-dialog-content>' + '</md-dialog>'
@@ -180,7 +80,7 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
     //#validate image saving and call saving function
     $scope.saveImage = function () {
         if($rootScope.file==undefined){
-            fireMsg('0', 'Please select profile picture to upload.');
+            notifications.toast('0', 'Please select profile picture to upload.');
         }
         else{
             //*Croped image
@@ -270,22 +170,129 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
                             var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
                             $scope.profile_pic = logoPath + data.Result.dp_path;
                             $rootScope.profile_pic = logoPath + data.Result.dp_path;
-                            ProfileService.UserDataArr.BannerPicture= $rootScope.profile_pic;
+                            //ProfileService.UserDataArr.BannerPicture= $rootScope.profile_pic;
                             $scope.getURL();
                             $mdDialog.hide();
-                            fireMsg('1', 'Profile picture uploaded successfully.');
+                            notifications.toast('1', 'Profile picture uploaded successfully.');
                         });
                 })
                 .error(function (data) {
                     $scope.profile_pic = "styles/css/images/setting/user100x100.png";
                     $rootScope.profile_pic = "styles/css/images/setting/user100x100.png";
                     $mdDialog.hide();
-                    fireMsg('0', 'There was an error while uploading profile picture !');
+                    notifications.toast('0', 'There was an error while uploading profile picture !');
                 });
         });
 
     };
 
+
+
+
+
+    $scope.editModeOn = true;
+	
+    	$scope.user = {
+            name:  $rootScope.profile_Det.Name,
+            company:  $rootScope.profile_Det.Company, 
+            email: $rootScope.profile_Det.Email,
+            contactNo: $rootScope.profile_Det.PhoneNumber,
+            street: $rootScope.profile_Det.BillingAddress,
+            country: $rootScope.profile_Det.Country,
+            zip: $rootScope.profile_Det.ZipCode
+        };
+
+        $scope.closeWindow=function(){
+            $state.go('home.welcomeSearch');
+        };
+
+        $scope.updateProfileData= function () {
+          
+            $scope.userProfile ={
+                 "BannerPicture":"img/cover.png",
+                 "BillingAddress":$scope.user.street,
+                 "Company":$scope.user.company,
+                 "Country":$scope.user.country,
+                 "Email":$scope.user.email,
+                 "Name":$scope.user.name,
+                 "PhoneNumber":$scope.user.contactNo,
+                 "ZipCode":$scope.user.zip
+            };
+        
+
+            $http({
+                method: 'POST',
+                url:'http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile',
+                //url: baseUrl+'/apis/profile/userprofile',
+                data: angular.toJson($scope.userProfile),
+                headers: {
+                     'Content-Type': 'application/json',
+                }
+            }).success(function (data) {
+                $scope.error.isLoading = false;
+                console.log(data);
+ 
+                if(data.IsSuccess==false){
+                    notifications.toast('0', 'Fail to update user profile.');
+                }
+                else
+                {
+                    notifications.toast('1', 'User profile updated successfully.');
+                    $scope.frmProfile.$setUntouched();
+                    profile.getProfile();
+                }
+                
+            }).error(function (data) {
+                $scope.error.isLoading = false;            
+            });
+        };
+
+
+	
+        $scope.profile = (function () {
+            return {
+                clickEdit: function () {
+                    $scope.editModeOn = false;
+                },
+    			changeUserProfile: function (){
+    				console.log($scope.user);
+    				$scope.editModeOn = true;
+                    $scope.updateProfileData();
+    			},
+                changePassword: function (ev) {
+                    $mdDialog.show({
+    				  controller: "changePasswordCtrl",
+    				  templateUrl: 'views/profile-settings/change-password.html',
+    				  parent: angular.element(document.body),
+    				  targetEvent: ev,
+    				  clickOutsideToClose:true
+    				})
+    				.then(function(answer) {
+    				})
+                },
+    			uploadProfilePicture: function(ev)
+    			{
+    				// $mdDialog.show({
+    				//   controller: "uploadProfilePictureCtrl",
+    				//   templateUrl: 'views/profile-settings/uploadProfilePicture.html',
+    				//   parent: angular.element(document.body),
+    				//   targetEvent: ev,
+    				//   clickOutsideToClose:true
+    				// })
+    				// .then(function(answer) {
+    				// })
+                     $scope.selectProfile=false;
+                     $scope.selectImage=true;
+
+    			},
+                closeSetting: function () {
+                    $state.go('home');
+                }
+        };
+
+
+
+   
 
 
 
@@ -501,8 +508,8 @@ routerApp.service('profile',['$rootScope','$http', function($rootScope,$http){
 
     this.getProfile = function() {
         var baseUrl = "http://" + window.location.hostname;
-        //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com') 
-        $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
+        $http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com') 
+        //$http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
             .success(function(response){
                 console.log(response);
                 //#load exisitging data

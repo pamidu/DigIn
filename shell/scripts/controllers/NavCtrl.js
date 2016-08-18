@@ -89,8 +89,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         //#get user profile       
         var baseUrl = "http://" + window.location.hostname;
-        //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
-        $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
+        $http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
+        //$http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
             .success(function (response) {
                 console.log(response);
                 $rootScope.profile_Det = response;
@@ -106,8 +106,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //#set initial logo as Digin logo
         $scope.imageUrl = "styles/css/images/DiginLogo.png";
         //$rootScope.myImage="styles/css/images/setting/user100x100.png";
-        $rootScope.myCroppedImage = "styles/css/images/setting/user100x100.png";
-        $rootScope.profile_pic = "styles/css/images/setting/user100x100.png";
+        $rootScope.myCroppedImage = "styles/css/images/signup-user.png";
+        $rootScope.profile_pic = "styles/css/images/signup-user.png";
         // if($scope.imageUrl==""){
         //      $scope.imageUrl = "styles/css/images/DiginLogo.png";
         // }
@@ -884,9 +884,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     var baseUrl = "http://" + window.location.hostname;
                     //var baseUrl = "http://" + $rootScope.TenantID;
                     $scope.domain = JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
-                    //baseUrl="http://"+$scope.domain;
-                    //$http.get("omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects")
-                    $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+                    $http.get("omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects")
+                    //$http.get(baseUrl + "/apis/usercommon/getSharableObjects")
                         .success(function (data) {
                             console.log(data);
                             $rootScope.sharableObjs = [];
@@ -916,8 +915,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     //-----------
                     
 
-                    $http.get(baseUrl + "/apis/usercommon/getAllGroups")
-                    //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups')
+                    //$http.get(baseUrl + "/apis/usercommon/getAllGroups")
+                    $http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups')
                         .success(function (data) {
                             console.log(data);
                             $rootScope.sharableGroupsDtls = [];
@@ -948,8 +947,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         $scope.getSharableUsers = function () {
             var baseUrl = "http://" + window.location.hostname;
-            //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects')
-            $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+            $http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects')
+            //$http.get(baseUrl + "/apis/usercommon/getSharableObjects")
                 .success(function (data) {
                     console.log(data);
                     $rootScope.sharableObjs = [];
@@ -977,8 +976,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
 
             //-----------
-            //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups')
-            $http.get(baseUrl + "/apis/usercommon/getAllGroups")
+            $http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups')
+            //$http.get(baseUrl + "/apis/usercommon/getAllGroups")
                 .success(function (data) {
                     console.log(data);
                     $rootScope.sharableGroupsDtls = [];
@@ -2160,8 +2159,8 @@ routerApp.controller('inviteUserCtrl',['$scope','$mdDialog','$http','Digin_Tenan
     $scope.getSharableObj=function(){
         var baseUrl = "http://" + window.location.hostname;
         
-        //$http.get("omalduosoftwarecom.prod./apis/usercommon/getSharableObjects")
-        $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+        $http.get("omalduosoftwarecom.prod./apis/usercommon/getSharableObjects")
+        //$http.get(baseUrl + "/apis/usercommon/getSharableObjects")
             .success(function (data) {
                 console.log(data);
                 $rootScope.sharableObjs = [];

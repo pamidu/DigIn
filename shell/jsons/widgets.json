@@ -47,7 +47,7 @@
             "sizeX": 4, "sizeY": 4, "row": 0, "col": 16
         },
         {
-            "title": "report",
+            "title": "Hourly summary",
             "icon": "styles/css/images/icons/reports.svg",
             "type": "reports",
             "Description": "View reports from a iFrame",

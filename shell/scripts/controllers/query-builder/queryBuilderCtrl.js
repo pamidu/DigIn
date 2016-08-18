@@ -495,7 +495,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             }, {
                 id: 'ct21',
                 icon: 'ti-panel',
-                name: 'googlemap',
+                name: 'GeoMap',
                 chart: 'googlemap',
                 selected: false,
                 chartType: 'GoogleMaps',
@@ -1041,7 +1041,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             "areas": $scope.area
                         },
                         "listeners": [{
-
+                            "event": "clickMapObject",
+                        "method": districtClick
                         }],
                         "areasSettings": {
                             "autoZoom": false,
@@ -2327,8 +2328,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             // $scope.commonData.chartTypes[17].view = "views/googleMaps/ViewGoogleMapsBranches.html";
         },
         saveWidget: function(widget) {
-            widget.widgetData.widView = "views/googleMaps/ViewGoogleMapsBranches.html";
-            widget.widgetData.uniqueType = "Google Maps Branches";
+            widget.widgetData.widView = "views/query/chart-views/GoogeMap.html";
+            widget.widgetData.uniqueType = "GeoMap";
             widget.widgetData.widName = $scope.widget.widgetData.widName;
             $scope.saveChart(widget);
         }

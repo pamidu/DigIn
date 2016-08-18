@@ -207,7 +207,7 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
         };
 
         $scope.updateProfileData= function () {
-          
+          var baseUrl = "http://" + window.location.hostname;
             $scope.userProfile ={
                  "BannerPicture":"img/cover.png",
                  "BillingAddress":$scope.user.street,

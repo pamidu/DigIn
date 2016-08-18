@@ -1,4 +1,4 @@
-<!-- <md-dialog aria-label="Add User" plumb-item class="dialog-1 b-r-0">
+<md-dialog aria-label="Add User" plumb-item class="dialog-1 b-r-0">
   <form md-theme="default" name="editForm" ng-submit="editForm.$valid && submit()">
   <md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">
       <div layout="row" layout-align="center center" class="digin-logo-wrapper2">
@@ -25,53 +25,4 @@
 
   </form>
 </md-dialog>
- -->
-
-
-
-<md-dialog plumb-item class="dialog-1">
-
-  <md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">
-      <div layout="row" layout-align="center center" class="digin-logo-wrapper2">
-        <img ng-src="styles/css/images/icons/users2.svg" class="digin-image">
-      </div>  
-      <div class="dialog-title">Add users to group  {{ grpName }}</div>         
-      <md-button class="buttonMinwidth38" ng-click="closeDialog();">      
-        <ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>   
-      </md-button>            
-  </md-toolbar>
-
-  <md-dialog-content style="max-width:800px;max-height:810px; ">
-    <div>
-
-     <!--  <div>
-          <md-chips-select ng-model="newSelected" select-items="remainUsers" main-title="Name"></md-chips-select>
-      </div> -->
-    
-aaaaaaaaaaaaa
-
-      <div>
-        <md-chips ng-model="newSelected" md-autocomplete-snap md-require-match="true">
-          <md-autocomplete
-                  md-selected-item="selectedItem"
-                  md-search-text="searchText"
-                  md-items="item in querySearch(searchText)"
-                  md-item-text="item.Name"
-                  placeholder="Add users to group here">
-              <span md-highlight-text="searchText">{{item.Name}}</span>
-          </md-autocomplete>
-          <md-chip-template style="background: #037281; font-size:16px">
-            <span><strong>{{$chip.Name}}</strong></span>
-          </md-chip-template>
-        </md-chips>
-      </div>
-
-
-
-
-      <div class="md-actions" layout="row">
-          <md-button class="btn-font btn-dialog" ng-click="addUsersToGroup(newSelected)"> SAVE</md-button>
-          <md-button class="btn-font btn-dialog" ng-click="closeDialog()"> CANCEL</md-button>   
-      </div>
-    </div>
-  </md-dialog-content>  
+ 

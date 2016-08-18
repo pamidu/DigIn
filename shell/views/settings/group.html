@@ -18,7 +18,7 @@
 		</div>
 		
 		<div style="padding:20px">
-		<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)">
+		<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)" multiple>
 				<v-pane id="Cards" expanded="$first" ng-repeat="group in groups"> 
 					<v-pane-header id="Store-header" aria-controls="Store-content">
 						<h5 style="margin-top:0px;">{{group.groupname}}</h5> 
@@ -27,7 +27,7 @@
 					<v-pane-content id="Store-content" aria-labelledby="Store-header">
 						<div layout="row" layout-align="end end">
 				
-							<md-button  aria-label="delete user" ng-click="addUser($event)" layout="row">
+							<md-button  aria-label="Add user" ng-click="loadAddUsersWindow(group.groupId,group.groupname,group.users,sharableUsers)" layout="row">
 								<span style="text-transform:none;color:#f9a525">Add User</span>
 							</md-button>
 							<md-button  aria-label="delete user" ng-click="deleteGroup($index,group.groupId,$event)">
@@ -39,7 +39,7 @@
 				
 							<md-list-item class="secondary-button-padding" ng-repeat="groupMemeber in group.users">
 								<p>{{groupMemeber.Name}}</p>
-								<md-button class="md-icon-button md-secondary" aria-label="delete user" ng-click="deleteUser($event)">
+								<md-button class="md-icon-button md-secondary" aria-label="delete user" ng-click="deleteUserFromGroup(group.groupId,groupMemeber)">
 									<ng-md-icon icon="delete" style="fill:grey;" size="20px" ></ng-md-icon>
 								</md-button>
 							</md-list-item>

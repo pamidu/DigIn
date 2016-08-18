@@ -1,6 +1,6 @@
 // * Created by Damith on 2/12/2016.
 
-routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog) {
+routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, notifications) {
 
     $scope.goDashboard = function() {
         $state.go('home.Dashboards');
@@ -1041,7 +1041,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             "areas": $scope.area
                         },
                         "listeners": [{
-
+							"event": "clickMapObject",
+							"method": districtClick
+                   
                         }],
                         "areasSettings": {
                             "autoZoom": false,
@@ -1054,7 +1056,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                     function districtClick(event) {
 
-                        getDistrictByID(event.mapObject.id)
+                        getDistrictByID(event.mapObject.title)
                         $scope.area = [];
                         $scope.area.push({
                             "id": event.mapObject.id,
@@ -1062,6 +1064,43 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         });
 
                     }
+					
+					var districts =[{District:"Gampaha",f0_:"1.0692726095000002E8"},
+						{District:"Hambanthota",f0_:"3.0021887890000004E7"},
+						{District:"Mullativu",f0_:"2160869.130000001"},
+						{District:"Anuradhapura",f0_:"5.462298085999999E7"},
+						{District:"Kurunagala",f0_:"9.217755252000001E7"},
+						{District:"Badulla",f0_:"4.817429579E7"},
+						{District:"Batticaloa",f0_:"6.786490195E7"},
+						{District:"Mannar",f0_:"4262008.129999999"},
+						{District:"Polonnaruwa",f0_:"3.0545677269999996E7"},
+						{District:"Jaffna",f0_:"1.295798956E7"},
+						{District:"Kilinochchi",f0_:"6551934.62"},
+						{District:"Colombo",f0_:"3.9187614298E8"},
+						{District:"Matale",f0_:"4.2969575300000004E7"},
+						{District:"Kandy",f0_:"1.0338308772E8"},
+						{District:"Matara",f0_:"6.0270031080000006E7"},
+						{District:"Nuwara Eliya",f0_:"2.5525292579999994E7"},
+						{District:"Kegalle",f0_:"3.780547114E7"},
+						{District:"Puttalam",f0_:"2.583396303E7"},
+						{District:"Ratnapura",f0_:"2.757293697E7"},
+						{District:"Monaragala",f0_:"2.4146062279999997E7"},
+						{District:"Vavuniya",f0_:"2062680.2199999997"},
+						{District:"Kalutara",f0_:"7.678809762E7"},
+						{District:"Galle",f0_:"8.318399742999999E7"},
+						{District:"Ampara",f0_:"2.990633667E7"},
+						{District:"Trincomalee",f0_:"3.858721745E7"}];
+					
+					function getDistrictByID(title)
+					{
+						for (i = 0, len = districts.length; i<len; ++i){
+							
+							if(title == districts[i].District)
+							{
+								notifications.alertDialog(districts[i].District,districts[i].f0_);
+							}
+						}
+					}
 
 
                 }

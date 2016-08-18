@@ -1,6 +1,6 @@
 // * Created by Damith on 2/12/2016.
 
-routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls) {
+routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog) {
 
     $scope.goDashboard = function() {
         $state.go('home.Dashboards');
@@ -1067,7 +1067,16 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }
                 if ($scope.chartType == "D3 visualization") {
 
-                     window.alert("D3 pop up");
+                     //window.alert("D3 pop up");
+					 
+					 $mdDialog.show({
+    				  controller: "openDthreeCtrl",
+    				  templateUrl: 'views/query/digind3.html',
+    				  parent: angular.element(document.body),
+    				  clickOutsideToClose:true
+    				})
+    				.then(function(answer) {
+    				})
 
                 }
                 if ($scope.chartType == "forecast") {
@@ -3233,3 +3242,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
     };
 });
+
+routerApp.controller('openDthreeCtrl',['$scope','$mdDialog','$http','digind3', '$sce' ,function ($scope,$mdDialog,$http,digind3, $sce) {
+	$scope.d3ref = $sce.trustAsResourceUrl(digind3);
+
+  $scope.cancel = function() {
+    $mdDialog.cancel();
+  };
+
+}])

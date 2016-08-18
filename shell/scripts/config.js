@@ -18,3 +18,5 @@ angular.module('configuration', [])
     .constant('IsLocal', true)
     .constant('Local_Shell_Path', 'http://localhost:8080/git/Digin/shell')
     .constant('report_Widget_Iframe', 'http://www.w3schools.com')
+	.constant('digind3', 'http://digin.io/digind3/')
+	

@@ -2,10 +2,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen', '$interval', 'notifications',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
               $http, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen, $interval, notifications) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -14,14 +14,27 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             // if(sessionInfo==null) location.href = 'index.php';
         }
         $scope.firstName = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
-        
-        // $scope.username = JSON.parse(decodeURIComponent(getCookie('authData'))).Name;
-        // var baseUrl = "http://" + window.location.hostname;
-
-        // if ($scope.username && $scope.username.length > 0) {
-        //     var fullName = $scope.username.split(' ');
-        //     $scope.firstName = fullName[0];
-        // }
+        $scope.count = 0;
+        $interval( function(){
+            var tempArray = [{
+                title: "Dashboard",
+                description: "Profit for the month has exceeded the treshold value"},{
+                title: "User Segregation",
+                description: "john@duosoftare.com has invited you to jon his tenant."},{
+                title: "Dashboard",
+                description: "Sales for the month has exceeded the treshold value"}];
+            if (tempArray.length > $scope.count){
+                $mdToast.hide();
+                $mdToast.show(
+                  $mdToast.simple()
+                    .textContent(tempArray[$scope.count].description)
+                    .position('bottom right')
+                    .hideDelay(4000)
+                );                
+                $scope.notifications.push(tempArray[$scope.count]);
+                $scope.count++;
+            }
+            }, 600000);        
 
         var db = new pouchDB('dashboard');
         $scope.adjustUI = function () {

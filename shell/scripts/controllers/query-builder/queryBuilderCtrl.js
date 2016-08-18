@@ -1,6 +1,6 @@
 // * Created by Damith on 2/12/2016.
 
-routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, notifications) {
+routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls) {
 
     $scope.goDashboard = function() {
         $state.go('home.Dashboards');
@@ -99,20 +99,28 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 // Explicitly tell the width and height of a chart
                 width: null
             },
-            exporting: {
+             exporting: {
                 filename: '',
                 sourceWidth: 600,
                 sourceHeight: 400
+            },
+            xAxis: {
+                showEmpty: false
+            },
+            yAxis:{
+                showEmpty: false
+            },    
+            credits: {
+                enabled: false
             }
-
         },
         title: {
             text: '',
         },
-        series: [{
-            color: '#536DFE',
-        }],
-
+        yAxis: {
+            showEmpty: false
+        }
+        
     };
 
 
@@ -499,16 +507,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 chart: 'googlemap',
                 selected: false,
                 chartType: 'GoogleMaps',
-                view: 'views/query/chart-views/GoogleMap.html',
-                initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
-            }, {
-                id: 'ct22',
-                icon: 'ti-panel',
-                name: 'D3 visualization',
-                chart: 'D3 visualization',
-                selected: false,
-                chartType: 'D3 Visualization',
                 view: 'views/query/chart-views/GoogleMap.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
@@ -914,9 +912,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                      case 'googlemap':
                         chartTypeTrue = false;
-                        $scope.chartWrapStyle = {
-                         height: 'calc(103vh)'
-                        };
                         break;
                 }
 
@@ -1003,30 +998,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         {
                             "id":"LK-62",
                             "color": "#03A9F4"
-                        },
-                        {
-                            "id":"LK-71",
-                            "color": "#448AFF"
-                        },
-                        {
-                            "id":"LK-72",
-                            "color": "#009688"
-                        },
-                        {
-                            "id":"LK-81",
-                            "color": "#536DFE"
-                        },
-                        {
-                            "id":"LK-82",
-                            "color": "#3F51B5"
-                        },
-                        {
-                            "id":"LK-91",
-                            "color": "#388E3C"
-                        },
-                        {
-                            "id":"LK-92",
-                            "color": "#4CAF50"
                         }
 
 
@@ -1041,9 +1012,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             "areas": $scope.area
                         },
                         "listeners": [{
-							"event": "clickMapObject",
-							"method": districtClick
-                   
+
                         }],
                         "areasSettings": {
                             "autoZoom": false,
@@ -1056,68 +1025,18 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
 
                     function districtClick(event) {
 
-                        getDistrictByID(event.mapObject.title)
+                        getDistrictByID(event.mapObject.id)
                         $scope.area = [];
                         $scope.area.push({
                             "id": event.mapObject.id,
                             "color": "#264F7F"
                         });
-
+                        
                     }
-					
-					var districts =[{District:"Gampaha",f0_:"1.0692726095000002E8"},
-						{District:"Hambanthota",f0_:"3.0021887890000004E7"},
-						{District:"Mullativu",f0_:"2160869.130000001"},
-						{District:"Anuradhapura",f0_:"5.462298085999999E7"},
-						{District:"Kurunagala",f0_:"9.217755252000001E7"},
-						{District:"Badulla",f0_:"4.817429579E7"},
-						{District:"Batticaloa",f0_:"6.786490195E7"},
-						{District:"Mannar",f0_:"4262008.129999999"},
-						{District:"Polonnaruwa",f0_:"3.0545677269999996E7"},
-						{District:"Jaffna",f0_:"1.295798956E7"},
-						{District:"Kilinochchi",f0_:"6551934.62"},
-						{District:"Colombo",f0_:"3.9187614298E8"},
-						{District:"Matale",f0_:"4.2969575300000004E7"},
-						{District:"Kandy",f0_:"1.0338308772E8"},
-						{District:"Matara",f0_:"6.0270031080000006E7"},
-						{District:"Nuwara Eliya",f0_:"2.5525292579999994E7"},
-						{District:"Kegalle",f0_:"3.780547114E7"},
-						{District:"Puttalam",f0_:"2.583396303E7"},
-						{District:"Ratnapura",f0_:"2.757293697E7"},
-						{District:"Monaragala",f0_:"2.4146062279999997E7"},
-						{District:"Vavuniya",f0_:"2062680.2199999997"},
-						{District:"Kalutara",f0_:"7.678809762E7"},
-						{District:"Galle",f0_:"8.318399742999999E7"},
-						{District:"Ampara",f0_:"2.990633667E7"},
-						{District:"Trincomalee",f0_:"3.858721745E7"}];
-					
-					function getDistrictByID(title)
-					{
-						for (i = 0, len = districts.length; i<len; ++i){
-							
-							if(title == districts[i].District)
-							{
-								notifications.alertDialog(districts[i].District,districts[i].f0_);
-							}
-						}
-					}
 
 
                 }
-                if ($scope.chartType == "D3 visualization") {
 
-                     //window.alert("D3 pop up");
-					 
-					 $mdDialog.show({
-    				  controller: "openDthreeCtrl",
-    				  templateUrl: 'views/query/digind3.html',
-    				  parent: angular.element(document.body),
-    				  clickOutsideToClose:true
-    				})
-    				.then(function(answer) {
-    				})
-
-                }
                 if ($scope.chartType == "forecast") {
                     if ($scope.sourceData.fAttArr.length == 1 && $scope.sourceData.fMeaArr.length == 1) {
                         if (!($scope.sourceData.fAttArr[0].dataType == "TIMESTAMP" || $scope.sourceData.fAttArr[0].dataType == "datetime")) {
@@ -1250,11 +1169,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }, 1000);
     };
 
-
-
-
-
-
     //chart functions
     $scope.highCharts = {
         onInit: function(recon) {
@@ -1368,6 +1282,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             title: {
                                 text: ''
                             },
+                            xAxis: {
+                                showEmpty: false
+                            },
+                            yAxis:{
+                                showEmpty: false
+                            },                            
                             plotOptions: {
                                 pie: {
                                     allowPointSelect: true,
@@ -1469,6 +1389,142 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             $scope.saveChart(widget);
         }
     };
+
+    $scope.filterForecast = {
+        onInit: function(recon) {
+            $scope.highchartsNG = $scope.initHighchartObj;
+            $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
+            delete $scope.highchartsNG.size;
+        },
+        changeType: function() {
+            var mergedArr = $scope.sourceData.fMeaArr.concat($scope.sourceData.fAttArr);
+            mergedArr.forEach(function(k) {
+                if (k.dataType == "TIMESTAMP" || k.dataType == "datetime") {
+                    $scope.forecastObj.paramObj.date_field = k.name;
+                } else {
+                    $scope.forecastObj.paramObj.f_field = k.name;
+                }
+            });
+
+            switch ($scope.forecastObj.paramObj.model) {
+                case "double exponential smoothing":
+                    $scope.forecastObj.paramObj.mod = 'double_exp';
+                    break;
+                case "triple exponential smoothing":
+                    $scope.forecastObj.paramObj.mod = 'triple_exp';
+                    break;
+                default:
+                    $scope.forecastObj.paramObj.mod = 'triple_exp';
+                    break;
+            }
+
+            $scope.generateFilterForecast($scope.forecastObj.paramObj);
+        },
+        saveWidget: function(widget) {
+            widget.widgetData.highchartsNG = $scope.widget.widgetData.highchartsNG;
+            widget.widgetData.widView = "views/query/chart-views/forecast.html";
+            widget.widgetData.foreCastObj = $scope.forecastObj.paramObj;
+            widget.widgetData.initCtrl = "elasticInit";
+            widget.widgetName = "forecast";
+            $scope.saveChart(widget);
+        }        
+    };
+
+    $scope.generateFilterForecast = function(fObj) {
+
+        $scope.widget.widgetData.highchartsNG = {};
+        $scope.widget.widgetData.highchartsNG = {
+            title: {
+                text: ''
+            }
+        };
+        $scope.eventHndler.isLoadingChart = true;
+        $scope.client.getForcast(fObj, function(data, status) {
+            if (status) {
+                var yearArray = [];
+                var dataArray = [];
+                var serObj = [];
+                var count = 0;
+                for (var i =0;i<data.time.length;i++){
+                    var date = moment(data.time[i]);
+                    var year = date.year();
+                    if(data.actual[i] !== undefined){
+                        dataArray.push(data.actual[i]);
+                    }
+                    else{
+                        dataArray.push(data.forecast[i]);
+                    }
+                    count++;
+                    if (count < 12 && data.time[i+1] === undefined){
+                        serObj.push({
+                            data: dataArray,
+                            zoneAxis: 'x'
+                        });                        
+                    }
+                    if (count == 12){
+                        serObj.push({
+                            data: dataArray,
+                            zoneAxis: 'x'
+                        });
+                        dataArray = [];
+                        count = 0;
+                    }
+                }
+                console.log(serObj);
+                var finalObj = []
+                finalObj[0] = serObj[serObj.length-2];
+                finalObj[1] = serObj[serObj.length-1];
+                $scope.widget.widgetData.highchartsNG = {
+                    options: {
+                        chart: {
+                            zoomType: 'x',
+                            events: {
+                                beforePrint: function() {
+                                    this.setTitle({
+                                        text: this.options.exporting.chartOptions.title.text
+                                    })
+                                },
+                                afterPrint: function() {
+                                    this.setTitle({
+                                        text: null
+                                    })
+                                }
+                            }
+                        },
+                        exporting: {
+                            sourceWidth: 600,
+                            sourceHeight: 400,
+                            chartOptions: {
+                                title: {
+                                    text: $scope.widget.widgetData.widName
+                                }
+                            }
+                        },
+                        title: {
+                            text: ''
+                        },
+                        tooltip: {
+                            pointFormat: '<b> <span style = "color : {series.color}" >  ● </span> {series.name}: {point.y:,.0f} </b>',
+                            useHTML: true
+                        }
+                    },
+                    xAxis: {
+                        type: 'datetime'
+                    },
+                    yAxis: {
+                        lineWidth: 1
+                    },
+                    title: {
+                        text: ''
+                    },
+                    series: finalObj
+                };                
+                $scope.eventHndler.isLoadingChart = false;
+            } else {
+                $scope.eventHndler.isLoadingChart = false;
+            }
+        });
+    };    
 
 
     $scope.forecast = {
@@ -1573,20 +1629,153 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         $scope.eventHndler.isLoadingChart = true;
         $scope.client.getForcast(fObj, function(data, status) {
             if (status) {
-                var serArr = [];
-                var catArr = [];
-                data.forecast = data.forecast.slice(data.actual.length);
-                serArr.push({
-                    data: data.actual.concat(data.forecast),
-                    zoneAxis: 'x',
-                    zones: [{
-                        value: data.actual.length - 1
-                    }, {
-                        dashStyle: 'dash'
-                    }]
-                })
-                catArr = data.time;
+                // var serArr = [];
+                // var catArr = [];
+                // data.forecast = data.forecast.slice(data.actual.length);
+                // serArr.push({
+                //     data: data.actual.concat(data.forecast),
+                //     zoneAxis: 'x',
+                //     zones: [{
+                //         value: data.actual.length - 1
+                //     }, {
+                //         dashStyle: 'dash'
+                //     }]
+                // })
+                // catArr = data.time;
 
+                // $scope.widget.widgetData.highchartsNG = {
+                //     options: {
+                //         chart: {
+                //             zoomType: 'x',
+                //             events: {
+                //                 beforePrint: function() {
+                //                     this.setTitle({
+                //                         text: this.options.exporting.chartOptions.title.text
+                //                     })
+                //                 },
+                //                 afterPrint: function() {
+                //                     this.setTitle({
+                //                         text: null
+                //                     })
+                //                 }
+                //             }
+                //         },
+                //         exporting: {
+                //             sourceWidth: 600,
+                //             sourceHeight: 400,
+                //             chartOptions: {
+                //                 title: {
+                //                     text: $scope.widget.widgetData.widName
+                //                 }
+                //             }
+                //         },
+                //         title: {
+                //             text: ''
+                //         },
+                //         tooltip: {
+                //             pointFormat: '<b> <span style = "color : {series.color}" >  ● </span> {series.name}: {point.y:,.0f} </b>',
+                //             useHTML: true
+                //         }
+                //     },
+                //     xAxis: {
+                //         type: 'datetime',
+                //         categories: catArr
+                //     },
+                //     yAxis: {
+                //         lineWidth: 1
+                //     },
+                //     title: {
+                //         text: ''
+                //     },
+                //     series: serArr
+                // };
+                var dataArray = [];
+                var yearArray = [];
+                var serObj = [];
+                var count = 0;
+                var oldYear = moment(data.time[0]).year();
+                var newYear = oldYear;
+                var newYear;
+                var temp;                
+                var flag = true;
+                var zoneValue;
+                var forecastFlag = true;
+                for (var i =0;i<data.time.length;i++){
+                    if (newYear == oldYear){
+                        if (data.actual[i] !== undefined)
+                            dataArray.push(data.actual[i]);
+                        else{
+                            dataArray.push(data.forecast[i]);
+                            if (forecastFlag){
+                                zoneValue = i;
+                            }
+                            forecastFlag = false;                              
+                        }
+                        if (data.time[i+1] !== undefined){
+                            newYear = moment(data.time[i+1]).year();                           
+                        }else{
+                            serObj.push({
+                                name: oldYear,
+                                zoneAxis: 'x',
+                                data: dataArray
+                            });
+                            yearArray.push(oldYear);                            
+                        }
+                    }else{
+                        forecastFlag = true;
+                        if ( zoneValue !== undefined){
+                            serObj.push({
+                                name: oldYear,
+                                data: dataArray,
+                                zoneAxis: 'x',
+                                zones: [{
+                                    value: zoneValue % 12
+                                }, {
+                                    dashStyle: 'dash'
+                                }]
+                            });
+                        } else{
+                            serObj.push({
+                                name: oldYear,
+                                data: dataArray,
+                                zoneAxis: 'x'
+                            });                            
+                        }
+                        zoneValue = undefined;
+                        yearArray.push(oldYear);
+                        oldYear = newYear;
+                        dataArray=[];
+                        if (!flag){
+                            if (data.actual[i] !== undefined){
+                                dataArray.push(data.actual[i]);
+                            }
+                            else{
+                                if (forecastFlag){
+                                    zoneValue = i;
+                                }
+                                dataArray.push(data.forecast[i]);
+                                forecastFlag = false;  
+                            }
+                        }
+                        flag = false;
+                    }
+                }
+                console.log(serObj);
+                var date = new Date();
+                var currYear = moment(date).year();
+                var prevYear = currYear-1;
+                var currYearIndex = yearArray.indexOf(currYear);
+                var prevYearIndex = yearArray.indexOf(prevYear);                
+                var finalObj = [];
+                var category = [];
+                var monthIndex;
+                var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+                finalObj[0] = serObj[currYearIndex];
+                finalObj[1] = serObj[prevYearIndex];
+                for(var i=0;i<12;i++){
+                    monthIndex = moment(data.time[i]).month();
+                    category.push(month[monthIndex]);
+                }
                 $scope.widget.widgetData.highchartsNG = {
                     options: {
                         chart: {
@@ -1623,7 +1812,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     },
                     xAxis: {
                         type: 'datetime',
-                        categories: catArr
+                        categories: category
                     },
                     yAxis: {
                         lineWidth: 1
@@ -1631,9 +1820,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     title: {
                         text: ''
                     },
-                    series: serArr
-                };
-
+                    series: finalObj
+                };                
                 $scope.eventHndler.isLoadingChart = false;
             } else {
                 $scope.eventHndler.isLoadingChart = false;
@@ -2358,7 +2546,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
     };
 
-    $scope.GoogleMaps = {
+    $scope.googleMap = {
         onInit: function(recon) {
 
         },
@@ -2529,6 +2717,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             }
                         }
                     },
+                    xAxis: {
+                        showEmpty: false
+                    },
+                    yAxis:{
+                        showEmpty: false
+                    },                    
                     plotOptions: {
                         pie: {
                             allowPointSelect: true,
@@ -3281,12 +3475,3 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
         }
     };
 });
-
-routerApp.controller('openDthreeCtrl',['$scope','$mdDialog','$http','digind3', '$sce' ,function ($scope,$mdDialog,$http,digind3, $sce) {
-	$scope.d3ref = $sce.trustAsResourceUrl(digind3);
-
-  $scope.cancel = function() {
-    $mdDialog.cancel();
-  };
-
-}])

@@ -304,9 +304,10 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
                   chartSeries.update(angular.copy(s), true);
                 } else {
                   if (s.visible !== undefined && chartSeries.visible !== s.visible) {
-                    chartSeries.setVisible(s.visible, true);
+                    chartSeries.setVisible(s.visible, false);
                   }
-                  chartSeries.setData(angular.copy(s.data), true);
+                  chartSeries.setData(angular.copy(s.data), false);
+                  chart.redraw();
                 }
               } else {
                 chart.addSeries(angular.copy(s), true);
@@ -346,10 +347,12 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
                     x: j
                 });                
               }
-              if(chart.series[i].data[j].category != chart.series[i].data[j].name){
-                chart.series[i].data[j].update({
-                    category: name
-                });                   
+              if(chart.series[i].data[j].name !== undefined){
+                if(chart.series[i].data[j].category != chart.series[i].data[j].name){
+                  chart.series[i].data[j].update({
+                      category: name
+                  });                   
+                }
               }
             }
           }
@@ -395,7 +398,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
             if(needsRedraw) {
               chart.redraw();
             }
-            if (chart.series.length > 0){
+            if (chart.series.length > 0 && chart.series[0].data[0].name !== undefined){
                 var cat = [];
                 for (var i=0; i< chart.series[0].data.length;i++){
                   cat.push(chart.series[0].data[i].name);

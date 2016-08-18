@@ -2,10 +2,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen', '$interval', 'notifications',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
               $http, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen, $interval, notifications) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -14,14 +14,27 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             // if(sessionInfo==null) location.href = 'index.php';
         }
         $scope.firstName = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
-        
-        // $scope.username = JSON.parse(decodeURIComponent(getCookie('authData'))).Name;
-        // var baseUrl = "http://" + window.location.hostname;
-
-        // if ($scope.username && $scope.username.length > 0) {
-        //     var fullName = $scope.username.split(' ');
-        //     $scope.firstName = fullName[0];
-        // }
+        $scope.count = 0;
+        $interval( function(){
+            var tempArray = [{
+                title: "Dashboard",
+                description: "Profit for the month has exceeded the treshold value"},{
+                title: "User Segregation",
+                description: "john@duosoftare.com has invited you to jon his tenant."},{
+                title: "Dashboard",
+                description: "Sales for the month has exceeded the treshold value"}];
+            if (tempArray.length > $scope.count){
+                $mdToast.hide();
+                $mdToast.show(
+                  $mdToast.simple()
+                    .textContent(tempArray[$scope.count].description)
+                    .position('bottom right')
+                    .hideDelay(4000)
+                );                
+                $scope.notifications.push(tempArray[$scope.count]);
+                $scope.count++;
+            }
+            }, 600000);        
 
         var db = new pouchDB('dashboard');
         $scope.adjustUI = function () {
@@ -771,13 +784,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 }
                             }
 
-                            ngToast.create({
-                                className: 'success',
-                                content: 'Retrieved Dashboard Details!',
-                                horizontalPosition: 'center',
-                                verticalPosition: 'top',
-                                dismissOnClick: true
-                            });
+                          
                             //fetch all saved dashboards from pouchdb
                             db.allDocs({
                                 include_docs: true,
@@ -1932,7 +1939,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 ];
         var reportsSub =    [
                                 { name: "Report Development", icon: "ti-filter", link: "home.ReportsDev"},
-                                { name: "Reports", icon: "ti-notepad", link: "home.Reports"}
+                                { name: "Published Reports", icon: "ti-notepad", link: "home.Reports"}
                             ];
         
         $scope.subMenu = (function () {
@@ -1945,9 +1952,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         ];
                     $scope.currentSubMenu.header = subMenuTitle;
 
-                    if(subMenuTitle == "Reports")
+					$scope.currentItem = subMenuTitle;
+                   /* if(subMenuTitle == "Reports")
                     {
-                        $scope.currentSubMenu.data = reportsSub;
+                        $scope.currentItem = ;
                     }else if(subMenuTitle == "Social Media")
                     {
                         $scope.currentSubMenu.data = socialMediaSub;
@@ -1957,7 +1965,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     }else if(subMenuTitle == "Settings")
                     {
                         $scope.currentSubMenu.data = settingsSub;
-                    }
+                    }*/
                 },
                 close: function () {
                     $scope.isEnableSubMenu = false;
@@ -1988,7 +1996,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
            console.log(menu);
             layoutManager.headerMenuToggle(true);
-           if(menu.name ==  "Email")
+           //if(menu.name ==  "Email")
+		if(menu ==  "Email")
            {
                     //console.log("email");
 
@@ -2002,7 +2011,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     })
 
            }else{
-               $state.go(menu.link);
+               //$state.go(menu.link);
+			   $state.go(menu);
                $scope.currentView = $scope.currentSubMenu.header;
            }
 

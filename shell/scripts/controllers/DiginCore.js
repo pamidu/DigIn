@@ -499,6 +499,194 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     //$mdDialog.hide();
                 });
         };
+    // Methods for filter option of charts
+    $scope.setAttributes = function (widget) {
+        $scope.series = [];
+        $scope.categories = [];
+        $scope.seriesName = [];
+        var tempArray = [];
+        var flag;
+        var seriesArray = widget.widgetData.highchartsNG.series;
+        for ( var i =0; i < seriesArray.length; i++){
+            if (typeof(seriesArray[i].visible) == "undefined"){
+                widget.widgetData.highchartsNG.series[i].visible = true;
+            }
+            $scope.series.push({
+                name: seriesArray[i].name,
+                status: seriesArray[i].visible,
+                index: i
+            });
+            if (widget.widgetData.categories === undefined){
+                for ( var j =0; j<seriesArray[i].data.length; j++){
+                    if (!(tempArray.indexOf(seriesArray[i].data[j].name) > -1 )){
+                        flag = true;
+                        if (typeof(widget.widgetData.removedArray) != "undefined" && widget.widgetData.removedArray.indexOf(seriesArray[i].data[j].name) >-1){
+                            flag = false;
+                        }
+                        tempArray.push(seriesArray[i].data[j].name);
+                        $scope.categories.push({
+                            name : seriesArray[i].data[j].name,
+                            status: flag
+                        });
+                        $scope.seriesName.push(seriesArray[i].data[j].name);
+                    }
+                }
+            }
+        }
+
+        if (widget.widgetData.categories === undefined){
+            widget.widgetData["categories"] = tempArray;
+        } else{
+            for(var i=0; i<widget.widgetData.categories.length;i++){
+                flag = false;
+                for(var j=0;j<seriesArray[0].data.length;j++){
+                    if(seriesArray[0].data[j].name == widget.widgetData.categories[i]){
+                        flag = true;
+                        break;
+                    }
+                }
+                $scope.categories.push({
+                    name : widget.widgetData.categories[i],
+                    status: flag
+                });                
+            }
+        }
+    };
+
+    $scope.isChecked = function(){
+        $scope.isIndeterminate = false;
+        var count = 0;
+        angular.forEach($scope.series, function(ser){
+            if(ser.status){
+                count++;
+            }
+        });
+        if (count !==0 && count !== $scope.series.length){
+            $scope.isIndeterminate = true;
+        }
+        if (count == $scope.series.length){
+            return true;
+        }else{
+            return false;
+        }
+
+    };
+
+    $scope.toggleAll = function(widget) {
+        var flag = $scope.isChecked();
+        // If all series are visible, un-set them all
+        if (flag){
+            angular.forEach($scope.series, function(ser){
+                if(ser.status){
+                    $scope.setSeriesFilter(ser,widget);
+                }
+            });
+        } else{
+            angular.forEach($scope.series, function(ser){
+                if (!ser.status){
+                    $scope.setSeriesFilter(ser,widget);
+                }
+            });            
+        }
+  
+    };
+
+    // filter by series
+    $scope.setSeriesFilter = function (series,widget) {
+        if(series.status){
+            series.status = false;
+            widget.widgetData.highchartsNG.series[series.index].visible = false;
+            // $scope.widget.widgetData.highchartsNG.series[series.index].visible = false;
+
+        } else{
+            series.status = true;
+            widget.widgetData.highchartsNG.series[series.index].visible = true;            
+            // $scope.widget.widgetData.highchartsNG.series[series.index].visible = true;            
+        }
+    };
+
+    $scope.setCategoriesFilter = function (category,widget) {
+        var series = widget.widgetData.highchartsNG.series;
+        var detailsArray = [];
+        if (category.status){
+            //remove
+            for (var i =0; i<series.length; i++){
+                for(var j=0; j<series[i].data.length; j++){
+                    if (category.name === series[i].data[j].name){
+                        //Store it to add later
+                        detailsArray.push({
+                            series: i,
+                            data: widget.widgetData.categories.indexOf(category.name),
+                            value: series[i].data[j]
+                        });                        
+                        // Remove the category from the chart
+                        series[i].data.splice(j,1);
+                        widget.widgetData.highchartsNG.series[i] = series[i];
+                        category.status = false;
+                    }
+                }
+            }
+            if (widget.widgetData.removedCat === undefined){
+                widget.widgetData["removedCat"] = [];
+            }
+            widget.widgetData.removedCat.push({
+                name: category.name,
+                details: detailsArray,
+                index: widget.widgetData.categories.indexOf(category.name)
+            });
+        }
+        else{
+            angular.forEach(widget.widgetData.removedCat,function(val){
+                if(val.name == category.name){
+                    // val.details.sort(function(a,b){return a.series-b.series});
+                    // console.log(val.details);
+                    // for (var i=0;i<val.details.length;i++){
+                    //     widget.widgetData.highchartsNG.series[val.details[i].series].data.splice(val.details[i].data,0,val.details[i].value);                        
+                    // }
+                    angular.forEach(val.details,function(element){
+                        widget.widgetData.highchartsNG.series[element.series].data.splice(element.data,0,element.value)
+                    });
+                    category.status = true;
+                    widget.widgetData.removedCat.splice(widget.widgetData.removedCat.indexOf(val),1);
+                }
+            });
+        }
+    };                    
+    // filter by categories
+    $scope.isCatChecked = function(){
+        $scope.isIndeterminate = false;
+        var count = 0;
+        angular.forEach($scope.categories, function(cat){
+            if(cat.status){
+                count++;
+            }
+        });
+        if (count !==0 && count !== $scope.categories.length){
+            $scope.isIndeterminate = true;
+        }
+        if (count == $scope.categories.length){
+            return true;
+        }else{
+            return false;
+        }
+    };
+
+    $scope.toggleCatAll = function(widget) {
+        var flag = $scope.isCatChecked();
+        if (flag){
+            angular.forEach($scope.categories,function(cat){
+                $scope.setCategoriesFilter(cat,widget);
+            });            
+        }else {
+            angular.forEach($scope.categories,function(cat){
+                if (!cat.status){
+                    $scope.setCategoriesFilter(cat,widget);
+                }
+            });             
+        }
+    };    
+
+
         $scope.showWidget = function(ev, widget) {
             console.log("widget is " + JSON.stringify(widget));
             $scope.tempWidth = widget.widgetData.highchartsNG.size.width;

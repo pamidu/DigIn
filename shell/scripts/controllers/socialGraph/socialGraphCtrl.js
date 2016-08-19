@@ -8,6 +8,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     $scope.totalLikes = 0;
     $scope.totalEngagement = 0;
     $scope.engageLikes = 0;
+    $scope.totalViews = 0;
     $scope.postCount = 0;
     $scope.requestCount = 0;
     $scope.postSummaryRequest = 0;
@@ -159,7 +160,12 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
 
                 if (entry.name == 'page_fans') {
                     seriesName = 'Page Likes';
-                    $scope.totalLikes = value[1];
+                    if ( value[1] == null ){                            
+                        $scope.totalLikes = 0;      
+                    }       
+                    else {      
+                        $scope.totalLikes = value[1];       
+                    }
                 }
 
                 if (entry.name == 'page_stories') seriesName = 'Page Stories';
@@ -459,13 +465,19 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         $scope.activePageSearch = false;
 
         $scope.fbClient = $restFb.getClient(page, pageTimestamps);
+        $scope.postIds = []; 
+        $scope.totalLikes = 0;
+        $scope.totalEngagement = 0;
+        $scope.engageLikes = 0;
+        $scope.postCount = 0;
+        $scope.requestCount = 0;
         $scope.postSummaryRequest = 0;
         $scope.sentimentRequest = 0;
+        $scope.totalViews = 0;
+        $scope.failedPool = [];
         $scope.sentimentConfigData = [];
         $scope.sentimentConfigSeries = [];
-        $scope.sentimentConfigData = [];        
-        $scope.postsObj = []; 
-        $scope.postIds = []; 
+        $scope.postsObj = [];        
         reqPool.forEach(function (key) {
             eval("$scope." + key.method + "()");
         });
@@ -479,10 +491,10 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         $scope.errorMessage = false;
         $scope.untilDate = new Date();
         var secondDate = new Date();
-        secondDate.setDate($scope.untilDate.getDate() - 60);
+        secondDate.setDate($scope.untilDate.getDate() - 30);
         $scope.sinceDate = secondDate;
         $scope.preloader = true;
-        $scope.getPageDetails(page, getBoundaryTimestamps(60, new Date()), $scope.defReqPool);
+        $scope.getPageDetails(page, getBoundaryTimestamps(30, new Date()), $scope.defReqPool);
     };
 
     $scope.changeTimeRange = function () {
@@ -499,8 +511,6 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                 });
              return;
          }
-
-
 
         var timeObj = {
             sinceStamp: Math.floor(since / 1000),

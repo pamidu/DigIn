@@ -2341,12 +2341,12 @@
                 for (var i = 0; i < $scope.commonData.columns.length; i++) {
                     fieldArray.push("'" + $scope.commonData.columns[i].filedName + "'");
                 }
-                if ($scope.commonData.measures.length < 3 || $scope.commonData.columns.length < 1) {
-                    privateFun.fireMessage('0', 'Please select atleast 3 measures and 1 attribute to generate bubble chart!');
-                    $scope.isPendingRequest = false;
-                    $scope.eventHndler.isLoadingChart = false;
-                    return;
-                }
+                // if ($scope.commonData.measures.length < 3 || $scope.commonData.columns.length < 1) {
+                //     privateFun.fireMessage('0', 'Please select atleast 3 measures and 1 attribute to generate bubble chart!');
+                //     $scope.isPendingRequest = false;
+                //     $scope.eventHndler.isLoadingChart = false;
+                //     return;
+                // }
                 var x = $scope.commonData.measures[0].filedName;
                 var y = $scope.commonData.measures[1].filedName;
                 var s = $scope.commonData.measures[2].filedName;

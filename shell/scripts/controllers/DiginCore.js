@@ -252,7 +252,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
            $scope.updateRealtime = function(){
 
             $scope.temp = 1770697;
-            $scope.label="Orders for the year";
 
             $interval(function () {
                 //var ranId =$scope.random();

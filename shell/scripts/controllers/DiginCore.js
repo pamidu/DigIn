@@ -234,8 +234,8 @@ routerApp.controller('showWidgetCtrl', function($scope, $mdDialog, widget) {
     };
 
 });
-routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', '$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce','sales_distribution',
-    function($scope, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce,sales_distribution) {
+routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', '$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce','sales_distribution',
+    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce,sales_distribution) {
 
         //code to keep widget fixed on pivot summary drag events
         $('#content1').on('mousedown', function(e) {
@@ -248,6 +248,38 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                 }
             }
         });
+
+           $scope.updateRealtime = function(){
+
+
+
+            $interval(function () {
+                $scope.label="Orders for the year";
+                    
+                    var ranId =$scope.random();
+                    
+                    $http.get('http://digin.io:1929/executeQuery?db=BigQuery&query=select%20sum(834770697%2Bsum(product_quantity))%20qty%20from%20digin_duosoftware_com.orders_RT&ranId='+ranId+'&SecurityToken=' + getCookie('securityToken') + '')
+                    .success(function(data) {
+                         $scope.value = data.Result[0].qty;
+                         
+                    })
+                    .error(function(err) {
+                          
+                    });  
+
+            }, 3000);
+
+        }
+
+        $scope.random = function generateUUID() {
+                var d = new Date().getTime();
+                var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    var r = (d + Math.random()*16)%16 | 0;
+                    d = Math.floor(d/16);
+                    return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+                });
+                return uuid;
+        };
         //configuring gridster
         $scope.gridsterOpts = {
 

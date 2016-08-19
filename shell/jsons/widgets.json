@@ -237,6 +237,15 @@
             "widView": "views/viewSales.html",
             "color": "#9C27B0",
             "sizeX": 4, "sizeY": 4, "row": 0, "col": 16
+        },
+        {
+            "title": "Realtime",
+            "icon": "styles/css/images/icons/traffic-light.svg",
+            "type": "Custom",
+            "Description": "View reports from a iFrame",
+            "widView": "views/nbsqaRealtime.html",
+            "color": "#9C27B0",
+            "sizeX": 4, "sizeY": 4, "row": 0, "col": 16
         }
     ]
 }

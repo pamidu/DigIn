@@ -18,9 +18,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $interval( function(){
             var tempArray = [{
                 title: "Dashboard",
-                description: "Profit for the month has exceeded the treshold value"},{
+                description: "Profit for the month has exceeded the tHreshold value"},{
                 title: "User Segregation",
-                description: "john@duosoftare.com has invited you to jon his tenant."},{
+                description: "john@duosoftare.com has invited you to join his tenant."},{
                 title: "Dashboard",
                 description: "Sales for the month has exceeded the treshold value"}];
             if (tempArray.length > $scope.count){

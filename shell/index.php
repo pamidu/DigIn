@@ -121,6 +121,7 @@
 <!-- search end -->
 <script type="text/javascript" src="scripts/vendor/prefixfree.min.js"></script>
 <script type="text/javascript" src='scripts/vendor/jquery.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" src="bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>
 <script type="text/javascript" src="scripts/controllers/jspdf.min.js"></script>
@@ -370,9 +371,16 @@
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.3/ng-csv.min.js"></script>
 
 <script src="bower_components/google-map/lodash.min.js"></script>
-<script type="text/javascript"  src="scripts/vendor/ammap.js"> </script>
-<script src="http://www.ammap.com/lib/maps/js/worldLow.js" type="text/javascript"></script>
-<script type="text/javascript"  src="scripts/vendor/sriLankaLow.js"> </script>
+<script src="https://code.highcharts.com/maps/modules/map.js"></script>
+<script  type="text/javascript" src="http://code.highcharts.com/maps/modules/drilldown.js"></script>
+<script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/world-continents.js"></script>
+<script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/asia.js"></script>
+<script  type="text/javascript" src="http://code.highcharts.com/mapdata/countries/lk/lk-all.js"></script>
+<script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/oceania.js"></script>
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/custom/europe.js"></script>
+<script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/north-america.js"></script>
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/custom/south-america.js"></script>
+
 <script type="text/javascript" src="bower_components/google-map/angular-simple-logger.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-maps/2.3.3/angular-google-maps.min.js"></script>
 <!-- marker clusterer -->

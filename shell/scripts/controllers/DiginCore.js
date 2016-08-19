@@ -15,12 +15,12 @@
  |      pStackCtrl                                          |
  ------------------------------------------------------------
  */
-routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
+routerApp.controller('showWidgetCtrl', function($scope, $mdDialog, widget) {
 
     $scope.widget = angular.copy(widget);
     $scope.dHeight = $scope.widget.widgetData.height + 100;
 
-    $scope.returnWidth = function (width, height) {
+    $scope.returnWidth = function(width, height) {
         console.log("width here", width, height);
         if ($scope.widget.widgetData.initCtrl == "elasticInit") {
             console.log('elastic');
@@ -28,32 +28,32 @@ routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
             $scope.widget.widgetData.highchartsNG.size.height = parseInt(height);
         }
     };
-    var reSizeWidget = function () {
+    var reSizeWidget = function() {
         $scope.widget.widgetData.highchartsNG.size.width = parseInt(600);
         $scope.widget.widgetData.highchartsNG.size.height = parseInt(400);
     }
 
-    $scope.setChartSize = function (data) {
+    $scope.setChartSize = function(data) {
         console.log(data);
-        setTimeout(function () {
+        setTimeout(function() {
             reSizeWidget();
         }, 50);
     }
 
-    $scope.closeDialog = function () {
+    $scope.closeDialog = function() {
         $mdDialog.hide();
     };
 
     // Methods for filter option of charts
-    $scope.setAttributes = function () {
+    $scope.setAttributes = function() {
         $scope.series = [];
         $scope.categories = [];
         $scope.seriesName = [];
         var tempArray = [];
         var flag;
         var seriesArray = widget.widgetData.highchartsNG.series;
-        for ( var i =0; i < seriesArray.length; i++){
-            if (typeof(seriesArray[i].visible) == "undefined"){
+        for (var i = 0; i < seriesArray.length; i++) {
+            if (typeof(seriesArray[i].visible) == "undefined") {
                 widget.widgetData.highchartsNG.series[i].visible = true;
             }
             $scope.series.push({
@@ -61,16 +61,16 @@ routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
                 status: seriesArray[i].visible,
                 index: i
             });
-            if (widget.widgetData.categories === undefined){
-                for ( var j =0; j<seriesArray[i].data.length; j++){
-                    if (!(tempArray.indexOf(seriesArray[i].data[j].name) > -1 )){
+            if (widget.widgetData.categories === undefined) {
+                for (var j = 0; j < seriesArray[i].data.length; j++) {
+                    if (!(tempArray.indexOf(seriesArray[i].data[j].name) > -1)) {
                         flag = true;
-                        if (typeof(widget.widgetData.removedArray) != "undefined" && widget.widgetData.removedArray.indexOf(seriesArray[i].data[j].name) >-1){
+                        if (typeof(widget.widgetData.removedArray) != "undefined" && widget.widgetData.removedArray.indexOf(seriesArray[i].data[j].name) > -1) {
                             flag = false;
                         }
                         tempArray.push(seriesArray[i].data[j].name);
                         $scope.categories.push({
-                            name : seriesArray[i].data[j].name,
+                            name: seriesArray[i].data[j].name,
                             status: flag
                         });
                         $scope.seriesName.push(seriesArray[i].data[j].name);
@@ -79,47 +79,47 @@ routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
             }
         }
 
-        if (widget.widgetData.categories === undefined){
+        if (widget.widgetData.categories === undefined) {
             widget.widgetData["categories"] = tempArray;
-        } else{
-            for(var i=0; i<widget.widgetData.categories.length;i++){
+        } else {
+            for (var i = 0; i < widget.widgetData.categories.length; i++) {
                 flag = false;
-                for(var j=0;j<seriesArray[0].data.length;j++){
-                    if(seriesArray[0].data[j].name == widget.widgetData.categories[i]){
+                for (var j = 0; j < seriesArray[0].data.length; j++) {
+                    if (seriesArray[0].data[j].name == widget.widgetData.categories[i]) {
                         flag = true;
                         break;
                     }
                 }
                 $scope.categories.push({
-                    name : widget.widgetData.categories[i],
+                    name: widget.widgetData.categories[i],
                     status: flag
-                });                
+                });
             }
         }
     };
 
-    $scope.setCategoriesFilter = function (category) {
+    $scope.setCategoriesFilter = function(category) {
         var series = $scope.widget.widgetData.highchartsNG.series;
         var detailsArray = [];
-        if (category.status){
+        if (category.status) {
             //remove
-            for (var i =0; i<series.length; i++){
-                for(var j=0; j<series[i].data.length; j++){
-                    if (category.name === series[i].data[j].name){
+            for (var i = 0; i < series.length; i++) {
+                for (var j = 0; j < series[i].data.length; j++) {
+                    if (category.name === series[i].data[j].name) {
                         //Store it to add later
                         detailsArray.push({
                             series: i,
                             data: widget.widgetData.categories.indexOf(category.name),
                             value: series[i].data[j]
-                        });                        
+                        });
                         // Remove the category from the chart
-                        series[i].data.splice(j,1);
+                        series[i].data.splice(j, 1);
                         widget.widgetData.highchartsNG.series[i] = series[i];
                         category.status = false;
                     }
                 }
             }
-            if (widget.widgetData.removedCat === undefined){
+            if (widget.widgetData.removedCat === undefined) {
                 widget.widgetData["removedCat"] = [];
             }
             widget.widgetData.removedCat.push({
@@ -127,40 +127,39 @@ routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
                 details: detailsArray,
                 index: widget.widgetData.categories.indexOf(category.name)
             });
-        }
-        else{
-            angular.forEach(widget.widgetData.removedCat,function(val){
-                if(val.name == category.name){
+        } else {
+            angular.forEach(widget.widgetData.removedCat, function(val) {
+                if (val.name == category.name) {
                     // val.details.sort(function(a,b){return a.series-b.series});
                     // console.log(val.details);
                     // for (var i=0;i<val.details.length;i++){
                     //     widget.widgetData.highchartsNG.series[val.details[i].series].data.splice(val.details[i].data,0,val.details[i].value);                        
                     // }
-                    angular.forEach(val.details,function(element){
-                        widget.widgetData.highchartsNG.series[element.series].data.splice(element.data,0,element.value)
+                    angular.forEach(val.details, function(element) {
+                        widget.widgetData.highchartsNG.series[element.series].data.splice(element.data, 0, element.value)
                     });
                     category.status = true;
-                    widget.widgetData.removedCat.splice(widget.widgetData.removedCat.indexOf(val),1);
+                    widget.widgetData.removedCat.splice(widget.widgetData.removedCat.indexOf(val), 1);
                 }
             });
             $scope.widget.widgetData.highchartsNG.series = widget.widgetData.highchartsNG.series;
         }
     };
     // filter by categories
-    $scope.isCatChecked = function(){
+    $scope.isCatChecked = function() {
         $scope.isIndeterminate = false;
         var count = 0;
-        angular.forEach($scope.categories, function(cat){
-            if(cat.status){
+        angular.forEach($scope.categories, function(cat) {
+            if (cat.status) {
                 count++;
             }
         });
-        if (count !==0 && count !== $scope.categories.length){
+        if (count !== 0 && count !== $scope.categories.length) {
             $scope.isIndeterminate = true;
         }
-        if (count == $scope.categories.length){
+        if (count == $scope.categories.length) {
             return true;
-        }else{
+        } else {
             return false;
         }
 
@@ -168,47 +167,47 @@ routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
 
     $scope.toggleCatAll = function() {
         var flag = $scope.isCatChecked();
-        if (flag){
-            angular.forEach($scope.categories,function(cat){
+        if (flag) {
+            angular.forEach($scope.categories, function(cat) {
                 $scope.setCategoriesFilter(cat);
-            });            
-        }else {
-            angular.forEach($scope.categories,function(cat){
-                if (!cat.status){
+            });
+        } else {
+            angular.forEach($scope.categories, function(cat) {
+                if (!cat.status) {
                     $scope.setCategoriesFilter(cat);
                 }
-            });             
+            });
         }
     };
-    
+
     // filter by series
-    $scope.setSeriesFilter = function (series) {
-        if(series.status){
+    $scope.setSeriesFilter = function(series) {
+        if (series.status) {
             series.status = false;
             widget.widgetData.highchartsNG.series[series.index].visible = false;
             $scope.widget.widgetData.highchartsNG.series[series.index].visible = false;
 
-        } else{
+        } else {
             series.status = true;
-            widget.widgetData.highchartsNG.series[series.index].visible = true;            
-            $scope.widget.widgetData.highchartsNG.series[series.index].visible = true;            
+            widget.widgetData.highchartsNG.series[series.index].visible = true;
+            $scope.widget.widgetData.highchartsNG.series[series.index].visible = true;
         }
     };
 
-    $scope.isChecked = function(){
+    $scope.isChecked = function() {
         $scope.isIndeterminate = false;
         var count = 0;
-        angular.forEach($scope.series, function(ser){
-            if(ser.status){
+        angular.forEach($scope.series, function(ser) {
+            if (ser.status) {
                 count++;
             }
         });
-        if (count !==0 && count !== $scope.series.length){
+        if (count !== 0 && count !== $scope.series.length) {
             $scope.isIndeterminate = true;
         }
-        if (count == $scope.series.length){
+        if (count == $scope.series.length) {
             return true;
-        }else{
+        } else {
             return false;
         }
 
@@ -218,25 +217,25 @@ routerApp.controller('showWidgetCtrl', function ($scope, $mdDialog, widget) {
     $scope.toggleAll = function() {
         var flag = $scope.isChecked();
         // If all series are visible, un-set them all
-        if (flag){
-            angular.forEach($scope.series, function(ser){
-                if(ser.status){
+        if (flag) {
+            angular.forEach($scope.series, function(ser) {
+                if (ser.status) {
                     $scope.setSeriesFilter(ser);
                 }
             });
-        } else{
-            angular.forEach($scope.series, function(ser){
-                if (!ser.status){
+        } else {
+            angular.forEach($scope.series, function(ser) {
+                if (!ser.status) {
                     $scope.setSeriesFilter(ser);
                 }
-            });            
+            });
         }
-  
+
     };
 
 });
-routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', '$state', '$qbuilder', '$diginengine', 'ngToast','report_Widget_Iframe','$sce',
-    function($scope, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, $state, $qbuilder, $diginengine, ngToast,report_Widget_Iframe,$sce) {
+routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', '$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce','sales_distribution',
+    function($scope, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce,sales_distribution) {
 
         //code to keep widget fixed on pivot summary drag events
         $('#content1').on('mousedown', function(e) {
@@ -285,8 +284,8 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
         // if($rootScope.tempDashboard.length != 0)
         $rootScope.tempDashboard = angular.copy($rootScope.dashboard);
-        $scope.reportWidgetURL =$sce.trustAsResourceUrl(report_Widget_Iframe);
-
+        $scope.reportWidgetURL = $sce.trustAsResourceUrl(report_Widget_Iframe);
+        $scope.sales_distribution = $sce.trustAsResourceUrl(sales_distribution);
         $scope.widgetTitleClass = 'widget-title-35';
 
         $scope.adjustTitleLength = function() {
@@ -499,192 +498,191 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     //$mdDialog.hide();
                 });
         };
-    // Methods for filter option of charts
-    $scope.setAttributes = function (widget) {
-        $scope.series = [];
-        $scope.categories = [];
-        $scope.seriesName = [];
-        var tempArray = [];
-        var flag;
-        var seriesArray = widget.widgetData.highchartsNG.series;
-        for ( var i =0; i < seriesArray.length; i++){
-            if (typeof(seriesArray[i].visible) == "undefined"){
-                widget.widgetData.highchartsNG.series[i].visible = true;
-            }
-            $scope.series.push({
-                name: seriesArray[i].name,
-                status: seriesArray[i].visible,
-                index: i
-            });
-            if (widget.widgetData.categories === undefined){
-                for ( var j =0; j<seriesArray[i].data.length; j++){
-                    if (!(tempArray.indexOf(seriesArray[i].data[j].name) > -1 )){
-                        flag = true;
-                        if (typeof(widget.widgetData.removedArray) != "undefined" && widget.widgetData.removedArray.indexOf(seriesArray[i].data[j].name) >-1){
-                            flag = false;
+        // Methods for filter option of charts
+        $scope.setAttributes = function(widget) {
+            $scope.series = [];
+            $scope.categories = [];
+            $scope.seriesName = [];
+            var tempArray = [];
+            var flag;
+            var seriesArray = widget.widgetData.highchartsNG.series;
+            for (var i = 0; i < seriesArray.length; i++) {
+                if (typeof(seriesArray[i].visible) == "undefined") {
+                    widget.widgetData.highchartsNG.series[i].visible = true;
+                }
+                $scope.series.push({
+                    name: seriesArray[i].name,
+                    status: seriesArray[i].visible,
+                    index: i
+                });
+                if (widget.widgetData.categories === undefined) {
+                    for (var j = 0; j < seriesArray[i].data.length; j++) {
+                        if (!(tempArray.indexOf(seriesArray[i].data[j].name) > -1)) {
+                            flag = true;
+                            if (typeof(widget.widgetData.removedArray) != "undefined" && widget.widgetData.removedArray.indexOf(seriesArray[i].data[j].name) > -1) {
+                                flag = false;
+                            }
+                            tempArray.push(seriesArray[i].data[j].name);
+                            $scope.categories.push({
+                                name: seriesArray[i].data[j].name,
+                                status: flag
+                            });
+                            $scope.seriesName.push(seriesArray[i].data[j].name);
                         }
-                        tempArray.push(seriesArray[i].data[j].name);
-                        $scope.categories.push({
-                            name : seriesArray[i].data[j].name,
-                            status: flag
-                        });
-                        $scope.seriesName.push(seriesArray[i].data[j].name);
                     }
                 }
             }
-        }
 
-        if (widget.widgetData.categories === undefined){
-            widget.widgetData["categories"] = tempArray;
-        } else{
-            for(var i=0; i<widget.widgetData.categories.length;i++){
-                flag = false;
-                for(var j=0;j<seriesArray[0].data.length;j++){
-                    if(seriesArray[0].data[j].name == widget.widgetData.categories[i]){
-                        flag = true;
-                        break;
+            if (widget.widgetData.categories === undefined) {
+                widget.widgetData["categories"] = tempArray;
+            } else {
+                for (var i = 0; i < widget.widgetData.categories.length; i++) {
+                    flag = false;
+                    for (var j = 0; j < seriesArray[0].data.length; j++) {
+                        if (seriesArray[0].data[j].name == widget.widgetData.categories[i]) {
+                            flag = true;
+                            break;
+                        }
                     }
-                }
-                $scope.categories.push({
-                    name : widget.widgetData.categories[i],
-                    status: flag
-                });                
-            }
-        }
-    };
-
-    $scope.isChecked = function(){
-        $scope.isIndeterminate = false;
-        var count = 0;
-        angular.forEach($scope.series, function(ser){
-            if(ser.status){
-                count++;
-            }
-        });
-        if (count !==0 && count !== $scope.series.length){
-            $scope.isIndeterminate = true;
-        }
-        if (count == $scope.series.length){
-            return true;
-        }else{
-            return false;
-        }
-
-    };
-
-    $scope.toggleAll = function(widget) {
-        var flag = $scope.isChecked();
-        // If all series are visible, un-set them all
-        if (flag){
-            angular.forEach($scope.series, function(ser){
-                if(ser.status){
-                    $scope.setSeriesFilter(ser,widget);
-                }
-            });
-        } else{
-            angular.forEach($scope.series, function(ser){
-                if (!ser.status){
-                    $scope.setSeriesFilter(ser,widget);
-                }
-            });            
-        }
-  
-    };
-
-    // filter by series
-    $scope.setSeriesFilter = function (series,widget) {
-        if(series.status){
-            series.status = false;
-            widget.widgetData.highchartsNG.series[series.index].visible = false;
-            // $scope.widget.widgetData.highchartsNG.series[series.index].visible = false;
-
-        } else{
-            series.status = true;
-            widget.widgetData.highchartsNG.series[series.index].visible = true;            
-            // $scope.widget.widgetData.highchartsNG.series[series.index].visible = true;            
-        }
-    };
-
-    $scope.setCategoriesFilter = function (category,widget) {
-        var series = widget.widgetData.highchartsNG.series;
-        var detailsArray = [];
-        if (category.status){
-            //remove
-            for (var i =0; i<series.length; i++){
-                for(var j=0; j<series[i].data.length; j++){
-                    if (category.name === series[i].data[j].name){
-                        //Store it to add later
-                        detailsArray.push({
-                            series: i,
-                            data: widget.widgetData.categories.indexOf(category.name),
-                            value: series[i].data[j]
-                        });                        
-                        // Remove the category from the chart
-                        series[i].data.splice(j,1);
-                        widget.widgetData.highchartsNG.series[i] = series[i];
-                        category.status = false;
-                    }
-                }
-            }
-            if (widget.widgetData.removedCat === undefined){
-                widget.widgetData["removedCat"] = [];
-            }
-            widget.widgetData.removedCat.push({
-                name: category.name,
-                details: detailsArray,
-                index: widget.widgetData.categories.indexOf(category.name)
-            });
-        }
-        else{
-            angular.forEach(widget.widgetData.removedCat,function(val){
-                if(val.name == category.name){
-                    // val.details.sort(function(a,b){return a.series-b.series});
-                    // console.log(val.details);
-                    // for (var i=0;i<val.details.length;i++){
-                    //     widget.widgetData.highchartsNG.series[val.details[i].series].data.splice(val.details[i].data,0,val.details[i].value);                        
-                    // }
-                    angular.forEach(val.details,function(element){
-                        widget.widgetData.highchartsNG.series[element.series].data.splice(element.data,0,element.value)
+                    $scope.categories.push({
+                        name: widget.widgetData.categories[i],
+                        status: flag
                     });
-                    category.status = true;
-                    widget.widgetData.removedCat.splice(widget.widgetData.removedCat.indexOf(val),1);
+                }
+            }
+        };
+
+        $scope.isChecked = function() {
+            $scope.isIndeterminate = false;
+            var count = 0;
+            angular.forEach($scope.series, function(ser) {
+                if (ser.status) {
+                    count++;
                 }
             });
-        }
-    };                    
-    // filter by categories
-    $scope.isCatChecked = function(){
-        $scope.isIndeterminate = false;
-        var count = 0;
-        angular.forEach($scope.categories, function(cat){
-            if(cat.status){
-                count++;
+            if (count !== 0 && count !== $scope.series.length) {
+                $scope.isIndeterminate = true;
             }
-        });
-        if (count !==0 && count !== $scope.categories.length){
-            $scope.isIndeterminate = true;
-        }
-        if (count == $scope.categories.length){
-            return true;
-        }else{
-            return false;
-        }
-    };
+            if (count == $scope.series.length) {
+                return true;
+            } else {
+                return false;
+            }
 
-    $scope.toggleCatAll = function(widget) {
-        var flag = $scope.isCatChecked();
-        if (flag){
-            angular.forEach($scope.categories,function(cat){
-                $scope.setCategoriesFilter(cat,widget);
-            });            
-        }else {
-            angular.forEach($scope.categories,function(cat){
-                if (!cat.status){
-                    $scope.setCategoriesFilter(cat,widget);
+        };
+
+        $scope.toggleAll = function(widget) {
+            var flag = $scope.isChecked();
+            // If all series are visible, un-set them all
+            if (flag) {
+                angular.forEach($scope.series, function(ser) {
+                    if (ser.status) {
+                        $scope.setSeriesFilter(ser, widget);
+                    }
+                });
+            } else {
+                angular.forEach($scope.series, function(ser) {
+                    if (!ser.status) {
+                        $scope.setSeriesFilter(ser, widget);
+                    }
+                });
+            }
+
+        };
+
+        // filter by series
+        $scope.setSeriesFilter = function(series, widget) {
+            if (series.status) {
+                series.status = false;
+                widget.widgetData.highchartsNG.series[series.index].visible = false;
+                // $scope.widget.widgetData.highchartsNG.series[series.index].visible = false;
+
+            } else {
+                series.status = true;
+                widget.widgetData.highchartsNG.series[series.index].visible = true;
+                // $scope.widget.widgetData.highchartsNG.series[series.index].visible = true;            
+            }
+        };
+
+        $scope.setCategoriesFilter = function(category, widget) {
+            var series = widget.widgetData.highchartsNG.series;
+            var detailsArray = [];
+            if (category.status) {
+                //remove
+                for (var i = 0; i < series.length; i++) {
+                    for (var j = 0; j < series[i].data.length; j++) {
+                        if (category.name === series[i].data[j].name) {
+                            //Store it to add later
+                            detailsArray.push({
+                                series: i,
+                                data: widget.widgetData.categories.indexOf(category.name),
+                                value: series[i].data[j]
+                            });
+                            // Remove the category from the chart
+                            series[i].data.splice(j, 1);
+                            widget.widgetData.highchartsNG.series[i] = series[i];
+                            category.status = false;
+                        }
+                    }
                 }
-            });             
-        }
-    };    
+                if (widget.widgetData.removedCat === undefined) {
+                    widget.widgetData["removedCat"] = [];
+                }
+                widget.widgetData.removedCat.push({
+                    name: category.name,
+                    details: detailsArray,
+                    index: widget.widgetData.categories.indexOf(category.name)
+                });
+            } else {
+                angular.forEach(widget.widgetData.removedCat, function(val) {
+                    if (val.name == category.name) {
+                        // val.details.sort(function(a,b){return a.series-b.series});
+                        // console.log(val.details);
+                        // for (var i=0;i<val.details.length;i++){
+                        //     widget.widgetData.highchartsNG.series[val.details[i].series].data.splice(val.details[i].data,0,val.details[i].value);                        
+                        // }
+                        angular.forEach(val.details, function(element) {
+                            widget.widgetData.highchartsNG.series[element.series].data.splice(element.data, 0, element.value)
+                        });
+                        category.status = true;
+                        widget.widgetData.removedCat.splice(widget.widgetData.removedCat.indexOf(val), 1);
+                    }
+                });
+            }
+        };
+        // filter by categories
+        $scope.isCatChecked = function() {
+            $scope.isIndeterminate = false;
+            var count = 0;
+            angular.forEach($scope.categories, function(cat) {
+                if (cat.status) {
+                    count++;
+                }
+            });
+            if (count !== 0 && count !== $scope.categories.length) {
+                $scope.isIndeterminate = true;
+            }
+            if (count == $scope.categories.length) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        $scope.toggleCatAll = function(widget) {
+            var flag = $scope.isCatChecked();
+            if (flag) {
+                angular.forEach($scope.categories, function(cat) {
+                    $scope.setCategoriesFilter(cat, widget);
+                });
+            } else {
+                angular.forEach($scope.categories, function(cat) {
+                    if (!cat.status) {
+                        $scope.setCategoriesFilter(cat, widget);
+                    }
+                });
+            }
+        };
 
 
         $scope.showWidget = function(ev, widget) {
@@ -1167,7 +1165,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
 
 
                         removeWidget = true;
-                        $mdDialog.hide(removeWidget,widget);
+                        $mdDialog.hide(removeWidget, widget);
                         //$scope.$apply();
                     }
                     $scope.cancel = function() {
@@ -1207,7 +1205,7 @@ routerApp.controller('DashboardCtrl', ['$scope', '$rootScope', '$mdDialog', '$ob
                     ngToast.dismiss();
                     ngToast.create({
                         className: 'success',
-                        content: ''+widget.widgetName+' widget removed successfully',
+                        content: '' + widget.widgetName + ' widget removed successfully',
                         horizontalPosition: 'center',
                         verticalPosition: 'top',
                         dismissOnClick: true
@@ -1888,4 +1886,29 @@ routerApp.controller('gmapsController', ['$scope', '$rootScope', '$mdDialog', '$
         }
     }
 ]);
+routerApp.directive('highchartTest', [function() {
+    return {
+        restrict: 'E',
+        template: '<div></div>',
+        replace: true,
+        link: function(scope, element, attrs) {
 
+            scope.$watch(attrs.chart, function() {
+
+                if (!attrs.chart) return;
+
+                var chart = scope.$eval(attrs.chart);
+
+                angular.element(element).highcharts(chart);
+            });
+
+        }
+    }
+}]);
+routerApp.controller('geomap', ['$scope', '$rootScope', '$mdDialog', '$state', '$http', '$timeout',
+    function($scope, $rootScope, $mdDialog, $state, $http, $timeout) {
+ 
+
+ 
+    }
+]);

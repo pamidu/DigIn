@@ -2147,6 +2147,7 @@ routerApp.controller('inviteUserCtrl',['$scope','$mdDialog','$http','Digin_Tenan
     }
 
     $scope.invite = function () {
+        var baseUrl = "http://" + window.location.hostname;
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
         $http.get(baseUrl + '/auth/tenant/AddUser/' + $scope.user.email + '/user', {
                 headers: {'Securitytoken': userInfo.SecurityToken}
@@ -2157,9 +2158,10 @@ routerApp.controller('inviteUserCtrl',['$scope','$mdDialog','$http','Digin_Tenan
                 }
                 else{
                     fireMsg('1', '</strong>Invitation sent successfully.');
-                    $scope.getAllSharableObj();
+                    $scope.getSharableObj();
                     $scope.inviteForm.$setUntouched();
                     $scope.user.email='';
+                    $mdDialog.cancel();
                 }
             }).error(function (error) {
                 fireMsg('0', 'Invitation sending fail');

@@ -1,7 +1,4 @@
-
-Duo DigIn
-
-Terms of Service
+									Duo DigIn - Terms of Service
 
 This is a Legal Agreement (“Agreement”) between you (“You”, “you”, “Participant” or “Customer”) and Duo World Inc., (“DuoWorld”), having place of business at 170S, Green Valley Parkway, Suite 300, Henderson, Nevada 89012, United States of America. If You are entering into this Agreement on behalf of a company or other legal entity, You represent and warrant that (i) You have full legal authority to bind that company or legal entity to the terms of this Agreement; (ii) You have read and understand this Agreement; (iii) You agree on behalf of the company or legal entity to this Agreement.
 

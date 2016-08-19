@@ -11,7 +11,7 @@
                 	<img src="image/login-logo.png" style="width:50px;height:50px; ">
                 </div>
 
-				<div style="padding: 6px; height: 20%; border-bottom: 1px solid #EEE; background-color: #01718d; width:90%;">
+				<div style="padding: 3px; height: 20%; border-bottom: 1px solid #EEE; background-color: #01718d; width:90%;">
 					<span style="padding-left:10px; color:white;font-weight:5000;font-size: 40px; font-family: 'Goudy Old Style';">
 						Terms and Conditions
 					</span></div>	
@@ -30,7 +30,7 @@
 			
 
 			<div align="center" style="padding:4px; height: 70%;">
-				<textarea rows="23" cols="175" style="border: 5px solid #cccccc;font-family: Tahoma; resize: none; padding: 20px 20px; text-align: justify; " readonly="true" >	
+				<textarea rows="20" cols="160" style="border: 5px solid #cccccc;font-family: Tahoma; resize: none; padding: 0px 20px; text-align: justify; " readonly="true" >	
 					<?php include('agreement.php');?>
 				</textarea>
 			</div>
@@ -42,7 +42,7 @@
 			    <md-button ng-click="clickNotAgreed()" class="md-raised md-primary">I DO NOT AGREED</md-button>
 			</div>
 
-			</br>
+			
 
 		    <div align="center" style="padding: 10px; height: 10%; width:100%; background-color: #01718d; ">
 				<span style="color:white;font-weight:500;font-size: 13px; ">

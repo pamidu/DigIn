@@ -5061,3 +5061,31 @@ i.icon-cancel:hover {
 .widicons :hover {
     fill:#f9a525 !important;
 }
+
+.custom-filter {
+    line-height: 3px !important;
+    min-height: 20px !important;
+}    
+
+.cutom-filter-ul {
+    margin-bottom: -11px !important;
+    margin-left: -22px !important;
+    margin-top: -6px !important;
+    min-width: 187px !important;
+}
+
+md-checkbox.md-checked .md-icon:after {
+    width: 3.66667px !important;
+    height: 8.33333px !important;    
+}
+
+md-checkbox .md-icon {
+    width: 15px !important;
+    height: 15px !important;
+}
+
+md-checkbox.md-indeterminate .md-icon:after {
+    width: 7px !important;
+    height: 1px !important;
+    border-width: 1px !important;
+}

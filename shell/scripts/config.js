@@ -1,21 +1,14 @@
 angular.module('configuration', [])
 	.constant('Digin_Engine_API', 'http://digin.io:1929/')
-    //.constant('Digin_Engine_API', 'http://digin.io:1929/')
-    .constant('Digin_Engine_API_Namespace', 'Demo')
     .constant('Digin_Tomcat_Base', 'http://digin.io:9897/')
     .constant('Digin_Domain', 'digin.io')
-    .constant('DevStudio', false)
     .constant('RealTime','http://report.digin.io:5601/app/kibana')
     .constant('ReportDevelopment','http://report.digin.io:5488/')
-   // .constant('RealTime','http://104.155.232.234/#/dashboard/file/default.json')
-  
-    .constant('Digin_LogoUploader', 'http://104.196.131.251:8080/')
+   .constant('Digin_LogoUploader', 'http://104.196.131.251:8080/')
     .constant('Digin_Auth', 'http://digin.io/')
    .constant('Digin_Tenant', 'http://auth.digin.io:3048')
    .constant('Digin_ObjStore', 'http://auth.digin.io:3000')
-
-    //#for loggin process
-    .constant('IsLocal', false)
+   .constant('IsLocal', false)
    .constant('report_Widget_Iframe', 'http://digin.io/Reports/HourlyCallSummery_HBL/HourlyCallSummery_HBL.pdf')
   .constant('digind3', 'http://digin.io/digind3/')
 	.constant("sales_distribution","http://digin.io/samples/")

@@ -1,4 +1,4 @@
-routerApp.service('CommonDataSrc', function($objectstore,$http,Digin_Engine_API_Namespace) {
+routerApp.service('CommonDataSrc', function($objectstore,$http) {
    var dataObj = null;
    var dataSrc = null;
    var dataTable = null;

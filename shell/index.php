@@ -143,7 +143,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
 
 <script src="http://code.highcharts.com/highcharts.js"></script>
-<script type="text/javascript" src="scripts/controllers/highchartsCustom.js"></script>
+ 
 <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
@@ -202,7 +202,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pouchdb/5.4.5/pouchdb.js"></script>
 <script src="https://cdn.jsdelivr.net/angular.pouchdb/4.3.0/angular-pouchdb.min.js"></script>
 <!-- html2canvas -->
-<script type="text/javascript" src="build/html2canvas.js"></script>
+
 <script type="text/javascript" src="scripts/custom/utility.js"></script>
 <script type="text/javascript" src="scripts/app.js"></script>
 <script type="text/javascript" src="scripts/controllers/login.js"></script>
@@ -388,7 +388,7 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
  
 <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyANY96AhQijBZgSXQ6RWkYUlO5fxCh6OMU&sensor=false'></script>
-<script src="https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/src/markerclusterer.js"></script>
+ 
 <!-- angular google plus -->
 <script src="bower_components/angular-google-plus/dist/angular-google-plus.min.js"></script>
 <!-- angular at-table -->

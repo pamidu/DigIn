@@ -621,7 +621,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         $('#content1').removeClass('content-m-top40').addClass('content-m-top0');
                         $scope.headerMenuToggle = false;
                 //if number of widgets are lesser than 6
-                var widgetLimit = 6;
+                var widgetLimit = 10;
                 if($rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.length < widgetLimit)
                 {
                     var length = $scope.sourceUi.sourceRcrd.length++;

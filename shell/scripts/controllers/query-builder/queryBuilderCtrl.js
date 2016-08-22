@@ -1783,6 +1783,8 @@
                 widget.widgetData.widView = "views/query/chart-views/forecast.html";
                 widget.widgetData.foreCastObj = $scope.forecastObj.paramObj;
                 widget.widgetData.initCtrl = "elasticInit";
+                widget.widgetData.highchartsNG.series[1].color =  "#4CAF50";
+                widget.widgetData.highchartsNG.series[0].color ="#E040FB" ;
                 widget.widgetName = "forecast";
                 $scope.saveChart(widget);
             }
@@ -1859,7 +1861,7 @@
                                 text: ''
                             },
                             tooltip: {
-                                pointFormat: '<b> <span style = "color : {series.color}" >  ● </span> {series.name}: {point.y:,.0f} </b>',
+                                pointFormat: '<b> <span style = "color : {series.color}" >  ? </span> {series.name}: {point.y:,.0f} </b>',
                                 useHTML: true
                             }
                         },
@@ -1912,6 +1914,8 @@
                 widget.widgetData.highchartsNG = $scope.widget.widgetData.highchartsNG;
                 widget.widgetData.widView = "views/query/chart-views/forecast.html";
                 widget.widgetData.foreCastObj = $scope.forecastObj.paramObj;
+                widget.widgetData.highchartsNG.series[1].color = "#E040FB";
+                widget.widgetData.highchartsNG.series[0].color = "#4CAF50";
                 widget.widgetData.initCtrl = "elasticInit";
                 widget.widgetName = "forecast";
                 $scope.saveChart(widget);
@@ -2017,7 +2021,7 @@
                     //             text: ''
                     //         },
                     //         tooltip: {
-                    //             pointFormat: '<b> <span style = "color : {series.color}" >  ● </span> {series.name}: {point.y:,.0f} </b>',
+                    //             pointFormat: '<b> <span style = "color : {series.color}" >  ? </span> {series.name}: {point.y:,.0f} </b>',
                     //             useHTML: true
                     //         }
                     //     },
@@ -2148,7 +2152,7 @@
                                 text: ''
                             },
                             tooltip: {
-                                pointFormat: '<b> <span style = "color : {series.color}" >  ● </span> {series.name}: {point.y:,.0f} </b>',
+                                pointFormat: '<b> <span style = "color : {series.color}" >  ? </span> {series.name}: {point.y:,.0f} </b>',
                                 useHTML: true
                             }
                         },
@@ -3193,7 +3197,7 @@
                                             if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
                                         }
                                     }
-                                    chart.options.lang.drillUpText = "◁ Back to " + highestLvl;
+                                    chart.options.lang.drillUpText = "? Back to " + highestLvl;
                                     // Show the loading label
                                     chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
                                     //aggregate method
@@ -3257,7 +3261,7 @@
                                 var flag = false;
                                 $scope.drillDownConfig.drillOrdArr.forEach(function(key) {
                                     if (chart.options.customVar == key.nextLevel) {
-                                        chart.options.lang.drillUpText = "◁ Back to " + key.name;
+                                        chart.options.lang.drillUpText = "? Back to " + key.name;
                                         flag = true;
                                     }
                                 });

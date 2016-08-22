@@ -16,14 +16,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.firstName = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
         $scope.count = 0;
         $interval( function(){
-            var tempArray = [{
-                title: "Dashboard",
-                description: "Profit for the month has exceeded the threshold value"},{
-                title: "User Segregation",
-                description: "john@duosoftare.com has invited you to join his tenant."},{
-                title: "Dashboard",
-                description: "Sales for the month has exceeded the treshold value"}];
-            if (tempArray.length > $scope.count){
+            var tempArray = 	 [{title:"User Segregation",description:"omal@duosoftare.com has invited you to jon his tenant"},
+		{title:"DigIn",description:"Your account will expire in 27 days"},         
+        {title:"Dashboard",description:"You event NBQSA  Demo is scheduled at 4:00 pm "},
+        {title:"DigIn",description:"Veery@duosoftware.com is waiting for your response"}];      
+         if (tempArray.length > $scope.count){
                 $mdToast.hide();
                 $mdToast.show(
                   $mdToast.simple()
@@ -34,7 +31,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.notifications.push(tempArray[$scope.count]);
                 $scope.count++;
             }
-            }, 600000);        
+            }, 200000);        
 
         var db = new pouchDB('dashboard');
         $scope.adjustUI = function () {
@@ -1042,7 +1039,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         
         $scope.navigate = function (routeName, ev) {
 
-            var widgetLimit = 6;
+            var widgetLimit = 10;
             var selectedPage = $rootScope.selectedPage;
             var pageCount = $rootScope.dashboard.pages.length;
             var pageWidgetCount = $rootScope.dashboard.pages[selectedPage - 1].widgets.length;
@@ -1221,11 +1218,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
         }
 		
-	$scope.notifications = 
+ 
+		$scope.notifications = 
 		 [{title:"User Segregation",description:"omal@duosoftare.com has invited you to jon his tenant."},
 		{title:"Dashboard",description:"Sales for the month has exceeded the treshold value"},
-		{title:"DigIn",description:"DigInCache server is down."}];
-
+		{title:"DigIn",description:"Your account will expire in 28 days"},         
+        {title:"Dashboard",description:"You have 2 events organized today"},
+        {title:"DigIn",description:"Veery@duosoftware.com is waiting for your response"}];
        $scope.removeNotification = function(ev,notification) {
              for (i = 0, len = $scope.notifications.length; i<len; ++i){
                     if($scope.notifications[i].title == notification.title)

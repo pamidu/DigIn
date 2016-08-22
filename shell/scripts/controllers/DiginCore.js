@@ -249,7 +249,8 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             }
         });
 
-           $scope.updateRealtime = function(){
+          
+            $scope.updateRealtime = function(){
 
             $scope.temp = 1770697;
 
@@ -1267,14 +1268,16 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             });
             client.getClasses("com.duosoftware.com");
         }
-        $scope.commentary = function(widget) {
+         $scope.commentary = function(widget) {
             var comment = "";
             var chunks = [];
-
-            var msg = new SpeechSynthesisUtterance("Total sales for the month is 101410.42 Srilankan Rupees");
+            if(widget.widgetName== "metric")
+            {
+                 var msg = new SpeechSynthesisUtterance("Total" + widget.widgetData.widName+" is  "+ widget.widgetData.widData.value + widget.widgetData.widData.scale);
             window.speechSynthesis.speak(msg);
-
-
+            }
+          
+           
         }
         $scope.closeDialog = function() {
             $mdDialog.hide();

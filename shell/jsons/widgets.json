@@ -239,7 +239,7 @@
             "sizeX": 4, "sizeY": 4, "row": 0, "col": 16
         },
         {
-            "title": "Realtime",
+            "title": "Orders",
             "icon": "styles/css/images/icons/traffic-light.svg",
             "type": "Custom",
             "Description": "View reports from a iFrame",

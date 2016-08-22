@@ -1,0 +1,43 @@
+<data:sql-datasource xmlns:data="http://jfreereport.sourceforge.net/namespaces/datasources/sql">
+  <data:config/>
+  <data:connection>
+    <data:driver>org.postgresql.Driver</data:driver>
+    <data:url>jdbc:postgresql://192.168.2.106:5432/VK_Digital</data:url>
+    <data:properties>
+      <data:property name="user">postgres</data:property>
+      <data:property name="password">encrypted:771b4a60055957</data:property>
+      <data:property name="::pentaho-reporting::port">5432</data:property>
+      <data:property name="::pentaho-reporting::name">MMIDB</data:property>
+      <data:property name="::pentaho-reporting::database-name">VK_Digital</data:property>
+      <data:property name="::pentaho-reporting::hostname">192.168.2.106</data:property>
+      <data:property name="::pentaho-reporting::database-type">POSTGRESQL</data:property>
+    </data:properties>
+  </data:connection>
+  <data:query-definitions>
+    <data:query name="Query 1">
+      <data:static-query>SELECT id,  guinvid,  invoiceno,  invoicedate ::date,
+batchno,  duedate::date, round(CAST(currentcharge as numeric),2) as currentcharge,  
+subtotal,  discount, retailprice ,
+round(CAST(taxtotal as numeric),2) as taxtotal,   guaccountid,  accountno, 
+stb,  vc,  gucustid,  gupromotionid,  promotioncode,
+  promotionname,  round(CAST(adjustment as numeric),2) as adjustment,  
+  round(CAST(closing as numeric),2) as closing, 
+  round(CAST(opening as numeric),2) as opening,
+  round(CAST(payment as numeric),2) as payment,
+  printdescription, round(CAST(totalprice as numeric),2) as totalprice, 
+  qty,  unitprice,
+  uom,  billrunstartdate::date,  billrunenddate::date,
+  guproductid,  productcode,  productname,
+  gudealerid,  dealercode,  dealername,
+  dealeraddress,  dealerpincode,  dealerphoneno,  customercode,
+  customername,  customeraddress,  customerpincode,  custphoneno,
+  tenantid,  companyid,  viewobjectid
+FROM
+     rep_invoiceprintbybatch_tbl
+WHERE
+ guinvid = ${RefID}
+ORDER BY
+     guinvid</data:static-query>
+    </data:query>
+  </data:query-definitions>
+</data:sql-datasource>

@@ -509,7 +509,7 @@ routerApp.service('profile',['$rootScope','$http', function($rootScope,$http){
     this.getProfile = function() {
         var baseUrl = "http://" + window.location.hostname;
         //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com') 
-        $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
+        $http.get(baseUrl+'/apis/profile/userprofile/'+$rootScope.profile_Det.Email)
             .success(function(response){
                 console.log(response);
                 //#load exisitging data

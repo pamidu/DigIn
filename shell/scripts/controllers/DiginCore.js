@@ -249,23 +249,26 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             }
         });
 
-           $scope.updateRealtime = function(){
+          
+            $scope.updateRealtime = function(){
 
-
+            $scope.temp = 1770697;
 
             $interval(function () {
-                $scope.label="Orders for the year";
+                //var ranId =$scope.random();
+                    var x =  Math.floor(Math.random() * 10) + 1;
+                    $scope.temp = $scope.temp + x;
+
+                    $scope.value = numberWithCommas($scope.temp);
                     
-                    var ranId =$scope.random();
-                    
-                    $http.get('http://digin.io:1929/executeQuery?db=BigQuery&query=select%20sum(834770697%2Bsum(product_quantity))%20qty%20from%20digin_duosoftware_com.orders_RT&ranId='+ranId+'&SecurityToken=' + getCookie('securityToken') + '')
-                    .success(function(data) {
-                         $scope.value = data.Result[0].qty;
+                    // $http.get('http://digin.io:1929/executeQuery?db=BigQuery&query=select%20sum(834770697%2Bsum(product_quantity))%20qty%20from%20digin_duosoftware_com.orders_RT&ranId='+ranId+'&SecurityToken=cc9ccbac6a952a498c5328c35d01d988')
+                    // .success(function(data) {
+                    //      //$scope.value = numberWithCommas(data.Result[0].qty);
                          
-                    })
-                    .error(function(err) {
+                    // })
+                    // .error(function(err) {
                           
-                    });  
+                    // });  
 
             }, 3000);
 
@@ -280,6 +283,10 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 });
                 return uuid;
         };
+
+        function numberWithCommas(x) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
         //configuring gridster
         $scope.gridsterOpts = {
 
@@ -1261,14 +1268,16 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             });
             client.getClasses("com.duosoftware.com");
         }
-        $scope.commentary = function(widget) {
+         $scope.commentary = function(widget) {
             var comment = "";
             var chunks = [];
-
-            var msg = new SpeechSynthesisUtterance("Total sales for the month is 101410.42 Srilankan Rupees");
+            if(widget.widgetName== "metric")
+            {
+                 var msg = new SpeechSynthesisUtterance("Total" + widget.widgetData.widName+" is  "+ widget.widgetData.widData.value + widget.widgetData.widData.scale);
             window.speechSynthesis.speak(msg);
-
-
+            }
+          
+           
         }
         $scope.closeDialog = function() {
             $mdDialog.hide();

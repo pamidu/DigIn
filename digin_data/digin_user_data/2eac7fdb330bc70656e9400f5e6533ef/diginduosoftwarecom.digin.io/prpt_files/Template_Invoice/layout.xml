@@ -1,0 +1,1166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout xmlns="http://reporting.pentaho.org/namespaces/engine/classic/bundle/layout/1.0" xmlns:style="http://reporting.pentaho.org/namespaces/engine/classic/bundle/style/1.0" xmlns:core="http://reporting.pentaho.org/namespaces/engine/attributes/core" xmlns:html="http://reporting.pentaho.org/namespaces/engine/attributes/html" xmlns:swing="http://reporting.pentaho.org/namespaces/engine/attributes/swing" xmlns:pdf="http://reporting.pentaho.org/namespaces/engine/attributes/pdf" xmlns:wizard="http://reporting.pentaho.org/namespaces/engine/attributes/wizard" xmlns:designtime="http://reporting.pentaho.org/namespaces/report-designer/2.0" xmlns:crosstab="http://reporting.pentaho.org/namespaces/engine/attributes/crosstab" xmlns:pentaho="http://reporting.pentaho.org/namespaces/engine/attributes/pentaho" xmlns:table="http://reporting.pentaho.org/namespaces/engine/attributes/table" core:auto-sort="true" designtime:zoom="2.0" designtime:HorizontalGuideLines="(true,274.0) (true,83.0) (true,359.5) (true,88.5)">
+  <style:element-style>
+  </style:element-style>
+  <report-header>
+    <root-level-content designtime:visual-height="184.852" designtime:VerticalGuideLines="(true,43.75001525878906) (true,14.0) (true,29.5) (true,58.0) (true,72.0) (true,86.0) (true,100.5)">
+      <style:element-style>
+        <style:spatial-styles x="90"/>
+      </style:element-style>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="0.506" y="0.8" min-width="80" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Customer Code		      </core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="0.506" y="16" min-width="80" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value> Customer Name	      </core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="0.506" y="59" min-width="80" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>LCO Code</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="274.391" y="31.16" min-width="51.791" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Bill No</core:value>
+      </label>
+      <horizontal-line>
+        <style:element-style>
+          <style:border-styles background-color="#fcd5b5"/>
+          <style:common-styles vertical-alignment="top"/>
+          <style:content-styles draw-shape="true" scale="true" color="black" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="0" y="167.99" min-width="535" min-height="0"/>
+          <style:text-styles font-face="Tahoma" font-size="8"/>
+        </style:element-style>
+      </horizontal-line>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="0.506" y="31" min-width="80" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Billing Address </core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="0.506" y="73" min-width="80" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>LCO Name</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="0.506" y="88" min-width="80" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>LCO Contact No</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="274" y="55.854" min-width="75.061" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Bill Date</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="274" y="71" min-width="75.061" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Bill Due Date</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="274" y="86" min-width="75.061" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Billing Cycle</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="274" y="0" min-width="52.083" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>STB No</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:spatial-styles x="1" y="140" min-width="77.586" min-height="9"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Previous Balance</core:value>
+      </label>
+      <rectangle>
+        <style:element-style>
+          <style:band-styles table-layout="fixed"/>
+          <style:border-styles padding-top="55" padding-left="0" padding-bottom="55" padding-right="5"/>
+          <style:common-styles vertical-alignment="top"/>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="86.667" y="137.241" min-width="89.919" min-height="28"/>
+        </style:element-style>
+      </rectangle>
+      <rectangle>
+        <style:element-style>
+          <style:band-styles table-layout="fixed"/>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="453.667" y="137.344" min-width="79.586" min-height="28"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+      </rectangle>
+      <rectangle>
+        <style:element-style>
+          <style:band-styles table-layout="fixed"/>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="368.333" y="137.344" min-width="79.586" min-height="28"/>
+        </style:element-style>
+      </rectangle>
+      <rectangle>
+        <style:element-style>
+          <style:band-styles table-layout="fixed"/>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="184.805" y="137.241" min-width="82.086" min-height="28"/>
+        </style:element-style>
+      </rectangle>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:spatial-styles x="185.805" y="140" min-width="77.586" min-height="9"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Adjustments</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:spatial-styles x="89.586" y="140" min-width="77.586" min-height="9"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Last Payment</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:spatial-styles x="368.333" y="140" min-width="77.586" min-height="9"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Amount Due</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:spatial-styles x="453.667" y="140" min-width="77.586" min-height="9"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Duo Date</core:value>
+      </label>
+      <horizontal-line>
+        <style:element-style>
+          <style:border-styles background-color="#fcd5b5"/>
+          <style:common-styles vertical-alignment="top"/>
+          <style:content-styles draw-shape="true" scale="true" color="black" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="0" y="184.852" min-width="535" min-height="0"/>
+          <style:text-styles font-face="Tahoma" font-size="8"/>
+        </style:element-style>
+      </horizontal-line>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="88.138" y="168.47" min-width="114.437" min-height="13.53"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Plan Details</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="446.919" y="170" min-width="78.92" min-height="13.53"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Total</core:value>
+      </label>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true" color="black" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="434.506" y="168.99" min-width="0" min-height="14.726"/>
+        </style:element-style>
+      </vertical-line>
+      <rectangle>
+        <style:element-style>
+          <style:band-styles table-layout="fixed"/>
+          <style:common-styles vertical-alignment="top"/>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="0" y="137" min-width="79.586" min-height="28"/>
+        </style:element-style>
+      </rectangle>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="83.977" y="1.8" min-width="3" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>:</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="83.977" y="16" min-width="3" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>:</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="83.977" y="30" min-width="3" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>:</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="83.977" y="59" min-width="3" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>:</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="83.977" y="74" min-width="3" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>:</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="83.977" y="90" min-width="3" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>:</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="360" y="1.8" min-width="3" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>:</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="360" y="16" min-width="3" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>:</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="360" y="59" min-width="3" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>:</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="360" y="31" min-width="3" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>:</core:value>
+      </label>
+      <rectangle>
+        <style:element-style>
+          <style:band-styles table-layout="fixed"/>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="274.967" y="137.241" min-width="85.911" min-height="28"/>
+        </style:element-style>
+      </rectangle>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:spatial-styles x="280.292" y="140" min-width="77.586" min-height="9"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Current Charges</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="1" y="170" min-width="54.101" min-height="13.53"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>No</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="355.061" y="170" min-width="72.225" min-height="13.53"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Rate</core:value>
+      </label>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true" color="black" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="348.506" y="168.99" min-width="0" min-height="14.726"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true" color="black" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="58.506" y="168.99" min-width="0" min-height="14.726"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true" color="black" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="0" y="168.99" min-width="0" min-height="14.726"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true" color="black" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="535" y="168.99" min-width="0" min-height="14.726"/>
+        </style:element-style>
+      </vertical-line>
+      <text-field core:field="customercode">
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="90" y="1.8" min-width="100" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="customername">
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="90" y="16.16" min-width="100" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="dealername">
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="90" y="74" min-width="100" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="dealercode">
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="90" y="59" min-width="100" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="invoiceno">
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="364" y="30.16" min-width="100" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <date-field core:field="invoicedate" core:format-string="yyyy-MM-dd">
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="364" y="56.854" min-width="100" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </date-field>
+      <date-field core:field="duedate" core:format-string="yyyy-MM-dd">
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="364" y="72" min-width="100" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </date-field>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="364" y="87" min-width="100" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>Monthly</core:value>
+      </label>
+      <text-field core:field="opening">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="15" y="150" min-width="50" min-height="11"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="paidamount">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="101.775" y="150" min-width="50" min-height="11"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="adjustment">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="197.405" y="150" min-width="50" min-height="11"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="currentcharge">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="298.683" y="150" min-width="50" min-height="11"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <date-field core:field="duedate" core:format-string="yyyy-MM-dd">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="460.61" y="150" min-width="50" min-height="11"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </date-field>
+      <text-field core:field="closing">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="386.541" y="150" min-width="50" min-height="11"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="stb">
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="364" y="0.8" min-width="100" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="274" y="16" min-width="51.791" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>VC No</core:value>
+      </label>
+      <text-field core:field="vc">
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="364" y="15" min-width="100" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="dealeraddress">
+        <style:element-style>
+          <style:common-styles vertical-alignment="top"/>
+          <style:spatial-styles x="90" y="30" min-width="167.5" min-height="26"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="dealerphoneno">
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="90" y="88" min-width="100" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="360" y="87" min-width="3" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>:</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="360" y="73" min-width="3" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>:</core:value>
+      </label>
+    </root-level-content>
+  </report-header>
+  <group>
+    <style:element-style>
+    </style:element-style>
+    <fields>
+    </fields>
+    <group-header>
+      <root-level-content designtime:hideInLayoutGUI="true">
+        <style:element-style>
+        </style:element-style>
+      </root-level-content>
+    </group-header>
+    <data-body>
+      <style:element-style>
+      </style:element-style>
+      <details-header designtime:hideInLayoutGUI="true">
+        <style:element-style>
+          <style:common-styles avoid-page-break="true"/>
+        </style:element-style>
+      </details-header>
+      <details>
+        <root-level-content designtime:visual-height="16.0">
+          <style:element-style>
+            <style:spatial-styles min-height="16"/>
+          </style:element-style>
+          <text-field core:field="productcode">
+            <style:element-style>
+              <style:common-styles vertical-alignment="middle"/>
+              <style:spatial-styles x="125.862" y="0" min-width="100" min-height="15"/>
+              <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="retailprice">
+            <style:element-style>
+              <style:common-styles alignment="right" vertical-alignment="middle"/>
+              <style:spatial-styles x="368.333" y="0" min-width="66.173" min-height="15"/>
+              <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <vertical-line>
+            <style:element-style>
+              <style:content-styles draw-shape="true" scale="true" stroke-weight="1.5" stroke-style="solid"/>
+              <style:spatial-styles x="0" y="0" min-width="0" min-height="16"/>
+            </style:element-style>
+          </vertical-line>
+          <vertical-line>
+            <style:element-style>
+              <style:content-styles draw-shape="true" scale="true" stroke-weight="1.5" stroke-style="solid"/>
+              <style:spatial-styles x="535" y="0" min-width="0" min-height="16"/>
+            </style:element-style>
+          </vertical-line>
+        </root-level-content>
+      </details>
+      <no-data>
+        <root-level-content designtime:hideInLayoutGUI="true">
+          <style:element-style>
+          </style:element-style>
+        </root-level-content>
+      </no-data>
+      <details-footer designtime:hideInLayoutGUI="true">
+        <style:element-style>
+          <style:common-styles avoid-page-break="true"/>
+        </style:element-style>
+      </details-footer>
+    </data-body>
+    <group-footer>
+      <root-level-content designtime:hideInLayoutGUI="true">
+        <style:element-style>
+        </style:element-style>
+      </root-level-content>
+    </group-footer>
+  </group>
+  <report-footer>
+    <root-level-content designtime:visual-height="392.592">
+      <style:element-style>
+        <style:spatial-styles min-width="535"/>
+      </style:element-style>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="349.061" y="30.009" min-width="84.278" min-height="13.53"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Non Taxable Amount</core:value>
+      </label>
+      <horizontal-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true" color="black" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="0" y="0" min-width="534.582" min-height="0"/>
+        </style:element-style>
+      </horizontal-line>
+      <horizontal-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true" color="black" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="0" y="71.494" min-width="535" min-height="0"/>
+        </style:element-style>
+      </horizontal-line>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="0" y="59.519" min-width="163.977" min-height="11"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Total Current Charge (Including Tax)</core:value>
+      </label>
+      <horizontal-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true" color="black" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="0" y="57.519" min-width="534.582" min-height="0"/>
+        </style:element-style>
+      </horizontal-line>
+      <vertical-line>
+        <style:element-style>
+          <style:common-styles box-sizing="content-box"/>
+          <style:content-styles draw-shape="true" scale="true" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="0.218" y="72.299" min-width="0" min-height="100"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:common-styles box-sizing="content-box"/>
+          <style:content-styles draw-shape="true" scale="true" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="535" y="72.299" min-width="0" min-height="100"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:common-styles box-sizing="content-box"/>
+          <style:content-styles draw-shape="true" scale="true" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="274.967" y="72.299" min-width="0" min-height="100"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:common-styles box-sizing="content-box"/>
+          <style:content-styles draw-shape="true" scale="true" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="434.506" y="0" min-width="0" min-height="56.324"/>
+        </style:element-style>
+      </vertical-line>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="8" y="103" min-width="284.001" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>1.please pay by Online/any of BOC Banking favour of duosoftware pvt Ltd</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="93.586" y="209.402" min-width="315.154" min-height="13.413"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Please cut the below protion and attach it along with the payments</core:value>
+      </label>
+      <vertical-line>
+        <style:element-style>
+          <style:common-styles box-sizing="content-box"/>
+          <style:content-styles draw-shape="true" scale="true" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="348.506" y="0" min-width="0" min-height="56.324"/>
+        </style:element-style>
+      </vertical-line>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="351.087" y="0" min-width="81.913" min-height="13.53"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Total Due (in INR)</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="351.087" y="14.53" min-width="81.913" min-height="13.53"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Taxable Amount</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="right" vertical-alignment="middle"/>
+          <style:spatial-styles x="350.506" y="43.539" min-width="81.913" min-height="13.53"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Tax</core:value>
+      </label>
+      <horizontal-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true" color="black" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="0" y="86.494" min-width="535" min-height="0"/>
+        </style:element-style>
+      </horizontal-line>
+      <horizontal-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true" color="black" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="0" y="173.494" min-width="535" min-height="0"/>
+        </style:element-style>
+      </horizontal-line>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="4" y="87.59" min-width="125.862" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Instructions</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="8" y="115" min-width="284.001" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>2.Past dues are to be paid immediately in order to avoid discussion.</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="8" y="152.342" min-width="284.001" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>5.PAN No.AAFCV0612F</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="8" y="140" min-width="284.001" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>4.Our Service Tax regNo.AAFCV0612FSD001</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="8" y="128" min-width="284.001" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>3.Figures in minus indicates the amount that is created to your account.</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="298.967" y="87.59" min-width="151.7" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>For any queries please email us.</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="300" y="103" min-width="90" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>Billing Email   :</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="300" y="115" min-width="90" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>Customer Care  :</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="300" y="128" min-width="90" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>Customer Care No  :</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="8" y="164.007" min-width="284.001" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>6.CIN No.U64200TN2015PTC099156</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="300" y="140" min-width="90" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>Billing Contact No  :</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="390" y="103" min-width="125" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>accounts@duosoftware.com</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="390" y="115" min-width="125" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>support@duosoftware.lk</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="390" y="128" min-width="125" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>011-4999 5999</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="390" y="140" min-width="125" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>011-45828282</core:value>
+      </label>
+      <horizontal-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true" color="black" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="0" y="190.494" min-width="535" min-height="0"/>
+        </style:element-style>
+      </horizontal-line>
+      <horizontal-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true" color="black" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="0" y="204.494" min-width="535" min-height="0"/>
+        </style:element-style>
+      </horizontal-line>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="0.289" y="190.494" min-width="149.573" min-height="13.413"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+        <core:value>Dear Customer you can pay online below URL  </core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="156.862" y="190.494" min-width="70.781" min-height="13.413"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+        <core:value>www.duosoftware.com</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles vertical-alignment="middle"/>
+          <style:spatial-styles x="239.405" y="190.494" min-width="289.877" min-height="13.413"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="6"/>
+        </style:element-style>
+        <core:value>&amp; Register any complaint through our mobile APP &quot;Duo&quot;. The App available at google play store.</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="1" y="222.815" min-width="534.582" min-height="13.413"/>
+          <style:text-styles font-face="Tahoma" font-size="8"/>
+        </style:element-style>
+        <core:value>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</core:value>
+      </label>
+      <rectangle>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="0" y="233.905" min-width="535" min-height="18"/>
+        </style:element-style>
+      </rectangle>
+      <band designtime:VerticalGuideLines="(false,3.105590343475342) (true,98.74333953857422)">
+        <style:element-style>
+          <style:common-styles box-sizing="border-box"/>
+          <style:spatial-styles x="1.218" y="5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+      </band>
+      <rectangle>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="0" y="282.794" min-width="535" min-height="17"/>
+        </style:element-style>
+      </rectangle>
+      <rectangle>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="0.218" y="299.794" min-width="535" min-height="14.968"/>
+        </style:element-style>
+      </rectangle>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="left" vertical-alignment="middle"/>
+          <style:spatial-styles x="0.506" y="270.794" min-width="335.154" min-height="12"/>
+          <style:text-styles font-face="Tahoma" font-size="8"/>
+        </style:element-style>
+        <core:value>Cheque/DD Should be in favoure of &quot;DUO SOFTWARE PVT LTD&quot;</core:value>
+      </label>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="411.292" y="282.794" min-width="0" min-height="32"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="300" y="282.794" min-width="0" min-height="32"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="193.862" y="282.794" min-width="0" min-height="32"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="193.862" y="234.228" min-width="0" min-height="36"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="85.101" y="282.207" min-width="0" min-height="32"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="411.292" y="234.794" min-width="0" min-height="36"/>
+        </style:element-style>
+      </vertical-line>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:spatial-styles x="4" y="238" min-width="69.319" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Account No</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="315.154" y="284" min-width="70" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Amount</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="217.415" y="284" min-width="70" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Bank Branch</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="105.775" y="284" min-width="70" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Bank Name</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="1.218" y="284" min-width="83.782" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Cheque.No/DD No</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:spatial-styles x="315.154" y="238" min-width="84" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>total Amount Due</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:spatial-styles x="96.586" y="238" min-width="84" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Bill No</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:spatial-styles x="208.405" y="238" min-width="84" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Bill Date</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:spatial-styles x="427.286" y="238" min-width="84" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Payment Due Date</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="417.292" y="284" min-width="70" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Remarks</core:value>
+      </label>
+      <rectangle>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="0" y="323.728" min-width="535" min-height="68.364"/>
+        </style:element-style>
+      </rectangle>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#a19d9d"/>
+          <style:common-styles alignment="left" vertical-alignment="middle"/>
+          <style:content-styles color="#333333"/>
+          <style:spatial-styles x="0" y="324.645" min-width="535.582" min-height="13.413"/>
+          <style:text-styles font-face="Tahoma" font-size="8"/>
+        </style:element-style>
+        <core:value>Payment Details</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="0" y="341.058" min-width="167.172" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>Benificiary name : Duo Software Pvt Ltd</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="274" y="341.058" min-width="203.667" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>403 1/1, Galle Rd ,Kollupitiya, Colombo 3</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="274" y="355" min-width="190" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>RTGS_NEFT IFSC Code : XXXXXXXXXXXXXXXX</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="0" y="355" min-width="198.575" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>Bank Acccount Number :  XXXXXXXXXXXXXXXX</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="0" y="368" min-width="90" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>MICR Code :</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:spatial-styles x="274" y="368" min-width="118.333" min-height="10.805"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+        <core:value>Bank Name  : BOC BANK</core:value>
+      </label>
+      <vertical-line>
+        <style:element-style>
+          <style:common-styles box-sizing="content-box"/>
+          <style:content-styles draw-shape="true" scale="true" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="535" y="0" min-width="0" min-height="56.324"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:common-styles box-sizing="content-box"/>
+          <style:content-styles draw-shape="true" scale="true" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="0.1" y="0" min-width="0" min-height="56.324"/>
+        </style:element-style>
+      </vertical-line>
+      <number-field core:field="Service">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="470" y="16.981" min-width="40" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </number-field>
+      <number-field core:field="EducationCess">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="470" y="30.009" min-width="40" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </number-field>
+      <number-field core:field="taxtotal">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="460.61" y="43.539" min-width="71.268" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </number-field>
+      <text-field core:field="subtotal">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="470" y="2.516" min-width="40" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="currentcharge">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="470" y="56.604" min-width="40" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="false" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="accountno">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="7" y="253.825" min-width="69.319" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="invoiceno">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="97.586" y="254" min-width="77.586" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <date-field core:field="invoicedate" core:format-string="yyyy-MM-dd">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="198.575" y="254" min-width="100.108" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+      </date-field>
+      <text-field core:field="closing">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="320.445" y="253.972" min-width="69.555" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <date-field core:field="duedate" core:format-string="yyyy-MM-dd">
+        <style:element-style>
+          <style:common-styles alignment="center" vertical-alignment="middle"/>
+          <style:spatial-styles x="427.286" y="254" min-width="97.708" min-height="12"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+      </date-field>
+      <rectangle>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="0" y="251.905" min-width="535" min-height="18"/>
+        </style:element-style>
+      </rectangle>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="0" y="191.5" min-width="0" min-height="12.994"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true" stroke-weight="1.5" stroke-style="solid"/>
+          <style:spatial-styles x="535" y="191.5" min-width="0" min-height="12.994"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="84.977" y="234.228" min-width="0" min-height="36"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="411.292" y="234.794" min-width="0" min-height="36"/>
+        </style:element-style>
+      </vertical-line>
+      <vertical-line>
+        <style:element-style>
+          <style:content-styles draw-shape="true" scale="true"/>
+          <style:spatial-styles x="300" y="233.905" min-width="0" min-height="36"/>
+        </style:element-style>
+      </vertical-line>
+    </root-level-content>
+  </report-footer>
+</layout>

@@ -18,6 +18,10 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
         profile.getProfile();
     };
 
+	
+	$scope.closeWindow = function(){
+		$state.go('home.welcomeSearch');
+	}
 
      //#pre-loader progress - with message
     var displayProgress = function (message) {

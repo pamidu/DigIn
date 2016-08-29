@@ -1021,14 +1021,14 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 highestLvl = this.options.customVar,
                                 drillObj = {},
                                 isLastLevel = false;
-
+                                selectedSeries = e.point.series.name;
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
                                     nextLevel = drillOrdArr[i].nextLevel;
                                     if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
                                 }
                             }
-
+                            chart.options.lang.drillUpText = " Back to " + highestLvl;
                             // Show the loading label
                             chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
 
@@ -1081,19 +1081,42 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                     e.preventDefault();
                                 }
                                 console.log(JSON.stringify(res));
+                                widget.widgetData.highchartsNG.xAxis["title"] = {
+                                    text: nextLevel
+                                };
+                                widget.widgetData.highchartsNG.yAxis["title"] = {
+                                    text: selectedSeries
+                                };                                
                                 chart.options.customVar = nextLevel;
                                 chart.hideLoading();
                             }, nextLevel, highestLvl + "='" + clickedPoint + "'");
                         }
                     },
                     drillup: function(e) {
-
-                        widget.widgetData.widData.drillConf.currentLevel--;
+                        console.log(e);
                         var chart = this;
+                        console.log(chart.options.customVar);
                         drillConf.drillOrdArr.forEach(function(key) {
-                            if (key.nextLevel && key.nextLevel == chart.options.customVar)
-                                chart.options.customVar = key.name;
+                        if (key.nextLevel && key.nextLevel == chart.options.customVar) {
+                            chart.options.customVar = key.name;
+                            widget.widgetData.highchartsNG.xAxis["title"] = {
+                                text: chart.options.customVar
+                            };                                                                        
+                            }
                         });
+                        // set x and y axis titles (DUODIGIN-914)
+                        var flag = false;
+                        $scope.drillDownConfig.drillOrdArr.forEach(function(key) {
+                            if (chart.options.customVar == key.nextLevel) {
+                            chart.options.lang.drillUpText = " Back to " + key.name;
+                            flag = true;
+                            }
+                        });
+                        if (!flag) {
+                            widget.widgetData.highchartsNG.yAxis["title"] = {
+                                text: 'values'
+                            };
+                        }
                     }
                 }
             }

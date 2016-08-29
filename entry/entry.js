@@ -171,16 +171,16 @@ routerApp
                             console.log(error);
                         });
 
-
-                        
-                        
-
                     }
                     else {
                         $mdDialog.hide();
                         if(data.Message=="Email Address is not varified."){
-                        mainFun.fireMsg('0', "This email address is not verified, please verify your email.");
-                        }else{
+							mainFun.fireMsg('0', "This email address is not verified, please verify your email.");
+                        }else if(data.Message.slice(0,22) == "User account is locked")
+						{
+							mainFun.fireMsg('0', "Your account is locked, try again in 2 minutes");
+						}
+						else{
                             mainFun.fireMsg('0', data.Message);
                         }
                     }

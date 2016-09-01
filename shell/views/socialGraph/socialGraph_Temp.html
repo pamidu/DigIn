@@ -361,9 +361,12 @@
                                         </div>
                                     </h2>
                                 </div>
-                                <div class="graph-chart-body">
+                                <div class="graph-chart-body" ng-hide="summaryChartLoading">
                                     <highchart id="fbChart" config="highchartsNG"></highchart>
                                 </div>
+                                <div layout="row" layout-align="center center" style="margin-top:150px;" ng-show="summaryChartLoading">
+                                    <img src="styles/css/images/preloaders/facebook.gif" alt="Washed Out" style="height:5%;width:5%;">
+                                </div>                                  
                             </div>
                         </md-card>
                     </div>
@@ -401,9 +404,12 @@
                                     </div>
                                 </h2>
                             </div>
-                            <div class="graph-chart-body">
+                            <div class="graph-chart-body" ng-hide="sentimentGraphLoading">
                                 <highchart config="sentimentConfig"></highchart>
                             </div>
+                                <div layout="row" layout-align="center center" style="margin-top:150px;" ng-show="sentimentGraphLoading">
+                                    <img src="styles/css/images/preloaders/facebook.gif" alt="Washed Out" style="height:5%;width:5%;">
+                                </div>                            
                         </div>
                     </md-card>
                 </div>
@@ -416,26 +422,12 @@
                                         Word Cloud
                                     </h2>
                                 </div>
-                                <digin-word-cloud words="wordArray"></digin-word-cloud>
+                                <digin-word-cloud words="wordArray" ng-hide="wordCloudLoading"></digin-word-cloud>
+                                <div layout="row" layout-align="center center" style="margin-top:150px;" ng-show="wordCloudLoading">
+                                    <img src="styles/css/images/preloaders/facebook.gif" alt="Washed Out" style="height:5%;width:5%;">
+                                </div>                                
                             </div>
                         </md-card>
-                    </div>
-                </div>
-
-
-                <div class="post-wrap">
-                    <div layout="row" layout-wrap>
-                        <div flex>
-                            <div layout="row" layout-align="center center" layout-wrap>
-                                <div flex="90">
-                                    <md-card class="md-default-theme box-shadow-none">
-                                        <div class="md-content__body" layout-align="center center">
-                                            <digin-word-cloud words="wordArray"></digin-word-cloud>
-                                        </div>
-                                    </md-card>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

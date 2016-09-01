@@ -1548,6 +1548,8 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
             } //end event function
         $scope.saveChart = function(widget) {
             var widgets = $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets;
+
+            console.log(JSON.stringify(widget.widgetData.highchartsNG));
             if (widget.widgetID == null) { // new widget, so a temp id is assigned
                 widget.widgetID = "temp" + Math.floor(Math.random() * (100 - 10 + 1) + 10);
             }
@@ -1653,6 +1655,11 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     $scope.executeQryData.executeColumns = [{
                         filedName: cat
                     }];
+                    angular.forEach($scope.executeQryData.executeMeasures, function(val){
+                        $scope.executeQryData.executeColumns.push({
+                            filedName: val.filedName
+                        });                        
+                    });
                     $scope.mapResult(cat, res, function(data) {
                         $scope.highchartsNG = {};
                         $scope.highchartsNG = {
@@ -2690,11 +2697,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
         }
         $scope.metric = {
             onInit: function(recon) {
-                $scope.selectedChart.initObj = {
-                    value: $scope.sourceData.wid.widData.value.toLocaleString(),
-                    label: $scope.sourceData.wid.widData.label,
-                    color: $scope.sourceData.wid.widData.color
-                };
                 // $scope.highchartsNG = $scope.widget.highchartsNG;
                 // $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
                 $scope.prevChartSize = {

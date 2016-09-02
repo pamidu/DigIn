@@ -587,7 +587,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.goDashboard = function (dashboard) {
 
             layoutManager.headerMenuToggle(true);
-            $scope.currentView = dashboard.dashboardName;
+            $rootScope.currentView = dashboard.dashboardName;
             $scope.openSearchBar(); 
             console.log($scope.dashboards);
             console.log("dash item", dashboard);

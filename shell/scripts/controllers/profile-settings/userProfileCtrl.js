@@ -174,7 +174,7 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
                             var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
                             $scope.profile_pic = logoPath + data.Result.dp_path;
                             $rootScope.profile_pic = logoPath + data.Result.dp_path;
-                            //ProfileService.UserDataArr.BannerPicture= $rootScope.profile_pic;
+                            ProfileService.UserDataArr.BannerPicture= $rootScope.profile_pic;
                             $scope.getURL();
                             $mdDialog.hide();
                             notifications.toast('1', 'Profile picture uploaded successfully.');
@@ -183,6 +183,7 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
                 .error(function (data) {
                     $scope.profile_pic = "styles/css/images/setting/user100x100.png";
                     $rootScope.profile_pic = "styles/css/images/setting/user100x100.png";
+                    ProfileService.UserDataArr.BannerPicture= $rootScope.profile_pic;
                     $mdDialog.hide();
                     notifications.toast('0', 'There was an error while uploading profile picture !');
                 });
@@ -508,7 +509,7 @@ routerApp.service('notifications',['ngToast','$mdDialog', function(ngToast,$mdDi
 }]);
 
 
-routerApp.service('profile',['$rootScope','$http', function($rootScope,$http){
+routerApp.service('profile',['$rootScope','$http','ProfileService', function($rootScope,$http,ProfileService){
 
     this.getProfile = function() {
         var baseUrl = "http://" + window.location.hostname;
@@ -525,6 +526,9 @@ routerApp.service('profile',['$rootScope','$http', function($rootScope,$http){
                 $rootScope.name=response.Name;
                 $rootScope.phoneNo=response.PhoneNumber;
                 $rootScope.zipCode=response.ZipCode;
+                response.BannerPicture=ProfileService.UserDataArr.BannerPicture;
+                ProfileService.InitProfileData(response);
+
         }).
         error(function(error){   
         });  

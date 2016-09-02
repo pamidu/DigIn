@@ -886,7 +886,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     }
                     // CHART VALIDATIONS
                     // allow to select only one measure for sunburst
-                    if ($scope.chartType == "sunburst" && $scope.commonData.measures.length > 1) {
+                    if (($scope.chartType == "sunburst" || $scope.chartType == "hierarchy") && $scope.commonData.measures.length > 1) {
                         privateFun.fireMessage('0', "Cannot generate " + $scope.chartType + " chart with more than one measure");
                         return;
                     }

@@ -96,6 +96,17 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             //fireMsg('0', '<strong>Error : </strong>Please try again...!');
         });
 
+        //#get user settings 
+        
+        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+        $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
+            
+        .success(function (data) {
+                ProfileService.widget_limit = data.Result.widget_limit;  
+        })
+        .error(function (data) {        
+        });    
+
 
         //initially hiding the tabs
         $scope.showTabs(true);
@@ -1039,7 +1050,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         
         $scope.navigate = function (routeName, ev) {
 
-            var widgetLimit = 10;
+            var widgetLimit = ProfileService.widget_limit;
             var selectedPage = $rootScope.selectedPage;
             var pageCount = $rootScope.dashboard.pages.length;
             var pageWidgetCount = $rootScope.dashboard.pages[selectedPage - 1].widgets.length;

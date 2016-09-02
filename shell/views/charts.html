@@ -15,7 +15,7 @@
         <md-tab-body>
             <div class="tab-style" gridster="gridsterOpts">
                 <li class="digin-widget"
-                    ng-repeat="widget in page.widgets | limitTo:6"
+                    ng-repeat="widget in page.widgets"
                     gridster-item="widget" layout="column"
                     layout-align="none stretch">
                     <div class="digin-widget-toolbar" layout="row" layout-align="center center" ng-init="setShowWidgetSettings(widget)">

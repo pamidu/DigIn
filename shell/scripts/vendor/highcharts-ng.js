@@ -342,12 +342,12 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
               s.remove(true);
             }
             for (var j=0; j< chart.series[i].data.length; j++){
-              if(chart.series[i].data[j].x != j){
-                chart.series[i].data[j].update({
-                    x: j
-                });                
-              }
               if(chart.series[i].data[j].name !== undefined){
+                if(chart.series[i].data[j].x != j){
+                  chart.series[i].data[j].update({
+                      x: j
+                  });                
+                }                
                 if(chart.series[i].data[j].category != chart.series[i].data[j].name){
                   chart.series[i].data[j].update({
                       category: name

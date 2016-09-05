@@ -886,7 +886,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     }
                     // CHART VALIDATIONS
                     // allow to select only one measure for sunburst
-                    if (($scope.chartType == "sunburst" || $scope.chartType == "hierarchy") && $scope.commonData.measures.length > 1) {
+                    if ($scope.chartType == "sunburst" && $scope.commonData.measures.length > 1) {
                         privateFun.fireMessage('0', "Cannot generate " + $scope.chartType + " chart with more than one measure");
                         return;
                     }
@@ -3046,7 +3046,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                         drillObj = {},
                                         isLastLevel = false,
                                         selectedSeries = e.point.series.name;
-                                    var cat = [];
+                                    // var cat = [];
                                     for (i = 0; i < drillOrdArr.length; i++) {
                                         if (drillOrdArr[i].name == highestLvl) {
                                             nextLevel = drillOrdArr[i].nextLevel;
@@ -3083,13 +3083,17 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                                     });
                                                 }
                                             });
-                                            for (var i=0;i<drillObj.length;i++){
-                                                cat.push(drillObj[i].name);
-                                            }
+                                            // for (var i=0;i<drillObj.data.length;i++){
+                                            //     cat.push(drillObj.data[i].name);
+                                            // }
 
                                             $scope.dataToBeBind.receivedQuery = query;
                                             chart.addSeriesAsDrilldown(e.point, drillObj);
-                                            chart.xAxis[0].setCategories(cat,false);
+                                            // chart.xAxis[0].setCategories(cat);
+                                            // for (var i=0; i< chart.series[0].data.length;i++){
+                                            //   cat.push(chart.series[0].data[i].name);
+                                            // }
+                                            // chart.xAxis[0].setCategories(cat);                                                    
                                         } else {
                                             alert('request failed due to :' + JSON.stringify(res));
                                             e.preventDefault();

@@ -766,22 +766,14 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
         $scope.pngDownload = function(widget) {
 
             var type = "png";
-            if(widget.widgetName =='pivotsummary'){                 
-                $scope.pivotsummaryImg(widget, type);       
-            }else{      
-                $scope.d3ImgDownload(widget, type);     
-            }
+            $scope.d3ImgDownload(widget, type);
 
         };
 
         $scope.jpegDownload = function(widget) {
 
             var type = "jpeg";
-             if(widget.widgetName =='pivotsummary'){                    
-                $scope.pivotsummaryImg(widget, type);       
-            }else{      
-                $scope.d3ImgDownload(widget, type);     
-            }
+            $scope.d3ImgDownload(widget, type);
 
         };
 
@@ -848,11 +840,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
         $scope.svg_to_pdf = function(widget) {
 
-            if(widget.widgetName =='pivotsummary'){
-                $scope.save_pdf_pivotsummaryImg (widget);
-            }
-            else{
-                var id = "#" + widget.widgetData.widData.id;
+            var id = "#" + widget.widgetData.widData.id;
             var element = $("" + id + "");
 
             $("#svg-container").empty();
@@ -896,8 +884,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     link.click();
                 }
             });
-            }
-            
 
 
             $scope.d3chartBtnClick(widget);
@@ -907,87 +893,23 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
         $scope.printD3Chart = function(widget) {
 
-            if(widget.widgetName =='pivotsummary'){
-                 var element = $('#grid');
+            var id = "#" + widget.widgetData.widData.id;
+            var element = $("" + id + "");
 
-                var printContents = element[0].innerHTML;
-                var originalContents = document.body.innerHTML;
+            var printContents = element[0].innerHTML;
+            var originalContents = document.body.innerHTML;
 
-                var popupWin = window.open('', '_blank', 'width=800,height=500');
-                popupWin.document.open();
-                popupWin.document.write('');
-                popupWin.document.write('<html><head></head><body onload="window.print()">' + printContents + '</body></html>');
-                popupWin.document.close();
-            }
-            else{
-                var id = "#" + widget.widgetData.widData.id;
-                var element = $("" + id + "");
-
-                var printContents = element[0].innerHTML;
-                var originalContents = document.body.innerHTML;
-
-                var popupWin = window.open('', '_blank', 'width=800,height=500');
-                popupWin.document.open();
-                popupWin.document.write('');
-                popupWin.document.write('<html><head></head><body onload="window.print()">' + printContents + '</body></html>');
-                popupWin.document.close();
-            }
-
-            
+            var popupWin = window.open('', '_blank', 'width=800,height=500');
+            popupWin.document.open();
+            popupWin.document.write('');
+            popupWin.document.write('<html><head></head><body onload="window.print()">' + printContents + '</body></html>');
+            popupWin.document.close();
 
             $scope.d3chartBtnClick(widget);
 
 
         }
 
-        $scope.pivotsummaryImg = function (widget,type){
-            var downType = null;
-            var name;
-            switch (type) {
-
-                case 'png':
-                    downType = "image/png";
-                    name="Chart.png";
-                    break;
-
-                case 'jpeg':
-                    downType = "image/jpeg";
-                    name="Chart.jpeg";
-                    break;
-
-            }
-            var element = $("#grid");
-            var getCanvas; 
-            $("#svg-container").empty();
-            html2canvas(element, {
-                 onrendered: function (canvas) {
-                        $("#svg-container").append(canvas);
-                        getCanvas = canvas;
-                        var imgageData = getCanvas.toDataURL(downType);
-                        var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
-                        $("#btn-Convert-Html2Image").attr("download",name ).attr("href", newData);
-                        document.getElementById('btn-Convert-Html2Image').click();
-                     }
-            }); 
-           
-        }
-
-        $scope.save_pdf_pivotsummaryImg = function(widget){
-
-            var doc = new jsPDF('landscape', 'pt');
-
-            var specialElementHandlers = {
-                '#svg-container': function (element, renderer) {
-                    return true;
-                }
-            };
-
-            doc.fromHTML($('#grid').html(), 15, 15, {
-                'width': 170,
-                    'elementHandlers': specialElementHandlers
-            });
-            doc.save('sample-file.pdf');
-        }
 
         $scope.d3chartBtnClick = function(widget) {
 
@@ -1032,10 +954,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     widget.isD3chart = true;
                     break;
 
-                case 'pivotsummary':
-                    widget.isD3chart = true;
-                    break;
-
             }
 
             if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled) {
@@ -1057,7 +975,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 drillObj = {},
                                 isLastLevel = false;
                                 selectedSeries = e.point.series.name;
-                            var cat = [];
+                            // var cat = [];
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
                                     nextLevel = drillOrdArr[i].nextLevel;
@@ -1109,11 +1027,11 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                             });
                                         }
                                     });
-                                    for (var i=0;i<drillObj.length;i++){
-                                        cat.push(drillObj[i].name);
-                                    }
+                                    // for (var i=0;i<drillObj.length;i++){
+                                    //     cat.push(drillObj[i].name);
+                                    // }
                                     chart.addSeriesAsDrilldown(e.point, drillObj);
-                                    chart.xAxis[0].setCategories(cat,false);
+                                    // chart.xAxis[0].setCategories(cat);
 
                                 } else {
                                     alert('request failed due to :' + JSON.stringify(res));

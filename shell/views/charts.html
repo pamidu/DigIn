@@ -15,7 +15,7 @@
         <md-tab-body>
             <div class="tab-style" gridster="gridsterOpts">
                 <li class="digin-widget"
-                    ng-repeat="widget in page.widgets | limitTo:6"
+                    ng-repeat="widget in page.widgets"
                     gridster-item="widget" layout="column"
                     layout-align="none stretch">
                     <div class="digin-widget-toolbar" layout="row" layout-align="center center" ng-init="setShowWidgetSettings(widget)">
@@ -124,8 +124,8 @@
 
                         <div id="svg-container" style="display: none">
                         </div>
-
-                        <canvas id="canvas" width="800" height="400" style="display: none">
+                        <a id="btn-Convert-Html2Image" style="display: none" href="#">Download</a>
+                        <canvas id="canvas" width="400" height="400" style="display: none">
                         </canvas>
 
                         <div id="png-container"></div>

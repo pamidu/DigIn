@@ -819,7 +819,8 @@ $scope.inviteUser = function () {
                 var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
                 $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
                 .success(function (data) {
-                $rootScope.userSettings=data.Result;        
+                $rootScope.userSettings=data.Result;  
+                ProfileService.widget_limit = data.Result.widget_limit;       
                 })
                 .error(function (data) {        
                 });

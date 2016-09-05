@@ -378,53 +378,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             }
         };
 
-        $scope.setCategoriesFilter = function(category) {
-            var series = $scope.widget.widgetData.highchartsNG.series;
-            var detailsArray = [];
-            if (category.status) {
-                //remove
-                for (var i = 0; i < series.length; i++) {
-                    for (var j = 0; j < series[i].data.length; j++) {
-                        if (category.name === series[i].data[j].name) {
-                            //Store it to add later
-                            detailsArray.push({
-                                series: i,
-                                data: widget.widgetData.categories.indexOf(category.name),
-                                value: series[i].data[j]
-                            });
-                            // Remove the category from the chart
-                            series[i].data.splice(j, 1);
-                            widget.widgetData.highchartsNG.series[i] = series[i];
-                            category.status = false;
-                        }
-                    }
-                }
-                if (widget.widgetData.removedCat === undefined) {
-                    widget.widgetData["removedCat"] = [];
-                }
-                widget.widgetData.removedCat.push({
-                    name: category.name,
-                    details: detailsArray,
-                    index: widget.widgetData.categories.indexOf(category.name)
-                });
-            } else {
-                angular.forEach(widget.widgetData.removedCat, function(val) {
-                    if (val.name == category.name) {
-                        // val.details.sort(function(a,b){return a.series-b.series});
-                        // console.log(val.details);
-                        // for (var i=0;i<val.details.length;i++){
-                        //     widget.widgetData.highchartsNG.series[val.details[i].series].data.splice(val.details[i].data,0,val.details[i].value);                        
-                        // }
-                        angular.forEach(val.details, function(element) {
-                            widget.widgetData.highchartsNG.series[element.series].data.splice(element.data, 0, element.value)
-                        });
-                        category.status = true;
-                        widget.widgetData.removedCat.splice(widget.widgetData.removedCat.indexOf(val), 1);
-                    }
-                });
-                $scope.widget.widgetData.highchartsNG.series = widget.widgetData.highchartsNG.series;
-            }
-        };
         // filter by categories
         $scope.isCatChecked = function() {
             $scope.isIndeterminate = false;
@@ -1022,6 +975,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 drillObj = {},
                                 isLastLevel = false;
                                 selectedSeries = e.point.series.name;
+                            var cat = [];
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
                                     nextLevel = drillOrdArr[i].nextLevel;
@@ -1073,8 +1027,11 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                             });
                                         }
                                     });
-
+                                    for (var i=0;i<drillObj.length;i++){
+                                        cat.push(drillObj[i].name);
+                                    }
                                     chart.addSeriesAsDrilldown(e.point, drillObj);
+                                    chart.xAxis[0].setCategories(cat,false);
 
                                 } else {
                                     alert('request failed due to :' + JSON.stringify(res));
@@ -1106,7 +1063,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         });
                         // set x and y axis titles (DUODIGIN-914)
                         var flag = false;
-                        $scope.drillDownConfig.drillOrdArr.forEach(function(key) {
+                        drillConf.drillOrdArr.forEach(function(key) {
                             if (chart.options.customVar == key.nextLevel) {
                             chart.options.lang.drillUpText = " Back to " + key.name;
                             flag = true;

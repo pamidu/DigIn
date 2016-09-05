@@ -453,8 +453,8 @@
                                     attribute
                                 </div>
                                 <p class="data-row-style-2"
-                                   ng-repeat="column in commonData.columns">
-                                    {{column.filedName}}
+                                   ng-repeat="column in sourceData.fAttArr">
+                                    {{column.name}}
                                 </p>
 
                             </div>
@@ -463,8 +463,8 @@
                                     measure
                                 </div>
                                 <p class="data-row-style-2"
-                                   ng-repeat="measure in commonData.measures">
-                                    {{measure.filedName}}
+                                   ng-repeat="measure in sourceData.fMeaArr">
+                                    {{measure.name}}
                                 </p>
                             </div>
                         </div>

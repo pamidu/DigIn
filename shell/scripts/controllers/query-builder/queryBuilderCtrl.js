@@ -3046,13 +3046,14 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                         drillObj = {},
                                         isLastLevel = false,
                                         selectedSeries = e.point.series.name;
+                                    var cat = [];
                                     for (i = 0; i < drillOrdArr.length; i++) {
                                         if (drillOrdArr[i].name == highestLvl) {
                                             nextLevel = drillOrdArr[i].nextLevel;
                                             if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
                                         }
                                     }
-                                    chart.options.lang.drillUpText = "? Back to " + highestLvl;
+                                    chart.options.lang.drillUpText = "Back to " + highestLvl;
                                     // Show the loading label
                                     chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
                                     //aggregate method
@@ -3082,8 +3083,13 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                                     });
                                                 }
                                             });
+                                            for (var i=0;i<drillObj.length;i++){
+                                                cat.push(drillObj[i].name);
+                                            }
+
                                             $scope.dataToBeBind.receivedQuery = query;
                                             chart.addSeriesAsDrilldown(e.point, drillObj);
+                                            chart.xAxis[0].setCategories(cat,false);
                                         } else {
                                             alert('request failed due to :' + JSON.stringify(res));
                                             e.preventDefault();

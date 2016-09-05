@@ -1,74 +1,75 @@
-<div ng-init="getAllApps();" class="setup-wrapper animated fadeInDown">
-    <div layout="row" class="setting-close pull-right" ng-click="route('back')">
-        <i class="fa fa-close"></i>
-    </div>
-    <div class="share-dashboard">
-        <div class="header">
-            <h5>Share Dashboard</h5>
-        </div>
-    </div>
+<style>
+.product_card {
+  cursor: pointer;
+  padding: 10px;
+  position: relative;
+  display: inline-block;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
 
-    <div class="dashboard-body">
-        <div style="margin-left: 20px;">
-            <div layout="row" layout-wrap layout-align="center center">
-                <div flex="20" style="margin-right: 25px;" ng-repeat="app in apps">
-                    <div class="share-dashboard-view">
-                        <h5>{{app.dashboardName}}</h5> 
-                        <!-- {{app}} -->
-                        <md-button class="setup-button md-raised md-primary" ng-click="loadShareWindow(app.dashboardID,app.dashboardName)">Share
-                        </md-button>
-                        <ng-md-icon icon="view_headline" style="fill:blue" size="40" ng-click="viewSharedListWindow(app.dashboardID,app.dashboardName)"></ng-md-icon> 
-                    </div>
-                </div>
-            </div>
-        </div>
+.product_card::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.product_card:hover {
+  -webkit-transform: scale(1.03, 1.03);
+  transform: scale(1.03, 1.03);
+}
+
+.product_card:hover::after {
+    opacity: 1;
+}
+
+.product_name
+{
+	color: #797979;
+	font-size: 20px;
+	padding-bottom:10px
+}
+
+.product_description
+{
+	color: #797979;
+	font-size: 13px;
+}
+
+</style>
+
+<div class="setup-wrapper animated fadeIn">
+    <div layout="row" class="setting-close pull-right" ng-click="route('back')">
+        <md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route('welcome')"></md-button>
     </div>
+	
+
+	<div layout="row" layout-align="center center" layout-wrap style="margin-top:50px;">
+		<md-card ng-repeat="dashboard in dashboards"  flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card" class="make-it-fast">
+			<div layout="row" layout-align="space-between start" style="padding-bottom:5px;margin-bottom:5px;">
+				<span class="product_name" style="border-bottom: 1px solid #cdcdcd;">{{dashboard.dashboardName}}</span>
+				<span></span>
+			</div>
+
+			<div layout="row" layout-align="center center">
+				<!-- <img ng-src="grid.png" style="width:50%"/> -->
+			</div>
+			<div layout="row" flex>
+				<md-button ng-click="viewSharedListWindow(dashboard.dashboardID,dashboard.dashboardName)" flex><span style="color:#afb6bcfont-weight:700;font-size: 13px;letter-spacing: 1px;"> Shared List</span></md-button>
+				<md-button ng-click="loadShareWindow(dashboard.dashboardID,dashboard.dashboardName)" flex> <span style="color:#f9a626;font-weight:700;font-size: 16px;letter-spacing: 1px;">Share</span></md-button>
+			</div>
+		</md-card>
+	</div>
 </div>
 
-
-<!--<div  ng-show="true" class="md-padding animated fadeIn" layout="row" -->
-<!--layout-align="center center">-->
-<!--<div layout="column" class="setup-info-container" flex="50">-->
-
-<!--<div layout="column" layout-align="space-between center">-->
-<!--<span class="setup-font-theme setup-user-heading">Share Dashboard</span>-->
-<!--</div>-->
-
-<!--<v-accordion onexpand="expandCallback(index, id)" class="vAccordion&#45;&#45;default" multiple control="accordion">-->
-
-<!--&lt;!&ndash; add expanded attribute to open the section &ndash;&gt;-->
-<!--<v-pane id="{{::app.name}}" ng-repeat="app in apps">-->
-<!--<v-pane-header>-->
-<!--<div layout="row">-->
-<!--<div ng-click="viewGroupsInApp(app.groupId,$event)" flex="90">-->
-<!--<ng-md-icon icon="apps" style="fill:pink" size="24"></ng-md-icon>-->
-<!--{{ app.name }}-->
-<!--</div>-->
-<!--<div ng-click="loadShareWindow(app.name)" flex="5">-->
-<!--<ng-md-icon icon="share" style="fill:blue" size="24"></ng-md-icon>-->
-<!--</div>-->
-<!--</div>  -->
-<!---->
-<!--</v-pane-header>-->
-
-<!--&lt;!&ndash; View grops shared on this app &ndash;&gt;-->
-<!--<v-pane-content>-->
-<!--<ul class="widget-collection">-->
-<!--<li class="collection-item" ng-repeat="group in groups">-->
-<!--<div layout="row">-->
-<!--<div flex="80">-->
-<!--<ng-md-icon icon="group" style="fill:blue" size="20"></ng-md-icon>-->
-<!--{{ group.groupname }}-->
-<!--</div>-->
-<!--<div ng-click="deleteGroupFromApp(app.name,group.groupId)" flex="5">-->
-<!--<ng-md-icon icon="clear" style="fill:red" size="20"></ng-md-icon>-->
-<!--</div>-->
-<!--</div>-->
-<!--</li>-->
-<!--</ul> -->
-<!--</v-pane-content>-->
-<!--</v-pane>-->
-<!--</v-accordion>-->
-
-<!--</div>-->
-<!--</div>-->
+<div style="color: #D0D0D0;bottom: 20px;right: 20px;position: fixed; z-index: -1;font-size: 60px;">Share Dashboards</div>

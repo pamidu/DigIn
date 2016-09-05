@@ -2028,8 +2028,8 @@ routerApp.controller('InitConfigD3',['$scope', '$mdDialog', 'widgetID', '$rootSc
     }
 ]);
 
-routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope',
-    function ($scope, $http, $mdDialog, widgetID, $rootScope) {
+routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope','ngToast',
+    function ($scope, $http, $mdDialog, widgetID, $rootScope,ngToast) {
 
         $scope.diginLogo = 'digin-logo-wrapper2';
         $scope.showFinishButton = false;
@@ -2083,13 +2083,20 @@ routerApp.controller( 'wordpressInit' ,['$scope', '$http', '$mdDialog', 'widgetI
                 console.log(message);
                 $scope.showFinishButton = false;
                 $scope.diginLogo = 'digin-logo-wrapper2';
+                ngToast.create({
+                        className: 'danger',
+                        content: 'The specified wordpress URL is invalid',
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
             });    
         };
     }
 ]);
 
-routerApp.controller('rssInit',['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope',
-    function ($scope, $http, $mdDialog, widgetID, $rootScope) {
+routerApp.controller('rssInit',['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope','ngToast',
+    function ($scope, $http, $mdDialog, widgetID, $rootScope,ngToast) {
 
         $scope.diginLogo = 'digin-logo-wrapper2';
         $scope.showFinishButton = false;
@@ -2120,6 +2127,15 @@ routerApp.controller('rssInit',['$scope', '$http', '$mdDialog', 'widgetID', '$ro
                     $scope.$apply();
                     $mdDialog.hide();
                     
+                }
+                else{
+                    ngToast.create({
+                        className: 'danger',
+                        content: 'The specified feed URL is invalid',
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
                 }
                 $scope.diginLogo = 'digin-logo-wrapper2';
             });
@@ -2163,7 +2179,7 @@ routerApp.controller('spreadInit',['$scope', '$http', '$mdDialog', 'widgetID', '
 
 
 // google news search is no more continue, so as the best alternative option 
-routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope',function ($scope, $http, $mdDialog, widgetID, $rootScope) {
+routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widgetID', '$rootScope','ngToast',function ($scope, $http, $mdDialog, widgetID, $rootScope,ngToast) {
 
     $scope.gnewsrequest;
     $scope.diginLogo = 'digin-logo-wrapper2';
@@ -2187,22 +2203,31 @@ routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widgetID', '$
 
     $http.get('https://bingapis.azure-api.net/api/v5/search/',{params: { q: $scope.gnewsrequest ,count:50 },headers: {'Ocp-Apim-Subscription-Key': '0c2e8372aeab41539540cc61edac0c3f'}})
     .success(function(data) {
+             if(!angular.isUndefined(data.webPages)){
+                     console.log("data from search",data.webPages.value)
+                     for (var i = 0; i < data.webPages.value.length; i++) {
 
-            console.log("data from search",data.webPages.value)
-             for (var i = 0; i < data.webPages.value.length; i++) {
+                            var entry = data.webPages.value[i];
+                            entry.displayUrl = "http://"+entry.displayUrl;
+                            $scope.entryArray.push(entry);
+                            //$scope.$apply();
+                        }
 
-                    var entry = data.webPages.value[i];
-                    entry.displayUrl = "http://"+entry.displayUrl;
-                    $scope.entryArray.push(entry);
-                    $scope.$apply();
+                        var ObjectIndex = getRootObjectById(widgetID,$rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);
+                        $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[ObjectIndex].widgetData.widData.news = $scope.entryArray;
+                     
+                        $scope.diginLogo = 'digin-logo-wrapper2';
+                        $scope.showFinishButton = true;
+                        $mdDialog.hide();
+                }else{
+                    ngToast.create({
+                        className: 'danger',
+                        content: 'Sorry, no results for the above search',
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
                 }
-
-                var ObjectIndex = getRootObjectById(widgetID,$rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);
-                $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[ObjectIndex].widgetData.widData.news = $scope.entryArray;
-             
-                $scope.diginLogo = 'digin-logo-wrapper2';
-                $scope.showFinishButton = true;
-                $mdDialog.hide();
             })
             .error(function(err) {
               

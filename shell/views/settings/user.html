@@ -1,71 +1,39 @@
-<div class="bg-gradient-green"></div>
-<div class="setup-wrapper">
-    <div layout="row" class="setting-close pull-right" ng-click="route('back')">
-        <i class="fa fa-close"></i>
-    </div>
-    <div class="md-padding animated fadeIn" layout="row" layout-align="center center">
-
-        <div class="setting-wrap" flex="50">
-            <div class="setting-card-header">
-                <h5>
-                    Invite User
-                </h5>
-
-                <div class="setting-img-wrap">
-                    <img src="styles/css/images/setting/invite_user.png"/>
-                </div>
-                <div class="setting-text-wrap">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                </div>
-
-            </div>
-            
-            
-                <!--
-                <div layout="column" class="setup-info-container">
-                    <md-input-container>
-                        <label>type email address here..</label>
-                        <input ng-model="user.email" type="email">
-                    </md-input-container>
-                    
-                    <md-button class="setup-button md-raised md-primary" ng-click="inviteUser()">
-                        <span class="setup-font-theme">Invite User</span>
-                    </md-button>
-                </div>
-                <input name="user.email" type="mail" ng-model="user.email" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required>
-                -->
-                    <form name="inviteForm" ng-submit="inviteUser()">
-                        <div class="setup-info-container">
-                            <md-input-container>
-                              <label translate>Email Address</label>
-                              <input name="user.email" type="mail" ng-model="user.email" required>
-                              
-                              <div ng-messages="inviteForm.user.email.$error" ng-if='inviteForm.user.email.$touched' role="alert">
-                                <div ng-message="required">Please enter a valid email address!</div>
-                              </div>
-                             </md-input-container>
-                              
-                          
-                            
-                            
-                          
-                                                         
-                            <md-button type="submit" class="setup-button md-raised md-primary">
-                                <span class="setup-font-theme">INVITE USER</span>
-                            </md-button>
-                            
-                            
-                        </div>  
-                            
-                            
-                        
-                    </form>
-                
-                
-
-            
-        </div>
+<md-dialog aria-label="Invite User" plumb-item class="dialog-1 b-r-0">
+  
+ <!-- <form md-theme="default" name="editForm" ng-submit="editForm.$valid && submit()"> -->
+	  <md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">
+	      <div layout="row" layout-align="center center" class="digin-logo-wrapper2">
+	        <img ng-src="styles/css/images/DiginLogo.png" class="digin-image">
+	      </div>  
+	      <div class="dialog-title">Invite User</div>         
+	      <md-button class="buttonMinwidth38 b-r-0" ng-click="cancel();">      
+	        <ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>   
+	      </md-button>            
+	  </md-toolbar>
 
 
-    </div>
-</div>
+
+     
+	<form name="inviteForm" ng-submit="inviteUser()">
+        <div class="setup-info-container" layout="column">
+            <md-input-container>
+              <label translate>Email Address</label>
+              <input name="user.email" type="mail" ng-model="user.email" required>
+              
+              <div ng-messages="inviteForm.user.email.$error" ng-if='inviteForm.user.email.$touched' role="alert">
+                <div ng-message="required">Please enter a valid email address!</div>
+              </div>
+            </md-input-container>                                         
+        </div>  
+
+            <md-button type="submit" class="setup-button md-raised md-primary">
+                <span class="setup-font-theme">INVITE USER</span>
+            </md-button>
+
+    </form>
+
+
+
+
+
+</md-dialog>

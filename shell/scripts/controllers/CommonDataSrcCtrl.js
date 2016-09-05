@@ -5,10 +5,10 @@
  */
 routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log',
     'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API',
-    'Digin_Engine_API_Namespace', '$diginengine', 'ngToast', '$window', '$state', '$csContainer', 'Upload', '$timeout', 'Digin_Domain',
+    '$diginengine', 'ngToast', '$window', '$state', '$csContainer', 'Upload', '$timeout', 'Digin_Domain',
     function($scope, $controller, $mdSidenav, $log, CommonDataSrc,
         $mdDialog, $rootScope, $http, Digin_Engine_API,
-        Digin_Engine_API_Namespace, $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout, Digin_Domain) {
+         $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout, Digin_Domain) {
 
         $scope.datasources = [{
             name: "DuoStore",
@@ -537,7 +537,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             openFileUploadWindow: function(ev) {
                 if (typeof ev != "undefined" && ev.type == 'click') {
                     $mdDialog.show({
-                            controller: function fileUploadCtrl($scope, $mdDialog, fileUpload, $http, Upload) {
+                            controller: function fileUploadCtrl($scope, $mdDialog, fileUpload, $http,$interval, Upload) {
 
                                 $scope.diginLogo = 'digin-logo-wrapper2';
                                 $scope.preloader = false;
@@ -564,6 +564,10 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                     
                                     if (files && files.length) {
                                         $scope.preloader = true;
+                                        $scope.determinateValue = 0;
+                                        promise = $interval(function() {
+                                                        $scope.determinateValue += 3;
+                                                }, 1000);
                                         $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
                                         for (var i = 0; i < files.length; i++) {
                                             var lim = i == 0 ? "" : "-" + i;
@@ -584,14 +588,28 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                                  }
                                                 
                                             }).success(function(data){                                                 
-                                                fireMsg('1', 'Successfully uploaded!Analyse your data by picking it on bigquery!');
-                                                $scope.preloader = false;
-                                                $scope.diginLogo = 'digin-logo-wrapper2';
-                                                $mdDialog.hide();
+                                                $interval.cancel(promise);
+
+                                                if(100-$scope.determinateValue > 0){
+
+                                                    promise = $interval(function() {
+                                                                $scope.determinateValue += 3;
+                                                                if ($scope.determinateValue > 110){
+                                                                        $interval.cancel(promise);
+                                                                        fireMsg('1', 'Successfully uploaded!Analyse your data by picking it on bigquery!');
+                                                                        $scope.preloader = false;
+                                                                        $scope.diginLogo = 'digin-logo-wrapper2';
+                                                                        $mdDialog.hide();
+                                                                        
+                                                                }
+                                                            }, 100);
+                                                }
                                             }).error(function(data) {
                                                 fireMsg('0', 'There was an error while uploading data !');
                                                 $scope.preloader = false;
                                                 $scope.diginLogo = 'digin-logo-wrapper2';
+
+                                                $interval.cancel(promise);
                                             });
 
                                             files = null;
@@ -613,8 +631,15 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 publicFun.clrTblSelectedObj($scope.sourceUi.tableData);
             },
             onSaveSource: function() {
+
+                $('.main-headbar-slide').animate({
+                            top: '-43px'
+                        }, 300);
+                        //  $('.blut-search-toggele').removeClass('go-up').addClass('go-down');
+                        $('#content1').removeClass('content-m-top40').addClass('content-m-top0');
+                        $scope.headerMenuToggle = false;
                 //if number of widgets are lesser than 6
-                var widgetLimit = 6;
+                var widgetLimit = 10;
                 if($rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.length < widgetLimit)
                 {
                     var length = $scope.sourceUi.sourceRcrd.length++;

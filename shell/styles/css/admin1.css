@@ -9941,12 +9941,7 @@ h6 {
     position: relative;
     left: 0;
     top: 0;
-    z-index: 4;
-    width: 100px;
     height: 100px;
-    -webkit-box-shadow: 2px 0 3px -2px #888;
-    box-shadow: 2px 0 3px -2px #888;
-    height: 100%;
     width: 48px;
     cursor: pointer;
 }
@@ -10193,11 +10188,12 @@ h6 {
 .nav-bar-border {
     position: relative;
     left: 0;
-    top: 0;
-    width: 40px;
-    height: calc(100vh);
+    top: 43px;
+    width: 44px;
+    height: calc(103vh);
     background: #fff;
-    /*border-right: 1px solid #f0f0f0;*/
+    z-index: 1500;
+    border-right: 1px solid #f4f4f4;
 }
 
 /*
@@ -10380,7 +10376,7 @@ h6 {
 .overlay {
     display: none;
     position: fixed;
-    z-index: 100;
+    z-index: 0;
     top: 0;
     left: 0;
     width: 100%;
@@ -13106,6 +13102,7 @@ md-tooltip {
     border-left: 12px solid transparent;
 }
 
+<<<<<<< HEAD
 
 .termsCondition{
     background-color:#eee;
@@ -13113,3 +13110,8 @@ md-tooltip {
 
    align:center;
 }
+=======
+#mainHeadbar:hover {
+    transform: translateY(0);
+}
+>>>>>>> remotes/origin/V3.1.0.0

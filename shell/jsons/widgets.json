@@ -45,7 +45,17 @@
             "widView": "views/ViewProfile.html",
             "color": "#9C27B0",
             "sizeX": 4, "sizeY": 4, "row": 0, "col": 16
-        }, {
+        },
+        {
+            "title": "Hourly summary",
+            "icon": "styles/css/images/icons/reports.svg",
+            "type": "reports",
+            "Description": "View reports from a iFrame",
+            "widView": "views/viewReportWidget.html",
+            "color": "#9C27B0",
+            "sizeX": 4, "sizeY": 4, "row": 0, "col": 16
+        },
+         {
             "title": "Facebook Pages",
             "icon": "styles/css/images/icons/facebook.svg",
             "type": "Social Media",
@@ -166,13 +176,11 @@
             "color": "#3F51B5",
             "sizeX": 4, "sizeY": 4, "row": 2, "col": 16
         }, {
-            "title": "Google Maps Branches",
-            "icon": "styles/css/images/icons/google.svg",
+            "title": "Top 10 customers ",
+            "icon": "styles/css/images/icons/topten.svg",
             "type": "Custom",
             "Description": "Google Maps",
-            "widView": "views/googleMaps/ViewGoogleMapsBranches.html",
-            "dataView": "views/googleMaps/ViewDataGoogleMaps.html",
-            "dataCtrl": "widgetSettingsDataCtrl",
+            "widView": "views/googleMaps/ViewGoogleMaps.html",           
             "color": "#8BC34A",
             "sizeX": 4, "sizeY": 4, "row": 3, "col": 16
         }, {
@@ -220,6 +228,24 @@
             "widView": "views/ViewWidgetSettings.html",
             "color": "#B6B6B6",
             "sizeX": 4, "sizeY": 4, "row": 0, "col": 12
+        },
+         {
+            "title": "Sales distribution over world",
+            "icon": "styles/css/images/icons/reports.svg",
+            "type": "Custom",
+            "Description": "View reports from a iFrame",
+            "widView": "views/viewSales.html",
+            "color": "#9C27B0",
+            "sizeX": 4, "sizeY": 4, "row": 0, "col": 16
+        },
+        {
+            "title": "Orders",
+            "icon": "styles/css/images/icons/traffic-light.svg",
+            "type": "Custom",
+            "Description": "View reports from a iFrame",
+            "widView": "views/nbsqaRealtime.html",
+            "color": "#9C27B0",
+            "sizeX": 4, "sizeY": 4, "row": 0, "col": 16
         }
     ]
 }

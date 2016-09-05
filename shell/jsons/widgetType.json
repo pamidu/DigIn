@@ -17,5 +17,10 @@
         "title": "General",
         "icon": "styles/css/images/icons/shopping_cart.svg"
 
+      },{
+
+        "title": "reports",
+        "icon": "styles/css/images/icons/shopping_cart.svg"
+
       }]
 }

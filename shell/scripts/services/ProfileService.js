@@ -1,7 +1,8 @@
-routerApp.service('ProfileService',function(){
+routerApp.service('ProfileService',function($http,Digin_Engine_API,Digin_Domain){
 
-
+	// user profile INformations --
 		
+		this.widget_limit;
 		this.UserDataArr = {
 
 			Name:"",
@@ -15,14 +16,13 @@ routerApp.service('ProfileService',function(){
 
 		};
 	
-
-
 		this.InitProfileData = function (response){
 
 			this.UserDataArr = response;
 
 		};
 
-	
+	// user settings informations 
+		this.widget_limit = "";
 
 });

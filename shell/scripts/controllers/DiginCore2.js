@@ -91,10 +91,148 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
             }
         }
 
+       
         $scope.initialize = function(){  
 
-            var query;
-            switch($rootScope.widget.widgetData.uniqueType){
+
+            if($rootScope.widget.widgetName == "sunburst" || $rootScope.widget.widgetName == "hierarchy"){
+
+                $scope.tableData=[];
+                var parent =$rootScope.widget.widgetData.commonSrc.src.fAttArr[0].name;
+                $scope.fieldData=[parent,"value"];
+              
+                var id=0;
+
+                var data = $rootScope.widget.widgetData.widData.data.children;
+                var newTableData = [];
+                for (var i = 0; i < data.length; i++) {
+
+                    if(typeof data[i].children == "object"){
+                        if(typeof data[i].children[i].children == "object"){
+                            var childone = $rootScope.widget.widgetData.commonSrc.src.fAttArr[2].name;
+                            var childtwo = $rootScope.widget.widgetData.commonSrc.src.fAttArr[1].name;
+                            $scope.fieldData=[parent,childone,childtwo,"value"];
+                            for (var x = 0; x < data[i].children.length; x++) {
+                                    for(var y = 0; y < data[i].children[x].children.length; y++){
+                                        var newObject = {};
+                                        id++;
+                                        newObject["id"] = id;
+                                        newObject[parent] = data[i].name;
+                                        newObject[childone] = data[i].children[x].name;
+                                        newObject[childtwo] = data[i].children[x].children[y].name;
+                                        newObject["value"]  = data[i].children[x].children[y].value;
+                                        newTableData.push(newObject);
+                                    }
+                            }
+                        }else{
+                               var childone = $rootScope.widget.widgetData.commonSrc.src.fAttArr[1].name;
+                               $scope.fieldData=[parent,childone,"value"];
+                               for (var x = 0; x < data[i].children.length; x++) {
+                                    var newObject = {};
+                                    id++;
+                                    newObject["id"] = id;
+                                    newObject[parent] = data[i].name;
+                                    newObject[childone] = data[i].children[x].name;
+                                    newObject["value"] = data[i].children[x].value;
+                                    newTableData.push(newObject);
+                            }
+                        }
+                     
+                    }
+                    else{
+                        var newObject = {};
+                        newObject["id"] = i;
+                        newObject[parent] = data[i].name;
+                        newObject["value"] = data[i].value;
+                        newTableData.push(newObject);
+                    }
+
+                }
+                console.log(newTableData);
+                $scope.tableData = newTableData;
+                $scope.originalList = newTableData;
+
+            }
+            else if($rootScope.widget.widgetName == "bubble"){
+                $scope.fieldData = [];
+                var newTableData = [];
+                // for(var i=0; i< $rootScope.widget.widgetData.commonSrc.src.fAttArr.length; i++){
+                //         $scope.fieldData.push($rootScope.widget.widgetData.commonSrc.src.fAttArr[i]);
+                // }
+                $scope.fieldData.push($rootScope.widget.widgetData.commonSrc.src.fAttArr[0].name);
+                for(var i=0; i< $rootScope.widget.widgetData.commonSrc.src.fMeaArr.length; i++){
+                        $scope.fieldData.push($rootScope.widget.widgetData.commonSrc.src.fMeaArr[i].name);
+                }
+                for(var i=0 ; i< $rootScope.widget.widgetData.highchartsNG.series.length; i++ ){
+                    var newObject = {};
+                    newObject["id"] = i;
+                    
+                    newObject[$scope.fieldData[0]] = $rootScope.widget.widgetData.highchartsNG.series[i].name;
+                    newObject[$scope.fieldData[1]] = $rootScope.widget.widgetData.highchartsNG.series[i].data[0].x;
+                    newObject[$scope.fieldData[2]] = $rootScope.widget.widgetData.highchartsNG.series[i].data[0].y;
+                    newObject[$scope.fieldData[3]] = $rootScope.widget.widgetData.highchartsNG.series[i].data[0].z;
+                    newTableData.push(newObject);
+                }
+                $scope.tableData = newTableData;
+                $scope.originalList = newTableData;
+                
+            }
+            else if($rootScope.widget.widgetName == "histogram"){
+                $scope.fieldData = ["lower_bound","upper_bound","value"];
+                var newTableData = [];
+
+                for(var i=0;i<$rootScope.widget.widgetData.highchartsNG.series[0].data.length ;i++){
+                    var newObject = {};
+                    newObject["id"] = i;
+                    newObject["lower_bound"] = $rootScope.widget.widgetData.highchartsNG.xAxis.categories[i][0];
+                    newObject["upper_bound"] = $rootScope.widget.widgetData.highchartsNG.xAxis.categories[i][1];
+                    newObject["value"] = $rootScope.widget.widgetData.highchartsNG.series[0].data[i];
+                    newTableData.push(newObject);
+                }
+                $scope.tableData = newTableData;
+                $scope.originalList = newTableData;
+
+            }
+            else if($rootScope.widget.widgetName == "boxplot"){
+                $scope.fieldData = ["label","value"];
+                var newTableData = [];
+
+                var newObject = {};
+                newObject["id"]=1;
+                newObject["label"]="Maximum";
+                newObject["value"] = $rootScope.widget.widgetData.highchartsNG.series[0].data[0][4];
+                newTableData.push(newObject);
+
+                var newObject = {};
+                newObject["id"]=2;
+                newObject["label"]="Upper_quartile";
+                newObject["value"] = $rootScope.widget.widgetData.highchartsNG.series[0].data[0][3];
+                newTableData.push(newObject);
+
+                var newObject = {};
+                newObject["id"]=3;
+                newObject["label"]="Median";
+                newObject["value"] =$rootScope.widget.widgetData.highchartsNG.series[0].data[0][2];
+                newTableData.push(newObject);
+
+                var newObject = {};
+                newObject["id"]=4;
+                newObject["label"]="Lower_quartile";
+                newObject["value"] =$rootScope.widget.widgetData.highchartsNG.series[0].data[0][1];
+                newTableData.push(newObject);
+
+                var newObject = {};
+                newObject["id"]=5;
+                newObject["label"] ="Minimum";
+                newObject["value"] =$rootScope.widget.widgetData.highchartsNG.series[0].data[0][0];            
+                newTableData.push(newObject);
+
+                $scope.tableData = newTableData;
+                $scope.originalList = newTableData;
+            }
+            else{
+                var query;
+                switch($rootScope.widget.widgetData.uniqueType){
 
                 case "Dynamic Visuals":
 
@@ -149,13 +287,30 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                 case "Google Maps Branches":  
                 break;
                 case "Pivot Summary":
-                    $scope.tableData = $rootScope.widget.widData.summary;
-                    $scope.originalList = $scope.tableData;
-                    $scope.fieldData = $rootScope.widget.widData.fieldArray;
+                    $scope.fieldData = [];
+                    var newTableData = [];
+                    for(var i=0; i< $rootScope.widget.widgetData.widData.fieldArray.length; i++){
+                        $scope.fieldData.push($rootScope.widget.widgetData.widData.fieldArray[i]);
+                    }
+                    for(var i=0; i< $rootScope.widget.widgetData.widData.summary.length; i++){
+                        var newObject = {};
+                        newObject["id"] = i;
+
+                        for(var b =0; b<$scope.fieldData.length;b++){
+                            var field = $scope.fieldData[b];
+                            newObject[$scope.fieldData[b]] = $rootScope.widget.widgetData.widData.summary[i][field];
+                        }
+                        newTableData.push(newObject);
+                        
+                   }
+                   $scope.tableData = newTableData;
+                   $scope.originalList = newTableData;
                 break;
                 default:
                 break;
             }
+            }
+           
         }
 
         $scope.updateFilteredList = function(search) {
@@ -640,7 +795,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                         $mdDialog.hide();
                         ngToast.create({
                             className: 'success',
-                            content: 'Successfuly Saved Dashboard',
+                            content: 'Dashboard Saved Successful',
                             horizontalPosition: 'center',
                             verticalPosition: 'top',
                             dismissOnClick: true
@@ -1143,8 +1298,14 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
             }
         })();
 
+
+		$scope.selected = {};
+
+      
+		
         getJSONData($http, 'widgetType', function(data) {
             $scope.WidgetTypes = data;
+			$scope.selected.type = data[0].title;
         });
 
         getJSONData($http, 'widgets', function(data) {
@@ -1179,11 +1340,7 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
             }
         };
 
-        $scope.closeDialog = function() {
-            $mdDialog.hide();
-        };
-
-        $scope.cancelDialog = function() {
+        $scope.cancel = function() {
             $mdDialog.cancel();
         };
 
@@ -1247,8 +1404,8 @@ routerApp.controller('addWidgetCtrl', ['$scope', '$timeout', '$rootScope', '$mdD
                                         "widgetID": "temp" + Math.floor(Math.random() * (100 - 10 + 1) + 10),
                                         "widgetName": $scope.currWidget.widName,
                                         "widgetData": $scope.currWidget,
-                                        sizeX: 6,
-                                        sizeY: 21,
+                                        sizeX: 7,
+                                        sizeY: 23,
                                        
                                 }
 
@@ -1319,7 +1476,6 @@ routerApp.controller('hierarchySummaryCtrl', [ '$scope', '$mdDialog', '$rootScop
         
     }
 ]);
-
 
 
 

@@ -33,7 +33,8 @@ var routerApp = angular.module('DuoDiginRt', [
     "com.2fdevs.videogular.plugins.controls",
     "info.vietnamcode.nampnq.videogular.plugins.youtube",
     "ngTagsInput",
-    'pouchdb'
+    'pouchdb',
+    'jkuri.slimscroll'
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
@@ -123,7 +124,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         })
         .state("home.group", {
             url: "/settings-group",
-            controller: "dashboardSetupCtrl",
+            controller: "userGroupsCtrl",
             templateUrl: "views/settings/group.html",
             data: {
                 requireLogin: true
@@ -355,6 +356,13 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         }).state('home.welcomeSearch', {
         url: '/welcome-search',
         templateUrl: "views/help/welcomeSearchBar.html",
+        data: {
+            requireLogin: true
+        }
+    }).state('home.profileSetting', {
+        url: '/user-profile?user',
+		controller: 'userProfileCtrl',
+        templateUrl: "views/profile-settings/user-profile-view.html",
         data: {
             requireLogin: true
         }

@@ -19,7 +19,7 @@
     <meta name="google-signin-client_id"
           content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com">
     <link rel="shortcut icon" href="styles/css/images/innerlogo.ico">
-    <!-- <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/> -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/> 
     <link rel="stylesheet" href="bower_components/bootstrap/less/glyphicons.less"/>
     <link rel="stylesheet" type="text/css" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
     <!-- <link href="styles/css/material-wfont.css" rel="stylesheet">-->
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
+    <!--link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css"-->
     <link rel="stylesheet" type="text/css" href="styles/css/directive_library.css">
     <link rel="stylesheet" type="text/css" href="styles/css/pivot.css"/>
     <!-- angular gridster -->
@@ -63,6 +63,7 @@
         -- ng tag input
         -->
     <link rel="stylesheet" href="styles/fonts/font-awesome/font-awesome.min.css" type='text/css'/>
+    <link rel="stylesheet" href="styles/fonts/digin-main/digin-main.css" type='text/css'/>
     <link rel="stylesheet" href="bower_components/angular-ui/angular-ui-select2/select2.min.css" type="text/css"/>
     <link rel="stylesheet"
           href="bower_components/angular-ui/anuglar-bootstrap-datepicker/angular-bootstrap-datepicker.css"
@@ -111,14 +112,16 @@
     <!-- If you'd like to support IE8 -->
         <script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 </head>
-<body>
-<div ui-view layout="column" id="mainContainer" style="height: 100%">
-</div>
+<body layout="column" ng-cloak>
+
+	<div ui-view layout="column" id="mainContainer" style="height: 100%">
+	</div>
 </body>
 <!--  new changes  -->
 <!-- search end -->
 <script type="text/javascript" src="scripts/vendor/prefixfree.min.js"></script>
 <script type="text/javascript" src='scripts/vendor/jquery.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" src="bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>
 <script type="text/javascript" src="scripts/controllers/jspdf.min.js"></script>
@@ -133,14 +136,14 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script> -->
 <script src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
 
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
 <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
 <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
 
 <script src="http://code.highcharts.com/highcharts.js"></script>
-<script type="text/javascript" src="scripts/controllers/highchartsCustom.js"></script>
+ 
 <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
@@ -160,7 +163,7 @@
 <script type="text/javascript" src="scripts/vendor/angular-css-injector.js"></script>
 <script type="text/javascript" src="bower_components/notification/ng-Toast/ngToast.min.js"></script>
 <script type="text/javascript" src="bower_components/v-accordion/v-accordion.min.js"></script>
-<!-- ng input tag -->
+<script type="text/javascript" src="bower_components/ngSlimscroll/src/js/ngSlimscroll.js"></script>
 
 <!-- image crop -->
 <script type="text/javascript" src="bower_components/imgcrop/ng-img-crop.js"></script>
@@ -199,7 +202,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pouchdb/5.4.5/pouchdb.js"></script>
 <script src="https://cdn.jsdelivr.net/angular.pouchdb/4.3.0/angular-pouchdb.min.js"></script>
 <!-- html2canvas -->
-<script type="text/javascript" src="build/html2canvas.js"></script>
+
 <script type="text/javascript" src="scripts/custom/utility.js"></script>
 <script type="text/javascript" src="scripts/app.js"></script>
 <script type="text/javascript" src="scripts/controllers/login.js"></script>
@@ -269,6 +272,10 @@
 <script type="text/javascript" src="scripts/controllers/help/welcomeSearchBarCtrl.js"></script>
 <script type="text/javascript" src="scripts/services/QueryBuilderService.js"></script>
 <script type="text/javascript" src="scripts/factories/dynamicallyReport/dynamicallyReportFact.js"></script>
+
+<!-- profile
+<script type="text/javascript" src="scripts/factories/profile/profileFact.js"></script> -->
+<script type="text/javascript" src="scripts/controllers/profile-settings/userProfileCtrl.js"></script>
 
 <!--  controllers end   -->
 <!-- zeroclipboard -->
@@ -362,14 +369,26 @@
 <script type="text/javascript" src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-ui/angular-ui-select2/select2.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.3/ng-csv.min.js"></script>
+
+<script src="bower_components/google-map/lodash.min.js"></script>
+<script src="https://code.highcharts.com/maps/modules/map.js"></script>
+<script  type="text/javascript" src="http://code.highcharts.com/maps/modules/drilldown.js"></script>
+<script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/world-continents.js"></script>
+<script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/asia.js"></script>
+<script  type="text/javascript" src="http://code.highcharts.com/mapdata/countries/lk/lk-all.js"></script>
+<script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/oceania.js"></script>
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/custom/europe.js"></script>
+<script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/north-america.js"></script>
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/custom/south-america.js"></script>
+
+<script type="text/javascript" src="bower_components/google-map/angular-simple-logger.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-maps/2.3.3/angular-google-maps.min.js"></script>
+<!-- marker clusterer -->
 <!-- angular google maps -->
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
-<script src="bower_components/google-map/lodash.min.js"></script>
-<script type="text/javascript" src="bower_components/google-map/angular-simple-logger.js"></script>
-<script src="bower_components/google-map/angular-google-maps.js"></script>
-<!-- marker clusterer -->
-<script src="https://raw.githubusercontent.com/PeterTheOne/js-marker-clusterer/gh-pages/src/markerclusterer_compiled.js"></script>
+ 
+<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyANY96AhQijBZgSXQ6RWkYUlO5fxCh6OMU&sensor=false'></script>
+ 
 <!-- angular google plus -->
 <script src="bower_components/angular-google-plus/dist/angular-google-plus.min.js"></script>
 <!-- angular at-table -->

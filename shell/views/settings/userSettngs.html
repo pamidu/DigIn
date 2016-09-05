@@ -1,80 +1,70 @@
-<div class="bg-gradient-green" ng-init="viewSettings()"></div>
 <div class="setup-wrapper  animated fadeIn">
-    <div layout="row" class="setting-close pull-right" ng-click="route('back')">
-        <i class="fa fa-close"></i>
-    </div>
 
-    <div class="md-padding animated fadeIn" layout="row" layout-align="center center">
-        <div class="setting-wrap" style="height: 760px;"
-             flex="50">
-            <div class="setting-card-header">
+        <div class="setting-wrap">
+			<div layout="row" layout-align="end end">
+				<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route('welcome')"></md-button>
+			</div>
+
+			<div class="setting-card-header">
                 <h5>User Setting</h5>
                 <div class="setting-img-wrap">
-                    <img src="styles/css/images/setting/invite_user.png"/>
+                    <img src="styles/css/images/setting/user_settings.png"/>
                 </div>
-                <div class="setting-text-wrap">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                </div>
-            </div>
+			</div>
+			
+			<div layout="row" layout-align="start start">
+			<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Settings</div>
+			</div>
 
-
-            <div class="user-setting-wrap">
-                <div layout="column">
-                    <md-input-container>
-                        <label>Cache Lifetime (Sec)</label>
-                        <input ng-model="cacheLifetime" type="number" step="1" min="0">
-                    </md-input-container>
-                </div>
-                <div layout="column">
-                    <md-input-container>
-                        <label>Number of Widgets</label>
-                        <md-select ng-model="noOfWidget">
-                            <md-option ng-value="topping.name" ng-repeat="topping in toppings">{{topping.name}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
+            <form name="frmNewUser" autocomplete="off">
+    
+				
+				<div layout="column" flex style="padding: 10px 10px 10px 10px;">
+					<label>Cache Lifetime (Sec)</label>
+					<input ng-model="cacheLifetime" type="number" class="form-control" step="1" min="0" flex/>
+				</div>
+                <div layout="column" flex style="padding: 10px 10px 10px 10px;">
+					<label>Number of Widgets</label>
+					<md-select ng-model="noOfWidget">
+						<md-option ng-value="topping.name" ng-repeat="topping in toppings">{{topping.name}}
+						</md-option>
+					</md-select>
                 </div>
 
-                <div layout="column">
-                    <md-input-container>
-                        <label>Request Limit</label>
-                        <md-select ng-model="reqLimit">
-                            <md-option ng-value="request.name" ng-repeat="request in requests">{{request.name}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                </div>
-
-                <div layout="column">
-                    <md-button class="setup-button md-raised md-primary" ng-click="updateSettings()">
-                        <span class="setup-font-theme">UPDATE SETTINGS</span>
-                    </md-button>
-                </div>
-
-                <div layout="column">
-                    <md-input-container>
-                        <label>Clear Cache</label>
-                        <md-select ng-model="clearDetail">
-                            <md-select-label>{{ clearDetail.name }}</md-select-label>
-                            <md-option ng-value="clearDetail.name" ng-repeat="clearDetail in clearDetails">
-                                {{clearDetail.name}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <md-button class="setup-button md-raised md-primary" ng-click="clearCache()">
-                        <span class="setup-font-theme">CLEAR CACHE</span>
-                    </md-button>
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-
-
+                <div layout="column" flex style="padding: 10px 10px 10px 10px;">
+					<label>Request Limit</label>
+					<md-select ng-model="reqLimit">
+						<md-option ng-value="request.name" ng-repeat="request in requests">{{request.name}}
+						</md-option>
+					</md-select>
+				</div>
+				
+				<div layout="row" layout-align="center center" style="margin-top:20px;">
+					<button type="button" class="blut-edit-btn" style="margin:10px 10px 10px 10px" ng-click="updateSettings()">
+						Update Settings
+					</button>
+				</div>
+			</form>
+				
+			<div layout="row" layout-align="start start">
+			<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Cache</div>
+			</div>
+			
+            <form name="frmNewUser" autocomplete="off">
+				<div layout="column" flex style="padding: 10px 10px 10px 10px;">
+					<label>Clear Cache</label>
+					<md-select ng-model="clearDetail">
+						<md-select-label>{{ clearDetail.name }}</md-select-label>
+						<md-option ng-value="clearDetail.name" ng-repeat="clearDetail in clearDetails">
+							{{clearDetail.name}}
+						</md-option>
+					</md-select>
+				</div>
+				<div layout="row" layout-align="center center" style="margin-top:20px;">
+					<button type="button" class="blut-edit-btn" style="margin:10px 10px 10px 10px" ng-click="clearCache()">
+						Clear Cache
+					</button>
+				</div>
+            </form>
+     </div>
 </div>
-
-
-
-

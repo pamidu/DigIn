@@ -1,24 +1,102 @@
 <md-list>
-    <!-- logo -->
-    <md-item>
-        <a>
-            <md-item-content md-ink-ripple class="sidebar-btn digin-logo" 
-            layout="column" layout-align="center center" ng-click="$parent.navigate('home')"> 
-                <div class="digin-logo-wrapper" layout="row" layout-align="center center">
-                    <img ng-src="{{image}}" alt="Upload Image" class="md-avatar" 
-                    id="digin-logo" style="width:80%;">
-                    <md-tooltip md-direction="right">DigIn v3.0.0.4.1</md-tooltip>
-                </div> 
-            </md-item-content>
-        </a>
-    </md-item>
+
     <!-- sidebar items -->
     <md-item ng-repeat="item in sidebarItems">
-        <a ng-click="$parent.navigate(item.title)">
-            <md-item-content md-ink-ripple class="sidebar-btn" layout="column" layout-align="center center">
-                <ng-md-icon icon="{{item.icon2}}" style="fill:#026689" size="20" layout="column" layout-align="center center" flex></ng-md-icon>
-                <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
-            </md-item-content>
+        <a ng-click="navigate(item.click)">
+            <i ng-mouseover="menuMouseHover(item)"
+
+               class="blut-left-menu  {{item.icon2}} " layout="column"
+               layout-align="center center"
+               flex></i>
+            <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
         </a>
     </md-item>
+
 </md-list>
+<div class="left-menu-toggle" ng-click="leftMenuToggle()">
+    <span ng-if="!leftMenuToggleState" class="ti-angle-right"></span>
+    <span ng-if="leftMenuToggleState" class="ti-angle-left"></span>
+</div>
+<div ng-show="isEnableSubMenu" ng-mouseleave="menuMouseLeave()" class="blut-sub-panel-wrapper blut-setting">
+    <div class="blut-wrap">
+        <div class="header-wrap">
+            <ul>
+                <li>{{currentSubMenu.header}}</li>
+                <li class="sub-menu-close" ng-click="subMenu.close()">
+                    <i class="icon-cancel"></i>
+                </li>
+            </ul>
+        </div>
+        <div class="body-wrap">
+            <ul ng-if="currentItem == 'Social Media'">
+                <!--li ng-repeat="menu in currentSubMenu.data" ng-click="goTORout(menu)">
+                    <i class="{{menu.icon}}"></i>
+                    <a ng-if="currentTitle == 'Share'" socialshare socialshare-provider="{{menu.provider}}" ng-src="{{menu.icon}}" socialshare-text="Share this dashboard" socialshare-url="#" style="color:rgba(0, 0, 0, 0.87)">
+                    {{menu.name}}</a>
+                    <span ng-if="currentTitle != 'Share'"> {{menu.name}}</span>
+                </li-->
+				
+				<li ng-click="goTORout('home.social-graph-fb')">
+					<i class="ti-facebook"></i>Facebook
+				</li>
+				<li ng-click="goTORout('home.SocialGraphTwitter')">
+					<i class="ti-twitter-alt"></i>Twitter
+				</li>
+            </ul>
+
+			<ul ng-if="currentItem == 'Reports'">		
+				<li ng-click="goTORout('home.ReportsDev')">
+					<i class="ti-filter"></i>Report Development
+				</li>
+				<li ng-click="goTORout('home.Reports')">
+					<i class="ti-notepad"></i>Published Reports
+				</li>
+            </ul>
+		
+			<ul ng-if="currentItem == 'Share'">		
+				<li>
+					<i class="ti-facebook"></i>
+					<a socialshare socialshare-provider="facebook" ng-src="ti-facebook" socialshare-text="Share this dashboard" socialshare-url="#" style="color:rgba(0, 0, 0, 0.87)">
+                   Facebook</a>
+				</li>
+				<li>
+					<i class="ti-google"></i>
+					<a socialshare socialshare-provider="google+" ng-src="ti-google" socialshare-text="Share this dashboard" socialshare-url="#" style="color:rgba(0, 0, 0, 0.87)">
+                   Google+</a>
+				</li>
+				<li>
+					<i class="ti-twitter-alt"></i>
+					<a socialshare socialshare-provider="twitter" ng-src="ti-twitter-alt" socialshare-text="Share this dashboard" socialshare-url="#" style="color:rgba(0, 0, 0, 0.87)">
+                   Twitter</a>
+				</li>
+				<li>
+					<i class="ti-linkedin"></i>
+					<a socialshare socialshare-provider="linkedin" ng-src="ti-linkedin" socialshare-text="Share this dashboard" socialshare-url="#" style="color:rgba(0, 0, 0, 0.87)">
+                   Linkedin</a>
+				</li>
+				<li ng-click="goTORout('Email')">
+					<i class="ti-email"></i>
+					<span> Email</span>
+				</li>
+            </ul>
+			<ul ng-if="currentItem == 'Settings'">	
+				<li ng-click="goTORout('home.createUser')">
+					<i class="ti-user"></i>New user
+				</li>
+				<li ng-click="goTORout('home.share')">
+					<i class="ti-share"></i>Share
+				</li>
+				<li ng-click="goTORout('home.userSettings')">
+					<i class="ti-pencil"></i>User settings
+				</li>
+				<li ng-click="goTORout('home.account')">
+					<i class="ti-settings"></i>Account settings
+				</li>
+				<li ng-click="goTORout('home.group')">
+					<i class="ti-settings"></i>Groups
+				</li>
+            </ul>
+        </div>
+
+    </div>
+</div>

@@ -95,7 +95,7 @@
                 <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
-                            series
+                            Series
                             <fieldset ng-disabled="isPendingRequest"
                                       data-ng-style="isPendingRequest && {'cursor':'not-allowed'}"
                                       class="toggle-icon animated "
@@ -133,7 +133,7 @@
                      id="togglePanelColumns">
                     <div class="header">
                         <h4 class="font-weight-300 p-20">
-                            attributes
+                            Attributes
                             <div class="header-icon">
                                 <i class="ti-help"></i>
                             </div>
@@ -453,8 +453,8 @@
                                     attribute
                                 </div>
                                 <p class="data-row-style-2"
-                                   ng-repeat="column in commonData.columns">
-                                    {{column.filedName}}
+                                   ng-repeat="column in sourceData.fAttArr">
+                                    {{column.name}}
                                 </p>
 
                             </div>
@@ -463,8 +463,8 @@
                                     measure
                                 </div>
                                 <p class="data-row-style-2"
-                                   ng-repeat="measure in commonData.measures">
-                                    {{measure.filedName}}
+                                   ng-repeat="measure in sourceData.fMeaArr">
+                                    {{measure.name}}
                                 </p>
                             </div>
                         </div>

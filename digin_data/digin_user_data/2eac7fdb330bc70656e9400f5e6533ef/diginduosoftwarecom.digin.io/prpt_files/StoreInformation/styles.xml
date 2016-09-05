@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<style xmlns="http://reporting.pentaho.org/namespaces/engine/classic/bundle/style/1.0" xmlns:layout="http://reporting.pentaho.org/namespaces/engine/classic/bundle/layout/1.0" xmlns:core="http://reporting.pentaho.org/namespaces/engine/attributes/core" xmlns:html="http://reporting.pentaho.org/namespaces/engine/attributes/html" xmlns:swing="http://reporting.pentaho.org/namespaces/engine/attributes/swing" xmlns:pdf="http://reporting.pentaho.org/namespaces/engine/attributes/pdf" xmlns:designtime="http://reporting.pentaho.org/namespaces/report-designer/2.0" xmlns:crosstab="http://reporting.pentaho.org/namespaces/engine/attributes/crosstab" xmlns:pentaho="http://reporting.pentaho.org/namespaces/engine/attributes/pentaho" xmlns:table="http://reporting.pentaho.org/namespaces/engine/attributes/table" xmlns:page="http://jfreereport.sourceforge.net/namespaces/reports/legacy/ext">
+  <page-definition horizontal-span="1" vertical-span="1" pageformat="A4" orientation="portrait" margin-top="72" margin-left="72" margin-bottom="72" margin-right="72"/>
+  <layout:watermark designtime:hideInLayoutGUI="true">
+    <element-style>
+    </element-style>
+  </layout:watermark>
+  <layout:page-header designtime:visual-height="77.027">
+    <element-style>
+    </element-style>
+    <layout:label>
+      <element-style>
+        <content-styles color="#548250"/>
+        <spatial-styles x="0" y="0" min-width="234.135" min-height="28.378"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="16"/>
+      </element-style>
+      <core:value>Store  Information </core:value>
+    </layout:label>
+  </layout:page-header>
+  <layout:page-footer designtime:visual-height="72.0">
+    <element-style>
+    </element-style>
+    <layout:content>
+      <element-style>
+        <content-styles scale="true" keep-aspect-ratio="true"/>
+        <spatial-styles x="151.027" y="19.595" min-width="192.892" min-height="29.054"/>
+      </element-style>
+      <core:value resource-type="resource-key">resourcekey:org.pentaho.reporting.libraries.docbundle.bundleloader.RepositoryResourceBundleLoader;resources/image.png;&quot;&quot;&quot;l:designtime::original_value=C:\Users\Jeganathan\Desktop\PoweredBy_DuoDigin.png&quot;&quot;&quot;</core:value>
+    </layout:content>
+  </layout:page-footer>
+</style>

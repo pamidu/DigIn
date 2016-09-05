@@ -1,21 +1,117 @@
-<md-tabs id="footerBar" md-selected="selectedPageIndx" md-border-bottom md-autoselect md-align-tabs="bottom" ng-show="currentView=='Dashboard'" ng-mouseover="adjustTitleLength()">
+<md-tabs id="footerBar" md-selected="selectedPageIndx" md-border-bottom md-autoselect md-align-tabs="bottom"
+         ng-show="currentView=='Dashboard'"
+         ng-mouseover="adjustTitleLength()">
     <md-tab ng-repeat="page in $root.dashboard.pages" md-on-select="selectPage(page)">
-        <md-tab-label >
-            <div layout="row" layout-align="center center" ng-dblclick="renamePage(page.pageName, page.pageID)" ng-click = "syncPage(page)">
+        <md-tab-label>
+            <div layout="row" layout-align="center center" ng-dblclick="renamePage(page.pageName, page.pageID)"
+                 ng-click="syncPage(page)">
                 <div class="pageName">{{page.pageName}}</div>
-                <md-button ng-click="removePage(page, $event)" ng-disabled="$root.dashboard.pages.length <= 1" class="pageCloseButton b-r-0" ng-click="cancel();">      
-                    <ng-md-icon icon="close" style="fill:#ABABAB" size="18" layout="row"></ng-md-icon>   
-                </md-button>  
+                <md-button ng-click="removePage(page, $event)" ng-disabled="$root.dashboard.pages.length <= 1"
+                           class="pageCloseButton b-r-0" ng-click="cancel();">
+                    <ng-md-icon icon="close" style="fill:#ABABAB" size="18" layout="row"></ng-md-icon>
+                </md-button>
             </div>
         </md-tab-label>
         <md-tab-body>
             <div class="tab-style" gridster="gridsterOpts">
-                <li class="digin-widget" 
-                ng-repeat="widget in page.widgets | limitTo:6"" 
-                gridster-item="widget" layout="column"
-                    layout-align="none stretch" >
-                    <div ng-init="widInit(widget)" class="digin-widget-content dashboard-widget" ng-style="{'height':widget.widgetData.mheight}" layout="row">
-                           <div class="d3-btn-wrap" ng-if="widget.isD3chart">
+                <li class="digin-widget"
+                    ng-repeat="widget in page.widgets"
+                    gridster-item="widget" layout="column"
+                    layout-align="none stretch">
+                    <div class="digin-widget-toolbar" layout="row" layout-align="center center" ng-init="setShowWidgetSettings(widget)">
+                        <div ng-class="widgetTitleClass" flex="80" style="color: #02b5e2; padding-left: 50px;">
+                            {{widget.widgetData.widName}}
+                        </div>
+                        <div class="" layout="row" layout-align="end center" >
+                           
+                             <md-button class="widget-button" ng-if="showDataView(widget)"
+                                       ng-click="showData($event,widget)" style="margin-top: 5px;">
+                                <ng-md-icon icon="format_list_numbered" class="widicons" size="20"></ng-md-icon>
+                                <md-tooltip >data</md-tooltip>
+                            </md-button>
+
+                             <md-button class="widget-button" ng-click="commentary(widget)" style="margin-top: 5px;">
+                                <ng-md-icon icon="volume_up" class="widicons" size="20"></ng-md-icon>
+                                <md-tooltip>commentary</md-tooltip>
+                            </md-button>
+
+                            <!-- <md-button class="widget-button" ng-if="showFullView(widget)"
+                                       ng-click="showWidget($event,widget)" style="margin-top: 4px;">
+                                <ng-md-icon icon="fullscreen" class="widicons" size="20"></ng-md-icon>
+                                <md-tooltip>full view</md-tooltip>
+                            </md-button> -->
+
+                            <md-button class="widget-button"
+                                       ng-show="widget.widgetData.initTemplate!=undefined ||
+                            widget.widgetData.commonSrc!=undefined" ng-click="widgetSettings($event,widget)" style="margin-top: 5px;">
+                                <ng-md-icon icon="settings" class="widicons"  size="20"></ng-md-icon>
+                                <md-tooltip>settings</md-tooltip>
+                            </md-button>
+                            <md-menu ng-show="widget.widgetData.initCtrl=='elasticInit'">
+                                <md-button class="widget-button" ng-click="$mdOpenMenu($event);$event.stopPropagation();setAttributes(widget);">
+                                    <i class="ti-filter blut-widget-icon"></i>
+                                    <md-tooltip>filter</md-tooltip>
+                                </md-button>
+                                <md-menu-content style="background:white;padding:10px;">
+                                    <div class="widget0s-menu">
+                                        <div layout="row" layout-xs="column">
+                                            <div flex="100">
+                                                    <div class="widget0s-filter-body" flex="100" layout="column">
+                                                        <div layout="row" layout-xs="column" flex="100">
+                                                            <div flex="50" style="overflow: hidden;">
+                                                                <div class = "blut-login-user card-head custom-filter">
+                                                                    &nbsp  SERIES
+                                                                </div>
+                                                                <md-checkbox ng-checked="isChecked()" md-indeterminate="isIndeterminate" ng-click="toggleAll(widget);$event.stopPropagation();" md-prevent-menu-close="md-prevent-menu-close">
+                                                                    All
+                                                                </md-checkbox>                            
+                                                                <ul ng-repeat="s in series" class="cutom-filter-ul">
+                                                                        <md-checkbox ng-checked="s.status" ng-click="setSeriesFilter(s,widget)"  md-prevent-menu-close="md-prevent-menu-close" aria-label="s.name" style="font-size: 12px;line-height: 0.428571;">{{s.name}}</md-checkbox>
+                                                                </ul>                            
+                                                            </div>
+                                                            <div flex="50">
+                                                                <div class = "blut-login-user card-head custom-filter">
+                                                                    &nbsp  CATEGORIES
+                                                                </div>
+                                                                <md-checkbox ng-checked="isCatChecked()" md-indeterminate="isIndeterminate" ng-click="toggleCatAll(widget)" md-prevent-menu-close="md-prevent-menu-close">
+                                                                    All
+                                                                </md-checkbox>                            
+                                                                <ul ng-repeat="c in categories" class="cutom-filter-ul" style="overflow: hidden;">
+                                                                        <md-checkbox ng-checked="c.status" ng-click="setCategoriesFilter(c,widget)"  md-prevent-menu-close="md-prevent-menu-close" style="font-size: 12px;line-height: 0.428571;">{{c.name}}</md-checkbox>
+                                                                </ul>                           
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </md-menu-content>
+                            </md-menu>                             
+                            <md-button class="widget-button" ng-click="syncWidget(widget)"
+                                       ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
+                                <i class="ti-reload blut-widget-icon"></i>
+                                <md-tooltip>sync</md-tooltip>
+                            </md-button>
+
+                            <md-button class="widget-button" ng-click="removeWidget(widget, $event)">
+                                <i class="ti-close blut-widget-icon"></i>
+                            </md-button>
+
+                        </div>
+                    </div>
+                    <md-divider></md-divider>
+                    <div ng-init="widInit(widget)" class="digin-widget-content dashboard-widget"
+                         ng-slimscroll
+                         opacity="0.1"
+                         distance="5px"
+                         height="100%"
+                         width="100%"
+                         ng-mouseover="chatWidgetscrollEnabled = true"
+                         ng-mouseleave="chatWidgetscrollEnabled = false"
+                         enabled="{{ chatWidgetscrollEnabled }}"
+                         ng-style="{'height':widget.widgetData.mheight}" layout="row">
+                        <div class="d3-btn-wrap" ng-if="widget.isD3chart">
                             <span class="fa fa-bars" id="d3-btn-stn" ng-click="d3chartBtnClick(widget)"></span>
                             <div class="d3-setting-wrap" ng-if="widget.d3chartBtn">
                                 <div class="print-chart-wrap" ng-click="printD3Chart(widget)">Print chart</div>
@@ -28,67 +124,17 @@
 
                         <div id="svg-container" style="display: none">
                         </div>
+                        <a id="btn-Convert-Html2Image" style="display: none" href="#">Download</a>
+                        <canvas id="canvas" width="400" height="400" style="display: none">
+                        </canvas>
 
-                            <canvas id="canvas"  width="400" height="400" style="display: none;">
-                            </canvas>
-
-                            <div id="png-container"></div>
-
-                        <div style="height:100%;width:100%" class="dashoard-Wrapper" id="d3Chart-wrap" ng-include src="widget.widgetData.widView" name="{{widget.widgetID}}">
+                        <div id="png-container"></div>
+                        <div style="height:100%;width:100%" class="dashoard-Wrapper" id="d3Chart-wrap" ng-include
+                             src="widget.widgetData.widView">
                         </div>
-                        <div class="widget-button-wrapper widget-button-wrapper2" layout="column" layout-align="end center" ng-show="showWidgetSettings" ng-mouseover="showWidgetSettings = true" 
-                        ng-mouseleave="showWidgetSettings = false" flex>
+                       
+                    </div>
 
-                            <!-- update damith
-                                 data source details view
-                            -->
-                            <!-- mapped data view -->
-                            <md-button class="widget-button" ng-click="syncWidget(widget)" ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
-                                <ng-md-icon icon="sync" style="fill:dimgrey" size="20" layout="column"
-                                            layout-align="center center" flex></ng-md-icon>
-                                <md-tooltip md-direction="left">sync</md-tooltip>
-                            </md-button>
-                            <md-button class="widget-button" 
-                            ng-show="widget.widgetData.initTemplate!=undefined || 
-                            widget.widgetData.commonSrc!=undefined" ng-click="widgetSettings($event,widget)">
-                                <ng-md-icon icon="settings" style="fill:dimgrey" size="20" layout="column"
-                                            layout-align="center center" flex></ng-md-icon>
-                                <md-tooltip md-direction="left">settings</md-tooltip>
-                            </md-button>
-                            <md-button class="widget-button" ng-if="showFullView(widget)" ng-click="showWidget($event,widget)">
-                                <ng-md-icon icon="fullscreen" style="fill:dimgrey" size="20" 
-                                layout="column" layout-align="center center" flex></ng-md-icon>
-                                <md-tooltip md-direction="left">full view</md-tooltip>
-                            </md-button>
-                            <md-button class="widget-button" ng-click="commentary(widget)">
-                                <ng-md-icon icon="volume_up" style="fill:dimgrey" size="20" layout="column"
-                                            layout-align="center center" flex></ng-md-icon>
-                                <md-tooltip md-direction="left">commentary</md-tooltip>
-                            </md-button>
-                            <md-button class="widget-button" ng-if="showDataView(widget)" ng-click="showData($event,widget)">
-                                <ng-md-icon icon="format_list_numbered" style="fill:dimgrey" size="20" layout="column"
-                                            layout-align="center center" flex></ng-md-icon>
-                                <md-tooltip md-direction="left">data</md-tooltip>
-                            </md-button>
-                    </div>
-                    </div>
-                    <div class="digin-widget-toolbar" layout="row" layout-align="center center">
-                        <div ng-class="widgetTitleClass" flex="80">
-                            {{widget.widgetData.widName}}
-                        </div>
-                        <div class="widget-button-wrapper" layout="row" layout-align="end center" flex>
-                            <md-button class="widget-button" ng-click="removeWidget(widget, $event)">
-                                <ng-md-icon icon="close" style="fill:dimgrey" size="20" layout="column"
-                                            layout-align="center center" flex></ng-md-icon>
-                            </md-button>
-                            <md-button class="widget-button" 
-                            ng-mouseover="showWidgetSettings = true" 
-                            ng-mouseleave="showWidgetSettings = false">
-                                <ng-md-icon icon="more_vert" style="fill:dimgrey" size="20" layout="column"
-                                            layout-align="center center" flex></ng-md-icon>
-                            </md-button>
-                        </div>
-                    </div>
                 </li>
             </div>
         </md-tab-body>

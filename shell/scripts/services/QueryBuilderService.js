@@ -189,6 +189,7 @@ routerApp.service('$qbuilder',function($diginengine){
 
     var FORECAST = function(){
         function mapResult(data){
+<<<<<<< HEAD
             var serArr = [];
             var catArr = [];
             var dataArray = [];
@@ -205,6 +206,98 @@ routerApp.service('$qbuilder',function($diginengine){
             catArr = data.time;            
             dataArray[0] = catArr;
             dataArray[1] = serArr
+=======
+                var dataArray = [];
+                var yearArray = [];
+                var serObj = [];
+                var count = 0;
+                var oldYear = moment(data.time[0]).year();
+                var newYear = oldYear;
+                var newYear;
+                var temp;                
+                var flag = true;
+                var zoneValue;
+                var forecastFlag = true;
+                for (var i =0;i<data.time.length;i++){
+                    if (newYear == oldYear){
+                        if (data.actual[i] !== undefined)
+                            dataArray.push(data.actual[i]);
+                        else{
+                            dataArray.push(data.forecast[i]);
+                            if (forecastFlag){
+                                zoneValue = i;
+                            }
+                            forecastFlag = false;                              
+                        }
+                        if (data.time[i+1] !== undefined){
+                            newYear = moment(data.time[i+1]).year();                           
+                        }else{
+                            serObj.push({
+                                name: oldYear,
+                                zoneAxis: 'x',
+                                data: dataArray
+                            });
+                            yearArray.push(oldYear);                            
+                        }
+                    }else{
+                        forecastFlag = true;
+                        if ( zoneValue !== undefined){
+                            serObj.push({
+                                name: oldYear,
+                                data: dataArray,
+                                zoneAxis: 'x',
+                                zones: [{
+                                    value: zoneValue % 12
+                                }, {
+                                    dashStyle: 'dash'
+                                }]
+                            });
+                        } else{
+                            serObj.push({
+                                name: oldYear,
+                                data: dataArray,
+                                zoneAxis: 'x'
+                            });                            
+                        }
+                        zoneValue = undefined;
+                        yearArray.push(oldYear);
+                        oldYear = newYear;
+                        dataArray=[];
+                        if (!flag){
+                            if (data.actual[i] !== undefined){
+                                dataArray.push(data.actual[i]);
+                            }
+                            else{
+                                if (forecastFlag){
+                                    zoneValue = i;
+                                }
+                                dataArray.push(data.forecast[i]);
+                                forecastFlag = false;  
+                            }
+                        }
+                        flag = false;
+                    }
+                }
+                console.log(serObj);
+                var date = new Date();
+                var currYear = moment(date).year();
+                var prevYear = currYear-1;
+                var currYearIndex = yearArray.indexOf(currYear);
+                var prevYearIndex = yearArray.indexOf(prevYear);                
+                var finalObj = [];
+                var category = [];
+                var monthIndex;
+                var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+                finalObj[0] = serObj[currYearIndex];
+                finalObj[1] = serObj[prevYearIndex];
+                for(var i=0;i<12;i++){
+                    monthIndex = moment(data.time[i]).month();
+                    category.push(month[monthIndex]);
+                }
+            catArr = data.time;            
+            dataArray[0] = category;
+            dataArray[1] = finalObj
+>>>>>>> remotes/origin/V3.1.0.0
             return dataArray;        
         }
 

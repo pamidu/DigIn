@@ -189,24 +189,6 @@ routerApp.service('$qbuilder',function($diginengine){
 
     var FORECAST = function(){
         function mapResult(data){
-<<<<<<< HEAD
-            var serArr = [];
-            var catArr = [];
-            var dataArray = [];
-            data.forecast = data.forecast.slice(data.actual.length);
-            serArr.push({
-                data: data.actual.concat(data.forecast),
-                zoneAxis: 'x',
-                zones: [{
-                    value: data.actual.length - 1
-                }, {
-                    dashStyle: 'dash'
-                }]                    
-            })
-            catArr = data.time;            
-            dataArray[0] = catArr;
-            dataArray[1] = serArr
-=======
                 var dataArray = [];
                 var yearArray = [];
                 var serObj = [];
@@ -297,7 +279,6 @@ routerApp.service('$qbuilder',function($diginengine){
             catArr = data.time;            
             dataArray[0] = category;
             dataArray[1] = finalObj
->>>>>>> remotes/origin/V3.1.0.0
             return dataArray;        
         }
 

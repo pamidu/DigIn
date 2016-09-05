@@ -16,8 +16,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.firstName = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
         $scope.count = 0;
         $interval( function(){
-            var tempArray = 	 [{title:"User Segregation",description:"omal@duosoftare.com has invited you to jon his tenant"},
-		{title:"DigIn",description:"Your account will expire in 27 days"},         
+            var tempArray =      [{title:"User Segregation",description:"omal@duosoftare.com has invited you to jon his tenant"},
+        {title:"DigIn",description:"Your account will expire in 27 days"},         
         {title:"Dashboard",description:"You event NBQSA  Demo is scheduled at 4:00 pm "},
         {title:"DigIn",description:"Veery@duosoftware.com is waiting for your response"}];      
          if (tempArray.length > $scope.count){
@@ -87,13 +87,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //#get user profile       
         var baseUrl = "http://" + window.location.hostname;
         //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
-<<<<<<< HEAD
-        $http.get(baseUrl+'/apis/profile/userprofile/'+JSON.parse(decodeURIComponent(getCookie('authData'))).Username)
-            .success(function(response){
-=======
         $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.firstName)
             .success(function (response) {
->>>>>>> remotes/origin/V3.1.0.0
                 console.log(response);
                 $rootScope.profile_Det = response;
                 ProfileService.InitProfileData(response);
@@ -1189,43 +1184,43 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     break;
                 case "invite":    
 
-					$mdDialog.show({
-					  controller: "inviteUserCtrl",
-					  templateUrl: 'views/settings/user.html',
-					  parent: angular.element(document.body),
-					  targetEvent: ev,
-					  clickOutsideToClose:false
-					})
-					.then(function(answer) {						
-					});
+                    $mdDialog.show({
+                      controller: "inviteUserCtrl",
+                      templateUrl: 'views/settings/user.html',
+                      parent: angular.element(document.body),
+                      targetEvent: ev,
+                      clickOutsideToClose:false
+                    })
+                    .then(function(answer) {                        
+                    });
                     
-				break;
+                break;
 
-			case "switch tenant": 
-			        $mdDialog.show({
-					  controller: "tenantCtrl",
-					  templateUrl: 'views/settings/switchTenant.html',
-					  parent: angular.element(document.body),
-					  targetEvent: ev,
-					  clickOutsideToClose:false
-					})
-					.then(function(answer) {
-					});
-					break;
-			default:
-				$state.go("home");
-				break;
+            case "switch tenant": 
+                    $mdDialog.show({
+                      controller: "tenantCtrl",
+                      templateUrl: 'views/settings/switchTenant.html',
+                      parent: angular.element(document.body),
+                      targetEvent: ev,
+                      clickOutsideToClose:false
+                    })
+                    .then(function(answer) {
+                    });
+                    break;
+            default:
+                $state.go("home");
+                break;
             }
         };
 
 
-		
+        
         $scope.openNotifications = function()
-		{
-			$mdSidenav('notifications').toggle().then(function () {
-				$log.debug("toggle right is done");
-			});
-		}
+        {
+            $mdSidenav('notifications').toggle().then(function () {
+                $log.debug("toggle right is done");
+            });
+        }
 
         $scope.openSearchBar = function()
         {
@@ -1233,12 +1228,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $log.debug("toggle left is done");
             });
         }
-		
+        
  
-		$scope.notifications = 
-		 [{title:"User Segregation",description:"omal@duosoftare.com has invited you to jon his tenant."},
-		{title:"Dashboard",description:"Sales for the month has exceeded the treshold value"},
-		{title:"DigIn",description:"Your account will expire in 28 days"},         
+        $scope.notifications = 
+         [{title:"User Segregation",description:"omal@duosoftare.com has invited you to jon his tenant."},
+        {title:"Dashboard",description:"Sales for the month has exceeded the treshold value"},
+        {title:"DigIn",description:"Your account will expire in 28 days"},         
         {title:"Dashboard",description:"You have 2 events organized today"},
         {title:"DigIn",description:"Veery@duosoftware.com is waiting for your response"}];
        $scope.removeNotification = function(ev,notification) {
@@ -1622,19 +1617,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $scope.renameNew = function () {
 
-<<<<<<< HEAD
-                    var noDuplicate = true;
-                                //to check weather the newpage is allready exist 
-                    $rootScope.dashboard.pages.forEach(function(key){
-                        if(key.pageName.toUpperCase() == $scope.existPageName.toUpperCase() ){
-                            if(key.pageID != $rootScope.dashboard.pages[$rootScope.selectedPage-1].pageID)
-=======
                 var noDuplicate = true;
                 //to check weather the newpage is allready exist
                 $rootScope.dashboard.pages.forEach(function (key) {
                     if (key.pageName.toUpperCase() == $scope.existPageName.toUpperCase()) {
                         if(key.pageID != $rootScope.dashboard.pages[$rootScope.selectedPage-1].pageID)
->>>>>>> remotes/origin/V3.1.0.0
                                 noDuplicate = false;
                     }
                 });
@@ -1975,7 +1962,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         ];
                     $scope.currentSubMenu.header = subMenuTitle;
 
-					$scope.currentItem = subMenuTitle;
+                    $scope.currentItem = subMenuTitle;
                    /* if(subMenuTitle == "Reports")
                     {
                         $scope.currentItem = ;
@@ -2020,7 +2007,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
            console.log(menu);
             layoutManager.headerMenuToggle(true);
            //if(menu.name ==  "Email")
-		if(menu ==  "Email")
+        if(menu ==  "Email")
            {
                     //console.log("email");
 
@@ -2035,7 +2022,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
            }else{
                //$state.go(menu.link);
-			   $state.go(menu);
+               $state.go(menu);
                $scope.currentView = $scope.currentSubMenu.header;
            }
 

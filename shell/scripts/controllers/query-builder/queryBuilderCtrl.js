@@ -559,59 +559,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
         } else {
             if ($scope.sourceData.fMeaArr.length > 0) {}
         }
-<<<<<<< HEAD
-        //Concat attributes and measures
-        $scope.commonData.columns = $scope.commonData.columns.concat($scope.commonData.measures);
-    } else {
-        if ( $scope.sourceData.fMeaArr.length > 0 ){
-
-        }
-    }
-
-    var executeQryData = {
-        executeMeasures: [],
-        executeColumns: [],
-        chartType: '',
-        electQry: [],
-        GrpFiled: []
-    };
-
-    $scope.executeQryData = executeQryData;
-
-    //$scope.pivotSummaryField1 = [];
-    //$scope.pivotSummaryField2 = [];
-
-    $scope.uiSource = {};
-
-    $scope.eventHndler = {
-            isToggleMeasure: false,
-            isToggleColumns: false,
-            isToggleMeasureDown: false,
-            isLoadingChart: false,
-            toggleDownName: [],
-            isMainLoading: false,
-            openSettingToggle: [{
-                isChart: false
-            }, {
-                isStructuret: false
-            }, {
-                isSerSetting: false
-            }],
-            messageAry: ['Adding widget to the dashboard!'],
-            message: '',
-            isChartSelected: false,
-            onToggleEvent: function(event) {
-                switch (event) {
-                    case '1':
-                        //event measures
-                        privateFun.checkToggleOpen('2');
-                        if (this.isToggleMeasure) {
-                            $("#togglePanel").hide(200);
-                            this.isToggleMeasure = false;
-                        } else {
-                            if (this.openSettingToggle[1].isQueryBuilder) {
-                                this.hideDesignQuery();
-=======
         var executeQryData = {
             executeMeasures: [],
             executeColumns: [],
@@ -654,7 +601,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                 }
                                 $("#togglePanel").show(300);
                                 this.isToggleMeasure = true;
->>>>>>> remotes/origin/V3.1.0.0
                             }
                             break;
                         case '2':
@@ -940,7 +886,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     }
                     // CHART VALIDATIONS
                     // allow to select only one measure for sunburst
-                    if (($scope.chartType == "sunburst" || $scope.chartType == "hierarchy") && $scope.commonData.measures.length > 1) {
+                    if ($scope.chartType == "sunburst" && $scope.commonData.measures.length > 1) {
                         privateFun.fireMessage('0', "Cannot generate " + $scope.chartType + " chart with more than one measure");
                         return;
                     }
@@ -1521,96 +1467,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                 }
                             }
                         }
-<<<<<<< HEAD
-                        break;
-                }
-
-            },
-            //hide dialog boxes
-            hideVisualizationType: function() {
-                $("#toggleSettingPanel").hide(200);
-                setTimeout(function() {
-                    $("#toggleSettingPanel").removeClass('chart-tab');
-                }, 200);
-                this.openSettingToggle[0].isChart = false;
-            },
-            hideDataStructure: function() {
-                $("#toggleStructurePanel").hide(200);
-                setTimeout(function() {
-                    $("#toggleStructurePanel").removeClass('structure-tab');
-                }, 200);
-                this.openSettingToggle[1].isStructuret = false;
-            },
-            hideChartSettings: function() {
-                $("#toggleSerSettingsPanel").hide(200);
-                setTimeout(function() {
-                    $("#toggleSerSettingsPanel").removeClass('ser-setting-tab');
-                }, 200);
-                this.openSettingToggle[2].isChart = false;
-            },
-            hideDesignQuery: function() {
-                $("#toggleQueryBuilder").hide(200);
-                setTimeout(function() {
-                    $("#toggleQueryBuilder").removeClass('design-tab');
-                }, 200);
-                this.openSettingToggle[1].isQueryBuilder = false;
-            },
-            onClickSelectedChart: function(data, onSelect) {
-
-                 $scope.chartType = onSelect.chart;
-
-                var chartTypeTrue =true;
-
-                switch ($scope.chartType) {
-                    case 'boxplot':
-                        chartTypeTrue = false;
-                        break;
-
-                    case 'pivotsummary':
-                        chartTypeTrue = false;
-                        break;
-
-                    case 'histogram':
-                        chartTypeTrue = false;
-                        break;
-
-                    case 'bubble':
-                        chartTypeTrue = false;
-                        break;
-
-                    case 'forecast':
-                        chartTypeTrue = false;
-                        break;
-
-                    case 'sunburst':
-                        chartTypeTrue = false;
-                        break;
-
-                    case 'hierarchy':
-                        chartTypeTrue = false;
-                        break;
-
-                    case 'pie':
-                        chartTypeTrue = false;
-                        break; 
-
-                    case 'metric':
-                        chartTypeTrue = false;
-                        break;
-                }
-
-                // CHART VALIDATIONS
-                // allow to select only one measure for sunburst
-                if ( $scope.chartType == "sunburst" && $scope.commonData.measures.length > 1 ){
-                    privateFun.fireMessage('0', "Cannot generate "+$scope.chartType+" chart with more than one measure");
-                    return;
-                }
-
-                if ($scope.chartType == "forecast"){
-                    if ($scope.sourceData.fAttArr.length == 1 && $scope.sourceData.fMeaArr.length == 1){
-                        if (!($scope.sourceData.fAttArr[0].dataType == "TIMESTAMP" || $scope.sourceData.fAttArr[0].dataType == "datetime")) {
-                            privateFun.fireMessage('0', "Select an attribute of type date to generate "+$scope.chartType+" chart");
-=======
                     }
                     if ($scope.chartType == "D3 visualization") {
                         //window.alert("D3 pop up");
@@ -1629,7 +1485,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                             }
                         } else {
                             privateFun.fireMessage('0', "Select only one attribute of type 'date' and one measure to generate " + $scope.chartType + " chart");
->>>>>>> remotes/origin/V3.1.0.0
                             return;
                         }
                     }
@@ -1640,38 +1495,10 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                         privateFun.fireMessage('0', "Cannot generate " + $scope.chartType + " chart with more than one series");
                         return;
                     }
-<<<<<<< HEAD
-                }
-
-                //privateFun.createHighchartsChart(onSelect.chart);
-
-                var seriesArr = $scope.executeQryData.executeMeasures;             
-                // do not allow pie charts with more than one series
-                if ( seriesArr.length > 1 && $scope.chartType == 'pie' ){
-                    privateFun.fireMessage('0', "Cannot generate "+$scope.chartType+" chart with more than one series");
-                    return;
-                }
-                $scope.selectedChart = onSelect;
-                // do not allow charts to be generated without selecting series
-                if (seriesArr.length < 1 && chartTypeTrue) {
-                    privateFun.fireMessage('0', "Cannot generate "+$scope.chartType+" chart without selecting a series ...");
-                    if (onSelect.chartType != 'metric' && onSelect.chartType != 'highCharts') {
-                        $scope.dynFlex = 90;
-                        $scope.chartWrapStyle.height = 'calc(91vh)';
-                    } else {
-                            $scope.dynFlex = 70;
-                            $scope.chartWrapStyle.height = 'calc(63vh)';
-                    }                    
-                    return 0;
-                } else{
-                        $scope.selectedChart = onSelect;
-                        eval("$scope." + $scope.selectedChart.chartType + ".changeType()");
-=======
                     $scope.selectedChart = onSelect;
                     // do not allow charts to be generated without selecting series
                     if (seriesArr.length < 1 && chartTypeTrue) {
                         privateFun.fireMessage('0', "Cannot generate " + $scope.chartType + " chart without selecting a series ...");
->>>>>>> remotes/origin/V3.1.0.0
                         if (onSelect.chartType != 'metric' && onSelect.chartType != 'highCharts') {
                             $scope.dynFlex = 90;
                             $scope.chartWrapStyle.height = 'calc(91vh)';
@@ -1742,52 +1569,9 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
             widget.sizeX = 6;
             widget.sizeY = 21;
             var objIndex = getRootObjectById(widget.widgetID, widgets);
-<<<<<<< HEAD
-            widgets[objIndex] = $scope.widget;
-            console.log("$scope.widget", $scope.widget);
-        }
-
-        $scope.eventHndler.isMainLoading = true;
-        $scope.eventHndler.message = $scope.eventHndler.messageAry[0];
-        setTimeout(function() {
-            $scope.eventHndler.isMainLoading = false;
-            $rootScope.selectedPageIndx = $rootScope.selectedPage -1;
-            $state.go('home.Dashboards');
-        }, 1000);
-    };
-
-    //chart functions
-    $scope.highCharts = {
-        onInit: function(recon) {
-            if (!recon)
-                $scope.highchartsNG = $scope.selectedChart.initObj;
-
-            else {
-                $scope.highchartsNG = $scope.widget.widgetData.highchartsNG;
-
-                $scope.highchartsNG.series.forEach(function(key) {
-                    $scope.recordedColors[key.origName] = key.color;
-                });
-                $scope.isDrilled = $scope.widget.widgetData.widData.drilled;
-
-                if ($scope.isDrilled) $scope.drillDownConfig = $scope.widget.widgetData.widData.drillConf;
-                $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
-                delete $scope.highchartsNG.size;
-            }
-        },
-        changeType: function() {
-            $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
-            $scope.highchartsNG.title.text = '';
-        },
-        selectCondition: function() {
-
-            if (!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0) {
-                $scope.getAggregation();
-=======
             if (objIndex == null) { //new widget
                 widgets.push(widget);
                 console.log("widget", widget);
->>>>>>> remotes/origin/V3.1.0.0
             } else {
                 $scope.widget.widgetData["commonSrc"] = {
                     src: $scope.sourceData,
@@ -2215,12 +1999,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                     }
                                 }
                             },
-<<<<<<< HEAD
-                            tooltip: {
-                                pointFormat: '{point.y:,.0f}'
-                            },
-=======
->>>>>>> remotes/origin/V3.1.0.0
                             exporting: {
                                 sourceWidth: 600,
                                 sourceHeight: 400,
@@ -2232,33 +2010,10 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                             },
                             title: {
                                 text: ''
-<<<<<<< HEAD
-                            },                      
-                            plotOptions: {
-                                pie: {
-                                    allowPointSelect: true,
-                                    cursor: 'pointer',
-                                    dataLabels: {
-                                        enabled: true,
-                                        color: '#000000',
-                                        format: '<b> {point.name}</b>'
-                                    },
-                                    series: {
-                                        dataLabels: {
-                                            enabled: true,
-                                            format: '<b>{point.name}</b> ({point.y:,.0f})',
-                                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
-                                            softConnector: true
-                                        }
-                                    },
-                                    showInLegend: false
-                                }
-=======
                             },
                             tooltip: {
                                 pointFormat: '<b> <span style = "color : {series.color}" >  ? </span> {series.name}: {point.y:,.0f} </b>',
                                 useHTML: true
->>>>>>> remotes/origin/V3.1.0.0
                             }
                         },
                         xAxis: {
@@ -2279,39 +2034,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 }
             });
         };
-<<<<<<< HEAD
-        $scope.eventHndler.isLoadingChart = true;
-        $scope.client.getForcast(fObj, function(data, status) {
-            if (status) {
-                var serArr = [];
-                var catArr = [];
-                data.forecast = data.forecast.slice(data.actual.length);
-                serArr.push({
-                    data: data.actual.concat(data.forecast),
-                    zoneAxis: 'x',
-                    zones: [{
-                        value: data.actual.length - 1
-                    }, {
-                        dashStyle: 'dash'
-                    }]                    
-                })
-                catArr = data.time;
-
-                $scope.widget.widgetData.highchartsNG = {
-                    options: {
-                        chart: {
-                            zoomType: 'x',
-                            events: {
-                                beforePrint: function() {
-                                    this.setTitle({
-                                        text: this.options.exporting.chartOptions.title.text
-                                        })
-                                    },
-                                afterPrint: function() {
-                                        this.setTitle({
-                                        text: null
-                                        })    
-=======
         $scope.boxplot = {
             onInit: function(recon) {},
             changeType: function() {
@@ -2369,7 +2091,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                         $scope.dataOutliers.push([i, k]);
                                     });
                                     i++;
->>>>>>> remotes/origin/V3.1.0.0
                                 }
                             }
                             $scope.widget.widgetData.highchartsNG = {
@@ -2403,51 +2124,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                     }
                                 },
                                 title: {
-<<<<<<< HEAD
-                                    text: $scope.widget.widgetData.widName
-                                }
-                            }                        
-                        },
-                        title: {
-                            text: ''
-                        },
-                        tooltip: {
-                            pointFormat: '<b> <span style = "color : {series.color}" >  ● </span> {series.name}: {point.y:,.0f} </b>',
-                            useHTML: true
-                        }
-                    },
-                    xAxis: {
-                        type: 'datetime',
-                        categories: catArr
-                    },
-                    yAxis: {
-                        lineWidth: 1
-                    },
-                    title: {
-                        text: ''
-                    },
-                    series: serArr                                            
-                };             
-
-                $scope.eventHndler.isLoadingChart = false;
-            } else {
-                $scope.eventHndler.isLoadingChart = false;                
-            }
-        });
-    };
-
-    $scope.boxplot = {
-        onInit: function(recon) {
-        
-        },
-        changeType: function() {
-            var meaArr = $scope.sourceData.fMeaArr;
-            var dataTypeFlag = true;
-            $scope.eventHndler.isLoadingChart = true;
-            meaArr.forEach(function(k) {
-                if (k.dataType == "TIMESTAMP" || k.dataType == "datetime") {
-                    dataTypeFlag = false;
-=======
                                     text: ''
                                 },
                                 xAxis: {
@@ -2502,7 +2178,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     privateFun.fireMessage('0', 'Please select only numeric values to create bloxplot');
                     $scope.isPendingRequest = false;
                     $scope.eventHndler.isLoadingChart = false;
->>>>>>> remotes/origin/V3.1.0.0
                 }
             },
             saveWidget: function(widget) {
@@ -2768,82 +2443,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                 },
                                 xAxis: {
                                     title: {
-<<<<<<< HEAD
-                                        text: $scope.widget.widgetData.widName
-                                    }
-                                }                                
-                            },
-                            tooltip: {
-                                useHTML: true,
-                                pointFormat: '{point.xName} : {point.x}' +
-                                    '</br>{point.yName} : {point.y}' +
-                                    '</br>{point.zName} : {point.z}'
-                            }
-                        },
-                        title: {
-                            text: ''
-                        },
-
-                        xAxis: {
-                            categories: $scope.dataforbubble,
-                            title: {
-                                text: $scope.commonData.measures[0].filedName
-                            }
-                        },
-
-                        yAxis: {
-                            lineWidth: 1,
-                            title: {
-                                text: $scope.commonData.measures[1].filedName
-                            }
-                        },
-                        credits: {
-                            enabled: false
-                        },
-                        legend: {
-                            enabled: false
-                        },
-                        series: seriesArray
-                    };
-                    $scope.dataToBeBind.receivedQuery = query;                    
-                } else {}
-            });
-        },
-        saveWidget: function(widget) {
-            widget.widgetData["widData"] = {
-                value: $scope.selectedChart.initObj.value,
-                label: $scope.selectedChart.initObj.label
-            };
-            widget.widgetData.highchartsNG["size"] = {
-
-                width: 300,
-                height: 220
-            };
-            widget.widgetName = "bubble";
-            widget.widgetData.highchartsNG = $scope.widget.widgetData.highchartsNG;
-            widget.widgetData.widView = "views/query/chart-views/bubble.html";
-            $scope.saveChart(widget);
-        }
-
-
-    }
-
-    $scope.histogram = {
-        onInit: function(recon) {
-        
-        },        
-        changeType: function() {
-            var meaArr = $scope.sourceData.fMeaArr;
-            var dataTypeFlag = true;
-            $scope.widget.widgetData.highchartsNG = {};
-            meaArr.forEach(function(k) {
-                if (k.dataType == "TIMESTAMP" || k.dataType == "datetime") {
-                    dataTypeFlag = false;
-                }
-            });
-
-            if (dataTypeFlag && $scope.sourceData.fAttArr.length == 0) {
-=======
                                         text: fieldArray[0]
                                     },
                                     categories: $scope.histogramPlotcat,
@@ -2908,7 +2507,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 $scope.hierarData = $scope.widget.widgetData.widData;
             },
             changeType: function() {
->>>>>>> remotes/origin/V3.1.0.0
                 $scope.eventHndler.isLoadingChart = true;
                 var fieldArray = [];
                 for (var i = 0; i < $scope.commonData.measures.length; i++) {
@@ -2971,115 +2569,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 $scope.client.getHighestLevel($scope.sourceData.tbl, $scope.fieldArray.toString(), function(data, status) {
                     var hObj = {};
                     if (status) {
-<<<<<<< HEAD
-                        $scope.eventHndler.isLoadingChart = false;
-                        $scope.histogramPlotcat = [];
-                        $scope.histogramPlotData = [];
-
-                        for ( var key in data){
-                            console.log(data[key]); // the whole array (index)
-                            $scope.histogramPlotData.push(parseFloat(data[key][0]));
-                            //var category = data[key][].splice(1, 1);
-                            var category = data[key][1];
-                            $scope.histogramPlotcat.push(category);
-                        }
-                        console.log($scope.histogramPlotData);
-                        $scope.categories = fieldArray;
-
-                        $scope.widget.widgetData.highchartsNG = {
-                            options: {
-                                chart: {
-                                    type: 'column',
-                                    width: null,
-                                    height: 500,
-                                    events: {
-                                        beforePrint: function() {
-                                            this.setTitle({
-                                                text: this.options.exporting.chartOptions.title.text
-                                                })
-                                            },
-                                        afterPrint: function() {
-                                                this.setTitle({
-                                                text: null
-                                                })    
-                                        }
-                                        }                                       
-                                    },
-                                exporting: {
-                                    sourceWidth: 600,
-                                    sourceHeight: 400,
-                                    chartOptions: {
-                                        title: {
-                                            text: $scope.widget.widgetData.widName
-                                        }
-                                    }
-                                },                                        
-                                plotOptions: {
-                                    column:{
-                                    shadow: false,
-                                    borderWidth: 1,
-                                    borderColor: '#666',
-                                    pointPadding: 0,
-                                    groupPadding: 0
-                                  },
-                                spline: {
-                                    shadow: false,
-                                    marker: {
-                                        radius: 1
-                                    }
-                                },
-                                areaspline: {
-                                    color: 'rgb(69, 114, 167)',
-                                    fillColor: 'rgba(69, 114, 167,.25)',
-                                    shadow: false,
-                                    marker: {
-                                        radius: 1
-                                    }
-                                }                                  
-                                }
-                            },
-                            title: {
-                                text: ''
-                            },
-                            xAxis: {
-
-                                title: {
-                                    text: fieldArray[0]
-                                },
-                                categories: $scope.histogramPlotcat,
-                                labels: {
-                                    rotation: -90,
-                                    y: 40,
-                                    style: {
-                                        fontSize: '8px',
-                                        fontWeight: 'normal',
-                                        color: '#333'
-                                    },
-                                },
-                                lineWidth: 0,
-                                lineColor: '#999',
-                                tickLength: 70,
-                                tickColor: '#ccc',
-                            },
-                            yAxis: {
-                                lineWidth: 1,
-                                title: {
-                                    text: 'Count'
-                                },
-                                //maxPadding:0,
-                                gridLineColor: '#e9e9e9',
-                                tickWidth: 1,
-                                tickLength: 3,
-                                tickColor: '#ccc',
-                                lineColor: '#ccc',
-                                //tickInterval: 25,
-                                //endOnTick:false,
-                            },
-                            series: [{
-                                data: $scope.histogramPlotData
-                            }]
-                        };
-=======
                         data.forEach(function(entry) {
                             hObj[entry.value] = entry.level;
                         });
@@ -3103,7 +2592,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                 $scope.eventHndler.isLoadingChart = false;
                             } else {}
                         });
->>>>>>> remotes/origin/V3.1.0.0
                         $scope.dataToBeBind.receivedQuery = query;
                     } else {}
                 });
@@ -3157,53 +2645,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                         $scope.eventHndler.isLoadingChart = false;
                     }, $scope.initRequestLimit.value);
                     $scope.dataToBeBind.receivedQuery = query;
-<<<<<<< HEAD
-                } else {}
-            });
-        },
-
-        saveWidget: function(widget) {
-            widget.widgetData.widView = "views/ViewHnbMonth.html";
-            //widget.widgetData = $scope.fieldArray;
-            widget.widgetData.widName = $scope.widget.widgetData.widName;
-            widget.widgetData.widData = $scope.hierarData;
-            widget.widgetName = "sunburst";
-
-            $scope.saveChart(widget);
-        }
-
-    };
-
-    $scope.pivotSummary = {
-        onInit: function(recon) {
-
-            $scope.fieldArray =$scope.widget.widgetData.widData.fieldArray;
-            $scope.summaryData=$scope.widget.widgetData.widData.summary;
-
-        },
-        changeType: function() {
-            $scope.eventHndler.isLoadingChart = true;
-            $scope.fieldArray = [];
-            var fieldArrayLength = $scope.sourceData.fMeaArr.length + $scope.sourceData.fAttArr.length;
-
-            if ( fieldArrayLength <= 10)
-            {
-                $scope.chartState = true;
-            for (var i = 0; i < $scope.sourceData.fMeaArr.length; i++) {
-                $scope.fieldArray.push($scope.sourceData.fMeaArr[i].name);
-            }
-            for (var i = 0; i < $scope.sourceData.fAttArr.length; i++) {
-                $scope.fieldArray.push($scope.sourceData.fAttArr[i].name);
-            }
-
-            console.log($scope.fieldArray);
-            var parameter;
-            var i = 0;
-            $scope.fieldArray.forEach(function(entry) {
-                if (i == 0) {
-                    parameter = entry
-=======
->>>>>>> remotes/origin/V3.1.0.0
                 } else {
                     $scope.isPendingRequest = false;
                     $scope.eventHndler.isLoadingChart = false;
@@ -3351,46 +2792,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                 }
                             }
                         },
-<<<<<<< HEAD
-                        afterPrint: function() {
-                            this.setTitle({
-                            text: null
-                          })
-                        }
-                      }                        
-
-                    },
-                    tooltip: {
-                        pointFormat: '{point.y:,.0f}'
-                    },
-                    exporting: {
-                        sourceWidth: 600,
-                        sourceHeight: 400,
-                        chartOptions: {
-                            title: {
-                                text: $scope.widget.widgetData.widName
-                            }
-                        }                        
-                    },                     
-                    plotOptions: {
-                        pie: {
-                            allowPointSelect: true,
-                            cursor: 'pointer',
-                            dataLabels: {
-                                enabled: true,
-                                color: '#000000',
-                                format: '<b> {point.name}</b>'
-                            },
-                            series: {
-                                dataLabels: {
-                                    enabled: true,
-                                    format: '<b>{point.name}</b> ( {point.y:,.0f} )',
-                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
-                                    softConnector: true
-                                }
-                            },
-                            showInLegend: false
-=======
                         tooltip: {
                             pointFormat: '{point.y:,.0f}'
                         },
@@ -3428,7 +2829,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                 },
                                 showInLegend: false
                             }
->>>>>>> remotes/origin/V3.1.0.0
                         }
                     },
                     title: {
@@ -3559,62 +2959,8 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     agg: key.condition
                 });
             });
-<<<<<<< HEAD
-        }
-
-        $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res, status, query) {
-            if (status) {
-                //               
-                //                console.log(JSON.stringify(res));
-                $scope.mapResult($scope.selectedCat, res, function(data) {
-                    $scope.highchartsNG.series = data;
-                    $scope.highchartsNG.xAxis["title"] = { text : $scope.selectedCat };
-
-                    $scope.highchartsNG.series.forEach(function(key) {
-                        if (key.data.length > 1000)
-                            key['turboThreshold'] = key.data.length;
-                    });
-
-                    $scope.eventHndler.isLoadingChart = false;
-
-                    $scope.dataToBeBind.receivedQuery = query;
-                    $scope.$apply();
-                    console.log(JSON.stringify($scope.highchartsNG));
-                    eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
-                });
-            } else {
-                //alert('request failed');
-                $scope.isPendingRequest = false;
-                $scope.eventHndler.isLoadingChart = false;
-                privateFun.fireMessage('0', 'request failed');
-                
-            }
-
-        }, $scope.selectedCat);
-    };
-
-    //<Async drilldown> 
-
-    $scope.getDrilledAggregation = function() {
-        var fieldArr = [];
-        var catArr = [];
-        var drillOrderArr = [];
-        $scope.eventHndler.isLoadingChart = true;
-        $scope.highchartsNG.series = [];
-
-        $scope.highchartsNG['drilldown'] = {
-            series: []
-        };
-
-        var measureArr = $scope.executeQryData.executeMeasures;
-        measureArr.forEach(function(key) {
-            fieldArr.push({
-                field: key.filedName,
-                agg: key.condition
-=======
             $scope.executeQryData.executeColumns.forEach(function(key) {
                 catArr.push('"' + key.filedName + '"');
->>>>>>> remotes/origin/V3.1.0.0
             });
             $scope.client.getHighestLevel($scope.sourceData.tbl, catArr.toString(), function(res, status) {
                 if (status) {
@@ -3660,69 +3006,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                 }
                             }
                         }
-<<<<<<< HEAD
-                    }
-
-                    //assigning the highest level query
-
-                    $scope.dataToBeBind.receivedQuery = query;
-
-                    $scope.drillDownConfig = {
-                        dataSrc: $scope.sourceData.src,
-                        clientObj: $scope.client,
-                        srcTbl: $scope.sourceData.tbl,
-                        drillOrdArr: drillOrderArr,
-                        highestLvl: highestLevel,
-                        fields: fieldArr,
-                        level1Query: query,
-                        level2Query: null,
-                        level3Query: null,
-                        currentLevel: 1
-                    };
-                    $scope.highchartsNG.xAxis["title"] = { text : highestLevel };
-                    $scope.highchartsNG.options['customVar'] = highestLevel;
-                    $scope.highchartsNG.options.chart['events'] = {
-
-                        drilldown: function(e) {
-                            if (!e.seriesOptions) {
-                                var srcTbl = $scope.sourceData.tbl,
-
-                                    fields = fieldArr,
-                                    drillOrdArr = drillOrderArr,
-                                    chart = this,
-                                    clientObj = $scope.client,
-                                    clickedPoint = e.point.name,
-                                    nextLevel = "",
-                                    highestLvl = this.options.customVar,
-                                    drillObj = {},
-                                    isLastLevel = false,
-                                    selectedSeries = e.point.series.name;
-
-                                for (i = 0; i < drillOrdArr.length; i++) {
-                                    if (drillOrdArr[i].name == highestLvl) {
-                                        nextLevel = drillOrdArr[i].nextLevel;
-
-                                        if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
-                                    }
-                                }
-                                chart.options.lang.drillUpText = "◁ Back to " + highestLvl;                              
-                                // Show the loading label
-                                chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
-
-                                //aggregate method
-                                clientObj.getAggData(srcTbl, fields, function(res, status, query) {
-
-
-                                    if (status) {
-                                        for (var key in res[0]) {
-                                            if (Object.prototype.hasOwnProperty.call(res[0], key)) {
-
-                                                if (key != nextLevel && key == selectedSeries) {
-                                                    drillObj = {
-                                                        name: key,
-                                                        data: []
-                                                    };
-=======
                         for (var key in serObj) {
                             if (Object.prototype.hasOwnProperty.call(serObj, key)) {
                                 $scope.highchartsNG.series.push({
@@ -3763,7 +3046,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                         drillObj = {},
                                         isLastLevel = false,
                                         selectedSeries = e.point.series.name;
-                                    var cat = [];
+                                    // var cat = [];
                                     for (i = 0; i < drillOrdArr.length; i++) {
                                         if (drillOrdArr[i].name == highestLvl) {
                                             nextLevel = drillOrdArr[i].nextLevel;
@@ -3784,7 +3067,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                                             data: []
                                                         };
                                                     }
->>>>>>> remotes/origin/V3.1.0.0
                                                 }
                                             }
                                             res.forEach(function(key) {
@@ -3801,13 +3083,17 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                                     });
                                                 }
                                             });
-                                            for (var i=0;i<drillObj.length;i++){
-                                                cat.push(drillObj[i].name);
-                                            }
+                                            // for (var i=0;i<drillObj.data.length;i++){
+                                            //     cat.push(drillObj.data[i].name);
+                                            // }
 
                                             $scope.dataToBeBind.receivedQuery = query;
                                             chart.addSeriesAsDrilldown(e.point, drillObj);
-                                            chart.xAxis[0].setCategories(cat,false);
+                                            // chart.xAxis[0].setCategories(cat);
+                                            // for (var i=0; i< chart.series[0].data.length;i++){
+                                            //   cat.push(chart.series[0].data[i].name);
+                                            // }
+                                            // chart.xAxis[0].setCategories(cat);                                                    
                                         } else {
                                             alert('request failed due to :' + JSON.stringify(res));
                                             e.preventDefault();
@@ -3843,39 +3129,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                         chart.options.lang.drillUpText = " Back to " + key.name;
                                         flag = true;
                                     }
-<<<<<<< HEAD
-                                    console.log(JSON.stringify(res));
-                                    $scope.highchartsNG.xAxis["title"] = { text : nextLevel };
-                                    $scope.highchartsNG.yAxis["title"] = { text : selectedSeries };                                      
-                                    chart.options.customVar = nextLevel;
-                                    chart.hideLoading();
-                                }, nextLevel, highestLvl + "='" + clickedPoint + "'");
-                            }
-                        },
-
-                        drillup: function(e) {
-                            console.log(e);
-                            var chart = this;
-                            console.log(chart.options.customVar);
-                            $scope.drillDownConfig.drillOrdArr.forEach(function(key) {
-                                if (key.nextLevel && key.nextLevel == chart.options.customVar){                                    
-                                    chart.options.customVar = key.name;
-                                    $scope.highchartsNG.xAxis["title"] = { text : chart.options.customVar };
-                                }
-                            });
-                            // set x and y axis titles (DUODIGIN-914)
-                            var flag = false;
-                            $scope.drillDownConfig.drillOrdArr.forEach(function(key) {
-                                if (chart.options.customVar == key.nextLevel){
-                                    chart.options.lang.drillUpText = "◁ Back to " + key.name;
-                                    flag = true;
-                                }
-                            });
-                            if (!flag){
-                                $scope.highchartsNG.yAxis["title"] = { text : 'values' };
-                            }                                                        
-                        }
-=======
                                 });
                                 if (!flag) {
                                     chart.yAxis[0].setTitle({
@@ -3997,7 +3250,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                 }
                             }, res[i].value);
                         } else {}
->>>>>>> remotes/origin/V3.1.0.0
                     };
                 } else {
                     // alert('request failed');

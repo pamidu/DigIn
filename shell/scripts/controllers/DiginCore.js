@@ -766,37 +766,23 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
         $scope.pngDownload = function(widget) {
 
             var type = "png";
-            if(widget.widgetName =='pivotsummary'){                 
-                $scope.pivotsummaryImg(widget, type);       
-            }else{      
-                $scope.d3ImgDownload(widget, type);     
-            }
+            $scope.d3ImgDownload(widget, type);
 
         };
 
         $scope.jpegDownload = function(widget) {
 
             var type = "jpeg";
-             if(widget.widgetName =='pivotsummary'){                    
-                $scope.pivotsummaryImg(widget, type);       
-            }else{      
-                $scope.d3ImgDownload(widget, type);     
-            }
+            $scope.d3ImgDownload(widget, type);
 
         };
 
-<<<<<<< HEAD
-
-            var id="#"+widget.widgetData.widData.id;
-            var element =$(""+id+"");
-=======
         $scope.d3ImgDownload = function(widget, type) {
 
 
             var id = "#" + widget.widgetData.widData.id;
             var element = $("" + id + "");
 
->>>>>>> remotes/origin/V3.1.0.0
             var downType = null;
             switch (type) {
 
@@ -852,22 +838,11 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             $scope.d3chartBtnClick(widget);
         }
 
-<<<<<<< HEAD
-        $scope.svg_to_pdf = function(widget){
-            
-            var id="#"+widget.widgetData.widData.id;
-            var element =$(""+id+"");
-=======
         $scope.svg_to_pdf = function(widget) {
 
-            if(widget.widgetName =='pivotsummary'){
-                $scope.save_pdf_pivotsummaryImg (widget);
-            }
-            else{
-                var id = "#" + widget.widgetData.widData.id;
+            var id = "#" + widget.widgetData.widData.id;
             var element = $("" + id + "");
 
->>>>>>> remotes/origin/V3.1.0.0
             $("#svg-container").empty();
             $("#svg-container").append(element[0].innerHTML);
             var svgEle = $("#svg-container").children();
@@ -909,8 +884,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     link.click();
                 }
             });
-            }
-            
 
 
             $scope.d3chartBtnClick(widget);
@@ -920,94 +893,23 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
         $scope.printD3Chart = function(widget) {
 
-<<<<<<< HEAD
-            var id="#"+widget.widgetData.widData.id;
-            var element =$(""+id+"");
+            var id = "#" + widget.widgetData.widData.id;
+            var element = $("" + id + "");
+
             var printContents = element[0].innerHTML;
             var originalContents = document.body.innerHTML;
-=======
-            if(widget.widgetName =='pivotsummary'){
-                 var element = $('#grid');
 
-                var printContents = element[0].innerHTML;
-                var originalContents = document.body.innerHTML;
->>>>>>> remotes/origin/V3.1.0.0
-
-                var popupWin = window.open('', '_blank', 'width=800,height=500');
-                popupWin.document.open();
-                popupWin.document.write('');
-                popupWin.document.write('<html><head></head><body onload="window.print()">' + printContents + '</body></html>');
-                popupWin.document.close();
-            }
-            else{
-                var id = "#" + widget.widgetData.widData.id;
-                var element = $("" + id + "");
-
-                var printContents = element[0].innerHTML;
-                var originalContents = document.body.innerHTML;
-
-                var popupWin = window.open('', '_blank', 'width=800,height=500');
-                popupWin.document.open();
-                popupWin.document.write('');
-                popupWin.document.write('<html><head></head><body onload="window.print()">' + printContents + '</body></html>');
-                popupWin.document.close();
-            }
-
-            
+            var popupWin = window.open('', '_blank', 'width=800,height=500');
+            popupWin.document.open();
+            popupWin.document.write('');
+            popupWin.document.write('<html><head></head><body onload="window.print()">' + printContents + '</body></html>');
+            popupWin.document.close();
 
             $scope.d3chartBtnClick(widget);
 
 
         }
 
-        $scope.pivotsummaryImg = function (widget,type){
-            var downType = null;
-            var name;
-            switch (type) {
-
-                case 'png':
-                    downType = "image/png";
-                    name="Chart.png";
-                    break;
-
-                case 'jpeg':
-                    downType = "image/jpeg";
-                    name="Chart.jpeg";
-                    break;
-
-            }
-            var element = $("#grid");
-            var getCanvas; 
-            $("#svg-container").empty();
-            html2canvas(element, {
-                 onrendered: function (canvas) {
-                        $("#svg-container").append(canvas);
-                        getCanvas = canvas;
-                        var imgageData = getCanvas.toDataURL(downType);
-                        var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
-                        $("#btn-Convert-Html2Image").attr("download",name ).attr("href", newData);
-                        document.getElementById('btn-Convert-Html2Image').click();
-                     }
-            }); 
-           
-        }
-
-        $scope.save_pdf_pivotsummaryImg = function(widget){
-
-            var doc = new jsPDF('landscape', 'pt');
-
-            var specialElementHandlers = {
-                '#svg-container': function (element, renderer) {
-                    return true;
-                }
-            };
-
-            doc.fromHTML($('#grid').html(), 15, 15, {
-                'width': 170,
-                    'elementHandlers': specialElementHandlers
-            });
-            doc.save('sample-file.pdf');
-        }
 
         $scope.d3chartBtnClick = function(widget) {
 
@@ -1052,10 +954,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     widget.isD3chart = true;
                     break;
 
-                case 'pivotsummary':
-                    widget.isD3chart = true;
-                    break;
-
             }
 
             if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled) {
@@ -1077,23 +975,14 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 drillObj = {},
                                 isLastLevel = false;
                                 selectedSeries = e.point.series.name;
-<<<<<<< HEAD
-
-=======
-                            var cat = [];
->>>>>>> remotes/origin/V3.1.0.0
+                            // var cat = [];
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
                                     nextLevel = drillOrdArr[i].nextLevel;
                                     if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
                                 }
                             }
-<<<<<<< HEAD
-                            chart.options.lang.drillUpText = "◁ Back to " + highestLvl;
-
-=======
                             chart.options.lang.drillUpText = " Back to " + highestLvl;
->>>>>>> remotes/origin/V3.1.0.0
                             // Show the loading label
                             chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
 
@@ -1115,7 +1004,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 if (status) {
                                     for (var key in res[0]) {
                                         if (Object.prototype.hasOwnProperty.call(res[0], key)) {
-                                            if (key != nextLevel && key == selectedSeries ) {
+                                            if (key != nextLevel) {
                                                 drillObj = {
                                                     name: key,
                                                     data: []
@@ -1138,28 +1027,23 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                             });
                                         }
                                     });
-                                    for (var i=0;i<drillObj.length;i++){
-                                        cat.push(drillObj[i].name);
-                                    }
+                                    // for (var i=0;i<drillObj.length;i++){
+                                    //     cat.push(drillObj[i].name);
+                                    // }
                                     chart.addSeriesAsDrilldown(e.point, drillObj);
-                                    chart.xAxis[0].setCategories(cat,false);
+                                    // chart.xAxis[0].setCategories(cat);
 
                                 } else {
                                     alert('request failed due to :' + JSON.stringify(res));
                                     e.preventDefault();
                                 }
                                 console.log(JSON.stringify(res));
-<<<<<<< HEAD
-                                chart.xAxis[0].update({title: {text: nextLevel}}, true);
-                                chart.yAxis[0].update({title: {text: selectedSeries}}, true);                                                                
-=======
                                 widget.widgetData.highchartsNG.xAxis["title"] = {
                                     text: nextLevel
                                 };
                                 widget.widgetData.highchartsNG.yAxis["title"] = {
                                     text: selectedSeries
                                 };                                
->>>>>>> remotes/origin/V3.1.0.0
                                 chart.options.customVar = nextLevel;
                                 chart.hideLoading();
                             }, nextLevel, highestLvl + "='" + clickedPoint + "'");
@@ -1168,24 +1052,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     drillup: function(e) {
                         console.log(e);
                         var chart = this;
-<<<<<<< HEAD
-                        drillConf.drillOrdArr.forEach(function (key) {
-                            if (key.nextLevel && key.nextLevel == chart.options.customVar)
-                                chart.options.customVar = key.name;
-                                chart.xAxis[0].update({title: {text: chart.options.customVar}}, true);
-                        });
-                        // set x and y axis titles (DUODIGIN-914)
-                        var flag = false;
-                        drillConf.drillOrdArr.forEach(function(key) {
-                            if (chart.options.customVar == key.nextLevel){
-                                chart.options.lang.drillUpText = "◁ Back to " + key.name;
-                                flag = true;
-                            }
-                        });
-                        if (!flag){
-                            chart.yAxis[0].update({title: {text: ''}}, true);
-                        }                         
-=======
                         console.log(chart.options.customVar);
                         drillConf.drillOrdArr.forEach(function(key) {
                         if (key.nextLevel && key.nextLevel == chart.options.customVar) {
@@ -1208,7 +1074,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 text: 'values'
                             };
                         }
->>>>>>> remotes/origin/V3.1.0.0
                     }
                 }
             }

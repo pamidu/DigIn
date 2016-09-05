@@ -465,13 +465,7 @@ routerApp
             }
             //------------------------------------
             $scope.agreed=localStorage.getItem('termsNconditions');
-<<<<<<< HEAD
-
-
-=======
-
-
->>>>>>> remotes/origin/V3.1.0.0
+ 
             if(localStorage.getItem('fname')==null){signUpUsr.firstName="";}else{signUpUsr.firstName=localStorage.getItem('fname')};
             if(localStorage.getItem('lname')==null){signUpUsr.lastName="";}else{signUpUsr.lastName=localStorage.getItem('lname')};
             if(localStorage.getItem('email')==null){signUpUsr.email="";} else if(localStorage.getItem('email')=="undefined"){signUpUsr.email="";} else {signUpUsr.email=localStorage.getItem('email')};

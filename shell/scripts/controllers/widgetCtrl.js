@@ -2702,48 +2702,74 @@ routerApp.controller('clockInit', ['$scope', '$mdDialog',
         });
         $scope.formats = [{
                 name: "default",
-                format: "ddd mmm dd yyyy HH:MM:ss"
+                format: "ddd mmm dd yyyy HH:MM:ss",
+                time: true
             }, {
                 name: "shortDate",
-                format: "m/d/yy"
+                format: "m/d/yy",
+                time: false
             }, {
                 name: "longDate",
-                format: "mmmm d, yyyy"
+                format: "mmmm d, yyyy",
+                time: false
             }, {
                 name: "fullDate",
-                format: "dddd, mmmm d, yyyy"
+                format: "dddd, mmmm d, yyyy",
+                time: false
             }, {
                 name: "shortTime",
-                format: "h:MM TT"
+                format: "h:MM TT",
+                time: true
             }, {
                 name: "mediumTime",
-                format: "h:MM:ss TT"
+                format: "h:MM:ss TT",
+                time: true
             }, {
                 name: "longTime",
-                format: "h:MM:ss TT Z"
+                format: "h:MM:ss TT Z",
+                time: true
             }, {
                 name: "isoDate",
-                format: "yyyy-mm-dd"
+                format: "yyyy-mm-dd",
+                 time: false
             }, {
                 name: "isoTime",
-                format: "HH:MM:ss"
+                format: "HH:MM:ss",
+                time: true
             }, {
                 name: "isoDateTime",
-                format: "yyyy-mm-dd'T'HH:MM:ss"
+                format: "yyyy-mm-dd'T'HH:MM:ss",
+                 time: true
             }, {
                 name: "isoUtcDateTime",
-                format: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
+                format: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'",
+                 time: true
         }];
         $scope.clockComponentformatChange = function (data) {
 
                 console.log("$('#clockmonthDay')", $('#clockmonthDay'));
 
                 if(data){
+
+                    for(var i=0; i < $scope.formats.length; i++){
+                        if(data == $scope.formats[i].format)
+                            if($scope.formats[i].time){
+                                $('#clockDate').css("display","none");
+                                $('#clockDate').css("color","white");
+                                break;
+                            }
+                            else{
+                                $('#clockDate').css("display","block");
+                                break;
+                            }
+                    }
+
                     var monthDay = dateFormat(data);
                     $('#clockmonthDay').text(monthDay);
 
                     var year = dateFormat('yyyy');
                     $('#clockyear').append(year);
+                    $('#clockDate').css("color","white");
 
                     $scope.showFinishButton = true;
                 }
@@ -2754,5 +2780,10 @@ routerApp.controller('clockInit', ['$scope', '$mdDialog',
         $scope.finish = function () {
                 $mdDialog.hide();
         };
+
+        $scope.setTime = function(){
+            $scope.clockComponentformatChange($scope.formats[2].format);
+        }
+        
     }
 ]);

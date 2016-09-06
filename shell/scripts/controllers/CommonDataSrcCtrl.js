@@ -5,10 +5,10 @@
  */
 routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log',
     'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API',
-    '$diginengine', 'ngToast', '$window', '$state', '$csContainer', 'Upload', '$timeout', 'Digin_Domain',
+    '$diginengine', 'ngToast', '$window', '$state', '$csContainer', 'Upload', '$timeout', 'Digin_Domain', '$diginurls',
     function($scope, $controller, $mdSidenav, $log, CommonDataSrc,
         $mdDialog, $rootScope, $http, Digin_Engine_API,
-         $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout, Digin_Domain) {
+         $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout, Digin_Domain, $diginurls) {
 
         $scope.datasources = [{
             name: "DuoStore",
@@ -39,7 +39,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
 
         //ng-disabled model of save button
         $scope.pendingColumns = true;
-        
+        $scope.show = false;
         //data base field type
         $scope.dataBaseFiledTypes = [{
             'type': 'nvarchar',
@@ -728,6 +728,22 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     fireMsg('0', 'Maximum Widget Limit Exceeded')
                 }
             },
+            onSelectFilter: function() {
+                var query = "";
+                var table_name = $scope.sourceUi.selectedNameSpace;
+                angular.forEach($scope.sourceUi.selectedAttribute,function(entry) {
+                    if (!entry.isRemove){
+                        query = "SELECT " + entry.name + " FROM " + $diginurls.getNamespace() + "." + table_name + " GROUP BY " + entry.name;
+                        $scope.client.getExecQuery(query, function(data, status) {
+                            if (status){
+                                angular.forEach(data,function(key,value){
+                                    console.log(data[key] + " : " + value);
+                                });
+                            }
+                        }, 1000);
+                    }                   
+                });
+            },            
             onRemoveAtt: function(onSelected, data) {
                 var attrObj = onSelected;
                 var index = attrObj.indexOf(data);

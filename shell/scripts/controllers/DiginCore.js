@@ -1004,7 +1004,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 if (status) {
                                     for (var key in res[0]) {
                                         if (Object.prototype.hasOwnProperty.call(res[0], key)) {
-                                            if (key != nextLevel) {
+                                            if (key != nextLevel && key == selectedSeries) {
                                                 drillObj = {
                                                     name: key,
                                                     data: []

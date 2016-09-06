@@ -4,7 +4,7 @@
 <!-- cooment by Gevindu on 2016/05/12 due to DUODIGIN-455 -->
 <md-sidenav class="md-sidenav-right slider-r-wrap" md-component-id="right">
 <!-- message
-<!-- <toast></toast> -->
+ <toast></toast> -->
 
     <md-content class="overflow-none" layout="row">
         <div class="slider-r-tab">
@@ -304,10 +304,14 @@
                               ng-click="commonUi.onSaveSource()">
                             save
                         </span>
+<!--                         <span ng-disabled="pendingColumns" class="btn btn-block btn-default"
+                              ng-click="commonUi.onSelectFilter()">
+                            Select Filter
+                        </span>    -->                     
                         <span class="btn btn-block btn-default btn-close"
                               ng-click="commonUi.onClickBack('3')">
                                 back
-                        </span>
+                        </span>                       
                 </div>
             </div>
         </div>
@@ -315,5 +319,4 @@
     </md-content>
 
 </md-sidenav>
-
 <!-- </div> -->

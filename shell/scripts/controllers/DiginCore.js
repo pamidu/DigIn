@@ -739,6 +739,15 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             });
         }
 
+        $scope.shareWidget = function(ev, widget){
+            $mdDialog.show({
+                controller: 'shareCtrl',
+                templateUrl: 'views/dashboard-share.html',
+                clickOutsideToClose: true,
+                resolve: {}
+            });
+        }
+
         /*Summary:
          synchronizes data per widget
          @widget : widget that need to get updated

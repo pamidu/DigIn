@@ -340,14 +340,18 @@ routerApp.controller('changePasswordCtrl',['$scope','$mdDialog','$http','notific
             console.log(window.location.host + '/auth/ChangePassword/' + encodeURIComponent($scope.oldPassword) + '/' + encodeURIComponent($scope.newPassword));
             $http.get('/auth/ChangePassword/' + encodeURIComponent($scope.oldPassword) + '/' + encodeURIComponent($scope.newPassword))
                 .success(function (data) {
-
+					
+					try{
+						data = data.replace(/(\r\n|\n|\r)/gm,"");
+					}catch(exception){} //The true or false comes with a linebreak therefore this is to remove the linebreak if it exisit
+					
+					console.log(data);
                     if (data == "true") {
 						console.log("Passoword Successfully Changed");
                         notifications.toast(1,"Passoword Successfully Changed");
                         $mdDialog.hide();
                     } else {
-						console.log("Error");
-                        notifications.toast(0, data);
+                        notifications.toast(0, data.Message);
                     }
 
                 }).error(function () {

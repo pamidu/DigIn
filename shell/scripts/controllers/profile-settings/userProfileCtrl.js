@@ -343,20 +343,20 @@ routerApp.controller('changePasswordCtrl',['$scope','$mdDialog','$http','notific
 
                     if (data == "true") {
 						console.log("Passoword Successfully Changed");
-                        notifications.toast("Passoword Successfully Changed", "success");
+                        notifications.toast(1,"Passoword Successfully Changed");
                         $mdDialog.hide();
                     } else {
 						console.log("Error");
-                        notifications.toast(data, "error");
+                        notifications.toast(0, data);
                     }
 
                 }).error(function () {
 					console.log("Error occurred while changing the password");
-                    notifications.toast("Error occurred while changing the password", "error", 3000);
+                    notifications.toast(0, "Error occurred while changing the password");
                 });
 
         } else {
-            notifications.toast("New Password Confirmation invalid", "error", 4000);
+            notifications.toast(0, "New Password Confirmation invalid");
         }
 		//$mdDialog.hide($scope.email);
   }

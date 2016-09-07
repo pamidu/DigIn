@@ -40,6 +40,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         //ng-disabled model of save button
         $scope.pendingColumns = true;
         $scope.show = false;
+        $scope.filterMenuStatus = false;
         //data base field type
         $scope.dataBaseFiledTypes = [{
             'type': 'nvarchar',
@@ -123,7 +124,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         }
 
     ];
-
+        $scope.fieldObjects = [];
+        $scope.selectedAttributes = []
         var chartTypes = [];
         var user = "";
         var isBQInitial = true;
@@ -369,6 +371,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         commonUi.selectedIndex = 2;
                         break;
                 }
+                commonUi.onCLickFilterClose();
             },
             onClickClose: function() {
                 commonUi.selectedIndex = 1;
@@ -378,11 +381,21 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         .close()
                         .then(function() {
                             console.log('right sidepanel closed');
-                        });  
+                        });
                     }
                 });
             },
+            onCLickFilterClose: function() {
+                $scope.filterMenuStatus = false;
+                $mdSidenav('filterMenu')
+                    .close()
+                    .then(function() {
+                    console.log('filterMenu sidepanel closed');                        
+                });
+                $scope.fieldObjects = [];
+            },
             onExecuteManualQuery: function(){
+                commonUi.onCLickFilterClose();                
                 if ( $scope.sourceUi.selectedSource != null ){
                     $csContainer.fillCSContainer({
                         src: $scope.sourceUi.selectedSource,
@@ -429,9 +442,10 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 else{
                     publicFun.fireMessage('0', 'Please select a source');
                     return;
-                }                
+                }
             },
             onClickNext: function(index) {
+                commonUi.onCLickFilterClose();
                 commonUi.isServiceError = false;
                 switch (index) {
                     case '1':
@@ -631,7 +645,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 publicFun.clrTblSelectedObj($scope.sourceUi.tableData);
             },
             onSaveSource: function() {
-
+                commonUi.onCLickFilterClose();
                 $('.main-headbar-slide').animate({
                             top: '-43px'
                         }, 300);
@@ -729,19 +743,50 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 }
             },
             onSelectFilter: function() {
+                if (!$scope.filterMenuStatus){
+                    $mdSidenav('filterMenu').toggle().then(function () {
+                        $log.debug("toggle left is done");
+                    });
+                    $scope.fieldObjects = [];
+                    $scope.selectedAttributes = [];
+                    $scope.filterMenuStatus = true;   
+                }             
                 var query = "";
                 var table_name = $scope.sourceUi.selectedNameSpace;
                 angular.forEach($scope.sourceUi.selectedAttribute,function(entry) {
                     if (!entry.isRemove){
-                        query = "SELECT " + entry.name + " FROM " + $diginurls.getNamespace() + "." + table_name + " GROUP BY " + entry.name;
-                        $scope.client.getExecQuery(query, function(data, status) {
-                            if (status){
-                                angular.forEach(data,function(key,value){
-                                    console.log(data[key] + " : " + value);
-                                });
+                        if ($scope.selectedAttributes.indexOf(entry.name) == -1 ){
+                            $scope.selectedAttributes.push(entry.name);
+                            query = "SELECT " + entry.name + " FROM " + $diginurls.getNamespace() + "." + table_name + " GROUP BY " + entry.name;
+                            $scope.client.getExecQuery(query, function(data, status) {
+                                if (status){
+                                    var tempArray = [];
+                                    for (var res in data){
+                                        var keyValue = data[res];
+                                        for (var v in keyValue){
+                                            var key = v;
+                                            var value = keyValue[v];
+                                            tempArray.push(value);
+                                        }
+                                    }
+                                    $scope.fieldObjects.push({
+                                        name: key,
+                                        value: tempArray
+                                    })
+                                }
+                            }, 1000);
+                        }
+                    } else{
+                        var index = $scope.selectedAttributes.indexOf(entry.name);
+                        if( index > -1 ){
+                            $scope.selectedAttributes.splice(index,1);
+                            for (var i=0;i<$scope.fieldObjects.length;i++){
+                                if ($scope.fieldObjects[i].name == entry.name){
+                                    $scope.fieldObjects.splice(i,1);
+                                }
                             }
-                        }, 1000);
-                    }                   
+                        }
+                    }                 
                 });
             },            
             onRemoveAtt: function(onSelected, data) {

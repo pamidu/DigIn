@@ -5093,3 +5093,30 @@ md-checkbox.md-indeterminate .md-icon:after {
     height: 1px !important;
     border-width: 1px !important;
 }
+
+span.bigcheck-target {
+    font-family: FontAwesome; /* use an icon font for the checkbox */    
+}
+input[type='checkbox'].bigcheck {     
+    position: relative;
+    left: -999em; /* hide the real checkbox */
+}
+
+input[type='checkbox'].bigcheck + span.bigcheck-target:after {
+    content: "\f096"; /* In fontawesome, is an open square (fa-square-o) */
+}
+input[type='checkbox'].bigcheck:checked + span.bigcheck-target:after {
+    content: "\f046"; /* fontawesome checked box (fa-check-square-o) */
+}
+
+/* ==== optional - colors and padding to make it look nice === */
+label.filter-label { 
+    display: block;
+    font-family: sans-serif;
+    font-weight: 5;
+    font-size: 1em; /* set this to whatever size you want */
+}
+div.bigcheck { 
+    display: block;
+    padding: 0.5em;;
+}

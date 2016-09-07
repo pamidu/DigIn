@@ -44,7 +44,7 @@ DiginApp.controller('inviteUserCtrl',[ '$scope','$mdDialog', '$http', 'notificat
 	
 	$scope.getCatLetter=function(catName){
 		try{
-			var catogeryLetter = "/img/material_alperbert/avatar_tile_"+catName.charAt(0).toLowerCase()+"_28.png";
+			var catogeryLetter = "images/material_alperbert/avatar_tile_"+catName.charAt(0).toLowerCase()+"_28.png";
 		}catch(exception){}
 		return catogeryLetter;
 	}; 

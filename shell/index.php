@@ -243,6 +243,7 @@
 <script type="text/javascript" src="scripts/controllers/NavCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/DiginCore.js"></script>
 <script type="text/javascript" src="scripts/controllers/DiginCore2.js"></script>
+<script type="text/javascript" src="scripts/controllers/DashboardshareCtrl.js"></script>
 <script type="text/javascript" src="scripts/directives/plumbItem.js"></script>
 <script type="text/javascript" src="scripts/directives/postRender.js"></script>
 <script type="text/javascript" src="scripts/directives/accordion.js"></script>

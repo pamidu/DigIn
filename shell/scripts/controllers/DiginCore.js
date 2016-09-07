@@ -744,7 +744,10 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 controller: 'shareCtrl',
                 templateUrl: 'views/dashboard-share.html',
                 clickOutsideToClose: true,
-                resolve: {}
+                resolve: {},
+                locals: {
+                    widget: widget
+                }
             });
         }
 

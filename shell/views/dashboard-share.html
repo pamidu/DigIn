@@ -10,12 +10,10 @@
         </div>
         <!-- </div> -->
        <div class="header-line-bottom"></div>
-        <div class="card-body bg-color-grey-100 p-b-20 share-body">
+        <div class="card-body bg-color-grey-100 p-b-20 share-body" id="social_dynamic_div">
             <div layout="row" layout-align="center center" layout-wrap>
-                <div class="select-card-btn asset" ng-repeat="item in shareOptions">
-                                    <a socialshare socialshare-provider="{{item.provider}}" ng-src="{{item.icon}}" socialshare-text="Share this dashboard" socialshare-url="#" ng-click="openProvider(item.provider)">
-                                    <img alt="" src="{{item.icon}}">
-                                    </a>
+                <div class="select-card-btn asset" ng-repeat="item in shareOptions" >
+                                    <img alt="" src="{{item.icon}}" ng-click="openProvider(item.provider)" >
                                     <span class="size graph-h2">
                                         {{item.provider}}
                                     </span>

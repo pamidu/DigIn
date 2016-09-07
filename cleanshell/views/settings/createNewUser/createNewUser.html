@@ -1,0 +1,93 @@
+<!--CARD CONTAINER START-->
+<div class="card-container">
+	<!--WHITEFRAME START-->
+	<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
+
+		<md-content>
+
+			<form name="editForm"  md-theme="default" ng-submit="submit()">
+				<div layout="row" layout-align="end end">
+					<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="back" ng-click="route('back')"></md-button>
+				</div>
+					
+				<div class="setting-card-header">
+					<h2>Create New User</h2>
+					<div class="setting-img-wrap">
+						<img src="views/settings/createNewUser/new_user.png"/>
+					</div>
+				</div>
+				
+				
+				<!--Input Elements Start-->
+				<div layout="row" layout-align="start start">
+					<div class="section-title">Profile details</div>
+				</div>
+				
+				<div layout-gt-sm="row" class="side-margins">
+					<md-input-container class="md-block" flex-gt-sm>
+						<span>First Name</span>
+						<input required type="email" name="fname" ng-model="content.fname" />
+						<div ng-messages="editForm.fname.$error" role="alert">
+						  <div ng-message-exp="['required']">
+								Frist name is required
+						  </div>
+						</div>
+					</md-input-container>
+					<md-input-container class="md-block" flex-gt-sm>
+						<span>Last Name</span>
+						<input required type="email" name="lname" ng-model="content.lname" />
+						<div ng-messages="editForm.lname.$error" role="alert">
+						  <div ng-message-exp="['required']">
+								Last name is required
+						  </div>
+						</div>
+					</md-input-container>
+					<!--md-input-container class="md-block" flex-gt-sm>
+						<span>Select Account Type</span>
+						<md-select class="select" ng-model="content.CardOrAccount">
+							<md-optgroup label="Select Account Type">
+								<md-option  value="Card" flex >Card</md-option>
+								<md-option  value="Account" flex >Account</md-option>
+							</md-optgroup>
+						</md-select>
+					</md-input-container-->
+
+				</div>
+				
+				<div layout-gt-sm="row" class="side-margins">
+					<md-input-container class="md-block" flex-gt-sm>
+						<span>Email</span>
+						<input required type="email" name="email" ng-model="content.email" minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+						<div ng-messages="editForm.email.$error" role="alert">
+						  <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+							Please enter a valid Email
+						  </div>
+						</div>
+					</md-input-container>
+					<md-input-container class="md-block" flex-gt-sm>
+						<span>Domain</span>
+						<input required type="text" name="domain" ng-model="content.domain" ng-disabled="true"/>
+						<div ng-messages="editForm.domain.$error" role="alert">
+						  <div ng-message-exp="[]">
+								Domain
+						  </div>
+						</div>
+					</md-input-container>
+
+				</div>
+
+				<div layout="row" layout-align="center start" layout-margin ng-init="submitted=false" >
+					<md-button id="accountSubmit" class="md-raised md-primary" style="width:100px;background:#02b5e2" ng-disabled="submitted" type="submit">
+						<span style="text-transform:none">Add User</span>
+					</md-button>
+				</div>
+		
+
+			</form>
+
+		</md-content>
+
+	</md-whiteframe><br/>
+	<!--WHITEFRAME END-->
+</div>
+<!--CARD CONTAINER END-->

@@ -1,0 +1,66 @@
+{
+	"Exception": null,
+	"Result": {
+		"compName": "zdcz",
+		"compCategory": null,
+		"compID": "1469637509158",
+		"compClass": null,
+		"pages": [{
+			"pageName": "DEFAULT",
+			"pageData": null,
+			"pageID": "1469637509348",
+			"widgets": [{
+				"widgetID": "1472658893560",
+				"pageID": "1469637509348",
+				"widgetData": {
+					"widEnc": {},
+					"externalDataURL": "",
+					"chartStack": [{
+						"id": "",
+						"title": "No"
+					}, {
+						"id": "normal",
+						"title": "Normal"
+					}, {
+						"id": "percent",
+						"title": "Percent"
+					}],
+					"widCsc": {},
+					"height": "300px",
+					"seriesname": "",
+					"dataname": "",
+					"id": 44,
+					"widCsv": {},
+					"top": "0px",
+					"d3plugin": "",
+					"width": "370px",
+					"widAexc": {},
+					"divider": false,
+					"syncState": true,
+					"widData": {},
+					"widName": "Sales distribution over world",
+					"highchartsNG": null,
+					"widAque": {},
+					"mheight": "100%",
+					"uniqueType": "Sales distribution over world",
+					"widView": "views/widgets/custom/viewSales.html",
+					"widDec": {},
+					"widAna": {},
+					"type": "Custom",
+					"expanded": true,
+					"widIm": {},
+					"left": "0px"
+				},
+				"widgetName": "Sales distribution over world",
+				"col": 0,
+				"sizeX": 13,
+				"sizeY": 34,
+				"row": 0
+			}]
+		}],
+		"refreshInterval": 60,
+		"compType": "dashboard"
+	},
+	"Is_Success": true,
+	"Custom_Message": "Successful!"
+}

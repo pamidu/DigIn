@@ -1,0 +1,57 @@
+<style>
+.select-card-btn
+{
+	margin:10px;
+	cursor: pointer;
+	outline: none;
+}
+
+.select-card-btn img {
+    height: 76px;
+    width: 76px;
+    margin: 16px;
+	}
+.widget-title
+{
+	box-sizing: border-box;
+	text-align: center;
+	display:inline-block;
+	text-transform: none;
+	line-height: 18px;
+}
+
+md-ink-bar
+{
+	background: #f9a525 !important;
+}
+</style>
+
+<md-dialog aria-label="Add Widget" ng-cloak>
+  <form name="editForm" ng-submit="addPage()">
+	  <md-toolbar class="modal-header">
+		<div class="md-toolbar-tools">
+		   <div layout="row" layout-align="center center">
+			<ng-md-icon icon="my_library_books" style="fill:white; padding-right: 20px;" size="24px"></ng-md-icon>
+			<h2>Add Widget</h2>
+		  </div>
+		  <span flex></span>
+		  <md-button class="md-icon-button icon-cancel" ng-click="cancel()" aria-label="Close">
+		  </md-button>
+		</div>
+	  </md-toolbar>
+	  <md-dialog-content style="max-width:800px;max-height:810px;min-width:385px;">
+		<md-tabs md-dynamic-height md-border-bottom>
+			<md-tab label="{{item.title}}" ng-repeat="item in WidgetTypes" ng-click="filterWidgets(item)">
+				<md-content flex layout-align="center center" layout="row" style="background:#f2f2f2;" layout-wrap>
+					<md-button class="select-card-btn md-raised" ng-repeat="widget in Widgets | filter : selected" layout="column" layout-align="center center" ng-click="addAllinOne(widget,$event)">
+						<img ng-src="{{widget.icon}}" alt=""/>
+						<span class="widget-title">
+							{{widget.title}}
+						</span>
+					</md-button>
+				</md-content>
+			</md-tab>
+		</md-tabs>
+	  </md-dialog-content>
+  </form>
+</md-dialog>

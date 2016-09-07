@@ -1,0 +1,34 @@
+{
+	"Exception": null,
+	"Result": [{
+		"compID": "1471558246611",
+		"compName": "StoreInformation",
+		"compType": "Report"
+	}, {
+		"compID": "1471569942324",
+		"compName": "Financial Summary",
+		"compType": "dashboard"
+	}, {
+		"compID": "1470684090262",
+		"compName": "Sales Dashboard",
+		"compType": "TYPE2"
+	}, {
+		"compID": "1470662397037",
+		"compName": "Returns Dashboard",
+		"compType": "TYPE1"
+	}, {
+		"compID": "1471611417717",
+		"compName": "HR Dashboard",
+		"compType": "dashboard"
+	}, {
+		"compID": "1471552916359",
+		"compName": "Sales Summary",
+		"compType": "dashboard"
+	}, {
+		"compID": "1471561139523",
+		"compName": "Template_Invoice",
+		"compType": "Report"
+	}],
+	"Is_Success": true,
+	"Custom_Message": "Successful!"
+}

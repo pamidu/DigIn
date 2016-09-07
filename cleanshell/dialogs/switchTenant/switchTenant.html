@@ -7,7 +7,7 @@
 		<h2>Switch Tenant</h2>
 	  </div>
       <span flex></span>
-      <md-button class="md-icon-button icon-cancel" ng-click="cancel()" aria-label="Close">
+      <md-button class="md-icon-button icon-cancel" ng-click="$root.cancel()" aria-label="Close">
       </md-button>
     </div>
   </md-toolbar>
@@ -18,7 +18,7 @@
 	<md-divider></md-divider>
 		<md-list ng-cloak>
 		  <md-list-item ng-repeat="tenant in tenants | filter:search" ng-click="switch(tenant)">
-			<p> {{ tenant.name }} </p>
+			<p> {{ tenant.Name }} </p>
 		  </md-list-item>
 		</md-list>
   

@@ -1,4 +1,4 @@
- DiginApp.factory('DiginServices', ['$http', 'notifications', function($http, notifications) {
+ DiginApp.factory('DiginServices', ['$http', '$v6urls', '$auth', 'notifications', function($http, $v6urls, $auth,notifications) {
    return {
         getDiginComponents: function() {
              //return the promise directly.
@@ -50,6 +50,15 @@
 			 for(i=0;i<obj.length;i++){
 					if(obj[i].widgetID == id) return i;
 				}		
+        }, getTenants: function() {
+             //return the promise directly.
+             return $http.get($v6urls.auth + "/tenant/GetTenants/" + $auth.getSecurityToken())
+			   .then(function(result) {
+					return result.data;
+				},function errorCallback(response) {
+						console.log(response);
+						notifications.toast(0, "Falied to load tenants");
+			 });	
         }
 		
    }

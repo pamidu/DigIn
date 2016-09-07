@@ -1,7 +1,7 @@
 DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices',function ($scope,$rootScope ,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices) {
 
 	$auth.checkSession();
-	var secToken = $auth.getSecurityToken();
+	$scope.secToken = $auth.getSecurityToken();
 	
 	//Start of layoutManager
 	$rootScope.showHeader = true;
@@ -79,8 +79,8 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$mdDialog', '$mdMedia','
 			console.log("Save");
 		}else if(action == 'Notifications')
 		{
-			//$mdSidenav('notifications').toggle();
-			notifications.toast(1,"yes");
+			$mdSidenav('notifications').toggle();
+			//notifications.toast(1,"yes");
 		}else if(action == "Switch Tenant")
 		{
 			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;

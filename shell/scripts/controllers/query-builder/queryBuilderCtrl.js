@@ -1789,6 +1789,14 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 $scope.isPendingRequest = false;
             },
             saveWidget: function(widget) {
+                 if($scope.selectedChart.name == "pyramid" || $scope.selectedChart.name == "funnel"){
+                    $scope.highchartsNG.options.exporting.sourceHeight = 1200;
+                    $scope.highchartsNG.options.exporting.sourceWidth = 2048;
+                }
+                else{
+                    $scope.highchartsNG.options.exporting.sourceHeight = 400;
+                    $scope.highchartsNG.options.exporting.sourceWidth  = 600;
+                }
                 widget.widgetData.highchartsNG = $scope.highchartsNG;
                 widget.widgetData.widData['drilled'] = $scope.isDrilled;
                 if ($scope.isDrilled) widget.widgetData.widData['drillConf'] = $scope.drillDownConfig;

@@ -1,8 +1,16 @@
-DiginApp.controller('profileCtrl',[ '$scope','$mdDialog', function ($scope,$mdDialog){
+DiginApp.controller('profileCtrl',[ '$scope','$mdDialog','DiginServices', 'notifications', function ($scope,$mdDialog,DiginServices,notifications){
 	
 	$scope.$parent.currentView = "Settings";
-		
+	
+	var userObject = {}; //if the user cancels editing replace $scope.user with this
+	$scope.user = {};
 	$scope.editModeOn = false;
+	
+	DiginServices.getProfile().then(function(data) {
+		userObject = angular.copy(data);
+		$scope.user = data;
+	});
+	
 	$scope.profile_pic = "images/settings/new_user.png";
 	
 	$scope.profile = (function () {
@@ -11,12 +19,21 @@ DiginApp.controller('profileCtrl',[ '$scope','$mdDialog', function ($scope,$mdDi
 				$scope.editModeOn = true;
 			},
 			changeUserProfile: function (){
-				console.log($scope.user);
 				$scope.editModeOn = true;
-				//$scope.updateProfileData();
+				DiginServices.updateProfile($scope.user).then(function(result) {
+					if(result.IsSuccess == true)
+					{
+						$scope.editModeOn = false;
+						notifications.toast(1, "Profile Updated");
+						userObject = $scope.user;
+					}else{
+						notifications.toast(0, result.Message);
+					}
+				})
 			},
 			cancel: function (){
-				console.log($scope.user);
+				$scope.user = angular.copy(userObject);
+				$scope.editModeOn = false;
 			},
 			changePassword: function (ev) {
 				$mdDialog.show({
@@ -49,7 +66,7 @@ DiginApp.controller('profileCtrl',[ '$scope','$mdDialog', function ($scope,$mdDi
 	
 }])
 
-DiginApp.controller('changePasswordCtrl',['$scope','$mdDialog','$http','notifications' ,function ($scope,$mdDialog,$http,notifications) {
+DiginApp.controller('changePasswordCtrl',['$scope','$mdDialog','$http','DiginServices','notifications' ,function ($scope,$mdDialog,$http,DiginServices,notifications) {
 
   $scope.cancel = function() {
     $mdDialog.cancel();
@@ -59,26 +76,18 @@ DiginApp.controller('changePasswordCtrl',['$scope','$mdDialog','$http','notifica
 	   
         if ($scope.newPassword === $scope.confirmNewPassword) {
 
-            console.log(window.location.host + '/auth/ChangePassword/' + encodeURIComponent($scope.oldPassword) + '/' + encodeURIComponent($scope.newPassword));
-            $http.get('/auth/ChangePassword/' + encodeURIComponent($scope.oldPassword) + '/' + encodeURIComponent($scope.newPassword))
-                .success(function (data) {
-
-                    if (data == "true") {
-						console.log("Passoword Successfully Changed");
-                        notifications.toast("Passoword Successfully Changed", "success");
-                        $mdDialog.hide();
-                    } else {
-						console.log("Error");
-                        notifications.toast(data, "error");
-                    }
-
-                }).error(function () {
-					console.log("Error occurred while changing the password");
-                    notifications.toast("Error occurred while changing the password", "error", 3000);
-                });
+			DiginServices.changePassword($scope.oldPassword ,$scope.newPassword).then(function(result) {
+				if(result.Error == false)
+				{
+					notifications.toast(1, "Passoword Changed");
+					$mdDialog.hide(result);
+				}else{
+					notifications.toast(0, result.Message);
+				}
+			})
 
         } else {
-            notifications.toast("New Password Confirmation invalid", "error", 4000);
+            notifications.toast(0,"New Password Confirmation invalid");
         }
 		//$mdDialog.hide($scope.email);
   }

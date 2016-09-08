@@ -31,7 +31,7 @@
 				<div layout-gt-sm="row" class="side-margins">
 					<md-input-container class="md-block" flex-gt-sm>
 						<span>Full Name</span>
-						<input required type="text" name="name" ng-model="user.name"  ng-disabled="!editModeOn" aria-label="name"/>
+						<input required type="text" name="name" ng-model="user.Name"  ng-disabled="!editModeOn" aria-label="name"/>
 						<div ng-messages="editForm.name.$error" role="alert">
 						  <div ng-message-exp="['required']">
 								Full name is required
@@ -40,7 +40,7 @@
 					</md-input-container>
 					<md-input-container class="md-block" flex-gt-sm>
 						<span>Company</span>
-						<input type="text" name="company" ng-model="user.company" ng-disabled="!editModeOn"  aria-label="company"/>					
+						<input type="text" name="company" ng-model="user.Company" ng-disabled="!editModeOn"  aria-label="company"/>					
 					</md-input-container>
 
 				</div>
@@ -48,7 +48,7 @@
 				<div layout-gt-sm="row" class="side-margins">
 					<md-input-container class="md-block" flex-gt-sm="60">
 						<span>Email</span>
-						<input required type="email" name="email" ng-model="user.email" minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" ng-disabled="true"  aria-label="email"/>
+						<input required type="email" name="email" ng-model="user.Email" minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" ng-disabled="true"  aria-label="email"/>
 						<div ng-messages="editForm.email.$error" role="alert">
 						  <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
 							Please enter a valid Email
@@ -57,7 +57,7 @@
 					</md-input-container>
 					<md-input-container class="md-block" flex-gt-sm>
 						<span>Contact no</span>
-						<input required type="text" name="contactNo" ng-model="user.contactNo" ng-pattern="/^[0-9 ]*$/" ng-disabled="!editModeOn"  aria-label="contact no"/>
+						<input required type="text" name="contactNo" ng-model="user.PhoneNumber" ng-pattern="/^[0-9 ]*$/" ng-disabled="!editModeOn"  aria-label="contact no"/>
 						<div ng-messages="editForm.contactNo.$error" role="alert">
 						  <div ng-message-exp="['required', 'pattern']">
 								Enter a valid contact number
@@ -69,7 +69,7 @@
 				<div layout-gt-sm="row" class="side-margins">
 					<md-input-container class="md-block" flex-gt-sm="50">
 						<span>Billing Address</span>
-						<input required type="text" name="street" ng-model="user.street" ng-disabled="!editModeOn"  aria-label="billing address"/>
+						<input required type="text" name="street" ng-model="user.BillingAddress" ng-disabled="!editModeOn"  aria-label="billing address"/>
 						<div ng-messages="editForm.street.$error" role="alert">
 						  <div ng-message-exp="['required']">
 							Please enter a Billing Address
@@ -78,7 +78,7 @@
 					</md-input-container>
 					<md-input-container class="md-block" flex-gt-sm="30">
 						<span>Country</span>
-						<input required type="text" name="country" ng-model="user.country" ng-disabled="!editModeOn"  aria-label="country"/>
+						<input required type="text" name="country" ng-model="user.Country" ng-disabled="!editModeOn"  aria-label="country"/>
 						<div ng-messages="editForm.country.$error" role="alert">
 						  <div ng-message-exp="['required']">
 							Country is required
@@ -87,7 +87,7 @@
 					</md-input-container>
 					<md-input-container class="md-block" flex-gt-sm>
 						<span>Zip Code</span>
-						<input type="text" name="zip" ng-model="user.zip" ng-disabled="!editModeOn"  aria-label="zip"/>
+						<input type="text" name="zip" ng-model="user.ZipCode" ng-disabled="!editModeOn"  aria-label="zip"/>
 					</md-input-container>
 
 				</div>

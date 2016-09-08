@@ -67,8 +67,7 @@
 				})
 			   .then(function(result) {
 					//return result.data;
-
-					console.log(result);
+					notifications.toast(1, "User Invited");
 					notifications.finishLoading();
 				},function errorCallback(response) {
 					console.log(response);
@@ -92,6 +91,48 @@
 				},function errorCallback(response) {
 					notifications.toast(0, "Falied to invite user");
 			 });	
+		
+		   }, getProfile: function() {
+					 //return the promise directly.
+					 return $http.get('/apis/profile/userprofile/'+$rootScope.authObject.Email)
+					   .then(function(result) {
+							//return result.data;
+							return result.data;
+							
+						},function errorCallback(response) {
+							notifications.toast(0, "Falied to retrieve user infomation");
+			});	
+        }, updateProfile: function(userObj) {
+				notifications.startLoading("Updating Profile, Please wait..");
+				var req = {
+					method: "POST",
+					url: "/apis/profile/userprofile",
+					headers: {
+						"Content-Type": "application/json"
+						//"SecurityKey" : $auth.getSecurityToken()
+					},
+					data: userObj
+				}
+				 return $http(req)
+						.then(function(result){
+							notifications.finishLoading();
+							return result.data;
+							
+						},function errorCallback(response) {
+							notifications.toast(0, "Falied to retrieve user infomation");
+							notifications.finishLoading();
+				});	
+        }, changePassword: function(oldPassword, newPassword) {
+					 //return the promise directly.
+					 return $http.get($v6urls.auth +'/ChangePassword/'+ encodeURIComponent(oldPassword) + '/' + encodeURIComponent(newPassword))
+					   .then(function(result) {
+							//return result.data;
+							
+							return result.data;
+							
+						},function errorCallback(response) {
+							notifications.toast(0, "Falied to retrieve user infomation");
+			});	
         }
 		
    }

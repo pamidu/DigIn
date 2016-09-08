@@ -732,6 +732,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 })
                 .then(function() {});
         };
+        
         $scope.convertCSVtoJson = function(src) {
 
             AsTorPlotItems.then(function(data) {

@@ -32,10 +32,11 @@ routerApp.controller('shareCtrl', ['Socialshare', '$scope','$mdDialog','widget',
         var widget =$scope.widget;
         if(provider=="email"){
             $mdDialog.show({
-                controller: 'emailCtrl',
-                templateUrl: 'views/loginEmail.html',
-                resolve: {
-
+                controller: 'shareEmailClients',
+                templateUrl: 'views/shareEmailClients.html',
+                resolve: {},
+                locals: {
+                    widget: widget
                 }
             })
         }

@@ -626,7 +626,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                                 $interval.cancel(promise);
                                             });
 
-                                            files = null;
+                                            files = [];
 
                                         }
                                     }

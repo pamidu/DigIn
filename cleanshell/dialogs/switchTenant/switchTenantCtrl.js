@@ -1,6 +1,6 @@
 DiginApp.controller('switchTenantCtrl',[ '$scope', '$rootScope','$mdDialog','DiginServices', function ($scope,$rootScope,$mdDialog,DiginServices){
 
-	DiginServices.getTenants().then(function(response) {
+	DiginServices.getTenants(function(response) {
 		$scope.tenants = response;
 	});
 					

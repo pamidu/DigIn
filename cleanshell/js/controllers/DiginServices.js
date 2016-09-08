@@ -51,15 +51,21 @@
 			 for(i=0;i<obj.length;i++){
 					if(obj[i].widgetID == id) return i;
 				}		
-        }, getTenants: function() {
-             //return the promise directly.
-             return $http.get($v6urls.auth + "/tenant/GetTenants/" + $auth.getSecurityToken())
-			   .then(function(result) {
-					return result.data;
-				},function errorCallback(response) {
-						console.log(response);
-						notifications.toast(0, "Falied to load tenants");
-			 });	
+        }, getTenants: function(callback) {
+			if(cache.tenants)
+			{
+				callback(cache.tenants);
+			}else{
+				 //return the promise directly.
+				 return $http.get($v6urls.auth + "/tenant/GetTenants/" + $auth.getSecurityToken())
+				   .then(function(result) {
+						cache.tenants = result.data;
+						callback(cache.tenants);
+					},function errorCallback(response) {
+							console.log(response);
+							notifications.toast(0, "Falied to load tenants");
+				 });	
+			}
         }, inviteUser: function(userEmail) {
 			 notifications.startLoading("Inviting user, Please wait..");
              //return the promise directly.

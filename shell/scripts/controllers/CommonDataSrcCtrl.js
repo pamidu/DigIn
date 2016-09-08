@@ -742,6 +742,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     fireMsg('0', 'Maximum Widget Limit Exceeded')
                 }
             },
+            // retrieve the fields of selected categories
             onSelectFilter: function() {
                 if (!$scope.filterMenuStatus){
                     $mdSidenav('filterMenu').toggle().then(function () {
@@ -766,12 +767,18 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                         for (var v in keyValue){
                                             var key = v;
                                             var value = keyValue[v];
-                                            tempArray.push(value);
+                                            tempArray.push({
+                                                id: value.replace(/ /g,"_"),
+                                                value: value,
+                                                status: true
+                                            });
                                         }
                                     }
                                     $scope.fieldObjects.push({
+                                        id: key.replace(/ /g,"_"),
                                         name: key,
-                                        value: tempArray
+                                        valueArray: tempArray,
+                                        status: true
                                     })
                                 }
                             }, 1000);
@@ -788,7 +795,53 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         }
                     }                 
                 });
-            },            
+            },
+            // check and un-check check-box
+            changeStatus: function(name,index,id) {
+                var count = 0;
+                for (var field in $scope.fieldObjects){
+                    if ($scope.fieldObjects[field].name == name){
+                        if ($scope.fieldObjects[field].valueArray[index].status){
+                            $scope.fieldObjects[field].valueArray[index].status = false;
+                        }else {
+                            $scope.fieldObjects[field].valueArray[index].status = true;
+                        }
+                        // Check or Un-check the All option
+                        for( var i=0;i<$scope.fieldObjects[field].valueArray.length;i++){
+                            if($scope.fieldObjects[field].valueArray[i].status){
+                                count++;
+                            }
+                        }
+                        if (count != $scope.fieldObjects[field].valueArray.length){
+                            $("#"+id).removeAttr("checked"); //uncheck
+                        }else {
+                            $("#"+id).attr("checked",true); //check
+                            $("#"+id).prop("checked",true); //check
+                        }
+                    }
+                }
+                
+            },
+            //triggered when 'All' check box is clicked
+            checkAll: function(name,index,id) {
+                var status = $("#"+ id ).is(":checked");
+                if(status){
+                    for(var i =0; i < $scope.fieldObjects[index].valueArray.length; i++) {
+                        $("#"  + id + "-" + $scope.fieldObjects[index].valueArray[i].id).attr("checked",true);
+                        $("#" + id+ "-" + $scope.fieldObjects[index].valueArray[i].id).prop("checked",true);                        
+                        if (!$scope.fieldObjects[index].valueArray[i].status){
+                            commonUi.changeStatus(name,i,$scope.fieldObjects[index].valueArray[i].id);
+                        }
+                    }
+                }else{
+                    for(var i =0; i < $scope.fieldObjects[index].valueArray.length; i++) {
+                        $("#"+id+"-"+$scope.fieldObjects[index].valueArray[i].id).removeAttr("checked");
+                        if($scope.fieldObjects[index].valueArray[i].status){
+                            commonUi.changeStatus(name,i,$scope.fieldObjects[index].valueArray[i].id);
+                        }
+                    }
+                }
+            },
             onRemoveAtt: function(onSelected, data) {
                 var attrObj = onSelected;
                 var index = attrObj.indexOf(data);

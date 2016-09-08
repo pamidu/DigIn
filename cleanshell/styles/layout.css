@@ -2,6 +2,8 @@
 {
 	padding-top:70px;
 	padding-left:45px;
+	-webkit-animation: fadeIn .8s forwards;
+	animation: fadeIn .8s forwards;
 }
 
 .layout-whiteframe

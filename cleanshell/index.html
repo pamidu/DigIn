@@ -108,6 +108,21 @@
 					transform: scale(1.05);
 				}
 			}
+			
+			.fadeIn {
+				-webkit-animation: fadeIn .8s forwards;
+				animation: fadeIn .8s forwards;
+			}
+
+			@keyframes fadeIn {
+				0% {opacity: 0;}
+				100% {opacity: 1;}
+			}
+
+			@-webkit-keyframes fadeIn {
+				0% {opacity: 0;}
+				100% {opacity: 1;}
+			}
 
 		</style>
 		<center>
@@ -128,7 +143,7 @@
 	<!--END OF PRELOADER-->
 	
 	<!--START OF APPLICATION CONTAINER-->
-	<div layout="column" ng-cloak>
+	<div layout="column" ng-cloak class="fadeIn">
 		<toastino></toastino>
 		<div class="blut-log-wrapper">
 			<div class="left-toggle-wrapper">

@@ -6,10 +6,10 @@ DiginApp.controller('profileCtrl',[ '$scope','$mdDialog','DiginServices', 'notif
 	$scope.user = {};
 	$scope.editModeOn = false;
 	
-	DiginServices.getProfile().then(function(data) {
+	DiginServices.getProfile(function(data) {
 		userObject = angular.copy(data);
 		$scope.user = data;
-	});
+	})
 	
 	$scope.profile_pic = "images/settings/new_user.png";
 	

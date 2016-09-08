@@ -1,5 +1,6 @@
  DiginApp.factory('DiginServices', ['$rootScope','$http', '$v6urls', '$auth', 'notifications', function($rootScope,$http, $v6urls, $auth,notifications) {
-   return {
+	var cache = {};
+	return {
         getDiginComponents: function() {
              //return the promise directly.
              return $http.get('jsons/everything.json')
@@ -74,34 +75,47 @@
 					notifications.toast(0, "Falied to load tenants");
 					notifications.finishLoading();
 			 });	
-        }, getInvitedUsers: function() {
-             //return the promise directly.
-             return $http.get('/apis/usercommon/getSharableObjects')
-			   .then(function(result) {
-					//return result.data;
-					 for (var i = 0, len = result.data.length; i<len; ++i) {
-						if (result.data[i].Type == "User") {
-							$rootScope.sharableUsers.push(result.data[i]);
-						}else if (result.data[i].Type == "Group") {
-							$rootScope.sharableGroups.push(result.data[i]);
-						}
-					}
-					console.log(result);
-					
-				},function errorCallback(response) {
-					notifications.toast(0, "Falied to invite user");
-			 });	
+        }, getInvitedUsers: function(callback) {
+				if(cache.invitedUsers)
+				{
+					callback(cache.invitedUsers);
+				}else{
+					 //return the promise directly.
+					 return $http.get('/apis/usercommon/getSharableObjects')
+					   .then(function(result) {
+							//return result.data;
+							 for (var i = 0, len = result.data.length; i<len; ++i) {
+								if (result.data[i].Type == "User") {
+									$rootScope.sharableUsers.push(result.data[i]);
+								}else if (result.data[i].Type == "Group") {
+									$rootScope.sharableGroups.push(result.data[i]);
+								}
+							}
+							cache.invitedUsers = result;
+							callback(cache.invitedUsers)
+							
+						},function errorCallback(response) {
+							notifications.toast(0, "Falied to invite user");
+					 });	
+				}
 		
-		   }, getProfile: function() {
+		   }, getProfile: function(callback) {
+				if(cache.profile)
+				{
+					callback(cache.profile);
+				}else{
 					 //return the promise directly.
 					 return $http.get('/apis/profile/userprofile/'+$rootScope.authObject.Email)
 					   .then(function(result) {
 							//return result.data;
-							return result.data;
+							cache.profile = result.data;
+							callback(cache.profile);
 							
 						},function errorCallback(response) {
+							console.log(response);
 							notifications.toast(0, "Falied to retrieve user infomation");
-			});	
+					});	
+				}
         }, updateProfile: function(userObj) {
 				notifications.startLoading("Updating Profile, Please wait..");
 				var req = {
@@ -116,6 +130,7 @@
 				 return $http(req)
 						.then(function(result){
 							notifications.finishLoading();
+							cache.profile = userObj;
 							return result.data;
 							
 						},function errorCallback(response) {

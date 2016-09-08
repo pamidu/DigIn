@@ -1,7 +1,9 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices',function ($scope,$rootScope ,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers',function ($scope,$rootScope ,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers) {
 
 	$auth.checkSession();
-	$scope.secToken = $auth.getSecurityToken();
+	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
+	$rootScope.sharableUsers = [];
+	$rootScope.sharableGroups = [];
 	
 	//Start of layoutManager
 	$rootScope.showHeader = true;

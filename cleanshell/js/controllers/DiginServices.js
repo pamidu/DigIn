@@ -1,4 +1,4 @@
- DiginApp.factory('DiginServices', ['$http', '$v6urls', '$auth', 'notifications', function($http, $v6urls, $auth,notifications) {
+ DiginApp.factory('DiginServices', ['$rootScope','$http', '$v6urls', '$auth', 'notifications', function($rootScope,$http, $v6urls, $auth,notifications) {
    return {
         getDiginComponents: function() {
              //return the promise directly.
@@ -58,6 +58,39 @@
 				},function errorCallback(response) {
 						console.log(response);
 						notifications.toast(0, "Falied to load tenants");
+			 });	
+        }, inviteUser: function(userEmail) {
+			 notifications.startLoading("Inviting user, Please wait..");
+             //return the promise directly.
+             return $http.get($v6urls.auth + '/tenant/AddUser/' + userEmail + '/user', {
+					headers: {'Securitytoken': $rootScope.authObject.SecurityToken}
+				})
+			   .then(function(result) {
+					//return result.data;
+
+					console.log(result);
+					notifications.finishLoading();
+				},function errorCallback(response) {
+					console.log(response);
+					notifications.toast(0, "Falied to load tenants");
+					notifications.finishLoading();
+			 });	
+        }, getInvitedUsers: function() {
+             //return the promise directly.
+             return $http.get('/apis/usercommon/getSharableObjects')
+			   .then(function(result) {
+					//return result.data;
+					 for (var i = 0, len = result.data.length; i<len; ++i) {
+						if (result.data[i].Type == "User") {
+							$rootScope.sharableUsers.push(result.data[i]);
+						}else if (result.data[i].Type == "Group") {
+							$rootScope.sharableGroups.push(result.data[i]);
+						}
+					}
+					console.log(result);
+					
+				},function errorCallback(response) {
+					notifications.toast(0, "Falied to invite user");
 			 });	
         }
 		

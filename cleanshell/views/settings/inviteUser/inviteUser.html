@@ -15,9 +15,9 @@
 			<form name="editForm"  md-theme="default" layout-padding>
 
 				<md-list ng-cloak>
-					<md-list-item ng-repeat="user in users | filter:searchText">
-						<img ng-src="{{user.imgUrl}}" err-src="{{getCatLetter(user.name)}}" class="md-avatar" alt="{{user.name}}" />
-						<p> {{ user.name }} </p>
+					<md-list-item ng-repeat="user in $root.sharableUsers | filter:searchText">
+						<img ng-src="{{user.imgUrl}}" err-src="{{getCatLetter(user.Name)}}" class="md-avatar" alt="{{user.Name}}" />
+						<p> {{ user.Name }} </p>
 						<md-menu md-position-mode="target-right target" >
 							<md-button aria-label="Open demo menu" class="md-icon-button ti-more" style="font-size:20px" ng-click="$mdOpenMenu($event)">
 							</md-button>
@@ -36,7 +36,7 @@
 					</md-list-item>
 				
 				</md-list>
-				<div ng-show="(users|filter:searchText).length == 0" layout="row" layout-align="center center">
+				<div ng-show="($root.sharableUsers|filter:searchText).length == 0" layout="row" layout-align="center center">
 					<img src="views/settings/inviteUser/desert.png" />
 					<span style="padding-left:20px;font-weight:700">There are currently no users with access to your account with this keyword/ email, try adding 'em.</span>
 				</div>

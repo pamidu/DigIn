@@ -5075,23 +5075,8 @@ i.icon-cancel:hover {
     min-width: 187px !important;
 }
 
-md-checkbox.md-checked .md-icon:after {
-    width: 3.66667px !important;
-    height: 8.33333px !important;   
- stroke-width: 1px !important;
-}
-
-md-checkbox .md-icon {
-  width: 7px !important;
-      height: 1px !important;
-      border-width: 1px !important;
-     stroke-width: 1px !important;
-}
-
-md-checkbox.md-indeterminate .md-icon:after {
-    width: 7px !important;
-    height: 1px !important;
-    border-width: 1px !important;
+.md-button {
+    text-transform: capitalize !important ; 
 }
 
 span.bigcheck-target {

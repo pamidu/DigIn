@@ -451,7 +451,15 @@ routerApp
                 isRetypeCnfrm: false,
                 isLoading: false
             };
-
+            
+            $scope.agreed=localStorage.getItem('termsNconditions');
+ 
+            if(localStorage.getItem('fname')==null){signUpUsr.firstName="";}else{signUpUsr.firstName=localStorage.getItem('fname')};
+            if(localStorage.getItem('lname')==null){signUpUsr.lastName="";}else{signUpUsr.lastName=localStorage.getItem('lname')};
+            if(localStorage.getItem('email')==null){signUpUsr.email="";} else if(localStorage.getItem('email')=="undefined"){signUpUsr.email="";} else {signUpUsr.email=localStorage.getItem('email')};
+            if(localStorage.getItem('fpw')==null){signUpUsr.pwd="";}else{signUpUsr.pwd=localStorage.getItem('fpw')};
+            if(localStorage.getItem('spw')==null){signUpUsr.cnfrPwd="";}else{signUpUsr.cnfrPwd=localStorage.getItem('spw')}; 
+            
             //-----invite user - Signup-----------
             var email = ($location.search()).email;
             var token = ($location.search()).code;
@@ -463,16 +471,7 @@ routerApp
                 signUpUsr.email=email;
                 $scope.freeze=true;
             }
-            //------------------------------------
-            $scope.agreed=localStorage.getItem('termsNconditions');
- 
-            if(localStorage.getItem('fname')==null){signUpUsr.firstName="";}else{signUpUsr.firstName=localStorage.getItem('fname')};
-            if(localStorage.getItem('lname')==null){signUpUsr.lastName="";}else{signUpUsr.lastName=localStorage.getItem('lname')};
-            if(localStorage.getItem('email')==null){signUpUsr.email="";} else if(localStorage.getItem('email')=="undefined"){signUpUsr.email="";} else {signUpUsr.email=localStorage.getItem('email')};
-            if(localStorage.getItem('fpw')==null){signUpUsr.pwd="";}else{signUpUsr.pwd=localStorage.getItem('fpw')};
-            if(localStorage.getItem('spw')==null){signUpUsr.cnfrPwd="";}else{signUpUsr.cnfrPwd=localStorage.getItem('spw')}; 
-            
-        
+            //------------------------------------        
 
 
             //#pre-loader progress

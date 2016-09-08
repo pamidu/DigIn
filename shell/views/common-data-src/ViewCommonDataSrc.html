@@ -337,15 +337,6 @@
                     <h5 class="font-weight-300 text-upper" style="max-width:50%">{{ ::row.name }}</h5>
                 </v-pane-header>
                 <v-pane-content class="trans-bg v-pane-content" style="max-width:50%">
-<!--                     <p class="data-row-style-2 "
-                        markable
-                        ng-click="eventHndler.onClickCondition(condition,measure,$event )"
-                       ng-repeat="value in row.value">
-                        {{ ::value }}
-                        <i class="ti-close"
-                        remove-markable
-                       ng-click="eventHndler.onClickRmvCondition(condition,measure)"></i>
-                    </p> -->
                     <ul ng-repeat="value in row.value" class="cutom-filter-ul" style="overflow: hidden;">
                         <div class="bigcheck">
                             <label class="filter-label">{{ ::value }}

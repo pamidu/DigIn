@@ -3,10 +3,11 @@ var fbInterface = new function () {
 
     this.state = "";
 
+    
     this.getUserAccount = function (scope, callback) {
         FB.api('/me', function (response) {
             console.log('Successful login for: ' + JSON.stringify(response));
-
+            scope.accounts =[];
             if (response) {
                 FB.api('/' + response.id + '/picture?width=250&height=250', function (res) {
                     scope.profileImage = res;

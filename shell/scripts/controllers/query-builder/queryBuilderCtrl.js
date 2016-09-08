@@ -472,7 +472,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct17',
-                icon: 'ti-panel',
+                icon: 'fa fa-circle',
                 name: 'bubble',
                 chart: 'bubble',
                 selected: false,
@@ -492,7 +492,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 settingsView: 'views/query/settings-views/forecastSettings.html'
             }, {
                 id: 'ct19',
-                icon: 'fa fa-line-chart',
+                icon: 'fa fa-filter',
                 name: 'funnel',
                 chart: 'funnel',
                 selected: false,
@@ -502,7 +502,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct20',
-                icon: 'ti-panel',
+                icon: 'fa fa-caret-up',
                 name: 'pyramid',
                 chart: 'pyramid',
                 selected: false,
@@ -512,23 +512,13 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 settingsView: 'views/query/settings-views/highchartsSettings.html'
             }, {
                 id: 'ct21',
-                icon: 'ti-panel',
-                name: 'googlemap',
-                chart: 'googlemap',
+                icon: 'fa fa-globe',
+                name: 'GeoMap',
+                chart: 'GeoMap',
                 selected: false,
-                chartType: 'GoogleMaps',
+                chartType: 'GeoMap',
                 view: 'views/query/chart-views/GoogleMap.html'
                
-            }, {
-                id: 'ct22',
-                icon: 'ti-panel',
-                name: 'D3 visualization',
-                chart: 'D3 visualization',
-                selected: false,
-                chartType: 'D3 Visualization',
-                view: 'views/query/chart-views/GoogleMap.html',
-                initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
             }]
         };
         //mapping measures array
@@ -880,7 +870,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                         case 'metric':
                             chartTypeTrue = false;
                             break;
-                        case 'googlemap':
+                        case 'GeoMap':
                             chartTypeTrue = false;
                             break;
                     }
@@ -890,7 +880,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                         privateFun.fireMessage('0', "Cannot generate " + $scope.chartType + " chart with more than one measure");
                         return;
                     }
-                    if ($scope.chartType == "googlemap") {
+                    if ($scope.chartType == "GeoMap") {
                          
                             // Initiate the chart
                             // 

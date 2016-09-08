@@ -5101,6 +5101,11 @@ label.filter-label {
     font-weight: 5;
     font-size: 1em; /* set this to whatever size you want */
 }
+
+label.display-inline-block {
+    display: inline-block !important;
+}
+
 div.bigcheck { 
     display: block;
     padding: 0.5em;;

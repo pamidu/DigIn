@@ -330,17 +330,25 @@
             <div></div>   
         </div>
     </md-toolbar>
-    <md-content layout-padding style="overflow-x: hidden;overflow-y: auto;">
+    <md-content layout-padding style="overflow-x: hidden;max-height: 100%;overflow-y: scroll;">
         <v-accordion id="accordionMenu" class="vAccordion--default" control="accordionA" multiple>
             <v-pane class="v-pane" ng-repeat="row in fieldObjects">
                 <v-pane-header style="max-width: 50%;">
                     <h5 class="font-weight-300 text-upper" style="max-width:50%">{{ ::row.name }}</h5>
                 </v-pane-header>
                 <v-pane-content class="trans-bg v-pane-content" style="max-width:50%">
-                    <ul ng-repeat="value in row.value" class="cutom-filter-ul" style="overflow: hidden;">
+                     <div class="bigcheck">
+                        <label class="filter-label display-inline-block"> 
+                            All
+                            <input type="checkbox" class="bigcheck" checked id="{{row.id}}" ng-click="commonUi.checkAll(row.name,$index,row.id)"/>
+                            <span class="bigcheck-target pull-right"></span>
+                        </label>
+                    </div>                    
+                    <ul ng-repeat="field in row.valueArray" class="cutom-filter-ul" style="overflow: hidden;">
                         <div class="bigcheck">
-                            <label class="filter-label">{{ ::value }}
-                                <input type="checkbox" class="bigcheck"/>
+                            <label class="filter-label" >
+                                {{ ::field.value }}
+                                <input type="checkbox" class="bigcheck" checked id="{{row.id}}-{{field.id}}" ng-click="commonUi.changeStatus(row.name,$index,row.id)"/>
                                 <span class="bigcheck-target pull-right"></span>
                             </label>
                         </div>

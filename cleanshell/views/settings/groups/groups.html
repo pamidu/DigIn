@@ -26,16 +26,16 @@
 					<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)" multiple>
 						<v-pane id="Cards" expanded="$first" ng-repeat="group in groups"> 
 							<v-pane-header id="Store-header" aria-controls="Store-content">
-								<h5 style="margin-top:0px;">{{group.groupname}}</h5> 
+								<h5 style="margin:0px;">{{group.groupname}}</h5> 
 							</v-pane-header>
 
-							<v-pane-content id="Store-content" aria-labelledby="Store-header">
+							<v-pane-content id="Store-content" aria-labelledby="Store-header" style="background: #eaeaea;border-radius: 4px;">
 								<div layout="row" layout-align="end end">
 						
-									<md-button  aria-label="Add user" ng-click="loadAddUsersWindow(group.groupId,group.groupname,group.users,sharableUsers)" layout="row">
+									<md-button  aria-label="Add user" ng-click="addUser($event,group,sharableUsers)" layout="row">
 										<span style="text-transform:none;color:#f9a525">Add User</span>
 									</md-button>
-									<md-button  aria-label="delete user" ng-click="deleteGroup($index,group.groupId,$event)">
+									<md-button  aria-label="delete user" ng-click="deleteGroup($event, $index,group.groupId)">
 										<span style="text-transform:none;color:#f9a525">Delete Group</span>
 									</md-button>
 								

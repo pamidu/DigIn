@@ -105,6 +105,23 @@
 					 });	
 				}
 		
+		   }, getAllGroups: function(callback) {
+				if(cache.allGroups)
+				{
+					callback(cache.allGroups);
+				}else{
+					 //return the promise directly.
+					 return $http.get('/apis/usercommon/getAllGroups')
+					   .then(function(result) {
+							//return result.data;
+							cache.allGroups = result.data;
+							callback(cache.allGroups)
+							
+						},function errorCallback(response) {
+							notifications.toast(0, "Falied to invite user");
+					 });	
+				}
+		
 		   }, getProfile: function(callback) {
 				if(cache.profile)
 				{
@@ -136,7 +153,7 @@
 				 return $http(req)
 						.then(function(result){
 							notifications.finishLoading();
-							cache.profile = userObj;
+							cache.profile = angular.copy(userObj);
 							return result.data;
 							
 						},function errorCallback(response) {

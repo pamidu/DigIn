@@ -1,4 +1,4 @@
-routerApp.controller('shareCtrl', ['Socialshare', '$scope','$mdDialog','widget',function (Socialshare,$scope,$mdDialog,widget) {
+routerApp.controller('shareCtrl', ['Socialshare', '$scope','$mdDialog','widget','ShareWidgetService',function (Socialshare,$scope,$mdDialog,widget,ShareWidgetService) {
 
     $scope.widget = widget;
      $scope.shareOptions = [{
@@ -32,20 +32,23 @@ routerApp.controller('shareCtrl', ['Socialshare', '$scope','$mdDialog','widget',
         var widget =$scope.widget;
         if(provider=="email"){
             $mdDialog.show({
-                controller: 'emailCtrl',
-                templateUrl: 'views/loginEmail.html',
-                resolve: {
-
+                controller: 'shareEmailClients',
+                templateUrl: 'views/shareEmailClients.html',
+                resolve: {},
+                locals: {
+                    widget: widget
                 }
             })
         }
         else {
          
+        var URL = ShareWidgetService.getShareWidgetURL(widget);
+        
            Socialshare.share({
                   'provider': provider,
                   'attrs': {
 
-                    'socialshareUrl': 'http://720kb.net',
+                    'socialshareUrl': URL,
                     'socialsharePopupHeight':'400',
                     'socialsharePopupWidth':'400'
                     

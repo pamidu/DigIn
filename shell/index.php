@@ -229,6 +229,9 @@
 <script type="application/javascript" src="scripts/services/fbGraphServices.js"></script>
 <script type="text/javascript" src="scripts/factories/socialMedia/twitterService.js"></script>
 <!-- services end -->
+
+<script type="text/javascript" src="scripts/services/ShareWidgetService.js"></script>
+
 <!--  directives start  -->
 <script type="application/javascript" src="scripts/directives/commonData.js"></script>
 <script type="application/javascript" src="scripts/directives/googleMaps.js"></script>
@@ -244,6 +247,7 @@
 <script type="text/javascript" src="scripts/controllers/DiginCore.js"></script>
 <script type="text/javascript" src="scripts/controllers/DiginCore2.js"></script>
 <script type="text/javascript" src="scripts/controllers/DashboardshareCtrl.js"></script>
+<script type="text/javascript" src="scripts/controllers/shareEmailClients.js"></script>
 <script type="text/javascript" src="scripts/directives/plumbItem.js"></script>
 <script type="text/javascript" src="scripts/directives/postRender.js"></script>
 <script type="text/javascript" src="scripts/directives/accordion.js"></script>

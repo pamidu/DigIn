@@ -41,6 +41,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         $scope.pendingColumns = true;
         $scope.show = false;
         $scope.filterMenuStatus = false;
+        $scope.fieldObjects = [];
         //data base field type
         $scope.dataBaseFiledTypes = [{
             'type': 'nvarchar',
@@ -390,9 +391,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 $mdSidenav('filterMenu')
                     .close()
                     .then(function() {
-                    console.log('filterMenu sidepanel closed');                        
+                    console.log('filterMenu sidepanel closed');
                 });
-                $scope.fieldObjects = [];
             },
             onExecuteManualQuery: function(){
                 commonUi.onCLickFilterClose();                
@@ -462,6 +462,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     case '2':
                         //selected info
                         commonUi.selectedIndex = 3;
+                        $scope.fieldObjects = [];
+                        $scope.selectedAttributes = [];
                         var selectedTbl = $scope.sourceUi.selectedNameSpace;
                         if (selectedTbl != null) {
                             $scope.pendingColumns = true;
@@ -719,7 +721,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         src: $scope.sourceUi.selectedSource,
                         tbl: $scope.sourceUi.selectedNameSpace,
                         fAttArr: $scope.sourceUi.attrObj,
-                        fMeaArr: $scope.sourceUi.mearsuresObj
+                        fMeaArr: $scope.sourceUi.mearsuresObj,
+                        filterFields: $scope.fieldObjects
                     });
 
                     publicFun.clearAll(function(status) {

@@ -40,7 +40,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
     };
 
 }]);    
-    routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls,$mdDialog) {
+    routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls,$mdDialog,filterService) {
         $scope.goDashboard = function() {
             $state.go('home.Dashboards');
         }
@@ -1617,18 +1617,11 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
             },
             selectAttribute: function(fieldName) {
                 if (!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0) {
-                    //                if($scope.executeQryData.executeColumns.length == 0){
                     $scope.executeQryData.executeColumns = [{
                         filedName: fieldName
                     }];
                     $scope.getGroupedAggregation(fieldName);
                 }
-                // else if($scope.executeQryData.executeColumns.length == 2){
-                //     eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
-                //     // alert("drilldown only supports for two levels"); 
-                //     privateFun.fireMessage('0','drilldown only supports for two levels');
-                //     $scope.isPendingRequest = false;               
-                // }
                 else if ($scope.executeQryData.executeColumns.length >= 1) {
                     $scope.executeQryData.executeColumns.push({
                         filedName: fieldName
@@ -2916,8 +2909,8 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
             }
             $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res, status, query) {
                 if (status) {
-                    //               
-                    //                console.log(JSON.stringify(res));
+                    // filter only the selected fields from the result returned by the service
+                    filterService.filterAggData(res,$scope.sourceData.filterFields);
                     $scope.mapResult($scope.selectedCat, res, function(data) {
                         $scope.highchartsNG.series = data;
                         $scope.highchartsNG.xAxis["title"] = {
@@ -2980,6 +2973,8 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     }
                     $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res, status, query) {
                         console.log(JSON.stringify(res));
+                        // filter only the selected fields from the result returned by the service
+                        filterService.filterAggData(res,$scope.sourceData.filterFields);
                         var serObj = {};
                         for (var key in res[0]) {
                             if (Object.prototype.hasOwnProperty.call(res[0], key)) {
@@ -3057,6 +3052,8 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                     //aggregate method
                                     clientObj.getAggData(srcTbl, fields, function(res, status, query) {
                                         if (status) {
+                                            // filter only the selected fields from the result returned by the service
+                                            filterService.filterAggData(res,$scope.sourceData.filterFields);
                                             for (var key in res[0]) {
                                                 if (Object.prototype.hasOwnProperty.call(res[0], key)) {
                                                     if (key != nextLevel && key == selectedSeries) {

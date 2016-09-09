@@ -301,13 +301,13 @@
             <div class="cmds-btn-footer" ng-show="sourceUi.selectedNameSpace!=''">
                 <div class="cmds-btn-footer m-top-10">
                         <span ng-disabled="pendingColumns" class="btn btn-block btn-default"
-                              ng-click="commonUi.onSaveSource()">
-                            save
-                        </span>
-                        <span ng-disabled="pendingColumns" class="btn btn-block btn-default"
                               ng-click="commonUi.onSelectFilter()">                             
                             Select Filter
-                        </span>                        
+                        </span>                         
+                        <span ng-disabled="pendingColumns" class="btn btn-block btn-default"
+                              ng-click="commonUi.onSaveSource()">
+                            save
+                        </span>                       
                         <span class="btn btn-block btn-default btn-close"
                               ng-click="commonUi.onClickBack('3')">
                                 back

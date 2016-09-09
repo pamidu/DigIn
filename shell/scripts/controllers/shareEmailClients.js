@@ -30,6 +30,8 @@ routerApp.controller('shareEmailClients', ['$scope','$mdDialog','widget',functio
 
                 }
             })
+        }else if(provider=="twitter"){
+            
         }
         
     };

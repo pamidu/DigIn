@@ -11,8 +11,9 @@ routerApp.service('ShareWidgetService',function(){
           var svgTag =document.getElementsByClassName(elementId)[0].childNodes[0].childNodes[1].childNodes[0].innerHTML;
         }
         else if(widget.widgetName=="hierarchy"){
-
-
+          var id = "#" + widget.widgetData.widData.id;
+          var element = $("" + id + "");
+          var svgTag =element[0].innerHTML;
         }
 
 

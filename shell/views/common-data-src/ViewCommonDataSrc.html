@@ -320,23 +320,27 @@
 
 </md-sidenav>
 <!-- </div> -->
-<md-sidenav class="md-sidenav-right md-whiteframe-4dp md-sidenav-right slider-r-wrap" md-component-id="filterMenu" style= "min-width: 700px !important; width: 50vw !important;max-width: 700px !important; z-index: 500 !important;overflow-y: scroll;">
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp md-sidenav-right slider-r-wrap" md-component-id="filterMenu" style= "min-width: 700px !important; width: 50vw !important;max-width: 700px !important; z-index: 500 !important;overflow: hidden;">
     <md-toolbar class="md-theme-light">
-        <div layout="row" layout-align="canter center">
-            <h1 class="md-toolbar-tools" style="width: 45%;">Select Filters</h1>
+        <div layout="row" layout-align="canter center" style="height: 85px;">
+            <h1 class="md-toolbar-tools" style="width: 45%;color: #e0e0e0;">
+                <i class="ti-filter" style="padding-right: 10px;"></i>
+                Select Filters
+            </h1>
             <a class="fnt-s-24" ng-click="commonUi.onCLickFilterClose()">
                 <i class="ti-close"></i>
             </a>     
             <div></div>   
         </div>
     </md-toolbar>
-    <md-content layout-padding style="overflow-x: hidden;max-height: 100%;overflow-y: scroll;">
+    <md-content layout-padding style="overflow-x: hidden;max-height: 100%;overflow: hidden;" layout="row">
+        <div flex="50" style="    overflow: scroll;max-height: 90vh;">
         <v-accordion id="accordionMenu" class="vAccordion--default" control="accordionA" multiple>
             <v-pane class="v-pane" ng-repeat="row in fieldObjects">
-                <v-pane-header style="max-width: 50%;">
-                    <h5 class="font-weight-300 text-upper" style="max-width:50%">{{ ::row.name }}</h5>
+                <v-pane-header>
+                    <h5 class="font-weight-300 text-upper">{{ ::row.name }}</h5>
                 </v-pane-header>
-                <v-pane-content class="trans-bg v-pane-content" style="max-width:50%">
+                <v-pane-content class="trans-bg v-pane-content">
                      <div class="bigcheck">
                         <label class="filter-label display-inline-block"> 
                             All
@@ -356,5 +360,7 @@
                 </v-pane-content>
             </v-pane>                       
         </v-accordion>
+        </div>
+        <!-- <div flex="50"></div> -->
     </md-content>
 </md-sidenav>  

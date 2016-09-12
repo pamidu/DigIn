@@ -1728,24 +1728,26 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                             colors: ['#EC784B'],
                             series: []
                         };
-                        $scope.highchartsNG.series = {};
-                        $scope.xAxiscat = [];
-                        $scope.highchartsNG.series = data;
-                        $scope.highchartsNG.xAxis = {};
-                        $scope.highchartsNG.xAxis.categories = [];
-                        $scope.highchartsNG.series.forEach(function(key) {
-                            if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
-                        });
-                        $scope.highchartsNG.series.forEach(function(key) {
-                            key.data.forEach(function(value) {
-                                $scope.xAxiscat.push(value.name);
+                        $scope.$apply(function() {
+                            $scope.highchartsNG.series = {};
+                            $scope.xAxiscat = [];
+                            $scope.highchartsNG.series = data;
+                            $scope.highchartsNG.xAxis = {};
+                            $scope.highchartsNG.xAxis.categories = [];
+                            $scope.highchartsNG.series.forEach(function(key) {
+                                if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
                             });
+                            $scope.highchartsNG.series.forEach(function(key) {
+                                key.data.forEach(function(value) {
+                                    $scope.xAxiscat.push(value.name);
+                                });
+                            });
+                            $scope.highchartsNG.xAxis.categories = $scope.xAxiscat;
+                            $scope.eventHndler.isLoadingChart = false;
+                            $scope.dataToBeBind.receivedQuery = query;
+                            $scope.queryEditState = false;
+                            $scope.isPendingRequest = false;
                         });
-                        $scope.highchartsNG.xAxis.categories = $scope.xAxiscat;
-                        $scope.eventHndler.isLoadingChart = false;
-                        $scope.dataToBeBind.receivedQuery = query;
-                        $scope.queryEditState = false;
-                        $scope.isPendingRequest = false;
                     });
                 } else {
                     $scope.setMeasureData(res[0]);

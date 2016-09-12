@@ -385,6 +385,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         });
                     }
                 });
+                commonUi.onCLickFilterClose();
             },
             onCLickFilterClose: function() {
                 $scope.filterMenuStatus = false;
@@ -777,12 +778,14 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                             });
                                         }
                                     }
-                                    $scope.fieldObjects.push({
-                                        id: key.replace(/ /g,"_"),
-                                        name: key,
-                                        valueArray: tempArray,
-                                        status: true
-                                    })
+                                    $scope.$apply(function() {
+                                        $scope.fieldObjects.push({
+                                            id: key.replace(/ /g,"_"),
+                                            name: key,
+                                            valueArray: tempArray,
+                                            status: true
+                                        })
+                                    });
                                 }
                             }, 1000);
                         }

@@ -1,4 +1,4 @@
-routerApp.service('$qbuilder',function($diginengine){
+routerApp.service('$qbuilder',function($diginengine,filterService){
     this.sync = function(widgetData, cb){        
         var chartType = widgetData.selectedChart.chartType;
         var widType = eval('new ' + chartType.toUpperCase() + '();');
@@ -97,6 +97,7 @@ routerApp.service('$qbuilder',function($diginengine){
             cl.getExecQuery(q, function(res, status, query){
                 var cat = "";
                 if(status){
+                    filterService.filterAggData(res,widObj.commonSrc.src.filterFields);
                     for(c in res[0]){
                         if (Object.prototype.hasOwnProperty.call(res[0], c)) {
                             if(typeof res[0][c] == "string") cat = c;

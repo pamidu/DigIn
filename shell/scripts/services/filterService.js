@@ -12,30 +12,28 @@ routerApp.service('filterService',function(){
                     }
                 }
             }
-            angular.forEach(filterFields,function(field){
-                if(field.name == cat){
-                    for (var j=0; j<res.length;j++){
-                  	    // angular.forEach(res,function(key){
-                        console.log(res[j]);
-                        for (var k in res[j]){
-                            if (Object.prototype.hasOwnProperty.call(res[j], k)) {
-                                if (typeof res[j][k] == "string") {
-                                    for (var i =0; i<field.valueArray.length;i++){
-                                        if(field.valueArray[i].value == res[j][k]){
-                                            if(!field.valueArray[i].status){
-                                                res.splice(j,1);
-                                                break;
-                                            }
+            if (cat !== undefined){
+                angular.forEach(filterFields,function(field){
+                    if(field.name == cat){
+                        for (var i=0;i<field.valueArray.length;i++){
+                            angular.forEach(res,function(key){
+                                for(var k in key){
+                                    if (Object.prototype.hasOwnProperty.call(key,k)){
+                                        if(typeof key[k] == "string") {
+                                            if(field.valueArray[i].value == key[k]){
+                                                if(!field.valueArray[i].status){
+                                                    res.splice(res.indexOf(key),1);
+                                                    break;
+                                                }
+                                            }                    
                                         }
                                     }
-                                    break;
                                 }
-                            }
+                            })
                         }
                     }
-      	        }
-            });
+                });
+            }
         }
-	}
-
+	};
 });

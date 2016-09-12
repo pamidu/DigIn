@@ -1,0 +1,52 @@
+<data:sql-datasource xmlns:data="http://jfreereport.sourceforge.net/namespaces/datasources/sql">
+  <data:config/>
+  <data:connection>
+    <data:driver>org.postgresql.Driver</data:driver>
+    <data:url>jdbc:postgresql://192.168.2.106:5432/SingerDB</data:url>
+    <data:properties>
+      <data:property name="user">postgres</data:property>
+      <data:property name="password">encrypted:771b4a60055957</data:property>
+      <data:property name="::pentaho-reporting::port">5432</data:property>
+      <data:property name="::pentaho-reporting::name">ReportCon</data:property>
+      <data:property name="::pentaho-reporting::database-name">SingerDB</data:property>
+      <data:property name="::pentaho-reporting::hostname">192.168.2.106</data:property>
+      <data:property name="::pentaho-reporting::database-type">POSTGRESQL</data:property>
+    </data:properties>
+  </data:connection>
+  <data:query-definitions>
+    <data:query name="Query 1">
+      <data:static-query>SELECT
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;id&quot;,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;date&quot;::date,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;hour&quot; || ':00' as hour,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;ivrcalls&quot;,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;answeredcalls&quot;,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;att&quot;,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;abandonedcalls&quot;,
+     (ROUND((&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;abandonedcalls&quot;::numeric/(case when (&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;ivrcalls&quot;::numeric) = 0 then 1 else (&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;ivrcalls&quot;::numeric) end))*100,2))::text as abandonedpercent,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;ldelaybaban&quot;,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;dropedcalls&quot;,
+     (ROUND((&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;dropedcalls&quot;::numeric/(case when (&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;queuedcalls&quot;::numeric)= 0 then 1 else (&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;queuedcalls&quot;::numeric) end))*100,2))::text as dropedcallspercent,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;aivrt&quot;,
+     (ROUND((&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;asanumerator&quot;::numeric/(case when (&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;answeredcalls&quot;::numeric) = 0 then 1 else (&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;answeredcalls&quot;::numeric) end)),2))::text as asa,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;avgdelaybeforeans&quot;,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;avgdelaybeforeaban&quot;,
+     (ROUND((&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;totholdt&quot;::numeric/ (SELECT CASE WHEN &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;tholdcount&quot;::numeric =0 THEN '1' ELSE &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;tholdcount&quot;::numeric END )),2))::text as aholdt,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;avgacw&quot;,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;queuedcalls&quot;,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;ldelaybans&quot;,
+     (ROUND((&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;answeredcalls&quot;::numeric/(case when (&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;queuedcalls&quot;::numeric) = 0 then 1 else (&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;queuedcalls&quot;::numeric) end)     *100),2))::text as handledcpercentage,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;ttt&quot;,
+     (ROUND((&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;slnumerator&quot;::numeric/case when (&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;queuedcalls&quot;::numeric) = 0 then 1 else  (&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;queuedcalls&quot;::numeric) end   ),2))::text as sl,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;company&quot;,
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;tenant&quot;
+FROM
+     &quot;public&quot;.&quot;cdr_hourlysummary&quot;
+     
+Where
+	&quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;date&quot;::date &gt;= ${FromDate}::date 
+	AND &quot;public&quot;.&quot;cdr_hourlysummary&quot;.&quot;date&quot;::date &lt;= ${ToDate}::date
+     Order by date, hour::numeric</data:static-query>
+    </data:query>
+  </data:query-definitions>
+</data:sql-datasource>

@@ -34,7 +34,9 @@ var routerApp = angular.module('DuoDiginRt', [
     "info.vietnamcode.nampnq.videogular.plugins.youtube",
     "ngTagsInput",
     'pouchdb',
-    'jkuri.slimscroll'
+    'jkuri.slimscroll',
+     'as.sortable'
+   
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {

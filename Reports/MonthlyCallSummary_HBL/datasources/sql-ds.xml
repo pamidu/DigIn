@@ -1,0 +1,125 @@
+<data:sql-datasource xmlns:data="http://jfreereport.sourceforge.net/namespaces/datasources/sql">
+  <data:config/>
+  <data:connection>
+    <data:driver>org.postgresql.Driver</data:driver>
+    <data:url>jdbc:postgresql://192.168.2.106:5432/SingerDB</data:url>
+    <data:properties>
+      <data:property name="user">postgres</data:property>
+      <data:property name="password">encrypted:771b4a60055957</data:property>
+      <data:property name="::pentaho-reporting::port">5432</data:property>
+      <data:property name="::pentaho-reporting::name">ReportCon</data:property>
+      <data:property name="::pentaho-reporting::database-name">SingerDB</data:property>
+      <data:property name="::pentaho-reporting::hostname">192.168.2.106</data:property>
+      <data:property name="::pentaho-reporting::database-type">POSTGRESQL</data:property>
+    </data:properties>
+  </data:connection>
+  <data:query-definitions>
+    <data:query name="Years">
+      <data:static-query>Select  '2015' as year, 1 as sort 
+union
+Select  '2014' as year, 2 as sort  
+union
+Select  '2013' as year, 3 as sort 
+order by sort 
+
+</data:static-query>
+    </data:query>
+    <data:query name="Query 1">
+      <data:static-query>select date,years,months,ivrcalls,answeredcalls,queuedcalls,att,abandonedcalls,abandonedpercent,ldelaybaban,dropedcalls,dropedcallspercent,aivrt,asa,avgdelaybeforeans,avgdelaybeforeaban,
+aholdt,avgacw,ldelaybans,handledcpercentage,avghandletime,ttt,sl,company,tenant,ivrfullsum,answeredfullsum,queuedfullsum,abandonedfullsum,droppedfullsum,tttfullsum,abandonedpercentfull,
+droppedpercentfull,aivrtfull,aacwtfull,attfull,fullhandledcpercentage,fullaht,fullasa,fullaholdtime,fullsl,idletime, (sum(idletime::interval) OVER() )::text as fullidle
+  from 
+
+(SELECT
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;id&quot;,
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;year&quot; as years,
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;month&quot; as months,
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;month&quot; || '-' || &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;year&quot; as date,
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;ivrcalls&quot;,
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;queuedcalls&quot;,
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;answeredcalls&quot;,
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;abandonedcalls&quot;,
+     (ROUND((&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;abandonedcalls&quot;::numeric/&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;ivrcalls&quot;::numeric)*100,2))::text as abandonedpercent,
+     TO_CHAR((ROUND((&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;asanumerator&quot;::numeric/&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;answeredcalls&quot;::numeric),2))::text::interval, 'HH24:MI:SS') as asa,
+     TO_CHAR((ROUND((&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;totholdt&quot;::numeric/ (SELECT CASE WHEN &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;tholdcount&quot;::numeric =0 THEN '1' ELSE &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;tholdcount&quot;::numeric END )),2))::text::interval, 'HH24:MI:SS') as aholdt,
+     TO_CHAR((ROUND(( (&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;ttt&quot;::numeric+&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;tacwt&quot;::numeric)/(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;answeredcalls&quot;::numeric)),2))::text::interval, 'HH24:MI:SS') as avghandletime,
+     TO_CHAR(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;ttt&quot;::text::interval, 'HH24:MI:SS') as ttt,
+     TO_CHAR(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;avgacw&quot;::text::interval, 'HH24:MI:SS') as avgacw,
+     (ROUND((&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;slnumerator&quot;::numeric/(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;queuedcalls&quot;::numeric)),2))::text as sl,
+     TO_CHAR(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;att&quot;::text::interval,'HH24:MI:SS') as att,
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;ldelaybaban&quot;,
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;dropedcalls&quot;,
+     (ROUND((&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;dropedcalls&quot;::numeric/&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;queuedcalls&quot;::numeric)*100,2))::text as dropedcallspercent,
+     TO_CHAR(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;aivrt&quot;::text::interval, 'HH24:MI:SS') as aivrt,
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;avgdelaybeforeans&quot;,
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;avgdelaybeforeaban&quot;,
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;ldelaybans&quot;,
+     (ROUND((&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;answeredcalls&quot;::numeric/(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;queuedcalls&quot;::numeric)*100),2))::text as handledcpercentage,
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;company&quot;,
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;tenant&quot;,
+
+     (sum(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;ivrcalls&quot;::integer) OVER ())::text  as ivrfullsum ,
+     (sum(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;answeredcalls&quot;::integer) OVER ())::text  as  answeredfullsum,
+     (sum(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;queuedcalls&quot;::integer) OVER ())::text  as  queuedfullsum,
+     (sum(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;abandonedcalls&quot;::integer) OVER ())::text  as  abandonedfullsum,
+     (sum(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;dropedcalls&quot;::integer) OVER ())::text  as  droppedfullsum,
+     TO_CHAR((sum(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;ttt&quot;::interval) OVER ())::text::interval, 'HH24:MI:SS' )  as  tttfullsum,
+     ROUND((avg(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;abandonedcalls&quot;::numeric*100/&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;ivrcalls&quot;::numeric) OVER ()),2)::text as abandonedpercentfull,
+     ROUND((avg(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;dropedcalls&quot;::numeric*100/&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;ivrcalls&quot;::numeric) OVER ()),2)::text as droppedpercentfull,
+     TO_CHAR((avg(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;ivrcalls&quot;::numeric) OVER ())::text::interval, 'HH24:MI:SS' ) as aivrtfull,
+     TO_CHAR((avg(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;avgacw&quot;::numeric) OVER ())::text::interval, 'HH24:MI:SS' )  as aacwtfull,
+     TO_CHAR((avg(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;ttt&quot;::numeric) OVER ())::text::interval , 'HH24:MI:SS' )as  attfull,
+     ROUND((avg(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;answeredcalls&quot;::numeric*100/(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;queuedcalls&quot;::numeric)) OVER () ),2)::text as fullhandledcpercentage,
+     TO_CHAR((avg((&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;ttt&quot;::numeric+&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;tacwt&quot;::numeric)/(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;answeredcalls&quot;::numeric)) OVER ())::text::interval, 'HH24:MI:SS' ) as fullaht,
+     TO_CHAR((avg(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;asanumerator&quot;::numeric/&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;answeredcalls&quot;::numeric) OVER ())::text::interval, 'HH24:MI:SS' ) as fullasa,
+     TO_CHAR((avg(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;totholdt&quot;::numeric/ (SELECT CASE WHEN &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;tholdcount&quot;::numeric =0 THEN '1' ELSE &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;tholdcount&quot;::numeric END )) OVER ())::text::interval, 'HH24:MI:SS' ) as fullaholdtime,
+    ROUND((avg(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;slnumerator&quot;::numeric/(&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;queuedcalls&quot;::numeric)) OVER () ),2)::text as fullsl
+FROM
+     &quot;public&quot;.&quot;cdr_monthlysummary&quot;
+Where
+	&quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;year&quot; =   ${Year} 
+	 and  &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;month&quot; IN (SELECT CASE WHEN(${Month}::text = '00' OR &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;month&quot; IS NULL OR ${Month}::text = '') THEN &quot;public&quot;.&quot;cdr_monthlysummary&quot;.&quot;month&quot;  ELSE ${Month}::text  END)
+    )a
+     Left outer join 
+     (select sum(idleinbound::interval)::text as idletime,  year, month from agent_monthlysummary
+ where
+    year = ${Year} 
+    and  month IN (SELECT CASE WHEN(${Month}::text = '00' OR ${Month}::text IS NULL OR ${Month}::text = '') THEN month  ELSE ${Month}::text  END)
+     group by year, month)b
+	ON a.years = b.year and a.months = b.month
+
+order by a.years desc, months desc
+
+
+</data:static-query>
+    </data:query>
+    <data:query name="Months">
+      <data:static-query>Select 'All' as month, '00' as value, 1 as sort
+union
+Select 'January' as month, '01' as value, 2 as sort
+union
+Select 'February' as month, '02' as value, 3 as sort
+union
+Select 'March' as month, '03' as value, 4 as sort
+union
+Select 'April' as month, '04' as value, 5 as sort
+union
+Select 'May' as month, '05' as value, 6 as sort
+union
+Select 'June' as month, '06' as value, 7 as sort
+union
+Select 'July' as month, '07' as value, 8 as sort
+union
+Select 'August' as month, '08' as value, 9 as sort
+union
+Select 'Sepetember' as month, '09' as value, 10 as sort
+union
+Select 'October' as month, '10' as value, 11 as sort
+union
+Select 'November' as month, '11' as value, 12 as sort
+union
+Select 'December' as month, '12' as value, 13 as sort
+order by sort </data:static-query>
+    </data:query>
+  </data:query-definitions>
+</data:sql-datasource>

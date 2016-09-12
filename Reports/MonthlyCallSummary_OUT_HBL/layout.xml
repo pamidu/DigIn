@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout xmlns="http://reporting.pentaho.org/namespaces/engine/classic/bundle/layout/1.0" xmlns:style="http://reporting.pentaho.org/namespaces/engine/classic/bundle/style/1.0" xmlns:core="http://reporting.pentaho.org/namespaces/engine/attributes/core" xmlns:html="http://reporting.pentaho.org/namespaces/engine/attributes/html" xmlns:swing="http://reporting.pentaho.org/namespaces/engine/attributes/swing" xmlns:pdf="http://reporting.pentaho.org/namespaces/engine/attributes/pdf" xmlns:wizard="http://reporting.pentaho.org/namespaces/engine/attributes/wizard" xmlns:designtime="http://reporting.pentaho.org/namespaces/report-designer/2.0" xmlns:crosstab="http://reporting.pentaho.org/namespaces/engine/attributes/crosstab" xmlns:pentaho="http://reporting.pentaho.org/namespaces/engine/attributes/pentaho" xmlns:table="http://reporting.pentaho.org/namespaces/engine/attributes/table" core:parameter-layout="flow" xmlns:internal="http://reporting.pentaho.org/namespaces/engine/attributes/internal" internal:compatibility-level="5.0.3" designtime:zoom="1.9299996" designtime:preview-dialog-bounds="192.0,0.0,700.0,624.0" designtime:HorizontalGuideLines="(true,283.4616394042969) (true,335.7693786621094) (true,622.0) (true,668.0772094726562) (true,268.0770263671875) (true,386.15399169921875) (true,567.6925659179688) (true,547.3079223632812)">
+  <style:element-style>
+  </style:element-style>
+  <report-header>
+    <root-level-content designtime:visual-height="39.375">
+      <style:element-style>
+      </style:element-style>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="148.026" y="11.875" min-width="61.111" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Abandoned Calls</core:value>
+        <swing:tooltip>No. of calls got disconnected waiting in the queue or ringing to an agent more than 10 sec.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="92.261" y="11.875" min-width="55.765" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Answered Calls</core:value>
+        <swing:tooltip>No. of calls answered by an agent.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="209.137" y="11.875" min-width="58.94" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Abandoned Calls %</core:value>
+        <swing:tooltip>Percentage of calls that are terminated while in the queue or ringing waiting to be answered for more than 10 seconds.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="0" y="11.875" min-width="45.81" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Month</core:value>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="325.071" y="11.875" min-width="61.083" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Total Talk Time</core:value>
+        <swing:tooltip>Percentage of calls that are terminated while in the queue or ringing waiting to be answered for less than 10 seconds.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="648.219" y="11.875" min-width="48.612" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Avg No of Agents</core:value>
+        <swing:tooltip>Daily average of acw time.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="45.81" y="11.875" min-width="46.451" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Dialled Calls</core:value>
+        <swing:tooltip>No. of calls answered by an agent.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="268.077" y="11.875" min-width="56.994" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Contacted %</core:value>
+        <swing:tooltip>Percentage of calls that are terminated while in the queue or ringing waiting to be answered for more than 10 seconds.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="593.997" y="11.875" min-width="54.222" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Avg Handling Time</core:value>
+        <swing:tooltip>Percentage of calls that are terminated while in the queue or ringing waiting to be answered for less than 10 seconds.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="386.154" y="11.875" min-width="44.048" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Total ACW Time</core:value>
+        <swing:tooltip>Percentage of calls that are terminated while in the queue or ringing waiting to be answered for less than 10 seconds.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="430.202" y="11.875" min-width="58.556" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Total Idle Time</core:value>
+        <swing:tooltip>Percentage of calls that are terminated while in the queue or ringing waiting to be answered for less than 10 seconds.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="488.758" y="11.875" min-width="54.172" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Total Break Time</core:value>
+        <swing:tooltip>Percentage of calls that are terminated while in the queue or ringing waiting to be answered for less than 10 seconds.</swing:tooltip>
+      </label>
+      <label>
+        <style:element-style>
+          <style:border-styles background-color="#008080"/>
+          <style:common-styles alignment="center" vertical-alignment="top"/>
+          <style:content-styles color="white"/>
+          <style:spatial-styles x="542.93" y="11.875" min-width="51.067" min-height="27.5"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value>Total Hold Time</core:value>
+        <swing:tooltip>Percentage of calls that are terminated while in the queue or ringing waiting to be answered for less than 10 seconds.</swing:tooltip>
+      </label>
+    </root-level-content>
+  </report-header>
+  <group core:name="DateGroup" core:group-fields="">
+    <style:element-style>
+    </style:element-style>
+    <fields>
+    </fields>
+    <group-header>
+      <root-level-content designtime:visual-height="8.803921699523926">
+        <style:element-style>
+          <style:content-styles color="black"/>
+        </style:element-style>
+      </root-level-content>
+    </group-header>
+    <data-body>
+      <style:element-style>
+      </style:element-style>
+      <details-header designtime:hideInLayoutGUI="true">
+        <style:element-style>
+          <style:common-styles avoid-page-break="true"/>
+        </style:element-style>
+      </details-header>
+      <details>
+        <root-level-content designtime:visual-height="30.7693">
+          <style:element-style>
+            <style:text-styles font-face="Tahoma" font-size="8"/>
+          </style:element-style>
+          <text-field core:field="date">
+            <style:element-style>
+              <style:common-styles alignment="center" vertical-alignment="middle"/>
+              <style:spatial-styles x="0" y="0" min-width="45.81" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="dialledcalls">
+            <style:element-style>
+              <style:common-styles alignment="center" vertical-alignment="middle"/>
+              <style:spatial-styles x="45.81" y="0" min-width="46.451" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="answeredcalls">
+            <style:element-style>
+              <style:common-styles alignment="center" vertical-alignment="middle"/>
+              <style:spatial-styles x="92.261" y="0" min-width="55.765" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="notansweredcalls">
+            <style:element-style>
+              <style:common-styles alignment="center" vertical-alignment="middle"/>
+              <style:spatial-styles x="148.026" y="0" min-width="61.111" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <number-field core:field="notansweredpercent">
+            <style:element-style>
+              <style:common-styles alignment="center" vertical-alignment="middle"/>
+              <style:spatial-styles x="209.137" y="0" min-width="58.94" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </number-field>
+          <text-field core:field="ttt">
+            <style:element-style>
+              <style:common-styles alignment="center" vertical-alignment="middle"/>
+              <style:spatial-styles x="325.071" y="0" min-width="61.083" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <number-field core:field="contactedpercent">
+            <style:element-style>
+              <style:common-styles alignment="center" vertical-alignment="middle"/>
+              <style:spatial-styles x="268.077" y="0" min-width="56.994" min-height="20"/>
+            </style:element-style>
+          </number-field>
+          <text-field core:field="avghandletime">
+            <style:element-style>
+              <style:common-styles alignment="center" vertical-alignment="middle"/>
+              <style:spatial-styles x="593.997" y="0" min-width="54.222" min-height="20"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="tacwt">
+            <style:element-style>
+              <style:common-styles alignment="center" vertical-alignment="middle"/>
+              <style:spatial-styles x="386.154" y="0" min-width="44.048" min-height="20"/>
+              <style:text-styles font-face="Tahoma" font-size="8"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="tidle">
+            <style:element-style>
+              <style:common-styles alignment="center" vertical-alignment="middle"/>
+              <style:spatial-styles x="430.202" y="0" min-width="58.556" min-height="20"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="tbreak">
+            <style:element-style>
+              <style:common-styles alignment="center" vertical-alignment="middle"/>
+              <style:spatial-styles x="488.758" y="0" min-width="54.172" min-height="20"/>
+            </style:element-style>
+          </text-field>
+          <text-field core:field="totholdt">
+            <style:element-style>
+              <style:common-styles alignment="center" vertical-alignment="middle"/>
+              <style:spatial-styles x="542.93" y="0" min-width="51.067" min-height="20"/>
+            </style:element-style>
+          </text-field>
+        </root-level-content>
+      </details>
+      <no-data>
+        <root-level-content designtime:hideInLayoutGUI="true">
+          <style:element-style>
+          </style:element-style>
+        </root-level-content>
+      </no-data>
+      <details-footer designtime:hideInLayoutGUI="true">
+        <style:element-style>
+          <style:common-styles avoid-page-break="true"/>
+        </style:element-style>
+      </details-footer>
+    </data-body>
+    <group-footer>
+      <root-level-content designtime:visual-height="14.307681202888489">
+        <style:element-style>
+        </style:element-style>
+      </root-level-content>
+    </group-footer>
+  </group>
+  <report-footer>
+    <root-level-content designtime:visual-height="51.16667598485947">
+      <style:element-style>
+        <style:border-styles background-color="#9999ff"/>
+        <style:common-styles alignment="center"/>
+        <style:content-styles color="black"/>
+        <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </style:element-style>
+      <label>
+        <style:element-style>
+          <style:common-styles alignment="center"/>
+          <style:spatial-styles x="0" y="0" min-width="45.81" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+        <core:value> Report Summary :</core:value>
+      </label>
+      <text-field core:field="dialledcallsfullsum">
+        <style:element-style>
+          <style:common-styles alignment="center"/>
+          <style:spatial-styles x="45.81" y="0" min-width="41.27" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="answeredcallsfullsum">
+        <style:element-style>
+          <style:common-styles alignment="center"/>
+          <style:spatial-styles x="92.261" y="0" min-width="55.765" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="notansweredcallsfullsum">
+        <style:element-style>
+          <style:common-styles alignment="center"/>
+          <style:spatial-styles x="148.026" y="0" min-width="61.111" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="notansweredpercentfull">
+        <style:element-style>
+          <style:common-styles alignment="center"/>
+          <style:spatial-styles x="209.137" y="0" min-width="58.94" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="tttfull">
+        <style:element-style>
+          <style:common-styles alignment="center"/>
+          <style:spatial-styles x="325.071" y="0" min-width="61.083" min-height="20"/>
+          <style:text-styles font-face="Tahoma" bold="true" font-size="8"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="contactedpercentfull">
+        <style:element-style>
+          <style:spatial-styles x="268.077" y="0" min-width="56.994" min-height="20"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="fullaht">
+        <style:element-style>
+          <style:spatial-styles x="593.997" y="0" min-width="54.222" min-height="20"/>
+          <style:text-styles bold="true"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="tacwfullsum">
+        <style:element-style>
+          <style:spatial-styles x="386.154" y="0" min-width="44.048" min-height="20"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="idlefullsum">
+        <style:element-style>
+          <style:spatial-styles x="430.202" y="0" min-width="58.556" min-height="20"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="breakfullsum">
+        <style:element-style>
+          <style:spatial-styles x="488.758" y="0" min-width="54.172" min-height="20"/>
+        </style:element-style>
+      </text-field>
+      <text-field core:field="totholdtfullsum">
+        <style:element-style>
+          <style:spatial-styles x="542.93" y="0" min-width="51.067" min-height="20"/>
+        </style:element-style>
+      </text-field>
+    </root-level-content>
+  </report-footer>
+</layout>

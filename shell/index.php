@@ -23,8 +23,10 @@
     <link rel="stylesheet" href="bower_components/bootstrap/less/glyphicons.less"/>
     <link rel="stylesheet" type="text/css" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
-
-
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap-css-only/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="scripts/vendor/ng-sortable.min.css">
+    <link rel="stylesheet" type="text/css" href="scripts/vendor/ng-sortable.style.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/css/board.css">
   
 
     <!-- <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css"> -->
@@ -130,10 +132,7 @@
 <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="bower_components/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
 <script type="text/javascript" src="scripts/vendor/twitteroauth.js"></script>
-<!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script> -->
+ 
 <script src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
 
 <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
@@ -141,8 +140,11 @@
 <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
 <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 
 <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script type="text/javascript" src="scripts/vendor/ng-sortable.js"></script>
  
 <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
@@ -178,7 +180,7 @@
 <script type="text/javascript" src="bower_components/canvas-toBlob.js/canvas-toBlob.js"></script>
 <!-- event calendar -->
 <script type="text/javascript" src="scripts/vendor/moment.js"></script>
-<!-- angularJS moment-->
+ 
 <script type="text/javascript" src="bower_components/angular-moment/angular-moment.min.js"></script>
 <!-- angular slider -->
 <script type="text/javascript" src="bower_components/angular-slider/rzslider.min.js"></script>
@@ -229,6 +231,9 @@
 <script type="application/javascript" src="scripts/services/fbGraphServices.js"></script>
 <script type="text/javascript" src="scripts/factories/socialMedia/twitterService.js"></script>
 <!-- services end -->
+
+<script type="text/javascript" src="scripts/services/ShareWidgetService.js"></script>
+
 <!--  directives start  -->
 <script type="application/javascript" src="scripts/directives/commonData.js"></script>
 <script type="application/javascript" src="scripts/directives/googleMaps.js"></script>
@@ -244,6 +249,7 @@
 <script type="text/javascript" src="scripts/controllers/DiginCore.js"></script>
 <script type="text/javascript" src="scripts/controllers/DiginCore2.js"></script>
 <script type="text/javascript" src="scripts/controllers/DashboardshareCtrl.js"></script>
+<script type="text/javascript" src="scripts/controllers/shareEmailClients.js"></script>
 <script type="text/javascript" src="scripts/directives/plumbItem.js"></script>
 <script type="text/javascript" src="scripts/directives/postRender.js"></script>
 <script type="text/javascript" src="scripts/directives/accordion.js"></script>
@@ -336,6 +342,7 @@
 <script src="scripts/charts/bumpChart.js"></script>
 <script src="scripts/charts/sunBurst.js"></script>
 <script src="scripts/services/services.js"></script>
+<script src="scripts/controllers/geomap\GeoMapController.js"
 <script type="text/javascript" src="scripts/controllers/controllers.js"></script>
 <script type="text/javascript" src="scripts/filters/filters.js"></script>
 <script type="text/javascript" src="scripts/directives/directives.js"></script>

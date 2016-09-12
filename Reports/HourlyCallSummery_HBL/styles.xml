@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<style xmlns="http://reporting.pentaho.org/namespaces/engine/classic/bundle/style/1.0" xmlns:layout="http://reporting.pentaho.org/namespaces/engine/classic/bundle/layout/1.0" xmlns:core="http://reporting.pentaho.org/namespaces/engine/attributes/core" xmlns:html="http://reporting.pentaho.org/namespaces/engine/attributes/html" xmlns:swing="http://reporting.pentaho.org/namespaces/engine/attributes/swing" xmlns:pdf="http://reporting.pentaho.org/namespaces/engine/attributes/pdf" xmlns:designtime="http://reporting.pentaho.org/namespaces/report-designer/2.0" xmlns:crosstab="http://reporting.pentaho.org/namespaces/engine/attributes/crosstab" xmlns:pentaho="http://reporting.pentaho.org/namespaces/engine/attributes/pentaho" xmlns:table="http://reporting.pentaho.org/namespaces/engine/attributes/table" xmlns:page="http://jfreereport.sourceforge.net/namespaces/reports/legacy/ext">
+  <page-definition horizontal-span="1" vertical-span="1" pageformat="A3" orientation="portrait" margin-top="72" margin-left="72" margin-bottom="72" margin-right="72"/>
+  <layout:layout-processors>
+    <layout:expression class="org.pentaho.reporting.engine.classic.core.function.RowBandingFunction">
+      <layout:properties>
+        <layout:property name="ignoreCrosstabMode" class="java.lang.Boolean">false</layout:property>
+        <layout:property name="initialState" class="java.lang.Boolean">false</layout:property>
+        <layout:property name="numberOfElements">1</layout:property>
+        <layout:property name="visibleBackground">light_gray</layout:property>
+      </layout:properties>
+    </layout:expression>
+  </layout:layout-processors>
+  <layout:watermark designtime:hideInLayoutGUI="true">
+    <element-style>
+    </element-style>
+  </layout:watermark>
+  <layout:page-header designtime:visual-height="77.8648647069931">
+    <element-style>
+    </element-style>
+    <layout:label>
+      <element-style>
+        <content-styles color="#008080"/>
+        <spatial-styles x="0" y="0" min-width="271" min-height="26.125"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="14"/>
+      </element-style>
+      <core:value>Hourly Call Summary</core:value>
+    </layout:label>
+    <layout:label>
+      <element-style>
+        <common-styles alignment="left" vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="0" y="47.331" min-width="49.5" min-height="13.919"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+      <core:value>From Date :  </core:value>
+    </layout:label>
+    <layout:date-field core:field="FromDate" core:format-string="yyyy-MM-dd">
+      <element-style>
+        <common-styles vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="49.5" y="41.25" min-width="87.911" min-height="20"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+    </layout:date-field>
+    <layout:label>
+      <element-style>
+        <common-styles vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="457.375" y="12.752" min-width="88.959" min-height="18.667"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+      <core:value>Report Generated At</core:value>
+    </layout:label>
+    <layout:date-field core:field="DateExpression1">
+      <element-style>
+        <border-styles background-color="white"/>
+        <common-styles alignment="left" vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="547.97" y="12.752" min-width="149.905" min-height="18.667"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+    </layout:date-field>
+    <layout:label>
+      <element-style>
+        <common-styles alignment="right" vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="505.584" y="31.42" min-width="40.75" min-height="18.667"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+      <core:value>By </core:value>
+    </layout:label>
+    <layout:text-field core:field="env::username">
+      <element-style>
+        <common-styles alignment="left" vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="547.97" y="31.42" min-width="126.985" min-height="18.667"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+    </layout:text-field>
+    <layout:label>
+      <element-style>
+        <common-styles alignment="right" vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="137.411" y="41.25" min-width="87.303" min-height="20"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+      <core:value>To Date :  </core:value>
+    </layout:label>
+    <layout:date-field core:field="ToDate" core:format-string="yyyy-MM-dd">
+      <element-style>
+        <common-styles alignment="left" vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="224.714" y="41.25" min-width="96.202" min-height="20"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+    </layout:date-field>
+  </layout:page-header>
+  <layout:page-footer designtime:visual-height="51.875">
+    <element-style>
+    </element-style>
+    <layout:label>
+      <element-style>
+        <spatial-styles x="622.292" y="5.625" min-width="40.083" min-height="13.125"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+      <core:value>Page</core:value>
+    </layout:label>
+    <layout:content>
+      <element-style>
+        <content-styles scale="true" keep-aspect-ratio="true"/>
+        <spatial-styles x="271" y="5.625" min-width="138.875" min-height="18.75"/>
+      </element-style>
+      <core:value resource-type="local-ref">D:\DuoDigin\ContactCenterReports\PoweredBy_DuoDigin.png</core:value>
+    </layout:content>
+    <layout:horizontal-line>
+      <element-style>
+        <content-styles draw-shape="true" scale="true"/>
+        <spatial-styles x="0" y="0" min-width="697.875" min-height="0"/>
+      </element-style>
+    </layout:horizontal-line>
+    <layout:text-field core:field="PageOfPagesFunction0">
+      <element-style>
+        <spatial-styles x="663.042" y="5.625" min-width="36.125" min-height="20"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+    </layout:text-field>
+  </layout:page-footer>
+</style>

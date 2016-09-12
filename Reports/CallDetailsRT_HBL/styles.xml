@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<style xmlns="http://reporting.pentaho.org/namespaces/engine/classic/bundle/style/1.0" xmlns:layout="http://reporting.pentaho.org/namespaces/engine/classic/bundle/layout/1.0" xmlns:core="http://reporting.pentaho.org/namespaces/engine/attributes/core" xmlns:html="http://reporting.pentaho.org/namespaces/engine/attributes/html" xmlns:swing="http://reporting.pentaho.org/namespaces/engine/attributes/swing" xmlns:pdf="http://reporting.pentaho.org/namespaces/engine/attributes/pdf" xmlns:designtime="http://reporting.pentaho.org/namespaces/report-designer/2.0" xmlns:crosstab="http://reporting.pentaho.org/namespaces/engine/attributes/crosstab" xmlns:pentaho="http://reporting.pentaho.org/namespaces/engine/attributes/pentaho" xmlns:table="http://reporting.pentaho.org/namespaces/engine/attributes/table" xmlns:page="http://jfreereport.sourceforge.net/namespaces/reports/legacy/ext">
+  <page-definition horizontal-span="1" vertical-span="1" pageformat="A3" orientation="portrait" margin-top="72" margin-left="72" margin-bottom="72" margin-right="72"/>
+  <layout:layout-processors>
+    <layout:expression class="org.pentaho.reporting.engine.classic.core.function.RowBandingFunction">
+      <layout:properties>
+        <layout:property name="ignoreCrosstabMode" class="java.lang.Boolean">false</layout:property>
+        <layout:property name="initialState" class="java.lang.Boolean">false</layout:property>
+        <layout:property name="numberOfElements">1</layout:property>
+        <layout:property name="visibleBackground">light_gray</layout:property>
+      </layout:properties>
+    </layout:expression>
+  </layout:layout-processors>
+  <layout:watermark designtime:hideInLayoutGUI="true">
+    <element-style>
+    </element-style>
+  </layout:watermark>
+  <layout:page-header designtime:visual-height="79.917">
+    <element-style>
+    </element-style>
+    <layout:label>
+      <element-style>
+        <content-styles color="#008080"/>
+        <spatial-styles x="0" y="0" min-width="149.839" min-height="26.125"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="14"/>
+      </element-style>
+      <core:value>Call Details</core:value>
+    </layout:label>
+    <layout:label>
+      <element-style>
+        <common-styles alignment="center" vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="0" y="41.25" min-width="49.367" min-height="20"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+      <core:value>From  :</core:value>
+    </layout:label>
+    <layout:label>
+      <element-style>
+        <common-styles alignment="right" vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="150" y="41.25" min-width="47.26" min-height="20"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+      <core:value>To  : </core:value>
+    </layout:label>
+    <layout:date-field core:field="FromDate" core:format-string="yyyy-MMM-dd">
+      <element-style>
+        <common-styles vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="49.367" y="41.25" min-width="100.472" min-height="20"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+    </layout:date-field>
+    <layout:date-field core:field="ToDate" core:format-string="yyyy-MMM-dd">
+      <element-style>
+        <common-styles vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="197.26" y="41.25" min-width="81.564" min-height="20"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+    </layout:date-field>
+    <layout:message>
+      <element-style>
+        <common-styles vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="279.116" y="41.25" min-width="100" min-height="20"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+      <core:value>Direction : $(Direction)</core:value>
+    </layout:message>
+    <layout:message>
+      <element-style>
+        <common-styles vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="400.792" y="41.25" min-width="140.542" min-height="20"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+      <core:value>Agent: $(Agent)</core:value>
+    </layout:message>
+    <layout:label>
+      <element-style>
+        <common-styles vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="424.67" y="0" min-width="99.992" min-height="18.667"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+      <core:value>Report Generated At :</core:value>
+    </layout:label>
+    <layout:date-field core:field="DateExpression1">
+      <element-style>
+        <common-styles vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="524.662" y="0" min-width="173.338" min-height="18.667"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+    </layout:date-field>
+  </layout:page-header>
+  <layout:page-footer designtime:visual-height="77.65278035402298">
+    <element-style>
+    </element-style>
+    <layout:label>
+      <element-style>
+        <common-styles alignment="center"/>
+        <spatial-styles x="595.667" y="43.847" min-width="48.75" min-height="13.125"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+      <core:value>Page</core:value>
+    </layout:label>
+    <layout:content>
+      <element-style>
+        <content-styles scale="true" keep-aspect-ratio="true"/>
+        <spatial-styles x="278.824" y="37.181" min-width="121.676" min-height="18.75"/>
+      </element-style>
+      <core:value resource-type="local-ref">D:\DuoDigin\ContactCenterReports\PoweredBy_DuoDigin.png</core:value>
+    </layout:content>
+    <layout:horizontal-line>
+      <element-style>
+        <content-styles draw-shape="true" scale="true"/>
+        <spatial-styles x="0" y="0" min-width="697.875" min-height="0"/>
+      </element-style>
+    </layout:horizontal-line>
+    <layout:text-field core:field="PageOfPagesFunction0">
+      <element-style>
+        <spatial-styles x="644.417" y="43.847" min-width="49.25" min-height="20"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+    </layout:text-field>
+    <layout:label>
+      <element-style>
+        <common-styles alignment="right" vertical-alignment="middle"/>
+        <content-styles color="#008080"/>
+        <spatial-styles x="563.653" y="0" min-width="70.098" min-height="20"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+      <core:value>Total No of Calls:</core:value>
+    </layout:label>
+    <layout:number-field core:field="reportsum">
+      <element-style>
+        <common-styles alignment="left" vertical-alignment="middle"/>
+        <spatial-styles x="644.417" y="0" min-width="53.583" min-height="20"/>
+        <text-styles font-face="Tahoma" bold="true" font-size="8"/>
+      </element-style>
+    </layout:number-field>
+  </layout:page-footer>
+</style>

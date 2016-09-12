@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data-definition xmlns="http://reporting.pentaho.org/namespaces/engine/classic/bundle/data/1.0">
+  <parameter-definition>
+    <plain-parameter name="FromDate" mandatory="false" type="java.util.Date">
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="role">user</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="parameter-render-type">datepicker</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="label">FromDate</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="hidden">false</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="data-format">yyyy-MM-dd</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="default-value-formula">=TODAY()</attribute>
+    </plain-parameter>
+    <plain-parameter name="FDate" mandatory="false" type="java.lang.String">
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="role">user</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="parameter-render-type">textbox</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="label">FDate</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="hidden">true</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="post-processor-formula">=MESSAGE(&quot;{0,date,yyyy-MM-dd}&quot;; [FromDate])</attribute>
+    </plain-parameter>
+    <plain-parameter name="ToDate" mandatory="false" type="java.util.Date">
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="role">user</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="parameter-render-type">datepicker</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="label">ToDate</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="hidden">false</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="data-format">yyyy-MM-dd</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="default-value-formula">=TODAY()</attribute>
+    </plain-parameter>
+    <plain-parameter name="TDate" mandatory="false" type="java.lang.String">
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="role">user</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="parameter-render-type">textbox</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="label">TDate</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="hidden">true</attribute>
+      <attribute namespace="http://reporting.pentaho.org/namespaces/engine/parameter-attributes/core" name="post-processor-formula">=MESSAGE(&quot;{0,date,yyyy-MM-dd}&quot;; [ToDate])</attribute>
+    </plain-parameter>
+  </parameter-definition>
+  <data-source report-query="Query 1" limit="-1" timout="0" ref="datasources/compound-ds.xml"/>
+  <expression name="PageFunction0" class="org.pentaho.reporting.engine.classic.core.function.PageFunction">
+    <properties>
+      <property name="pageIncrement">1</property>
+      <property name="startPage">1</property>
+    </properties>
+  </expression>
+  <expression name="PageOfPagesFunction0" class="org.pentaho.reporting.engine.classic.core.function.PageOfPagesFunction">
+    <properties>
+      <property name="format">{0} / {1}</property>
+      <property name="pageIncrement">1</property>
+      <property name="startPage">1</property>
+    </properties>
+  </expression>
+  <expression name="DateExpression1" class="org.pentaho.reporting.engine.classic.core.function.date.DateExpression">
+    <properties>
+    </properties>
+  </expression>
+</data-definition>

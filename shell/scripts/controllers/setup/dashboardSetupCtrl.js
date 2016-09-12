@@ -34,6 +34,15 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         "route": "userProfile",
         "icon": "styles/css/images/setting/user100x100.png"
     }];
+	
+	$scope.usageDetails = {};
+	$http.get("http://staging.digin.io:1929/get_usage_details?SecurityToken=cf084a0bbc1e217414d6cee85e341044")
+	.success(function(data){
+		console.log(data.Result);
+		$scope.usageDetails = data.Result;
+	}).error(function(){
+		console.log("error");
+	});
 
 	// Test chart to show bandwidth
    /* Highcharts.chart('container', {

@@ -100,8 +100,7 @@
                   </div>
                   </br>
 
-                  <div class="txt-box"
-                    ng-class="{error:error.isEmail,'':!error.isEmail}">
+                  <div class="txt-box" ng-class="{error:error.isEmail,'':!error.isEmail}">
                     <label for="email">Cc : </label>
                       <div>
                         <input type="email" class="form-control"
@@ -113,16 +112,37 @@
                           <div ng-message="pattern">Email address is invalid</div>
                         </div>
                   </div>
-                  </br>  
-
-                    <md-button class="setup-button md-raised md-primary" ng-click="sendMail(false)"><span class="setup-font-theme">Send Email</span></md-button>
-                    </br>
-                </div>
+                  </br> 
+                  <div class="txt-box" ng-class="">
+                    <label for="text">Subject : </label>
+                      <div>
+                        <input type="text" class="form-control"
+                        ng-model="emailSubject"
+                        placeholder="shared a link with u ....">
+                      </div>
+                  </div>
+                  </br> 
+                   <div class="txt-box" ng-class="">
+                    <label for="text">Body : </label>
+                      <div>
+                        <input type="text" class="form-control" rows="4" cols="50"
+                        ng-model="emailBody"
+                        placeholder="shared a link with u ....">
+                      </div>
+                    
+                  </div>
+                    <div class="md-actions" layout="row">
+                        <span flex></span>
+                        <md-button class="btn-dialog b-r-0" ng-click="send()">
+                           Send
+                        </md-button>
+                        <md-button class="btn-dialog b-r-0" ng-click="close()">
+                            CANCEL
+                        </md-button>
+                    </div>
+                </div> 
             </div> 
     </form>
-
-
-
 </md-dialog>
 
 

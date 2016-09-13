@@ -109,6 +109,7 @@ routerApp.controller('localEmailClient', ['$scope','$mdDialog','URL','$http','ng
             }).then(function(response){
                 console.log(response)
                 $scope.fireMsg('1', 'Mail sent successfully!');
+                $scope.close();
             },function(response){
                 console.log(response)
                 $scope.fireMsg('0', 'Mail sending fail!');

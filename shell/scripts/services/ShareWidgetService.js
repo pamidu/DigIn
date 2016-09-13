@@ -5,7 +5,9 @@ routerApp.service('ShareWidgetService',function(Upload,$http,Digin_Engine_API,Di
       this.getShareWidgetURL = function(widget,callback,provider){
 
         var svgTag = "";
-        var fileName = widget.widgetName + new Date().getTime()+".svg";
+        var date = new Date().getTime();
+        var fileNamepng= widget.widgetName + date +".png";
+        var fileName = widget.widgetName + date +".svg";
         if(widget.widgetName=="highcharts" || widget.widgetName=="histogram"){
 
           var elementId = widget.widgetID;
@@ -13,10 +15,13 @@ routerApp.service('ShareWidgetService',function(Upload,$http,Digin_Engine_API,Di
           var file = new File([svgTag], fileName, {type: "image/svg+xml"});
 
         }
-        else if(widget.widgetName=="hierarchy"){
+        else if(widget.widgetName=="hierarchy" || widget.widgetName=="sunburst"){
           var id = "#" + widget.widgetData.widData.id;
           var element = $("" + id + "");
-          var svgTag =element[0].innerHTML;
+          
+          var svgTag =element[0].children[0].innerHTML;
+          svgTag ='<svg viewBox="0 0 500 600" width="100%" height="100%">'+svgTag+ '</svg>';
+
           var file = new File([svgTag], fileName, {type: "image/svg+xml"});
            
 
@@ -40,7 +45,7 @@ routerApp.service('ShareWidgetService',function(Upload,$http,Digin_Engine_API,Di
             var NameSpace = res.replace(".", "");
             var tenent = NameSpace + "." + Digin_Domain;
             //var url = "http://" + Digin_Domain + data.Result + "/digin_user_data/" + userInfo.UserID + "/" + userInfo.Username + "/shared_files/" +fileName;
-            var url = "http://staging.digin.io"  + data.Result + "/digin_user_data/" + userInfo.UserID + "/" + tenent + "/shared_files/" +fileName;
+            var url = "http://staging.digin.io"  + data.Result + "/digin_user_data/" + userInfo.UserID + "/" + tenent + "/shared_files/" +fileNamepng;
             
             callback(url,provider);
 

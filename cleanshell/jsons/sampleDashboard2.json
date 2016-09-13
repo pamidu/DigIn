@@ -1,0 +1,69 @@
+{
+	"Exception": null,
+	"Result": {
+		"compName": "clock",
+		"compCategory": null,
+		"compID": "1472215221449",
+		"compClass": null,
+		"pages": [{
+			"pageName": "clock",
+			"pageData": null,
+			"pageID": "1472215221467",
+			"widgets": [{
+				"widgetID": "1472215221503",
+				"pageID": "1472215221467",
+				"widgetData": {
+					"widEnc": {},
+					"externalDataURL": "",
+					"chartStack": [{
+						"id": "",
+						"title": "No"
+					}, {
+						"id": "normal",
+						"title": "Normal"
+					}, {
+						"id": "percent",
+						"title": "Percent"
+					}],
+					"widCsc": {},
+					"height": "300px",
+					"seriesname": "",
+					"dataname": "",
+					"id": 74,
+					"widCsv": {},
+					"top": "0px",
+					"d3plugin": "",
+					"width": "370px",
+					"widAexc": {},
+					"divider": false,
+					"syncState": true,
+					"widData": {},
+					"initDialogCtrl": "clockDialogCtrl",
+					"initCtrl": "clockInit",
+					"widName": "Clock",
+					"highchartsNG": null,
+					"widAque": {},
+					"uniqueType": "Clock",
+					"initTemplate": "views/widgets/clock/InitConfigClockComponent.html",
+					"mheight": "100%",
+					"widView": "views/widgets/clock/ViewClock.html",
+					"widDec": {},
+					"widAna": {},
+					"type": "General",
+					"expanded": true,
+					"widIm": {},
+					"left": "0px"
+				},
+				"widgetName": "Clock",
+				"col": 0,
+				"sizeX": 9,
+				"sizeY": 29,
+				"row": 0
+			}]
+		}],
+		"refreshInterval": 60,
+		"compType": "dashboard"
+	},
+	"Is_Success": true,
+	"Custom_Message": "Successful!"
+}

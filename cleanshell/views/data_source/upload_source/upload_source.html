@@ -1,0 +1,124 @@
+<!--CARD CONTAINER START-->
+<div class="card-container">
+	<!--WHITEFRAME START-->
+	<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
+
+		<md-content>
+
+			<form name="editForm"  md-theme="default" ng-submit="profile.changeUserProfile()">
+				<div layout="row" layout-align="end end">
+					<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="back" ng-click="route('back')"></md-button>
+				</div>
+					
+				<div class="setting-card-header">
+					<h2>Upload Source</h2>
+					<div class="setting-img-wrap" layout="row" layout-align="center center">
+						<img ng-src="{{profile_pic}}" err-src="images/settings/new_user.png" class="img-circle" ng-click="profile.uploadProfilePicture($event)">
+							<md-tooltip md-direction="bottom">
+								Upload Profile Picture
+							</md-tooltip>
+						</img>
+
+					</div>
+				</div>
+				
+				
+				<!--Input Elements Start-->
+				<div layout="row" layout-align="start start">
+					<div class="section-title">Profile details</div>
+				</div>
+				
+				<div layout-gt-sm="row" class="side-margins">
+					<md-input-container class="md-block" flex-gt-sm>
+						<span>Full Name</span>
+						<input required type="text" name="name" ng-model="user.name"  ng-disabled="!editModeOn" aria-label="name"/>
+						<div ng-messages="editForm.name.$error" role="alert">
+						  <div ng-message-exp="['required']">
+								Full name is required
+						  </div>
+						</div>
+					</md-input-container>
+					<md-input-container class="md-block" flex-gt-sm>
+						<span>Company</span>
+						<input type="text" name="company" ng-model="user.company" ng-disabled="!editModeOn"  aria-label="company"/>					
+					</md-input-container>
+
+				</div>
+				
+				<div layout-gt-sm="row" class="side-margins">
+					<md-input-container class="md-block" flex-gt-sm="60">
+						<span>Email</span>
+						<input required type="email" name="email" ng-model="user.email" minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" ng-disabled="true"  aria-label="email"/>
+						<div ng-messages="editForm.email.$error" role="alert">
+						  <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+							Please enter a valid Email
+						  </div>
+						</div>
+					</md-input-container>
+					<md-input-container class="md-block" flex-gt-sm>
+						<span>Contact no</span>
+						<input required type="text" name="contactNo" ng-model="user.contactNo" ng-pattern="/^[0-9 ]*$/" ng-disabled="!editModeOn"  aria-label="contact no"/>
+						<div ng-messages="editForm.contactNo.$error" role="alert">
+						  <div ng-message-exp="['required', 'pattern']">
+								Enter a valid contact number
+						  </div>
+						</div>
+					</md-input-container>
+
+				</div>
+				<div layout-gt-sm="row" class="side-margins">
+					<md-input-container class="md-block" flex-gt-sm="50">
+						<span>Billing Address</span>
+						<input required type="text" name="street" ng-model="user.street" ng-disabled="!editModeOn"  aria-label="billing address"/>
+						<div ng-messages="editForm.street.$error" role="alert">
+						  <div ng-message-exp="['required']">
+							Please enter a Billing Address
+						  </div>
+						</div>
+					</md-input-container>
+					<md-input-container class="md-block" flex-gt-sm="30">
+						<span>Country</span>
+						<input required type="text" name="country" ng-model="user.country" ng-disabled="!editModeOn"  aria-label="country"/>
+						<div ng-messages="editForm.country.$error" role="alert">
+						  <div ng-message-exp="['required']">
+							Country is required
+						  </div>
+						</div>
+					</md-input-container>
+					<md-input-container class="md-block" flex-gt-sm>
+						<span>Zip Code</span>
+						<input type="text" name="zip" ng-model="user.zip" ng-disabled="!editModeOn"  aria-label="zip"/>
+					</md-input-container>
+
+				</div>
+
+				<div layout="row" layout-align="center start" layout-margin ng-init="submitted=false" >
+					<md-button class="md-raised md-primary" style="width:100px;background:#02b5e2" type="button" ng-click="profile.clickEdit()"  aria-label="edit" ng-if="editModeOn == false">
+						<span style="text-transform:none">Edit Profile</span>
+					</md-button>
+					<md-button class="md-raised md-primary" style="min-width:60px;width:60px;background:#FF5252" type="button" ng-click="profile.cancel()"  aria-label="cancel" ng-if="editModeOn == true">
+						<span style="text-transform:none">Cancel</span>
+					</md-button>
+					<md-button class="md-raised md-primary" style="width:100px;background:#02b5e2" ng-disabled="submitted" type="submit" aria-label="save" ng-if="editModeOn == true">
+						<span style="text-transform:none">Save Profile</span>
+					</md-button>
+				</div>
+				
+				<div layout="row" layout-align="start start">
+					<div class="section-title">Security</div>
+				</div>
+				<div layout="row" layout-align="start start" layout-margin >
+					<md-button class="md-raised" ng-disabled="submitted" type="button" ng-click="profile.changePassword($event)">
+						<i class="ti-lock"></i><span style="padding-left:10px;text-transform:none">Change Password</span>
+					</md-button>
+				</div>
+		
+
+			</form>
+
+		</md-content>
+
+	</md-whiteframe><br/>
+	<!--WHITEFRAME END-->
+</div>
+<!--CARD CONTAINER END-->

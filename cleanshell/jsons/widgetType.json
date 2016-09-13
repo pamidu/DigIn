@@ -1,0 +1,26 @@
+{
+    "Result": [
+     {
+
+        "title": "Blogging",
+        "icon": "styles/css/images/icons/open_in_browser.svg"
+    }, {
+
+        "title": "Custom",
+        "icon": "styles/css/images/icons/shopping_basket.svg"
+    }, {
+
+        "title": "Social Media",
+        "icon": "styles/css/images/icons/notebook.svg"
+    },{
+
+        "title": "General",
+        "icon": "styles/css/images/icons/shopping_cart.svg"
+
+      },{
+
+        "title": "reports",
+        "icon": "styles/css/images/icons/shopping_cart.svg"
+
+      }]
+}

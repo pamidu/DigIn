@@ -1,0 +1,56 @@
+.card-container
+{
+	padding-top:70px;
+	padding-left:45px;
+	-webkit-animation: fadeIn .8s forwards;
+	animation: fadeIn .8s forwards;
+}
+
+.layout-whiteframe
+{
+	margin:0 auto;
+	max-width:960px;
+	border-radius: 8px;
+	background: white;
+}
+
+.layout-whiteframe > md-content
+{
+	width: 100%;
+	border-radius: 8px;
+}
+
+.section-title
+{
+	padding:10px;
+	background:rgb(224, 224, 224) !important;
+	color:#f9a624;
+	font-weight:700;
+	letter-spacing: 1px;
+	margin: 10px 0px 5px 0px;
+}
+
+.setting-card-header {
+    text-align: center;
+}
+.setting-card-header > h2
+{
+	color: #3b6982;
+	margin-top: 0px;
+}
+
+.md-button.md-icon-button
+{
+	margin: 0px;
+}
+.side-margins
+{
+	margin: 0px 10px 0px 10px;
+}
+
+input:disabled {
+	background: #e9e9e9;
+	cursor: not-allowed;
+	background-image: none !important;
+
+}

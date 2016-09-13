@@ -1728,24 +1728,26 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                             colors: ['#EC784B'],
                             series: []
                         };
-                        $scope.highchartsNG.series = {};
-                        $scope.xAxiscat = [];
-                        $scope.highchartsNG.series = data;
-                        $scope.highchartsNG.xAxis = {};
-                        $scope.highchartsNG.xAxis.categories = [];
-                        $scope.highchartsNG.series.forEach(function(key) {
-                            if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
-                        });
-                        $scope.highchartsNG.series.forEach(function(key) {
-                            key.data.forEach(function(value) {
-                                $scope.xAxiscat.push(value.name);
+                        $scope.$apply(function() {
+                            $scope.highchartsNG.series = {};
+                            $scope.xAxiscat = [];
+                            $scope.highchartsNG.series = data;
+                            $scope.highchartsNG.xAxis = {};
+                            $scope.highchartsNG.xAxis.categories = [];
+                            $scope.highchartsNG.series.forEach(function(key) {
+                                if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
                             });
+                            $scope.highchartsNG.series.forEach(function(key) {
+                                key.data.forEach(function(value) {
+                                    $scope.xAxiscat.push(value.name);
+                                });
+                            });
+                            $scope.highchartsNG.xAxis.categories = $scope.xAxiscat;
+                            $scope.eventHndler.isLoadingChart = false;
+                            $scope.dataToBeBind.receivedQuery = query;
+                            $scope.queryEditState = false;
+                            $scope.isPendingRequest = false;
                         });
-                        $scope.highchartsNG.xAxis.categories = $scope.xAxiscat;
-                        $scope.eventHndler.isLoadingChart = false;
-                        $scope.dataToBeBind.receivedQuery = query;
-                        $scope.queryEditState = false;
-                        $scope.isPendingRequest = false;
                     });
                 } else {
                     $scope.setMeasureData(res[0]);
@@ -1888,91 +1890,19 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
             $scope.eventHndler.isLoadingChart = true;
             $scope.client.getForcast(fObj, function(data, status) {
                 if (status) {
-                    var dataArray = [];
-                    var yearArray = [];
-                    var serObj = [];
-                    var count = 0;
-                    var oldYear = moment(data.time[0]).year();
-                    var newYear = oldYear;
-                    var newYear;
-                    var temp;
-                    var flag = true;
-                    var zoneValue;
-                    var forecastFlag = true;
-                    for (var i = 0; i < data.time.length; i++) {
-                        if (newYear == oldYear) {
-                            if (data.actual[i] !== undefined) dataArray.push(data.actual[i]);
-                            else {
-                                dataArray.push(data.forecast[i]);
-                                if (forecastFlag) {
-                                    zoneValue = i;
-                                }
-                                forecastFlag = false;
-                            }
-                            if (data.time[i + 1] !== undefined) {
-                                newYear = moment(data.time[i + 1]).year();
-                            } else {
-                                serObj.push({
-                                    name: oldYear,
-                                    zoneAxis: 'x',
-                                    data: dataArray
-                                });
-                                yearArray.push(oldYear);
-                            }
-                        } else {
-                            forecastFlag = true;
-                            if (zoneValue !== undefined) {
-                                serObj.push({
-                                    name: oldYear,
-                                    data: dataArray,
-                                    zoneAxis: 'x',
-                                    zones: [{
-                                        value: zoneValue % 12
-                                    }, {
-                                        dashStyle: 'dash'
-                                    }]
-                                });
-                            } else {
-                                serObj.push({
-                                    name: oldYear,
-                                    data: dataArray,
-                                    zoneAxis: 'x'
-                                });
-                            }
-                            zoneValue = undefined;
-                            yearArray.push(oldYear);
-                            oldYear = newYear;
-                            dataArray = [];
-                            if (!flag) {
-                                if (data.actual[i] !== undefined) {
-                                    dataArray.push(data.actual[i]);
-                                } else {
-                                    if (forecastFlag) {
-                                        zoneValue = i;
-                                    }
-                                    dataArray.push(data.forecast[i]);
-                                    forecastFlag = false;
-                                }
-                            }
-                            flag = false;
-                        }
-                    }
-                    console.log(serObj);
-                    var date = new Date();
-                    var currYear = moment(date).year();
-                    var prevYear = currYear - 1;
-                    var currYearIndex = yearArray.indexOf(currYear);
-                    var prevYearIndex = yearArray.indexOf(prevYear);
-                    var finalObj = [];
-                    var category = [];
-                    var monthIndex;
-                    var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-                    finalObj[0] = serObj[currYearIndex];
-                    finalObj[1] = serObj[prevYearIndex];
-                    for (var i = 0; i < 12; i++) {
-                        monthIndex = moment(data.time[i]).month();
-                        category.push(month[monthIndex]);
-                    }
+                    var serArr = [];
+                    var catArr = [];
+                    data.forecast = data.forecast.slice(data.actual.length);
+                    serArr.push({
+                        data: data.actual.concat(data.forecast),
+                        zoneAxis: 'x',
+                        zones: [{
+                            value: data.actual.length - 1
+                        }, {
+                            dashStyle: 'dash'
+                        }]
+                    })
+                    catArr = data.time;
                     $scope.widget.widgetData.highchartsNG = {
                         options: {
                             chart: {
@@ -2003,13 +1933,13 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                 text: ''
                             },
                             tooltip: {
-                                pointFormat: '<b> <span style = "color : {series.color}" >  ? </span> {series.name}: {point.y:,.0f} </b>',
+                                pointFormat: '<b> <span style = "color : {series.color}" >  ● </span> {series.name}: {point.y:,.0f} </b>',
                                 useHTML: true
                             }
                         },
                         xAxis: {
                             type: 'datetime',
-                            categories: category
+                            categories: catArr
                         },
                         yAxis: {
                             lineWidth: 1
@@ -2017,7 +1947,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                         title: {
                             text: ''
                         },
-                        series: finalObj
+                        series: serArr
                     };
                     $scope.eventHndler.isLoadingChart = false;
                 } else {

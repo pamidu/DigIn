@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html ng-app="mainApp">
+<head>
+	<meta charset="UTF-8" name="viewport" content="width=device-width">
+	<title>DigIn - Beyond BI</title>
+	<link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.min.css">
+	<link rel="stylesheet" type="text/css" href="styles/digin-main/digin-main.css">
+	<link rel="stylesheet" type="text/css" href="styles/themify/themify-icons.css">
+	<link rel="stylesheet" type="text/css" href="styles/index.css">
+	<link rel="stylesheet" type="text/css" href="styles/side-menu.css">
+	<link rel="stylesheet" type="text/css" href="styles/layout.css">
+	<link rel="stylesheet" type="text/css" href="styles/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="styles/directive_library.css">
+	<link rel="stylesheet" type="text/css" href="styles/md-steppers.css">
+	<link rel="stylesheet" type="text/css" href="styles/angular-gridster.min.css"/>
+	<link rel="stylesheet" type="text/css" href="styles/v-accordion.min.css"/>
+	<link rel="stylesheet" type="text/css" href="styles/ng-croppie.min.css">
+
+</head>
+<body ng-controller="NavCtrl as ctrl" layout="column" style="background:rgba(230, 230, 230, 1) !important">
+	<!--START OF PRELOADER--> <!--the below css lines are given here to improve load efficency rather than fetching an additional file on the initial load-->
+	<div style="background:#2795d8;width:100%;height:100%;display:block" id="preload">
+		<div style=" position:fixed;top: 50%;left: 50%;width:30em;height:18em;margin-top: -9em;margin-left: -15em;">
+			<style>
+
+			#loadSection {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-size: 40px;
+				font-family: Roboto,"Helvetica Neue",sans-serif;
+				font-weight: 300;
+				color: white;
+				margin-top: 40px;
+			}
+
+			section div {
+				transform: scale(0, 0);
+				animation: scaler 1.5s ease-in-out infinite;
+			}
+
+			.delay1 {
+				animation-delay: .1s;
+			}
+			.delay2 {
+				animation-delay: .2s;
+			}
+			.delay3 {
+				animation-delay: .3s;
+			}
+			.delay4 {
+				animation-delay: .4s;
+			}
+			.delay5 {
+				animation-delay: .5s;
+			}
+			.delay6 {
+				animation-delay: .6s;
+			}
+
+			@media (max-width: 768px) {
+				section {
+					font-size: 50px;
+				}
+			}
+
+			@keyframes scaler {
+				0% {
+					transform: scale(0,0);
+				}
+				50% {
+					transform: scale(1, 1);
+				}
+				100% {
+					transform: scale(0, 0);
+				}
+			}
+			#diginLoaderLogo {
+
+				background-repeat:no-repeat;
+				width:300px;
+				z-index:5;
+
+				
+				-webkit-transform-origin: 0 0;
+				-ms-transform-origin: 0 0;
+				transform-origin: 0 0;
+				
+				
+				-webkit-animation: diginLogoAnimation 5s ease-in-out infinite alternate;
+				animation: diginLogoAnimation 5s ease-in-out infinite alternate;
+			}
+
+			@-webkit-keyframes diginLogoAnimation {
+				0% {
+					-webkit-transform: scale(1.0);
+				}
+				100% {
+					-webkit-transform: scale(1.05);
+				}
+			}
+
+			@keyframes diginLogoAnimation {
+				0% {
+					transform: scale(1.0);
+				}
+				100% {
+					transform: scale(1.05);
+				}
+			}
+			
+			.fadeIn {
+				-webkit-animation: fadeIn .8s forwards;
+				animation: fadeIn .8s forwards;
+			}
+
+			@keyframes fadeIn {
+				0% {opacity: 0;}
+				100% {opacity: 1;}
+			}
+
+			@-webkit-keyframes fadeIn {
+				0% {opacity: 0;}
+				100% {opacity: 1;}
+			}
+
+		</style>
+		<center>
+			<img id="diginLoaderLogo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlgAAAEsCAMAAAAo4z2kAAAAUVBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////8IN+deAAAAGnRSTlMA/fob9kT07+fXt6l44jbNw5SFTtzSn2hZGTlFDcsAAAh9SURBVHja7NxhahsxEIDR0TYlTRrcJqYU5v4H7ZKUEpo2stc71sZ+7wBiYT/0QyMUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFen3QSsrmVOAet3pSxKupq1gHW7UhYVXSmLiq6URUVXyqKiK2VR0ZWyqOhKWVR0pSwqulIWFV0pi4qulEVFV8qioitlUdGVsqjoSllUdKUsKrpSFhVdKYuKrpRFRVfKoqIrZTG+K2VxWFfKYhtdKYt+V8piO10pi/e7Uhbb6kpZ/L8rZbG+TGURscGwlMU/pLKYbTIsZfFGKovZRsPKDHgtlcVsu2Epi9dSWcy2HJayqAkrPwW8SGUx23hYyuK3VBYVsqflcXYBB4QVUx7nc8ABYSmLmrCiKYv1w1JWoS8Xe6qcPbGkrJ/xQdy3fNb2McDNBY8rsicWlfUQK2pvTS/unv2Ipab84zbOrV30HCx7oqCsoncGp5OWnuKs2oUPWLMnxpY15VFae4qD3eZszJ7VLn5ynz2xtKynrb+Cs8+/7OMsdrt2BVdCsmf5X34s+rq+adlmOMVZ3F3FXaPsieVlfR0VVraHRYvHWVzHJbbsiZFl5XLCGit7YmRZeQJhDZU9cVJZ9+PCSmGNlD1xWlnfx4WVO2GNkz1xYlnfxoWVj8L6xd6dbjcNg0EYnrETJ2ShodAWvvu/UCAs50DrSko1tlzP+7vHS/3ETrwpu9lhTSor3ti2xdMNhnUNb5b1MB8stniC1LCu4e2yvtRaOox0z1FZDV7SMaxrqCDrrIV17ZHlJzy6vAOhYUlg1ZC1V8FKLxZea5e3vzIsBSyBLBUs4FJ4SfpzF9e6z3glw1LAEsjSwcLhhTk3lmFdQyVZu2lg4dj82wYN6xoEspSwQMNqoTSsarKGaWBhMKwGSsMSyNLCgmE1UBpWRVkbwzKsP6GqLMMyrN+hqqzOsAzrV6gsq1FY/StTNywJrMqy2CKse5Zu4scPPzp3PyMfDas+rHJZzcH6wpKpd4znkVstrHO8EMlPaLQ0rPqy2oLVlVwwYozHJxmsXYzHNt/tk4YlkNUQLBZM/RKp2CtgbZY4RlYNWIjC2AisLQumfmJkxOqwuMzh19KwJLKksO6S8yrfxB9Z7a5Gza/uz2irNCyNrIXBYuTHj9VgMfI7oqnSsESylgSrj7JYCVYUdUZLpWGpZC0IFquOoyC7yL9BQ1WD1RfLWgwsRnFEBc6LHkE5DUsnSwVrVxdWFzc0vBnWYdljc6dhCWWJYG3qwoqbejOshQ8ZGamglLUEWEPth7ArPlPQ8JMjNWHhYxTGBcBivBD/FmOJ95Mk2fKxsCosbItltQ8rY7/wRAms9KXIezZ7LEzDEstaHqw9XmhHLSxipJXAukHWwmARI+2UsPaLu72rNixs3zcsYrROB4sYr1sJLDy9a1gfMB5lsPBaa4GF03uGBcOaDRZOM8OiDhYNa0ZYOBmWYSlg4d6wDEsBC4+GZVgKWDgalmEpYOFoWIalgIWDYRmWAhYuhmVYCli4MyzDUsDCnWEZlgIW7gzLsBSw8MGwDEsBC2fDMiwFLOwNy7AUsLA3LMNSwMLesAxLAQs7wzIsBSwMhmVYClgYDMuwFLAwGJZhKWCBhmVYgiWl91iGJYBFf8cyLAEsruNXYRjWtLC4kvNYhjUtLK7lzLthTQqLq7lWaFhTwuJ67m4wrAlhcUX3YxnWZLD6Vd2abFhTwdqu62EKw5oI1mllj38Z1jSwjmt7YNWwJoF1Wd0j9oY1Bazz+l4KYlgTwNqt8DVGhqWH1cWMsMKw5k8DizEjLBpWA0lgMeaDdYj/gmFltQBYDBms8nlvDCurBcBizAZrSCy/FBYNSwqLMResM+NZx7qwYofRwrCUsBg6WKWqIojKsKLDSA+GpYTFEMIaMNKXsdmiOqxgjxfaMgxLCCtCCKs8CmBF8IB/OzIiDEsHq6+96QWuijfxYWxE5t3Xy8CfRYRhKWFtq296gSvBePKGpYV1ku5SyjujDiwY1qywjspdSnnsUQvW2bBmhHUncAXFYbAcFmhYs8E6S7a95DBYDgt7w5oJ1nCLKxmsT0BdWAANaw5YnexYpZlwOSwcDGt6WIziOmhg9Teu/AbJNgJYfMz4K37NXQt+QytFKo2rAQpYKKx0cVgZFnOWjR9z14JoqEglcbWHABaKK2F1rWeMxzJY/ILXesYqvRZNFakUrh7QRjdtkE9kPO+Y/5WtYD/EPnMteEFjRSqBqwMaqebnPB8WIzZZE2PubPmE5opU9V19QislWIlgHe6RURCZNfSNvQRWdVcNfroqFW3+8M+rLVhR3hbvNsOqBKuP8nq83wyrDqxt5LSi/zbXs6rKTpFbm2fwABhWgx3tyrAEPdiVYQna29X39u41J2EggMLojOJbSTTGmNn/QhVi/CVCsdc+5pwdNPkgzfQWhBVwrSthBVRdOW7Y0dV/qMLS1ei2tasju73pu7oo6/ZeezsL3pm+q5lN0M63rbV6yPBl+q5uy1rUJY7OluGMru7Karir/DZ9Vyv65G50FdKWPBf9OyuOjMs23GNZj+d2sm3hZFe9z0Xr4t5CWoSX7uei7q8S7rufi9Z2kk3B/Gr0L6ybgvnVIK/tqPpUGGSjq1K7u+LfmDOMprfr/YmuWABd8UlXLIOu2Jk+rLXPRRk7LCfPjKjbuShZ3c5FyWpDzO4nVpmtNsBbgRN1OhclrdO5KGmdzkVJ63MuSpzHOEToighdEaErInRFhK6I0BURuuIgrz0xO+aiRJiLEtEOey1wLnNRIsxFiTAXJcJclAhzUSLMRYlw3E6ErojQFRG6IkJXROiKCF0RoSsidEWEuSgR/tiKCHNRIsxFiWh7DwVGZS5KhLkoEeaiRJiLAgAAAAAAAAAAAAAAAAAAAMBxH2VN+JIi4H0pAAAAAElFTkSuQmCC"/>
+		</center>
+		<section id="loadSection">
+            <div class="">L</div>
+            <div class="delay1">O</div>
+            <div class="delay2">A</div>
+            <div class="delay3">D</div>
+            <div class="delay4">I</div>
+            <div class="delay5">N</div>
+            <div class="delay6">G</div>
+        </section>
+
+		</div>
+	</div>
+	<!--END OF PRELOADER-->
+	
+	<!--START OF APPLICATION CONTAINER-->
+	<div layout="column" ng-cloak>
+		<toastino></toastino>
+		<div class="blut-log-wrapper">
+			<div class="left-toggle-wrapper">
+				<img ng-src="images/digin43x43.png" err-src="images/digin43x43.png"/>
+				 <md-tooltip md-direction="right">
+				  v3.1.0.0
+				</md-tooltip>
+			</div>
+		</div>
+		<div class="main-headbar-slide" style="width:100%;height:45px;position:fixed;left:45px;background:white;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);z-index:3">
+		
+			<div layout="row" layout-align="space-between center" style="padding: 0 25px;">
+				<div class="blut-search-wrapper" ng-click="navigate($event,'Search')" layout="row" flex>
+					<i class="icon-search"></i>
+					Search
+				</div>
+				<div class="blut-current-view" flex hide-xs hide-sm>
+					{{currentView}}
+				</div>
+				<div layout="row" layout-align="end center" class="blut-search-right-wrapper" style="width: 495px;">
+
+					<div class="blut-header-icon" ng-click="navigate($event,'Home')">
+						<i class="icon-house-outline"></i>
+					</div>
+					<div class="blut-header-icon" ng-click="navigate($event,'TV Mode')">
+						<i class="icon-full-size"></i>
+					</div>
+					<div class="blut-header-icon" ng-click="navigate($event,'Clear Widgets')">
+						<i class="icon-broom"></i>
+					</div>
+					<div class="blut-header-icon" ng-click="navigate($event,'Save')">
+						<i class="ti-save"></i>
+					</div>
+					<!--div flex="10" class="blut-header-icon" ng-click="navigate('Help')">
+						<i class="ti-help-alt"></i>
+					</div-->
+					<div class="blut-header-icon" ng-click="navigate($event,'Notifications')">
+						<i class="ti-bell"></i>
+						<div style="width:15px;height:15px;border-radius:16px;background:#02b5e2;color:white;margin-top:-30px;margin-left:15px;font-size:10px;font-weight:700;position:absolute"><div style="margin-left:4px;margin-top:1px;" ng-if="notifications.length <=9">{{notifications.length}}</div><div style="margin-left:1px;margin-top:3px;" ng-if="notifications.length > 9">{{notifications.length}}</div></div>
+					</div>
+
+
+					<div class="blut-profile-wrapper-header">
+						<div layout="row" class="blut-login-user pull-right">
+							<p ng-model="username" hide-sm hide-xs>{{$root.authObject.Email}}</p>
+							<div class="login-img">
+								<img ng-src="images/signup-user.png" err-src="images/signup-user.png" />
+							</div>
+
+							<div class="dropdown">
+							  <button class="dropbtn"><i class="ti-angle-down"></i></button>
+							  <div class="dropdown-content">
+								<a ng-click="navigate($event,'Switch Tenant')">Switch Tenant</a>
+								<a ng-click="navigate($event,'Invite User')">Invite user</a>
+								<a ng-click="navigate($event,'Profile Settings')">Profile Settings</a>
+								<a ng-click="navigate($event,'Help')">Help</a>
+								<a ng-click="navigate($event,'Logout')">Logout</a>
+							  </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="blut-search-toggle" ng-click="topMenuToggle()">
+				<span ng-if="!showHeader" class="ti-angle-down"></span>
+				<span ng-if="showHeader" class="ti-angle-up"></span>
+			</div>
+			
+		</div>
+		
+		<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="notifications" style="overflow-y:hidden;z-index:1501;">
+
+			<md-toolbar style="min-height: 45px;height:45px;background:#02b5e2">
+				<div layout="row" layout-align="space-between center">
+
+					<h1 class="md-toolbar-tools" style="color:white">Notifications</h1>
+					<md-button class="md-icon-button" ng-click="openNotifications()" aria-label="close">
+						<ng-md-icon icon="close" style="fill:white;margin-top:10px" size="24px"></ng-md-icon>
+					</md-button>
+				</div>
+			</md-toolbar>
+			<md-content style="overflow-y:scroll;height:calc(100% - 130px);padding:0" ng-if="notifications.length >= 1">
+				<md-list style="padding:0">
+					<md-list-item class="md-3-line" ng-repeat="notification in notifications" ng-click="viewNotifications(notification)">
+						<div class="md-list-item-text" layout="column">
+							<div layout="row" layout-align="start start" > <h3 style="width: 155px;">{{notification.title}}</h3></div>
+							<p style="margin-top:6px;">{{notification.description}}</p>
+						</div>
+						<md-button class="md-icon-button launch" ng-click="removeNotification($event,notification)" aria-label="removeNotification" style="margin-top: 10px !important" aria-label="delete" ng-if="notification.email == useremail">
+							<ng-md-icon icon="close" style="fill:#979797" size="18px"></ng-md-icon>
+						</md-button>
+					</md-list-item>
+				</md-list>
+			</md-content>
+			<md-content style="padding:0;height:calc(100% - 130px)" ng-if="notifications.length < 1" layout="column" layout-align="center center">
+				<p>There are no Notifications</p>
+			</md-content>
+				
+
+		</md-sidenav>
+		
+		<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="searchBar" style="overflow-y:hidden;z-index:1501;">
+
+
+			<md-toolbar style="min-height: 45px;height:45px;background:#02b5e2">
+				<div layout="row" layout-align="space-between center">
+
+					<div class="search-box">
+						<input style="width:200px" placeholder="search dashboard or report..." ng-model="SearchComponents">
+					</div>
+					<md-button class="md-icon-button"  ng-click="openSearchBar()" aria-label="open search">
+						<ng-md-icon icon="close" style="fill:white;margin-top:10px" size="24px"></ng-md-icon>
+					</md-button>
+				</div>
+			</md-toolbar>
+			<md-content style="overflow-y:scroll;height:calc(100% - 45px);padding:0">
+				<div class="dashboard-wrapper">
+					<h3 style="color: #9a9a9a;margin-left:10px">Dashboards</h3>
+				</div>
+				<md-list style="padding:0">
+					<md-list-item class="md-3-line md-3-line-small" ng-repeat="dashboard in dashboards | filter:SearchComponents" ng-click="diginComponents.goDashboard(dashboard)">
+						<span class="ti-pie-chart" style="font-size:40px; padding-right: 15px"></span>
+						<div class="md-list-item-text" layout="column">
+							<div layout="row" layout-align="start start" > <h3 style="width: 155px;">{{dashboard.compName}}</h3></div>
+						</div>
+						<md-button class="md-icon-button icon-cancel" ng-click="diginComponents.deleteDashboard(dashboard,$event);$event.stopPropagation()" style="margin-top: 10px !important;font-size:10px;" aria-label="delete">
+						</md-button>
+					</md-list-item>
+				</md-list>
+				
+				<div class="dashboard-wrapper">
+					<h3 style="color: #9a9a9a;margin-left:10px">Reports</h3>
+				</div>
+				
+				<md-list style="padding:0">
+					<md-list-item class="md-3-line md-3-line-small" ng-repeat="report in reports | filter:SearchComponents" ng-click="diginComponents.goReport(report)">
+						<span class="ti-bar-chart" style="font-size:35px; padding-right: 15px"></span>
+						<div class="md-list-item-text" layout="column">
+							<div layout="row" layout-align="start start" > <h3 style="width: 155px;">{{report.compName}}</h3></div>
+						</div>
+						<md-button class="md-icon-button icon-cancel" ng-click="diginComponents.deleteReport(report,$event);$event.stopPropagation()" style="margin-top: 10px !important;font-size:10px;" aria-label="delete">
+						</md-button>
+					</md-list-item>
+				</md-list>
+
+			</md-content>
+			
+
+		</md-sidenav>
+		
+		<div class="left-menu-slide" style="height:100%;background:white;position:fixed;z-index:3;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:2px 0 3px -2px #888;top:45px; border-left: 3px solid #d7d8da;"  ng-intro-options="IntroOptions" ng-intro-method="Introduce">
+			<div id="cssmenu">
+				<ul>
+					<!--li style="margin-top:25px;height:50px;font-size:24px" ng-click="navigate($event,'New Page')"><a><i class="icon-add-page"></i></a></li-->
+					<li style="margin-top:25px;height:50px;font-size:24px" class="active has-sub"><a href="#"><i class="icon-report"></i></a>
+						<ul>
+							<li class="has-sub"><a><i class="ti-filter sub-menu-icon"></i>Report Development</a></li>
+							<li class="has-sub"><a><i class="ti-notepad sub-menu-icon"></i>Published Reports</a></li>
+						</ul>
+					</li>
+					<li style="height:50px;font-size:24px" ng-click="navigate($event,'RealTime')"><a><i class="icon-clock"></i></a></li>
+					<!--li style="height:50px;font-size:24px" ng-click="navigate($event,'DataSource')"><a><i class="icon-database"></i></a></li-->
+					<li style="height:50px;font-size:24px" class="active has-sub"><a href="#"><i class="icon-database"></i></a>
+						<ul>
+							<li class="has-sub" ng-click="navigate($event,'Visualize Data')"><a><i class="ti-pie-chart sub-menu-icon"></i>Visualize Data</a></li>
+							<li class="has-sub" ng-click="navigate($event,'Upload Source')"><a><i class="ti-upload sub-menu-icon"></i>Upload Source</a></li>
+						</ul>
+					</li>
+					<li style="height:50px;font-size:24px" ng-click="navigate($event,'AddWidget')"><a><i class="icon-plugin"></i></a></li>
+					<li style="height:50px;font-size:24px" class="active has-sub"><a href="#"><i class="icon-profile"></i></a>
+						<ul>
+							<li class="has-sub"><a><i class="ti-facebook sub-menu-icon"></i>Facebook</a></li>
+							<li class="has-sub"><a><i class="ti-twitter sub-menu-icon"></i>Twitter</a></li>
+						</ul>
+					</li>
+					<li style="height:50px;font-size:24px" class="active has-sub"><a href="#"><i class="icon-share"></i></a>
+						<ul>
+							<li class="has-sub"><a><i class="ti-facebook sub-menu-icon"></i>Facebook</a></li>
+							<li class="has-sub"><a><i class="ti-google sub-menu-icon"></i>Google+</a></li>
+							<li class="has-sub"><a><i class="ti-twitter sub-menu-icon"></i>Twitter</a></li>
+							<li class="has-sub"><a><i class="ti-linkedin sub-menu-icon"></i>Linkedin</a></li>
+							<li class="has-sub"><a><i class="ti-email sub-menu-icon"></i>Email</a></li>
+						</ul>
+					</li>
+					<li style="height:50px;font-size:24px" class="active has-sub"><a href="#"><i class="icon-settings"></i></a>
+						<ul>
+							<li class="has-sub" ng-click="navigate($event,'createNewUser')"><a><i class="ti-user sub-menu-icon"></i>New user</a></li>
+							<li class="has-sub" ng-click="navigate($event,'shareDashboard')"><a><i class="ti-share sub-menu-icon"></i>Share Dashboard</a></li>
+							<li class="has-sub" ng-click="navigate($event,'userSettings')"><a><i class="ti-pencil sub-menu-icon"></i>User settings</a></li>
+							<li class="has-sub" ng-click="navigate($event,'accountSettings')"><a><i class="ti-settings sub-menu-icon"></i>Account settings</a></li>
+							<li class="has-sub" ng-click="navigate($event,'groups')"><a><i class="icon-group sub-menu-icon"></i>Groups</a></li>
+						</ul>
+					</li>
+					
+					
+
+
+				</ul>
+				<div class="left-menu-toggle" ng-click="leftMenuToggle()">
+					<span ng-if="!showSideMenu" class="ti-angle-right"></span>
+					<span ng-if="showSideMenu" class="ti-angle-left"></span>
+				</div>
+			</div>
+		</div>
+
+		<md-content style="background:transparent">
+			
+			<div ui-view></div>
+
+		</md-content>
+	</div>
+	<!--END OF APPLICATION CONTAINER-->
+	
+	<script src="js/jquery-2.1.4.min.js"></script>
+	<script src="js/lodash.js"></script>
+	<script src="bower_components/angular/angular.min.js"></script>
+	<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+	<script src="bower_components/angular-aria/angular-aria.min.js"></script>
+	<script src="bower_components/angular-material/angular-material.min.js"></script>
+	<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script src="bower_components/angular-messages/angular-messages.min.js"></script>
+	<script src="js/angular-simple-logger.min.js"></script>
+	<script src="js/angular-google-maps.min.js"></script>
+	
+
+    <script src="js/angular-gridster.min.js"></script>
+	<script src="js/uimicrokernel.js"></script>
+
+	
+	<script src="js/directivelibrary.js"></script>
+	<script src="js/md-steppers.js"></script>
+	<script src="js/highcharts.js"></script>
+	<script src="js/highcharts-ng.js"></script>
+	
+	<script src="http://code.highcharts.com/modules/exporting.js"></script>
+	<script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
+	<script type="text/javascript" src="http://code.highcharts.com/highcharts-3d.js"></script>
+	<script type="text/javascript" src="js/v-accordion.min.js"></script>
+	<script type="text/javascript" src="js/ng-croppie.min.js"></script>
+	
+	<!--for rss feeds-->
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript">
+	  google.load("feeds", "1");
+	</script>
+	
+	<script src="js/highcharts-more.js"></script>
+
+	<script src="js/controllers/statesConfig.js"></script>
+	<script src="js/controllers/DiginServices.js"></script>
+	<script src="js/controllers/NavCtrl.js"></script>
+
+	<script src="views/data_source/visualize_data/visualize_dataCtrl.js"></script>
+	<script src="dialogs/addWidget/addWidgetCtrl.js"></script>
+	<script src="dialogs/addPage/addPageCtrl.js"></script>
+	<script src="dialogs/switchTenant/switchTenantCtrl.js"></script>
+	<script src="views/settings/createNewUser/createNewUserCtrl.js"></script>
+	<script src="views/settings/shareDashboard/shareDashboardCtrl.js"></script>
+	<script src="views/settings/userSettings/userSettingsCtrl.js"></script>
+	<script src="views/settings/accountSettings/accountSettingsCtrl.js"></script>
+	<script src="views/settings/groups/groupsCtrl.js"></script>
+	<script src="views/settings/profile/profileCtrl.js"></script>
+	<script src="views/settings/inviteUser/inviteUserCtrl.js"></script>
+	<script src="views/dashboard/dashboardCtrl.js"></script>
+	<script src="views/dashboard/renamePage/renamePageCtrl.js"></script>
+	
+	
+	<!--Widgets Controllers-->
+	<script src="views/widgets/clock/clockCtrl.js"></script>
+	<script src="views/widgets/custom/google_maps/gmapsCtrl.js"></script>
+	<script src="views/widgets/blogging/WordPress/wordpressInitCtrl.js"></script>
+	<script src="views/widgets/blogging/RssFeeds/rssInitCtrl.js"></script>
+	<script src="views/widgets/blogging/Gnews/gnewsInitCtrl.js"></script>
+	
+	
+	<script src="views/widgets/custom/view_image/imInitCtrl.js"></script>
+	
+	
+	<script src="views/widgets/custom/realTime/realTimeCtrl.js"></script>
+
+	<!--Widgets Controllers-->
+	<script>
+	$(document).ready(function(){
+		var preload = document.getElementById("preload");
+		preload.style.display = "none";
+	});
+	</script>
+	
+</body>
+</html>

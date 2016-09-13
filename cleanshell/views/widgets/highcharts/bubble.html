@@ -1,0 +1,6 @@
+<md-content style="padding-top:20px;width:100%;height:100%">
+	<highchart  flex id="{{widget.widgetData.id}}"  config="widget.widgetData.highchartsNG"></highchart>
+</md-content>
+<div ng-hide="widget.widgetData.syncState" layout="row" layout-sm="column" layout-align="center center" style="height:100%;width:100%;">
+    <md-progress-circular md-mode="indeterminate" md-diameter="96"></md-progress-circular>
+</div>

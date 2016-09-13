@@ -1,0 +1,377 @@
+{
+	"Exception": null,
+	"Result": {
+		"compName": "HighChart-test",
+		"compCategory": null,
+		"compID": "1472463225297",
+		"compClass": null,
+		"pages": [{
+			"pageName": "DEFAULT",
+			"pageData": null,
+			"pageID": "1472463225313",
+			"widgets": [{
+				"widgetID": "1472463225323",
+				"pageID": "1472463225313",
+				"widgetData": {
+					"externalDataURL": "",
+					"dataView": "views/ViewData.html",
+					"height": "300px",
+					"seriesname": "",
+					"dataname": "",
+					"id": "889a",
+					"d3plugin": "",
+					"width": "370px",
+					"type": "Visualization",
+					"syncState": true,
+					"widData": {
+						"drilled": false
+					},
+					"initCtrl": "elasticInit",
+					"dataCtrl": "widgetSettingsDataCtrl",
+					"highchartsNG": {
+						"title": {
+							"text": ""
+						},
+						"series": [{
+							"color": "#3b6982",
+							"data": [{
+								"y": 1970.8572149132758,
+								"name": "Alberta"
+							}, {
+								"y": 1680.9571797514163,
+								"name": "British Columbia"
+							}, {
+								"y": 1731.2090563682898,
+								"name": "Manitoba"
+							}, {
+								"y": 2118.3019278637207,
+								"name": "New Brunswick"
+							}, {
+								"y": 1255.1715548780755,
+								"name": "Newfoundland"
+							}, {
+								"y": 2032.6074362945337,
+								"name": "Northwest Territories"
+							}, {
+								"y": 1762.3477637931358,
+								"name": "Nova Scotia"
+							}, {
+								"y": 1473.1200405063798,
+								"name": "Nunavut"
+							}, {
+								"y": 1677.553383734883,
+								"name": "Ontario"
+							}, {
+								"y": 1940.204979620946,
+								"name": "Prince Edward Island"
+							}, {
+								"y": 1933.6684755443023,
+								"name": "Quebec"
+							}, {
+								"y": 1604.0041836801447,
+								"name": "Saskachewan"
+							}, {
+								"y": 1800.493305535103,
+								"name": "Yukon"
+							}],
+							"name": "avg_Sales",
+							"id": "series-2"
+						}],
+						"yAxis": {
+							"lineWidth": 1
+						},
+						"legend": {
+							"layout": "vertical",
+							"align": "right",
+							"verticalAlign": "middle",
+							"borderWidth": 0
+						},
+						"credits": {
+							"enabled": false
+						},
+						"colors": ["#3b6982"],
+						"xAxis": {
+							"type": "category",
+							"title": {
+								"text": "Province"
+							}
+						},
+						"options": {
+							"yAxis": {
+								"showEmpty": false
+							},
+							"chart": {
+								"plotShadow": false,
+								"type": "bar",
+								"plotBackgroundColor": null,
+								"plotBorderWidth": null,
+								"events": {}
+							},
+							"tooltip": {
+								"pointFormat": "{point.y:,.0f}"
+							},
+							"plotOptions": {
+								"pie": {
+									"cursor": "pointer",
+									"series": {
+										"dataLabels": {
+											"color": "black",
+											"enabled": true,
+											"softConnector": true,
+											"format": "<b>{point.name}</b> ( {point.y:,.0f} )"
+										}
+									},
+									"allowPointSelect": true,
+									"showInLegend": false,
+									"dataLabels": {
+										"color": "#000000",
+										"enabled": true,
+										"format": "<b> {point.name}</b>"
+									}
+								}
+							},
+							"xAxis": {
+								"showEmpty": false
+							},
+							"exporting": {
+								"sourceHeight": 400,
+								"sourceWidth": 600,
+								"chartOptions": {
+									"title": {}
+								}
+							}
+						},
+						"size": {
+							"width": 425.3333333333333,
+							"height": 295
+						}
+					},
+					"uniqueType": "Dynamic Visuals",
+					"initTemplate": "",
+					"mheight": "100%",
+					"widView": "views/widgets/highcharts/ViewCommonSrc.html",
+					"selectedChart": {
+						"initObj": {
+							"init": false,
+							"title": {
+								"text": ""
+							},
+							"options": {
+								"credits": {
+									"enabled": false
+								},
+								"exporting": {
+									"sourceHeight": 400,
+									"sourceWidth": 600,
+									"filename": ""
+								},
+								"chart": {
+									"width": null,
+									"type": "bar"
+								},
+								"xAxis": {
+									"showEmpty": false
+								},
+								"yAxis": {
+									"showEmpty": false
+								}
+							},
+							"yAxis": {
+								"showEmpty": false
+							}
+						},
+						"name": "bar ",
+						"selected": false,
+						"chart": "bar",
+						"chartType": "highCharts",
+						"icon": "ti-bar-chart",
+						"settingsView": "views/query/settings-views/highchartsSettings.html",
+						"id": "ct02",
+						"view": "views/query/chart-views/highcharts.html"
+					},
+					"divider": false,
+					"expanded": true,
+					"commonSrc": {
+						"src": {
+							"src": "BigQuery",
+							"fAttArr": [{
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "0",
+								"name": "Row_ID"
+							}, {
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "1",
+								"name": "Order_ID"
+							}, {
+								"isRemove": false,
+								"dataType": "TIMESTAMP",
+								"id": "2",
+								"name": "Date"
+							}, {
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "3",
+								"name": "Order_Priority"
+							}, {
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "7",
+								"name": "Ship_Mode"
+							}, {
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "11",
+								"name": "Customer_Name"
+							}, {
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "12",
+								"name": "Province"
+							}, {
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "13",
+								"name": "Region"
+							}, {
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "14",
+								"name": "Customer_Segment"
+							}, {
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "15",
+								"name": "Product_Category"
+							}, {
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "16",
+								"name": "Product_SubCategory"
+							}, {
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "17",
+								"name": "Product_Name"
+							}, {
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "18",
+								"name": "Product_Container"
+							}, {
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "19",
+								"name": "Product_BaseMargin"
+							}, {
+								"isRemove": false,
+								"dataType": "TIMESTAMP",
+								"id": "20",
+								"name": "Ship_Date"
+							}],
+							"tbl": "superstore",
+							"fMeaArr": [{
+								"isRemove": false,
+								"dataType": "INTEGER",
+								"id": "4",
+								"name": "Order_Quantity"
+							}, {
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "5",
+								"name": "Sales"
+							}, {
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "6",
+								"name": "Discount"
+							}, {
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "8",
+								"name": "Profit"
+							}, {
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "9",
+								"name": "Unit_Price"
+							}, {
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "10",
+								"name": "Shipping_Cost"
+							}]
+						},
+						"att": [{
+							"filedName": "Province"
+						}],
+						"mea": [{
+							"filedName": "Sales",
+							"condition": "AVG"
+						}],
+						"query": "SELECT Province ,avg(Sales) as avg_Sales FROM omal_duosoftware_com.superstore  GROUP BY Province ORDER BY Province"
+					}
+				},
+				"widgetName": "highcharts",
+				"col": 0,
+				"sizeX": 8,
+				"sizeY": 25,
+				"row": 0
+			}, {
+				"widgetID": "1472463225335",
+				"pageID": "1472463225313",
+				"widgetData": {
+					"widEnc": {},
+					"externalDataURL": "",
+					"chartStack": [{
+						"id": "",
+						"title": "No"
+					}, {
+						"id": "normal",
+						"title": "Normal"
+					}, {
+						"id": "percent",
+						"title": "Percent"
+					}],
+					"widCsc": {},
+					"height": "300px",
+					"seriesname": "",
+					"dataname": "",
+					"id": 66,
+					"widCsv": {},
+					"top": "0px",
+					"d3plugin": "",
+					"width": "370px",
+					"widAexc": {},
+					"divider": false,
+					"syncState": true,
+					"widData": {},
+					"initCtrl": "clockInit",
+					"widName": "Clock",
+					"highchartsNG": null,
+					"widAque": {},
+					"uniqueType": "Clock",
+					"initTemplate": "views/widgets/clock/InitConfigClockComponent.html",
+					"mheight": "100%",
+					"widView": "views/widgets/clock/ViewClock.html",
+					"widDec": {},
+					"widAna": {},
+					"type": "General",
+					"expanded": true,
+					"widIm": {},
+					"left": "0px"
+				},
+				"widgetName": "Clock",
+				"col": 8,
+				"sizeX": 8,
+				"sizeY": 26,
+				"row": 0
+			}]
+		}],
+		"refreshInterval": 60,
+		"compType": "dashboard"
+	},
+	"Is_Success": true,
+	"Custom_Message": "Successful!"
+}

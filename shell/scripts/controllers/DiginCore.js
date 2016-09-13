@@ -45,8 +45,8 @@ routerApp.controller('showWidgetCtrl', function($scope, $mdDialog, widget) {
     };
 
 });
-routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', '$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce','sales_distribution',
-    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce,sales_distribution) {
+routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce','sales_distribution',
+    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce, sales_distribution) {
 
         //code to keep widget fixed on pivot summary drag events
         $('#content1').on('mousedown', function(e) {
@@ -1001,7 +1001,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
                             //aggregate method
                             clientObj.getAggData(srcTbl, fields, function(res, status, query) {
-
+                                filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
                                 widget.widgetData.widData.drillConf.currentLevel++;
                                 switch (widget.widgetData.widData.drillConf.currentLevel) {
                                     case 2:

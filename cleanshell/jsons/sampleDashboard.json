@@ -1,0 +1,2314 @@
+{
+	"Exception": null,
+	"Result": {
+		"compName": "Sales Dashboard",
+		"compCategory": null,
+		"compID": "1470684090262",
+		"compClass": null,
+		"pages": [{
+			"pageName": "Overall Sales Summary",
+			"pageData": null,
+			"pageID": "1470684090268",
+			"widgets": [{
+				"widgetID": "1470684090273",
+				"pageID": "1470684090268",
+				"widgetData": {
+					"externalDataURL": "",
+					"dataView": "views/ViewData.html",
+					"height": "300px",
+					"seriesname": "",
+					"dataname": "",
+					"id": "9912",
+					"d3plugin": "",
+					"width": "370px",
+					"type": "Visualization",
+					"syncState": true,
+					"widData": {},
+					"initCtrl": "elasticInit",
+					"dataCtrl": "widgetSettingsDataCtrl",
+					"widName": "Sales Forecast",
+					"highchartsNG": {
+						"title": {
+							"text": ""
+						},
+						"series": [],
+						"yAxis": {
+							"lineWidth": 1
+						},
+						"xAxis": {
+							"type": "datetime",
+							"categories": ["2013-4", "2013-5", "2013-6", "2013-7", "2013-8", "2013-9", "2013-10", "2013-11", "2013-12", "2014-1", "2014-2", "2014-3", "2014-4", "2014-5", "2014-6", "2014-7", "2014-8", "2014-9", "2014-10", "2014-11", "2014-12", "2015-1", "2015-2", "2015-3", "2015-4", "2015-5", "2015-6", "2015-7", "2015-8", "2015-9", "2015-10", "2015-11", "2015-12", "2016-1", "2016-2", "2016-3", "2016-4", "2016-5", "2016-6", "2016-7", "2016-8", "2016-9", "2016-10", "2016-11", "2016-12", "2017-1", "2017-2", "2017-3"]
+						},
+						"options": {
+							"chart": {
+								"zoomType": "x"
+							}
+						},
+						"size": {
+							"width": 668.375,
+							"height": 297
+						}
+					},
+					"uniqueType": "Dynamic Visuals",
+					"initTemplate": "",
+					"mheight": "100%",
+					"widView": "views/common-data-src/res-views/ViewCommonSrc.html",
+					"foreCastObj": {
+						"a": 0.716,
+						"b": 0.029,
+						"g": 0.993,
+						"interval": "Monthly",
+						"len_season": "12",
+						"fcast_days": 12,
+						"beta": 0.029,
+						"date_field": "InvoiceDate",
+						"f_field": "InvoiceAmount",
+						"tbl": "ar_invoiceheader",
+						"alpha": 0.716,
+						"model": "triple exponential smoothing",
+						"method": "Additive",
+						"gamma": 0.993,
+						"mod": "triple_exp"
+					},
+					"selectedChart": {
+						"initObj": {
+							"series": [{
+								"color": "#536DFE",
+								"id": "series-0"
+							}],
+							"options": {
+								"chart": {
+									"width": null,
+									"type": "bar"
+								},
+								"exporting": {
+									"sourceHeight": 400,
+									"sourceWidth": 600,
+									"filename": ""
+								}
+							},
+							"title": {
+								"text": ""
+							}
+						},
+						"name": "forecast",
+						"selected": true,
+						"chart": "forecast",
+						"chartType": "forecast",
+						"icon": "fa fa-line-chart",
+						"settingsView": "views/query/settings-views/forecastSettings.html",
+						"id": "ct18",
+						"view": "views/query/chart-views/highcharts.html"
+					},
+					"divider": false,
+					"expanded": true,
+					"commonSrc": {
+						"src": {
+							"src": "BigQuery",
+							"fAttArr": [{
+								"isRemove": false,
+								"dataType": "TIMESTAMP",
+								"id": "6",
+								"name": "InvoiceDate"
+							}],
+							"tbl": "ar_invoiceheader",
+							"fMeaArr": [{
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "23",
+								"name": "InvoiceAmount"
+							}]
+						},
+						"att": [],
+						"mea": [],
+						"query": ""
+					}
+				},
+				"widgetName": "forecast",
+				"col": 0,
+				"sizeX": 11,
+				"sizeY": 22,
+				"row": 0
+			}, {
+				"widgetID": "1470684090277",
+				"pageID": "1470684090268",
+				"widgetData": {
+					"externalDataURL": "",
+					"dataView": "views/ViewData.html",
+					"height": "300px",
+					"seriesname": "",
+					"dataname": "",
+					"id": "1c03",
+					"d3plugin": "",
+					"width": "370px",
+					"type": "Visualization",
+					"syncState": true,
+					"widData": {
+						"drillConf": {
+							"highestLvl": "brand",
+							"currentLevel": 1,
+							"drillOrdArr": [{
+								"nextLevel": "ProductCode",
+								"name": "brand",
+								"level": 1
+							}, {
+								"name": "ProductCode",
+								"level": 2
+							}],
+							"fields": [{
+								"agg": "SUM",
+								"field": "invoiceamount"
+							}],
+							"level1Query": "SELECT brand ,sum(invoiceamount) as sum_invoiceamount FROM digin_duosoftware_com.salesbyproduct_view  GROUP BY brand ORDER BY brand",
+							"dataSrc": "BigQuery",
+							"currentQuery": "SELECT ProductCode ,sum(invoiceamount) as sum_invoiceamount FROM digin_duosoftware_com.salesbyproduct_view WHERE brand='Epsi' GROUP BY ProductCode ORDER BY ProductCode",
+							"level2Query": "SELECT ProductCode ,sum(invoiceamount) as sum_invoiceamount FROM digin_duosoftware_com.salesbyproduct_view WHERE brand='Epsi' GROUP BY ProductCode ORDER BY ProductCode",
+							"clientObj": {},
+							"srcTbl": "salesbyproduct_view",
+							"level3Query": null
+						},
+						"drilled": true
+					},
+					"initCtrl": "elasticInit",
+					"dataCtrl": "widgetSettingsDataCtrl",
+					"widName": "Sales by Product",
+					"highchartsNG": {
+						"title": {
+							"text": ""
+						},
+						"series": [{
+							"color": "#a388d6",
+							"data": [{
+								"y": 6274070,
+								"drilldown": true,
+								"name": "A- Data"
+							}, {
+								"y": 8000,
+								"drilldown": true,
+								"name": "A-Plus"
+							}, {
+								"y": 54489678,
+								"drilldown": true,
+								"name": "A4 Tech"
+							}, {
+								"y": 7024523315.889995,
+								"drilldown": true,
+								"name": "ASUS"
+							}, {
+								"y": 13000,
+								"drilldown": true,
+								"name": "Altec Lansing"
+							}, {
+								"y": 47746001.5,
+								"drilldown": true,
+								"name": "Apple"
+							}, {
+								"y": 102500,
+								"drilldown": true,
+								"name": "Belkin"
+							}, {
+								"y": 712595,
+								"drilldown": true,
+								"name": "Canon"
+							}, {
+								"y": 397550,
+								"drilldown": true,
+								"name": "Creative Products"
+							}, {
+								"y": 1307700,
+								"drilldown": true,
+								"name": "D- Link"
+							}, {
+								"y": 4368079,
+								"drilldown": true,
+								"name": "DELL Products"
+							}, {
+								"y": 2798260,
+								"drilldown": true,
+								"name": "Daewoo"
+							}, {
+								"y": 407600,
+								"drilldown": true,
+								"name": "Defender"
+							}, {
+								"y": 10800,
+								"drilldown": true,
+								"name": "ELECOM"
+							}, {
+								"y": 100228960,
+								"drilldown": true,
+								"name": "EPSI"
+							}, {
+								"y": 75960,
+								"drilldown": true,
+								"name": "Energizer"
+							}, {
+								"y": 1817485785.5000005,
+								"drilldown": true,
+								"name": "Epsi"
+							}, {
+								"y": 2141100,
+								"drilldown": true,
+								"name": "Epson"
+							}, {
+								"y": 6660294,
+								"drilldown": true,
+								"name": "Fixed Assets"
+							}, {
+								"y": 31800,
+								"drilldown": true,
+								"name": "GRIFFIN"
+							}, {
+								"y": 17155590,
+								"drilldown": true,
+								"name": "Genius"
+							}, {
+								"y": 87900,
+								"drilldown": true,
+								"name": "HARMAN KARDON"
+							}, {
+								"y": 27681752,
+								"drilldown": true,
+								"name": "HP - Products"
+							}, {
+								"y": 32105537,
+								"drilldown": true,
+								"name": "Hauppauge"
+							}, {
+								"y": 495562,
+								"drilldown": true,
+								"name": "Hitachi"
+							}, {
+								"y": 5000,
+								"drilldown": true,
+								"name": "I dea Style"
+							}, {
+								"y": 138807605.07,
+								"drilldown": true,
+								"name": "INTEL"
+							}, {
+								"y": 414900,
+								"drilldown": true,
+								"name": "Imation"
+							}, {
+								"y": 5650,
+								"drilldown": true,
+								"name": "Intex"
+							}, {
+								"y": 37600,
+								"drilldown": true,
+								"name": "JBL"
+							}, {
+								"y": 17493719.6,
+								"drilldown": true,
+								"name": "KASPERSKY"
+							}, {
+								"y": 137618192.64,
+								"drilldown": true,
+								"name": "KINGSTON"
+							}, {
+								"y": 2179009,
+								"drilldown": true,
+								"name": "LOGITECH"
+							}, {
+								"y": 0,
+								"drilldown": true,
+								"name": "Linksys"
+							}, {
+								"y": 33501,
+								"drilldown": true,
+								"name": "MAXTOR"
+							}, {
+								"y": 94696053.41000001,
+								"drilldown": true,
+								"name": "MICROSOFT"
+							}, {
+								"y": 1800280,
+								"drilldown": true,
+								"name": "NORTON"
+							}, {
+								"y": 209118157.51999998,
+								"drilldown": true,
+								"name": "OEM-Products"
+							}, {
+								"y": 4573000,
+								"drilldown": true,
+								"name": "OTTER BOX"
+							}, {
+								"y": 25992084.4,
+								"drilldown": true,
+								"name": "Other"
+							}, {
+								"y": 7500,
+								"drilldown": true,
+								"name": "PLANET"
+							}, {
+								"y": 7500,
+								"drilldown": true,
+								"name": "PLUSTEK"
+							}, {
+								"y": 1046600,
+								"drilldown": true,
+								"name": "PROLINK"
+							}, {
+								"y": 11264932,
+								"drilldown": true,
+								"name": "Powerlogic"
+							}, {
+								"y": 1666876,
+								"drilldown": true,
+								"name": "SAMSUNG"
+							}, {
+								"y": 3968128,
+								"drilldown": true,
+								"name": "SEAGATE"
+							}, {
+								"y": 1167300,
+								"drilldown": true,
+								"name": "SENNHEISER"
+							}, {
+								"y": 18900,
+								"drilldown": true,
+								"name": "SONY"
+							}, {
+								"y": 248300,
+								"drilldown": true,
+								"name": "Service"
+							}, {
+								"y": 552471538.11,
+								"drilldown": true,
+								"name": "Singer"
+							}, {
+								"y": 22284474.4,
+								"drilldown": true,
+								"name": "Stock"
+							}, {
+								"y": 168276754.42,
+								"drilldown": true,
+								"name": "TOSHIBA"
+							}, {
+								"y": 4791913,
+								"drilldown": true,
+								"name": "TP Link"
+							}, {
+								"y": 85106613.02999999,
+								"drilldown": true,
+								"name": "TRANSCEND"
+							}, {
+								"y": 45100,
+								"drilldown": true,
+								"name": "Trade-in"
+							}, {
+								"y": 583040316.76,
+								"drilldown": true,
+								"name": "VIEW SONIC PRODUCTS"
+							}, {
+								"y": 3508176.77,
+								"drilldown": true,
+								"name": "Western Digital"
+							}],
+							"name": "Invoice Amount",
+							"id": "series-30"
+						}],
+						"yAxis": {
+							"lineWidth": 1,
+							"title": {
+								"text": "Invoice Amount(LKR)"
+							}
+						},
+						"legend": {
+							"layout": "vertical",
+							"align": "right",
+							"verticalAlign": "middle",
+							"borderWidth": 0
+						},
+						"credits": {
+							"enabled": false
+						},
+						"colors": ["#3b6982"],
+						"xAxis": {
+							"type": "category"
+						},
+						"drilldown": {
+							"series": []
+						},
+						"options": {
+							"customVar": "brand",
+							"plotOptions": {
+								"pie": {
+									"cursor": "pointer",
+									"series": {
+										"dataLabels": {
+											"color": "black",
+											"enabled": true,
+											"softConnector": true,
+											"format": "<b>{point.name}</b> ({point.y:,.0f})"
+										}
+									},
+									"allowPointSelect": true,
+									"showInLegend": false,
+									"dataLabels": {
+										"color": "#000000",
+										"enabled": true,
+										"format": "{point.percentage:,.2f}  %<b> {point.name}</b>undefined</b> |   {point.y:,.2f}"
+									}
+								}
+							},
+							"chart": {
+								"plotShadow": false,
+								"type": "column",
+								"plotBackgroundColor": null,
+								"plotBorderWidth": null,
+								"events": {}
+							},
+							"tooltip": {
+								"pointFormat": "{point.y}"
+							},
+							"exporting": {
+								"sourceHeight": 400,
+								"sourceWidth": 600,
+								"chartOptions": {
+									"title": {
+										"text": "Sales by Product"
+									}
+								}
+							}
+						},
+						"size": {
+							"width": 590.4583333333333,
+							"height": 267
+						}
+					},
+					"uniqueType": "Dynamic Visuals",
+					"initTemplate": "",
+					"mheight": "100%",
+					"widView": "views/common-data-src/res-views/ViewCommonSrc.html",
+					"selectedChart": {
+						"initObj": {
+							"series": [{
+								"color": "#536DFE",
+								"id": "series-17"
+							}],
+							"init": false,
+							"options": {
+								"chart": {
+									"width": null,
+									"type": "bar"
+								},
+								"exporting": {
+									"sourceHeight": 400,
+									"sourceWidth": 600,
+									"filename": ""
+								}
+							},
+							"title": {
+								"text": ""
+							}
+						},
+						"name": "column",
+						"selected": true,
+						"chart": "column",
+						"chartType": "highCharts",
+						"icon": "ti-bar-chart",
+						"settingsView": "views/query/settings-views/highchartsSettings.html",
+						"id": "ct03",
+						"view": "views/query/chart-views/highcharts.html"
+					},
+					"divider": false,
+					"expanded": true,
+					"commonSrc": {
+						"src": {
+							"src": "BigQuery",
+							"fAttArr": [{
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "0",
+								"name": "brand"
+							}, {
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "1",
+								"name": "ProductCode"
+							}],
+							"tbl": "salesbyproduct_view",
+							"fMeaArr": [{
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "2",
+								"name": "invoiceamount"
+							}]
+						},
+						"att": [{
+							"filedName": "brand"
+						}, {
+							"filedName": "ProductCode"
+						}],
+						"mea": [{
+							"filedName": "invoiceamount",
+							"condition": "SUM"
+						}],
+						"query": "SELECT brand ,sum(invoiceamount) as sum_invoiceamount FROM digin_duosoftware_com.salesbyproduct_view  GROUP BY brand ORDER BY brand"
+					}
+				},
+				"widgetName": "highcharts",
+				"col": 0,
+				"sizeX": 11,
+				"sizeY": 23,
+				"row": 22
+			}, {
+				"widgetID": "1470684090283",
+				"pageID": "1470684090268",
+				"widgetData": {
+					"externalDataURL": "",
+					"dataView": "views/ViewData.html",
+					"height": "300px",
+					"seriesname": "",
+					"dataname": "",
+					"id": "9034",
+					"d3plugin": "",
+					"width": "370px",
+					"type": "Visualization",
+					"syncState": true,
+					"widData": {
+						"drilled": false
+					},
+					"initCtrl": "elasticInit",
+					"dataCtrl": "widgetSettingsDataCtrl",
+					"widName": "Worst 50 Customers by Sales",
+					"highchartsNG": {
+						"title": {
+							"text": ""
+						},
+						"series": [{
+							"color": "#89ce6f",
+							"data": [{
+								"y": 0,
+								"name": "Sri Lankan Custom"
+							}, {
+								"y": 0,
+								"name": "STL Logistics (Pvt) Ltd"
+							}, {
+								"y": 0,
+								"name": "Institute Of Chemistry"
+							}, {
+								"y": 0,
+								"name": "First Capital Holdings PLC"
+							}, {
+								"y": 0,
+								"name": "The Kingsbury"
+							}, {
+								"y": 0,
+								"name": "MR. ABEYARATNE"
+							}, {
+								"y": 0,
+								"name": "SECRET HEART CHURCH"
+							}, {
+								"y": 0,
+								"name": "WASTE MANAGEMENT AUTHORITY (WESTERN PROVINCE)"
+							}, {
+								"y": 0,
+								"name": "Wasantha Ruwan"
+							}, {
+								"y": 0,
+								"name": "CIC Agri Businesses (Pvt) Ltd"
+							}, {
+								"y": 0,
+								"name": "IT Store"
+							}, {
+								"y": 0,
+								"name": "EMERALD INTERNATIONAL (PVT) LTD"
+							}, {
+								"y": 0,
+								"name": "Mahaweli Authority of Sri Lanka"
+							}, {
+								"y": 0,
+								"name": "Emerald International (Pvt) Ltd"
+							}, {
+								"y": 0,
+								"name": "ALL I WANT FOR CHRISMAS"
+							}, {
+								"y": 0,
+								"name": "International College of Business and Technology"
+							}, {
+								"y": 0,
+								"name": "Eskimo Fashion Knitwear (Pvt) Ltd"
+							}, {
+								"y": 0,
+								"name": "MTV Chanel (Pvt) Ltd"
+							}, {
+								"y": 0,
+								"name": "Mr. H. Malalakeerthi"
+							}, {
+								"y": 0,
+								"name": "CHINA METALLURGICAL GROUP CORPORATION"
+							}, {
+								"y": 0,
+								"name": "CECB"
+							}, {
+								"y": 0,
+								"name": "Laughf Holdings Limited"
+							}, {
+								"y": 0,
+								"name": "Sri Lanka Insurance"
+							}, {
+								"y": 0,
+								"name": "Fazlan Ameer"
+							}, {
+								"y": 0,
+								"name": "Quincy private Limited"
+							}, {
+								"y": 1,
+								"name": "Epsi Technology (Pvt) Ltd ? Admin Div"
+							}, {
+								"y": 1,
+								"name": "Canagey Capital (pvt) Ltd"
+							}, {
+								"y": 5,
+								"name": "Telecommunications Regulatory Commission of Sri Lanka"
+							}, {
+								"y": 6,
+								"name": "FA Assets Discard"
+							}, {
+								"y": 10,
+								"name": "Ifthikar Muthalif"
+							}, {
+								"y": 250,
+								"name": "G.D.K.Waruna (Epsi)"
+							}, {
+								"y": 450,
+								"name": "Chandrasiri"
+							}, {
+								"y": 450,
+								"name": "RUKSHAN"
+							}, {
+								"y": 475,
+								"name": "Nishantha De Silva"
+							}, {
+								"y": 500,
+								"name": "Sea Link Shipping"
+							}, {
+								"y": 500,
+								"name": "Kalana De Mel"
+							}, {
+								"y": 500,
+								"name": "Skills International"
+							}, {
+								"y": 500,
+								"name": "Omal Bhagya"
+							}, {
+								"y": 500,
+								"name": "MR. PATHMAKUMARA"
+							}, {
+								"y": 600,
+								"name": "Mohamed Mushtaq Shareef"
+							}, {
+								"y": 700,
+								"name": "Ganga Daran"
+							}, {
+								"y": 750,
+								"name": "G.P. Peris"
+							}, {
+								"y": 850,
+								"name": "H L Wasantha"
+							}, {
+								"y": 850,
+								"name": "SUNIL DE SILVA"
+							}, {
+								"y": 850,
+								"name": "Expelogix (Pvt) LTD"
+							}, {
+								"y": 950,
+								"name": "RAVI"
+							}, {
+								"y": 950,
+								"name": "MR. AMMAR"
+							}, {
+								"y": 1000,
+								"name": "Rania Waheed"
+							}, {
+								"y": 1000,
+								"name": "Abhiruha Thimbiripola"
+							}, {
+								"y": 1000,
+								"name": "H.K.Pradeep"
+							}],
+							"name": "Invoice Amount",
+							"id": "series-31"
+						}],
+						"yAxis": {
+							"lineWidth": 1,
+							"title": {
+								"text": "Invoice Amount(LKR)"
+							}
+						},
+						"legend": {
+							"layout": "vertical",
+							"align": "right",
+							"verticalAlign": "middle",
+							"borderWidth": 0
+						},
+						"credits": {
+							"enabled": false
+						},
+						"colors": ["#EC784B"],
+						"xAxis": {
+							"categories": ["First Capital Holdings PLC", "International College of Business and Technology", "EMERALD INTERNATIONAL (PVT) LTD", "ALL I WANT FOR CHRISMAS", "CHINA METALLURGICAL GROUP CORPORATION", "Sri Lankan Custom", "STL Logistics (Pvt) Ltd", "Laughf Holdings Limited", "CIC Agri Businesses (Pvt) Ltd", "Quincy private Limited", "IT Store", "Mahaweli Authority of Sri Lanka", "Wasantha Ruwan", "MTV Chanel (Pvt) Ltd", "Fazlan Ameer", "MR. ABEYARATNE", "Mr. H. Malalakeerthi", "Emerald International (Pvt) Ltd", "CECB", "Sri Lanka Insurance", "WASTE MANAGEMENT AUTHORITY (WESTERN PROVINCE)", "Eskimo Fashion Knitwear (Pvt) Ltd", "SECRET HEART CHURCH", "The Kingsbury", "Institute Of Chemistry", "Canagey Capital (pvt) Ltd", "Epsi Technology (Pvt) Ltd ? Admin Div", "Telecommunications Regulatory Commission of Sri Lanka", "FA Assets Discard", "Ifthikar Muthalif", "G.D.K.Waruna (Epsi)", "RUKSHAN", "Chandrasiri", "Nishantha De Silva", "Skills International", "MR. PATHMAKUMARA", "Kalana De Mel", "Sea Link Shipping", "Omal Bhagya", "Mohamed Mushtaq Shareef", "Ganga Daran", "G.P. Peris", "H L Wasantha", "Expelogix (Pvt) LTD", "SUNIL DE SILVA", "MR. AMMAR", "RAVI", "H.K.Pradeep", "Lanka Stock", "Syed Ahmed Fawaz"]
+						},
+						"options": {
+							"plotOptions": {
+								"pie": {
+									"cursor": "pointer",
+									"series": {
+										"dataLabels": {
+											"color": "black",
+											"enabled": true,
+											"softConnector": true,
+											"format": "undefined<b>{point.name}</b> ({point.y:,.0f})"
+										}
+									},
+									"allowPointSelect": true,
+									"showInLegend": false,
+									"dataLabels": {
+										"color": "#000000",
+										"enabled": true,
+										"format": "{point.percentage:,.2f}  %undefined<b> {point.name}</b>undefined</b> |   {point.y:,.2f}"
+									}
+								}
+							},
+							"chart": {
+								"plotShadow": false,
+								"type": "bar",
+								"events": {},
+								"plotBorderWidth": null,
+								"plotBackgroundColor": null
+							},
+							"tooltip": {
+								"pointFormat": "{point.y}"
+							},
+							"exporting": {
+								"sourceHeight": 400,
+								"sourceWidth": 600,
+								"chartOptions": {
+									"title": {
+										"text": "Worst 50 Customers by Sales"
+									}
+								}
+							}
+						},
+						"size": {
+							"width": 370.29166666666663,
+							"height": 575
+						}
+					},
+					"uniqueType": "Dynamic Visuals",
+					"initTemplate": "",
+					"mheight": "100%",
+					"widView": "views/common-data-src/res-views/ViewCommonSrc.html",
+					"selectedChart": {
+						"initObj": {
+							"series": [{
+								"color": "#536DFE",
+								"id": "series-25"
+							}],
+							"options": {
+								"chart": {
+									"width": null,
+									"type": "bar"
+								},
+								"exporting": {
+									"sourceHeight": 400,
+									"sourceWidth": 600,
+									"filename": ""
+								}
+							},
+							"title": {
+								"text": ""
+							}
+						},
+						"name": "bar ",
+						"selected": true,
+						"chart": "bar",
+						"chartType": "highCharts",
+						"icon": "ti-bar-chart",
+						"settingsView": "views/query/settings-views/highchartsSettings.html",
+						"id": "ct02",
+						"view": "views/query/chart-views/highcharts.html"
+					},
+					"divider": false,
+					"expanded": true,
+					"commonSrc": {
+						"src": {
+							"src": "BigQuery",
+							"fAttArr": "",
+							"tbl": "",
+							"fMeaArr": ""
+						},
+						"att": [{
+							"filedName": "CustomerName"
+						}],
+						"mea": [{
+							"condition": "invoiceamount"
+						}],
+						"query": "select CustomerName,sum(InvoiceAmount) invoiceamount from digin_duosoftware_com.ar_invoiceheader as inv inner join digin_duosoftware_com.ar_customerinfo as cus on inv.GUCustID = cus.GUCustID group by inv.GUCustID,CustomerName order by invoiceamount limit 50"
+					}
+				},
+				"widgetName": "highcharts",
+				"col": 17,
+				"sizeX": 7,
+				"sizeY": 45,
+				"row": 0
+			}, {
+				"widgetID": "1470684090288",
+				"pageID": "1470684090268",
+				"widgetData": {
+					"externalDataURL": "",
+					"dataView": "views/ViewData.html",
+					"height": "300px",
+					"seriesname": "",
+					"dataname": "",
+					"id": "f850",
+					"d3plugin": "",
+					"width": "370px",
+					"type": "Visualization",
+					"syncState": true,
+					"widData": {
+						"drilled": false
+					},
+					"initCtrl": "elasticInit",
+					"dataCtrl": "widgetSettingsDataCtrl",
+					"widName": "Top 50 Customers by Sales",
+					"highchartsNG": {
+						"title": {
+							"text": ""
+						},
+						"series": [{
+							"color": "#a388d6",
+							"data": [{
+								"y": 307356096,
+								"name": "SINGER (SRILANKA ) PLC"
+							}, {
+								"y": 257245662,
+								"name": "Barclays Computers (PVT) LTD"
+							}, {
+								"y": 184568595,
+								"name": "Unity Systems (PVT) Ltd"
+							}, {
+								"y": 123180000,
+								"name": "TECH INFORMATION SOLUTIONS (PVT) LTD"
+							}, {
+								"y": 93281950,
+								"name": "THE TECHNOCITY (PVT) LTD (IT Galaxy)"
+							}, {
+								"y": 83141400,
+								"name": "Tulip Computer Systems  (Pvt) Ltd-Unity"
+							}, {
+								"y": 82025607.72999999,
+								"name": "EPSI COMPUTERS (PVT ) LTD"
+							}, {
+								"y": 55308966.47,
+								"name": "Siva Computers (Pvt) Ltd"
+							}, {
+								"y": 53517706,
+								"name": "PC GLOBE SYSTEMS (PVT) LTD"
+							}, {
+								"y": 50034895,
+								"name": "WINSOFT TECHNOLOGIES (PVT) LTD"
+							}, {
+								"y": 49580150,
+								"name": "LAPZONE (PVT) LTD"
+							}, {
+								"y": 43259407,
+								"name": "EXTREME COMPUTER TECHNOLOGIES (PVT) LTD"
+							}, {
+								"y": 39035250,
+								"name": "REDLINE TECHNOLOGIES"
+							}, {
+								"y": 35683720,
+								"name": "ICBT CAMPUS"
+							}, {
+								"y": 31486850,
+								"name": "Tulip Computers"
+							}, {
+								"y": 30427850,
+								"name": "SHADS DIGITAL"
+							}, {
+								"y": 29472500,
+								"name": "Newsun Trading (Pvt) Ltd"
+							}, {
+								"y": 28382700,
+								"name": "ASIAN COMPUTER TRADING (PVT) LTD"
+							}, {
+								"y": 24744617.259999998,
+								"name": "OrangeIT Pvt Ltd"
+							}, {
+								"y": 24128550,
+								"name": "ACECOM (PVT) LTD"
+							}, {
+								"y": 24006350,
+								"name": "CENTRAL IMPEX"
+							}, {
+								"y": 23060400,
+								"name": "UNITY PC SYSTEMS"
+							}, {
+								"y": 22851865.4,
+								"name": "EPSI Technology Assemble Systems"
+							}, {
+								"y": 21488920,
+								"name": "PC PARTNER PVT LTD"
+							}, {
+								"y": 20260350,
+								"name": "COMPUTERAGE (PVT) LTD"
+							}, {
+								"y": 19548204,
+								"name": "FDN Foundation Garments"
+							}, {
+								"y": 19411000,
+								"name": "COMMERCIAL BANK OF CEYLON PLC"
+							}, {
+								"y": 17626773.6,
+								"name": "PC GLOBE SYSTEMS (PVT) LTD - Unity Plaza"
+							}, {
+								"y": 17007050,
+								"name": "SELL X COMPUTERS"
+							}, {
+								"y": 16128200,
+								"name": "SENSE MICRO DISTRIBUTORS"
+							}, {
+								"y": 15913700,
+								"name": "NORTHERN PC PARK"
+							}, {
+								"y": 15362550,
+								"name": "SMS Marketing (Pvt) Ltd"
+							}, {
+								"y": 15167400,
+								"name": "Richcom Technology"
+							}, {
+								"y": 14768800,
+								"name": "IT GALAXY"
+							}, {
+								"y": 13817943,
+								"name": "Netstarter (Pvt) Ltd."
+							}, {
+								"y": 13770800,
+								"name": "MICRO PC SYSTEMS"
+							}, {
+								"y": 13476958,
+								"name": "University of Moratuwa"
+							}, {
+								"y": 13029300,
+								"name": "PC TECHNOLOGIES (PVT) LTD"
+							}, {
+								"y": 12451300,
+								"name": "C3 DIGITAL SIGNAGE SOLUTIONS (PVT) LTD"
+							}, {
+								"y": 12404600,
+								"name": "OSAKA IT(PVT)LTD"
+							}, {
+								"y": 12316690,
+								"name": "EXTREME COMPUTERS (PVT) LTD"
+							}, {
+								"y": 10964420,
+								"name": "GIGA TECH SOLUTIONS (PVT) LTD"
+							}, {
+								"y": 10618251,
+								"name": "Winap Lanka (Pvt) Ltd"
+							}, {
+								"y": 10098460,
+								"name": "TNN LANKA (PVT) LTD"
+							}, {
+								"y": 9998150,
+								"name": "Nanotek computer solutions"
+							}, {
+								"y": 9968920,
+								"name": "E POWER TECHNOLOGIES (PVT) LTD"
+							}, {
+								"y": 9754999.700000001,
+								"name": "RICHARD PIERIS FINANCE LIMITED"
+							}, {
+								"y": 9661300,
+								"name": "MEGA MASS COMPUTERS (PVT) LTD"
+							}, {
+								"y": 8892000,
+								"name": "MITECH COMPUTER SYSTEMS"
+							}, {
+								"y": 8384187.75,
+								"name": "PEARSON LANKA (PVT) LTD"
+							}],
+							"name": "Invoice Amount",
+							"id": "series-32"
+						}],
+						"yAxis": {
+							"lineWidth": 1,
+							"title": {
+								"text": "Invoice Amount(LKR)"
+							}
+						},
+						"legend": {
+							"layout": "vertical",
+							"align": "right",
+							"verticalAlign": "middle",
+							"borderWidth": 0
+						},
+						"credits": {
+							"enabled": false
+						},
+						"colors": ["#EC784B"],
+						"xAxis": {
+							"categories": ["SINGER (SRILANKA ) PLC", "Barclays Computers (PVT) LTD", "Unity Systems (PVT) Ltd", "TECH INFORMATION SOLUTIONS (PVT) LTD", "THE TECHNOCITY (PVT) LTD (IT Galaxy)", "Tulip Computer Systems  (Pvt) Ltd-Unity", "EPSI COMPUTERS (PVT ) LTD", "Siva Computers (Pvt) Ltd", "PC GLOBE SYSTEMS (PVT) LTD", "WINSOFT TECHNOLOGIES (PVT) LTD", "LAPZONE (PVT) LTD", "EXTREME COMPUTER TECHNOLOGIES (PVT) LTD", "REDLINE TECHNOLOGIES", "ICBT CAMPUS", "Tulip Computers", "SHADS DIGITAL", "Newsun Trading (Pvt) Ltd", "ASIAN COMPUTER TRADING (PVT) LTD", "OrangeIT Pvt Ltd", "ACECOM (PVT) LTD", "CENTRAL IMPEX", "UNITY PC SYSTEMS", "EPSI Technology Assemble Systems", "PC PARTNER PVT LTD", "COMPUTERAGE (PVT) LTD", "FDN Foundation Garments", "COMMERCIAL BANK OF CEYLON PLC", "PC GLOBE SYSTEMS (PVT) LTD - Unity Plaza", "SELL X COMPUTERS", "SENSE MICRO DISTRIBUTORS", "NORTHERN PC PARK", "SMS Marketing (Pvt) Ltd", "Richcom Technology", "IT GALAXY", "Netstarter (Pvt) Ltd.", "MICRO PC SYSTEMS", "University of Moratuwa", "PC TECHNOLOGIES (PVT) LTD", "C3 DIGITAL SIGNAGE SOLUTIONS (PVT) LTD", "OSAKA IT(PVT)LTD", "EXTREME COMPUTERS (PVT) LTD", "GIGA TECH SOLUTIONS (PVT) LTD", "Winap Lanka (Pvt) Ltd", "TNN LANKA (PVT) LTD", "Nanotek computer solutions", "E POWER TECHNOLOGIES (PVT) LTD", "RICHARD PIERIS FINANCE LIMITED", "MEGA MASS COMPUTERS (PVT) LTD", "MITECH COMPUTER SYSTEMS", "PEARSON LANKA (PVT) LTD"]
+						},
+						"options": {
+							"plotOptions": {
+								"pie": {
+									"cursor": "pointer",
+									"series": {
+										"dataLabels": {
+											"color": "black",
+											"enabled": true,
+											"softConnector": true,
+											"format": "undefined<b>{point.name}</b> ({point.y:,.0f})"
+										}
+									},
+									"allowPointSelect": true,
+									"showInLegend": false,
+									"dataLabels": {
+										"color": "#000000",
+										"enabled": true,
+										"format": "{point.percentage:,.2f}  %undefined<b> {point.name}</b>undefined</b> |   {point.y:,.2f}"
+									}
+								}
+							},
+							"chart": {
+								"plotShadow": false,
+								"type": "bar",
+								"events": {},
+								"plotBorderWidth": null,
+								"plotBackgroundColor": null
+							},
+							"tooltip": {
+								"pointFormat": "{point.y}"
+							},
+							"exporting": {
+								"sourceHeight": 400,
+								"sourceWidth": 600,
+								"chartOptions": {
+									"title": {
+										"text": "Top 50 Customers by Sales"
+									}
+								}
+							}
+						},
+						"size": {
+							"width": 315.25,
+							"height": 575
+						}
+					},
+					"uniqueType": "Dynamic Visuals",
+					"initTemplate": "",
+					"mheight": "100%",
+					"widView": "views/common-data-src/res-views/ViewCommonSrc.html",
+					"selectedChart": {
+						"initObj": {
+							"series": [{
+								"color": "#536DFE",
+								"id": "series-44"
+							}],
+							"options": {
+								"chart": {
+									"width": null,
+									"type": "bar"
+								},
+								"exporting": {
+									"sourceHeight": 400,
+									"sourceWidth": 600,
+									"filename": ""
+								}
+							},
+							"title": {
+								"text": ""
+							}
+						},
+						"name": "bar ",
+						"selected": false,
+						"chart": "bar",
+						"chartType": "highCharts",
+						"icon": "ti-bar-chart",
+						"settingsView": "views/query/settings-views/highchartsSettings.html",
+						"id": "ct02",
+						"view": "views/query/chart-views/highcharts.html"
+					},
+					"divider": false,
+					"expanded": true,
+					"commonSrc": {
+						"src": {
+							"src": "BigQuery",
+							"fAttArr": "",
+							"tbl": "",
+							"fMeaArr": ""
+						},
+						"att": [{
+							"filedName": "CustomerName"
+						}],
+						"mea": [{
+							"condition": "invoiceamount"
+						}],
+						"query": "select CustomerName,sum(InvoiceAmount) invoiceamount from digin_duosoftware_com.ar_invoiceheader as inv inner join digin_duosoftware_com.ar_customerinfo as cus on inv.GUCustID = cus.GUCustID group by inv.GUCustID,CustomerName order by invoiceamount desc limit 50"
+					}
+				},
+				"widgetName": "highcharts",
+				"col": 11,
+				"sizeX": 6,
+				"sizeY": 45,
+				"row": 0
+			}]
+		}, {
+			"pageName": "Current Month's Sales Summary",
+			"pageData": null,
+			"pageID": "1470684090293",
+			"widgets": [{
+				"widgetID": "1470684090297",
+				"pageID": "1470684090293",
+				"widgetData": {
+					"externalDataURL": "",
+					"dataView": "views/ViewData.html",
+					"height": "300px",
+					"seriesname": "",
+					"dataname": "",
+					"id": "7e5d",
+					"d3plugin": "",
+					"width": "370px",
+					"type": "Visualization",
+					"syncState": true,
+					"widData": {
+						"scale": "LKR",
+						"decValue": "",
+						"value": "",
+						"label": "",
+						"scalePosition": "front",
+						"dec": "0"
+					},
+					"initCtrl": "commonSrcInit",
+					"dataCtrl": "widgetSettingsDataCtrl",
+					"widName": "Month's Sales",
+					"highchartsNG": {
+						"size": {
+							"width": 357.75,
+							"height": 73
+						}
+					},
+					"uniqueType": "Dynamic Visuals",
+					"initTemplate": "",
+					"mheight": "100%",
+					"widView": "views/common-data-src/res-views/ViewCommonSrcMetric.html",
+					"selectedChart": {
+						"initObj": {
+							"scale": "LKR",
+							"decValue": 80305531.07,
+							"value": "80,305,531",
+							"label": "",
+							"scalePosition": "front",
+							"dec": "0"
+						},
+						"name": "metric",
+						"selected": true,
+						"chart": "metric",
+						"chartType": "metric",
+						"icon": "fa fa-sort-numeric-desc",
+						"settingsView": "views/query/settings-views/metricSettings.html",
+						"id": "ct13",
+						"view": "views/query/chart-views/metric.html"
+					},
+					"divider": false,
+					"expanded": true,
+					"commonSrc": {
+						"src": {
+							"src": "BigQuery",
+							"fAttArr": "",
+							"tbl": "",
+							"fMeaArr": ""
+						},
+						"att": [],
+						"mea": [{
+							"condition": "invoiceAmount"
+						}],
+						"query": "select sum(InvoiceAmount) invoiceAmount from digin_duosoftware_com.ar_invoiceheader where year(InvoiceDate) = Year(current_date()) and Month(InvoiceDate) = Month(current_date())-5"
+					}
+				},
+				"widgetName": "metric",
+				"col": 0,
+				"sizeX": 6,
+				"sizeY": 8,
+				"row": 0
+			}, {
+				"widgetID": "1470684090301",
+				"pageID": "1470684090293",
+				"widgetData": {
+					"externalDataURL": "",
+					"dataView": "views/ViewData.html",
+					"height": "300px",
+					"seriesname": "",
+					"dataname": "",
+					"id": "38be",
+					"d3plugin": "",
+					"width": "370px",
+					"type": "Visualization",
+					"syncState": true,
+					"widData": {
+						"drillConf": {
+							"highestLvl": "cat",
+							"currentLevel": 1,
+							"drillOrdArr": [{
+								"nextLevel": "brand",
+								"name": "cat",
+								"level": 1
+							}, {
+								"nextLevel": "ProductCode",
+								"name": "brand",
+								"level": 2
+							}, {
+								"name": "ProductCode",
+								"level": 3
+							}],
+							"fields": [{
+								"agg": "SUM",
+								"field": "invoiceamount"
+							}],
+							"level1Query": "SELECT cat ,sum(invoiceamount) as sum_invoiceamount FROM digin_duosoftware_com.customerwisesales_view  GROUP BY cat ORDER BY cat",
+							"previousQuery": "SELECT ProductCode ,sum(invoiceamount) as sum_invoiceamount FROM digin_duosoftware_com.customerwisesales_view WHERE brand='Epsi' GROUP BY ProductCode ORDER BY ProductCode",
+							"dataSrc": "BigQuery",
+							"currentQuery": "SELECT ProductCode ,sum(invoiceamount) as sum_invoiceamount FROM digin_duosoftware_com.customerwisesales_view WHERE brand='ASUS' GROUP BY ProductCode ORDER BY ProductCode",
+							"level2Query": "SELECT brand ,sum(invoiceamount) as sum_invoiceamount FROM digin_duosoftware_com.customerwisesales_view WHERE cat='Unknown' GROUP BY brand ORDER BY brand",
+							"clientObj": {},
+							"srcTbl": "customerwisesales_view",
+							"level3Query": "SELECT ProductCode ,sum(invoiceamount) as sum_invoiceamount FROM digin_duosoftware_com.customerwisesales_view WHERE brand='ASUS' GROUP BY ProductCode ORDER BY ProductCode"
+						},
+						"drilled": true
+					},
+					"initCtrl": "elasticInit",
+					"dataCtrl": "widgetSettingsDataCtrl",
+					"widName": "Sales by Customer Category",
+					"highchartsNG": {
+						"title": {
+							"text": ""
+						},
+						"series": [{
+							"color": "#a388d6",
+							"data": [{
+								"y": 43810,
+								"drilldown": true,
+								"name": "Employees"
+							}, {
+								"y": 3800000,
+								"drilldown": true,
+								"name": "Singer"
+							}, {
+								"y": 7202100,
+								"drilldown": true,
+								"name": "Tender"
+							}, {
+								"y": 307031742.87,
+								"drilldown": true,
+								"name": "Unknown"
+							}],
+							"name": "Invoice Amount",
+							"id": "series-33"
+						}],
+						"yAxis": {
+							"lineWidth": 1,
+							"title": {
+								"text": "Invoice Amount(LKR)"
+							}
+						},
+						"legend": {
+							"layout": "vertical",
+							"align": "right",
+							"verticalAlign": "middle",
+							"borderWidth": 0
+						},
+						"credits": {
+							"enabled": false
+						},
+						"colors": ["#3b6982"],
+						"xAxis": {
+							"type": "category"
+						},
+						"drilldown": {
+							"series": []
+						},
+						"options": {
+							"customVar": "cat",
+							"plotOptions": {
+								"pie": {
+									"cursor": "pointer",
+									"series": {
+										"dataLabels": {
+											"color": "black",
+											"enabled": true,
+											"softConnector": true,
+											"format": "undefined<b>{point.name}</b> ({point.y:,.0f})"
+										}
+									},
+									"allowPointSelect": true,
+									"showInLegend": false,
+									"dataLabels": {
+										"color": "#000000",
+										"enabled": true,
+										"format": "{point.percentage:,.2f}  %undefined<b> {point.name}</b>undefined</b> |   {point.y:,.2f}"
+									}
+								}
+							},
+							"chart": {
+								"plotShadow": false,
+								"type": "pie",
+								"events": {},
+								"plotBorderWidth": null,
+								"plotBackgroundColor": null
+							},
+							"tooltip": {
+								"pointFormat": "{point.y}"
+							},
+							"exporting": {
+								"sourceHeight": 400,
+								"sourceWidth": 600,
+								"chartOptions": {
+									"title": {
+										"text": "Sales by Customer Category"
+									}
+								}
+							}
+						},
+						"size": {
+							"width": 624.375,
+							"height": 260
+						}
+					},
+					"uniqueType": "Dynamic Visuals",
+					"initTemplate": "",
+					"mheight": "100%",
+					"widView": "views/common-data-src/res-views/ViewCommonSrc.html",
+					"selectedChart": {
+						"initObj": {
+							"series": [{
+								"color": "#536DFE"
+							}],
+							"options": {
+								"chart": {
+									"width": null,
+									"type": "bar"
+								},
+								"exporting": {
+									"sourceHeight": 400,
+									"sourceWidth": 600,
+									"filename": ""
+								}
+							},
+							"title": {
+								"text": ""
+							}
+						},
+						"name": "pie chart",
+						"selected": true,
+						"chart": "pie",
+						"chartType": "highCharts",
+						"icon": "ti-pie-chart",
+						"settingsView": "views/query/settings-views/highchartsSettings.html",
+						"id": "ct01",
+						"view": "views/query/chart-views/highcharts.html"
+					},
+					"divider": false,
+					"expanded": true,
+					"commonSrc": {
+						"src": {
+							"src": "BigQuery",
+							"fAttArr": [{
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "0",
+								"name": "cat"
+							}, {
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "2",
+								"name": "ProductCode"
+							}, {
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "3",
+								"name": "brand"
+							}],
+							"tbl": "customerwisesales_view",
+							"fMeaArr": [{
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "1",
+								"name": "invoiceamount"
+							}]
+						},
+						"att": [{
+							"filedName": "brand"
+						}, {
+							"filedName": "cat"
+						}, {
+							"filedName": "ProductCode"
+						}],
+						"mea": [{
+							"filedName": "invoiceamount",
+							"condition": "SUM"
+						}],
+						"query": "SELECT cat ,sum(invoiceamount) as sum_invoiceamount FROM digin_duosoftware_com.customerwisesales_view  GROUP BY cat ORDER BY cat"
+					}
+				},
+				"widgetName": "highcharts",
+				"col": 13,
+				"sizeX": 11,
+				"sizeY": 21,
+				"row": 0
+			}, {
+				"widgetID": "1470684090306",
+				"pageID": "1470684090293",
+				"widgetData": {
+					"externalDataURL": "",
+					"dataView": "views/ViewData.html",
+					"height": "300px",
+					"seriesname": "",
+					"dataname": "",
+					"id": "8e47",
+					"d3plugin": "",
+					"width": "370px",
+					"type": "Visualization",
+					"syncState": true,
+					"widData": {
+						"drilled": false
+					},
+					"initCtrl": "elasticInit",
+					"dataCtrl": "widgetSettingsDataCtrl",
+					"widName": "Top 10 Customers by Sales",
+					"highchartsNG": {
+						"title": {
+							"text": ""
+						},
+						"series": [{
+							"color": "#a388d6",
+							"data": [{
+								"y": 8844000,
+								"name": "Barclays Computers (PVT) LTD"
+							}, {
+								"y": 2020715.53,
+								"name": "EPSI COMPUTERS (PVT ) LTD"
+							}, {
+								"y": 5051370,
+								"name": "EPSI Technology Assemble Systems"
+							}, {
+								"y": 1835850,
+								"name": "FDN Foundation Garments"
+							}, {
+								"y": 2150700,
+								"name": "OrangeIT Pvt Ltd"
+							}, {
+								"y": 3258500,
+								"name": "REDLINE TECHNOLOGIES"
+							}, {
+								"y": 8947000,
+								"name": "SINGER (SRILANKA ) PLC"
+							}, {
+								"y": 7514500,
+								"name": "THE TECHNOCITY (PVT) LTD (IT Galaxy)"
+							}, {
+								"y": 1894750,
+								"name": "Tulip Computer Systems  (Pvt) Ltd-Unity"
+							}, {
+								"y": 11786900,
+								"name": "Unity Systems (PVT) Ltd"
+							}],
+							"name": "Current Month's Invoice Amount",
+							"id": "series-34"
+						}, {
+							"color": "#89ce6f",
+							"data": [{
+								"y": 8444900,
+								"name": "Barclays Computers (PVT) LTD"
+							}, {
+								"y": 2279737.9699999997,
+								"name": "EPSI COMPUTERS (PVT ) LTD"
+							}, {
+								"y": 6379779,
+								"name": "EPSI Technology Assemble Systems"
+							}, {
+								"y": 1323400,
+								"name": "FDN Foundation Garments"
+							}, {
+								"y": 1032970,
+								"name": "OrangeIT Pvt Ltd"
+							}, {
+								"y": 1963750,
+								"name": "REDLINE TECHNOLOGIES"
+							}, {
+								"y": 3800000,
+								"name": "SINGER (SRILANKA ) PLC"
+							}, {
+								"y": 2028750,
+								"name": "THE TECHNOCITY (PVT) LTD (IT Galaxy)"
+							}, {
+								"y": 2968300,
+								"name": "Tulip Computer Systems  (Pvt) Ltd-Unity"
+							}, {
+								"y": 9810600,
+								"name": "Unity Systems (PVT) Ltd"
+							}],
+							"name": "Previous Month's Invoice Amount",
+							"id": "series-35"
+						}],
+						"yAxis": {
+							"lineWidth": 1,
+							"title": {
+								"text": "Invoice Amount(LKR)"
+							}
+						},
+						"legend": {
+							"layout": "vertical",
+							"align": "right",
+							"verticalAlign": "middle",
+							"borderWidth": 0
+						},
+						"credits": {
+							"enabled": false
+						},
+						"colors": ["#3b6982"],
+						"xAxis": {
+							"type": "category"
+						},
+						"options": {
+							"plotOptions": {
+								"pie": {
+									"cursor": "pointer",
+									"series": {
+										"dataLabels": {
+											"color": "black",
+											"enabled": true,
+											"softConnector": true,
+											"format": "undefined<b>{point.name}</b> ({point.y:,.0f})"
+										}
+									},
+									"allowPointSelect": true,
+									"showInLegend": false,
+									"dataLabels": {
+										"color": "#000000",
+										"enabled": true,
+										"format": "{point.percentage:,.2f}  %undefined<b> {point.name}</b>undefined</b> |   {point.y:,.2f}"
+									}
+								}
+							},
+							"chart": {
+								"plotShadow": false,
+								"type": "bar",
+								"plotBackgroundColor": null,
+								"plotBorderWidth": null,
+								"events": {}
+							},
+							"tooltip": {
+								"pointFormat": "{point.y}"
+							},
+							"exporting": {
+								"sourceHeight": 400,
+								"sourceWidth": 600,
+								"chartOptions": {
+									"title": {
+										"text": "Top 10 Customers by Sales"
+									}
+								}
+							}
+						},
+						"size": {
+							"width": 370.29166666666663,
+							"height": 575
+						}
+					},
+					"uniqueType": "Dynamic Visuals",
+					"initTemplate": "",
+					"mheight": "100%",
+					"widView": "views/common-data-src/res-views/ViewCommonSrc.html",
+					"selectedChart": {
+						"initObj": {
+							"series": [{
+								"color": "#536DFE",
+								"id": "series-5"
+							}],
+							"init": false,
+							"options": {
+								"chart": {
+									"width": null,
+									"type": "bar"
+								},
+								"exporting": {
+									"sourceHeight": 400,
+									"sourceWidth": 600,
+									"filename": ""
+								}
+							},
+							"title": {
+								"text": ""
+							}
+						},
+						"name": "bar ",
+						"selected": false,
+						"chart": "bar",
+						"chartType": "highCharts",
+						"icon": "ti-bar-chart",
+						"settingsView": "views/query/settings-views/highchartsSettings.html",
+						"id": "ct02",
+						"view": "views/query/chart-views/highcharts.html"
+					},
+					"divider": false,
+					"expanded": true,
+					"commonSrc": {
+						"src": {
+							"src": "BigQuery",
+							"fAttArr": [{
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "0",
+								"name": "CustomerName"
+							}],
+							"tbl": "compare_customers_view",
+							"fMeaArr": [{
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "1",
+								"name": "curentmonth_invoiceamount"
+							}, {
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "2",
+								"name": "previousmonth_invoiceamount"
+							}]
+						},
+						"att": [{
+							"filedName": "CustomerName"
+						}],
+						"mea": [{
+							"filedName": "curentmonth_invoiceamount",
+							"condition": "SUM"
+						}, {
+							"filedName": "previousmonth_invoiceamount",
+							"condition": "SUM"
+						}],
+						"query": "SELECT CustomerName ,sum(curentmonth_invoiceamount) as sum_curentmonth_invoiceamount, sum(previousmonth_invoiceamount) as sum_previousmonth_invoiceamount FROM digin_duosoftware_com.compare_customers_view  GROUP BY CustomerName ORDER BY CustomerName"
+					}
+				},
+				"widgetName": "highcharts",
+				"col": 6,
+				"sizeX": 7,
+				"sizeY": 45,
+				"row": 0
+			}, {
+				"widgetID": "1470684090311",
+				"pageID": "1470684090293",
+				"widgetData": {
+					"externalDataURL": "",
+					"dataView": "views/ViewData.html",
+					"height": "300px",
+					"seriesname": "",
+					"dataname": "",
+					"id": "1183",
+					"d3plugin": "",
+					"width": "370px",
+					"type": "Visualization",
+					"syncState": true,
+					"widData": {
+						"drilled": false
+					},
+					"initCtrl": "elasticInit",
+					"dataCtrl": "widgetSettingsDataCtrl",
+					"widName": "Top 10 Products by Sales",
+					"highchartsNG": {
+						"title": {
+							"text": ""
+						},
+						"series": [{
+							"color": "#89ce6f",
+							"data": [{
+								"y": 28777868,
+								"name": "ASADP00026"
+							}, {
+								"y": 6469091,
+								"name": "ASDVR00069"
+							}, {
+								"y": 7825952.3,
+								"name": "ASLCD00038"
+							}, {
+								"y": 4720235,
+								"name": "ASMBD00504"
+							}, {
+								"y": 3817910,
+								"name": "ASNOT00460"
+							}, {
+								"y": 3524705,
+								"name": "ASNOT00465"
+							}, {
+								"y": 1892807,
+								"name": "ASNOT00485"
+							}, {
+								"y": 47196357.49999999,
+								"name": "ECMKT00001"
+							}, {
+								"y": 3800000,
+								"name": "SISYS00007"
+							}, {
+								"y": 5332146,
+								"name": "TOHDD00004"
+							}],
+							"name": "Previous Month's Invoice Amount",
+							"id": "series-36"
+						}, {
+							"color": "#a388d6",
+							"data": [{
+								"y": 39363409.45,
+								"name": "ASADP00026"
+							}, {
+								"y": 5722335,
+								"name": "ASDVR00069"
+							}, {
+								"y": 9670213.9,
+								"name": "ASLCD00038"
+							}, {
+								"y": 8993500,
+								"name": "ASMBD00504"
+							}, {
+								"y": 7303728,
+								"name": "ASNOT00460"
+							}, {
+								"y": 8222670.74,
+								"name": "ASNOT00465"
+							}, {
+								"y": 12691680,
+								"name": "ASNOT00485"
+							}, {
+								"y": 63350866.199999996,
+								"name": "ECMKT00001"
+							}, {
+								"y": 7600000,
+								"name": "SISYS00007"
+							}, {
+								"y": 8279349,
+								"name": "TOHDD00004"
+							}],
+							"name": "Current Month's Invoice Amount",
+							"id": "series-37"
+						}],
+						"yAxis": {
+							"lineWidth": 1,
+							"title": {
+								"text": "Invoice Amount(LKR)"
+							}
+						},
+						"legend": {
+							"layout": "vertical",
+							"align": "right",
+							"verticalAlign": "middle",
+							"borderWidth": 0
+						},
+						"credits": {
+							"enabled": false
+						},
+						"colors": ["#3b6982"],
+						"xAxis": {
+							"type": "category"
+						},
+						"options": {
+							"plotOptions": {
+								"pie": {
+									"cursor": "pointer",
+									"series": {
+										"dataLabels": {
+											"color": "black",
+											"enabled": true,
+											"softConnector": true,
+											"format": "undefined<b>{point.name}</b> ({point.y:,.0f})"
+										}
+									},
+									"allowPointSelect": true,
+									"showInLegend": false,
+									"dataLabels": {
+										"color": "#000000",
+										"enabled": true,
+										"format": "{point.percentage:,.2f}  %undefined<b> {point.name}</b>undefined</b> |   {point.y:,.2f}"
+									}
+								}
+							},
+							"chart": {
+								"plotShadow": false,
+								"type": "bar",
+								"events": {},
+								"plotBorderWidth": null,
+								"plotBackgroundColor": null
+							},
+							"tooltip": {
+								"pointFormat": "{point.y}"
+							},
+							"exporting": {
+								"sourceHeight": 400,
+								"sourceWidth": 600,
+								"chartOptions": {
+									"title": {
+										"text": "Top 10 Products by Sales"
+									}
+								}
+							}
+						},
+						"size": {
+							"width": 313.25,
+							"height": 463
+						}
+					},
+					"uniqueType": "Dynamic Visuals",
+					"initTemplate": "",
+					"mheight": "100%",
+					"widView": "views/common-data-src/res-views/ViewCommonSrc.html",
+					"selectedChart": {
+						"initObj": {
+							"series": [{
+								"color": "#536DFE",
+								"id": "series-27"
+							}],
+							"init": false,
+							"options": {
+								"chart": {
+									"width": null,
+									"type": "bar"
+								},
+								"exporting": {
+									"sourceHeight": 400,
+									"sourceWidth": 600,
+									"filename": ""
+								}
+							},
+							"title": {
+								"text": ""
+							}
+						},
+						"name": "bar ",
+						"selected": false,
+						"chart": "bar",
+						"chartType": "highCharts",
+						"icon": "ti-bar-chart",
+						"settingsView": "views/query/settings-views/highchartsSettings.html",
+						"id": "ct02",
+						"view": "views/query/chart-views/highcharts.html"
+					},
+					"divider": false,
+					"expanded": true,
+					"commonSrc": {
+						"src": {
+							"src": "BigQuery",
+							"fAttArr": [{
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "0",
+								"name": "ProductCode"
+							}],
+							"tbl": "compare_product_view",
+							"fMeaArr": [{
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "1",
+								"name": "currentmonth_invoiceamount"
+							}, {
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "2",
+								"name": "previousmonth_invoiceamount"
+							}]
+						},
+						"att": [{
+							"filedName": "ProductCode"
+						}],
+						"mea": [{
+							"filedName": "currentmonth_invoiceamount",
+							"condition": "SUM"
+						}, {
+							"filedName": "previousmonth_invoiceamount",
+							"condition": "SUM"
+						}],
+						"query": "SELECT ProductCode ,sum(currentmonth_invoiceamount) as sum_currentmonth_invoiceamount, sum(previousmonth_invoiceamount) as sum_previousmonth_invoiceamount FROM digin_duosoftware_com.compare_product_view  GROUP BY ProductCode ORDER BY ProductCode"
+					}
+				},
+				"widgetName": "highcharts",
+				"col": 0,
+				"sizeX": 6,
+				"sizeY": 37,
+				"row": 8
+			}, {
+				"widgetID": "1470684090316",
+				"pageID": "1470684090293",
+				"widgetData": {
+					"externalDataURL": "",
+					"dataView": "views/ViewData.html",
+					"height": "300px",
+					"seriesname": "",
+					"dataname": "",
+					"id": "594c",
+					"d3plugin": "",
+					"width": "370px",
+					"type": "Visualization",
+					"syncState": true,
+					"widData": {
+						"drilled": false
+					},
+					"initCtrl": "elasticInit",
+					"dataCtrl": "widgetSettingsDataCtrl",
+					"widName": "Daily Sales",
+					"highchartsNG": {
+						"title": {
+							"text": ""
+						},
+						"series": [{
+							"color": "#a388d6",
+							"data": [{
+								"y": 6236698,
+								"name": 1
+							}, {
+								"y": 3535688.5,
+								"name": 2
+							}, {
+								"y": 4441810.5,
+								"name": 3
+							}, {
+								"y": 0,
+								"name": 4
+							}, {
+								"y": 3866480,
+								"name": 5
+							}, {
+								"y": 0,
+								"name": 6
+							}, {
+								"y": 0,
+								"name": 7
+							}, {
+								"y": 7164891,
+								"name": 8
+							}, {
+								"y": 6698150,
+								"name": 9
+							}, {
+								"y": 1853831,
+								"name": 10
+							}, {
+								"y": 9083538,
+								"name": 11
+							}, {
+								"y": 8547217,
+								"name": 12
+							}, {
+								"y": 0,
+								"name": 13
+							}, {
+								"y": 0,
+								"name": 14
+							}, {
+								"y": 8208154,
+								"name": 15
+							}, {
+								"y": 3103707,
+								"name": 16
+							}, {
+								"y": 1589674,
+								"name": 17
+							}, {
+								"y": 4522157,
+								"name": 18
+							}, {
+								"y": 3546641.5,
+								"name": 19
+							}, {
+								"y": 381600,
+								"name": 20
+							}, {
+								"y": 0,
+								"name": 21
+							}, {
+								"y": 0,
+								"name": 22
+							}, {
+								"y": 5090034.5,
+								"name": 23
+							}, {
+								"y": 4895827.5,
+								"name": 24
+							}, {
+								"y": 3103426,
+								"name": 25
+							}, {
+								"y": 5216031.5,
+								"name": 26
+							}, {
+								"y": 0,
+								"name": 27
+							}, {
+								"y": 0,
+								"name": 28
+							}, {
+								"y": 10324867,
+								"name": 29
+							}, {
+								"y": 0,
+								"name": 30
+							}, {
+								"y": 0,
+								"name": 31
+							}],
+							"name": "Current Month's Invoice Amount",
+							"origName": "sum_currentmonth_sales",
+							"id": "series-8"
+						}, {
+							"color": "#89ce6f",
+							"data": [{
+								"y": 2815420.2,
+								"name": 1
+							}, {
+								"y": 0,
+								"name": 2
+							}, {
+								"y": 0,
+								"name": 3
+							}, {
+								"y": 5185925,
+								"name": 4
+							}, {
+								"y": 4083676,
+								"name": 5
+							}, {
+								"y": 26703516,
+								"name": 6
+							}, {
+								"y": 5624467,
+								"name": 7
+							}, {
+								"y": 7552508,
+								"name": 8
+							}, {
+								"y": 352800,
+								"name": 9
+							}, {
+								"y": 0,
+								"name": 10
+							}, {
+								"y": 4477711,
+								"name": 11
+							}, {
+								"y": 2333887,
+								"name": 12
+							}, {
+								"y": 1383747,
+								"name": 13
+							}, {
+								"y": 0,
+								"name": 14
+							}, {
+								"y": 0,
+								"name": 15
+							}, {
+								"y": 0,
+								"name": 16
+							}, {
+								"y": 0,
+								"name": 17
+							}, {
+								"y": 5863746,
+								"name": 18
+							}, {
+								"y": 5919655.5,
+								"name": 19
+							}, {
+								"y": 3097071.2,
+								"name": 20
+							}, {
+								"y": 4068446,
+								"name": 21
+							}, {
+								"y": 1283924,
+								"name": 22
+							}, {
+								"y": 0,
+								"name": 23
+							}, {
+								"y": 0,
+								"name": 24
+							}, {
+								"y": 6986827,
+								"name": 25
+							}, {
+								"y": 4558177,
+								"name": 26
+							}, {
+								"y": 3406182.5,
+								"name": 27
+							}, {
+								"y": 2562414,
+								"name": 28
+							}, {
+								"y": 4969621,
+								"name": 29
+							}, {
+								"y": 114000,
+								"name": 30
+							}, {
+								"y": 0,
+								"name": 31
+							}],
+							"name": "Previous Month's Invoice Amount",
+							"origName": "sum_previousmonth_sales",
+							"id": "series-9"
+						}],
+						"yAxis": {
+							"lineWidth": 1,
+							"title": {
+								"text": "Invoice Amount(LKR)"
+							}
+						},
+						"legend": {
+							"layout": "vertical",
+							"align": "right",
+							"verticalAlign": "middle",
+							"borderWidth": 0
+						},
+						"credits": {
+							"enabled": false
+						},
+						"colors": ["#3b6982"],
+						"xAxis": {
+							"type": "category",
+							"title": {
+								"text": "Date"
+							}
+						},
+						"options": {
+							"plotOptions": {
+								"pie": {
+									"cursor": "pointer",
+									"series": {
+										"dataLabels": {
+											"color": "black",
+											"enabled": true,
+											"softConnector": true,
+											"format": "undefined<b>{point.name}</b> ({point.y:,.0f})"
+										}
+									},
+									"allowPointSelect": true,
+									"showInLegend": false,
+									"dataLabels": {
+										"color": "#000000",
+										"enabled": true,
+										"format": "{point.percentage:,.2f}  %undefined<b> {point.name}</b>undefined</b> |   {point.y:,.2f}"
+									}
+								}
+							},
+							"chart": {
+								"plotShadow": false,
+								"type": "line",
+								"plotBackgroundColor": null,
+								"plotBorderWidth": null,
+								"events": {}
+							},
+							"tooltip": {
+								"pointFormat": "{point.y}"
+							},
+							"exporting": {
+								"sourceHeight": 400,
+								"sourceWidth": 600,
+								"chartOptions": {
+									"title": {
+										"text": "Daily Sales"
+									}
+								}
+							}
+						},
+						"size": {
+							"width": 624.375,
+							"height": 305
+						}
+					},
+					"uniqueType": "Dynamic Visuals",
+					"initTemplate": "",
+					"mheight": "100%",
+					"widView": "views/common-data-src/res-views/ViewCommonSrc.html",
+					"selectedChart": {
+						"initObj": {
+							"series": [{
+								"color": "#536DFE",
+								"id": "series-5"
+							}],
+							"init": false,
+							"options": {
+								"chart": {
+									"width": null,
+									"type": "bar"
+								},
+								"exporting": {
+									"sourceHeight": 400,
+									"sourceWidth": 600,
+									"filename": ""
+								}
+							},
+							"title": {
+								"text": ""
+							}
+						},
+						"name": "line ",
+						"selected": true,
+						"chart": "line",
+						"chartType": "highCharts",
+						"icon": "ti-gallery",
+						"settingsView": "views/query/settings-views/highchartsSettings.html",
+						"id": "ct03",
+						"view": "views/query/chart-views/highcharts.html"
+					},
+					"divider": false,
+					"expanded": true,
+					"commonSrc": {
+						"src": {
+							"src": "BigQuery",
+							"fAttArr": [],
+							"tbl": "sales_comparison",
+							"fMeaArr": [{
+								"isRemove": false,
+								"dataType": "INTEGER",
+								"id": "0",
+								"name": "Date"
+							}, {
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "1",
+								"name": "previousmonth_sales"
+							}, {
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "2",
+								"name": "currentmonth_sales"
+							}]
+						},
+						"att": [{
+							"filedName": "Date"
+						}],
+						"mea": [{
+							"filedName": "previousmonth_sales",
+							"condition": "SUM"
+						}, {
+							"filedName": "currentmonth_sales",
+							"condition": "SUM"
+						}],
+						"query": "SELECT Date ,sum(previousmonth_sales) as sum_previousmonth_sales, sum(currentmonth_sales) as sum_currentmonth_sales FROM digin_duosoftware_com.sales_comparison  GROUP BY Date ORDER BY Date"
+					}
+				},
+				"widgetName": "highcharts",
+				"col": 13,
+				"sizeX": 11,
+				"sizeY": 24,
+				"row": 21
+			}]
+		}],
+		"refreshInterval": 120,
+		"compType": "dashboard"
+	},
+	"Is_Success": true,
+	"Custom_Message": "Successful!"
+}

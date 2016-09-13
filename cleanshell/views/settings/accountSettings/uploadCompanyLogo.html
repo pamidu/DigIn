@@ -1,0 +1,44 @@
+<md-dialog aria-label="Upload Company Logo">
+  <form md-theme="default" name="editForm" ng-submit="editForm.$valid && submit()">
+	  <md-toolbar class="modal-header">
+		<div class="md-toolbar-tools">
+		   <div layout="row" layout-align="center center">
+			<ng-md-icon icon="my_library_books" style="fill:white; padding-right: 20px;" size="24px"></ng-md-icon>
+			<h2>Upload Company Logo</h2>
+		  </div>
+		  <span flex></span>
+		  <md-button class="md-icon-button icon-cancel" ng-click="$root.cancel()" aria-label="Close">
+		  </md-button>
+		</div>
+	  </md-toolbar>
+  <md-dialog-content style="max-width:800px;max-height:810px; ">
+   <div class="md-dialog-content" style="padding-bottom:0px;">
+		
+		<div layout='row' layout-align="center center">
+			<input id='fileInput' style='width: 400px' class='form-control' type='file' custom-on-change="fileChanged"/>
+		</div>
+		<div class='row' ng-if='theImage1 != undefined'>
+
+            <ng-croppie   ng-model='output'
+                          update='onUpdate'
+                          boundry="{w: 400, h: 400}"
+                          viewport="{w: 300, h:300}"
+                          mousezoom="true" zoom="true" type="square"
+                          src="theImage1">
+            </ng-croppie>
+			<img id="profileImg" src='{{output}}' style="display:none;"/>
+
+		</div>
+  </div>
+ 
+  </md-dialog-content>
+  
+  	<md-dialog-actions layout="row">
+			<span flex></span>
+			<md-button class="btn-dialog b-r-0" aria-label="upload" type="submit">
+				Upload
+			</md-button>
+	</md-dialog-actions>
+
+  </form>
+</md-dialog>

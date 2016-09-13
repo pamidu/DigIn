@@ -1,0 +1,40 @@
+<md-content style="width:100%;height:100%">
+    <div layout="row" layout-align="center center" class="padding-10">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAb1BMVEUAAAD1tFn1t1j/u1X0tFr0tFn0tFn0tFn0tFnztFnztVrztFn1tlf0tVv0tFn////98Nz98uL++/X++O/+9ur64Ln62qv52Kn4z5T3yYj3xoD1umb0t1/0tVz75cP63LH40Zr3x4T2xH32w3r2v3DzS6gCAAAADnRSTlMA8xgH9ePayMGYl4RJLSpv9/gAAAESSURBVDjLhZPddoMgEIQhJEbRDAj+Rm2TJu//jIU0LnJsy3eh5+iwM8AuC4iqyDPOs7yoBNtzkBwElwcWI8ojIo6liJafseO8KXI54RdOF1of/seKdw1B9XcuPzlK/En5Mljz98bq9r5Ee/EmEm+s8tRf2CBdAjqfW6NefM4guGAVAtPY177IE0TFCkQsnVeEGgXLsdIZ3Y7Ao3EuWMlZhijkx4SHe1HSjFFGDLVXNBM6Z7KsKb2AmAfjamBxyjsJMmx5OsWIXqmWLELIq9ZXDP7fqJSmkGGb2n+e/WNSytI2q1iAWhmgUYYOSvDIAoPtgJvt6aiZxD9Iuu5AfN2phkm2XKppk22fHpz06KWHNzn+35rRLidDP8gDAAAAAElFTkSuQmCC" wdith="30" height="30">
+        <div class="widget-header font-wp-grey">Feeds</div>
+    </div>
+    <div ng-repeat="feed in widget.widgetData.widData.feeds track by $index">
+		<md-list-item class="md-3-line p-0" flex>
+		  <div layout="column" class="data-container1">
+			<div class="data-slot1 background-wp-grey" layout="row">{{feed.title}}</div>
+			<div layout="row" class="background-digin-blue padding-5">
+				<div flex="20" class="padding-10"><img class="custom-avatar2" src="{{feed.mediaGroups[0].contents[0].url}}"/>
+				</div>
+				<div layout="column" flex="80" class="data-slot2">
+					<div class="data-slot3 margin-bottom-5"layout="row">
+						<div class="data-field3 background-rss-orange">Published Date</div>
+						<div class="data-item1 background-wp-grey">{{feed.publishedDate}}</div>
+					</div>
+					<div class="data-slot3" layout="row">
+						<div class="data-field3 background-rss-orange">Summary</div>
+						<div class="data-item1 background-wp-grey">{{feed.contentSnippet}}</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		</md-list-item>   
+    </div>
+	 <!--div layout="column" ng-repeat="entry in widget.widgetData.widData track by $index">
+		<md-card layout-margin flex layout="column" style="border: 1px solid #D8D8D8;box-shadow: 2px 2px 2px rgba(188, 188, 188);background-color: rgb(238, 238, 238);border-radius: 5px;"> 
+			<h4 layout-margin><a style="color:black" target="_blank" href="{{entry.link}}">{{entry.title}}</a></h4>
+			<md-list-item class="md-3-line" layout-margin flex>
+				<div class="md-list-item-text">
+				   
+					<h3 style="line-height: 1.0em;">Published Date: {{entry.publishedDate}} </h3>
+					<h3 style="line-height: 1.0em;">Summary: {{entry.contentSnippet}}</h3>             
+					<h3 style="line-height: 1.0em;">Author: {{entry.author}}</h3>
+				</div>
+			</md-list-item>
+		</md-card>  
+    </div-->
+</md-content>

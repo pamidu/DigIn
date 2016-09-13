@@ -156,7 +156,7 @@ div.task h3 {
     margin: 0;
     padding: 0;
     list-style: none;
-    min-height: 50px;
+    min-height: 30px;
 }
 .col-sheet {
     cursor: pointer;
@@ -208,7 +208,7 @@ div.task h3 {
     text-decoration: none;
     font-weight: bold;
     line-height: 1.5em;
-    padding: 8px 1px;
+    padding: 8px 13px;
     display: block;
 }
 .addNewCard {

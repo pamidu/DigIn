@@ -3,21 +3,17 @@
 
 'use strict';
 
-angular.module('demoApp').service('BoardDataFactory', function () {
+routerApp.service('BoardDataFactory', function () {
 
   return {
     kanban: {
       "name": "Kanban Board",
-      "numberOfColumns": 4,
+      "numberOfColumns": 3,
       "columns": [
-        {"name": "Fields", "cards": [
-           {"title": "Sales",
-                  "details": "",
-                  "status": ""},
-                {"title": "Invoice Date",
-                  "details": "",
-                  "status": ""}
-        ]},
+        {"name": "Fields", "cards": 
+
+
+        },
             {"name": "Country", "cards": [
          
         ]},

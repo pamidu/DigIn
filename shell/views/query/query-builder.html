@@ -91,7 +91,7 @@
                 -->
             </div>
             <!-- measures -->
-            <div flex="20" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric'">
+            <div flex="20" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric' || selectedChart.chartType == 'GeoMap'">
                 <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
@@ -484,7 +484,7 @@
                              <input ng-if = "selectedChart.chartType == 'highCharts' " ng-model="widget.widgetData.widName" ng-blur="highchartsNG.options.exporting.chartOptions.title.text=widget.widgetData.widName" >
                             <input ng-if = "selectedChart.chartType == 'boxplot' || selectedChart.chartType ==  'histogram' || selectedChart.chartType ==  'bubble' || selectedChart.chartType ==  'forecast' " ng-model="widget.widgetData.widName" 
                             ng-blur="widget.widgetData.highchartsNG.options.exporting.chartOptions.title.text=widget.widgetData.widName" > 
-                            <input ng-if = "selectedChart.chartType == 'd3hierarchy' || selectedChart.chartType ==  'd3sunburst' || selectedChart.chartType ==  'pivotSummary' || selectedChart.chartType ==  'metric' " ng-model="widget.widgetData.widName" >                            
+                            <input ng-if = "selectedChart.chartType == 'd3hierarchy' || selectedChart.chartType ==  'd3sunburst' || selectedChart.chartType ==  'pivotSummary' || selectedChart.chartType ==  'GeoMap' || selectedChart.chartType ==  'metric' " ng-model="widget.widgetData.widName" >                            
                         </md-input-container>
                         <div ng-include src="selectedChart.settingsView"></div>
                         <!--

@@ -3,7 +3,7 @@
 
 'use strict';
 
-angular.module('demoApp').service('BoardService', ['$uibModal', 'BoardManipulator', function ($uibModal, BoardManipulator) {
+routerApp.service('BoardService', ['$uibModal', 'BoardManipulator', function ($uibModal, BoardManipulator) {
 
   return {
     removeCard: function (board, column, card) {

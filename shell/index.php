@@ -279,7 +279,15 @@
 <script type="text/javascript" src="scripts/controllers/help/welcomeSearchBarCtrl.js"></script>
 <script type="text/javascript" src="scripts/services/QueryBuilderService.js"></script>
 <script type="text/javascript" src="scripts/factories/dynamicallyReport/dynamicallyReportFact.js"></script>
+<script src="http://code.highcharts.com/maps/highmaps.js"></script>
+<script src="http://code.highcharts.com/maps/modules/drilldown.js"></script>
+<script src="http://code.highcharts.com/mapdata/custom/world-continents.js"></script>
+<script src="http://code.highcharts.com/mapdata/custom/asia.js"></script>
 
+<script src="http://code.highcharts.com/mapdata/custom/oceania.js"></script>
+<script src="http://code.highcharts.com/mapdata/custom/europe.js"></script>
+<script src="http://code.highcharts.com/mapdata/custom/north-america.js"></script>
+<script src="http://code.highcharts.com/mapdata/custom/south-america.js"></script>
 <!-- profile
 <script type="text/javascript" src="scripts/factories/profile/profileFact.js"></script> -->
 <script type="text/javascript" src="scripts/controllers/profile-settings/userProfileCtrl.js"></script>
@@ -342,7 +350,11 @@
 <script src="scripts/charts/bumpChart.js"></script>
 <script src="scripts/charts/sunBurst.js"></script>
 <script src="scripts/services/services.js"></script>
-<script src="scripts/controllers/geomap\GeoMapController.js"
+<script src="scripts/services/BoardDataFactory.js"></script>
+<script src="scripts/services/BoardManipulator.js"></script>
+<script src="scripts/services/BoardService.js"></script>
+ <script type="text/javascript" src="scripts/controllers/geomap/model.js"></script>
+<script src="scripts/controllers/geomap/GeoMapController.js"></script>
 <script type="text/javascript" src="scripts/controllers/controllers.js"></script>
 <script type="text/javascript" src="scripts/filters/filters.js"></script>
 <script type="text/javascript" src="scripts/directives/directives.js"></script>

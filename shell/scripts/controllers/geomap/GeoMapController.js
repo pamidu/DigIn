@@ -3,10 +3,10 @@
 
 'use strict';
 
-angular.module('demoApp').controller('GeoMapController', ['$scope', 'BoardService', 'BoardDataFactory', function ($scope, BoardService, BoardDataFactory) {
+routerApp.controller('GeoMapController', ['$scope', 'BoardService', 'BoardDataFactory', function ($scope, BoardService, BoardDataFactory) {
 
   $scope.kanbanBoard = BoardService.kanbanBoard(BoardDataFactory.kanban);
-
+   
   $scope.kanbanSortOptions = {
 
     //restrict move across columns. move only within column.
@@ -28,5 +28,8 @@ angular.module('demoApp').controller('GeoMapController', ['$scope', 'BoardServic
   $scope.addNewCard = function (column) {
     BoardService.addNewCard($scope.kanbanBoard, column);
   }
+ 
+
+
 }]);
 

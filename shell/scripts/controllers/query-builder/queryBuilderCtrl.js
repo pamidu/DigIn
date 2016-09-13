@@ -1008,6 +1008,193 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 $state.go('home.Dashboards');
             }, 1000);
         };
+
+          $scope.GeoMap = {
+            onInit: function(recon) {
+                if (!recon) $scope.highchartsNG = $scope.selectedChart.initObj;
+                else {
+                    $scope.highchartsNG = $scope.widget.widgetData.highchartsNG;
+                    $scope.highchartsNG.series.forEach(function(key) {
+                        $scope.recordedColors[key.origName] = key.color;
+                    });
+                    $scope.isDrilled = $scope.widget.widgetData.widData.drilled;
+                    if ($scope.isDrilled) $scope.drillDownConfig = $scope.widget.widgetData.widData.drillConf;
+                    $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
+                    delete $scope.highchartsNG.size;
+                }
+            },
+            changeType: function() {
+                $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
+                $scope.highchartsNG.title.text = '';
+            },
+            selectCondition: function() {
+                if (!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0) {
+                    $scope.getAggregation();
+                } else {
+                    if ($scope.executeQryData.executeMeasures.length >= 1) {
+                        $scope.getDrilledAggregation();
+                    } else {
+                        $scope.executeQryData.executeMeasures.pop();
+                        eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
+                        //alert("drilldown only supports single series");
+                        privateFun.fireMessage('0', 'drilldown only supports single series');
+                        $scope.isPendingRequest = false;
+                    }
+                }
+            },
+            selectAttribute: function(fieldName) {
+                if (!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0) {
+                    //                if($scope.executeQryData.executeColumns.length == 0){
+                    $scope.executeQryData.executeColumns = [{
+                        filedName: fieldName
+                    }];
+                    $scope.getGroupedAggregation(fieldName);
+                }
+                // else if($scope.executeQryData.executeColumns.length == 2){
+                //     eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
+                //     // alert("drilldown only supports for two levels"); 
+                //     privateFun.fireMessage('0','drilldown only supports for two levels');
+                //     $scope.isPendingRequest = false;               
+                // }
+                else if ($scope.executeQryData.executeColumns.length >= 1) {
+                    $scope.executeQryData.executeColumns.push({
+                        filedName: fieldName
+                    });
+                    $scope.getDrilledAggregation();
+                }
+                //for pivot summary
+                //$scope.pivotSummaryField2.push({
+                //    filedName: fieldName
+                //});
+            },
+            executeQuery: function(cat, res, query) {
+                if (cat != "") {
+                    $scope.executeQryData.executeColumns = [{
+                        filedName: cat
+                    }];
+                    angular.forEach($scope.executeQryData.executeMeasures, function(val){
+                        $scope.executeQryData.executeColumns.push({
+                            filedName: val.filedName
+                        });                        
+                    });
+                    $scope.mapResult(cat, res, function(data) {
+                        $scope.highchartsNG = {};
+
+                        $scope.highchartsNG = {
+                            options: {
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    map: {
+                        mapData: Highcharts.maps['custom/world'],
+                        joinBy: ['name']
+                    }
+                },
+            },
+            chartType: 'map',
+            title: {
+                text: ' '
+            },
+            size :{
+               width: 760,
+                height: 420
+            },
+            series: [{
+                name: 'World',
+                data: [{
+                        'hc-key': 'eu',
+                        drilldown: true,
+                        value: 10
+                    },
+
+                    {
+                        'hc-key': 'as',
+                        drilldown: true,
+                        value: 55
+                    }, {
+                        'hc-key': 'lk-all',
+                        drilldown: true,
+                        value: 55
+                    }
+
+                ],
+                mapData: Highcharts.maps['custom/world-continents'],
+                joinBy: 'hc-key',
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}' + '<br />' + ' {point.value}' + '%'
+                }
+            }],
+                            title: {
+                                text: ''
+                            },                   
+                            
+                            colors: ['#EC784B']
+                            
+                        };
+                        $scope.highchartsNG.series = {};
+                        $scope.xAxiscat = [];
+                        $scope.highchartsNG.series = data;
+                        $scope.highchartsNG.xAxis = {};
+                        $scope.highchartsNG.xAxis.categories = [];
+                        $scope.highchartsNG.series.forEach(function(key) {
+                            if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
+                        });
+                        $scope.highchartsNG.series.forEach(function(key) {
+                            key.data.forEach(function(value) {
+                                $scope.xAxiscat.push(value.name);
+                            });
+                        });
+                        $scope.highchartsNG.xAxis.categories = $scope.xAxiscat;
+                        $scope.eventHndler.isLoadingChart = false;
+                        $scope.dataToBeBind.receivedQuery = query;
+                        $scope.queryEditState = false;
+                        $scope.isPendingRequest = false;
+                    });
+                } else {
+                    $scope.setMeasureData(res[0]);
+                    $scope.dataToBeBind.receivedQuery = query;
+                }
+            },
+            removeMea: function(l) {
+                if (l > 0) $scope.getAggregation();
+                else {
+                    //$scope.eventHndler.isLoadingChart = false;
+                    $scope.executeQryData.executeColumns = [];
+                    $scope.highchartsNG = $scope.selectedChart.initObj;
+                }
+            },
+            removeCat: function() {
+                if ($scope.isDrilled) $scope.getDrilledAggregation();
+                else $scope.getAggregation();
+            },
+            onGetAggData: function(res) {
+                $scope.isPendingRequest = false;
+                $scope.setMeasureData(res);
+            },
+            onGetGrpAggData: function() {
+                $scope.isPendingRequest = false;
+            },
+            saveWidget: function(widget) {
+                 if($scope.selectedChart.name == "pyramid" || $scope.selectedChart.name == "funnel"){
+                    $scope.highchartsNG.options.exporting.sourceHeight = 1200;
+                    $scope.highchartsNG.options.exporting.sourceWidth = 2048;
+                }
+                else{
+                    $scope.highchartsNG.options.exporting.sourceHeight = 400;
+                    $scope.highchartsNG.options.exporting.sourceWidth  = 600;
+                }
+                widget.widgetData.highchartsNG = $scope.highchartsNG;
+                widget.widgetData.widData['drilled'] = $scope.isDrilled;
+                if ($scope.isDrilled) widget.widgetData.widData['drillConf'] = $scope.drillDownConfig;
+                widget.widgetName = "highcharts";
+                widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
+                widget.widgetData.initCtrl = "elasticInit";
+                $scope.saveChart(widget);
+            }
+        };
+
         //chart functions
         $scope.highCharts = {
             onInit: function(recon) {

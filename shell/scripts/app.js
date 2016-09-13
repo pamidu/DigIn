@@ -35,7 +35,8 @@ var routerApp = angular.module('DuoDiginRt', [
     "ngTagsInput",
     'pouchdb',
     'jkuri.slimscroll',
-     'as.sortable'
+     'as.sortable',
+      'ui.bootstrap'
    
 ]);
 

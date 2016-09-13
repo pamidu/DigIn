@@ -2,9 +2,9 @@
 /*global angular: false */
 
 
-'use strict';
+ 
 
-angular.module('demoApp').factory('BoardManipulator', function () {
+routerApp.factory('BoardManipulator', function () {
   return {
 
     addColumn: function (board, columnName) {

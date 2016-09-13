@@ -41,23 +41,26 @@ routerApp.controller('shareCtrl', ['Socialshare', '$scope','$mdDialog','widget',
             })
         }
         else {
-         
-        var URL = ShareWidgetService.getShareWidgetURL(widget);
         
-           Socialshare.share({
-                  'provider': provider,
-                  'attrs': {
+        ShareWidgetService.getShareWidgetURL(widget,$scope.getreturnSocial,provider);
 
-                    'socialshareUrl': URL,
-                    'socialsharePopupHeight':'400',
-                    'socialsharePopupWidth':'400'
-                    
-
-                  }
-            });
         }
     };
 
+
+    $scope.getreturnSocial = function(url,provider){
+        Socialshare.share({
+                      'provider': provider,
+                      'attrs': {
+
+                        'socialshareUrl': url,
+                        'socialsharePopupHeight':'400',
+                        'socialsharePopupWidth':'400'
+                        
+
+                      }
+                });
+    }
   
 }]);
 

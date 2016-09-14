@@ -1,0 +1,13 @@
+<md-content style="width:100%;height:100%">
+  <div ng-repeat="entry in widget.widgetData.widData.news" layout="column" layout-align="center center" flex style="border: 1px solid #D8D8D8;">
+
+        <h4 layout-margin>{{entry.name}}</h4>
+        <a class="links" ng-href="{{entry.displayUrl}}" target="_blank">{{entry.displayUrl}}</a>
+        <md-list-item class="md-3-line" layout-margin flex>
+        <div class="md-list-item-text">
+            <p style="line-height: 1.0em;">{{entry.snippet}}</p><!-- | htmlToPlaintext-->
+        </div>
+        </md-list-item>
+      <!-- </md-card> -->
+  </div>
+</md-content>

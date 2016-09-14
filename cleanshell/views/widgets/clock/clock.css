@@ -1,0 +1,83 @@
+.clockmain {
+    padding: 4px 0;
+    width: inherit;
+    height: inherit;
+    background-color: #00BCD4;
+}
+.nav {
+    float: left;
+    width: 215px;
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+    li {
+        padding: 30px 0 0 95px;
+        height: 84px;
+        border-bottom: 1px solid rgba(193, 193, 193, 0.5);
+        font-size: 25px;
+        color: rgba(188, 185, 184, 0.7);
+        &:hover {
+            color: #E0744D;
+        }
+    }
+    .al {
+        background: url('https://dl.dropboxusercontent.com/u/13526976/clock_wid/alams.svg') 15% center no-repeat;
+    }
+    .sw {
+        background: url('https://dl.dropboxusercontent.com/u/13526976/clock_wid/stopwatch.svg') 15% center no-repeat;
+    }
+    .tm {
+        background: url('https://dl.dropboxusercontent.com/u/13526976/clock_wid/timer.svg') 15% center no-repeat;
+    }
+    .st {
+        background: url('https://dl.dropboxusercontent.com/u/13526976/clock_wid/site.svg') 15% center no-repeat;
+        border-bottom: 0px;
+    }
+}
+#clockclock {
+    padding: 0;
+    position: relative;
+    list-style: none;
+    margin: 10px auto;
+    height: 234px;
+    width: 234px;
+    display: block;
+    background: url('https://dl.dropboxusercontent.com/u/13526976/clock_wid/clockFace.svg') 5% center no-repeat;
+    /*  -webkit-box-shadow: 0px 0px 20px rgba(47, 40, 39, 0.4);  */
+}
+#clocksec,
+#clockmin,
+#clockhour {
+    position: absolute;
+    width: 24px;
+    height: 234px;
+    top: 0px;
+    left: 102px;
+}
+#clocksec {
+    background: url('https://dl.dropboxusercontent.com/u/13526976/clock_wid/sec.svg');
+    z-index: 3;
+}
+#clockmin {
+    background: url('https://dl.dropboxusercontent.com/u/13526976/clock_wid/min.svg');
+    z-index: 2;
+}
+#clockhour {
+    background: url('https://dl.dropboxusercontent.com/u/13526976/clock_wid/hour.svg');
+    z-index: 1;
+}
+#clockdate {
+    width: 100%;
+    text-align: center;
+    color: #FFFFFF;
+}
+#clockmonthDay {
+    color: #4B4746;
+    font-family: lato, sans-serif;
+}
+#clockyear {
+    color: #4B4746;
+    font-family: lato, sans-serif;
+}

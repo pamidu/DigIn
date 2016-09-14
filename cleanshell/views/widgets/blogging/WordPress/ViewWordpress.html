@@ -1,0 +1,35 @@
+<md-content style="width:100%;height:100%">
+    <div layout="row" layout-align="center center" class="padding-10">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAnFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4jUzeAAAAM3RSTlMACybzGAeYfRI99uPbyYTCv0DNrvDs4EmgRiAEjZtYLfvpaGNdUTTUt7KllZF1qYdvTB1Dahi2AAABzklEQVQ4y4VTWWLqMAyUbRJnXwlL2Fv20tdl7n+3JzkQaPvBfMAkkUbySKY7vLGfJ8YkuT/26C8GvkEP4w9+ffayCKhsqZXSpa2AKPN+pKdAre/PugbSB5FVjFHI/+3WTvyXUDENR4hXfX6MIiBaFrgi5eigQHzV8FIUM/ou8IBFQLMCaddHhlFA5RCPMJY1RshcgQgh6Z/f8UXSByIp4qMmep9n7wkW9uPNkXWnXcPnDgzc+dp5g+PnlWDPJCAN49EYFQUtkYrA0FdyIj6VogpjrmDp1fLzPzA+bmRKdHklyzVylFSP+P0OjPhGjkRVTSVySlj2wEHkDV3mlQxJrSvSSMhA0RATzpyAcbkRVUoQjAtoYBTRFIwddeRAFzQS4EqkwJZo1rCy2jHZAD7/pFJCmhTNgjPfgMlX3pEly5ylSXfMFwCtWIvxGdqRASe5YzqjFIuLFXETRMiEpMqgcUZ1Vlsg4ffzxRaIhdglkDmru2EFCRAS7adHsYLJ6oSDkmHdxt1usBC+BnCWQa2H2o27X5h9I1ZIt4iEbEK3MA8rNzixFTkA6Z7soF+5+9JqauEgVnRL+3vtg6WdLD6n3/3aP784z6/e88v79Pr/B6RVS+rT+XoGAAAAAElFTkSuQmCC" wdith="30" height="30">
+        <div class="widget-header font-wp-grey">Posts</div>
+    </div>
+    <div>
+    <div ng-repeat="post in widget.widgetData.widData.posts track by $index">
+            <md-list-item class="md-3-line p-0" flex>
+              <div layout="column" class="data-container1">
+                <div class="data-slot1 background-wp-grey" layout="row">{{post.title}}</div>
+                <div layout="row" class="background-digin-blue padding-5">
+                    <div flex="40"><img class="custom-avatar1" src="{{post.picURL}}"/>
+                    </div>
+                    <div layout="column" flex="60" class="data-slot2">
+                        <div class="data-slot3 margin-bottom-5"layout="row">
+                            <div class="data-field2 background-wp-orange">Author</div>
+                            <div class="data-item4 background-wp-grey">{{post.authorName}}</div>
+                        </div>
+                        <div class="data-slot3 margin-bottom-5"layout="row">
+                            <div class="data-field1 background-wp-orange">Date</div>
+                            <div class="data-item3 background-wp-grey">{{post.date}}</div>
+                        </div>
+                        <div class="data-slot3" layout="row">
+                            <div class="data-field1 background-wp-orange">Comments</div>
+                            <div class="data-item2 background-wp-grey">{{post.comments}}</div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </md-list-item>   
+    </div>
+    </div>
+</md-content>
+
+

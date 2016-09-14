@@ -35,7 +35,14 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
         "icon": "styles/css/images/setting/user100x100.png"
     }];
 
-
+	$scope.usageDetails = {};
+	$http.get("http://staging.digin.io:1929/get_usage_details?SecurityToken="+getCookie('securityToken'))
+	.success(function(data){
+		console.log(data.Result);
+		$scope.usageDetails = data.Result;
+	}).error(function(){
+		console.log("error");
+	});
     
     
     //*Settings routing ---------------- 

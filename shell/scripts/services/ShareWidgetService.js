@@ -11,7 +11,14 @@ routerApp.service('ShareWidgetService',function(Upload,$http,Digin_Engine_API,Di
         if(widget.widgetName=="highcharts" || widget.widgetName=="histogram"){
 
           var elementId = widget.widgetID;
-          var svgTag =document.getElementsByClassName(elementId)[0].childNodes[0].childNodes[1].childNodes[0].innerHTML;
+          var ele = document.getElementsByClassName(elementId)[0].childNodes[0].childNodes[1].childNodes[0].childNodes[0];
+           
+          var clone = $(ele).clone();
+          var cloneSvg = clone[0];
+          var a = cloneSvg.getElementsByClassName("highcharts-button");
+          $(cloneSvg).find(a).remove();
+           
+          svgTag ='<svg viewBox="0 0 500 600" width="100%" height="100%">'+cloneSvg.innerHTML+ '</svg>';
           var file = new File([svgTag], fileName, {type: "image/svg+xml"});
 
         }
@@ -26,7 +33,8 @@ routerApp.service('ShareWidgetService',function(Upload,$http,Digin_Engine_API,Di
            
 
         }
-         var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
+
+           var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
            Upload.upload({
             url: 'http://staging.digin.io:1929/' + 'file_upload',
             headers: {'Content-Type': 'multipart/form-data',},

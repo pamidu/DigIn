@@ -325,59 +325,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 .substring(1);
         }
         // Methods for filter option of charts
-        $scope.setAttributes = function() {
-            $scope.series = [];
-            $scope.categories = [];
-            $scope.seriesName = [];
-            var tempArray = [];
-            var flag;
-            var seriesArray = widget.widgetData.highchartsNG.series;
-            for (var i = 0; i < seriesArray.length; i++) {
-                if (typeof(seriesArray[i].visible) == "undefined") {
-                    widget.widgetData.highchartsNG.series[i].visible = true;
-                }
-                $scope.series.push({
-                    name: seriesArray[i].name,
-                    status: seriesArray[i].visible,
-                    index: i
-                });
-                if (widget.widgetData.categories === undefined) {
-                    for (var j = 0; j < seriesArray[i].data.length; j++) {
-                        if (!(tempArray.indexOf(seriesArray[i].data[j].name) > -1)) {
-                            flag = true;
-                            if (typeof(widget.widgetData.removedArray) != "undefined" && widget.widgetData.removedArray.indexOf(seriesArray[i].data[j].name) > -1) {
-                                flag = false;
-                            }
-                            tempArray.push(seriesArray[i].data[j].name);
-                            $scope.categories.push({
-                                name: seriesArray[i].data[j].name,
-                                status: flag
-                            });
-                            $scope.seriesName.push(seriesArray[i].data[j].name);
-                        }
-                    }
-                }
-            }
-
-            if (widget.widgetData.categories === undefined) {
-                widget.widgetData["categories"] = tempArray;
-            } else {
-                for (var i = 0; i < widget.widgetData.categories.length; i++) {
-                    flag = false;
-                    for (var j = 0; j < seriesArray[0].data.length; j++) {
-                        if (seriesArray[0].data[j].name == widget.widgetData.categories[i]) {
-                            flag = true;
-                            break;
-                        }
-                    }
-                    $scope.categories.push({
-                        name: widget.widgetData.categories[i],
-                        status: flag
-                    });
-                }
-            }
-        };
-
         // filter by categories
         $scope.isCatChecked = function() {
             $scope.isIndeterminate = false;
@@ -483,7 +430,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     for (var j = 0; j < seriesArray[i].data.length; j++) {
                         if (!(tempArray.indexOf(seriesArray[i].data[j].name) > -1)) {
                             flag = true;
-                            if (typeof(widget.widgetData.removedArray) != "undefined" && widget.widgetData.removedArray.indexOf(seriesArray[i].data[j].name) > -1) {
+                            if (typeof(widget.widgetData.removedCat) != "undefined" && widget.widgetData.removedCat.indexOf(seriesArray[i].data[j].name) > -1) {
                                 flag = false;
                             }
                             tempArray.push(seriesArray[i].data[j].name);
@@ -568,6 +515,8 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
         $scope.setCategoriesFilter = function(category, widget) {
             var series = widget.widgetData.highchartsNG.series;
             var detailsArray = [];
+            var chart = widget.widgetData.highchartsNG.getHighcharts();
+            var charts = angular.copy(chart);
             if (category.status) {
                 //remove
                 for (var i = 0; i < series.length; i++) {
@@ -610,6 +559,38 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     }
                 });
             }
+                for(i = chart.series.length - 1; i >= 0; i--) {
+                    var s = chart.series[i];
+                    for (var j=0; j< chart.series[i].data.length; j++){
+                        if(chart.series[i].data[j].name !== undefined){
+                            if(chart.series[i].data[j].x != j){
+                                chart.series[i].data[j].update({
+                                    x: j
+                                });                
+                            }                
+                            if(chart.series[i].data[j].category != chart.series[i].data[j].name){
+                                chart.series[i].data[j].update({
+                                category: name
+                                });                   
+                            }
+                        }
+                    }
+                }
+                // if (chart.series.length > 0 && chart.series[0].data[0].name !== undefined){
+                //     var cat = [];
+                //     for (var i=0; i< chart.series[0].data.length;i++){
+                //       cat.push(chart.series[0].data[i].name);
+                //     }
+                //     chart.xAxis[0].setCategories(cat);                        
+                //     chart.redraw();
+                // }                
+              chart.redraw();
+          var chart2 = widget.widgetData.highchartsNG.getHighcharts();
+          if (chart == chart2){
+            console.log("similar : FAILED");
+          } else{
+            console.log("changes applied : PASS");
+          }
         };
         // filter by categories
         $scope.isCatChecked = function() {
@@ -645,6 +626,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 });
             }
         };
+        // Filter option methods end
         $scope.showWidget = function(ev, widget) {
             console.log("widget is " + JSON.stringify(widget));
             $scope.tempWidth = widget.widgetData.highchartsNG.size.width;

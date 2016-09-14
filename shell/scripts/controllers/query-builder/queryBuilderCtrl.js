@@ -56,6 +56,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 $scope.executeQryData.executeMeasures = $scope.widget.widgetData.commonSrc.mea;
                 $scope.executeQryData.executeColumns = $scope.widget.widgetData.commonSrc.att;
                 $scope.dataToBeBind.receivedQuery = $scope.widget.widgetData.commonSrc.query;
+                $scope.executeQryData.executeFilters = $scope.widget.widgetData.commonSrc.filter;
                 if ($scope.selectedChart.chartType != 'metric' && $scope.selectedChart.chartType != 'highCharts') {
                     $scope.dynFlex = 90;
                     $scope.chartWrapStyle.height = 'calc(91vh)';
@@ -169,6 +170,12 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                             if ($scope.eventHndler.isToggleColumns) {
                                 $("#togglePanelColumns").hide(200);
                                 $scope.eventHndler.isToggleColumns = false;
+                            }
+                            break;
+                        case '3' :
+                            if($scope.eventHndler.isTogglePanelFilter) {
+                                $("#togglePanelFilter").hide(200);
+                                $scope.eventHndler.isTogglePanelFilter = false;
                             }
                             break;
                     }
@@ -552,6 +559,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
         var executeQryData = {
             executeMeasures: [],
             executeColumns: [],
+            executeFilters: [],
             chartType: '',
             electQry: [],
             GrpFiled: []
@@ -564,6 +572,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 isToggleMeasure: false,
                 isToggleColumns: false,
                 isToggleMeasureDown: false,
+                isTogglePanelFilter: false,
                 isLoadingChart: false,
                 toggleDownName: [],
                 isMainLoading: false,
@@ -582,6 +591,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                         case '1':
                             //event measures
                             privateFun.checkToggleOpen('2');
+                            privateFun.checkToggleOpen('3');
                             if (this.isToggleMeasure) {
                                 $("#togglePanel").hide(200);
                                 this.isToggleMeasure = false;
@@ -596,6 +606,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                         case '2':
                             //event columns
                             privateFun.checkToggleOpen('1');
+                            privateFun.checkToggleOpen('3');
                             if (this.isToggleColumns) {
                                 $("#togglePanelColumns").hide(200);
                                 this.isToggleColumns = false;
@@ -610,6 +621,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                         case '3':
                             //event columns
                             privateFun.checkToggleOpen('1');
+                            privateFun.checkToggleOpen('3');
                             if (this.isToggleColumns) {
                                 $("#togglePanelColumns").hide(200);
                                 this.isToggleColumns = false;
@@ -619,6 +631,21 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                 }
                                 $("#togglePanelColumns").show(300);
                                 this.isToggleColumns = true;
+                            }
+                            break;
+                        case '4':
+                            //event filters
+                            privateFun.checkToggleOpen('1');
+                            privateFun.checkToggleOpen('2');
+                            if (this.isTogglePanelFilter) {
+                                $("#togglePanelFilter").hide(200);
+                                this.isTogglePanelFilter = false;
+                            } else {
+                                if (this.openSettingToggle[1].isQueryBuilder) {
+                                    this.hideDesignQuery();
+                                }
+                                $("#togglePanelFilter").show(300);
+                                this.isTogglePanelFilter = true;
                             }
                             break;
                         default:
@@ -689,7 +716,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                             eval("$scope." + $scope.selectedChart.chartType + ".selectAttribute(column.filedName)");
                         } else {
                             //alert("First select atleast one measure");
-                            privateFun.fireMessage('0', 'First select atleast one measure or select appropriate chart type..');
+                            privateFun.fireMessage('0', 'Select atleast one measure or select appropriate chart type..');
                             $scope.isPendingRequest = false;
                         }
                     }
@@ -698,6 +725,24 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     //alert('record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
                     privateFun.fireMessage('0', 'record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
                     $scope.isPendingRequest = false;
+                },
+                onClickFilter: function(filter) {
+                    var duplicateRecord = false;
+                    if (!duplicateRecord){
+                        angular.forEach(executeQryData.executeFilters,function(field){
+                            if (field.name == filter.name) {
+                                privateFun.fireMessage('0','Duplicate record found in object');
+                                duplicateRecord = true;
+                            }
+                        });
+                    }
+                    if (duplicateRecord){
+                        return;
+                    }
+                    executeQryData.executeFilters.push(filter);
+                },
+                removeFilter: function(filter) {
+                    executeQryData.executeFilters.splice(executeQryData.executeFilters.indexOf(filter),1);
                 },
                 onClickApply: function() {
                     this.isLoadingChart = true;
@@ -1554,7 +1599,8 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 src: $scope.sourceData,
                 mea: $scope.executeQryData.executeMeasures,
                 att: $scope.executeQryData.executeColumns,
-                query: $scope.dataToBeBind.receivedQuery
+                query: $scope.dataToBeBind.receivedQuery,
+                filter: $scope.executeQryData.executeFilters
             };
             widget.sizeX = 6;
             widget.sizeY = 21;
@@ -1567,7 +1613,8 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     src: $scope.sourceData,
                     mea: $scope.executeQryData.executeMeasures,
                     att: $scope.executeQryData.executeColumns,
-                    query: $scope.dataToBeBind.receivedQuery
+                    query: $scope.dataToBeBind.receivedQuery,
+                    filter: $scope.executeQryData.executeFilters
                 };
                 var objIndex = getRootObjectById(widget.widgetID, widgets);
                 widgets[objIndex] = $scope.widget;

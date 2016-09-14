@@ -155,16 +155,6 @@
                             </v-pane>
                         </v-accordion>
                     </div>
-
-                    <!--
-                                        <div class="digin-qb-panle-footer">
-                                                <span class="btn btn-block btn-default btn-apply" role="button"
-                                                      ng-click="eventHndler.onClickApply()"
-                                                      tabindex="0">
-                                                        apply
-                                                </span>
-                                        </div>
-                    -->
                 </div>
                 <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle">
                     <div class="panel-header">
@@ -195,6 +185,66 @@
                         </div>
                     </div>
                 </div>
+                <!-- Filter config panel -->
+                <div class="filter-config-panel animated  "
+                     id="togglePanelFilter">
+                    <div class="header">
+                        <h4 class="font-weight-300 p-20">
+                            Filters
+                            <div class="header-icon">
+                                <i class="ti-help"></i>
+                            </div>
+                        </h4>
+                    </div>
+                    <div class="chart-config-wrap">
+                        <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
+                                     onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
+                            <v-pane id="{{ ::Attr.id }}" ng-repeat="Attr in sourceData.fAttArr"
+                                    class="v-pane-column">
+                                <v-pane-header id="{{ ::Attr.id }}-header" class="data-row-columns"
+                                               ng-click="eventHndler.onClickFilter(Attr)"
+                                               aria-controls="{{ ::Attr.id }}-content">
+                                    <h5 markable class="font-weight-300 text-upper">{{ ::Attr.name }}
+<!--                                         <i class="ti-close"></i> -->
+                                    </h5>
+                                </v-pane-header>
+
+                            </v-pane>
+                        </v-accordion>
+                    </div>
+                </div>                
+                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle">
+                    <div class="panel-header">
+                        <h3 class="font-weight-300">
+                            Filter
+                            <fieldset ng-disabled="isPendingRequest"
+                                      data-ng-style="isPendingRequest && {'cursor':'not-allowed'}"
+                                      class="toggle-icon animated "
+                                      ng-class="eventHndler.isTogglePanelFilter==true?'left-icon-toggle':'left-icon'"
+                                      ng-click="eventHndler.onToggleEvent('4')">
+                                <i class="" style="cursor:inherit;"
+                                   ng-class="eventHndler.isTogglePanelFilter==true?'ti-angle-left rotateOut':'ti-angle-right rotateIn'"
+                                ></i>
+
+                            </fieldset>                            
+                        </h3>
+                    </div>
+
+                    <div class="measures-body">
+                        <div class="draggable-measure data-row"
+                             ng-repeat="filter in executeQryData.executeFilters">
+                            <i class="ti-close" ng-click="eventHndler.removeFilter(filter)"></i>
+                            <span>
+                              &nbsp;&nbsp;{{filter.name}}
+                            </span>
+                        </div>
+                        <div class="filter-data-not-fund"
+                             ng-if="executeQryData.executeFilters.length < 1">
+                            <i class="ti-filter"></i>
+                            <h5>add aggregations</h5>
+                        </div>
+                    </div>
+                </div>                
             </div>
             <div flex="dynFlex" style="overflow: hidden;">
                 <div class="digin-gb-chart-wrap" ng-style="chartGbMeaStyle">

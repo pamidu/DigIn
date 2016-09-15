@@ -48,44 +48,23 @@
                                 <md-tooltip>settings</md-tooltip>
                             </md-button>
                             <md-menu ng-show="widget.widgetData.initCtrl=='elasticInit'">
-                                <md-button class="widget-button" ng-click="$mdOpenMenu($event);$event.stopPropagation();setAttributes(widget);">
+                                <md-button class="widget-button" ng-click="$mdOpenMenu($event);$event.stopPropagation();">
                                     <i class="ti-filter blut-widget-icon"></i>
                                     <md-tooltip>filter</md-tooltip>
                                 </md-button>
-                                <md-menu-content style="background:white;padding:10px;">
-                                    <div class="widget0s-menu">
-                                        <div layout="row" layout-xs="column">
-                                            <div flex="100">
-                                                    <div class="widget0s-filter-body" flex="100" layout="column">
-                                                        <div layout="row" layout-xs="column" flex="100">
-                                                            <div flex="50" style="overflow: hidden;">
-                                                                <div class = "blut-login-user card-head custom-filter">
-                                                                    &nbsp  SERIES
-                                                                </div>
-                                                                <md-checkbox ng-checked="isChecked()" md-indeterminate="isIndeterminate" ng-click="toggleAll(widget);$event.stopPropagation();" md-prevent-menu-close="md-prevent-menu-close">
-                                                                    All
-                                                                </md-checkbox>                            
-                                                                <ul ng-repeat="s in series" class="cutom-filter-ul">
-                                                                        <md-checkbox ng-checked="s.status" ng-click="setSeriesFilter(s,widget)"  md-prevent-menu-close="md-prevent-menu-close" aria-label="s.name" style="font-size: 12px;line-height: 0.428571;">{{s.name}}</md-checkbox>
-                                                                </ul>                            
-                                                            </div>
-                                                            <div flex="50">
-                                                                <div class = "blut-login-user card-head custom-filter">
-                                                                    &nbsp  CATEGORIES
-                                                                </div>
-                                                                <md-checkbox ng-checked="isCatChecked()" md-indeterminate="isIndeterminate" ng-click="toggleCatAll(widget)" md-prevent-menu-close="md-prevent-menu-close">
-                                                                    All
-                                                                </md-checkbox>                            
-                                                                <ul ng-repeat="c in categories" class="cutom-filter-ul" style="overflow: hidden;">
-                                                                        <md-checkbox ng-checked="c.status" ng-click="setCategoriesFilter(c,widget)"  md-prevent-menu-close="md-prevent-menu-close" style="font-size: 12px;line-height: 0.428571;">{{c.name}}</md-checkbox>
-                                                                </ul>                           
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <md-menu-content style="background:white;padding:10px;min-width: calc(30vh);min-height: calc(30vh);">
+                                    <v-accordion id="accordionMenu" class="vAccordion--default" control="accordionA" multiple style="margin: 10px;" onexpand="loadFilterParams(index,id,widget)">
+                                        <v-pane id = "{{ ::filter.filter.id }}" class="v-pane" ng-repeat="filter in widget.widgetData.commonSrc.filter"> 
+                                            <v-pane-header>
+                                                <h5 class="font-weight-300 text-upper">{{ ::filter.filter.name }}</h5>
+                                            </v-pane-header>
+                                            <v-pane-content class="trans-bg v-pane-content">
+                            <!--                     <div layout="row" layout-sm="column" layout-align="space-around">
+                                                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                                                </div>   -->           
+                                            </v-pane-content>
+                                        </v-pane>                       
+                                    </v-accordion>                                    
                                 </md-menu-content>
                             </md-menu>                             
                             <md-button class="widget-button" ng-click="syncWidget(widget)"

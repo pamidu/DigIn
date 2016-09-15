@@ -726,12 +726,16 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     privateFun.fireMessage('0', 'record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
                     $scope.isPendingRequest = false;
                 },
-                onClickFilter: function(filter) {
+                onClickFilter: function(filter,type) {
                     var duplicateRecord = false;
                     if (!duplicateRecord){
                         angular.forEach(executeQryData.executeFilters,function(field){
-                            if (field.name == filter.name) {
-                                privateFun.fireMessage('0','Duplicate record found in object');
+                            if (field.filter.name == filter.name) {
+                                if (field.type == type){
+                                    privateFun.fireMessage('0','Duplicate record found in object');
+                                } else {
+                                    field.type = type;
+                                }
                                 duplicateRecord = true;
                             }
                         });
@@ -739,7 +743,10 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     if (duplicateRecord){
                         return;
                     }
-                    executeQryData.executeFilters.push(filter);
+                    executeQryData.executeFilters.push({
+                        filter : filter,
+                        type: type
+                    });
                 },
                 removeFilter: function(filter) {
                     executeQryData.executeFilters.splice(executeQryData.executeFilters.indexOf(filter),1);

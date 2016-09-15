@@ -79,7 +79,6 @@
                         </v-pane>
                     </v-accordion>
                 </div>
-
                 <!--
                                 <div class="digin-qb-panle-footer">
                                     <span class="btn btn-block btn-default btn-apply" role="button"
@@ -155,6 +154,16 @@
                             </v-pane>
                         </v-accordion>
                     </div>
+
+                    <!--
+                                        <div class="digin-qb-panle-footer">
+                                                <span class="btn btn-block btn-default btn-apply" role="button"
+                                                      ng-click="eventHndler.onClickApply()"
+                                                      tabindex="0">
+                                                        apply
+                                                </span>
+                                        </div>
+                    -->
                 </div>
                 <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle">
                     <div class="panel-header">
@@ -197,20 +206,25 @@
                         </h4>
                     </div>
                     <div class="chart-config-wrap">
-                        <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
-                                     onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
-                            <v-pane id="{{ ::Attr.id }}" ng-repeat="Attr in sourceData.fAttArr"
-                                    class="v-pane-column">
-                                <v-pane-header id="{{ ::Attr.id }}-header" class="data-row-columns"
-                                               ng-click="eventHndler.onClickFilter(Attr)"
-                                               aria-controls="{{ ::Attr.id }}-content">
-                                    <h5 markable class="font-weight-300 text-upper">{{ ::Attr.name }}
-<!--                                         <i class="ti-close"></i> -->
-                                    </h5>
-                                </v-pane-header>
-
-                            </v-pane>
-                        </v-accordion>
+                    <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
+                                 onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
+                        <v-pane id="{{ ::Attr.id }}" ng-repeat="Attr in sourceData.fAttArr" class="v-pane">
+                            <v-pane-header id="{{ ::Attr.id }}-header" aria-controls="{{ ::Attr.id }}-content">
+                                <h5 class="font-weight-300 text-upper">{{ ::Attr.name }}</h5>
+                            </v-pane-header>
+                            <v-pane-content class="trans-bg v-pane-content" id="{{ ::Attr.id }}-content"
+                                            aria-labelledby="{{ ::Attr.id }}-header">
+                                <p class="data-row-style-2 hvr-sweep-to-right"
+                                   markable ng-click="eventHndler.onClickFilter(Attr,'single')">
+                                    Single Select
+                                </p>
+                                <p class="data-row-style-2 hvr-sweep-to-right"
+                                   markable ng-click="eventHndler.onClickFilter(Attr,'multiple')">
+                                    Multiple Select
+                                </p>                                
+                            </v-pane-content>
+                        </v-pane>
+                    </v-accordion>                        
                     </div>
                 </div>                
                 <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle">
@@ -235,8 +249,11 @@
                              ng-repeat="filter in executeQryData.executeFilters">
                             <i class="ti-close" ng-click="eventHndler.removeFilter(filter)"></i>
                             <span>
-                              &nbsp;&nbsp;{{filter.name}}
+                              &nbsp;&nbsp;{{filter.filter.name}}
                             </span>
+                            <div class="measures-type">
+                                {{filter.type}}
+                            </div>                            
                         </div>
                         <div class="filter-data-not-fund"
                              ng-if="executeQryData.executeFilters.length < 1">

@@ -5147,6 +5147,6 @@ label.display-inline-block {
 }
 
 div.bigcheck { 
-    display: block;
+    /*display: block;*/
     padding: 0.5em;;
 }

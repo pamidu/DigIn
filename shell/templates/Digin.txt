@@ -1,0 +1,57 @@
+[{
+	"Body": "Dear @@name@@, An user allocation has been authenticated to your tenent noted by Tenent ID : @tenantID@ registered under email, @@email@@ to your user ID : @@userID@@. Allocated user information as follows. UserID : @@FromID@@, User Name : @@FromName@@, User Email : @@FromEmail@@. Thank you for using DigIn!",
+	"Owner": "Duo World",
+	"TemplateID": "tenant_request",
+	"Title": "Tenent User Allocation Notification!"
+}, {
+	"Body": "\u003chtml\u003e\u003chead\u003e\u003ctitle\u003eDigIn - Account Verification\u003c/title\u003e\u003c/head\u003e\u003ctitle \u003eDigIn-Account Verification\u003c/title\u003e\u003cbody\u003e\u003ch2\u003eDigIn Registration - Confirmation Mail\u003c/h2\u003e\u003ch3 class=\"\"\u003eDear @@CNAME@@ ,\u003c/h3\u003e\u003cp\u003eYour email, @@CEMAIL@@ has been successfully registered at DigIn. To activate click on the following link : \u003ca href="http://digin.io/activate.php?token=@@CODE@@\u0026email=@@CEMAIL@@"\u003e http://digin.io/activate.php?token=@@PASSWORD@@\u0026email=@@CEMAIL@@\u003c/a\u003e\u003cbr/\u003e\u003c/p\u003e\u003cp\u003e
+	\u003cbr/\u003eYour temporary password is : @@PASSWORD@@ and please change your password as soon as you login.\u003c/p\u003e\u003cbr/\u003e\u003cbr/\u003e\u003cp\u003eMany thanks,\u003c/p\u003e\u003ch3\u003eDigIn Team\u003c/h3\u003e\u003ca href=\"http://www.digin.io\" target=\"_blank\"\u003ewww.digin.io \u003c/a\u003e \u003c/body\u003e \u003c/html\u003e",
+	"Owner": "Digin",
+	"TemplateID": "TenantUser_Verification",
+	"Title": "Account Verification"
+}, {
+	"Body": "\u003c!DOCTYPE html\u003e\u003chtml\u003e\u003chead\u003e\u003ctitle\u003e\u003c/title\u003e\u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1\"\u003e\u003cstyle type=\"text/css\"\u003ebody{background-color:ffffff;background-repeat:no-repeat;background-position:top left;background-attachment:fixed;}h1{font-family:Arial;color:000000;background-color:CCFFFF;}p{font-family:Arial;font-size:14px;font-style:normal;font-weight:normal;color:000000;}\u003c/style\u003e\u003c/head\u003e\u003cbody\u003e\u003ch1\u003eReset Password\u003c/h1\u003e\u003cp\u003eDear @@CNAME@@, \u003cbr/\u003e\u003cbr/\u003eYou have requested to change password, Please use following link to change password.\u003c/br\u003e\u003ca href="http://digin.io/auth/o/?e=@@CEMAIL@@&o=@@PASSWORD@@&r=http://digin.io/entry/#/change"\u003e\u003c/a\u003e\u003cbr/\u003e\u003cbr/\u003eThanks, \u003cbr/\u003eDigIn Team\u003c/p\u003e\u003c/body\u003e\u003c/html\u003e",
+	"Owner": "Digin",
+	"TemplateID": "T_Email_FORGETPW",
+	"Title": "Password Reset"
+}, {
+	"Body": "\u003c!DOCTYPE html\u003e\u003chtml\u003e\u003chead\u003e\u003ctitle\u003e\u003c/title\u003e\u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1\"\u003e\u003cstyle type=\"text/css\"\u003ebody{background-color:ffffff;background-repeat:no-repeat;background-position:top left;background-attachment:fixed;}h1{font-family:Arial;color:000000;background-color:CCFFFF;}p{font-family:Arial;font-size:14px;font-style:normal;font-weight:normal;color:000000;}\u003c/style\u003e\u003c/head\u003e\u003cbody\u003e\u003ch1\u003eTenant Creation\u003c/h1\u003e\u003cp\u003eDear @@name@@, \u003cbr/\u003e\u003cbr/\u003e Your email, @@email@@ has been registered with DigIn and account creation has been completed successfully. \u003cbr/\u003e \u003cbr/\u003eThanks, \u003cbr/\u003eDigIn Team\u003c/p\u003e\u003c/body\u003e\u003c/html\u003e ",
+	"Owner": "Digin",
+	"TemplateID": "T_Email_tenant_creation",
+	"Title": "Tenant Creation Notification!"
+}, {
+	"Body": "\u003c!DOCTYPE html\u003e\u003chtml\u003e\u003chead\u003e\u003ctitle\u003e\u003c/title\u003e\u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1\"\u003e\u003cstyle type=\"text/css\"\u003ebody{background-color:ffffff;background-repeat:no-repeat;background-position:top left;background-attachment:fixed;}h1{font-family:Arial;color:000000;background-color:CCFFFF;}p{font-family:Arial;font-size:14px;font-style:normal;font-weight:normal;color:000000;}\u003c/style\u003e\u003c/head\u003e\u003cbody\u003e\u003ch1\u003eInvitation to register !\u003c/h1\u003e\u003cp\u003eDear Customer, \u003cbr/\u003e\u003cbr/\u003e\u003cp\u003eYou @@EMAIL@@, have been invited by @@DOMAIN@@ to join DigIn. Use the following link to create an account.\u003c/p\u003e\u003cp\u003e\u003ca href="http://digin.io/entry/#/signup?code=@@CODE@@\u0026email=@@EMAIL@@"\u003ehttp://digin.io/entry/#/signup?code=@@CODE@@\u0026email=@@EMAIL@@\u003c/a\u003e\u003cbr/\u003e\u003c/p\u003e\u003cbr/\u003e\u003cbr/\u003eThanks, \u003cbr/\u003eDigIn Team\u003c/p\u003e\u003c/body\u003e\u003c/html\u003e",
+	"Owner": "Digin",
+	"TemplateID": "T_Email_tenant_invitation",
+	"Title": "Invitation to tenant"
+}, {
+	"Body": "\u003c!DOCTYPE html\u003e\u003chtml\u003e\u003chead\u003e\u003ctitle\u003e\u003c/title\u003e\u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1\"\u003e\u003cstyle type=\"text/css\"\u003ebody{background-color:ffffff;background-repeat:no-repeat;background-position:top left;background-attachment:fixed;}h1{font-family:Arial;color:000000;background-color:CCFFFF;}p{font-family:Arial;font-size:14px;font-style:normal;font-weight:normal;color:000000;}\u003c/style\u003e\u003c/head\u003e\u003cbody\u003e\u003ch1\u003eTenent User Allocation Notification\u003c/h1\u003e\u003cp\u003eDear @@name@@, \u003cbr/\u003e\u003cbr/\u003eAn user allocation has been authenticated to your tenent noted by Tenent ID : @tenantID@ registered under email, @@email@@ to your user ID : @@userID@@. Allocated user information as follows. UserID : @@FromID@@, User Name : @@FromName@@, User Email : @@FromEmail@@. \u003cbr/\u003e \u003cbr/\u003eThanks, \u003cbr/\u003eDigIn Team\u003c/p\u003e\u003c/body\u003e\u003c/html\u003e",
+	"Owner": "Digin",
+	"TemplateID": "T_Email_tenant_request",
+	"Title": "Tenent User Allocation Notification!"
+}, {
+	"Body": "\u003c!DOCTYPE html\u003e\u003chtml\u003e\u003chead\u003e\u003ctitle\u003e\u003c/title\u003e\u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1\"\u003e\u003cstyle type=\"text/css\"\u003ebody{background-color:ffffff;background-repeat:no-repeat;background-position:top left;background-attachment:fixed;}h1{font-family:Arial;color:000000;background-color:CCFFFF;}p{font-family:Arial;font-size:14px;font-style:normal;font-weight:normal;color:000000;}\u003c/style\u003e\u003c/head\u003e\u003cbody\u003e\u003ch1\u003eUser Login Notification\u003c/h1\u003e\u003cp\u003eDear @@name@@, \u003cbr/\u003e\u003cbr/\u003eYour user account registered to @@email@@ of @@Domain@@ has been accessed by IP address: @@ClientIP@@  via @@UserAgent@@ using securityToken: @@SecurityToken@@ \u003cbr/\u003e\u003cbr/\u003e\u003cbr/\u003e \u003cbr/\u003eThanks, \u003cbr/\u003eDigIn Team\u003c/p\u003e\u003c/body\u003e\u003c/html\u003e",
+	"Owner": "Digin",
+	"TemplateID": "T_Email_user_login",
+	"Title": "User Authorization"
+}, {
+	"Body": "\u003chtml\u003e\u003chead\u003e\u003ctitle\u003eDigIn - Account Verification\u003c/title\u003e\u003c/head\u003e\u003ctitle \u003eDigIn-Account Verification\u003c/title\u003e\u003cbody\u003e\u003ch2\u003eDigIn Registration - Confirmation Mail\u003c/h2\u003e\u003ch3 class=\"\"\u003eDear @@CNAME@@ ,\u003c/h3\u003e\u003cp\u003eYour email, @@CEMAIL@@ has been successfully registered at DigIn. To activate click on the following link : \u003ca href="http://digin.io/activate.php?token=@@CODE@@\u0026email=@@CEMAIL@@"\u003e http://digin.io/activate.php?token=@@CODE@@\u0026email=@@CEMAIL@@\u003c/a\u003e\u003cbr/\u003e\u003c/p\u003e\u003cp\u003eMany thanks,\u003c/p\u003e\u003ch3\u003eDigIn Team\u003c/h3\u003e\u003ca href=\"http://www.digin.io\" target=\"_blank\"\u003ewww.digin.io \u003c/a\u003e \u003c/body\u003e \u003c/html\u003e",
+	"Owner": "Digin",
+	"TemplateID": "T_Email_Verification",
+	"Title": "Account Verification"
+}, {
+	"Body": "Dear @@name@@, your email, @@email@@ has been successfully registered at DigIn. Here is your token : @@token@@. And your password is : @@password@@. Thank you for joining with DigIn!",
+	"Owner": "Digin",
+	"TemplateID": "user_activate",
+	"Title": "Account Creation"
+}, {
+	"Body": "Dear @@name@@, your email, @@email@@ has been successfully registered at DigIn",
+	"Owner": "Digin",
+	"TemplateID": "user_activated",
+	"Title": "Account Verification"
+}, {
+	"Body": "Dear @@name@@, your email, @@email@@ has requested a password reset. If this wasn't intentional please change your password as soon as possible. And your new password is : @@password@@. Thank you for using DigIn!",
+	"Owner": "Digin",
+	"TemplateID": "user_resetpassword",
+	"Title": "Account Creation"
+}]

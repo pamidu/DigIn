@@ -8,10 +8,10 @@ routerApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','ShareW
             provider: "Yahoo",
             icon: "styles/css/images/icons/yahoo.svg"
         }, 
-        // {
-        //     provider: "twitter",
-        //     icon: "styles/css/images/icons/twitter.svg"
-        // }, 
+         {
+             provider: "outlook",
+             icon: "styles/css/images/icons/outlook.svg"
+         }, 
         {
             provider: "Other",
             icon: "styles/css/images/icons/mail.svg"
@@ -54,6 +54,10 @@ routerApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','ShareW
             window.open('http://compose.mail.yahoo.com/?to=&subject=Digin shared a link with u ....&body='+URL+'','_blank');
 
         }
+        else if(provider=="outlook"){
+            window.location.href ='mailto:?subject=Digin shared a link with u ....&body='+URL+'';
+
+        }
 
    }
 
@@ -65,14 +69,20 @@ routerApp.controller('localEmailClient', ['$scope','$mdDialog','URL','$http','ng
     $scope.emailBody=URL,
     $scope.emailSubject="Digin shared a link with u ....",
     $scope.emailTo;
+    $scope.emailCc;
+    var isCClistOk = true;
     $scope.sendEmail=function () {
 
-          if($scope.validateEmail($scope.emailTo)){
+            if(typeof $scope.emailCc != "undefined")
+                isCClistOk = $scope.checkCCList($scope.emailCc);
+
+          if($scope.validateEmail($scope.emailTo) && isCClistOk){
             
             
             $scope.mailData =   {
                 "type": "email",
                 "to": $scope.emailTo,
+                "cc" : $scope.emailCc,
                 "subject": $scope.emailSubject,
                 "from": "Digin <noreply-digin@duoworld.com>",
                 "Namespace": "com.duosoftware.com",
@@ -153,7 +163,21 @@ routerApp.controller('localEmailClient', ['$scope','$mdDialog','URL','$http','ng
                     verticalPosition: 'top',
                     dismissOnClick: true
                     });
+    }
+
+    $scope.checkCCList = function(ccList){
+
+        var str = ccList;
+        var res = str.split(",");
+
+        for(var i =0 ; i < res.length ; i++){
+
+            if(!$scope.validateEmail(res[i]))
+                return false;
         }
+
+        return true;
+    }
 
 
 

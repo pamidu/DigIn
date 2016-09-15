@@ -104,6 +104,28 @@
     /*box-shadow: 1px 1px 8px 0px #ccc;*/
 }
 
+.right-wrap-forgot {
+    height: 250px;
+    width: 80%;
+    background: #ffffff;
+    -moz-box-shadow: 1px 1px 8px 0px #ccc;
+    -webkit-box-shadow: 1px 1px 8px 0px #ccc;
+    box-shadow: 1px 1px 8px 0px #ccc;
+    border-radius: 10px;
+}
+
+.right-wrap-password {
+    height: 40%;
+    width: 70%;
+    background: #ffffff;
+    -moz-box-shadow: 1px 1px 8px 0px #ccc;
+    -webkit-box-shadow: 1px 1px 8px 0px #ccc;
+    box-shadow: 1px 1px 8px 0px #ccc;
+    border-radius: 10px;
+    position: relative;
+}
+
+
 .sign-up-wrap {
     height: 550px !important;
 }
@@ -130,6 +152,14 @@
     padding: 23px 25px;
 }
 
+.digin-login-card .right-wrap-password .login-text-wrap {
+    padding: 23px 25px;
+}
+
+.digin-login-card .right-wrap-forgot .login-text-wrap {
+    padding: 23px 25px;
+}
+
 .login-text-wrap > h5 {
     font-family: 'Ek Mukta', sans-serif;
     font-weight: 600;
@@ -141,6 +171,7 @@
     animation-delay: 2s;
     position: relative
 }
+
 
 .digin-lgn-wrap > .footer-wrap {
     text-align: center;

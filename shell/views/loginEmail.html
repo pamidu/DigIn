@@ -83,34 +83,23 @@
   <form name="frmMail" autocomplete="off">
             <div class="md-padding" layout="row" layout-align="center center">
                 <div layout="column" class="setup-info-container" flex="100">
-                  <div class="txt-box"
-                    ng-class="{error:error.isEmail,'':!error.isEmail}">
+                  <div class="txt-box">
                     <label for="email">To : </label>
                       <div>
-                        <input type="email" class="form-control"
-                        required
-                        ng-pattern="regex.email"
+                        <input type="text" class="form-control"
                         ng-model="emailTo"
-                        placeholder="jane.doe@example.com">
+                        placeholder="jane.doe@example.com"/>
                       </div>
-                        <div class="ng-message" ng-messages="frmMail.emailTo.$error">
-                          <div ng-message="required">This is required.</div>
-                          <div ng-message="pattern">Email address is invalid</div>
-                        </div>
                   </div>
                   </br>
 
-                  <div class="txt-box" ng-class="{error:error.isEmail,'':!error.isEmail}">
+                  <div class="txt-box">
                     <label for="email">Cc : </label>
                       <div>
-                        <input type="email" class="form-control"
-                        ng-pattern="regex.email"
+                        <input type="text" class="form-control"
                         ng-model="emailCc"
-                        placeholder="jane.doe@example.com">
+                        placeholder="jane.doe@example.com"/>
                       </div>
-                        <div class="ng-message" ng-messages="frmMail.emailCc.$error">
-                          <div ng-message="pattern">Email address is invalid</div>
-                        </div>
                   </div>
                   </br> 
                   <div class="txt-box" ng-class="">

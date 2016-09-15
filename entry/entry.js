@@ -38,6 +38,14 @@ routerApp
                         requireLogin: false
                     }
                 })
+                .state("change", {
+                    url: "/change",
+                    controller: "signin-ctrl",
+                    templateUrl: "partial-changePw.php",
+                    data: {
+                        requireLogin: false
+                    }
+                })
                 .state("termsNconditions", {
                     url: "/termsNconditions",
                     controller: "signup-ctrl",
@@ -94,6 +102,10 @@ routerApp
 
             $scope.onClickForgetPw = function () {
                 $state.go('password');
+            };
+
+            $scope.onClickChangePw = function () {
+                $state.go('change');
             };
 
             var mainFun = (function () {
@@ -175,12 +187,12 @@ routerApp
                     else {
                         $mdDialog.hide();
                         if(data.Message=="Email Address is not varified."){
-							mainFun.fireMsg('0', "This email address is not verified, please verify your email.");
+                            mainFun.fireMsg('0', "This email address is not verified, please verify your email.");
                         }else if(data.Message.slice(0,22) == "User account is locked")
-						{
-							mainFun.fireMsg('0', "Your account is locked, try again in 2 minutes");
-						}
-						else{
+                        {
+                            mainFun.fireMsg('0', "Your account is locked, try again in 2 minutes");
+                        }
+                        else{
                             mainFun.fireMsg('0', data.Message);
                         }
                     }
@@ -342,6 +354,39 @@ routerApp
             };
 
         
+
+            //Send request to change password 
+            $scope.submitPassword = function()
+            {
+                //Get reset password by auth
+                var oid = ($location.search()).o;
+                if(oid==undefined){
+                    mainFun.fireMsg('0','Error occurred while changing the password');
+                }
+                else{
+                    if ($scope.newPassword === $scope.confirmNewPassword) {
+                        $http.get('/auth/ChangePassword/' + oid + '/' + encodeURIComponent($scope.newPassword))
+                            .success(function (data) {
+
+                                if (data.Error == "true") {
+                                    mainFun.fireMsg('0',data);
+                                } else {
+                                    mainFun.fireMsg('1',"Passoword Successfully Changed");
+                                    window.location = "http://"+Digin_Domain+"/entry";
+                                    
+                                }
+
+                            }).error(function () {
+                                mainFun.fireMsg('0','Error occurred while changing the password');
+                            });
+
+                    } else {
+                        mainFun.fireMsg('0','Passwords are not matching.');
+                    }
+                }
+            }
+
+
 
 
 

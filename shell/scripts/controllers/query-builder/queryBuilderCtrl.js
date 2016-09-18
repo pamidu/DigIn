@@ -745,7 +745,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             },
             onClickSetting: function(tabNo) {
             
-              
+                DB.setDrillDownSettingsConfig($scope.mapconfig);
 
                 switch (tabNo) {
                     case '1':
@@ -2645,6 +2645,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                     text: 'values'
                                 });
                             }
+                            DB.setDrilledDataConfig($scope.drillDownConfig);
                         }
                     };
                     $scope.isPendingRequest = false;

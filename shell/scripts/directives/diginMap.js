@@ -1,4 +1,4 @@
- app.directive('myMap', function(DB, $timeout) {
+ routerApp.directive('myMap', function(DB, $timeout) {
 
    return {
      restrict: 'E',
@@ -239,6 +239,8 @@
 
  routerApp.factory('DB', function($http) {
      var mapData = [];
+     var drilledConfig ={};
+     var drilleddataConfig = [];
      var statesData = {
          'us': [{
              'code': 'us-ma',
@@ -296,6 +298,18 @@
          return mapData;
      };
 
+     setDrillDownSettingsConfig = function(val){
+           drilledConfig = val;
+           return drilledConfig;
+       
+     }
+     setDrilledDataConfig = function(val)
+     {
+         drilleddataConfig = val;
+           return drilleddataConfig;
+
+     }
+
 
      return {
          getStatesData: function(county) {
@@ -312,6 +326,8 @@
          },
          setMapConfig: setMapConfig,
          setData:setData,
+         setDrillDownSettingsConfig:setDrillDownSettingsConfig,
+         setDrilledDataConfig :setDrilledDataConfig,          
          getConfig: function() {
              return mapConfig
          }

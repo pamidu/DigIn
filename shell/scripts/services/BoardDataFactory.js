@@ -10,10 +10,17 @@ routerApp.service('BoardDataFactory', function () {
       "name": "Kanban Board",
       "numberOfColumns": 3,
       "columns": [
-        {"name": "Fields", "cards": 
-
-
-        },
+        {"name": "Fields", "cards": [
+           {"title": "Sales",
+                  "details": "",
+                  "status": ""},
+                {"title": "Region",
+                  "details": "",
+                  "status": ""},
+                   {"title": "Province",
+                  "details": "",
+                  "status": ""} 
+        ]},
             {"name": "Country", "cards": [
          
         ]},
@@ -34,7 +41,7 @@ routerApp.service('BoardDataFactory', function () {
        
         ]}
       ]
-    }, 
+    }
        
   };
 });

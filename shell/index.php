@@ -3,12 +3,8 @@
 <head>
     <title>DigIn - Beyond BI</title>
     <link rel="shortcut icon" href="./styles/css/images/innerlogo.ico" type="image/png">
-
-
     <link rel="stylesheet" href="styles/css/commonstyle.css">
-    <link rel="stylesheet" href="styles/css/login.css">
-    <!--  new changes  -->
-
+    <link rel="stylesheet" href="styles/css/login.css">   
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
@@ -27,19 +23,15 @@
   <link rel="stylesheet" type="text/css" href="scripts/vendor/ng-sortable.min.css">
     <link rel="stylesheet" type="text/css" href="scripts/vendor/ng-sortable.style.min.css">
     <link rel="stylesheet" type="text/css" href="styles/css/board.css">
-  
-
-    <!-- <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css"> -->
+        <!-- <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css"> -->
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
     <!-- <link href="styles/css/material-wfont.css" rel="stylesheet">-->
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!--link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css"-->
     <link rel="stylesheet" type="text/css" href="styles/css/directive_library.css">
-    <link rel="stylesheet" type="text/css" href="styles/css/pivot.css"/>
-    <!-- angular gridster -->
+    <link rel="stylesheet" type="text/css" href="styles/css/pivot.css"/>    <!-- angular gridster -->
     <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
-    <!-- <link rel="stylesheet" type="text/css" src="bower_components/mdchips/md-chips-select.css"/> -->
-    
+    <!-- <link rel="stylesheet" type="text/css" src="bower_components/mdchips/md-chips-select.css"/> -->    
     <!-- angular slider -->
     <link rel="stylesheet" type="text/css" href="bower_components/angular-slider/rzslider.min.css">
     <link rel="stylesheet" type="text/css" href="styles/css/style.css">
@@ -87,8 +79,7 @@
     <link rel="stylesheet" href="styles/css/socialMedFb.css" type="text/css"/>
     <link href='https://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
-   
+    <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>  
     <!-- image crop -->
     <link rel="stylesheet" href="bower_components/imgcrop/ng-img-crop.css"/> 
 
@@ -122,8 +113,7 @@
 <!--  new changes  -->
 <!-- search end -->
 <script type="text/javascript" src="scripts/vendor/prefixfree.min.js"></script>
-<script type="text/javascript" src='scripts/vendor/jquery.js'></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" src="bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>
 <script type="text/javascript" src="scripts/controllers/jspdf.min.js"></script>
@@ -131,10 +121,8 @@
 <script type="text/javascript" src="scripts/vendor/jquery.jsPlumb-1.4.1-all-min.js"></script>
 <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="bower_components/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
-<script type="text/javascript" src="scripts/vendor/twitteroauth.js"></script>
- 
+<script type="text/javascript" src="scripts/vendor/twitteroauth.js"></script> 
 <script src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
-
 <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
 <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
@@ -142,16 +130,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
     <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-
-<script src="http://code.highcharts.com/highcharts.js"></script>
-        <script type="text/javascript" src="scripts/vendor/ng-sortable.js"></script>
- 
-<script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
-<script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
 <script type="text/javascript" src="scripts/vendor/google-picker.min.js"></script>
-<script type="text/javascript" src="http://code.highcharts.com/highcharts-3d.js"></script>
-<!-- <script type="text/javascript" src="scripts/vendor/Googleinitial.js"></script>  -->
 <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
 <script type="text/javascript" src="https://rawgit.com/emeeks/3361332/raw/61cf57523fe8cf314333e5f60cc266351fec2017/d3.layout.cloud.js"></script>
 <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
@@ -166,13 +145,9 @@
 <script type="text/javascript" src="bower_components/notification/ng-Toast/ngToast.min.js"></script>
 <script type="text/javascript" src="bower_components/v-accordion/v-accordion.min.js"></script>
 <script type="text/javascript" src="bower_components/ngSlimscroll/src/js/ngSlimscroll.js"></script>
-
 <!-- image crop -->
 <script type="text/javascript" src="bower_components/imgcrop/ng-img-crop.js"></script>
-
-
 <script src="bower_components/tag-input/ng-tags-input.min.js"></script>
-
 <!-- codemirror -->
 <script type="text/javascript" src="bower_components/codemirror/lib/codemirror.js"></script>
 <script type="text/javascript" src="bower_components/codemirror/addon/display/placeholder.js"></script>
@@ -190,7 +165,6 @@
 <script type="text/javascript" src="scripts/directives/calendar.js"></script>
 <script type="text/javascript" src="scripts/vendor/fullcalendar.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.0/gcal.js"></script>
-
 <!-- filesaver -->
 <script type="text/javascript"
         src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/98887/angular-fullscreen.js"></script>
@@ -243,6 +217,7 @@
 <script type="text/javascript" src="bower_components/circular-json-master/build/circular-json.js"></script>
 
 <script type="text/javascript" src="scripts/services/ProfileService.js"></script>
+<script type="text/javascript" src="scripts/directives/diginMap.js"></script>
 
 <!-- controller -->
 <script type="text/javascript" src="scripts/controllers/NavCtrl.js"></script>
@@ -264,8 +239,7 @@
 <script type="text/javascript" src="bower_components/FileSaver/FileSaver.js"></script>
 <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/d3PluginCtrl.js"></script>
- 
-<script src="https://code.highcharts.com/modules/funnel.js"></script>
+
 
 <script type="text/javascript" src="scripts/controllers/socialGraph/SocialAnalysisCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphFBCtrl.js"></script>
@@ -279,15 +253,27 @@
 <script type="text/javascript" src="scripts/controllers/help/welcomeSearchBarCtrl.js"></script>
 <script type="text/javascript" src="scripts/services/QueryBuilderService.js"></script>
 <script type="text/javascript" src="scripts/factories/dynamicallyReport/dynamicallyReportFact.js"></script>
-<script src="http://code.highcharts.com/maps/highmaps.js"></script>
+
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
+<script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
+  <script type="text/javascript" src="http://code.highcharts.com/maps/modules/map.js"></script>
+ 
+<script  type="text/javascript" src="https://code.highcharts.com/maps/modules/data.js"></script>
 <script src="http://code.highcharts.com/maps/modules/drilldown.js"></script>
+<script src="https://code.highcharts.com/mapdata/countries/us/us-all.js"></script>
 <script src="http://code.highcharts.com/mapdata/custom/world-continents.js"></script>
 <script src="http://code.highcharts.com/mapdata/custom/asia.js"></script>
-
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
 <script src="http://code.highcharts.com/mapdata/custom/oceania.js"></script>
 <script src="http://code.highcharts.com/mapdata/custom/europe.js"></script>
 <script src="http://code.highcharts.com/mapdata/custom/north-america.js"></script>
 <script src="http://code.highcharts.com/mapdata/custom/south-america.js"></script>
+
+ 
+
+ 
+<script src="https://code.highcharts.com/modules/funnel.js"></script>
 <!-- profile
 <script type="text/javascript" src="scripts/factories/profile/profileFact.js"></script> -->
 <script type="text/javascript" src="scripts/controllers/profile-settings/userProfileCtrl.js"></script>
@@ -312,19 +298,14 @@
 <script type="text/javascript" src="scripts/controllers/ExcelCtrl.js"></script>
 
 
-
 <!-- Material Icons -->
 <script type="text/javascript"
         src="//cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"></script>
-<script type="text/javascript" src="scripts/vendor/layout.js"></script>
-<!-- svg to canvas -->
-<script type="text/javascript" src="scripts/vendor/pleasure.js"></script>
-<script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script>
-<script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
+ 
+ 
+ 
 <script type="text/javascript" src="scripts/vendor/nv.d3.js"></script>
-<!-- or use another assembly -->
-<script type="text/javascript" src="scripts/vendor/angular-nvd3.js"></script>
-<script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script>
+ 
 <script type="text/javascript" src="scripts/controllers/angular-touch.js"></script>
 <!-- raw -->
 <script type="text/javascript" src="scripts/controllers/DiginD3.js"></script>
@@ -390,16 +371,8 @@
 <script type="text/javascript" src="bower_components/angular-ui/angular-ui-select2/select2.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.3/ng-csv.min.js"></script>
 
-<script src="bower_components/google-map/lodash.min.js"></script>
-<script src="https://code.highcharts.com/maps/modules/map.js"></script>
-<script  type="text/javascript" src="http://code.highcharts.com/maps/modules/drilldown.js"></script>
-<script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/world-continents.js"></script>
-<script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/asia.js"></script>
-<script  type="text/javascript" src="http://code.highcharts.com/mapdata/countries/lk/lk-all.js"></script>
-<script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/oceania.js"></script>
-<script type="text/javascript"  src="http://code.highcharts.com/mapdata/custom/europe.js"></script>
-<script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/north-america.js"></script>
-<script type="text/javascript"  src="http://code.highcharts.com/mapdata/custom/south-america.js"></script>
+<script  type="text/javascript" src="bower_components/google-map/lodash.min.js"></script>
+
 
 <script type="text/javascript" src="bower_components/google-map/angular-simple-logger.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-maps/2.3.3/angular-google-maps.min.js"></script>
@@ -451,14 +424,7 @@
         s.parentNode.insertBefore(ga, s);
     })();
 </script>
-<script>
-    $(document).ready(function () {
-        Layout.init();
-        $('#pagePreLoader').show();
-        $('#content1').css("visibility", "hidden");
-        $('#getReport').css("visibility", "hidden");
-    });
-</script>
+ 
 <!--  new changes  -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-messages.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.15.0/TweenMax.min.js"></script>

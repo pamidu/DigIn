@@ -34,9 +34,8 @@ var routerApp = angular.module('DuoDiginRt', [
     "info.vietnamcode.nampnq.videogular.plugins.youtube",
     "ngTagsInput",
     'pouchdb',
-    'jkuri.slimscroll',
-     'as.sortable',
-      'ui.bootstrap'
+    'jkuri.slimscroll'
+   
    
 ]);
 

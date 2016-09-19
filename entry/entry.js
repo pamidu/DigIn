@@ -62,6 +62,9 @@ routerApp
         '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location',
         function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location) {
 
+
+
+
             $scope.signindetails = {};
             $scope.isLoggedin = false;
             $scope.activated=false;
@@ -132,7 +135,15 @@ routerApp
                 }
             })();
 
+
+            //'Username password incorrect' User name or password incorrect, please try again. 
+
+
             $scope.login = function () {
+
+
+
+                
                 displayProgress();
                 $http({
                     method: 'POST',
@@ -190,7 +201,11 @@ routerApp
                             mainFun.fireMsg('0', "This email address is not verified, please verify your email.");
                         }else if(data.Message.slice(0,22) == "User account is locked")
                         {
-                            mainFun.fireMsg('0', "Your account is locked, try again in 2 minutes");
+                            mainFun.fireMsg('0', "Your account is locked, try again in 2 minutes.");
+                        }
+                        else if('Username password incorrect')
+                        {
+                            mainFun.fireMsg('0', "User name or password is incorrect, please try again.");
                         }
                         else{
                             mainFun.fireMsg('0', data.Message);
@@ -429,6 +444,7 @@ routerApp
         'Digin_Domain', 'Digin_Engine_API','ngToast','$mdDialog','$location',
         function ($scope, $http, $state, focus,
                   Digin_Domain, Digin_Engine_API, ngToast,$mdDialog,$location) {
+
 
             $scope.onClickSignIn = function () {
                 $scope.isLoggedin = false;

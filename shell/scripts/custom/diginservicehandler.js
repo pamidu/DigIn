@@ -54,7 +54,11 @@
                     var strField = "";
 
                     aggObjArr.forEach(function(key) {
-                        strField += "[%27" + key.field + "%27,%27" + key.agg + "%27],";
+                        if (key.field !== undefined){
+                            strField += "[%27" + key.field + "%27,%27" + key.agg + "%27],";                            
+                        } else{
+                            strField += "[%27" + key.filedName + "%27,%27" + key.condition + "%27],";
+                        }
                     });
 
                     var wSrc = "scripts/webworkers/webWorker.js";

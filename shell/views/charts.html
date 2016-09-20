@@ -48,20 +48,47 @@
                                 <md-tooltip>settings</md-tooltip>
                             </md-button>
                             <md-menu ng-show="widget.widgetData.initCtrl=='elasticInit'">
-                                <md-button class="widget-button" ng-click="$mdOpenMenu($event);$event.stopPropagation();">
+                                <md-button class="widget-button" ng-click="$mdOpenMenu($event);$event.stopPropagation();onClickFilterButton(widget);">
                                     <i class="ti-filter blut-widget-icon"></i>
                                     <md-tooltip>filter</md-tooltip>
                                 </md-button>
-                                <md-menu-content style="background:white;padding:10px;min-width: calc(30vh);min-height: calc(30vh);">
+                                <md-menu-content style="background:white;padding:10px;min-width: calc(40vh);min-height: calc(30vh);">
+                                    <div flex layout="row" style="min-height: 20px; max-height: 20px;cursor:pointer;">
+                                        <div style="color: #82b8d7;padding-right: 10px;font-size: 16px;" ng-click="buildChart(widget)" md-prevent-menu-close="md-prevent-menu-close" flex="50"> Filter Chart
+                                        </div>
+                                        <div ng-click="syncWidget(widget)" md-prevent-menu-close="md-prevent-menu-close" flex="50">
+                                            <div style="color: #82b8d7;padding-right: 10px;font-size: 16px;"> Back to Chart </div>
+                                        </div>                                          
+                                    </div>                                  
                                     <v-accordion id="accordionMenu" class="vAccordion--default" control="accordionA" multiple style="margin: 10px;" onexpand="loadFilterParams(index,id,widget)">
-                                        <v-pane id = "{{ ::filter.filter.id }}" class="v-pane" ng-repeat="filter in widget.widgetData.commonSrc.filter"> 
+                                        <v-pane id = "{{ ::filter.filter.id }}" class="v-pane" ng-repeat="filter in widgetFilters"> 
                                             <v-pane-header>
                                                 <h5 class="font-weight-300 text-upper">{{ ::filter.filter.name }}</h5>
                                             </v-pane-header>
                                             <v-pane-content class="trans-bg v-pane-content">
-                            <!--                     <div layout="row" layout-sm="column" layout-align="space-around">
+                                                <div layout="row" layout-sm="column" layout-align="space-around" ng-hide = "filter.values.length > 0 ">
                                                     <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-                                                </div>   -->           
+                                                </div>   
+                                                <div ng-show = "filter.values.length > 0">
+                                                    <div class="bigcheck" ng-if="filter.type == 'multiple'">
+<!--                                                         <label class="filter-label display-inline-block"> 
+                                                            All
+                                                            <input type="checkbox" class="bigcheck"/>
+                                                            <span class="bigcheck-target pull-right"></span>
+                                                        </label> -->
+                                                    </div>                    
+                                                    <ul ng-repeat="value in filter.values" class="cutom-filter-ul" style="overflow: hidden;">
+                                                        <div class="bigcheck">
+                                                            <label class="filter-label" >
+                                                                {{ ::value.value }}
+                                                                <input type="checkbox" class="bigcheck" ng-if="filter.type == 'multiple'" ng-click="onClickFilterField(filter.filter.name,value.value)" md-prevent-menu-close="md-prevent-menu-close"/>
+                                                                <input type="radio" class="bigcheck" ng-if="filter.type == 'single'" name="{{filter.filter.name}}" ng-click="onClickFilterField(filter.filter.name,value.value)" md-prevent-menu-close="md-prevent-menu-close"/>
+                                                                <span class="bigcheck-target pull-right"></span>
+                                                            </label>
+                                                        </div>
+                                                    </ul>
+                                                </div>
+                                                <!-- end                                                             -->
                                             </v-pane-content>
                                         </v-pane>                       
                                     </v-accordion>                                    

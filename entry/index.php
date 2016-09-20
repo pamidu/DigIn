@@ -1,23 +1,24 @@
 <?php
-    // if (isset($_GET["r"]))
-    // {
-    //     $_SESSION['r']=$_GET["r"];
-    // }
+    if (isset($_GET["r"]))
+    {
+        $_SESSION['r']=$_GET["r"];
+    }
 
-    // if(isset($_COOKIE['securityToken']))
-    // {
-    //      if(isset($_SESSION['r']))
-    //      {
-    //           header("Location: ".$_SESSION['r']."?securityToken=".$_COOKIE["securityToken"]);
-    //           session_unset('r');
-    //           exit();
-    //      }
-    //      else
-    //      {
-    //           header("location: /"); 
-    //           exit();
-    //      }
-    // }
+    if(isset($_COOKIE['securityToken']))   
+    {
+         if(isset($_SESSION['r']))
+         {
+              header("Location: ".$_SESSION['r']."?securityToken=".$_COOKIE["securityToken"]);
+              session_unset('r');
+              exit();
+         }
+         else
+         {
+              header("location: /Digin"); //Use for local *Note: Local digin folder path
+              //header("location: /"); //use for live 
+              exit();
+         }
+    }
 ?>
 
 

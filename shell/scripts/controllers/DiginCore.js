@@ -411,28 +411,124 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 })
                 .then(function() {});
         };
+        // Methods for filter functionality
         $scope.loadFilterParams = function(index,id,widget) {
-            var client = $diginengine.getClient(widget.widgetData.commonSrc.src.src);
+            $scope.client = $diginengine.getClient(widget.widgetData.commonSrc.src.src);
             var query = "";
-            angular.forEach(widget.widgetData.commonSrc.filter,function(key){
+            angular.forEach($scope.widgetFilters,function(key){
                 if (key.filter.id == id){
                     //call service for the expanded dropdown
-                    query = "SELECT " + key.filter.name + " FROM " + $diginurls.getNamespace() + "." + widget.widgetData.commonSrc.src.tbl + " GROUP BY " + key.filter.name;
-                    client.getExecQuery(query, function(data, status){
-                        if (status){
-                            //do something
-                        }
-                    });
+                    if (key.values === undefined) {
+                        query = "SELECT " + key.filter.name + " FROM " + $diginurls.getNamespace() + "." + widget.widgetData.commonSrc.src.tbl + " GROUP BY " + key.filter.name;
+                        $scope.client.getExecQuery(query, function(data, status){
+                            if (status) {
+                                key["values"] = [];
+                                for (var res in data) {
+                                    var keyValue = data[res];
+                                    for (var v in keyValue){
+                                        var value = keyValue[v];
+                                        $scope.$apply(function(){
+                                            key.values.push({
+                                                id: value.replace(/ /g,"_"),
+                                                value: value,
+                                                status: false
+                                            });
+                                        })
+                                    }
+                                }
+                            }
+                        });
+                    }
                 }
             });
         };
+        $scope.onClickFilterButton = function(widget){
+            $scope.widgetFilters = [];
+            $scope.widgetFilters = widget.widgetData.commonSrc.filter;
+        };
+        $scope.onClickFilterField = function(name,value){
+            angular.forEach($scope.widgetFilters,function(key){
+                if (key.filter.name == name){
+                    if (key.type == 'single'){
+                        angular.forEach(key.values,function(res){
+                            if(res.value == value){
+                                res.status = true;        
+                            } else{
+                                res.status = false;
+                            }
+                        });
+                    } else {
+                        angular.forEach(key.values,function(res){
+                            if(res.value == value){
+                                if (res.status) {
+                                    res.status = false;
+                                } else {
+                                    res.status = true;
+                                }    
+                            }                        
+                        })
+                    }
+                }
+            })
+        };
+        $scope.buildChart = function(widget) {
+            var tempFilterArray = [];
+            var filterArray = [];
+            var tempStr = "";
+            var requestArray = [];
+            var cat = "";
+            angular.forEach($scope.widgetFilters,function(filter){
+                tempFilterArray = [];
+                tempStr = "";
+                angular.forEach(filter.values,function(key){
+                    if(key.status){
+                        tempFilterArray.push( "'" + key.value + "'");
+                    }
+                })
+                if(tempFilterArray.length > 0) {
+                    tempFilterArray.toString();
+                    tempStr = filter.filter.name + " in ( " + tempFilterArray + " )";
+                    filterArray.push(tempStr);
+                }
+            })
+            if (filterArray.length > 0){
+                var filterStr = filterArray.join( ' And ');
+            }
+            angular.forEach(widget.widgetData.commonSrc.att,function(key){
+                requestArray.push(key.filedName);
+            })
+            console.log(filterStr);
+                widget.widgetData.syncState = false;
+                $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, function(res, status, query) {
+                if (status) { widget.widgetData.commonSrc.att.filedName
+                    if (widget.widgetData.commonSrc.att.length == 1){
+                        cat = widget.widgetData.commonSrc.att[0].filedName;
+                    }
+                    var color = [];
+                    var name = [];
+                    for ( var i = 0; i < widget.widgetData.highchartsNG.series.length; i++){
+                        color.push(widget.widgetData.highchartsNG.series[i].color);
+                        name.push(widget.widgetData.highchartsNG.series[i].name);
+                    }
+                    filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);                                        
+                    var data = filterService.mapResult(cat,res,widget.widgetData.widData.drilled,color,name);
+                    widget.widgetData.syncState = true;
+                    if ( data !== undefined ){
+                        widget.widgetData.highchartsNG.series = data;
+                        widget.widgetData.highchartsNG.series.forEach(function(key) {
+                            if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
+                        });
+                        $scope.$apply();
+                    }
+                } else {
+                }
+            },requestArray,filterStr);            
+        };
         $scope.convertCSVtoJson = function(src) {
-
             AsTorPlotItems.then(function(data) {
                 $scope.items = data;
             });
-        }
-
+        };
         $scope.shareWidget = function(ev, widget){
             $mdDialog.show({
                 controller: 'shareCtrl',

@@ -36,4 +36,46 @@ routerApp.service('filterService',function(){
             }
         }
 	};
+
+    this.mapResult = function(cat, res, d, color, name) {
+            var serArr = [];
+            var i = 0;
+            for(c in res[0]){
+                if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+                    if(c != cat){
+                        serArr.push({
+                            temp: c,
+                            name: name[i],
+                            data: [],
+                            color: color[i]
+                        });
+                        i++;
+                    }                
+                }
+            }
+
+            //fill the series array
+            res.forEach(function(key){
+                serArr.forEach(function(ser){
+
+                    if(!d){
+                        ser.data.push({
+                            name: key[cat],
+                            y: parseFloat(key[ser.temp])
+                        });
+                    }else{
+                        ser.data.push({
+                            name: key[cat],
+                            y: parseFloat(key[ser.temp]),
+                            drilldown: true
+                        });
+                    }                    
+                });
+            });
+            serArr.forEach(function(ser){
+                delete ser.temp;
+            });
+        return serArr;
+        // cb(serArr);
+        };      
 });

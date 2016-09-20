@@ -1682,21 +1682,18 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     });
                     $scope.getDrilledAggregation();
                 }
-                //for pivot summary
-                //$scope.pivotSummaryField2.push({
-                //    filedName: fieldName
-                //});
             },
             executeQuery: function(cat, res, query) {
                 if (cat != "") {
                     $scope.executeQryData.executeColumns = [{
                         filedName: cat
                     }];
-                    angular.forEach($scope.executeQryData.executeMeasures, function(val){
-                        $scope.executeQryData.executeColumns.push({
-                            filedName: val.filedName
-                        });                        
-                    });
+                    // angular.forEach($scope.executeQryData.executeMeasures, function(val){
+                    //     $scope.executeQryData.executeColumns.push({
+                    //         filedName: val.filedName
+                    //     });                        
+                    // });
+                    filterService.filterAggData(res,$scope.sourceData.filterFields);
                     $scope.mapResult(cat, res, function(data) {
                         $scope.highchartsNG = {};
                         $scope.highchartsNG = {

@@ -75,7 +75,7 @@
                                             </div>
                                             <div  ng-show="frmDiginLogin.loginUserName.$invalid && !frmDiginLogin.loginUserName.$pristine"
                                              class="ng-message" ng-messages="frmDiginLogin.loginUserName.$error">
-                                                <div ng-message="required">This is required.</div>
+                                                <div ng-message="required">User name is required.</div>
                                             </div>
                                         </div>
                                         <div class="txt-box-login password"
@@ -93,7 +93,7 @@
                                             </div>
                                             <div ng-show="frmDiginLogin.password.$invalid && !frmDiginLogin.password.$pristine"
                                             class="ng-message" ng-messages="frmDiginLogin.password.$error">
-                                                <div ng-message="required">This is required.</div>
+                                                <div ng-message="required">Password is required.</div>
                                             </div>
                                         </div>
 

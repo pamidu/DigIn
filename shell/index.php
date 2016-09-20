@@ -258,8 +258,9 @@
 <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
 <script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
   <script type="text/javascript" src="http://code.highcharts.com/maps/modules/map.js"></script>
- 
+ <script src="http://code.highcharts.com/mapdata/custom/world.js"></script>
 <script  type="text/javascript" src="https://code.highcharts.com/maps/modules/data.js"></script>
+<script src="https://code.highcharts.com/mapdata/countries/lk/lk-all.js"></script>
 <script src="http://code.highcharts.com/maps/modules/drilldown.js"></script>
 <script src="https://code.highcharts.com/mapdata/countries/us/us-all.js"></script>
 <script src="http://code.highcharts.com/mapdata/custom/world-continents.js"></script>

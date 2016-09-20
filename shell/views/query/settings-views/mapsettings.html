@@ -1,18 +1,32 @@
 <md-switch ng-model="isDrilled" ng-change="toggleDrilled(isDrilled)" aria-label="Switch 1">
     Drilled: {{ isDrilled }}
 </md-switch>
-<div layout-gt-sm="row">
+ <div>
+    <h6 class="md-title">Select Map Type:</h6>
+    <div layout="row">
    <md-input-container>
         <label>Select Map Type:</label>
-        <md-select ng-model="mapType">
+        <md-select ng-model="mapconfig.mapType">
             <md-option ng-repeat="d in mapTypes" value="{{d.name}}">
                 {{d.name}}
             </md-option>
         </md-select>
     </md-input-container>
+       <md-input-container ng-show="mapType == 'Country'">
+        <label>Select Map Type:</label>
+        <md-select ng-model="mapconfig.selectedCountry">
+            <md-option ng-repeat="d in countries" value="{{d.hc-key}}">
+                {{d.code}}
+            </md-option>
+        </md-select>
+    </md-input-container>
 </div>
+</div>
+ <div>
+    <h6 class="md-title"> {{mapconfig.mapType}} Configuration:</h6>
+    <div layout="row">
 <div layout-gt-sm="row">
-    <md-input-container ng-show="mapType == 'World' ">
+    <md-input-container ng-show="mapconfig.mapType == 'World' ">
         <label>Continent</label>
         <md-select ng-model="mapconfig.Continent">
             <md-option ng-repeat="d in executeQryData.executeColumns" value="{{d.filedName}}">
@@ -20,7 +34,7 @@
             </md-option>
         </md-select>
     </md-input-container>
-    <md-input-container  ng-show="mapType == 'World' ">
+    <md-input-container  ng-show="mapconfig.mapType == 'World' ">
         <label>Country</label>
         <md-select ng-model="mapconfig.Country">
             <md-option ng-repeat="d in executeQryData.executeColumns" value="{{d.filedName}}">
@@ -28,7 +42,7 @@
             </md-option>
         </md-select>
     </md-input-container>
-    <md-input-container  ng-show="mapType == 'Country' || mapType == 'World'">
+    <md-input-container  ng-show="mapconfig.mapType == 'Country' || mapconfig.mapType == 'World'">
         <label>State</label>
         <md-select ng-model="mapconfig.State">
             <md-option ng-repeat="d in executeQryData.executeColumns" value="{{d.filedName}}">
@@ -36,7 +50,7 @@
             </md-option>
         </md-select>
     </md-input-container >
-    <md-input-container ng-show="mapType == 'Country' || mapType == 'World'">
+    <md-input-container ng-show="mapconfig.mapType == 'Country' || mapconfig.mapType == 'World'">
         <label>City</label>
         <md-select ng-model="mapconfig.City">
             <md-option ng-repeat="d in executeQryData.executeColumns" value="{{d.filedName}}">
@@ -44,4 +58,6 @@
             </md-option>
         </md-select>
     </md-input-container>
+</div>
+</div>
 </div>

@@ -72,9 +72,33 @@
         }, {
             "name": "World",
             "abbreviation": "Wo"
-        }];
-        $scope.mapType = '';
+        },{
+            "name": "Continent",
+            "abbreviation": "Wo"
+        }
 
+        ];
+        $scope.mapType = '';
+        $scope.countries =[
+        {
+            "hc-key": "us",
+            "code": "United states"
+        },
+        {
+            "hc-key": "lk",
+            "code": "Sri Lanka"
+        },
+        {
+            "hc-key": "pk",
+            "code": "Pakistan"
+        },
+        {
+            "hc-key": "in",
+            "code": "India"
+        }
+
+
+        ];
         $scope.widget = $stateParams.widObj;
         $scope.isDrilled = false;
         $scope.dynFlex = 70;
@@ -87,7 +111,9 @@
             Province: '',
             District: '',
             State: '',
-            City: ''
+            City: '',
+            mapType:'',
+            selectedCountry:''
 
         }
 
@@ -792,8 +818,9 @@
                             if (this.openSettingToggle[2].isChart) {
                               if($scope.chartType == 'Geographical Map')
                               {
-                                  DB.setDrillDownSettingsConfig($scope.mapconfig,$scope.drillDownConfig, $scope.highchartsNG.series);
+                                  DB.setDrillDownSettingsConfig($scope.drillDownConfig, $scope.highchartsNG.series,$scope.mapconfig);
                                   $scope.mydata = DB.getContinentData();
+                                  $scope.mapconfig = DB.getConfig();
                               }
                               this.hideChartSettings();
                           } else {
@@ -1087,7 +1114,10 @@
 
                 widget.widgetData.mapNG = DB.getConfig(); 
                 widget.widgetData.widData['drilled'] = $scope.isDrilled;
-
+                widget.widgetName = "highcharts";
+                widget.widgetData.widView = "views/common-data-src/res-views/ViewMap.html";
+                widget.widgetData.initCtrl = "elasticInit";
+                $scope.saveChart(widget);
 
 
                 $scope.saveChart(widget);

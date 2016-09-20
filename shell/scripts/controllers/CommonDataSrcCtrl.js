@@ -498,6 +498,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                                         }
                                                     }
                                                     $scope.sourceUi.attrObj = $scope.commonUi.attribute;
+                                                    $scope.forecastAtt = $scope.commonUi.attribute;
                                                     $scope.sourceUi.mearsuresObj = $scope.commonUi.measures;
                                                 }
 
@@ -723,7 +724,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         tbl: $scope.sourceUi.selectedNameSpace,
                         fAttArr: $scope.sourceUi.attrObj,
                         fMeaArr: $scope.sourceUi.mearsuresObj,
-                        filterFields: $scope.fieldObjects
+                        filterFields: $scope.fieldObjects,
+                        forecastAtt: $scope.forecastAtt
                     });
 
                     publicFun.clearAll(function(status) {

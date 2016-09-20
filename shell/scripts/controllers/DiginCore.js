@@ -524,6 +524,30 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 }
             },requestArray,filterStr);            
         };
+        $scope.onCLickAll = function(widgetId,name,filterId){
+            var id = '#' + widgetId + "-" + name + "-" + filterId;
+            var fieldId = "";
+            var status = $(id).is(':checked');
+            angular.forEach($scope.widgetFilters,function(key){
+                if (key.filter.name == name){
+                    angular.forEach(key.values,function(res){
+                        fieldId = '#' + widgetId + '-' + res.id + '-' + name;
+                        if (!res.status){
+                            if (status){
+                                res.status = true;
+                                $(fieldId).attr("checked",true); //check
+                                $(fieldId).prop("checked",true); //check
+                            }
+                        } else {
+                            if(!status){
+                                res.status = false;
+                                $(fieldId).removeAttr("checked"); //uncheck
+                            }
+                        }
+                    })                    
+                }
+            })                
+        };
         $scope.convertCSVtoJson = function(src) {
             AsTorPlotItems.then(function(data) {
                 $scope.items = data;

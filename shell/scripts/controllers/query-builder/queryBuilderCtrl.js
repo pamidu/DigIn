@@ -98,6 +98,13 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
             decimals: [0, 1, 2, 3, 4],
             scalePositions: ["front", "back"]
         };
+        $scope.forecastAtts = [];
+        $scope.forecastAtt ="";
+        for(var i =0; i < $scope.sourceData.forecastAtt.length ; i++){
+            $scope.forecastAtts[i] = $scope.sourceData.forecastAtt[i].name;
+        }
+
+        $rootScope.intDate = new Date();        
         $scope.forecastObj = {
             method: ["Additive", "Multiplicative"],
             models: ["double exponential smoothing", "triple exponential smoothing"],
@@ -117,7 +124,10 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 date_field: "",
                 f_field: "",
                 len_season: 12,
-                interval: "Monthly"
+                interval: "Monthly",
+                startdate: $rootScope.intDate ,
+                enddate: $rootScope.intDate,
+                forecastAtt:$scope.forecastAtt, 
             }
         };
         $scope.recordedColors = {};
@@ -1885,7 +1895,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
             }
         };
         $scope.$watch("forecastObj.paramObj", function(newValue, oldValue) {
-            if (newValue !== oldValue) {
+            if (newValue !== oldValue && ( (new Date(newValue.enddate) > new Date(newValue.startdate)) || ( newValue.enddate == $rootScope.intDate && newValue.startdate == $rootScope.intDate) ) ) {
                 if (!(newValue.mod != oldValue.mod || newValue.date_field != oldValue.date_field || newValue.f_field != oldValue.f_field || newValue.alpha != oldValue.alpha || newValue.beta != oldValue.beta || newValue.gamma != oldValue.gamma)) {
                     switch (newValue.model) {
                         case "double exponential smoothing":
@@ -1939,21 +1949,33 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 }
             };
             $scope.eventHndler.isLoadingChart = true;
-            $scope.client.getForcast(fObj, function(data, status) {
+            $scope.client.getForcast(fObj, function(data, status,fObj) {
                 if (status) {
+                    var forcastArr =[];
                     var serArr = [];
                     var catArr = [];
-                    data.forecast = data.forecast.slice(data.actual.length);
-                    serArr.push({
-                        data: data.actual.concat(data.forecast),
-                        zoneAxis: 'x',
-                        zones: [{
-                            value: data.actual.length - 1
-                        }, {
-                            dashStyle: 'dash'
-                        }]
-                    })
-                    catArr = data.time;
+
+                    if(fObj.forecastAtt == ""){
+                        var a = data.data.forecast.length - fObj.len_season;
+                        for(var i =a ; i< data.data.forecast.length; i++){
+                            forcastArr.push(data.data.forecast[i]);
+                        }
+                        data.data.forecast = forcastArr;
+                        serArr.push({
+                            data: data.data.actual.concat(data.data.forecast),
+                            zoneAxis: 'x',
+                            zones: [{
+                                value: data.data.actual.length - 1
+                            }, {
+                                dashStyle: 'dash'
+                            }]
+                        })
+
+                        catArr = data.data.time;
+                    }else{
+
+                       
+                    }
                     $scope.widget.widgetData.highchartsNG = {
                         options: {
                             chart: {

@@ -139,11 +139,38 @@
                 },
 
                 getForcast: function(fObj, cb, gb) {
+
+                    function formattedDate(date) {
+
+                            var d = new Date(date || Date.now()),
+                                month = '' + (d.getMonth() + 1),
+                                day = '' + d.getDate(),
+                                year = d.getFullYear();
+
+                            if (month.length < 2) month = "0"+ month;
+                            if (day.length < 2) day ="0"+   day;
+
+                            return [year,month, day].join('-');
+                    }
+
+            
+                    var endDate,startdate;
+                    if (new Date(fObj.enddate) > new Date(fObj.startdate)){
+                        endDate = "'"+formattedDate(fObj.enddate)+"'" ;
+                        startdate = "'"+formattedDate(fObj.startdate)+"'";
+                        
+                    }
+                    else{
+                        endDate = "";
+                        startdate = "";
+                    }
+                    
+
                     if(database == "BigQuery")
                     {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
-                            cb(data, status);
-                        }, $diginurls.diginengine + "forecast?model=" + fObj.mod +
+                            cb(data, status,fObj);
+                        }, "http://192.168.2.33:1929/"+ "forecast?model=" + fObj.mod +
                         "&method=" + fObj.method +
                         "&alpha=" + fObj.a +
                         "&beta=" + fObj.b +
@@ -154,12 +181,15 @@
                         "&f_field=" + fObj.f_field +
                         "&period=" + fObj.interval +
                         "&len_season=" + fObj.len_season +
+                        "&start_date=" + startdate +
+                        "&end_date=" + endDate +
+                        "&group_by=" + fObj.forecastAtt +
                         "&dbtype=" + database);
                       }
                       else
                       {
                           $servicehelpers.httpSend("get", function(data, status, msg) {
-                            cb(data, status);
+                            cb(data, status,fObj);
                         }, $diginurls.diginengine + "forecast?model=" + fObj.mod +
                         "&method=" + fObj.method +
                         "&alpha=" + fObj.a +

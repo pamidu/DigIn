@@ -71,18 +71,25 @@
                                                 </div>   
                                                 <div ng-show = "filter.values.length > 0">
                                                     <div class="bigcheck" ng-if="filter.type == 'multiple'">
-<!--                                                         <label class="filter-label display-inline-block"> 
+                                                        <label class="filter-label display-inline-block"> 
                                                             All
-                                                            <input type="checkbox" class="bigcheck"/>
+                                                            <input type="checkbox" class="bigcheck" id="{{widget.widgetID}}-{{filter.filter.name}}-{{filter.filter.id}}" ng-click="onCLickAll(widget.widgetID,filter.filter.name,filter.filter.id)"  md-prevent-menu-close="md-prevent-menu-close"/>
                                                             <span class="bigcheck-target pull-right"></span>
-                                                        </label> -->
-                                                    </div>                    
+                                                        </label>
+                                                    </div>
+                                                    <div class="bigcheck" ng-if="filter.type == 'single'">
+                                                        <label class="filter-label display-inline-block"> 
+                                                            Clear
+                                                            <input type="checkbox" class="bigcheck" id="{{widget.widgetID}}-{{filter.filter.name}}-{{filter.filter.id}}"/>
+                                                            <span class="bigcheck-target pull-right"></span>
+                                                        </label>
+                                                    </div>                                                                         
                                                     <ul ng-repeat="value in filter.values" class="cutom-filter-ul" style="overflow: hidden;">
                                                         <div class="bigcheck">
                                                             <label class="filter-label" >
                                                                 {{ ::value.value }}
-                                                                <input type="checkbox" class="bigcheck" ng-if="filter.type == 'multiple'" ng-click="onClickFilterField(filter.filter.name,value.value)" md-prevent-menu-close="md-prevent-menu-close"/>
-                                                                <input type="radio" class="bigcheck" ng-if="filter.type == 'single'" name="{{filter.filter.name}}" ng-click="onClickFilterField(filter.filter.name,value.value)" md-prevent-menu-close="md-prevent-menu-close"/>
+                                                                <input type="checkbox" class="bigcheck" ng-if="filter.type == 'multiple'" ng-click="onClickFilterField(filter.filter.name,value.value)" md-prevent-menu-close="md-prevent-menu-close" id="{{widget.widgetID}}-{{value.id}}-{{filter.filter.name}}"/>
+                                                                <input type="radio" class="bigcheck" ng-if="filter.type == 'single'" name="{{filter.filter.name}}" ng-click="onClickFilterField(filter.filter.name,value.value)" md-prevent-menu-close="md-prevent-menu-close" id="{{widget.widgetID}}-{{value.id}}-{{filter.filter.name}}"/>
                                                                 <span class="bigcheck-target pull-right"></span>
                                                             </label>
                                                         </div>
@@ -91,7 +98,7 @@
                                                 <!-- end                                                             -->
                                             </v-pane-content>
                                         </v-pane>                       
-                                    </v-accordion>                                    
+                                    </v-accordion>                               
                                 </md-menu-content>
                             </md-menu>                             
                             <md-button class="widget-button" ng-click="syncWidget(widget)"

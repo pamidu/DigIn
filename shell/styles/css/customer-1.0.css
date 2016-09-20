@@ -4663,7 +4663,7 @@ close button
 }
 
 label {
-    font-family: 'Roboto', sans-serif;
+    /*font-family: 'Roboto', sans-serif;*/
     font-weight: 300;
     font-size: 13px;
 }
@@ -5095,6 +5095,17 @@ i.icon-cancel:hover {
     color: #f9a525 ;
 }
 
+.blut-filtered-icon{
+    color: #00FF7F;
+    padding-right: 10px;
+    padding-top: 15px;
+    font-size: 16px;    
+}
+
+.blut-filtered-icon:hover{
+    color: #f9a525 ;
+}
+
 .widicons{
     fill:#82b8d7;
 }
@@ -5115,6 +5126,50 @@ i.icon-cancel:hover {
     min-width: 187px !important;
 }
 
+.submenu {
+  /*display: none;*/
+  background: #ffffff;
+  font-size: 14px;
+}
+
+.submenu label { border-bottom: 1px solid #9bbed9; }
+
+.submenu label {
+  display: block;
+  text-decoration: none;
+  padding: 6px;
+  /*padding-left: 42px;*/
+  -webkit-transition: all 0.25s ease;
+  -o-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+}
+
+.submenu label:hover {
+  background: #d9d9d9;
+  color: #2196f3;
+}
+.unselectedSub {
+  color: #000000;
+}
+
+.selectedSub {
+  color: #2196f3;
+}
+
+.filter-button {
+    background: rgb(66,133,244);
+    border-radius: 20px;
+    align-items: center;
+    text-align: center;
+    display: inline-block;
+    color: white;
+    margin: 1px;
+}
+
+input[type='radio'].submenu {     
+    position: relative;
+    left: -999em; /* hide the real radio button */
+}
 .md-button {
     text-transform: capitalize !important ; 
 }

@@ -100,10 +100,11 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
         };
         $scope.forecastAtts = [];
         $scope.forecastAtt ="";
-        for(var i =0; i < $scope.sourceData.forecastAtt.length ; i++){
-            $scope.forecastAtts[i] = $scope.sourceData.forecastAtt[i].name;
+        if(typeof $scope.sourceData.forecastAtt != 'undefined'){
+            for(var i =0; i < $scope.sourceData.forecastAtt.length ; i++){
+                $scope.forecastAtts[i] = $scope.sourceData.forecastAtt[i].name;
+            }
         }
-
         $rootScope.intDate = new Date();        
         $scope.forecastObj = {
             method: ["Additive", "Multiplicative"],

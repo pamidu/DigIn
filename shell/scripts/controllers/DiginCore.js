@@ -428,11 +428,13 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                     for (var v in keyValue){
                                         var value = keyValue[v];
                                         $scope.$apply(function(){
-                                            key.values.push({
-                                                id: value.replace(/ /g,"_"),
-                                                value: value,
-                                                status: false
-                                            });
+                                            if (typeof value != 'number' ){
+                                                key.values.push({
+                                                    id: value.replace(/ /g,"_"),
+                                                    value: value,
+                                                    status: false
+                                                });
+                                            }
                                         })
                                     }
                                 }
@@ -446,7 +448,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             $scope.widgetFilters = [];
             $scope.widgetFilters = widget.widgetData.commonSrc.filter;
         };
-        $scope.onClickFilterField = function(name,value){
+        $scope.onClickFilterField = function(name,value,widget){
             angular.forEach($scope.widgetFilters,function(key){
                 if (key.filter.name == name){
                     if (key.type == 'single'){
@@ -455,6 +457,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 res.status = true;        
                             } else{
                                 res.status = false;
+                                $("#"+widget.widgetID+"-"+name+"-"+key.filter.id).removeAttr("checked"); //uncheck
                             }
                         });
                     } else {
@@ -462,6 +465,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             if(res.value == value){
                                 if (res.status) {
                                     res.status = false;
+                                    $("#"+widget.widgetID+"-"+name+"-"+key.filter.id).removeAttr("checked"); //uncheck
                                 } else {
                                     res.status = true;
                                 }    
@@ -513,6 +517,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);                                        
                     var data = filterService.mapResult(cat,res,widget.widgetData.widData.drilled,color,name);
                     widget.widgetData.syncState = true;
+                    widget.widgetData.filteredState = true;
                     if ( data !== undefined ){
                         widget.widgetData.highchartsNG.series = data;
                         widget.widgetData.highchartsNG.series.forEach(function(key) {
@@ -581,6 +586,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 widget.widgetData.syncState = false;
                 $qbuilder.sync(widget.widgetData, function(data) {
                     widget.widgetData.syncState = true;
+                    widget.widgetData.filteredState = false;
                     widget = data;
                     if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
                         $scope.widInit();

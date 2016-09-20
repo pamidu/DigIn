@@ -3,6 +3,9 @@
 routerApp.service('filterService',function(){
 
 	this.filterAggData = function(res,filterFields) {
+        if (typeof filterFields === undefined ){
+            return;
+        }
 		// filter only the selected fields from the result returned by the service
         if (filterFields.length > 0){
             for (c in res[0]) {

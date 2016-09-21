@@ -100,6 +100,8 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
         };
         $scope.forecastAtts = [];
         $scope.forecastAtt ="";
+        $scope.showActual = false;
+
         if(typeof $scope.sourceData.forecastAtt != 'undefined'){
             for(var i =0; i < $scope.sourceData.forecastAtt.length ; i++){
                 $scope.forecastAtts[i] = $scope.sourceData.forecastAtt[i].name;
@@ -128,7 +130,8 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 interval: "Monthly",
                 startdate: $rootScope.intDate ,
                 enddate: $rootScope.intDate,
-                forecastAtt:$scope.forecastAtt, 
+                forecastAtt:$scope.forecastAtt,
+                showActual: $scope.showActual, 
             }
         };
         $scope.recordedColors = {};
@@ -1888,8 +1891,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 widget.widgetData.highchartsNG = $scope.widget.widgetData.highchartsNG;
                 widget.widgetData.widView = "views/query/chart-views/forecast.html";
                 widget.widgetData.foreCastObj = $scope.forecastObj.paramObj;
-                widget.widgetData.highchartsNG.series[1].color = "#E040FB";
-                widget.widgetData.highchartsNG.series[0].color = "#4CAF50";
                 widget.widgetData.initCtrl = "elasticInit";
                 widget.widgetName = "forecast";
                 $scope.saveChart(widget);
@@ -1957,26 +1958,85 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     var catArr = [];
 
                     if(fObj.forecastAtt == ""){
-                        var a = data.data.forecast.length - fObj.len_season;
-                        for(var i =a ; i< data.data.forecast.length; i++){
-                            forcastArr.push(data.data.forecast[i]);
-                        }
-                        data.data.forecast = forcastArr;
-                        serArr.push({
-                            data: data.data.actual.concat(data.data.forecast),
-                            zoneAxis: 'x',
-                            zones: [{
-                                value: data.data.actual.length - 1
-                            }, {
+
+                        if(fObj.showActual == false){
+                            var a = data.data.forecast.length - fObj.len_season;
+                            for(var i =a ; i< data.data.forecast.length; i++){
+                                forcastArr.push(data.data.forecast[i]);
+                            }
+                            data.data.forecast = forcastArr;
+                            serArr.push({
+                                data: data.data.actual.concat(data.data.forecast),
+                                zoneAxis: 'x',
+                                zones: [{
+                                    value: data.data.actual.length - 1
+                                }, {
+                                    dashStyle: 'dash'
+                                }]
+                            })
+                        }else{
+                             serArr.push({
+                                    name: 'Actual',
+                                    data: data.data.actual,
+                            })
+
+                            serArr.push({
+                                name: 'Forcasted',
+                                data: data.data.forecast,
                                 dashStyle: 'dash'
-                            }]
-                        })
+                            })
+                        }
 
                         catArr = data.data.time;
                     }else{
+                        if(fObj.showActual == false){
+                                Object.keys(data).forEach(function(key) {
 
-                       
+                                    forcastArr =[];
+
+                                    var obj = data[key];
+                                    var a = obj.forecast.length - fObj.len_season;
+
+                                    for(var i =a ; i < obj.forecast.length; i++){
+                                        forcastArr.push(obj.forecast[i]);
+                                    }
+                                    obj.forecast = forcastArr;
+                                    serArr.push({
+                                        name: key,
+                                        data: obj.actual.concat(obj.forecast),
+                                        zoneAxis: 'x',
+                                        zones: [{
+                                            value: obj.actual.length - 1
+                                        }, {
+                                            dashStyle: 'dash'
+                                        }]
+                                    })
+
+                                    catArr = obj.time;
+                                });
+
+                        }else{
+                               Object.keys(data).forEach(function(key) {
+
+                                    var obj = data[key];
+                                  
+
+                                    serArr.push({
+                                    name: 'Actual  '+key,
+                                    data: obj.actual,
+                                    })
+
+                                    serArr.push({
+                                        name: 'Forcasted  '+key,
+                                        data: obj.forecast,
+                                        dashStyle: 'dash'
+                                    })
+
+                                    catArr = obj.time;
+                                });
+                        }
                     }
+
                     $scope.widget.widgetData.highchartsNG = {
                         options: {
                             chart: {

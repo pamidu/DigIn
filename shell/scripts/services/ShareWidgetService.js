@@ -8,7 +8,7 @@ routerApp.service('ShareWidgetService',function(Upload,$http,Digin_Engine_API,Di
         var date = new Date().getTime();
         var fileNamepng= widget.widgetName + date +".png";
         var fileName = widget.widgetName + date +".svg";
-        if(widget.widgetName=="highcharts" || widget.widgetName=="histogram"){
+        if(widget.widgetName=="highcharts" || widget.widgetName=="histogram"  || widget.widgetName=="forecast"){
 
           var elementId = widget.widgetID;
           var ele = document.getElementsByClassName(elementId)[0].childNodes[0].childNodes[1].childNodes[0].childNodes[0];
@@ -36,11 +36,11 @@ routerApp.service('ShareWidgetService',function(Upload,$http,Digin_Engine_API,Di
 
            var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
            Upload.upload({
-            url: 'http://staging.digin.io:1929/' + 'file_upload',
+            url: Digin_Engine_API + 'file_upload',
             headers: {'Content-Type': 'multipart/form-data',},
             data: {
                 db: 'BigQuery',
-                SecurityToken: '0285096850fee688b6704a83c9ea1223',
+                SecurityToken: userInfo.SecurityToken,
                 other_data:'widget_image',
                 file: file
             }
@@ -53,7 +53,7 @@ routerApp.service('ShareWidgetService',function(Upload,$http,Digin_Engine_API,Di
             var NameSpace = res.replace(".", "");
             var tenent = NameSpace + "." + Digin_Domain;
             //var url = "http://" + Digin_Domain + data.Result + "/digin_user_data/" + userInfo.UserID + "/" + userInfo.Username + "/shared_files/" +fileName;
-            var url = "http://staging.digin.io"  + data.Result + "/digin_user_data/" + userInfo.UserID + "/" + tenent + "/shared_files/" +fileNamepng;
+            var url = "http://" + Digin_Domain + data.Result + "/digin_user_data/" + userInfo.UserID + "/" + tenent + "/shared_files/" +fileNamepng;
             
             callback(url,provider);
 

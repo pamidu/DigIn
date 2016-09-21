@@ -412,12 +412,17 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 .then(function() {});
         };
         // Methods for filter functionality
+        // load the parameters for filtering 
         $scope.loadFilterParams = function(index,id,widget) {
             $scope.client = $diginengine.getClient(widget.widgetData.commonSrc.src.src);
             var query = "";
             angular.forEach($scope.widgetFilters,function(key){
                 if (key.filter.id == id){
-                    //call service for the expanded dropdown
+                    // Do not load parameters if the selected filed is of type date. A date picker is displayed.
+                    if (key.type == "date-single" || key.type == "date-multiple"){
+                        return;
+                    }
+                    //call service if the expanded dropdownaccordion is expanded
                     if (key.values === undefined) {
                         query = "SELECT " + key.filter.name + " FROM " + $diginurls.getNamespace() + "." + widget.widgetData.commonSrc.src.tbl + " GROUP BY " + key.filter.name;
                         $scope.client.getExecQuery(query, function(data, status){
@@ -444,37 +449,56 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 }
             });
         };
+        //assign the selected filter options to a scope variable
         $scope.onClickFilterButton = function(widget){
             $scope.widgetFilters = [];
             $scope.widgetFilters = widget.widgetData.commonSrc.filter;
         };
+        //Method that is called when the fields are selected for filtering
+        //Select if un-selected and vice versa
         $scope.onClickFilterField = function(name,value,widget){
             angular.forEach($scope.widgetFilters,function(key){
                 if (key.filter.name == name){
                     if (key.type == 'single'){
                         angular.forEach(key.values,function(res){
                             if(res.value == value){
-                                res.status = true;        
+                                if (res.status){
+                                    res.status = false;
+                                    $("#"+widget.widgetID+"-"+name+"-"+key.filter.id).removeAttr("checked"); //uncheck
+                                } else{
+                                    res.status = true;        
+                                }
                             } else{
                                 res.status = false;
                                 $("#"+widget.widgetID+"-"+name+"-"+key.filter.id).removeAttr("checked"); //uncheck
                             }
                         });
                     } else {
+                        var count = 0;
                         angular.forEach(key.values,function(res){
                             if(res.value == value){
                                 if (res.status) {
                                     res.status = false;
-                                    $("#"+widget.widgetID+"-"+name+"-"+key.filter.id).removeAttr("checked"); //uncheck
+                                    //uncheck the 'All' checkbox if one of the fields is un-selected
+                                    $("#"+widget.widgetID+"-"+name+"-"+key.filter.id).removeAttr("checked");
                                 } else {
                                     res.status = true;
                                 }    
-                            }                        
+                            }
+                            if(res.status) {
+                                count++;
+                            }
                         })
+                        // Check the 'All' checkbox if all the fields are selected
+                        if (count == key.values.length){
+                            $("#"+widget.widgetID+"-"+name+"-"+key.filter.id).attr("checked",true); //check
+                            $("#"+widget.widgetID+"-"+name+"-"+key.filter.id).prop("checked",true); //check
+                        }
                     }
                 }
             })
         };
+        // Regenerate the chart when the filter us applied
         $scope.buildChart = function(widget) {
             var tempFilterArray = [];
             var filterArray = [];
@@ -504,12 +528,13 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             console.log(filterStr);
                 widget.widgetData.syncState = false;
                 $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, function(res, status, query) {
-                if (status) { widget.widgetData.commonSrc.att.filedName
+                if (status) {
+                    var color = [];
+                    var name = [];                    
                     if (widget.widgetData.commonSrc.att.length == 1){
                         cat = widget.widgetData.commonSrc.att[0].filedName;
                     }
-                    var color = [];
-                    var name = [];
+                    //Store the name and the color to apply to the chart after it is regenareted
                     for ( var i = 0; i < widget.widgetData.highchartsNG.series.length; i++){
                         color.push(widget.widgetData.highchartsNG.series[i].color);
                         name.push(widget.widgetData.highchartsNG.series[i].name);
@@ -526,6 +551,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         $scope.$apply();
                     }
                 } else {
+                    fireMsg('0','Error Occured!Please try again!')
                 }
             },requestArray,filterStr);            
         };

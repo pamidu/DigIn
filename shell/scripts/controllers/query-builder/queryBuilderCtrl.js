@@ -740,6 +740,9 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 onClickFilter: function(filter,type) {
                     var duplicateRecord = false;
                     if (!duplicateRecord){
+                        if (filter.dataType == 'datetime' || filter.dataType == 'DATE' || filter.dataType == 'TIMESTAMP') {
+                            type = 'date-' + type;
+                        }
                         angular.forEach(executeQryData.executeFilters,function(field){
                             if (field.filter.name == filter.name) {
                                 if (field.type == type){

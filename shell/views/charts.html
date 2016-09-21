@@ -71,7 +71,7 @@
                                                 <h5 class="font-weight-300 text-upper">{{ ::filter.filter.name }}</h5>
                                             </v-pane-header>
                                             <v-pane-content class="trans-bg v-pane-content">
-                                                <div layout="row" layout-sm="column" layout-align="space-around" ng-hide = "filter.values.length > 0 ">
+                                                <div layout="row" layout-sm="column" layout-align="space-around" ng-hide = "filter.values.length > 0 || filter.type == 'date-single' || filter.type == 'date-multiple' ">
                                                     <md-progress-circular md-mode="indeterminate"></md-progress-circular>
                                                 </div>   
                                                 <div ng-show = "filter.values.length > 0">
@@ -100,9 +100,12 @@
                                                                     <input type="radio" ng-if="filter.type == 'single'" name="{{filter.filter.name}}" ng-click="onClickFilterField(filter.filter.name,value.value,widget)" md-prevent-menu-close="md-prevent-menu-close" id="{{widget.widgetID}}-{{value.id}}-{{filter.filter.name}}" class="submenu"/>
                                                                 </label>
                                                         </div>
-                                                    </div>
-                                                </div>                                                    
-                                                <!-- end                                                             -->
+                                                    </div>                                                   
+                                                </div>
+                                                <div  ng-if="filter.type == 'date-single' || filter.type == 'date-multiple' " class="submenu">
+                                                    <input type="date" class="filter-date">
+                                                </div>                                                                                                     
+                                                <!--        end       -->
                                             </v-pane-content>
                                         </v-pane>                       
                                     </v-accordion>                               

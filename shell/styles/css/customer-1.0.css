@@ -5132,7 +5132,7 @@ i.icon-cancel:hover {
   font-size: 14px;
 }
 
-.submenu label { border-bottom: 1px solid #9bbed9; }
+.submenu label { border-bottom: 1px solid #eee; }
 
 .submenu label {
   display: block;
@@ -5216,4 +5216,12 @@ label.display-inline-block {
 div.bigcheck { 
     /*display: block;*/
     padding: 0.5em;;
+}
+
+.filter-date {
+    line-height: 13px !important;
+    border: 1px solid #82b8d7;
+    margin-top: 6px;
+    margin-left: 1px;
+    align-items: center;
 }

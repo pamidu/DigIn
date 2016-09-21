@@ -170,7 +170,7 @@
                     {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status,fObj);
-                        }, "http://192.168.2.33:1929/"+ "forecast?model=" + fObj.mod +
+                        }, $diginurls.diginengine + "forecast?model=" + fObj.mod +
                         "&method=" + fObj.method +
                         "&alpha=" + fObj.a +
                         "&beta=" + fObj.b +
@@ -201,6 +201,9 @@
                         "&f_field=" + fObj.f_field +
                         "&period=" + fObj.interval +
                         "&len_season=" + fObj.len_season +
+                        "&start_date=" + startdate +
+                        "&end_date=" + endDate +
+                        "&group_by=" + fObj.forecastAtt +
                         "&dbtype=" + database);
                       }
 

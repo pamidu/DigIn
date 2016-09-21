@@ -5095,6 +5095,16 @@ i.icon-cancel:hover {
     color: #f9a525 ;
 }
 
+.filter-text{
+    color: #82b8d7;
+    padding-right: 10px;
+    font-size: 16px;    
+}
+
+.filter-text:hover{
+    color: #f9a525 ;
+}
+
 .blut-filtered-icon{
     color: #00FF7F;
     padding-right: 10px;

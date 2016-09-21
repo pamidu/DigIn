@@ -452,7 +452,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
         //assign the selected filter options to a scope variable
         $scope.onClickFilterButton = function(widget){
             $scope.widgetFilters = [];
-            $scope.widgetFilters = widget.widgetData.commonSrc.filter;
+            $scope.widgetFilters = angular.copy(widget.widgetData.commonSrc.filter);
         };
         //Method that is called when the fields are selected for filtering
         //Select if un-selected and vice versa

@@ -63,8 +63,8 @@
                                                 <i class="ti-trash"></i>
                                                 Clear Filter
                                             </div>                                          
-                                        </div>                                         
-                                    </div>                                  
+                                        </div>
+                                    </div>
                                     <v-accordion id="accordionMenu" class="vAccordion--default" control="accordionA" multiple style="margin: 10px;" onexpand="loadFilterParams(index,id,widget)">
                                         <v-pane id = "{{ ::filter.filter.id }}" class="v-pane" ng-repeat="filter in widgetFilters"> 
                                             <v-pane-header>
@@ -100,11 +100,11 @@
                                                                     <input type="radio" ng-if="filter.type == 'single'" name="{{filter.filter.name}}" ng-click="onClickFilterField(filter.filter.name,value.value,widget)" md-prevent-menu-close="md-prevent-menu-close" id="{{widget.widgetID}}-{{value.id}}-{{filter.filter.name}}" class="submenu"/>
                                                                 </label>
                                                         </div>
-                                                    </div>                                                   
+                                                    </div>
                                                 </div>
                                                 <div  ng-if="filter.type == 'date-single' || filter.type == 'date-multiple' " class="submenu">
                                                     <input type="date" class="filter-date">
-                                                </div>                                                                                                     
+                                                </div>
                                                 <!--        end       -->
                                             </v-pane-content>
                                         </v-pane>                       

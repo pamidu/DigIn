@@ -5213,6 +5213,13 @@ label.display-inline-block {
     display: inline-block !important;
 }
 
+span.bigcheck { 
+    /*display: block;*/
+    padding-bottom: 0.5em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
 div.bigcheck { 
     /*display: block;*/
     padding: 0.5em;;

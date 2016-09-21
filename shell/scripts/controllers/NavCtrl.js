@@ -1210,24 +1210,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         {
             $mdSidenav('searchBar').toggle().then(function () {
                 $log.debug("toggle left is done");
-            });
+            });        
         }
-        
- 
-        $scope.notifications = 
-         [{title:"User Segregation",description:"omal@duosoftare.com has invited you to jon his tenant."},
-        {title:"Dashboard",description:"Sales for the month has exceeded the treshold value"},
-        {title:"DigIn",description:"Your account will expire in 28 days"},         
-        {title:"Dashboard",description:"You have 2 events organized today"},
-        {title:"DigIn",description:"Veery@duosoftware.com is waiting for your response"}];
-       $scope.removeNotification = function(ev,notification) {
-             for (i = 0, len = $scope.notifications.length; i<len; ++i){
-                    if($scope.notifications[i].title == notification.title)
-                        $scope.notifications.splice(i, 1);
-
-                }
-
-       }
         
         $scope.goHomeDialog = function (ev) {
 

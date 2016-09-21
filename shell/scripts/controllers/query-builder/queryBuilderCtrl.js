@@ -760,8 +760,12 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     if (duplicateRecord){
                         return;
                     }
+
                     executeQryData.executeFilters.push({
-                        filter : filter,
+                        filter : {
+                            name : filter.name,
+                            id : filter.id
+                        },
                         type: type
                     });
                 },

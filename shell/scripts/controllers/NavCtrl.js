@@ -643,6 +643,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 console.log('syncing...');
                                 if (typeof(widget.widgetData.commonSrc) != "undefined") {
                                     widget.widgetData.syncState = false;
+                                    if (widget.widgetData.filteredState !== undefined){
+                                        widget.widgetData.filteredState = false;
+                                    }
                                     //widget.widgetData.syncState = false;
                                     if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
                                         $qbuilder.sync(widget.widgetData, function (data) {

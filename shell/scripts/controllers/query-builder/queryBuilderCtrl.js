@@ -1950,6 +1950,15 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     break;
             }
         };
+
+
+
+
+
+
+
+
+
         $scope.generateForecast = function(fObj) {
             $scope.widget.widgetData.highchartsNG = {};
             $scope.widget.widgetData.highchartsNG = {
@@ -1982,7 +1991,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                                 }]
                             })
                         }else{
-                             serArr.push({
+                            serArr.push({
                                     name: 'Actual',
                                     data: data.data.actual,
                             })

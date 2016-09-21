@@ -189,106 +189,101 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
     }; 
 
     var FORECAST = function(){
-        function mapResult(data){
-                var dataArray = [];
-                var yearArray = [];
-                var serObj = [];
-                var count = 0;
-                var oldYear = moment(data.time[0]).year();
-                var newYear = oldYear;
-                var newYear;
-                var temp;                
-                var flag = true;
-                var zoneValue;
-                var forecastFlag = true;
-                for (var i =0;i<data.time.length;i++){
-                    if (newYear == oldYear){
-                        if (data.actual[i] !== undefined)
-                            dataArray.push(data.actual[i]);
-                        else{
-                            dataArray.push(data.forecast[i]);
-                            if (forecastFlag){
-                                zoneValue = i;
-                            }
-                            forecastFlag = false;                              
-                        }
-                        if (data.time[i+1] !== undefined){
-                            newYear = moment(data.time[i+1]).year();                           
-                        }else{
-                            serObj.push({
-                                name: oldYear,
-                                zoneAxis: 'x',
-                                data: dataArray
-                            });
-                            yearArray.push(oldYear);                            
-                        }
-                    }else{
-                        forecastFlag = true;
-                        if ( zoneValue !== undefined){
-                            serObj.push({
-                                name: oldYear,
-                                data: dataArray,
-                                zoneAxis: 'x',
-                                zones: [{
-                                    value: zoneValue % 12
-                                }, {
-                                    dashStyle: 'dash'
-                                }]
-                            });
-                        } else{
-                            serObj.push({
-                                name: oldYear,
-                                data: dataArray,
-                                zoneAxis: 'x'
-                            });                            
-                        }
-                        zoneValue = undefined;
-                        yearArray.push(oldYear);
-                        oldYear = newYear;
-                        dataArray=[];
-                        if (!flag){
-                            if (data.actual[i] !== undefined){
-                                dataArray.push(data.actual[i]);
-                            }
-                            else{
-                                if (forecastFlag){
-                                    zoneValue = i;
+        function mapResult(data,fObj){
+                    var forcastArr =[];
+                    var serArr = [];
+                    var catArr = [];
+                 if(fObj.forecastAtt == ""){
+
+                                if(fObj.showActual == false){
+                                    var a = data.data.forecast.length - fObj.len_season;
+                                    for(var i =a ; i< data.data.forecast.length; i++){
+                                        forcastArr.push(data.data.forecast[i]);
+                                    }
+                                    data.data.forecast = forcastArr;
+                                    serArr.push({
+                                        data: data.data.actual.concat(data.data.forecast),
+                                        zoneAxis: 'x',
+                                        zones: [{
+                                            value: data.data.actual.length - 1
+                                        }, {
+                                            dashStyle: 'dash'
+                                        }]
+                                    })
+                                }else{
+                                    serArr.push({
+                                            name: 'Actual',
+                                            data: data.data.actual,
+                                    })
+
+                                    serArr.push({
+                                        name: 'Forcasted',
+                                        data: data.data.forecast,
+                                        dashStyle: 'dash'
+                                    })
                                 }
-                                dataArray.push(data.forecast[i]);
-                                forecastFlag = false;  
-                            }
-                        }
-                        flag = false;
-                    }
-                }
-                console.log(serObj);
-                var date = new Date();
-                var currYear = moment(date).year();
-                var prevYear = currYear-1;
-                var currYearIndex = yearArray.indexOf(currYear);
-                var prevYearIndex = yearArray.indexOf(prevYear);                
-                var finalObj = [];
-                var category = [];
-                var monthIndex;
-                var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-                finalObj[0] = serObj[currYearIndex];
-                finalObj[1] = serObj[prevYearIndex];
-                for(var i=0;i<12;i++){
-                    monthIndex = moment(data.time[i]).month();
-                    category.push(month[monthIndex]);
-                }
-            catArr = data.time;            
-            dataArray[0] = category;
-            dataArray[1] = finalObj
+
+                                catArr = data.data.time;
+                            }else{
+                                if(fObj.showActual == false){
+                                        Object.keys(data).forEach(function(key) {
+
+                                            forcastArr =[];
+
+                                            var obj = data[key];
+                                            var a = obj.forecast.length - fObj.len_season;
+
+                                            for(var i =a ; i < obj.forecast.length; i++){
+                                                forcastArr.push(obj.forecast[i]);
+                                            }
+                                            obj.forecast = forcastArr;
+                                            serArr.push({
+                                                name: key,
+                                                data: obj.actual.concat(obj.forecast),
+                                                zoneAxis: 'x',
+                                                zones: [{
+                                                    value: obj.actual.length - 1
+                                                }, {
+                                                    dashStyle: 'dash'
+                                                }]
+                                            })
+
+                                            catArr = obj.time;
+                                        });
+
+                                }else{
+                                       Object.keys(data).forEach(function(key) {
+
+                                            var obj = data[key];
+                                          
+
+                                            serArr.push({
+                                            name: 'Actual  '+key,
+                                            data: obj.actual,
+                                            })
+
+                                            serArr.push({
+                                                name: 'Forcasted  '+key,
+                                                data: obj.forecast,
+                                                dashStyle: 'dash'
+                                            })
+
+                                            catArr = obj.time;
+                                        });
+                                }
+                            }    
+            var  dataArray =[];               
+            dataArray[0] = serArr;
+            dataArray[1] = catArr;
             return dataArray;        
         }
 
         this.sync = function(q, cl, widObj, cb){
             cl.getForcast(widObj.foreCastObj, function(data, status){
                 if (status){
-                    dataArray = mapResult(data);
-                    widObj.highchartsNG.series = dataArray[1];
-                    widObj.highchartsNG.xAxis.categories = dataArray[0];                    
+                    dataArray = mapResult(data,widObj.foreCastObj);
+                    widObj.highchartsNG.series = dataArray[0];
+                    widObj.highchartsNG.xAxis.categories = dataArray[1];                    
                 }
                 widObj.syncState = true;
                 cb(widObj);

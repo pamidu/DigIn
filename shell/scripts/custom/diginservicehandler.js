@@ -140,6 +140,7 @@
 
                 getForcast: function(fObj, cb, gb) {
 
+
                     function formattedDate(date) {
 
                             var d = new Date(date || Date.now()),

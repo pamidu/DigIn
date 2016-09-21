@@ -334,6 +334,7 @@
 <script type="text/javascript" src="scripts/controllers/controllers.js"></script>
 <script type="text/javascript" src="scripts/filters/filters.js"></script>
 <script type="text/javascript" src="scripts/directives/directives.js"></script>
+<script type="text/javascript" src="scripts/directives/queryBuilderDirective.js"></script>
 <!--hight charts update damith -->
 <!-- // <script type="text/javascript" src="bower_components/highcharts/highcharts.js"></script> -->
 <script type="text/javascript" src="bower_components/highcharts/highcharts-more.js"></script>

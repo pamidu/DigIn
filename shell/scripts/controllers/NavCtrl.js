@@ -13,26 +13,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             var sessionInfo = $helpers.getCookie('securityToken');
             // if(sessionInfo==null) location.href = 'index.php';
         }
-        $scope.firstName = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
-        $scope.count = 0;
-        $interval( function(){
-            var tempArray =      [{title:"User Segregation",description:"omal@duosoftare.com has invited you to jon his tenant"},
-        {title:"DigIn",description:"Your account will expire in 27 days"},         
-        {title:"Dashboard",description:"You event NBQSA  Demo is scheduled at 4:00 pm "},
-        {title:"DigIn",description:"Veery@duosoftware.com is waiting for your response"}];      
-         if (tempArray.length > $scope.count){
-                $mdToast.hide();
-                $mdToast.show(
-                  $mdToast.simple()
-                    .textContent(tempArray[$scope.count].description)
-                    .position('bottom right')
-                    .hideDelay(4000)
-                );                
-                $scope.notifications.push(tempArray[$scope.count]);
-                $scope.count++;
-            }
-            }, 200000);        
-
+        $scope.firstName = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;  
         var db = new pouchDB('dashboard');
         $scope.adjustUI = function () {
 
@@ -662,6 +643,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 console.log('syncing...');
                                 if (typeof(widget.widgetData.commonSrc) != "undefined") {
                                     widget.widgetData.syncState = false;
+                                    if (widget.widgetData.filteredState !== undefined){
+                                        widget.widgetData.filteredState = false;
+                                    }
                                     //widget.widgetData.syncState = false;
                                     if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
                                         $qbuilder.sync(widget.widgetData, function (data) {

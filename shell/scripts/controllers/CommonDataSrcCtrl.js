@@ -170,16 +170,14 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     console.log(user != userInfo);
                     switch (src) {
                         case "BigQuery":
-                            if (user != userInfo || isBQInitial){
-                                localStorage.setItem("BigQueryTables",null);
-                                user = userInfo;
-                                isBQInitial = false;
-                            }
-                            if (localStorage.getItem("BigQueryTables") === null || localStorage.getItem("BigQueryTables") == "null" ||
-                                localStorage.getItem("BigQueryTables") == "undefined") {
+                            // if (user != userInfo || isBQInitial){
+                            //     localStorage.setItem("BigQueryTables",null);
+                            //     user = userInfo;
+                            //     isBQInitial = false;
+                            // }
+                            // if (localStorage.getItem("BigQueryTables") === null || localStorage.getItem("BigQueryTables") == "null" ||
+                            //     localStorage.getItem("BigQueryTables") == "undefined") {
                                 $scope.client.getTables(function(res, status) {
-                                    // console.log("get tables result", res.length);
-                                    // console.log("status", status);
                                     if (typeof res === 'object' && status) {
                                         callback(res, status);
                                         localStorage.setItem("BigQueryTables", res);
@@ -189,11 +187,11 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                         publicFun.fireMessage('0', 'No tables available');
                                     }
                                 });
-                            } else {
-                                var BigQueryTablesString = localStorage.getItem("BigQueryTables");
-                                var res = BigQueryTablesString.split(',');
-                                callback(res, true);
-                            }
+                            // } else {
+                            //     var BigQueryTablesString = localStorage.getItem("BigQueryTables");
+                            //     var res = BigQueryTablesString.split(',');
+                            //     callback(res, true);
+                            // }
                             break;
                             case "MSSQL":
                                 if (user != userInfo || isMSSQLInitial){
@@ -511,6 +509,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                     $scope.sourceUi.selectedMeasures = angular.
                                     copy($scope.commonUi.measures);
                                 }
+                                // check the 'all' check box in measures and attributes section
+                                $("#measures").prop("checked",true); //check
+                                $("#attributes").prop("checked",true); //check
                                 commonUi.isDataLoading = false;
                             });
                         }
@@ -852,33 +853,93 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             },
             onRemoveAtt: function(onSelected, data) {
                 var attrObj = onSelected;
+                var count = 0;
                 var index = attrObj.indexOf(data);
                 if (data.isRemove) {
                     $scope.sourceUi.selectedAttribute[index].
                     isRemove = false;
                     $scope.sourceUi.attrObj[index].
                     isRemove = false;
+                    //check the all 'all' checkbox if all attributes are selected
+                    angular.forEach( $scope.sourceUi.selectedAttribute,function(key){
+                        if(!key.isRemove){
+                            count++;
+                        }
+                    })
+                    if( count == $scope.sourceUi.selectedAttribute.length ){
+                        $("#attributes").attr("checked",true); //check
+                        $("#attributes").prop("checked",true); //check                        
+                    }                    
                 } else {
+                    $("#attributes").removeAttr("checked");
                     $scope.sourceUi.selectedAttribute[index].
                     isRemove = true;
                     $scope.sourceUi.attrObj[index].
                     isRemove = true;
                 }
+
             },
             onRemoveMeasures: function(onSelected, data) {
                 var attrObj = onSelected;
                 var index = attrObj.indexOf(data);
+                var count = 0;
                 if (data.isRemove) {
                     $scope.sourceUi.selectedMeasures[index].
                     isRemove = false;
                     $scope.sourceUi.mearsuresObj[index].
                     isRemove = false;
+                    //check the all 'all' checkbox if all attributes are selected
+                    angular.forEach( $scope.sourceUi.selectedMeasures,function(key){
+                        if(!key.isRemove){
+                            count++;
+                        }
+                    })
+                    if( count == $scope.sourceUi.selectedMeasures.length ){
+                        $("#measures").attr("checked",true); //check
+                        $("#measures").prop("checked",true); //check                        
+                    }
                 } else {
+                    $("#measures").removeAttr("checked");
                     $scope.sourceUi.selectedMeasures[index].
                     isRemove = true;
                     $scope.sourceUi.mearsuresObj[index].
                     isRemove = true;
                 }
+            },
+            //Select All ttru
+            selectAllAttributes: function(){
+                if ($("#attributes").is(':checked')) {
+                    angular.forEach( $scope.sourceUi.selectedAttribute,function(key){
+                        key.isRemove = false;
+                    })
+                    angular.forEach( $scope.sourceUi.attrObj,function(key){
+                        key.isRemove = false;
+                    })                    
+                } else{
+                    angular.forEach( $scope.sourceUi.selectedAttribute,function(key){
+                        key.isRemove = true;
+                    })
+                    angular.forEach( $scope.sourceUi.attrObj,function(key){
+                        key.isRemove = true;
+                    })                                          
+                }
+            },
+            selectAllMeasures: function(){
+                if ($("#measures").is(':checked')) {
+                    angular.forEach( $scope.sourceUi.selectedMeasures,function(key){
+                        key.isRemove = false;
+                    })
+                    angular.forEach( $scope.sourceUi.mearsuresObj,function(key){
+                        key.isRemove = false;
+                    })                    
+                } else{
+                    angular.forEach( $scope.sourceUi.selectedMeasures,function(key){
+                        key.isRemove = true;
+                    })
+                    angular.forEach( $scope.sourceUi.mearsuresObj,function(key){
+                        key.isRemove = true;
+                    })                                          
+                }                
             },
             onRefresh: function(index) {
                 switch (index) {

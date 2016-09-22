@@ -445,14 +445,23 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 }
                             }
                         });
+                    } else{
+                        //maintain the selected filter options
+                        angular.forEach(key.values,function(res){
+                           var fieldId = "#" + widget.widgetID + "-" + res.id + "-" + key.filter.name;
+                            if (res.status) {
+                                $(fieldId).prop("checked",true); //check
+                            } else{
+                                $(fieldId).removeAttr("checked"); //un-check
+                            }
+                        })
                     }
                 }
             });
         };
         //assign the selected filter options to a scope variable
         $scope.onClickFilterButton = function(widget){
-            $scope.widgetFilters = [];
-            $scope.widgetFilters = angular.copy(widget.widgetData.commonSrc.filter);
+            $scope.widgetFilters = widget.widgetData.commonSrc.filter;
         };
         //Method that is called when the fields are selected for filtering
         //Select if un-selected and vice versa
@@ -522,25 +531,20 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             if (filterArray.length > 0){
                 var filterStr = filterArray.join( ' And ');
             }
-            angular.forEach(widget.widgetData.commonSrc.att,function(key){
-                requestArray.push(key.filedName);
-            })
+            requestArray[0] = widget.widgetData.commonSrc.att[0].filedName;
             console.log(filterStr);
                 widget.widgetData.syncState = false;
                 $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, function(res, status, query) {
                 if (status) {
                     var color = [];
                     var name = [];                    
-                    if (widget.widgetData.commonSrc.att.length == 1){
-                        cat = widget.widgetData.commonSrc.att[0].filedName;
-                    }
                     //Store the name and the color to apply to the chart after it is regenareted
                     for ( var i = 0; i < widget.widgetData.highchartsNG.series.length; i++){
                         color.push(widget.widgetData.highchartsNG.series[i].color);
                         name.push(widget.widgetData.highchartsNG.series[i].name);
                     }
                     filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);                                        
-                    var data = filterService.mapResult(cat,res,widget.widgetData.widData.drilled,color,name);
+                    var data = filterService.mapResult(requestArray[0],res,widget.widgetData.widData.drilled,color,name);
                     widget.widgetData.syncState = true;
                     widget.widgetData.filteredState = true;
                     if ( data !== undefined ){
@@ -555,6 +559,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 }
             },requestArray,filterStr);            
         };
+        //when all checkbox is clicked
         $scope.onCLickAll = function(widgetId,name,filterId){
             var id = '#' + widgetId + "-" + name + "-" + filterId;
             var fieldId = "";
@@ -579,6 +584,9 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 }
             })                
         };
+
+        // filter methods end
+
         $scope.convertCSVtoJson = function(src) {
             AsTorPlotItems.then(function(data) {
                 $scope.items = data;
@@ -611,8 +619,9 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             } else if (typeof(widget.widgetData.commonSrc) != "undefined") {
                 widget.widgetData.syncState = false;
                 $qbuilder.sync(widget.widgetData, function(data) {
+                    //If the widget has filters, clear the selections
+                    filterService.clearFilters(widget);
                     widget.widgetData.syncState = true;
-                    widget.widgetData.filteredState = false;
                     widget = data;
                     if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
                         $scope.widInit();

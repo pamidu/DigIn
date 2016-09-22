@@ -1,10 +1,10 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
-    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http',
+    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http', 'filterService',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
     'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen', '$interval', 'notifications',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
-              $http, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
+              $http, filterService, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
               $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen, $interval, notifications) {
 
         if (DevStudio) {
@@ -643,12 +643,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 console.log('syncing...');
                                 if (typeof(widget.widgetData.commonSrc) != "undefined") {
                                     widget.widgetData.syncState = false;
-                                    if (widget.widgetData.filteredState !== undefined){
-                                        widget.widgetData.filteredState = false;
-                                    }
                                     //widget.widgetData.syncState = false;
                                     if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
                                         $qbuilder.sync(widget.widgetData, function (data) {
+                                            //Clear the filter indication when the chart is re-set
+                                            filterService.clearFilters(widget);
                                             //widget.widgetData.syncState = true;
                                             // if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
                                             //     $qbuilder.widInit();

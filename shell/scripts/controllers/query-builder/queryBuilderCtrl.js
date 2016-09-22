@@ -1706,14 +1706,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
             },
             executeQuery: function(cat, res, query) {
                 if (cat != "") {
-                    $scope.executeQryData.executeColumns = [{
-                        filedName: cat
-                    }];
-                    // angular.forEach($scope.executeQryData.executeMeasures, function(val){
-                    //     $scope.executeQryData.executeColumns.push({
-                    //         filedName: val.filedName
-                    //     });                        
-                    // });
                     filterService.filterAggData(res,$scope.sourceData.filterFields);
                     $scope.mapResult(cat, res, function(data) {
                         $scope.highchartsNG = {};
@@ -3381,19 +3373,39 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                     var cat = "";
                     var measureArr = [];
                     if (status) {
+                        $scope.executeQryData.executeColumns = [];
                         for (c in res[0]) {
                             if (Object.prototype.hasOwnProperty.call(res[0], c)) {
                                 if (typeof res[0][c] == "string") cat = c;
                                 else {
                                     var m = c.split('_');
-                                    measureArr.push({
-                                        filedName: m[1],
-                                        condition: m[0]
-                                    });
+                                    if ( m[0] !== undefined && m[1] !== undefined){
+                                        measureArr.push({
+                                            filedName: m[1],
+                                            condition: m[0]
+                                        });
+                                    } else {
+                                        //push to attributes, if aggregation is not found
+                                        $scope.executeQryData.executeColumns.push({
+                                            filedName: m[0]
+                                        });                        
+                                    }
                                 }
                             }
                         }
                         $scope.executeQryData.executeMeasures = measureArr;
+                        if (cat !== "" && cat !== undefined){
+                            $scope.executeQryData.executeColumns[0] = {
+                                filedName: cat
+                            };
+                        } else{
+                            cat = $scope.executeQryData.executeColumns[0].filedName;
+                        }
+                        angular.forEach($scope.executeQryData.executeMeasures, function(val){
+                            $scope.executeQryData.executeColumns.push({
+                                filedName: val.filedName
+                            });                        
+                        });                        
                         eval("$scope." + $scope.selectedChart.chartType + ".executeQuery(cat, res, query)");
                     } else {
                         //alert('request failed');
@@ -3434,7 +3446,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
             angular.forEach(res, function(key) {
                 serArr.forEach(function(ser) {
                     ser.data.push({
-                        name: key[cat],
+                        name: key[cat].toString(),
                         y: parseFloat(key[ser.name])
                     });
                 });

@@ -80,5 +80,23 @@ routerApp.service('filterService',function(){
             });
         return serArr;
         // cb(serArr);
-        };      
+        };
+
+    // clear the filters when the chart is re-set    
+    this.clearFilters = function(widget){
+        var fieldId ="";
+        if (typeof widget.widgetData.commonSrc.filter != "undefined"){
+            widget.widgetData.filteredState = false;
+            angular.forEach(widget.widgetData.commonSrc.filter,function(key){
+                if(typeof key.values != "undefined"){
+                    angular.forEach(key.values,function(val){
+                        val.status = false;
+                        fieldId = "#" + widget.widgetID + "-" + val.id + "-" + key.filter.name;
+                        $(fieldId).removeAttr("checked"); //un-check
+                    })
+                }
+            })
+        }
+    };
+
 });

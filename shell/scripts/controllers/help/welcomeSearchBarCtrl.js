@@ -1,7 +1,7 @@
 //damith
 'use strict';
 
-routerApp.controller('welcomeSearchBarCtl', function ($scope, $rootScope, $http, $qbuilder, dynamicallyReportSrv,
+routerApp.controller('welcomeSearchBarCtl', function ($scope, $rootScope, $http, $qbuilder, dynamicallyReportSrv, filterService,
                                                       Digin_Engine_API, Digin_Tomcat_Base, $state, Digin_Domain, ngToast) {
 
     var privateFun = (function () {
@@ -96,12 +96,11 @@ routerApp.controller('welcomeSearchBarCtl', function ($scope, $rootScope, $http,
                         var widget = $rootScope.dashboard.pages[index].widgets[i];
                         console.log('syncing...');
                         if (typeof(widget.widgetData.commonSrc) != "undefined") {
-                            widget.widgetData.syncState = false;
-                            if (widget.widgetData.filteredState !== undefined){
-                                widget.widgetData.filteredState = false;
-                            }                            
+                            widget.widgetData.syncState = false;                       
                             if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
                                 $qbuilder.sync(widget.widgetData, function (data) {
+                                    //Clear the filter indication when the chart is re-set
+                                    filterService.clearFilters(widget);
                                     // if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
                                     //     $qbuilder.widInit();
                                     //widget.widgetData.syncState = true;

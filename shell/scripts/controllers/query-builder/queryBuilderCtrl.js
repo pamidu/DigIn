@@ -40,7 +40,8 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
     };
 
 }]);    
-    routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls,$mdDialog,filterService) {
+
+routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls,$mdDialog,filterService) {
         $scope.goDashboard = function() {
             $state.go('home.Dashboards');
         }
@@ -66,6 +67,51 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 }
             }
         };
+            $scope.mapTypes = [{
+                "name": "Country",
+                "abbreviation": "Co"
+            }, {
+                "name": "World",
+                "abbreviation": "Wo"
+            }
+
+        ];
+
+
+        $scope.mapType = '';
+        $scope.countries = [{
+                "key": "us",
+                "code": "United states"
+            }, {
+                "key": "lk",
+                "code": "Sri Lanka"
+            }, {
+                "key": "pk",
+                "code": "Pakistan"
+            }, {
+                "key": "in",
+                "code": "India"
+            }
+
+
+        ];
+           $scope.mapconfig = {
+            Country: '',
+            Continent: '',
+            Province: '',
+            District: '',
+            State: '',
+            City: '',
+            mapType: 'World',
+            selectedCountry: '',
+            drilled: false,
+            minColor: '#0288D1',
+            maxColor: '#B3E5FC',
+            mapdata: [],
+            min :0
+
+        }
+        $scope.maplibrary;
         $scope.widget = $stateParams.widObj;
         $scope.isDrilled = false;
         $scope.dynFlex = 70;
@@ -134,6 +180,38 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 showActual: $scope.showActual, 
             }
         };
+         $scope.initMapConfigObj = {
+            options: {
+                legend: {
+                    enabled: true
+                },
+                plotOptions: {
+                    map: {
+                        mapData: Highcharts.maps['custom/world'],
+                        joinBy: 'hc-key',
+                    }
+                },
+                colorAxis: {
+                min: $scope.mapconfig.min,
+                minColor: $scope.mapconfig.minColor,
+                maxColor: $scope.mapconfig.maxColor
+                 
+            }
+            },
+            chartType: 'map',
+            title: {
+                text: ''
+            },
+            series: [
+
+            ],
+            credits: {
+                enabled: false
+            }
+            
+
+        };
+
         $scope.recordedColors = {};
         $scope.initRequestLimit = {
             value: 1000
@@ -534,11 +612,14 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
             }, {
                 id: 'ct21',
                 icon: 'fa fa-globe',
-                name: 'GeoMap',
-                chart: 'GeoMap',
+                name: 'Geographical Map',
+                chart: 'Geographical Map',
                 selected: false,
-                chartType: 'GeoMap',
-                view: 'views/query/chart-views/GoogleMap.html'
+                chartType: 'map',
+                view: 'views/query/chart-views/GeoMap.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/mapsettings.html'
+
                
             }]
         };
@@ -953,593 +1034,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                         privateFun.fireMessage('0', "Cannot generate " + $scope.chartType + " chart with more than one measure");
                         return;
                     }
-                    if ($scope.chartType == "GeoMap") {
-                         
-                            // Initiate the chart
-                            // 
-                            var chart = new Highcharts.Chart({
-                                colors: ["#7cb5ec", "#f7a35c"],
-                                chart: {
-                                    type: 'column',
-                                    renderTo: 'container'
-                                },
-                                title: {
-                                    text: 'Sales for the year 2015'
-                                },
-                                chart: {
-                                    events: {
-                                        drilldown: function(e) {
-                                            // alert(e.point.name);
-                                            if (!e.seriesOptions) {
-                                                //alert(e.point);
-                                                var chart = this,
-                                                    pointWithLatLon = function(point, latLon) {
-                                                        return Highcharts.merge(point, chart.transformFromLatLon(latLon, Highcharts.maps['custom/world']['hc-transform']['default']));
-                                                    };
-                                                var continent;
-                                                var contName;
-                                                switch (e.point.name) {
-                                                    case "Asia":
-                                                        chart.addSeriesAsDrilldown(e.point, {
-                                                            mapData: Highcharts.maps['custom/asia'],
-                                                            joinBy: 'hc-key',
-                                                            click: function() {
-                                                                alert('Hello');
-                                                            },
-                                                            data: [{
-                                                                'hc-key': 'ir',
-                                                                value: 4
-                                                            }, {
-                                                                'hc-key': 'ph',
-                                                                value: 12
-                                                            }, {
-                                                                'hc-key': 'sa',
-                                                                value: 25
-                                                            }, {
-                                                                'hc-key': 'jp',
-                                                                value: 5
-                                                            }, {
-                                                                'hc-key': 'mn',
-                                                                value: 26
-                                                            }, {
-                                                                'hc-key': 'kw',
-                                                                value: 9
-                                                            }, {
-                                                                'hc-key': 'iq',
-                                                                value: 14
-                                                            }, {
-                                                                'hc-key': 'ae',
-                                                                value: 6
-                                                            }, {
-                                                                'hc-key': 'la',
-                                                                value: 9
-                                                            }, {
-                                                                'hc-key': 'pk',
-                                                                value: 4
-                                                            }, {
-                                                                'hc-key': 'jk',
-                                                                value: 45
-                                                            }, {
-                                                                'hc-key': 'qa',
-                                                                value: 9
-                                                            }, {
-                                                                'hc-key': 'tr',
-                                                                value: 11
-                                                            }, {
-                                                                'hc-key': 'bn',
-                                                                value: 29
-                                                            }, {
-                                                                'hc-key': 'af',
-                                                                value: 8
-                                                            }, {
-                                                                'hc-key': 'kp',
-                                                                value: 27
-                                                            }, {
-                                                                'hc-key': 'lb',
-                                                                value: 41
-                                                            }, {
-                                                                'hc-key': 'nc',
-                                                                value: 28
-                                                            }, {
-                                                                'hc-key': 'cy',
-                                                                value: 8
-                                                            }, {
-                                                                'hc-key': 'tw',
-                                                                value: 35
-                                                            }, {
-                                                                'hc-key': 'np',
-                                                                value: 42
-                                                            }, {
-                                                                'hc-key': 'lk',
-                                                                value: 16
-                                                            }, {
-                                                                'hc-key': 'kg',
-                                                                value: 41
-                                                            }],
-                                                            dataLabels: {
-                                                                enabled: true,
-                                                                formatter: function() {
-                                                                    return this.point.value + '%';
-                                                                }
-                                                            }
-                                                        });
-                                                        break;
-                                                    case "lk":
-                                                        chart.addSeriesAsDrilldown(e.point, {
-                                                            mapData: Highcharts.maps['countries/lk/lk-all'],
-                                                            joinBy: 'hc-key',
-                                                            click: function() {
-                                                                alert('Hello');
-                                                            },
-                                                            data: [{
-                                                                'hc-key': 'lk-kl',
-                                                                value: 4
-                                                            }, {
-                                                                'hc-key': 'lk-ky',
-                                                                value: 12
-                                                            }, {
-                                                                'hc-key': 'lk-mt',
-                                                                value: 25
-                                                            }, {
-                                                                'hc-key': 'lk-va',
-                                                                value: 5
-                                                            }, {
-                                                                'hc-key': 'lk-hb',
-                                                                value: 26
-                                                            }, {
-                                                                'hc-key': 'lk-ke',
-                                                                value: 9
-                                                            }],
-                                                            dataLabels: {
-                                                                enabled: true,
-                                                                formatter: function() {
-                                                                    return this.point.value + '%';
-                                                                }
-                                                            }
-                                                        });
-                                                        break;
-                                                    case "Europe":
-                                                        chart.addSeriesAsDrilldown(e.point, {
-                                                            mapData: Highcharts.maps['custom/europe'],
-                                                            joinBy: 'hc-key',
-                                                            data: [{
-                                                                'hc-key': 'dk',
-                                                                value: 4
-                                                            }, {
-                                                                'hc-key': 'fo',
-                                                                value: 20
-                                                            }, {
-                                                                'hc-key': 'hr',
-                                                                value: 40
-                                                            }, {
-                                                                'hc-key': 'nl',
-                                                                value: 25
-                                                            }, {
-                                                                'hc-key': 'ee',
-                                                                value: 10
-                                                            }, {
-                                                                'hc-key': 'bg',
-                                                                value: 15
-                                                            }, {
-                                                                'hc-key': 'es',
-                                                                value: 22
-                                                            }, {
-                                                                'hc-key': 'it',
-                                                                value: 10
-                                                            }, {
-                                                                'hc-key': 'sm',
-                                                                value: 16
-                                                            }, {
-                                                                'hc-key': 'va',
-                                                                value: 26
-                                                            }, {
-                                                                'hc-key': 'tr',
-                                                                value: 35
-                                                            }, {
-                                                                'hc-key': 'mt',
-                                                                value: 11
-                                                            }, {
-                                                                'hc-key': 'fr',
-                                                                value: 29
-                                                            }, {
-                                                                'hc-key': 'no',
-                                                                value: 36
-                                                            }, {
-                                                                'hc-key': 'de',
-                                                                value: 13
-                                                            }, {
-                                                                'hc-key': 'ie',
-                                                                value: 19
-                                                            }, {
-                                                                'hc-key': 'ua',
-                                                                value: 27
-                                                            }, {
-                                                                'hc-key': 'fi',
-                                                                value: 36
-                                                            }, {
-                                                                'hc-key': 'se',
-                                                                value: 42
-                                                            }, {
-                                                                'hc-key': 'ru',
-                                                                value: 45
-                                                            }, {
-                                                                'hc-key': 'gb',
-                                                                value: 14
-                                                            }, {
-                                                                'hc-key': 'cy',
-                                                                value: 8
-                                                            }, {
-                                                                'hc-key': 'pt',
-                                                                value: 9
-                                                            }, {
-                                                                'hc-key': 'gr',
-                                                                value: 5
-                                                            }, {
-                                                                'hc-key': 'lt',
-                                                                value: 33
-                                                            }, {
-                                                                'hc-key': 'si',
-                                                                value: 11
-                                                            }, {
-                                                                'hc-key': 'ba',
-                                                                value: 1
-                                                            }, {
-                                                                'hc-key': 'mc',
-                                                                value: 27
-                                                            }, {
-                                                                'hc-key': 'al',
-                                                                value: 34
-                                                            }, {
-                                                                'hc-key': 'cnm',
-                                                                value: 43
-                                                            }, {
-                                                                'hc-key': 'nc',
-                                                                value: 42
-                                                            }, {
-                                                                'hc-key': 'rs',
-                                                                value: 15
-                                                            }, {
-                                                                'hc-key': 'ro',
-                                                                value: 20
-                                                            }, {
-                                                                'hc-key': 'me',
-                                                                value: 31
-                                                            }, {
-                                                                'hc-key': 'li',
-                                                                value: 3
-                                                            }, {
-                                                                'hc-key': 'at',
-                                                                value: 28
-                                                            }, {
-                                                                'hc-key': 'sk',
-                                                                value: 26
-                                                            }, {
-                                                                'hc-key': 'hu',
-                                                                value: 29
-                                                            }, {
-                                                                'hc-key': 'ad',
-                                                                value: 33
-                                                            }, {
-                                                                'hc-key': 'lu',
-                                                                value: 38
-                                                            }, {
-                                                                'hc-key': 'ch',
-                                                                value: 17
-                                                            }, {
-                                                                'hc-key': 'be',
-                                                                value: 11
-                                                            }, {
-                                                                'hc-key': 'kv',
-                                                                value: 27
-                                                            }, {
-                                                                'hc-key': 'pl',
-                                                                value: 35
-                                                            }, {
-                                                                'hc-key': 'mk',
-                                                                value: 37
-                                                            }, {
-                                                                'hc-key': 'lv',
-                                                                value: 7
-                                                            }, {
-                                                                'hc-key': 'by',
-                                                                value: 12
-                                                            }, {
-                                                                'hc-key': 'is',
-                                                                value: 25
-                                                            }, {
-                                                                'hc-key': 'md',
-                                                                value: 30
-                                                            }, {
-                                                                'hc-key': 'cz',
-                                                                value: 17
-                                                            }],
-                                                            dataLabels: {
-                                                                enabled: true,
-                                                                formatter: function() {
-                                                                    return this.point.value + '%';
-                                                                }
-                                                            }
-                                                        });
-                                                        break;
-                                                }
-                                                chart.addSeries({
-                                                    id: 'cities',
-                                                    name: 'Cities',
-                                                    type: 'mappoint',
-                                                    color: 'black',
-                                                    marker: {
-                                                        symbol: 'circle'
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    }
-                                },
-                                mapNavigation: {
-                                    enabled: true,
-                                    buttonOptions: {
-                                        verticalAlign: 'bottom'
-                                    }
-                                },
-                                colorAxis: {
-                                    min: 1,
-                                    max: 100,
-                                    minColor: '#E0D2F8',
-                                    maxColor: '#280D58'
-                                },
-                                plotOptions: {
-                                    series: {
-                                        point: {
-                                            events: {
-                                                click: renderSecond
-                                            }
-                                        }
-                                    }
-                                },
-                                legend: {
-                                    enabled: false
-                                },
-                                credits: {
-                                    enabled: false
-                                },
-                                series: [{
-                                    name: 'World',
-                                    data: [{
-                                        'hc-key': 'eu',
-                                        drilldown: true,
-                                        value: 10
-                                    }, {
-                                        'hc-key': 'as',
-                                        drilldown: true,
-                                        value: 55
-                                    }, {
-                                        'hc-key': 'lk-all',
-                                        drilldown: true,
-                                        value: 55
-                                    }],
-                                    mapData: Highcharts.maps['custom/world-continents'],
-                                    joinBy: 'hc-key',
-                                    dataLabels: {
-                                        enabled: true,
-                                        format: '{point.name}' + '<br />' + ' {point.value}' + '%'
-                                    }
-                                }]
-                            });
-
-                            function renderSecond(e) {
-                                var point = this;
-                                // Prepare demo data
-                                var data = [{
-                                    "hc-key": "lk-bc",
-                                    "value": 0
-                                }, {
-                                    "hc-key": "lk-mb",
-                                    "value": 1
-                                }, {
-                                    "hc-key": "lk-ja",
-                                    "value": 2
-                                }, {
-                                    "hc-key": "lk-kl",
-                                    "value": 3
-                                }, {
-                                    "hc-key": "lk-ky",
-                                    "value": 4
-                                }, {
-                                    "hc-key": "lk-mt",
-                                    "value": 5
-                                }, {
-                                    "hc-key": "lk-nw",
-                                    "value": 6
-                                }, {
-                                    "hc-key": "lk-ap",
-                                    "value": 7
-                                }, {
-                                    "hc-key": "lk-pr",
-                                    "value": 8
-                                }, {
-                                    "hc-key": "lk-tc",
-                                    "value": 9
-                                }, {
-                                    "hc-key": "lk-ad",
-                                    "value": 10
-                                }, {
-                                    "hc-key": "lk-va",
-                                    "value": 11
-                                }, {
-                                    "hc-key": "lk-mp",
-                                    "value": 12
-                                }, {
-                                    "hc-key": "lk-kg",
-                                    "value": 13
-                                }, {
-                                    "hc-key": "lk-px",
-                                    "value": 14
-                                }, {
-                                    "hc-key": "lk-rn",
-                                    "value": 15
-                                }, {
-                                    "hc-key": "lk-gl",
-                                    "value": 16
-                                }, {
-                                    "hc-key": "lk-hb",
-                                    "value": 17
-                                }, {
-                                    "hc-key": "lk-mh",
-                                    "value": 18
-                                }, {
-                                    "hc-key": "lk-bd",
-                                    "value": 19
-                                }, {
-                                    "hc-key": "lk-mj",
-                                    "value": 20
-                                }, {
-                                    "hc-key": "lk-ke",
-                                    "value": 21
-                                }, {
-                                    "hc-key": "lk-co",
-                                    "value": 22
-                                }, {
-                                    "hc-key": "lk-gq",
-                                    "value": 23
-                                }, {
-                                    "hc-key": "lk-kt",
-                                    "value": 24
-                                }];
-                                // Initiate the chart
-                                $("#detail").highcharts('Map', {
-                                    title: {
-                                        text: 'Sri Lanka'
-                                    },
-                                    mapNavigation: {
-                                        enabled: true,
-                                        buttonOptions: {
-                                            verticalAlign: 'bottom'
-                                        }
-                                    },
-                                    colorAxis: {
-                                        min: 0
-                                    },
-                                    series: [{
-                                        data: data,
-                                        mapData: Highcharts.maps['countries/lk/lk-all'],
-                                        joinBy: 'hc-key',
-                                        name: 'Random data',
-                                        states: {
-                                            hover: {
-                                                color: '#BADA55'
-                                            }
-                                        },
-                                        dataLabels: {
-                                            enabled: true,
-                                            format: '{point.name}'
-                                        }
-                                    }]
-                                });
-                            }
-                         ;
-
-                        function districtClick(event) {
-                            getDistrictByID(event.mapObject.id)
-                            $scope.area = [];
-                            $scope.area.push({
-                                "id": event.mapObject.id,
-                                "color": "#264F7F"
-                            });
-                        }
-                        var districts = [{
-                            District: "Gampaha",
-                            f0_: "1.0692726095000002E8"
-                        }, {
-                            District: "Hambanthota",
-                            f0_: "3.0021887890000004E7"
-                        }, {
-                            District: "Mullativu",
-                            f0_: "2160869.130000001"
-                        }, {
-                            District: "Anuradhapura",
-                            f0_: "5.462298085999999E7"
-                        }, {
-                            District: "Kurunagala",
-                            f0_: "9.217755252000001E7"
-                        }, {
-                            District: "Badulla",
-                            f0_: "4.817429579E7"
-                        }, {
-                            District: "Batticaloa",
-                            f0_: "6.786490195E7"
-                        }, {
-                            District: "Mannar",
-                            f0_: "4262008.129999999"
-                        }, {
-                            District: "Polonnaruwa",
-                            f0_: "3.0545677269999996E7"
-                        }, {
-                            District: "Jaffna",
-                            f0_: "1.295798956E7"
-                        }, {
-                            District: "Kilinochchi",
-                            f0_: "6551934.62"
-                        }, {
-                            District: "Colombo",
-                            f0_: "3.9187614298E8"
-                        }, {
-                            District: "Matale",
-                            f0_: "4.2969575300000004E7"
-                        }, {
-                            District: "Kandy",
-                            f0_: "1.0338308772E8"
-                        }, {
-                            District: "Matara",
-                            f0_: "6.0270031080000006E7"
-                        }, {
-                            District: "Nuwara Eliya",
-                            f0_: "2.5525292579999994E7"
-                        }, {
-                            District: "Kegalle",
-                            f0_: "3.780547114E7"
-                        }, {
-                            District: "Puttalam",
-                            f0_: "2.583396303E7"
-                        }, {
-                            District: "Ratnapura",
-                            f0_: "2.757293697E7"
-                        }, {
-                            District: "Monaragala",
-                            f0_: "2.4146062279999997E7"
-                        }, {
-                            District: "Vavuniya",
-                            f0_: "2062680.2199999997"
-                        }, {
-                            District: "Kalutara",
-                            f0_: "7.678809762E7"
-                        }, {
-                            District: "Galle",
-                            f0_: "8.318399742999999E7"
-                        }, {
-                            District: "Ampara",
-                            f0_: "2.990633667E7"
-                        }, {
-                            District: "Trincomalee",
-                            f0_: "3.858721745E7"
-                        }];
-
-                        function getDistrictByID(title) {
-                            for (i = 0, len = districts.length; i < len; ++i) {
-                                if (title == districts[i].District) {
-                                    notifications.alertDialog(districts[i].District, districts[i].f0_);
-                                }
-                            }
-                        }
-                    }
-                    if ($scope.chartType == "D3 visualization") {
-                        //window.alert("D3 pop up");
-                        $mdDialog.show({
-                            controller: "openDthreeCtrl",
-                            templateUrl: 'views/query/digind3.html',
-                            parent: angular.element(document.body),
-                            clickOutsideToClose: true
-                        }).then(function(answer) {})
-                    }
+                   
                     if ($scope.chartType == "forecast") {
                         if ($scope.sourceData.fAttArr.length == 1 && $scope.sourceData.fMeaArr.length == 1) {
                             if (!($scope.sourceData.fAttArr[0].dataType == "TIMESTAMP" || $scope.sourceData.fAttArr[0].dataType == "datetime")) {
@@ -2614,6 +2109,154 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 $scope.saveChart(widget);
             }
         };
+
+           $scope.map = {
+
+            onInit: function(recon) {
+                if (!recon) $scope.initMapConfigObj = $scope.initMapConfigObj;
+                else {
+                    $scope.initMapConfigObj = $scope.widget.widgetData.highchartsNG;
+                }
+
+            },
+            changeType: function() {
+                var d = $scope.highchartsNG.series[0].data;
+                if ($scope.mapconfig.mapType == 'World') {
+                    {
+                        if ($scope.mapconfig.mapType.drilled) {
+                            maplibrary = Highcharts.maps['custom/world-continents'];
+                        } else {
+                            maplibrary = Highcharts.maps['custom/world'];
+
+                        }
+                    }
+
+                }
+                if ($scope.mapconfig.mapType == 'Country') {
+                    if ($scope.mapconfig.selectedCountry == 'lk') {
+                        maplibrary = Highcharts.maps['countries/lk/lk-all'];
+
+                    }
+                    if ($scope.mapconfig.selectedCountry == 'us') {
+                        maplibrary = Highcharts.maps['countries/us/us-all'];
+                    }
+
+                }
+                d.forEach(function(e) {
+                    e["hc-key"] = e.name;
+                    e.value = e.y;
+                    delete e.name;
+                    delete e.y;
+                });
+
+
+                $scope.initMapConfigObj.series = $scope.highchartsNG.series;
+                $scope.initMapConfigObj = $scope.initMapConfigObj;
+                $scope.initMapConfigObj.chartType = $scope.selectedChart.chartType;
+                $scope.initMapConfigObj.options.plotOptions.map.mapData = maplibrary;
+                $scope.initMapConfigObj.title.text = '';
+
+
+            },
+            selectCondition: function() {
+                if (!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0) {
+                    $scope.getAggregation();
+                } else {
+                    if ($scope.executeQryData.executeMeasures.length >= 1) {
+                        $scope.getDrilledAggregation();
+                    } else {
+                        $scope.executeQryData.executeMeasures.pop();
+                        eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
+                        //alert("drilldown only supports single series");
+                        privateFun.fireMessage('0', 'drilldown only supports single series');
+                        $scope.isPendingRequest = false;
+                    }
+                }
+
+            },
+            selectAttribute: function() {
+                if (!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0) {
+                    //                if($scope.executeQryData.executeColumns.length == 0){
+                    $scope.executeQryData.executeColumns = [{
+                        filedName: fieldName
+                    }];
+                    $scope.getGroupedAggregation(fieldName);
+                } else if ($scope.executeQryData.executeColumns.length >= 1) {
+                    $scope.executeQryData.executeColumns.push({
+                        filedName: fieldName
+                    });
+                    $scope.getDrilledAggregation();
+                }
+
+
+            },
+            removeMea: function(l) {
+                if (l > 0) $scope.getAggregation();
+                else {
+                    //$scope.eventHndler.isLoadingChart = false;
+                    $scope.executeQryData.executeColumns = [];
+                    $scope.highchartsNG = $scope.selectedChart.initObj;
+                }
+            },
+            removeCat: function() {
+                if ($scope.isDrilled) $scope.getDrilledAggregation();
+                else $scope.getAggregation();
+            },
+            onGetAggData: function(res) {
+                $scope.isPendingRequest = false;
+                $scope.setMeasureData(res);
+            },
+            onGetGrpAggData: function() {
+                $scope.isPendingRequest = false;
+                var d = $scope.highchartsNG.series.data.forEach(function(e) {
+                    e["hc-key"] = e.name;
+                    e.value = e.y;
+                    delete e.name;
+                    delete e.y;
+                });
+                $scope.highchartsNG.series = d;
+
+            },
+            saveWidget: function(widget) {
+                widget.widgetName = "highcharts";
+                widget.widgetData.widView = "views/common-data-src/res-views/ViewMap.html";
+                widget.widgetData.initMapConfigObj = $scope.initMapConfigObj;
+                $scope.saveChart(widget);
+            }
+        };
+
+        $scope.$watch("mapconfig", function(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                if (newValue.mapType == 'World') {
+                    {
+                        if (newValue.drilled) {
+                            $scop.maplibrary = Highcharts.maps['custom/world-continents'];
+                        } else {
+                            mapDataNew = Highcharts.maps['custom/world'];
+
+                        }
+                    }
+
+                }
+                if (newValue.mapType == 'Country') {
+                    if (newValue.selectedCountry == 'lk') {
+                        mapDataNew = Highcharts.maps['countries/lk/lk-all'];
+
+                    }
+                    if (newValue.selectedCountry == 'us') {
+                        mapDataNew = Highcharts.maps['countries/us/us-all'];
+                    }
+
+                }
+                $scope.initMapConfigObj.options.plotOptions.map.mapData = mapDataNew;
+                $scope.initMapConfigObj.options.colorAxis.minColor = newValue.minColor;
+                $scope.initMapConfigObj.options.colorAxis.minColor = newValue.maxColor;
+                $scope.initMapConfigObj.series[0].dataLabels = {
+                               enabled: true,
+                               format: '{point.name}' + '<br />' + ' {point.value}'
+                           };
+            }
+        }, true);
         $scope.d3sunburst = {
             onInit: function(recon) {
                 $scope.hierarData = $scope.widget.widgetData.widData;
@@ -2725,15 +2368,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPick
                 $scope.saveChart(widget);
             }
         };
-        $scope.googleMap = {
-            
-            saveWidget: function(widget) {
-                widget.widgetData.widView = "views/googleMaps/ViewGoogleMapsBranches.html";
-                widget.widgetData.uniqueType = "Google Maps Branches";
-                widget.widgetData.widName = $scope.widget.widgetData.widName;
-                $scope.saveChart(widget);
-            }
-        };
+       
         $scope.selectedFields = [];
         $scope.drawPivotSummary = function() {
             console.log("$scope", $scope);

@@ -1,0 +1,39 @@
+<md-dialog aria-label="Add Group">
+  <form md-theme="default" name="editForm" ng-submit="editForm.$valid && submit()">
+  <md-toolbar class="modal-header">
+    <div class="md-toolbar-tools">
+       <div layout="row" layout-align="center center">
+		<ng-md-icon icon="my_library_books" style="fill:white; padding-right: 20px;" size="24px"></ng-md-icon>
+		<h2>Add Group</h2>
+	  </div>
+      <span flex></span>
+      <md-button class="md-icon-button icon-cancel" ng-click="$root.cancel()" aria-label="Close">
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content style="max-width:800px;max-height:810px; ">
+    <div class="md-dialog-content">
+
+		 <md-input-container layout="column" class="md-block" flex-gt-sm>
+			<span>User Name</span>
+			<input required type="text" ng-model="userName" name="userName" aria-label="Group Name">
+			<div ng-messages="editForm.userName.$error">
+				<div ng-message-exp="['required']">
+					Please enter a username
+				</div>
+			</div>
+		 </md-input-container>
+
+    </div>
+	</md-dialog-content>
+	<md-dialog-actions layout="row">
+		<span flex></span>
+		<md-button aria-label="change" type="submit">
+			Add
+		</md-button>
+	</md-dialog-actions>
+	  
+
+
+  </form>
+</md-dialog>

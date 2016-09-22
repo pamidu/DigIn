@@ -1,0 +1,97 @@
+<style>
+ng-color-picker ul {
+    padding: 0;
+    margin: 0;
+}
+
+ng-color-picker li {
+    width: 20px;
+    height: 20px;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+ng-color-picker li.selected {
+    border: 2px solid #333;
+}
+</style>
+<md-switch ng-model="isDrilled" ng-change="toggleDrilled(isDrilled)" aria-label="Switch 1">
+    Drilled: {{ isDrilled }}
+</md-switch>
+<div>
+    <h4>Select Map Type:</h3>
+    <div layout="row">
+   <md-input-container>
+        <label>Select Map Type:</label>
+        <md-select ng-model="mapconfig.mapType">
+            <md-option ng-repeat="d in mapTypes" value="{{d.name}}">
+                {{d.name}}
+            </md-option>
+        </md-select>
+    </md-input-container>
+       <md-input-container ng-show="mapconfig.mapType == 'Country'">
+        <label>Select Country:</label>
+        <md-select ng-model="mapconfig.selectedCountry">
+            <md-option ng-repeat="d in countries" value="{{d.key}}">
+                {{d.code}}
+            </md-option>
+        </md-select>
+    </md-input-container>
+</div>
+</div>
+ <div>
+    <h4 > {{mapconfig.mapType}} Map Configuration:</h4>
+    <div layout="row">
+        <div layout-gt-sm="row">
+            <md-input-container ng-show="mapconfig.mapType == 'World' ">
+                <label>Continent</label>
+                <md-select ng-model="mapconfig.Continent">
+                    <md-option ng-repeat="d in executeQryData.executeColumns" value="{{d.filedName}}">
+                        {{d.filedName}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container ng-show="mapconfig.mapType == 'World' ">
+                <label>Country</label>
+                <md-select ng-model="mapconfig.Country">
+                    <md-option ng-repeat="d in executeQryData.executeColumns" value="{{d.filedName}}">
+                        {{d.filedName}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container ng-show="mapconfig.mapType == 'Country' || mapconfig.mapType == 'World'">
+                <label>State</label>
+                <md-select ng-model="mapconfig.State">
+                    <md-option ng-repeat="d in executeQryData.executeColumns" value="{{d.filedName}}">
+                        {{d.filedName}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container ng-show="mapconfig.mapType == 'Country' || mapconfig.mapType == 'World'">
+                <label>City</label>
+                <md-select ng-model="mapconfig.City">
+                    <md-option ng-repeat="d in executeQryData.executeColumns" value="{{d.filedName}}">
+                        {{d.filedName}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+    </div>
+</div>
+<div>
+    <h4> Color Range:</h4>
+    <div layout="row">
+        <md-input-container flex-gt-sm>
+            <span style="color:rgba(0,0,0,0.54);font-size:12px;margin-bottom: 12px;">Start Color</span>
+            <ng-color-picker selected='mapconfig.minColor' colors="colors"></ng-color-picker>
+        </md-input-container>
+        <md-input-container flex-gt-sm>
+            <span style="color:rgba(0,0,0,0.54);font-size:12px;margin-bottom: 12px;">End Color</span>
+            <ng-color-picker selected='mapconfig.maxColor' colors="colors"></ng-color-picker>
+        </md-input-container>
+        <md-input-container flex>
+            <label>Minimum value</label>
+            <input ng-model="mapconfig.min">
+        </md-input-container>
+    </div>
+</div>

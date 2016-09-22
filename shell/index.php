@@ -3,11 +3,8 @@
 <head>
     <title>DigIn - Beyond BI</title>
     <link rel="shortcut icon" href="./styles/css/images/innerlogo.ico" type="image/png">
-
-
     <link rel="stylesheet" href="styles/css/commonstyle.css">
-    <link rel="stylesheet" href="styles/css/login.css">
-    <!--  new changes  -->
+    <link rel="stylesheet" href="styles/css/login.css">    <!--  new changes  -->
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,10 +19,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/> 
     <link rel="stylesheet" href="bower_components/bootstrap/less/glyphicons.less"/>
     <link rel="stylesheet" type="text/css" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css">
-    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
-
-
-  
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"> 
 
     <!-- <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css"> -->
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
@@ -77,7 +71,7 @@
     <link rel="stylesheet" href="styles/css/hover.css" type='text/css'/>
     <link rel="stylesheet" href="bower_components/angular-ui/angular-ui-select2/select2-bootstrap.min.css"
           type='text/css'/>
-    <script src="https://code.highcharts.com/modules/funnel.js"></script>
+ 
     <link rel="stylesheet" href="bower_components/tag-input/ng-tags-input.min.css"/>
     <link rel="stylesheet" href="styles/css/customer.css" type='text/css'/>
     <link rel="stylesheet" href="bower_components/v-accordion/v-accordion.min.css" type='text/css'/>
@@ -310,12 +304,8 @@
 <script type="text/javascript" src="scripts/vendor/layout.js"></script>
 <!-- svg to canvas -->
 <script type="text/javascript" src="scripts/vendor/pleasure.js"></script>
-<script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script>
-<script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
-<script type="text/javascript" src="scripts/vendor/nv.d3.js"></script>
-<!-- or use another assembly -->
-<script type="text/javascript" src="scripts/vendor/angular-nvd3.js"></script>
-<script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script>
+ 
+ 
 <script type="text/javascript" src="scripts/controllers/angular-touch.js"></script>
 <!-- raw -->
 <script type="text/javascript" src="scripts/controllers/DiginD3.js"></script>
@@ -381,8 +371,10 @@
 <script src="https://code.highcharts.com/maps/modules/map.js"></script>
 <script  type="text/javascript" src="http://code.highcharts.com/maps/modules/drilldown.js"></script>
 <script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/world-continents.js"></script>
+ <script src="http://code.highcharts.com/mapdata/custom/world.js"></script>
 <script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/asia.js"></script>
 <script  type="text/javascript" src="http://code.highcharts.com/mapdata/countries/lk/lk-all.js"></script>
+<script  type="text/javascript" src="http://code.highcharts.com/mapdata/countries/us/us-all.js"></script>
 <script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/oceania.js"></script>
 <script type="text/javascript"  src="http://code.highcharts.com/mapdata/custom/europe.js"></script>
 <script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/north-america.js"></script>
@@ -401,10 +393,7 @@
 <!-- angular at-table -->
 <script src="bower_components/at-table/dist/angular-table.js"></script>
 <script src="scripts/vendor/markerclusterer.js"></script>
-<!-- canvg -->
-<script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script> 
-<script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
-<script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script> 
+ 
 <script type="text/javascript">
     google.load('search', '1');
 </script>

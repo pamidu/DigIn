@@ -42,8 +42,9 @@
     <md-input-container>
         <label> Gamma </label>
         <input ng-model="forecastObj.paramObj.gamma" ng-blur = "setValue('gamma')">
-    </md-input-container>   
+    </md-input-container> 
     <md-container>
+        <label style="font-weight: bolder;color: #01718d;">For Calculation</label>
         <div>
             <label>Start Date</label>
             <md-date-picker model="forecastObj.paramObj.startdate" md-placeholder=""></md-date-picker> <br>
@@ -51,6 +52,16 @@
             <md-date-picker model="forecastObj.paramObj.enddate" md-placeholder=""> </md-date-picker>
         </div>
     </md-container> 
+    <md-container>
+        <label style="font-weight: bolder;color: #01718d;">For Visualisation</label>
+        <div>
+            <label>Start Date</label>
+            <md-date-picker model="visualDate.startdate" md-placeholder=""></md-date-picker> <br>
+            <label>End Date  </label>
+            <md-date-picker model="visualDate.enddate" md-placeholder=""> </md-date-picker>
+        </div>
+    </md-container>   
+    
      <md-input-container>
         <label>Group by</label>
         <md-select ng-model="forecastObj.paramObj.forecastAtt">

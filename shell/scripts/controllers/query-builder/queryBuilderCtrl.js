@@ -153,7 +153,16 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 $scope.forecastAtts[i] = $scope.sourceData.forecastAtt[i].name;
             }
         }
-        $rootScope.intDate = new Date();        
+        $scope.intDate = new Date();
+         if(typeof $scope.widget.widgetData.foreCastObjDate == 'undefined'){
+            $scope.widget.widgetData.foreCastObjDate = $scope.intDate;
+        } 
+
+         $scope.visualDate = {
+            startdate:$scope.intDate,
+            enddate:$scope.intDate,
+        };
+
         $scope.forecastObj = {
             method: ["Additive", "Multiplicative"],
             models: ["double exponential smoothing", "triple exponential smoothing"],
@@ -174,8 +183,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 f_field: "",
                 len_season: 12,
                 interval: "Monthly",
-                startdate: $rootScope.intDate ,
-                enddate: $rootScope.intDate,
+                startdate: $scope.intDate,
+                enddate: $scope.intDate,
                 forecastAtt:$scope.forecastAtt,
                 showActual: $scope.showActual, 
             }
@@ -1387,7 +1396,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 $scope.generateForecast($scope.forecastObj.paramObj);
             },
             saveWidget: function(widget) {
-                widget.widgetData.highchartsNG = $scope.widget.widgetData.highchartsNG;
+                widget.widgetData.highchartsNG = $rootScope.tempForecastArr;
                 widget.widgetData.widView = "views/query/chart-views/forecast.html";
                 widget.widgetData.foreCastObj = $scope.forecastObj.paramObj;
                 widget.widgetData.initCtrl = "elasticInit";
@@ -1396,7 +1405,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             }
         };
         $scope.$watch("forecastObj.paramObj", function(newValue, oldValue) {
-            if (newValue !== oldValue && ( (new Date(newValue.enddate) > new Date(newValue.startdate)) || ( newValue.enddate == $rootScope.intDate && newValue.startdate == $rootScope.intDate) ) ) {
+            if (newValue !== oldValue && ( (new Date(newValue.enddate) > new Date(newValue.startdate)) || ( newValue.enddate == $scope.widget.widgetData.foreCastObjDate && newValue.startdate == $scope.widget.widgetData.foreCastObjDate ) || newValue.showActual != oldValue.showActual ) ) {
                 if (!(newValue.mod != oldValue.mod || newValue.date_field != oldValue.date_field || newValue.f_field != oldValue.f_field || newValue.alpha != oldValue.alpha || newValue.beta != oldValue.beta || newValue.gamma != oldValue.gamma)) {
                     switch (newValue.model) {
                         case "double exponential smoothing":
@@ -1416,6 +1425,75 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }
             }
         }, true);
+
+        $scope.$watch("visualDate", function(newValue, oldValue) {
+             if (newValue !== oldValue && ( (new Date(newValue.enddate) > new Date(newValue.startdate)) )){
+
+
+                var startdate = formattedDate(newValue.startdate);
+                var enddate = formattedDate(newValue.enddate);
+                var xAxisLen = $rootScope.tempForecastArr.xAxis.categories.length;
+
+                var startInd =-1;
+                var endInd  = -1;
+                var cat= [];
+                var data=[];    
+                for(var i=0; i<xAxisLen;i++){
+                    var date = $rootScope.tempForecastArr.xAxis.categories[i]+"-1";
+                    var x= new Date(startdate);
+                    var y = new Date(date) ;
+                    var z= new Date(enddate);
+                    if(x <= y && y <= z){
+                        if(startInd == -1){
+                            startInd=i;
+                        }
+
+                        cat.push($rootScope.tempForecastArr.xAxis.categories[i]);
+
+                        if(i==xAxisLen-1)
+                            endInd=i;
+
+                    }else if(startInd > -1){
+                        if(endInd == -1){
+                            endInd=i;
+                        }
+                    }
+                }
+
+                var seriesLen = $rootScope.tempForecastArr.series.length;
+                for(var i= 0; i < seriesLen ;i++){
+                    data=[];
+                    for (var j=startInd; j< endInd ;j++){
+                        data.push($rootScope.tempForecastArr.series[i].data[j]);
+                    }
+                    if(data.length >0){
+                        $scope.widget.widgetData.highchartsNG.series[i].data = data;
+                    }
+                }
+                    
+                if(cat.length >0 ){
+                    $scope.widget.widgetData.highchartsNG.xAxis.categories=cat;
+                }
+               
+
+             }
+        }, true);
+
+        function formattedDate(date) {
+
+            var d = new Date(date || Date.now()),
+                month = '' + (d.getMonth() + 1),
+                day = '1',
+                year = d.getFullYear();
+
+            if (month.length < 2) month =month;
+            if (day.length < 2) day =day;
+
+            return [year,month, day].join('-');
+        }
+
+
+
         // change the value of those parameters seperately to prevent $watch from calling the service each time a value is changed
         $scope.setValue = function(obj) {
             switch (obj) {
@@ -1592,7 +1670,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                         series: serArr
                     };
                     $scope.eventHndler.isLoadingChart = false;
+                    $rootScope.tempForecastArr = angular.copy($scope.widget.widgetData.highchartsNG);
                 } else {
+                    privateFun.fireMessage('0', 'Error occurred while performing this operation');
                     $scope.eventHndler.isLoadingChart = false;
                 }
             });

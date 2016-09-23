@@ -433,7 +433,13 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                     for (var v in keyValue){
                                         var value = keyValue[v];
                                         $scope.$apply(function(){
-                                            if (typeof value != 'number' ){
+                                            if (typeof value == 'number' ){
+                                                key.values.push({
+                                                    id: value,
+                                                    value: value,
+                                                    status: false
+                                                });
+                                            }else {
                                                 key.values.push({
                                                     id: value.replace(/ /g,"_"),
                                                     value: value,
@@ -519,7 +525,11 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 tempStr = "";
                 angular.forEach(filter.values,function(key){
                     if(key.status){
-                        tempFilterArray.push( "'" + key.value + "'");
+                        if (typeof key.value == 'number'){
+                            tempFilterArray.push(key.value);
+                        } else{
+                            tempFilterArray.push( "'" + key.value + "'");
+                        }
                     }
                 })
                 if(tempFilterArray.length > 0) {

@@ -623,6 +623,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                
             }]
         };
+        $scope.commonData.filters = [];
         //mapping measures array
         if ($scope.sourceData.fMeaArr.length > 0) {
             for (i = 0; i < $scope.sourceData.fMeaArr.length; i++) {
@@ -633,6 +634,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     selectQry: [],
                     proBy: 'm0'
                 });
+                //fill the filters array
+                $scope.commonData.filters.push($scope.sourceData.fMeaArr[i]);
             }
         }
         //mapping attributes array
@@ -645,11 +648,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     selectQry: [],
                     proBy: 'c0'
                 });
+                //fill the filters array
+                $scope.commonData.filters.push($scope.sourceData.fAttArr[i]);
             }
             //Concat attributes and measures
             $scope.commonData.columns = $scope.commonData.columns.concat($scope.commonData.measures);
         } else {
-            if ($scope.sourceData.fMeaArr.length > 0) {}
+
         }
         var executeQryData = {
             executeMeasures: [],
@@ -1037,7 +1042,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                    
                     if ($scope.chartType == "forecast") {
                         if ($scope.sourceData.fAttArr.length == 1 && $scope.sourceData.fMeaArr.length == 1) {
-                            if (!($scope.sourceData.fAttArr[0].dataType == "TIMESTAMP" || $scope.sourceData.fAttArr[0].dataType == "datetime")) {
+                            if (!($scope.sourceData.fAttArr[0].dataType == "TIMESTAMP" || $scope.sourceData.fAttArr[0].dataType == "datetime"  || $scope.sourceData.fAttArr[0].dataType == "DATE")) {
                                 privateFun.fireMessage('0', "Select an attribute of type date to generate " + $scope.chartType + " chart");
                                 return;
                             }
@@ -1362,7 +1367,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             changeType: function() {
                 var mergedArr = $scope.sourceData.fMeaArr.concat($scope.sourceData.fAttArr);
                 mergedArr.forEach(function(k) {
-                    if (k.dataType == "TIMESTAMP" || k.dataType == "datetime") {
+                    if (k.dataType == "TIMESTAMP" || k.dataType == "datetime" || k.dataType == "DATE") {
                         $scope.forecastObj.paramObj.date_field = k.name;
                     } else {
                         $scope.forecastObj.paramObj.f_field = k.name;

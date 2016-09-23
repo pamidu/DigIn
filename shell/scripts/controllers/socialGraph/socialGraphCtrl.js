@@ -9,12 +9,15 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     $scope.totalEngagement = 0;
     $scope.engageLikes = 0;
     $scope.totalViews = 0;
+    $scope.avgEngagement = 0;
     $scope.postCount = 0;
     $scope.requestCount = 0;
     $scope.postSummaryRequest = 0;
     $scope.sentimentRequest = 0;
+    $scope.newPage = true;
     $scope.wordCloudLoading = true;
     $scope.sentimentGraphLoading = true;
+    $scope.timeChanged = false;
     $scope.failedPool = [];
     $scope.sentimentConfigData = [];
     $scope.sentimentConfigSeries = [];
@@ -277,12 +280,22 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
             $scope.requestCount++;
             $scope.sentimentStatus = false;
             if (status) {
+                var endWeek = moment().utc().valueOf();
+                var startWeek = endWeek - 604800000;
+                var date="";
                 var d = data;            
                 m = $scope.postSummaryRequest*25;                
                 for ( var i = 0; i < data.length; i++){
                     $scope.postsObj.push(data[i]);
-                    $scope.totalEngagement += $scope.postsObj[i].shares + $scope.postsObj[i].comments;
-                    $scope.engageLikes += $scope.postsObj[i].likes;                    
+                    date = moment($scope.postsObj[i].created_time).utc().valueOf();
+                    if ( $scope.newPage && !$scope.timeChanged ) {
+                        if (date <= endWeek && date >= startWeek){
+                            $scope.totalEngagement += $scope.postsObj[i].shares + $scope.postsObj[i].comments;
+                            $scope.avgEngagement = (Math.round(($scope.totalEngagement / 7)*100)/100);
+                        }
+                    }
+                    // $scope.totalEngagement += $scope.postsObj[i].shares + $scope.postsObj[i].comments;
+                    // $scope.engageLikes += $scope.postsObj[i].likes;                    
                 }
                 $scope.postCount += data.length;
                 for ( var z = m; z < m + data.length; z++ ){
@@ -478,11 +491,10 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         $scope.page = page;
         $scope.timestamps = pageTimestamps;
         $scope.activePageSearch = false;
-
         $scope.fbClient = $restFb.getClient(page, pageTimestamps);
         $scope.postIds = []; 
         $scope.totalLikes = 0;
-        $scope.totalEngagement = 0;
+        $scope.newPage = true;
         $scope.engageLikes = 0;
         $scope.postCount = 0;
         $scope.requestCount = 0;
@@ -495,7 +507,11 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         $scope.sentimentConfigData = [];
         $scope.sentimentConfigSeries = [];
         $scope.configData = [];
-        $scope.postsObj = [];        
+        $scope.postsObj = [];
+        if ( $scope.newPage && !$scope.timeChanged ) {
+            $scope.avgEngagement = 0;
+            $scope.totalEngagement = 0;
+        }        
         reqPool.forEach(function (key) {
             eval("$scope." + key.method + "()");
         });
@@ -516,6 +532,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     };
 
     $scope.changeTimeRange = function () {
+        $scope.timeChanged = true;
         var since = new Date($scope.sinceDate);
         var until = new Date($scope.untilDate);
         //alert(typeof(since));
@@ -551,6 +568,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         }
     };
     $scope.goBack = function () {
+        $scope.timeChanged = false;
         $scope.activePageSearch = true;
         $scope.preloader = false;
     }
@@ -651,7 +669,7 @@ function viewTableCtrl($scope, $mdDialog, jsonData, pageName) {
                 'like': ''
             };
             for (var b = 0; b < jsonData[i].data[c].length; b++) {
-                if (b == 2) {
+                if (b == 0) {
                     //date
                     var date = jsonData[i].data[c][b];
                     jsonObj.date = cvtUnixToDate(date);

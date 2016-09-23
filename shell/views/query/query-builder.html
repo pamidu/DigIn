@@ -208,7 +208,7 @@
                     <div class="chart-config-wrap">
                     <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
                                  onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
-                        <v-pane id="{{ ::Attr.id }}" ng-repeat="Attr in sourceData.fAttArr" class="v-pane">
+                        <v-pane id="{{ ::Attr.id }}" ng-repeat="Attr in commonData.filters" class="v-pane">
                             <v-pane-header id="{{ ::Attr.id }}-header" aria-controls="{{ ::Attr.id }}-content">
                                 <h5 class="font-weight-300 text-upper">{{ ::Attr.name }}</h5>
                             </v-pane-header>

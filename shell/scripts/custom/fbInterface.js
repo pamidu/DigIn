@@ -151,7 +151,9 @@ var fbInterface = new function () {
                             tempFbPg.accessToken = response.data[i].access_token;
                             tempFbPg.name = response.data[i].name;
                             tempFbPg.category = response.data[i].category;
-                            scope.fbPages.push(tempFbPg);
+                            scope.$apply(function(){
+                                scope.fbPages.push(tempFbPg);
+                            });
                         }
                         console.log('fbPages array:' + JSON.stringify(scope.fbPages));
                         if (cb) cb();
@@ -258,11 +260,13 @@ var fbInterface = new function () {
                     scope.searchedFbPages = [];
                     var searchRes = JSON.parse(xhr.response).data;
                     searchRes.forEach(function (entry) {
-                        scope.searchedFbPages.push({
-                            id: entry.id,
-                            accessToken: token,
-                            name: entry.name,
-                            category: entry.category
+                        scope.$apply(function(){
+                            scope.searchedFbPages.push({
+                                id: entry.id,
+                                accessToken: token,
+                                name: entry.name,
+                                category: entry.category
+                            });
                         });
                     });
 

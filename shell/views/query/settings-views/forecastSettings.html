@@ -17,7 +17,7 @@
     </md-input-container>    
     <md-input-container>
         <label>Interval</label>
-        <md-select ng-model="forecastObj.paramObj.interval">
+        <md-select ng-model="forecastObj.paramObj.interval" ng-change="setDefLenSeason(forecastObj.paramObj.interval)">
           <md-option ng-repeat="int in forecastObj.intervals" value="{{int}}">
             {{int}}
           </md-option>

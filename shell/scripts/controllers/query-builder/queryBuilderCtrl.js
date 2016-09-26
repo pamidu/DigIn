@@ -1409,7 +1409,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             }
         };
         $scope.$watch("forecastObj.paramObj", function(newValue, oldValue) {
-            if (newValue !== oldValue && ( (new Date(newValue.enddate) > new Date(newValue.startdate)) || ( newValue.enddate == $scope.widget.widgetData.foreCastObjDate && newValue.startdate == $scope.widget.widgetData.foreCastObjDate ) || newValue.showActual != oldValue.showActual ) ) {
+            var seasonOK = $scope.isSeasonOk(newValue)
+            if (newValue !== oldValue && ( (new Date(newValue.enddate) > new Date(newValue.startdate)) || ( newValue.enddate == $scope.widget.widgetData.foreCastObjDate && newValue.startdate == $scope.widget.widgetData.foreCastObjDate ) || newValue.showActual != oldValue.showActual ) && seasonOK) {
                 if (!(newValue.mod != oldValue.mod || newValue.date_field != oldValue.date_field || newValue.f_field != oldValue.f_field || newValue.alpha != oldValue.alpha || newValue.beta != oldValue.beta || newValue.gamma != oldValue.gamma)) {
                     switch (newValue.model) {
                         case "double exponential smoothing":
@@ -1427,6 +1428,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     }
                     $scope.generateForecast(newValue);
                 }
+            }else if(newValue !== oldValue && !(new Date(newValue.enddate) > new Date(newValue.startdate))){
+                 privateFun.fireMessage('0', 'Invalid start date and end date');
+            }else if(newValue !== oldValue && !seasonOK){
+                privateFun.fireMessage('0', 'Invalid seasonality');
             }
         }, true);
 
@@ -1480,7 +1485,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }
                
 
-             }
+             }else if(newValue !== oldValue && !(new Date(newValue.enddate) > new Date(newValue.startdate))){
+                 privateFun.fireMessage('0', 'Invalid start date and end date');
+            }
         }, true);
 
         function formattedDate(date) {
@@ -1496,7 +1503,45 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             return [year,month, day].join('-');
         }
 
+        $scope.setDefLenSeason = function(interval){
+            if (interval == "Yearly")
+                $scope.forecastObj.paramObj.len_season = 2;
+            else if (interval == "Daily")
+                $scope.forecastObj.paramObj.len_season = 7;
+            else if (interval == "Monthly")
+                $scope.forecastObj.paramObj.len_season = 12;
+        }
 
+        $scope.isSeasonOk = function(newValue){
+            var isSeasonOk = true;
+            var startdate = new Date(newValue.startdate);
+            var enddate = new Date(newValue.enddate);
+            var diff = new Date(enddate - startdate);
+
+            var years = (diff.getUTCFullYear() - 1970); 
+            var monts= (diff.getUTCMonth()); 
+            var days =(diff.getUTCDate()); 
+
+            if (newValue.interval == "Yearly") {
+                isSeasonOk = $scope.getModulas(years,newValue.len_season);
+            }
+            else if (newValue.interval == "Monthly") {
+                 isSeasonOk = $scope.getModulas(monts,newValue.len_season);
+            }
+            else if (newValue.interval == "Daily") {
+                 isSeasonOk = $scope.getModulas(days,newValue.len_season);
+            }
+
+            return isSeasonOk;
+        }
+
+        $scope.getModulas = function(value,season){
+
+            if(value > (season *3 ) )
+                return true;
+            else 
+                return false;
+        }
 
         // change the value of those parameters seperately to prevent $watch from calling the service each time a value is changed
         $scope.setValue = function(obj) {
@@ -1550,7 +1595,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     if(fObj.forecastAtt == ""){
 
                         if(fObj.showActual == false){
-                            var a = data.data.forecast.length - fObj.len_season;
+                            var a = data.data.forecast.length - fObj.fcast_days;
                             for(var i =a ; i< data.data.forecast.length; i++){
                                 forcastArr.push(data.data.forecast[i]);
                             }
@@ -1585,7 +1630,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                     forcastArr =[];
 
                                     var obj = data[key];
-                                    var a = obj.forecast.length - fObj.len_season;
+                                    var a = obj.forecast.length - fObj.fcast_days;
 
                                     for(var i =a ; i < obj.forecast.length; i++){
                                         forcastArr.push(obj.forecast[i]);
@@ -2067,6 +2112,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                                 this.setSize(this.widthPrev,this.heightPrev, true);                                       
                                             }
                                         }
+                                    },
+                                    credits: {
+                                        enabled: false
                                     },
                                     exporting: {
                                         sourceWidth: 600,

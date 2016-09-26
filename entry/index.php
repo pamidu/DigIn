@@ -14,8 +14,8 @@
          }
          else
          {
-              header("location: /Digin"); //Use for local *Note: Local digin folder path
-              //header("location: /"); //use for live 
+              //header("location: /Digin"); //Use for local *Note: Local digin folder path
+              header("location: /"); //use for live 
               exit();
          }
     }

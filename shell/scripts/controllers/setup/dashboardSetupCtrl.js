@@ -36,7 +36,7 @@ routerApp.controller('dashboardSetupCtrl', function ($scope, $mdDialog, $locatio
     }];
 
 	$scope.usageDetails = {};
-	$http.get("http://prod.digin.io:1929/get_usage_details?SecurityToken="+getCookie('securityToken'))
+	$http.get("http://prod.digin.io:1929/get_usage_summary?SecurityToken="+getCookie('securityToken'))
 	.success(function(data){
 		console.log(data.Result);
 		$scope.usageDetails = data.Result;

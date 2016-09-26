@@ -1423,6 +1423,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     }
                     $scope.generateForecast(newValue);
                 }
+            }else if(newValue !== oldValue && !(new Date(newValue.enddate) > new Date(newValue.startdate))){
+                 privateFun.fireMessage('0', 'Invalid start date and end date');
             }
         }, true);
 
@@ -1476,7 +1478,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                 }
                
 
-             }
+             }else if(newValue !== oldValue && !(new Date(newValue.enddate) > new Date(newValue.startdate))){
+                 privateFun.fireMessage('0', 'Invalid start date and end date');
+            }
         }, true);
 
         function formattedDate(date) {
@@ -2047,6 +2051,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                                 })
                                             }
                                         }
+                                    },
+                                    credits: {
+                                        enabled: false
                                     },
                                     exporting: {
                                         sourceWidth: 600,

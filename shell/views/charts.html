@@ -48,7 +48,7 @@
                                 <md-tooltip>settings</md-tooltip>
                             </md-button>
                             <md-menu ng-show="widget.widgetData.initCtrl=='elasticInit'">
-                                <md-button class="widget-button" ng-click="$mdOpenMenu($event);$event.stopPropagation();onClickFilterButton(widget);">
+                                <md-button class="widget-button"  ng-show="widget.widgetData.selectedChart.chartType!='forecast'" ng-click="$mdOpenMenu($event);$event.stopPropagation();onClickFilterButton(widget);">
                                     <i class="ti-filter" ng-class="widget.widgetData.filteredState==true? 'blut-filtered-icon' : 'blut-widget-icon'"></i>
                                     <md-tooltip>filter</md-tooltip>
                                 </md-button>

@@ -1,6 +1,8 @@
 <div class="setup-wrapper  animated fadeIn">
-
-		<div layout="row" layout-align="center start" layout-wrap>
+	<div layout="row" class="setting-close pull-right" ng-click="route('back')">
+        <md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route('welcome')"></md-button>
+    </div>
+		<div layout="row" layout-align="center start" style="margin-top:50px" layout-wrap>
 		<div layout="column">
 			<md-card class="product_card" style="width:490px;height:205px;background:#2795d8" layout="row" layout-align="center center" ng-click="openLogoUploadWindow()">
 				<img src="{{userSetingsUrl}}" style="width:190px;height:190px;background:white;border-radius:4px"/>
@@ -14,8 +16,8 @@
 						</div>
 
 						<div layout="column" flex>
-							<text style="font-weight:700;color:grey;font-size:15px">DASHBOARDS</text>
-							<text style="font-size:50px">{{usageDetails.dashboard_count}}</text>
+							<text style="font-weight:700;color:#9e9e9e;font-size:15px">DASHBOARDS</text>
+							<text style="font-size:50px">{{usageDetails.dashboard}}</text>
 						</div>
 					</div>
 					<div layout="row" flex style="padding:10px">
@@ -24,20 +26,20 @@
 						</div>
 
 						<div layout="column" flex>
-							<text style="font-weight:700;color:grey;font-size:15px">REPORTS</text>
-							<text style="font-size:50px">{{usageDetails.report_count}}</text>
+							<text style="font-weight:700;color:#9e9e9e;font-size:15px">REPORTS</text>
+							<text style="font-size:50px">{{usageDetails.report_count}} 1</text>
 						</div>
 					</div>
 				</div>
-				<div layout="row">
+				<div layout="row" style="border-bottom: 1px solid #dddddd">
 					<div layout="row" flex style="padding:10px;border-right: 1px solid #dddddd">
 						<div layout="row" layout-align="start center" flex="30">
 							<i class="ti-user" style="color:#4caf50;font-size: 30px;padding-top: 23px;" flex="30"></i>
 						</div>
 
 						<div layout="column" flex>
-							<text style="font-weight:700;color:grey;font-size:15px">ACCOUNT HOLDER</text>
-							<text style="font-size:20px">{{username}}</text>
+							<text style="font-weight:700;color:#9e9e9e;font-size:15px">ACCOUNT HOLDER</text>
+							<text style="font-size:20px;font-size: 20px;padding-top: 10px;">{{$root.profile_Det.Name}}</text>
 						</div>
 					</div>
 					<div layout="row" flex style="padding:10px">
@@ -46,8 +48,30 @@
 						</div>
 
 						<div layout="column" flex>
-							<text style="font-weight:700;color:grey;font-size:15px">TOTAL USERS</text>
+							<text style="font-weight:700;color:#9e9e9e;font-size:15px">TOTAL USERS</text>
 							<text style="font-size:50px">50</text>
+						</div>
+					</div>
+				</div>
+				<div layout="row">
+					<div layout="row" flex style="padding:10px;border-right: 1px solid #dddddd">
+						<div layout="row" layout-align="start center" flex="30">
+							<i class="ti-download" style="color:#1b7b97;font-size: 30px;padding-top: 23px;" flex="30"></i>
+						</div>
+
+						<div layout="column" flex>
+							<text style="font-weight:700;color:#9e9e9e;font-size:15px">BANDWIDTH</text>
+							<text style="font-size:20px;font-size: 20px;padding-top: 10px;">{{usageDetails.totalBytesProcessed / 1000}} mb</text>
+						</div>
+					</div>
+					<div layout="row" flex style="padding:10px">
+						<div layout="row" layout-align="start center" flex="30">
+							<i class="ti-upload" style="color:#13b6b3;font-size: 36px;padding-top: 33px;" flex="30"></i>
+						</div>
+
+						<div layout="column" flex>
+							<text style="font-weight:700;color:#9e9e9e;font-size:15px">UPLOADS</text>
+							<text style="font-size:20px;padding-top: 10px;">{{usageDetails.totalBytesBilled / 1000}} mb</text>
 						</div>
 					</div>
 				</div>

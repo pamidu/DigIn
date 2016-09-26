@@ -20,5 +20,6 @@ define("SVC_SMOOTHFLOW_URL", "http://smoothflow.io");
 
 define("Digin_Domain", "digin.io");
 define("Digin_Engine_API", "http://digin.io:1929/");
+define("PAYMENT_GATWAY", "stripe");
 ?>
 

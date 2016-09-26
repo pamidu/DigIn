@@ -196,7 +196,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                  if(fObj.forecastAtt == ""){
 
                                 if(fObj.showActual == false){
-                                    var a = data.data.forecast.length - fObj.len_season;
+                                    var a = data.data.forecast.length - fObj.fcast_days;
                                     for(var i =a ; i< data.data.forecast.length; i++){
                                         forcastArr.push(data.data.forecast[i]);
                                     }
@@ -231,7 +231,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                                             forcastArr =[];
 
                                             var obj = data[key];
-                                            var a = obj.forecast.length - fObj.len_season;
+                                            var a = obj.forecast.length - fObj.fcast_days;
 
                                             for(var i =a ; i < obj.forecast.length; i++){
                                                 forcastArr.push(obj.forecast[i]);

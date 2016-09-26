@@ -1230,11 +1230,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                             this.setTitle({
                                                 text: this.options.exporting.chartOptions.title.text
                                             })
+                                            this.heightPrev = this.chartHeight;
+                                            this.widthPrev = this.chartWidth;
+                                            this.setSize(600,400, false);
                                         },
                                         afterPrint: function() {
                                             this.setTitle({
                                                 text: null
                                             })
+                                            this.setSize(this.widthPrev,this.heightPrev, true);                                       
                                         }
                                     }
                                 },
@@ -1632,11 +1636,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                         this.setTitle({
                                             text: this.options.exporting.chartOptions.title.text
                                         })
+                                        this.heightPrev = this.chartHeight;
+                                        this.widthPrev = this.chartWidth;
+                                        this.setSize(600,400, false);
                                     },
                                     afterPrint: function() {
                                         this.setTitle({
                                             text: null
                                         })
+                                        this.setSize(this.widthPrev,this.heightPrev, true);                                       
                                     }
                                 }
                             },
@@ -1748,11 +1756,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                                 this.setTitle({
                                                     text: this.options.exporting.chartOptions.title.text
                                                 })
+                                                this.heightPrev = this.chartHeight;
+                                                this.widthPrev = this.chartWidth;
+                                                this.setSize(600,400, false);
                                             },
                                             afterPrint: function() {
                                                 this.setTitle({
                                                     text: null
                                                 })
+                                                this.setSize(this.widthPrev,this.heightPrev, true);                                       
                                             }
                                         }
                                     },
@@ -1919,11 +1931,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                             this.setTitle({
                                                 text: this.options.exporting.chartOptions.title.text
                                             })
+                                            this.heightPrev = this.chartHeight;
+                                            this.widthPrev = this.chartWidth;
+                                            this.setSize(600,400, false);
                                         },
                                         afterPrint: function() {
                                             this.setTitle({
                                                 text: null
                                             })
+                                            this.setSize(this.widthPrev,this.heightPrev, true);                                       
                                         }
                                     }
                                 },
@@ -2040,11 +2056,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                                 this.setTitle({
                                                     text: this.options.exporting.chartOptions.title.text
                                                 })
+                                                this.heightPrev = this.chartHeight;
+                                                this.widthPrev = this.chartWidth;
+                                                this.setSize(600,400, false);
                                             },
                                             afterPrint: function() {
                                                 this.setTitle({
                                                     text: null
                                                 })
+                                                this.setSize(this.widthPrev,this.heightPrev, true);                                       
                                             }
                                         }
                                     },
@@ -2567,11 +2587,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                                     this.setTitle({
                                         text: this.options.exporting.chartOptions.title.text
                                     })
+                                    this.heightPrev = this.chartHeight;
+                                    this.widthPrev = this.chartWidth;
+                                    this.setSize(600,400, false);
                                 },
                                 afterPrint: function() {
                                     this.setTitle({
                                         text: null
                                     })
+                                    this.setSize(this.widthPrev,this.heightPrev, true);                                       
                                 }
                             }
                         },

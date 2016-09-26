@@ -643,15 +643,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 console.log('syncing...');
                                 if (typeof(widget.widgetData.commonSrc) != "undefined") {
                                     widget.widgetData.syncState = false;
-                                    //widget.widgetData.syncState = false;
+                                    //Clear the filter indication when the chart is re-set
+                                    widget.widgetData.filteredState = false;
+                                    filterService.clearFilters(widget);                                    
                                     if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
                                         $qbuilder.sync(widget.widgetData, function (data) {
-                                            //Clear the filter indication when the chart is re-set
-                                            filterService.clearFilters(widget);
-                                            //widget.widgetData.syncState = true;
-                                            // if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
-                                            //     $qbuilder.widInit();
-                                            //widget.widgetData.syncState = true;
                                         });
 
                                     }

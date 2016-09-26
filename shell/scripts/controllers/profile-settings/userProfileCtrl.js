@@ -472,7 +472,9 @@ routerApp.service('notifications',['ngToast','$mdDialog', function(ngToast,$mdDi
             horizontalPosition: 'center',
             verticalPosition: 'top',
             dismissOnClick: true,
-            dismissButton:true
+            dismissButton:true,
+            timeout: 3000,
+            dismissOnTimeout: true
         });
     }
 	

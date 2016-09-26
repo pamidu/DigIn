@@ -40,6 +40,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         //ng-disabled model of save button
         $scope.pendingColumns = true;
         $scope.show = false;
+        $scope.isFilterLoading = false;
         $scope.filterMenuStatus = false;
         $scope.fieldObjects = [];
         //data base field type
@@ -387,6 +388,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             },
             onCLickFilterClose: function() {
                 $scope.filterMenuStatus = false;
+                $scope.isFilterLoading = false;
                 $mdSidenav('filterMenu')
                     .close()
                     .then(function() {
@@ -751,6 +753,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             },
             // retrieve the fields of selected categories
             onSelectFilter: function() {
+                var Keycount = 0;
                 if (!$scope.filterMenuStatus){
                     $mdSidenav('filterMenu').toggle().then(function () {
                         $log.debug("toggle left is done");
@@ -761,24 +764,34 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 }             
                 var query = "";
                 var table_name = $scope.sourceUi.selectedNameSpace;
+                $scope.isFilterLoading = true;
                 angular.forEach($scope.sourceUi.selectedAttribute,function(entry) {
-                    if (!entry.isRemove){
-                        if ($scope.selectedAttributes.indexOf(entry.name) == -1 ){
+                    if (!entry.isRemove){ 
+                        if ( $scope.selectedAttributes.indexOf(entry.name) == -1 ) {
                             $scope.selectedAttributes.push(entry.name);
                             query = "SELECT " + entry.name + " FROM " + $diginurls.getNamespace() + "." + table_name + " GROUP BY " + entry.name;
                             $scope.client.getExecQuery(query, function(data, status) {
                                 if (status){
+                                    $scope.isFilterLoading = false;
                                     var tempArray = [];
                                     for (var res in data){
                                         var keyValue = data[res];
                                         for (var v in keyValue){
                                             var key = v;
                                             var value = keyValue[v];
-                                            tempArray.push({
-                                                id: value.replace(/ /g,"_"),
-                                                value: value,
-                                                status: true
-                                            });
+                                            if (typeof value == 'number' ){
+                                                tempArray.push({
+                                                    id: value,
+                                                    value: value,
+                                                    status: true
+                                                });
+                                            }else {
+                                                tempArray.push({
+                                                    id: value.replace(/ /g,"_"),
+                                                    value: value,
+                                                    status: true
+                                                });
+                                            }
                                         }
                                     }
                                     $scope.$apply(function() {
@@ -789,12 +802,15 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                             status: true
                                         })
                                     });
+                                } else{
+                                    $scope.isFilterLoading = false;
                                 }
                             }, 1000);
                         }
                     } else{
                         var index = $scope.selectedAttributes.indexOf(entry.name);
                         if( index > -1 ){
+                            $scope.isFilterLoading = false;
                             $scope.selectedAttributes.splice(index,1);
                             for (var i=0;i<$scope.fieldObjects.length;i++){
                                 if ($scope.fieldObjects[i].name == entry.name){

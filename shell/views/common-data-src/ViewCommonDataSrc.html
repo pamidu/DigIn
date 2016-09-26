@@ -349,31 +349,36 @@
     </md-toolbar>
     <md-content layout-padding style="overflow-x: hidden;max-height: 100%;overflow: hidden;" layout="row">
         <div flex="50" style="    overflow: scroll;max-height: 90vh;">
-        <v-accordion id="accordionMenu" class="vAccordion--default" control="accordionA" multiple>
-            <v-pane class="v-pane" ng-repeat="row in fieldObjects">
-                <v-pane-header>
-                    <h5 class="font-weight-300 text-upper">{{ ::row.name }}</h5>
-                </v-pane-header>
-                <v-pane-content class="trans-bg v-pane-content">
-                     <div class="bigcheck">
-                        <label class="filter-label display-inline-block"> 
-                            All
-                            <input type="checkbox" class="bigcheck" checked id="{{row.id}}" ng-click="commonUi.checkAll(row.name,$index,row.id)"/>
-                            <span class="bigcheck-target pull-right"></span>
-                        </label>
-                    </div>                    
-                    <ul ng-repeat="field in row.valueArray" class="cutom-filter-ul" style="overflow: hidden;">
-                        <div class="bigcheck">
-                            <label class="filter-label" >
-                                {{ ::field.value }}
-                                <input type="checkbox" class="bigcheck" checked id="{{row.id}}-{{field.id}}" ng-click="commonUi.changeStatus(row.name,$index,row.id)"/>
+            <div class="digin-cmds-loading" ng-show="isFilterLoading">
+                <svg class="circular-loader" height="50" width="50">
+                    <circle class="path" cx="25" cy="25.2" r="19.9" fill="none" stroke-width="6" stroke-miterlimit="10"/>
+                </svg>
+            </div>        
+            <v-accordion id="accordionMenu" class="vAccordion--default" control="accordionA" multiple ng-hide="isFilterLoading">
+                <v-pane class="v-pane" ng-repeat="row in fieldObjects">
+                    <v-pane-header>
+                        <h5 class="font-weight-300 text-upper">{{ ::row.name }}</h5>
+                    </v-pane-header>
+                    <v-pane-content class="trans-bg v-pane-content">
+                         <div class="bigcheck">
+                            <label class="filter-label display-inline-block"> 
+                                All
+                                <input type="checkbox" class="bigcheck" checked id="{{row.id}}" ng-click="commonUi.checkAll(row.name,$index,row.id)"/>
                                 <span class="bigcheck-target pull-right"></span>
                             </label>
-                        </div>
-                    </ul>                       
-                </v-pane-content>
-            </v-pane>                       
-        </v-accordion>
+                        </div>                    
+                        <ul ng-repeat="field in row.valueArray" class="cutom-filter-ul" style="overflow: hidden;">
+                            <div class="bigcheck">
+                                <label class="filter-label" >
+                                    {{ ::field.value }}
+                                    <input type="checkbox" class="bigcheck" checked id="{{row.id}}-{{field.id}}" ng-click="commonUi.changeStatus(row.name,$index,row.id)"/>
+                                    <span class="bigcheck-target pull-right"></span>
+                                </label>
+                            </div>
+                        </ul>                       
+                    </v-pane-content>
+                </v-pane>                       
+            </v-accordion>
         </div>
         <!-- <div flex="50"></div> -->
     </md-content>

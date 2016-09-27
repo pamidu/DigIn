@@ -1405,8 +1405,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             }
         };
         $scope.$watch("forecastObj.paramObj", function(newValue, oldValue) {
-            var seasonOK = $scope.isSeasonOk(newValue)
-            if (newValue !== oldValue && ( (new Date(newValue.enddate) > new Date(newValue.startdate)) || ( newValue.enddate == $scope.widget.widgetData.foreCastObjDate && newValue.startdate == $scope.widget.widgetData.foreCastObjDate ) || newValue.showActual != oldValue.showActual ) && seasonOK) {
+            
+            if (newValue !== oldValue && ( (new Date(newValue.enddate) > new Date(newValue.startdate)) || ( newValue.enddate == $scope.widget.widgetData.foreCastObjDate && newValue.startdate == $scope.widget.widgetData.foreCastObjDate ) || newValue.showActual != oldValue.showActual )) {
                 if (!(newValue.mod != oldValue.mod || newValue.date_field != oldValue.date_field || newValue.f_field != oldValue.f_field || newValue.alpha != oldValue.alpha || newValue.beta != oldValue.beta || newValue.gamma != oldValue.gamma)) {
                     switch (newValue.model) {
                         case "double exponential smoothing":
@@ -1422,12 +1422,17 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                             $scope.forecastObj.paramObj.mod = 'triple_exp';
                             break;
                     }
-                    $scope.generateForecast(newValue);
+
+                    var seasonOK = $scope.isSeasonOk(newValue)
+                    if(seasonOK){
+                     $scope.generateForecast(newValue);
+                    }
+                    else{
+                        privateFun.fireMessage('0', 'Invalid seasonality');
+                    }
                 }
             }else if(newValue !== oldValue && !(new Date(newValue.enddate) > new Date(newValue.startdate))){
                  privateFun.fireMessage('0', 'Invalid start date and end date');
-            }else if(newValue !== oldValue && !seasonOK){
-                privateFun.fireMessage('0', 'Invalid seasonality');
             }
         }, true);
 
@@ -1518,14 +1523,19 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             var monts= (diff.getUTCMonth()); 
             var days =(diff.getUTCDate()); 
 
-            if (newValue.interval == "Yearly") {
-                isSeasonOk = $scope.getModulas(years,newValue.len_season);
-            }
-            else if (newValue.interval == "Monthly") {
-                 isSeasonOk = $scope.getModulas(monts,newValue.len_season);
-            }
-            else if (newValue.interval == "Daily") {
-                 isSeasonOk = $scope.getModulas(days,newValue.len_season);
+            var a = startdate.getTime();
+            var b =  enddate.getTime();
+
+            if(startdate.getTime() !== enddate.getTime()){
+                if (newValue.interval == "Yearly") {
+                    isSeasonOk = $scope.getModulas(years,newValue.len_season);
+                }
+                else if (newValue.interval == "Monthly") {
+                     isSeasonOk = $scope.getModulas(monts,newValue.len_season);
+                }
+                else if (newValue.interval == "Daily") {
+                     isSeasonOk = $scope.getModulas(days,newValue.len_season);
+                }
             }
 
             return isSeasonOk;

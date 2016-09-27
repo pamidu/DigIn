@@ -45,8 +45,8 @@ routerApp.controller('showWidgetCtrl', function($scope, $mdDialog, widget) {
     };
 
 });
-routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce','sales_distribution',
-    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce, sales_distribution) {
+routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce','sales_distribution', 'notifications',
+    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce, sales_distribution, notifications) {
 
         //code to keep widget fixed on pivot summary drag events
         $('#content1').on('mousedown', function(e) {
@@ -411,6 +411,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 })
                 .then(function() {});
         };
+
         // Methods for filter functionality
         // load the parameters for filtering 
         $scope.loadFilterParams = function(index,id,widget) {
@@ -465,10 +466,12 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 }
             });
         };
+
         //assign the selected filter options to a scope variable
         $scope.onClickFilterButton = function(widget){
             $scope.widgetFilters = widget.widgetData.commonSrc.filter;
         };
+
         //Method that is called when the fields are selected for filtering
         //Select if un-selected and vice versa
         $scope.onClickFilterField = function(name,value,widget){
@@ -513,6 +516,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 }
             })
         };
+
         // Regenerate the chart when the filter us applied
         $scope.buildChart = function(widget) {
             var tempFilterArray = [];
@@ -520,31 +524,33 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             var tempStr = "";
             var requestArray = [];
             var cat = "";
-            angular.forEach($scope.widgetFilters,function(filter){
-                tempFilterArray = [];
-                tempStr = "";
-                angular.forEach(filter.values,function(key){
-                    if(key.status){
-                        if (typeof key.value == 'number'){
-                            tempFilterArray.push(key.value);
-                        } else{
-                            tempFilterArray.push( "'" + key.value + "'");
-                        }
-                    }
-                })
-                if(tempFilterArray.length > 0) {
-                    tempFilterArray.toString();
-                    tempStr = filter.filter.name + " in ( " + tempFilterArray + " )";
-                    filterArray.push(tempStr);
-                }
-            })
+
+            //map the selected filter fields
+            filterArray = filterService.generateFilterParameters($scope.widgetFilters);
+
             if (filterArray.length > 0){
                 var filterStr = filterArray.join( ' And ');
+            } else { // validation if no fields are selected and tried to filter
+                notifications.toast('0', 'Please select fields to apply filters!');
+                return;
             }
-            requestArray[0] = widget.widgetData.commonSrc.att[0].filedName;
+
+            //if chart is configured for drilled down, get the highest level to apply filters
+            if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled){
+                var chart = widget.widgetData.highchartsNG.getHighcharts();
+                if ( chart.options.customVar == widget.widgetData.widData.drillConf.highestLvl ) {
+                    requestArray[0] = chart.options.customVar;                    
+                } else {
+                    notifications.toast('0', 'Please go to level 1 to apply filters!');
+                    return;
+                }
+            } else{
+                requestArray[0] = widget.widgetData.commonSrc.att[0].filedName;                
+            }
+
             console.log(filterStr);
-                widget.widgetData.syncState = false;
-                $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, function(res, status, query) {
+            widget.widgetData.syncState = false;
+            $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, function(res, status, query) {
                 if (status) {
                     var color = [];
                     var name = [];                    
@@ -565,10 +571,11 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         $scope.$apply();
                     }
                 } else {
-                    fireMsg('0','Error Occured!Please try again!')
+                    notifications.toast('0', 'Error Occured!Please try again!');
                 }
             },requestArray,filterStr);            
         };
+
         //when all checkbox is clicked
         $scope.onCLickAll = function(widgetId,name,filterId){
             var id = '#' + widgetId + "-" + name + "-" + filterId;
@@ -593,6 +600,22 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     })                    
                 }
             })                
+        };
+
+        //clear filters
+        $scope.clearFilter = function(widget) {
+            //if chart is configured for drilled down, get the highest level to apply filters
+            if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled) {
+                var chart = widget.widgetData.highchartsNG.getHighcharts();
+                if ( chart.options.customVar == widget.widgetData.widData.drillConf.highestLvl ) {
+                    $scope.syncWidget(widget);
+                } else {
+                    notifications.toast('0', 'Please go to level 1 to remove filters!');
+                    return;
+                }
+            } else{
+                $scope.syncWidget(widget);
+            }           
         };
 
         // filter methods end
@@ -628,8 +651,9 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 });
             } else if (typeof(widget.widgetData.commonSrc) != "undefined") {
                 widget.widgetData.syncState = false;
+                //If the widget has filters, clear the selections
+                widget.widgetData.filteredState = false;                
                 $qbuilder.sync(widget.widgetData, function(data) {
-                    //If the widget has filters, clear the selections
                     filterService.clearFilters(widget);
                     widget.widgetData.syncState = true;
                     widget = data;
@@ -852,6 +876,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 drillObj = {},
                                 isLastLevel = false;
                                 selectedSeries = e.point.series.name;
+                                filterStr = "";
                             // var cat = [];
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
@@ -862,7 +887,15 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             chart.options.lang.drillUpText = " Back to " + highestLvl;
                             // Show the loading label
                             chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
+                            filterArray = filterService.generateFilterParameters(widget.widgetData.commonSrc.filter);
 
+                            if (filterArray.length > 0) {
+                                filterStr = filterArray.join( ' And ');
+                                filterStr += ' And ' + highestLvl + "='" + clickedPoint + "'";
+                            } else {
+                                filterStr = highestLvl + "='" + clickedPoint + "'";
+                            }
+                            console.log(filterStr);
                             //aggregate method
                             clientObj.getAggData(srcTbl, fields, function(res, status, query) {
                                 filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
@@ -904,11 +937,8 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                             });
                                         }
                                     });
-                                    // for (var i=0;i<drillObj.length;i++){
-                                    //     cat.push(drillObj[i].name);
-                                    // }
+
                                     chart.addSeriesAsDrilldown(e.point, drillObj);
-                                    // chart.xAxis[0].setCategories(cat);
 
                                 } else {
                                     alert('request failed due to :' + JSON.stringify(res));
@@ -923,7 +953,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 };                                
                                 chart.options.customVar = nextLevel;
                                 chart.hideLoading();
-                            }, nextLevel, highestLvl + "='" + clickedPoint + "'");
+                            }, nextLevel, filterStr);
                         }
                     },
                     drillup: function(e) {

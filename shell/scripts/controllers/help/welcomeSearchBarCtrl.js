@@ -96,11 +96,12 @@ routerApp.controller('welcomeSearchBarCtl', function ($scope, $rootScope, $http,
                         var widget = $rootScope.dashboard.pages[index].widgets[i];
                         console.log('syncing...');
                         if (typeof(widget.widgetData.commonSrc) != "undefined") {
-                            widget.widgetData.syncState = false;                       
+                            widget.widgetData.syncState = false;
                             if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
+                                //Clear the filter indication when the chart is re-set
+                                widget.widgetData.filteredState = false;
+                                filterService.clearFilters(widget);                                
                                 $qbuilder.sync(widget.widgetData, function (data) {
-                                    //Clear the filter indication when the chart is re-set
-                                    filterService.clearFilters(widget);
                                     // if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
                                     //     $qbuilder.widInit();
                                     //widget.widgetData.syncState = true;

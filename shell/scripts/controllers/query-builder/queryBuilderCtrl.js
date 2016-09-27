@@ -1524,11 +1524,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
             var diff = new Date(enddate - startdate);
 
             var years = (diff.getUTCFullYear() - 1970); 
-            var monts= (diff.getUTCMonth()); 
-            var days =(diff.getUTCDate()); 
-
-            var a = startdate.getTime();
-            var b =  enddate.getTime();
+            var monts= (diff.getUTCMonth()) + (12*years); 
+            var days =(diff.getUTCDate()) +(365*years); 
 
             if(startdate.getTime() !== enddate.getTime()){
                 if (newValue.interval == "Yearly") {
@@ -1735,7 +1732,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $rootScope, $location,
                     $scope.eventHndler.isLoadingChart = false;
                     $rootScope.tempForecastArr = angular.copy($scope.widget.widgetData.highchartsNG);
                 } else {
-                    privateFun.fireMessage('0', 'Error occurred while performing this operation');
+                    privateFun.fireMessage('0', data);
                     $scope.eventHndler.isLoadingChart = false;
                 }
             });

@@ -179,6 +179,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                     $scope.goHome = function () {
 
+                        $rootScope.currentView = "Home";
                         $mdDialog.cancel();
                         $state.go('home.welcomeSearch');
                         $scope.createuuid = function () {
@@ -484,6 +485,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //On click report Event
         $scope.goReport = function (report) {
             // --- Add by Gevindu on 5/23/2016 - DUODIGIN-509
+             $rootScope.currentView =report;
             layoutManager.headerMenuToggle(true);
             $scope.openSearchBar(); 
             $mdSidenav('right')
@@ -656,6 +658,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             
 
                             $state.go('home.Dashboards');
+                            //$rootScope.currentView = dashboard.dashboardName;
                         }
                         else {
 

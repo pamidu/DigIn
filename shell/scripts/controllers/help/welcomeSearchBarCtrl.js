@@ -63,6 +63,7 @@ routerApp.controller('welcomeSearchBarCtl', function ($scope, $rootScope, $http,
     //go dashboard
     $scope.goReport = function (report) {
         $state.go('home.DynamicallyReportBuilder', {'reportNme': report});
+        $rootScope.currentView =report;
     }
 
     $scope.goDashboard = function (dashboard) {

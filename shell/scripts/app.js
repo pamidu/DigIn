@@ -9,35 +9,25 @@ var routerApp = angular.module('DuoDiginRt', [
     '720kb.socialshare',
     'ngStorage',
     'configuration',
-    'directivelibrary',
-    'ngMdIcons',
-    'FBAngular',
-    'gridster',
+    'directivelibrary',       
     'ui.calendar',
     'mgcrea.ngStrap',
+     'ngSanitize',
     'ui',
-    'ngImgCrop',
-    'lk-google-picker',
-    'angularUtils.directives.dirPagination',
-    'ngSanitize',
-    'ngCsv',
-    'angular-intro',
-    'uiGmapgoogle-maps',
+    'ngImgCrop',      
+    'angularUtils.directives.dirPagination',  
     'googleplus',
-    'angular-table',
-    'ngToast',
+    'angular-table',   
     'vAccordion',
     'ngMessages',
-    'ngFileUpload',
-    "com.2fdevs.videogular",
-    "com.2fdevs.videogular.plugins.controls",
-    "info.vietnamcode.nampnq.videogular.plugins.youtube",
-    "ngTagsInput",
+    'ngFileUpload', 
+   'ngToast',   
     'pouchdb',
+      'FBAngular',
     'jkuri.slimscroll'
 ]);
 
-routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
+routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
 
     $httpProvider.defaults.headers.post['Content-Type'] = 'multipart/form-data';
     $httpProvider.defaults.useXDomain = true;
@@ -368,11 +358,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         }
     });
 
-    lkGoogleSettingsProvider.configure({
-        apiKey: 'AIzaSyA9fv9lYQdt1XV6wooFtItxYlMF8Y9t1ao',
-        clientId: '468951747947-jb7obcgd91m7379q4nn7vroid8g37ds0.apps.googleusercontent.com',
-        scope: ['https://www.googleapis.com/auth/drive']
-    });
+
 
     var customPrimary = {
         '50': '#10cefd', '100': '#02c2f2', '200': '#02aed9', '300': '#019ac0',

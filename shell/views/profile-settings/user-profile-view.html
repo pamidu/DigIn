@@ -52,7 +52,7 @@
 						<!-- <img src="styles/css/images/signup-user.png" style="cursor:pointer;	width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()">
  -->
 
-						 <img src="{{profile_pic}}" class="img-circle" style="cursor:pointer;	width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()">
+						 <img src="{{profile_pic}}" class="img-circle" style="cursor:pointer;	width: 150px;outline:none;"  ng-click="profile.uploadProfilePicture()">
 
 						<!-- <div ng-show="selectProfile">  
 			                <div align="center">
@@ -75,7 +75,7 @@
 
                <form name="frmProfile" autocomplete="off" ng-submit="profile.changeUserProfile()">
 					<div layout="row" layout-align="start start">
-						<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Public details</div>
+						<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Public Details</div>
 					</div>
 					<div layout="row" style="padding:0px 10px 0px 10px">
 						<div flex>
@@ -83,18 +83,35 @@
 							<input type="text"
 								   id="txtName"
 								   ng-model="user.name"
+								   name="txtName"
 								   ng-disabled="editModeOn"
-								   class="form-control">
+								   class="form-control"
+								   ng-pattern="/^[a-zA-Z0-9]*$/"  ng-required="true" required ng-trim="true">
+								   
+								   <div ng-messages="frmProfile.txtName.$error" role="alert">
+										<div ng-message="required" style="color:red">
+											User name is required.
+										</div>
+								  </div>
 						</div>
+						
 						<div flex style="padding-left: 5px;">
 							<label>Company </label>
 							<input type="text"
 								   id="txtCompany"
+								   name="txtCompany"
 								   ng-model="user.company"
 								   ng-disabled="editModeOn"
-								   class="form-control">
+								   class="form-control"
+								   ng-pattern="/^\S*$/"  ng-required="true" required ng-trim="true">
+								   
+								   <div ng-messages="frmProfile.txtCompany.$error" role="alert">
+										<div ng-message="required" style="color:red" >
+											Company name is required.
+										</div>
+								  </div>
 						</div>
-						
+				
 					</div>
 
 					<div layout="row" style="padding:0px 10px 0px 10px">
@@ -107,12 +124,20 @@
 								   class="form-control" readonly>
 						</div>
 						<div flex="40" style="padding-left: 5px;">
-							<label>Contact no </label>
+							<label>Contact No </label>
 							<input type="text"
 								   id="txtContactNo"
+								   name="txtContactNo"
 								   ng-model="user.contactNo"
 								   ng-disabled="editModeOn"
-								   class="form-control">
+								   class="form-control"
+								   valid-number ng-required="true" required ng-trim="true">
+								   
+								   <div ng-messages="frmProfile.txtContactNo.$error" role="alert">
+										<div ng-message="required" style="color:red" >
+											Contact number is required.
+										</div>
+								  </div>
 						</div>
 					</div>
 					<!-- address details -->
@@ -127,27 +152,39 @@
 						</div>
 						<div flex="40" style="padding-left: 5px;">
 							<label>Country</label>
-							<input type="text"
+							<!--input type="text"
 								   id="txtCountry"
 								   ng-model="user.country"
 								   ng-disabled="editModeOn"
-								   class="form-control">
+								   class="form-control"-->
+								   
+
+								<select  id="txtCountry" ng-model="user.country" ng-options="Country.name for Country in allCountries" ng-disabled="editModeOn" class="form-control">
+									 <option id="coutnry" ng-selected="true" selected>{{user.country}}</option>
+								</select>   
+								
+								   				   
+								   
 						</div>
+
+						
+					
 						<div flex="20" style="padding-left: 5px;">
-							<label>ZIP code</label>
+							<label>ZIP Code</label>
 							<input type="text"
 								   id="txtZip"
 								   ng-model="user.zip"
 								   ng-disabled="editModeOn"
 								   class="form-control">
 						</div>
-					</div>                   
+					</div>     
+					
 					<div layout="row" layout-align="center center">
 						<div ng-click="profile.clickEdit()" type="button" class="blut-edit-btn" style="margin:10px 10px 10px 10px" ng-if="editModeOn == true">
-							Edit profile
+							Edit Profile
 						</div>
 						<button type="submit" class="blut-edit-btn" style="margin:10px 10px 10px 10px" ng-if="editModeOn == false">
-							Save changes
+							Save Changes
 						</button>
 					</div>
             	</form>

@@ -235,54 +235,50 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                 switch($rootScope.widget.widgetData.uniqueType){
 
                 case "Dynamic Visuals":
+                    $scope.fieldData = [];
+                    if ($rootScope.widget.widgetData.highchartsNG.xAxis.title.text !== undefined){
+                        $scope.fieldData[0] = $rootScope.widget.widgetData.highchartsNG.xAxis.title.text;
+                    } else{
+                        $scope.fieldData[0] = "label"
+                    }
+                    $scope.serObj = angular.copy($rootScope.widget.widgetData.highchartsNG.series);
+                    angular.forEach($scope.serObj,function(series) {
+                        $scope.fieldData.push(series.name);
+                        angular.forEach(series.data,function(data){
+                            var tempY = data.y;
+                            var tempName = data.name;
+                            delete data.y;
+                            delete data.name;
+                            delete series.color;
+                            delete series.id;
+                            delete series.origName;
+                            data[series.name] = tempY;
+                            data[$scope.fieldData[0]] = tempName;
+                        });
+                        delete series.name;
+                    });
+                    var temp = {};
+                    for (var i=0; i<$scope.serObj.length-1;i++){
+                        angular.merge($scope.serObj[i+1].data,$scope.serObj[i].data, $scope.serObj[i+1].data);
+                    }
+                    var data = $scope.serObj[$scope.serObj.length-1].data;
 
-                    if($rootScope.widget.widgetData.widData.drilled){//drilled
+                    var newTableData = [];
+                    for(var i = 0; i < data.length; i++){                
+                        var newObject = {};
+                        newObject["id"] = i;
+                        for(var j = 0; j < $scope.fieldData.length; j++){
+                            if (typeof data[i][$scope.fieldData[j]] == 'number'){
+                                newObject[$scope.fieldData[j]] = (Math.round( data[i][$scope.fieldData[j]] * 100 ) / 100 );
+                            } else{
+                                newObject[$scope.fieldData[j]] = data[i][$scope.fieldData[j]];
+                            }
+                        }
+                        newTableData.push(newObject);
+                    }
+                    $scope.tableData = newTableData;
+                    $scope.originalList = newTableData;
 
-                        query = publicFun.getDrilledLevel();
-                    }
-                    else{
-                        query = $rootScope.widget.widgetData.commonSrc.query;
-                    }
-                    
-                    $scope.client = $diginengine.getClient($rootScope.widget.widgetData.commonSrc.src.src);
-
-                    if( $localStorage.tableData === null || 
-                        $localStorage.tableData == undefined ||
-                        $localStorage.query != query || 
-                        $localStorage.query == undefined ){
-                        console.log("$rootScope.widget", $rootScope.widget);
-                            $scope.client.getExecQuery(query, function(data, status){
-                                
-                                $scope.fieldData = [];
-                                for(var key in data[0]){
-                                    $scope.fieldData.push(key);
-                                }
-                                var newTableData = [];
-                                for(var i = 0; i < data.length; i++){
-                                    
-                                    var newObject = {};
-                                    newObject["id"] = i;
-                                    for(var j = 0; j < $scope.fieldData.length; j++){
-                                        console.log()
-                                        newObject[$scope.fieldData[j]] = data[i][$scope.fieldData[j]];
-                                    }
-                                    newTableData.push(newObject);
-                                }
-                                
-                                $scope.tableData = newTableData;
-                                $scope.originalList = newTableData;
-                                //save in $localStorage
-                                $localStorage.tableData = newTableData;
-                                $localStorage.originalList = newTableData;
-                                $localStorage.fieldData = $scope.fieldData;
-                                $localStorage.query = query;
-                            });
-                    }
-                    else{   //retrieve from $localStorage
-                            $scope.tableData = $localStorage.tableData;
-                            $scope.originalList = $localStorage.originalList;
-                            $scope.fieldData = $localStorage.fieldData;
-                    }
                 break;
                 case "Google Maps Branches":  
                 break;
@@ -301,7 +297,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                             newObject[$scope.fieldData[b]] = $rootScope.widget.widgetData.widData.summary[i][field];
                         }
                         newTableData.push(newObject);
-                        
+
                    }
                    $scope.tableData = newTableData;
                    $scope.originalList = newTableData;

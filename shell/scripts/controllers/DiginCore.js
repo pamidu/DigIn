@@ -981,7 +981,21 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 text: 'values'
                             };
                         }
-                    }
+                    },
+                    beforePrint: function() {
+                        this.setTitle({
+                            text: this.options.exporting.chartOptions.title.text
+                        })
+                        this.heightPrev = this.chartHeight;
+                        this.widthPrev = this.chartWidth;
+                        this.setSize(800,600, false);
+                    },
+                        afterPrint: function() {
+                            this.setTitle({
+                                text: null
+                            })
+                            this.setSize(this.widthPrev,this.heightPrev, true);                                       
+                    }                      
                 }
             }
         };

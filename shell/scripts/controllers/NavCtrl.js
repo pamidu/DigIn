@@ -179,6 +179,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                     $scope.goHome = function () {
 
+                        $rootScope.currentView = "Home";
                         $mdDialog.cancel();
                         $state.go('home.welcomeSearch');
                         $scope.createuuid = function () {
@@ -484,6 +485,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //On click report Event
         $scope.goReport = function (report) {
             // --- Add by Gevindu on 5/23/2016 - DUODIGIN-509
+             $rootScope.currentView =report;
             layoutManager.headerMenuToggle(true);
             $scope.openSearchBar(); 
             $mdSidenav('right')
@@ -656,6 +658,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             
 
                             $state.go('home.Dashboards');
+                            //$rootScope.currentView = dashboard.dashboardName;
                         }
                         else {
 
@@ -1038,17 +1041,17 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $scope.goHomeDialog(ev);
                     break;
                 case "Add Page":
-                    $scope.currentView = "Dashboard";
+                    $rootScope.currentView = "Dashboard";
                     $scope.showAddNewPage(ev);
                     $state.go('home.Dashboards');
                     break;
                 case "Social Media Analytics":
-                    $scope.currentView = "Social Analysis";
+                    $rootScope.currentView = "Social Analysis";
                     $scope.showAddSocialAnalysis(ev);
                     break;
                 case "Add Widgets":
                     if (pageWidgetCount < widgetLimit) {
-                        $scope.currentView = "Dashboard";
+                        $rootScope.currentView = "Dashboard";
                         $scope.showAddNewWidgets(ev);
                         $state.go("home.Dashboards");
                     }
@@ -1114,15 +1117,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $scope.openTheme();
                     break;
                 case "Share":
-                    $scope.currentView = "Share";
+                    $rootScope.currentView = "Share";
                     $scope.Share();
                     break;
                 case "Export":
-                    $scope.currentView = "Export";
+                    $rootScope.currentView = "Export";
                     $scope.Export();
                     break;
                 case "Help":
-                    $scope.currentView = "Help";
+                    $rootScope.currentView = "Help";
                     //user guide
                     setTimeout(function () {
                         var intro;
@@ -1147,11 +1150,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     }
                     break;
                 case "Settings":
-                    $scope.currentView = "Settings";
+                    $rootScope.currentView = "Settings";
                     // $state.go('home.Settings');
                     break;
                 case "TV Mode":
-                    $scope.currentView = "TV Mode";
+                    $rootScope.currentView = "TV Mode";
                     if (Fullscreen.isEnabled()) Fullscreen.cancel();
                     else Fullscreen.all();
                     break;
@@ -1260,7 +1263,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }).then(function (homeState) {
                 if (homeState) {
                     $scope.showTabs(true);
-                    $scope.currentView = "Home";
+                    $rootScope.currentView = "Home";
                     $state.go('home');
                 }
             });

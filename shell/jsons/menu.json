@@ -37,12 +37,6 @@
       "menuName":"Social Media"
     },
     {
-      "title": "Share",
-      "icon2": "icon-share",
-      "type": "sub-menu",
-      "menuName":"Share"
-    },
-    {
       "title": "Settings",
       "icon2": "icon-settings",
       "type": "sub-menu",

@@ -3000,8 +3000,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             this.setSize(this.widthPrev, this.heightPrev, true);
                         }
                     };
-                    $scope.isPendingRequest = false;
-                    $scope.eventHndler.isLoadingChart = false;
+                    $scope.$apply(function(){
+                        $scope.isPendingRequest = false;
+                        $scope.eventHndler.isLoadingChart = false;
+                    });
                 }, highestLevel);
             } else {
                 privateFun.fireMessage('0', res);

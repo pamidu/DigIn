@@ -379,7 +379,17 @@
 <script type="text/javascript"  src="http://code.highcharts.com/mapdata/custom/europe.js"></script>
 <script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/north-america.js"></script>
 <script type="text/javascript"  src="http://code.highcharts.com/mapdata/custom/south-america.js"></script>
-
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/id/id-all.js"></script>
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/al/al-all.js"></script>
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/dz/dz-all.js"></script>
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/as/as-all.js"></script>
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/ad/ad-all.js"></script>
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/ao/ao-all.js"></script>
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/ag/ag-all.js"></script>
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/am/am-all.js"></script>
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/au/au-all.js"></script>
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/at/at-all.js"></script>
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/az/az-all.js"></script>
 <script type="text/javascript" src="bower_components/google-map/angular-simple-logger.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-maps/2.3.3/angular-google-maps.min.js"></script>
 <!-- marker clusterer -->

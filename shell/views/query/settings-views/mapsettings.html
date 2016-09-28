@@ -18,22 +18,22 @@ ng-color-picker li.selected {
 <md-switch ng-model="isDrilled" ng-change="toggleDrilled(isDrilled)" aria-label="Switch 1">
     Drilled: {{ isDrilled }}
 </md-switch>
-<div>
-    <h4>Select Map Type:</h3>
+<div  ng-init="getCountries()">
+    <h5>Map Type:</h5>
     <div layout="row">
-   <md-input-container>
+   <md-input-container flex="60">
         <label>Select Map Type:</label>
         <md-select ng-model="mapconfig.mapType">
             <md-option ng-repeat="d in mapTypes" value="{{d.name}}">
                 {{d.name}}
             </md-option>
         </md-select>
-    </md-input-container>
+    </md-input-container flex="40">
        <md-input-container ng-show="mapconfig.mapType == 'Country'">
         <label>Select Country:</label>
         <md-select ng-model="mapconfig.selectedCountry">
-            <md-option ng-repeat="d in countries" value="{{d.key}}">
-                {{d.code}}
+            <md-option ng-repeat="d in countries" value="{{d.code}}">
+                {{d.name}}
             </md-option>
         </md-select>
     </md-input-container>

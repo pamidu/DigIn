@@ -1007,7 +1007,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 }
             }, openExcelFileUpload: function(ev) {
 				
-					console.log("upload excel");
+					$mdSidenav('right').close();
 					$state.go("home.excelFileUpload")
             }
         };

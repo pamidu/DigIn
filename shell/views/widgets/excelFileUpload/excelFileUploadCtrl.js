@@ -1,4 +1,4 @@
-routerApp.controller('excelFileUploadCtrl',[ '$scope','$mdDialog', '$http','notifications',function ($scope,$mdDialog, $http, notifications){
+routerApp.controller('excelFileUploadCtrl',[ '$scope','$mdDialog', '$state' ,'$http','notifications','$mdSidenav',function ($scope,$mdDialog, $state ,$http, notifications,$mdSidenav){
 		
 	var vm = this;
 	vm.files = []; //Files imported array
@@ -232,6 +232,12 @@ routerApp.controller('excelFileUploadCtrl',[ '$scope','$mdDialog', '$http','noti
 			notifications.toast(0,"There are no files to be uploaded.");
 		}
 	}	
+	
+	vm.goToDashboard = function()
+	{
+		$state.go("home.Dashboards");
+		$mdSidenav('right').toggle();
+	}
 	
 }])
 

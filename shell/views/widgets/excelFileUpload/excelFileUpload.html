@@ -207,7 +207,7 @@ input:disabled {
                                 <form name="step2">
                                     <md-card class="form-container">
                                         <div layout="column" layout-align="center center" style="min-height: 200px">
-                                            <h4>{{vm.files.length}} Files were successfully uploaded</h4>
+                                            <h4>{{vm.files.length}}<span ng-show="vm.files.length > 1"> Files were</span> <span ng-show="vm.files.length == 1"> File was</span> successfully uploaded</h4>
                                             <md-button class="md-primary md-raised next-btn" ng-click="vm.goToDashboard()">Finish</md-button>
                                         </div>
                                     </md-card><br/>

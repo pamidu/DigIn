@@ -37,6 +37,12 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		controller: 'userSettingsCtrl'
 	})
 	
+	.state('myAccount', {
+		url: '/myAccount',
+		templateUrl: 'views/settings/myAccount/myAccount.html',
+		controller: 'myAccountCtrl'
+	})
+	
 	.state('accountSettings', {
 		url: '/accountSettings',
 		templateUrl: 'views/settings/accountSettings/accountSettings.html',

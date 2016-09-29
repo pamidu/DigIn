@@ -77,6 +77,7 @@
     <link rel="stylesheet" href="bower_components/v-accordion/v-accordion.min.css" type='text/css'/>
     <link rel="stylesheet" href="styles/css/customer-1.0.css" type='text/css'/>
     <link rel="stylesheet" href="styles/css/socialMedFb.css" type="text/css"/>
+	<link rel="stylesheet" href="styles/css/md-steppers.css" type="text/css"/>
     <link href='https://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
@@ -312,6 +313,11 @@
 <!-- charts -->
 <script src="scripts/charts/treemap.js"></script>
 <script src="scripts/controllers/prediction/prediction.js"></script>
+
+<!--feature wise excelUpload-->
+<script src="views/widgets/excelFileUpload/excelFileUploadCtrl.js"></script>
+
+
 <script src="scripts/charts/d3Force.js"></script>
 
 <script src="scripts/charts/streamgraph.js"></script>
@@ -354,6 +360,9 @@
 <script type="text/javascript" src="bower_components/FileSaver/FileSaver.js"></script>
 <!-- mdchip -->
 <script type="text/javascript" src="bower_components/mdchips/md-chips-select.js"></script>
+
+<!-- md-steppers-->
+<script type="text/javascript" src="scripts/md-steppers.js"></script>
 
 <!-- zeroclipboard -->
 <script type="text/javascript"
@@ -415,6 +424,7 @@
 <!-- linq for quering in elastic widget -->
 <script type="text/javascript" src="scripts/vendor/linq/linq.js"></script>
 <script type="text/javascript" src="bower_components/angular-utils-pagination/dirPagination.js"></script>
+
 <script>
     var script = '<script type="text/javascript" src="src/markerclusterer';
     if (document.location.search.indexOf('compiled') !== -1) {

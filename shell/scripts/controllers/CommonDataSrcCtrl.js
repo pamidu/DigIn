@@ -1005,6 +1005,10 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     default:
                         break;
                 }
+            }, openExcelFileUpload: function(ev) {
+				
+					console.log("upload excel");
+					$state.go("home.excelFileUpload")
             }
         };
         $scope.commonUi = commonUi;

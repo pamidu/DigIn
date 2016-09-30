@@ -576,6 +576,7 @@ routerApp
                         };
                     },
 
+					
                     dataClear: function () {
                         signUpUsr.firstName = '';
                         signUpUsr.lastName = '';
@@ -583,6 +584,14 @@ routerApp
                         signUpUsr.pwd = '';
                         signUpUsr.cnfrPwd = '';
                         $scope.freeze=false;
+						
+						localStorage.setItem('termsNconditions',false);
+						localStorage.setItem('fname',"");
+						localStorage.setItem('lname',"");
+						localStorage.setItem('email',"");
+						localStorage.setItem('fpw',"");
+						localStorage.setItem('spw',"");
+						
                     },
 
                     validateEmail: function (email) {

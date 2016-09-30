@@ -127,7 +127,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             TenantID = TenantID.replace('.', "");
             TenantID = TenantID.replace('.', "");
 
-            TenantID ="testa5"; //*only for testing.. remove after testing         
+            //TenantID ="testa5"; //*only for testing.. remove after testing         
             //tenant.name, tenant.company,tenant.type,tenant.accessLevel,tenant.businessModel
             var companyDetail= $rootScope.companyDetail;
             

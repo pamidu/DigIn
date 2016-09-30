@@ -1,4 +1,4 @@
-routerApp.controller('excelFileUploadCtrl',[ '$scope','$mdDialog', '$state' ,'$http','notifications','$mdSidenav',function ($scope,$mdDialog, $state ,$http, notifications,$mdSidenav){
+routerApp.controller('excelFileUploadCtrl',[ '$scope','$mdDialog', '$state' ,'$http','notifications','$mdSidenav','Digin_Domain','Upload','Digin_Engine_API',function ($scope,$mdDialog, $state ,$http, notifications,$mdSidenav,Digin_Domain,Upload,Digin_Engine_API){
 		
 	var vm = this;
 	vm.files = []; //Files imported array
@@ -15,6 +15,12 @@ routerApp.controller('excelFileUploadCtrl',[ '$scope','$mdDialog', '$state' ,'$h
 			vm.files.push(file);
 			$scope.$apply();
 		}
+		 /*var fr = new FileReader();
+			fr.onload = function(e) {
+			    console.log(e.target.result);
+			};
+			fr.readAsText(e.target.files[0]);
+			*/
 
 	}
 	
@@ -177,7 +183,8 @@ routerApp.controller('excelFileUploadCtrl',[ '$scope','$mdDialog', '$state' ,'$h
 		});
 	
     }
-	
+		
+
 	vm.upload = function(e, stepData)
 	{
 		vm.currentStep = stepData.step -1;
@@ -189,10 +196,22 @@ routerApp.controller('excelFileUploadCtrl',[ '$scope','$mdDialog', '$state' ,'$h
 			var iterator = new AsyncIterator(vm.files, 2);
 			
 			iterator.onProcessOne(function(item, controller){
+
+				var subObj = {
+					db: "bigquery",
+				 	SecurityToken: getCookie('securityToken'),
+	                Domain: Digin_Domain,
+	                file: item,
+	                other_data: { "file_type":"datasource",  "folder_name": "Test"}
+            	};
+
 				$http({
-					url: "views/widgets/excelFileUpload/test.php",
+					//url: "views/widgets/excelFileUpload/test.php",
+					url: Digin_Engine_API + 'file_upload',
+					//url: 'http://192.168.2.61:8080/file_upload',
 					method: 'POST',
-					data: item,
+					data: subObj,
+					headers: { 'enctype': 'multipart/form-data'}, 
 					uploadEventHandlers: {
 						progress: function(e) {
 							if(e.lengthComputable) {
@@ -204,7 +223,6 @@ routerApp.controller('excelFileUploadCtrl',[ '$scope','$mdDialog', '$state' ,'$h
 				}).then(function(data){
 					controller.complete(true, data);
 				},
-				
 				function(data)
 				{
 					controller.complete(false, {});

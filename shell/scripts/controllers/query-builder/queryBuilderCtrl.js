@@ -2201,6 +2201,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     $scope.d3hierarchy = {
         onInit: function(recon) {
             $scope.hierarData = $scope.widget.widgetData.widData;
+            $scope.TochartData = $scope.widget.widgetData.TochartData ;
         },
         changeType: function() {
             $scope.eventHndler.isLoadingChart = true;
@@ -2412,6 +2413,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     $scope.d3sunburst = {
         onInit: function(recon) {
             $scope.hierarData = $scope.widget.widgetData.widData;
+            $scope.TochartData = $scope.widget.widgetData.TochartData ;
             $scope.$apply;
         },
         changeType: function() {

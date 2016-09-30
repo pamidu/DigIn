@@ -98,55 +98,79 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
             if($rootScope.widget.widgetName == "sunburst" || $rootScope.widget.widgetName == "hierarchy"){
 
                 $scope.tableData=[];
-                var parent =$rootScope.widget.widgetData.commonSrc.src.fAttArr[0].name;
+                // if($rootScope.widget.widgetData.commonSrc.src.fMeaArr.length > 0)
+                //     var parent =$rootScope.widget.widgetData.commonSrc.src.fMeaArr[0].name;
+
                 $scope.fieldData=[parent,"value"];
               
                 var id=0;
+                var data;
+                
+                data = $rootScope.widget.widgetData.TochartData.children;
 
-                var data = $rootScope.widget.widgetData.widData.data.children;
                 var newTableData = [];
                 for (var i = 0; i < data.length; i++) {
 
                     if(typeof data[i].children == "object"){
-                        if(typeof data[i].children[i].children == "object"){
-                            var childone = $rootScope.widget.widgetData.commonSrc.src.fAttArr[2].name;
-                            var childtwo = $rootScope.widget.widgetData.commonSrc.src.fAttArr[1].name;
-                            $scope.fieldData=[parent,childone,childtwo,"value"];
+
+                        if($rootScope.widget.widgetData.commonSrc.src.fAttArr.length > 2){
+                            var childone = $rootScope.widget.widgetData.commonSrc.src.fAttArr[0].name;
+                            var childtwo = $rootScope.widget.widgetData.commonSrc.src.fAttArr[2].name;
+                            var childthree = $rootScope.widget.widgetData.commonSrc.src.fAttArr[1].name;
+                            if($rootScope.widget.widgetData.commonSrc.src.fMeaArr.length > 0)
+                                $scope.fieldData=[childone,childtwo,childthree,parent];
+                            else 
+                                $scope.fieldData=[childone,childtwo,childthree,"value"];
+
                             for (var x = 0; x < data[i].children.length; x++) {
-                                    for(var y = 0; y < data[i].children[x].children.length; y++){
+                                for(var y = 0; y < data[i].children[x].children.length; y++){
+                                    //for(var z=0; z< data[i].children[x].children[y].children.length ; z++){
                                         var newObject = {};
                                         id++;
                                         newObject["id"] = id;
-                                        newObject[parent] = data[i].name;
-                                        newObject[childone] = data[i].children[x].name;
-                                        newObject[childtwo] = data[i].children[x].children[y].name;
-                                        newObject["value"]  = data[i].children[x].children[y].value;
+                                        newObject[childone] = data[i].type;
+                                        newObject[childtwo] = data[i].children[x].type;
+                                        newObject[childthree] = data[i].children[x].children[y].type;
+                                        newObject["value"]  = data[i].children[x].children[y].size;
+                                        // if($rootScope.widget.widgetData.commonSrc.src.fMeaArr.length > 0)
+                                        //     newObject[parent]  = data[i].children[x].children[y].children[z].type;
                                         newTableData.push(newObject);
-                                    }
+                                    //}
+                                    
+                                }
                             }
-                        }else{
-                               var childone = $rootScope.widget.widgetData.commonSrc.src.fAttArr[1].name;
-                               $scope.fieldData=[parent,childone,"value"];
-                               for (var x = 0; x < data[i].children.length; x++) {
+                        }
+                        else if($rootScope.widget.widgetData.commonSrc.src.fAttArr.length === 2){
+                            var childone = $rootScope.widget.widgetData.commonSrc.src.fAttArr[0].name;
+                            var childtwo = $rootScope.widget.widgetData.commonSrc.src.fAttArr[1].name;
+                            //$scope.fieldData=[childone,childtwo,parent];
+                            $scope.fieldData=[childone,childtwo,"value"];
+                            for (var x = 0; x < data[i].children.length; x++) {
+                                    //for(var y = 0; y < data[i].children[x].children.length; y++){
+                                        var newObject = {};
+                                        id++;
+                                        newObject["id"] = id;
+                                        newObject[childone] = data[i].type;
+                                        newObject[childtwo] = data[i].children[x].type;
+                                        newObject["value"] = data[i].children[x].size;
+                                        //newObject[parent]  = data[i].children[x].children[y].type;
+                                        newTableData.push(newObject);
+                                    //}
+                            }
+                        }else if($rootScope.widget.widgetData.commonSrc.src.fAttArr.length === 1){
+                               var childone = $rootScope.widget.widgetData.commonSrc.src.fAttArr[0].name;
+                               $scope.fieldData=[childone,"value"];
+                               //for (var x = 0; x < data[i].children.length; x++) {
                                     var newObject = {};
                                     id++;
                                     newObject["id"] = id;
-                                    newObject[parent] = data[i].name;
-                                    newObject[childone] = data[i].children[x].name;
-                                    newObject["value"] = data[i].children[x].value;
+                                    newObject[childone] = data[i].type;
+                                    newObject["value"] = data[i].size;
                                     newTableData.push(newObject);
-                            }
+                            //}
                         }
                      
                     }
-                    else{
-                        var newObject = {};
-                        newObject["id"] = i;
-                        newObject[parent] = data[i].name;
-                        newObject["value"] = data[i].value;
-                        newTableData.push(newObject);
-                    }
-
                 }
                 console.log(newTableData);
                 $scope.tableData = newTableData;

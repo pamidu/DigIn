@@ -2201,6 +2201,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     $scope.d3hierarchy = {
         onInit: function(recon) {
             $scope.hierarData = $scope.widget.widgetData.widData;
+            $scope.TochartData = $scope.widget.widgetData.TochartData ;
         },
         changeType: function() {
             $scope.eventHndler.isLoadingChart = true;
@@ -2226,6 +2227,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         var query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=" + tbl + "&db=" + database;
                     }
                     $scope.client.getHierarchicalSummary(query, function(data, status) {
+                        $scope.TochartData = angular.copy(data);
                         if (status) {
                             var res = {
                                 data: data,
@@ -2242,6 +2244,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         saveWidget: function(widget) {
             widget.widgetData.widView = "views/ViewHnbData.html";
             widget.widgetData.widData = $scope.hierarData;
+            widget.widgetData.TochartData = $scope.TochartData;
             widget.widgetData.widName = $scope.widget.widgetData.widName;
             widget.widgetName = "hierarchy";
             $scope.saveChart(widget);
@@ -2410,6 +2413,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     $scope.d3sunburst = {
         onInit: function(recon) {
             $scope.hierarData = $scope.widget.widgetData.widData;
+            $scope.TochartData = $scope.widget.widgetData.TochartData ;
             $scope.$apply;
         },
         changeType: function() {
@@ -2438,6 +2442,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     }
                     $scope.client.getHierarchicalSummary(query, function(data, status) {
                         $scope.eventHndler.isLoadingChart = false;
+                        $scope.TochartData = angular.copy(data);
                         if (status) {
                             var res = {
                                 data: data,
@@ -2456,6 +2461,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             widget.widgetData.widView = "views/ViewHnbMonth.html";
             //widget.widgetData = $scope.fieldArray;
             widget.widgetData.widName = $scope.widget.widgetData.widName;
+            widget.widgetData.TochartData = $scope.TochartData;
             widget.widgetData.widData = $scope.hierarData;
             widget.widgetName = "sunburst";
             $scope.saveChart(widget);

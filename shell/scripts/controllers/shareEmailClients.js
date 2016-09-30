@@ -143,7 +143,7 @@ routerApp.controller('localEmailClient', ['$scope','$mdDialog','URL','$http','ng
 
     $scope.validateEmail = function(email){
 
-        var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+        var pattern = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/igm;
         return pattern.test(email);    
     }
 

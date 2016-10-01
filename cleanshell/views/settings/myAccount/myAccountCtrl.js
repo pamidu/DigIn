@@ -139,6 +139,11 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$mdDialog','DiginServices', 'not
 		}
 	];
 	
+	vm.makeDefault = function()
+	{
+		console.log("make Default");
+	}
+	
 }])
 
 DiginApp.controller('changePasswordCtrl',['$scope','$mdDialog','$http','DiginServices','notifications' ,function ($scope,$mdDialog,$http,DiginServices,notifications) {

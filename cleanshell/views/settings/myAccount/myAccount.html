@@ -589,7 +589,7 @@ md-tabs[md-align-tabs=bottom]
 											</div>
 											<div layout="column" layout="space-between center">
 												<span style="color:#71777b;font-size:10px;" flex>Card Number</span>
-												<span style="color:white;font-size:18px;line-height:40px;font-family: cursive;" flex>**** **** **** {{card.last4}}</span>
+												<span style="color:white;font-size:18px;line-height:40px;font-family: cursive;text-shadow: 2px 1px #484848;" flex>**** **** **** {{card.last4}}</span>
 											</div>
 											<div layout="column" layout="space-between center">
 												<span style="color:#71777b;font-size:10px;" flex>Expiry Date</span>
@@ -599,11 +599,11 @@ md-tabs[md-align-tabs=bottom]
 								
 									</div>
 									<div class="back">
-										<md-card class="tint showbox paymentCard product_card" ng-class="{selected: $index == selectedCard}">
-											<div layout="row" layout="space-between center" style="margin-top:20px;height:50px;background:white;">
-												<span style="color:#615097;font-weight:700;letter-spacing:1px" flex>Payment Details</span>
-												<img src="views/settings/myAccount/cards/visa_s.png" style="width:77px;height:44px" />
-											</div>
+										<md-card class="tint showbox paymentCard product_card" ng-class="{selected: $index == selectedCard}" style="padding: 0px;">
+											<div layout="row" layout="space-between center" style="margin-top:20px;height:35px;background:white;"></div>
+											<center style="margin-top:40px;">
+												<md-button class="md-raised" ng-click="vm.makeDefault()"><span style="text-transform:initial">Make Default</span></md-button>
+											</center>
 										</md-card>
 									</div>
 								</div>

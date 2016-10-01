@@ -1,4 +1,4 @@
-DiginApp.controller('myAccountCtrl',[ '$scope','$mdDialog','DiginServices', 'notifications', function ($scope,$mdDialog,DiginServices,notifications){
+DiginApp.controller('myAccountCtrl',[ '$scope','$mdDialog','DiginServices', 'notifications','paymentGateway','$http', function ($scope,$mdDialog,DiginServices,notifications,paymentGateway,$http){
 	
 	$scope.$parent.currentView = "Settings";
 	
@@ -143,6 +143,94 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$mdDialog','DiginServices', 'not
 	{
 		console.log("make Default");
 	}
+	
+	
+	//#load stripe payement detail window
+	vm.loadStripe=function(ev,plan){	
+		var stripeConfig = {
+			publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
+			title: 'DigIn',
+			description: "Beyond BI",
+			logo: 'images/small-logo.png',
+			label: 'New Card'
+		};
+	   
+		var stripegateway = paymentGateway.setup('stripe').configure(stripeConfig);
+		stripegateway.open(ev, function(token, args) {
+			console.log(token);
+			if(token!=null || token!="" || token!=undefined){
+				vm.upgradePackage(token,plan);
+			}
+			else
+			{
+				displayError("Error while retriving token from stripe");
+			}
+	});
+	}	
+
+	
+	
+	//#Customize existing package
+	vm.customizePackage=function(plan){	
+		var pkgObj = {
+            "plan" : {
+				"features": [
+					{"tag":"storage","feature": "25GB storage","quantity":0,"amount": 30,"action":"remove"},
+					{"tag":"user","feature": "Additional users","amount": 15,"quantity":5,"action":"add"}
+				]
+			}
+        }
+				
+        $http({
+            url : "/include/duoapi/paymentgateway/customizePackage",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data : pkgObj
+        }).then(function(response){
+			console.log(response)
+            $mdDialog.hide();
+        },function(response){
+            console.log(response)
+            $mdDialog.hide();
+        })
+		
+	}
+	
+	
+	//#Upgrade exisitng package into another package
+	vm.upgradePackage=function(token,plan){	
+		var pkgObj = {
+            "token":token.id,
+            "plan" : {
+                "attributes":  [
+                    {"tag":"Package","feature": "Gold Package","amount": 20,"quantity":0,"action":"add"},
+                    {"tag":"user","feature": "Additional +1 user","amount": 10, "quantity":5,"action":"add"}
+                ],
+                "subscription": "month",
+                "quantity": 1 
+            }
+        }
+		
+        $http({
+            url : "/include/duoapi/paymentgateway/upgradePackage",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data : pkgObj
+        }).then(function(response){
+			console.log(response)
+            $mdDialog.hide();
+        },function(response){
+            console.log(response)
+            $mdDialog.hide();
+        })
+		
+	}
+	
+	
 	
 }])
 

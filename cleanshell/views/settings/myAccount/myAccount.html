@@ -528,7 +528,7 @@ md-tabs[md-align-tabs=bottom]
 										<span style="color:white;font-size:25px;">{{plan.perMonth}}</span>
 										<span style="color:white;font-size:12px;">{{plan.per}}</span>
 									</div>
-									<md-button class="md-fab md-mini ti-check" ng-disabled="false" aria-label="Comment" style="background:#f9a525;position:absolute;margin-top: -10px;margin-left: 50px;">
+									<md-button class="md-fab md-mini ti-check" ng-disabled="false" aria-label="Comment" style="background:#f9a525;position:absolute;margin-top: -10px;margin-left: 50px;" ng-click="vm.loadStripe($event,plan)">
 									</md-button>
 								  </center>
 					

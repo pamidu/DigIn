@@ -12,13 +12,17 @@
 
 	$handler = new stripePayment();
 	switch ($view) {
-		case 'addPackage':
+		case 'puchasePackage':
 			$postString = file_get_contents ( 'php://input' );
-			$handler->addPayment($postString);
+			$handler->puchasePackage($postString);
 			break;
-		case 'updatePackage':	
+		case 'customizePackage':	
 			$postString = file_get_contents ( 'php://input' );
-			$handler->updatePayment($postString);
+			$handler->customizePackage($postString);
+			break;
+		case 'upgradePackage':
+			$postString = file_get_contents ( 'php://input' );
+			$handler->upgradePackage($postString);
 			break;
 		default:
 			echo "no such method";
@@ -27,35 +31,37 @@
 
 
 class stripePayment{
-	//#Add package
-	public function addPayment($jsonString){
+	
+	//#Purchase new package
+	public function puchasePackage($jsonString){
 		$input = json_decode($jsonString);
 		$planInfo = $input->plan;
 		$token = $input->token;
-		$addPackage = new CloudCharge();
-		$response = $addPackage->plan()->subscribeToCustomplan($token ,$planInfo);
+		$puchasePackage = new CloudCharge();
+		$response = $puchasePackage->plan()->subscribeToCustomplan($token ,$planInfo);
 		$encodeVal = json_encode($response);
 		echo $encodeVal;
 	}
-	
-	/*public function updatePayment($jsonString){
-		$input = json_decode($jsonString,true);
-		$planInfo = $input["plan"];
-		$updatePackage = new CloudCharge();
-		$response = $updatePackage->plan()->customize($planInfo);
-		$encodeVal = json_encode($response);
-		echo $encodeVal;
-	}*/
 
-	//#Customize package
-	public function updatePayment($jsonString){
+	//#Customize existing package
+	public function customizePackage($jsonString){
 		$input = json_decode($jsonString);
 		$planInfo = $input->plan;
-		$updatePackage = new CloudCharge();
-		$response = $updatePackage->plan()->customize($planInfo);
+		$customizePackage = new CloudCharge();
+		$response = $customizePackage->plan()->customize($planInfo);
 		$encodeVal = json_encode($response);
 		echo $encodeVal;
 	}
 	
+	//#Upgrade package
+	public function upgradePackage($jsonString){
+		$input = json_decode($jsonString);
+		$planInfo = $input->plan;
+		$token = $input->token;
+		$upgradePackage = new CloudCharge();
+		$response = $upgradePackage->plan()->upgrade($token ,$planInfo);
+		$encodeVal = json_encode($response);
+		echo $encodeVal;
+	}
 	
 }

@@ -217,15 +217,12 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             "token":token.id,
             "plan" : {
                 "attributes":  [
-                    {"tag":"Package","feature": plan.id,"amount": price*100,"quantity":1,"action":"add"},
-                    {"tag":"user","feature": "Additional +1 user","amount": 10, "quantity":5,"action":"add"}
+                    {"tag":"Package","feature": plan.id,"amount": price*100,"quantity":1,"action":"add"}
                 ],
                 "subscription": "month",
                 "quantity": 1 
             }
         }
-		
-		
 		
 		/*var sampleObj = {
             "token":token.id,
@@ -240,7 +237,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         }*/
 		
         $http({
-            url : "/include/duoapi/paymentgateway/addPackage",
+            url : "/include/duoapi/paymentgateway/puchasePackage",
             method : "POST",
             headers: {
                 'Content-Type': 'application/json'

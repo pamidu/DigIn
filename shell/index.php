@@ -317,6 +317,9 @@
 <!--feature wise excelUpload-->
 <script src="views/widgets/excelFileUpload/excelFileUploadCtrl.js"></script>
 
+<!--feature wise myAccount-->
+<script src="views/settings/myAccount/myAccountCtrl.js"></script>
+
 
 <script src="scripts/charts/d3Force.js"></script>
 

@@ -161,6 +161,12 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             templateUrl: "views/widgets/excelFileUpload/excelFileUpload.html",
             controllerAs: 'vm'
         })
+		.state("home.myAccount", {
+            url: "/myAccount",
+            controller: "myAccountCtrl",
+            templateUrl: "views/settings/myAccount/myAccount.html",
+            controllerAs: 'vm'
+        })
         .state("home.userProfile", {
             url: "/settings-userProfile",
             controller: "dashboardSetupCtrl",

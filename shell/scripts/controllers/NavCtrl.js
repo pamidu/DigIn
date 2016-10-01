@@ -1164,6 +1164,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 case "Common Source Algorithm":
                     $state.go("home.commonSrcAlgorithm");
                     break;
+				case "my account":
+                    $state.go("home.myAccount");
+                    break;
                 case "invite":    
 
                     $mdDialog.show({

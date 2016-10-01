@@ -86,6 +86,59 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$mdDialog','DiginServices', 'not
 		});
 	}, 1000);
 	
+	var vm = this;
+	
+	vm.companyPricePlans = [
+		{
+			id : "personal_space",
+			name:"Personal Space",
+			numberOfUsers:"1",
+			storage: "10 GB",
+			bandwidth: "100 GB",
+			perMonth: "$10",
+			perYear: "$10",
+			per: "/ User",
+			Description: "desc"
+		},
+		{
+			id : "mini_team",
+			name:"We Are A Mini Team",
+			numberOfUsers:"5",
+			storage: "10 GB",
+			bandwidth: "100 GB",
+			perMonth: "$8",
+			perYear: "$6.99 ",
+			per: "/ User",
+			Description: "desc"
+		},
+		{
+			id : "world",
+			name:"We Are the World",
+			numberOfUsers:"10",
+			storage: "10 GB",
+			bandwidth: "100 GB",
+			perMonth: "$6",
+			perYear: "$4.99",
+			per: "/ User",
+			Description: "desc"
+		}];
+	
+	vm.paymentCards = [
+		{
+			last4: "8431",
+			brand: "American Express",
+			country: "US",
+			exp_month: 5,
+			exp_year: 2019
+		},{
+			last4: "8445",
+			brand: "Visa",
+			country: "US",
+			exp_month: 6,
+			exp_year: 2020
+		}
+	];
+	
 }])
 
 DiginApp.controller('changePasswordCtrl',['$scope','$mdDialog','$http','DiginServices','notifications' ,function ($scope,$mdDialog,$http,DiginServices,notifications) {

@@ -302,3 +302,72 @@
     color: #555
 }
 /*end of password-strength-indicator*/
+
+/*
+ _____ _  _     ____    ____  ____  ____  ____  ____    ____  _____  ____  ____  _____ 
+/    // \/ \   /  __\  /   _\/  _ \/  __\/  _ \/ ___\  / ___\/__ __\/  _ \/  __\/__ __\
+|  __\| || |   |  \/|  |  /  | / \||  \/|| | \||    \  |    \  / \  | / \||  \/|  / \  
+| |   | || |_/\|  __/  |  \_ | |-|||    /| |_/|\___ |  \___ |  | |  | |-|||    /  | |  
+\_/   \_/\____/\_/     \____/\_/ \|\_/\_\\____/\____/  \____/  \_/  \_/ \|\_/\_\  \_/  
+*/
+/* entire container, keeps perspective */
+.flip-container {
+	perspective: 1000;
+	outline: 0;
+	cursor:pointer;
+}
+	/* flip the pane when hovered */
+	.flip-container:hover .flipper, .flip-container.hover .flipper {
+		transform: rotateY(180deg);
+	}
+
+.flip-container, .front {
+	width: 280px;
+	height: 200px;
+	margin-right:8px;
+	margin-top:8px;
+}
+
+.flip-container, .back {
+	width: 280px;
+	height: 200px;
+	margin-right:8px;
+	margin-top:8px;
+}
+
+/* flip speed goes here */
+.flipper {
+	transition: 0.6s;
+	transform-style: preserve-3d;
+
+	position: relative;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+	backface-visibility: hidden;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* front pane, placed above back */
+.front {
+	z-index: 2;
+	/* for firefox 31 */
+	transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.back {
+	transform: rotateY(180deg);
+}
+
+/*
+ _____ _  _     ____    ____  ____  ____  ____  ____    _____ _      ____ 
+/    // \/ \   /  __\  /   _\/  _ \/  __\/  _ \/ ___\  /  __// \  /|/  _ \
+|  __\| || |   |  \/|  |  /  | / \||  \/|| | \||    \  |  \  | |\ ||| | \|
+| |   | || |_/\|  __/  |  \_ | |-|||    /| |_/|\___ |  |  /_ | | \||| |_/|
+\_/   \_/\____/\_/     \____/\_/ \|\_/\_\\____/\____/  \____\\_/  \|\____/
+*/

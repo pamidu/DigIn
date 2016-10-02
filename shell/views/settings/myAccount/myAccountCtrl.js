@@ -65,7 +65,7 @@ routerApp.controller('myAccountCtrl',[ '$scope','$mdDialog', 'notifications', fu
     })();
 	
 	setTimeout(function(){
-		Highcharts.chart('container', {
+		Highcharts.chart('container_chart', {
 			  title: {
 				text: 'Bandwidth Usage'
 			  },

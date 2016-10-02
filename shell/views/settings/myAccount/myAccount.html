@@ -254,6 +254,7 @@ md-tabs[md-align-tabs=bottom]
 	width:280px;
 	height:170px;
 	background: #11141d;
+	padding: 10px;
  }
  
  p{
@@ -605,7 +606,7 @@ md-tabs[md-align-tabs=bottom]
 					</md-card>
 				</div>
 				<md-card class="product_card" style="padding: 10px">
-						<div id="container" style="margin:10px">Placeholder for chart</div>
+						<div id="container_chart" style="margin:10px">Placeholder for chart</div>
 				</md-card>
 		
 				
@@ -619,16 +620,17 @@ md-tabs[md-align-tabs=bottom]
 			</span>
 		</md-tab-label>
 		<md-tab-body>
-			<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;margin-top:20px;"> 
+		<div class="setup-wrapper  animated fadeIn">
+			<!--md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;margin-top:20px;"> 
 
-				<md-content style="background:transparent">
-			<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)">
+				<md-content style="background:transparent"-->
+			<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)" style="padding-left: 65px;padding-right:30px;">
 				<v-pane id="Cards" expanded="$first"> 
 					<v-pane-header id="Store-header" aria-controls="Store-content">
 						<h1 class="search-header" style="margin:0px;">Subscription Details</h1> 
 					</v-pane-header>
 
-					<v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;">
+					<v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;background:transparent;">
 						<div layout="row" layout-align="center start" layout-wrap>
 							<div layout="column">
 								<md-card class="product_card" style="width:460px;height:205px;background:#02b5e2;padding:0px;" layout="column">
@@ -669,7 +671,7 @@ md-tabs[md-align-tabs=bottom]
 						<h1 class="search-header" style="margin:0px;">Update Details</h1> 
 					</v-pane-header>
 
-					<v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;">
+					<v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;background:transparent;">
 						 <div layout="row" layout-align="center top" class="fadeIn">
 							
 						   <div layout="row" layout-align="center center">
@@ -714,7 +716,7 @@ md-tabs[md-align-tabs=bottom]
 						<h1 class="search-header" style="margin:0px;">Card Details</h1> 
 					</v-pane-header>
 
-					<v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;">
+					<v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;background:transparent;">
 						<div layout="row" layout-align="center center" layout-wrap>
 							<!--md-card class="tint showbox paymentCard product_card" ng-repeat="card in vm.paymentCards" ng-class="{selected: $index == selectedCard}">
 								<div layout="row" layout="space-between center">
@@ -765,8 +767,9 @@ md-tabs[md-align-tabs=bottom]
 					</v-pane-content>  
 				</v-pane>
 			</v-accordion>
-			</md-content>
-			</md-whiteframe>
+			<!--/md-content>
+			</md-whiteframe-->
+			</div>
 			
 		</md-tab-body>
 	  </md-tab>

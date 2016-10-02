@@ -196,15 +196,18 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
 
     $scope.editModeOn = true;
   
-      $scope.user = {
-            name:  $rootScope.profile_Det.Name,
-            company:  $rootScope.profile_Det.Company, 
-            email: $rootScope.profile_Det.Email,
-            contactNo: $rootScope.profile_Det.PhoneNumber,
-            street: $rootScope.profile_Det.BillingAddress,
-            country: $rootScope.profile_Det.Country,
-            zip: $rootScope.profile_Det.ZipCode
+
+        $scope.user = {
+          name:  $rootScope.profile_Det.Name,
+          company:  $rootScope.profile_Det.Company, 
+          email: $rootScope.profile_Det.Email,
+          contactNo: $rootScope.profile_Det.PhoneNumber,
+          street: $rootScope.profile_Det.BillingAddress,
+          country: $rootScope.profile_Det.Country,
+          zip: $rootScope.profile_Det.ZipCode
         };
+      
+          
 
         $scope.closeWindow=function(){
             $state.go('home.welcomeSearch');
@@ -307,17 +310,7 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
                 }
         };
 
-
-
-   
-
-
-
-
-
-
-
-    })();
+      })();
 
     //UI animation
     var uiAnimation = (function () {

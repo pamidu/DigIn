@@ -1898,7 +1898,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         
         var settingsSub = [
                                 {name: "New user",icon: "ti-user", link: "home.createUser"},
-                                {name: "Share", icon: "ti-share", link: "home.share"},
+                                //{name: "Share", icon: "ti-share", link: "home.share"},
                                 {name: "User settings",icon: "ti-pencil",link: "home.userSettings"},
                                 {name: "Account settings",icon: "ti-settings",link: "home.account"},
                                 {name: "Groups",icon: "ti-settings",link: "home.group"}

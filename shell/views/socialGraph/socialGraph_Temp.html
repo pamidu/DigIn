@@ -251,8 +251,11 @@
                             <div layout="row" layout-align="center center" layout-wrap>
                                 <!-- Likes -->
                                 <div flex="20">
-                                    <md-card class="md-default-theme box-shadow-none widget-h130 widget-bg-blue900">
-                                        <div class="md-content__body">
+                                    <md-card class="md-default-theme box-shadow-none widget-h130 widget-bg-blue900" layout="row" layout-align="center center">
+                                        <div layout="row" layout-align="center center" ng-show="postSummaryLoading || summaryChartLoading">
+                                            <img src="styles/css/images/preloaders/facebook.gif" alt="Washed Out" style="height:35%;width:35%;">
+                                        </div>
+                                        <div class="md-content__body" ng-hide="postSummaryLoading || summaryChartLoading">
                                             <section class="home-mini-card">
                                                 <div class="fb-like-details">
                                                     <h2 class=" graph-h1 color-accent">
@@ -269,8 +272,11 @@
 
                                 <div flex="20">
                                     <!-- shares -->
-                                    <md-card class="md-default-theme box-shadow-none widget-h130 widget-bg-blue600">
-                                        <div class="md-content__body">
+                                    <md-card class="md-default-theme box-shadow-none widget-h130 widget-bg-blue600" layout="row" layout-align="center center">
+                                        <div layout="row" layout-align="center center" ng-show="postSummaryLoading || summaryChartLoading">
+                                            <img src="styles/css/images/preloaders/facebook.gif" alt="Washed Out" style="height:35%;width:35%;">
+                                        </div>                                    
+                                        <div class="md-content__body" ng-hide="postSummaryLoading || summaryChartLoading">
                                             <section class="home-mini-card">
                                                 <div class="fb-view">
                                                     <h2 class=" graph-h1 color-accent">
@@ -287,8 +293,11 @@
 
                                 <div flex="20">
                                     <!-- comments -->
-                                    <md-card class="md-default-theme box-shadow-none widget-h130 widget-bg-yellow600">
-                                        <div class="md-content__body">
+                                    <md-card class="md-default-theme box-shadow-none widget-h130 widget-bg-yellow600" layout="row" layout-align="center center">
+                                        <div layout="row" layout-align="center center" ng-show=" postSummaryLoading || summaryChartLoading">
+                                            <img src="styles/css/images/preloaders/facebook.gif" alt="Washed Out" style="height:35%;width:35%;">
+                                        </div>                                    
+                                        <div class="md-content__body" ng-hide="postSummaryLoading || summaryChartLoading">
                                             <section class="home-mini-card">
                                                 <div class="fb-post">
                                                     <h2 class=" graph-h1 color-accent">
@@ -305,8 +314,11 @@
 
                                 <div flex="20">
                                     <!-- average engagement per week -->
-                                    <md-card class="md-default-theme box-shadow-none widget-h130 widget-bg-blue400">
-                                        <div class="md-content__body">
+                                    <md-card class="md-default-theme box-shadow-none widget-h130 widget-bg-blue400" layout="row" layout-align="center center">
+                                        <div layout="row" layout-align="center center" ng-show="postSummaryLoading || summaryChartLoading">
+                                            <img src="styles/css/images/preloaders/facebook.gif" alt="Washed Out" style="height:35%;width:35%;">
+                                        </div>                                    
+                                        <div class="md-content__body" ng-hide="postSummaryLoading || summaryChartLoading">
                                             <section class="home-mini-card">
                                                 <div class="average-engamnt">
                                                     <h2 class=" graph-h1 color-accent">
@@ -324,8 +336,11 @@
 
                                 <div flex="20">
                                     <!-- total engagement this week -->
-                                    <md-card class="md-default-theme box-shadow-none widget-h130 widget-bg-gray400">
-                                        <div class="md-content__body">
+                                    <md-card class="md-default-theme box-shadow-none widget-h130 widget-bg-gray400" layout="row" layout-align="center center">
+                                        <div layout="row" layout-align="center center" ng-show="postSummaryLoading || summaryChartLoading">
+                                            <img src="styles/css/images/preloaders/facebook.gif" alt="Washed Out" style="height:35%;width:35%;">
+                                        </div>
+                                        <div class="md-content__body" ng-hide="postSummaryLoading || summaryChartLoading">
                                             <section class="home-mini-card">
                                                 <div class="total-engment">
                                                     <h2 class=" graph-h1 color-accent">

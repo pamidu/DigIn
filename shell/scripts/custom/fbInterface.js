@@ -16,6 +16,7 @@ var fbInterface = new function () {
             scope.accounts.push(response.name);
             scope.userAccountName = response.name;
             scope.profileDetails = response;
+            scope.profileDetails.link = "https://www.facebook.com/" + response.id;
             callback(response);
         });
     };
@@ -45,7 +46,6 @@ var fbInterface = new function () {
         }, {
             scope: 'manage_pages,read_insights'
         });
-        scope.lblPageLogin = analysis ? 'Logout' : 'Login';
     };
 
     this.getFreshPage = function (pId, cb) {
@@ -99,10 +99,16 @@ var fbInterface = new function () {
     this.logoutFromFb = function (scope, analysis) {
         FB.logout(function (response) {
             fbInterface.setLoginButtonValue(response.status, scope);
-            scope.accounts = [];
-            scope.userAccountName = '';
-            scope.fbPages = [];
-            if (analysis) scope.lblPageLogin = 'Login';
+            scope.$apply(function(){
+                scope.accounts = [];
+                scope.userAccountName = '';
+                scope.fbPages = [];        
+            })
+            if (analysis) {
+                scope.$apply(function(){
+                    scope.lblPageLogin = 'Login';
+                })
+            }
         });
     };
 
@@ -120,8 +126,13 @@ var fbInterface = new function () {
 
     this.setLoginButtonValue = function (state, scope) {
         this.state = state;
-        if (state != 'connected') scope.connectBtnLabel = 'Add Account';
-        else scope.connectBtnLabel = 'Remove Account';
+        if (state != 'connected') {
+            scope.connectBtnLabel = 'Add Account';
+            scope.lblPageLogin = 'Login';
+        } else {
+            scope.connectBtnLabel = 'Remove Account';
+            scope.lblPageLogin = 'Logout';
+        }
     };
 
     this.setPageLoginButtonValue = function (state, scope) {

@@ -765,12 +765,21 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     if (!entry.isRemove){
                         if ( $scope.selectedAttributes.indexOf(entry.name) == -1 ) {
                             $scope.selectedAttributes.push(entry.name);
-                            $scope.fieldObjects.push({
-                                id: entry.name.replace(/ /g,"_"),
-                                name: entry.name,
-                                valueArray: [],
-                                status: true
-                            })
+                            if (typeof entry.name == 'number' ) {
+                                $scope.fieldObjects.push({
+                                    id: "filter-" + entry.name,
+                                    name: entry.name,
+                                    valueArray: [],
+                                    status: true
+                                })                                
+                            } else{
+                                $scope.fieldObjects.push({
+                                    id: "filter-" + entry.name.replace(/ /g,"_"),
+                                    name: entry.name,
+                                    valueArray: [],
+                                    status: true
+                                })                                
+                            }
                         }
                     } else{
                         var index = $scope.selectedAttributes.indexOf(entry.name);
@@ -792,7 +801,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 var name = "";
                 for (var i=0;i<$scope.fieldObjects.length;i++) {
                     if ($scope.fieldObjects[i].id == id) {
-                        if ( $scope.fieldObjects[i].valueArray != 'undefined' && $scope.fieldObjects[i].valueArray.length == 0){
+                        if ( $scope.fieldObjects[i].valueArray != 'undefined' || $scope.fieldObjects[i].valueArray.length == 0){
                             name = $scope.fieldObjects[i].name;
                             break;
                         } else{
@@ -805,20 +814,19 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 query = "SELECT " + name + " FROM " + $diginurls.getNamespace() + "." + table_name + " GROUP BY " + name;
                 $scope.client.getExecQuery(query, function(data, status) {
                     if (status){
-                        $scope.isFilterLoading = false;
                         var tempArray = [];
                         for (var res in data){
                             var keyValue = data[res];
                             for (var v in keyValue){
                                 var key = v;
                                 var value = keyValue[v];
-                                if (typeof value == 'number' ){
+                                if (typeof value == 'number' ) {
                                     tempArray.push({
                                         id: value,
                                         value: value,
                                         status: true
                                     });
-                                }else {
+                                } else {
                                     tempArray.push({
                                         id: value.replace(/ /g,"_"),
                                         value: value,
@@ -859,10 +867,10 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             }
                         }
                         if (count != $scope.fieldObjects[field].valueArray.length){
-                            $("#"+id).removeAttr("checked"); //uncheck
+                            $("#filter-"+id).removeAttr("checked"); //uncheck
                         }else {
-                            $("#"+id).attr("checked",true); //check
-                            $("#"+id).prop("checked",true); //check
+                            $("#filter-"+id).attr("checked",true); //check
+                            $("#filter-"+id).prop("checked",true); //check
                         }
                     }
                 }
@@ -870,7 +878,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             },
             //triggered when 'All' check box is clicked
             checkAll: function(name,index,id) {
-                var status = $("#"+ id ).is(":checked");
+                var status = $("#filter-"+ id ).is(":checked");         
                 if(status) {
                     for(var i =0; i < $scope.fieldObjects[index].valueArray.length; i++) {
                         $("#"  + id + "-" + $scope.fieldObjects[index].valueArray[i].id).attr("checked",true);

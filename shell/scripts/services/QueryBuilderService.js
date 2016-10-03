@@ -435,6 +435,4 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
 
     }
 
-
-
 });

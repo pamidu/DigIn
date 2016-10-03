@@ -40,7 +40,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
         //ng-disabled model of save button
         $scope.pendingColumns = true;
         $scope.show = false;
-        $scope.isFilterLoading = false;
         $scope.filterMenuStatus = false;
         $scope.fieldObjects = [];
         //data base field type
@@ -388,7 +387,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             },
             onCLickFilterClose: function() {
                 $scope.filterMenuStatus = false;
-                $scope.isFilterLoading = false;
                 $mdSidenav('filterMenu')
                     .close()
                     .then(function() {
@@ -760,57 +758,23 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     });
                     $scope.fieldObjects = [];
                     $scope.selectedAttributes = [];
-                    $scope.filterMenuStatus = true;   
-                }             
+                    $scope.filterMenuStatus = true;
+                }
                 var query = "";
-                var table_name = $scope.sourceUi.selectedNameSpace;
-                $scope.isFilterLoading = true;
                 angular.forEach($scope.sourceUi.selectedAttribute,function(entry) {
-                    if (!entry.isRemove){ 
+                    if (!entry.isRemove){
                         if ( $scope.selectedAttributes.indexOf(entry.name) == -1 ) {
                             $scope.selectedAttributes.push(entry.name);
-                            query = "SELECT " + entry.name + " FROM " + $diginurls.getNamespace() + "." + table_name + " GROUP BY " + entry.name;
-                            $scope.client.getExecQuery(query, function(data, status) {
-                                if (status){
-                                    $scope.isFilterLoading = false;
-                                    var tempArray = [];
-                                    for (var res in data){
-                                        var keyValue = data[res];
-                                        for (var v in keyValue){
-                                            var key = v;
-                                            var value = keyValue[v];
-                                            if (typeof value == 'number' ){
-                                                tempArray.push({
-                                                    id: value,
-                                                    value: value,
-                                                    status: true
-                                                });
-                                            }else {
-                                                tempArray.push({
-                                                    id: value.replace(/ /g,"_"),
-                                                    value: value,
-                                                    status: true
-                                                });
-                                            }
-                                        }
-                                    }
-                                    $scope.$apply(function() {
-                                        $scope.fieldObjects.push({
-                                            id: key.replace(/ /g,"_"),
-                                            name: key,
-                                            valueArray: tempArray,
-                                            status: true
-                                        })
-                                    });
-                                } else{
-                                    $scope.isFilterLoading = false;
-                                }
-                            }, 1000);
+                            $scope.fieldObjects.push({
+                                id: entry.name.replace(/ /g,"_"),
+                                name: entry.name,
+                                valueArray: [],
+                                status: true
+                            })
                         }
                     } else{
                         var index = $scope.selectedAttributes.indexOf(entry.name);
                         if( index > -1 ){
-                            $scope.isFilterLoading = false;
                             $scope.selectedAttributes.splice(index,1);
                             for (var i=0;i<$scope.fieldObjects.length;i++){
                                 if ($scope.fieldObjects[i].name == entry.name){
@@ -818,8 +782,65 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                 }
                             }
                         }
-                    }                 
+                    }
                 });
+            },
+            //Load the parameters when the v-accordion is expanded
+            loadFilterParams: function(index,id){
+                var query = "";
+                var table_name = $scope.sourceUi.selectedNameSpace;
+                var name = "";
+                for (var i=0;i<$scope.fieldObjects.length;i++) {
+                    if ($scope.fieldObjects[i].id == id) {
+                        if ( $scope.fieldObjects[i].valueArray != 'undefined' && $scope.fieldObjects[i].valueArray.length == 0){
+                            name = $scope.fieldObjects[i].name;
+                            break;
+                        } else{
+                            return;
+                        }
+                    }
+                }
+                $scope.fieldObjects[i].isLoading = true;
+                console.log(i);
+                query = "SELECT " + name + " FROM " + $diginurls.getNamespace() + "." + table_name + " GROUP BY " + name;
+                $scope.client.getExecQuery(query, function(data, status) {
+                    if (status){
+                        $scope.isFilterLoading = false;
+                        var tempArray = [];
+                        for (var res in data){
+                            var keyValue = data[res];
+                            for (var v in keyValue){
+                                var key = v;
+                                var value = keyValue[v];
+                                if (typeof value == 'number' ){
+                                    tempArray.push({
+                                        id: value,
+                                        value: value,
+                                        status: true
+                                    });
+                                }else {
+                                    tempArray.push({
+                                        id: value.replace(/ /g,"_"),
+                                        value: value,
+                                        status: true
+                                    });
+                                }
+                            }
+                        }
+                        if (tempArray.length > 0){
+                            $scope.$apply(function() {
+                                $scope.fieldObjects[i].valueArray = tempArray;
+                            });
+                        }
+                        $scope.$apply(function() {
+                            $scope.fieldObjects[i].isLoading = false;
+                        });
+                    } else {
+                        $scope.$apply(function() {
+                            $scope.fieldObjects[i].isLoading = false;
+                        });                        
+                    }
+                }, 1000);
             },
             // check and un-check check-box
             changeStatus: function(name,index,id) {
@@ -850,15 +871,15 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             //triggered when 'All' check box is clicked
             checkAll: function(name,index,id) {
                 var status = $("#"+ id ).is(":checked");
-                if(status){
+                if(status) {
                     for(var i =0; i < $scope.fieldObjects[index].valueArray.length; i++) {
                         $("#"  + id + "-" + $scope.fieldObjects[index].valueArray[i].id).attr("checked",true);
                         $("#" + id+ "-" + $scope.fieldObjects[index].valueArray[i].id).prop("checked",true);                        
-                        if (!$scope.fieldObjects[index].valueArray[i].status){
+                        if (!$scope.fieldObjects[index].valueArray[i].status) {
                             commonUi.changeStatus(name,i,$scope.fieldObjects[index].valueArray[i].id);
                         }
                     }
-                }else{
+                } else {
                     for(var i =0; i < $scope.fieldObjects[index].valueArray.length; i++) {
                         $("#"+id+"-"+$scope.fieldObjects[index].valueArray[i].id).removeAttr("checked");
                         if($scope.fieldObjects[index].valueArray[i].status){

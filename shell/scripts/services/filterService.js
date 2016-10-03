@@ -53,7 +53,7 @@ routerApp.service('filterService',function(){
                         color: color[i]
                     });
                     i++;
-                }                
+                }
             }
         }
 
@@ -65,13 +65,13 @@ routerApp.service('filterService',function(){
                         name: key[cat],
                         y: parseFloat(key[ser.temp])
                     });
-                }else{
+                } else {
                     ser.data.push({
                         name: key[cat],
                         y: parseFloat(key[ser.temp]),
                         drilldown: true
                     });
-                }                    
+                }
             });
         });
         serArr.forEach(function(ser){
@@ -81,7 +81,7 @@ routerApp.service('filterService',function(){
         // cb(serArr);
     };
 
-    // clear the filters when the chart is re-set    
+    // clear the filters when the chart is re-set
     this.clearFilters = function(widget) {
         var fieldId ="";
         if (typeof widget.widgetData.commonSrc.filter != "undefined"){

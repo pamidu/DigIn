@@ -46,7 +46,13 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                     shadow: !1,
                     pointPadding: .1
                 }
-            }
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    month: '%e. %b. %Y'
+                }            
+            }            
         },
         credits: {
             enabled: false
@@ -54,14 +60,14 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         xAxis: {
             type: 'datetime',
             dateTimeLabelFormats: { // don't display the dummy year
-                month: '%e. %b',
-                year: '%b'
+                month: '%e. %b. %Y'
             }            
         },
         yAxis: {
             title: {
                 text: "Polarity"
-            }
+            },
+            lineWidth: 1
         },
         title: {
             text: ""
@@ -213,12 +219,11 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
             xAxis: {
                 type: "datetime",
                 dateTimeLabelFormats: { // don't display the dummy year
-                    month: '%e. %b',
-                    year: '%b'
+                    month: '%e. %b. %Y'
                 },                
             },
             yAxis: {
-
+                lineWidth: 1
             },
             title: {
                 text: ""

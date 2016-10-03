@@ -23,20 +23,20 @@
                             {{widget.widgetData.widName}}
                         </div>
                         <div class="" layout="row" layout-align="end center" >
-                           
+
                             <md-button class="widget-button" ng-if="showDataView(widget)"
                                        ng-click="shareWidget($event,widget)" style="margin-top: 0px;">
                                 <i class="ti-sharethis blut-widget-icon"></i>
                                 <md-tooltip >share</md-tooltip>
                             </md-button>
 
-                             <md-button class="widget-button" ng-if="showDataView(widget)"
-                                       ng-click="showData($event,widget)" style="margin-top: 5px;">
+                            <md-button class="widget-button" ng-if="showDataView(widget)" 
+                                    ng-click="showData($event,widget)" style="margin-top: 5px;">
                                 <ng-md-icon icon="format_list_numbered" class="widicons" size="20"></ng-md-icon>
                                 <md-tooltip >data</md-tooltip>
                             </md-button>
 
-                             <md-button class="widget-button" ng-click="commentary(widget)" style="margin-top: 5px;">
+                            <md-button class="widget-button" ng-click="commentary(widget)" style="margin-top: 5px;">
                                 <ng-md-icon icon="volume_up" class="widicons" size="20"></ng-md-icon>
                                 <md-tooltip>commentary</md-tooltip>
                             </md-button>
@@ -72,17 +72,17 @@
                                             </v-pane-header>
                                             <v-pane-content class="trans-bg v-pane-content">
                                                 <div layout="row" layout-sm="column" layout-align="space-around" ng-hide = "filter.values.length > 0 || filter.type == 'date-single' || filter.type == 'date-multiple' ">
-                                                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                                                    <md-progress-circular md-mode="indeterminate" md-diameter="20px"></md-progress-circular>
                                                 </div>   
                                                 <div ng-show = "filter.values.length > 0">
                                                     <div  ng-if="filter.type == 'multiple'"> 
                                                         <div class="bigcheck">
-                                                            <label class="filter-label display-inline-block"> 
+                                                            <label class="filter-label display-inline-block">
                                                                 All
                                                                 <input type="checkbox" class="bigcheck" id="{{widget.widgetID}}-{{filter.filter.name}}-{{filter.filter.id}}" ng-click="onCLickAll(widget.widgetID,filter.filter.name,filter.filter.id)"  md-prevent-menu-close="md-prevent-menu-close"/>
                                                                 <span class="bigcheck-target pull-right"></span>
                                                             </label>
-                                                        </div>                                                                     
+                                                        </div>
                                                         <ul ng-repeat="value in filter.values" class="cutom-filter-ul" style="overflow: hidden;">
                                                             <div class="bigcheck">
                                                                 <label class="filter-label" >

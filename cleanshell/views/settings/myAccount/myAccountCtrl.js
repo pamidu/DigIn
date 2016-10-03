@@ -86,6 +86,19 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$mdDialog','DiginServices', 'not
 		});
 	}, 1000);
 	
+	$scope.uploadCompanyLogo = function(ev)
+	{
+		$mdDialog.show({
+		  controller: "uploadCompanyLogoCtrl",
+		  templateUrl: 'views/settings/myAccount/uploadCompanyLogo.html',
+		  parent: angular.element(document.body),
+		  targetEvent: ev,
+		  clickOutsideToClose:true
+		})
+		.then(function(answer) {
+		})
+	}
+	
 	var vm = this;
 	
 	vm.companyPricePlans = [
@@ -285,6 +298,34 @@ DiginApp.controller('uploadProfilePictureCtrl',['$scope','$mdDialog','$http','no
 	{
 		var profileImg = document.getElementById('profileImg');
 		var profileImgSrc = someimage.src;
+		console.log(profileImgSrc);
+	}
+}])
+
+DiginApp.controller('uploadCompanyLogoCtrl',['$scope','$mdDialog','$http','notifications' ,function ($scope,$mdDialog,$http,notifications) {
+	
+	$scope.fileChanged = function(e)
+	{
+		if( !e ) e = window.event;
+		var x = e.target||e.srcElement;
+		
+		var file = e.target.files[0];
+		var reader = new FileReader();
+		reader.onload = function(){
+			$scope.theImage1 = reader.result;
+			$scope.$apply();
+		};
+		reader.readAsDataURL(file);
+	}
+	
+	$scope.cancel = function() {
+		$mdDialog.cancel();
+	};
+	
+	$scope.submit = function()
+	{
+		var profileImg = document.getElementById('profileImg');
+		var profileImgSrc = profileImg.src;
 		console.log(profileImgSrc);
 	}
 }])

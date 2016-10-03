@@ -1,10 +1,10 @@
-var app = angular.module('app', ['ngMaterial', 'ngMessages', 'md-steppers','stripe-payment-tools','ngCookies']);
+var app = angular.module('app', ['ngMaterial', 'ngMessages', 'md-steppers','stripe-payment-tools','ngCookies','configuration']);
 
-app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGateway,$mdDialog,$cookies,$http) {
+app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGateway,$mdDialog,$cookies,$http,Digin_Tenant,Digin_Domain) {
 
     var vm = this;
 
-	vm.price=100;
+    vm.price=100;
 
     vm.companyPricePlans = [
         {
@@ -86,40 +86,106 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             $rootScope.createdTenantID="";
             $rootScope.btnMessage="Thank you...!";
             $rootScope.btnContinue="Exit";
+            
+            var deferred = $q.defer();
+            vm.showBusyText = true;
+            console.log('On before submit');
+            if (!tenant.completed && !isSkip) {
+                //simulate $http
+                $timeout(function () {
+                    vm.showBusyText = false;
+                    console.log('On submit success');
+                    deferred.resolve({ status: 200, statusText: 'success', data: {} });
+                    //move to next step when success
+                    tenant.completed = true;
+                    vm.enableNextStep();
+                }, 1000)
+            } else {
+                vm.showBusyText = false;
+                vm.enableNextStep();
+            }
+            
+            
         }
         else{
-            var companyDetail="";
-            if(tenant!=null || tenant!="" || tenant!=undefined){
-                companyDetail=tenant;
-            }
-            $rootScope.companyDetail=companyDetail;
+            var SecToken = decodeURIComponent($cookies.get('securityToken'));
+            $http.get(Digin_Tenant+'/tenant/GetTenant/'+tenant.name+'.'+Digin_Domain, {
+                headers: {'Securitytoken': SecToken}
+            })
+            .success(function (response) {
+                console.log(response);
+                if(response.TenantID==null || response.TenantID==""){
+                        var companyDetail="";
+                        if(tenant!=null || tenant!="" || tenant!=undefined){
+                            companyDetail=tenant;
+                        }
+                        $rootScope.companyDetail=companyDetail;
+                        
+                        var deferred = $q.defer();
+                        vm.showBusyText = true;
+                        console.log('On before submit');
+                        if (!tenant.completed && !isSkip) {
+                            //simulate $http
+                            $timeout(function () {
+                                vm.showBusyText = false;
+                                console.log('On submit success');
+                                deferred.resolve({ status: 200, statusText: 'success', data: {} });
+                                //move to next step when success
+                                tenant.completed = true;
+                                vm.enableNextStep();
+                            }, 1000)
+                        } else {
+                            vm.showBusyText = false;
+                            vm.enableNextStep();
+                        }
+                }
+                else
+                {
+                    displayError("This tenant name is already registered...");
+                }
+                
+                //displayError("This tenant name is already registered...");
+            }).error(function (error) {
+                displayError(error.Message);
+            });
+            
+                        //#for testing-------
+                        /*
+                        var companyDetail="";
+                        if(tenant!=null || tenant!="" || tenant!=undefined){
+                            companyDetail=tenant;
+                        }
+                        $rootScope.companyDetail=companyDetail;
+                        
+                        var deferred = $q.defer();
+                        vm.showBusyText = true;
+                        console.log('On before submit');
+                        if (!tenant.completed && !isSkip) {
+                            //simulate $http
+                            $timeout(function () {
+                                vm.showBusyText = false;
+                                console.log('On submit success');
+                                deferred.resolve({ status: 200, statusText: 'success', data: {} });
+                                //move to next step when success
+                                tenant.completed = true;
+                                vm.enableNextStep();
+                            }, 1000)
+                        } else {
+                            vm.showBusyText = false;
+                            vm.enableNextStep();
+                        }
+                        */
+                        //---------------------
         }
         
-        var deferred = $q.defer();
-        vm.showBusyText = true;
-        console.log('On before submit');
-        if (!tenant.completed && !isSkip) {
-            //simulate $http
-            $timeout(function () {
-                vm.showBusyText = false;
-                console.log('On submit success');
-                deferred.resolve({ status: 200, statusText: 'success', data: {} });
-                //move to next step when success
-                tenant.completed = true;
-                vm.enableNextStep();
-            }, 1000)
-        } else {
-            vm.showBusyText = false;
-            vm.enableNextStep();
-        }
     }
 
     //*load card detail window from stripe*/
     vm.loadCardDetail = function loadCardDetail(ev, plan) {
-					
-		displayProgress('Processing...!');
+                    
+        displayProgress('Processing...!');
 
-		/*Tenant creation process*/	 
+        /*Tenant creation process*/  
         var userInfo ="";
         var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
         var email=userInfo.Email;
@@ -132,7 +198,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             var companyDetail= $rootScope.companyDetail;
             
         $scope.tenantDtl = {
-            "TenantID": TenantID,
+            "TenantID": companyDetail.name,
             "TenantType":"Company", //companyDetail.type,
             "Name": companyDetail.name,
             "Shell": "",
@@ -161,39 +227,39 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         .success(function (response) {
             //var res=decodeURIComponent(response);
             if (response.Success == true) {
-				$rootScope.createdTenantID=response.Data.TenantID;
-				
-				if(plan.id=="Free"){
-					$rootScope.trial=true;
-					$rootScope.btnMessage="Congratulations...! This trial version is valid only for 30 days.";
-					$mdDialog.hide();
-					localStorage.setItem('firstLogin',true);
-					$rootScope.btnContinue="Continue";
-					vm.enableNextStep();
-				}
-				else{
-					//--------------------load stripe payement detail window
-					var stripeConfig = {
-						publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
-						title: 'DigIn',
-						description: "Beyond BI",
-						logo: 'img/small-logo.png',
-						label: 'New Card'
-					};
+                $rootScope.createdTenantID=response.Data.TenantID;
+                
+                if(plan.id=="Free"){
+                    $rootScope.trial=true;
+                    $rootScope.btnMessage="Congratulations...! This trial version is valid only for 30 days.";
+                    $mdDialog.hide();
+                    localStorage.setItem('firstLogin',true);
+                    $rootScope.btnContinue="Continue";
+                    vm.enableNextStep();
+                }
+                else{
+                    //--------------------load stripe payement detail window
+                    var stripeConfig = {
+                        publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
+                        title: 'DigIn',
+                        description: "Beyond BI",
+                        logo: 'img/small-logo.png',
+                        label: 'New Card'
+                    };
                    
-					var stripegateway = paymentGateway.setup('stripe').configure(stripeConfig);
-					stripegateway.open(ev, function(token, args) {
-						console.log(token);
-						if(token!=null || token!="" || token!=undefined){
-							vm.proceedPayment(token,plan);
-						}
-						else
-						{
-							displayError("Error while retriving token from stripe");
-						}
-					});	
-					//------------------
-				}
+                    var stripegateway = paymentGateway.setup('stripe').configure(stripeConfig);
+                    stripegateway.open(ev, function(token, args) {
+                        console.log(token);
+                        if(token!=null || token!="" || token!=undefined){
+                            vm.proceedPayment(token,plan);
+                        }
+                        else
+                        {
+                            displayError("Error while retriving token from stripe");
+                        }
+                    }); 
+                    //------------------
+                }
             }
             else {  
                 $mdDialog.hide();
@@ -202,18 +268,18 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         })
         .error(function (error) {
             $mdDialog.hide();
-			displayError(error);
+            displayError(error);
         }); 
     }
 
-	
+    
     /*proceed with payement*/
     vm.proceedPayment = function proceedPayment(token,plan) {
         displayProgress('Processing...');
 
-		var price=vm.price;
-		
-		var sampleObj = {
+        var price=vm.price;
+        
+        var sampleObj = {
             "token":token.id,
             "plan" : {
                 "attributes":  [
@@ -223,8 +289,8 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                 "quantity": 1 
             }
         }
-		
-		/*var sampleObj = {
+        
+        /*var sampleObj = {
             "token":token.id,
             "plan" : {
                 "attributes":  [
@@ -235,28 +301,38 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                 "quantity": 1 
             }
         }*/
-		
+        
         $http({
             url : "/include/duoapi/paymentgateway/puchasePackage",
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/puchasePackage",
             method : "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
             data : sampleObj
         }).then(function(response){
-            console.log(response)
-                if(response.statusText=="OK"){
-                    $rootScope.btnMessage="Congratulations...! Tenant creation completed successfully.";
-					localStorage.setItem('firstLogin',true);
-					$rootScope.btnContinue="Continue";
-					$mdDialog.hide();
-					vm.enableNextStep();  
-                }
-            $mdDialog.hide();
+                console.log()
+                    if(response.statusText=="OK"){
+                        if(response.data.status==false){
+                            displayError(response.data.result);
+                        }
+                        else{
+                            $rootScope.btnMessage="Congratulations...! Tenant creation completed successfully.";
+                            localStorage.setItem('firstLogin',true);
+                            $rootScope.btnContinue="Continue";
+                            $mdDialog.hide();
+                            vm.enableNextStep(); 
+                        }    
+                    }
+                    else
+                    {
+                        displayError("Error occured while completing payment procees...");
+                    }
+                $mdDialog.hide();
         },function(response){
             console.log(response)
             $mdDialog.hide();
-			displayError("Error while completing payment procees...");
+            displayError("Error occured while completing payment procees...");
         })
     }
 
@@ -269,11 +345,11 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         });
     };
 
-	//#common error message
+    //#common error message
     var displayError = function (message) {
         $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process fail !').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
     };
-	
+    
     //#goto Welcome page
     vm.continueBtn = function continueBtn() {
         if($rootScope.btnContinue=="Continue"){
@@ -284,8 +360,8 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         }
     }
     
-    
-    
+
+
 });
 
 

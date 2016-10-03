@@ -248,7 +248,7 @@ Params: token - token that genarated by stripe
 					{
 						"attributes":  [
 							{"tag":"Package","feature": "Gold Package","amount": 20,"quantity":0,"action":"add"},
-							{"tag":"user","feature": "Additional user","amount": 0, "quantity":5,"action":"add"}
+							{"tag":"user","feature": "Additional +1 user","amount": 10, "quantity":5,"action":"add"}
 						],
 						"subscription": "month",
 						"quantity":	1 
@@ -259,6 +259,30 @@ Success response:  {"status": true}
 
 Error response: {"status": false,"response": {}}
 
+-----------------------------------
+Subscribe for Custom plan(Alacarte)
+-----------------------------------
+
+invoke when subscribes for a alacarte plan
+
+Method: (new CloudCharge())->plan()->subscribeToCustomplan($token ,$planInfo);
+
+Params: token - token that genarated by stripe
+				planInfo - object that contains plan info
+
+					{
+						"attributes":  [
+							{"tag":"Package","feature": "Gold Package","amount": 20,"quantity":0,"action":"add"},
+							{"tag":"user","feature": "Additional +1 user","amount": 10, "quantity":5,"action":"add"}
+						],
+						"subscription": "month",
+						"quantity":	1 
+					}
+
+
+Success response:  {"status": true}
+
+Error response: {"status": false,"response": {}}
 
 ----------------
 Customize a plan

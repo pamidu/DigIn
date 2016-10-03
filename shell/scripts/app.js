@@ -35,7 +35,8 @@ var routerApp = angular.module('DuoDiginRt', [
     "ngTagsInput",
     'pouchdb',
     'jkuri.slimscroll',
-	'md-steppers'
+	'md-steppers',
+    'stripe-payment-tools'
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {

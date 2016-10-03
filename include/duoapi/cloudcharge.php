@@ -3,9 +3,10 @@
 /*
 
 	CloudCharge Endpoint Library
-		Version 1.0.5
+		Version 1.0.6
 	
 	change-log [
+		2016-9-26 - intraduce new methods to handle plan upgrade related operations.
 		2016-9-08 - introduce new methods to handle plan related operations.
 		2016-9-02 - introduce new methods to handle card related operations.
 		2016-9-02 - format method responses.
@@ -339,9 +340,10 @@ class Plan {
 		$plan->planDetails = $planInfo->attributes;
 		$plan->interval = $planInfo->subscription;
 		$plan->quantity = (isset($planInfo->quantity)) ? (int)$planInfo->quantity : 1;
-		//echo json_encode($plan); exit();
+
 		$res = $this->cClient->getRequestInvoker()->post("/customPackage", $plan);
 		return $this->getDefaultValue($res);
+
 	}
 
 	public function customize($planInfo) {
@@ -376,7 +378,52 @@ class Plan {
 
 	}
 
-	public function upgrade() { }
+	public function upgradeToFixedplan($planInfo) {
+		/* {"plan":"Gold", "amount": 10, "quantity":1} */
+
+		$plan = new FixedPlanStruct();
+		$plan->plan = $planInfo->plan;
+		$plan->amount = (float)$planInfo->amount;
+		$plan->quantity = (isset($planInfo->quantity)) ? (int)$planInfo->quantity : 1;
+		unset($plan->token);
+
+		$res = $this->cClient->getRequestInvoker()->post("/upgrade", $plan);
+		return $this->getDefaultValue($res);
+
+	}
+
+	public function upgradeToCustomplan($planInfo) {
+
+		/*
+			{
+				"attributes": [
+					{"tag":"storage","feature": "25GB storage","quantity":0,"amount": 30,"action":"remove"},
+					{"tag":"user","feature": "Additional users","amount": 15,"quantity":5,"action":"add"}
+				],
+				"subscription": "month",
+				"quantity":	1 
+			}
+		*/
+
+		$plan = new CustomPlanStruct();
+
+		$totamount = 0.0;
+		foreach ($planInfo->attributes as $attribute) {
+			if($attribute->action === "add")
+				$totamount += (float)$attribute->amount;
+		}
+		
+		$plan->plan = "custom";
+		$plan->pacakgeAmount = $totamount;
+		$plan->planDetails = $planInfo->attributes;
+		$plan->interval = $planInfo->subscription;
+		$plan->quantity = (isset($planInfo->quantity)) ? (int)$planInfo->quantity : 1;
+		unset($plan->customer);
+		unset($plan->token);
+
+		$res = $this->cClient->getRequestInvoker()->post("/upgrade", $plan);
+		return $this->getDefaultValue($res);
+	}
 
 	public function stopSubscription($now = false) { 
 
@@ -450,10 +497,6 @@ class CloudCharge {
 	
 }
 
-
-////http://staging.digin.io/services/duosoftware.paymentgateway.service/stripe/fixedPackage
-//
-
 /*
 
 	(new CloudCharge())->user()->get();
@@ -481,7 +524,19 @@ class CloudCharge {
 			]
 		}
 
-	(new CloudCharge())->plan()->upgrade();
+	(new CloudCharge())->plan()->upgradeToFixedplan($planInfo); 
+		{"plan":"Gold", "amount": 10, "quantity":1}
+
+	(new CloudCharge())->plan()->upgradeToCustomplan($planInfo);
+		{
+			"attributes": [
+				{"tag":"storage","feature": "25GB storage","quantity":0,"amount": 30,"action":"remove"},
+				{"tag":"user","feature": "Additional users","amount": 15,"quantity":5,"action":"add"}
+			],
+			"subscription": "month",
+			"quantity":	1 
+		}
+
 	(new CloudCharge())->plan()->stopSubscription([$stopnow]);
 	(new CloudCharge())->plan()->resubscribe();
 

@@ -1,0 +1,160 @@
+<style>
+#pagingTabs md-tabs-wrapper
+{
+	background: white !important;
+	height: 40px !important;
+	border-top: 1px solid lightgrey;
+}
+#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab
+{
+	color: white !important;
+	background: #afb6bc;
+}
+
+#pagingTabs md-tabs-wrapper md-tabs-canvas
+{
+	left: 45px !important;
+	max-height:40px;
+}
+
+#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active
+{
+	color: white !important;
+	background: #3b6981 !important;
+	-ms-transform: scale(1.1, 1.1); /* IE 9 */
+    -webkit-transform: scale(1.1, 1.1); /* Safari */
+    transform: scale(1.1, 1.1);
+}
+
+#pagingTabs md-tabs-content-wrapper
+{
+	height: calc(100vh - 86px);	
+	position: relative;
+
+}
+
+md-tabs[md-align-tabs=bottom]
+{
+	padding-bottom: 40px !important;
+}
+.widget-header
+{
+	background: white;
+    padding: 0px 10px 0px 10px;
+}
+
+.widget-button
+{
+	color: #02b5e2;
+}
+.widget-button:hover
+{
+	color: #f9a525;
+}
+
+.md-tab.md-disabled
+{
+	opacity: 1;
+	background: white !important;
+	color: black !important;
+}
+
+.md-menu {
+    padding: 0px
+}
+
+.links
+{
+	text-decoration:none;
+	color: #428bca;
+}
+
+.align-left
+{
+    text-align: left;
+	color: white;
+	font-size:20px;
+	line-height:30px;
+}
+ 
+ p{
+	margin: 4px;
+ }
+
+</style>
+
+<footer style="width:100%;right:0px;bottom:0px;position:fixed;">
+	<md-tabs id="pagingTabs" md-align-tabs="bottom">
+	  <md-tab id="tab1" md-on-select="selectPage($index)">
+		<md-tab-label layout="row" layout="space-between center">
+			<span  style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>Manage Users</span>
+			<span flex></span>
+		</md-tab-label>
+		<md-tab-body>
+		
+			<div layout="row" style="max-width:960px;margin: 0 auto;margin-bottom: 15px;margin-top:20px">
+				<input placeholder="Type the user's Email to Invite" style="width:100%;border-radius: 4px 0px 0px 4px !important;box-shadow:0 2px 4px 0 rgba(0,0,0,.15) !important;margin-top: 0px !important;" type="text" ng-model="searchText" ng-keypress="($event.which === 13)?enterInviteUser($event,searchText):0" />
+				<md-button aria-label="Open demo menu" class="md-raised md-primary" style="border-radius: 0px 4px 4px 0px !important;background: #02b5e2;margin: 0px;" ng-click="enterInviteUser($event,searchText)">
+					<span style="text-transform:none">Add User</span>
+				</md-button>
+			</div>
+			
+			<!--WHITEFRAME START-->
+			<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
+
+				<md-content>
+
+					<form name="editForm"  md-theme="default" layout-padding>
+
+						<md-list ng-cloak>
+							<md-list-item ng-repeat="user in $root.sharableUsers | filter:searchText">
+								<img ng-src="{{user.imgUrl}}" err-src="{{getCatLetter(user.Name)}}" class="md-avatar" alt="{{user.Name}}" />
+								<div layout="row" flex>
+									<p style="font-weight:700"  flex="40"> {{ user.Name }} </p>
+									<p style="color:#717171" flex> {{ user.Id}} </p>
+								</div>
+								<md-menu md-position-mode="target-right target" >
+									<md-button aria-label="Open demo menu" class="md-icon-button ti-more" style="font-size:20px" ng-click="$mdOpenMenu($event)">
+									</md-button>
+									<md-menu-content width="4" >
+										<md-menu-item>
+										  <md-button ng-click="removeUser($event, user)">
+											  <div layout="row" flex>
+												<p flex>Remove User</p>
+												<div class="ti-trash" style="font-size: 20px;padding-top: 8px;"></div>
+											  </div>
+										  </md-button>
+										</md-menu-item>
+									</md-menu-content>
+							   </md-menu>
+							   <md-divider ng-show="!$last"></md-divider>
+							</md-list-item>
+						
+						</md-list>
+						<div ng-show="($root.sharableUsers|filter:searchText).length == 0" layout="row" layout-align="center center">
+							<img src="views/settings/inviteUser/desert.png" />
+							<span style="padding-left:20px;font-weight:700">There are currently no users with access to your account with this keyword/ email, try adding 'em.</span>
+						</div>
+
+				
+
+					</form>
+
+				</md-content>
+
+			</md-whiteframe><br/>
+		</md-tab-body>
+	  </md-tab>
+	  <md-tab label="add page">
+		<md-tab-label layout="row" layout="space-between center">
+			<span  style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>
+				System Roles
+			</span>
+		</md-tab-label>
+		<md-tab-body>
+
+		</md-tab-body>
+	  </md-tab>
+	</md-tabs>
+
+</footer>

@@ -40,6 +40,7 @@ var fbInterface = new function () {
             fbInterface.getUserPages(scope, function () {
                 scope.lblPageLogin = analysis ? 'Logout' : 'Login';
                 localStorage.setItem('authResponse', JSON.stringify(response.authResponse));
+                console.log(response.authResponse);
 
                 if (callback) callback(response);
             });

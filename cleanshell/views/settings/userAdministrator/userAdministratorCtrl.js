@@ -1,6 +1,6 @@
-DiginApp.controller('inviteUserCtrl',[ '$scope', '$rootScope','$mdDialog', 'DiginServices', 'notifications', '$timeout',function ($scope, $rootScope,$mdDialog, DiginServices, notifications,$timeout){
+DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','DiginServices', 'notifications','paymentGateway','$http', function ($scope,$rootScope,$mdDialog,DiginServices,notifications,paymentGateway,$http){
 	
-	$scope.$parent.currentView = "Invite User";
+	$scope.$parent.currentView = "User Administrator";
 	
 	DiginServices.getInvitedUsers(function(data) {});
 	var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -71,4 +71,7 @@ DiginApp.controller('inviteUserCtrl',[ '$scope', '$rootScope','$mdDialog', 'Digi
 		}catch(exception){}
 		return catogeryLetter;
 	}; 
+	
+
+	
 }])

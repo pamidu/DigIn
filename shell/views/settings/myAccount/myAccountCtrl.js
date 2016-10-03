@@ -1,6 +1,6 @@
 
 routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDialog,notifications,profile,$http, Upload,
-                                                     Digin_Domain, Digin_Tenant,$mdDialog, $location,Digin_Engine_API, $apps,ProfileService) {
+                                                     Digin_Domain, Digin_Tenant,$mdDialog, $location,Digin_Engine_API, $apps,ProfileService,paymentGateway) {
 
     
 //#Subscription START----------------------
@@ -83,6 +83,94 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
   {
     console.log("make Default");
   }
+
+
+  //#load stripe payement detail window
+  vm.loadStripe=function(ev,plan){  
+    var stripeConfig = {
+      publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
+      title: 'DigIn',
+      description: "Beyond BI",
+      logo: '/boarding/img/small-logo.png',
+      label: 'New Card'
+    };
+     
+    var stripegateway = paymentGateway.setup('stripe').configure(stripeConfig);
+    stripegateway.open(ev, function(token, args) {
+      console.log(token);
+      if(token!=null || token!="" || token!=undefined){
+        vm.upgradePackage(token,plan);
+      }
+      else
+      {
+        displayError("Error while retriving token from stripe");
+      }
+    });
+  } 
+
+  
+  //#Customize existing package
+  vm.customizePackage=function(plan){ 
+    var pkgObj = {
+            "plan" : {
+        "features": [
+          {"tag":"storage","feature": "25GB storage","quantity":0,"amount": 30,"action":"remove"},
+          {"tag":"user","feature": "Additional users","amount": 15,"quantity":5,"action":"add"}
+        ]
+      }
+        }
+        
+        $http({
+            url : "/include/duoapi/paymentgateway/customizePackage",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data : pkgObj
+        }).then(function(response){
+      console.log(response)
+            $mdDialog.hide();
+        },function(response){
+            console.log(response)
+            $mdDialog.hide();
+        })
+    
+  }
+  
+  
+  //#Upgrade exisitng package into another package
+  vm.upgradePackage=function(token,plan){ 
+    var pkgObj = {
+            "token":token.id,
+            "plan" : {
+                "attributes":  [
+                    {"tag":"Package","feature": "Gold Package","amount": 20,"quantity":0,"action":"add"},
+                    {"tag":"user","feature": "Additional +1 user","amount": 10, "quantity":5,"action":"add"}
+                ],
+                "subscription": "month",
+                "quantity": 1 
+            }
+        }
+    
+        $http({
+            url : "/include/duoapi/paymentgateway/upgradePackage",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data : pkgObj
+        }).then(function(response){
+      console.log(response)
+            $mdDialog.hide();
+        },function(response){
+            console.log(response)
+            $mdDialog.hide();
+        })
+    
+  }
+
+
+
 
 //#Subscription END----------------------
 

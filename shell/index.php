@@ -384,14 +384,15 @@
 <script  type="text/javascript" src="http://code.highcharts.com/maps/modules/drilldown.js"></script>
 <script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/world-continents.js"></script>
  <script src="http://code.highcharts.com/mapdata/custom/world.js"></script>
+ <script type="text/javascript" src="scripts/vendor/lk-all.js"></script>
 <script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/asia.js"></script>
-<script  type="text/javascript" src="http://code.highcharts.com/mapdata/countries/lk/lk-all.js"></script>
 <script  type="text/javascript" src="http://code.highcharts.com/mapdata/countries/us/us-all.js"></script>
 <script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/oceania.js"></script>
 <script type="text/javascript"  src="http://code.highcharts.com/mapdata/custom/europe.js"></script>
 <script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/north-america.js"></script>
 <script type="text/javascript"  src="http://code.highcharts.com/mapdata/custom/south-america.js"></script>
 <script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/id/id-all.js"></script>
+<script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/in/in-all.js"></script>
 <script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/al/al-all.js"></script>
 <script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/dz/dz-all.js"></script>
 <script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/as/as-all.js"></script>

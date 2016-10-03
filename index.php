@@ -162,7 +162,6 @@
 <!-- image crop -->
 <script type="text/javascript" src="bower_components/imgcrop/ng-img-crop.js"></script>
 
-
 <script src="bower_components/tag-input/ng-tags-input.min.js"></script>
 
 <!-- codemirror -->
@@ -457,4 +456,6 @@
 <script src="http://static.videogular.com/scripts/videogular/latest/videogular.js"></script>
 <script src="http://static.videogular.com/scripts/controls/latest/vg-controls.js"></script>
 <script src="http://static.videogular.com/scripts/youtube/latest/youtube.js"></script>
+
+
 </html>

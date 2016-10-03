@@ -30,7 +30,7 @@ routerApp.controller('fbInit',['$scope', '$mdDialog', 'widgetID', '$rootScope',f
     var pages = $rootScope.dashboard.pages;
     var objIndex = getRootObjectById( widgetID, pages[selectedPage-1].widgets);
 
-    
+   
 
 
 
@@ -158,6 +158,15 @@ routerApp.controller('fbInit',['$scope', '$mdDialog', 'widgetID', '$rootScope',f
         }
     };
 
+    $scope.likes = [];
+    $scope.views = [];
+    $scope.summary = {};
+
+    $scope.getDate = function(date){
+        var str = date;
+        var res = str.split("T");
+        return res[0];
+    }
 
     //complete config  
     $scope.fetch = function() {
@@ -172,39 +181,39 @@ routerApp.controller('fbInit',['$scope', '$mdDialog', 'widgetID', '$rootScope',f
         //getting page likes insights
         fbInterface.getPageLikesInsight($scope.fbPageModel, dateObj, function(data) {
 
-            var likeHistory = fbInterface.getPageLikesObj(data);
-            $scope.chartConf.series[0].data = likeHistory.likeArr;
-            $scope.chartConf.series[0].pointStart = Date.UTC(likeHistory.start.getUTCFullYear(), likeHistory.start.getUTCMonth(), likeHistory.start.getUTCDate());;
-            $scope.chartConf.series[0].pointInterval = likeHistory.interval;
-
-            // var obj = {
-            //     pgData: $scope.pageData,
-            //     likeData: $scope.chartConf
-            // };
-            // $rootScope.dashboard.widgets[objIndex].widData = obj;
+            for(var i=0; i< data.data[0].values.length ; i++){
+                var like = {
+                    date: $scope.getDate(data.data[0].values[i].end_time),
+                    value: data.data[0].values[i].value
+                };
+                $scope.likes.push(like);
+            }
+           
+            
+         
         });
 
         //getting page views insights
         fbInterface.getPageViewsInsight($scope.fbPageModel, dateObj, function(data) {
+             $scope.summary = {};
+         
+           for(var i=0; i< data.data[1].values.length ; i++){
+                var view = {
+                    date: $scope.getDate(data.data[0].values[i].end_time),
+                    value: data.data[0].values[i].value
+                };
+                $scope.views.push(view);
+            }
+            
+            $scope.summary ={
+                likes:$scope.likes,
+                views:$scope.views
+            }
 
-            var viewHistory = fbInterface.getPageLikesObj(data);
-            $scope.chartConfView.series[0].data = viewHistory.likeArr;
-            $scope.chartConfView.series[0].pointStart = Date.UTC(viewHistory.start.getUTCFullYear(), viewHistory.start.getUTCMonth(), viewHistory.start.getUTCDate());;
-            $scope.chartConfView.series[0].pointInterval = viewHistory.interval;
-
-            // var obj = {
-            //     pgData: $scope.pageData,
-            //     likeData: $scope.chartConf,
-            //     viewData: $scope.chartConfView
-            // };
-            // $rootScope.dashboard.widgets[objIndex].widData = obj;
-            var obj = {
-                pgData: $scope.pageData,
-                likeData: $scope.chartConf,
-                viewData: $scope.chartConfView
-            };
-            $rootScope.dashboard.widgets[objIndex].widData = obj;
+            var objIndex = getRootObjectById(widgetID, $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets);
+            $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[objIndex].widgetData.widData = $scope.summary;
             $scope.showFinishButton = true;
+            $scope.$apply();
             $scope.diginLogo = 'digin-logo-wrapper2';
         });
 
@@ -2201,7 +2210,7 @@ routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widgetID', '$
     $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
     $scope.entryArray = [];
 
-    $http.get('https://bingapis.azure-api.net/api/v5/search/',{params: { q: $scope.gnewsrequest ,count:50 },headers: {'Ocp-Apim-Subscription-Key': '0c2e8372aeab41539540cc61edac0c3f'}})
+    $http.get('https://api.cognitive.microsoft.com/bing/v5.0/search/',{params: { q: $scope.gnewsrequest ,count:50 },headers: {'Ocp-Apim-Subscription-Key': '0c2e8372aeab41539540cc61edac0c3f'}})
     .success(function(data) {
              if(!angular.isUndefined(data.webPages)){
                      console.log("data from search",data.webPages.value)

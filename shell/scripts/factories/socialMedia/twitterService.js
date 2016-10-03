@@ -43,7 +43,7 @@ routerApp.factory('twitterService', function ($q, ngToast, $http, Digin_Domain) 
 
             //initialize OAuth.io with public key of the application
 
-            OAuth.initialize('19gVB-kbrzsJWQs5o7Ha2LIeX4I', {
+            OAuth.initialize('ySObL4Bj6x1vdJGwr1V8VXV8W7g', {
                 cache: true
             });
             

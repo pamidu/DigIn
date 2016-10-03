@@ -59,7 +59,12 @@ routerApp.controller('dataSourceCtrl', function($scope, $rootScope, $state, $dig
         name: "MSSQL",
         icon: "styles/css/images/data-source/sql.png",
         selected: false
-    }];
+    }, {
+        name: "Upload",
+        icon: "styles/css/images/data-source/excel.png",
+        selected: false
+    
+	}];
 
     //data base field type
     $scope.dataBaseFiledTypes = [{

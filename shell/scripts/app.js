@@ -34,7 +34,8 @@ var routerApp = angular.module('DuoDiginRt', [
     "info.vietnamcode.nampnq.videogular.plugins.youtube",
     "ngTagsInput",
     'pouchdb',
-    'jkuri.slimscroll'
+    'jkuri.slimscroll',
+	'md-steppers'
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
@@ -153,6 +154,18 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             data: {
                 requireLogin: true
             }
+        })
+		.state("home.excelFileUpload", {
+            url: "/excelFileUpload",
+            controller: "excelFileUploadCtrl",
+            templateUrl: "views/widgets/excelFileUpload/excelFileUpload.html",
+            controllerAs: 'vm'
+        })
+		.state("home.myAccount", {
+            url: "/myAccount",
+            controller: "myAccountCtrl",
+            templateUrl: "views/settings/myAccount/myAccount.html",
+            controllerAs: 'vm'
         })
         .state("home.userProfile", {
             url: "/settings-userProfile",

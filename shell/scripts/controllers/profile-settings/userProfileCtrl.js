@@ -196,15 +196,18 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
 
     $scope.editModeOn = true;
   
-      $scope.user = {
-            name:  $rootScope.profile_Det.Name,
-            company:  $rootScope.profile_Det.Company, 
-            email: $rootScope.profile_Det.Email,
-            contactNo: $rootScope.profile_Det.PhoneNumber,
-            street: $rootScope.profile_Det.BillingAddress,
-            country: $rootScope.profile_Det.Country,
-            zip: $rootScope.profile_Det.ZipCode
+
+        $scope.user = {
+          name:  $rootScope.profile_Det.Name,
+          company:  $rootScope.profile_Det.Company, 
+          email: $rootScope.profile_Det.Email,
+          contactNo: $rootScope.profile_Det.PhoneNumber,
+          street: $rootScope.profile_Det.BillingAddress,
+          country: $rootScope.profile_Det.Country,
+          zip: $rootScope.profile_Det.ZipCode
         };
+      
+          
 
         $scope.closeWindow=function(){
             $state.go('home.welcomeSearch');
@@ -307,17 +310,7 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
                 }
         };
 
-
-
-   
-
-
-
-
-
-
-
-    })();
+      })();
 
     //UI animation
     var uiAnimation = (function () {
@@ -1112,28 +1105,25 @@ routerApp.controller('changePasswordCtrl',['$scope','$mdDialog','$http','notific
   };
   $scope.submit = function()
   {
-     
-        if ($scope.newPassword === $scope.oldPassword) {
+          if ($scope.newPassword === $scope.confirmNewPassword) {
 
             console.log(window.location.host + '/auth/ChangePassword/' + encodeURIComponent($scope.oldPassword) + '/' + encodeURIComponent($scope.newPassword));
             $http.get('/auth/ChangePassword/' + encodeURIComponent($scope.oldPassword) + '/' + encodeURIComponent($scope.newPassword))
                 .success(function (data) {
-
-                    if (data == "false") {;
-            notifications.toast('0', 'Error occurred while changing the password');
+                    if (data.Error) {;
+            notifications.toast('0', data.Message);
                     } else {
-            notifications.toast('1', 'Passoword Successfully Changed.');
+            notifications.toast('1', 'Passoword is changed successfully.');
                         $mdDialog.hide();
                     }
 
                 }).error(function () {
-                    notifications.toast('0',"Error occurred while changing the password");
+                    notifications.toast('0',"Error occurred while changing the password.");
                 });
 
         } else {
       notifications.toast('0', 'Passwords does not match.');
         }
-    //$mdDialog.hide($scope.email);
   }
 }])
 

@@ -20,6 +20,17 @@
             "color": "#FF9800",
             "sizeX": 4, "sizeY": 4, "row": 0, "col": 4
         }, {
+            "title": "Excel Upload",
+            "icon": "styles/css/images/icons/excel.svg",
+            "type": "Custom",
+            "Description": "Upcoming events",
+            "initTemplate": "views/InitConfigCalendar.html",
+            "initController": "calendarInit",
+            "widView": "views/ViewCalendar.html",
+            "color": "#FF9800",
+            "sizeX": 4, "sizeY": 4, "row": 0, "col": 4
+        },
+		{
             "title": "Clock",
             "icon": "styles/css/images/icons/dashboard.svg",
             "type": "General",

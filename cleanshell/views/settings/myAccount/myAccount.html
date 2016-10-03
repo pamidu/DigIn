@@ -1,0 +1,622 @@
+<style>
+#pagingTabs md-tabs-wrapper
+{
+	background: white !important;
+	height: 40px !important;
+	border-top: 1px solid lightgrey;
+}
+#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab
+{
+	color: white !important;
+	background: #afb6bc;
+}
+
+#pagingTabs md-tabs-wrapper md-tabs-canvas
+{
+	left: 45px !important;
+	max-height:40px;
+}
+
+#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active
+{
+	color: white !important;
+	background: #3b6981 !important;
+	-ms-transform: scale(1.1, 1.1); /* IE 9 */
+    -webkit-transform: scale(1.1, 1.1); /* Safari */
+    transform: scale(1.1, 1.1);
+}
+
+#pagingTabs md-tabs-content-wrapper
+{
+	height: calc(100vh - 86px);	
+	position: relative;
+
+}
+
+md-tabs[md-align-tabs=bottom]
+{
+	padding-bottom: 40px !important;
+}
+.widget-header
+{
+	background: white;
+    padding: 0px 10px 0px 10px;
+}
+
+.widget-button
+{
+	color: #02b5e2;
+}
+.widget-button:hover
+{
+	color: #f9a525;
+}
+
+.md-tab.md-disabled
+{
+	opacity: 1;
+	background: white !important;
+	color: black !important;
+}
+
+.md-menu {
+    padding: 0px
+}
+
+/* common styles */
+.padding-5 {
+    padding: 5px;
+}
+
+.padding-10 {
+    padding: 10px;
+}
+
+.margin-bottom-5 {
+    margin-bottom: 5px;
+}
+
+.margin-bottom-2 {
+    margin-bottom: 2px;
+}
+
+/****** start wordpress, twitter, rss widgets custom css *****/
+
+/* common classes*/
+.data-container1 {
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 500;
+    width: 100%;
+    padding-left: 8px;
+    padding-bottom: 8px;
+	font-size: 12px;
+}
+
+.data-slot1 {
+    padding: 8px;
+}
+
+.data-slot2 {
+    text-align: left;
+}
+
+.data-slot3 {
+    border-radius: 5px;
+}
+
+.data-field1 {
+    border-radius: 4px 0px 0px 4px;
+    width: 80%;
+    padding: 8px;
+}
+
+.data-field2 {
+    border-radius: 4px 0px 0px 4px;
+    width: 50%;
+    padding: 8px;
+}
+
+.data-field3 {
+    border-radius: 4px 0px 0px 4px;
+    width: 30%;
+    padding: 8px;
+}
+
+.data-item1 {
+    border-radius: 0px 4px 4px 0px;
+    width: 70%;
+    padding: 8px;
+}
+
+.data-item2 {
+    border-radius: 0px 4px 4px 0px;
+    width: 20%;
+    padding: 8px;
+}
+
+.data-item3 {
+    border-radius: 0px 4px 4px 0px;
+    padding: 8px;
+}
+
+.data-item4 {
+    border-radius: 0px 4px 4px 0px;
+    width: 50%;
+    padding: 8px;
+}
+
+.custom-avatar1 {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
+    box-sizing: content-box;
+}
+
+.custom-avatar2 {
+    max-width: 80%;
+    height: auto;
+    border-radius: 10%;
+    box-sizing: content-box;
+}
+
+.widget-header {
+    font-size: 28px;
+    margin-left: 10px;
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 200;
+}
+
+/* twitter */
+
+.font-twitter-blue {
+    color: #55acee;
+}
+
+.background-twitter-grey {
+    color: white;
+    background-color: #292F33;
+}
+
+.background-twitter-blue {
+    color: white;
+    background-color: #55acee;
+}
+
+.background-digin-blue {
+    color: white;
+    background-color: #026689;
+}
+
+/* wordpress */
+.font-wp-grey {
+    color: #464646;
+}
+
+.background-wp-grey {
+    color: white;
+    background-color: #464646;
+}
+
+.background-wp-orange {
+    color: white;
+    background-color: #d54e21;
+}
+
+.background-wp-blue {
+    color: white;
+    background-color: #21759b;
+}
+
+/* rss */
+.background-rss-orange {
+    color: white;
+    background-color: #f26522;
+}
+
+.background-rss-dark-orange {
+    color: white;
+    background-color: #BB450E;
+}
+
+.background-rss-grey {
+    color: white;
+    background-color: #181818;
+}
+
+/**** end wordpress, twitter, rss widgets custom css *****/
+
+.links
+{
+	text-decoration:none;
+	color: #428bca;
+}
+
+.align-left
+{
+    text-align: left;
+	color: white;
+	font-size:20px;
+	line-height:30px;
+}
+
+.pricePlanCard
+ {
+	width: 250px;
+	margin: 20px;
+	margin-top: 0px;
+	outline:none;
+	padding: 0px;
+	margin-top: 10px;
+ }
+ 
+ .paymentCard
+ {
+	width:280px;
+	height:170px;
+	background: #11141d;
+ }
+ 
+ p{
+	margin: 4px;
+ }
+
+</style>
+
+<footer style="width:100%;right:0px;bottom:0px;position:fixed;">
+	<md-tabs id="pagingTabs" md-align-tabs="bottom">
+	  <md-tab id="tab1" md-on-select="selectPage($index)">
+		<md-tab-label layout="row" layout="space-between center">
+			<span  style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>Profile Details</span>
+			<span flex></span>
+		</md-tab-label>
+		<md-tab-body>
+			<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
+
+				<md-content>
+
+					<form name="editForm"  md-theme="default" ng-submit="profile.changeUserProfile()">
+						<div layout="row" layout-align="end end">
+							<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="back" ng-click="route('back')"></md-button>
+						</div>
+							
+						<div class="setting-card-header">
+							<h2>User Profile</h2>
+							<div class="setting-img-wrap" layout="row" layout-align="center center">
+								<img ng-src="{{profile_pic}}" err-src="images/settings/new_user.png" class="img-circle" ng-click="profile.uploadProfilePicture($event)">
+									<md-tooltip md-direction="bottom">
+										Upload Profile Picture
+									</md-tooltip>
+								</img>
+
+							</div>
+						</div>
+						
+						
+						<!--Input Elements Start-->
+						<div layout="row" layout-align="start start">
+							<div class="section-title">Profile details</div>
+						</div>
+						
+						<div layout-gt-sm="row" class="side-margins">
+							<md-input-container class="md-block" flex-gt-sm>
+								<span>Full Name</span>
+								<input required type="text" name="name" ng-model="user.Name"  ng-disabled="!editModeOn" aria-label="name"/>
+								<div ng-messages="editForm.name.$error" role="alert">
+								  <div ng-message-exp="['required']">
+										Full name is required
+								  </div>
+								</div>
+							</md-input-container>
+							<md-input-container class="md-block" flex-gt-sm>
+								<span>Company</span>
+								<input type="text" name="company" ng-model="user.Company" ng-disabled="!editModeOn"  aria-label="company"/>					
+							</md-input-container>
+
+						</div>
+						
+						<div layout-gt-sm="row" class="side-margins">
+							<md-input-container class="md-block" flex-gt-sm="60">
+								<span>Email</span>
+								<input required type="email" name="email" ng-model="user.Email" minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" ng-disabled="true"  aria-label="email"/>
+								<div ng-messages="editForm.email.$error" role="alert">
+								  <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+									Please enter a valid Email
+								  </div>
+								</div>
+							</md-input-container>
+							<md-input-container class="md-block" flex-gt-sm>
+								<span>Contact no</span>
+								<input required type="text" name="contactNo" ng-model="user.PhoneNumber" ng-pattern="/^[0-9 ]*$/" ng-disabled="!editModeOn"  aria-label="contact no"/>
+								<div ng-messages="editForm.contactNo.$error" role="alert">
+								  <div ng-message-exp="['required', 'pattern']">
+										Enter a valid contact number
+								  </div>
+								</div>
+							</md-input-container>
+
+						</div>
+						<div layout-gt-sm="row" class="side-margins">
+							<md-input-container class="md-block" flex-gt-sm="50">
+								<span>Billing Address</span>
+								<input required type="text" name="street" ng-model="user.BillingAddress" ng-disabled="!editModeOn"  aria-label="billing address"/>
+								<div ng-messages="editForm.street.$error" role="alert">
+								  <div ng-message-exp="['required']">
+									Please enter a Billing Address
+								  </div>
+								</div>
+							</md-input-container>
+							<md-input-container class="md-block" flex-gt-sm="30">
+								<span>Country</span>
+								<input required type="text" name="country" ng-model="user.Country" ng-disabled="!editModeOn"  aria-label="country"/>
+								<div ng-messages="editForm.country.$error" role="alert">
+								  <div ng-message-exp="['required']">
+									Country is required
+								  </div>
+								</div>
+							</md-input-container>
+							<md-input-container class="md-block" flex-gt-sm>
+								<span>Zip Code</span>
+								<input type="text" name="zip" ng-model="user.ZipCode" ng-disabled="!editModeOn"  aria-label="zip"/>
+							</md-input-container>
+
+						</div>
+
+						<div layout="row" layout-align="center start" layout-margin ng-init="submitted=false" >
+							<md-button class="md-raised md-primary" style="width:100px;background:#02b5e2" type="button" ng-click="profile.clickEdit()"  aria-label="edit" ng-if="editModeOn == false">
+								<span style="text-transform:none">Edit Profile</span>
+							</md-button>
+							<md-button class="md-raised md-primary" style="min-width:60px;width:60px;background:#FF5252" type="button" ng-click="profile.cancel()"  aria-label="cancel" ng-if="editModeOn == true">
+								<span style="text-transform:none">Cancel</span>
+							</md-button>
+							<md-button class="md-raised md-primary" style="width:100px;background:#02b5e2" ng-disabled="submitted" type="submit" aria-label="save" ng-if="editModeOn == true">
+								<span style="text-transform:none">Save Profile</span>
+							</md-button>
+						</div>
+						
+						<div layout="row" layout-align="start start">
+							<div class="section-title">Security</div>
+						</div>
+						<div layout="row" layout-align="start start" layout-margin >
+							<md-button class="md-raised" ng-disabled="submitted" type="button" ng-click="profile.changePassword($event)">
+								<i class="ti-lock"></i><span style="padding-left:10px;text-transform:none">Change Password</span>
+							</md-button>
+						</div>
+				
+
+					</form>
+
+				</md-content>
+
+			</md-whiteframe><br/>
+		</md-tab-body>
+	  </md-tab>
+	  	  <md-tab label="add page">
+		<md-tab-label layout="row" layout="space-between center">
+			<span  style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>
+				Usage Details
+			</span>
+		</md-tab-label>
+		<md-tab-body>
+			<div layout="row" layout-align="center start" layout-wrap class="card-container">
+				<div layout="column">
+					<md-card class="product_card" style="width:460px;height:205px;background:#2795d8" layout="row" layout-align="center center" ng-click="uploadCompanyLogo($event)">
+						<img src="views/settings/accountSettings/login_logo.png" style="width:190px;height:190px;background:white;border-radius:4px"/>
+						<md-tooltip md-direction="bottom">Upload Company Image</md-tooltip>
+					</md-card>
+					<md-card class="product_card" style="width:460px;">
+						<div layout="row" style="border-bottom: 1px solid #dddddd">
+							<div layout="row" flex style="padding:10px;border-right: 1px solid #dddddd">
+								<div layout="row" layout-align="start center" flex="30">
+									<i class="ti-pie-chart" style="color:#1b7b97;font-size: 30px;padding-top: 28px;" flex="30"></i>
+								</div>
+
+								<div layout="column" flex>
+									<text style="font-weight:700;color:grey;font-size:15px">DASHBOARDS</text>
+									<text style="font-size:50px">30</text>
+								</div>
+							</div>
+							<div layout="row" flex style="padding:10px">
+								<div layout="row" layout-align="start center" flex="30">
+									<i class="ti-bar-chart" style="color:#13b6b3;font-size: 30px;padding-top: 26px;" flex="30"></i>
+								</div>
+
+								<div layout="column" flex>
+									<text style="font-weight:700;color:grey;font-size:15px">REPORTS</text>
+									<text style="font-size:50px">5</text>
+								</div>
+							</div>
+						</div>
+						<div layout="row">
+							<div layout="row" flex style="padding:10px;border-right: 1px solid #dddddd">
+								<div layout="row" layout-align="start center" flex="30">
+									<i class="ti-user" style="color:#4caf50;font-size: 30px;padding-top: 23px;" flex="30"></i>
+								</div>
+
+								<div layout="column" flex>
+									<text style="font-weight:700;color:grey;font-size:15px">LOGGED-IN USERS</text>
+									<text style="font-size:50px">2</text>
+								</div>
+							</div>
+							<div layout="row" flex style="padding:10px">
+								<div layout="row" layout-align="start center" flex="30">
+									<i class="icon-group" style="color:#f9a525;font-size: 36px;padding-top: 33px;" flex="30"></i>
+								</div>
+
+								<div layout="column" flex>
+									<text style="font-weight:700;color:grey;font-size:15px">TOTAL USERS</text>
+									<text style="font-size:50px">50</text>
+								</div>
+							</div>
+						</div>
+
+					</md-card>
+				</div>
+				<md-card class="product_card" style="padding: 10px">
+						<div id="container" style="margin:10px">Placeholder for chart</div>
+				</md-card>
+		
+				
+			</div>
+		</md-tab-body>
+	  </md-tab>
+	  <md-tab label="add page">
+		<md-tab-label layout="row" layout="space-between center">
+			<span  style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>
+				Package Details
+			</span>
+		</md-tab-label>
+		<md-tab-body>
+			<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;margin-top:20px;"> 
+
+				<md-content style="background:transparent">
+			<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)">
+				<v-pane id="Cards" expanded="$first"> 
+					<v-pane-header id="Store-header" aria-controls="Store-content">
+						<h1 class="search-header" style="margin:0px;">Subscription Details</h1> 
+					</v-pane-header>
+
+					<v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;">
+						<div layout="row" layout-align="center start" layout-wrap>
+							<div layout="column">
+								<md-card class="product_card" style="width:460px;height:205px;background:#02b5e2;padding:0px;" layout="column">
+									<center style="background:#06a7cf;color:white;font-size:16px;font-weight:700;padding:10px 0px;border-radius: 2px 2px 0px 0px;width:460px">Current Plan - Personal Space</center>
+									<!--md-content style="background:transparent" layout="row" layout-align="center center"-->
+									<center style="padding:10px;" layout="row">
+										<div flex="40" layout="row" layout-align="space-between end">
+											<div style="width:100px;height:100px;border-radius:100px;border: 5px solid white;margin: 30px;" layout="column" layout-align="center center">
+												<span style="color:white;font-size:25px;">$10</span>
+												<span style="color:white;font-size:12px;">/User</span>
+											</div>
+										</div>
+										<div flex layout="column">
+											<span class="align-left"> 1 User</span>
+											<span class="align-left"> 10 GB Storage</span>
+											<span class="align-left"> 100 GB of Bandwidth</span>
+										</div>
+									</center>
+								</md-card>
+								<md-card class="product_card" style="width:460px;height:205px;background:#ff5252" layout="row" ng-click="uploadCompanyLogo($event)">
+									<div flex="40" layout="row" layout-align="space-between center">
+										<img src="views/settings/myAccount/bad.png" style="width: 160px;-webkit-filter: drop-shadow(1px 0px 1px #222);filter: drop-shadow(1px 0px 1px #222);" ng-show="true"/>
+										<img src="views/settings/myAccount/bad.png" style="width: 160px;-webkit-filter: drop-shadow(1px 0px 1px #222);filter: drop-shadow(1px 0px 1px #222);" ng-show="false"/>
+									</div>
+									<div flex="40" layout="column" layout-align="start start" style="padding-top:30px;">
+										<span class="align-left">Expires in 3 days</span>
+										<span class="align-left" style="margin-top:15px;font-size:14px;line-height:20px;font-weight: 700;letter-spacing: 1px;">Expiry Date</span>
+										<span class="align-left">12/05/2016</span>
+										
+									</div>
+								</md-card>
+							</div>
+						</div>
+					</v-pane-content>  
+				</v-pane>
+				<v-pane id="Cards"> 
+					<v-pane-header id="Store-header" aria-controls="Store-content">
+						<h1 class="search-header" style="margin:0px;">Update Details</h1> 
+					</v-pane-header>
+
+					<v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;">
+						 <div layout="row" layout-align="center top" class="fadeIn">
+							
+						   <div layout="row" layout-align="center center">
+							   <md-card class="tint showbox pricePlanCard product_card" ng-repeat="plan in vm.companyPricePlans" ng-class="{selected: $index == selectedCard}">
+
+								  <center style="background:#06a7cf;color:white;font-size:16px;font-weight:700;padding:10px;border-radius: 2px 2px 0px 0px;">{{plan.name}}</center>
+								  <center style="background:#02b5e2;padding:10px;">
+									<div style="width:100px;height:100px;border-radius:100px;border: 5px solid white;" layout="column" layout-align="center center">
+										<span style="color:white;font-size:25px;">{{plan.perMonth}}</span>
+										<span style="color:white;font-size:12px;">{{plan.per}}</span>
+									</div>
+									<md-button class="md-fab md-mini ti-check" ng-disabled="false" aria-label="Comment" style="background:#f9a525;position:absolute;margin-top: -10px;margin-left: 50px;" ng-click="vm.loadStripe($event,plan)">
+									</md-button>
+								  </center>
+					
+
+								
+								<md-card-content layout="column" layout-align="center center">
+								  <p layout="row">{{plan.numberOfUsers }} <span ng-if="plan.numberOfUsers == '1'">&nbspUser</span><span ng-if="plan.numberOfUsers != '1'">&nbspUsers</span></p>
+								  <p>{{plan.storage}} of Storage</p>
+								  <p>{{plan.bandwidth}} of Bandwidth</p>
+								</md-card-content>
+								<md-card-content layout="column" layout-align="center center" style="background:#e7faff">
+								  <p>{{plan.perMonth}} / Per User (Monthly)</p>
+								  <p>{{plan.perYear}} / Per User (Yearly)  </p>
+								  <!--md-button class="md-raised" ng-click="selectPlan($event,$index, plan)" aria-label="submit"><span ng-if="plan.price == '0'">Get!</span><span ng-if="plan.price != '0'">Buy!</span></md-button-->
+								</md-card-content>
+								<md-card-content layout="column" layout-align="start start">
+								  <b style="margin-bottom:10px;">Advanced Options:</b>
+								  <div layout="row" layout-align="space-between center" style="width:100%"> <span flex>Option 1</span><md-checkbox class="checkbox" ng-model="data.cb1" aria-label="Checkbox 1"></md-checkbox></div>
+								</md-card-content>
+								<md-card-content layout="column" layout-align="end end" style="background:#e7faff;padding:0">
+								  <span style="padding: 5px;border-radius: 4px;margin: 6px;border: 1px solid #b7b7b7;color: grey;font-weight: 700;">Total Amount:<b style="font-size:20px;"> $10</b></span>
+								</md-card-content>
+							  </md-card>
+							</div>
+						</div>
+					</v-pane-content>  
+				</v-pane>
+				<v-pane id="Cards"> 
+					<v-pane-header id="Store-header" aria-controls="Store-content">
+						<h1 class="search-header" style="margin:0px;">Card Details</h1> 
+					</v-pane-header>
+
+					<v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;">
+						<div layout="row" layout-align="center center" layout-wrap>
+							<!--md-card class="tint showbox paymentCard product_card" ng-repeat="card in vm.paymentCards" ng-class="{selected: $index == selectedCard}">
+								<div layout="row" layout="space-between center">
+									<span style="color:#615097;font-weight:700;letter-spacing:1px" flex>Payment Details</span>
+									<img src="views/settings/myAccount/cards/visa_s.png" style="width:77px;height:44px" />
+								</div>
+								<div layout="column" layout="space-between center">
+									<span style="color:#71777b;font-size:10px;" flex>Card Number</span>
+									<span style="color:white;font-size:18px;line-height:40px;font-family: cursive;" flex>**** **** **** {{card.last4}}</span>
+								</div>
+								<div layout="column" layout="space-between center">
+									<span style="color:#71777b;font-size:10px;" flex>Expiry Date</span>
+									<span style="color:white;font-size:18px;line-height:40px;" flex>{{card.exp_month}}/{{card.exp_year}}</span>
+								</div>
+							</md-card-->
+							<div class="flip-container" id="{{$index}}" ng-repeat="card in vm.paymentCards">
+								<div class="flipper">
+									<div class="front">
+							
+											
+										<md-card class="tint showbox paymentCard product_card" ng-class="{selected: $index == selectedCard}">
+											<div layout="row" layout="space-between center">
+												<span style="color:#615097;font-weight:700;letter-spacing:1px" flex>Payment Details</span>
+												<img src="views/settings/myAccount/cards/visa_s.png" style="width:77px;height:44px" />
+											</div>
+											<div layout="column" layout="space-between center">
+												<span style="color:#71777b;font-size:10px;" flex>Card Number</span>
+												<span style="color:white;font-size:18px;line-height:40px;font-family: cursive;text-shadow: 2px 1px #484848;" flex>**** **** **** {{card.last4}}</span>
+											</div>
+											<div layout="column" layout="space-between center">
+												<span style="color:#71777b;font-size:10px;" flex>Expiry Date</span>
+												<span style="color:white;font-size:18px;line-height:40px;" flex>{{card.exp_month}}/{{card.exp_year}}</span>
+											</div>
+										</md-card>
+								
+									</div>
+									<div class="back">
+										<md-card class="tint showbox paymentCard product_card" ng-class="{selected: $index == selectedCard}" style="padding: 0px;">
+											<div layout="row" layout="space-between center" style="margin-top:20px;height:35px;background:white;"></div>
+											<center style="margin-top:40px;">
+												<md-button class="md-raised" ng-click="vm.makeDefault()"><span style="text-transform:initial">Make Default</span></md-button>
+											</center>
+										</md-card>
+									</div>
+								</div>
+							</div>
+						</div>
+					</v-pane-content>  
+				</v-pane>
+			</v-accordion>
+			</md-content>
+			</md-whiteframe>
+			
+		</md-tab-body>
+	  </md-tab>
+	</md-tabs>
+
+</footer>

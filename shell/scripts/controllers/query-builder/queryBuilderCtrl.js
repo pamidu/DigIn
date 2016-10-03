@@ -180,37 +180,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             showActual: $scope.showActual,
         }
     };
-    $scope.initMapConfigObj = {
-        options: {
-            legend: {
-                enabled: true
-            },
-            plotOptions: {
-                map: {
-                    mapData: Highcharts.maps['custom/world'],
-                    joinBy: 'hc-key',
-                }
-            },
-            colorAxis: {
-                min: $scope.mapconfig.min,
-                minColor: $scope.mapconfig.minColor,
-                maxColor: $scope.mapconfig.maxColor
 
-            }
-        },
-        chartType: 'map',
-        title: {
-            text: ''
-        },
-        series: [
-
-        ],
-        credits: {
-            enabled: false
-        }
-
-
-    };
 
     $scope.recordedColors = {};
     $scope.initRequestLimit = {
@@ -1112,7 +1082,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     $scope.saveChart = function(widget) {
         var widgets = $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets;
 
-        console.log(JSON.stringify(widget.widgetData.highchartsNG));
         if (widget.widgetID == null) { // new widget, so a temp id is assigned
             widget.widgetID = "temp" + Math.floor(Math.random() * (100 - 10 + 1) + 10);
         }
@@ -1357,6 +1326,186 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             $scope.saveChart(widget);
         }
     };
+    $scope.map = {
+
+        onInit: function(recon) {
+            if (!recon) $scope.highchartsNG = $scope.selectedChart.initObj;
+            $scope.highchartsNG = $scope.widget.widgetData.highchartsNG;
+            $scope.chartType = 'Geographical Map';
+
+        },
+        changeType: function() {
+            if ($scope.chartType == "Geographical Map") {
+
+
+                if ($scope.executeQryData.executeMeasures.length < 1 || $scope.executeQryData.executeColumns < 1) {
+                    privateFun.fireMessage('0', "Cannot generate " + $scope.chartType + "without minimum one category and series");
+                    $scope.MapConfigObj = $scope.initMapConfigObj;
+                    return;
+
+
+                } else {
+                    $scope.highchartsNG.options = {
+                        legend: {
+                            enabled: true
+                        },
+                        plotOptions: {
+                            map: {
+                                mapData: Highcharts.maps['custom/world'],
+                                joinBy: 'hc-key',
+                            }
+                        },
+                        colorAxis: {
+                            min: $scope.mapconfig.min,
+                            minColor: $scope.mapconfig.minColor,
+                            maxColor: $scope.mapconfig.maxColor
+
+                        }
+                    };
+                    $scope.highchartsNG.chartType = 'map';
+
+
+                }
+                var d = $scope.highchartsNG.series[0].data;
+                if ($scope.mapconfig.mapType == 'World') {
+                    {
+                        if ($scope.mapconfig.mapType.drilled) {
+                            maplibrary = Highcharts.maps['custom/world-continents'];
+                        } else {
+                            maplibrary = Highcharts.maps['custom/world'];
+
+                        }
+                    }
+
+                }
+                if ($scope.mapconfig.mapType == 'Country') {
+                    if ($scope.mapconfig.selectedCountry != null) {
+                        var lib = "countries/" + $scope.mapconfig.selectedCountry.toLowerCase() + "/" + $scope.mapconfig.selectedCountry.toLowerCase() + "-all";
+
+                        maplibrary = Highcharts.maps[lib];
+
+                    }
+
+
+                }
+                d.forEach(function(e) {
+                    e["hc-key"] = e.name;
+                    e.value = e.y;
+                    delete e.name;
+                    delete e.y;
+                });
+
+                delete $scope.highchartsNG.xAxis;
+                delete $scope.highchartsNG.yAxis;
+                delete $scope.highchartsNG.legend;
+                $scope.highchartsNG.options.plotOptions.map.mapData = maplibrary;
+                $scope.highchartsNG.title.text = '';
+
+            }
+
+
+
+
+
+        },
+        selectCondition: function() {
+            if (!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0) {
+                $scope.getAggregation();
+            } else {
+                if ($scope.executeQryData.executeMeasures.length >= 1) {
+                    $scope.getDrilledAggregation();
+                } else {
+                    $scope.executeQryData.executeMeasures.pop();
+                    eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
+                    //alert("drilldown only supports single series");
+                    privateFun.fireMessage('0', 'drilldown only supports single series');
+                    $scope.isPendingRequest = false;
+                }
+            }
+
+        },
+        selectAttribute: function(fieldName) {
+            if (!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0) {
+                //                if($scope.executeQryData.executeColumns.length == 0){
+                $scope.executeQryData.executeColumns = [{
+                    filedName: fieldName
+                }];
+                $scope.getGroupedAggregation(fieldName);
+            } else if ($scope.executeQryData.executeColumns.length >= 1) {
+                $scope.executeQryData.executeColumns.push({
+                    filedName: fieldName
+                });
+                $scope.getDrilledAggregation();
+            }
+
+
+        },
+        removeMea: function(l) {
+            if (l > 0) $scope.getAggregation();
+            else {
+                //$scope.eventHndler.isLoadingChart = false;
+                $scope.executeQryData.executeColumns = [];
+                $scope.highchartsNG = $scope.selectedChart.initObj;
+            }
+        },
+        removeCat: function() {
+            if ($scope.isDrilled) $scope.getDrilledAggregation();
+            else $scope.getAggregation();
+        },
+        onGetAggData: function(res) {
+            $scope.isPendingRequest = false;
+            $scope.setMeasureData(res);
+        },
+        onGetGrpAggData: function() {
+            $scope.isPendingRequest = false;
+
+
+        },
+        saveWidget: function(widget) {
+            widget.widgetName = "highcharts";
+            widget.widgetData.highchartsNG["size"] = {
+                width: 313,
+                height: 260
+            };
+            widget.widgetData.highchartsNG = $scope.highchartsNG;
+            widget.widgetData.widView = "views/common-data-src/res-views/ViewMap.html";
+
+
+            $scope.saveChart(widget);
+        }
+    };
+
+    $scope.$watch("mapconfig", function(newValue, oldValue) {
+        if (newValue !== oldValue) {
+
+            if (newValue.mapType == 'World') {
+                {
+                    if (newValue.drilled) {
+                        $scop.maplibrary = Highcharts.maps['custom/world-continents'];
+                    } else {
+                        mapDataNew = Highcharts.maps['custom/world'];
+
+                    }
+                }
+
+            }
+            if (newValue.mapType == 'Country') {
+                var lib = "countries/" + $scope.mapconfig.selectedCountry.toLowerCase() + "/" + $scope.mapconfig.selectedCountry.toLowerCase() + "-all";
+                mapDataNew = Highcharts.maps[lib];
+
+            }
+            $scope.highchartsNG.options.plotOptions.map.mapData = mapDataNew;
+            $scope.highchartsNG.options.colorAxis.minColor = newValue.minColor;
+            $scope.highchartsNG.options.colorAxis.maxColor = newValue.maxColor;
+              $scope.highchartsNG.options.colorAxis.min = newValue.min;
+            $scope.highchartsNG.series[0].dataLabels = {
+                enabled: true,
+                format: '{point.name}' + '<br />' + ' {point.value}'
+            };
+        }
+    }, true);
+
+
     $scope.forecast = {
         onInit: function(recon) {
             $scope.highchartsNG = $scope.initHighchartObj;
@@ -2201,6 +2350,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     $scope.d3hierarchy = {
         onInit: function(recon) {
             $scope.hierarData = $scope.widget.widgetData.widData;
+            $scope.TochartData = $scope.widget.widgetData.TochartData;
         },
         changeType: function() {
             $scope.eventHndler.isLoadingChart = true;
@@ -2226,6 +2376,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         var query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=" + tbl + "&db=" + database;
                     }
                     $scope.client.getHierarchicalSummary(query, function(data, status) {
+                        $scope.TochartData = angular.copy(data);
                         if (status) {
                             var res = {
                                 data: data,
@@ -2242,174 +2393,18 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         saveWidget: function(widget) {
             widget.widgetData.widView = "views/ViewHnbData.html";
             widget.widgetData.widData = $scope.hierarData;
+            widget.widgetData.TochartData = $scope.TochartData;
             widget.widgetData.widName = $scope.widget.widgetData.widName;
             widget.widgetName = "hierarchy";
             $scope.saveChart(widget);
         }
     };
 
-    $scope.map = {
 
-        onInit: function(recon) {
-            if (!recon) $scope.initMapConfigObj = $scope.initMapConfigObj;
-            else {
-                $scope.initMapConfigObj = $scope.widget.widgetData.highchartsNG;
-            }
-
-        },
-        changeType: function() {
-            if ($scope.chartType == "Geographical Map") {
-
-
-                if ($scope.executeQryData.executeMeasures.length < 1 || $scope.executeQryData.executeColumns < 1) {
-                    privateFun.fireMessage('0', "Cannot generate " + $scope.chartType + "without minimum one category and series");
-                    $scope.MapConfigObj = $scope.initMapConfigObj;
-                    return;
-
-
-                } else {
-
-                    var d = $scope.highchartsNG.series[0].data;
-                    if ($scope.mapconfig.mapType == 'World') {
-                        {
-                            if ($scope.mapconfig.mapType.drilled) {
-                                maplibrary = Highcharts.maps['custom/world-continents'];
-                            } else {
-                                maplibrary = Highcharts.maps['custom/world'];
-
-                            }
-                        }
-
-                    }
-                    if ($scope.mapconfig.mapType == 'Country') {
-                        if ($scope.mapconfig.selectedCountry != null) {
-                            var lib = "countries/" + $scope.mapconfig.selectedCountry.toLowerCase() + "/" + $scope.mapconfig.selectedCountry.toLowerCase() + "-all";
-
-                            maplibrary = Highcharts.maps[lib];
-
-                        }
-
-
-                    }
-                    d.forEach(function(e) {
-                        e["hc-key"] = e.name;
-                        e.value = e.y;
-                        delete e.name;
-                        delete e.y;
-                    });
-
-                    $scope.MapConfigObj = $scope.initMapConfigObj;
-                    $scope.MapConfigObj.series = $scope.highchartsNG.series;
-
-                    $scope.MapConfigObj.chartType = $scope.selectedChart.chartType;
-                    $scope.MapConfigObj.options.plotOptions.map.mapData = maplibrary;
-                    $scope.MapConfigObj.title.text = '';
-
-                }
-
-
-            }
-
-
-        },
-        selectCondition: function() {
-            if (!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0) {
-                $scope.getAggregation();
-            } else {
-                if ($scope.executeQryData.executeMeasures.length >= 1) {
-                    $scope.getDrilledAggregation();
-                } else {
-                    $scope.executeQryData.executeMeasures.pop();
-                    eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
-                    //alert("drilldown only supports single series");
-                    privateFun.fireMessage('0', 'drilldown only supports single series');
-                    $scope.isPendingRequest = false;
-                }
-            }
-
-        },
-        selectAttribute: function() {
-            if (!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0) {
-                //                if($scope.executeQryData.executeColumns.length == 0){
-                $scope.executeQryData.executeColumns = [{
-                    filedName: fieldName
-                }];
-                $scope.getGroupedAggregation(fieldName);
-            } else if ($scope.executeQryData.executeColumns.length >= 1) {
-                $scope.executeQryData.executeColumns.push({
-                    filedName: fieldName
-                });
-                $scope.getDrilledAggregation();
-            }
-
-
-        },
-        removeMea: function(l) {
-            if (l > 0) $scope.getAggregation();
-            else {
-                //$scope.eventHndler.isLoadingChart = false;
-                $scope.executeQryData.executeColumns = [];
-                $scope.highchartsNG = $scope.selectedChart.initObj;
-            }
-        },
-        removeCat: function() {
-            if ($scope.isDrilled) $scope.getDrilledAggregation();
-            else $scope.getAggregation();
-        },
-        onGetAggData: function(res) {
-            $scope.isPendingRequest = false;
-            $scope.setMeasureData(res);
-        },
-        onGetGrpAggData: function() {
-            $scope.isPendingRequest = false;
-            var d = $scope.highchartsNG.series.data.forEach(function(e) {
-                e["hc-key"] = e.name;
-                e.value = e.y;
-                delete e.name;
-                delete e.y;
-            });
-            $scope.highchartsNG.series = d;
-
-        },
-        saveWidget: function(widget) {
-            widget.widgetName = "highcharts";
-            widget.widgetData.widView = "views/common-data-src/res-views/ViewMap.html";
-            widget.widgetData.initMapConfigObj = $scope.MapConfigObj;
-            $scope.saveChart(widget);
-        }
-    };
-
-    $scope.$watch("mapconfig", function(newValue, oldValue) {
-        if (newValue !== oldValue) {
-
-            if (newValue.mapType == 'World') {
-                {
-                    if (newValue.drilled) {
-                        $scop.maplibrary = Highcharts.maps['custom/world-continents'];
-                    } else {
-                        mapDataNew = Highcharts.maps['custom/world'];
-
-                    }
-                }
-
-            }
-            if (newValue.mapType == 'Country') {
-                var lib = "countries/" + $scope.mapconfig.selectedCountry.toLowerCase() + "/" + $scope.mapconfig.selectedCountry.toLowerCase() + "-all";
-                mapDataNew = Highcharts.maps[lib];
-
-            }
-            $scope.initMapConfigObj.options.plotOptions.map.mapData = mapDataNew;
-            $scope.initMapConfigObj.options.colorAxis.minColor = newValue.minColor;
-            $scope.initMapConfigObj.options.colorAxis.minColor = newValue.maxColor;
-            $scope.initMapConfigObj.series[0].dataLabels = {
-                enabled: true,
-                format: '{point.name}' + '<br />' + ' {point.value}'
-            };
-        }
-    }, true);
     $scope.d3sunburst = {
         onInit: function(recon) {
             $scope.hierarData = $scope.widget.widgetData.widData;
+            $scope.TochartData = $scope.widget.widgetData.TochartData;
             $scope.$apply;
         },
         changeType: function() {
@@ -2438,6 +2433,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     }
                     $scope.client.getHierarchicalSummary(query, function(data, status) {
                         $scope.eventHndler.isLoadingChart = false;
+                        $scope.TochartData = angular.copy(data);
                         if (status) {
                             var res = {
                                 data: data,
@@ -2456,6 +2452,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             widget.widgetData.widView = "views/ViewHnbMonth.html";
             //widget.widgetData = $scope.fieldArray;
             widget.widgetData.widName = $scope.widget.widgetData.widName;
+            widget.widgetData.TochartData = $scope.TochartData;
             widget.widgetData.widData = $scope.hierarData;
             widget.widgetName = "sunburst";
             $scope.saveChart(widget);
@@ -2620,90 +2617,121 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         if (typeof $scope.highchartsNG["init"] == "undefined" || !$scope.highchartsNG.init) {
             $scope.highchartsNG["init"] = false;
             $scope.highchartsNG = {};
-            $scope.highchartsNG = {
-                options: {
-                    chart: {
-                        type: $scope.selectedChart.chart,
-                        plotBackgroundColor: null,
-                        plotBorderWidth: null,
-                        plotShadow: false,
-                        events: {
-                            beforePrint: function() {
-                                this.setTitle({
-                                    text: this.options.exporting.chartOptions.title.text
-                                })
-                                this.heightPrev = this.chartHeight;
-                                this.widthPrev = this.chartWidth;
-                                this.setSize(800, 600, false);
-                            },
-                            afterPrint: function() {
-                                this.setTitle({
-                                    text: null
-                                })
-                                this.setSize(this.widthPrev, this.heightPrev, true);
+            if ($scope.chartType != 'Geographical Map') {
+                $scope.highchartsNG = {
+                    options: {
+                        chart: {
+                            type: $scope.selectedChart.chart,
+                            plotBackgroundColor: null,
+                            plotBorderWidth: null,
+                            plotShadow: false,
+                            events: {
+                                beforePrint: function() {
+                                    this.setTitle({
+                                        text: this.options.exporting.chartOptions.title.text
+                                    })
+                                    this.heightPrev = this.chartHeight;
+                                    this.widthPrev = this.chartWidth;
+                                    this.setSize(800, 600, false);
+                                },
+                                afterPrint: function() {
+                                    this.setTitle({
+                                        text: null
+                                    })
+                                    this.setSize(this.widthPrev, this.heightPrev, true);
+                                }
                             }
-                        }
-                    },
-                    tooltip: {
-                        pointFormat: '{point.y:,.0f}'
-                    },
-                    exporting: {
-                        sourceWidth: 600,
-                        sourceHeight: 400,
-                        chartOptions: {
-                            title: {
-                                text: $scope.widget.widgetData.widName
+                        },
+                        tooltip: {
+                            pointFormat: '{point.y:,.0f}'
+                        },
+                        exporting: {
+                            sourceWidth: 600,
+                            sourceHeight: 400,
+                            chartOptions: {
+                                title: {
+                                    text: $scope.widget.widgetData.widName
+                                }
                             }
-                        }
-                    },
-                    xAxis: {
-                        showEmpty: false
-                    },
-                    yAxis: {
-                        showEmpty: false
-                    },
-                    plotOptions: {
-                        pie: {
-                            allowPointSelect: true,
-                            cursor: 'pointer',
-                            dataLabels: {
-                                enabled: true,
-                                color: '#000000',
-                                format: '<b> {point.name}</b>'
-                            },
-                            series: {
+                        },
+                        xAxis: {
+                            showEmpty: false
+                        },
+                        yAxis: {
+                            showEmpty: false
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
                                 dataLabels: {
                                     enabled: true,
-                                    format: '<b>{point.name}</b> ( {point.y:,.0f} )',
-                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
-                                    softConnector: true
-                                }
-                            },
-                            showInLegend: false
+                                    color: '#000000',
+                                    format: '<b> {point.name}</b>'
+                                },
+                                series: {
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '<b>{point.name}</b> ( {point.y:,.0f} )',
+                                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                                        softConnector: true
+                                    }
+                                },
+                                showInLegend: false
+                            }
                         }
-                    }
-                },
-                title: {
-                    text: ''
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle',
-                    borderWidth: 0
-                },
-                xAxis: {
-                    type: 'category'
-                },
-                yAxis: {
-                    lineWidth: 1
-                },
-                credits: {
-                    enabled: false
-                },
-                colors: ['#3b6982'],
-                series: []
-            };
+                    },
+                    title: {
+                        text: ''
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle',
+                        borderWidth: 0
+                    },
+                    xAxis: {
+                        type: 'category'
+                    },
+                    yAxis: {
+                        lineWidth: 1
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    colors: ['#3b6982'],
+                    series: []
+                };
+
+
+            } else {
+                {
+                    $scope.highchartsNG.options = {
+                        legend: {
+                            enabled: true
+                        },
+                        plotOptions: {
+                            map: {
+                                mapData: Highcharts.maps['custom/world'],
+                                joinBy: 'hc-key',
+                            }
+                        },
+                        colorAxis: {
+                            min: $scope.mapconfig.min,
+                            minColor: $scope.mapconfig.minColor,
+                            maxColor: $scope.mapconfig.maxColor
+
+                        }
+                    };
+                    $scope.highchartsNG.chartType = 'map';
+
+
+                }
+
+
+
+            }
+
         }
         var row = "";
         if ($scope.executeQryData.executeColumns.length == 0) {
@@ -2735,6 +2763,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         //alert('test');
     };
     $scope.setMeasureData = function(res) {
+
+
         $scope.highchartsNG.series = [];
         $scope.serColor = "";
         for (var c in res) {
@@ -2748,6 +2778,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             }
         }
         $scope.eventHndler.isLoadingChart = false;
+
+
+
+
+
+
+
+
+
     };
     $scope.getGroupedAggregation = function(row) {
         if (row) $scope.selectedCat = row;
@@ -2773,18 +2812,49 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 // filter only the selected fields from the result returned by the service
                 filterService.filterAggData(res, $scope.sourceData.filterFields);
                 $scope.mapResult($scope.selectedCat, res, function(data) {
-                    $scope.highchartsNG.series = data;
-                    $scope.highchartsNG.xAxis["title"] = {
-                        text: $scope.selectedCat
-                    };
-                    $scope.highchartsNG.series.forEach(function(key) {
-                        if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
-                    });
-                    $scope.eventHndler.isLoadingChart = false;
-                    $scope.dataToBeBind.receivedQuery = query;
-                    $scope.$apply();
-                    console.log(JSON.stringify($scope.highchartsNG));
-                    eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
+                     $scope.highchartsNG.series = data;
+                    if ($scope.chartType != 'Geographical Map') {
+                       
+                        $scope.highchartsNG.xAxis["title"] = {
+                            text: $scope.selectedCat
+                        };
+                        $scope.highchartsNG.series.forEach(function(key) {
+                            if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
+                        });
+                        $scope.eventHndler.isLoadingChart = false;
+                        $scope.dataToBeBind.receivedQuery = query;
+                        $scope.$apply();
+                        eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
+                    } else
+
+                    {
+
+                        d = $scope.highchartsNG.series[0].data;
+                        if ($scope.mapconfig.mapType == 'Country') {
+                            if ($scope.mapconfig.selectedCountry != null) {
+                                var lib = "countries/" + $scope.mapconfig.selectedCountry.toLowerCase() + "/" + $scope.mapconfig.selectedCountry.toLowerCase() + "-all";
+
+                                maplibrary = Highcharts.maps[lib];
+
+                            }
+
+
+                        }
+                        d.forEach(function(e) {
+                            e["hc-key"] = e.name;
+                            e.value = e.y;
+                            delete e.name;
+                            delete e.y;
+                        });
+
+                        delete $scope.highchartsNG.xAxis;
+                        delete $scope.highchartsNG.yAxis;
+                        delete $scope.highchartsNG.legend;
+                        $scope.highchartsNG.options.plotOptions.map.mapData = maplibrary;
+                        $scope.eventHndler.isLoadingChart = false;                        
+                        $scope.$apply();
+
+                    }
                 });
             } else {
                 //alert('request failed');
@@ -2833,7 +2903,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     }
                 }
                 $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res, status, query) {
-                    console.log(JSON.stringify(res));
+
                     // filter only the selected fields from the result returned by the service
                     filterService.filterAggData(res, $scope.sourceData.filterFields);
                     var serObj = {};
@@ -2948,7 +3018,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                         alert('request failed due to :' + JSON.stringify(res));
                                         e.preventDefault();
                                     }
-                                    console.log(JSON.stringify(res));
+
                                     chart.xAxis[0].setTitle({
                                         text: nextLevel
                                     });
@@ -2961,7 +3031,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             }
                         },
                         drillup: function(e) {
-                            console.log(e);
+
                             var chart = this;
                             console.log(chart.options.customVar);
                             $scope.drillDownConfig.drillOrdArr.forEach(function(key) {
@@ -3001,7 +3071,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             this.setSize(this.widthPrev, this.heightPrev, true);
                         }
                     };
-                    $scope.$apply(function(){
+                    $scope.$apply(function() {
                         $scope.isPendingRequest = false;
                         $scope.eventHndler.isLoadingChart = false;
                     });
@@ -3040,7 +3110,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     if (i < res.length) {
                         $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res1, status, query) {
                             if (status) {
-                                console.log(JSON.stringify(res1));
+
                                 var serNameKey = "";
                                 var serValKey = "";
                                 for (var key in res1[0]) {
@@ -3059,7 +3129,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                     name: serValKey,
                                     data: serArr
                                 });
-                                console.log(JSON.stringify(serMainArr));
+
                                 syncAgg(j, res1);
 
                                 function syncAgg(j, res1) {
@@ -3075,7 +3145,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                                         typeof res2[0][key] == "string" ? dserNameKey = key : dserValKey = key;
                                                     }
                                                 }
-                                                console.log(JSON.stringify(res2));
+
                                                 for (k = 0; k < res2.length; k++) {
                                                     drillSerArr.push({
                                                         name: res2[k][dserNameKey],
@@ -3088,7 +3158,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                                     id: res1[j][res[i].value],
                                                     data: drillSerArr
                                                 });
-                                                console.log(JSON.stringify(drillSerMainArr));
+
                                                 $scope.dataToBeBind.receivedQuery = query;
                                                 syncAgg(j + 1, res1);
                                             } else {

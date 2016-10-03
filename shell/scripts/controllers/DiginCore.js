@@ -45,8 +45,8 @@ routerApp.controller('showWidgetCtrl', function($scope, $mdDialog, widget) {
     };
 
 });
-routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce','sales_distribution', 'notifications',
-    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce, sales_distribution, notifications) {
+routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce', 'notifications',
+    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce,  notifications) {
 
         //code to keep widget fixed on pivot summary drag events
         $('#content1').on('mousedown', function(e) {
@@ -135,7 +135,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
         // if($rootScope.tempDashboard.length != 0)
         $rootScope.tempDashboard = angular.copy($rootScope.dashboard);
         $scope.reportWidgetURL = $sce.trustAsResourceUrl(report_Widget_Iframe);
-        $scope.sales_distribution = $sce.trustAsResourceUrl(sales_distribution);
+        
         $scope.widgetTitleClass = 'widget-title-35';
 
         $scope.adjustTitleLength = function() {
@@ -1133,7 +1133,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     ngToast.dismiss();
                     ngToast.create({
                         className: 'success',
-                        content: '' + widget.widgetName + ' widget removed successfully',
+                        content: 'widget removed successfully',
                         horizontalPosition: 'center',
                         verticalPosition: 'top',
                         dismissOnClick: true

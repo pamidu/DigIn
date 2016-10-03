@@ -472,6 +472,6 @@
 
 <!-- payment gateway -->
 <script src="https://checkout.stripe.com/checkout.js"></script>
-<script src="/boarding/scripts/stripe.payment.tool.js"></script>
+<script src="../boarding/scripts/stripe.payment.tool.js"></script>
 
 </html>

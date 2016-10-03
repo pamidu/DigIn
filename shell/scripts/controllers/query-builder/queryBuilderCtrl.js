@@ -2974,6 +2974,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                 for (i = 0; i < drillOrdArr.length; i++) {
                                     if (drillOrdArr[i].name == highestLvl) {
                                         nextLevel = drillOrdArr[i].nextLevel;
+                                        drillOrdArr[i].clickedPoint = clickedPoint;
                                         if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
                                     }
                                 }

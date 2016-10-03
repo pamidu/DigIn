@@ -147,7 +147,7 @@
 		<toastino></toastino>
 		<div class="blut-log-wrapper">
 			<div class="left-toggle-wrapper">
-				<img ng-src="images/digin43x43.png" err-src="images/digin43x43.png"/>
+				<img ng-src="{{getUserSettings.logo_path}}" err-src="images/digin43x43.png"/>
 				 <md-tooltip md-direction="right">
 				  v3.1.0.0
 				</md-tooltip>
@@ -190,7 +190,7 @@
 						<div layout="row" class="blut-login-user pull-right">
 							<p ng-model="username" hide-sm hide-xs>{{$root.authObject.Email}}</p>
 							<div class="login-img">
-								<img ng-src="images/signup-user.png" err-src="images/signup-user.png" />
+								<img ng-src="{{getUserSettings.dp_path}}" err-src="images/signup-user.png" />
 							</div>
 
 							<div class="dropdown">
@@ -337,7 +337,7 @@
 							<li class="has-sub" ng-click="navigate($event,'userSettings')"><a><i class="ti-pencil sub-menu-icon"></i>User settings</a></li>
 							<li class="has-sub" ng-click="navigate($event,'accountSettings')"><a><i class="ti-settings sub-menu-icon"></i>Account settings</a></li>
 							<li class="has-sub" ng-click="navigate($event,'groups')"><a><i class="icon-group sub-menu-icon"></i>Groups</a></li-->
-							<li class="has-sub" ng-click="navigate($event,'createNewUser')"><a><i class="ti-user sub-menu-icon"></i>User Administrator</a></li>
+							<li class="has-sub" ng-click="navigate($event,'User Administrator')"><a><i class="ti-user sub-menu-icon"></i>User Administrator</a></li>
 							<li class="has-sub" ng-click="navigate($event,'createNewUser')"><a><i class="ti-settings sub-menu-icon"></i>System Settings</a></li>
 						</ul>
 					</li>
@@ -405,13 +405,11 @@
 	<script src="dialogs/addPage/addPageCtrl.js"></script>
 	<script src="dialogs/switchTenant/switchTenantCtrl.js"></script>
 	<script src="views/settings/myAccount/myAccountCtrl.js"></script>
+	<script src="views/settings/userAdministrator/userAdministratorCtrl.js"></script>
 	<script src="views/settings/createNewUser/createNewUserCtrl.js"></script>
 	<script src="views/settings/shareDashboard/shareDashboardCtrl.js"></script>
 	<script src="views/settings/userSettings/userSettingsCtrl.js"></script>
-	<script src="views/settings/accountSettings/accountSettingsCtrl.js"></script>
 	<script src="views/settings/groups/groupsCtrl.js"></script>
-	<script src="views/settings/profile/profileCtrl.js"></script>
-	<script src="views/settings/inviteUser/inviteUserCtrl.js"></script>
 	<script src="views/dashboard/dashboardCtrl.js"></script>
 	<script src="views/dashboard/renamePage/renamePageCtrl.js"></script>
 

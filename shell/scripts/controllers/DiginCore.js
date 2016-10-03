@@ -548,7 +548,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 requestArray[0] = widget.widgetData.commonSrc.att[0].filedName;                
             }
 
-            console.log(filterStr);
             widget.widgetData.syncState = false;
             $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, function(res, status, query) {
                 if (status) {
@@ -608,12 +607,14 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled) {
                 var chart = widget.widgetData.highchartsNG.getHighcharts();
                 if ( chart.options.customVar == widget.widgetData.widData.drillConf.highestLvl ) {
+                    widget.widgetData.filteredState = false;
                     $scope.syncWidget(widget);
                 } else {
                     notifications.toast('0', 'Please go to level 1 to remove filters!');
                     return;
                 }
             } else{
+                widget.widgetData.filteredState = false;
                 $scope.syncWidget(widget);
             }           
         };
@@ -650,19 +651,31 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     widget = data;
                 });
             } else if (typeof(widget.widgetData.commonSrc) != "undefined") {
+                // if chart is configured for drilled down, get the highest level to apply filters
+                if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled){
+                    var chart = widget.widgetData.highchartsNG.getHighcharts();
+                    if ( chart.options.customVar != widget.widgetData.widData.drillConf.highestLvl ) {
+                        notifications.toast('0', 'Please go to the highest level to sync the chart!');
+                        return;                  
+                    }
+                }
                 widget.widgetData.syncState = false;
-                //If the widget has filters, clear the selections
-                widget.widgetData.filteredState = false;                
-                $qbuilder.sync(widget.widgetData, function(data) {
-                    filterService.clearFilters(widget);
-                    widget.widgetData.syncState = true;
-                    widget = data;
-                    if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
-                        $scope.widInit();
-                });
+
+                // If the chart is configured for filters, it should sync accordinly
+                if (widget.widgetData.filteredState) {
+                    $scope.buildChart(widget);
+                } else{
+                    widget.widgetData.filteredState = false;
+                    $qbuilder.sync(widget.widgetData, function(data) {
+                        filterService.clearFilters(widget);
+                        $scope.$apply(function(){
+                            widget.widgetData.syncState = true;
+                            widget = data;
+                        });
+                    });
+                }
             }
         };
-
 
         $scope.pngDownload = function(widget) {
 
@@ -887,14 +900,21 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             chart.options.lang.drillUpText = " Back to " + highestLvl;
                             // Show the loading label
                             chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
-                            filterArray = filterService.generateFilterParameters(widget.widgetData.commonSrc.filter);
 
-                            if (filterArray.length > 0) {
-                                filterStr = filterArray.join( ' And ');
-                                filterStr += ' And ' + highestLvl + "='" + clickedPoint + "'";
-                            } else {
+                            // get the filter parameters
+                            if (widget.widgetData.filteredState) {
+                                filterArray = filterService.generateFilterParameters(widget.widgetData.commonSrc.filter);
+                                if (filterArray.length > 0) {
+                                    filterStr = filterArray.join( ' And ');
+                                    filterStr += ' And ' + highestLvl + "='" + clickedPoint + "'";   
+                                } else {
+                                    filterStr = highestLvl + "='" + clickedPoint + "'";
+                                }                            
+                            }
+                            else {
                                 filterStr = highestLvl + "='" + clickedPoint + "'";
                             }
+
                             console.log(filterStr);
                             //aggregate method
                             clientObj.getAggData(srcTbl, fields, function(res, status, query) {

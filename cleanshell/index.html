@@ -147,7 +147,7 @@
 		<toastino></toastino>
 		<div class="blut-log-wrapper">
 			<div class="left-toggle-wrapper">
-				<img ng-src="images/digin43x43.png" err-src="images/digin43x43.png"/>
+				<img ng-src="{{getUserSettings.logo_path}}" err-src="images/digin43x43.png"/>
 				 <md-tooltip md-direction="right">
 				  v3.1.0.0
 				</md-tooltip>
@@ -190,7 +190,7 @@
 						<div layout="row" class="blut-login-user pull-right">
 							<p ng-model="username" hide-sm hide-xs>{{$root.authObject.Email}}</p>
 							<div class="login-img">
-								<img ng-src="images/signup-user.png" err-src="images/signup-user.png" />
+								<img ng-src="{{getUserSettings.dp_path}}" err-src="images/signup-user.png" />
 							</div>
 
 							<div class="dropdown">

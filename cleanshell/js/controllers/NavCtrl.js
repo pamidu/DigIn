@@ -104,13 +104,13 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$mdDialog', '$mdMedia','
 		}else if(action == "Invite User")
 		{
 			location.href = '#/inviteUser';
-		}else if(action == "Profile Settings")
-		{
-			location.href = '#/profile';
 		}else if(action == "My Account")
 		{
 			console.log("My Account");
 			location.href = '#/myAccount';
+		}else if(action == "User Administrator")
+		{
+			location.href = '#/userAdministrator';
 		}else if(action == "Help")
 		{
 			

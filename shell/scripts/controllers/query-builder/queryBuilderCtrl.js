@@ -1529,11 +1529,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             $scope.highchartsNG.size = {
                 width: 800,
                 height: 660
-            };
-
-
-            
-          
+            };    
 
             $scope.highchartsNG.options.colorAxis.minColor = newValue.minColor;
             $scope.highchartsNG.options.colorAxis.maxColor = newValue.maxColor;

@@ -72,7 +72,7 @@
                                             </v-pane-header>
                                             <v-pane-content class="trans-bg v-pane-content">
                                                 <div layout="row" layout-sm="column" layout-align="space-around" ng-hide = "filter.values.length > 0 || filter.type == 'date-single' || filter.type == 'date-multiple' ">
-                                                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                                                    <md-progress-circular md-mode="indeterminate" md-diameter="20px"></md-progress-circular>
                                                 </div>   
                                                 <div ng-show = "filter.values.length > 0">
                                                     <div  ng-if="filter.type == 'multiple'"> 

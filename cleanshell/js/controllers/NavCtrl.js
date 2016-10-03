@@ -220,6 +220,11 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$mdDialog', '$mdMedia','
 		
 	}// End of Navigate
 	
+	$scope.getUserSettings = {};
+	DiginServices.getUserSettings().then(function(data) {
+		$scope.getUserSettings = data;
+    });
+	
 	$scope.dashboards = [];
 	$scope.reports = [];
 	

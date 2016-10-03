@@ -1,7 +1,17 @@
  DiginApp.factory('DiginServices', ['$rootScope','$http', '$v6urls', '$auth', 'notifications', function($rootScope,$http, $v6urls, $auth,notifications) {
 	var cache = {};
 	return {
-        getDiginComponents: function() {
+        getUserSettings: function() {
+             //return the promise directly.
+             return $http.get('http://prod.digin.io:1929/get_user_settings?SecurityToken='+ $auth.getSecurityToken()+'&Domain=prod.digin.io')
+                       .then(function(result) {
+                            //resolve the promise as the data
+                            return result.data.Result;
+                        },function errorCallback(response) {
+								console.log(response);
+								notifications.toast(0, "Falied to get Digin Components");
+						 });
+        },getDiginComponents: function() {
              //return the promise directly.
              return $http.get('jsons/everything.json')
                        .then(function(result) {

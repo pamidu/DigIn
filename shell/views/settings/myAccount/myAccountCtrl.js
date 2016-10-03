@@ -140,19 +140,31 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
   
   //#Upgrade exisitng package into another package
   vm.upgradePackage=function(token,plan){ 
-    var pkgObj = {
+    /*var pkgObj = {
             "token":token.id,
             "plan" : {
                 "attributes":  [
-                    {"tag":"Package","feature": "Gold Package","amount": 20,"quantity":0,"action":"add"},
-                    {"tag":"user","feature": "Additional +1 user","amount": 10, "quantity":5,"action":"add"}
+                    {"tag":"Package","feature": plan.id,"amount": 20,"quantity":1,"action":"add"},\
+                    {"tag":"Storage","feature": "25GB storage","quantity":1,"amount": 30*100,"action":"remove"},
+                    {"tag":"user","feature": "Additional users","amount": 15,"quantity":5,"action":"add"}
                 ],
                 "subscription": "month",
                 "quantity": 1 
             }
-        }
+        }*/
+
+      var pkgObj ={
+        "plan" :{
+          "attributes": [
+            {"tag":"Package","feature": plan.id,"amount": 20*100,"quantity":1,"action":"add"}
+          ],
+          "subscription": "month",
+          "quantity": 1 
+          }
+      }  
     
         $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/upgradePackage",
             url : "/include/duoapi/paymentgateway/upgradePackage",
             method : "POST",
             headers: {
@@ -160,16 +172,45 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
             },
             data : pkgObj
         }).then(function(response){
-      console.log(response)
-            $mdDialog.hide();
+              //console.log(response)
+              if(response.statusText=="OK"){
+                  if(response.data.status==true){
+                    //Success
+                    displaySuccess("Your package is upgraded successfully...");
+                  }
+                  else{
+                    //fail
+                    displayError(response.data);
+                  }
+              }
+              $mdDialog.hide();
         },function(response){
-            console.log(response)
-            $mdDialog.hide();
+              //console.log(response)
+              displayError("Error while upgrade the package...");
+              //$mdDialog.hide();
         })
     
   }
 
 
+      //#common pre loader
+    var displayProgress = function (message) {
+        $mdDialog.show({
+            template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="row" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + '           <span>'+message+'</span>' + '       </div>' + '   </md-dialog-content>' + '</md-dialog>'
+            , parent: angular.element(document.body)
+            , clickOutsideToClose: false
+        });
+    };
+
+    //#common error message
+    var displayError = function (message) {
+        $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process fail !').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
+    };
+    
+      //#common error message
+    var displaySuccess = function (message) {
+        $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Success !').textContent('' + message + '').ariaLabel('successfully completed.').ok('OK'));
+    };
 
 
 //#Subscription END----------------------

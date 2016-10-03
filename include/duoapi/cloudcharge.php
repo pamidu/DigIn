@@ -422,6 +422,7 @@ class Plan {
 		unset($plan->token);
 
 		$res = $this->cClient->getRequestInvoker()->post("/upgrade", $plan);
+
 		return $this->getDefaultValue($res);
 	}
 

@@ -57,9 +57,8 @@ class stripePayment{
 	public function upgradePackage($jsonString){
 		$input = json_decode($jsonString);
 		$planInfo = $input->plan;
-		$token = $input->token;
 		$upgradePackage = new CloudCharge();
-		$response = $upgradePackage->plan()->upgrade($token ,$planInfo);
+		$response = $upgradePackage->plan()->upgradeToCustomplan($planInfo);
 		$encodeVal = json_encode($response);
 		echo $encodeVal;
 	}

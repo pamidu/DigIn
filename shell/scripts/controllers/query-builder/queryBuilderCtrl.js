@@ -1243,9 +1243,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                 }
                             }
                         },
-                        title: {
-                            text: ''
-                        },
+
                         yAxis: {
                             lineWidth: 1,
                         },
@@ -1331,6 +1329,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         onInit: function(recon) {
             if (!recon) $scope.highchartsNG = $scope.selectedChart.initObj;
             $scope.highchartsNG = $scope.widget.widgetData.highchartsNG;
+            $scope.highchartsNG.size = {
+                        width: 800,
+                        height: 660
+                    };
             $scope.chartType = 'Geographical Map';
 
         },
@@ -1349,11 +1351,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         legend: {
                             enabled: true
                         },
+
                         plotOptions: {
                             map: {
                                 mapData: Highcharts.maps['custom/world'],
-                                joinBy: 'hc-key',
-                            }
+                                joinBy: 'name',
+                            } 
+                        },
+
+                        chart: {
+                            // Edit chart spacing
+                            spacingBottom: 15,
+                            spacingTop: 30,
+                            spacingLeft: 10,
+                            spacingRight: 10,
+
                         },
                         colorAxis: {
                             min: $scope.mapconfig.min,
@@ -1363,6 +1375,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         }
                     };
                     $scope.highchartsNG.chartType = 'map';
+                    $scope.highchartsNG.size = {
+                        width: 800,
+                        height: 660
+                    };
+
+
 
 
                 }
@@ -1384,14 +1402,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
                         maplibrary = Highcharts.maps[lib];
 
+
                     }
 
 
                 }
                 d.forEach(function(e) {
-                    e["hc-key"] = e.name;
+                    e["name"] = e.name;
                     e.value = e.y;
-                    delete e.name;
                     delete e.y;
                 });
 
@@ -1399,7 +1417,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 delete $scope.highchartsNG.yAxis;
                 delete $scope.highchartsNG.legend;
                 $scope.highchartsNG.options.plotOptions.map.mapData = maplibrary;
-                $scope.highchartsNG.title.text = '';
+                
 
             }
 
@@ -1467,6 +1485,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 width: 313,
                 height: 260
             };
+            widget.widgetData.initCtrl = "elasticInit";
             widget.widgetData.highchartsNG = $scope.highchartsNG;
             widget.widgetData.widView = "views/common-data-src/res-views/ViewMap.html";
 
@@ -1495,13 +1514,27 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
             }
             $scope.highchartsNG.options.plotOptions.map.mapData = mapDataNew;
-            $scope.highchartsNG.options.colorAxis.minColor = newValue.minColor;
-            $scope.highchartsNG.options.colorAxis.maxColor = newValue.maxColor;
-              $scope.highchartsNG.options.colorAxis.min = newValue.min;
+            $scope.highchartsNG.options.chart = {
+                // Edit chart spacing
+                spacingBottom: 15,
+                spacingTop: 30,
+                spacingLeft: 10,
+                spacingRight: 10,
+
+            };
             $scope.highchartsNG.series[0].dataLabels = {
                 enabled: true,
-                format: '{point.name}' + '<br />' + ' {point.value}'
+                 format: '{point.name}'
             };
+            $scope.highchartsNG.size = {
+                width: 800,
+                height: 660
+            };    
+
+            $scope.highchartsNG.options.colorAxis.minColor = newValue.minColor;
+            $scope.highchartsNG.options.colorAxis.maxColor = newValue.maxColor;
+            $scope.highchartsNG.options.colorAxis.min = newValue.min;
+
         }
     }, true);
 
@@ -2713,7 +2746,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         plotOptions: {
                             map: {
                                 mapData: Highcharts.maps['custom/world'],
-                                joinBy: 'hc-key',
+                                joinBy: 'name',
                             }
                         },
                         colorAxis: {
@@ -2723,7 +2756,20 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
                         }
                     };
+                    $scope.highchartsNG.options.exporting = {
+
+                        chartOptions: {
+                            title: {
+                                text: $scope.widget.widgetData.widName
+                            }
+
+                        },
+                        title: {
+                            text: ''
+                        }
+                    };
                     $scope.highchartsNG.chartType = 'map';
+                    $scope.highchartsNG.title.text = '';
 
 
                 }
@@ -2812,9 +2858,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 // filter only the selected fields from the result returned by the service
                 filterService.filterAggData(res, $scope.sourceData.filterFields);
                 $scope.mapResult($scope.selectedCat, res, function(data) {
-                     $scope.highchartsNG.series = data;
+                    $scope.highchartsNG.series = data;
                     if ($scope.chartType != 'Geographical Map') {
-                       
+
                         $scope.highchartsNG.xAxis["title"] = {
                             text: $scope.selectedCat
                         };
@@ -2841,9 +2887,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
                         }
                         d.forEach(function(e) {
-                            e["hc-key"] = e.name;
+                            e["name"] = e.name;
                             e.value = e.y;
-                            delete e.name;
+
                             delete e.y;
                         });
 
@@ -2851,7 +2897,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         delete $scope.highchartsNG.yAxis;
                         delete $scope.highchartsNG.legend;
                         $scope.highchartsNG.options.plotOptions.map.mapData = maplibrary;
-                        $scope.eventHndler.isLoadingChart = false;                        
+                        $scope.eventHndler.isLoadingChart = false;
                         $scope.$apply();
 
                     }

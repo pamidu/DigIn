@@ -38,7 +38,7 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$mdDialog','DiginServices', 'not
 			changePassword: function (ev) {
 				$mdDialog.show({
 				  controller: "changePasswordCtrl",
-				  templateUrl: 'views/settings/profile/change-password.html',
+				  templateUrl: 'views/settings/myAccount/change-password.html',
 				  parent: angular.element(document.body),
 				  targetEvent: ev,
 				  clickOutsideToClose:true
@@ -50,7 +50,7 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$mdDialog','DiginServices', 'not
 			{
 				$mdDialog.show({
 				  controller: "uploadProfilePictureCtrl",
-				  templateUrl: 'views/settings/profile/uploadProfilePicture.html',
+				  templateUrl: 'views/settings/myAccount/uploadProfilePicture.html',
 				  parent: angular.element(document.body),
 				  targetEvent: ev,
 				  clickOutsideToClose:true

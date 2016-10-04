@@ -347,12 +347,11 @@ md-tabs[md-align-tabs=bottom]
 							</md-input-container>
 							<md-input-container class="md-block" flex-gt-sm="30">
 								<span>Country</span>
-								<input required type="text" name="country" ng-model="user.Country" ng-disabled="!editModeOn"  aria-label="country"/>
-								<div ng-messages="editForm.country.$error" role="alert">
-								  <div ng-message-exp="['required']">
-									Country is required
-								  </div>
-								</div>
+								<md-select ng-model="user.Country" ng-disabled="!editModeOn" >
+									 <md-option ng-value="Country.name" ng-repeat="Country in vm.allCountries" aria-label="country" ng-selected="{{ Country.name === user.Country ? 'true' : 'false' }}">
+									 {{Country.name}}
+									 </md-option>
+								</md-select>
 							</md-input-container>
 							<md-input-container class="md-block" flex-gt-sm>
 								<span>Zip Code</span>

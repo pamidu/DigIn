@@ -330,6 +330,15 @@ md-tabs[md-align-tabs=bottom]
 \_/   \_/\____/\_/     \____/\_/ \|\_/\_\\____/\____/  \____\\_/  \|\____/
 */
 
+.md-select-value
+{  
+	md-select[disabled] white !important;
+	border-bottom: none !important;
+	padding-left: 8px !important;
+}
+
+
+
 </style>
 
 <footer style="width:100%;right:0px;bottom:0px;position:fixed;">
@@ -347,7 +356,7 @@ md-tabs[md-align-tabs=bottom]
 						</div>
 
 					   <div ng-show="selectImage" align="center"><!-- selectImage-->
-							<div><input type="file" id="fileInput" /></div>
+							<div><input type="file" id="fileInput" custom-on-change="handleFileSelect"/></div>
 							<div class="cropArea" align="center">
 								<img-crop class="cropArea"  image="myImage" result-image="myCroppedImage" area-type="circle" >
 								</img-crop>
@@ -498,10 +507,15 @@ md-tabs[md-align-tabs=bottom]
 											   class="form-control"-->
 											   
 
-											<select  id="txtCountry" ng-model="user.country" ng-options="Country.name for Country in allCountries" ng-disabled="editModeOn" class="form-control">
+											<!--select  id="txtCountry" ng-model="user.country" ng-options="Country.name for Country in allCountries" ng-disabled="editModeOn" class="form-control">
 												 <option id="coutnry" ng-selected="true" selected>{{user.country}}</option>
-											</select>   
-											
+											</select-->
+											<md-select ng-model="user.country" style="border: 1px solid #d0d0d0;height: 40px;"  ng-disabled="editModeOn">
+												 <md-option ng-value="Country.name" ng-repeat="Country in allCountries" ng-selected="{{ Country.name === user.country ? 'true' : 'false' }}">
+													{{Country.name}}
+												 </md-option>
+											</md-select>
+					
 															   
 											   
 									</div>

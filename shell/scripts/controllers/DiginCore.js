@@ -656,7 +656,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     var chart = widget.widgetData.highchartsNG.getHighcharts();
                     if ( chart.options.customVar != widget.widgetData.widData.drillConf.highestLvl ) {
                         notifications.toast('0', 'Please go to the highest level to sync the chart!');
-                        return;                  
+                        return;
                     }
                 }
                 widget.widgetData.syncState = false;
@@ -664,7 +664,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 // If the chart is configured for filters, it should sync accordinly
                 if (widget.widgetData.filteredState) {
                     $scope.buildChart(widget);
-                } else{
+                } else {
                     widget.widgetData.filteredState = false;
                     $qbuilder.sync(widget.widgetData, function(data) {
                         filterService.clearFilters(widget);
@@ -837,7 +837,16 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             if (!page.isSeen) {
                 for (var i = 0; i < page.widgets.length; i++) {
                     if (typeof page.widgets[i].widgetData.commonSrc != 'undefined') {
-                        $scope.syncWidget(page.widgets[i]);
+                        if (typeof(page.widgets[i].widgetData.commonSrc) != "undefined") {
+                            page.widgets[i].widgetData.syncState = false;
+                            //Clear the filter indication when the chart is re-set
+                            page.widgets[i].widgetData.filteredState = false;
+                            filterService.clearFilters(page.widgets[i]);                                    
+                            if (page.widgets[i].widgetData.selectedChart.chartType != "d3hierarchy" && page.widgets[i].widgetData.selectedChart.chartType != "d3sunburst") {
+                                $qbuilder.sync(page.widgets[i].widgetData, function (data) {
+                                });
+                            }
+                        }                        
                     }
                 }
                 $scope.isPageSync = false;
@@ -894,6 +903,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
                                     nextLevel = drillOrdArr[i].nextLevel;
+                                    drillOrdArr[i].clickedPoint = clickedPoint;
                                     if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
                                 }
                             }

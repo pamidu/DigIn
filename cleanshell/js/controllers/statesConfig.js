@@ -44,6 +44,13 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		controllerAs: 'vm'
 	})
 	
+	.state('addaLaCarte', {
+		url: '/addaLaCarte',
+		templateUrl: 'views/settings/myAccount/addaLaCarte.html',
+		controller: 'addaLaCarteCtrl',
+		controllerAs: 'vm'
+	})
+	
 	.state('userAdministrator', {
 		url: '/userAdministrator',
 		templateUrl: 'views/settings/userAdministrator/userAdministrator.html',

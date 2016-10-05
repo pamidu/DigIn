@@ -162,15 +162,7 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$mdDialog','DiginServices', 'not
 	
 	vm.updatePackage = function(ev)
 	{
-		$mdDialog.show({
-		  controller: "addaLaCarteCtrl",
-		  templateUrl: 'views/settings/myAccount/addaLaCarte.html',
-		  parent: angular.element(document.body),
-		  targetEvent: ev,
-		  clickOutsideToClose:true
-		})
-		.then(function(answer) {
-		})
+		location.href = '#/addaLaCarte';
 	}
 	
 	

@@ -23,7 +23,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
             return this.widget.sync(q,cl,wid, cb);
         }
     };
-    
+
     var HIGHCHARTS = function() {
         function mapResult(cat, res, d, color, name, cb){
             var serArr = [];

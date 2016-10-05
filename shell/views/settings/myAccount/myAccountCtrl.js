@@ -1,6 +1,6 @@
 
 routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDialog,notifications,profile,$http, Upload,
-                                                     Digin_Domain, Digin_Tenant,$mdDialog, $location,Digin_Engine_API, $apps,ProfileService,paymentGateway) {
+                                                     Digin_Domain, Digin_Tenant, $location,Digin_Engine_API, $apps,ProfileService,paymentGateway) {
 
     
 //#Subscription START----------------------
@@ -256,7 +256,7 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
     $rootScope.myImage='';
     $scope.myCroppedImage='';
   
-    var handleFileSelect=function(evt) {
+    $scope.handleFileSelect = function(evt) {
           var file=evt.currentTarget.files[0];
           console.log(file);
           var reader = new FileReader();
@@ -268,7 +268,7 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
           };
           reader.readAsDataURL(file);  
     };
-    angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+   // angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
 
 
     //#conver dataURL into base64
@@ -301,9 +301,12 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
         }
         else{
             //*Croped image
+				
+				
                 var name=$rootScope.file.name;
                 var file = base64ToBlob($scope.myCroppedImage.replace('data:image/png;base64,',''), 'image/jpeg');
                 file.name=name;
+				console.log(file);
                 //uploader.addToQueue(file);
                 $scope.upload(file);
 
@@ -410,10 +413,11 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
 
     $scope.editModeOn = true;
   
-      if($scope.user==undefined){
+      if($rootScope.profile_Det==undefined){
         
       }
       else{
+		  console.log($rootScope.profile_Det.Country);
         $scope.user = {
           name:  $rootScope.profile_Det.Name,
           company:  $rootScope.profile_Det.Company, 
@@ -447,7 +451,7 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
            "BannerPicture":"img/cover.png",
            "BillingAddress":$scope.user.street,
            "Company":$scope.user.company,
-           "Country":$scope.user.country.name,
+           "Country":$scope.user.country,
            "Email":$scope.user.email,
            "Name":$scope.user.name,
            "PhoneNumber":$scope.user.contactNo,
@@ -485,27 +489,31 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
 
 
   
-        $scope.profile = (function () {
-            return {
-                clickEdit: function () {
-                    $scope.editModeOn = false;
-                },
+      $scope.profile = (function () {
+          return {
+              clickEdit: function () {
+                  $scope.editModeOn = false;
+              },
+
+
           changeUserProfile: function (){
             console.log($scope.user);
             $scope.editModeOn = true;
-          $scope.updateProfileData();
+            $scope.updateProfileData();
           },
-                changePassword: function (ev) {
-                    $mdDialog.show({
+
+          changePassword: function (ev) {
+              $mdDialog.show({
               controller: "changePasswordCtrl",
-              templateUrl: 'views/profile-settings/change-password.html',
+              templateUrl: 'views/settings/myAccount/change-password.html',
               parent: angular.element(document.body),
               targetEvent: ev,
               clickOutsideToClose:true
             })
             .then(function(answer) {
             })
-                },
+          },
+
           uploadProfilePicture: function(ev)
           {
             // $mdDialog.show({
@@ -521,12 +529,13 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
                      $scope.selectImage=true;
 
           },
-                closeSetting: function () {
-                    $state.go('home');
-                }
+          closeSetting: function () {
+            $state.go('home');
+          }
+
         };
 
-      })();
+    })();
 
     //UI animation
     var uiAnimation = (function () {
@@ -1321,7 +1330,7 @@ routerApp.controller('changePasswordCtrl',['$scope','$mdDialog','$http','notific
                     if (data.Error) {;
             notifications.toast('0', data.Message);
                     } else {
-            notifications.toast('1', 'Passoword is changed successfully.');
+            notifications.toast('1', 'Password is changed successfully.');
                         $mdDialog.hide();
                     }
 
@@ -1349,7 +1358,7 @@ routerApp.controller('uploadProfilePictureCtrl',['$scope','$mdDialog','$http','n
 //Password Strength Directive - Start
 routerApp.directive('passwordStrengthIndicator',passwordStrengthIndicator);
 
-function passwordStrengthIndicator() {
+  function passwordStrengthIndicator() {
     return {
         restrict: 'A',
         require: 'ngModel',
@@ -1535,6 +1544,16 @@ routerApp.directive('validNumber', function() {
           event.preventDefault();
         }
       });
+    }
+  };
+});
+
+routerApp.directive('customOnChange', function() {
+  return {
+    restrict: 'A',
+    link: function (scope, element, attrs) {
+      var onChangeFunc = scope.$eval(attrs.customOnChange);
+      element.bind('change', onChangeFunc);
     }
   };
 });

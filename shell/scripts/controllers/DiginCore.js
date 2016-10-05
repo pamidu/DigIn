@@ -714,17 +714,29 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             $("#svg-container").append(element[0].innerHTML);
             var svgEle = $("#svg-container").children();
             var svgElement = svgEle[0];
+            svgElement.children[0].setAttribute("transform", "translate(" + 300+ "," + 300 + ") rotate(-90 0 0)");
             console.log(svgElement);
             var svgString = new XMLSerializer().serializeToString(svgElement);
+
+
+            var name = "";
+            if(typeof widget.widgetData.widName != 'undefined')
+                name = widget.widgetData.widName;
+
+            var svgInnerContainer = svgEle[0].innerHTML;
+            var chartName = '<text fill="#000000" font-size="15" font-family="Verdana" x="250" y="20">'+name+'</text>';
+            svgString= '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0  600 600" width="100%"> '+chartName+' + '+svgInnerContainer+' +</svg>';
+
+
 
             $("#canvas").empty();
             var canvas = document.getElementById("canvas");
             var ctx = null;
             var ctx = canvas.getContext("2d");
-            ctx.clearRect(0, 0, 400, 400);
+            ctx.clearRect(0, 0, 600, 600);
             if (type == "jpeg") {
                 ctx.fillStyle = "#FFFFFF";
-                ctx.fillRect(0, 0, 400, 400);
+                ctx.fillRect(0, 0, 600, 600);
             }
             var DOMURL = self.URL || self.webkitURL || self;
             var img, svg = null;
@@ -762,6 +774,21 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             var svgEle = $("#svg-container").children();
             var svg = svgEle[0];
 
+            svg.setAttribute("viewBox", "0 0  600 600")
+            svg.children[0].setAttribute("transform", "translate(300,300) rotate(-90 0 0)");
+            var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+            newElement.setAttribute('x',200);
+            newElement.setAttribute('y',20);
+            newElement.setAttribute('fill','#000000');
+            newElement.setAttribute('font-size',20);
+            newElement.setAttribute('font-family','Verdana');
+
+
+            if(typeof widget.widgetData.widName != 'undefined')
+                newElement.innerHTML = widget.widgetData.widName;
+
+            svg.appendChild(newElement);
+
             svgAsDataUri(svg, {}, function(svg_uri) {
                 var image = document.createElement('img');
 
@@ -772,17 +799,17 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 image.onload = function() {
                     var canvas = document.getElementById("canvas");
                     var context = canvas.getContext('2d');
-                    context.clearRect(0, 0, 400, 400);
+                    context.clearRect(0, 0, 600, 600);
                     context.setFillColor = "#FFFFFF";
-                    context.fillRect(0, 0, 400, 400);
-                    var doc = new jsPDF('landscape', 'pt');
+                    context.fillRect(0, 0, 600, 600);
+                    var doc = new jsPDF('portrait', 'pt');
                     var dataUrl;
 
                     canvas.width = image.width;
                     canvas.height = image.height;
                     context.drawImage(image, 0, 0, image.width, image.height);
-                    dataUrl = canvas.toDataURL('image/JPEG');
-                    doc.addImage(dataUrl, 'JPEG', 0, 0, image.width, image.height);
+                    dataUrl = canvas.toDataURL('image/png');
+                    doc.addImage(dataUrl, 'png', 0, 0, image.width, image.height);
                     doc.setFillColor = "#FFFFFF";
 
                     var x = doc.output('dataurlstring');

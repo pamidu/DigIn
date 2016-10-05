@@ -4,12 +4,8 @@ DiginApp.controller('myAccountCtrl',[ '$scope', '$stateParams', '$mdDialog','Dig
 	
 	$scope.$parent.currentView = "Settings";
 	
-	if($stateParams.pageNo)
-	{
-		vm.selectedPage = $stateParams.pageNo;
-	}else{
-		vm.selectedPage = 0;
-	}
+	vm.selectedPage = $stateParams.pageNo;
+
 	
 	var userObject = {}; //if the user cancels editing replace $scope.user with this
 	$scope.user = {};
@@ -154,13 +150,28 @@ DiginApp.controller('myAccountCtrl',[ '$scope', '$stateParams', '$mdDialog','Dig
 			brand: "American Express",
 			country: "US",
 			exp_month: 5,
-			exp_year: 2019
+			exp_year: 2019,
+			background : "#136e59",
+			image: "amex_s.png",
+			default: false
 		},{
 			last4: "8445",
 			brand: "Visa",
 			country: "US",
 			exp_month: 6,
-			exp_year: 2020
+			exp_year: 2020,
+			background : "#11141d",
+			image: "visa_s.png",
+			default: true
+		},{
+			last4: "3125",
+			brand: "Master",
+			country: "US",
+			exp_month: 6,
+			exp_year: 2025,
+			background : "#0066a8",
+			image: "master_s.png",
+			default: false
 		}
 	];
 	

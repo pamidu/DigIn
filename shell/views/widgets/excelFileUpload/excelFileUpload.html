@@ -1,220 +1,194 @@
 <style>
-
-.form-container
-{
-	max-width:960px;
-	margin: 0 auto;
-	border-radius: 8px;
-}
- .setting-card-header {
-	text-align: center;
-}
-.setting-card-header > h2
-{
-	color: #3b6982;
-	margin-top: 40px;
-}
-.setting-img-wrap
-{
-	width: 125px;
-	margin: 0 auto;
-}
-p{
-	margin: 4px;
+.form-container {
+    max-width: 960px;
+    margin: 0 auto;
+    border-radius: 8px;
 }
 
-.md-button.md-icon-button
-{
-	margin: 0px;
+.setting-card-header {
+    text-align: center;
 }
-.side-margins
-{
-	margin: 0px 10px 0px 10px;
+
+.setting-card-header > h2 {
+    color: #3b6982;
+    margin-top: 40px;
+}
+
+.setting-img-wrap {
+    width: 125px;
+    margin: 0 auto;
+}
+
+p {
+    margin: 4px;
+}
+
+.md-button.md-icon-button {
+    margin: 0px;
+}
+
+.side-margins {
+    margin: 0px 10px 0px 10px;
 }
 
 input:disabled {
-	background: #e9e9e9;
-	cursor: not-allowed;
-	background-image: none !important;
+    background: #e9e9e9;
+    cursor: not-allowed;
+    background-image: none !important;
+}
 
+.next-btn {
+    background: #02b5e2 !important;
+    color: white !important;
 }
-.next-btn
-{
-	background: #02b5e2 !important;
-	color: white !important;
-}
-.checkbox
-{
-	margin: 0px;
+
+.checkbox {
+    margin: 0px;
 }
 
 .product_card {
-  position: relative;
-  display: inline-block;
-  background-color: #fff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    display: inline-block;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .product_card::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .product_card:hover {
-  -webkit-transform: scale(1.03, 1.03);
-  transform: scale(1.03, 1.03);
+    -webkit-transform: scale(1.03, 1.03);
+    transform: scale(1.03, 1.03);
 }
 
 .product_card:hover::after {
-	opacity: 1;
+    opacity: 1;
 }
 
-._md-nav-button
-{
-	width: 100% !important;
+._md-nav-button {
+    width: 100% !important;
 }
 </style>
 <div class="setup-wrapper  animated fadeIn">
-
-	        <md-stepper-card-content class="md-no-padding">
-                    <md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="vm.selectedStep" md-busy-text="vm.stepData[vm.currentStep].busyText" md-busy="vm.showBusyText">
-                        <md-step label="Folder Name" md-complete="vm.stepData[0].data.completed" ng-disabled="vm.stepProgress < 1">
-                            <md-step-body>
-                                <form name="step1" ng-submit="vm.submitCurrentStep(vm.stepData[0])">
-									<md-card class="form-container">
-										
-										<div class="setting-card-header">
-											<h2>Folder Name</h2>
-											<div class="setting-img-wrap">
-												<img src="views/widgets/excelFileUpload/folder.png"/>
-											</div>
-										</div>
-										
-										<div layout-gt-sm="row" class="side-margins">
-									
-
-											<md-nav-bar md-selected-nav-item="vm.currentNavItem" nav-bar-aria-label="navigation links" flex>
-											  <md-nav-item md-nav-click="vm.goto('page1')" name="page1" flex>New Collection</md-nav-item>
-											  <md-nav-item md-nav-click="vm.goto('page2')" name="page2" flex>Exisiting Collection</md-nav-item>
-									
-											</md-nav-bar>
-
-											
-											
-										</div>
-										
-										<div layout="row" class="side-margins">
-									
-											<div flex class="side-margins" style="padding-top: 30px;">
-												<md-input-container class="md-block" flex-gt-sm="90">
-												<span>Upload File</span>
-												<input required name="folderName" ng-model="vm.collection.folderName" ng-disabled="vm.newCollection" aria-label="folder name">
-												<div ng-messages="step1.folderName.$error">
-												  <div ng-message="required">This is required.</div>
-												</div>
-											  </md-input-container>
-										  
-											</div>
-											<div flex class="side-margins" style="padding-top: 30px;">
-												<md-radio-group ng-model="vm.collection.folderName" flex-gt-sm="40" ng-disabled="!vm.newCollection">
-
-												  <md-radio-button value="SALES" class="md-primary">SALES</md-radio-button>
-												  <md-radio-button value="INVENTORY"> INVENTORY </md-radio-button>
-												  <md-radio-button value="HR">HR</md-radio-button>
-
-												</md-radio-group>
-											</div>
-
-											
-											
-										</div>
-										 <div flex layout="row" layout-align="space-between center"  class="side-margins">
-                                            <span></span>
-                                            <md-button type="submit" ng-disabled="vm.showBusyText" class="md-raised next-btn">NEXT</md-button>
+    <md-stepper-card-content class="md-no-padding">
+        <md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="selectedStep" md-busy-text="stepData[currentStep].busyText" md-busy="showBusyText">
+            <md-step label="Folder Name" md-complete="stepData[0].data.completed" ng-disabled="stepProgress < 1">
+                <md-step-body>
+                    <form name="step1" ng-submit="submitCurrentStep(stepData[0])">
+                        <md-card class="form-container">
+                            <div class="setting-card-header">
+                                <h2>Folder Name</h2>
+                                <div class="setting-img-wrap">
+                                    <img src="views/widgets/excelFileUpload/folder.png" />
+                                </div>
+                            </div>
+                            <div layout-gt-sm="row" class="side-margins">
+                                <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links" flex>
+                                    <md-nav-item md-nav-click="goto('page1')" name="page1" flex>New Collection</md-nav-item>
+                                    <md-nav-item md-nav-click="goto('page2')" name="page2" flex>Exisiting Collection</md-nav-item>
+                                </md-nav-bar>
+                            </div>
+                            <div layout="row" class="side-margins">
+                                <div flex class="side-margins" style="padding-top: 30px;">
+                                    <md-input-container class="md-block" flex-gt-sm="90">
+                                        <span>Folder Name:</span>
+                                        <input required name="folderName" ng-model="collection.folderName" ng-disabled="newCollection" aria-label="folder name">
+                                        <div ng-messages="step1.folderName.$error">
+                                            <div ng-message="required">This is required.</div>
                                         </div>
-									</md-card><br/>
-                                 
-                                    <md-step-actions layout="row">
-                                     
-                                    </md-step-actions>
-                                </form>
-                            </md-step-body>
-                        </md-step>
-                        <md-step label="Upload" md-complete="vm.stepData[1].data.completed" ng-disabled="vm.stepProgress < 2">
-                            <md-step-body>
-                                <form name="step2" ng-submit="vm.upload($event, vm.stepData[1])">
-									<md-card class="form-container">
-										
-										<div class="setting-card-header">
-											<h2>Upload File</h2>
-											<div class="setting-img-wrap">
-												<img src="views/widgets/excelFileUpload/upload.png"/>
-											</div>
-										</div>
-										
-										<div layout-gt-sm="row" class="side-margins">
-									
-											<md-list flex>
-												<md-list-item class="md-3-line" ng-repeat="file in vm.files" ng-click="null">
-												  <img ng-src="views/widgets/excelFileUpload/excel.png" class="md-avatar" style="height:60px;width:52px;border-radius:0;" alt="{{file.name}}" />
-												  <div class="md-list-item-text" layout="column">
-													<h3>{{ file.name }}</h3>
-													<md-progress-linear md-mode="determinate" value="{{file.progressCounter}}" style="margin-top:15px;" flex></md-progress-linear>
-
-												  </div>
-												</md-list-item>
-											</md-list>
-										</div>
-										<div layout-gt-sm="row" class="side-margins">
-											<input id="myInput" type="file" custom-on-change="vm.fileChanged" multiple accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="display:none"/>
-											<md-button type="button" onclick="$('#myInput').click();">
-												<div layout="row" flex>
-												  <p flex>Import Files</p>
-												  <ng-md-icon md-menu-align-target icon="insert_drive_file" style="fill:#5E5E8E;margin-top: 10px;" size="24px"></ng-md-icon>
-												</div>
-											</md-button>
-											<!--md-button type="button" ng-click="vm.upload($event, vm.stepData[0].data)">
-												<div layout="row" flex>
-												  <p flex>Upload Files</p>
-												  <ng-md-icon md-menu-align-target icon="insert_drive_file" style="fill:#5E5E8E;margin-top: 10px;" size="24px"></ng-md-icon>
-												</div>
-											</md-button-->
-										</div>
-										
-										 <div flex layout="row" layout-align="space-between center"  class="side-margins">
-                                            <md-button class="md-warn" ng-click="vm.moveToPreviousStep()">Previous</md-button>
-                                            <md-button type="submit" ng-disabled="vm.showBusyText" class="md-raised next-btn">Upload</md-button>
-											<!--ng-click="vm.upload($event, vm.stepData[0].data)"-->
+                                    </md-input-container>
+                                </div>
+                                <div flex class="side-margins" style="padding-top: 30px;">
+                                    <md-radio-group ng-model="collection.folderName" class="effect-radio-group">
+                                        <md-radio-button class="effect-btn" ng-repeat="folder in Folders" ng-value="folder">{{folder}}</md-radio-button>
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                            <div flex layout="row" layout-align="space-between center" class="side-margins">
+                                <span></span>
+                                <md-button type="submit" ng-disabled="showBusyText" class="md-raised next-btn">NEXT</md-button>
+                            </div>
+                        </md-card>
+                        <br/>
+                        <md-step-actions layout="row">
+                        </md-step-actions>
+                    </form>
+                </md-step-body>
+            </md-step>
+            <md-step label="Upload" md-complete="stepData[1].data.completed" ng-disabled="stepProgress < 2">
+                <md-step-body>
+                    <form name="step2" ng-submit="upload($event, stepData[1])">
+                        <md-card class="form-container">
+                            <div class="setting-card-header">
+                                <h2>Upload File</h2>
+                                <div class="setting-img-wrap">
+                                    <img src="views/widgets/excelFileUpload/upload.png" />
+                                </div>
+                            </div>
+                            <div layout-gt-sm="row" class="side-margins">
+                                <!--   <md-list flex>
+                                    <md-list-item class="md-3-line" ng-repeat="file in vm.files" ng-click="null">
+                                        <img ng-src="views/widgets/excelFileUpload/excel.png" class="md-avatar" style="height:60px;width:52px;border-radius:0;" alt="{{file.name}}" />
+                                        <div class="md-list-item-text" layout="column">
+                                            <h3>{{ file.name }}</h3>
+                                            <md-progress-linear md-mode="determinate" value="{{file.progressCounter}}" style="margin-top:15px;" flex></md-progress-linear>
                                         </div>
-										</md-card><br/>
-                                  
-                                </form>
-                            </md-step-body>
-                        </md-step>
-                        <md-step label="Finish" md-complete="vm.stepData[2].data.completed" ng-disabled="vm.stepProgress < 3">
-                            <md-step-body>
-                                <form name="step2">
-                                    <md-card class="form-container">
-                                        <div layout="column" layout-align="center center" style="min-height: 200px">
-                                            <h4>{{vm.files.length}}<span ng-show="vm.files.length > 1"> Files were</span> <span ng-show="vm.files.length == 1"> File was</span> successfully uploaded</h4>
-                                            <md-button class="md-primary md-raised next-btn" ng-click="vm.goToDashboard()">Finish</md-button>
+                                    </md-list-item>
+                                </md-list> -->
+                                <div class="custom-file-upload" layout="column" layout-align="center center">
+                                    <div ngf-drop="upload($files)" ngf-select="upload($files)" ng-model="files" class="drop-box" ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true" ngf-pattern="'.xls,.csv,.xlsx'" accept=".xls,.csv,.xlsx">Drop excel files here or click to upload
+                                    </div>
+                                    <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+                                    <div style="display:inline-flex;">
+                                        Files :
+                                        <div ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}
                                         </div>
-                                    </md-card><br/>
-                                </form>
-                            </md-step-body>
-                        </md-step>
-                    </md-steppers>
-                </md-stepper-card-content>
-
+                                    </div>
+                                    <!-- <div class="digin-gb-chart-loading m-l-50"
+                         ng-show="preloader">
+                          <svg class="circular-loader" height="50" width="50">
+                              <circle class="path" cx="25" cy="25.2" r="19.9"
+                                      fill="none" stroke-width="6" stroke-miterlimit="10"/>
+                          </svg>
+                        </div> -->
+                                </div>
+                            </div>
+                            <div flex layout="row" layout-align="space-between center" class="side-margins">
+                                <md-button class="md-warn" ng-click="moveToPreviousStep()">Previous</md-button>
+                                <md-button type="submit" ng-disabled="showBusyText" class="md-raised next-btn">Upload</md-button>
+                                <!--ng-click="vm.upload($event, vm.stepData[0].data)"-->
+                            </div>
+                        </md-card>
+                        <br/>
+                    </form>
+                </md-step-body>
+            </md-step>
+            <md-step label="Finish" md-complete="stepData[2].data.completed" ng-disabled="stepProgress < 3">
+                <md-step-body>
+                    <form name="step2">
+                        <md-card class="form-container">
+                            <div layout="column" layout-align="center center" style="min-height: 200px">
+                                <h4>{{files.length}}<span ng-show="files.length > 1"> Files were</span> <span ng-show="files.length == 1"> File was</span> successfully uploaded</h4>
+                                <md-button class="md-primary md-raised next-btn" ng-click="goToDashboard()">Finish</md-button>
+                            </div>
+                        </md-card>
+                        <br/>
+                    </form>
+                </md-step-body>
+            </md-step>
+        </md-steppers>
+    </md-stepper-card-content>
 </div>

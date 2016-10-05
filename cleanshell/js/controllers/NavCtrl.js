@@ -1,4 +1,4 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers',function ($scope,$rootScope ,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers) {
 
 	$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
@@ -273,6 +273,11 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$mdDialog', '$mdMedia','
 			$rootScope.currentDashboard = data;
 			location.href = '#/dashboard';
 		});
+	}
+	
+	$scope.route = function(state, pageNo) //pageNo is optional
+	{
+		$state.go(state,{ 'pageNo': pageNo });
 	}
 	
 	//close any dialog box

@@ -246,7 +246,7 @@
                 w.addEventListener('message', function(event) {
                     if (event.data.state) {
                         var res = JSON.parse(event.data.res);
-                        res.Is_Success ? cb(res.Result, event.data.state, res.Custom_Message) : cb(res.Custom_Message, event.data.state, "");
+                        res.Is_Success ? cb(res.Result, res.Is_Success, res.Custom_Message) : cb(res.Custom_Message, res.Is_Success, "");
                     } else {
                         if (typeof res != "undefined")
                             cb(res.Custom_Message, event.data.state, "");

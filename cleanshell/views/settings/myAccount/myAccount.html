@@ -253,17 +253,31 @@ md-tabs[md-align-tabs=bottom]
  {
 	width:280px;
 	height:170px;
-	background: #11141d;
  }
  
  p{
 	margin: 4px;
  }
+ 
+ .redExpiryContainer
+ {
+	background:#ff5252;
+ }
+ 
+ .greenExpiryContainer
+ {
+	background:#4CAF50;
+ }
+ .smallMdButton
+ {
+    line-height: 30px;
+    min-height: 30px;
+  }
 
 </style>
 
 <footer style="width:100%;right:0px;bottom:0px;position:fixed;">
-	<md-tabs id="pagingTabs" md-align-tabs="bottom">
+	<md-tabs id="pagingTabs" md-selected="vm.selectedPage" md-align-tabs="bottom">
 	  <md-tab id="tab1" md-on-select="selectPage($index)">
 		<md-tab-label layout="row" layout="space-between center">
 			<span  style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>Profile Details</span>
@@ -347,12 +361,11 @@ md-tabs[md-align-tabs=bottom]
 							</md-input-container>
 							<md-input-container class="md-block" flex-gt-sm="30">
 								<span>Country</span>
-								<input required type="text" name="country" ng-model="user.Country" ng-disabled="!editModeOn"  aria-label="country"/>
-								<div ng-messages="editForm.country.$error" role="alert">
-								  <div ng-message-exp="['required']">
-									Country is required
-								  </div>
-								</div>
+								<md-select ng-model="user.Country" ng-disabled="!editModeOn" >
+									 <md-option ng-value="Country.name" ng-repeat="Country in vm.allCountries" aria-label="country" ng-selected="{{ Country.name === user.Country ? 'true' : 'false' }}">
+									 {{Country.name}}
+									 </md-option>
+								</md-select>
 							</md-input-container>
 							<md-input-container class="md-block" flex-gt-sm>
 								<span>Zip Code</span>
@@ -492,19 +505,24 @@ md-tabs[md-align-tabs=bottom]
 											<span class="align-left"> 1 User</span>
 											<span class="align-left"> 10 GB Storage</span>
 											<span class="align-left"> 100 GB of Bandwidth</span>
+											<div layout="row" layout-align="end end" style="margin-top: 10px;">
+												<md-button class="md-raised smallMdButton" ng-click="vm.deactivateAccount($event)"><span style="text-transform:none">Deactivate Account</span></md-button>
+												<md-button class="md-raised smallMdButton" ng-click="vm.updatePackage($event)"><span style="text-transform:none">Customize</span></md-button>
+											</div>
 										</div>
 									</center>
 								</md-card>
-								<md-card class="product_card" style="width:460px;height:205px;background:#ff5252" layout="row" ng-click="uploadCompanyLogo($event)">
+								<md-card class="product_card" style="width:460px;height:205px;" layout="row" ng-click="uploadCompanyLogo($event)" ng-class="{'redExpiryContainer':vm.warning== true,'greenExpiryContainer':vm.warning==false}">
 									<div flex="40" layout="row" layout-align="space-between center">
-										<img src="views/settings/myAccount/bad.png" style="width: 160px;-webkit-filter: drop-shadow(1px 0px 1px #222);filter: drop-shadow(1px 0px 1px #222);" ng-show="true"/>
-										<img src="views/settings/myAccount/bad.png" style="width: 160px;-webkit-filter: drop-shadow(1px 0px 1px #222);filter: drop-shadow(1px 0px 1px #222);" ng-show="false"/>
+										<img src="views/settings/myAccount/good.png" style="width: 160px;-webkit-filter: drop-shadow(1px 0px 1px #222);filter: drop-shadow(1px 0px 1px #222);" ng-hide="vm.warning"/>
+										<img src="views/settings/myAccount/bad.png" style="width: 160px;-webkit-filter: drop-shadow(1px 0px 1px #222);filter: drop-shadow(1px 0px 1px #222);" ng-show="vm.warning"/>
 									</div>
-									<div flex="40" layout="column" layout-align="start start" style="padding-top:30px;">
-										<span class="align-left">Expires in 3 days</span>
-										<span class="align-left" style="margin-top:15px;font-size:14px;line-height:20px;font-weight: 700;letter-spacing: 1px;">Expiry Date</span>
-										<span class="align-left">12/05/2016</span>
+									<div flex layout="column" layout-align="start start" style="padding-top:30px;">
+										<!--span class="align-left">Expires in 3 days</span-->
 										
+										<span class="align-left" style="font-size:14px;line-height:20px;font-weight: 700;letter-spacing: 1px;">Expiry Date</span>
+										<span class="align-left">November 19, 2016</span>
+										<span countdownn='' warning='vm.warning' date='November 19, 2016' style="font-size:15px;margin-top:15px;color:white">&nbsp;</span>
 									</div>
 								</md-card>
 							</div>
@@ -563,46 +581,37 @@ md-tabs[md-align-tabs=bottom]
 
 					<v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;">
 						<div layout="row" layout-align="center center" layout-wrap>
-							<!--md-card class="tint showbox paymentCard product_card" ng-repeat="card in vm.paymentCards" ng-class="{selected: $index == selectedCard}">
-								<div layout="row" layout="space-between center">
-									<span style="color:#615097;font-weight:700;letter-spacing:1px" flex>Payment Details</span>
-									<img src="views/settings/myAccount/cards/visa_s.png" style="width:77px;height:44px" />
-								</div>
-								<div layout="column" layout="space-between center">
-									<span style="color:#71777b;font-size:10px;" flex>Card Number</span>
-									<span style="color:white;font-size:18px;line-height:40px;font-family: cursive;" flex>**** **** **** {{card.last4}}</span>
-								</div>
-								<div layout="column" layout="space-between center">
-									<span style="color:#71777b;font-size:10px;" flex>Expiry Date</span>
-									<span style="color:white;font-size:18px;line-height:40px;" flex>{{card.exp_month}}/{{card.exp_year}}</span>
-								</div>
-							</md-card-->
 							<div class="flip-container" id="{{$index}}" ng-repeat="card in vm.paymentCards">
 								<div class="flipper">
 									<div class="front">
 							
 											
-										<md-card class="tint showbox paymentCard product_card" ng-class="{selected: $index == selectedCard}">
+										<md-card class="tint showbox paymentCard product_card" ng-class="{selected: $index == selectedCard}" style="background:{{card.background}}">
 											<div layout="row" layout="space-between center">
-												<span style="color:#615097;font-weight:700;letter-spacing:1px" flex>Payment Details</span>
-												<img src="views/settings/myAccount/cards/visa_s.png" style="width:77px;height:44px" />
+												<span style="color:white;font-weight:700;letter-spacing:1px" flex>Payment Details</span>
+												<img src="views/settings/myAccount/cards/{{card.image}}" style="width:77px;height:44px" />
 											</div>
 											<div layout="column" layout="space-between center">
-												<span style="color:#71777b;font-size:10px;" flex>Card Number</span>
+												<span style="color:white;font-size:10px;" flex>Card Number</span>
 												<span style="color:white;font-size:18px;line-height:40px;font-family: cursive;text-shadow: 2px 1px #484848;" flex>**** **** **** {{card.last4}}</span>
 											</div>
 											<div layout="column" layout="space-between center">
-												<span style="color:#71777b;font-size:10px;" flex>Expiry Date</span>
+												<span style="color:white;font-size:10px;" flex>Expiry Date</span>
 												<span style="color:white;font-size:18px;line-height:40px;" flex>{{card.exp_month}}/{{card.exp_year}}</span>
+											</div>
+											<div layout="column" layout="end end">
+												<md-button ng-show="card.default == true" class="md-raised" aria-label="Profile" style="position:absolute;right: 10px;bottom: -25px;background:#f9a525">
+													<span style="text-transform:none;font-weight:700;letter-spacing:1px;color:white;    text-shadow: 1px 0px #484848;">Default</span>
+												</md-button>
 											</div>
 										</md-card>
 								
 									</div>
 									<div class="back">
-										<md-card class="tint showbox paymentCard product_card" ng-class="{selected: $index == selectedCard}" style="padding: 0px;">
+										<md-card class="tint showbox paymentCard product_card" ng-class="{selected: $index == selectedCard}" style="padding: 0px;background:{{card.background}}">
 											<div layout="row" layout="space-between center" style="margin-top:20px;height:35px;background:white;"></div>
 											<center style="margin-top:40px;">
-												<md-button class="md-raised" ng-click="vm.makeDefault()"><span style="text-transform:initial">Make Default</span></md-button>
+												<md-button class="md-raised" ng-click="vm.makeDefault()" ng-disabled="card.default == true"><span style="text-transform:initial">Make Default</span></md-button>
 											</center>
 										</md-card>
 									</div>

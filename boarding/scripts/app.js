@@ -1,5 +1,14 @@
 var app = angular.module('app', ['ngMaterial', 'ngMessages', 'md-steppers','stripe-payment-tools','ngCookies','configuration']);
 
+app.config(["$httpProvider", function ($httpProvider) {
+
+    $httpProvider.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    $httpProvider.defaults.headers.common["Content-Type"] = "application/x-www-form-urlencoded";
+}]);
+
+
 app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGateway,$mdDialog,$cookies,$http,Digin_Tenant,Digin_Domain) {
 
     var vm = this;
@@ -109,8 +118,9 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         }
         else{
             var SecToken = decodeURIComponent($cookies.get('securityToken'));
-            $http.get(Digin_Tenant+'/tenant/GetTenant/'+tenant.name+'.'+Digin_Domain, {
-                headers: {'Securitytoken': SecToken}
+            $http({method: 'GET', 
+                    url: Digin_Tenant+'/tenant/GetTenant/'+tenant.name+'.'+Digin_Domain, 
+                    headers: {'Securitytoken': SecToken}
             })
             .success(function (response) {
                 console.log(response);
@@ -264,6 +274,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             else {  
                 $mdDialog.hide();
                 console.log(response.Message);
+                displayError(response.Message);
             }
         })
         .error(function (error) {

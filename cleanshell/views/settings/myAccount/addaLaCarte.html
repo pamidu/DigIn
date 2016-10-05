@@ -22,7 +22,7 @@
 
 			<form name="editForm"  md-theme="default" ng-submit="submit()">
 				<div layout="row" layout-align="end end">
-					<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="back" ng-click="route('back')"></md-button>
+					<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="back" ng-click="route('myAccount' , 2)"></md-button>
 				</div>
 					
 				<div class="setting-card-header">
@@ -75,7 +75,7 @@
 					<h2 class="alaCarte_color" flex>Hosting</h2>
 					<md-input-container class="md-block" flex-gt-sm>
 						<span>don't be trippin</span>
-						<input required type="email" name="fname" ng-model="content.fname" />
+						<input required type="email" name="fname" ng-model="content.fname" aria-label="fname"/>
 						<div ng-messages="editForm.fname.$error" role="alert">
 						  <div ng-message-exp="['required']">
 								Frist name is required

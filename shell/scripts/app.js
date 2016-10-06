@@ -166,8 +166,19 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             url: "/myAccount",
             controller: "myAccountCtrl",
             templateUrl: "views/settings/myAccount/myAccount.html",
-            controllerAs: 'vm'
+            controllerAs: 'vm',
+			 params: {
+				'pageNo': '0'
+			  }
         })
+		
+		.state('home.addaLaCarte', {
+			url: '/addaLaCarte',
+			templateUrl: 'views/settings/myAccount/addaLaCarte.html',
+			controller: 'addaLaCarteCtrl',
+			controllerAs: 'vm'
+		})
+		
         .state("home.userProfile", {
             url: "/settings-userProfile",
             controller: "dashboardSetupCtrl",

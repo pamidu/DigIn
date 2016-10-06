@@ -24,7 +24,11 @@
                         cb(data, status);
                     }, $diginurls.diginengine + "GetTables?dataSetName=" + getNamespace() + "&db=" + database);
                 },
-
+                getFolders: function(cb) {
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + "get_system_directories?folder_type=data_source_folder");
+                },
                 getFields: function(tbl, cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);

@@ -31,25 +31,25 @@
 				<div class="setting-card-header">
 					<h2>Add a La Carte</h2>
 					<div class="setting-img-wrap">
-						<img src="views/settings/createNewUser/new_user.png"/>
+						<img src="views/settings/myAccount/addaLaCarte.png"/>
 					</div>
 				</div>
 				
 				
 				<!--Input Elements Start-->
 				<div layout="row" layout-align="start start">
-					<div class="section-title">Add</div>
+					<div class="section-title">Customize Package</div>
 				</div>
 				
 				<div layout-gt-sm="row" class="side-margins">
 					<h2 class="alaCarte_color" flex>Users</h2>
 					<md-input-container flex>
-						<span>about 20M chat messages</span>
-						<md-slider class="md-primary" md-discrete ng-model="rating3" step="1" min="1" max="5" aria-label="rating">
+						<span>No. of Users</span>
+						<md-slider class="md-primary" md-discrete ng-model="users" step="1" min="1" max="20" aria-label="rating">
 						</md-slider>
 					</md-input-container>
 					<div layout="column" layout-align="center center" flex>
-						<h3 class="alaCarte_h3">1 GB</h3>
+						<h3 class="alaCarte_h3">{{users}} users</h3>
 						<span class="grey">about 20M chat messages</span>
 					</div>
 					
@@ -59,15 +59,15 @@
 				</div>
 				<md-divider></md-divider>
 				<div layout-gt-sm="row" class="side-margins">
-					<h2 class="alaCarte_color" flex>File Storage</h2>
+					<h2 class="alaCarte_color" flex>Storage</h2>
 					<md-input-container flex>
-						<span>This is just a layout</span>
-						<md-slider class="md-primary" md-discrete ng-model="rating3" step="1" min="1" max="5" aria-label="rating">
+						<span>GB Stored</span>
+						<md-slider class="md-primary" md-discrete ng-model="storage" step="1" min="1" max="100" aria-label="rating">
 						</md-slider>
 					</md-input-container>
 					<div layout="column" layout-align="center center" flex>
-						<h3 class="alaCarte_h3">1 GB</h3>
-						<span class="grey">about 20M chat messages</span>
+						<h3 class="alaCarte_h3">{{storage}} GB</h3>
+						<span class="grey">about 20M dashboards</span>
 					</div>
 					<div layout="column" layout-align="center center" flex="20">
 						<h2 class="alaCarte_h3_color">$5</h2>
@@ -75,6 +75,21 @@
 				</div>
 				<md-divider></md-divider>
 				<div layout-gt-sm="row" class="side-margins">
+					<h2 class="alaCarte_color" flex>Bandwidth</h2>
+					<md-input-container flex>
+						<span>GB Transferred</span>
+						<md-slider class="md-primary" md-discrete ng-model="bandwidth" step="1" min="1" max="100" aria-label="bandwidth">
+						</md-slider>
+					</md-input-container>
+					<div layout="column" layout-align="center center" flex>
+						<h3 class="alaCarte_h3">{{bandwidth}} GB</h3>
+						<span class="grey">about 20M chat messages</span>
+					</div>
+					<div layout="column" layout-align="center center" flex="20">
+						<h2 class="alaCarte_h3_color">$5</h2>
+					</div>
+				</div>
+				<!--div layout-gt-sm="row" class="side-margins">
 					<h2 class="alaCarte_color" flex>Hosting</h2>
 					<md-input-container class="md-block" flex-gt-sm>
 						<span>don't be trippin</span>
@@ -92,7 +107,7 @@
 					<div layout="column" layout-align="center center" flex="20">
 						<h2 class="alaCarte_h3_color">$5</h2>
 					</div>
-				</div>
+				</div-->
 
 				<div layout="row" layout-align="center start" layout-margin ng-init="submitted=false" >
 					<md-button id="accountSubmit" class="md-raised md-primary" style="width:100px;background:#02b5e2" ng-disabled="submitted" type="submit">

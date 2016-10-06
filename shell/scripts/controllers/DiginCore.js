@@ -1286,8 +1286,8 @@ routerApp.controller('ReportsDevCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportS
         }
     }
 ]);
-routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain','DashboardService','$state',
-    function($scope, dynamicallyReportSrv, $localStorage, Digin_Engine_API, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain,DashboardService,$state) {
+routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain',
+    function($scope, dynamicallyReportSrv, $localStorage, Digin_Engine_API, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain) {
 
 
         // update damith
@@ -1322,22 +1322,23 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                     $scope.reports = [];
                     getSession();
                     startReportService();
-                    dynamicallyReportSrv.getAllReports(reqParameter).success(function(data) {
-                        console.log(data);
-                        if (data.Is_Success) {
-                            for (var i = 0; i < data.Result.length; i++) {
-                                console.log($scope.reports);
-                                $scope.reports.push({
-                                    splitName: data.Result[i],
-                                    path: '/dynamically-report-builder'
-                                });
+                    // dynamicallyReportSrv.getAllReports(reqParameter).success(function(data) {
+                    //     console.log(data);
+                    //     if (data.Is_Success) {
+                    //         for (var i = 0; i < data.Result.length; i++) {
+                    //             console.log($scope.reports);
+                    //             $scope.reports.push({
+                    //                 splitName: data.Result[i],
+                    //                 path: '/dynamically-report-builder'
+                    //             });
                                 
-                            }
-                        }
-                    }).error(function(respose) {
-                        console.error('error request getAllReports...');
-                    });
+                    //         }
+                    //     }
+                    // }).error(function(respose) {
+                    //     console.error('error request getAllReports...');
+                    // });
                     dynamicallyReportSrv.getAllComponents(reqParameter).success(function(data) {
+                        $rootScope.reports = [];
                         angular.forEach(data.Result, function(key) {
                             if (key.compType == "Report") {
                                 $scope.reports.push({
@@ -1345,6 +1346,13 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                                     path: '/dynamically-report-builder',
                                     reportId: key.compID
                                 });
+
+                                $rootScope.reports.push({
+                                    splitName: key.compName,
+                                    path: '/dynamically-report-builder',
+                                    reportId: key.compID
+                                });
+                                   
                             }
                         });
 
@@ -1387,10 +1395,10 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                     var lim = i == 0 ? "" : "-" + i;
 
                     
-                    if(typeof DashboardService.reports != "undefined" ){
-                       for(var j=0; j<DashboardService.reports.length;j++){
-                            if(DashboardService.reports[j].splitName+".zip" == files[i].name || DashboardService.reports[j].splitName+".rar" == files[i].name){
-                                repid = DashboardService.reports[j].reportId;
+                    if(typeof $rootScope.reports != "undefined" ){
+                       for(var j=0; j<$rootScope.reports.length;j++){
+                            if($rootScope.reports[j].splitName+".zip" == files[i].name || $rootScope.reports[j].splitName+".rar" == files[i].name){
+                                repid = $rootScope.reports[j].reportId;
                             }
                         } 
                     }
@@ -1567,7 +1575,7 @@ routerApp.controller('summarizeCtrl', ['$scope', '$http', '$objectstore', '$mdDi
 
             client.getFields("com.duosoftware.com", index.display);
         }
-        
+
         $scope.remove = function() {
             // Easily hides most recent dialog shown...
             // no specific instance reference is needed.

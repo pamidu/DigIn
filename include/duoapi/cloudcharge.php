@@ -3,10 +3,11 @@
 /*
 
 	CloudCharge Endpoint Library
-		Version 1.0.6
+		Version 1.0.7
 	
 	change-log [
-		2016-9-26 - intraduce new methods to handle plan upgrade related operations.
+		2016-10-05 - added subscription check method for plans.
+		2016-9-26 - introduce new methods to handle plan upgrade related operations.
 		2016-9-08 - introduce new methods to handle plan related operations.
 		2016-9-02 - introduce new methods to handle card related operations.
 		2016-9-02 - format method responses.
@@ -118,7 +119,7 @@ Class Card {
 		if (!$jsonObj){
 			$jsonObj = new stdClass();
 			$jsonObj->status = false;
-			$jsonObj->message = $res;
+			$jsonObj->response = $res;
 		}
 		return $jsonObj;
 
@@ -146,7 +147,7 @@ class User {
 		if (!$jsonObj){
 			$jsonObj = new stdClass();
 			$jsonObj->status = false;
-			$jsonObj->message = $res;
+			$jsonObj->response = $res;
 		}
 		return $jsonObj;
 
@@ -284,7 +285,7 @@ class App {
 		if (!$jsonObj){
 			$jsonObj = new stdClass();
 			$jsonObj->status = false;
-			$jsonObj->message = $res;
+			$jsonObj->response = $res;
 		}
 		return $jsonObj;
 
@@ -422,8 +423,8 @@ class Plan {
 		unset($plan->token);
 
 		$res = $this->cClient->getRequestInvoker()->post("/upgrade", $plan);
-
 		return $this->getDefaultValue($res);
+
 	}
 
 	public function stopSubscription($now = false) { 
@@ -443,13 +444,19 @@ class Plan {
 		
 	}
 
+	public function checkSubscription() {
+		$res = $this->cClient->getRequestInvoker()->get("/subscriberCheck");
+		return $this->getDefaultValue($res);
+		
+	}
+
 	private function getDefaultValue($res){
 
 		$jsonObj =json_decode($res);
 		if (!$jsonObj){
 			$jsonObj = new stdClass();
 			$jsonObj->status = false;
-			$jsonObj->message = $res;
+			$jsonObj->response = $res;
 		}
 		return $jsonObj;
 
@@ -540,6 +547,7 @@ class CloudCharge {
 
 	(new CloudCharge())->plan()->stopSubscription([$stopnow]);
 	(new CloudCharge())->plan()->resubscribe();
+	(new CloudCharge())->plan()->checkSubscription();
 
 	(new CloudCharge())->app()->create($app); // invoke during app publishing
 	(new CloudCharge())->app()->purchase($appkey, $price [,$token]); // invoke during one time payment app purchase

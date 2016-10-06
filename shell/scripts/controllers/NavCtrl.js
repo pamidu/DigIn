@@ -2183,5 +2183,12 @@ routerApp.controller('inviteUserCtrl',['$scope','$mdDialog','$http','Digin_Tenan
 
 
 
+    $scope.route = function(state, pageNo) //pageNo is optional
+    {
+        $state.go(state,{ 'pageNo': pageNo });
+    }
+
+
+
 
 }])

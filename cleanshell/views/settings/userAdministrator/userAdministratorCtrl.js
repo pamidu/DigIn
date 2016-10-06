@@ -92,7 +92,7 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 	$scope.addUser = function(ev,group)
 	{
 		$mdDialog.show({
-			  controller: "addUserCtrl",
+			  controller: "addUserCtrl as vm",
 			  templateUrl: 'views/settings/userAdministrator/addUser.html',
 			  parent: angular.element(document.body),
 			  targetEvent: ev,
@@ -121,4 +121,53 @@ DiginApp.controller('addUserCtrl',[ '$scope','$mdDialog', function ($scope,$mdDi
 			console.log("submit");
 	}
 	
+	 var vm = this;
+
+    vm.querySearch = querySearch;
+    vm.allContacts = loadContacts();
+	console.log(vm.allContacts);
+    vm.contacts = [vm.allContacts[0]];
+    vm.filterSelected = true;
+
+    /**
+     * Search for contacts.
+     */
+    function querySearch (query) {
+      var results = query ?
+          vm.allContacts.filter(createFilterFor(query)) : [];
+      return results;
+    }
+
+    /**
+     * Create filter function for a query string
+     */
+    function createFilterFor(query) {
+      var lowercaseQuery = angular.lowercase(query);
+
+      return function filterFn(contact) {
+        return (contact._lowername.indexOf(lowercaseQuery) != -1);;
+      };
+
+    }
+
+	function getCatLetter(catName){
+		try{
+			var catogeryLetter = "images/material_alperbert/avatar_tile_"+catName.charAt(0).toLowerCase()+"_28.png";
+		}catch(exception){}
+		return catogeryLetter;
+	};
+	
+    function loadContacts() {
+		var contacts = [{email: "m.augustine@example.com", name:"Marina Augustine"},
+						{email: "o.sarno@example.com", name:"Oddr Sarno"},
+						{email: "n.giannopoulos@example.com", name:"Nick Giannopoulos"}];
+						
+		for (i = 0, len = contacts.length; i<len; ++i){
+			//write iteration logic here
+			contacts[i].image = getCatLetter(contacts[i].name);
+			contacts[i]._lowername = contacts[i].name.toLowerCase();
+		}
+		return contacts;
+    }
+
 }])

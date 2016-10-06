@@ -738,6 +738,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
             };//end
 
+
             return {
                 getAllDashboards: function () {
 
@@ -760,8 +761,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             for (var i = 0; i < data.Result.length; i++) {
                                 if (data.Result[i].compType == "Report") {
                                     $scope.reports.push(
-                                        {splitName: data.Result[i].compName, path: '/dynamically-report-builder'}
+                                        {splitName: data.Result[i].compName, path: '/dynamically-report-builder', reportId: data.Result[i].compID}
                                     );
+
+                                    DashboardService.reports = $scope.reports;
                                 }
                                 else {
 
@@ -773,7 +776,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                                 }
                             }
-
+                            
                           
                             //fetch all saved dashboards from pouchdb
                             db.allDocs({

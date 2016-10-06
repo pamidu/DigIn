@@ -1,7 +1,7 @@
 routerApp.factory('DashboardService', function (ObjectStoreService, $rootScope, $mdDialog) {
     var dashboards = [];
+    var reports = [];
     return {
-
         getDashboards: function (newDash) {
             var client = ObjectStoreService.initialize("duodigin_dashboard");
 

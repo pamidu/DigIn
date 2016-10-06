@@ -1286,8 +1286,8 @@ routerApp.controller('ReportsDevCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportS
         }
     }
 ]);
-routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain',
-    function($scope, dynamicallyReportSrv, $localStorage, Digin_Engine_API, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain) {
+routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain','DashboardService','$state',
+    function($scope, dynamicallyReportSrv, $localStorage, Digin_Engine_API, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain,DashboardService,$state) {
 
 
         // update damith
@@ -1316,7 +1316,6 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                 }
             }; //end
 
-
             return {
                 getAllReport: function() {
                     reqParameter.userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
@@ -1332,6 +1331,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                                     splitName: data.Result[i],
                                     path: '/dynamically-report-builder'
                                 });
+                                
                             }
                         }
                     }).error(function(respose) {
@@ -1342,14 +1342,15 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                             if (key.compType == "Report") {
                                 $scope.reports.push({
                                     splitName: key.compName,
-                                    path: '/dynamically-report-builder'
+                                    path: '/dynamically-report-builder',
+                                    reportId: key.compID
                                 });
                             }
                         });
+
                     }).error(function(error) {
 
                     });
-
                 }
             }
         }());
@@ -1375,12 +1376,26 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
             var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
             var uploadFlag;
             var storeFlag;
+            var repid = null;
+            
+
             if (files && files.length) {
                 $scope.preloader = true;
                 $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
 
                 for (var i = 0; i < files.length; i++) {
                     var lim = i == 0 ? "" : "-" + i;
+
+                    
+                    if(typeof DashboardService.reports != "undefined" ){
+                       for(var j=0; j<DashboardService.reports.length;j++){
+                            if(DashboardService.reports[j].splitName+".zip" == files[i].name || DashboardService.reports[j].splitName+".rar" == files[i].name){
+                                repid = DashboardService.reports[j].reportId;
+                            }
+                        } 
+                    }
+                    
+
 
                     Upload.upload({
                         url: Digin_Engine_API + 'file_upload',
@@ -1417,7 +1432,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                         "compClass": '',
                         "compType": "Report",
                         "compCategory": "",
-                        "compID": null,
+                        "compID": repid,
                         "compName": files[i].name.replace(/\.[^/.]+$/, ""),
                         "refreshInterval": 0,
                         "deletions": {
@@ -1441,6 +1456,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                         if (uploadFlag && storeFlag) {
                             fireMsg('1', 'Successfully uploaded!');
                             privateFun.getAllReport();
+                            
                         }
                     }).error(function(data) {
                         storeFlag = false;
@@ -1551,6 +1567,7 @@ routerApp.controller('summarizeCtrl', ['$scope', '$http', '$objectstore', '$mdDi
 
             client.getFields("com.duosoftware.com", index.display);
         }
+        
         $scope.remove = function() {
             // Easily hides most recent dialog shown...
             // no specific instance reference is needed.

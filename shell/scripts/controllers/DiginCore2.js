@@ -550,7 +550,6 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
         $scope.saveDashboard = function() {      
 
-
             if($scope.dashboardName && $scope.refreshInterval ){
 
                 var noDuplicate = true;

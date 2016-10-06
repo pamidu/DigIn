@@ -485,7 +485,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //On click report Event
         $scope.goReport = function (report) {
             // --- Add by Gevindu on 5/23/2016 - DUODIGIN-509
-             $rootScope.currentView =report;
+             $rootScope.currentView ="Reports || "+report;
             layoutManager.headerMenuToggle(true);
             $scope.openSearchBar(); 
             $mdSidenav('right')
@@ -570,7 +570,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.goDashboard = function (dashboard) {
 
             layoutManager.headerMenuToggle(true);
-            $rootScope.currentView = dashboard.dashboardName;
+            $rootScope.currentView = "Dashboards || " + dashboard.dashboardName;
             $scope.openSearchBar(); 
             console.log($scope.dashboards);
             console.log("dash item", dashboard);

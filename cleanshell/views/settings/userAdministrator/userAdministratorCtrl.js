@@ -72,6 +72,53 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 		return catogeryLetter;
 	}; 
 	
+		DiginServices.getAllGroups(function(data) {
+		$scope.groups = data;
+	});
+	
+	$scope.addGroup = function(ev)
+	{
+		$mdDialog.show({
+			  controller: "addGroupCtrl",
+			  templateUrl: 'views/settings/userAdministrator/addGroup.html',
+			  parent: angular.element(document.body),
+			  targetEvent: ev,
+			  clickOutsideToClose:true
+		})
+		.then(function(answer) {
+		})
+	}
+	
+	$scope.addUser = function(ev,group)
+	{
+		$mdDialog.show({
+			  controller: "addUserCtrl",
+			  templateUrl: 'views/settings/userAdministrator/addUser.html',
+			  parent: angular.element(document.body),
+			  targetEvent: ev,
+			  clickOutsideToClose:true,
+			  locals: group
+		})
+		.then(function(answer) {
+		})
+	}
 
+}])
+
+DiginApp.controller('addGroupCtrl',[ '$scope','$mdDialog', function ($scope,$mdDialog){
+	
+	$scope.submit = function()
+	{
+			console.log("submit");
+	}
+	
+}])
+
+DiginApp.controller('addUserCtrl',[ '$scope','$mdDialog', function ($scope,$mdDialog){
+	
+	$scope.submit = function()
+	{
+			console.log("submit");
+	}
 	
 }])

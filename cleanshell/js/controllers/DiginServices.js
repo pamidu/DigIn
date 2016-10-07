@@ -132,7 +132,39 @@
 					 });	
 				}
 		
-		   }, getProfile: function(callback) {
+		   }, addUserGroup: function(userGroup) {
+				//notifications.startLoading("Adding User Group, Please wait..");
+				var req = {
+					method: "POST",
+					url: "/apis/usercommon/addUserGroup",
+					headers: {
+						"Content-Type": "application/json"
+						//"SecurityKey" : $auth.getSecurityToken()
+					},
+					data: userGroup
+				}
+				 return $http(req)
+					.then(function(result){
+						//notifications.finishLoading();
+						console.log(result);
+						return result.data;
+						
+						
+					},function errorCallback(response) {
+						notifications.toast(0, "Falied to add group");
+						notifications.finishLoading();
+				});	
+		
+		},removeUserGroup: function(groupId) {
+			 return $http.get('/apis/usercommon/removeUserGroup/'+groupId) //jsons/everything.json
+			   .then(function(result) {
+					//resolve the promise as the data
+					return result.data.Result;
+				},function errorCallback(response) {
+						console.log(response);
+						notifications.toast(0, "Falied to Remove User");
+				 });
+        },getProfile: function(callback) {
 				if(cache.profile)
 				{
 					callback(cache.profile);

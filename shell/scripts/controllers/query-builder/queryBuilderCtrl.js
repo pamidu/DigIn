@@ -49,8 +49,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         if (typeof($scope.widget.widgetData.commonSrc) == "undefined") {
             $scope.selectedChart = $scope.commonData.chartTypes[1];
             $scope.highCharts.onInit(false);
-        } else {+
-
+        } else {
             $scope.selectedChart = $scope.widget.widgetData.selectedChart;
             $scope.widget.widgetData.highchartsNG.size.height = null;
             $scope.widget.widgetData.highchartsNG.size.width = null;
@@ -788,7 +787,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     } else {
                         //alert("First select atleast one measure");
                         privateFun.fireMessage('0', 'Select atleast one measure or select appropriate chart type..');
-           +             $scope.isPendingRequest = false;
+                        $scope.isPendingRequest = false;
                     }
                 }
             },
@@ -1161,12 +1160,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             }
         },
         selectAttribute: function(fieldName) {
-            if (!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0) {
+            if ($scope.executeQryData.executeColumns.length == 0) {
                 $scope.executeQryData.executeColumns = [{
                     filedName: fieldName
                 }];
                 $scope.getGroupedAggregation(fieldName);
             } else if ($scope.executeQryData.executeColumns.length >= 1) {
+                $scope.isDrilled = true;
                 $scope.executeQryData.executeColumns.push({
                     filedName: fieldName
                 });
@@ -1813,7 +1813,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                 }, {
                                     dashStyle: 'dash'
                                 }]
-       +                     })
+                            })
 
                             catArr = obj.time;
                         });
@@ -1895,7 +1895,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             } else {
                 privateFun.fireMessage('0', data);
                 $scope.eventHndler.isLoadingChart = false;
-        ++    }+
+            }
         });
     };
     $scope.boxplot = {
@@ -1936,7 +1936,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     $scope.dataforeachBox = []
                     $scope.dataOutliers = [];
                     $scope.plotCategories = [];
-                
                     $scope.observationsData = [];
                     $scope.widget.widgetData.highchartsNG = {};
                     var i = 0;
@@ -3326,12 +3325,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     eval("$scope." + $scope.selectedChart.chartType + ".executeQuery(cat, res, query)");
                 } else {
                     //alert('request failed');
-                    privateFun.fireMessage('0', '<strong>Invalid query :</strong>please enter request failed ');
-                    if ($scope.selectedChart.chartType == 'highCharts') {
-                        $scope.highchartsNG.series = {};
-                    }
-                    $scope.isPendingRequest = false;
-                    $scope.eventHndler.isLoadingChart = false;
+                    $scope.$apply(function(){
+                        privateFun.fireMessage('0', '<strong>Invalid query :</strong>please enter request failed ');
+                        if ($scope.selectedChart.chartType == 'highCharts') {
+                            $scope.highchartsNG.series = {};
+                        }
+                        $scope.isPendingRequest = false;
+                        $scope.eventHndler.isLoadingChart = false;
+                    })
                 }
             }, $scope.initRequestLimit.value);
         } else {

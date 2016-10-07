@@ -433,9 +433,7 @@
                         <fieldset ng-disabled="isPendingRequest"
                                   data-ng-style="isPendingRequest && {'cursor':'not-allowed'}" class="right-menu "
                                   ng-click="eventHndler.onClickSetting('1')" style="cursor:inherit">
-                            <i class="ti-pie-chart hvr-pop "
-                               style="cursor:inherit"
-                               selected-setting-icon></i>
+                            <i class="ti-pie-chart hvr-pop "></i>
                         </fieldset>
                     </div>
 
@@ -491,7 +489,7 @@
                                 <i class="{{chart.icon}}"></i>
                                 <small>{{chart.name}}</small>
                                 <div class="selectedChart"
-                                     ng-class="chart.selected==true?'selectedChart':'displayNone'">
+                                    ng-class="chart.selected==true?'selectedChart':'displayNone'">
                                     <i class="fa fa-check-circle-o"></i>
                                 </div>
                             </li>

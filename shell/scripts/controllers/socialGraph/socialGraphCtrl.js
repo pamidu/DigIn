@@ -24,6 +24,10 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     $scope.sentimentConfigSeries = [];
     $scope.postsObj = [];
     $scope.configData = [];
+    $scope.untilDate = new Date();
+    var secondDate = new Date();
+    secondDate.setDate($scope.untilDate.getDate() - 30);
+    $scope.sinceDate = secondDate;    
     $scope.defReqPool = [{method: 'setPageOverview'},
         {method: 'setWordCloud'},
         {method: 'setDemographicsinfo'},
@@ -529,10 +533,6 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     $scope.viewPageDetails = function (page) {
         $scope.preloader = false;
         $scope.errorMessage = false;
-        $scope.untilDate = new Date();
-        var secondDate = new Date();
-        secondDate.setDate($scope.untilDate.getDate() - 30);
-        $scope.sinceDate = secondDate;
         $scope.preloader = true;
         $scope.getPageDetails(page, getBoundaryTimestamps(30, new Date()), $scope.defReqPool);
     };

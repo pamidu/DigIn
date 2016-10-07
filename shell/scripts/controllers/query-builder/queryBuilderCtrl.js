@@ -3324,12 +3324,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     eval("$scope." + $scope.selectedChart.chartType + ".executeQuery(cat, res, query)");
                 } else {
                     //alert('request failed');
-                    privateFun.fireMessage('0', '<strong>Invalid query :</strong>please enter request failed ');
-                    if ($scope.selectedChart.chartType == 'highCharts') {
-                        $scope.highchartsNG.series = {};
-                    }
-                    $scope.isPendingRequest = false;
-                    $scope.eventHndler.isLoadingChart = false;
+                    $scope.$apply(function(){
+                        privateFun.fireMessage('0', '<strong>Invalid query :</strong>please enter request failed ');
+                        if ($scope.selectedChart.chartType == 'highCharts') {
+                            $scope.highchartsNG.series = {};
+                        }
+                        $scope.isPendingRequest = false;
+                        $scope.eventHndler.isLoadingChart = false;
+                    })
                 }
             }, $scope.initRequestLimit.value);
         } else {

@@ -1,4 +1,5 @@
 DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','DiginServices', 'notifications','paymentGateway','$http', function ($scope,$rootScope,$mdDialog,DiginServices,notifications,paymentGateway,$http){
+	var vm = this;
 	
 	$scope.$parent.currentView = "User Administrator";
 	
@@ -72,61 +73,74 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 		return catogeryLetter;
 	}; 
 	
-		DiginServices.getAllGroups(function(data) {
+	DiginServices.getAllGroups(function(data) {
+		console.log(data);
 		$scope.groups = data;
 	});
 	
-	$scope.addGroup = function(ev)
+	vm.addGroup = function(ev)
 	{
+		var group = {};
 		$mdDialog.show({
-			  controller: "addGroupCtrl",
+			  controller: "addGroupCtrl as vm",
 			  templateUrl: 'views/settings/userAdministrator/addGroup.html',
-			  parent: angular.element(document.body),
-			  targetEvent: ev,
-			  clickOutsideToClose:true
-		})
-		.then(function(answer) {
-		})
-	}
-	
-	$scope.addUser = function(ev,group)
-	{
-		$mdDialog.show({
-			  controller: "addUserCtrl as vm",
-			  templateUrl: 'views/settings/userAdministrator/addUser.html',
 			  parent: angular.element(document.body),
 			  targetEvent: ev,
 			  clickOutsideToClose:true,
 			  locals: group
 		})
 		.then(function(answer) {
+			if(answer)
+			{
+				console.log(answer);
+				$scope.groups.push(answer);
+			}
 		})
 	}
+	
+	$scope.addUser = function(ev,group)
+	{
+		
+	}
+	vm.deleteGroup = function(ev,index,group)
+	{
+		 var confirm = $mdDialog.confirm()
+          .title('Delete Group')
+          .textContent('Are you sure you want to delete this group?')
+          .ariaLabel('Delete Group')
+          .targetEvent(ev)
+          .ok('Please do it!')
+          .cancel('Cancel');
+
+		$mdDialog.show(confirm).then(function() {
+		  console.log("delete " + group.groupId);
+		  notifications.toast(1, "'"+group.groupname +"' Deleted");
+		  
+		  DiginServices.removeUserGroup(group.groupId).then(function(data) {
+				$scope.groups.splice(index, 1); 
+			});
+		});
+	}
 
 }])
 
-DiginApp.controller('addGroupCtrl',[ '$scope','$mdDialog', function ($scope,$mdDialog){
+/*DiginApp.controller('addGroupCtrl',[ '$scope','$mdDialog', function ($scope,$mdDialog){
 	
 	$scope.submit = function()
 	{
 			console.log("submit");
 	}
 	
-}])
+}])*/
 
-DiginApp.controller('addUserCtrl',[ '$scope','$mdDialog', function ($scope,$mdDialog){
-	
-	$scope.submit = function()
-	{
-			console.log("submit");
-	}
+DiginApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifications','DiginServices', function ($scope,$rootScope,$mdDialog,notifications,DiginServices){
 	
 	 var vm = this;
 
     vm.querySearch = querySearch;
     vm.allContacts = loadContacts();
 	console.log(vm.allContacts);
-    vm.contacts = [vm.allContacts[0]];
+    vm.contacts = [];
     vm.filterSelected = true;
 
     /**
@@ -158,16 +172,51 @@ DiginApp.controller('addUserCtrl',[ '$scope','$mdDialog', function ($scope,$mdDi
 	};
 	
     function loadContacts() {
-		var contacts = [{email: "m.augustine@example.com", name:"Marina Augustine"},
+		/*var contacts = [{email: "m.augustine@example.com", name:"Marina Augustine"},
 						{email: "o.sarno@example.com", name:"Oddr Sarno"},
-						{email: "n.giannopoulos@example.com", name:"Nick Giannopoulos"}];
+						{email: "n.giannopoulos@example.com", name:"Nick Giannopoulos"}];*/
+		var contacts = angular.copy($rootScope.sharableUsers);
 						
 		for (i = 0, len = contacts.length; i<len; ++i){
-			//write iteration logic here
-			contacts[i].image = getCatLetter(contacts[i].name);
-			contacts[i]._lowername = contacts[i].name.toLowerCase();
+			contacts[i].image = getCatLetter(contacts[i].Name);
+			contacts[i]._lowername = contacts[i].Name.toLowerCase();
 		}
 		return contacts;
     }
+	
+	//Finally add the group and close the Dialog
+	$scope.submit = function()
+	{
+		vm.submitted = true;
+		if(vm.contacts.length != 0)
+		{
+
+			vm.group.users = [];
+			vm.group.groupId = "-999";
+			vm.group.parentId = "";
+			
+			for (i = 0, len = vm.contacts.length; i<len; ++i){
+				vm.group.users.push({Name:vm.contacts[i].Name, Id:vm.contacts[i].Id});
+			}
+			console.log(vm.group);
+			
+			DiginServices.addUserGroup(vm.group).then(function(result) {
+				if(result.IsSuccess == true)
+				{
+					notifications.toast(1, "Group Added");
+					vm.group.groupId = result.Data[0].ID;
+					$mdDialog.hide(vm.group);
+				}else{
+					notifications.toast(0, result.Message);
+				}
+				vm.submitted = false;
+			})
+			
+		}else{
+			notifications.toast(0, "Please add members to the group");
+		}
+			
+	}
+	
 
 }])

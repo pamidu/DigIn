@@ -12,25 +12,52 @@
     </div>
   </md-toolbar>
   <md-dialog-content style="max-width:800px;max-height:810px; ">
-    <div class="md-dialog-content">
-
-		 <md-input-container layout="column" class="md-block" flex-gt-sm>
-			<span>Group Name</span>
-			<input required type="text" ng-model="groupName" name="groupName" aria-label="Group Name">
-			<div ng-messages="editForm.groupName.$error">
-				<div ng-message-exp="['required']">
-					Please enter a group name
+		<div class="md-dialog-content">
+			 <md-input-container layout="column" class="md-block" flex-gt-sm>
+				<span>Group Name</span>
+				<input required type="text" ng-model="vm.group.groupname" name="groupName" aria-label="Group Name">
+				<div ng-messages="editForm.groupName.$error">
+					<div ng-message-exp="['required']">
+						Please enter a group name
+					</div>
 				</div>
-			</div>
-		 </md-input-container>
+			 </md-input-container>
+			<div layout="column" class="chipsdemoContactChips">
+				<md-content class="autocomplete" layout="column">
+					<span style="font-size:12px;margin-bottom:7px;">Group Members</span>
+					<md-contact-chips ng-model="vm.contacts" md-contacts="vm.querySearch($query)" md-contact-name="Name" md-contact-image="image" md-contact-email="Id" md-require-match="true" md-highlight-flags="i" filter-selected="ctrl.filterSelected" placeholder="Add Here">
+					</md-contact-chips>
 
-    </div>
+					<md-list class="fixedRows">
+					  <md-subheader class="md-no-sticky">Contacts</md-subheader>
+					  <md-list-item class="md-2-line contact-item" ng-repeat="(index, contact) in vm.allContacts" ng-if="vm.contacts.indexOf(contact) < 0">
+						<img ng-src="{{contact.image}}" class="md-avatar" alt="{{contact.name}}">
+						<div class="md-list-item-text compact">
+						  <h3>{{contact.Name}}</h3>
+						  <p>{{contact.Id}}</p>
+						</div>
+					  </md-list-item>
+					  <md-list-item class="md-2-line contact-item selected" ng-repeat="(index, contact) in vm.contacts">
+						<img ng-src="{{contact.image}}" class="md-avatar" alt="{{contact.name}}">
+						<div class="md-list-item-text compact">
+						  <h3>{{contact.Name}}</h3>
+						  <p>{{contact.Id}}</p>
+						</div>
+					  </md-list-item>
+					</md-list>
+
+				  </md-content>
+			</div>
+		</div>
 	</md-dialog-content>
 	<md-dialog-actions layout="row">
 		<span flex></span>
-		<md-button aria-label="change" type="submit">
-			Add
-		</md-button>
+		<div layout="row" ng-init="vm.submitted = false;">
+			<md-progress-circular md-mode="indeterminate" ng-show="vm.submitted"></md-progress-circular>
+			<md-button class="md-rasied" aria-label="change" type="submit" ng-disabled="vm.submitted">
+				<span ng-hide="vm.submitted">Add</span><span ng-show="vm.submitted">Adding Group</span>
+			</md-button>
+		</div>
 	</md-dialog-actions>
 	  
 

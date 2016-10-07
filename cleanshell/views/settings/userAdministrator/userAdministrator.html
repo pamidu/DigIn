@@ -169,7 +169,7 @@ md-tabs[md-align-tabs=bottom]
 								<div class="setting-img-wrap">
 									<img src="views/settings/userAdministrator/groups.png"/>
 									<div layout="row" layout-align="end center" style="margin-right:20px">
-										<md-button class="md-raised" aria-label="Add Group" ng-click="addUser($event)">
+										<md-button class="md-raised" aria-label="Add Group" ng-click="vm.addGroup($event)">
 											<span style="color:grey">Add Group</span>
 										</md-button>
 									</div>
@@ -189,7 +189,7 @@ md-tabs[md-align-tabs=bottom]
 												<md-button  aria-label="Add user" ng-click="addUser($event,group,sharableUsers)" layout="row">
 													<span style="text-transform:none;color:#f9a525">Add User</span>
 												</md-button>
-												<md-button  aria-label="delete user" ng-click="deleteGroup($event, $index,group.groupId)">
+												<md-button  aria-label="delete user" ng-click="vm.deleteGroup($event, $index,group)">
 													<span style="text-transform:none;color:#f9a525">Delete Group</span>
 												</md-button>
 											

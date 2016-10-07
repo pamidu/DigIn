@@ -415,7 +415,7 @@ md-tabs[md-align-tabs=bottom]
 									<!-- <img src="styles/css/images/signup-user.png" style="cursor:pointer;	width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()">
 			 -->
 
-									 <img src="{{profile_pic}}" class="img-circle" style="cursor:pointer;	width: 150px;outline:none;"  ng-click="profile.uploadProfilePicture()">
+									 <img src="{{profile_pic}}" class="img-circle" style="cursor:pointer;	width: 150px;outline:none;"  ng-click="profile.uploadProfilePicture()" ng-disabled="editModeOn" >
 
 									<!-- <div ng-show="selectProfile">  
 										<div align="center">
@@ -445,11 +445,11 @@ md-tabs[md-align-tabs=bottom]
 										<label>Name</label>
 										<input type="text"
 											   id="txtName"
-											   ng-model="user.name"
+											   ng-model="name"
 											   name="txtName"
 											   ng-disabled="editModeOn"
 											   class="form-control"
-											   ng-pattern="/^[a-zA-Z0-9]*$/"  ng-required="true" required ng-trim="true">
+											   ng-pattern="/^[a-zA-Z0-9]/"  ng-required="true" required ng-trim="false">
 											   
 											   <div ng-messages="frmProfile.txtName.$error" role="alert">
 													<div ng-message="required" style="color:red">
@@ -463,10 +463,10 @@ md-tabs[md-align-tabs=bottom]
 										<input type="text"
 											   id="txtCompany"
 											   name="txtCompany"
-											   ng-model="user.company"
+											   ng-model="company"
 											   ng-disabled="editModeOn"
 											   class="form-control"
-											   ng-pattern="/^\S*$/"  ng-required="true" required ng-trim="true">
+											   ng-pattern="/^[a-zA-Z0-9]/"  ng-required="true" required ng-trim="false">
 											   
 											   <div ng-messages="frmProfile.txtCompany.$error" role="alert">
 													<div ng-message="required" style="color:red" >

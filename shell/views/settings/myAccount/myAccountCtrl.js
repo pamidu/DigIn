@@ -1,9 +1,12 @@
 
 routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDialog,notifications,profile,$http, Upload,
-                                                     Digin_Domain, Digin_Tenant, $location,Digin_Engine_API, $apps,ProfileService,paymentGateway) {
+                                                     Digin_Domain, Digin_Tenant, $location,Digin_Engine_API, $apps,ProfileService,paymentGateway,paymentGatewaySvc) {
 
     
 //#Subscription START----------------------
+
+  $scope.result = paymentGatewaySvc.output();
+
   setTimeout(function(){
     Highcharts.chart('container_chart', {
         title: {
@@ -63,51 +66,51 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
       Description: "desc"
     }];
   
-  	vm.paymentCards = [
-		{
-			last4: "8431",
-			brand: "American Express",
-			country: "US",
-			exp_month: 5,
-			exp_year: 2019,
-			background : "#136e59",
-			image: "amex_s.png",
-			default: false
-		},{
-			last4: "8445",
-			brand: "Visa",
-			country: "US",
-			exp_month: 6,
-			exp_year: 2020,
-			background : "#11141d",
-			image: "visa_s.png",
-			default: true
-		},{
-			last4: "3125",
-			brand: "Master",
-			country: "US",
-			exp_month: 6,
-			exp_year: 2025,
-			background : "#0066a8",
-			image: "master_s.png",
-			default: false
-		}
-	];
-	
-	vm.makeDefault = function()
-	{
-		console.log("make Default");
-	}
-	
-	vm.updatePackage = function(ev)
-	{
-		location.href = '#/home/addaLaCarte';
-	}
-	
-	vm.addCard = function(ev)
-	{
-		alert("open add card window");
-	}
+    vm.paymentCards = [
+    {
+      last4: "8431",
+      brand: "American Express",
+      country: "US",
+      exp_month: 5,
+      exp_year: 2019,
+      background : "#136e59",
+      image: "amex_s.png",
+      default: false
+    },{
+      last4: "8445",
+      brand: "Visa",
+      country: "US",
+      exp_month: 6,
+      exp_year: 2020,
+      background : "#11141d",
+      image: "visa_s.png",
+      default: true
+    },{
+      last4: "3125",
+      brand: "Master",
+      country: "US",
+      exp_month: 6,
+      exp_year: 2025,
+      background : "#0066a8",
+      image: "master_s.png",
+      default: false
+    }
+  ];
+  
+  vm.makeDefault = function()
+  {
+    console.log("make Default");
+  }
+  
+  vm.updatePackage = function(ev)
+  {
+    location.href = '#/home/addaLaCarte';
+  }
+  
+  vm.addCard = function(ev)
+  {
+    alert("open add card window");
+  }
   
   vm.makeDefault = function()
   {
@@ -129,11 +132,11 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
     stripegateway.open(ev, function(token, args) {
       console.log(token);
       if(token!=null || token!="" || token!=undefined){
-        vm.upgradePackage(token,plan);
+		  vm.upgradePackage(token,plan);	 
       }
       else
       {
-        displayError("Error while retriving token from stripe");
+		displayError("Error while retriving token from stripe");
       }
     });
   } 
@@ -142,15 +145,16 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
   //#Customize existing package
   vm.customizePackage=function(plan){ 
     var pkgObj = {
-            "plan" : {
-        "features": [
-          {"tag":"storage","feature": "25GB storage","quantity":0,"amount": 30,"action":"remove"},
-          {"tag":"user","feature": "Additional users","amount": 15,"quantity":5,"action":"add"}
-        ]
-      }
-        }
-        
+          "plan" :  {
+                      "features": [
+                        {"tag":"storage","feature": "25GB storage","quantity":0,"amount": 30,"action":"remove"},
+                        {"tag":"user","feature": "Additional users","amount": 15,"quantity":5,"action":"add"}
+                      ]
+                    }
+          }
+
         $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/customizePackage",
             url : "/include/duoapi/paymentgateway/customizePackage",
             method : "POST",
             headers: {
@@ -222,6 +226,281 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
     
   }
 
+  //#Check subscription
+  vm.checkSbscription=function(){  
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/checkSubscription",
+            url : "/include/duoapi/paymentgateway/checkSubscription",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response){
+              //console.log(response)
+              if(response.statusText=="OK"){
+                  if(response.data.status==true){
+                    console.log(response)
+                    //displaySuccess("Your package is upgraded successfully...");
+                  }
+                  else{
+                    console.log(response)
+                    //displayError(response.data);
+                  }
+              }
+              $mdDialog.hide();
+        },function(response){
+              console.log(response)
+              //displayError("Error while upgrade the package...");
+              //$mdDialog.hide();
+        })
+    
+  }
+
+  //#Upgrade exisitng package into another package
+  vm.getCustomerInformations=function(){ 
+    
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/getCustomerInformations",
+            url : "/include/duoapi/paymentgateway/getCustomerInformations",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response){
+              //console.log(response)
+              if(response.statusText=="OK"){
+                  if(response.data.status==true){
+                    //Success
+                    //displaySuccess("Your package is upgraded successfully...");
+                  }
+                  else{
+                    //fail
+                    //displayError(response.data);
+                  }
+              }
+              $mdDialog.hide();
+        },function(response){
+              //console.log(response)
+              //displayError("Error while upgrade the package...");
+              //$mdDialog.hide();
+        })
+    
+  }
+
+  //#Stop subscription immediate
+  vm.stopSubscriptionImmediate=function(){ 
+    
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/stopSubscriptionImmediate",
+            url : "/include/duoapi/paymentgateway/stopSubscriptionImmediate",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response){
+              //console.log(response)
+              if(response.statusText=="OK"){
+                  if(response.data.status==true){
+                    //Success
+                    //displaySuccess("Your package is upgraded successfully...");
+                  }
+                  else{
+                    //fail
+                    //displayError(response.data);
+                  }
+              }
+              $mdDialog.hide();
+        },function(response){
+              //console.log(response)
+              //displayError("Error while upgrade the package...");
+              //$mdDialog.hide();
+        })
+    
+  }
+
+  //#Stop subscription immediate
+  vm.stopSubscriptionEndOfPeriod=function(){ 
+    
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/stopSubscriptionEndOfPeriod",
+            url : "/include/duoapi/paymentgateway/stopSubscriptionEndOfPeriod",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response){
+              //console.log(response)
+              if(response.statusText=="OK"){
+                  if(response.data.status==true){
+                    //Success
+                    //displaySuccess("Your package is upgraded successfully...");
+                  }
+                  else{
+                    //fail
+                    //displayError(response.data);
+                  }
+              }
+              $mdDialog.hide();
+        },function(response){
+              //console.log(response)
+              //displayError("Error while upgrade the package...");
+              //$mdDialog.hide();
+        })
+    
+  }
+
+  //#Reactive subscriptions
+  vm.reactiveSubscription=function(){ 
+    
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/reactiveSubscription",
+            url : "/include/duoapi/paymentgateway/reactiveSubscription",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response){
+              //console.log(response)
+              if(response.statusText=="OK"){
+                  if(response.data.status==true){
+                    //Success
+                    //displaySuccess("Your package is upgraded successfully...");
+                  }
+                  else{
+                    //fail
+                    //displayError(response.data);
+                  }
+              }
+              $mdDialog.hide();
+        },function(response){
+              //console.log(response)
+              //displayError("Error while upgrade the package...");
+              //$mdDialog.hide();
+        })
+    
+  }
+
+
+  //#Add card
+  vm.addCard=function(token,setdefault){ 
+    var cardObj = {
+            "token":token.id,
+            "default" : setdefault
+        }
+
+    
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/addCard",
+            url : "/include/duoapi/paymentgateway/addCard",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data : cardObj
+        }).then(function(response){
+              //console.log(response)
+              if(response.statusText=="OK"){
+                  if(response.data.status==true){
+                    //Success
+                    displaySuccess("Your package is upgraded successfully...");
+                  }
+                  else{
+                    //fail
+                    displayError(response.data);
+                  }
+              }
+              $mdDialog.hide();
+        },function(response){
+              //console.log(response)
+              displayError("Error while upgrade the package...");
+              //$mdDialog.hide();
+        })
+    
+  }
+
+  //#Get card information
+  vm.getCardInformation=function(){ 
+
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/getCardInformation",
+            url : "/include/duoapi/paymentgateway/getCardInformation",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response){
+              //console.log(response)
+              if(response.statusText=="OK"){
+                  if(response.data.status==true){
+                    //Success
+                    //displaySuccess("Your package is upgraded successfully...");
+                  }
+                  else{
+                    //fail
+                    //displayError(response.data);
+                  }
+              }
+              $mdDialog.hide();
+        },function(response){
+              //console.log(response)
+              //displayError("Error while upgrade the package...");
+              //$mdDialog.hide();
+        })
+    
+  }
+
+  //#Delete card
+  vm.deleteCard=function(cardId){ 
+    var pkgObj = {
+          "cardId" :cardId  
+          }
+
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/deleteCard",
+            url : "/include/duoapi/paymentgateway/deleteCard",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data : pkgObj
+        }).then(function(response){
+      console.log(response)
+            $mdDialog.hide();
+        },function(response){
+            console.log(response)
+            $mdDialog.hide();
+        })
+    
+  }
+  
+  //#Set default card
+  vm.setDefaultCard=function(cardId){ 
+    var cardObj = {
+          "cardId" :cardId  
+          }
+
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/setDefaultCard",
+            url : "/include/duoapi/paymentgateway/setDefaultCard",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data : cardObj
+        }).then(function(response){
+      console.log(response)
+            $mdDialog.hide();
+        },function(response){
+            console.log(response)
+            $mdDialog.hide();
+        })
+    
+  }
+  
+
+
+  
+  
 
       //#common pre loader
     var displayProgress = function (message) {
@@ -331,12 +610,12 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
         }
         else{
             //*Croped image
-				
-				
+        
+        
                 var name=$rootScope.file.name;
                 var file = base64ToBlob($scope.myCroppedImage.replace('data:image/png;base64,',''), 'image/jpeg');
                 file.name=name;
-				console.log(file);
+        console.log(file);
                 //uploader.addToQueue(file);
                 $scope.upload(file);
 
@@ -438,52 +717,70 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
     };
 
 
-
-
-
     $scope.editModeOn = true;
   
       if($rootScope.profile_Det==undefined){
         
       }
       else{
-		  console.log($rootScope.profile_Det.Country);
+      console.log($rootScope.profile_Det.Country);
         $scope.user = {
-          name:  $rootScope.profile_Det.Name,
-          company:  $rootScope.profile_Det.Company, 
           email: $rootScope.profile_Det.Email,
           contactNo: $rootScope.profile_Det.PhoneNumber,
           street: $rootScope.profile_Det.BillingAddress,
           country: $rootScope.profile_Det.Country,
           zip: $rootScope.profile_Det.ZipCode
         };
+		
+		  $scope.name=  $rootScope.profile_Det.Name;
+          $scope.company=  $rootScope.profile_Det.Company; 
       }
 
         $scope.closeWindow=function(){
             $state.go('home.welcomeSearch');
         };
 
-        $scope.updateProfileData= function () {
+		$scope.validname=false;
+		$scope.validcompany=false;
+		$scope.regex=/^[a-zA-Z0-9]/;
+		
+		$scope.$watch('name', function(){
+				$scope.validname = $scope.regex.test($scope.name);
+		})
+		
+		$scope.$watch('company', function(){
+				$scope.validcompany = $scope.regex.test($scope.company);
+		})
+		
+		
+    $scope.updateProfileData= function () {
       
           var baseUrl = "http://" + window.location.hostname;
 
-      if($scope.user.name=="" || $scope.user.name==undefined){
+      if($scope.name=="" || $scope.name==undefined){
         notifications.toast('0', 'Invalid user name.');
       }
-      else if($scope.user.company=="" || $scope.user.company==undefined){
+      else if($scope.company=="" || $scope.company==undefined){
         notifications.toast('0', 'Invalid company name.');
       }
       else if($scope.user.contactNo=="" || $scope.user.contactNo==undefined){
         notifications.toast('0', 'Contact number can not be a blank.');
       }
+	 else if(!$scope.validname){
+		  notifications.toast('0', 'Invalid user name.');
+	  }
+	 else if(!$scope.validcompany){
+		  notifications.toast('0', 'Invalid company name.');
+	  }
+			
       else{
         $scope.userProfile ={
            "BannerPicture":"img/cover.png",
            "BillingAddress":$scope.user.street,
-           "Company":$scope.user.company,
+           "Company":$scope.company,
            "Country":$scope.user.country,
            "Email":$scope.user.email,
-           "Name":$scope.user.name,
+           "Name":$scope.name,
            "PhoneNumber":$scope.user.contactNo,
            "ZipCode":$scope.user.zip
         };
@@ -583,7 +880,7 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
         }
     })();
 
-	$scope.allCountries=[{code:"AF",name:"Afghanistan"},{code:"AL",name:"Albania"},{code:"DZ",name:"Algeria"},{code:"AS",name:"American Samoa"},{code:"AD",name:"Andorre"},{code:"AO",name:"Angola"},{code:"AI",name:"Anguilla"},{code:"AQ",name:"Antarctica"},{code:"AG",name:"Antigua and Barbuda"},{code:"AR",name:"Argentina"},{code:"AM",name:"Armenia"},{code:"AW",name:"Aruba"},{code:"AU",name:"Australia"},{code:"AT",name:"Austria"},{code:"AZ",name:"Azerbaijan"},{code:"BS",name:"Bahamas"},{code:"BH",name:"Bahrain"},{code:"BD",name:"Bangladesh"},{code:"BB",name:"Barbade"},{code:"BY",name:"Belarus"},{code:"BE",name:"Belgium"},{code:"BZ",name:"Belize"},{code:"BJ",name:"Benin"},{code:"BM",name:"Bermuda"},{code:"BT",name:"Bhutan"},{code:"BO",name:"Bolivia"},{code:"BQ",name:"Bonaire, Sint Eustatius and Saba"},{code:"BA",name:"Bosnia and Herzegovina"},{code:"BW",name:"Botswana"},{code:"BV",name:"Bouvet Island"},{code:"BR",name:"Brazil"},{code:"IO",name:"British Indian Ocean Territory"},{code:"VG",name:"British Virgin Islands"},{code:"BN",name:"Brunei"},{code:"BG",name:"Bulgaria"},{code:"BF",name:"Burkina Faso"},{code:"BI",name:"Burundi"},{code:"KH",name:"Cambodia"},{code:"CM",name:"Cameroon"},{code:"CA",name:"Canada"},{code:"CV",name:"Cape Verde"},{code:"KY",name:"Cayman Islands"},{code:"CF",name:"Central African Republic"},{code:"TD",name:"Chad"},{code:"CL",name:"Chile"},{code:"CN",name:"China"},{code:"CX",name:"Christmas Island"},{code:"CC",name:"Cocos (Keeling) Islands"},{code:"CO",name:"Colombia"},{code:"KM",name:"Comoros"},{code:"CG",name:"Congo"},{code:"CD",name:"Congo (Dem. Rep.)"},{code:"CK",name:"Cook Islands"},{code:"CR",name:"Costa Rica"},{code:"ME",name:"Crna Gora"},{code:"HR",name:"Croatia"},{code:"CU",name:"Cuba"},{code:"CW",name:"Curaçao"},{code:"CY",name:"Cyprus"},{code:"CZ",name:"Czech Republic"},{code:"CI",name:"Côte D'Ivoire"},{code:"DK",name:"Denmark"},{code:"DJ",name:"Djibouti"},{code:"DM",name:"Dominica"},{code:"DO",name:"Dominican Republic"},{code:"TL",name:"East Timor"},{code:"EC",name:"Ecuador"},{code:"EG",name:"Egypt"},{code:"SV",name:"El Salvador"},{code:"GQ",name:"Equatorial Guinea"},{code:"ER",name:"Eritrea"},{code:"EE",name:"Estonia"},{code:"ET",name:"Ethiopia"},{code:"FK",name:"Falkland Islands"},{code:"FO",name:"Faroe Islands"},{code:"FJ",name:"Fiji"},{code:"FI",name:"Finland"},{code:"FR",name:"France"},{code:"GF",name:"French Guiana"},{code:"PF",name:"French Polynesia"},{code:"TF",name:"French Southern Territories"},{code:"GA",name:"Gabon"},{code:"GM",name:"Gambia"},{code:"GE",name:"Georgia"},{code:"DE",name:"Germany"},{code:"GH",name:"Ghana"},{code:"GI",name:"Gibraltar"},{code:"GR",name:"Greece"},{code:"GL",name:"Greenland"},{code:"GD",name:"Grenada"},{code:"GP",name:"Guadeloupe"},{code:"GU",name:"Guam"},{code:"GT",name:"Guatemala"},{code:"GG",name:"Guernsey and Alderney"},{code:"GN",name:"Guinea"},{code:"GW",name:"Guinea-Bissau"},{code:"GY",name:"Guyana"},{code:"HT",name:"Haiti"},{code:"HM",name:"Heard and McDonald Islands"},{code:"HN",name:"Honduras"},{code:"HK",name:"Hong Kong"},{code:"HU",name:"Hungary"},{code:"IS",name:"Iceland"},{code:"IN",name:"India"},{code:"ID",name:"Indonesia"},{code:"IR",name:"Iran"},{code:"IQ",name:"Iraq"},{code:"IE",name:"Ireland"},{code:"IM",name:"Isle of Man"},{code:"IL",name:"Israel"},{code:"IT",name:"Italy"},{code:"JM",name:"Jamaica"},{code:"JP",name:"Japan"},{code:"JE",name:"Jersey"},{code:"JO",name:"Jordan"},{code:"KZ",name:"Kazakhstan"},{code:"KE",name:"Kenya"},{code:"KI",name:"Kiribati"},{code:"KP",name:"Korea (North)"},{code:"KR",name:"Korea (South)"},{code:"KW",name:"Kuwait"},{code:"KG",name:"Kyrgyzstan"},{code:"LA",name:"Laos"},{code:"LV",name:"Latvia"},{code:"LB",name:"Lebanon"},{code:"LS",name:"Lesotho"},{code:"LR",name:"Liberia"},{code:"LY",name:"Libya"},{code:"LI",name:"Liechtenstein"},{code:"LT",name:"Lithuania"},{code:"LU",name:"Luxembourg"},{code:"MO",name:"Macao"},{code:"MK",name:"Macedonia"},{code:"MG",name:"Madagascar"},{code:"MW",name:"Malawi"},{code:"MY",name:"Malaysia"},{code:"MV",name:"Maldives"},{code:"ML",name:"Mali"},{code:"MT",name:"Malta"},{code:"MH",name:"Marshall Islands"},{code:"MQ",name:"Martinique"},{code:"MR",name:"Mauritania"},{code:"MU",name:"Mauritius"},{code:"YT",name:"Mayotte"},{code:"MX",name:"Mexico"},{code:"FM",name:"Micronesia"},{code:"MD",name:"Moldova"},{code:"MC",name:"Monaco"},{code:"MN",name:"Mongolia"},{code:"MS",name:"Montserrat"},{code:"MA",name:"Morocco"},{code:"MZ",name:"Mozambique"},{code:"MM",name:"Myanmar"},{code:"NA",name:"Namibia"},{code:"NR",name:"Nauru"},{code:"NP",name:"Nepal"},{code:"NL",name:"Netherlands"},{code:"AN",name:"Netherlands Antilles"},{code:"NC",name:"New Caledonia"},{code:"NZ",name:"New Zealand"},{code:"NI",name:"Nicaragua"},{code:"NE",name:"Niger"},{code:"NG",name:"Nigeria"},{code:"NU",name:"Niue"},{code:"NF",name:"Norfolk Island"},{code:"MP",name:"Northern Mariana Islands"},{code:"NO",name:"Norway"},{code:"OM",name:"Oman"},{code:"PK",name:"Pakistan"},{code:"PW",name:"Palau"},{code:"PS",name:"Palestine"},{code:"PA",name:"Panama"},{code:"PG",name:"Papua New Guinea"},{code:"PY",name:"Paraguay"},{code:"PE",name:"Peru"},{code:"PH",name:"Philippines"},{code:"PN",name:"Pitcairn"},{code:"PL",name:"Poland"},{code:"PT",name:"Portugal"},{code:"PR",name:"Puerto Rico"},{code:"QA",name:"Qatar"},{code:"RO",name:"Romania"},{code:"RU",name:"Russia"},{code:"RW",name:"Rwanda"},{code:"RE",name:"Réunion"},{code:"BL",name:"Saint Barthélemy"},{code:"SH",name:"Saint Helena"},{code:"KN",name:"Saint Kitts and Nevis"},{code:"LC",name:"Saint Lucia"},{code:"MF",name:"Saint Martin"},{code:"PM",name:"Saint Pierre and Miquelon"},{code:"VC",name:"Saint Vincent and the Grenadines"},{code:"WS",name:"Samoa"},{code:"SM",name:"San Marino"},{code:"SA",name:"Saudi Arabia"},{code:"SN",name:"Senegal"},{code:"RS",name:"Serbia"},{code:"SC",name:"Seychelles"},{code:"SL",name:"Sierra Leone"},{code:"SG",name:"Singapore"},{code:"SX",name:"Sint Maarten"},{code:"SK",name:"Slovakia"},{code:"SI",name:"Slovenia"},{code:"SB",name:"Solomon Islands"},{code:"SO",name:"Somalia"},{code:"ZA",name:"South Africa"},{code:"GS",name:"South Georgia and the South Sandwich Islands"},{code:"SS",name:"South Sudan"},{code:"ES",name:"Spain"},{code:"LK",name:"Sri Lanka"},{code:"SD",name:"Sudan"},{code:"SR",name:"Suriname"},{code:"SJ",name:"Svalbard and Jan Mayen"},{code:"SZ",name:"Swaziland"},{code:"SE",name:"Sweden"},{code:"SE",name:"Sweden"},{code:"SL",name:"Sri Lanka"},{code:"SY",name:"Syria"},{code:"ST",name:"São Tomé and Príncipe"},{code:"TW",name:"Taiwan"},{code:"TJ",name:"Tajikistan"},{code:"TZ",name:"Tanzania"},{code:"TH",name:"Thailand"},{code:"TG",name:"Togo"},{code:"TK",name:"Tokelau"},{code:"TO",name:"Tonga"},{code:"TT",name:"Trinidad and Tobago"},{code:"TN",name:"Tunisia"},{code:"TR",name:"Turkey"},{code:"TM",name:"Turkmenistan"},{code:"TC",name:"Turks and Caicos Islands"},{code:"TV",name:"Tuvalu"},{code:"UG",name:"Uganda"},{code:"UA",name:"Ukraine"},{code:"AE",name:"United Arab Emirates"},{code:"GB",name:"United Kingdom"},{code:"UM",name:"United States Minor Outlying Islands"},{code:"US",name:"United States of America"},{code:"UY",name:"Uruguay"},{code:"UZ",name:"Uzbekistan"},{code:"VU",name:"Vanuatu"},{code:"VA",name:"Vatican City"},{code:"VE",name:"Venezuela"},{code:"VN",name:"Vietnam"},{code:"VI",name:"Virgin Islands of the United States"},{code:"WF",name:"Wallis and Futuna"},{code:"EH",name:"Western Sahara"},{code:"YE",name:"Yemen"},{code:"ZM",name:"Zambia"},{code:"ZW",name:"Zimbabwe"},{code:"AX",name:"Åland Islands"}];
+  $scope.allCountries=[{code:"AF",name:"Afghanistan"},{code:"AL",name:"Albania"},{code:"DZ",name:"Algeria"},{code:"AS",name:"American Samoa"},{code:"AD",name:"Andorre"},{code:"AO",name:"Angola"},{code:"AI",name:"Anguilla"},{code:"AQ",name:"Antarctica"},{code:"AG",name:"Antigua and Barbuda"},{code:"AR",name:"Argentina"},{code:"AM",name:"Armenia"},{code:"AW",name:"Aruba"},{code:"AU",name:"Australia"},{code:"AT",name:"Austria"},{code:"AZ",name:"Azerbaijan"},{code:"BS",name:"Bahamas"},{code:"BH",name:"Bahrain"},{code:"BD",name:"Bangladesh"},{code:"BB",name:"Barbade"},{code:"BY",name:"Belarus"},{code:"BE",name:"Belgium"},{code:"BZ",name:"Belize"},{code:"BJ",name:"Benin"},{code:"BM",name:"Bermuda"},{code:"BT",name:"Bhutan"},{code:"BO",name:"Bolivia"},{code:"BQ",name:"Bonaire, Sint Eustatius and Saba"},{code:"BA",name:"Bosnia and Herzegovina"},{code:"BW",name:"Botswana"},{code:"BV",name:"Bouvet Island"},{code:"BR",name:"Brazil"},{code:"IO",name:"British Indian Ocean Territory"},{code:"VG",name:"British Virgin Islands"},{code:"BN",name:"Brunei"},{code:"BG",name:"Bulgaria"},{code:"BF",name:"Burkina Faso"},{code:"BI",name:"Burundi"},{code:"KH",name:"Cambodia"},{code:"CM",name:"Cameroon"},{code:"CA",name:"Canada"},{code:"CV",name:"Cape Verde"},{code:"KY",name:"Cayman Islands"},{code:"CF",name:"Central African Republic"},{code:"TD",name:"Chad"},{code:"CL",name:"Chile"},{code:"CN",name:"China"},{code:"CX",name:"Christmas Island"},{code:"CC",name:"Cocos (Keeling) Islands"},{code:"CO",name:"Colombia"},{code:"KM",name:"Comoros"},{code:"CG",name:"Congo"},{code:"CD",name:"Congo (Dem. Rep.)"},{code:"CK",name:"Cook Islands"},{code:"CR",name:"Costa Rica"},{code:"ME",name:"Crna Gora"},{code:"HR",name:"Croatia"},{code:"CU",name:"Cuba"},{code:"CW",name:"Curaçao"},{code:"CY",name:"Cyprus"},{code:"CZ",name:"Czech Republic"},{code:"CI",name:"Côte D'Ivoire"},{code:"DK",name:"Denmark"},{code:"DJ",name:"Djibouti"},{code:"DM",name:"Dominica"},{code:"DO",name:"Dominican Republic"},{code:"TL",name:"East Timor"},{code:"EC",name:"Ecuador"},{code:"EG",name:"Egypt"},{code:"SV",name:"El Salvador"},{code:"GQ",name:"Equatorial Guinea"},{code:"ER",name:"Eritrea"},{code:"EE",name:"Estonia"},{code:"ET",name:"Ethiopia"},{code:"FK",name:"Falkland Islands"},{code:"FO",name:"Faroe Islands"},{code:"FJ",name:"Fiji"},{code:"FI",name:"Finland"},{code:"FR",name:"France"},{code:"GF",name:"French Guiana"},{code:"PF",name:"French Polynesia"},{code:"TF",name:"French Southern Territories"},{code:"GA",name:"Gabon"},{code:"GM",name:"Gambia"},{code:"GE",name:"Georgia"},{code:"DE",name:"Germany"},{code:"GH",name:"Ghana"},{code:"GI",name:"Gibraltar"},{code:"GR",name:"Greece"},{code:"GL",name:"Greenland"},{code:"GD",name:"Grenada"},{code:"GP",name:"Guadeloupe"},{code:"GU",name:"Guam"},{code:"GT",name:"Guatemala"},{code:"GG",name:"Guernsey and Alderney"},{code:"GN",name:"Guinea"},{code:"GW",name:"Guinea-Bissau"},{code:"GY",name:"Guyana"},{code:"HT",name:"Haiti"},{code:"HM",name:"Heard and McDonald Islands"},{code:"HN",name:"Honduras"},{code:"HK",name:"Hong Kong"},{code:"HU",name:"Hungary"},{code:"IS",name:"Iceland"},{code:"IN",name:"India"},{code:"ID",name:"Indonesia"},{code:"IR",name:"Iran"},{code:"IQ",name:"Iraq"},{code:"IE",name:"Ireland"},{code:"IM",name:"Isle of Man"},{code:"IL",name:"Israel"},{code:"IT",name:"Italy"},{code:"JM",name:"Jamaica"},{code:"JP",name:"Japan"},{code:"JE",name:"Jersey"},{code:"JO",name:"Jordan"},{code:"KZ",name:"Kazakhstan"},{code:"KE",name:"Kenya"},{code:"KI",name:"Kiribati"},{code:"KP",name:"Korea (North)"},{code:"KR",name:"Korea (South)"},{code:"KW",name:"Kuwait"},{code:"KG",name:"Kyrgyzstan"},{code:"LA",name:"Laos"},{code:"LV",name:"Latvia"},{code:"LB",name:"Lebanon"},{code:"LS",name:"Lesotho"},{code:"LR",name:"Liberia"},{code:"LY",name:"Libya"},{code:"LI",name:"Liechtenstein"},{code:"LT",name:"Lithuania"},{code:"LU",name:"Luxembourg"},{code:"MO",name:"Macao"},{code:"MK",name:"Macedonia"},{code:"MG",name:"Madagascar"},{code:"MW",name:"Malawi"},{code:"MY",name:"Malaysia"},{code:"MV",name:"Maldives"},{code:"ML",name:"Mali"},{code:"MT",name:"Malta"},{code:"MH",name:"Marshall Islands"},{code:"MQ",name:"Martinique"},{code:"MR",name:"Mauritania"},{code:"MU",name:"Mauritius"},{code:"YT",name:"Mayotte"},{code:"MX",name:"Mexico"},{code:"FM",name:"Micronesia"},{code:"MD",name:"Moldova"},{code:"MC",name:"Monaco"},{code:"MN",name:"Mongolia"},{code:"MS",name:"Montserrat"},{code:"MA",name:"Morocco"},{code:"MZ",name:"Mozambique"},{code:"MM",name:"Myanmar"},{code:"NA",name:"Namibia"},{code:"NR",name:"Nauru"},{code:"NP",name:"Nepal"},{code:"NL",name:"Netherlands"},{code:"AN",name:"Netherlands Antilles"},{code:"NC",name:"New Caledonia"},{code:"NZ",name:"New Zealand"},{code:"NI",name:"Nicaragua"},{code:"NE",name:"Niger"},{code:"NG",name:"Nigeria"},{code:"NU",name:"Niue"},{code:"NF",name:"Norfolk Island"},{code:"MP",name:"Northern Mariana Islands"},{code:"NO",name:"Norway"},{code:"OM",name:"Oman"},{code:"PK",name:"Pakistan"},{code:"PW",name:"Palau"},{code:"PS",name:"Palestine"},{code:"PA",name:"Panama"},{code:"PG",name:"Papua New Guinea"},{code:"PY",name:"Paraguay"},{code:"PE",name:"Peru"},{code:"PH",name:"Philippines"},{code:"PN",name:"Pitcairn"},{code:"PL",name:"Poland"},{code:"PT",name:"Portugal"},{code:"PR",name:"Puerto Rico"},{code:"QA",name:"Qatar"},{code:"RO",name:"Romania"},{code:"RU",name:"Russia"},{code:"RW",name:"Rwanda"},{code:"RE",name:"Réunion"},{code:"BL",name:"Saint Barthélemy"},{code:"SH",name:"Saint Helena"},{code:"KN",name:"Saint Kitts and Nevis"},{code:"LC",name:"Saint Lucia"},{code:"MF",name:"Saint Martin"},{code:"PM",name:"Saint Pierre and Miquelon"},{code:"VC",name:"Saint Vincent and the Grenadines"},{code:"WS",name:"Samoa"},{code:"SM",name:"San Marino"},{code:"SA",name:"Saudi Arabia"},{code:"SN",name:"Senegal"},{code:"RS",name:"Serbia"},{code:"SC",name:"Seychelles"},{code:"SL",name:"Sierra Leone"},{code:"SG",name:"Singapore"},{code:"SX",name:"Sint Maarten"},{code:"SK",name:"Slovakia"},{code:"SI",name:"Slovenia"},{code:"SB",name:"Solomon Islands"},{code:"SO",name:"Somalia"},{code:"ZA",name:"South Africa"},{code:"GS",name:"South Georgia and the South Sandwich Islands"},{code:"SS",name:"South Sudan"},{code:"ES",name:"Spain"},{code:"LK",name:"Sri Lanka"},{code:"SD",name:"Sudan"},{code:"SR",name:"Suriname"},{code:"SJ",name:"Svalbard and Jan Mayen"},{code:"SZ",name:"Swaziland"},{code:"SE",name:"Sweden"},{code:"SE",name:"Sweden"},{code:"SL",name:"Sri Lanka"},{code:"SY",name:"Syria"},{code:"ST",name:"São Tomé and Príncipe"},{code:"TW",name:"Taiwan"},{code:"TJ",name:"Tajikistan"},{code:"TZ",name:"Tanzania"},{code:"TH",name:"Thailand"},{code:"TG",name:"Togo"},{code:"TK",name:"Tokelau"},{code:"TO",name:"Tonga"},{code:"TT",name:"Trinidad and Tobago"},{code:"TN",name:"Tunisia"},{code:"TR",name:"Turkey"},{code:"TM",name:"Turkmenistan"},{code:"TC",name:"Turks and Caicos Islands"},{code:"TV",name:"Tuvalu"},{code:"UG",name:"Uganda"},{code:"UA",name:"Ukraine"},{code:"AE",name:"United Arab Emirates"},{code:"GB",name:"United Kingdom"},{code:"UM",name:"United States Minor Outlying Islands"},{code:"US",name:"United States of America"},{code:"UY",name:"Uruguay"},{code:"UZ",name:"Uzbekistan"},{code:"VU",name:"Vanuatu"},{code:"VA",name:"Vatican City"},{code:"VE",name:"Venezuela"},{code:"VN",name:"Vietnam"},{code:"VI",name:"Virgin Islands of the United States"},{code:"WF",name:"Wallis and Futuna"},{code:"EH",name:"Western Sahara"},{code:"YE",name:"Yemen"},{code:"ZM",name:"Zambia"},{code:"ZW",name:"Zimbabwe"},{code:"AX",name:"Åland Islands"}];
   
 });
 
@@ -831,53 +1128,119 @@ routerApp.directive('customOnChange', function() {
 });
 
 routerApp.controller('addaLaCarteCtrl',['$scope','$mdDialog','$http','notifications' ,function ($scope,$mdDialog,$http,notifications) {
-	
-	$scope.users = 2;
-	$scope.storage = 1;
-	$scope.bandwidth = 2;
-	
-	$scope.submit = function()
-	{
+  
+  $scope.users = 2;
+  $scope.storage = 1;
+  $scope.bandwidth = 2;
+  
+  $scope.submit = function()
+  {
 
-	}
+  }
 }])
 
 routerApp.directive('countdownn', ['Util', '$interval', function(Util, $interval) {
-	return {
-		restrict: 'A',
-		scope: {
-			date: '@',
-			warning: '='
-		},
-		link: function(scope, element) {
-			var future;
-			future = new Date(scope.date);
-			$interval(function() {
-				var diff;
-				diff = Math.floor((future.getTime() - new Date().getTime()) / 1000);
-				var remaining = Util.dhms(diff);
-				scope.warning = remaining.warn;
-				return element.text(remaining.remaining);
-			}, 1000);
-		}
-	};
+  return {
+    restrict: 'A',
+    scope: {
+      date: '@',
+      warning: '='
+    },
+    link: function(scope, element) {
+      var future;
+      future = new Date(scope.date);
+      $interval(function() {
+        var diff;
+        diff = Math.floor((future.getTime() - new Date().getTime()) / 1000);
+        var remaining = Util.dhms(diff);
+        scope.warning = remaining.warn;
+        return element.text(remaining.remaining);
+      }, 1000);
+    }
+  };
 }]).factory('Util', [function() {
-	return {
-		dhms: function(t) {
-			var days, hours, minutes, seconds;
-			days = Math.floor(t / 86400);
-			t -= days * 86400;
-			hours = Math.floor(t / 3600) % 24;
-			t -= hours * 3600;
-			minutes = Math.floor(t / 60) % 60;
-			t -= minutes * 60;
-			seconds = t % 60;
-			if(days < 30)
-			{
-				return {remaining: [days + ' days ', hours + ' hours ', minutes + ' minutes and ', seconds + ' seconds remaining '].join(' '), warn: true};
-			}else{
-				return {remaining: [days + ' days ', hours + ' hours ', minutes + ' minutes remaining '].join(' '), warn: false};
-			}
-		}
-	};
+  return {
+    dhms: function(t) {
+      var days, hours, minutes, seconds;
+      days = Math.floor(t / 86400);
+      t -= days * 86400;
+      hours = Math.floor(t / 3600) % 24;
+      t -= hours * 3600;
+      minutes = Math.floor(t / 60) % 60;
+      t -= minutes * 60;
+      seconds = t % 60;
+      if(days < 30)
+      {
+        return {remaining: [days + ' days ', hours + ' hours ', minutes + ' minutes and ', seconds + ' seconds remaining '].join(' '), warn: true};
+      }else{
+        return {remaining: [days + ' days ', hours + ' hours ', minutes + ' minutes remaining '].join(' '), warn: false};
+      }
+    }
+  };
 }]);
+
+
+routerApp.service('paymentGatewaySvc',['$http', function($http){
+
+  this.output=function(){
+    return result;
+  }
+  var result = [{
+        'isSuccess': true,
+        'isError': false,
+        'msg': '',
+    }];
+    
+
+  //#Upgrade exisitng package into another package
+  this.upgradePackage=function(token,plan){ 
+
+      var pkgObj ={
+        "plan" :{
+          "attributes": [
+            {"tag":"Package","feature": plan.id,"amount": 20*100,"quantity":1,"action":"add"}
+          ],
+          "subscription": "month",
+          "quantity": 1 
+          }
+      }  
+    
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/upgradePackage",
+            url : "/include/duoapi/paymentgateway/upgradePackage",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data : pkgObj
+        }).then(function(response){
+              //console.log(response)
+              if(response.statusText=="OK"){
+                  if(response.data.status==true){
+                    //Success
+                    result.isSuccess=true;
+          result.isError=false;
+          result.msg="Package created successfully!";
+                  }
+                  else{
+                    //fail
+          result.isSuccess=false;
+          result.isError=false;
+          result.msg=response.data;
+          
+                  }
+          return true;
+              }
+        },function(response){
+      return false;
+        })
+    
+  }
+
+
+
+
+
+
+}]);
+

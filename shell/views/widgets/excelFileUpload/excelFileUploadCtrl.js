@@ -303,7 +303,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 SecurityToken: userInfo.SecurityToken,
                 filename: $scope.FileName,
                 folder_name: $scope.folderName,
-                folder_type : 'New'
+                folder_type : 'singlefile'
 
             }
 

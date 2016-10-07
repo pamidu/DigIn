@@ -3,6 +3,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
 
     $scope.files = []; //Files imported array
     $scope.Folders = [];
+    $scope.FileName ;
     $scope.selectedFolder;
     $scope.fileChanged = function(e) {
         if (!e) e = window.event;
@@ -228,7 +229,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
             $scope.otherdata = { "file_type":"datasource",  "folder_name": $scope.collection.folderName};
             for (var i = 0; i < files.length; i++) {
                 var lim = i == 0 ? "" : "-" + i;
-               
+                 $scope.FileName= files[i].name;
                 Upload.upload({
                     url: Digin_Engine_API + 'file_upload',
                     headers: {
@@ -279,18 +280,17 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                         schema : JSON.stringify($scope.schema),
                         db: 'BigQuery',
                         SecurityToken: userInfo.SecurityToken,
-                        filename: "test",
+                        filename:  $scope.FileName,
                         folder_name: $scope.collection.folderName
                         
                     }
 
                 }).success(function(data) {
                     console.log(data);
-                      notifications.toast(0, "Successfully uploaded to the datawarehouse");
+                      notifications.toast(1, "Successfully uploaded to the datawarehouse");
                     uploadFlag = true;
-                    $scope.preloader = false;
-
-                   
+                    $scope.preloader = false;     
+                     $scope.enableNextStep();
                    
                 }).error(function(data) {
                     console.log(data);

@@ -19,10 +19,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             icon: "styles/icons/source/biq-query.svg",
             selected: false
         }, {
-            name: "CSV/Excel",
-            icon: "styles/icons/source/xlsx.svg",
-            selected: false
-        },{
             name: "postgresql",
             icon: "styles/icons/source/api.svg",
             selected: false
@@ -30,11 +26,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
             name: "MSSQL",
             icon: "styles/icons/source/mssql.svg",
             selected: false
-        }, {
-            name: "Spreadsheet",
-            icon: "styles/icons/source/spread-sheet.svg",
-            selected: false
-
         }];
 
         //ng-disabled model of save button

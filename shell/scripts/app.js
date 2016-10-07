@@ -156,6 +156,12 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: true
             }
         })
+		.state("home.userAdministrator", {
+            url: "/settings-userAdministrator",
+            controller: "userAdministratorCtrl",
+            templateUrl: "views/settings/userAdministrator/userAdministrator.html",
+            controllerAs: 'vm'
+        })
 		.state("home.excelFileUpload", {
             url: "/excelFileUpload",
             controller: "excelFileUploadCtrl",

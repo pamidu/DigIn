@@ -71,10 +71,10 @@
                                                 <h5 class="font-weight-300 text-upper">{{ ::filter.filter.name }}</h5>
                                             </v-pane-header>
                                             <v-pane-content class="trans-bg v-pane-content">
-                                                <div layout="row" layout-sm="column" layout-align="space-around" ng-hide = "filter.values.length > 0 || filter.type == 'date-single' || filter.type == 'date-multiple' ">
+                                                <div layout="row" layout-sm="column" layout-align="space-around" ng-hide = "!filter.sync || filter.type == 'date-single' || filter.type == 'date-multiple' ">
                                                     <md-progress-circular md-mode="indeterminate" md-diameter="20px"></md-progress-circular>
                                                 </div>   
-                                                <div ng-show = "filter.values.length > 0">
+                                                <div ng-show = "!filter.sync">
                                                     <div  ng-if="filter.type == 'multiple'"> 
                                                         <div class="bigcheck">
                                                             <label class="filter-label display-inline-block">

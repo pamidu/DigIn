@@ -425,10 +425,13 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     }
                     //call service if the expanded dropdownaccordion is expanded
                     if (key.values === undefined) {
+                        key.sync = true;
                         query = "SELECT " + key.filter.name + " FROM " + $diginurls.getNamespace() + "." + widget.widgetData.commonSrc.src.tbl + " GROUP BY " + key.filter.name;
                         $scope.client.getExecQuery(query, function(data, status){
                             if (status) {
                                 key["values"] = [];
+                                data.sort(function(a,b){return a[key.filter.name] - b[key.filter.name]});
+                                key.sync = false;
                                 for (var res in data) {
                                     var keyValue = data[res];
                                     for (var v in keyValue){
@@ -450,6 +453,12 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                         })
                                     }
                                 }
+                            } else {
+                                $scope.apply(function(){
+                                    key.sync = false;
+                                    notifications.toast('0', 'Error Occured! Please try again!');
+                                    return;
+                                });
                             }
                         });
                     } else{
@@ -552,13 +561,13 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, function(res, status, query) {
                 if (status) {
                     var color = [];
-                    var name = [];                    
+                    var name = [];
                     //Store the name and the color to apply to the chart after it is regenareted
-                    for ( var i = 0; i < widget.widgetData.highchartsNG.series.length; i++){
+                    for ( var i = 0; i < widget.widgetData.highchartsNG.series.length; i++) {
                         color.push(widget.widgetData.highchartsNG.series[i].color);
                         name.push(widget.widgetData.highchartsNG.series[i].name);
                     }
-                    filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);                                        
+                    filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
                     var data = filterService.mapResult(requestArray[0],res,widget.widgetData.widData.drilled,color,name);
                     widget.widgetData.syncState = true;
                     widget.widgetData.filteredState = true;
@@ -570,7 +579,10 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         $scope.$apply();
                     }
                 } else {
-                    notifications.toast('0', 'Error Occured!Please try again!');
+                    $scope.$apply(function(){
+                        notifications.toast('0', 'Error Occured!Please try again!');
+                        widget.widgetData.syncState = true;
+                    })
                 }
             },requestArray,filterStr);            
         };
@@ -1316,40 +1328,49 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                 }
             }; //end
 
-
             return {
                 getAllReport: function() {
                     reqParameter.userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
                     $scope.reports = [];
                     getSession();
                     startReportService();
-                    dynamicallyReportSrv.getAllReports(reqParameter).success(function(data) {
-                        console.log(data);
-                        if (data.Is_Success) {
-                            for (var i = 0; i < data.Result.length; i++) {
-                                console.log($scope.reports);
-                                $scope.reports.push({
-                                    splitName: data.Result[i],
-                                    path: '/dynamically-report-builder'
-                                });
-                            }
-                        }
-                    }).error(function(respose) {
-                        console.error('error request getAllReports...');
-                    });
+                    // dynamicallyReportSrv.getAllReports(reqParameter).success(function(data) {
+                    //     console.log(data);
+                    //     if (data.Is_Success) {
+                    //         for (var i = 0; i < data.Result.length; i++) {
+                    //             console.log($scope.reports);
+                    //             $scope.reports.push({
+                    //                 splitName: data.Result[i],
+                    //                 path: '/dynamically-report-builder'
+                    //             });
+                                
+                    //         }
+                    //     }
+                    // }).error(function(respose) {
+                    //     console.error('error request getAllReports...');
+                    // });
                     dynamicallyReportSrv.getAllComponents(reqParameter).success(function(data) {
+                        $rootScope.reports = [];
                         angular.forEach(data.Result, function(key) {
                             if (key.compType == "Report") {
                                 $scope.reports.push({
                                     splitName: key.compName,
-                                    path: '/dynamically-report-builder'
+                                    path: '/dynamically-report-builder',
+                                    reportId: key.compID
                                 });
+
+                                $rootScope.reports.push({
+                                    splitName: key.compName,
+                                    path: '/dynamically-report-builder',
+                                    reportId: key.compID
+                                });
+                                   
                             }
                         });
+
                     }).error(function(error) {
 
                     });
-
                 }
             }
         }());
@@ -1375,12 +1396,26 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
             var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
             var uploadFlag;
             var storeFlag;
+            var repid = null;
+            
+
             if (files && files.length) {
                 $scope.preloader = true;
                 $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
 
                 for (var i = 0; i < files.length; i++) {
                     var lim = i == 0 ? "" : "-" + i;
+
+                    
+                    if(typeof $rootScope.reports != "undefined" ){
+                       for(var j=0; j<$rootScope.reports.length;j++){
+                            if($rootScope.reports[j].splitName+".zip" == files[i].name || $rootScope.reports[j].splitName+".rar" == files[i].name){
+                                repid = $rootScope.reports[j].reportId;
+                            }
+                        } 
+                    }
+                    
+
 
                     Upload.upload({
                         url: Digin_Engine_API + 'file_upload',
@@ -1417,7 +1452,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                         "compClass": '',
                         "compType": "Report",
                         "compCategory": "",
-                        "compID": null,
+                        "compID": repid,
                         "compName": files[i].name.replace(/\.[^/.]+$/, ""),
                         "refreshInterval": 0,
                         "deletions": {
@@ -1441,6 +1476,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                         if (uploadFlag && storeFlag) {
                             fireMsg('1', 'Successfully uploaded!');
                             privateFun.getAllReport();
+                            
                         }
                     }).error(function(data) {
                         storeFlag = false;
@@ -1551,6 +1587,7 @@ routerApp.controller('summarizeCtrl', ['$scope', '$http', '$objectstore', '$mdDi
 
             client.getFields("com.duosoftware.com", index.display);
         }
+
         $scope.remove = function() {
             // Easily hides most recent dialog shown...
             // no specific instance reference is needed.

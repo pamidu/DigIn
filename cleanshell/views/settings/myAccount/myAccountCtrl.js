@@ -188,6 +188,11 @@ DiginApp.controller('myAccountCtrl',[ '$scope', '$stateParams', '$mdDialog','Dig
 		location.href = '#/addaLaCarte';
 	}
 	
+	vm.addCard = function(ev)
+	{
+		alert("open add card window");
+	}
+	
 	
 	//#load stripe payement detail window
 	vm.loadStripe=function(ev,plan){	

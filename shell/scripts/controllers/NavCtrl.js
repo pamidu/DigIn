@@ -314,7 +314,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         $scope.dashboards = [];
-        $scope.reports = [];
+        $rootScope.reports = [];
         $scope.analyzers = [];
         $scope.favoriteDashboards = [];
         $scope.favoriteReports = [];
@@ -361,11 +361,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         $rootScope.dashboards_toNameChk = $scope.dashboards;
         $scope.originalDashboardsList = $scope.dashboards;
-        $scope.originalReportssList = $scope.reports;
+        $scope.originalReportssList = $rootScope.reports;
 
         $scope.updateFilteredList = function () {
             $scope.dashboards = $filter("filter")($scope.originalDashboardsList, $scope.searchText);
-            $scope.reports = $filter("filter")($scope.originalReportssList, $scope.searchText);
+            $rootScope.reports = $filter("filter")($scope.originalReportssList, $scope.searchText);
         };
 
         //change dates range in likes
@@ -485,7 +485,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //On click report Event
         $scope.goReport = function (report) {
             // --- Add by Gevindu on 5/23/2016 - DUODIGIN-509
-             $rootScope.currentView =report;
+             $rootScope.currentView ="Reports || "+report;
             layoutManager.headerMenuToggle(true);
             $scope.openSearchBar(); 
             $mdSidenav('right')
@@ -570,7 +570,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.goDashboard = function (dashboard) {
 
             layoutManager.headerMenuToggle(true);
-            $rootScope.currentView = dashboard.dashboardName;
+            $rootScope.currentView = "Dashboards || " + dashboard.dashboardName;
             $scope.openSearchBar(); 
             console.log($scope.dashboards);
             console.log("dash item", dashboard);
@@ -738,13 +738,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
             };//end
 
+
             return {
                 getAllDashboards: function () {
 
                     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
                     $scope.dashboards = [];
-                    $scope.reports = [];
+                    $rootScope.reports = [];
                     $http({
                         method: 'GET',
 
@@ -759,9 +760,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             // seperate reports and dashboards
                             for (var i = 0; i < data.Result.length; i++) {
                                 if (data.Result[i].compType == "Report") {
-                                    $scope.reports.push(
-                                        {splitName: data.Result[i].compName, path: '/dynamically-report-builder'}
+                                    $rootScope.reports.push(
+                                        {splitName: data.Result[i].compName, path: '/dynamically-report-builder', reportId: data.Result[i].compID}
                                     );
+
+                                    DashboardService.reports = $rootScope.reports;
                                 }
                                 else {
 
@@ -773,7 +776,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                                 }
                             }
-
+                            
                           
                             //fetch all saved dashboards from pouchdb
                             db.allDocs({
@@ -835,21 +838,21 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $scope.confirmWin = false;
                     $scope.listWin = true;
                 },
-                getAllReports: function () {
-                    getSession();
-                    startReportService();
-                    dynamicallyReportSrv.getAllReports(reqParameter).success(function (data) {
-                        if (data.Is_Success) {
-                            for (var i = 0; i < data.Result.length; i++) {
-                                $scope.reports.push(
-                                    {splitName: data.Result[i], path: '/dynamically-report-builder'}
-                                );
-                            }
-                        }
-                    }).error(function (respose) {
-                        console.log('error request getAllReports...');
-                    });
-                },
+                // getAllReports: function () {
+                //     getSession();
+                //     startReportService();
+                //     dynamicallyReportSrv.getAllReports(reqParameter).success(function (data) {
+                //         if (data.Is_Success) {
+                //             for (var i = 0; i < data.Result.length; i++) {
+                //                 $rootScope.reports.push(
+                //                     {splitName: data.Result[i], path: '/dynamically-report-builder'}
+                //                 );
+                //             }
+                //         }
+                //     }).error(function (respose) {
+                //         console.log('error request getAllReports...');
+                //     });
+                // },
 
 
                 getTenantID: function () {
@@ -1006,7 +1009,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.getSearchPanelDetails = function () {
             privateFun.getTenantID();
             privateFun.getAllDashboards();
-            privateFun.getAllReports();
+            //privateFun.getAllReports();
             $scope.getAnalyzerDetails();
             privateFun.getAllSharableObj();
 
@@ -2177,6 +2180,13 @@ routerApp.controller('inviteUserCtrl',['$scope','$mdDialog','$http','Digin_Tenan
         });
     }
 
+
+
+
+    $scope.route = function(state, pageNo) //pageNo is optional
+    {
+        $state.go(state,{ 'pageNo': pageNo });
+    }
 
 
 

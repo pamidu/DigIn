@@ -319,6 +319,10 @@
 <!--feature wise myAccount-->
 <script src="views/settings/myAccount/myAccountCtrl.js"></script>
 
+<!--feature wise userAdministrator-->
+<script src="views/settings/userAdministrator/userAdministratorCtrl.js"></script>
+<script src="views/settings/userAdministrator/userAdminFactory.js"></script>
+
 
 <script src="scripts/charts/d3Force.js"></script>
 

@@ -152,7 +152,71 @@ md-tabs[md-align-tabs=bottom]
 			</span>
 		</md-tab-label>
 		<md-tab-body>
+		<!--CARD CONTAINER START-->
+			<div class="card-container">
+				<!--WHITEFRAME START-->
+				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
 
+					<md-content>
+
+						<form name="editForm"  md-theme="default" ng-submit="submit()">
+							<div layout="row" layout-align="end end">
+								<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="back" ng-click="route('back')"></md-button>
+							</div>
+								
+							<div class="setting-card-header">
+								<h2>User Groups</h2>
+								<div class="setting-img-wrap">
+									<img src="views/settings/userAdministrator/groups.png"/>
+									<div layout="row" layout-align="end center" style="margin-right:20px">
+										<md-button class="md-raised" aria-label="Add Group" ng-click="addUser($event)">
+											<span style="color:grey">Add Group</span>
+										</md-button>
+									</div>
+								</div>
+							</div>
+							
+							<div style="padding:20px">
+								<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)" multiple>
+									<v-pane id="Cards" expanded="$first" ng-repeat="group in groups"> 
+										<v-pane-header id="Store-header" aria-controls="Store-content">
+											<h5 style="margin:0px;">{{group.groupname}}</h5> 
+										</v-pane-header>
+
+										<v-pane-content id="Store-content" aria-labelledby="Store-header" style="background: #eaeaea;border-radius: 4px;">
+											<div layout="row" layout-align="end end">
+									
+												<md-button  aria-label="Add user" ng-click="addUser($event,group,sharableUsers)" layout="row">
+													<span style="text-transform:none;color:#f9a525">Add User</span>
+												</md-button>
+												<md-button  aria-label="delete user" ng-click="deleteGroup($event, $index,group.groupId)">
+													<span style="text-transform:none;color:#f9a525">Delete Group</span>
+												</md-button>
+											
+											</div>
+											<md-list ng-cloak>
+									
+												<md-list-item class="secondary-button-padding" ng-repeat="groupMemeber in group.users">
+													<p>{{groupMemeber.Name}}</p>
+													<md-button class="md-icon-button md-secondary" aria-label="delete user" ng-click="deleteUserFromGroup(group.groupId,groupMemeber)">
+														<ng-md-icon icon="delete" style="fill:grey;" size="20px" ></ng-md-icon>
+													</md-button>
+												</md-list-item>
+								
+
+											</md-list>
+										</v-pane-content>  
+									</v-pane>
+								</v-accordion>
+							</div>
+							
+						</form>
+					</md-content>
+
+				</md-whiteframe><br/>
+				<!--WHITEFRAME END-->
+			</div>
+			<!--CARD CONTAINER END-->
 		</md-tab-body>
 	  </md-tab>
 	  <md-tab label="add page">
@@ -162,7 +226,7 @@ md-tabs[md-align-tabs=bottom]
 			</span>
 		</md-tab-label>
 		<md-tab-body>
-
+			
 		</md-tab-body>
 	  </md-tab>
 	</md-tabs>

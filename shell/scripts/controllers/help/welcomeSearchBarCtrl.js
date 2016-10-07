@@ -63,11 +63,10 @@ routerApp.controller('welcomeSearchBarCtl', function ($scope, $rootScope, $http,
     //go dashboard
     $scope.goReport = function (report) {
         $state.go('home.DynamicallyReportBuilder', {'reportNme': report});
-        $rootScope.currentView =report;
+        $rootScope.currentView ="Reports || "+report;
     }
 
     $scope.goDashboard = function (dashboard) {
-        $rootScope.currentView = dashboard.dashboardName;
         console.log("dash item", dashboard);
 
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
@@ -79,7 +78,7 @@ routerApp.controller('welcomeSearchBarCtl', function ($scope, $rootScope, $http,
             .success(function (data) {
                 if (data.Is_Success) {
                     console.log("$scope.dashboardObject", $scope.dashboardObject);
-                    $rootScope.currentView = dashboard.dashboardName;
+                    $rootScope.currentView = "Dashboards || "+dashboard.dashboardName;
                     $rootScope.dashboard = data.Result;
                     ngToast.create({
                         className: 'success',

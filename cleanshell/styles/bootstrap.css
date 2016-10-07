@@ -18,9 +18,13 @@ md-select, input
 	color: #3b6982 !important;
 
 }
-input:focus, md-select:focus {
+input[type=text]:focus, md-select:focus {
 	box-shadow: 0 0 4px rgba(81, 203, 238, 1) !important;
 	border: 1px solid rgba(81, 203, 238, 1) !important;
+}
+
+input[type=search] {
+	border: none !important;
 }
 
 .select

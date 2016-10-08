@@ -402,7 +402,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             settingsView: 'views/query/settings-views/highchartsSettings.html'
         }, {
             id: 'ct02',
-            icon: 'ti-bar-chart',
+            icon: 'fa fa-bars',
             name: 'bar ',
             chart: 'bar',
             selected: false,
@@ -604,8 +604,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 selectQry: [],
                 proBy: 'm0'
             });
-            //fill the filters array
-            $scope.commonData.filters.push($scope.sourceData.fMeaArr[i]);
         }
     }
     //mapping attributes array
@@ -621,8 +619,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             //fill the filters array
             $scope.commonData.filters.push($scope.sourceData.fAttArr[i]);
         }
-        //Concat attributes and measures
-        $scope.commonData.columns = $scope.commonData.columns.concat($scope.commonData.measures);
     } else {
 
     }
@@ -1160,12 +1156,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             }
         },
         selectAttribute: function(fieldName) {
-            if (!$scope.isDrilled || $scope.executeQryData.executeColumns.length == 0) {
+            if ($scope.executeQryData.executeColumns.length == 0) {
                 $scope.executeQryData.executeColumns = [{
                     filedName: fieldName
                 }];
                 $scope.getGroupedAggregation(fieldName);
             } else if ($scope.executeQryData.executeColumns.length >= 1) {
+                $scope.isDrilled = true;
                 $scope.executeQryData.executeColumns.push({
                     filedName: fieldName
                 });

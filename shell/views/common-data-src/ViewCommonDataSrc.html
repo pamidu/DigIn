@@ -201,7 +201,11 @@
                         <li class="col-sheet"
                             ng-click="commonUi.onSelectClassRow(row)"
                             ng-class="row.selected==true?'selectedRow':'unSelectedRow'"
-                        > {{row.name}}
+                        > 
+                            <span>
+                                <i class="{{row.type}}"></i>&nbsp;&nbsp;
+                            </span>
+                            {{row.name}}
                             <i class="pull-right">
                             </i>
                         </li>

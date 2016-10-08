@@ -161,6 +161,10 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     console.log(user != userInfo);
                     switch (src) {
                         case "BigQuery":
+                            $scope.tables = [];
+                            var filesFlag = false;
+                            var foldersFlag = false;
+                            var flag;
                             // if (user != userInfo || isBQInitial){
                             //     localStorage.setItem("BigQueryTables",null);
                             //     user = userInfo;
@@ -170,12 +174,55 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             //     localStorage.getItem("BigQueryTables") == "undefined") {
                                 $scope.client.getTables(function(res, status) {
                                     if (typeof res === 'object' && status) {
-                                        callback(res, status);
-                                        localStorage.setItem("BigQueryTables", res);
+                                        angular.forEach(res,function(r) {
+                                            $scope.tables.push({
+                                                name: r,
+                                                type: "ti-file"
+                                            });
+                                        });
+                                        filesFlag = true;
+                                        if ( filesFlag && foldersFlag ) {
+                                            callback($scope.tables, status);
+                                            localStorage.setItem("BigQueryTables", $scope.tables);
+                                            commonUi.isDataLoading = false;
+                                        }
                                     }
-                                    if(!status){//if status false
-                                        commonUi.isDataLoading = false;
-                                        publicFun.fireMessage('0', 'No tables available');
+                                    if(!status) { //if status false
+                                        filesFlag = true;
+                                        if ( filesFlag && foldersFlag ) {
+                                            if ($scope.tables.length > 0){
+                                                flag = true;
+                                            }
+                                            callback($scope.tables, flag);
+                                            commonUi.isDataLoading = false;
+                                        }                                          
+                                        publicFun.fireMessage('0', 'Could not retrieve all the files!');
+                                    }
+                                });
+                                $scope.client.getFolders(function(res, status) {
+                                    if (status) {
+                                        angular.forEach(res,function(data){
+                                            $scope.tables.push({
+                                                name: data.file,
+                                                type: "ti-folder"
+                                            });
+                                        });
+                                        foldersFlag = true;
+                                        if ( filesFlag && foldersFlag ) {
+                                            callback($scope.tables, flag);
+                                            localStorage.setItem("BigQueryTables", $scope.tables);
+                                            commonUi.isDataLoading = false;
+                                        }                                        
+                                    } else {
+                                        foldersFlag = true;
+                                        if ( filesFlag && foldersFlag ) {
+                                            if ($scope.tables.length > 0){
+                                                flag = true;
+                                            }
+                                            callback($scope.tables, flag);
+                                            commonUi.isDataLoading = false;
+                                        }                                        
+                                        publicFun.fireMessage('0', 'Could not retrieve all the folders!');
                                     }
                                 });
                             // } else {
@@ -185,6 +232,10 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             // }
                             break;
                             case "MSSQL":
+                                $scope.tables = [];
+                                var filesFlag = false;
+                                var foldersFlag = false;
+                                var flag;
                                 if (user != userInfo || isMSSQLInitial){
                                     localStorage.setItem("MSSQL",null);
                                     user = userInfo;
@@ -195,14 +246,59 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                 $scope.client.getTables(function(res, status) {
                                     // console.log("get tables result", res.length);
                                     // console.log("status", status);
-                                    if (typeof res === 'object' && status) {
-                                        callback(res, status);
-                                        localStorage.setItem("MSSQL", res);
-                                    }
-                                    if(!status){//if status false
-                                        commonUi.isDataLoading = false;
-                                        publicFun.fireMessage('0', 'No tables available');
-                                    }
+                                    $scope.client.getTables(function(res, status) {
+                                        if (typeof res === 'object' && status) {
+                                            angular.forEach(res,function(r) {
+                                                $scope.tables.push({
+                                                    name: r,
+                                                    type: "ti-file"
+                                                });
+                                            });
+                                            filesFlag = true;
+                                            if ( filesFlag && foldersFlag ) {
+                                                callback($scope.tables, status);
+                                                localStorage.setItem("MSSQL", $scope.tables);
+                                                commonUi.isDataLoading = false;
+                                            }
+                                        }
+                                        if(!status) { //if status false
+                                            filesFlag = true;
+                                            if ( filesFlag && foldersFlag ) {
+                                                if ($scope.tables.length > 0){
+                                                    flag = true;
+                                                }
+                                                callback($scope.tables, flag);
+                                                commonUi.isDataLoading = false;
+                                            }                                          
+                                            publicFun.fireMessage('0', 'Could not retrieve all the files!');
+                                        }
+                                    });
+                                    $scope.client.getFolders(function(res, status) {
+                                        if (status) {
+                                            angular.forEach(res,function(data){
+                                                $scope.tables.push({
+                                                    name: data.file,
+                                                    type: "ti-folder"
+                                                });
+                                            });
+                                            foldersFlag = true;
+                                            if ( filesFlag && foldersFlag ) {
+                                                callback($scope.tables, flag);
+                                                localStorage.setItem("MSSQL", $scope.tables);
+                                                commonUi.isDataLoading = false;
+                                            }                                        
+                                        } else {
+                                            foldersFlag = true;
+                                            if ( filesFlag && foldersFlag ) {
+                                                if ($scope.tables.length > 0){
+                                                    flag = true;
+                                                }
+                                                callback($scope.tables, flag);
+                                                commonUi.isDataLoading = false;
+                                            }                                        
+                                            publicFun.fireMessage('0', 'Could not retrieve all the folders!');
+                                        }
+                                    });
                                 });
                             } else {
                                 var BigQueryTablesString = localStorage.getItem("MSSQL");
@@ -211,9 +307,68 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             }
                             break;
                         default:
-                            $scope.client.getTables(function(res, status) {
-                                callback(res, status);
-                            });
+                            $scope.tables = [];
+                            var filesFlag = false;
+                            var foldersFlag = false;
+                            var flag;
+                            // if (user != userInfo || isBQInitial){
+                            //     localStorage.setItem("BigQueryTables",null);
+                            //     user = userInfo;
+                            //     isBQInitial = false;
+                            // }
+                            // if (localStorage.getItem("BigQueryTables") === null || localStorage.getItem("BigQueryTables") == "null" ||
+                            //     localStorage.getItem("BigQueryTables") == "undefined") {
+                                $scope.client.getTables(function(res, status) {
+                                    if (typeof res === 'object' && status) {
+                                        angular.forEach(res,function(r) {
+                                            $scope.tables.push({
+                                                name: r,
+                                                type: "ti-file"
+                                            });
+                                        });
+                                        filesFlag = true;
+                                        if ( filesFlag && foldersFlag ) {
+                                            callback($scope.tables, status);
+                                            commonUi.isDataLoading = false;
+                                        }
+                                    }
+                                    if(!status) { //if status false
+                                        filesFlag = true;
+                                        if ( filesFlag && foldersFlag ) {
+                                            if ($scope.tables.length > 0){
+                                                flag = true;
+                                            }
+                                            callback($scope.tables, flag);
+                                            commonUi.isDataLoading = false;
+                                        }                                          
+                                        publicFun.fireMessage('0', 'Could not retrieve all the files!');
+                                    }
+                                });
+                                $scope.client.getFolders(function(res, status) {
+                                    if (status) {
+                                        angular.forEach(res,function(data){
+                                            $scope.tables.push({
+                                                name: data.file,
+                                                type: "ti-folder"
+                                            });
+                                        });
+                                        foldersFlag = true;
+                                        if ( filesFlag && foldersFlag ) {
+                                            callback($scope.tables, flag);
+                                            commonUi.isDataLoading = false;
+                                        }                                        
+                                    } else {
+                                        foldersFlag = true;
+                                        if ( filesFlag && foldersFlag ) {
+                                            if ($scope.tables.length > 0){
+                                                flag = true;
+                                            }
+                                            callback($scope.tables, flag);
+                                            commonUi.isDataLoading = false;
+                                        }                                        
+                                        publicFun.fireMessage('0', 'Could not retrieve all the folders!');
+                                    }
+                                });
                             break;
                     }
                 },
@@ -281,8 +436,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                         for (var i = 0; i < res.length; i++) {
                             $scope.sourceUi.tableData.push({
                                 'id': i,
-                                'name': res[i],
-                                'selected': false
+                                'name': res[i].name,
+                                'selected': false,
+                                'type' : res[i].type
                             });
                         }
                     } else {
@@ -469,14 +625,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                                 if (key == 'FieldType') {
                                                     for (var i = 0; i < dataTypes.length; i++) {
                                                         if (value == dataTypes[i].type) {
-                                                            if (dataTypes[i].category == 'att') {
-                                                                $scope.commonUi.attribute.push({
-                                                                    id: c,
-                                                                    name: res[c].Fieldname,
-                                                                    isRemove: false,
-                                                                    dataType: dataTypes[i].type
-                                                                })
-                                                            } else {
+                                                            if (dataTypes[i].category == 'mes') {
                                                                 $scope.commonUi.measures.push({
                                                                     id: c,
                                                                     name: res[c].Fieldname,
@@ -484,6 +633,12 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                                                     dataType: dataTypes[i].type
                                                                 })
                                                             }
+                                                            $scope.commonUi.attribute.push({
+                                                                id: c,
+                                                                name: res[c].Fieldname,
+                                                                isRemove: false,
+                                                                dataType: dataTypes[i].type
+                                                            })
                                                         }
                                                     }
                                                     $scope.sourceUi.attrObj = $scope.commonUi.attribute;
@@ -805,6 +960,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 query = "SELECT " + name + " FROM " + $diginurls.getNamespace() + "." + table_name + " GROUP BY " + name;
                 $scope.client.getExecQuery(query, function(data, status) {
                     if (status){
+                        data.sort(function(a,b){return a[name] - b[name]});
                         var tempArray = [];
                         for (var res in data){
                             var keyValue = data[res];

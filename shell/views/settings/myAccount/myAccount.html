@@ -14,7 +14,7 @@
 #pagingTabs md-tabs-wrapper md-tabs-canvas
 {
 	left: 45px !important;
-	max-height:40px;
+	max-height:40px;
 }
 
 #pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active
@@ -502,6 +502,10 @@ md-tabs[md-align-tabs=bottom]
 													</div>
 											  </div>
 									</div>
+									
+									
+									
+									
 								</div>
 								<!-- address details -->
 								<div layout="row" style="padding:0px 10px 0px 10px">
@@ -655,9 +659,17 @@ md-tabs[md-align-tabs=bottom]
 				<md-content style="background:transparent"-->
 			<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)" style="padding-left: 65px;padding-right:30px;">
 				<v-pane id="Cards" expanded="$first"> 
+				
 					<v-pane-header id="Store-header" aria-controls="Store-content">
-						<h1 class="search-header" style="margin:0px;">Subscription Details</h1> 
+						<!--h1 class="search-header" style="margin:0px;">Subscription Details</h1--> 
+						
+						<div class="setting-card-header">
+								<h5>Subscription Details</h5>
+						</div>
+						
 					</v-pane-header>
+					
+					
 
 					<v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;background:transparent;">
 						<div layout="row" layout-align="center start" layout-wrap>
@@ -702,7 +714,13 @@ md-tabs[md-align-tabs=bottom]
 				</v-pane>
 				<v-pane id="Cards"> 
 					<v-pane-header id="Store-header" aria-controls="Store-content">
-						<h1 class="search-header" style="margin:0px;">Update Details</h1> 
+						<!--h1 class="search-header" style="margin:0px;">Upgrade Package</h1--> 
+						
+						
+						<div class="setting-card-header">
+								<h5>Upgrade Package</h5>
+						</div>		
+						
 					</v-pane-header>
 
 					<v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;background:transparent;">
@@ -714,10 +732,10 @@ md-tabs[md-align-tabs=bottom]
 								  <center style="background:#06a7cf;color:white;font-size:16px;font-weight:700;padding:10px;border-radius: 2px 2px 0px 0px;">{{plan.name}}</center>
 								  <center style="background:#02b5e2;padding:10px;">
 									<div style="width:100px;height:100px;border-radius:100px;border: 5px solid white;" layout="column" layout-align="center center">
-										<span style="color:white;font-size:25px;">{{plan.perMonth}}</span>
+										<span style="color:white;font-size:25px;">${{plan.perMonth}}</span>
 										<span style="color:white;font-size:12px;">{{plan.per}}</span>
 									</div>
-									<md-button class="md-fab md-mini ti-check" ng-disabled="false" aria-label="Comment" style="background:#f9a525;position:absolute;margin-top: -10px;margin-left: 50px;" ng-click="vm.loadStripe($event,plan)">
+									<!--md-button class="md-fab md-mini ti-check" ng-disabled="false" aria-label="Comment" style="background:#f9a525;position:absolute;margin-top: -10px;margin-left: 50px;" -->
 									</md-button>
 								  </center>
 					
@@ -729,17 +747,24 @@ md-tabs[md-align-tabs=bottom]
 								  <p>{{plan.bandwidth}} of Bandwidth</p>
 								</md-card-content>
 								<md-card-content layout="column" layout-align="center center" style="background:#e7faff">
-								  <p>{{plan.perMonth}} / Per User (Monthly)</p>
-								  <p>{{plan.perYear}} / Per User (Yearly)  </p>
-								  <!--md-button class="md-raised" ng-click="selectPlan($event,$index, plan)" aria-label="submit"><span ng-if="plan.price == '0'">Get!</span><span ng-if="plan.price != '0'">Buy!</span></md-button-->
+								  <p>${{plan.perMonth}} / Per User (Monthly)</p>
+								  <p>${{plan.perYear}} / Per User (Yearly)  </p>
+								  
+								  <md-button class="md-raised" ng-click="vm.loadStripe($event,plan)" aria-label="Comment" style="background:#f9a525;">
+									<span>Upgrade now!</span>
+								  </md-button>
+								
 								</md-card-content>
-								<md-card-content layout="column" layout-align="start start">
+								
+								<!--md-card-content layout="column" layout-align="start start">
 								  <b style="margin-bottom:10px;">Advanced Options:</b>
 								  <div layout="row" layout-align="space-between center" style="width:100%"> <span flex>Option 1</span><md-checkbox class="checkbox" ng-model="data.cb1" aria-label="Checkbox 1"></md-checkbox></div>
-								</md-card-content>
+								</md-card-content-->
+								
 								<md-card-content layout="column" layout-align="end end" style="background:#e7faff;padding:0">
-								  <span style="padding: 5px;border-radius: 4px;margin: 6px;border: 1px solid #b7b7b7;color: grey;font-weight: 700;">Total Amount:<b style="font-size:20px;"> $10</b></span>
+								  <span style="padding: 5px;border-radius: 4px;margin: 6px;border: 1px solid #b7b7b7;color: grey;font-weight: 700;">Total Amount:<b style="font-size:20px;">${{plan.numberOfUsers*plan.perMonth}}</b></span>
 								</md-card-content>
+								
 							  </md-card>
 							</div>
 						</div>
@@ -747,7 +772,10 @@ md-tabs[md-align-tabs=bottom]
 				</v-pane>
 				<v-pane id="Cards"> 
 					<v-pane-header id="Store-header" aria-controls="Store-content">
-						<h1 class="search-header" style="margin:0px;">Card Details</h1> 
+						<!--h1 class="search-header" style="margin:0px;">Card Details</h1--> 
+							<div class="setting-card-header">
+								<h5>Card Details</h5>
+						</div>
 					</v-pane-header>
 
 					<v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;background:transparent;">

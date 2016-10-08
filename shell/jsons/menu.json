@@ -13,12 +13,6 @@
       "menuName":"Reports"
     },
     {
-      "title": "RealTime",
-      "icon2": "icon-clock",
-      "type": "menu",
-      "click":"RealTime"
-    },
-    {
       "title": "Data Source",
       "icon2": "icon-database",
       "type": "menu",

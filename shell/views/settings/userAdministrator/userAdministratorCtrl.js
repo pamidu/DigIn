@@ -1,9 +1,9 @@
-DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','DiginServices', 'notifications','paymentGateway','$http', function ($scope,$rootScope,$mdDialog,DiginServices,notifications,paymentGateway,$http){
+routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http){
 	var vm = this;
 	
 	$scope.$parent.currentView = "User Administrator";
 	
-	DiginServices.getInvitedUsers(function(data) {});
+	userAdminFactory.getInvitedUsers(function(data) {});
 	var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		
 	$scope.enterInviteUser = function(ev,searchText)
@@ -16,7 +16,7 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 			console.log(exist);
 			if(exist == false)
 			{
-				DiginServices.inviteUser(searchText).then(function(response) {
+				userAdminFactory.inviteUser(searchText).then(function(response) {
 					console.log(response);
 					$scope.searchText = "";
 				});
@@ -73,7 +73,7 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 		return catogeryLetter;
 	}; 
 	
-	DiginServices.getAllGroups(function(data) {
+	userAdminFactory.getAllGroups(function(data) {
 		console.log(data);
 		$scope.groups = data;
 	});
@@ -116,7 +116,7 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 		  console.log("delete " + group.groupId);
 		  notifications.toast(1, "'"+group.groupname +"' Deleted");
 		  
-		  DiginServices.removeUserGroup(group.groupId).then(function(data) {
+		  userAdminFactory.removeUserGroup(group.groupId).then(function(data) {
 				$scope.groups.splice(index, 1); 
 			});
 		});
@@ -133,7 +133,7 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 	
 }])*/
 
-DiginApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifications','DiginServices', function ($scope,$rootScope,$mdDialog,notifications,DiginServices){
+routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifications','userAdminFactory', function ($scope,$rootScope,$mdDialog,notifications,userAdminFactory){
 	
 	 var vm = this;
 
@@ -200,7 +200,7 @@ DiginApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notific
 			}
 			console.log(vm.group);
 			
-			DiginServices.addUserGroup(vm.group).then(function(result) {
+			userAdminFactory.addUserGroup(vm.group).then(function(result) {
 				if(result.IsSuccess == true)
 				{
 					notifications.toast(1, "Group Added");

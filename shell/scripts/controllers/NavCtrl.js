@@ -13,6 +13,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             var sessionInfo = $helpers.getCookie('securityToken');
             // if(sessionInfo==null) location.href = 'index.php';
         }
+		$rootScope.sharableUsers = [];
+		$rootScope.sharableGroups = [];
         $scope.firstName = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;  
         var db = new pouchDB('dashboard');
         $scope.adjustUI = function () {
@@ -866,6 +868,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 },
 
                 //#added by chamila
+				/*
                 //#to retrive all users and groups
                 getAllSharableObj: function () {
                     var baseUrl = "http://" + window.location.hostname;
@@ -936,6 +939,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         //alert("Oops! There was a problem retrieving the groups");
                     });
                 }
+				*/
             }
         }());
 

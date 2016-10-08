@@ -3,7 +3,10 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
 
     $scope.files = []; //Files imported array
     $scope.Folders = [];
-    $scope.selectedFolder;
+    $scope.FileName;
+
+    $scope.selectedFolder;   
+    $scope.selectedPath;
     $scope.fileChanged = function(e) {
         if (!e) e = window.event;
         var x = e.target || e.srcElement;
@@ -130,7 +133,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     $scope.newCollection = false;
 
     $scope.goto = function() {
-            $scope.collection = ""; // Empty the form
+         
             $scope.step1.$setUntouched();
             $scope.step1.$setPristine();
             $scope.newCollection = !$scope.newCollection;
@@ -139,7 +142,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
 
     //start of configuring pages
     $scope.currentStep = 0;
-     $scope.schema  = [];
+    $scope.schema = [];
     $scope.selectedStep = 0;
     $scope.stepProgress = 1;
     $scope.maxStep = 3;
@@ -164,15 +167,24 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     }, ];
 
     $scope.enableNextStep = function nextStep() {
-        //do not exceed into max step
-        if ($scope.selectedStep >= $scope.maxStep) {
+
+        if ($scope.selectedPath == "File") {
+            $scope.stepProgress = 2;
+            $scope.selectedStep = 2;
             return;
+
+        } else {
+            //do not exceed into max step
+            if ($scope.selectedStep >= $scope.maxStep) {
+                return;
+            }
+            //do not increment $scope.stepProgress when submitting from previously completed step
+            if ($scope.selectedStep === $scope.stepProgress - 1) {
+                $scope.stepProgress = $scope.stepProgress + 1;
+            }
+            $scope.selectedStep = $scope.selectedStep + 1;
         }
-        //do not increment $scope.stepProgress when submitting from previously completed step
-        if ($scope.selectedStep === $scope.stepProgress - 1) {
-            $scope.stepProgress = $scope.stepProgress + 1;
-        }
-        $scope.selectedStep = $scope.selectedStep + 1;
+
     }
 
     $scope.moveToPreviousStep = function moveToPreviousStep() {
@@ -186,12 +198,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     $scope.submitCurrentStep = function submitCurrentStep(stepData, isSkip) {
         $scope.currentStep = stepData.step - 1;
 
-        var submitObject = {
-            domain: window.location.host,
-            filename: $scope.collection.folderName,
-            folderName: $scope.collection.folderName,
-            schema: ""
-        };
+
         $scope.showBusyText = true;
         var req = {
             method: "POST",
@@ -203,7 +210,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
             data: $scope.files
         };
         $http(req).then(function(data) {
-               
+
                 stepData.completed = true;
                 $scope.showBusyText = false;
                 stepData.data.completed = true;
@@ -225,10 +232,21 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
         if (files && files.length) {
             $scope.preloader = true;
             $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
-            $scope.otherdata = { "file_type":"datasource",  "folder_name": $scope.collection.folderName};
+            if ($scope.selectedPath == "File") {
+                $scope.otherdata = {
+                    "file_type": "datasource",
+                    "folder_name": ""
+                };
+            } else {
+                $scope.otherdata = {
+                    "file_type": "datasource",
+                    "folder_name": $scope.folderName
+                };
+
+            }
             for (var i = 0; i < files.length; i++) {
                 var lim = i == 0 ? "" : "-" + i;
-               
+                $scope.FileName = files[i].name;
                 Upload.upload({
                     url: Digin_Engine_API + 'file_upload',
                     headers: {
@@ -247,9 +265,9 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                     $scope.schema = data.Result;
                     uploadFlag = true;
                     $scope.preloader = false;
-                   notifications.toast(1, "Schema retrieved  successfully");
-                   
-                   
+                    notifications.toast(1, "Schema retrieved  successfully");
+
+
                 }).error(function(data) {
                     console.log(data);
                     uploadFlag = false;
@@ -257,57 +275,61 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                     $scope.preloader = false;
                     $scope.diginLogo = 'digin-logo-wrapper2';
                 });
- 
 
-              
+
+
             }
         }
     };
 
-     $scope.UploadWithUpdate = function() {
-           $scope.preloader = true;
+    $scope.UploadWithUpdate = function() {
+        $scope.preloader = true;
 
-        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));      
+        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
-       
-                Upload.upload({
-                    url: Digin_Engine_API + 'insert_data',
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                    data: {
-                        schema : JSON.stringify($scope.schema),
-                        db: 'BigQuery',
-                        SecurityToken: userInfo.SecurityToken,
-                        filename: "test",
-                        folder_name: $scope.collection.folderName
-                        
-                    }
+        if ($scope.selectedPath == "File") {
+            $scope.folderName = '';
+        } else {
+          
+        }
+        Upload.upload({
+            url: Digin_Engine_API + 'insert_data',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            data: {
+                schema: JSON.stringify($scope.schema),
+                db: 'BigQuery',
+                SecurityToken: userInfo.SecurityToken,
+                filename: $scope.FileName,
+                folder_name: $scope.folderName,
+                folder_type : 'singlefile'
 
-                }).success(function(data) {
-                    console.log(data);
-                      notifications.toast(0, "Successfully uploaded to the datawarehouse");
-                    uploadFlag = true;
-                    $scope.preloader = false;
+            }
 
-                   
-                   
-                }).error(function(data) {
-                    console.log(data);
-                    uploadFlag = false;
-                     notifications.toast(0, "There is an errror while uploading the file");
-                    $scope.preloader = false;
-                    $scope.diginLogo = 'digin-logo-wrapper2';
-                });
- 
+        }).success(function(data) {
+            console.log(data);
+            notifications.toast(1, "Successfully uploaded to the datawarehouse");
+            uploadFlag = true;
+            $scope.preloader = false;
+            $scope.enableNextStep();
 
-              
-            
-        
+        }).error(function(data) {
+            console.log(data);
+            uploadFlag = false;
+            notifications.toast(0, "There is an errror while uploading the file");
+            $scope.preloader = false;
+            $scope.diginLogo = 'digin-logo-wrapper2';
+        });
+
+
+
+
+
     };
 
- 
-           
+
+
     $scope.goToDashboard = function() {
         $state.go("home.Dashboards");
         $mdSidenav('right').toggle();

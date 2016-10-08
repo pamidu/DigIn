@@ -39,9 +39,7 @@
 				<li ng-click="goTORout('home.social-graph-fb')">
 					<i class="ti-facebook"></i>Facebook
 				</li>
-				<li ng-click="goTORout('home.SocialGraphTwitter')">
-					<i class="ti-twitter-alt"></i>Twitter
-				</li>
+				 
             </ul>
 
 			<ul ng-if="currentItem == 'Reports'">		
@@ -80,12 +78,9 @@
 				</li>
             </ul>
 			<ul ng-if="currentItem == 'Settings'">	
-				<li ng-click="goTORout('home.createUser')">
+				<!--li ng-click="goTORout('home.createUser')">
 					<i class="ti-user"></i>New user
 				</li>
-				<!-- <li ng-click="goTORout('home.share')">
-					<i class="ti-share"></i>Share
-				</li> -->
 				<li ng-click="goTORout('home.userSettings')">
 					<i class="ti-pencil"></i>User settings
 				</li>
@@ -94,6 +89,12 @@
 				</li>
 				<li ng-click="goTORout('home.group')">
 					<i class="ti-settings"></i>Groups
+				</li-->
+				<li ng-click="goTORout('home.userAdministrator')">
+					<i class="ti-pencil"></i>User Administrator
+				</li>
+				<li ng-click="goTORout('home.systemSettings')">
+					<i class="ti-settings"></i>System Settings
 				</li>
             </ul>
         </div>

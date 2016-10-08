@@ -13,8 +13,6 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
 
     var vm = this;
 
-    vm.price=100;
-
     vm.companyPricePlans = [
         {
             id : "Free",
@@ -22,45 +20,51 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             numberOfUsers:"1",
             storage: "10 GB",
             bandwidth: "100 GB",
-            perMonth: "Free",
-            perYear: "$10",
+            perMonth: 0,
+            perYear: 10,
             per: "/ User",
-            Description: "desc"
+            Description: "desc",
+			price:0
         },
         {
             id : "personal_space",
             name:"Personal Space",
-            numberOfUsers:"1",
+            numberOfUsers:1,
             storage: "10 GB",
             bandwidth: "100 GB",
-            perMonth: "$10",
-            perYear: "$10",
+            perMonth: 10,
+            perYear: 10,
             per: "/ User",
-            Description: "desc"
+            Description: "desc",
+			price:10
         },
         {
             id : "mini_team",
             name:"We Are A Mini Team",
-            numberOfUsers:"5",
+            numberOfUsers:5,
             storage: "10 GB",
             bandwidth: "100 GB",
-            perMonth: "$8",
-            perYear: "$6.99 ",
+            perMonth: 8,
+            perYear: 6.99,
             per: "/ User",
-            Description: "desc"
+            Description: "desc",
+			price:40
         },
         {
             id : "world",
             name:"We Are the World",
-            numberOfUsers:"10",
+            numberOfUsers:10,
             storage: "10 GB",
             bandwidth: "100 GB",
-            perMonth: "$6",
-            perYear: "$4.99",
+            perMonth: 6,
+            perYear: 4.99,
             per: "/ User",
-            Description: "desc"
+            Description: "desc",
+			price:60
         }];
-        
+        	
+
+		
     vm.selectedStep = 0;
     vm.stepProgress = 1;
     vm.maxStep = 3;
@@ -90,34 +94,52 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         }
     }
 
-    vm.submitCurrentStep = function submitCurrentStep(tenant, isSkip) { 
-        if(tenant=='Cancel'){
-            $rootScope.createdTenantID="";
-            $rootScope.btnMessage="Thank you...!";
-            $rootScope.btnContinue="Exit";
-            
-            var deferred = $q.defer();
-            vm.showBusyText = true;
-            console.log('On before submit');
-            if (!tenant.completed && !isSkip) {
-                //simulate $http
-                $timeout(function () {
-                    vm.showBusyText = false;
-                    console.log('On submit success');
-                    deferred.resolve({ status: 200, statusText: 'success', data: {} });
-                    //move to next step when success
-                    tenant.completed = true;
-                    vm.enableNextStep();
-                }, 1000)
-            } else {
-                vm.showBusyText = false;
-                vm.enableNextStep();
-            }
-            
-            
-        }
-        else{
+    vm.submitCurrentStep = function submitCurrentStep(tenant, isSkip) {	
+	
+	if($scope.tenant.name=="" || $scope.tenant.name==undefined){
+		return;
+	}
+	else if($scope.tenant.company=="" || $scope.tenant.company==undefined){
+		return;
+	}
+	else{
+		
+	}
+        
+	if(tenant=='Cancel'){
+		$rootScope.createdTenantID="";
+		$rootScope.btnMessage="Thank you...!";
+		$rootScope.btnContinue="Exit";
+		
+		var deferred = $q.defer();
+		vm.showBusyText = true;
+		console.log('On before submit');
+		if (!tenant.completed && !isSkip) {
+			//simulate $http
+			$timeout(function () {
+				vm.showBusyText = false;
+				console.log('On submit success');
+				deferred.resolve({ status: 200, statusText: 'success', data: {} });
+				//move to next step when success
+				tenant.completed = true;
+				vm.enableNextStep();
+			}, 1000)
+		} else {
+			vm.showBusyText = false;
+			vm.enableNextStep();
+		}
+		
+		
+	}
+	else{
             var SecToken = decodeURIComponent($cookies.get('securityToken'));
+			//var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
+			
+			var tenantcode=tenant.name;
+			tenantcode=tenantcode.toLowerCase();
+			tenantcode=tenantcode.replace(/ /g, '');
+			$scope.tenant.name=tenantcode;
+			
             $http({method: 'GET', 
                     url: Digin_Tenant+'/tenant/GetTenant/'+tenant.name+'.'+Digin_Domain, 
                     headers: {'Securitytoken': SecToken}
@@ -190,14 +212,41 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         
     }
 
-    //*load card detail window from stripe*/
-    vm.loadCardDetail = function loadCardDetail(ev, plan) {
+	//#Get selected plan object#//
+	vm.iscontinue=false;
+	vm.selectPlan = function selectPlan(ev,plan) {
+		if(plan=="" || plan==undefined){
+			vm.iscontinue=false;
+		}
+		else{
+			 vm.plan = plan;
+			 vm.iscontinue=true;
+		}
+	};
+	
+
+	//#load card detail window from stripe*/
+    vm.loadCardDetail = function loadCardDetail(ev) {
+		if(vm.plan=="" || vm.plan==undefined){
+			return;
+		}
+		else{
+			vm.createTenant (vm.plan,ev);
+		}
+	}
+	
+	
+	
+	
+    //#create tenant#//
+    vm.createTenant = function createTenant(plan,ev) {
                     
         displayProgress('Processing...!');
 
         /*Tenant creation process*/  
         var userInfo ="";
         var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
+		
         var email=userInfo.Email;
         var TenantID = email.replace('@', "");
             TenantID = TenantID.replace('.', "");
@@ -220,7 +269,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             "OtherData": {
                 "CompanyName": companyDetail.company,
                 "SampleAttributs": "Values",
-                "catagory": ""
+                "catagory": companyDetail.businessModel
             }
         };
  
@@ -288,13 +337,11 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
     vm.proceedPayment = function proceedPayment(token,plan) {
         displayProgress('Processing...');
 
-        var price=vm.price;
-        
         var sampleObj = {
             "token":token.id,
             "plan" : {
                 "attributes":  [
-                    {"tag":"Package","feature": plan.id,"amount": price*100,"quantity":1,"action":"add"}
+                    {"tag":"Package","feature": plan.id,"amount": plan.numberOfUsers*plan.perMonth*100,"quantity":1,"action":"add"}
                 ],
                 "subscription": "month",
                 "quantity": 1 

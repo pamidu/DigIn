@@ -24,6 +24,10 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
 
 
 //#Upload company logo/#/
+$scope.cancel=function(){
+  $mdDialog.hide();
+}
+
     $scope.uploadCompanyLogo = function (ev) {
         $mdDialog.show({
                 controller: function fileUploadCtrl($scope, $rootScope, $mdDialog, fileUpload, $http, Upload) {
@@ -265,7 +269,7 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
 
     $mdDialog.show(confirm).then(function() {
       //Yes
-	  paymentGatewaySvc.stopSubscriptionImmediate();
+	     paymentGatewaySvc.stopSubscriptionImmediate();
     }, function() {
       //No
     });
@@ -1265,7 +1269,7 @@ routerApp.directive('countdownn', ['Util', '$interval', function(Util, $interval
 }]);
 
 
-routerApp.service('paymentGatewaySvc',['$http','notifications', function($http,notifications){
+routerApp.service('paymentGatewaySvc',['$http','notifications','$rootScope', function($http,notifications,$rootScope){
 
 	   //#Stop subscription immediate
 	  this.stopSubscriptionImmediate=function(){ 		
@@ -1338,7 +1342,7 @@ routerApp.service('paymentGatewaySvc',['$http','notifications', function($http,n
 				  if(response.statusText=="OK"){
 					  if(response.data.status==true){
 						console.log(response)
-						$rootscope.customer=response.data.response;
+						$rootScope.customer=response.data.response;
 					  }
 					  else{
 					  }
@@ -1362,7 +1366,7 @@ routerApp.service('paymentGatewaySvc',['$http','notifications', function($http,n
 			}).then(function(response){
 				  //console.log(response)
 				  if(response.statusText=="OK"){
-					 $rootscope.custStatus=response.data.status;
+					 $rootScope.custStatus=response.data.status;
 				  }				  
 			},function(response){
 				  console.log(response)

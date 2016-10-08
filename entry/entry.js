@@ -129,7 +129,7 @@ routerApp
                             dismissOnClick: true,
                             animation: 'slide',
                             dismissOnClick: 'true',
-                            timeout: 30000
+                            timeout: 50000
                         });
                     }
                 }
@@ -441,9 +441,9 @@ routerApp
 //#signup controller
 routerApp
     .controller('signup-ctrl', ['$scope', '$http', '$state', 'focus',
-        'Digin_Domain', 'Digin_Engine_API','ngToast','$mdDialog','$location',
+        'Digin_Domain', 'Digin_Engine_API','ngToast','$mdDialog','$location','$timeout',
         function ($scope, $http, $state, focus,
-                  Digin_Domain, Digin_Engine_API, ngToast,$mdDialog,$location) {
+                  Digin_Domain, Digin_Engine_API, ngToast,$mdDialog,$location,$timeout) {
 
 
             $scope.onClickSignIn = function () {
@@ -607,9 +607,15 @@ routerApp
                         .success(function (response) {
                             if (response.Success === true) {
                                 $mdDialog.hide();
+
                                 mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
-                                mainFun.dataClear();
-                                window.location = "http://"+Digin_Domain+"/entry";
+                                //mainFun.dataClear();
+
+                                $timeout(function () {
+                                       window.location = "http://"+Digin_Domain+"/entry";
+                                }, 5000);
+
+                               
                             }
                             else
                             {
@@ -663,9 +669,14 @@ routerApp
                                 else{
                                     $mdDialog.hide();
                                     mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
-                                    mainFun.dataClear();
-                                    window.location = "http://"+Digin_Domain+"/entry";
-                                    //window.location = "http://www.digin.io";
+                                    
+                                    $timeout(function () {
+                                       window.location = "http://"+Digin_Domain+"/entry";
+                                    }, 5000);
+                                    
+                                    //mainFun.dataClear();
+                                    //window.location = "http://"+Digin_Domain+"/entry";
+
                                 }
                             }
                         }).error(function (data, status) {

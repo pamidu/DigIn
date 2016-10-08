@@ -126,34 +126,44 @@
 				
 				<div layout-gt-sm="row" class="side-margins">
 					<h2 class="alaCarte_color" flex>Users</h2>
-					<div flex>
+					<!--div flex>
 						<span>No. of Users</span>
-						<md-slider ng-model="users" step="1" min="1" max="20" aria-label="rating">
-						</md-slider>
-					</div>
+						<md-slider ng-model="users" step="1" min="1" max="20" aria-label="rating"> </md-slider>
+					</div-->
+					
+					<md-input-container flex>
+						<span>No. of Users</span>
+						<!--md-slider ng-model="users" step="1" min="1" max="20" aria-label="rating"> </md-slider-->
+						<input type="text" id="users" name="users" ng-model="users" valid-number>
+						
+					</md-input-container>
+					
 					<div layout="column" layout-align="center center" flex>
 						<h3 class="alaCarte_h3">{{users}} users</h3>
-						<span>about 20M chat messages</span>
+						<span>{{usersRate}}$ per/user</span>
 					</div>
 					
 					<div layout="column" layout-align="center center" flex="20">
-						<h2 class="alaCarte_h3_color">$5</h2>
+						<h2 class="alaCarte_h3_color">{{users*usersRate}}$</h2>
 					</div>
 				</div>
+				
 				<md-divider></md-divider>
+				
 				<div layout-gt-sm="row" class="side-margins">
 					<h2 class="alaCarte_color" flex>Storage</h2>
 					<md-input-container flex>
 						<span>GB Stored</span>
-						<md-slider class="md-primary" md-discrete ng-model="storage" step="1" min="1" max="100" aria-label="storage">
-						</md-slider>
+						<!--md-slider class="md-primary" md-discrete ng-model="storage" step="1" min="1" max="100" aria-label="storage"></md-slider-->
+						<input type="text" id="storage" name="storage" ng-model="storage" valid-number>
+						
 					</md-input-container>
 					<div layout="column" layout-align="center center" flex>
 						<h3 class="alaCarte_h3">{{storage}} GB</h3>
-						<span>about 20M dashboards</span>
+						<span>{{storageRate}}$ per/</span>
 					</div>
 					<div layout="column" layout-align="center center" flex="20">
-						<h2 class="alaCarte_h3_color">$5</h2>
+						<h2 class="alaCarte_h3_color">{{storage*storageRate}}$</h2>
 					</div>
 				</div>
 				<md-divider></md-divider>
@@ -161,15 +171,15 @@
 					<h2 class="alaCarte_color" flex>Bandwidth</h2>
 					<md-input-container flex>
 						<span>GB Transferred</span>
-						<md-slider class="md-primary" md-discrete ng-model="bandwidth" step="1" min="1" max="100" aria-label="bandwidth">
-						</md-slider>
+						<!--md-slider class="md-primary" md-discrete ng-model="bandwidth" step="1" min="1" max="100" aria-label="bandwidth"></md-slider-->
+						<input type="text" id="bandwidth" name="bandwidth" ng-model="bandwidth" valid-number>
 					</md-input-container>
 					<div layout="column" layout-align="center center" flex>
 						<h3 class="alaCarte_h3">{{bandwidth}} GB</h3>
-						<span>about 20M chat messages</span>
+						<span>{{bandwithRate}}$ per/</span>
 					</div>
 					<div layout="column" layout-align="center center" flex="20">
-						<h2 class="alaCarte_h3_color">$5</h2>
+						<h2 class="alaCarte_h3_color">{{bandwidth*bandwithRate}}$</h2>
 					</div>
 				</div>
 

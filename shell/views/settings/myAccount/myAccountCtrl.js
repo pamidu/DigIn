@@ -4,9 +4,14 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
 
     
 //#Subscription START----------------------
-
-  $scope.result = paymentGatewaySvc.output();
-
+  
+  //#Get customer detail#//
+  paymentGatewaySvc.getCustomerInformations();
+  
+ //#Get customer status as active - true || false #//
+  paymentGatewaySvc.checkSbscription();
+  
+  
   setTimeout(function(){
     Highcharts.chart('container_chart', {
         title: {
@@ -35,33 +40,33 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
     {
       id : "personal_space",
       name:"Personal Space",
-      numberOfUsers:"1",
+      numberOfUsers:1,
       storage: "10 GB",
       bandwidth: "100 GB",
-      perMonth: "$10",
-      perYear: "$10",
+      perMonth: 10,
+      perYear: 10,
       per: "/ User",
-      Description: "desc"
+      Description: "desc",
     },
     {
       id : "mini_team",
       name:"We Are A Mini Team",
-      numberOfUsers:"5",
+      numberOfUsers:5,
       storage: "10 GB",
       bandwidth: "100 GB",
-      perMonth: "$8",
-      perYear: "$6.99 ",
+      perMonth: 8,
+      perYear: 6.99,
       per: "/ User",
       Description: "desc"
     },
     {
       id : "world",
       name:"We Are the World",
-      numberOfUsers:"10",
+      numberOfUsers:10,
       storage: "10 GB",
       bandwidth: "100 GB",
-      perMonth: "$6",
-      perYear: "$4.99",
+      perMonth: 6,
+      perYear: 4.99,
       per: "/ User",
       Description: "desc"
     }];
@@ -107,6 +112,26 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
     location.href = '#/home/addaLaCarte';
   }
   
+
+   vm.deactivateAccount = function(ev) {
+    var confirm = $mdDialog.confirm()
+          .title('Account Deactivation')
+          .textContent('Are you sure you want to deactivate this account?')
+          .ariaLabel('Lucky day')
+          .targetEvent(ev)
+          .ok('Yes')
+          .cancel('No');
+
+    $mdDialog.show(confirm).then(function() {
+      //Yes
+	  paymentGatewaySvc.stopSubscriptionImmediate();
+    }, function() {
+      //No
+    });
+  };
+
+  
+  
   vm.addCard = function(ev)
   {
     alert("open add card window");
@@ -140,37 +165,6 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
       }
     });
   } 
-
-  
-  //#Customize existing package
-  vm.customizePackage=function(plan){ 
-    var pkgObj = {
-          "plan" :  {
-                      "features": [
-                        {"tag":"storage","feature": "25GB storage","quantity":0,"amount": 30,"action":"remove"},
-                        {"tag":"user","feature": "Additional users","amount": 15,"quantity":5,"action":"add"}
-                      ]
-                    }
-          }
-
-        $http({
-            //url : "http://staging.digin.io/include/duoapi/paymentgateway/customizePackage",
-            url : "/include/duoapi/paymentgateway/customizePackage",
-            method : "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data : pkgObj
-        }).then(function(response){
-      console.log(response)
-            $mdDialog.hide();
-        },function(response){
-            console.log(response)
-            $mdDialog.hide();
-        })
-    
-  }
-  
   
   //#Upgrade exisitng package into another package
   vm.upgradePackage=function(token,plan){ 
@@ -221,129 +215,6 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
         },function(response){
               //console.log(response)
               displayError("Error while upgrade the package...");
-              //$mdDialog.hide();
-        })
-    
-  }
-
-  //#Check subscription
-  vm.checkSbscription=function(){  
-        $http({
-            //url : "http://staging.digin.io/include/duoapi/paymentgateway/checkSubscription",
-            url : "/include/duoapi/paymentgateway/checkSubscription",
-            method : "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(function(response){
-              //console.log(response)
-              if(response.statusText=="OK"){
-                  if(response.data.status==true){
-                    console.log(response)
-                    //displaySuccess("Your package is upgraded successfully...");
-                  }
-                  else{
-                    console.log(response)
-                    //displayError(response.data);
-                  }
-              }
-              $mdDialog.hide();
-        },function(response){
-              console.log(response)
-              //displayError("Error while upgrade the package...");
-              //$mdDialog.hide();
-        })
-    
-  }
-
-  //#Upgrade exisitng package into another package
-  vm.getCustomerInformations=function(){ 
-    
-        $http({
-            //url : "http://staging.digin.io/include/duoapi/paymentgateway/getCustomerInformations",
-            url : "/include/duoapi/paymentgateway/getCustomerInformations",
-            method : "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(function(response){
-              //console.log(response)
-              if(response.statusText=="OK"){
-                  if(response.data.status==true){
-                    //Success
-                    //displaySuccess("Your package is upgraded successfully...");
-                  }
-                  else{
-                    //fail
-                    //displayError(response.data);
-                  }
-              }
-              $mdDialog.hide();
-        },function(response){
-              //console.log(response)
-              //displayError("Error while upgrade the package...");
-              //$mdDialog.hide();
-        })
-    
-  }
-
-  //#Stop subscription immediate
-  vm.stopSubscriptionImmediate=function(){ 
-    
-        $http({
-            //url : "http://staging.digin.io/include/duoapi/paymentgateway/stopSubscriptionImmediate",
-            url : "/include/duoapi/paymentgateway/stopSubscriptionImmediate",
-            method : "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(function(response){
-              //console.log(response)
-              if(response.statusText=="OK"){
-                  if(response.data.status==true){
-                    //Success
-                    //displaySuccess("Your package is upgraded successfully...");
-                  }
-                  else{
-                    //fail
-                    //displayError(response.data);
-                  }
-              }
-              $mdDialog.hide();
-        },function(response){
-              //console.log(response)
-              //displayError("Error while upgrade the package...");
-              //$mdDialog.hide();
-        })
-    
-  }
-
-  //#Stop subscription immediate
-  vm.stopSubscriptionEndOfPeriod=function(){ 
-    
-        $http({
-            //url : "http://staging.digin.io/include/duoapi/paymentgateway/stopSubscriptionEndOfPeriod",
-            url : "/include/duoapi/paymentgateway/stopSubscriptionEndOfPeriod",
-            method : "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(function(response){
-              //console.log(response)
-              if(response.statusText=="OK"){
-                  if(response.data.status==true){
-                    //Success
-                    //displaySuccess("Your package is upgraded successfully...");
-                  }
-                  else{
-                    //fail
-                    //displayError(response.data);
-                  }
-              }
-              $mdDialog.hide();
-        },function(response){
-              //console.log(response)
-              //displayError("Error while upgrade the package...");
               //$mdDialog.hide();
         })
     
@@ -498,10 +369,6 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
   }
   
 
-
-  
-  
-
       //#common pre loader
     var displayProgress = function (message) {
         $mdDialog.show({
@@ -523,6 +390,8 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
 
 
 //#Subscription END----------------------
+
+
 
 
 
@@ -1127,16 +996,91 @@ routerApp.directive('customOnChange', function() {
   };
 });
 
-routerApp.controller('addaLaCarteCtrl',['$scope','$mdDialog','$http','notifications' ,function ($scope,$mdDialog,$http,notifications) {
+routerApp.controller('addaLaCarteCtrl',['$scope','$mdDialog','$http','notifications','$state' ,function ($scope,$mdDialog,$http,notifications,$state) {
   
-  $scope.users = 2;
-  $scope.storage = 1;
-  $scope.bandwidth = 2;
+  $scope.usersRate=5; $scope.storageRate=8; $scope.bandwithRate=10;
+  
+  
+if($scope.users=="" || $scope.users==undefined){$scope.users = 0;}
+if($scope.storage=="" || $scope.storage==undefined){$scope.storage = 0;}
+if($scope.bandwidth==""|| $scope.bandwidth==undefined){$scope.bandwidth = 0;}
   
   $scope.submit = function()
   {
-
+	if(($scope.users=="" || $scope.users==undefined)&&($scope.storage=="" || $scope.storage==undefined)&& ($scope.bandwidth==""|| $scope.bandwidth==undefined))
+	{
+		notifications.toast("0","You have not selected any alacarte to customize!");
+	}
+	else{
+		
+		 var users=[{"tag":"user","feature": "Additional users","quantity":parseInt($scope.users),"amount": $scope.users*$scope.usersRate*100,"action":"add"}];
+		 var storage= [{"tag":"storage","feature": "Additional storage","quantity":parseInt($scope.storage),"amount": $scope.storage*$scope.storageRate*100,"action":"add"}];
+		 var bandwidth=[{"tag":"bandwidth","feature": "Additional bandwidth","quantity":parseInt($scope.bandwidth),"amount": $scope.bandwidth*$scope.bandwithRate*100,"action":"add"}];
+		
+		var obj=[];
+		if(!$scope.users=="" || $scope.users==undefined || $scope.users=="0"){obj.push(users[0]);}
+		if(!$scope.storage=="" || $scope.storage==undefined || $scope.users=="0"){obj.push(storage[0]);}
+		if(!$scope.bandwidth==""|| $scope.bandwidth==undefined || $scope.users=="0"){obj.push(bandwidth[0]);}
+   
+		var pkgObj={
+          "plan" :  {
+                      "features": obj
+                    }
+          }
+		  		 	  
+		  
+	    $scope.customizePackage(pkgObj);
+	}
   }
+  
+ 
+  //#Customize existing package
+  $scope.customizePackage=function(pkgObj){ 
+    /*var pkgObj = {
+          "plan" :  {
+                      "features": [
+						{"tag":"user","feature": "Additional users","amount": 15,"quantity":5,"action":"add"},
+                        {"tag":"storage","feature": "Additional storage","quantity":0,"amount": 30,"action":"add"},
+						{"tag":"bandwidth","feature": "Additional bandwidth","amount": 15,"quantity":5,"action":"add"}
+                      ]
+                    }
+          }*/
+
+		  
+		  
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/customizePackage",
+            url : "/include/duoapi/paymentgateway/customizePackage",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data : pkgObj
+        }).then(function(response){
+			console.log(response)
+			if(response.statusText=="OK"){
+                  if(response.data.status==true){
+                    //Success
+                    notifications.toast("1",response.data.response);
+                  }
+                  else{
+                    //fail
+                    notifications.toast("0",response.data.response);
+                  }
+              } 
+			else{
+				
+			}			  
+        },function(response){
+            console.log(response)
+            notifications.toast("0","Error occured while customizing the package.");
+        })   
+  }
+  
+  
+  
+  
+  
 }])
 
 routerApp.directive('countdownn', ['Util', '$interval', function(Util, $interval) {
@@ -1180,67 +1124,114 @@ routerApp.directive('countdownn', ['Util', '$interval', function(Util, $interval
 }]);
 
 
-routerApp.service('paymentGatewaySvc',['$http', function($http){
+routerApp.service('paymentGatewaySvc',['$http','notifications', function($http,notifications){
 
-  this.output=function(){
-    return result;
-  }
-  var result = [{
-        'isSuccess': true,
-        'isError': false,
-        'msg': '',
-    }];
-    
+	   //#Stop subscription immediate
+	  this.stopSubscriptionImmediate=function(){ 		
+			$http({
+				//url : "http://staging.digin.io/include/duoapi/paymentgateway/stopSubscriptionImmediate",
+				url : "/include/duoapi/paymentgateway/stopSubscriptionImmediate",
+				method : "POST",
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			}).then(function(response){
+				  //console.log(response)
+				  if(response.statusText=="OK"){
+					  if(response.data.status==true){
+						//Success
+						notifications.toast("1",response.data.response);
+					  }
+					  else{
+						//fail
+						notifications.toast("0",response.data.response);
+					  }
+				  }
+			},function(response){
+					  //console.log(response)
+					  notifications.toast("0","Error occured while deactivating the account.");
+			})
+		
+	  }
 
-  //#Upgrade exisitng package into another package
-  this.upgradePackage=function(token,plan){ 
+	  //#Stop subscription immediate
+		  this.stopSubscriptionEndOfPeriod=function(){ 
+			
+				$http({
+					//url : "http://staging.digin.io/include/duoapi/paymentgateway/stopSubscriptionEndOfPeriod",
+					url : "/include/duoapi/paymentgateway/stopSubscriptionEndOfPeriod",
+					method : "POST",
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}).then(function(response){
+					  //console.log(response)
+					  if(response.statusText=="OK"){
+						  if(response.data.status==true){
+							//Success
+							notifications.toast("1",response.data.response);
+						  }
+						  else{
+							//fail
+							notifications.toast("0",response.data.response);
+						  }
+					  }
+				},function(response){
+					  //console.log(response)
+					  notifications.toast("0","Error occured while deactivating the account.");
+				})
+			
+		  }
+	  
+	//#get customer informations
+	  this.getCustomerInformations=function(){ 
+			$http({
+				//url : "http://staging.digin.io/include/duoapi/paymentgateway/getCustomerInformations",
+				url : "/include/duoapi/paymentgateway/getCustomerInformations",
+				method : "POST",
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			}).then(function(response){
+				  //console.log(response)
+				  if(response.statusText=="OK"){
+					  if(response.data.status==true){
+						console.log(response)
+						$rootscope.customer=response.data.response;
+					  }
+					  else{
+					  }
+				  }
+			},function(response){
+				 //console.log(response)
+				notifications.toast("0","Error occured while retriving the account detail.");
+			})
+		
+	  }
 
-      var pkgObj ={
-        "plan" :{
-          "attributes": [
-            {"tag":"Package","feature": plan.id,"amount": 20*100,"quantity":1,"action":"add"}
-          ],
-          "subscription": "month",
-          "quantity": 1 
-          }
-      }  
-    
-        $http({
-            //url : "http://staging.digin.io/include/duoapi/paymentgateway/upgradePackage",
-            url : "/include/duoapi/paymentgateway/upgradePackage",
-            method : "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data : pkgObj
-        }).then(function(response){
-              //console.log(response)
-              if(response.statusText=="OK"){
-                  if(response.data.status==true){
-                    //Success
-                    result.isSuccess=true;
-          result.isError=false;
-          result.msg="Package created successfully!";
-                  }
-                  else{
-                    //fail
-          result.isSuccess=false;
-          result.isError=false;
-          result.msg=response.data;
-          
-                  }
-          return true;
-              }
-        },function(response){
-      return false;
-        })
-    
-  }
-
-
-
-
-
-
-}]);
+	    //#Check subscription
+	  this.checkSbscription=function(){  
+			$http({
+				//url : "http://staging.digin.io/include/duoapi/paymentgateway/checkSubscription",
+				url : "/include/duoapi/paymentgateway/checkSubscription",
+				method : "POST",
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			}).then(function(response){
+				  //console.log(response)
+				  if(response.statusText=="OK"){
+					 $rootscope.custStatus=response.data.status;
+				  }				  
+			},function(response){
+				  console.log(response)
+				  notifications.toast("0","Error occured while retriving the account detail.");
+			})
+		
+	  }
+	  
+	  
+	  
+		
+	}]);
 

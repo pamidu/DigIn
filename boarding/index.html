@@ -23,7 +23,7 @@
                     <md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="vm.selectedStep" md-busy-text="'Processing...'" md-busy="vm.showBusyText">
                         <md-step label="Register Tenant" md-complete="vm.stepData[0].data.completed" ng-disabled="vm.stepProgress < 1">
                             <md-step-body>
-                                <form name="step1" ng-submit="vm.submitCurrentStep(tenant)">
+                                <form name="step1" ng-submit="vm.submitCurrentStep(tenant)" novalidate>
                                 
 										<md-card class="form-container">
 										
@@ -34,38 +34,49 @@
 											</div>
 										</div>
 										
-										<div layout-gt-sm="row" class="side-margins">
+										<div layout-gt-sm="column" class="side-margins">
 
 										  <md-input-container class="md-block" flex-gt-sm>
 											<span>Tenant Name</span>
-											<input required name="tenantName" ng-model="tenant.name"  ng-pattern="/^\S*$/"  ng-required="true"/>
+											<input  name="tenantName" ng-model="tenant.name"  ng-pattern="/[a-zA-Z0-9]/"  ng-required="true"/>
 											<div ng-messages="step1.tenantName.$error" role="alert">
 												<div ng-message="required">
 													Tenant name is required.
 												</div>
 												<div ng-message="pattern">
-													Tenant name cannot contain whitespaces.
+													Tenant name cannot contain only special characotors.
 												</div>
 											</div>
 										  </md-input-container>
+										  
 										  <md-input-container class="md-block" flex-gt-sm>
 											<span>Company Name</span>
 											<input required name="companyName" ng-model="tenant.company">
 											<div ng-messages="step1.companyName.$error">
-											  <div ng-message="required">This is required.</div>
+											  <div ng-message="required">Company name is required.</div>
 											</div>
 										  </md-input-container>
 										  
+										  <md-input-container class="md-block" flex-gt-sm>
+												<span>Business Model</span>
+												<md-select ng-model="tenant.businessModel" >
+													<md-optgroup label="Select business model">
+														<md-option  value="Sole Proprietorship" flex >Sole Proprietorship</md-option>
+														<md-option  value="Partnership" flex >Partnership</md-option>
+														<md-option  value="Corporation" flex >Corporation</md-option>
+													</md-optgroup>
+												</md-select>
+											</md-input-container>
+										  
 
 										</div>
-										<div layout-gt-sm="row" class="side-margins">
+										<!--div layout-gt-sm="row" class="side-margins">
 											<section-title></section-title>
 											<md-input-container class="md-block" flex-gt-sm>
-												<span>Tenant Type</span>
-												<md-select ng-model="tenant.type">
-													<md-optgroup label="Select Tenant Type">
-														<md-option  value="Developer" flex >Developer</md-option>
-														<md-option  value="Company" flex >Company</md-option>
+												<span>Business Model</span>
+												<md-select ng-model="tenant.businessModel">
+													<md-optgroup label="Select business model">
+														<md-option  value="Developer" flex >IT</md-option>
 													</md-optgroup>
 												</md-select>
 											</md-input-container>
@@ -78,9 +89,9 @@
 													</md-optgroup>
 												</md-select>
 											</md-input-container>
-										</div>
+										</div-->
 										
-										<div layout-gt-sm="row" class="side-margins">
+										<!--div layout-gt-sm="row" class="side-margins">
 
 											<md-input-container class="md-block" flex-gt-sm>
 												<span>Business Model</span>
@@ -92,7 +103,7 @@
 											</md-input-container>
 										  <md-input-container class="md-block" flex-gt-sm>
 											</md-input-container>
-										</div>
+										</div-->
 										 <div flex layout="row" layout-align="end top"  class="side-margins">
                                             <!--md-button class="md-warn">CANCEL</md-button-->
                                             <md-button type="submit" ng-disabled="vm.showBusyText" class="md-raised next-btn">NEXT</md-button>
@@ -105,6 +116,9 @@
                                 </form>
                             </md-step-body>
                         </md-step>
+						
+						
+						
                         <md-step label="Select Package" md-complete="vm.stepData[1].data.completed" ng-disabled="vm.stepProgress < 2">
                             <md-step-body>
                                 <form name="step2">
@@ -113,46 +127,44 @@
 											
 										   <div layout="row" layout-align="center center">
 											   <md-card class="tint showbox pricePlanCard product_card" ng-repeat="plan in vm.companyPricePlans" ng-class="{selected: $index == selectedCard}">
-
-												  <center style="background:#06a7cf;color:white;font-size:16px;font-weight:700;padding:10px;border-radius: 2px 2px 0px 0px;">{{plan.name}}</center>
-												  <center style="background:#02b5e2;padding:10px;">
-													<div style="width:100px;height:100px;border-radius:100px;border: 5px solid white;" layout="column" layout-align="center center">
-														<span style="color:white;font-size:25px;">{{plan.perMonth}}</span>
-														<span style="color:white;font-size:12px;">{{plan.per}}</span>
-													</div>
-													<md-button class="md-fab md-mini" ng-disabled="false" aria-label="Comment" style="background:#f9a525;position:absolute;margin-top: -10px;margin-left: 50px;" ng-click="vm.loadCardDetail($event,plan)">
-														<md-icon md-svg-src="ic_check_24px.svg"></md-icon>
-													</md-button>
-												  </center>
-									
-
-												
-												<md-card-content layout="column" layout-align="center center">
-												  <p layout="row">{{plan.numberOfUsers }} <span ng-if="plan.numberOfUsers == '1'">&nbspUser</span><span ng-if="plan.numberOfUsers != '1'">&nbspUsers</span></p>
-												  <p>{{plan.storage}} of Storage</p>
-												  <p>{{plan.bandwidth}} of Bandwidth</p>
-												</md-card-content>
-												<md-card-content layout="column" layout-align="center center" style="background:#e7faff">
-												  <p>{{plan.perMonth}} / Per User (Monthly)</p>
-												  <p>{{plan.perYear}} / Per User (Yearly)  </p>
-												  <!--md-button class="md-raised" ng-click="selectPlan($event,$index, plan)" aria-label="submit"><span ng-if="plan.price == '0'">Get!</span><span ng-if="plan.price != '0'">Buy!</span></md-button-->
-												</md-card-content>
-												<md-card-content layout="column" layout-align="start start">
-												  <b style="margin-bottom:10px;">Advanced Options:</b>
-												  <div layout="row" layout-align="space-between center" style="width:100%"> <span flex>Option 1</span><md-checkbox class="checkbox" ng-model="data.cb1" aria-label="Checkbox 1"></md-checkbox></div>
-												</md-card-content>
-												<md-card-content layout="column" layout-align="end end" style="background:#e7faff;padding:0">
-												  <span style="padding: 5px;border-radius: 4px;margin: 6px;border: 1px solid #b7b7b7;color: grey;font-weight: 700;">
-													Total Amount:
-													<b style="font-size:20px;">
-														<label for="price">{{ vm.price }}</label>
-													</b>
-													
-														
-													
-												  </span>
-												</md-card-content>
+													<md-card-content ng-click="vm.selectPlan($event,plan)">			
+															  <center style="background:#06a7cf;color:white;font-size:16px;font-weight:700;padding:10px;border-radius: 2px 2px 0px 0px;">{{plan.name}}</center>
+															  <center style="background:#02b5e2;padding:10px;">
+																<div style="width:100px;height:100px;border-radius:100px;border: 5px solid white;" layout="column" layout-align="center center">
+																	<span style="color:white;font-size:25px;">${{plan.perMonth}}</span>
+																	<span style="color:white;font-size:12px;">{{plan.per}}</span>
+																</div>
+																<!--md-button class="md-fab md-mini" ng-disabled="false" aria-label="Comment" style="background:#f9a525;position:absolute;margin-top: -10px;margin-left: 50px;" >
+																	<md-icon md-svg-src="ic_check_24px.svg"></md-icon>
+																</md-button-->
+															  </center>
+															<md-card-content layout="column" layout-align="center center">
+															  <p layout="row">{{plan.numberOfUsers }} <span ng-if="plan.numberOfUsers == '1'">&nbspUser</span><span ng-if="plan.numberOfUsers != '1'">&nbspUsers</span></p>
+															  <p>{{plan.storage}} of Storage</p>
+															  <p>{{plan.bandwidth}} of Bandwidth</p>
+															</md-card-content>
+															
+															<md-card-content layout="column" layout-align="center center" style="background:#e7faff">
+															  <p>${{plan.perMonth}} / Per User (Monthly)</p>
+															  <p>${{plan.perYear}} / Per User (Yearly)  </p>
+															  <!--md-button class="md-raised" ng-click="selectPlan($event,$index, plan)" aria-label="submit"><span ng-if="plan.price == '0'">Get!</span><span ng-if="plan.price != '0'">Buy!</span></md-button-->
+															</md-card-content>
+															
+															<!--md-card-content layout="column" layout-align="start start">
+															  <b style="margin-bottom:10px;">Advanced Options:</b>
+															  <div layout="row" layout-align="space-between center" style="width:100%"> <span flex>Option 1</span><md-checkbox class="checkbox" ng-model="data.cb1" aria-label="Checkbox 1"></md-checkbox></div>
+															</md-card-content!-->
+															<md-card-content layout="column" layout-align="end end" style="background:#e7faff;padding:0">
+															  <span style="padding: 5px;border-radius: 4px;margin: 6px;border: 1px solid #b7b7b7;color: grey;font-weight: 700;">
+																Total Amount:
+																<b style="font-size:20px;">
+																	<label for="price">${{plan.numberOfUsers*plan.perMonth}}</label>
+																</b>
+															  </span>
+															</md-card-content>
+													</md-card-content>
 											  </md-card>
+											  
 											</div>
                                         </div>
                                     </md-content>
@@ -163,11 +175,12 @@
                                         <div flex layout="row" layout-align="end top">
                                             <!--md-button class="md-warn" ng-click="">CANCEL</md-button-->
 											
-                                            <md-button ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep('Cancel', !(vm.stepData[1].data.firsname && vm.stepData[1].data.lastname))" class="md-primary md-raised">
+                                            <!--md-button ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep('Cancel', !(vm.stepData[1].data.firsname && vm.stepData[1].data.lastname))" class="md-primary md-raised">
                                                 {{ vm.stepData[1].data.firsname && vm.stepData[1].data.lastname ? 'NEXT' : 'SKIP' }}
-                                            </md-button>
-                                        </div>
-                                    </md-step-actions>
+                                            </md-button-->
+											
+											<md-button class="md-raised md-primary" ng-click="vm.loadCardDetail($event)"  ng-show="vm.iscontinue">CONTINUE</md-button>	
+                                   </md-step-actions>
                                 </form>
                             </md-step-body>
                         </md-step>
@@ -191,6 +204,8 @@
                                 </form>
                             </md-step-body>
                         </md-step-->
+						
+						
 						
 						<md-step label="Finish" md-complete="vm.stepData[2].data.completed" ng-disabled="vm.stepProgress < 3">
                             <md-step-body>

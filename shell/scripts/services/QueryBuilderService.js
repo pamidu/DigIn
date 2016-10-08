@@ -283,7 +283,9 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                 if (status){
                     dataArray = mapResult(data,widObj.foreCastObj);
                     widObj.highchartsNG.series = dataArray[0];
-                    widObj.highchartsNG.xAxis.categories = dataArray[1];                    
+                    widObj.highchartsNG.xAxis.categories = dataArray[1]; 
+                    widObj.minDate =  data.min_date;
+                    widObj.maxDate =  data.max_date;                     
                 }
                 widObj.syncState = true;
                 cb(widObj);

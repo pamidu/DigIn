@@ -135,6 +135,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         decimals: [0, 1, 2, 3, 4],
         scalePositions: ["front", "back"]
     };
+
+
     $scope.forecastAtts = [];
     $scope.forecastAtt = "";
     $scope.showActual = false;
@@ -144,7 +146,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             $scope.forecastAtts[i] = $scope.sourceData.forecastAtt[i].name;
         }
     }
+
     $scope.intDate = new Date();
+
     if (typeof $scope.widget.widgetData.foreCastObjDate == 'undefined') {
         $scope.widget.widgetData.foreCastObjDate = $scope.intDate;
     }
@@ -402,7 +406,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             settingsView: 'views/query/settings-views/highchartsSettings.html'
         }, {
             id: 'ct02',
-            icon: 'ti-bar-chart',
+            icon: 'fa fa-bars',
             name: 'bar ',
             chart: 'bar',
             selected: false,
@@ -604,8 +608,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 selectQry: [],
                 proBy: 'm0'
             });
-            //fill the filters array
-            $scope.commonData.filters.push($scope.sourceData.fMeaArr[i]);
         }
     }
     //mapping attributes array
@@ -621,8 +623,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             //fill the filters array
             $scope.commonData.filters.push($scope.sourceData.fAttArr[i]);
         }
-        //Concat attributes and measures
-        $scope.commonData.columns = $scope.commonData.columns.concat($scope.commonData.measures);
     } else {
 
     }
@@ -1546,6 +1546,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
             if ($scope.widget.widgetData.foreCastObj !== undefined) {
                 $scope.forecastObj.paramObj = $scope.widget.widgetData.foreCastObj;
+                $scope.maxDate = $scope.widget.widgetData.maxDate;
+                $scope.minDate = $scope.widget.widgetData.minDate;
             }
             delete $scope.highchartsNG.size;
         },
@@ -1575,11 +1577,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             widget.widgetData.highchartsNG = $rootScope.tempForecastArr;
             widget.widgetData.widView = "views/query/chart-views/forecast.html";
             widget.widgetData.foreCastObj = $scope.forecastObj.paramObj;
+            widget.widgetData.maxDate = $scope.maxDate;
+            widget.widgetData.minDate = $scope.minDate;
             widget.widgetData.initCtrl = "elasticInit";
             widget.widgetName = "forecast";
             $scope.saveChart(widget);
         }
     };
+
+    $scope.sendrequst = true;
     $scope.$watch("forecastObj.paramObj", function(newValue, oldValue) {
 
         if (newValue !== oldValue && ((new Date(newValue.enddate) > new Date(newValue.startdate)) || (newValue.enddate == $scope.widget.widgetData.foreCastObjDate && newValue.startdate == $scope.widget.widgetData.foreCastObjDate) || newValue.showActual != oldValue.showActual)) {
@@ -1599,70 +1605,300 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         break;
                 }
 
-                var seasonOK = $scope.isSeasonOk(newValue)
-                if (seasonOK) {
-                    $scope.generateForecast(newValue);
-                } else {
-                    privateFun.fireMessage('0', 'Invalid seasonality');
-                }
+
+                var isstartdateOki = false;
+                var isenddateoki = false;
+
+                var startdate = new Date(newValue.startdate).getTime();
+                var enddate   = new Date(newValue.enddate).getTime();
+
+                var minStart = new Date($scope.minDate).getTime();
+                var maxend   = new Date($scope.maxDate).getTime();
+
+                if(minStart< startdate && startdate < maxend)
+                     isstartdateOki = true;
+
+                if(minStart< enddate && enddate < maxend)
+                    isenddateoki = true;
+
+
+                if($scope.sendrequst ){ // this will check wether there is a chnage that should actually generate the chart again 
+                    if(isstartdateOki && isenddateoki){
+                        $scope.generateForecast(newValue);
+                    }
+                    else if ($scope.sendrequst && !isstartdateOki) {
+                        privateFun.fireMessage('0', 'Calculation Start date should within '+$scope.minDate+' and '+$scope.maxDate+'');
+                    }
+                    else if ($scope.sendrequst && !isenddateoki) {
+                        privateFun.fireMessage('0', 'Calculation End date should within '+$scope.minDate+' and '+$scope.maxDate+'');
+                    }  
+                 }
+              
             }
         } else if (newValue !== oldValue && !(new Date(newValue.enddate) > new Date(newValue.startdate))) {
             privateFun.fireMessage('0', 'Invalid start date and end date');
         }
+        $scope.sendrequst = true;
     }, true);
 
+    $scope.getForcastPeriod = function(newValue){
+
+        var CalcEnddate;
+        var forecastDays;
+
+        if($scope.forecastObj.paramObj.enddate != $scope.intDate){
+
+            if(new Date($scope.minDate).getTime() < new Date($scope.forecastObj.paramObj.enddate).getTime() && new Date($scope.forecastObj.paramObj.enddate).getTime() < new Date($scope.maxDate).getTime())
+                CalcEnddate = new Date($scope.forecastObj.paramObj.enddate);
+            else
+                CalcEnddate = new Date($scope.maxDate);
+
+         }else{
+            CalcEnddate =  new Date($scope.maxDate);
+        }
+
+            var visualEnddate = new Date(newValue.enddate);
+
+            var diff = new Date(visualEnddate - CalcEnddate);
+
+            var years = (diff.getUTCFullYear() - 1970);
+            var months = (diff.getUTCMonth()) + (12 * years);
+            var days = (diff.getUTCDate()) + (365 * years);
+
+            if($scope.forecastObj.paramObj.interval == "Yearly"){
+                forecastDays = years;
+            }
+            else if($scope.forecastObj.paramObj.interval == "Monthly"){
+                forecastDays = months;
+            }
+            else if($scope.forecastObj.paramObj.interval == "Daily"){
+                forecastDays = days;
+            }
+
+            return forecastDays;
+
+    }
+
+
     $scope.$watch("visualDate", function(newValue, oldValue) {
-        if (newValue !== oldValue && ((new Date(newValue.enddate) > new Date(newValue.startdate)))) {
+
+    
+    var visualStartDateOk = false;
+
+    var calcStartdate;
+    var CalcEnddate;
+
+    if($scope.forecastObj.paramObj.enddate != $scope.intDate ){
+        if(new Date($scope.minDate).getTime() < new Date($scope.forecastObj.paramObj.enddate).getTime() && new Date($scope.forecastObj.paramObj.enddate).getTime() < new Date($scope.maxDate).getTime())
+            CalcEnddate = new Date($scope.forecastObj.paramObj.enddate);
+        else
+        CalcEnddate = new Date($scope.maxDate);
+    }
+    else
+        CalcEnddate = new Date($scope.maxDate);
+
+    if($scope.forecastObj.paramObj.startdate != $scope.intDate )
+        if(new Date($scope.minDate).getTime() < new Date($scope.forecastObj.paramObj.enddate).getTime() && new Date($scope.forecastObj.paramObj.startdate).getTime() < new Date($scope.maxDate).getTime())
+            calcStartdate = new Date($scope.forecastObj.paramObj.startdate);
+        else
+            calcStartdate = new Date($scope.minDate);
+    else
+        calcStartdate = new Date($scope.minDate);
+
+    var visualSdate = new Date(newValue.startdate).getTime();
+    calcStartdate=calcStartdate.getTime();
+    CalcEnddate = CalcEnddate.getTime();
+
+    if(calcStartdate < visualSdate && visualSdate < CalcEnddate){
+        visualStartDateOk = true;
+    }
+    
+    if (newValue !== oldValue && visualStartDateOk && ((new Date(newValue.enddate) > new Date(newValue.startdate)))) {
+
+        var forecast_days = $scope.getForcastPeriod(newValue);
+        $scope.sendrequst =false;
+        $scope.forecastObj.paramObj.fcast_days = forecast_days;
+
+        $scope.eventHndler.isLoadingChart = true;
+        $scope.client.getForcast($scope.forecastObj.paramObj, function(data, status, fObj) {
+
+            if (status) {
+                var forcastArr = [];
+                var serArr = [];
+                var catArr = [];
+
+                $scope.maxDate = data.max_date;
+                $scope.minDate = data.min_date;
+
+                if(data.warning != null)
+                    privateFun.fireMessage('0',data.warning );
 
 
-            var startdate = formattedDate(newValue.startdate);
-            var enddate = formattedDate(newValue.enddate);
-            var xAxisLen = $rootScope.tempForecastArr.xAxis.categories.length;
+                if(data.len_season != $scope.forecastObj.paramObj.len_season){
+                    $scope.sendrequst = false;
+                    $scope.forecastObj.paramObj.len_season = data.len_season;
+                }
 
-            var startInd = -1;
-            var endInd = -1;
-            var cat = [];
-            var data = [];
-            for (var i = 0; i < xAxisLen; i++) {
-                var date = $rootScope.tempForecastArr.xAxis.categories[i] + "-1";
-                var x = new Date(startdate);
-                var y = new Date(date);
-                var z = new Date(enddate);
-                if (x <= y && y <= z) {
-                    if (startInd == -1) {
-                        startInd = i;
+
+                if (fObj.forecastAtt == "") {
+
+                    if (fObj.showActual == false) {
+                        var a = data.data.forecast.length - fObj.fcast_days;
+                        for (var i = a; i < data.data.forecast.length; i++) {
+                            forcastArr.push(data.data.forecast[i]);
+                        }
+                        data.data.forecast = forcastArr;
+                        serArr.push({
+                            data: data.data.actual.concat(data.data.forecast),
+                            zoneAxis: 'x',
+                            zones: [{
+                                value: data.data.actual.length - 1
+                            }, {
+                                dashStyle: 'dash'
+                            }]
+                        })
+                    } else {
+                        serArr.push({
+                            name: 'Actual',
+                            data: data.data.actual,
+                        })
+
+                        serArr.push({
+                            name: 'Forcasted',
+                            data: data.data.forecast,
+                            dashStyle: 'dash'
+                        })
                     }
 
-                    cat.push($rootScope.tempForecastArr.xAxis.categories[i]);
+                    catArr = data.data.time;
+                } else {
+                    if (fObj.showActual == false) {
+                        Object.keys(data).forEach(function(key) {
 
-                    if (i == xAxisLen - 1)
-                        endInd = i;
+                            forcastArr = [];
 
-                } else if (startInd > -1) {
-                    if (endInd == -1) {
-                        endInd = i;
+                            var obj = data[key];
+                            var a = obj.forecast.length - fObj.fcast_days;
+
+                            for (var i = a; i < obj.forecast.length; i++) {
+                                forcastArr.push(obj.forecast[i]);
+                            }
+                            obj.forecast = forcastArr;
+                            serArr.push({
+                                name: key,
+                                data: obj.actual.concat(obj.forecast),
+                                zoneAxis: 'x',
+                                zones: [{
+                                    value: obj.actual.length - 1
+                                }, {
+                                    dashStyle: 'dash'
+                                }]
+                            })
+
+                            catArr = obj.time;
+                        });
+
+                    } else {
+                        Object.keys(data).forEach(function(key) {
+
+                            var obj = data[key];
+
+
+                            serArr.push({
+                                name: 'Actual  ' + key,
+                                data: obj.actual,
+                            })
+
+                            serArr.push({
+                                name: 'Forcasted  ' + key,
+                                data: obj.forecast,
+                                dashStyle: 'dash'
+                            })
+
+                            catArr = obj.time;
+                        });
                     }
                 }
-            }
 
-            var seriesLen = $rootScope.tempForecastArr.series.length;
-            for (var i = 0; i < seriesLen; i++) {
-                data = [];
-                for (var j = startInd; j < endInd; j++) {
-                    data.push($rootScope.tempForecastArr.series[i].data[j]);
+
+                $scope.eventHndler.isLoadingChart = false;
+                var categories = catArr;
+                var series = serArr;
+
+
+                // ---------------------------------------------------------------------------------    
+                var startdate = formattedDate(newValue.startdate);
+                var enddate = formattedDate(newValue.enddate);
+                var xAxisLen = categories.length;
+
+                var startInd = -1;
+                var endInd = -1;
+                var cat = [];
+                var data = [];
+                for (var i = 0; i < xAxisLen; i++) {
+                    var date = categories[i] + "-1";
+                    var x = new Date(startdate);
+                    var y = new Date(date);
+                    var z = new Date(enddate);
+                    if (x <= y && y <= z) {
+                        if (startInd == -1) {
+                            startInd = i;
+                        }
+
+                        cat.push(categories[i]);
+
+                        if (i == xAxisLen - 1)
+                            endInd = i;
+
+                    } else if (startInd > -1) {
+                        if (endInd == -1) {
+                            endInd = i;
+                        }
+                    }
                 }
-                if (data.length > 0) {
-                    $scope.widget.widgetData.highchartsNG.series[i].data = data;
+
+                var seriesLen = series.length;
+                for (var i = 0; i < seriesLen; i++) {
+                    data = [];
+                    for (var j = startInd; j < endInd; j++) {
+                        data.push(series[i].data[j]);
+                    }
+                    if (data.length > 0) {
+                        $scope.widget.widgetData.highchartsNG.series[i].data = data;
+                    }
                 }
-            }
 
-            if (cat.length > 0) {
-                $scope.widget.widgetData.highchartsNG.xAxis.categories = cat;
-            }
+                if (cat.length > 0) {
+                    $scope.widget.widgetData.highchartsNG.xAxis.categories = cat;
+                }
 
 
+            // --------------------------------------------------------------------------------------
+
+            
+
+                if($scope.forecastObj.paramObj.interval = "Monthly"){
+                    $scope.sendrequst = false;
+                    $scope.forecastObj.paramObj.fcast_days =12; 
+
+                }else if($scope.forecastObj.paramObj.interval = "Daily"){
+                    $scope.sendrequst = false;
+                    $scope.forecastObj.paramObj.fcast_days =7; 
+
+                }else if($scope.forecastObj.paramObj.interval = "Yearly"){
+                    $scope.sendrequst = false;
+                    $scope.forecastObj.paramObj.fcast_days =1; 
+                }
+
+        } else {
+            privateFun.fireMessage('0', data);
+            $scope.eventHndler.isLoadingChart = false;
+        }
+    });
         } else if (newValue !== oldValue && !(new Date(newValue.enddate) > new Date(newValue.startdate))) {
             privateFun.fireMessage('0', 'Invalid start date and end date');
+        }else if(newValue !== oldValue && !visualStartDateOk){
+            privateFun.fireMessage('0', 'Start date should within '+$scope.minDate+' and '+$scope.maxDate+'');
         }
     }, true);
 
@@ -1679,45 +1915,24 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         return [year, month, day].join('-');
     }
 
-    $scope.setDefLenSeason = function(interval) {
-        if (interval == "Yearly")
-            $scope.forecastObj.paramObj.len_season = 2;
-        else if (interval == "Daily")
-            $scope.forecastObj.paramObj.len_season = 7;
-        else if (interval == "Monthly")
-            $scope.forecastObj.paramObj.len_season = 12;
+   $scope.setDefLenSeason = function(interval) {
+    if (interval == "Yearly"){
+        $scope.forecastObj.paramObj.len_season = 1;
+        $scope.forecastObj.paramObj.fcast_days =1; 
+        $scope.forecastObj.paramObj.model = 'double exponential smoothing';
     }
 
-    $scope.isSeasonOk = function(newValue) {
-        var isSeasonOk = true;
-        var startdate = new Date(newValue.startdate);
-        var enddate = new Date(newValue.enddate);
-        var diff = new Date(enddate - startdate);
-
-        var years = (diff.getUTCFullYear() - 1970);
-        var monts = (diff.getUTCMonth()) + (12 * years);
-        var days = (diff.getUTCDate()) + (365 * years);
-
-        if (startdate.getTime() !== enddate.getTime()) {
-            if (newValue.interval == "Yearly") {
-                isSeasonOk = $scope.getModulas(years, newValue.len_season);
-            } else if (newValue.interval == "Monthly") {
-                isSeasonOk = $scope.getModulas(monts, newValue.len_season);
-            } else if (newValue.interval == "Daily") {
-                isSeasonOk = $scope.getModulas(days, newValue.len_season);
-            }
-        }
-
-        return isSeasonOk;
+    else if (interval == "Daily"){
+        $scope.forecastObj.paramObj.len_season = 7;
+        $scope.forecastObj.paramObj.fcast_days =7; 
     }
-
-    $scope.getModulas = function(value, season) {
-
-        if (value > (season * 3))
-            return true;
-        else
-            return false;
+    else if (interval == "Monthly"){
+        $scope.forecastObj.paramObj.len_season = 12;
+        $scope.forecastObj.paramObj.fcast_days =12; 
     }
+}
+
+
 
     // change the value of those parameters seperately to prevent $watch from calling the service each time a value is changed
     $scope.setValue = function(obj) {
@@ -1746,6 +1961,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         }
     };
 
+$scope.maxDate = "";
+$scope.minDate = "";
+
     $scope.generateForecast = function(fObj) {
         $scope.widget.widgetData.highchartsNG = {};
         $scope.widget.widgetData.highchartsNG = {
@@ -1759,6 +1977,24 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 var forcastArr = [];
                 var serArr = [];
                 var catArr = [];
+
+                //to set the serive returning maxdate and mindate
+                if($scope.maxDate == ""){
+                    $scope.maxDate = data.max_date;
+                    $scope.minDate = data.min_date;
+                }
+                
+
+                // to check wether service has returned any warnings
+                if(data.warning != null)
+                    privateFun.fireMessage('0',data.warning );
+
+                //if the service has return a diferent len_season set it
+                if(data.len_season != $scope.forecastObj.paramObj.len_season){
+                    $scope.sendrequst = false;
+                    $scope.forecastObj.paramObj.len_season = data.len_season;
+                }
+
 
                 if (fObj.forecastAtt == "") {
 

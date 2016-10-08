@@ -15,7 +15,7 @@ routerApp.service('filterService',function(){
                     }
                 }
             }
-            if (cat !== undefined){
+            if (typeof cat != 'undefined'){
                 angular.forEach(filterFields,function(field){
                     if(field.name == cat){
                         for (var i=0;i<field.valueArray.length;i++){

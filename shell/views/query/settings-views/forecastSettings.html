@@ -23,10 +23,10 @@
           </md-option>
         </md-select>
     </md-input-container>
-    <md-input-container>
+    <!-- <md-input-container>
         <label>Forcast Period ( {{forecastObj.paramObj.interval}} ) </label>
         <input ng-model="forecastObj.paramObj.fcast_days">
-    </md-input-container>
+    </md-input-container> -->
     <md-input-container>
         <label>Length of season ( {{forecastObj.paramObj.interval}} )</label>
         <input ng-model="forecastObj.paramObj.len_season" ng-disabled="forecastObj.paramObj.model == 'double exponential smoothing'">
@@ -47,9 +47,9 @@
         <label style="font-weight: bolder;color: #01718d;">For Calculation</label>
         <div>
             <label>Start Date</label>
-            <md-date-picker model="forecastObj.paramObj.startdate" md-placeholder=""></md-date-picker> <br>
+            <md-date-picker model="forecastObj.paramObj.startdate" md-placeholder=""></md-date-picker> <label >{{minDate}}  </label> <br>
             <label>End Date  </label>
-            <md-date-picker model="forecastObj.paramObj.enddate" md-placeholder=""> </md-date-picker>
+            <md-date-picker model="forecastObj.paramObj.enddate" md-placeholder=""> </md-date-picker>  <label >{{maxDate}}  </label>
         </div>
     </md-container> 
     <md-container>

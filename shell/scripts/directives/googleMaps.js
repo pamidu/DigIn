@@ -32,7 +32,6 @@ routerApp.directive('diginMap', function($http) {
                 }
 
                 function Geocode(locItem) {
-                    console.log(locItem);
                     if ('total_sales' in locItem) {
                         var sales = locItem.total_sales;
                         var custName = locItem.customername;

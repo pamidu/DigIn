@@ -119,7 +119,7 @@ input:disabled {
                     <form name="step1" ng-submit="submitCurrentStep(stepData[0])">
                         <md-card class="form-container">
                             <div class="setting-card-header">
-                                <h2>Folder Name</h2>
+                                <h2>Folder Selection</h2>
                                 <div class="setting-img-wrap">
                                     <img src="views/widgets/excelFileUpload/folder.png" />
                                 </div>
@@ -179,7 +179,7 @@ input:disabled {
                                     </md-list-item>
                                 </md-list> -->
                             <div class="custom-file-upload" layout-align="center center">
-                                <div ngf-drop="upload($files)" ngf-select="upload($files)" ng-model="files" class="drop-box" ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true" ngf-pattern="'.xls,.csv,.xlsx'" accept=".xls,.csv,.xlsx">Drop excel file here or click to upload
+                                <div ngf-drop="upload($files)" ngf-select="upload($files)" ng-model="files" class="drop-box" ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true" ngf-pattern="'.xls,.csv,.xlsx'" accept=".xls,.csv,.xlsx">Drop files here or click to upload
                                 </div>
                                 <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
                                 <div style="display:inline-flex;">
@@ -223,7 +223,7 @@ input:disabled {
                     <form name="step2">
                         <md-card class="form-container">
                             <div layout="column" layout-align="center center" style="min-height: 200px">
-                                <h4>{{files.length}}<span ng-show="files.length > 1"> Files were</span> <span ng-show="files.length == 1"> File was</span> successfully uploaded</h4>
+                                <h4><span ng-show="files.length > 1"> Files were</span> <span ng-show="files.length == 1"> File was</span> successfully uploaded</h4>
                                 <md-button class="md-primary md-raised next-btn" ng-click="goToDashboard()">Finish</md-button>
                             </div>
                         </md-card>

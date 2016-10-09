@@ -4,7 +4,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     $scope.files = []; //Files imported array
     $scope.Folders = [];
     $scope.FileName;
-
+    var uploadFlag = false;
     $scope.selectedFolder;   
     $scope.selectedPath;
     $scope.fileChanged = function(e) {
@@ -168,9 +168,10 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
 
     $scope.enableNextStep = function nextStep() {
 
-        if ($scope.selectedPath == "File") {
+        if ($scope.selectedPath == "File" && uploadFlag == false) {
             $scope.stepProgress = 2;
             $scope.selectedStep = 2;
+            $scope.schema =[];
             return;
 
         } else {
@@ -183,8 +184,13 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 $scope.stepProgress = $scope.stepProgress + 1;
             }
             $scope.selectedStep = $scope.selectedStep + 1;
+            $scope.stepProgress = $scope.selectedStep ;
         }
 
+    }
+    $scope.selectFile = function(folder){
+
+        $scope.folderName = folder.file;
     }
 
     $scope.moveToPreviousStep = function moveToPreviousStep() {
@@ -289,7 +295,10 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
 
         if ($scope.selectedPath == "File") {
             $scope.folderName = '';
+            $scope.folder_type = 'singlefile';
         } else {
+            
+            $scope.folder_type = 'singlefile';
           
         }
         Upload.upload({

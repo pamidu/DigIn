@@ -5,27 +5,9 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     $scope.Folders = [];
     $scope.FileName;
     var uploadFlag = false;
-    $scope.selectedFolder;   
+    $scope.isExist = false;
     $scope.selectedPath;
-    $scope.fileChanged = function(e) {
-        if (!e) e = window.event;
-        var x = e.target || e.srcElement;
-
-        for (i = 0, len = e.target.files.length; i < len; ++i) {
-
-            var file = e.target.files[i];
-            //console.log(file);
-            $scope.files.push(file);
-            $scope.$apply();
-        }
-        /*var fr = new FileReader();
-			fr.onload = function(e) {
-			    console.log(e.target.result);
-			};
-			fr.readAsText(e.target.files[0]);
-			*/
-
-    }
+    $scope.schemaCollection = [];
     $scope.client = $diginengine.getClient("BigQuery");
     $scope.client.getFolders(function(res, status) {
 
@@ -33,107 +15,12 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
 
     });
 
-
-
-
-    function AsyncIterator(arr, cReqs) {
-
-        var funcComplete, funcPc, funcCompleteOne, funcProcess;
-        var completeFlags = {};
-
-        function nextElement(pIndex) {
-            completeFlags[pIndex] = 1;
-            var processObj = {
-                index: pIndex,
-                complete: function(success, data) {
-                    if (funcCompleteOne)
-                        funcCompleteOne({
-                            index: this.index,
-                            success: success,
-                            data: data
-                        });
-                    completeProcessing(this.index);
-                },
-                changeProgress: function(val) {
-                    if (funcPc)
-                        funcPc({
-                            index: this.index,
-                            value: val
-                        });
-                }
-            }
-
-            if (funcProcess)
-                funcProcess(arr[pIndex], processObj);
-
-        }
-
-        function completeProcessing(index) {
-            completeFlags[index] = 2;
-            var nextIndex = -1;
-            for (i in completeFlags) {
-                if (completeFlags[i] == 0) {
-                    nextIndex = i;
-                    break;
-                }
-            }
-            if (nextIndex == -1) {
-                var canTrigger = true;
-                for (i in completeFlags)
-                    if (completeFlags[i] != 2) {
-                        canTrigger = false;
-                        break;
-                    }
-
-                if (funcComplete && canTrigger) {
-                    funcComplete();
-                }
-            } else {
-                nextElement(nextIndex);
-            }
-        }
-
-        return {
-            onComplete: function(f) {
-
-                funcComplete = f;
-            },
-            onProgressChanged: function(f) {
-                funcPc = f;
-            },
-            onCompleteOne: function(f) {
-                funcCompleteOne = f;
-            },
-            onProcessOne: function(f) {
-                funcProcess = f;
-            },
-            Process: function() {
-
-                if (!cReqs)
-                    cReqs = 1;
-
-                if (cReqs > arr.length)
-                    cReqs = arr.length;
-
-                for (var i = 0; i < arr.length; i++)
-                    completeFlags[i] = 0;
-
-
-                for (var i = 0; i < cReqs; i++)
-                    nextElement(i);
-
-
-            }
-        }
-    }
-
-
     //start of page one Folder name configuring
     $scope.currentNavItem = 'page1';
     $scope.newCollection = false;
 
     $scope.goto = function() {
-         
+
             $scope.step1.$setUntouched();
             $scope.step1.$setPristine();
             $scope.newCollection = !$scope.newCollection;
@@ -152,13 +39,13 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
         completed: false,
         optional: false,
         data: {},
-        busyText: "Adding to Collection..."
+        busyText: "Proceeding to step 2"
     }, {
         step: 2,
         completed: false,
         optional: false,
         data: {},
-        busyText: "Uploading Files..."
+        busyText: "Uploading File"
     }, {
         step: 3,
         completed: false,
@@ -171,7 +58,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
         if ($scope.selectedPath == "File" && uploadFlag == false) {
             $scope.stepProgress = 2;
             $scope.selectedStep = 2;
-            $scope.schema =[];
+            $scope.schema = [];
             return;
 
         } else {
@@ -184,13 +71,14 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 $scope.stepProgress = $scope.stepProgress + 1;
             }
             $scope.selectedStep = $scope.selectedStep + 1;
-            $scope.stepProgress = $scope.selectedStep ;
+            $scope.stepProgress = $scope.selectedStep;
         }
 
     }
-    $scope.selectFile = function(folder){
+    $scope.selectFile = function(folder) {
 
         $scope.folderName = folder.file;
+        $scope.isExist = true;
     }
 
     $scope.moveToPreviousStep = function moveToPreviousStep() {
@@ -231,10 +119,11 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
 
     $scope.upload = function(files) {
         console.log(files);
+        $scope.files = files;
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
         var uploadFlag;
         var storeFlag;
-
+        $scope.schemaCollection = [];
         if (files && files.length) {
             $scope.preloader = true;
             $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
@@ -269,6 +158,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 }).success(function(data) {
                     console.log(data);
                     $scope.schema = data.Result;
+                    $scope.schemaCollection.push($scope.schema);
                     uploadFlag = true;
                     $scope.preloader = false;
                     notifications.toast(1, "Schema retrieved  successfully");
@@ -297,41 +187,46 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
             $scope.folderName = '';
             $scope.folder_type = 'singlefile';
         } else {
-            
-            $scope.folder_type = 'singlefile';
-          
-        }
-        Upload.upload({
-            url: Digin_Engine_API + 'insert_data',
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            data: {
-                schema: JSON.stringify($scope.schema),
-                db: 'BigQuery',
-                SecurityToken: userInfo.SecurityToken,
-                filename: $scope.FileName,
-                folder_name: $scope.folderName,
-                folder_type : 'singlefile'
+            if ($scope.isExist) {
+                $scope.folder_type = 'exist';
+                $scope.schema = [];
+            } else {
+                $scope.folder_type = 'new';
 
             }
+        }
+        for (var i = 0; i < $scope.files.length; i++) {
+            Upload.upload({
+                url: Digin_Engine_API + 'insert_data',
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                data: {
+                    schema: JSON.stringify($scope.schema),
+                    db: 'BigQuery',
+                    SecurityToken: userInfo.SecurityToken,
+                    filename: $scope.files[i].name,
+                    folder_name: $scope.folderName,
+                    folder_type: $scope.folder_type
 
-        }).success(function(data) {
-            console.log(data);
-            notifications.toast(1, "Successfully uploaded to the datawarehouse");
-            uploadFlag = true;
-            $scope.preloader = false;
-            $scope.enableNextStep();
+                }
 
-        }).error(function(data) {
-            console.log(data);
-            uploadFlag = false;
-            notifications.toast(0, "There is an errror while uploading the file");
-            $scope.preloader = false;
-            $scope.diginLogo = 'digin-logo-wrapper2';
-        });
+            }).success(function(data) {
+                console.log(data);
+                notifications.toast(1, "Successfully uploaded to the datawarehouse");
+                uploadFlag = true;
+                $scope.preloader = false;
+                $scope.enableNextStep();
 
+            }).error(function(data) {
+                console.log(data);
+                uploadFlag = false;
+                notifications.toast(0, "There is an errror while uploading the file");
+                $scope.preloader = false;
+                $scope.diginLogo = 'digin-logo-wrapper2';
+            });
 
+        }
 
 
 

@@ -1820,23 +1820,76 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     }
                 }
 
+                $scope.widget.widgetData.highchartsNG = {
+                    options: {
+                        chart: {
+                            zoomType: 'x',
+                            events: {
+                                beforePrint: function() {
+                                    this.setTitle({
+                                        text: this.options.exporting.chartOptions.title.text
+                                    })
+                                    this.heightPrev = this.chartHeight;
+                                    this.widthPrev = this.chartWidth;
+                                    this.setSize(800, 600, false);
+                                },
+                                afterPrint: function() {
+                                    this.setTitle({
+                                        text: null
+                                    })
+                                    this.setSize(this.widthPrev, this.heightPrev, true);
+                                }
+                            }
+                        },
+                        exporting: {
+                            sourceWidth: 600,
+                            sourceHeight: 400,
+                            chartOptions: {
+                                title: {
+                                    text: $scope.widget.widgetData.widName
+                                }
+                            }
+                        },
+                        title: {
+                            text: ''
+                        },
+                        tooltip: {
+                            pointFormat: '<b> <span style = "color : {series.color}" >  ● </span> {series.name}: {point.y:,.0f} </b>',
+                            useHTML: true
+                        }
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        categories: catArr
+                    },
+                    yAxis: {
+                        lineWidth: 1
+                    },
+                    title: {
+                        text: ''
+                    },
+                    series: serArr
+                };
 
                 $scope.eventHndler.isLoadingChart = false;
-                var categories = catArr;
-                var series = serArr;
+
+                $scope.temptArr = angular.copy($scope.widget.widgetData.highchartsNG);
+
+                // var categories = catArr;
+                // var series = serArr;
 
 
                 // ---------------------------------------------------------------------------------    
                 var startdate = formattedDate(newValue.startdate);
                 var enddate = formattedDate(newValue.enddate);
-                var xAxisLen = categories.length;
+                var xAxisLen = $scope.temptArr.xAxis.categories.length;
 
                 var startInd = -1;
                 var endInd = -1;
                 var cat = [];
                 var data = [];
                 for (var i = 0; i < xAxisLen; i++) {
-                    var date = categories[i] + "-1";
+                    var date = $scope.temptArr.xAxis.categories[i] + "-1";
                     var x = new Date(startdate);
                     var y = new Date(date);
                     var z = new Date(enddate);
@@ -1845,7 +1898,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             startInd = i;
                         }
 
-                        cat.push(categories[i]);
+                        cat.push($scope.temptArr.xAxis.categories[i]);
 
                         if (i == xAxisLen - 1)
                             endInd = i;
@@ -1857,14 +1910,17 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     }
                 }
 
-                var seriesLen = series.length;
+                var seriesLen = $scope.temptArr.series.length;
                 for (var i = 0; i < seriesLen; i++) {
                     data = [];
-                    for (var j = startInd; j < endInd; j++) {
-                        data.push(series[i].data[j]);
+                    for (var j = startInd; j <= endInd; j++) {
+                        data.push($scope.temptArr.series[i].data[j]);
                     }
+
                     if (data.length > 0) {
                         $scope.widget.widgetData.highchartsNG.series[i].data = data;
+                        if(fObj.showActual != true)
+                            $scope.widget.widgetData.highchartsNG.series[i].zones[0].value = cat.length - fObj.fcast_days;
                     }
                 }
 

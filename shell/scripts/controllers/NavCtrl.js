@@ -1015,7 +1015,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             privateFun.getAllDashboards();
             //privateFun.getAllReports();
             $scope.getAnalyzerDetails();
-            privateFun.getAllSharableObj();
+            //privateFun.getAllSharableObj();
 
         }
 

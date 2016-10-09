@@ -12,6 +12,151 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
   paymentGatewaySvc.checkSbscription();
   
   
+  //#get usage detail#//
+  $scope.usageDetails = {};
+  $http.get(Digin_Engine_API+"get_usage_summary?SecurityToken="+getCookie('securityToken'))
+  .success(function(data){
+      console.log(data.Result);
+    $scope.usageDetails = data.Result;
+  }).error(function(){
+      console.log("error");
+  });
+
+
+//#Upload company logo/#/
+$scope.cancel=function(){
+  $mdDialog.hide();
+}
+
+    $scope.uploadCompanyLogo = function (ev) {
+        $mdDialog.show({
+                controller: function fileUploadCtrl($scope, $rootScope, $mdDialog, fileUpload, $http, Upload) {
+
+                    var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+                    var filename;
+
+                    $scope.diginLogo = 'digin-logo-wrapper2';
+                    $scope.preloader = false;
+                    $scope.finish = function () {
+                        $mdDialog.hide();
+                    }
+                    $scope.cancel = function () {
+                        $mdDialog.cancel();
+                    }
+
+                    //$scope.$watch('file', function () {
+                        if ($scope.file != null) {
+                            $scope.files = [$scope.file];
+                        }
+                    //});
+
+                    $scope.upload = function (files) {
+                        if (files && files.length) {
+                            $scope.preloader = true;
+                            $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
+
+                                displayProgress('Uploading...'); 
+                                console.log(userInfo);
+                                filename = $scope.files[0].name;
+
+                                Upload.upload({
+                                    url: Digin_Engine_API + 'file_upload',
+                                    headers: {'Content-Type': 'multipart/form-data',},
+                                    data: {
+                                        db: 'BigQuery',
+                                        SecurityToken: userInfo.SecurityToken,
+                                        Domain: Digin_Domain,
+                                        other_data: 'logo',
+                                        file: files[0]
+                                    }
+                                }).success(function (data) {
+
+                                    //#chk undefined values
+                                    var dp_name="";
+                                    var logo_name="";
+                                    var components; var userRole; var cacheLifetime; var widgetLimit; var themeConfig; var queryLimit;
+                                    if($rootScope.userSettings.components==undefined) {components=0;} else {components=$rootScope.userSettings.components}
+                                    if($rootScope.userSettings.user_role==undefined) {userRole="";} else {userRole=$rootScope.userSettings.user_role}
+                                    if($rootScope.userSettings.cache_lifetime==undefined) {cacheLifetime=0;} else {cacheLifetime=$rootScope.userSettings.cache_lifetime}
+                                    if($rootScope.userSettings.widget_limit==undefined) {widgetLimit=0;} else {widgetLimit=$rootScope.userSettings.widget_limit}
+                                    if($rootScope.userSettings.query_limit==undefined) {queryLimit=0;} else {queryLimit=$rootScope.userSettings.query_limit}
+                                    if($rootScope.userSettings.dp_path==undefined) {dp_name="";} else {dp_name=$rootScope.userSettings.dp_path.split("/").pop();}
+                                    if($rootScope.userSettings.logo_path==undefined) {logo_name="";} else {logo_name=$rootScope.userSettings.logo_path.split("/").pop();}
+                                    if($rootScope.userSettings.theme_config==undefined) {themeConfig="";} else {themeConfig=$rootScope.userSettings.theme_config}     
+                                         
+
+                                    //#store to user settings---------------------
+                                    $scope.settings = {
+                                        "email": userInfo.Email,
+                                        "components": components,
+                                        "user_role":userRole,
+                                        "cache_lifetime":cacheLifetime,
+                                        "widget_limit": widgetLimit,
+                                        "query_limit": queryLimit,
+                                        "logo_name": filename,
+                                        "dp_name" : dp_name,
+                                        "theme_config": themeConfig
+                                        // "SecurityToken": userInfo.SecurityToken,
+                                        // "Domain": Digin_Domain
+                                    }
+                                
+                                    $http({
+                                        method: 'POST',
+                                        url: Digin_Engine_API + 'store_user_settings/',
+                                        data: angular.toJson($scope.settings),
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'SecurityToken': userInfo.SecurityToken
+                                        }
+                                    })
+                                        .success(function (response) {
+                                            $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
+                                                .success(function (data) {
+                                                    console.log(data);
+                                                    $rootScope.userSettings=data.Result;
+                                                    var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
+                                                    $rootScope.image = logoPath + data.Result.logo_path;
+                                                    $scope.image=logoPath + data.Result.logo_path;
+                                                    $rootScope.imageUrl = logoPath + data.Result.logo_path;                                             
+                                                    $scope.preloader = false;
+                                                    $mdDialog.hide();
+                                                    notifications.toast('1', 'Logo Successfully uploaded!');
+                                                });
+                                        })
+                                        .error(function (data) {
+                                            $rootScope.image = "styles/css/images/DiginLogo.png";
+                                            $mdDialog.hide();
+                                            notifications.toast('0', 'There was an error while uploading logo.');
+                                        });
+                                });                             
+                            //}     
+                        }
+                    };
+                },
+                templateUrl: 'views/settings/myAccount/logoUpload.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+            })
+            .then(function (answer) {
+                //$scope.getURL();
+            });
+            
+            
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   setTimeout(function(){
     Highcharts.chart('container_chart', {
         title: {
@@ -124,7 +269,7 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
 
     $mdDialog.show(confirm).then(function() {
       //Yes
-	  paymentGatewaySvc.stopSubscriptionImmediate();
+	     paymentGatewaySvc.stopSubscriptionImmediate();
     }, function() {
       //No
     });
@@ -1124,7 +1269,7 @@ routerApp.directive('countdownn', ['Util', '$interval', function(Util, $interval
 }]);
 
 
-routerApp.service('paymentGatewaySvc',['$http','notifications', function($http,notifications){
+routerApp.service('paymentGatewaySvc',['$http','notifications','$rootScope', function($http,notifications,$rootScope){
 
 	   //#Stop subscription immediate
 	  this.stopSubscriptionImmediate=function(){ 		
@@ -1197,7 +1342,7 @@ routerApp.service('paymentGatewaySvc',['$http','notifications', function($http,n
 				  if(response.statusText=="OK"){
 					  if(response.data.status==true){
 						console.log(response)
-						$rootscope.customer=response.data.response;
+						$rootScope.customer=response.data.response;
 					  }
 					  else{
 					  }
@@ -1221,7 +1366,7 @@ routerApp.service('paymentGatewaySvc',['$http','notifications', function($http,n
 			}).then(function(response){
 				  //console.log(response)
 				  if(response.statusText=="OK"){
-					 $rootscope.custStatus=response.data.status;
+					 $rootScope.custStatus=response.data.status;
 				  }				  
 			},function(response){
 				  console.log(response)

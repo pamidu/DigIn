@@ -397,7 +397,15 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         data: {
             requireLogin: true
         }
+    }).state('home.systemSettings', {
+        url: '/systemSettings',
+        controller: 'systemSettingsCtrl',
+        templateUrl: "views/settings/systemSettings/systemSettings.html",
+        data: {
+            requireLogin: true
+        }
     });
+    
 
     lkGoogleSettingsProvider.configure({
         apiKey: 'AIzaSyA9fv9lYQdt1XV6wooFtItxYlMF8Y9t1ao',

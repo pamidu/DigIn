@@ -323,6 +323,8 @@
 <script src="views/settings/userAdministrator/userAdministratorCtrl.js"></script>
 <script src="views/settings/userAdministrator/userAdminFactory.js"></script>
 
+<!--sytem settings-->
+<script src="views/settings/systemSettings/systemSettings.js"></script>
 
 <script src="scripts/charts/d3Force.js"></script>
 

@@ -5,7 +5,11 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
         widProt = new Widget(widType);
         widProt.sync(widgetData, cb);
     }
-    
+
+
+    var colors = ['#82b8d7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', 
+             '#FF9655', '#FFF263', '#6AF9C4']
+  
     var Widget = function(wid) {
         this.widget = wid;        
     };
@@ -189,7 +193,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
     }; 
 
     var FORECAST = function(){
-        function mapResult(data,fObj){
+        function mapResult(data,fObj,color){
                     var forcastArr =[];
                     var serArr = [];
                     var catArr = [];
@@ -204,6 +208,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                                     serArr.push({
                                         data: data.data.actual.concat(data.data.forecast),
                                         zoneAxis: 'x',
+                                        color: colors[0],
                                         zones: [{
                                             value: data.data.actual.length - 1
                                         }, {
@@ -214,12 +219,14 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                                     serArr.push({
                                             name: 'Actual',
                                             data: data.data.actual,
+                                            color: colors[0],
                                     })
 
                                     serArr.push({
                                         name: 'Forcasted',
                                         data: data.data.forecast,
-                                        dashStyle: 'dash'
+                                        dashStyle: 'dash',
+                                        color: colors[1],
                                     })
                                 }
 

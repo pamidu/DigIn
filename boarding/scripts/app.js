@@ -322,7 +322,7 @@ $scope.getTenantToken=function(token,plan){
                      $rootScope.btnMessage2="This trial version is valid only for 30 days.";
                     $mdDialog.hide();
                     localStorage.setItem('firstLogin',true);
-                    $rootScope.btnContinue="Continue";
+                    $rootScope.btnContinue="Go to Home";
                     vm.enableNextStep();
                 }
                 else{
@@ -406,7 +406,7 @@ $scope.getTenantToken=function(token,plan){
                             $rootScope.btnMessage="Congratulations...!";
                             $rootScope.btnMessage2="Tenant creation completed successfully.";
                             localStorage.setItem('firstLogin',true);
-                            $rootScope.btnContinue="Continue";
+                            $rootScope.btnContinue="Go to Home";
                             $mdDialog.hide();
                             vm.enableNextStep();
                         }
@@ -442,7 +442,8 @@ $scope.getTenantToken=function(token,plan){
     
     //#goto Welcome page
     vm.continueBtn = function continueBtn() {
-        if($rootScope.btnContinue=="Continue"){
+        if($rootScope.btnContinue=="Go to Home"){
+            localStorage.setItem('tenantCreated', true);
             window.location = "http://" +$rootScope.createdTenantID;
         }
         else{
@@ -453,7 +454,6 @@ $scope.getTenantToken=function(token,plan){
 
 
 });
-
 
 
 

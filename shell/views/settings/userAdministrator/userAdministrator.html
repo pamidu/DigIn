@@ -114,7 +114,7 @@ md-tabs[md-align-tabs=bottom]
 									<p style="font-weight:700"  flex="40"> {{ user.Name }} </p>
 									<p style="color:#717171" flex> {{ user.Id}} </p>
 								</div>
-								<md-menu md-position-mode="target-right target" >
+								<!--md-menu md-position-mode="target-right target" >
 									<md-button aria-label="Open demo menu" class="md-icon-button ti-more" style="font-size:20px" ng-click="$mdOpenMenu($event)">
 									</md-button>
 									<md-menu-content width="4" >
@@ -127,7 +127,9 @@ md-tabs[md-align-tabs=bottom]
 										  </md-button>
 										</md-menu-item>
 									</md-menu-content>
-							   </md-menu>
+							   </md-menu-->
+							   <md-button class="md-mini ti-trash" style="font-size: 20px;color:grey" ng-click="removeUser($event, user)">
+								</md-button>
 							   <md-divider ng-show="!$last"></md-divider>
 							</md-list-item>
 						

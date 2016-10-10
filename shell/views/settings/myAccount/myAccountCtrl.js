@@ -1,8 +1,16 @@
 
 routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDialog,notifications,profile,$http, Upload,
-                                                     Digin_Domain, Digin_Tenant, $location,Digin_Engine_API, $apps,ProfileService,paymentGateway,paymentGatewaySvc) {
+                                                     Digin_Domain, Digin_Tenant, $location,Digin_Engine_API, $apps,ProfileService,paymentGateway,paymentGatewaySvc,$stateParams) {
 
-    
+
+  var vm = this;
+  $scope.$parent.currentView = "Settings";
+  vm.selectedPage = $stateParams.pageNo;
+  console.log(vm.selectedPage);
+
+
+
+
 //#Subscription START----------------------
   
   //#Get customer detail#//
@@ -1112,9 +1120,11 @@ routerApp.directive('customOnChange', function() {
   };
 });
 
-routerApp.controller('addaLaCarteCtrl',['$scope','$mdDialog','$http','notifications','$state' ,function ($scope,$mdDialog,$http,notifications,$state) {
-  
-  $scope.usersRate=5; $scope.storageRate=8; $scope.bandwithRate=10;
+routerApp.controller('addaLaCarteCtrl',['$scope','$mdDialog','$http','notifications','$state','$stateParams' ,function ($scope,$mdDialog,$http,notifications,$state,$stateParams) {
+
+
+
+$scope.usersRate=5; $scope.storageRate=8; $scope.bandwithRate=10;
   
   
 if($scope.users=="" || $scope.users==undefined){$scope.users = 0;}
@@ -1128,6 +1138,16 @@ $scope.confirmCard=function(event)
 {
 
 }
+
+
+
+    $scope.route = function(state, pageNo) //pageNo is optional
+    {
+        $state.go(state,{ 'pageNo': pageNo });
+    }
+
+
+
 
 //#Customise package add alacartes#//
 $scope.submit = function(ev) {

@@ -172,6 +172,13 @@ DiginApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notific
 				}//if close
 			}//for close
 		}//for close
+	}else{
+		for (i = 0, len = vm.allContacts.length; i<len; ++i){
+			if(vm.allContacts[i].Id == $rootScope.authObject.Email)
+			{
+				vm.contacts.push(vm.allContacts[i]);
+			}
+		}
 	}
 	
     /**

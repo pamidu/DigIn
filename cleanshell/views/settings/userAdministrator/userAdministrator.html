@@ -186,8 +186,8 @@ md-tabs[md-align-tabs=bottom]
 										<v-pane-content id="Store-content" aria-labelledby="Store-header" style="background: #eaeaea;border-radius: 4px;">
 											<div layout="row" layout-align="end end">
 									
-												<md-button  aria-label="Add user" ng-click="addUser($event,group,sharableUsers)" layout="row">
-													<span style="text-transform:none;color:#f9a525">Add User</span>
+												<md-button  aria-label="Add user" ng-click="vm.addGroup($event,group,$index)" layout="row">
+													<span style="text-transform:none;color:#f9a525">Edit Group</span>
 												</md-button>
 												<md-button  aria-label="delete user" ng-click="vm.deleteGroup($event, $index,group)">
 													<span style="text-transform:none;color:#f9a525">Delete Group</span>
@@ -197,7 +197,7 @@ md-tabs[md-align-tabs=bottom]
 											<md-list ng-cloak>
 									
 												<md-list-item class="secondary-button-padding" ng-repeat="groupMemeber in group.users">
-													<p>{{groupMemeber.Name}}</p>
+													<p><span style="font-weight:700">{{groupMemeber.Name}}</span> ({{groupMemeber.Id}})</p>
 													<md-button class="md-icon-button md-secondary" aria-label="delete user" ng-click="deleteUserFromGroup(group.groupId,groupMemeber)">
 														<ng-md-icon icon="delete" style="fill:grey;" size="20px" ></ng-md-icon>
 													</md-button>

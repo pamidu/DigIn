@@ -357,7 +357,7 @@ md-tabs[md-align-tabs=bottom]
 </style>
 
 <footer style="width:100%;right:0px;bottom:0px;position:fixed;">
-	<md-tabs id="pagingTabs" md-align-tabs="bottom">
+	<md-tabs id="pagingTabs" md-selected="vm.selectedPage" md-align-tabs="bottom">
 	  <md-tab id="tab1" md-on-select="selectPage($index)">
 		<md-tab-label layout="row" layout="space-between center">
 			<span  style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>Profile Details</span>
@@ -750,7 +750,7 @@ md-tabs[md-align-tabs=bottom]
 								  <p>${{plan.perMonth}} / Per User (Monthly)</p>
 								  <p>${{plan.perYear}} / Per User (Yearly)  </p>
 								  
-								  <md-button class="md-raised" ng-click="vm.loadStripe($event,plan)" aria-label="Comment" style="background:#f9a525;">
+								  <md-button class="md-raised" ng-click="vm.upgradeConfirmation($event,plan)" aria-label="Comment" style="background:#f9a525;">
 									<span>Upgrade now!</span>
 								  </md-button>
 								

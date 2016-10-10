@@ -94,121 +94,149 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         }
     }
 
+
+//#Get tenant secutity token#//
+//http://prod.auth.digin.io:3048/GetSession/1716b085cc5bd67a7cb887e978de148e/aaaaa.prod.digin.io
+$scope.getTenantToken=function(token,plan){
+    $scope.getToken = function (cb) {
+        $http({method: 'GET', 
+            url: Digin_Tenant+'/GetSession/'+decodeURIComponent($cookies.get('securityToken'))+'/'+$rootScope.createdTenantID, 
+            headers: {'Securitytoken':decodeURIComponent($cookies.get('securityToken'))}
+            })
+        .success(function (response) {
+            $scope.TenantSecToken=response.SecurityToken;     
+            cb(true);     
+
+        }).error(function (error) {
+            cb(false);
+        });  
+    }
+
+    $scope.getToken(function(data){
+        if(data){
+            vm.proceedPayment(token,plan);
+        }
+    });
+}
+
+
+
     vm.submitCurrentStep = function submitCurrentStep(tenant, isSkip) {	
 	
-	if($scope.tenant.name=="" || $scope.tenant.name==undefined){
-		return;
-	}
-	else if($scope.tenant.company=="" || $scope.tenant.company==undefined){
-		return;
-	}
-	else{
-		
-	}
-        
-	if(tenant=='Cancel'){
-		$rootScope.createdTenantID="";
-		$rootScope.btnMessage="Thank you...!";
-		$rootScope.btnContinue="Exit";
-		
-		var deferred = $q.defer();
-		vm.showBusyText = true;
-		console.log('On before submit');
-		if (!tenant.completed && !isSkip) {
-			//simulate $http
-			$timeout(function () {
-				vm.showBusyText = false;
-				console.log('On submit success');
-				deferred.resolve({ status: 200, statusText: 'success', data: {} });
-				//move to next step when success
-				tenant.completed = true;
-				vm.enableNextStep();
-			}, 1000)
-		} else {
-			vm.showBusyText = false;
-			vm.enableNextStep();
-		}
-		
-		
-	}
-	else{
-            var SecToken = decodeURIComponent($cookies.get('securityToken'));
-			//var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
-			
-			var tenantcode=tenant.name;
-			tenantcode=tenantcode.toLowerCase();
-			tenantcode=tenantcode.replace(/ /g, '');
-			$scope.tenant.name=tenantcode;
-			
-            $http({method: 'GET', 
-                    url: Digin_Tenant+'/tenant/GetTenant/'+tenant.name+'.'+Digin_Domain, 
-                    headers: {'Securitytoken': SecToken}
-            })
-            .success(function (response) {
-                console.log(response);
-                if(response.TenantID==null || response.TenantID==""){
-                        var companyDetail="";
-                        if(tenant!=null || tenant!="" || tenant!=undefined){
-                            companyDetail=tenant;
-                        }
-                        $rootScope.companyDetail=companyDetail;
-                        
-                        var deferred = $q.defer();
-                        vm.showBusyText = true;
-                        console.log('On before submit');
-                        if (!tenant.completed && !isSkip) {
-                            //simulate $http
-                            $timeout(function () {
-                                vm.showBusyText = false;
-                                console.log('On submit success');
-                                deferred.resolve({ status: 200, statusText: 'success', data: {} });
-                                //move to next step when success
-                                tenant.completed = true;
-                                vm.enableNextStep();
-                            }, 1000)
-                        } else {
-                            vm.showBusyText = false;
-                            vm.enableNextStep();
-                        }
-                }
-                else
-                {
-                    displayError("This tenant name is already registered...");
-                }
-                
-                //displayError("This tenant name is already registered...");
-            }).error(function (error) {
-                displayError(error.Message);
-            });
+    	if($scope.tenant.name=="" || $scope.tenant.name==undefined){
+    		return;
+    	}
+    	else if($scope.tenant.company=="" || $scope.tenant.company==undefined){
+    		return;
+    	}
+    	else{
+    		
+    	}
             
-                        //#for testing-------
-                        /*
-                        var companyDetail="";
-                        if(tenant!=null || tenant!="" || tenant!=undefined){
-                            companyDetail=tenant;
-                        }
-                        $rootScope.companyDetail=companyDetail;
-                        
-                        var deferred = $q.defer();
-                        vm.showBusyText = true;
-                        console.log('On before submit');
-                        if (!tenant.completed && !isSkip) {
-                            //simulate $http
-                            $timeout(function () {
+    	if(tenant=='Cancel')
+        {
+    		$rootScope.createdTenantID="";
+    		$rootScope.btnMessage="Thank you...!";
+    		$rootScope.btnContinue="Exit";
+    		
+    		var deferred = $q.defer();
+    		vm.showBusyText = true;
+    		console.log('On before submit');
+    		if (!tenant.completed && !isSkip) {
+    			//simulate $http
+    			$timeout(function () {
+    				vm.showBusyText = false;
+    				console.log('On submit success');
+    				deferred.resolve({ status: 200, statusText: 'success', data: {} });
+    				//move to next step when success
+    				tenant.completed = true;
+    				vm.enableNextStep();
+    			}, 1000)
+    		} else {
+    			vm.showBusyText = false;
+    			vm.enableNextStep();
+    		}
+    		
+    		
+    	}
+    	else{
+                var SecToken = decodeURIComponent($cookies.get('securityToken'));
+    			//var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
+    			
+    			var tenantcode=tenant.name;
+    			tenantcode=tenantcode.toLowerCase();
+    			tenantcode=tenantcode.replace(/ /g, '');
+    			$scope.tenant.name=tenantcode;
+    			
+                $http({method: 'GET', 
+                        url: Digin_Tenant+'/tenant/GetTenant/'+tenant.name+'.'+Digin_Domain, 
+                        headers: {'Securitytoken': SecToken}
+                })
+                .success(function (response) {
+                    console.log(response);
+                    if(response.TenantID==null || response.TenantID==""){
+                            var companyDetail="";
+                            if(tenant!=null || tenant!="" || tenant!=undefined){
+                                companyDetail=tenant;
+                            }
+                            $rootScope.companyDetail=companyDetail;
+                            
+                            var deferred = $q.defer();
+                            vm.showBusyText = true;
+                            console.log('On before submit');
+                            if (!tenant.completed && !isSkip) {
+                                //simulate $http
+                                $timeout(function () {
+                                    vm.showBusyText = false;
+                                    console.log('On submit success');
+                                    deferred.resolve({ status: 200, statusText: 'success', data: {} });
+                                    //move to next step when success
+                                    tenant.completed = true;
+                                    vm.enableNextStep();
+                                }, 1000)
+                            } else {
                                 vm.showBusyText = false;
-                                console.log('On submit success');
-                                deferred.resolve({ status: 200, statusText: 'success', data: {} });
-                                //move to next step when success
-                                tenant.completed = true;
                                 vm.enableNextStep();
-                            }, 1000)
-                        } else {
-                            vm.showBusyText = false;
-                            vm.enableNextStep();
-                        }
-                        */
-                        //---------------------
-        }
+                            }
+                    }
+                    else
+                    {
+                        displayError("This tenant name is already registered...");
+                    }
+                    
+                    //displayError("This tenant name is already registered...");
+                }).error(function (error) {
+                    displayError(error.Message);
+                });
+                
+                            //#for testing-------
+                            /*
+                            var companyDetail="";
+                            if(tenant!=null || tenant!="" || tenant!=undefined){
+                                companyDetail=tenant;
+                            }
+                            $rootScope.companyDetail=companyDetail;
+                            
+                            var deferred = $q.defer();
+                            vm.showBusyText = true;
+                            console.log('On before submit');
+                            if (!tenant.completed && !isSkip) {
+                                //simulate $http
+                                $timeout(function () {
+                                    vm.showBusyText = false;
+                                    console.log('On submit success');
+                                    deferred.resolve({ status: 200, statusText: 'success', data: {} });
+                                    //move to next step when success
+                                    tenant.completed = true;
+                                    vm.enableNextStep();
+                                }, 1000)
+                            } else {
+                                vm.showBusyText = false;
+                                vm.enableNextStep();
+                            }
+                            */
+                            //---------------------
+            }
         
     }
 
@@ -290,10 +318,11 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                 
                 if(plan.id=="Free"){
                     $rootScope.trial=true;
-                    $rootScope.btnMessage="Congratulations...! This trial version is valid only for 30 days.";
+                    $rootScope.btnMessage="Congratulations...!";
+                     $rootScope.btnMessage2="This trial version is valid only for 30 days.";
                     $mdDialog.hide();
                     localStorage.setItem('firstLogin',true);
-                    $rootScope.btnContinue="Continue";
+                    $rootScope.btnContinue="Go to Home";
                     vm.enableNextStep();
                 }
                 else{
@@ -310,7 +339,8 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                     stripegateway.open(ev, function(token, args) {
                         console.log(token);
                         if(token!=null || token!="" || token!=undefined){
-                            vm.proceedPayment(token,plan);
+                           $scope.getTenantToken(token,plan);  
+
                         }
                         else
                         {
@@ -365,21 +395,23 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             //url : "http://staging.digin.io/include/duoapi/paymentgateway/puchasePackage",
             method : "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'securityToken': $scope.TenantSecToken
             },
             data : sampleObj
         }).then(function(response){
                 console.log()
                     if(response.statusText=="OK"){
-                        if(response.data.status==false){
-                            displayError(response.data.result);
+                        if(response.data.status==true){
+                            $rootScope.btnMessage="Congratulations...!";
+                            $rootScope.btnMessage2="Tenant creation completed successfully.";
+                            localStorage.setItem('firstLogin',true);
+                            $rootScope.btnContinue="Go to Home";
+                            $mdDialog.hide();
+                            vm.enableNextStep();
                         }
                         else{
-                            $rootScope.btnMessage="Congratulations...! Tenant creation completed successfully.";
-                            localStorage.setItem('firstLogin',true);
-                            $rootScope.btnContinue="Continue";
-                            $mdDialog.hide();
-                            vm.enableNextStep(); 
+                            displayError(response.data.result);
                         }    
                     }
                     else
@@ -410,7 +442,8 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
     
     //#goto Welcome page
     vm.continueBtn = function continueBtn() {
-        if($rootScope.btnContinue=="Continue"){
+        if($rootScope.btnContinue=="Go to Home"){
+            localStorage.setItem('tenantCreated', true);
             window.location = "http://" +$rootScope.createdTenantID;
         }
         else{
@@ -424,3 +457,83 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
 
 
 
+
+
+///------------------
+/*
+routerApp.service('loginSvc',['$http','notifications','$rootScope','Digin_Domain','Digin_Engine_API', function($http,notifications,$rootScope,Digin_Domain,Digin_Engine_API){
+
+     this.login = function () {
+                $http({
+                    method: 'POST',
+                    url: 'http://'+Digin_Domain+'/apis/authorization/userauthorization/login',
+                    headers: {'Content-Type': 'application/json'},
+                    data: $scope.signindetails
+                }).success(function (data) {
+                    if (data.Success === true) {
+
+                        var token=data.Data.SecurityToken;
+
+                        //#create Dataset
+                        $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + token + '&Domain=' + Digin_Domain)
+                        .success(function (result) {
+                            if(result.Is_Success==true){
+                                if(result.Custom_Message=="No user settings saved for given user and domain")
+                                {
+                                        //console.og(result.Result);
+                                        localStorage.setItem('initialLogin',true);
+                                        this.createDataSet(token);
+                                }
+                                else
+                                {
+                                    localStorage.setItem('initialLogin',false);   
+                                }
+
+                                $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;   
+                            }
+                        })
+                        .error(function (error) {
+                            console.log(error);
+                        });
+
+                    }
+                    else {
+                        
+                    }
+                }).error(function (data) {
+
+                });
+            };
+
+            this.createDataSet = function (secToken) {
+                //displayProgress('Processing, please wait...!');
+                $scope.data = {"db": "bigquery"}
+
+                $http({
+                    method: 'POST',
+                    url: Digin_Engine_API+'set_init_user_settings',
+                    data: angular.toJson($scope.data),
+                    headers: {
+                        'SecurityToken': secToken
+                    }
+                })
+                .success(function (response) {
+                    if (response.Success == true) {
+                        //displaySuccess('Success...!');
+                        console.log(response.Message);
+                    }
+                    else {  
+                        //displayError('Data set creation fail');
+                        console.log(response.Message);
+                    }
+
+                })
+                .error(function (error) {
+                    //displayError('Data set creation fail');
+                    console.log(error);
+                });
+            };    
+
+}]);
+
+*/

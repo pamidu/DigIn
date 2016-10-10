@@ -3,7 +3,7 @@
 /*
 
 	CloudCharge Endpoint Library
-		Version 1.0.7
+		Version 1.0.8
 	
 	change-log [
 		2016-10-05 - added subscription check method for plans.
@@ -500,7 +500,13 @@ class CloudCharge {
 				$paygateway = PAYMENT_GATWAY;
 
 		$this->invoker = new WsInvoker("http://". $GLOBALS['mainDomain'] ."/services/duosoftware.paymentgateway.service/" . $paygateway);
-		$this->invoker->addHeader("securityToken", $_COOKIE['securityToken']);
+		
+		$secToken;
+		if($GLOBALS['mainDomain'] === $_SERVER['HTTP_HOST']) {			
+			$headers = getallheaders();
+			if(isset($headers['securityToken'])) $secToken = $headers['securityToken'];
+		} else $secToken = $_COOKIE['securityToken'];
+		$this->invoker->addHeader("securityToken", $secToken);
 	}
 	
 }

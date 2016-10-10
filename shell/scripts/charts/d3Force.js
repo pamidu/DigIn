@@ -50,22 +50,10 @@ routerApp.directive('linearChart', function() {
                     node = svg.selectAll(".node");
                 root = rootData;
                 update();
-                 startVis();
+               
                 console.log(svg);
                 scope.setSvg(svg[0][0].innerHTML);
-
-                function startVis() {
-                    console.log('start');
-
-
-                    //root = data;
-                    var nodes = flatten(root);
-                    nodes.forEach(function(d) {
-                        d._children = d.children;
-                        d.children = null;
-                    });
-                    update();
-                }
+ 
 
                
 

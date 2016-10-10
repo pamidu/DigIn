@@ -78,22 +78,31 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 		$scope.groups = data;
 	});
 	
-	vm.addGroup = function(ev)
+	vm.addGroup = function(ev, group, index)
 	{
-		var group = {};
+		if(!group)
+		{
+			var group = {};
+			var index = "";
+		}
+		
 		$mdDialog.show({
 			  controller: "addGroupCtrl as vm",
 			  templateUrl: 'views/settings/userAdministrator/addGroup.html',
 			  parent: angular.element(document.body),
 			  targetEvent: ev,
 			  clickOutsideToClose:true,
-			  locals: group
+			  locals: {group: group, index: index}
 		})
 		.then(function(answer) {
 			if(answer)
 			{
-				console.log(answer);
-				$scope.groups.push(answer);
+				if(index)
+				{
+					$scope.groups[index] = answer.group;
+				}else{
+					$scope.groups.push(answer.group);
+				}
 			}
 		})
 	}
@@ -113,9 +122,7 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
           .cancel('Cancel');
 
 		$mdDialog.show(confirm).then(function() {
-		  console.log("delete " + group.groupId);
 		  notifications.toast(1, "'"+group.groupname +"' Deleted");
-		  
 		  DiginServices.removeUserGroup(group.groupId).then(function(data) {
 				$scope.groups.splice(index, 1); 
 			});
@@ -133,22 +140,45 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 	
 }])*/
 
-DiginApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifications','DiginServices', function ($scope,$rootScope,$mdDialog,notifications,DiginServices){
+DiginApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifications','DiginServices', 'group','index' ,function ($scope,$rootScope,$mdDialog,notifications,DiginServices,group,index){
 	
-	 var vm = this;
-
+	var vm = this;
+	var index = index;
+	vm.addOrEdit = "Add";
+	vm.group = {};
     vm.querySearch = querySearch;
     vm.allContacts = loadContacts();
-	console.log(vm.allContacts);
     vm.contacts = [];
     vm.filterSelected = true;
+	
+	function getCatLetter(catName){
+		try{
+			var catogeryLetter = "images/material_alperbert/avatar_tile_"+catName.charAt(0).toLowerCase()+"_28.png";
+		}catch(exception){}
+		return catogeryLetter;
+	};
 
+	if(Object.keys(group).length != 0)
+	{
+		vm.addOrEdit = "Edit";
+		vm.group = group;
+		//vm.contacts = group.users;
+		for (var i = 0; i<group.users.length; i++) {
+			var arrlen = vm.allContacts.length;
+			for (var j = 0; j<arrlen; j++) {
+				if (group.users[i].Id == vm.allContacts[j].Id) {
+					//removeItems.push(j);
+					 vm.contacts.push(vm.allContacts[j]);
+				}//if close
+			}//for close
+		}//for close
+	}
+	
     /**
      * Search for contacts.
      */
     function querySearch (query) {
-      var results = query ?
-          vm.allContacts.filter(createFilterFor(query)) : [];
+      var results = query ? vm.allContacts.filter(createFilterFor(query)) : [];
       return results;
     }
 
@@ -159,17 +189,10 @@ DiginApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notific
       var lowercaseQuery = angular.lowercase(query);
 
       return function filterFn(contact) {
-        return (contact._lowername.indexOf(lowercaseQuery) != -1);;
+        return (contact._lowername.indexOf(lowercaseQuery) != -1);
       };
 
     }
-
-	function getCatLetter(catName){
-		try{
-			var catogeryLetter = "images/material_alperbert/avatar_tile_"+catName.charAt(0).toLowerCase()+"_28.png";
-		}catch(exception){}
-		return catogeryLetter;
-	};
 	
     function loadContacts() {
 		/*var contacts = [{email: "m.augustine@example.com", name:"Marina Augustine"},
@@ -187,25 +210,26 @@ DiginApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notific
 	//Finally add the group and close the Dialog
 	$scope.submit = function()
 	{
-		vm.submitted = true;
 		if(vm.contacts.length != 0)
 		{
-
+			vm.submitted = true;
 			vm.group.users = [];
-			vm.group.groupId = "-999";
-			vm.group.parentId = "";
-			
+			if(!vm.group.groupId)
+			{
+				vm.group.groupId = "-999";
+				vm.group.parentId = "";
+			}
+
 			for (i = 0, len = vm.contacts.length; i<len; ++i){
 				vm.group.users.push({Name:vm.contacts[i].Name, Id:vm.contacts[i].Id});
 			}
-			console.log(vm.group);
-			
+						
 			DiginServices.addUserGroup(vm.group).then(function(result) {
 				if(result.IsSuccess == true)
 				{
 					notifications.toast(1, "Group Added");
 					vm.group.groupId = result.Data[0].ID;
-					$mdDialog.hide(vm.group);
+					$mdDialog.hide({group:vm.group, index:index});
 				}else{
 					notifications.toast(0, result.Message);
 				}

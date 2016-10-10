@@ -495,17 +495,19 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             view: 'views/query/chart-views/sunburst.html',
             initObj: $scope.initHighchartObj,
             settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
-            id: 'ct12',
-            icon: 'ti-layout-accordion-list',
-            name: 'pivotsummary',
-            chart: 'pivotsummary',
-            selected: false,
-            chartType: 'pivotSummary',
-            view: 'views/query/chart-views/pivotSummary.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
+         }, 
+       // {
+        //     id: 'ct12',
+        //     icon: 'ti-layout-accordion-list',
+        //     name: 'pivotsummary',
+        //     chart: 'pivotsummary',
+        //     selected: false,
+        //     chartType: 'pivotSummary',
+        //     view: 'views/query/chart-views/pivotSummary.html',
+        //     initObj: $scope.initHighchartObj,
+        //     settingsView: 'views/query/settings-views/highchartsSettings.html'
+        // }, 
+           {
             id: 'ct13',
             icon: 'fa fa-sort-numeric-desc',
             name: 'metric',

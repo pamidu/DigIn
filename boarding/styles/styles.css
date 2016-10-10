@@ -37,6 +37,13 @@ md-content{
 	align:center;
 }
 
+.form-containerNew
+{
+	max-width:900px;
+	margin: 0 auto;
+	border-radius: 8px;
+	align:center;
+}
 
  .setting-card-header {
 	text-align: center;

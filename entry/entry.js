@@ -141,9 +141,6 @@ routerApp
 
             $scope.login = function () {
 
-
-
-                
                 displayProgress();
                 $http({
                     method: 'POST',

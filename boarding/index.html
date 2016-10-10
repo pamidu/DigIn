@@ -210,7 +210,7 @@
 						<md-step label="Finish" md-complete="vm.stepData[2].data.completed" ng-disabled="vm.stepProgress < 3">
                             <md-step-body>
                                 <form name="step2">
-                                   	<md-card class="form-container">
+                                   	<md-card class="form-containerNew">
 										<div class="setting-card-header">
 											<h2>{{btnMessage}}</h2>
 											<div class="setting-img-wrap">
@@ -220,7 +220,7 @@
 										
 										<md-content class="md-padding">
 											<div layout="column" layout-align="center center" style="min-height: 200px">
-												<h4>   </h4>
+												<h4>{{btnMessage2}}</h4>
 												<md-button class="md-primary md-raised" ng-click="vm.continueBtn()" text>{{btnContinue}}</md-button>
 											</div>
 										</md-content>

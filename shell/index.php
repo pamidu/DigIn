@@ -47,7 +47,7 @@
     <link rel="stylesheet" href="styles/css/fullcalendar.css"/>
     <!-- event calendar -->
     <!-- Add IntroJs styles -->
-    <link href="bower_components/intro.js/introjs.css" rel="stylesheet">
+    <link href="styles/css/introjs.css" rel="stylesheet">
     <link href="styles/css/widgetSettings.css" rel="stylesheet">
     <!-- damith
         -- web font
@@ -355,11 +355,10 @@
 <script src="http://code.highcharts.com/highcharts-more.js"></script>
 <!-- customize angular gridster -->
 <script type="text/javascript" src="scripts/vendor/digin-gridster.js"></script>
-<script type="text/javascript"
-        src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-sanitize.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-sanitize.min.js"></script>
 <!-- intro -->
-<script type="text/javascript" src="bower_components/intro.js/minified/intro.min.js"></script>
-<script type="text/javascript" src="scripts/controllers/angular-intro.js"></script>
+<script src="scripts/intro.min.js"></script>
+<script src="scripts/angular-intro.min.js"></script>
 <script type="text/javascript" src="bower_components/codemirror/lib/codemirror.js"></script>
 <script type="text/javascript" src="bower_components/codemirror/addon/display/placeholder.js"></script>
 <!-- canvastoblob -->

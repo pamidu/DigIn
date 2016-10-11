@@ -242,13 +242,17 @@ $scope.getTenantToken=function(token,plan){
 
 	//#Get selected plan object#//
 	vm.iscontinue=false;
-	vm.selectPlan = function selectPlan(ev,plan) {
+	vm.selectPlan = function selectPlan(ev,plan,index) {
 		if(plan=="" || plan==undefined){
 			vm.iscontinue=false;
 		}
 		else{
 			 vm.plan = plan;
 			 vm.iscontinue=true;
+			 for (var i = 0, len = vm.companyPricePlans.length; i < len; i++) {
+				vm.companyPricePlans[i].isSelected = false;
+			}
+			 vm.companyPricePlans[index].isSelected = true;
 		}
 	};
 	

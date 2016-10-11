@@ -4414,7 +4414,7 @@ close button
 .blut-user-drp-setting {
     width: 167px;
     overflow: hidden;
-    height: 190px;
+    height: 150px;
     position: absolute;
     background: #ffffff;
     -webkit-border-bottom-right-radius: 5px;
@@ -4464,7 +4464,7 @@ close button
     width: 167px;
     position: absolute;
     background: #f9a525;
-    bottom: 50px;
+    bottom: 40px;
 }
 
 .blut-user-drp-setting > .menu > li.logout {

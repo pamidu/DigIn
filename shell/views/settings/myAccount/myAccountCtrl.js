@@ -16,6 +16,7 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
   //#Get customer detail#//
   paymentGatewaySvc.getCustomerInformations();
   
+  
  //#Get customer status as active - true || false #//
   paymentGatewaySvc.checkSubscription();
   
@@ -39,10 +40,12 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
             else{
               //fail
               //displayError(response.data);
+			  $scope.cardDetail={};
             }
         }
   },function(response){
         //console.log(response)
+		$scope.cardDetail={};
         //displayError("Error while upgrade the package...");
         //$mdDialog.hide();
   })
@@ -318,7 +321,12 @@ $scope.cancel=function(){
 
     $mdDialog.show(confirm).then(function() {
       //Yes
-	     paymentGatewaySvc.stopSubscriptionImmediate();
+	  if($rootScope.custStatus==true){
+		  paymentGatewaySvc.stopSubscriptionImmediate();
+	  }
+	   else{
+		 displayError("This customer is already deactivated or have not been subscribed to any package.");
+	   }  
     }, function() {
       //No
     });
@@ -328,8 +336,29 @@ $scope.cancel=function(){
   
   vm.addCard = function(ev)
   {
-    alert("open add card window");
+	var stripeConfig = {
+		publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
+		title: 'DigIn',
+		description: "Beyond BI",
+		logo: 'img/small-logo.png',
+		label: 'New Card'
+	};
+   
+	var stripegateway = paymentGateway.setup('stripe').configure(stripeConfig);
+	stripegateway.open(ev, function(token, args) {
+		console.log(token);
+		if(token!=null || token!="" || token!=undefined){
+		   //#insert new card  
+		}
+		else
+		{
+			displayError("Error occured while inserting new card.");
+		}
+	}); 
   }
+  
+  
+  
   
   vm.makeDefault = function()
   {
@@ -337,6 +366,8 @@ $scope.cancel=function(){
   }
 
 
+	
+ 
  
 
    vm.upgradeConfirmation = function(ev,plan) {
@@ -350,27 +381,15 @@ $scope.cancel=function(){
 
     $mdDialog.show(confirm).then(function() {
       //Yes
-        //#Select payment method
-             /*vm.cardConfirmation = function(ev) {
-              var confirm = $mdDialog.confirm()
-                    .title('Request Card Detail')
-                    .textContent('Select card to proceed with payment.')
-                    .ariaLabel('Lucky day')
-                    .targetEvent(ev)
-                    .ok('Proceed with Default Card')
-                    .cancel('Proceed with new card');
-
-              $mdDialog.show(confirm).then(function() {
-                //Yes
-                  vm.loadStripe(ev,plan)
-              }, function() {
-                //No
-                vm.upgradePackage(plan); 
-              });
-            };*/
-
-
-             vm.upgradePackage(plan);
+	  //#for exist customer's package will upgrade
+	  if($rootScope.custStatus==true){
+		  vm.upgradePackage(plan);
+	  }
+	  //#for non existing customers package cannot be upgraded and initial package need to be purchage
+      else
+	  {
+		  vm.processInitialPurchase(ev, plan);
+	  }
 
     }, function() {
       //No
@@ -379,7 +398,7 @@ $scope.cancel=function(){
 
 
   //#load stripe payement detail window
-  vm.loadStripe=function(ev,plan){  
+  vm.processInitialPurchase=function(ev,plan){  
     var stripeConfig = {
       publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
       title: 'DigIn',
@@ -392,7 +411,7 @@ $scope.cancel=function(){
     stripegateway.open(ev, function(token, args) {
       console.log(token);
       if(token!=null || token!="" || token!=undefined){
-		    vm.upgradePackage(token.id,plan);	 
+		    vm.purchasePackage(token.id,plan);	 
       }
       else
       {
@@ -420,7 +439,7 @@ $scope.cancel=function(){
       var pkgObj ={
         "plan" :{
           "attributes": [
-            {"tag":"Package","feature": plan.id,"amount": plan.perMonth*plan.numberOfUsers*100,"quantity":1,"action":"add"}
+            {"tag":"Package","feature": plan.id,"amount": plan.perMonth*plan.numberOfUsers,"quantity":1,"action":"add"}
           ],
           "subscription": "month",
           "quantity": 1 
@@ -456,7 +475,51 @@ $scope.cancel=function(){
     
   }
 
+/*proceed with payement*/
+    vm.purchasePackage = function purchasePackage(token,plan) {
+        displayProgress('Processing...');
 
+        var sampleObj = {
+            "token":token.id,
+            "plan" : {
+                "attributes":  [
+                    {"tag":"Package","feature": plan.id,"amount": plan.numberOfUsers*plan.perMonth,"quantity":1,"action":"add"}
+                ],
+                "subscription": "month",
+                "quantity": 1 
+            }
+        }
+              
+        $http({
+            url : "/include/duoapi/paymentgateway/puchasePackage",
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/puchasePackage",
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'securityToken': decodeURIComponent($cookies.get('securityToken'))
+            },
+            data : sampleObj
+        }).then(function(response){
+                console.log()
+                    if(response.statusText=="OK"){
+                        if(response.data.status==true){
+							notifications.toast('1','Package upgraded successfully!');
+                        }
+                        else{
+							notifications.toast('0',response.data.result);
+                        }    
+                    }
+                    else
+                    {
+						notifications.toast('0','Error occured while completing payment procees.');
+                    }
+        },function(response){;
+            notifications.toast('0','Error occured while completing payment procees.');
+        })
+    }
+  
+  
+  
 
   //#Reactive subscriptions
   vm.reactiveSubscription=function(){ 
@@ -553,7 +616,6 @@ $scope.cancel=function(){
         $scope.selectProfile=false;
         $scope.selectImage=true;
     };
-
 
     $rootScope.myImage='';
     $scope.myCroppedImage='';
@@ -1120,17 +1182,13 @@ routerApp.directive('customOnChange', function() {
   };
 });
 
-routerApp.controller('addaLaCarteCtrl',['$scope','$mdDialog','$http','notifications','$state','$stateParams' ,function ($scope,$mdDialog,$http,notifications,$state,$stateParams) {
-
-
+routerApp.controller('addaLaCarteCtrl',['$scope','$rootScope','$mdDialog','$http','notifications','$state','$stateParams' ,function ($scope,$rootScope,$mdDialog,$http,notifications,$state,$stateParams) {
 
 $scope.usersRate=5; $scope.storageRate=8; $scope.bandwithRate=10;
-  
-  
+   
 if($scope.users=="" || $scope.users==undefined){$scope.users = 0;}
 if($scope.storage=="" || $scope.storage==undefined){$scope.storage = 0;}
 if($scope.bandwidth==""|| $scope.bandwidth==undefined){$scope.bandwidth = 0;}
-  
 
 
 //#Confirm card detail
@@ -1139,14 +1197,10 @@ $scope.confirmCard=function(event)
 
 }
 
-
-
-    $scope.route = function(state, pageNo) //pageNo is optional
-    {
-        $state.go(state,{ 'pageNo': pageNo });
-    }
-
-
+$scope.route = function(state, pageNo) //pageNo is optional
+{
+	$state.go(state,{ 'pageNo': pageNo });
+}
 
 
 //#Customise package add alacartes#//
@@ -1161,37 +1215,26 @@ $scope.submit = function(ev) {
 
     $mdDialog.show(confirm).then(function() {
       //Yes
-        //#Select payment method
-             /*vm.cardConfirmation = function(ev) {
-              var confirm = $mdDialog.confirm()
-                    .title('Request Card Detail')
-                    .textContent('Select card to proceed with payment.')
-                    .ariaLabel('Lucky day')
-                    .targetEvent(ev)
-                    .ok('Proceed with Default Card')
-                    .cancel('Proceed with new card');
-
-              $mdDialog.show(confirm).then(function() {
-                //Yes
-                  vm.loadStripe(ev,plan)
-              }, function() {
-                //No
-                vm.upgradePackage(plan); 
-              });
-            };*/
-
-
-            $scope.ProceedCustomizedValidation();
-
+	   if($rootScope.custStatus==true){
+			$scope.ProceedCustomizedValidation();
+	   }
+	   else{
+		   //notifications.toast('0','This customer is not active customer or currently have not been subsctibed any package.');
+		   displayError('This customer is not active customer or currently have not been subsctibed any package.');
+	   }	  
     }, function() {
       //No
     });
   };
 
-
+    //#common error message
+    var displayError = function (message) {
+        $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process fail !').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
+    };
+  
+  
 $scope.ProceedCustomizedValidation = function()
 {
-
 	if(($scope.users=="" || $scope.users==undefined)&&($scope.storage=="" || $scope.storage==undefined)&& ($scope.bandwidth==""|| $scope.bandwidth==undefined))
 	{
 		notifications.toast("0","You have not selected any alacarte to customize!");
@@ -1284,10 +1327,6 @@ $scope.customizePackage=function(pkgObj){
 
         })   
   }
-  
-  
-  
-  
   
 }])
 
@@ -1408,6 +1447,7 @@ routerApp.service('paymentGatewaySvc',['$http','notifications','$rootScope', fun
 						$rootScope.customer=response.data.response;
 					  }
 					  else{
+						  $rootScope.customer={};
 					  }
 				  }
 			},function(response){

@@ -199,14 +199,19 @@ input:disabled {
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th ng-repeat="(key, value) in eachfile.schema">{{key | uppercase }}
-                                        </th>
+                                        <th>Field Name</th>
+                                        <th>Field Type</th>
                                     </tr>
                                     <tbody>
-                                        <tr ng-repeat="val in schema">
-                                            <td ng-repeat="cell in val">
-                                                <input type="text" ng-model="cell">
-                                            </td>
+                                        <tr ng-repeat="val in schema track by $index">
+                                        <td> {{val.name}} </td>
+                                        <td>
+                                            <md-select ng-model="val.type">
+                                                <md-option ng-repeat="type in fieldTypeObj" value="{{type}}">
+                                                    {{type}}
+                                                </md-option>
+                                            </md-select>   
+                                        </td>
                                         </tr>
                                     </tbody>
                             </table>

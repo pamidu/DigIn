@@ -14,6 +14,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
         $scope.Folders = res;
 
     });
+    $scope.fieldTypeObj = ["STRING","BYTES","INTEGER","FLOAT","BOOLEAN","RECORD","TIMESTAMP","DATE","TIME","DATETIME"];
 
     //start of page one Folder name configuring
     $scope.currentNavItem = 'page1';
@@ -165,6 +166,9 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 }).success(function(data) {
                     console.log(data);
                     $scope.schema = data.Result;
+                    angular.forEach($scope.schema,function(key){
+                        key.type = key.type.toUpperCase();
+                    });
                     $scope.schemaCollection.push($scope.schema);
                     uploadFlag = true;
                     $scope.preloader = false;
@@ -262,7 +266,6 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
 
         });
     };
-
 
     // UPDATE PROGRESS BAR.
     function updateProgress(e) {

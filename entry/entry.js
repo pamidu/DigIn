@@ -54,13 +54,13 @@ routerApp
                         requireLogin: false
                     }
                 })
-
+                
         }]);
 
 routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
-        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location',
-        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location) {
+        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location','Digin_Tenant',
+        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant) {
 
 
 
@@ -68,6 +68,7 @@ routerApp
             $scope.signindetails = {};
             $scope.isLoggedin = false;
             $scope.activated=false;
+            $scope.activatedemail="";
             localStorage.setItem('termsNconditions',false);
 
             $scope.error = {
@@ -79,6 +80,7 @@ routerApp
 
             //-----activated user - Signin-----------
             var activated = ($location.search()).activated;
+            var activatedemail= ($location.search()).id;
             $scope.activated=false;
             if(activated==undefined){
                 $scope.activated=false;
@@ -86,8 +88,17 @@ routerApp
             else{
                 $scope.activated=true;
             }
+            
+            $scope.activatedemail="";
+            if(activatedemail==undefined){
+                $scope.activatedemail="";
+            }
+            else{
+                $scope.activatedemail=activatedemail;
+            }
             //------------------------------------
 
+            
             $scope.signup = function () {
                 $scope.isLoggedin = false;
                 $state.go('signup');
@@ -150,7 +161,27 @@ routerApp
                     data: $scope.signindetails
                 }).success(function (data) {
                     if (data.Success === true) {
+                        
+                        //#Expire existing cookies
+                        document.cookie = 'authData=; Path=/;  Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                        document.cookie = 'securityToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                        document.cookie = 'tenantData=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 
+                        //#loggin direct to shell
+                        if(IsLocal==false) { 
+                            //#Added for live servers ------------------------------
+                            $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
+                        }  
+                        else{
+                            //#Added for local host ------------------------------
+                             document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
+                             document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
+                             window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
+                        }
+                        
+                        
+                        
+                        /*
                         var token=data.Data.SecurityToken;
 
                         //#create Dataset
@@ -189,7 +220,7 @@ routerApp
                         })
                         .error(function (error) {
                             console.log(error);
-                        });
+                        });*/
 
                     }
                     else {
@@ -215,7 +246,8 @@ routerApp
                 });
             };
 
-            $scope.createDataSet = function (secToken) {
+            
+            /*$scope.createDataSet = function (secToken) {
                 //displayProgress('Processing, please wait...!');
                 $scope.data = {"db": "bigquery"}
 
@@ -245,8 +277,9 @@ routerApp
                     $mdDialog.hide();
                     console.log(error);
                 });
-            };    
-
+            };   */ 
+            
+            
             /*
             $scope.isDataSetNotExist=function (secToken, cb){
                 $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + secToken + '&Domain=' + Digin_Domain)
@@ -269,7 +302,7 @@ routerApp
 
 
         $scope.isUserExist = function (email, cb) {
-            $http.get('http://104.197.27.7:3048/GetUser/' + email)
+            $http.get(Digin_Tenant+'/GetUser/' + email)
                 .success(function (response) {
                     cb(true);
                 }).error(function (error) {
@@ -573,7 +606,7 @@ routerApp
                         };
                     },
 
-					
+                    
                     dataClear: function () {
                         signUpUsr.firstName = '';
                         signUpUsr.lastName = '';
@@ -581,14 +614,14 @@ routerApp
                         signUpUsr.pwd = '';
                         signUpUsr.cnfrPwd = '';
                         $scope.freeze=false;
-						
-						localStorage.setItem('termsNconditions',false);
-						localStorage.setItem('fname',"");
-						localStorage.setItem('lname',"");
-						localStorage.setItem('email',"");
-						localStorage.setItem('fpw',"");
-						localStorage.setItem('spw',"");
-						
+                        
+                        localStorage.setItem('termsNconditions',false);
+                        localStorage.setItem('fname',"");
+                        localStorage.setItem('lname',"");
+                        localStorage.setItem('email',"");
+                        localStorage.setItem('fpw',"");
+                        localStorage.setItem('spw',"");
+                        
                     },
 
                     validateEmail: function (email) {

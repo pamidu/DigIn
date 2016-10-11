@@ -9,7 +9,7 @@ app.config(["$httpProvider", function ($httpProvider) {
 }]);
 
 
-app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGateway,$mdDialog,$cookies,$http,Digin_Tenant,Digin_Domain) {
+app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGateway,$mdDialog,$cookies,$http,Digin_Tenant,Digin_Domain,Digin_Engine_API) {
 
     var vm = this;
 
@@ -17,54 +17,75 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         {
             id : "Free",
             name:"Free",
+            sp:"Free",
+            //currancy:"$",
             numberOfUsers:"1",
-            storage: "10 GB",
-            bandwidth: "100 GB",
-            perMonth: 0,
-            perYear: 10,
-            per: "/ User",
-            Description: "desc",
-			price:0
+            storage: "",
+            bandwidth: "",
+            //perMonth: 0,
+            //perYear: 10,
+            //StorageStr:" of Storage",
+            //BandwidthStr:" of Bandwidth)",
+            //per: "/ User",
+            //permonth:" / Per User (Monthly)",
+            //peryear:" / Per User (Yearly)",
+            Description: "30 days trial",
+            price:0
         },
         {
             id : "personal_space",
             name:"Personal Space",
+            currancy:"$",
             numberOfUsers:1,
             storage: "10 GB",
             bandwidth: "100 GB",
+            StorageStr:" of Storage",
+            BandwidthStr:" of Bandwidth)",
             perMonth: 10,
             perYear: 10,
             per: "/ User",
-            Description: "desc",
-			price:10
+            permonthStr:" / Per User (Monthly)",
+            peryearStr:" / Per User (Yearly)",
+            Description: "",
+            price:10
         },
         {
             id : "mini_team",
             name:"We Are A Mini Team",
+            currancy:"$",
             numberOfUsers:5,
             storage: "10 GB",
             bandwidth: "100 GB",
+            StorageStr:" of Storage",
+            BandwidthStr:" of Bandwidth)",
             perMonth: 8,
             perYear: 6.99,
             per: "/ User",
-            Description: "desc",
-			price:40
+            permonthStr:" / Per User (Monthly)",
+            peryearStr:" / Per User (Yearly)",
+            Description: "",
+            price:40
         },
         {
             id : "world",
             name:"We Are the World",
+            currancy:"$",
             numberOfUsers:10,
             storage: "10 GB",
             bandwidth: "100 GB",
+            StorageStr:" of Storage",
+            BandwidthStr:" of Bandwidth)",
             perMonth: 6,
             perYear: 4.99,
             per: "/ User",
-            Description: "desc",
-			price:60
+            permonthStr:" / Per User (Monthly)",
+            peryearStr:" / Per User (Yearly)",
+            Description: "",
+            price:60
         }];
-        	
+            
 
-		
+        
     vm.selectedStep = 0;
     vm.stepProgress = 1;
     vm.maxStep = 3;
@@ -114,60 +135,98 @@ $scope.getTenantToken=function(token,plan){
 
     $scope.getToken(function(data){
         if(data){
+            vm.createDataSet();
             vm.proceedPayment(token,plan);
         }
     });
 }
 
+    //#initialize digin data set
+    vm.createDataSet = function (secToken) {
+            displayProgress('Initialised dataset...');
+            $scope.data = {"db": "bigquery"}
+
+            $http({
+                method: 'POST',
+                url: Digin_Engine_API+'set_init_user_settings',
+                data: angular.toJson($scope.data),
+                headers: {
+                    'SecurityToken': $scope.TenantSecToken
+                }
+            })
+            .success(function (response) {
+                if (response.Success == true) {
+                    //displaySuccess('Success...!');
+                    //$mdDialog.hide();
+                    console.log(response.Message);
+                }
+                else {  
+                    //displayError('Data set creation fail');
+                    //$mdDialog.hide();
+                    console.log(response.Message);
+                }
+
+            })
+            .error(function (error) {
+                //displayError('Data set creation fail');
+                //$mdDialog.hide();
+                console.log(error);
+            });
+        };
 
 
-    vm.submitCurrentStep = function submitCurrentStep(tenant, isSkip) {	
-	
-    	if($scope.tenant.name=="" || $scope.tenant.name==undefined){
-    		return;
-    	}
-    	else if($scope.tenant.company=="" || $scope.tenant.company==undefined){
-    		return;
-    	}
-    	else{
-    		
-    	}
+
+
+    vm.submitCurrentStep = function submitCurrentStep(tenant, isSkip) { 
+    
+        if($scope.tenant.name=="" || $scope.tenant.name==undefined){
+            return;
+        }
+        else if($scope.tenant.company=="" || $scope.tenant.company==undefined){
+            return;
+        }
+        else if($scope.tenant.address=="" || $scope.tenant.address==undefined){
+            return;
+        }
+        else{
             
-    	if(tenant=='Cancel')
+        }
+            
+        if(tenant=='Cancel')
         {
-    		$rootScope.createdTenantID="";
-    		$rootScope.btnMessage="Thank you...!";
-    		$rootScope.btnContinue="Exit";
-    		
-    		var deferred = $q.defer();
-    		vm.showBusyText = true;
-    		console.log('On before submit');
-    		if (!tenant.completed && !isSkip) {
-    			//simulate $http
-    			$timeout(function () {
-    				vm.showBusyText = false;
-    				console.log('On submit success');
-    				deferred.resolve({ status: 200, statusText: 'success', data: {} });
-    				//move to next step when success
-    				tenant.completed = true;
-    				vm.enableNextStep();
-    			}, 1000)
-    		} else {
-    			vm.showBusyText = false;
-    			vm.enableNextStep();
-    		}
-    		
-    		
-    	}
-    	else{
+            $rootScope.createdTenantID="";
+            $rootScope.btnMessage="Thank you...!";
+            $rootScope.btnContinue="Exit";
+            
+            var deferred = $q.defer();
+            vm.showBusyText = true;
+            console.log('On before submit');
+            if (!tenant.completed && !isSkip) {
+                //simulate $http
+                $timeout(function () {
+                    vm.showBusyText = false;
+                    console.log('On submit success');
+                    deferred.resolve({ status: 200, statusText: 'success', data: {} });
+                    //move to next step when success
+                    tenant.completed = true;
+                    vm.enableNextStep();
+                }, 1000)
+            } else {
+                vm.showBusyText = false;
+                vm.enableNextStep();
+            }
+            
+            
+        }
+        else{
                 var SecToken = decodeURIComponent($cookies.get('securityToken'));
-    			//var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
-    			
-    			var tenantcode=tenant.name;
-    			tenantcode=tenantcode.toLowerCase();
-    			tenantcode=tenantcode.replace(/ /g, '');
-    			$scope.tenant.name=tenantcode;
-    			
+                //var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
+                
+                var tenantcode=tenant.name;
+                tenantcode=tenantcode.toLowerCase();
+                tenantcode=tenantcode.replace(/ /g, '');
+                $scope.tenant.name=tenantcode;
+                
                 $http({method: 'GET', 
                         url: Digin_Tenant+'/tenant/GetTenant/'+tenant.name+'.'+Digin_Domain, 
                         headers: {'Securitytoken': SecToken}
@@ -240,45 +299,45 @@ $scope.getTenantToken=function(token,plan){
         
     }
 
-	//#Get selected plan object#//
-	vm.iscontinue=false;
-	vm.selectPlan = function selectPlan(ev,plan,index) {
-		if(plan=="" || plan==undefined){
-			vm.iscontinue=false;
-		}
-		else{
-			 vm.plan = plan;
-			 vm.iscontinue=true;
-			 for (var i = 0, len = vm.companyPricePlans.length; i < len; i++) {
-				vm.companyPricePlans[i].isSelected = false;
-			}
-			 vm.companyPricePlans[index].isSelected = true;
-		}
-	};
-	
+    //#Get selected plan object#//
+    vm.iscontinue=false;
+    vm.selectPlan = function selectPlan(ev,plan,index) {
+        if(plan=="" || plan==undefined){
+            vm.iscontinue=false;
+        }
+        else{
+             vm.plan = plan;
+             vm.iscontinue=true;
+             for (var i = 0, len = vm.companyPricePlans.length; i < len; i++) {
+                vm.companyPricePlans[i].isSelected = false;
+            }
+             vm.companyPricePlans[index].isSelected = true;
+        }
+    };
+    
 
-	//#load card detail window from stripe*/
+    //#load card detail window from stripe*/
     vm.loadCardDetail = function loadCardDetail(ev) {
-		if(vm.plan=="" || vm.plan==undefined){
-			return;
-		}
-		else{
-			vm.createTenant (vm.plan,ev);
-		}
-	}
-	
-	
-	
-	
+        if(vm.plan=="" || vm.plan==undefined){
+            return;
+        }
+        else{
+            vm.createTenant (vm.plan,ev);
+        }
+    }
+    
+    
+    
+    
     //#create tenant#//
     vm.createTenant = function createTenant(plan,ev) {
                     
-        displayProgress('Processing...!');
+        displayProgress('Creating tenant...');
 
         /*Tenant creation process*/  
         var userInfo ="";
         var userInfo = JSON.parse(decodeURIComponent($cookies.get('authData')));
-		
+        
         var email=userInfo.Email;
         var TenantID = email.replace('@', "");
             TenantID = TenantID.replace('.', "");
@@ -295,6 +354,7 @@ $scope.getTenantToken=function(token,plan){
             "Shell": "",
             "Statistic": {
                 "CompanyName": companyDetail.company,
+                "CompanyAddress": companyDetail.address,
                 "Plan": plan.id
             },
             "Private": true,
@@ -369,7 +429,7 @@ $scope.getTenantToken=function(token,plan){
     
     /*proceed with payement*/
     vm.proceedPayment = function proceedPayment(token,plan) {
-        displayProgress('Processing...');
+        displayProgress('Proceed with payment...');
 
         var sampleObj = {
             "token":token.id,

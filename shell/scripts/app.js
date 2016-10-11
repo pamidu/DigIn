@@ -61,8 +61,8 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         */
         
         if (localStorage.getItem('initialLogin') == undefined) {
-            localStorage.setItem('initialLogin', false);
-            state = "home";
+            //localStorage.setItem('initialLogin', false);
+            state = "welcome";
         }
         else if(localStorage.getItem('initialLogin') == "false"){
            state = "home";

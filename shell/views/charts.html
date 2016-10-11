@@ -1,6 +1,8 @@
-<md-tabs id="footerBar" md-selected="selectedPageIndx" md-border-bottom md-autoselect md-align-tabs="bottom"
-         ng-show="currentView=='Dashboard'"
-         ng-mouseover="adjustTitleLength()">
+<footer style="width:100%;right:0px;bottom:0px;position:fixed;">
+<!--md-tabs id="pagingTabs" md-selected="selectedPageIndx" md-border-bottom md-autoselect md-align-tabs="bottom"
+         ng-show="cu-entView=='Dashboard'"
+         ng-mouseover="adjustTitleLength()"-->
+	<md-tabs id="pagingTabs" md-align-tabs="bottom">
     <md-tab ng-repeat="page in $root.dashboard.pages" md-on-select="selectPage(page)">
         <md-tab-label>
             <div layout="row" layout-align="center center" ng-dblclick="renamePage(page.pageName, page.pageID)"
@@ -163,6 +165,6 @@
         </md-tab-body>
     </md-tab>
 </md-tabs>
-
+</footer>
 
 

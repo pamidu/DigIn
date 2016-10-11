@@ -2191,46 +2191,6 @@ routerApp.controller('inviteUserCtrl',['$scope','$mdDialog','$http','Digin_Tenan
     {
         $state.go(state,{ 'pageNo': pageNo });
     }
-	
-	//Introduction to Shell
-	$scope.IntroOptions = {
-        steps:[
-        {
-            element: document.querySelector('#step0'),
-            intro: "The <b>Designer</b> is an interactive tool which helps developers to easily create Angular forms in Material Design.",
-			position: 'right'
-        },
-		{
-            element: '#step1',
-            intro: "<b>Add a New Row</b> to the form, right-click the form inputs and edit properties there after",
-            position: 'right'
-        },
-		{
-            element: '#step2',
-            intro: 'After the design you can <b>Save</b> your work to continue working later',
-            position: 'right'
-        },
-        {
-            element: '#step3',
-            intro: "You can <b>Load</b> a previously saved Form (JSON file) and continue working from there, or else upload a project",
-            position: 'right'
-        },
-        {
-            element: '#step4',
-            intro: "The Script of the project can also be changed",
-            position: 'right'
-        }
-        ],
-        showStepNumbers: false,
-        exitOnOverlayClick: true,
-        exitOnEsc:true,
-        nextLabel: '<strong style="color:green">NEXT</strong>',
-        prevLabel: '<span>Previous</span>',
-        skipLabel: 'End Tour',
-        doneLabel: '<strong style="color:green">Got it!!</strong>'
-    };
-
-    $scope.ShouldAutoStart = false;
 
 
 

@@ -15,6 +15,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/angular-gridster.min.css"/>
 	<link rel="stylesheet" type="text/css" href="styles/v-accordion.min.css"/>
 	<link rel="stylesheet" type="text/css" href="styles/ng-croppie.min.css">
+	<link rel="stylesheet" type="text/css" href="styles/introjs.css">
 
 </head>
 <body ng-controller="NavCtrl as ctrl" layout="column" style="background:rgba(230, 230, 230, 1) !important">
@@ -200,7 +201,7 @@
 								<!--a ng-click="navigate($event,'Invite User')">Invite user</a>
 								<a ng-click="navigate($event,'Profile Settings')">Profile Settings</a-->
 								<a ng-click="navigate($event,'My Account')">My Account</a>
-								<a ng-click="navigate($event,'Help')">Help</a>
+								<a ng-click="Introduce()">Help</a>
 								<a ng-click="navigate($event,'Logout')">Logout</a>
 							  </div>
 							</div>
@@ -300,21 +301,21 @@
 			<div id="cssmenu">
 				<ul>
 					<!--li style="margin-top:25px;height:50px;font-size:24px" ng-click="navigate($event,'New Page')"><a><i class="icon-add-page"></i></a></li-->
-					<li style="margin-top:25px;height:50px;font-size:24px" class="active has-sub"><a href="#"><i class="icon-report"></i></a>
+					<li style="margin-top:25px;height:50px;font-size:24px" class="active has-sub" id="step1"><a href="#"><i class="icon-report"></i></a>
 						<ul>
 							<li class="has-sub"><a><i class="ti-filter sub-menu-icon"></i>Report Development</a></li>
 							<li class="has-sub"><a><i class="ti-notepad sub-menu-icon"></i>Published Reports</a></li>
 						</ul>
 					</li>
-					<li style="height:50px;font-size:24px" ng-click="navigate($event,'RealTime')"><a><i class="icon-clock"></i></a></li>
+					<li style="height:50px;font-size:24px" ng-click="navigate($event,'RealTime')" id="step2"><a><i class="icon-clock"></i></a></li>
 					<!--li style="height:50px;font-size:24px" ng-click="navigate($event,'DataSource')"><a><i class="icon-database"></i></a></li-->
-					<li style="height:50px;font-size:24px" class="active has-sub"><a href="#"><i class="icon-database"></i></a>
+					<li style="height:50px;font-size:24px" class="active has-sub"><a href="#" id="step3"><i class="icon-database"></i></a>
 						<ul>
 							<li class="has-sub" ng-click="navigate($event,'Visualize Data')"><a><i class="ti-pie-chart sub-menu-icon"></i>Visualize Data</a></li>
 							<li class="has-sub" ng-click="navigate($event,'Upload Source')"><a><i class="ti-upload sub-menu-icon"></i>Upload Source</a></li>
 						</ul>
 					</li>
-					<li style="height:50px;font-size:24px" ng-click="navigate($event,'AddWidget')"><a><i class="icon-plugin"></i></a></li>
+					<li style="height:50px;font-size:24px" ng-click="navigate($event,'AddWidget')" id="step4"><a><i class="icon-plugin"></i></a></li>
 					<li style="height:50px;font-size:24px" class="active has-sub"><a href="#"><i class="icon-profile"></i></a>
 						<ul>
 							<li class="has-sub"><a><i class="ti-facebook sub-menu-icon"></i>Facebook</a></li>
@@ -387,6 +388,8 @@
 	<script type="text/javascript" src="http://code.highcharts.com/highcharts-3d.js"></script>
 	<script type="text/javascript" src="js/v-accordion.min.js"></script>
 	<script type="text/javascript" src="js/ng-croppie.min.js"></script>
+	<script src="js/intro.min.js"></script>
+	<script src="js/angular-intro.min.js"></script>
 	
 	<!--for rss feeds-->
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>

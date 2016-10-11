@@ -1,3 +1,5 @@
+
+
 /*update damith
 update UI version 1.0
 cmds >> common data source style
@@ -1062,9 +1064,20 @@ v-pane-content
     margin: 5px;
 }
 
-.chart-config-wrap-rw1 > ul > li > i {
+.chart-config-wrap-rw1 > ul > li > p > i {
     font-size: 40px;
     color: #ffffff;
+}
+
+.custom-chart-icon {
+    margin: 0 10px;
+    margin-bottom: 3px;
+}
+
+.custom-chart-rotate-icon {
+    margin: 0 10px;
+    margin-bottom: 3px;
+    transform: rotate(90deg);
 }
 
 /*main page loader*/
@@ -4412,7 +4425,7 @@ close button
 .blut-user-drp-setting {
     width: 167px;
     overflow: hidden;
-    height: 190px;
+    height: 150px;
     position: absolute;
     background: #ffffff;
     -webkit-border-bottom-right-radius: 5px;
@@ -4462,7 +4475,7 @@ close button
     width: 167px;
     position: absolute;
     background: #f9a525;
-    bottom: 50px;
+    bottom: 40px;
 }
 
 .blut-user-drp-setting > .menu > li.logout {
@@ -4774,7 +4787,7 @@ label {
 }
 
 md-tabs-canvas {
-    height: 34px;
+    height: 40px;
 }
 
 .blut-tab > .tab-blue.active {
@@ -4791,6 +4804,46 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
     background: #f9a525;
     color: #fff;
 }
+
+#pagingTabs md-tabs-wrapper
+{
+	background: white !important;
+	height: 35px !important;
+	border-top: 1px solid lightgrey;
+}
+#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab
+{
+	color: white !important;
+	background: #afb6bc;
+}
+
+#pagingTabs md-tabs-wrapper md-tabs-canvas
+{
+	left: 45px !important;
+	max-height:40px;
+}
+
+#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active
+{
+	color: white !important;
+	background: #3b6981 !important;
+	-ms-transform: scale(1.1, 1.1); /* IE 9 */
+    -webkit-transform: scale(1.1, 1.1); /* Safari */
+    transform: scale(1.1, 1.1);
+}
+
+#pagingTabs md-tabs-content-wrapper
+{
+	height: calc(100vh - 86px);	
+	position: relative;
+
+}
+
+md-tabs[md-align-tabs=bottom]
+{
+	padding-bottom: 40px !important;
+}
+
 
 .blut-close-btn {
     text-align: right;
@@ -5241,4 +5294,10 @@ div.bigcheck {
     margin-top: 6px;
     margin-left: 1px;
     align-items: center;
+}
+
+.onshareHover:hover{
+    box-shadow: 10px 10px 5px #888888;
+    cursor: pointer;
+    margin-top: 1px;
 }

@@ -485,7 +485,9 @@
                         <ul>
                             <li class="hvr-border-fade" ng-repeat="chart in commonData.chartTypes"
                                 ng-click="eventHndler.onClickSelectedChart(commonData.chartTypes,chart)">
-                                <i class="{{chart.icon}}"></i>
+                                <p ng-class="chart.name=='bar'?'custom-chart-rotate-icon':'custom-chart-icon'">
+                                    <i class="{{chart.icon}}"></i>
+                                </p>
                                 <small>{{chart.name}}</small>
                                 <div class="selectedChart"
                                     ng-class="chart.selected==true?'selectedChart':'displayNone'">

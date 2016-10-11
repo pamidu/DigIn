@@ -71,7 +71,35 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
       console.log("error");
   });
 
-
+   $scope.highchartsNG = {
+        options: {
+            chart: {
+                type: 'line',
+                // Explicitly tell the width and height of a chart
+                width: null
+            },
+            exporting: {
+                filename: '',
+                sourceWidth: 600,
+                sourceHeight: 400
+            },
+            xAxis: {
+                showEmpty: false
+            },
+            yAxis: {
+                showEmpty: false
+            },
+            credits: {
+                enabled: false
+            }
+        },
+        title: {
+            text: '',
+        },
+        yAxis: {
+            showEmpty: false
+        }
+    };
  
 
 

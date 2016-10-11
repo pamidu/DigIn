@@ -65,6 +65,8 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
   $http.get(Digin_Engine_API+"get_usage_summary?SecurityToken="+getCookie('securityToken'))
   .success(function(data){
       console.log(data.Result);
+       $scope.firstName = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;  
+        var db = new pouchDB('dashboard');
       $scope.usageDetails = data.Result;
   }).error(function(){
       console.log("error");
@@ -237,27 +239,6 @@ $scope.cancel=function(){
     };
 
 
-  setTimeout(function(){
-    Highcharts.chart('container_chart', {
-        title: {
-        text: 'Bandwidth Usage'
-        },
-        chart: {
-        type: "line"
-        
-        },
-
-        xAxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-        ]
-        },
-
-        series: [{
-        data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-        }]
-    });
-  }, 1000);
   
   var vm = this;
   

@@ -82,35 +82,7 @@ routerApp.controller('myAccountCtrl', function ($scope,$rootScope, $state, $mdDi
       console.log("error");
   });
 
-   $scope.highchartsNG = {
-        options: {
-            chart: {
-                type: 'line',
-                // Explicitly tell the width and height of a chart
-                width: null
-            },
-            exporting: {
-                filename: '',
-                sourceWidth: 600,
-                sourceHeight: 400
-            },
-            xAxis: {
-                showEmpty: false
-            },
-            yAxis: {
-                showEmpty: false
-            },
-            credits: {
-                enabled: false
-            }
-        },
-        title: {
-            text: '',
-        },
-        yAxis: {
-            showEmpty: false
-        }
-    };
+
  
 
 
@@ -427,6 +399,9 @@ $scope.cancel=function(){
 
   //#load stripe payement detail window
   vm.processInitialPurchase=function(ev,plan){  
+  
+
+  
     var stripeConfig = {
       publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
       title: 'DigIn',
@@ -451,6 +426,9 @@ $scope.cancel=function(){
   //#Upgrade exisitng package into another package
   //vm.upgradePackage=function(token,plan){ 
     vm.upgradePackage=function(plan){ 
+  
+  displayProgress("Proceed with payment.");
+  
     /*var pkgObj = {
             "token":token.id,
             "plan" : {
@@ -498,17 +476,17 @@ $scope.cancel=function(){
         },function(response){
               //console.log(response)
               displayError("Error while upgrade the package...");
-              //$mdDialog.hide();
+              $mdDialog.hide();
         })
     
   }
 
 /*proceed with payement*/
     vm.purchasePackage = function purchasePackage(token,plan) {
-        displayProgress('Processing...');
-
+        displayProgress('Payment processing...');
+    
         var sampleObj = {
-            "token":token.id,
+            "token":token,
             "plan" : {
                 "attributes":  [
                     {"tag":"Package","feature": plan.id,"amount": plan.numberOfUsers*plan.perMonth,"quantity":1,"action":"add"}
@@ -541,14 +519,15 @@ $scope.cancel=function(){
                     {
             notifications.toast('0','Error occured while completing payment procees.');
                     }
+           $mdDialog.hide();
         },function(response){;
-            notifications.toast('0','Error occured while completing payment procees.');
+            notifications.toast('0','Error occured while completing payment procees');
+       $mdDialog.hide();
         })
     }
+ 
   
   
-  
-
   //#Reactive subscriptions
   vm.reactiveSubscription=function(){ 
     

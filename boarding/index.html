@@ -64,6 +64,14 @@
 										  </md-input-container>
 										  
 										  <md-input-container class="md-block" flex-gt-sm>
+											<span>Company Address</span>
+											<input required name="companyAddress" ng-model="tenant.address">
+											<div ng-messages="step1.companyAddress.$error">
+											  <div ng-message="required">Address is required.</div>
+											</div>
+										  </md-input-container>
+										  
+										  <md-input-container class="md-block" flex-gt-sm>
 												<span>Business Model</span>
 												<md-select ng-model="tenant.businessModel" >
 													<md-optgroup label="Select business model">
@@ -137,7 +145,8 @@
 															  <center style="background:#06a7cf;color:white;font-size:16px;font-weight:700;padding:10px;border-radius: 2px 2px 0px 0px;">{{plan.name}}</center>
 															  <center style="background:#02b5e2;padding:10px;">
 																<div style="width:100px;height:100px;border-radius:100px;border: 5px solid white;" layout="column" layout-align="center center">
-																	<span style="color:white;font-size:25px;">${{plan.perMonth}}</span>
+																	<span style="color:white;font-size:25px;">{{plan.sp}}</span>
+																	<span style="color:white;font-size:25px;">{{plan.perMonth+plan.currancy}}</span>
 																	<span style="color:white;font-size:12px;">{{plan.per}}</span>
 																</div>
 																<md-button class="md-fab md-mini" ng-disabled="false" aria-label="Comment" style="background:#f9a525;position:absolute;margin-top: -10px;margin-left: 50px;" ng-show="plan.isSelected == true">
@@ -146,13 +155,14 @@
 															  </center>
 															<md-card-content layout="column" layout-align="center center">
 															  <p layout="row">{{plan.numberOfUsers }} <span ng-if="plan.numberOfUsers == '1'">&nbspUser</span><span ng-if="plan.numberOfUsers != '1'">&nbspUsers</span></p>
-															  <p>{{plan.storage}} of Storage</p>
-															  <p>{{plan.bandwidth}} of Bandwidth</p>
+															  <p>{{plan.storage+plan.StorageStr}}</p>
+															  <p>{{plan.bandwidth+plan.BandwidthStr}}</p>
 															</md-card-content>
 															
 															<md-card-content layout="column" layout-align="center center" style="background:#e7faff">
-															  <p>${{plan.perMonth}} / Per User (Monthly)</p>
-															  <p>${{plan.perYear}} / Per User (Yearly)  </p>
+															  <p>{{plan.perMonth+plan.currancy+plan.permonthStr}}</p>
+															  <p>{{plan.perYear+plan.currancy+plan.peryearStr}}  </p>
+															  <p>{{plan.Description}}</p>
 															</md-card-content>
 															
 															<!--md-card-content layout="column" layout-align="start start">
@@ -163,7 +173,7 @@
 															  <span style="padding: 5px;border-radius: 4px;margin: 6px;border: 1px solid #b7b7b7;color: grey;font-weight: 700;">
 																Total Amount:
 																<b style="font-size:20px;">
-																	<label for="price">${{plan.numberOfUsers*plan.perMonth}}</label>
+																	<label for="price">{{plan.price}}$</label>
 																</b>
 															  </span>
 															</md-card-content>

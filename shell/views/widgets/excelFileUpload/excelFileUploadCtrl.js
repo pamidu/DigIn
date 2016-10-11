@@ -82,7 +82,13 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     }
 
     $scope.moveToPreviousStep = function moveToPreviousStep() {
-            if ($scope.selectedStep > 0) {
+
+            if ($scope.selectedPath == "File" && uploadFlag == false) {
+
+                $scope.selectedStep = $scope.selectedStep - 2;
+                $scope.schema = [];
+
+            } else if ($scope.selectedStep > 0) {
                 $scope.selectedStep = $scope.selectedStep - 1;
             }
         }
@@ -120,6 +126,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     $scope.upload = function(files) {
         console.log(files);
         $scope.files = files;
+
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
         var uploadFlag;
         var storeFlag;
@@ -180,7 +187,10 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
 
     $scope.UploadWithUpdate = function() {
         $scope.preloader = true;
-
+        if ($scope.files.length <= 0) {
+            notifications.toast(0, "Please add a file");
+            return;
+        }
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
         if ($scope.selectedPath == "File") {

@@ -738,12 +738,18 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             var svgInnerContainer = svgEle[0].innerHTML;
             var chartName = '<text fill="#000000" font-size="15" font-family="Verdana" x="250" y="20">'+name+'</text>';
             svgString= '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0  600 600" width="100%"> '+chartName+' + '+svgInnerContainer+' +</svg>';
+
+
+
             $("#canvas").empty();
             var canvas = document.getElementById("canvas");
             var ctx = null;
             var ctx = canvas.getContext("2d");
             ctx.clearRect(0, 0, 600, 600);
-            
+            if (type == "jpeg") {
+                ctx.fillStyle = "#FFFFFF";
+                ctx.fillRect(0, 0, 600, 600);
+            }
             var DOMURL = self.URL || self.webkitURL || self;
             var img, svg = null;
             var img = new Image();

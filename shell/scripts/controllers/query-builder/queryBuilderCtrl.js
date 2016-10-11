@@ -1927,6 +1927,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     $scope.forecastObj.paramObj.fcast_days =1; 
                 }
 
+                
+
         } else {
             privateFun.fireMessage('0', data);
             $scope.eventHndler.isLoadingChart = false;
@@ -2166,6 +2168,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     series: serArr
                 };
                 $scope.eventHndler.isLoadingChart = false;
+                $scope.sendrequst = true;
                 $rootScope.tempForecastArr = angular.copy($scope.widget.widgetData.highchartsNG);
             } else {
                 privateFun.fireMessage('0', data);

@@ -443,13 +443,17 @@ md-tabs[md-align-tabs=bottom]
 								<div layout="row" style="padding:0px 10px 0px 10px">
 									<div flex>
 										<label>Name</label>
-										<input type="text"
-											   id="txtName"
+										
+
+										
+										
+										
+										<!--id="txtName" -->
+										<input type="text" class="form-control"
 											   ng-model="name"
 											   name="txtName"
 											   ng-disabled="editModeOn"
-											   class="form-control"
-											   ng-pattern="/^[a-zA-Z0-9]/"  ng-required="true" required ng-trim="false">
+											   ng-pattern="/^[a-zA-Z0-9]/"  ng-required="true">
 											   
 											   <div ng-messages="frmProfile.txtName.$error" role="alert">
 													<div ng-message="required" style="color:red">
@@ -466,7 +470,7 @@ md-tabs[md-align-tabs=bottom]
 											   ng-model="company"
 											   ng-disabled="editModeOn"
 											   class="form-control"
-											   ng-pattern="/^[a-zA-Z0-9]/"  ng-required="true" required ng-trim="false">
+											   ng-pattern="/^[a-zA-Z0-9]/"  ng-required="true" ng-trim="false">
 											   
 											   <div ng-messages="frmProfile.txtCompany.$error" role="alert">
 													<div ng-message="required" style="color:red" >
@@ -494,7 +498,7 @@ md-tabs[md-align-tabs=bottom]
 											   ng-model="user.contactNo"
 											   ng-disabled="editModeOn"
 											   class="form-control"
-											   valid-number ng-required="true" required ng-trim="true">
+											   valid-number ng-required="true" ng-trim="true">
 											   
 											   <div ng-messages="frmProfile.txtContactNo.$error" role="alert">
 													<div ng-message="required" style="color:red" >
@@ -504,11 +508,11 @@ md-tabs[md-align-tabs=bottom]
 									</div>
 									
 									
-									
-									
+							
+					
 								</div>
 								<!-- address details -->
-								<div layout="row" style="padding:0px 10px 0px 10px">
+								<!--div layout="row" style="padding:0px 10px 0px 10px">
 									<div flex="40">
 										<label>Billing Address </label>
 										<input type="text"
@@ -517,30 +521,17 @@ md-tabs[md-align-tabs=bottom]
 											   ng-disabled="editModeOn"
 											   class="form-control">
 									</div>
+									
+								
 									<div flex="40" style="padding-left: 5px;">
 										<label>Country</label>
-										<!--input type="text"
-											   id="txtCountry"
-											   ng-model="user.country"
-											   ng-disabled="editModeOn"
-											   class="form-control"-->
-											   
-
-											<!--select  id="txtCountry" ng-model="user.country" ng-options="Country.name for Country in allCountries" ng-disabled="editModeOn" class="form-control">
-												 <option id="coutnry" ng-selected="true" selected>{{user.country}}</option>
-											</select-->
 											<md-select ng-model="user.country" style="border: 1px solid #d0d0d0;height: 40px;"  ng-disabled="editModeOn">
 												 <md-option ng-value="Country.name" ng-repeat="Country in allCountries" ng-selected="{{ Country.name === user.country ? 'true' : 'false' }}">
 													{{Country.name}}
 												 </md-option>
 											</md-select>
-					
-															   
-											   
 									</div>
-
-									
-								
+										
 									<div flex="20" style="padding-left: 5px;">
 										<label>ZIP Code</label>
 										<input type="text"
@@ -549,7 +540,7 @@ md-tabs[md-align-tabs=bottom]
 											   ng-disabled="editModeOn"
 											   class="form-control">
 									</div>
-								</div>     
+								</div-->     
 								
 								<div layout="row" layout-align="center center">
 									<div ng-click="profile.clickEdit()" type="button" class="blut-edit-btn" style="margin:10px 10px 10px 10px" ng-if="editModeOn == true">
@@ -639,7 +630,7 @@ md-tabs[md-align-tabs=bottom]
 					</md-card>
 				</div>
 				<md-card class="product_card" style="padding: 10px">
-					 <highchart   config="highchartsNG"></highchart>
+						<div id="container_chart" style="margin:10px">Placeholder for chart</div>
 				</md-card>
 		
 				
@@ -689,7 +680,7 @@ md-tabs[md-align-tabs=bottom]
 											<span class="align-left"> 10 GB Storage</span>
 											<span class="align-left"> 100 GB of Bandwidth</span>
 											<div layout="row" layout-align="end end" style="margin-top: 10px;">
-												<md-button class="md-raised smallMdButton" ng-click="vm.deactivateAccount($event)"><span style="text-transform:none">Unsubscribe</span></md-button>
+												<md-button class="md-raised smallMdButton" ng-click="vm.deactivateAccount($event)"><span style="text-transform:none">Deactivate Account</span></md-button>
 												<md-button class="md-raised smallMdButton" ng-click="vm.updatePackage($event)"><span style="text-transform:none">Customize</span></md-button>
 											</div>
 										</div>

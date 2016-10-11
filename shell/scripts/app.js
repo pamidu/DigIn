@@ -36,7 +36,8 @@ var routerApp = angular.module('DuoDiginRt', [
     'pouchdb',
     'jkuri.slimscroll',
 	'md-steppers',
-    'stripe-payment-tools'
+    'stripe-payment-tools',
+	'angular-intro'
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
@@ -61,8 +62,8 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         */
         
         if (localStorage.getItem('initialLogin') == undefined) {
-            localStorage.setItem('initialLogin', false);
-            state = "home";
+            //localStorage.setItem('initialLogin', false);
+            state = "welcome";
         }
         else if(localStorage.getItem('initialLogin') == "false"){
            state = "home";

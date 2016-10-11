@@ -1,4 +1,4 @@
-routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', 'notifications','$http','Digin_Engine_API','Digin_Domain','$state', function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state){
+routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', 'notifications','$http','Digin_Engine_API','Digin_Domain','$state','ProfileService', function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService){
 
     $scope.sizes = [
         "5",

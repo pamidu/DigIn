@@ -18,7 +18,7 @@
     <span ng-if="leftMenuToggleState" class="ti-angle-left"></span>
 </div>
 <div ng-show="isEnableSubMenu" ng-mouseleave="menuMouseLeave()" class="blut-sub-panel-wrapper blut-setting">
-    <div class="blut-wrap">
+    <div class="blut-wrap" id="step{{$index}}">
         <div class="header-wrap">
             <ul>
                 <li>{{currentSubMenu.header}}</li>

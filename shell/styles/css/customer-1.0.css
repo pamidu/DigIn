@@ -1,3 +1,5 @@
+
+
 /*update damith
 update UI version 1.0
 cmds >> common data source style
@@ -4423,7 +4425,7 @@ close button
 .blut-user-drp-setting {
     width: 167px;
     overflow: hidden;
-    height: 190px;
+    height: 150px;
     position: absolute;
     background: #ffffff;
     -webkit-border-bottom-right-radius: 5px;
@@ -4473,7 +4475,7 @@ close button
     width: 167px;
     position: absolute;
     background: #f9a525;
-    bottom: 50px;
+    bottom: 40px;
 }
 
 .blut-user-drp-setting > .menu > li.logout {
@@ -5252,4 +5254,10 @@ div.bigcheck {
     margin-top: 6px;
     margin-left: 1px;
     align-items: center;
+}
+
+.onshareHover:hover{
+    box-shadow: 10px 10px 5px #888888;
+    cursor: pointer;
+    margin-top: 1px;
 }

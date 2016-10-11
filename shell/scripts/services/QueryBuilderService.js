@@ -233,11 +233,11 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                                 catArr = data.data.time;
                             }else{
                                 if(fObj.showActual == false){
-                                        Object.keys(data).forEach(function(key) {
+                                        Object.keys(data.data).forEach(function(key) {
 
                                             forcastArr =[];
 
-                                            var obj = data[key];
+                                            var obj = data.data[key];
                                             var a = obj.forecast.length - fObj.fcast_days;
 
                                             for(var i =a ; i < obj.forecast.length; i++){
@@ -259,9 +259,9 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                                         });
 
                                 }else{
-                                       Object.keys(data).forEach(function(key) {
+                                       Object.keys(data.data).forEach(function(key) {
 
-                                            var obj = data[key];
+                                            var obj = data.data[key];
                                           
 
                                             serArr.push({
@@ -291,8 +291,8 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                     dataArray = mapResult(data,widObj.foreCastObj);
                     widObj.highchartsNG.series = dataArray[0];
                     widObj.highchartsNG.xAxis.categories = dataArray[1]; 
-                    widObj.minDate =  data.min_date;
-                    widObj.maxDate =  data.max_date;                     
+                    widObj.minDate =  data.act_min_date;
+                    widObj.maxDate =  data.act_max_date;                     
                 }
                 widObj.syncState = true;
                 cb(widObj);

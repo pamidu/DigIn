@@ -187,12 +187,28 @@
                         <div class="col-md-6">
                             <div layout="row">
                                 <div>
-                                    <md-date-picker model="sinceDate" label="Since"
-                                                    dialog-md-theme="datePickerTheme"/>
+                                    <!-- < md-date-picker model="sinceDate" label="Since"
+                                                    dialog-md-theme="datePickerTheme"/> -->
+                                    <!-- #datepicker -->
+                                    <div class="date-filter">
+                                        <div class="inline-date"  style="width: 160px;">
+                                            <label>Since Date</label>
+                                            <input type="text" class="form-control datep" datep
+                                                   ng-model="sinceDate"/>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
-                                    <md-date-picker model="untilDate" label="Until"
-                                                    dialog-md-theme="datePickerTheme"/>
+                                    <!-- <md-date-picker model="untilDate" label="Until"
+                                                    dialog-md-theme="datePickerTheme"/> -->
+                                    <!-- #datepicker -->
+                                    <div class="date-filter">
+                                        <div class="inline-date"  style="width: 160px;">
+                                            <label>Until Date</label>
+                                            <input type="text" class="form-control datep" datep
+                                                   ng-model="untilDate"/>
+                                        </div>
+                                    </div>
                                 </div>
                                 <md-button class="md-primary" ng-click="changeTimeRange()">
                                     <i class="ti-search pull-right"></i>

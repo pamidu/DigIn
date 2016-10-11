@@ -1062,9 +1062,20 @@ v-pane-content
     margin: 5px;
 }
 
-.chart-config-wrap-rw1 > ul > li > i {
+.chart-config-wrap-rw1 > ul > li > p > i {
     font-size: 40px;
     color: #ffffff;
+}
+
+.custom-chart-icon {
+    margin: 0 10px;
+    margin-bottom: 3px;
+}
+
+.custom-chart-rotate-icon {
+    margin: 0 10px;
+    margin-bottom: 3px;
+    transform: rotate(90deg);
 }
 
 /*main page loader*/

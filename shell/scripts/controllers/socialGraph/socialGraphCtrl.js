@@ -24,10 +24,11 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     $scope.sentimentConfigSeries = [];
     $scope.postsObj = [];
     $scope.configData = [];
-    $scope.untilDate = new Date();
+    var untilDate = new Date();
     var secondDate = new Date();
-    secondDate.setDate($scope.untilDate.getDate() - 30);
-    $scope.sinceDate = secondDate;    
+    secondDate.setDate(untilDate.getDate() - 30);
+    $scope.sinceDate = moment(secondDate).format('LL');
+    $scope.untilDate = moment(untilDate).format('LL');
     $scope.defReqPool = [{method: 'setPageOverview'},
         {method: 'setWordCloud'},
         {method: 'setDemographicsinfo'},
@@ -517,11 +518,12 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         if ( $scope.newPage && !$scope.timeChanged ) {
             $scope.avgEngagement = 0;
             $scope.totalEngagement = 0;
-            $scope.untilDate = new Date();
+            var untilDate = new Date();
             var secondDate = new Date();
-            secondDate.setDate($scope.untilDate.getDate() - 30);
-            $scope.sinceDate = secondDate;            
-        }        
+            secondDate.setDate(untilDate.getDate() - 30);
+            $scope.sinceDate = moment(secondDate).format('LL');
+            $scope.untilDate = moment(untilDate).format('LL');
+        }
         reqPool.forEach(function (key) {
             eval("$scope." + key.method + "()");
         });
@@ -763,5 +765,26 @@ routerApp.directive("fixOnScroll", function () {
                 $(fixedDiv).scrollLeft(leftPos);
             }
         });
+    }
+}).directive('datep', function () {
+    return {
+        restrict: "A",
+        require: "ngModel",
+        link: function (scope, elem, attrs, ngModelCtrl) {
+            var updateModel = function (dateText) {
+                scope.$apply(function () {
+                    ngModelCtrl.$setViewValue(dateText);
+                });
+            };
+            var options = {
+                dateFormat: 'MM d, yy',
+                changeMonth: true,
+                changeYear: true,
+                onSelect: function (dateText) {
+                    updateModel(dateText);
+                }
+            };
+            elem.datepicker(options);
+        }
     }
 });

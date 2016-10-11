@@ -406,8 +406,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             settingsView: 'views/query/settings-views/highchartsSettings.html'
         }, {
             id: 'ct02',
-            icon: 'fa fa-bars',
-            name: 'bar ',
+            icon: 'ti-bar-chart-alt',
+            name: 'bar',
             chart: 'bar',
             selected: false,
             chartType: 'highCharts',
@@ -3620,7 +3620,7 @@ $scope.minDate = "";
                 } else {
                     //alert('request failed');
                     $scope.$apply(function(){
-                        privateFun.fireMessage('0', '<strong>Invalid query :</strong>please enter request failed ');
+                        privateFun.fireMessage('0', '<strong>Invalid query :</strong>Try Again!');
                         if ($scope.selectedChart.chartType == 'highCharts') {
                             $scope.highchartsNG.series = {};
                         }

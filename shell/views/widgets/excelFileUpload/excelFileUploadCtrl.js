@@ -138,7 +138,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
             if ($scope.selectedPath == "File") {
                 $scope.otherdata = {
                     "file_type": "datasource",
-                    "folder_name": ""
+                    "folder_name": null
                 };
             } else {
                 $scope.otherdata = {

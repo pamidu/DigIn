@@ -3,7 +3,7 @@
  */
 
 routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphServices,ngToast,
-                                                  $http, $rootScope, $mdDialog, $restFb) {
+                                                  $http, $rootScope, $mdDialog, $restFb, notifications) {
 
     $scope.totalLikes = 0;
     $scope.totalEngagement = 0;
@@ -181,7 +181,6 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                     Date.UTC(enDate[0], enDate[1] - 1, enDate[2]),
                     value[1]
                 ]);
-                console.log(Date.UTC(enDate[0], enDate[1] - 1, enDate[2]));
             });
 
             configSeries.push({
@@ -217,10 +216,10 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                 enabled: false
             },
             xAxis: {
-                type: "datetime",
-                dateTimeLabelFormats: { // don't display the dummy year
-                    month: '%e. %b. %Y'
-                },                
+                type: 'datetime',
+                labels: {
+                    format: '{value:%e. %b. %Y}'
+                }          
             },
             yAxis: {
                 lineWidth: 1
@@ -368,8 +367,6 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                             "pol": data[i-j].polarity,
                             "ico": sentIcons[data[i-j].sentiment]
                         };
-                        console.log("$scope.postsObj[i]['sentiment']");
-                        console.log($scope.postsObj[i]['sentiment']);
 
                         var x = moment($scope.postsObj[i].created_time).format('YYYY-MM-DD');
 
@@ -545,22 +542,27 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         var until = new Date($scope.untilDate);
         //alert(typeof(since));
         if (since > until) {
-             ngToast.create({
-                    className: 'danger',
-                    content: "From Date should be less than the To Date",
-                    horizontalPosition: 'center',
-                    verticalPosition: 'top',
-                    dismissOnClick: true
-                });
-             return;
-         }
+            ngToast.create({
+                className: 'danger',
+                content: "From Date should be less than the To Date",
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                dismissOnClick: true
+            });
+            return;
+        }
 
         var timeObj = {
             sinceStamp: Math.floor(since / 1000),
             untilStamp: Math.floor(until / 1000)+86400
         };
-   
-
+        var sinceTime = moment(timeObj.untilStamp);
+        var untilTime = moment(timeObj.sinceStamp);
+        var diff = sinceTime.diff(untilTime);
+        if ( diff > 8035200) {
+            notifications.toast(0, "Please select a time range of 3 months or lesser!");
+            return;
+        }
         $scope.getPageDetails($scope.page, timeObj, $scope.defReqPool, true);
     };
 

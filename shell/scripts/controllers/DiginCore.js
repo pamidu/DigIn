@@ -935,9 +935,11 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 nextLevel = "",
                                 highestLvl = this.options.customVar,
                                 drillObj = {},
-                                isLastLevel = false;
-                                selectedSeries = e.point.series.name;
-                                filterStr = "";
+                                isLastLevel = false,
+                                selectedSeries = e.point.series.name,
+                                filterStr = "",
+                                origName = "",
+                                serName = "";
                             // var cat = [];
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
@@ -968,6 +970,12 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             //aggregate method
                             clientObj.getAggData(srcTbl, fields, function(res, status, query) {
                                 filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
+                                angular.forEach( widget.widgetData.highchartsNG.series, function(series) {
+                                    if ( series.name == selectedSeries ) {
+                                        origName = series.origName;
+                                        serName = series.name;
+                                    }
+                                });                                
                                 widget.widgetData.widData.drillConf.currentLevel++;
                                 switch (widget.widgetData.widData.drillConf.currentLevel) {
                                     case 2:
@@ -983,10 +991,11 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 if (status) {
                                     for (var key in res[0]) {
                                         if (Object.prototype.hasOwnProperty.call(res[0], key)) {
-                                            if (key != nextLevel && key == selectedSeries) {
+                                            if (key != nextLevel && key == origName) {
                                                 drillObj = {
-                                                    name: key,
-                                                    data: []
+                                                    name: serName,
+                                                    data: [],
+                                                    origName: key
                                                 };
                                             }
                                         }
@@ -996,13 +1005,13 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                         if (!isLastLevel) {
                                             drillObj.data.push({
                                                 name: key[nextLevel],
-                                                y: parseFloat(key[drillObj.name]),
+                                                y: parseFloat(key[drillObj.origName]),
                                                 drilldown: true
                                             });
                                         } else {
                                             drillObj.data.push({
                                                 name: key[nextLevel],
-                                                y: parseFloat(key[drillObj.name])
+                                                y: parseFloat(key[drillObj.origName])
                                             });
                                         }
                                     });

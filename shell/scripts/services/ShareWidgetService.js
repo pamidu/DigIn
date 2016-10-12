@@ -18,11 +18,18 @@ routerApp.service('ShareWidgetService',function(Upload,$http,Digin_Engine_API,Di
         if(widget.widgetName=="highcharts" || widget.widgetName=="histogram"  || widget.widgetName=="forecast" || widget.widgetName=="boxplot"){
 
           var highchartsObj = angular.copy(widget.widgetData.highchartsNG);
-          highchartsObj.title.text = widgetName;
+
+          if ( highchartsObj.title !== undefined) {
+            highchartsObj.title.text = widgetName;
+          }
+
           var chart = angular.copy(highchartsObj.getHighcharts());
-          chart.setTitle({
-            text: widgetName
-          })
+          if ( highchartsObj.title !== undefined ) {
+            chart.setTitle({
+              text: widgetName
+            });
+          }          
+
           svg = chart.getSVG();
 
           var file = new File([svg], fileName, {type: "image/svg+xml"});

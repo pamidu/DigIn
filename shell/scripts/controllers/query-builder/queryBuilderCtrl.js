@@ -3364,7 +3364,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         if (Object.prototype.hasOwnProperty.call(serObj, key)) {
                             $scope.highchartsNG.series.push({
                                 name: key,
-                                data: serObj[key].data
+                                data: serObj[key].data,
+                                origName : key
                             });
                         }
                     }
@@ -3399,7 +3400,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                     highestLvl = this.options.customVar,
                                     drillObj = {},
                                     isLastLevel = false,
-                                    selectedSeries = e.point.series.name;
+                                    selectedSeries = e.point.series.name,
+                                    origName = "",
+                                    serName = "";
                                 // var cat = [];
                                 for (i = 0; i < drillOrdArr.length; i++) {
                                     if (drillOrdArr[i].name == highestLvl) {
@@ -3416,12 +3419,19 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                     if (status) {
                                         // filter only the selected fields from the result returned by the service
                                         filterService.filterAggData(res, $scope.sourceData.filterFields);
+                                        angular.forEach($scope.highchartsNG.series,function(series) {
+                                            if ( series.name == selectedSeries ) {
+                                                origName = series.origName;
+                                                serName = series.name;
+                                            }
+                                        });
                                         for (var key in res[0]) {
                                             if (Object.prototype.hasOwnProperty.call(res[0], key)) {
-                                                if (key != nextLevel && key == selectedSeries) {
+                                                if (key != nextLevel && key == origName) {
                                                     drillObj = {
-                                                        name: key,
-                                                        data: []
+                                                        name: serName,
+                                                        data: [],
+                                                        origName: key
                                                     };
                                                 }
                                             }
@@ -3430,13 +3440,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                             if (!isLastLevel) {
                                                 drillObj.data.push({
                                                     name: key[nextLevel],
-                                                    y: parseFloat(key[drillObj.name]),
+                                                    y: parseFloat(key[drillObj.origName]),
                                                     drilldown: true
                                                 });
                                             } else {
                                                 drillObj.data.push({
                                                     name: key[nextLevel],
-                                                    y: parseFloat(key[drillObj.name])
+                                                    y: parseFloat(key[drillObj.origName])
                                                 });
                                             }
                                         });
@@ -3557,6 +3567,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                 }
                                 serMainArr.push({
                                     name: serValKey,
+                                    origName: serValKey,
                                     data: serArr
                                 });
 
@@ -3585,6 +3596,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                                 }
                                                 drillSerMainArr.push({
                                                     name: dserValKey,
+                                                    origName: dserValKey,
                                                     id: res1[j][res[i].value],
                                                     data: drillSerArr
                                                 });

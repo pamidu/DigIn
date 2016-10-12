@@ -163,12 +163,11 @@
                 <div class="home-mini-card">
                     <div class="row m-t-0">
                         <div class="col-md-1">
-                                <span class="circle-icon md bg-primary">
-                                  <md-icon class="color-white ng-isolate-scope md-default-theme
-                                  fa fa-facebook fa-3x"
-                                           aria-hidden="true">
-                                  </md-icon>
-                                </span>
+                            <span class="circle-icon md bg-primary">
+                                <md-icon class="color-white ng-isolate-scope md-default-theme fa fa-facebook fa-3x" 
+                                aria-hidden="true">
+                                </md-icon>
+                            </span>
                         </div>
                         <div class="col-md-5">
                             <div class="graph-main-header-text">
@@ -186,9 +185,12 @@
                         </div>
                         <div class="col-md-6">
                             <div layout="row">
+                                <div class="col-md-1" layout="row" layout-align="center center">
+                                    <div class="back p-l-20 p-r-45 remove" ng-click="goBack()">
+                                        <i class="ti-arrow-left fnt-s-24"></i>
+                                    </div>
+                                </div>
                                 <div>
-                                    <!-- < md-date-picker model="sinceDate" label="Since"
-                                                    dialog-md-theme="datePickerTheme"/> -->
                                     <!-- #datepicker -->
                                     <div class="date-filter">
                                         <div class="inline-date"  style="width: 160px;">
@@ -199,8 +201,6 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <!-- <md-date-picker model="untilDate" label="Until"
-                                                    dialog-md-theme="datePickerTheme"/> -->
                                     <!-- #datepicker -->
                                     <div class="date-filter">
                                         <div class="inline-date"  style="width: 160px;">
@@ -240,11 +240,6 @@
                                       <p class="text-muted graph-h5">Likes</p>
                                   </li>
                               </ul> -->
-                        </div>
-                        <div class="col-md-1">
-                            <div class="back p-l-20" ng-click="goBack()">
-                                <i class="ti-arrow-left fnt-s-24"></i>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -339,7 +334,7 @@
                                                     </h2>
 
                                                     <p class="font-color-100">
-                                                        Average Engagement Per Week
+                                                        Average Engagement for this Week
                                                     </p>
                                                 </div>
                                             </section>

@@ -3643,6 +3643,11 @@ li:active {
     margin-top: 0px;
 }
 
+.search-fb-btn {
+    margin-top: auto;
+    min-width: 40px;
+}
+
 .setting-tab-wrap > div > div > .setting-tab {
     background: rgb(3, 128, 135);
     width: 160px;
@@ -5201,6 +5206,7 @@ i.icon-cancel:hover {
   display: block;
   text-decoration: none;
   padding: 6px;
+  margin-bottom: 0px !important;
   /*padding-left: 42px;*/
   -webkit-transition: all 0.25s ease;
   -o-transition: all 0.25s ease;

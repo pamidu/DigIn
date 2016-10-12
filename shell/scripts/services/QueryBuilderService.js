@@ -193,7 +193,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
     }; 
 
     var FORECAST = function(){
-        function mapResult(data,fObj,color){
+        function mapResult(data,fObj,widObj){
                     var forcastArr =[];
                     var serArr = [];
                     var catArr = [];
@@ -278,17 +278,73 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                                             catArr = obj.time;
                                         });
                                 }
-                            }    
-            var  dataArray =[];               
-            dataArray[0] = serArr;
-            dataArray[1] = catArr;
+                            }
+            var  dataArray =[];
+            if(widObj.isVisual == true){
+            // // ---------------------------------------------------------------------------------    
+                var startdate = formattedDate(widObj.Vstart);
+                var enddate = formattedDate(widObj.Vend);
+                var xAxisLen = catArr.length;
+
+                var startInd = -1;
+                var endInd = -1;
+                var cat = [];
+                var data = [];
+                for (var i = 0; i <= xAxisLen; i++) {
+                    var date = catArr[i] + "-1";
+                    var x = new Date(startdate);
+                    var y = new Date(date);
+                    var z = new Date(enddate);
+                    if (x <= y && y <= z) {
+                        if (startInd == -1) {
+                            startInd = i;
+                        }
+
+                        cat.push(catArr[i]);
+
+                        if (i == xAxisLen - 1)
+                            endInd = i;
+
+                    } else if (startInd > -1) {
+                        if (endInd == -1) {
+                            endInd = i;
+                        }
+                    }
+                }
+
+                var seriesLen = serArr.length;
+                for (var i = 0; i < seriesLen; i++) {
+                    data = [];
+                    for (var j = startInd; j <= endInd; j++) {
+                        data.push(serArr[i].data[j]);
+                    }
+
+                    if (data.length > 0) {
+                        serArr[i].data = data;
+                        if(fObj.showActual != true)
+                            serArr[i].zones[0].value = cat.length - fObj.fcast_days;
+                    }
+                }
+
+
+                dataArray[0] = serArr;
+                dataArray[1] = cat;
+            }else{
+                
+                dataArray[0] = serArr;
+                dataArray[1] = catArr;
+            }
+
+               
+                   
+                
             return dataArray;        
         }
 
         this.sync = function(q, cl, widObj, cb){
             cl.getForcast(widObj.foreCastObj, function(data, status){
                 if (status){
-                    dataArray = mapResult(data,widObj.foreCastObj);
+                    dataArray = mapResult(data,widObj.foreCastObj,widObj);
                     widObj.highchartsNG.series = dataArray[0];
                     widObj.highchartsNG.xAxis.categories = dataArray[1]; 
                     widObj.minDate =  data.act_min_date;
@@ -300,6 +356,18 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
         }
     };
 
+    var formattedDate = function (date) {
+
+        var d = new Date(date || Date.now()),
+            month = '' + (d.getMonth() + 1),
+            day = '1',
+            year = d.getFullYear();
+
+        if (month.length < 2) month = month;
+        if (day.length < 2) day = day;
+
+        return [year, month, day].join('-');
+    }
 
     var BOXPLOT = function(){
 

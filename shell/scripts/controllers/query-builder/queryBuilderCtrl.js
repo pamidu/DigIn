@@ -145,9 +145,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         for (var i = 0; i < $scope.sourceData.forecastAtt.length; i++) {
             $scope.forecastAtts[i] = $scope.sourceData.forecastAtt[i].name;
         }
+        $scope.forecastAtts.push("");
     }
 
-    $scope.intDate = new Date();
+    $scope.intDate = moment(new Date()).format('LL');
 
     if (typeof $scope.widget.widgetData.foreCastObjDate == 'undefined') {
         $scope.widget.widgetData.foreCastObjDate = $scope.intDate;
@@ -158,6 +159,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         enddate: $scope.intDate,
     };
 
+    $scope.generateDesable = false;
     $scope.forecastObj = {
         method: ["Additive", "Multiplicative"],
         models: ["double exponential smoothing", "triple exponential smoothing"],
@@ -416,6 +418,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             settingsView: 'views/query/settings-views/highchartsSettings.html'
         }, {
             id: 'ct03',
+            icon: 'fa fa-line-chart',
             icon: 'ti-bar-chart',
             name: 'column',
             chart: 'column',
@@ -1547,8 +1550,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
             if ($scope.widget.widgetData.foreCastObj !== undefined) {
                 $scope.forecastObj.paramObj = $scope.widget.widgetData.foreCastObj;
-                $scope.maxDate = $scope.widget.widgetData.maxDate;
-                $scope.minDate = $scope.widget.widgetData.minDate;
+                $scope.maxDate = moment(new Date($scope.widget.widgetData.maxDate)).format('LL');
+                $scope.minDate = moment(new Date($scope.widget.widgetData.minDate)).format('LL');
+
+                $scope.visualDate.startdate= $scope.widget.widgetData.Vstart;
+                $scope.visualDate.enddate = $scope.widget.widgetData.Vend;
+                $scope.useFiltering.status = $scope.widget.widgetData.isVisual;
             }
             delete $scope.highchartsNG.size;
         },
@@ -1575,18 +1582,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             $scope.generateForecast($scope.forecastObj.paramObj);
         },
         saveWidget: function(widget) {
-            widget.widgetData.highchartsNG = $rootScope.tempForecastArr;
+            widget.widgetData.highchartsNG = $scope.widget.widgetData.highchartsNG;
             widget.widgetData.widView = "views/query/chart-views/forecast.html";
             widget.widgetData.foreCastObj = $scope.forecastObj.paramObj;
             widget.widgetData.maxDate = $scope.maxDate;
             widget.widgetData.minDate = $scope.minDate;
+            widget.widgetData.Vstart = $scope.visualDate.startdate;
+            widget.widgetData.Vend = $scope.visualDate.enddate;
+            widget.widgetData.isVisual = $scope.useFiltering.status;
             widget.widgetData.initCtrl = "elasticInit";
             widget.widgetName = "forecast";
             $scope.saveChart(widget);
         }
     };
 
-    $scope.sendrequst = true;
+    
     $scope.$watch("forecastObj.paramObj", function(newValue, oldValue) {
 
         if (newValue !== oldValue && ((new Date(newValue.enddate) > new Date(newValue.startdate)) || (newValue.enddate == $scope.widget.widgetData.foreCastObjDate && newValue.startdate == $scope.widget.widgetData.foreCastObjDate) || newValue.showActual != oldValue.showActual)) {
@@ -1623,23 +1633,32 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     isenddateoki = true;
 
 
-                if($scope.sendrequst ){ // this will check wether there is a chnage that should actually generate the chart again 
+               // this will check wether there is a chnage that should actually generate the chart again 
                     if(isstartdateOki && isenddateoki){
-                        $scope.generateForecast(newValue);
+                        $scope.generateDesable = false;
                     }
-                    else if ($scope.sendrequst && !isstartdateOki) {
+                    else if (!isstartdateOki) {
+                        $scope.generateDesable = true;
                         privateFun.fireMessage('0', 'Calculation Start date should within '+$scope.minDate+' and '+$scope.maxDate+'');
+                        $scope.forecastObj.paramObj.enddate =  moment(new Date($scope.maxDate)).format('LL');
+                        $scope.forecastObj.paramObj.startdate = moment(new Date($scope.minDate)).format('LL');
                     }
-                    else if ($scope.sendrequst && !isenddateoki) {
+                    else if (!isenddateoki) {
+                        $scope.generateDesable = true;
                         privateFun.fireMessage('0', 'Calculation End date should within '+$scope.minDate+' and '+$scope.maxDate+'');
+                        $scope.forecastObj.paramObj.enddate =  moment(new Date($scope.maxDate)).format('LL');
+                        $scope.forecastObj.paramObj.startdate = moment(new Date($scope.minDate)).format('LL');
                     }  
-                 }
+                 
               
             }
         } else if (newValue !== oldValue && !(new Date(newValue.enddate) > new Date(newValue.startdate))) {
             privateFun.fireMessage('0', 'Invalid start date and end date');
+            $scope.generateDesable = true;
+            $scope.forecastObj.paramObj.enddate =  moment(new Date($scope.maxDate)).format('LL');
+            $scope.forecastObj.paramObj.startdate = moment(new Date($scope.minDate)).format('LL');
         }
-        $scope.sendrequst = true;
+      
     }, true);
 
     $scope.getForcastPeriod = function(newValue){
@@ -1647,8 +1666,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         var CalcEnddate;
         var forecastDays;
 
+
+
             var CalcEnddate   = new Date($scope.forecastObj.paramObj.enddate);
-            var visualEnddate = new Date(newValue.enddate);
+            var visualEnddate = new Date($scope.visualDate.enddate);
 
             var diff = new Date(visualEnddate - CalcEnddate);
 
@@ -1671,35 +1692,31 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     }
 
 
-    $scope.$watch("visualDate", function(newValue, oldValue) {
-
-    
-    var visualStartDateOk = false;
-    var VisualEndDateok = false;
-
-    var calcStartdate = new Date($scope.forecastObj.paramObj.startdate);
-    var CalcEnddate = new Date($scope.forecastObj.paramObj.enddate);
-
-
-    var visualSdate = new Date(newValue.startdate).getTime();
-    var visualEndDate =  new Date(newValue.enddate).getTime();
-    calcStartdate=calcStartdate.getTime();
-    CalcEnddate = CalcEnddate.getTime();
-
-    if(calcStartdate < visualSdate && visualSdate < CalcEnddate){
-        visualStartDateOk = true;
+    $scope.ForcastBtnFun = function(){
+        if($scope.useFiltering.status == true){
+            if($scope.VisualDatesOk == false){
+                privateFun.fireMessage('0', 'Invalid visualization start date and end date');
+            }else{
+                $scope.generateForecastWithFiltering($scope.forecastObj.paramObj);
+            }
+        }else{
+            $scope.generateForecast($scope.forecastObj.paramObj);
+        }
     }
 
-    if(CalcEnddate < visualEndDate)
-        var VisualEndDateok = true;
-    
-    if (newValue !== oldValue && visualStartDateOk && VisualEndDateok && ((new Date(newValue.enddate) > new Date(newValue.startdate)))) {
+     $scope.generateForecastWithFiltering = function(fobj){
 
-        var forecast_days = $scope.getForcastPeriod(newValue);
-        $scope.sendrequst =false;
-        $scope.forecastObj.paramObj.fcast_days = forecast_days;
+        var forecast_days = $scope.getForcastPeriod();
+        $scope.forecastObj.paramObj.fcast_days = forecast_days; 
 
+        $scope.widget.widgetData.highchartsNG = {};
+        $scope.widget.widgetData.highchartsNG = {
+            title: {
+                text: ''
+            }
+        };
         $scope.eventHndler.isLoadingChart = true;
+
         $scope.client.getForcast($scope.forecastObj.paramObj, function(data, status, fObj) {
 
             if (status) {
@@ -1707,15 +1724,19 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 var serArr = [];
                 var catArr = [];
 
-                $scope.maxDate = data.act_max_date;
-                $scope.minDate = data.act_min_date;
+                $scope.maxDate = moment(new Date(data.act_max_date)).format('LL');
+                $scope.minDate = moment(new Date(data.act_min_date)).format('LL');
+
+                // $scope.forecastObj.paramObj.enddate =  moment(new Date(data.max_date)).format('LL');
+                // $scope.forecastObj.paramObj.startdate = moment(new Date(data.min_date)).format('LL');
+                
 
                 if(data.warning != null)
                     privateFun.fireMessage('0',data.warning );
 
 
                 if(data.len_season != $scope.forecastObj.paramObj.len_season){
-                    $scope.sendrequst = false;
+                   
                     $scope.forecastObj.paramObj.len_season = data.len_season;
                 }
 
@@ -1853,15 +1874,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
                 $scope.eventHndler.isLoadingChart = false;
 
-                $scope.temptArr = angular.copy($scope.widget.widgetData.highchartsNG);
+                $scope.temptArr = $scope.widget.widgetData.highchartsNG;
 
                 // var categories = catArr;
                 // var series = serArr;
 
 
                 // ---------------------------------------------------------------------------------    
-                var startdate = formattedDate(newValue.startdate);
-                var enddate = formattedDate(newValue.enddate);
+                var startdate = formattedDate($scope.visualDate.startdate);
+                var enddate = formattedDate($scope.visualDate.enddate);
                 var xAxisLen = $scope.temptArr.xAxis.categories.length;
 
                 var startInd = -1;
@@ -1911,35 +1932,68 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
             // --------------------------------------------------------------------------------------
 
-            
-
-                if($scope.forecastObj.paramObj.interval = "Monthly"){
-                    $scope.sendrequst = false;
-                    $scope.forecastObj.paramObj.fcast_days =12; 
-
-                }else if($scope.forecastObj.paramObj.interval = "Daily"){
-                    $scope.sendrequst = false;
-                    $scope.forecastObj.paramObj.fcast_days =7; 
-
-                }else if($scope.forecastObj.paramObj.interval = "Yearly"){
-                    $scope.sendrequst = false;
-                    $scope.forecastObj.paramObj.fcast_days =1; 
-                }
-
-                
-
+        
         } else {
             privateFun.fireMessage('0', data);
             $scope.eventHndler.isLoadingChart = false;
         }
     });
-        } else if (newValue !== oldValue && !(new Date(newValue.enddate) > new Date(newValue.startdate))) {
-            privateFun.fireMessage('0', 'Invalid start date and end date');
-        }else if(newValue !== oldValue && !visualStartDateOk){
-            privateFun.fireMessage('0', 'Start date should within '+$scope.minDate+' and '+$scope.maxDate+'');
-        }else if(newValue !== oldValue && !VisualEndDateok){
-            privateFun.fireMessage('0', 'End date should  greater than '+$scope.maxDate+'');
-        }
+
+
+
+    }
+
+
+    $scope.useFiltering ={
+        status:false,
+    } 
+    $scope.VisualDatesOk = false; 
+    $scope.$watch("visualDate", function(newValue, oldValue) {
+
+        if (newValue !== oldValue){
+            var calcStartdate = new Date($scope.forecastObj.paramObj.startdate);
+            var CalcEnddate = new Date($scope.forecastObj.paramObj.enddate);
+
+
+            var visualSdate = new Date(newValue.startdate).getTime();
+            var visualEndDate =  new Date(newValue.enddate).getTime();
+            calcStartdate=calcStartdate.getTime();
+            CalcEnddate = CalcEnddate.getTime();
+
+            var isVisualStartdateOK =false;
+            var isVisualEndOk= false;
+            if(visualSdate < visualEndDate){
+
+                if(calcStartdate <= visualSdate && visualSdate <= CalcEnddate){
+                    isVisualStartdateOK = true;
+                }
+
+                if(CalcEnddate <= visualEndDate){
+                    isVisualEndOk = true;
+                }
+
+                if(isVisualStartdateOK && isVisualEndOk){
+                    // $scope.useFiltering = true;
+                    $scope.VisualDatesOk = true;
+                }
+                else if(!isVisualEndOk) {
+                    privateFun.fireMessage('0', 'Visualization End date should  greater than '+$scope.maxDate+'');
+                    $scope.visualDate.startdate=  moment(new Date()).format('LL');
+                    $scope.visualDate.enddate=  moment(new Date()).format('LL');
+                }else if(!isVisualStartdateOK){
+                    privateFun.fireMessage('0', 'Visualization Start date should within '+$scope.minDate+' and '+$scope.maxDate+'');
+                    $scope.visualDate.startdate=  moment(new Date()).format('LL');
+                    $scope.visualDate.enddate=  moment(new Date()).format('LL');
+                }
+
+            }else{
+                 privateFun.fireMessage('0', 'Invalid visualization start date and end date');
+                 $scope.visualDate.startdate=  moment(new Date()).format('LL');
+                 $scope.visualDate.enddate=  moment(new Date()).format('LL');
+            }
+            
+    }
+
     }, true);
 
     function formattedDate(date) {
@@ -2001,10 +2055,29 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         }
     };
 
+
+  
+
+
+
     $scope.maxDate = "";
     $scope.minDate = "";
 
+
     $scope.generateForecast = function(fObj) {
+
+
+        if ($scope.forecastObj.paramObj.interval == "Yearly"){
+            $scope.forecastObj.paramObj.fcast_days =1; 
+        }
+
+        else if ($scope.forecastObj.paramObj.interval == "Daily"){
+            $scope.forecastObj.paramObj.fcast_days =7; 
+        }
+        else if ($scope.forecastObj.paramObj.interval == "Monthly"){
+            $scope.forecastObj.paramObj.fcast_days =12; 
+        }
+
         $scope.widget.widgetData.highchartsNG = {};
         $scope.widget.widgetData.highchartsNG = {
             title: {
@@ -2019,12 +2092,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 var catArr = [];
 
                
-                $scope.maxDate = data.act_max_date;
-                $scope.minDate = data.act_min_date;
               
-                $scope.sendrequst = false;
-                $scope.forecastObj.paramObj.enddate =  new Date(data.act_max_date);
-                $scope.forecastObj.paramObj.startdate = new Date(data.act_min_date);
+                $scope.maxDate = moment(new Date(data.act_max_date)).format('LL');
+                $scope.minDate = moment(new Date(data.act_min_date)).format('LL');
+              
+                
+                $scope.forecastObj.paramObj.enddate =  moment(new Date(data.max_date)).format('LL');
+                $scope.forecastObj.paramObj.startdate = moment(new Date(data.min_date)).format('LL');
+                 
 
                 // to check wether service has returned any warnings
                 if(data.warning != null)
@@ -2032,7 +2107,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
                 //if the service has return a diferent len_season set it
                 if(data.len_season != $scope.forecastObj.paramObj.len_season){
-                    $scope.sendrequst = false;
                     $scope.forecastObj.paramObj.len_season = data.len_season;
                 }
 
@@ -2167,8 +2241,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     series: serArr
                 };
                 $scope.eventHndler.isLoadingChart = false;
-                $scope.sendrequst = true;
-                $rootScope.tempForecastArr = angular.copy($scope.widget.widgetData.highchartsNG);
+                
             } else {
                 privateFun.fireMessage('0', data);
                 $scope.eventHndler.isLoadingChart = false;

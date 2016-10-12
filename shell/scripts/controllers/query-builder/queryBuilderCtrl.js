@@ -1845,6 +1845,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                 }
                             }
                         },
+                        credits: {
+                            enabled: false
+                          },
                         exporting: {
                             sourceWidth: 600,
                             sourceHeight: 400,
@@ -2230,6 +2233,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                 }
                             }
                         },
+                        credits: {
+                            enabled: false
+                          },
                         exporting: {
                             sourceWidth: 600,
                             sourceHeight: 400,

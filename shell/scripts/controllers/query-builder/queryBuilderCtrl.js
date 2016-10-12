@@ -1556,6 +1556,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 $scope.visualDate.startdate= $scope.widget.widgetData.Vstart;
                 $scope.visualDate.enddate = $scope.widget.widgetData.Vend;
                 $scope.useFiltering.status = $scope.widget.widgetData.isVisual;
+                $scope.VisualDatesOk = $scope.widget.widgetData.VisualDatesOk ;
             }
             delete $scope.highchartsNG.size;
         },
@@ -1590,6 +1591,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             widget.widgetData.Vstart = $scope.visualDate.startdate;
             widget.widgetData.Vend = $scope.visualDate.enddate;
             widget.widgetData.isVisual = $scope.useFiltering.status;
+            widget.widgetData.VisualDatesOk  = $scope.VisualDatesOk;
             widget.widgetData.initCtrl = "elasticInit";
             widget.widgetName = "forecast";
             $scope.saveChart(widget);
@@ -1640,14 +1642,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     else if (!isstartdateOki) {
                         $scope.generateDesable = true;
                         privateFun.fireMessage('0', 'Calculation Start date should within '+$scope.minDate+' and '+$scope.maxDate+'');
-                        $scope.forecastObj.paramObj.enddate =  moment(new Date($scope.maxDate)).format('LL');
-                        $scope.forecastObj.paramObj.startdate = moment(new Date($scope.minDate)).format('LL');
+                        // $scope.forecastObj.paramObj.enddate =  moment(new Date($scope.maxDate)).format('LL');
+                        // $scope.forecastObj.paramObj.startdate = moment(new Date($scope.minDate)).format('LL');
                     }
                     else if (!isenddateoki) {
                         $scope.generateDesable = true;
                         privateFun.fireMessage('0', 'Calculation End date should within '+$scope.minDate+' and '+$scope.maxDate+'');
-                        $scope.forecastObj.paramObj.enddate =  moment(new Date($scope.maxDate)).format('LL');
-                        $scope.forecastObj.paramObj.startdate = moment(new Date($scope.minDate)).format('LL');
+                        // $scope.forecastObj.paramObj.enddate =  moment(new Date($scope.maxDate)).format('LL');
+                        // $scope.forecastObj.paramObj.startdate = moment(new Date($scope.minDate)).format('LL');
                     }  
                  
               
@@ -1655,8 +1657,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         } else if (newValue !== oldValue && !(new Date(newValue.enddate) > new Date(newValue.startdate))) {
             privateFun.fireMessage('0', 'Invalid start date and end date');
             $scope.generateDesable = true;
-            $scope.forecastObj.paramObj.enddate =  moment(new Date($scope.maxDate)).format('LL');
-            $scope.forecastObj.paramObj.startdate = moment(new Date($scope.minDate)).format('LL');
+            // $scope.forecastObj.paramObj.enddate =  moment(new Date($scope.maxDate)).format('LL');
+            // $scope.forecastObj.paramObj.startdate = moment(new Date($scope.minDate)).format('LL');
         }
       
     }, true);
@@ -1678,7 +1680,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             var days = (diff.getUTCDate()) + (365 * years);
 
             if($scope.forecastObj.paramObj.interval == "Yearly"){
-                forecastDays = years;
+                forecastDays = years+1;
             }
             else if($scope.forecastObj.paramObj.interval == "Monthly"){
                 forecastDays = months+1;
@@ -1697,6 +1699,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             if($scope.VisualDatesOk == false){
                 privateFun.fireMessage('0', 'Invalid visualization start date and end date');
             }else{
+
                 $scope.generateForecastWithFiltering($scope.forecastObj.paramObj);
             }
         }else{
@@ -1842,6 +1845,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                 }
                             }
                         },
+                        credits: {
+                            enabled: false
+                          },
                         exporting: {
                             sourceWidth: 600,
                             sourceHeight: 400,
@@ -1874,6 +1880,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
                 $scope.eventHndler.isLoadingChart = false;
 
+                if(typeof $scope.widget.widgetData.highchartsNG.series != "undefined"){
+                  $scope.widget.widgetData.highchartsNG.series.forEach(function(key) {
+                     if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
+                   });
+                }
+
                 $scope.temptArr = $scope.widget.widgetData.highchartsNG;
 
                 // var categories = catArr;
@@ -1890,7 +1902,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 var cat = [];
                 var data = [];
                 for (var i = 0; i < xAxisLen; i++) {
-                    var date = $scope.temptArr.xAxis.categories[i] + "-1";
+
+                    if($scope.forecastObj.paramObj.interval != "Daily"){
+                         var date = $scope.temptArr.xAxis.categories[i] + "-1";
+                    }
+                    else{
+                        var date = $scope.temptArr.xAxis.categories[i];
+                    }
                     var x = new Date(startdate);
                     var y = new Date(date);
                     var z = new Date(enddate);
@@ -1975,21 +1993,25 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 if(isVisualStartdateOK && isVisualEndOk){
                     // $scope.useFiltering = true;
                     $scope.VisualDatesOk = true;
+                    $scope.generateDesable = false;
                 }
                 else if(!isVisualEndOk) {
                     privateFun.fireMessage('0', 'Visualization End date should  greater than '+$scope.maxDate+'');
-                    $scope.visualDate.startdate=  moment(new Date()).format('LL');
-                    $scope.visualDate.enddate=  moment(new Date()).format('LL');
+                    $scope.generateDesable = true;
+                    // $scope.visualDate.startdate=  moment(new Date()).format('LL');
+                    // $scope.visualDate.enddate=  moment(new Date()).format('LL');
                 }else if(!isVisualStartdateOK){
                     privateFun.fireMessage('0', 'Visualization Start date should within '+$scope.minDate+' and '+$scope.maxDate+'');
-                    $scope.visualDate.startdate=  moment(new Date()).format('LL');
-                    $scope.visualDate.enddate=  moment(new Date()).format('LL');
+                    $scope.generateDesable = true;
+                    // $scope.visualDate.startdate=  moment(new Date()).format('LL');
+                    // $scope.visualDate.enddate=  moment(new Date()).format('LL');
                 }
 
             }else{
                  privateFun.fireMessage('0', 'Invalid visualization start date and end date');
-                 $scope.visualDate.startdate=  moment(new Date()).format('LL');
-                 $scope.visualDate.enddate=  moment(new Date()).format('LL');
+                 $scope.generateDesable = true;
+                 // $scope.visualDate.startdate=  moment(new Date()).format('LL');
+                 // $scope.visualDate.enddate=  moment(new Date()).format('LL');
             }
             
     }
@@ -2136,7 +2158,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         serArr.push({
                             name: 'Forcasted',
                             data: data.data.forecast,
-                            dashStyle: 'dash'
+                            dashStyle: 'dash',
                         })
                     }
 
@@ -2211,6 +2233,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                 }
                             }
                         },
+                        credits: {
+                            enabled: false
+                          },
                         exporting: {
                             sourceWidth: 600,
                             sourceHeight: 400,
@@ -2240,6 +2265,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     },
                     series: serArr
                 };
+
+                if(typeof $scope.widget.widgetData.highchartsNG.series != "undefined"){
+                  $scope.widget.widgetData.highchartsNG.series.forEach(function(key) {
+                     if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
+                   });
+                }
+
                 $scope.eventHndler.isLoadingChart = false;
                 
             } else {
@@ -2543,6 +2575,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         },
                         series: seriesArray
                     };
+
                     $scope.dataToBeBind.receivedQuery = query;
                 } else {}
             });

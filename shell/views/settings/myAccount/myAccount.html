@@ -600,7 +600,7 @@ md-tabs[md-align-tabs=bottom]
 
 								<div layout="column" flex>
 									<text style="font-weight:700;color:grey;font-size:15px">REPORTS</text>
-									<text style="font-size:50px">{{usageDetails.report_count}}</text>
+									<text style="font-size:50px">{{usageDetails.Report}}</text>
 								</div>
 							</div>
 						</div>
@@ -611,8 +611,8 @@ md-tabs[md-align-tabs=bottom]
 								</div>
 
 								<div layout="column" flex>
-									<text style="font-weight:700;color:grey;font-size:15px">LOGGED-IN USERS</text>
-									<text style="font-size:50px">2</text>
+									<text style="font-weight:700;color:grey;font-size:15px">STORAGE</text>
+									<text style="font-size:50px">{{usageDetails.storage_bq/1024000 | number:0}} GB</text>
 								</div>
 							</div>
 							<div layout="row" flex style="padding:10px">
@@ -621,8 +621,8 @@ md-tabs[md-align-tabs=bottom]
 								</div>
 
 								<div layout="column" flex>
-									<text style="font-weight:700;color:grey;font-size:15px">TOTAL USERS</text>
-									<text style="font-size:50px">50</text>
+									<text style="font-weight:700;color:grey;font-size:15px">DATA USAGE</text>
+									<text style="font-size:50px">{{usageDetails.download_bq/1024000 |  number:0}} GB </text>
 								</div>
 							</div>
 						</div>

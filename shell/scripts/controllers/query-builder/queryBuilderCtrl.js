@@ -1694,7 +1694,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
     $scope.ForcastBtnFun = function(){
         if($scope.useFiltering.status == true){
-            $scope.generateForecastWithFiltering($scope.forecastObj.paramObj);
+            if($scope.VisualDatesOk == false){
+                privateFun.fireMessage('0', 'Invalid visualization start date and end date');
+            }else{
+                $scope.generateForecastWithFiltering($scope.forecastObj.paramObj);
+            }
         }else{
             $scope.generateForecast($scope.forecastObj.paramObj);
         }
@@ -1943,7 +1947,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     $scope.useFiltering ={
         status:false,
     } 
-
+    $scope.VisualDatesOk = false; 
     $scope.$watch("visualDate", function(newValue, oldValue) {
 
         if (newValue !== oldValue){
@@ -1970,6 +1974,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
                 if(isVisualStartdateOK && isVisualEndOk){
                     // $scope.useFiltering = true;
+                    $scope.VisualDatesOk = true;
                 }
                 else if(!isVisualEndOk) {
                     privateFun.fireMessage('0', 'Visualization End date should  greater than '+$scope.maxDate+'');

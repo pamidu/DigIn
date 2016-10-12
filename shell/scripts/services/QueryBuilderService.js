@@ -279,9 +279,19 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                                         });
                                 }
                             }
+
+
+
+            if(typeof serArr != "undefined"){
+                  serArr.forEach(function(key) {
+                     if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
+                   });
+            }
+
+
             var  dataArray =[];
             if(widObj.isVisual == true){
-            // // ---------------------------------------------------------------------------------    
+            // ---------------------------------------------------------------------------------    
                 var startdate = formattedDate(widObj.Vstart);
                 var enddate = formattedDate(widObj.Vend);
                 var xAxisLen = catArr.length;
@@ -291,7 +301,13 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                 var cat = [];
                 var data = [];
                 for (var i = 0; i <= xAxisLen; i++) {
-                    var date = catArr[i] + "-1";
+
+                    if(widObj.interval != "Daily"){
+                         var date = catArr[i] + "-1";
+                    }
+                    else{
+                        var date = catArr[i];
+                    }
                     var x = new Date(startdate);
                     var y = new Date(date);
                     var z = new Date(enddate);
@@ -334,9 +350,6 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                 dataArray[0] = serArr;
                 dataArray[1] = catArr;
             }
-
-               
-                   
                 
             return dataArray;        
         }

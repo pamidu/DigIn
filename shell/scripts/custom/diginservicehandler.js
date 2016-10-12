@@ -56,7 +56,9 @@
                 },
                 getAggData: function(tbl, aggObjArr, cb, gb, con) {
                     var strField = "";
-
+                    if (con !== undefined) {
+                        con = con.replace(/&/g , "%26");                        
+                    }
                     aggObjArr.forEach(function(key) {
                         if (key.field !== undefined){
                             strField += "[%27" + key.field + "%27,%27" + key.agg + "%27],";                            

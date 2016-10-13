@@ -49,7 +49,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         //#Added by Chamila
         //#to get session detail for logged user
-        $http.get(Digin_Tenant + '/GetSession/' + getCookie('securityToken') + '/Nil')
+        $http.get('/auth/GetSession/' + getCookie('securityToken') + '/Nil')
             .success(function (data) {
                 console.log(data);
                 $rootScope.SessionDetail = data;
@@ -58,7 +58,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         });
 
         //#to get tenant ID for logged user
-        $http.get(Digin_Tenant + '/tenant/GetTenants/' + getCookie('securityToken'))
+         $http.get('/auth/tenant/GetTenants/' + getCookie('securityToken'))
             .success(function (data) {
                 console.log(data);
                 $rootScope.TenantID = data[0].TenantID;
@@ -858,7 +858,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
 
                 getTenantID: function () {
-                    $http.get(Digin_Tenant + '/tenant/GetTenants/' + getCookie('securityToken'))
+                $http.get('/auth/tenant/GetTenants/' + getCookie('securityToken'))
                         .success(function (data) {
                             console.log(data);
                             $rootScope.TenantID = data[0].TenantID;

@@ -118,10 +118,11 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
 
 //#Get tenant secutity token#//
 //http://prod.auth.digin.io:3048/GetSession/1716b085cc5bd67a7cb887e978de148e/aaaaa.prod.digin.io
+//http://chamiladilhani.duoworld.com/auth/GetSession/665b9bb99e36de2ae89d246a0b4f8dfa/chamiladilhani.duoworld.com
 $scope.getTenantToken=function(token,plan){
     $scope.getToken = function (cb) {
         $http({method: 'GET', 
-            url: Digin_Tenant+'/GetSession/'+decodeURIComponent($cookies.get('securityToken'))+'/'+$rootScope.createdTenantID, 
+            url: '/auth/GetSession/'+decodeURIComponent($cookies.get('securityToken'))+'/'+$rootScope.createdTenantID, 
             headers: {'Securitytoken':decodeURIComponent($cookies.get('securityToken'))}
             })
         .success(function (response) {
@@ -215,7 +216,7 @@ $scope.getTenantToken=function(token,plan){
                 vm.showBusyText = false;
                 vm.enableNextStep();
             }
-            
+           
             
         }
         else{
@@ -226,11 +227,14 @@ $scope.getTenantToken=function(token,plan){
                 tenantcode=tenantcode.toLowerCase();
                 tenantcode=tenantcode.replace(/ /g, '');
                 $scope.tenant.name=tenantcode;
-                
-                $http({method: 'GET', 
-                        url: Digin_Tenant+'/tenant/GetTenant/'+tenant.name+'.'+Digin_Domain, 
-                        headers: {'Securitytoken': SecToken}
-                })
+               
+				$http({
+					method: 'GET',
+					url: "/apis/usertenant/tenant/" + tenant.name + '.' + Digin_Domain,
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				})
                 .success(function (response) {
                     console.log(response);
                     if(response.TenantID==null || response.TenantID==""){
@@ -435,7 +439,7 @@ $scope.getTenantToken=function(token,plan){
             "token":token.id,
             "plan" : {
                 "attributes":  [
-                    {"tag":"Package","feature": plan.id,"amount": plan.numberOfUsers*plan.perMonth*100,"quantity":1,"action":"add"}
+                    {"tag":"Package","feature": plan.id,"amount": plan.numberOfUsers*plan.perMonth,"quantity":1,"action":"add"}
                 ],
                 "subscription": "month",
                 "quantity": 1 

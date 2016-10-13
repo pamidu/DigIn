@@ -66,8 +66,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             $scope.result = data.Result;
             $scope.UserID = JSON.parse(decodeURIComponent(getCookie('authData'))).UserID;
             $scope.domain = JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
-            $scope.emaildid =  JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
-            $scope.usageDetails =  $scope.result.usage[0][$scope.domain][$scope.UserID];
+            $scope.emaildid = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
+            $scope.usageDetails = $scope.result.usage[0][$scope.domain][$scope.UserID];
         }).error(function() {
             console.log("error");
         });
@@ -80,13 +80,42 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         .success(function(data) {
             console.log(data.Result);
             $scope.usageDetailsDatewise = data.Result;
+            $scope.monthlywise = data.Resultl
         }).error(function() {
             console.log("error");
         });
 
 
 
-
+    $scope.HighchartObj = {
+        options: {
+            chart: {
+                type: $scope.chartType,
+                // Explicitly tell the width and height of a chart
+                width: null
+            },
+            exporting: {
+                filename: '',
+                sourceWidth: 600,
+                sourceHeight: 400
+            },
+            xAxis: {
+                showEmpty: false
+            },
+            yAxis: {
+                showEmpty: false
+            },
+            credits: {
+                enabled: false
+            }
+        },
+        title: {
+            text: '',
+        },
+        yAxis: {
+            showEmpty: false
+        }
+    };
 
 
     //#Upload company logo/#/

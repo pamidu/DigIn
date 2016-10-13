@@ -4,7 +4,8 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
        inviteUser: function(userEmail) {
 			 notifications.startLoading("Inviting user, Please wait..");
              //return the promise directly.
-             return $http.get($v6urls.auth + '/tenant/AddUser/' + userEmail + '/user', {
+			 //http://testfirst1t.qa.duoworld.com/auth/tenant/AddUser/chamila@duosoftware.com/user
+             return $http.get('/auth/tenant/AddUser/' + userEmail + '/user', {
 					headers: {'Securitytoken': JSON.parse(decodeURIComponent(getCookie('authData'))).SecurityToken}
 				})
 			   .then(function(result) {
@@ -89,7 +90,9 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 						console.log(response);
 						notifications.toast(0, "Falied to remove user");
 				 });
-        }
+        },getSharableObjects:function(){
+			
+		}
 		
    }
 }]);//END OF DiginServices

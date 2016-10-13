@@ -300,7 +300,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                         }
                         newTableData.push(newObject);
                     }
-                    $scope.tableData = newTableData;
+                    $scope.tableData =  newTableData;
                     $scope.originalList = newTableData;
 
                 break;

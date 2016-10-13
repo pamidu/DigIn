@@ -4,7 +4,7 @@
     require_once ("include/session.php");
 
     $fullHost = strtolower($_SERVER['HTTP_HOST']);
-
+	INTS();
     switch ($fullHost) {
         case $mainDomain: // digin.io
             if(isset($_COOKIE["securityToken"])){
@@ -15,14 +15,12 @@
                 getURI();
             }
             else{
-                //getURI();
                 header("Location: http://www.digin.io");
             }
             break;
         case "www." . $mainDomain: // www.digin.io
             if(!isset($_COOKIE["securityToken"])){
-                //include ("index1.php");
-                
+                include ("login/index.html");
                 }
             else{
                 getURI();
@@ -33,6 +31,10 @@
             if($mainDomain != $_SERVER['HTTP_HOST']){ 
                 header("Location: http://". $mainDomain . "/login.php?r=http://" . $_SERVER['HTTP_HOST'] . '/s.php'); 
             }
+			else
+			{
+				header("Location: http://".$mainDomain."/login.php?r=http://".$_SERVER['HTTP_HOST'].'/s.php');
+			}
             exit();
         }
         

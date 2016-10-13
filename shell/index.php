@@ -1,4 +1,22 @@
 <!DOCTYPE html>
+
+<?php 
+
+	//var_dump($_SERVER['DOCUMENT_ROOT']) ; exit();
+
+	 if ($_SERVER['DOCUMENT_ROOT']=="/var/www/html"){
+		require_once($_SERVER['DOCUMENT_ROOT'] . "/include/config.php");
+		require_once($_SERVER['DOCUMENT_ROOT'] . "/include/session.php");
+	 }
+	 else{
+		require_once($_SERVER['DOCUMENT_ROOT'] . "/digin/include/config.php");
+		require_once($_SERVER['DOCUMENT_ROOT'] . "/digin/include/session.php");
+	 }
+
+	INTS();
+
+?>
+
 <html ng-app="DuoDiginRt" ng-controller="LoginCtrl">
 <head>
     <title>DigIn - Beyond BI</title>

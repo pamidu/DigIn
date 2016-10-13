@@ -228,24 +228,26 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 }
 
             }).success(function(data) {
-                console.log(data);
-                notifications.toast(1, "Successfully uploaded to the datawarehouse");
-                uploadFlag = true;
+                if (data.Is_Success){
+                    uploadFlag = true;
+                    notifications.toast(1, "Successfully uploaded to the datawarehouse");
+                    $scope.enableNextStep();
+                } else {
+                    uploadFlag = false;
+                    notifications.toast(1, data.custom_message);
+                    $scope.diginLogo = 'digin-logo-wrapper2';
+                }
                 $scope.preloader = false;
-                $scope.enableNextStep();
+                console.log(data);
 
             }).error(function(data) {
                 console.log(data);
                 uploadFlag = false;
-                notifications.toast(0, "There is an errror while uploading the file");
+                notifications.toast(0, "Error Uploading File!");
                 $scope.preloader = false;
                 $scope.diginLogo = 'digin-logo-wrapper2';
             });
-
         }
-
-
-
     };
 
 

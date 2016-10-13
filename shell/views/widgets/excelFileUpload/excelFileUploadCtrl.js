@@ -1,4 +1,4 @@
-routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$http', 'notifications', '$mdSidenav', 'Digin_Domain', 'Upload', 'Digin_Engine_API', '$diginurls', '$diginengine', function($scope, $mdDialog, $state, $http, notifications, $mdSidenav, Digin_Domain, Upload, Digin_Engine_API, $diginurls, $diginengine) {
+routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$http', 'notifications', '$mdSidenav', 'Digin_Domain', 'Upload', 'Digin_Engine_API', '$diginurls', '$diginengine', '$location', '$anchorScroll', function($scope, $mdDialog, $state, $http, notifications, $mdSidenav, Digin_Domain, Upload, Digin_Engine_API, $diginurls, $diginengine, $location, $anchorScroll) {
 
 
     $scope.files = []; //Files imported array
@@ -8,6 +8,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     $scope.isExist = false;
     $scope.selectedPath;
     $scope.schemaCollection = [];
+    $scope.progressPercentage = 0;
     $scope.client = $diginengine.getClient("BigQuery");
     $scope.client.getFolders(function(res, status) {
 
@@ -133,6 +134,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
         var uploadFlag;
         var storeFlag;
+        $scope.progressPercentage = 0;
         $scope.schemaCollection = [];
         if (files && files.length) {
             $scope.preloader = true;
@@ -165,34 +167,39 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                         other_data: JSON.stringify($scope.otherdata)
                     }
 
-                }).success(function(data) {
-                    console.log(data);
-                    $scope.schema = data.Result;
-                    angular.forEach($scope.schema,function(key){
-                        key.type = key.type.toUpperCase();
-                    });
-                    $scope.schemaCollection.push($scope.schema);
-                    uploadFlag = true;
-                    $scope.preloader = false;
-                    notifications.toast(1, "Schema retrieved  successfully");
-
-
-                }).error(function(data) {
-                    console.log(data);
+                }).then(function (data) {
+                    if (data.data.Is_Success){
+                        $scope.schema = data.data.Result;
+                        angular.forEach($scope.schema,function(key){
+                            key.type = key.type.toUpperCase();
+                        });
+                        $scope.schemaCollection.push($scope.schema);
+                        uploadFlag = true;
+                        $scope.preloader = false;
+                        notifications.toast(1, "Schema retrieved  successfully");
+                    } else {
+                        uploadFlag = false;
+                        fireMsg('0', 'Error uploading file!');
+                        $scope.preloader = false;
+                        $scope.diginLogo = 'digin-logo-wrapper2';
+                    }
+                }, function (data) {
                     uploadFlag = false;
                     fireMsg('0', 'Error uploading file!');
                     $scope.preloader = false;
                     $scope.diginLogo = 'digin-logo-wrapper2';
+                }, function (evt) {
+                    $scope.progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                 });
-
-
-
             }
         }
     };
 
     $scope.UploadWithUpdate = function() {
         $scope.preloader = true;
+        $scope.progressPercentage = 0;
+        $location.hash('report-top');
+        $anchorScroll();
         if ($scope.files.length <= 0) {
             notifications.toast(0, "Please add a file");
             return;
@@ -226,31 +233,28 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                     folder_type: $scope.folder_type
 
                 }
-
-            }).success(function(data) {
-                if (data.Is_Success){
+            }).then(function (data) {
+                if (data.data.Is_Success){
                     uploadFlag = true;
                     notifications.toast(1, "Successfully uploaded to the datawarehouse");
                     $scope.enableNextStep();
                 } else {
                     uploadFlag = false;
-                    notifications.toast(1, data.custom_message);
+                    notifications.toast(0, data.data.Custom_Message);
                     $scope.diginLogo = 'digin-logo-wrapper2';
                 }
                 $scope.preloader = false;
                 console.log(data);
-
-            }).error(function(data) {
-                console.log(data);
+            }, function (data) {
                 uploadFlag = false;
                 notifications.toast(0, "Error Uploading File!");
                 $scope.preloader = false;
                 $scope.diginLogo = 'digin-logo-wrapper2';
+            }, function (evt) {
+                $scope.progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
             });
         }
     };
-
-
 
     $scope.goToDashboard = function() {
         $state.go("home.Dashboards");

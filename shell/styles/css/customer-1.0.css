@@ -1056,6 +1056,7 @@ v-pane-content
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00a9ed', endColorstr='#01718d', GradientType=0); /* IE6-9 */
 
     padding: 16px;
+    padding-left: 9px;
     height: 83px;
     width: 83px;
     text-align: center;
@@ -1070,14 +1071,14 @@ v-pane-content
 }
 
 .custom-chart-icon {
-    margin: 0 10px;
-    margin-bottom: 3px;
+    margin-bottom: -3px;
+    margin-top: -9px;
 }
 
 .custom-chart-rotate-icon {
-    margin: 0 10px;
-    margin-bottom: 3px;
+    margin-bottom: -3px;
     transform: rotate(90deg);
+    margin-top: -9px;
 }
 
 /*main page loader*/

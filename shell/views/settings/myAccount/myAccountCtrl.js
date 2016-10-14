@@ -19,7 +19,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     
     //#Get card information
-    $scope.cardDetail = {}
+    vm.paymentCards = [];
     $http({
         //url : "http://staging.digin.io/include/duoapi/paymentgateway/getCardInformation",
         url: "/include/duoapi/paymentgateway/getCardInformation",
@@ -32,11 +32,11 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         if (response.statusText == "OK") {
             if (response.data.status == true) {
                 //Success
-                $scope.cardDetail = response.data.data;
-            } else {
+                vm.getFormattedCardList(response.data.data);
+            } else { 
                 //fail
                 //displayError(response.data);
-                $scope.cardDetail = {};
+                vm.paymentCards =[];
             }
         }
     }, function(response) {
@@ -47,14 +47,49 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     })
 
 
-
+    //#Add card formats
+    vm.getFormattedCardList=function(card){
+        for (var i = 0; i <= card.length; i ++) {
+            if(card[i].brand=="American Express"){
+                card[i].background= "#136e59";
+                card[i].image= "amex_s.png";
+                if(i==0){
+                    card[0].defaultCard= true;
+                }
+                else{
+                    card[i].defaultCard= false;
+                }
+            }
+            else if(card[i].brand=="Visa"){
+                card[i].background= "#11141d";
+                card[i].image= "visa_s.png";
+                if(i==0){
+                    card[0].defaultCard= true;
+                }
+                else{
+                    card[i].defaultCard= false;
+                }
+            }
+            else if(cards[i].brand=="MasterCard"){
+                card[i].background= "#0066a8";
+                card[i].image= "master_s.png";
+                if(i==0){
+                    card[0].defaultCard= true;
+                }
+                else{
+                    card[i].defaultCard= false;
+                }
+            }
+            else {}
+            
+            vm.paymentCards=card;
+        }
+    }
+                            
 
     //#Get card information
-    $scope.defaultCard = {}
+    $scope.defaultCard = []
     //paymentGatewaySvc.getDefalultCard(); 
-
-
-
 
     //#get usage summary#//
     $scope.usageDetails = {};
@@ -216,7 +251,6 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                                     themeConfig = $rootScope.userSettings.theme_config
                                 }
 
-
                                 //#store to user settings---------------------
                                 $scope.settings = {
                                     "email": userInfo.Email,
@@ -272,14 +306,10 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             .then(function(answer) {
                 //$scope.getURL();
             });
-
-
     };
 
 
-
     var vm = this;
-
     vm.companyPricePlans = [{
         id: "personal_space",
         name: "Personal Space",
@@ -312,6 +342,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         Description: "desc"
     }];
 
+    /*
     vm.paymentCards = [{
         id: "card_194OMZLEDsR3ar1xYbp3GCsG",
         last4: "8431",
@@ -343,10 +374,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         image: "master_s.png",
         default: false
     }];
-
-    vm.makeDefault = function() {
-        console.log("make Default");
-    }
+*/
 
     vm.updatePackage = function(ev) {
         location.href = '#/home/addaLaCarte';
@@ -393,7 +421,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                 displayProgress("Adding new card...")
                 vm.addNewCard(token.id);
             } else {
-                displayError("Error occured while inserting new card.");
+                $mdDialog.hide();
+                //displayError("Error occured while inserting new card.");
             }
         });
     }
@@ -417,6 +446,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                 if (response.data.status == true) {
                     //Success
                     displaySuccess("New card is added successfully...");
+                    vm.getFormattedCardList(response.data.data);
                 } else {
                     //fail
                     displayError(response.data.response);

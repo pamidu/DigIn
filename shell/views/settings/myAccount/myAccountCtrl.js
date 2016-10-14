@@ -9,19 +9,17 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
 
 
-
     //#Subscription START----------------------
 
     //#Get customer detail#//
     paymentGatewaySvc.getCustomerInformations();
 
-
     //#Get customer status as active - true || false #//
     paymentGatewaySvc.checkSubscription();
 
+    
     //#Get card information
     $scope.cardDetail = {}
-        //#Get card information
     $http({
         //url : "http://staging.digin.io/include/duoapi/paymentgateway/getCardInformation",
         url: "/include/duoapi/paymentgateway/getCardInformation",
@@ -53,7 +51,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     //#Get card information
     $scope.defaultCard = {}
-        /*paymentGatewaySvc.getDefalultCard(); */
+    //paymentGatewaySvc.getDefalultCard(); 
 
 
 
@@ -315,6 +313,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     }];
 
     vm.paymentCards = [{
+        id: "card_194OMZLEDsR3ar1xYbp3GCsG",
         last4: "8431",
         brand: "American Express",
         country: "US",
@@ -324,6 +323,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         image: "amex_s.png",
         default: false
     }, {
+        id: "card_191ZDULEDsR3ar1xDxgxVweZ",
         last4: "8445",
         brand: "Visa",
         country: "US",
@@ -333,6 +333,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         image: "visa_s.png",
         default: true
     }, {
+        id: "card_194OC5LEDsR3ar1xE7Q6QVwq",
         last4: "3125",
         brand: "Master",
         country: "US",
@@ -373,14 +374,14 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         });
     };
 
-
-
     vm.addCard = function(ev) {
+        displayProgress("Request to add new card...")
+        
         var stripeConfig = {
             publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
             title: 'DigIn',
             description: "Beyond BI",
-            logo: 'img/small-logo.png',
+            logo: '/boarding/img/small-logo',
             label: 'New Card'
         };
 
@@ -389,24 +390,96 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             console.log(token);
             if (token != null || token != "" || token != undefined) {
                 //#insert new card  
+                displayProgress("Adding new card...")
+                vm.addNewCard(token.id);
             } else {
                 displayError("Error occured while inserting new card.");
             }
         });
     }
 
+    vm.addNewCard=function(token){
+        var pkgObj = {
+            "token": token,
+            "default":false
+        }
 
-
-
-    vm.makeDefault = function() {
-        console.log("make Default");
+        $http({
+            url: "/include/duoapi/paymentgateway/addCard",
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: pkgObj
+        }).then(function(response) {
+            //console.log(response)
+            if (response.statusText == "OK") {
+                if (response.data.status == true) {
+                    //Success
+                    displaySuccess("New card is added successfully...");
+                } else {
+                    //fail
+                    displayError(response.data.response);
+                }
+            }
+            $mdDialog.hide();
+        }, function(response) {
+            //console.log(response)
+            displayError("Error while adding new card...");
+            $mdDialog.hide();
+        })
+    }
+    
+    vm.makeDefault = function(ev, cardId) {
+         var confirm = $mdDialog.confirm()
+            .title('Change default card')
+            .textContent('Do you cant to set this card as default card?')
+            .ariaLabel('Lucky day')
+            .targetEvent(ev)
+            .ok('Yes')
+            .cancel('No');
+        $mdDialog.show(confirm).then(function() {
+            //Yes
+            displayProgress("Processing...")
+            vm.makeAsDefault(cardId);
+        }, function() {
+            //No
+        });
     }
 
-
-
-
-
-
+    vm.makeAsDefault=function(cardId){
+        var pkgObj = {
+            "cardId": cardId
+        }
+        $http({
+            url: "/include/duoapi/paymentgateway/setDefaultCard",
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: pkgObj
+        }).then(function(response) {
+            //console.log(response)
+            if (response.statusText == "OK") {
+                if (response.data.status == true) {
+                    //Success
+                    displaySuccess("Requested card set as defaut card successfully...");
+                } else {
+                    //fail
+                    displayError(response.data.response);
+                }
+            }
+            $mdDialog.hide();
+        }, function(response) {
+            //console.log(response)
+            displayError("Error while setting default card...");
+            $mdDialog.hide();
+        })
+    }
+    
+    
+    
+    
     vm.upgradeConfirmation = function(ev, plan) {
         var confirm = $mdDialog.confirm()
             .title('Upgrade Account')

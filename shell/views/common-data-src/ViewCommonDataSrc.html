@@ -204,9 +204,9 @@
                         > 
                             <span>
                                 <i class="{{row.type}}"></i>&nbsp;&nbsp;
+                                {{ row.name | limitTo: 25 }}{{row.name.length > 25 ? '...' : ''}}
                             </span>
-                            {{row.name}}
-                            <i class="pull-right">
+                            <!-- <i class="pull-right"> -->
                             </i>
                         </li>
                     </ui>

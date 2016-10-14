@@ -94,44 +94,33 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //initially hiding the tabs
         $scope.showTabs(true);
 
+
         //#set initial logo as Digin logo
         $scope.imageUrl = "styles/css/images/DiginLogo.png";
-        //$rootScope.myImage="styles/css/images/setting/user100x100.png";
         $rootScope.myCroppedImage = "styles/css/images/signup-user.png";
         $rootScope.profile_pic = "styles/css/images/signup-user.png";
-        // if($scope.imageUrl==""){
-        //      $scope.imageUrl = "styles/css/images/DiginLogo.png";
-        // }
-        // else{
+
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
         var res = userInfo.Username.replace("@", "_");
         var NameSpace = res.replace(".", "_");
 
-        var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
-        //console.log(logPath);
-
         $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
             .success(function (data) {
-                $rootScope.image = logoPath + data.Result.logo_path;
-                //$rootScope.myimage = logoPath + data.Result.dp_path;
-                //$rootScope.myCroppedImage = logoPath + data.Result.dp_path;
+
+                $rootScope.image ='http://' + Digin_Domain +  data.Result.logo_path;
                 $rootScope.profile_pic = data.Result.dp_path;
                 $rootScope.userSettings = data.Result;
-                ProfileService.UserDataArr.BannerPicture = 'http://' + NameSpace + '.' + 'prod.digin.io' + data.Result.dp_path;
-                //$rootScope.image = "http://192.168.2.33/user_data/9c42d3c4661182ca872b3b6878aa0429/logos/hnb.png";
-                //$scope.imageUrl = "styles/css/images/DiginLogo.png";
+                ProfileService.UserDataArr.BannerPicture = 'http://' + Digin_Domain + data.Result.dp_path;
+
 
                 if (data.Result.logo_path == undefined) {
                     $rootScope.image = "styles/css/images/DiginLogo.png";
-                    //$rootScope.myImage="styles/css/images/setting/user100x100.png";
                     $rootScope.myCroppedImage = "styles/css/images/setting/user100x100.png";
                     $rootScope.profile_pic = "styles/css/images/setting/user100x100.png";
                 }
                 else {
-                    $rootScope.image = logoPath + data.Result.logo_path;
-                    //$rootScope.myImage=logoPath + data.Result.dp_path;
-                    //$rootScope.myCroppedImage=logoPath + data.Result.dp_path;
-                    $rootScope.profile_pic = logoPath + data.Result.dp_path;
+                    $rootScope.image = 'http://' + Digin_Domain  + data.Result.logo_path;
+                    $rootScope.profile_pic = 'http://' + Digin_Domain + data.Result.dp_path;
                 }
 
                 $scope.getURL();
@@ -140,8 +129,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             })
             .error(function (data) {
                 $scope.imageUrl = "styles/css/images/DiginLogo.png";
-                //$scope.myimageUrl = "styles/css/images/setting/user100x100.png";
-                //$scope.myCroppedImageUrl = "styles/css/images/setting/user100x100.png";
                 $scope.profile_pic = "styles/css/images/setting/user100x100.png";
                 $scope.getURL();
             });
@@ -281,7 +268,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
                     $rootScope.username = userInfo.Username;
-                    $http.get(Digin_Tenant + '/tenant/GetTenants/' + userInfo.SecurityToken)
+                    $http.get('/auth/tenant/GetTenants/' + userInfo.SecurityToken)
                         .success(function (response) {
                             $scope.tennants = response;
                         });
@@ -2011,7 +1998,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
  routerApp.controller('tenantCtrl',['$scope','$mdDialog','$http','Digin_Tenant', function ($scope,$mdDialog,$http,Digin_Tenant) {
 
     //$http.get(Digin_Tenant + '/tenant/GetTenants/' + '15430a361f730ec5ea2d79f60d0fa78e')
-    $http.get(Digin_Tenant + '/tenant/GetTenants/' + getCookie('securityToken'))
+    $http.get('/auth/tenant/GetTenants/' + getCookie('securityToken'))
     .success(function (response) {
         $scope.tennants = response;
     });

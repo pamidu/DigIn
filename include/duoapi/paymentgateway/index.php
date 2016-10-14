@@ -68,11 +68,11 @@
 			$handler->deleteCard($postString);
 			break;	
 			
-		case 'getDefaultCard':
+		case 'setDefaultCard':
 			$postString = file_get_contents ( 'php://input' );
 			$handler->setDefaultCard($postString);
 			break;	
-			
+
 		default:
 			echo "no such method";
 			break;
@@ -182,7 +182,7 @@ class stripePayment{
 	}
 
 	//#Set default card 
-	public function setDefaultCard($jsonString){
+	public function setDefaultCard($jsonString){	
 		$input = json_decode($jsonString);
 		$cardId = $input->cardId;
 		$setDefaultCard = new CloudCharge();
@@ -190,7 +190,7 @@ class stripePayment{
 		$encodeVal = json_encode($response);
 		echo $encodeVal;
 	}
-
+	
 
 	
 }

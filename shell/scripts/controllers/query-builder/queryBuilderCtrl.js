@@ -104,7 +104,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     }
     $scope.maplibrary;
     $scope.widget = $stateParams.widObj;
-    $scope.isDrilled = false;
+    $scope.isDrilled = true;
     $scope.dynFlex = 70;
     $scope.chartWrapStyle = {
         height: 'calc(63vh)'

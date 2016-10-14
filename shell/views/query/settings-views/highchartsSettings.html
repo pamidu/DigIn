@@ -17,9 +17,9 @@
 </style>
 
 <div ng-show="selectedChart.chartType == 'highCharts'" class="chart-config-wrap"> 
-   <md-switch  ng-model="isDrilled" ng-change="toggleDrilled(isDrilled)" aria-label="Switch 1">
+<!--    <md-switch  ng-model="isDrilled" ng-change="toggleDrilled(isDrilled)" aria-label="Switch 1">
     Drilled: {{ isDrilled }}
-  </md-switch>
+  </md-switch> -->
                             <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
                                          onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)" ng-hide="selectedChart.chart == 'pie' || selectedChart.chart == 'funnel' || selectedChart.chart == 'pyramid' ">
                                 <v-pane ng-repeat="series in highchartsNG.series" class="v-pane">

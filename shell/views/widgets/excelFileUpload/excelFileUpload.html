@@ -83,6 +83,7 @@ input:disabled {
 }
 </style>
 <div class="setup-wrapper  animated fadeIn">
+    <a id="report-top"></a>
     <md-stepper-card-content class="md-no-padding">
         <md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="selectedStep" md-busy-text="stepData[currentStep].busyText" md-busy="showBusyText">
             <md-step label="Select type" md-complete="stepData[0].data.completed" ng-disabled="stepProgress < 1">
@@ -179,7 +180,18 @@ input:disabled {
                                     </md-list-item>
                                 </md-list> -->
                             <div class="custom-file-upload" layout-align="center center">
-                                <div ngf-drop="upload($files)" ngf-select="upload($files)" ng-model="files" class="drop-box" ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true" ngf-pattern="'.xls,.csv,.xlsx'" accept=".xls,.csv,.xlsx">Drop files here or click to upload
+                                <div ngf-drop="upload($files)" ngf-select="upload($files)" ng-model="files" class="drop-box" ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true" ngf-pattern="'.xls,.csv,.xlsx'" accept=".xls,.csv,.xlsx" flex layout = "column" 
+                                layout-align="space-between center">Drop files here or click to upload
+                                <div ng-show="preloader">
+                                    Uploading file.. {{progressPercentage}} % complete..
+                                    <md-progress-linear md-mode="determinate" value="{{progressPercentage}}" 
+                                    style="width: 300px;">
+                                    </md-progress-linear>
+                                </div>
+                                <svg class="circular-loader" height="50" width="50" ng-show="insertPreLoader">
+                                    <circle class="path" cx="25" cy="25.2" r="19.9" fill="none" stroke-width="6" stroke-miterlimit="10" />
+                                </svg>                                
+                                <div></div>
                                 </div>
                                 <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
                                 <div style="display:inline-flex;">
@@ -188,12 +200,6 @@ input:disabled {
                                     </div>
                                 </div>
                             </div>
-                            <div class="digin-gb-chart-loading m-l-50" ng-show="preloader">
-                                <svg class="circular-loader" height="50" width="50">
-                                    <circle class="path" cx="25" cy="25.2" r="19.9" fill="none" stroke-width="6" stroke-miterlimit="10" />
-                                </svg>
-                            </div>
-                           
                             <div ng-repeat="eachfile in schemaCollection track by $index" >
                              <h4> Edit Schema {{$index +1}} </h4>
                             <table class="table table-striped">
@@ -218,7 +224,10 @@ input:disabled {
                             </div>
                             <div flex layout="row" layout-align="space-between center" class="side-margins">
                                 <md-button ng-click="moveToPreviousStep()" class="md-raised next-btn">Previous</md-button>
-                                <md-button ng-click="UploadWithUpdate()" ng-disabled="showBusyText" class="md-raised next-btn">Upload</md-button>
+                                <svg class="circular-loader" height="50" width="50" ng-show="uploadPreLoader">
+                                    <circle class="path" cx="25" cy="25.2" r="19.9" fill="none" stroke-width="6" stroke-miterlimit="10" />
+                                </svg>
+                                <md-button ng-click="UploadWithUpdate()" ng-disabled="showBusyText || preloader || insertPreLoader || uploadPreLoader" class="md-raised next-btn">Upload</md-button>
                                 <!--ng-click="vm.upload($event, vm.stepData[0].data)"-->
                             </div>
                         </md-card>

@@ -197,16 +197,16 @@
                         </md-input-container>                          
                     </div>
                     <!-- table data -->
-                    <ui ng-repeat="row in sourceUi.tableData | filter : {name: sourceUi.search}">
+                    <ui ng-repeat="row in sourceUi.tableData | filter : {name: sourceUi.search} | orderBy: 'name' ">
                         <li class="col-sheet"
                             ng-click="commonUi.onSelectClassRow(row)"
                             ng-class="row.selected==true?'selectedRow':'unSelectedRow'"
                         > 
                             <span>
                                 <i class="{{row.type}}"></i>&nbsp;&nbsp;
+                                {{ row.name | limitTo: 25 }}{{row.name.length > 25 ? '...' : ''}}
                             </span>
-                            {{row.name}}
-                            <i class="pull-right">
+                            <!-- <i class="pull-right"> -->
                             </i>
                         </li>
                     </ui>
@@ -290,7 +290,7 @@
                     </div>
                     <!-- #attribute -->
                     <div class="digin-cmds-attribute">
-                        <ui ng-repeat="row in sourceUi.selectedAttribute ">
+                        <ui ng-repeat="row in sourceUi.selectedAttribute | orderBy: 'name' ">
                             <li class="col-sheet-attr displayInlineBlock "
                                 ng-click="commonUi.onRemoveAtt(sourceUi.selectedAttribute ,row)"
                                 ng-class="row.isRemove==true?'unSelectedRow':'selectedRow'">
@@ -306,16 +306,16 @@
                     <div class="sub-header">
                         <span>Measures</span>
                         <span class="bigcheck pull-right">
-                            <label class="filter-label display-inline-block"> 
+                            <label class="filter-label display-inline-block">
                                 All
                                 <input type="checkbox" id="measures" class="bigcheck" checked ng-click="commonUi.selectAllMeasures()"/>
                                 <span class="bigcheck-target pull-right"></span>
                             </label>
-                        </span>                        
+                        </span>
                     </div>
                     <!-- #measures -->
                     <div class="digin-cmds-measures ">
-                        <ui ng-repeat="row in sourceUi.selectedMeasures ">
+                        <ui ng-repeat="row in sourceUi.selectedMeasures | orderBy: 'name' ">
                             <li class="col-sheet-attr displayInlineBlock "
                                 ng-click="commonUi.onRemoveMeasures(sourceUi.selectedMeasures ,row)"
                                 ng-class="row.isRemove==true?'unSelectedRow':'selectedRow'">
@@ -332,7 +332,7 @@
                 <div class="cmds-btn-footer m-top-10">
                         <span ng-disabled="pendingColumns" class="btn btn-block btn-default"
                               ng-click="commonUi.onSelectFilter()">                             
-                            Select Filter
+                            Filter Data
                         </span>                         
                         <span ng-disabled="pendingColumns" class="btn btn-block btn-default"
                               ng-click="commonUi.onSaveSource()">
@@ -366,7 +366,7 @@
     <md-content layout-padding style="overflow-x: hidden;max-height: 100%;overflow: hidden;" layout="row">
         <div flex="50" style="    overflow: scroll;max-height: 90vh;">
             <v-accordion id="accordionMenu" class="vAccordion--default" control="accordionA" multiple ng-hide="isFilterLoading" onexpand="commonUi.loadFilterParams(index,id)"> 
-                <v-pane class="v-pane" ng-repeat="row in fieldObjects" id= "{{ ::row.id }}" >
+                <v-pane class="v-pane" ng-repeat="row in fieldObjects | orderBy: 'name' " id= "{{ ::row.id }}" >
                     <v-pane-header>
                         <h5 class="font-weight-300 text-upper">{{ ::row.name }}</h5>
                     </v-pane-header>

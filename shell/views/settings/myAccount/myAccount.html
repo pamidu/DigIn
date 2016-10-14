@@ -382,14 +382,14 @@ p {
                             <div class="setting-card-header">
                                 <h5>Profile Settings</h5>
                                 <div class="setting-img-wrap">
-                                    <!-- <img src="styles/css/images/signup-user.png" style="cursor:pointer;	width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()">
-			 -->
-                                    <img src="{{profile_pic}}" class="img-circle" style="cursor:pointer;	width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()" ng-disabled="editModeOn">
+                                    <!-- <img src="styles/css/images/signup-user.png" style="cursor:pointer;    width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()">
+             -->
+                                    <img src="{{profile_pic}}" class="img-circle" style="cursor:pointer;    width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()" ng-disabled="editModeOn">
                                     <!-- <div ng-show="selectProfile">  
-										<div align="center">
-											<img ng-src="{{profile_pic}}" class="img-circle">
-										</div>
-									</div>     -->
+                                        <div align="center">
+                                            <img ng-src="{{profile_pic}}" class="img-circle">
+                                        </div>
+                                    </div>     -->
                                     <md-tooltip md-direction="bottom">
                                         <md-tooltip md-direction="bottom">
                                             Upload Profile Picture
@@ -439,34 +439,34 @@ p {
                                 </div>
                                 <!-- address details -->
                                 <!--div layout="row" style="padding:0px 10px 0px 10px">
-									<div flex="40">
-										<label>Billing Address </label>
-										<input type="text"
-											   id="txtStreet"
-											   ng-model="user.street"
-											   ng-disabled="editModeOn"
-											   class="form-control">
-									</div>
-									
-								
-									<div flex="40" style="padding-left: 5px;">
-										<label>Country</label>
-											<md-select ng-model="user.country" style="border: 1px solid #d0d0d0;height: 40px;"  ng-disabled="editModeOn">
-												 <md-option ng-value="Country.name" ng-repeat="Country in allCountries" ng-selected="{{ Country.name === user.country ? 'true' : 'false' }}">
-													{{Country.name}}
-												 </md-option>
-											</md-select>
-									</div>
-										
-									<div flex="20" style="padding-left: 5px;">
-										<label>ZIP Code</label>
-										<input type="text"
-											   id="txtZip"
-											   ng-model="user.zip"
-											   ng-disabled="editModeOn"
-											   class="form-control">
-									</div>
-								</div-->
+                                    <div flex="40">
+                                        <label>Billing Address </label>
+                                        <input type="text"
+                                               id="txtStreet"
+                                               ng-model="user.street"
+                                               ng-disabled="editModeOn"
+                                               class="form-control">
+                                    </div>
+                                    
+                                
+                                    <div flex="40" style="padding-left: 5px;">
+                                        <label>Country</label>
+                                            <md-select ng-model="user.country" style="border: 1px solid #d0d0d0;height: 40px;"  ng-disabled="editModeOn">
+                                                 <md-option ng-value="Country.name" ng-repeat="Country in allCountries" ng-selected="{{ Country.name === user.country ? 'true' : 'false' }}">
+                                                    {{Country.name}}
+                                                 </md-option>
+                                            </md-select>
+                                    </div>
+                                        
+                                    <div flex="20" style="padding-left: 5px;">
+                                        <label>ZIP Code</label>
+                                        <input type="text"
+                                               id="txtZip"
+                                               ng-model="user.zip"
+                                               ng-disabled="editModeOn"
+                                               class="form-control">
+                                    </div>
+                                </div-->
                                 <div layout="row" layout-align="center center">
                                     <div ng-click="profile.clickEdit()" type="button" class="blut-edit-btn" style="margin:10px 10px 10px 10px" ng-if="editModeOn == true">
                                         Edit Profile
@@ -495,8 +495,8 @@ p {
         <md-tab label="add page">
             <md-tab-label layout="row" layout="space-between center">
                 <span style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>
-				Usage Details
-			</span>
+                Usage Details
+            </span>
             </md-tab-label>
             <md-tab-body>
                 <div layout="row" layout-align="center start" layout-wrap class="card-container">
@@ -557,14 +557,14 @@ p {
         <md-tab label="add page">
             <md-tab-label layout="row" layout="space-between center">
                 <span style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>
-				Package Details
-			</span>
+                Package Details
+            </span>
             </md-tab-label>
             <md-tab-body>
                 <div class="setup-wrapper  animated fadeIn">
                     <!--md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;margin-top:20px;"> 
 
-				<md-content style="background:transparent"-->
+                <md-content style="background:transparent"-->
                     <v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)" style="padding-left: 65px;padding-right:30px;">
                         <v-pane id="Cards" expanded="$first">
                             <v-pane-header id="Store-header" aria-controls="Store-content">
@@ -646,9 +646,9 @@ p {
                                                 </md-button>
                                             </md-card-content>
                                             <!--md-card-content layout="column" layout-align="start start">
-								  <b style="margin-bottom:10px;">Advanced Options:</b>
-								  <div layout="row" layout-align="space-between center" style="width:100%"> <span flex>Option 1</span><md-checkbox class="checkbox" ng-model="data.cb1" aria-label="Checkbox 1"></md-checkbox></div>
-								</md-card-content-->
+                                  <b style="margin-bottom:10px;">Advanced Options:</b>
+                                  <div layout="row" layout-align="space-between center" style="width:100%"> <span flex>Option 1</span><md-checkbox class="checkbox" ng-model="data.cb1" aria-label="Checkbox 1"></md-checkbox></div>
+                                </md-card-content-->
                                             <md-card-content layout="column" layout-align="end end" style="background:#e7faff;padding:0">
                                                 <span style="padding: 5px;border-radius: 4px;margin: 6px;border: 1px solid #b7b7b7;color: grey;font-weight: 700;">Total Amount:<b style="font-size:20px;">${{plan.numberOfUsers*plan.perMonth}}</b></span>
                                             </md-card-content>
@@ -683,7 +683,7 @@ p {
                                                         <span style="color:white;font-size:18px;line-height:40px;" flex>{{card.exp_month}}/{{card.exp_year}}</span>
                                                     </div>
                                                     <div layout="column" layout="end end">
-                                                        <md-button ng-show="card.default == true" class="md-raised" aria-label="Profile" style="position:absolute;right: 10px;bottom: 0px;background:#f9a525">
+                                                        <md-button ng-show="card.defaultCard == true" class="md-raised" aria-label="Profile" style="position:absolute;right: 10px;bottom: 0px;background:#f9a525">
                                                             <span style="text-transform:none;font-weight:700;letter-spacing:1px;color:white;    text-shadow: 1px 0px #484848;">Default</span>
                                                         </md-button>
                                                     </div>
@@ -693,7 +693,7 @@ p {
                                                 <md-card class="tint showbox paymentCard product_card" ng-class="{selected: $index == selectedCard}" style="padding: 0px;background:{{card.background}}">
                                                     <div layout="row" layout="space-between center" style="margin-top:20px;height:35px;background:white;"></div>
                                                     <center style="margin-top:40px;">
-                                                        <md-button class="md-raised" ng-click="vm.makeDefault()" ng-disabled="card.default == true"><span style="text-transform:initial">Make Default</span></md-button>
+                                                        <md-button class="md-raised" ng-click="vm.makeDefault($event,card.id)" ng-disabled="card.default == true"><span style="text-transform:initial">Make Default</span></md-button>
                                                     </center>
                                                 </md-card>
                                             </div>
@@ -710,7 +710,7 @@ p {
                         </v-pane>
                     </v-accordion>
                     <!--/md-content>
-			</md-whiteframe-->
+            </md-whiteframe-->
                 </div>
             </md-tab-body>
         </md-tab>

@@ -104,7 +104,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     }
     $scope.maplibrary;
     $scope.widget = $stateParams.widObj;
-    $scope.isDrilled = false;
+    $scope.isDrilled = true;
     $scope.dynFlex = 70;
     $scope.chartWrapStyle = {
         height: 'calc(63vh)'
@@ -1675,9 +1675,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
             var diff = new Date(visualEnddate - CalcEnddate);
 
-            var years = (diff.getUTCFullYear() - 1970);
-            var months = (diff.getUTCMonth()) + (12 * years);
-            var days = (diff.getUTCDate()) + (365 * years);
+            var years = (diff.getFullYear() - 1970);
+            var months = (diff.getMonth()) + (12 * years);
+            var days = (diff.getDate()) + (365 * years);
+
+            var months = $scope.monthDiff(CalcEnddate,visualEnddate);
+
 
             if($scope.forecastObj.paramObj.interval == "Yearly"){
                 forecastDays = years+1;
@@ -1693,6 +1696,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
     }
 
+
+    $scope.monthDiff = function (d1, d2) {
+        var months;
+        months = (d2.getFullYear() - d1.getFullYear()) * 12;
+        months -= d1.getMonth() + 1;
+        months += d2.getMonth();
+        return months <= 0 ? 0 : months;
+    }
 
     $scope.ForcastBtnFun = function(){
         if($scope.useFiltering.status == true){
@@ -1893,8 +1904,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
 
                 // ---------------------------------------------------------------------------------    
-                var startdate = formattedDate($scope.visualDate.startdate);
-                var enddate = formattedDate($scope.visualDate.enddate);
+                var startdate = formattedDate($scope.visualDate.startdate, $scope.forecastObj.paramObj.interval);
+                var enddate = formattedDate($scope.visualDate.enddate, $scope.forecastObj.paramObj.interval);
                 var xAxisLen = $scope.temptArr.xAxis.categories.length;
 
                 var startInd = -1;
@@ -1903,12 +1914,16 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 var data = [];
                 for (var i = 0; i < xAxisLen; i++) {
 
-                    if($scope.forecastObj.paramObj.interval != "Daily"){
-                         var date = $scope.temptArr.xAxis.categories[i] + "-1";
+                    var date;
+                    if($scope.forecastObj.paramObj.interval == "Yearly"){
+                        date = $scope.temptArr.xAxis.categories[i] + "-01-01";
+                    }else if($scope.forecastObj.paramObj.interval == "Monthly"){
+                        date = $scope.temptArr.xAxis.categories[i] + "-01";
+                    }else if($scope.forecastObj.paramObj.interval == "Daily"){
+                        date = $scope.temptArr.xAxis.categories[i];
                     }
-                    else{
-                        var date = $scope.temptArr.xAxis.categories[i];
-                    }
+                   
+
                     var x = new Date(startdate);
                     var y = new Date(date);
                     var z = new Date(enddate);
@@ -1919,7 +1934,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
                         cat.push($scope.temptArr.xAxis.categories[i]);
 
-                        if (i == xAxisLen - 1)
+                        if (i == xAxisLen-1)
                             endInd = i;
 
                     } else if (startInd > -1) {
@@ -1929,25 +1944,65 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     }
                 }
 
+                
                 var seriesLen = $scope.temptArr.series.length;
-                for (var i = 0; i < seriesLen; i++) {
-                    data = [];
-                    for (var j = startInd; j <= endInd; j++) {
-                        data.push($scope.temptArr.series[i].data[j]);
-                    }
 
-                    if (data.length > 0) {
-                        $scope.widget.widgetData.highchartsNG.series[i].data = data;
-                        if(fObj.showActual != true)
-                            $scope.widget.widgetData.highchartsNG.series[i].zones[0].value = cat.length - fObj.fcast_days;
-                    }
-                }
+                if($scope.forecastObj.paramObj.interval == "Daily" && $scope.forecastObj.paramObj.forecastAtt !=""){
+                        
+                        var tempcatLen = $scope.getAllDays(startdate,enddate).length;
+                        for (var i = 0; i < seriesLen; i++) {
+                            data = [];
+                            for (var j = startInd; j <= endInd; j++) {
+                                    data.push($scope.temptArr.series[i].data[j]);
+                            }
 
-                if (cat.length > 0) {
-                    $scope.widget.widgetData.highchartsNG.xAxis.categories = cat;
-                }
+                            if (data.length > 0) {
+                                $scope.widget.widgetData.highchartsNG.series[i].data = data;
 
+                                var tempdate=[];
+                                if(data.length > tempcatLen){
+                                    for(var a=0;a<$scope.getAllDays(startdate,enddate).length ; a++){
+                                            tempdate.push(data[a]);
+                                    }
 
+                                }
+                                $scope.widget.widgetData.highchartsNG.series[i].data = tempdate;
+                                if(fObj.showActual != true){
+                                   
+                                        $scope.widget.widgetData.highchartsNG.series[i].zones[0].value = tempcatLen - fObj.fcast_days-1;
+                                }
+                            }
+                        }
+
+                         if (cat.length > 0) {
+                            $scope.widget.widgetData.highchartsNG.xAxis.categories = $scope.getAllDays(startdate,enddate);
+                        }
+                }else{
+                    
+                       
+                        for (var i = 0; i < seriesLen; i++) {
+                            data = [];
+                            for (var j = startInd; j <= endInd; j++) {
+                                    data.push($scope.temptArr.series[i].data[j]);
+                            }
+
+                            if (data.length > 0) {
+                                $scope.widget.widgetData.highchartsNG.series[i].data = data;
+
+                            
+                                if(fObj.showActual != true){
+                                   
+                                        $scope.widget.widgetData.highchartsNG.series[i].zones[0].value = cat.length - fObj.fcast_days-1;
+                                }
+                            }
+                        }
+
+                         if (cat.length > 0) {
+                            $scope.widget.widgetData.highchartsNG.xAxis.categories = cat;
+                        }
+
+           }
+    
             // --------------------------------------------------------------------------------------
 
         
@@ -1961,6 +2016,29 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
     }
 
+    $scope.getAllDays = function (startdate,enddate) {
+        var s = new Date(startdate);
+        var e = new Date(enddate);
+        var a = [];
+        
+        while(s < e) {
+            a.push($scope.getFormattedDate(s));
+            s = new Date(s.setDate(
+                s.getDate() + 1
+            ))
+        }
+        
+        return a;
+    };
+
+$scope.getFormattedDate = function (date) {
+      var year = date.getFullYear();
+      var month = (1 + date.getMonth()).toString();
+      month = month.length > 1 ? month : '0' + month;
+      var day = date.getDate().toString();
+      day = day.length > 1 ? day : '0' + day;
+      return year +  '-' + month + '-' + day;
+}
 
     $scope.useFiltering ={
         status:false,
@@ -2018,19 +2096,41 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
     }, true);
 
-    function formattedDate(date) {
+    function formattedDate(date,format) {
 
-        var d = new Date(date || Date.now()),
-            month = '' + (d.getMonth() + 1),
-            day = '1',
-            year = d.getFullYear();
+        var date;
+        if(format ==  "Monthly"){
+            var d = new Date(date || Date.now()),
+                month = '' + (d.getMonth() + 1),
+                day = '01',
+                year = d.getFullYear();
 
-        if (month.length < 2) month = month;
-        if (day.length < 2) day = day;
+            if (month.length < 2) month = month;
+            if (day.length < 2) day = day;
 
-        return [year, month, day].join('-');
-    }
+            date =  [year, month, day].join('-');
 
+        }else if(format==  "Yearly"){
+             var d = new Date(date || Date.now()),
+                month = '01' ,
+                day = '01',
+                year = d.getFullYear();
+
+                date = [year, month, day].join('-');
+
+        }else if(format == "Daily"){
+             var d = new Date(date || Date.now()),
+                month = '' + (d.getMonth() + 1),
+                day = d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2) month ="0" +month;
+            if (day.length < 2) day = "0"+day;
+
+            date =  [year, month, day].join('-');
+        } 
+        return date;
+}
    $scope.setDefLenSeason = function(interval) {
     if (interval == "Yearly"){
         $scope.forecastObj.paramObj.len_season = 1;

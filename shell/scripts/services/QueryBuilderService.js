@@ -292,8 +292,8 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
             var  dataArray =[];
             if(widObj.isVisual == true){
             // ---------------------------------------------------------------------------------    
-                var startdate = formattedDate(widObj.Vstart);
-                var enddate = formattedDate(widObj.Vend);
+                var startdate = formattedDate(widObj.Vstart, widObj.foreCastObj.interval);
+                var enddate = formattedDate(widObj.Vend, widObj.foreCastObj.interval);
                 var xAxisLen = catArr.length;
 
                 var startInd = -1;
@@ -302,12 +302,16 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                 var data = [];
                 for (var i = 0; i <= xAxisLen; i++) {
 
-                    if(widObj.interval != "Daily"){
-                         var date = catArr[i] + "-1";
+                    var date;
+                    if(widObj.foreCastObj.interval == "Yearly"){
+                        date = catArr[i] + "-01-01";
+                    }else if(widObj.foreCastObj.interval == "Monthly"){
+                        date = catArr[i] + "-01";
+                    }else if(widObj.foreCastObj.interval == "Daily"){
+                        date = catArr[i];
                     }
-                    else{
-                        var date = catArr[i];
-                    }
+
+
                     var x = new Date(startdate);
                     var y = new Date(date);
                     var z = new Date(enddate);
@@ -329,19 +333,54 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                 }
 
                 var seriesLen = serArr.length;
-                for (var i = 0; i < seriesLen; i++) {
-                    data = [];
-                    for (var j = startInd; j <= endInd; j++) {
-                        data.push(serArr[i].data[j]);
-                    }
 
-                    if (data.length > 0) {
-                        serArr[i].data = data;
-                        if(fObj.showActual != true)
-                            serArr[i].zones[0].value = cat.length - fObj.fcast_days;
+                if(widObj.foreCastObj.interval == "Daily" && widObj.foreCastObj.interval.forecastAtt !=""){
+                        var tempcatLen = getAllDays(startdate,enddate).length;
+                        for (var i = 0; i < seriesLen; i++) {
+                            data = [];
+                            for (var j = startInd; j <= endInd; j++) {
+                                    data.push(serArr[i].data[j]);
+                            }
+
+                            if (data.length > 0) {
+                                serArr[i].data = data;
+
+                                var tempdate=[];
+                                if(data.length > tempcatLen){
+                                    for(var a=0;a<tempcatLen ; a++){
+                                            tempdate.push(data[a]);
+                                    }
+
+                                }
+                                serArr[i].data = tempdate;
+                                if(fObj.showActual != true){
+                                   
+                                        serArr[i].zones[0].value = tempcatLen - fObj.fcast_days-1;
+                                }
+                            }
+                        }
+
+                         if (cat.length > 0) {
+                            dataArray[1] = getAllDays(startdate,enddate);
+                        }
+
+                }else{
+                    for (var i = 0; i < seriesLen; i++) {
+                        data = [];
+                        for (var j = startInd; j <= endInd; j++) {
+                            data.push(serArr[i].data[j]);
+                        }
+
+                        if (data.length > 0) {
+                            serArr[i].data = data;
+                            if(fObj.showActual != true)
+                                serArr[i].zones[0].value = cat.length - fObj.fcast_days-1;
+                        }
                     }
+                    if (cat.length > 0) {
+                            dataArray[1] = cat;
+                        }
                 }
-
 
                 dataArray[0] = serArr;
                 dataArray[1] = cat;
@@ -352,6 +391,32 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
             }
                 
             return dataArray;        
+        }
+
+
+
+         var getAllDays = function (startdate,enddate) {
+            var s = new Date(startdate);
+            var e = new Date(enddate);
+            var a = [];
+            
+            while(s < e) {
+                a.push(getFormattedDate(s));
+                s = new Date(s.setDate(
+                    s.getDate() + 1
+                ))
+            }
+            
+            return a;
+        };
+
+        var getFormattedDate = function (date) {
+              var year = date.getFullYear();
+              var month = (1 + date.getMonth()).toString();
+              month = month.length > 1 ? month : '0' + month;
+              var day = date.getDate().toString();
+              day = day.length > 1 ? day : '0' + day;
+              return year +  '-' + month + '-' + day;
         }
 
         this.sync = function(q, cl, widObj, cb){
@@ -369,17 +434,41 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
         }
     };
 
-    var formattedDate = function (date) {
+    var formattedDate = function (date,format) {
 
-        var d = new Date(date || Date.now()),
-            month = '' + (d.getMonth() + 1),
-            day = '1',
-            year = d.getFullYear();
+        var date;
+        if(format ==  "Monthly"){
+            var d = new Date(date || Date.now()),
+                month = '' + (d.getMonth() + 1),
+                day = '01',
+                year = d.getFullYear();
 
-        if (month.length < 2) month = month;
-        if (day.length < 2) day = day;
+            if (month.length < 2) month = month;
+            if (day.length < 2) day = day;
 
-        return [year, month, day].join('-');
+            date =  [year, month, day].join('-');
+
+        }else if(format==  "Yearly"){
+             var d = new Date(date || Date.now()),
+                month = '01' ,
+                day = '01',
+                year = d.getFullYear();
+
+                date = [year, month, day].join('-');
+
+        }else if(format == "Daily"){
+             var d = new Date(date || Date.now()),
+                month = '' + (d.getMonth() + 1),
+                day = d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2) month ="0" +month;
+            if (day.length < 2) day = "0"+day;
+
+            date =  [year, month, day].join('-');
+        } 
+
+        return date;
     }
 
     var BOXPLOT = function(){

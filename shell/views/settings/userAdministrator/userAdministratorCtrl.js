@@ -217,9 +217,29 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 		return contacts;
     }
 	
+	
+	
+	vm.isValidGroupName=function(){
+        for (var i = 0; i < $rootScope.sharableGroups.length; i++) {
+            var groupName=$rootScope.sharableGroups[i].Name;
+                if(vm.group.groupname==groupName){
+                    return false;
+                }
+        }
+        return true;
+    };
+	
+	
+	
 	//Finally add the group and close the Dialog
 	$scope.submit = function()
 	{
+		if(vm.isValidGroupName()==false){
+            notifications.toast('0', 'This user group is already created.');
+            return;
+        };
+		
+		
 		if(vm.contacts.length != 0)
 		{
 			vm.submitted = true;

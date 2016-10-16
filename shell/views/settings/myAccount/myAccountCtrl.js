@@ -41,7 +41,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         }
     }, function(response) {
         //console.log(response)
-        $scope.cardDetail = {};
+        vm.paymentCards =[];
         //displayError("Error while upgrade the package...");
         //$mdDialog.hide();
     })
@@ -49,7 +49,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     //#Add card formats
     vm.getFormattedCardList=function(card){
-        for (var i = 0; i <= card.length; i ++) {
+        for (var i = 0; i < card.length; i ++) {
             if(card[i].brand=="American Express"){
                 card[i].background= "#136e59";
                 card[i].image= "amex_s.png";
@@ -70,7 +70,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                     card[i].defaultCard= false;
                 }
             }
-            else if(cards[i].brand=="MasterCard"){
+            else if(card[i].brand=="MasterCard"){
                 card[i].background= "#0066a8";
                 card[i].image= "master_s.png";
                 if(i==0){
@@ -80,16 +80,13 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                     card[i].defaultCard= false;
                 }
             }
-            else {}
-            
-            vm.paymentCards=card;
+            else {}     
         }
+        
+        vm.paymentCards=card;
     }
                             
 
-    //#Get card information
-    $scope.defaultCard = []
-    //paymentGatewaySvc.getDefalultCard(); 
 
     //#get usage summary#//
     $scope.usageDetails = {};
@@ -493,6 +490,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             if (response.statusText == "OK") {
                 if (response.data.status == true) {
                     //Success
+                    vm.getFormattedCardList(response.data.data);
                     displaySuccess("Requested card set as defaut card successfully...");
                 } else {
                     //fail
@@ -506,6 +504,56 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             $mdDialog.hide();
         })
     }
+    
+    
+    vm.deleteCard = function(ev, cardId) {
+         var confirm = $mdDialog.confirm()
+            .title('Deletion Confirmation')
+            .textContent('Do you cant delete this card?')
+            .ariaLabel('Lucky day')
+            .targetEvent(ev)
+            .ok('Yes')
+            .cancel('No');
+        $mdDialog.show(confirm).then(function() {
+            //Yes
+            displayProgress("Processing...")
+            vm.deleteCardProcess(cardId);
+        }, function() {
+            //No
+        });
+    }
+
+    vm.deleteCardProcess=function(cardId){
+        var pkgObj = {
+            "cardId": cardId
+        }
+        $http({
+            url: "/include/duoapi/paymentgateway/deleteCard",
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: pkgObj
+        }).then(function(response) {
+            //console.log(response)
+            if (response.statusText == "OK") {
+                if (response.data.status == true) {
+                    //Success
+                    vm.getFormattedCardList(response.data.data);
+                    displaySuccess("Requested card deleted successfully...");
+                } else {
+                    //fail
+                    displayError(response.data.response);
+                }
+            }
+            $mdDialog.hide();
+        }, function(response) {
+            //console.log(response)
+            displayError("Error while deleting default card...");
+            $mdDialog.hide();
+        })
+    }
+    
     
     
     

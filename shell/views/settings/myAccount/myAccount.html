@@ -341,6 +341,19 @@ p {
     line-height: 30px;
     min-height: 30px;
 }
+
+
+
+
+  #md-button.md-amber-theme.md-warn {
+    color: #ef5350;
+    fill: #ef5350; }
+  #md-button.md-amber-theme.md-raised, .md-button.md-amber-theme.md-fab {
+    background-color: rgba(158, 158, 158, 0.185); }
+
+
+<!--id=md-raised md-warn-->
+
 </style>
 <footer style="width:100%;right:0px;bottom:0px;position:fixed;">
     <md-tabs id="pagingTabs" md-selected="vm.selectedPage" md-align-tabs="bottom">
@@ -687,14 +700,29 @@ p {
                                                             <span style="text-transform:none;font-weight:700;letter-spacing:1px;color:white;    text-shadow: 1px 0px #484848;">Default</span>
                                                         </md-button>
                                                     </div>
+                                                    
+                                                    
+                                                    
                                                 </md-card>
                                             </div>
                                             <div class="back">
                                                 <md-card class="tint showbox paymentCard product_card" ng-class="{selected: $index == selectedCard}" style="padding: 0px;background:{{card.background}}">
                                                     <div layout="row" layout="space-between center" style="margin-top:20px;height:35px;background:white;"></div>
                                                     <center style="margin-top:40px;">
-                                                        <md-button class="md-raised" ng-click="vm.makeDefault($event,card.id)" ng-disabled="card.default == true"><span style="text-transform:initial">Make Default</span></md-button>
+                                                        <!--md-button class="md-raised" ng-click="vm.makeDefault($event,card.id)" ng-disabled="card.default == true"><span style="text-transform:initial">Make Default</span></md-button-->
+                                                   
+                                                        <md-button class="md-raised" aria-label="Profile" style="background:#006400" ng-click="vm.makeDefault($event,card.id)">
+                                                            <span style="text-transform:none;font-weight:700;letter-spacing:1px;color:white;    text-shadow: 1px 0px #484848;">Make Default</span>
+                                                        </md-button>
+                                                   
+                                                        <md-button class="md-raised" aria-label="Profile" style="background:#f92424" ng-click="vm.deleteCard($event,card.id)">
+                                                            <span style="text-transform:none;font-weight:700;letter-spacing:1px;color:white;    text-shadow: 1px 0px #484848;">Remove</span>
+                                                        </md-button>
+                                                    
                                                     </center>
+                                                    
+                            
+                                                    
                                                 </md-card>
                                             </div>
                                         </div>

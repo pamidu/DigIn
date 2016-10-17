@@ -30,7 +30,7 @@
                                                     aria-labelledby="{{ ::series.name }}-header">
                                         <md-input-container flex>
                                             <label>Name</label>
-                                            <input ng-model="series.name">
+                                            <input ng-change="validateSeriesName(series.name)" ng-model="series.name">
                                         </md-input-container>
                                         <!--md-input-container flex>
                                             <label>Color</label>

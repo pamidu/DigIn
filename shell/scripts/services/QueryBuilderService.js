@@ -192,6 +192,20 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
         }
     }; 
 
+   var MAP = function(){
+
+        this.sync = function(q, cl, widObj, cb) {
+            cl.getHierarchicalSummary(q, function(data, status) {
+                if (status){
+                    widObj.widData.children = data.children;
+                    }
+                widObj.syncState = true;                    
+                cb(widObj);
+            });
+        }
+    }; 
+
+
     var FORECAST = function(){
         function mapResult(data,fObj,widObj){
                     var forcastArr =[];

@@ -223,6 +223,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             showEmpty: false
         }
     };
+
+
     //#private function
     var privateFun = (function() {
         return {
@@ -397,209 +399,210 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             proBy: 'mc0'
         }],
         chartTypes: [{
-            id: 'ct01',
-            icon: 'ti-pie-chart',
-            name: 'pie chart',
-            chart: 'pie',
-            selected: false,
-            chartType: 'highCharts',
-            view: 'views/query/chart-views/highcharts.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
-            id: 'ct02',
-            icon: 'ti-bar-chart-alt',
-            name: 'bar',
-            chart: 'bar',
-            selected: false,
-            chartType: 'highCharts',
-            view: 'views/query/chart-views/highcharts.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
-            id: 'ct03',
-            icon: 'fa fa-line-chart',
-            icon: 'ti-bar-chart',
-            name: 'column',
-            chart: 'column',
-            selected: false,
-            chartType: 'highCharts',
-            view: 'views/query/chart-views/highcharts.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
-            id: 'ct03',
-            icon: 'ti-gallery',
-            name: 'line ',
-            chart: 'line',
-            selected: false,
-            chartType: 'highCharts',
-            view: 'views/query/chart-views/highcharts.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
-            id: 'ct05',
-            icon: ' chart-diginSmooth_line',
-            name: 'Smooth line ',
-            chart: 'spline',
-            selected: false,
-            chartType: 'highCharts',
-            view: 'views/query/chart-views/highcharts.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
-            id: 'ct06',
-            icon: 'fa fa-area-chart',
-            name: 'area ',
-            chart: 'area',
-            selected: false,
-            chartType: 'highCharts',
-            view: 'views/query/chart-views/highcharts.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
-            id: 'ct07',
-            icon: 'chart-diginsmooth_area',
-            name: 'Smooth area ',
-            chart: 'areaspline',
-            selected: false,
-            chartType: 'highCharts',
-            view: 'views/query/chart-views/highcharts.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
-            id: 'ct08',
-            icon: 'chart-diginscatter',
-            name: 'scatter ',
-            chart: 'scatter',
-            selected: false,
-            chartType: 'highCharts',
-            view: 'views/query/chart-views/highcharts.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
-            id: 'ct9',
-            icon: 'chart-diginhierarchy-chart',
-            name: 'hierarchy',
-            chart: 'hierarchy',
-            selected: false,
-            chartType: 'd3hierarchy',
-            view: 'views/query/chart-views/hierarchySummary.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
-            id: 'ct10',
-            icon: 'chart-diginsunburst-chart',
-            name: 'sunburst',
-            chart: 'sunburst',
-            selected: false,
-            chartType: 'd3sunburst',
-            view: 'views/query/chart-views/sunburst.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-         }, 
-       // {
-        //     id: 'ct12',
-        //     icon: 'ti-layout-accordion-list',
-        //     name: 'pivotsummary',
-        //     chart: 'pivotsummary',
-        //     selected: false,
-        //     chartType: 'pivotSummary',
-        //     view: 'views/query/chart-views/pivotSummary.html',
-        //     initObj: $scope.initHighchartObj,
-        //     settingsView: 'views/query/settings-views/highchartsSettings.html'
-        // }, 
-           {
-            id: 'ct13',
-            icon: 'fa fa-sort-numeric-desc',
-            name: 'metric',
-            chart: 'metric',
-            selected: false,
-            chartType: 'metric',
-            view: 'views/query/chart-views/metric.html',
-            initObj: {
-                value: 33852,
-                decValue: 33852,
-                scale: "",
-                dec: 2,
-                label: "Sales Average",
-                scalePosition: "back",
-                color: 'black'
+                id: 'ct01',
+                icon: 'ti-pie-chart',
+                name: 'pie chart',
+                chart: 'pie',
+                selected: false,
+                chartType: 'highCharts',
+                view: 'views/query/chart-views/highcharts.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct02',
+                icon: 'ti-bar-chart-alt',
+                name: 'bar',
+                chart: 'bar',
+                selected: false,
+                chartType: 'highCharts',
+                view: 'views/query/chart-views/highcharts.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct03',
+                icon: 'fa fa-line-chart',
+                icon: 'ti-bar-chart',
+                name: 'column',
+                chart: 'column',
+                selected: false,
+                chartType: 'highCharts',
+                view: 'views/query/chart-views/highcharts.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct03',
+                icon: 'ti-gallery',
+                name: 'line ',
+                chart: 'line',
+                selected: false,
+                chartType: 'highCharts',
+                view: 'views/query/chart-views/highcharts.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct05',
+                icon: ' chart-diginSmooth_line',
+                name: 'Smooth line ',
+                chart: 'spline',
+                selected: false,
+                chartType: 'highCharts',
+                view: 'views/query/chart-views/highcharts.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct06',
+                icon: 'fa fa-area-chart',
+                name: 'area ',
+                chart: 'area',
+                selected: false,
+                chartType: 'highCharts',
+                view: 'views/query/chart-views/highcharts.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct07',
+                icon: 'chart-diginsmooth_area',
+                name: 'Smooth area ',
+                chart: 'areaspline',
+                selected: false,
+                chartType: 'highCharts',
+                view: 'views/query/chart-views/highcharts.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct08',
+                icon: 'chart-diginscatter',
+                name: 'scatter ',
+                chart: 'scatter',
+                selected: false,
+                chartType: 'highCharts',
+                view: 'views/query/chart-views/highcharts.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct9',
+                icon: 'chart-diginhierarchy-chart',
+                name: 'hierarchy',
+                chart: 'hierarchy',
+                selected: false,
+                chartType: 'd3hierarchy',
+                view: 'views/query/chart-views/hierarchySummary.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct10',
+                icon: 'chart-diginsunburst-chart',
+                name: 'sunburst',
+                chart: 'sunburst',
+                selected: false,
+                chartType: 'd3sunburst',
+                view: 'views/query/chart-views/sunburst.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
             },
-            settingsView: 'views/query/settings-views/metricSettings.html'
-        }, {
-            id: 'ct15',
-            icon: 'fa fa-tasks',
-            name: 'boxplot',
-            chart: 'boxplot',
-            selected: false,
-            chartType: 'boxplot',
-            view: 'views/query/chart-views/BoxPlot.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
-            id: 'ct16',
-            icon: 'fa fa-bar-chart',
-            name: 'histogram',
-            chart: 'histogram',
-            selected: false,
-            chartType: 'histogram',
-            view: 'views/query/chart-views/Histogram.html',
-            initObj: {},
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
-            id: 'ct17',
-            icon: 'fa fa-circle',
-            name: 'bubble',
-            chart: 'bubble',
-            selected: false,
-            chartType: 'bubble',
-            view: 'views/query/chart-views/bubble.html',
-            initObj: {},
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
-            id: 'ct18',
-            icon: 'fa fa-line-chart',
-            name: 'forecast',
-            chart: 'forecast',
-            selected: false,
-            chartType: 'forecast',
-            view: 'views/query/chart-views/forecast.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/forecastSettings.html'
-        }, {
-            id: 'ct19',
-            icon: 'fa fa-filter',
-            name: 'funnel',
-            chart: 'funnel',
-            selected: false,
-            chartType: 'highCharts',
-            view: 'views/query/chart-views/highcharts.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
-            id: 'ct20',
-            icon: 'fa fa-caret-up',
-            name: 'pyramid',
-            chart: 'pyramid',
-            selected: false,
-            chartType: 'highCharts',
-            view: 'views/query/chart-views/highcharts.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/highchartsSettings.html'
-        }, {
-            id: 'ct21',
-            icon: 'fa fa-globe',
-            name: 'Geographical Map',
-            chart: 'Geographical Map',
-            selected: false,
-            chartType: 'map',
-            view: 'views/query/chart-views/GeoMap.html',
-            initObj: $scope.initHighchartObj,
-            settingsView: 'views/query/settings-views/mapsettings.html'
+            // {
+            //     id: 'ct12',
+            //     icon: 'ti-layout-accordion-list',
+            //     name: 'pivotsummary',
+            //     chart: 'pivotsummary',
+            //     selected: false,
+            //     chartType: 'pivotSummary',
+            //     view: 'views/query/chart-views/pivotSummary.html',
+            //     initObj: $scope.initHighchartObj,
+            //     settingsView: 'views/query/settings-views/highchartsSettings.html'
+            // }, 
+            {
+                id: 'ct13',
+                icon: 'fa fa-sort-numeric-desc',
+                name: 'metric',
+                chart: 'metric',
+                selected: false,
+                chartType: 'metric',
+                view: 'views/query/chart-views/metric.html',
+                initObj: {
+                    value: 33852,
+                    decValue: 33852,
+                    scale: "",
+                    dec: 2,
+                    label: "Sales Average",
+                    scalePosition: "back",
+                    color: 'black'
+                },
+                settingsView: 'views/query/settings-views/metricSettings.html'
+            }, {
+                id: 'ct15',
+                icon: 'fa fa-tasks',
+                name: 'boxplot',
+                chart: 'boxplot',
+                selected: false,
+                chartType: 'boxplot',
+                view: 'views/query/chart-views/BoxPlot.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct16',
+                icon: 'fa fa-bar-chart',
+                name: 'histogram',
+                chart: 'histogram',
+                selected: false,
+                chartType: 'histogram',
+                view: 'views/query/chart-views/Histogram.html',
+                initObj: {},
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct17',
+                icon: 'fa fa-circle',
+                name: 'bubble',
+                chart: 'bubble',
+                selected: false,
+                chartType: 'bubble',
+                view: 'views/query/chart-views/bubble.html',
+                initObj: {},
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct18',
+                icon: 'fa fa-line-chart',
+                name: 'forecast',
+                chart: 'forecast',
+                selected: false,
+                chartType: 'forecast',
+                view: 'views/query/chart-views/forecast.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/forecastSettings.html'
+            }, {
+                id: 'ct19',
+                icon: 'fa fa-filter',
+                name: 'funnel',
+                chart: 'funnel',
+                selected: false,
+                chartType: 'highCharts',
+                view: 'views/query/chart-views/highcharts.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct20',
+                icon: 'fa fa-caret-up',
+                name: 'pyramid',
+                chart: 'pyramid',
+                selected: false,
+                chartType: 'highCharts',
+                view: 'views/query/chart-views/highcharts.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/highchartsSettings.html'
+            }, {
+                id: 'ct21',
+                icon: 'fa fa-globe',
+                name: 'Geographical Map',
+                chart: 'Geographical Map',
+                selected: false,
+                chartType: 'map',
+                view: 'views/query/chart-views/GeoMap.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/mapsettings.html'
 
 
-        }]
+            }
+        ]
     };
     $scope.commonData.filters = [];
     //mapping measures array
@@ -1335,9 +1338,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             if (!recon) $scope.highchartsNG = $scope.selectedChart.initObj;
             $scope.highchartsNG = $scope.widget.widgetData.highchartsNG;
             $scope.highchartsNG.size = {
-                        width: 800,
-                        height: 660
-                    };
+                width: 800,
+                height: 660
+            };
             $scope.chartType = 'Geographical Map';
 
         },
@@ -1361,7 +1364,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             map: {
                                 mapData: Highcharts.maps['custom/world'],
                                 joinBy: 'name',
-                            } 
+                            }
                         },
 
                         chart: {
@@ -1422,7 +1425,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 delete $scope.highchartsNG.yAxis;
                 delete $scope.highchartsNG.legend;
                 $scope.highchartsNG.options.plotOptions.map.mapData = maplibrary;
-                
+
 
             }
 
@@ -1529,12 +1532,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             };
             $scope.highchartsNG.series[0].dataLabels = {
                 enabled: true,
-                 format: '{point.name}'
+                format: '{point.name}'
             };
             $scope.highchartsNG.size = {
                 width: 800,
                 height: 660
-            };    
+            };
 
             $scope.highchartsNG.options.colorAxis.minColor = newValue.minColor;
             $scope.highchartsNG.options.colorAxis.maxColor = newValue.maxColor;
@@ -1553,10 +1556,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 $scope.maxDate = moment(new Date($scope.widget.widgetData.maxDate)).format('LL');
                 $scope.minDate = moment(new Date($scope.widget.widgetData.minDate)).format('LL');
 
-                $scope.visualDate.startdate= $scope.widget.widgetData.Vstart;
+                $scope.visualDate.startdate = $scope.widget.widgetData.Vstart;
                 $scope.visualDate.enddate = $scope.widget.widgetData.Vend;
                 $scope.useFiltering.status = $scope.widget.widgetData.isVisual;
-                $scope.VisualDatesOk = $scope.widget.widgetData.VisualDatesOk ;
+                $scope.VisualDatesOk = $scope.widget.widgetData.VisualDatesOk;
             }
             delete $scope.highchartsNG.size;
         },
@@ -1591,14 +1594,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             widget.widgetData.Vstart = $scope.visualDate.startdate;
             widget.widgetData.Vend = $scope.visualDate.enddate;
             widget.widgetData.isVisual = $scope.useFiltering.status;
-            widget.widgetData.VisualDatesOk  = $scope.VisualDatesOk;
+            widget.widgetData.VisualDatesOk = $scope.VisualDatesOk;
             widget.widgetData.initCtrl = "elasticInit";
             widget.widgetName = "forecast";
             $scope.saveChart(widget);
         }
     };
 
-    
+
     $scope.$watch("forecastObj.paramObj", function(newValue, oldValue) {
 
         if (newValue !== oldValue && ((new Date(newValue.enddate) > new Date(newValue.startdate)) || (newValue.enddate == $scope.widget.widgetData.foreCastObjDate && newValue.startdate == $scope.widget.widgetData.foreCastObjDate) || newValue.showActual != oldValue.showActual)) {
@@ -1623,36 +1626,34 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 var isenddateoki = false;
 
                 var startdate = new Date(newValue.startdate).getTime();
-                var enddate   = new Date(newValue.enddate).getTime();
+                var enddate = new Date(newValue.enddate).getTime();
 
                 var minStart = new Date($scope.minDate).getTime();
-                var maxend   = new Date($scope.maxDate).getTime();
+                var maxend = new Date($scope.maxDate).getTime();
 
-                if(minStart<= startdate && startdate < maxend)
-                     isstartdateOki = true;
+                if (minStart <= startdate && startdate < maxend)
+                    isstartdateOki = true;
 
-                if(minStart< enddate && enddate <= maxend)
+                if (minStart < enddate && enddate <= maxend)
                     isenddateoki = true;
 
 
-               // this will check wether there is a chnage that should actually generate the chart again 
-                    if(isstartdateOki && isenddateoki){
-                        $scope.generateDesable = false;
-                    }
-                    else if (!isstartdateOki) {
-                        $scope.generateDesable = true;
-                        privateFun.fireMessage('0', 'Calculation Start date should within '+$scope.minDate+' and '+$scope.maxDate+'');
-                        // $scope.forecastObj.paramObj.enddate =  moment(new Date($scope.maxDate)).format('LL');
-                        // $scope.forecastObj.paramObj.startdate = moment(new Date($scope.minDate)).format('LL');
-                    }
-                    else if (!isenddateoki) {
-                        $scope.generateDesable = true;
-                        privateFun.fireMessage('0', 'Calculation End date should within '+$scope.minDate+' and '+$scope.maxDate+'');
-                        // $scope.forecastObj.paramObj.enddate =  moment(new Date($scope.maxDate)).format('LL');
-                        // $scope.forecastObj.paramObj.startdate = moment(new Date($scope.minDate)).format('LL');
-                    }  
-                 
-              
+                // this will check wether there is a chnage that should actually generate the chart again 
+                if (isstartdateOki && isenddateoki) {
+                    $scope.generateDesable = false;
+                } else if (!isstartdateOki) {
+                    $scope.generateDesable = true;
+                    privateFun.fireMessage('0', 'Calculation Start date should within ' + $scope.minDate + ' and ' + $scope.maxDate + '');
+                    // $scope.forecastObj.paramObj.enddate =  moment(new Date($scope.maxDate)).format('LL');
+                    // $scope.forecastObj.paramObj.startdate = moment(new Date($scope.minDate)).format('LL');
+                } else if (!isenddateoki) {
+                    $scope.generateDesable = true;
+                    privateFun.fireMessage('0', 'Calculation End date should within ' + $scope.minDate + ' and ' + $scope.maxDate + '');
+                    // $scope.forecastObj.paramObj.enddate =  moment(new Date($scope.maxDate)).format('LL');
+                    // $scope.forecastObj.paramObj.startdate = moment(new Date($scope.minDate)).format('LL');
+                }
+
+
             }
         } else if (newValue !== oldValue && !(new Date(newValue.enddate) > new Date(newValue.startdate))) {
             privateFun.fireMessage('0', 'Invalid start date and end date');
@@ -1660,57 +1661,60 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             // $scope.forecastObj.paramObj.enddate =  moment(new Date($scope.maxDate)).format('LL');
             // $scope.forecastObj.paramObj.startdate = moment(new Date($scope.minDate)).format('LL');
         }
-      
+
     }, true);
 
-    $scope.getForcastPeriod = function(newValue){
+    $scope.validateSeriesName = function(series) {
+
+        return series.replace(/\s/g, '');
+    }
+
+    $scope.getForcastPeriod = function(newValue) {
 
         var CalcEnddate;
         var forecastDays;
 
 
 
-            var CalcEnddate   = new Date($scope.forecastObj.paramObj.enddate);
-            var visualEnddate = new Date($scope.visualDate.enddate);
+        var CalcEnddate = new Date($scope.forecastObj.paramObj.enddate);
+        var visualEnddate = new Date($scope.visualDate.enddate);
 
-            var diff = new Date(visualEnddate - CalcEnddate);
+        var diff = new Date(visualEnddate - CalcEnddate);
 
-            var years = (diff.getUTCFullYear() - 1970);
-            var months = (diff.getUTCMonth()) + (12 * years);
-            var days = (diff.getUTCDate()) + (365 * years);
+        var years = (diff.getUTCFullYear() - 1970);
+        var months = (diff.getUTCMonth()) + (12 * years);
+        var days = (diff.getUTCDate()) + (365 * years);
 
-            if($scope.forecastObj.paramObj.interval == "Yearly"){
-                forecastDays = years+1;
-            }
-            else if($scope.forecastObj.paramObj.interval == "Monthly"){
-                forecastDays = months+1;
-            }
-            else if($scope.forecastObj.paramObj.interval == "Daily"){
-                forecastDays = days;
-            }
+        if ($scope.forecastObj.paramObj.interval == "Yearly") {
+            forecastDays = years + 1;
+        } else if ($scope.forecastObj.paramObj.interval == "Monthly") {
+            forecastDays = months + 1;
+        } else if ($scope.forecastObj.paramObj.interval == "Daily") {
+            forecastDays = days;
+        }
 
-            return forecastDays ;
+        return forecastDays;
 
     }
 
 
-    $scope.ForcastBtnFun = function(){
-        if($scope.useFiltering.status == true){
-            if($scope.VisualDatesOk == false){
+    $scope.ForcastBtnFun = function() {
+        if ($scope.useFiltering.status == true) {
+            if ($scope.VisualDatesOk == false) {
                 privateFun.fireMessage('0', 'Invalid visualization start date and end date');
-            }else{
+            } else {
 
                 $scope.generateForecastWithFiltering($scope.forecastObj.paramObj);
             }
-        }else{
+        } else {
             $scope.generateForecast($scope.forecastObj.paramObj);
         }
     }
 
-     $scope.generateForecastWithFiltering = function(fobj){
+    $scope.generateForecastWithFiltering = function(fobj) {
 
         var forecast_days = $scope.getForcastPeriod();
-        $scope.forecastObj.paramObj.fcast_days = forecast_days; 
+        $scope.forecastObj.paramObj.fcast_days = forecast_days;
 
         $scope.widget.widgetData.highchartsNG = {};
         $scope.widget.widgetData.highchartsNG = {
@@ -1732,14 +1736,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
                 // $scope.forecastObj.paramObj.enddate =  moment(new Date(data.max_date)).format('LL');
                 // $scope.forecastObj.paramObj.startdate = moment(new Date(data.min_date)).format('LL');
-                
-
-                if(data.warning != null)
-                    privateFun.fireMessage('0',data.warning );
 
 
-                if(data.len_season != $scope.forecastObj.paramObj.len_season){
-                   
+                if (data.warning != null)
+                    privateFun.fireMessage('0', data.warning);
+
+
+                if (data.len_season != $scope.forecastObj.paramObj.len_season) {
+
                     $scope.forecastObj.paramObj.len_season = data.len_season;
                 }
 
@@ -1847,7 +1851,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         },
                         credits: {
                             enabled: false
-                          },
+                        },
                         exporting: {
                             sourceWidth: 600,
                             sourceHeight: 400,
@@ -1880,10 +1884,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
                 $scope.eventHndler.isLoadingChart = false;
 
-                if(typeof $scope.widget.widgetData.highchartsNG.series != "undefined"){
-                  $scope.widget.widgetData.highchartsNG.series.forEach(function(key) {
-                     if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
-                   });
+                if (typeof $scope.widget.widgetData.highchartsNG.series != "undefined") {
+                    $scope.widget.widgetData.highchartsNG.series.forEach(function(key) {
+                        if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
+                    });
                 }
 
                 $scope.temptArr = $scope.widget.widgetData.highchartsNG;
@@ -1903,10 +1907,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 var data = [];
                 for (var i = 0; i < xAxisLen; i++) {
 
-                    if($scope.forecastObj.paramObj.interval != "Daily"){
-                         var date = $scope.temptArr.xAxis.categories[i] + "-1";
-                    }
-                    else{
+                    if ($scope.forecastObj.paramObj.interval != "Daily") {
+                        var date = $scope.temptArr.xAxis.categories[i] + "-1";
+                    } else {
                         var date = $scope.temptArr.xAxis.categories[i];
                     }
                     var x = new Date(startdate);
@@ -1938,7 +1941,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
                     if (data.length > 0) {
                         $scope.widget.widgetData.highchartsNG.series[i].data = data;
-                        if(fObj.showActual != true)
+                        if (fObj.showActual != true)
                             $scope.widget.widgetData.highchartsNG.series[i].zones[0].value = cat.length - fObj.fcast_days;
                     }
                 }
@@ -1948,73 +1951,72 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 }
 
 
-            // --------------------------------------------------------------------------------------
+                // --------------------------------------------------------------------------------------
 
-        
-        } else {
-            privateFun.fireMessage('0', data);
-            $scope.eventHndler.isLoadingChart = false;
-        }
-    });
+
+            } else {
+                privateFun.fireMessage('0', data);
+                $scope.eventHndler.isLoadingChart = false;
+            }
+        });
 
 
 
     }
 
 
-    $scope.useFiltering ={
-        status:false,
-    } 
-    $scope.VisualDatesOk = false; 
+    $scope.useFiltering = {
+        status: false,
+    }
+    $scope.VisualDatesOk = false;
     $scope.$watch("visualDate", function(newValue, oldValue) {
 
-        if (newValue !== oldValue){
+        if (newValue !== oldValue) {
             var calcStartdate = new Date($scope.forecastObj.paramObj.startdate);
             var CalcEnddate = new Date($scope.forecastObj.paramObj.enddate);
 
 
             var visualSdate = new Date(newValue.startdate).getTime();
-            var visualEndDate =  new Date(newValue.enddate).getTime();
-            calcStartdate=calcStartdate.getTime();
+            var visualEndDate = new Date(newValue.enddate).getTime();
+            calcStartdate = calcStartdate.getTime();
             CalcEnddate = CalcEnddate.getTime();
 
-            var isVisualStartdateOK =false;
-            var isVisualEndOk= false;
-            if(visualSdate < visualEndDate){
+            var isVisualStartdateOK = false;
+            var isVisualEndOk = false;
+            if (visualSdate < visualEndDate) {
 
-                if(calcStartdate <= visualSdate && visualSdate <= CalcEnddate){
+                if (calcStartdate <= visualSdate && visualSdate <= CalcEnddate) {
                     isVisualStartdateOK = true;
                 }
 
-                if(CalcEnddate <= visualEndDate){
+                if (CalcEnddate <= visualEndDate) {
                     isVisualEndOk = true;
                 }
 
-                if(isVisualStartdateOK && isVisualEndOk){
+                if (isVisualStartdateOK && isVisualEndOk) {
                     // $scope.useFiltering = true;
                     $scope.VisualDatesOk = true;
                     $scope.generateDesable = false;
-                }
-                else if(!isVisualEndOk) {
-                    privateFun.fireMessage('0', 'Visualization End date should  greater than '+$scope.maxDate+'');
+                } else if (!isVisualEndOk) {
+                    privateFun.fireMessage('0', 'Visualization End date should  greater than ' + $scope.maxDate + '');
                     $scope.generateDesable = true;
                     // $scope.visualDate.startdate=  moment(new Date()).format('LL');
                     // $scope.visualDate.enddate=  moment(new Date()).format('LL');
-                }else if(!isVisualStartdateOK){
-                    privateFun.fireMessage('0', 'Visualization Start date should within '+$scope.minDate+' and '+$scope.maxDate+'');
+                } else if (!isVisualStartdateOK) {
+                    privateFun.fireMessage('0', 'Visualization Start date should within ' + $scope.minDate + ' and ' + $scope.maxDate + '');
                     $scope.generateDesable = true;
                     // $scope.visualDate.startdate=  moment(new Date()).format('LL');
                     // $scope.visualDate.enddate=  moment(new Date()).format('LL');
                 }
 
-            }else{
-                 privateFun.fireMessage('0', 'Invalid visualization start date and end date');
-                 $scope.generateDesable = true;
-                 // $scope.visualDate.startdate=  moment(new Date()).format('LL');
-                 // $scope.visualDate.enddate=  moment(new Date()).format('LL');
+            } else {
+                privateFun.fireMessage('0', 'Invalid visualization start date and end date');
+                $scope.generateDesable = true;
+                // $scope.visualDate.startdate=  moment(new Date()).format('LL');
+                // $scope.visualDate.enddate=  moment(new Date()).format('LL');
             }
-            
-    }
+
+        }
 
     }, true);
 
@@ -2031,22 +2033,19 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         return [year, month, day].join('-');
     }
 
-   $scope.setDefLenSeason = function(interval) {
-    if (interval == "Yearly"){
-        $scope.forecastObj.paramObj.len_season = 1;
-        $scope.forecastObj.paramObj.fcast_days =1; 
-        $scope.forecastObj.paramObj.model = 'double exponential smoothing';
+    $scope.setDefLenSeason = function(interval) {
+        if (interval == "Yearly") {
+            $scope.forecastObj.paramObj.len_season = 1;
+            $scope.forecastObj.paramObj.fcast_days = 1;
+            $scope.forecastObj.paramObj.model = 'double exponential smoothing';
+        } else if (interval == "Daily") {
+            $scope.forecastObj.paramObj.len_season = 7;
+            $scope.forecastObj.paramObj.fcast_days = 7;
+        } else if (interval == "Monthly") {
+            $scope.forecastObj.paramObj.len_season = 12;
+            $scope.forecastObj.paramObj.fcast_days = 12;
+        }
     }
-
-    else if (interval == "Daily"){
-        $scope.forecastObj.paramObj.len_season = 7;
-        $scope.forecastObj.paramObj.fcast_days =7; 
-    }
-    else if (interval == "Monthly"){
-        $scope.forecastObj.paramObj.len_season = 12;
-        $scope.forecastObj.paramObj.fcast_days =12; 
-    }
-}
 
 
 
@@ -2078,7 +2077,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     };
 
 
-  
+
 
 
 
@@ -2089,15 +2088,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     $scope.generateForecast = function(fObj) {
 
 
-        if ($scope.forecastObj.paramObj.interval == "Yearly"){
-            $scope.forecastObj.paramObj.fcast_days =1; 
-        }
-
-        else if ($scope.forecastObj.paramObj.interval == "Daily"){
-            $scope.forecastObj.paramObj.fcast_days =7; 
-        }
-        else if ($scope.forecastObj.paramObj.interval == "Monthly"){
-            $scope.forecastObj.paramObj.fcast_days =12; 
+        if ($scope.forecastObj.paramObj.interval == "Yearly") {
+            $scope.forecastObj.paramObj.fcast_days = 1;
+        } else if ($scope.forecastObj.paramObj.interval == "Daily") {
+            $scope.forecastObj.paramObj.fcast_days = 7;
+        } else if ($scope.forecastObj.paramObj.interval == "Monthly") {
+            $scope.forecastObj.paramObj.fcast_days = 12;
         }
 
         $scope.widget.widgetData.highchartsNG = {};
@@ -2113,22 +2109,22 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 var serArr = [];
                 var catArr = [];
 
-               
-              
+
+
                 $scope.maxDate = moment(new Date(data.act_max_date)).format('LL');
                 $scope.minDate = moment(new Date(data.act_min_date)).format('LL');
-              
-                
-                $scope.forecastObj.paramObj.enddate =  moment(new Date(data.max_date)).format('LL');
+
+
+                $scope.forecastObj.paramObj.enddate = moment(new Date(data.max_date)).format('LL');
                 $scope.forecastObj.paramObj.startdate = moment(new Date(data.min_date)).format('LL');
-                 
+
 
                 // to check wether service has returned any warnings
-                if(data.warning != null)
-                    privateFun.fireMessage('0',data.warning );
+                if (data.warning != null)
+                    privateFun.fireMessage('0', data.warning);
 
                 //if the service has return a diferent len_season set it
-                if(data.len_season != $scope.forecastObj.paramObj.len_season){
+                if (data.len_season != $scope.forecastObj.paramObj.len_season) {
                     $scope.forecastObj.paramObj.len_season = data.len_season;
                 }
 
@@ -2235,7 +2231,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         },
                         credits: {
                             enabled: false
-                          },
+                        },
                         exporting: {
                             sourceWidth: 600,
                             sourceHeight: 400,
@@ -2266,14 +2262,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     series: serArr
                 };
 
-                if(typeof $scope.widget.widgetData.highchartsNG.series != "undefined"){
-                  $scope.widget.widgetData.highchartsNG.series.forEach(function(key) {
-                     if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
-                   });
+                if (typeof $scope.widget.widgetData.highchartsNG.series != "undefined") {
+                    $scope.widget.widgetData.highchartsNG.series.forEach(function(key) {
+                        if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
+                    });
                 }
 
                 $scope.eventHndler.isLoadingChart = false;
-                
+
             } else {
                 privateFun.fireMessage('0', data);
                 $scope.eventHndler.isLoadingChart = false;
@@ -3365,7 +3361,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             $scope.highchartsNG.series.push({
                                 name: key,
                                 data: serObj[key].data,
-                                origName : key
+                                origName: key
                             });
                         }
                     }
@@ -3419,8 +3415,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                     if (status) {
                                         // filter only the selected fields from the result returned by the service
                                         filterService.filterAggData(res, $scope.sourceData.filterFields);
-                                        angular.forEach($scope.highchartsNG.series,function(series) {
-                                            if ( series.name == selectedSeries ) {
+                                        angular.forEach($scope.highchartsNG.series, function(series) {
+                                            if (series.name == selectedSeries) {
                                                 origName = series.origName;
                                                 serName = series.name;
                                             }
@@ -3720,7 +3716,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     eval("$scope." + $scope.selectedChart.chartType + ".executeQuery(cat, res, query)");
                 } else {
                     //alert('request failed');
-                    $scope.$apply(function(){
+                    $scope.$apply(function() {
                         privateFun.fireMessage('0', '<strong>Invalid query :</strong>Try Again!');
                         if ($scope.selectedChart.chartType == 'highCharts') {
                             $scope.highchartsNG.series = {};

@@ -107,8 +107,7 @@ Class Card {
 		if($cardId) {
 			$card = new stdClass();
 			$card->card_id = $cardId;
-
-			$res = $this->cClient->getRequestInvoker()->post("/makeDefault", $card);
+			$res = $this->cClient->getRequestInvoker()->post("/makeDefault", $card);		
 			return $this->getDefaultValue($res);
 		}
 

@@ -90,7 +90,7 @@
 										</md-menu-item>
 									</md-menu-content>
 							   </md-menu-->
-							   <md-button class="md-mini ti-trash" style="font-size: 20px;color:grey" ng-click="removeUser($event, user)">
+							   <md-button class="md-mini ti-trash" style="font-size: 20px;color:grey" aria-label="remove" ng-click="removeUser($event, user)">
 								</md-button>
 							   <md-divider ng-show="!$last"></md-divider>
 							</md-list-item>
@@ -149,8 +149,8 @@
 										<v-pane-content id="Store-content" aria-labelledby="Store-header" style="background: #eaeaea;border-radius: 4px;">
 											<div layout="row" layout-align="end end">
 									
-												<md-button  aria-label="Add user" ng-click="addUser($event,group,sharableUsers)" layout="row">
-													<span style="text-transform:none;color:#f9a525">Add User</span>
+												<md-button  aria-label="Add user" ng-click="vm.addGroup($event,group,$index)" layout="row">
+													<span style="text-transform:none;color:#f9a525">Edit Group</span>
 												</md-button>
 												<md-button  aria-label="delete user" ng-click="vm.deleteGroup($event, $index,group)">
 													<span style="text-transform:none;color:#f9a525">Delete Group</span>
@@ -160,10 +160,8 @@
 											<md-list ng-cloak>
 									
 												<md-list-item class="secondary-button-padding" ng-repeat="groupMemeber in group.users">
-													<p>{{groupMemeber.Name}}</p>
-													<md-button class="md-icon-button md-secondary" aria-label="delete user" ng-click="deleteUserFromGroup(group.groupId,groupMemeber)">
-														<ng-md-icon icon="delete" style="fill:grey;" size="20px" ></ng-md-icon>
-													</md-button>
+													<p><span style="font-weight:700">{{groupMemeber.Name}}</span> ({{groupMemeber.Id}})</p>
+						
 												</md-list-item>
 								
 

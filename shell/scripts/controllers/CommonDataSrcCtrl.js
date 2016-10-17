@@ -947,9 +947,14 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 var name = "";
                 for (var i=0;i<$scope.fieldObjects.length;i++) {
                     if ($scope.fieldObjects[i].id == id) {
-                        if ( $scope.fieldObjects[i].valueArray != 'undefined' || $scope.fieldObjects[i].valueArray.length == 0){
-                            name = $scope.fieldObjects[i].name;
-                            break;
+                        if ( $scope.fieldObjects[i].valueArray != 'undefined'){
+                            if ($scope.fieldObjects[i].valueArray.length == 0) {
+                                name = $scope.fieldObjects[i].name;
+                                break;                                
+                            } else {
+                                return;
+                            }
+
                         } else{
                             return;
                         }

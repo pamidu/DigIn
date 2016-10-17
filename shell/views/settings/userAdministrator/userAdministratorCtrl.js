@@ -78,22 +78,31 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 		$scope.groups = data;
 	});
 	
-	vm.addGroup = function(ev)
+	vm.addGroup = function(ev, group, index)
 	{
-		var group = {};
+		if(!group)
+		{
+			var group = {};
+			var index = "";
+		}
+		
 		$mdDialog.show({
 			  controller: "addGroupCtrl as vm",
 			  templateUrl: 'views/settings/userAdministrator/addGroup.html',
 			  parent: angular.element(document.body),
 			  targetEvent: ev,
 			  clickOutsideToClose:true,
-			  locals: group
+			  locals: {group: group, index: index}
 		})
 		.then(function(answer) {
 			if(answer)
 			{
-				console.log(answer);
-				$scope.groups.push(answer);
+				if(index)
+				{
+					$scope.groups[index] = answer.group;
+				}else{
+					$scope.groups.push(answer.group);
+				}
 			}
 		})
 	}
@@ -133,22 +142,53 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	
 }])*/
 
-routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifications','userAdminFactory', function ($scope,$rootScope,$mdDialog,notifications,userAdminFactory){
-	
-	 var vm = this;
 
+routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifications','userAdminFactory', 'group','index' ,function ($scope,$rootScope,$mdDialog,notifications,userAdminFactory,group,index){
+	
+	var vm = this;
+	var index = index;
+	vm.addOrEdit = "Add";
+	vm.group = {};
     vm.querySearch = querySearch;
     vm.allContacts = loadContacts();
-	console.log(vm.allContacts);
     vm.contacts = [];
     vm.filterSelected = true;
+	
+	function getCatLetter(catName){
+		try{
+			var catogeryLetter = "images/material_alperbert/avatar_tile_"+catName.charAt(0).toLowerCase()+"_28.png";
+		}catch(exception){}
+		return catogeryLetter;
+	};
 
+	if(Object.keys(group).length != 0)
+	{
+		vm.addOrEdit = "Edit";
+		vm.group = group;
+		//vm.contacts = group.users;
+		for (var i = 0; i<group.users.length; i++) {
+			var arrlen = vm.allContacts.length;
+			for (var j = 0; j<arrlen; j++) {
+				if (group.users[i].Id == vm.allContacts[j].Id) {
+					//removeItems.push(j);
+					 vm.contacts.push(vm.allContacts[j]);
+				}//if close
+			}//for close
+		}//for close
+	}else{
+		for (i = 0, len = vm.allContacts.length; i<len; ++i){
+			if(vm.allContacts[i].Id == JSON.parse(decodeURIComponent(getCookie('authData'))).Email)
+			{
+				vm.contacts.push(vm.allContacts[i]);
+			}
+		}
+	}
+	
     /**
      * Search for contacts.
      */
     function querySearch (query) {
-      var results = query ?
-          vm.allContacts.filter(createFilterFor(query)) : [];
+      var results = query ? vm.allContacts.filter(createFilterFor(query)) : [];
       return results;
     }
 
@@ -159,17 +199,10 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
       var lowercaseQuery = angular.lowercase(query);
 
       return function filterFn(contact) {
-        return (contact._lowername.indexOf(lowercaseQuery) != -1);;
+        return (contact._lowername.indexOf(lowercaseQuery) != -1);
       };
 
     }
-
-	function getCatLetter(catName){
-		try{
-			var catogeryLetter = "images/material_alperbert/avatar_tile_"+catName.charAt(0).toLowerCase()+"_28.png";
-		}catch(exception){}
-		return catogeryLetter;
-	};
 	
     function loadContacts() {
 		/*var contacts = [{email: "m.augustine@example.com", name:"Marina Augustine"},
@@ -184,28 +217,49 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 		return contacts;
     }
 	
+	
+	
+	vm.isValidGroupName=function(){
+        for (var i = 0; i < $rootScope.sharableGroups.length; i++) {
+            var groupName=$rootScope.sharableGroups[i].Name;
+                if(vm.group.groupname==groupName){
+                    return false;
+                }
+        }
+        return true;
+    };
+	
+	
+	
 	//Finally add the group and close the Dialog
 	$scope.submit = function()
 	{
-		vm.submitted = true;
+		if(vm.isValidGroupName()==false){
+            notifications.toast('0', 'This user group is already created.');
+            return;
+        };
+		
+		
 		if(vm.contacts.length != 0)
 		{
-
+			vm.submitted = true;
 			vm.group.users = [];
-			vm.group.groupId = "-999";
-			vm.group.parentId = "";
-			
+			if(!vm.group.groupId)
+			{
+				vm.group.groupId = "-999";
+				vm.group.parentId = "";
+			}
+
 			for (i = 0, len = vm.contacts.length; i<len; ++i){
 				vm.group.users.push({Name:vm.contacts[i].Name, Id:vm.contacts[i].Id});
 			}
-			console.log(vm.group);
-			
+						
 			userAdminFactory.addUserGroup(vm.group).then(function(result) {
 				if(result.IsSuccess == true)
 				{
 					notifications.toast(1, "Group Added");
 					vm.group.groupId = result.Data[0].ID;
-					$mdDialog.hide(vm.group);
+					$mdDialog.hide({group:vm.group, index:index});
 				}else{
 					notifications.toast(0, result.Message);
 				}
@@ -216,6 +270,11 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 			notifications.toast(0, "Please add members to the group");
 		}
 			
+	}
+	
+	vm.close = function()
+	{
+		$mdDialog.cancel();
 	}
 	
 

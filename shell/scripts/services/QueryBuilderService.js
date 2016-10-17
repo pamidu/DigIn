@@ -348,56 +348,36 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
 
                 var seriesLen = serArr.length;
 
-                if(widObj.foreCastObj.interval == "Daily" && widObj.foreCastObj.interval.forecastAtt !=""){
-                        var tempcatLen = getAllDays(startdate,enddate).length;
-                        for (var i = 0; i < seriesLen; i++) {
-                            data = [];
-                            for (var j = startInd; j <= endInd; j++) {
-                                    data.push(serArr[i].data[j]);
-                            }
+                for (var i = 0; i < seriesLen; i++) {
+                    data = [];
+                    var endIndex = startInd+cat.length;
+                    for (var j = startInd; j < endIndex; j++) {
+                        data.push(serArr[i].data[j]);
+                    }
 
-                            if (data.length > 0) {
-                                serArr[i].data = data;
-
-                                var tempdate=[];
-                                if(data.length > tempcatLen){
-                                    for(var a=0;a<tempcatLen ; a++){
-                                            tempdate.push(data[a]);
-                                    }
-
+                    if (data.length > 0) {
+                        serArr[i].data = data;
+                        if(fObj.showActual != true){
+                            serArr[i].zones[0].value = cat.length - fObj.fcast_days-1;
+                        }else{
+                             if(i%2 == 0 ){
+                                var tempArr = [];
+                                for(var indtemp=0 ; indtemp <= cat.length - fObj.fcast_days;indtemp++){
+                                    tempArr.push(serArr[i].data[indtemp]);
                                 }
-                                serArr[i].data = tempdate;
-                                if(fObj.showActual != true){
-                                   
-                                        serArr[i].zones[0].value = tempcatLen - fObj.fcast_days-1;
-                                }
+
+                                serArr[i].data =tempArr;
                             }
-                        }
-
-                         if (cat.length > 0) {
-                            dataArray[1] = getAllDays(startdate,enddate);
-                        }
-
-                }else{
-                    for (var i = 0; i < seriesLen; i++) {
-                        data = [];
-                        for (var j = startInd; j <= endInd; j++) {
-                            data.push(serArr[i].data[j]);
-                        }
-
-                        if (data.length > 0) {
-                            serArr[i].data = data;
-                            if(fObj.showActual != true)
-                                serArr[i].zones[0].value = cat.length - fObj.fcast_days-1;
                         }
                     }
-                    if (cat.length > 0) {
-                            dataArray[1] = cat;
-                        }
                 }
 
+                if (cat.length > 0) {
+                        dataArray[1] = cat;
+                }
+              
                 dataArray[0] = serArr;
-                dataArray[1] = cat;
+                
             }else{
                 
                 dataArray[0] = serArr;

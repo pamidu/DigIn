@@ -1669,30 +1669,32 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         var forecastDays;
 
 
+        var date1 = new Date($scope.forecastObj.paramObj.enddate).getMonth()+1 + "/" +  new Date($scope.forecastObj.paramObj.enddate).getDate() + "/" +  new Date($scope.forecastObj.paramObj.enddate).getFullYear();
+        var date2 =  new Date($scope.visualDate.enddate).getMonth()+1 + "/" + new Date($scope.visualDate.enddate).getDate()  +"/"+ new Date($scope.visualDate.enddate).getFullYear();
 
-            var CalcEnddate   = new Date($scope.forecastObj.paramObj.enddate);
-            var visualEnddate = new Date($scope.visualDate.enddate);
+        var CalcEnddate   = new Date(date1);
+        var visualEnddate = new Date(date2);
 
-            var diff = new Date(visualEnddate - CalcEnddate);
+        var diff = new Date(visualEnddate - CalcEnddate);
 
-            var years = (diff.getFullYear() - 1970);
-            var months = (diff.getMonth()) + (12 * years);
-            var days = (diff.getDate()) + (365 * years);
+        var years = (diff.getFullYear() - 1970);
+        var months = (diff.getMonth()) + (12 * years);
+        
+        var timeDiff = Math.abs(visualEnddate.getTime() - CalcEnddate.getTime());
+        var days = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-            var months = $scope.monthDiff(CalcEnddate,visualEnddate);
 
+        if($scope.forecastObj.paramObj.interval == "Yearly"){
+            forecastDays = years+1;
+        }
+        else if($scope.forecastObj.paramObj.interval == "Monthly"){
+            forecastDays = months+1;
+        }
+        else if($scope.forecastObj.paramObj.interval == "Daily"){
+            forecastDays = days;
+        }
 
-            if($scope.forecastObj.paramObj.interval == "Yearly"){
-                forecastDays = years+1;
-            }
-            else if($scope.forecastObj.paramObj.interval == "Monthly"){
-                forecastDays = months+1;
-            }
-            else if($scope.forecastObj.paramObj.interval == "Daily"){
-                forecastDays = days;
-            }
-
-            return forecastDays ;
+        return forecastDays ;
 
     }
 
@@ -1946,62 +1948,39 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
                 
                 var seriesLen = $scope.temptArr.series.length;
-
-                if($scope.forecastObj.paramObj.interval == "Daily" && $scope.forecastObj.paramObj.forecastAtt !=""){
-                        
-                        var tempcatLen = $scope.getAllDays(startdate,enddate).length;
-                        for (var i = 0; i < seriesLen; i++) {
-                            data = [];
-                            for (var j = startInd; j <= endInd; j++) {
-                                    data.push($scope.temptArr.series[i].data[j]);
-                            }
-
-                            if (data.length > 0) {
-                                $scope.widget.widgetData.highchartsNG.series[i].data = data;
-
-                                var tempdate=[];
-                                if(data.length > tempcatLen){
-                                    for(var a=0;a<$scope.getAllDays(startdate,enddate).length ; a++){
-                                            tempdate.push(data[a]);
-                                    }
-
-                                }
-                                $scope.widget.widgetData.highchartsNG.series[i].data = tempdate;
-                                if(fObj.showActual != true){
-                                   
-                                        $scope.widget.widgetData.highchartsNG.series[i].zones[0].value = tempcatLen - fObj.fcast_days-1;
-                                }
-                            }
-                        }
-
-                         if (cat.length > 0) {
-                            $scope.widget.widgetData.highchartsNG.xAxis.categories = $scope.getAllDays(startdate,enddate);
-                        }
-                }else{
                     
                        
-                        for (var i = 0; i < seriesLen; i++) {
-                            data = [];
-                            for (var j = startInd; j <= endInd; j++) {
-                                    data.push($scope.temptArr.series[i].data[j]);
-                            }
+                for (var i = 0; i < seriesLen; i++) {
+                    data = [];
+                    var endIndex = startInd+cat.length;
+                    for (var j = startInd; j < endIndex; j++) {
+                            data.push($scope.temptArr.series[i].data[j]);
+                    }
 
-                            if (data.length > 0) {
-                                $scope.widget.widgetData.highchartsNG.series[i].data = data;
-
-                            
-                                if(fObj.showActual != true){
-                                   
-                                        $scope.widget.widgetData.highchartsNG.series[i].zones[0].value = cat.length - fObj.fcast_days-1;
+                    if (data.length > 0) {
+                        $scope.widget.widgetData.highchartsNG.series[i].data = data;
+                        if(fObj.showActual != true){
+                           
+                                $scope.widget.widgetData.highchartsNG.series[i].zones[0].value = cat.length - fObj.fcast_days-1;
+                        }
+                        else{
+                            if(i%2 == 0 ){
+                                var tempArr = [];
+                                for(var indtemp=0 ; indtemp <= cat.length - fObj.fcast_days;indtemp++){
+                                    tempArr.push($scope.widget.widgetData.highchartsNG.series[i].data[indtemp]);
                                 }
+
+                                $scope.widget.widgetData.highchartsNG.series[i].data =tempArr;
                             }
                         }
+                    }
+                }
 
-                         if (cat.length > 0) {
-                            $scope.widget.widgetData.highchartsNG.xAxis.categories = cat;
-                        }
+                 if (cat.length > 0) {
+                    $scope.widget.widgetData.highchartsNG.xAxis.categories = cat;
+                }
 
-           }
+          
     
             // --------------------------------------------------------------------------------------
 

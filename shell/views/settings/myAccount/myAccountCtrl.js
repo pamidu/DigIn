@@ -106,11 +106,10 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     $scope.usageDetailsDatewise = {};
 
     //http://prod.digin.io:1929/get_usage_details?SecurityToken=8d6b7bfe68c7ebafe3c60664e9ea030b&start_date=%272016-09-27%27&end_date=%272016-09-28%27
-    $http.get(Digin_Engine_API + "get_usage_details?SecurityToken=" + getCookie('securityToken') + "&start_date=%27" + '2016-09-01' + "%27&end_date=%27" + '2016-09-30' + "%27")
+    $http.get(Digin_Engine_API + "get_usage_details?SecurityToken=" + getCookie('securityToken') + "&start_date=%27" + '2016-09-01' + "%27&end_date=%27" + '2016-10-30' + "%27")
         .success(function(data) {
             console.log(data.Result);
-            $scope.usageDetailsDatewise = data.Result;
-            $scope.monthlywise = data.Resultl
+            $scope.usageDetailsDatewise = data.Result;            
         }).error(function() {
             console.log("error");
         });

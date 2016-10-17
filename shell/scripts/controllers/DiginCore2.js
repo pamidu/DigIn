@@ -260,8 +260,10 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
                 case "Dynamic Visuals":
                     $scope.fieldData = [];
-                    if ($rootScope.widget.widgetData.highchartsNG.xAxis.title !== undefined){
+                    if ($rootScope.widget.widgetData.highchartsNG.xAxis !== undefined){
+                        if ($rootScope.widget.widgetData.highchartsNG.xAxis.title !== undefined){
                         $scope.fieldData[0] = $rootScope.widget.widgetData.highchartsNG.xAxis.title.text;
+                    }
                     } else{
                         $scope.fieldData[0] = "label"
                     }

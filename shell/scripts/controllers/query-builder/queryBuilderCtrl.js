@@ -1025,6 +1025,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         return;
                     }
                 }
+
+                if ($scope.chartType == "histogram") {
+                    var meaArr = $scope.sourceData.fMeaArr;
+                    var dataTypeFlag = true;
+                    $scope.widget.widgetData.highchartsNG = {};
+                    meaArr.forEach(function(k) {
+                        if (k.dataType == "TIMESTAMP" || k.dataType == "datetime") {
+                            dataTypeFlag = false;
+                        }
+                    });                    
+                    if( !(dataTypeFlag && $scope.sourceData.fAttArr.length == 0 && meaArr.length == 1) ) {
+                        privateFun.fireMessage('0', 'Please select only one numeric field to create histogram');
+                        return;
+                    }
+                }
                 //privateFun.createHighchartsChart(onSelect.chart);
                 var seriesArr = $scope.executeQryData.executeMeasures;
                 // do not allow pie charts with more than one series
@@ -2677,7 +2692,11 @@ $scope.getFormattedDate = function (date) {
                     };
 
                     $scope.dataToBeBind.receivedQuery = query;
-                } else {}
+                } else {
+                    $scope.isPendingRequest = false;
+                    $scope.eventHndler.isLoadingChart = false;
+                    privateFun.fireMessage('0', 'request failed');
+                }
             });
         },
         saveWidget: function(widget) {
@@ -2698,15 +2717,6 @@ $scope.getFormattedDate = function (date) {
     $scope.histogram = {
         onInit: function(recon) {},
         changeType: function() {
-            var meaArr = $scope.sourceData.fMeaArr;
-            var dataTypeFlag = true;
-            $scope.widget.widgetData.highchartsNG = {};
-            meaArr.forEach(function(k) {
-                if (k.dataType == "TIMESTAMP" || k.dataType == "datetime") {
-                    dataTypeFlag = false;
-                }
-            });
-            if (dataTypeFlag && $scope.sourceData.fAttArr.length == 0) {
                 $scope.eventHndler.isLoadingChart = true;
                 $scope.histogramPlot = []
                 var fieldArray = [];
@@ -2841,14 +2851,12 @@ $scope.getFormattedDate = function (date) {
                             }]
                         };
                         $scope.dataToBeBind.receivedQuery = query;
-                    } else {}
+                    } else {
+                        $scope.isPendingRequest = false;
+                        $scope.eventHndler.isLoadingChart = false;
+                        privateFun.fireMessage('0', 'request failed');
+                    }
                 });
-            } else {
-                $scope.isPendingRequest = false;
-                $scope.eventHndler.isLoadingChart = false;
-                privateFun.fireMessage('0', 'Please select only numeric values to create histogram');
-                return;
-            }
         },
         saveWidget: function(widget) {
             widget.widgetData["widData"] = {
@@ -3502,7 +3510,8 @@ $scope.getFormattedDate = function (date) {
                                     isLastLevel = false,
                                     selectedSeries = e.point.series.name,
                                     origName = "",
-                                    serName = "";
+                                    serName = ""
+                                    conStr = "";
                                 // var cat = [];
                                 for (i = 0; i < drillOrdArr.length; i++) {
                                     if (drillOrdArr[i].name == highestLvl) {
@@ -3510,6 +3519,11 @@ $scope.getFormattedDate = function (date) {
                                         drillOrdArr[i].clickedPoint = clickedPoint;
                                         if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
                                     }
+                                }
+                                if ( typeof clickedPoint == 'number') {
+                                    conStr = highestLvl + " = " + clickedPoint;
+                                } else {
+                                    conStr = highestLvl + " = '" + clickedPoint + "'";
                                 }
                                 chart.options.lang.drillUpText = "Back to " + highestLvl;
                                 // Show the loading label
@@ -3567,7 +3581,7 @@ $scope.getFormattedDate = function (date) {
                                     });
                                     chart.options.customVar = nextLevel;
                                     chart.hideLoading();
-                                }, nextLevel, highestLvl + "='" + clickedPoint + "'");
+                                }, nextLevel, conStr);
                             }
                         },
                         drillup: function(e) {

@@ -939,7 +939,8 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 selectedSeries = e.point.series.name,
                                 filterStr = "",
                                 origName = "",
-                                serName = "";
+                                serName = "",
+                                conStr = "";
                             // var cat = [];
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
@@ -953,17 +954,22 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
 
                             // get the filter parameters
+                            if ( typeof clickedPoint == 'number') {
+                                conStr = highestLvl + " = " + clickedPoint;
+                            } else {
+                                conStr = highestLvl + " = '" + clickedPoint + "'";
+                            }
                             if (widget.widgetData.filteredState) {
                                 filterArray = filterService.generateFilterParameters(widget.widgetData.commonSrc.filter);
                                 if (filterArray.length > 0) {
                                     filterStr = filterArray.join( ' And ');
-                                    filterStr += ' And ' + highestLvl + "='" + clickedPoint + "'";   
+                                    filterStr += ' And ' + conStr;   
                                 } else {
-                                    filterStr = highestLvl + "='" + clickedPoint + "'";
+                                    filterStr = conStr;
                                 }                            
                             }
                             else {
-                                filterStr = highestLvl + "='" + clickedPoint + "'";
+                                filterStr = conStr;
                             }
 
                             console.log(filterStr);

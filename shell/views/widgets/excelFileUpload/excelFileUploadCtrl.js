@@ -98,6 +98,16 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 $scope.insertPreLoader = false;
                 $scope.preloader = false;              
 
+            } else if ($scope.selectedPath == "Folder" && uploadFlag == false) {
+                if ($scope.selectedStep > 0) $scope.selectedStep = $scope.selectedStep - 1;
+                $scope.files = [];
+                $scope.schema = [];
+                $scope.schemaCollection = [];
+                $scope.progressPercentage = 0;
+                $scope.uploadPreLoader = false;
+                $scope.insertPreLoader = false;
+                $scope.preloader = false;
+
             } else if ($scope.selectedStep > 0) {
                 $scope.selectedStep = $scope.selectedStep - 1;
             }

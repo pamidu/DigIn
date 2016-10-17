@@ -30,7 +30,7 @@
                                                     aria-labelledby="{{ ::series.name }}-header">
                                         <md-input-container flex>
                                             <label>Name</label>
-                                            <input ng-change="validateSeriesName(series.name)" ng-model="series.name">
+                                            <input  ng-change="series.name = series.name.split(' ').join('')" ng-model="series.name">
                                         </md-input-container>
                                         <!--md-input-container flex>
                                             <label>Color</label>
@@ -51,10 +51,10 @@
 -->
                             <md-input-container flex ng-hide="selectedChart.chart == 'pie' || selectedChart.chart == 'funnel' || selectedChart.chart == 'pyramid' ">
                                 <label>Y axis</label>
-                                <input ng-model="highchartsNG.yAxis.title.text">
+                                <input ng-model="highchartsNG.yAxis.title.text" ng-change="highchartsNG.yAxis.title.text = highchartsNG.yAxis.title.text.split(' ').join('')" >
                             </md-input-container>
                             <md-input-container flex ng-hide="selectedChart.chart == 'pie' || selectedChart.chart == 'funnel' || selectedChart.chart == 'pyramid'">
                                 <label>X axis</label>
-                                <input ng-model="highchartsNG.xAxis.title.text">
+                                <input ng-model="highchartsNG.xAxis.title.text" ng-change="highchartsNG.xAxis.title.text = highchartsNG.xAxis.title.text.split(' ').join('')">
                             </md-input-container>    
 </div>

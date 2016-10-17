@@ -1663,6 +1663,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
       
     }, true);
 
+     
     $scope.getForcastPeriod = function(newValue){
 
         var CalcEnddate;

@@ -1307,8 +1307,8 @@ routerApp.controller('ReportsDevCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportS
         }
     }
 ]);
-routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain',
-    function($scope, dynamicallyReportSrv, $localStorage, Digin_Engine_API, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain) {
+routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain','$state','$mdDialog',
+    function($scope, dynamicallyReportSrv, $localStorage, Digin_Engine_API, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain,$state,$mdDialog) {
 
 
         // update damith
@@ -1337,6 +1337,10 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                 }
             }; //end
 
+            $scope.goBackFromReports = function(){
+
+               $state.go('home.welcomeSearch');
+            }
             return {
                 getAllReport: function() {
                     reqParameter.userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
@@ -1409,89 +1413,169 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
             
 
             if (files && files.length) {
-                $scope.preloader = true;
-                $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
+               
 
                 for (var i = 0; i < files.length; i++) {
                     var lim = i == 0 ? "" : "-" + i;
 
-                    
+
                     if(typeof $rootScope.reports != "undefined" ){
                        for(var j=0; j<$rootScope.reports.length;j++){
                             if($rootScope.reports[j].splitName+".zip" == files[i].name || $rootScope.reports[j].splitName+".rar" == files[i].name){
                                 repid = $rootScope.reports[j].reportId;
                             }
                         } 
+
+                        if(repid != null){
+                              var confirm = $mdDialog.confirm()
+                                  .title('Delete Dashboard')
+                                  .textContent('Do you want to overwrite the existing report?')
+                                  .ariaLabel('Lucky day')
+                                  .ok('yes')
+                                  .cancel('no');
+                                    $mdDialog.show(confirm).then(function() {
+                                       $scope.preloader = true;
+                                        $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
+                                        Upload.upload({
+                                                url: Digin_Engine_API + 'file_upload',
+                                                headers: {
+                                                    'Content-Type': 'multipart/form-data',
+                                                },
+                                                data: {
+                                                    file: files[0],
+                                                    db: 'BigQuery',
+                                                    SecurityToken: userInfo.SecurityToken,
+                                                    other_data: 'prpt_reports'
+                                                }
+                                            }).success(function(data) {
+                                                console.log(data);
+                                                uploadFlag = true;
+                                                console.log($scope.reports);
+                                                $scope.preloader = false;
+                                                $scope.diginLogo = 'digin-logo-wrapper2';
+                                                if (uploadFlag && storeFlag) {
+                                                    fireMsg('1', 'Successfully uploaded!');
+                                                    privateFun.getAllReport();
+                                                }
+                                            }).error(function(data) {
+                                                console.log(data);
+                                                uploadFlag = false;
+                                                fireMsg('0', 'Error uploading file!');
+                                                $scope.preloader = false;
+                                                $scope.diginLogo = 'digin-logo-wrapper2';
+                                            });
+
+                                            var dashboardObject = {
+
+                                                "pages": [],
+                                                "compClass": '',
+                                                "compType": "Report",
+                                                "compCategory": "",
+                                                "compID": repid,
+                                                "compName": files[0].name.replace(/\.[^/.]+$/, ""),
+                                                "refreshInterval": 0,
+                                                "deletions": {
+                                                    "componentIDs": [],
+                                                    "pageIDs": [],
+                                                    "widgetIDs": []
+                                                }
+                                            }
+
+                                            $http({
+                                                method: 'POST',
+
+                                                url: Digin_Engine_API + 'store_component',
+                                                data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'SecurityToken': userInfo.SecurityToken
+                                                }
+                                            }).success(function(data) {
+                                                storeFlag = true;
+                                                if (uploadFlag && storeFlag) {
+                                                    fireMsg('1', 'Successfully uploaded!');
+                                                    privateFun.getAllReport();
+                                                    
+                                                }
+                                            }).error(function(data) {
+                                                storeFlag = false;
+                                                fireMsg('2', 'Error uploading file!');
+                                            })
+                                    }, function() {
+                                      
+                                });
+                        }else{
+
+                            $scope.preloader = true;
+                            $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
+                            Upload.upload({
+                                    url: Digin_Engine_API + 'file_upload',
+                                    headers: {
+                                        'Content-Type': 'multipart/form-data',
+                                    },
+                                    data: {
+                                        file: files[i],
+                                        db: 'BigQuery',
+                                        SecurityToken: userInfo.SecurityToken,
+                                        other_data: 'prpt_reports'
+                                    }
+                                }).success(function(data) {
+                                    console.log(data);
+                                    uploadFlag = true;
+                                    console.log($scope.reports);
+                                    $scope.preloader = false;
+                                    $scope.diginLogo = 'digin-logo-wrapper2';
+                                    if (uploadFlag && storeFlag) {
+                                        fireMsg('1', 'Successfully uploaded!');
+                                        privateFun.getAllReport();
+                                    }
+                                }).error(function(data) {
+                                    console.log(data);
+                                    uploadFlag = false;
+                                    fireMsg('0', 'Error uploading file!');
+                                    $scope.preloader = false;
+                                    $scope.diginLogo = 'digin-logo-wrapper2';
+                                });
+
+                                var dashboardObject = {
+
+                                    "pages": [],
+                                    "compClass": '',
+                                    "compType": "Report",
+                                    "compCategory": "",
+                                    "compID": repid,
+                                    "compName": files[i].name.replace(/\.[^/.]+$/, ""),
+                                    "refreshInterval": 0,
+                                    "deletions": {
+                                        "componentIDs": [],
+                                        "pageIDs": [],
+                                        "widgetIDs": []
+                                    }
+                                }
+
+                                $http({
+                                    method: 'POST',
+
+                                    url: Digin_Engine_API + 'store_component',
+                                    data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'SecurityToken': userInfo.SecurityToken
+                                    }
+                                }).success(function(data) {
+                                    storeFlag = true;
+                                    if (uploadFlag && storeFlag) {
+                                        fireMsg('1', 'Successfully uploaded!');
+                                        privateFun.getAllReport();
+                                        
+                                    }
+                                }).error(function(data) {
+                                    storeFlag = false;
+                                    fireMsg('2', 'Error uploading file!');
+                                })
+                        }
                     }
-                    
-
-
-                    Upload.upload({
-                        url: Digin_Engine_API + 'file_upload',
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                        data: {
-                            file: files[i],
-                            db: 'BigQuery',
-                            SecurityToken: userInfo.SecurityToken,
-                            other_data: 'prpt_reports'
-                        }
-                    }).success(function(data) {
-                        console.log(data);
-                        uploadFlag = true;
-                        console.log($scope.reports);
-                        $scope.preloader = false;
-                        $scope.diginLogo = 'digin-logo-wrapper2';
-                        if (uploadFlag && storeFlag) {
-                            fireMsg('1', 'Successfully uploaded!');
-                            privateFun.getAllReport();
-                        }
-                    }).error(function(data) {
-                        console.log(data);
-                        uploadFlag = false;
-                        fireMsg('0', 'Error uploading file!');
-                        $scope.preloader = false;
-                        $scope.diginLogo = 'digin-logo-wrapper2';
-                    });
-
-                    var dashboardObject = {
-
-                        "pages": [],
-                        "compClass": '',
-                        "compType": "Report",
-                        "compCategory": "",
-                        "compID": repid,
-                        "compName": files[i].name.replace(/\.[^/.]+$/, ""),
-                        "refreshInterval": 0,
-                        "deletions": {
-                            "componentIDs": [],
-                            "pageIDs": [],
-                            "widgetIDs": []
-                        }
-                    }
-
-                    $http({
-                        method: 'POST',
-
-                        url: Digin_Engine_API + 'store_component',
-                        data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'SecurityToken': userInfo.SecurityToken
-                        }
-                    }).success(function(data) {
-                        storeFlag = true;
-                        if (uploadFlag && storeFlag) {
-                            fireMsg('1', 'Successfully uploaded!');
-                            privateFun.getAllReport();
-                            
-                        }
-                    }).error(function(data) {
-                        storeFlag = false;
-                        fireMsg('2', 'Error uploading file!');
-                    })
-
+         
                 }
             }
         };

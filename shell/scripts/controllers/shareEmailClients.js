@@ -108,13 +108,15 @@ routerApp.controller('localEmailClient', ['$scope','$mdDialog','URL','$http','ng
             };
 
             var token =getCookie("securityToken");
+
+            console.log(JSON.stringify($scope.mailData));
             $http({
                 method: 'POST',
-                url: 'http://104.197.27.7:3500/command/notification',
+                url: 'http://104.196.114.113:3500/command/notification',
                 data: $scope.mailData,
                 headers:{
                     'Content-Type': 'application/json',
-                    'securitytoken': token
+                    'securityToken': token
                 }
             }).then(function(response){
                 console.log(response)

@@ -1,7 +1,7 @@
-routerApp.controller('shareCtrl', ['Socialshare', '$scope','$mdDialog','widget','ShareWidgetService',function (Socialshare,$scope,$mdDialog,widget,ShareWidgetService) {
+routerApp.controller('shareCtrl', ['Socialshare', '$scope', '$mdDialog', 'widget', 'ShareWidgetService', function(Socialshare, $scope, $mdDialog, widget, ShareWidgetService) {
 
     $scope.widget = widget;
-     $scope.shareOptions = [{
+    $scope.shareOptions = [{
         provider: "facebook",
         icon: "styles/css/images/icons/facebook.svg"
     }, {
@@ -14,12 +14,6 @@ routerApp.controller('shareCtrl', ['Socialshare', '$scope','$mdDialog','widget',
         provider: "linkedin",
         icon: "styles/css/images/icons/linkedin.svg"
     }, {
-        provider: "pinterest",
-        icon: "styles/css/images/icons/pinterest.svg"
-    }, {
-        provider: "tumblr",
-        icon: "styles/css/images/icons/tumblr.svg"
-    },{
         provider: "email",
         icon: "styles/css/images/icons/email.svg"
     }];
@@ -29,8 +23,8 @@ routerApp.controller('shareCtrl', ['Socialshare', '$scope','$mdDialog','widget',
         $mdDialog.hide();
     };
     $scope.openProvider = function(provider) {
-        var widget =$scope.widget;
-        if(provider=="email"){
+        var widget = $scope.widget;
+        if (provider == "email") {
             $mdDialog.show({
                 controller: 'shareEmailClients',
                 templateUrl: 'views/shareEmailClients.html',
@@ -39,37 +33,34 @@ routerApp.controller('shareCtrl', ['Socialshare', '$scope','$mdDialog','widget',
                     widget: widget
                 }
             })
-        }
-        else {
-        
-        ShareWidgetService.getShareWidgetURL(widget,$scope.getreturnSocial,provider);
+        } else {
+
+            ShareWidgetService.getShareWidgetURL(widget, $scope.getreturnSocial, provider);
 
         }
     };
 
 
-    $scope.getreturnSocial = function(url,provider){
+    $scope.getreturnSocial = function(url, provider) {
         //var url = 'http://prod.digin.io/digin_data/digin_user_data/1fe2dfa9c6c56c8492b9c78107eb5ae3/nordirisrhytacom.prod.digin.io/DPs/4.jpg';
-        if(provider == "pinterest"){
-            window.open('https://pinterest.com/pin/create/button/?url='+url+'','_blank');
-        }else if(provider == "tumblr"){
-             window.open('http://www.tumblr.com/share/link?url='+url+'','_blank');
-        }
-        else{
+        if (provider == "pinterest") {
+            window.open('https://pinterest.com/pin/create/button/?url=' + url + '', '_blank');
+        } else if (provider == "tumblr") {
+            window.open('http://www.tumblr.com/share/link?url=' + url + '', '_blank');
+        } else {
             Socialshare.share({
-              'provider': provider,
-              'attrs': {
+                'provider': provider,
+                'attrs': {
 
-                'socialshareUrl': url,
-                'socialsharePopupHeight':'400',
-                'socialsharePopupWidth':'400'
+                    'socialshareUrl': url,
+                    'socialsharePopupHeight': '400',
+                    'socialsharePopupWidth': '400'
 
 
-            }
-        });
-        } 
-        
+                }
+            });
+        }
+
     }
-  
-}]);
 
+}]);

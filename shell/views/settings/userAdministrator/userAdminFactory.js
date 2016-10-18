@@ -18,14 +18,14 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 					notifications.finishLoading();
 			 });	
         }, getInvitedUsers: function(callback) {
-				if(cache.invitedUsers)
-				{
-					callback(cache.invitedUsers);
-				}else{
-					 //return the promise directly.
+				//if(cache.invitedUsers)
+				//{
+				//	callback(cache.invitedUsers);
+				//}else{
+					 ////return the promise directly.
 					 return $http.get('/apis/usercommon/getSharableObjects')
 					   .then(function(result) {
-							//return result.data;
+							////return result.data;
 							 for (var i = 0, len = result.data.length; i<len; ++i) {
 								if (result.data[i].Type == "User") {
 									$rootScope.sharableUsers.push(result.data[i]);
@@ -33,13 +33,13 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 									$rootScope.sharableGroups.push(result.data[i]);
 								}
 							}
-							cache.invitedUsers = result;
-							callback(cache.invitedUsers)
+							//cache.invitedUsers = result;
+							//callback(cache.invitedUsers)
 							
 						},function errorCallback(response) {
 							notifications.toast(0, "Falied to get users");
 					 });	
-				}
+				//}
 		
 		   }, getAllGroups: function(callback) {
 				if(cache.allGroups)
@@ -90,8 +90,24 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 						console.log(response);
 						notifications.toast(0, "Falied to remove user");
 				 });
-        },getSharableObjects:function(){
+        },removeInvitedUser:function(email){
 			
+			//http://hxllnisqyomailinfo.staging.digin.io/auth/tenant/RemoveUser/juafbeblvexc@dropmail.me
+			return $http.get('/auth/tenant/RemoveUser/'+email)
+			   .then(function(result) {
+					//resolve the promise as the data
+					if(result.Error==true){
+						return result.Message;
+					}
+					else
+					{
+						
+					}
+
+				},function errorCallback(response) {
+						console.log(response);
+						notifications.toast(0, "Falied to remove user");
+				 });
 		}
 		
    }

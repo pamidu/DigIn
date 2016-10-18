@@ -17,7 +17,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     //#Get customer status as active - true || false #//
     paymentGatewaySvc.checkSubscription();
 
-    
+
     //#Get card information
     vm.paymentCards = [];
     $http({
@@ -33,63 +33,70 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             if (response.data.status == true) {
                 //Success
                 vm.getFormattedCardList(response.data.data);
-            } else { 
+            } else {
                 //fail
                 //displayError(response.data);
-                vm.paymentCards =[];
+                vm.paymentCards = [];
             }
         }
     }, function(response) {
         //console.log(response)
-        vm.paymentCards =[];
+        vm.paymentCards = [];
         //displayError("Error while upgrade the package...");
         //$mdDialog.hide();
     })
 
 
     //#Add card formats
-    vm.getFormattedCardList=function(card){
-        for (var i = 0; i < card.length; i ++) {
-            if(card[i].brand=="American Express"){
-                card[i].background= "#136e59";
-                card[i].image= "amex_s.png";
-                if(i==0){
-                    card[0].defaultCard= true;
+    vm.getFormattedCardList = function(card) {
+        for (var i = 0; i < card.length; i++) {
+            if (card[i].brand == "American Express") {
+                card[i].background = "#136e59";
+                card[i].image = "amex_s.png";
+                if (i == 0) {
+                    card[0].defaultCard = true;
+                } else {
+                    card[i].defaultCard = false;
                 }
-                else{
-                    card[i].defaultCard= false;
+            } else if (card[i].brand == "Visa") {
+                card[i].background = "#11141d";
+                card[i].image = "visa_s.png";
+                if (i == 0) {
+                    card[0].defaultCard = true;
+                } else {
+                    card[i].defaultCard = false;
                 }
-            }
-            else if(card[i].brand=="Visa"){
-                card[i].background= "#11141d";
-                card[i].image= "visa_s.png";
-                if(i==0){
-                    card[0].defaultCard= true;
+            } else if (card[i].brand == "MasterCard") {
+                card[i].background = "#0066a8";
+                card[i].image = "master_s.png";
+                if (i == 0) {
+                    card[0].defaultCard = true;
+                } else {
+                    card[i].defaultCard = false;
                 }
-                else{
-                    card[i].defaultCard= false;
-                }
-            }
-            else if(card[i].brand=="MasterCard"){
-                card[i].background= "#0066a8";
-                card[i].image= "master_s.png";
-                if(i==0){
-                    card[0].defaultCard= true;
-                }
-                else{
-                    card[i].defaultCard= false;
-                }
-            }
-            else {}     
+            } else {}
         }
-        
-        vm.paymentCards=card;
-    }
-                            
 
+        vm.paymentCards = card;
+    }
+
+
+    $scope.chartXLabels = [];
+    $scope.chartSeries = [{
+        "name": "totalBytesBilled",
+        "data": []
+    }, {
+        "name": "totalBytesProcessed",
+        "data": []
+    }, {
+        "name": "download_bq",
+        "data": []
+    }];
 
     //#get usage summary#//
     $scope.usageDetails = {};
+
+
     $http.get(Digin_Engine_API + "get_usage_summary?SecurityToken=" + getCookie('securityToken'))
         .success(function(data) {
             console.log(data.Result);
@@ -98,53 +105,89 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             $scope.domain = JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
             $scope.emaildid = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
             $scope.usageDetails = $scope.result.usage[0][$scope.domain][$scope.UserID];
+
         }).error(function() {
             console.log("error");
         });
 
     //#get usage Detail datewise#//
     $scope.usageDetailsDatewise = {};
+    $scope.toDate = new Date();
+    var d = new Date();
+    month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    $scope.toDate = [year, month, day].join('-');
+    $scope.fromDate = d.setDate(d.getDate() - 30);
+    monthe = '' + (d.getMonth() + 1),
+        daye = '' + d.getDate(),
+        yeare = d.getFullYear();
+
+    if (monthe.length < 2) monthe = '0' + monthe;
+    if (daye.length < 2) daye = '0' + daye;
+
+    $scope.fromDate = [yeare, monthe, daye].join('-');
+
 
     //http://prod.digin.io:1929/get_usage_details?SecurityToken=8d6b7bfe68c7ebafe3c60664e9ea030b&start_date=%272016-09-27%27&end_date=%272016-09-28%27
-    $http.get(Digin_Engine_API + "get_usage_details?SecurityToken=" + getCookie('securityToken') + "&start_date=%27" + '2016-09-01' + "%27&end_date=%27" + '2016-10-30' + "%27")
+    $http.get(Digin_Engine_API + "get_usage_details?SecurityToken=" + getCookie('securityToken') + "&start_date=%27" + $scope.fromDate + "%27&end_date=%27" + $scope.toDate + "%27")
         .success(function(data) {
             console.log(data.Result);
-            $scope.usageDetailsDatewise = data.Result;            
+            $scope.usageDetailsDatewise = data.Result;
+            $scope.UserID = JSON.parse(decodeURIComponent(getCookie('authData'))).UserID;
+            $scope.domain = JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
+            $scope.monthlyData = $scope.usageDetailsDatewise[0][$scope.domain][$scope.UserID];
+            for (var detail in $scope.monthlyData) {
+                $scope.chartXLabels.push(detail);
+                if ($scope.monthlyData.hasOwnProperty(detail)) {
+                    $scope.chartSeries[0].data.push($scope.monthlyData[detail].totalBytesBilled / 1024000);
+                    $scope.chartSeries[1].data.push($scope.monthlyData[detail].totalBytesProcessed / 1024000);
+                    $scope.chartSeries[2].data.push($scope.monthlyData[detail].download_bq / 1024000);
+                }
+            }
+            $scope.chartConfig = {
+                options: {
+                    chart: {
+                        type: 'line'
+                    },
+                    plotOptions: {
+
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Usage'
+                        }
+                    }
+                },
+                xAxis: {
+                    title: {
+                        text: 'Date'
+                    },
+                    categories: $scope.chartXLabels
+                },
+                size: {
+                    width: 600,
+                    height: 412
+                },
+                series: $scope.chartSeries,
+                title: {
+                    text: 'Monthly usage'
+                },
+                credits: {
+                    enabled: false
+                },
+                loading: false
+            }
+
+
         }).error(function() {
             console.log("error");
         });
 
 
 
-    $scope.HighchartObj = {
-        options: {
-            chart: {
-                type: $scope.chartType,
-                // Explicitly tell the width and height of a chart
-                width: null
-            },
-            exporting: {
-                filename: '',
-                sourceWidth: 600,
-                sourceHeight: 400
-            },
-            xAxis: {
-                showEmpty: false
-            },
-            yAxis: {
-                showEmpty: false
-            },
-            credits: {
-                enabled: false
-            }
-        },
-        title: {
-            text: '',
-        },
-        yAxis: {
-            showEmpty: false
-        }
-    };
 
 
     //#Upload company logo/#/
@@ -276,10 +319,10 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                                             .success(function(data) {
                                                 console.log(data);
                                                 $rootScope.userSettings = data.Result;
-                                                var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
-                                                $rootScope.image = logoPath + data.Result.logo_path;
-                                                $scope.image = logoPath + data.Result.logo_path;
-                                                $rootScope.imageUrl = logoPath + data.Result.logo_path;
+                                                //var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
+                                                $rootScope.image ='http://' + Digin_Domain  + data.Result.logo_path;
+                                                $scope.image = 'http://' + Digin_Domain + data.Result.logo_path;
+                                                $rootScope.imageUrl = 'http://' + Digin_Domain + data.Result.logo_path;
                                                 $scope.preloader = false;
                                                 $mdDialog.hide();
                                                 notifications.toast('1', 'Logo Successfully uploaded!');
@@ -400,7 +443,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     vm.addCard = function(ev) {
         displayProgress("Request to add new card...")
-        
+
         var stripeConfig = {
             publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
             title: 'DigIn',
@@ -423,10 +466,10 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         });
     }
 
-    vm.addNewCard=function(token){
+    vm.addNewCard = function(token) {
         var pkgObj = {
             "token": token,
-            "default":false
+            "default": false
         }
 
         $http({
@@ -455,9 +498,9 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             $mdDialog.hide();
         })
     }
-    
+
     vm.makeDefault = function(ev, cardId) {
-         var confirm = $mdDialog.confirm()
+        var confirm = $mdDialog.confirm()
             .title('Change default card')
             .textContent('Do you cant to set this card as default card?')
             .ariaLabel('Lucky day')
@@ -473,7 +516,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         });
     }
 
-    vm.makeAsDefault=function(cardId){
+    vm.makeAsDefault = function(cardId) {
         var pkgObj = {
             "cardId": cardId
         }
@@ -503,10 +546,10 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             $mdDialog.hide();
         })
     }
-    
-    
+
+
     vm.deleteCard = function(ev, cardId) {
-         var confirm = $mdDialog.confirm()
+        var confirm = $mdDialog.confirm()
             .title('Deletion Confirmation')
             .textContent('Do you cant delete this card?')
             .ariaLabel('Lucky day')
@@ -522,7 +565,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         });
     }
 
-    vm.deleteCardProcess=function(cardId){
+    vm.deleteCardProcess = function(cardId) {
         var pkgObj = {
             "cardId": cardId
         }
@@ -552,11 +595,11 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             $mdDialog.hide();
         })
     }
-    
-    
-    
-    
-    
+
+
+
+
+
     vm.upgradeConfirmation = function(ev, plan) {
         var confirm = $mdDialog.confirm()
             .title('Upgrade Account')
@@ -985,9 +1028,9 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                         .success(function(data) {
                             console.log(data);
                             $rootScope.userSettings = data.Result;
-                            var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
-                            $scope.profile_pic = logoPath + data.Result.dp_path;
-                            $rootScope.profile_pic = logoPath + data.Result.dp_path;
+                            //var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
+                            $scope.profile_pic = 'http://' + Digin_Domain + data.Result.dp_path;
+                            $rootScope.profile_pic = 'http://' + Digin_Domain + data.Result.dp_path;
                             ProfileService.UserDataArr.BannerPicture = $rootScope.profile_pic;
                             $scope.getURL();
                             $mdDialog.hide();
@@ -2431,6 +2474,34 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope', 
         })
 
     }
+
+    //#Reactive subscription
+    this.reactiveSubscription = function() {
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/reinstall",
+            url: "/include/duoapi/paymentgateway/reactiveSubscription",
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response) {
+            //console.log(response)
+            if (response.statusText == "OK") {
+                if (response.data.status == true) {
+                    //Success
+                    notifications.toast("1", "You account is reactivated.");
+                } else {
+                    //fail
+                    notifications.toast("0", "Account reactivation is failed.");
+                }
+            }
+        }, function(response) {
+            //console.log(response)
+            notifications.toast("0", "Error occured while reactivating the account.");
+        })
+
+    }
+
 
     //#get customer informations
     this.getCustomerInformations = function() {

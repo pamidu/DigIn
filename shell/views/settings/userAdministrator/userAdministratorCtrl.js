@@ -10,13 +10,15 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	{
 		
 		if(reg.test(searchText) == true)
-		{
-			
+		{		
 			var exist = checkIfExist(searchText)
 			console.log(exist);
 			if(exist == false)
 			{
 				userAdminFactory.inviteUser(searchText).then(function(response) {
+					$rootScope.sharableUsers=[];
+					userAdminFactory.getInvitedUsers(function(data) {});
+					
 					console.log(response);
 					$scope.searchText = "";
 				});
@@ -55,14 +57,17 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
           .ok('Please do it!')
           .cancel('Cancel');
 		$mdDialog.show(confirm).then(function() {
-			//send HTTP request and add the below call only if it succeeds
-			
-			/*for (i = 0, len = $scope.users.length; i<len; ++i){
-				if($scope.users[i].name == user.name)
-				{
-					$scope.users.splice(i, 1);
-				}
-			}*/
+			//*send HTTP request and add the below call only if it succeeds
+			userAdminFactory.removeInvitedUser(user.Id);
+
+				/*for (i=0; i<$rootScope.sharableUsers.length; i++){
+					if(user.Id==$rootScope.sharableUsers[i].Id){
+						$rootScope.sharableUsers.splice[i];
+					}
+				}*/
+				$rootScope.sharableUsers=[];
+				userAdminFactory.getInvitedUsers(function(data) {});
+				
 		});
 	}
 	
@@ -274,7 +279,7 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 	
 	vm.close = function()
 	{
-		$mdDialog.cancel();
+		$mdDialog.hide();
 	}
 	
 

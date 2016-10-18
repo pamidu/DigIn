@@ -77,7 +77,7 @@ v-pane-content
 .digin-cmds-source .source-wrap {
     width: 70px;
     height: 80px;
-    background: #026689;
+    background: #02b5e2;
 }
 
 .digin-cmds-source .error {
@@ -297,7 +297,7 @@ v-pane-content
 }
 
 .btn-close {
-    background-color: #026689 !important;
+    background-color: #02b5e2 !important;
     color: #fff !important;
 }
 
@@ -4700,6 +4700,10 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
 	background: white !important;
 	height: 35px !important;
 	border-top: 1px solid lightgrey;
+	width: 100%;
+    right: 0px;
+    bottom: 0px;
+    position: fixed;
 }
 #pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab
 {

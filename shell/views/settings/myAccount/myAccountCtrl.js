@@ -276,10 +276,10 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                                             .success(function(data) {
                                                 console.log(data);
                                                 $rootScope.userSettings = data.Result;
-                                                var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
-                                                $rootScope.image = logoPath + data.Result.logo_path;
-                                                $scope.image = logoPath + data.Result.logo_path;
-                                                $rootScope.imageUrl = logoPath + data.Result.logo_path;
+                                                //var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
+                                                $rootScope.image ='http://' + Digin_Domain  + data.Result.logo_path;
+                                                $scope.image = 'http://' + Digin_Domain + data.Result.logo_path;
+                                                $rootScope.imageUrl = 'http://' + Digin_Domain + data.Result.logo_path;
                                                 $scope.preloader = false;
                                                 $mdDialog.hide();
                                                 notifications.toast('1', 'Logo Successfully uploaded!');
@@ -985,9 +985,9 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                         .success(function(data) {
                             console.log(data);
                             $rootScope.userSettings = data.Result;
-                            var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
-                            $scope.profile_pic = logoPath + data.Result.dp_path;
-                            $rootScope.profile_pic = logoPath + data.Result.dp_path;
+                            //var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
+                            $scope.profile_pic = 'http://' + Digin_Domain + data.Result.dp_path;
+                            $rootScope.profile_pic = 'http://' + Digin_Domain + data.Result.dp_path;
                             ProfileService.UserDataArr.BannerPicture = $rootScope.profile_pic;
                             $scope.getURL();
                             $mdDialog.hide();
@@ -2431,6 +2431,34 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope', 
         })
 
     }
+
+     //#Reactive subscription
+    this.reactiveSubscription = function() {
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/reinstall",
+            url: "/include/duoapi/paymentgateway/reactiveSubscription",
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response) {
+            //console.log(response)
+            if (response.statusText == "OK") {
+                if (response.data.status == true) {
+                    //Success
+                    notifications.toast("1", "You account is reactivated.");
+                } else {
+                    //fail
+                    notifications.toast("0", "Account reactivation is failed.");
+                }
+            }
+        }, function(response) {
+            //console.log(response)
+            notifications.toast("0", "Error occured while reactivating the account.");
+        })
+
+    }
+
 
     //#get customer informations
     this.getCustomerInformations = function() {

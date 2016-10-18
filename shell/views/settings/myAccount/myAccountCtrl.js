@@ -319,10 +319,10 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                                             .success(function(data) {
                                                 console.log(data);
                                                 $rootScope.userSettings = data.Result;
-                                                var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
-                                                $rootScope.image = logoPath + data.Result.logo_path;
-                                                $scope.image = logoPath + data.Result.logo_path;
-                                                $rootScope.imageUrl = logoPath + data.Result.logo_path;
+                                                //var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
+                                                $rootScope.image ='http://' + Digin_Domain  + data.Result.logo_path;
+                                                $scope.image = 'http://' + Digin_Domain + data.Result.logo_path;
+                                                $rootScope.imageUrl = 'http://' + Digin_Domain + data.Result.logo_path;
                                                 $scope.preloader = false;
                                                 $mdDialog.hide();
                                                 notifications.toast('1', 'Logo Successfully uploaded!');
@@ -1028,9 +1028,9 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                         .success(function(data) {
                             console.log(data);
                             $rootScope.userSettings = data.Result;
-                            var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
-                            $scope.profile_pic = logoPath + data.Result.dp_path;
-                            $rootScope.profile_pic = logoPath + data.Result.dp_path;
+                            //var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
+                            $scope.profile_pic = 'http://' + Digin_Domain + data.Result.dp_path;
+                            $rootScope.profile_pic = 'http://' + Digin_Domain + data.Result.dp_path;
                             ProfileService.UserDataArr.BannerPicture = $rootScope.profile_pic;
                             $scope.getURL();
                             $mdDialog.hide();

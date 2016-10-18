@@ -1,17 +1,10 @@
-<footer style="width:100%;right:0px;bottom:0px;position:fixed;">
-<!--md-tabs id="pagingTabs" md-selected="selectedPageIndx" md-border-bottom md-autoselect md-align-tabs="bottom"
-         ng-show="cu-entView=='Dashboard'"
-         ng-mouseover="adjustTitleLength()"-->
+<!--footer style="width:100%;right:0px;bottom:0px;position:fixed;"-->
 	<md-tabs id="pagingTabs" md-align-tabs="bottom">
     <md-tab ng-repeat="page in $root.dashboard.pages" md-on-select="selectPage(page)">
         <md-tab-label>
             <div layout="row" layout-align="space-between center" ng-dblclick="renamePage(page.pageName, page.pageID)" ng-click="syncPage(page)">
                 <span  style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" class="pageName" flex>{{page.pageName}}</span>
 				<span flex></span>
-                <!--md-button ng-click="removePage(page, $event)" 
-                           class="pageCloseButton b-r-0" ng-click="cancel();">
-                    <ng-md-icon icon="close" style="fill:#ABABAB" size="18" layout="row"></ng-md-icon>
-                </md-button-->
 				<i class="icon-cancel" style="font-size:10px;cursor:pointer;outline:none" ng-disabled="$root.dashboard.pages.length <= 1" ng-click="removePage(page,$event);$event.stopPropagation()" flex></i>
             </div>
         </md-tab-label>
@@ -166,6 +159,6 @@
         </md-tab-body>
     </md-tab>
 </md-tabs>
-</footer>
+<!--/footer-->
 
 

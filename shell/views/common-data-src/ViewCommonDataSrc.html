@@ -102,7 +102,7 @@
                 </div>
             </div>
             <div class="cmds-btn-footer m-top-10">
-                        <span class="btn btn-block btn-default"
+                        <span class="btn btn-block btn-default btn-close"
                               ng-click="commonUi.onClickNext('1')" ng-disabled="!sourceUi.selectedSource">
                             next
                         </span>                     
@@ -214,12 +214,12 @@
             </div>
             <div class="cmds-btn-footer">
                 <div class="cmds-btn-footer m-top-10">
-                        <span class="btn btn-block btn-default"
+                        <span class="btn btn-block btn-default btn-close"
                               ng-click="commonUi.onClickNext('2')" ng-disabled="!sourceUi.selectedNameSpace"
                               ng-if="commonUi.isServiceError==false">
                             next
                         </span>
-                        <span class="btn btn-block btn-default btn-close"
+                        <span class="btn btn-block btn-default"
                               ng-click="commonUi.onClickBack('2')">
                                 back
                         </span>
@@ -334,11 +334,11 @@
                               ng-click="commonUi.onSelectFilter()">                             
                             Filter Data
                         </span>                         
-                        <span ng-disabled="pendingColumns" class="btn btn-block btn-default"
+                        <span ng-disabled="pendingColumns" class="btn btn-block btn-default btn-close"
                               ng-click="commonUi.onSaveSource()">
                             save
                         </span>                       
-                        <span class="btn btn-block btn-default btn-close"
+                        <span class="btn btn-block btn-default"
                               ng-click="commonUi.onClickBack('3')">
                                 back
                         </span>                       

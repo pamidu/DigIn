@@ -168,8 +168,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                     categories: $scope.chartXLabels
                 },
                 size: {
-                    width: 400,
-                    height: 410
+                    width: 600,
+                    height: 412
                 },
                 series: $scope.chartSeries,
                 title: {

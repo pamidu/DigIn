@@ -4700,6 +4700,10 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
 	background: white !important;
 	height: 35px !important;
 	border-top: 1px solid lightgrey;
+	width: 100%;
+    right: 0px;
+    bottom: 0px;
+    position: fixed;
 }
 #pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab
 {

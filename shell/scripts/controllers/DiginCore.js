@@ -726,6 +726,9 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             $("#svg-container").append(element[0].innerHTML);
             var svgEle = $("#svg-container").children();
             var svgElement = svgEle[0];
+
+
+
             svgElement.children[0].setAttribute("transform", "translate(" + 300+ "," + 300 + ") rotate(-90 0 0)");
             console.log(svgElement);
             var svgString = new XMLSerializer().serializeToString(svgElement);
@@ -852,10 +855,23 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             var printContents = element[0].innerHTML;
             var originalContents = document.body.innerHTML;
 
+            //----------------------------------------------------
+
+            var name = "";
+            if(typeof widget.widgetData.widName != 'undefined')
+                name = widget.widgetData.widName;
+
+            var chartName = '<text fill="#000000" font-size="15" font-family="Verdana" x="250" y="0">'+name+'</text>';
+            svgString= '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -40  600 600" width="100%"> '+chartName+' + '+printContents+' +</svg>';
+
+            //----------------------------------------------------
+
+
+
             var popupWin = window.open('', '_blank', 'width=800,height=500');
             popupWin.document.open();
             popupWin.document.write('');
-            popupWin.document.write('<html><head></head><body onload="window.print()">' + printContents + '</body></html>');
+            popupWin.document.write('<html><head></head><body onload="window.print()">' + svgString + '</body></html>');
             popupWin.document.close();
 
             $scope.d3chartBtnClick(widget);

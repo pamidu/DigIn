@@ -509,7 +509,17 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
             })
                 .success(function (response) {
-                    privateFun.getAllDashboards();
+                    db.get($rootScope.page_id, function (err, doc) {
+                        if (err) {
+                        }
+                        else {
+                            db.remove(doc)
+                            .catch(function (err) {
+                                //fail silently
+                            });                            
+                        }
+                    });
+                    privateFun.getAllDashboards();                    
                     ngToast.create({
                         className: 'success',
                         content: "Dashbord deleted successfully...!",

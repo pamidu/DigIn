@@ -1034,12 +1034,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         if (k.dataType == "TIMESTAMP" || k.dataType == "datetime") {
                             dataTypeFlag = false;
                         }
-                    });                    
+                    });
                     if( !(dataTypeFlag && $scope.sourceData.fAttArr.length == 0 && meaArr.length == 1) ) {
                         privateFun.fireMessage('0', 'Please select only one numeric field to create histogram');
                         return;
                     }
                 }
+
+                // Allow 3 measures and 1 attribute for bubble chart
+                if ($scope.chartType == "bubble") {
+                    if (!($scope.commonData.measures.length == 3 && $scope.commonData.columns.length == 1)) {
+                        privateFun.fireMessage('0', 'Please select only one attribute and three measures to generate bubble chart!');
+                        return;
+                    }
+                }
+
                 //privateFun.createHighchartsChart(onSelect.chart);
                 var seriesArr = $scope.executeQryData.executeMeasures;
                 // do not allow pie charts with more than one series
@@ -2434,6 +2443,11 @@ $scope.getFormattedDate = function (date) {
                                 i++;
                             }
                         }
+                        $scope.str = '90th percentile:' + $scope.observationsData[0] + '<br/>' +
+                                            'Q3: {point.q3}<br/>' +
+                                            'Median: {point.median}<br/>' +
+                                            'Q1: {point.q1}<br/>' +
+                                            '10th percentile: {point.low}<br/>';                        
                         $scope.widget.widgetData.highchartsNG = {
                             options: {
                                 chart: {
@@ -2499,7 +2513,8 @@ $scope.getFormattedDate = function (date) {
                             series: [{
                                 data: $scope.observationsData,
                                 tooltip: {
-                                    headerFormat: '<em>Experiment No {point.key}</em><br/>'
+                                    headerFormat: '<em>Experiment No {point.key}</em><br/>',
+                                    pointFormat: $scope.str
                                 }
                             }, {
                                 name: 'Outlier',

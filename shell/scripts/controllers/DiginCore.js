@@ -963,10 +963,10 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 filterArray = filterService.generateFilterParameters(widget.widgetData.commonSrc.filter);
                                 if (filterArray.length > 0) {
                                     filterStr = filterArray.join( ' And ');
-                                    filterStr += ' And ' + conStr;   
+                                    filterStr += ' And ' + conStr;
                                 } else {
                                     filterStr = conStr;
-                                }                            
+                                }
                             }
                             else {
                                 filterStr = conStr;

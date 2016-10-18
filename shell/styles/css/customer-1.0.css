@@ -425,6 +425,8 @@ v-pane-content
 }
 
 .alert-danger {
+    white-space: pre;
+    text-align: left;    
     background: #E53935 !important;
     width: 100%;
     color: #ffffff !important;

@@ -2441,13 +2441,13 @@ $scope.getFormattedDate = function (date) {
                                     $scope.dataOutliers.push([i, k]);
                                 });
                                 i++;
+                                $scope.tooltip = 'Maximum: ' + data[key].max + '<br/>' +
+                                'Upper Quartile: ' + data[key].quartile_3 + '<br/>' +
+                                'Median: ' + data[key].quartile_2 + '<br/>' +
+                                'Lower Quartile: ' + data[key].quartile_1 + '<br/>' +
+                                'Minimum: ' + data[key].min + '<br/>'
                             }
                         }
-                        $scope.str = '90th percentile:' + $scope.observationsData[0] + '<br/>' +
-                                            'Q3: {point.q3}<br/>' +
-                                            'Median: {point.median}<br/>' +
-                                            'Q1: {point.q1}<br/>' +
-                                            '10th percentile: {point.low}<br/>';                        
                         $scope.widget.widgetData.highchartsNG = {
                             options: {
                                 chart: {
@@ -2514,7 +2514,7 @@ $scope.getFormattedDate = function (date) {
                                 data: $scope.observationsData,
                                 tooltip: {
                                     headerFormat: '<em>Experiment No {point.key}</em><br/>',
-                                    pointFormat: $scope.str
+                                    pointFormat: $scope.tooltip
                                 }
                             }, {
                                 name: 'Outlier',

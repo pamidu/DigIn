@@ -2433,6 +2433,34 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope', 
 
     }
 
+     //#Reactive subscription
+    this.reactiveSubscription = function() {
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/reinstall",
+            url: "/include/duoapi/paymentgateway/reactiveSubscription",
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response) {
+            //console.log(response)
+            if (response.statusText == "OK") {
+                if (response.data.status == true) {
+                    //Success
+                    notifications.toast("1", "You account is reactivated.");
+                } else {
+                    //fail
+                    notifications.toast("0", "Account reactivation is failed.");
+                }
+            }
+        }, function(response) {
+            //console.log(response)
+            notifications.toast("0", "Error occured while reactivating the account.");
+        })
+
+    }
+
+
     //#get customer informations
     this.getCustomerInformations = function() {
         $http({

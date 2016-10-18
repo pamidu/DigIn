@@ -119,7 +119,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
 //#Get tenant secutity token#//
 //http://prod.auth.digin.io:3048/GetSession/1716b085cc5bd67a7cb887e978de148e/aaaaa.prod.digin.io
 //http://chamiladilhani.duoworld.com/auth/GetSession/665b9bb99e36de2ae89d246a0b4f8dfa/chamiladilhani.duoworld.com
-$scope.getTenantToken=function(token,plan){
+$scope.getTenantToken=function(plan){
     $scope.getToken = function (cb) {
         $http({method: 'GET', 
             url: '/auth/GetSession/'+decodeURIComponent($cookies.get('securityToken'))+'/'+$rootScope.createdTenantID, 
@@ -135,15 +135,50 @@ $scope.getTenantToken=function(token,plan){
     }
 
     $scope.getToken(function(data){
-        if(data){
-            vm.createDataSet();
-            vm.proceedPayment(token,plan);
+        
+        if(data){   
+            if(vm.createDataSet()==true){
+        
+                if(plan.id=="Free"){
+                    $rootScope.trial=true;
+                    $rootScope.btnMessage="Congratulations...!";
+                    $rootScope.btnMessage2="This trial version is valid only for 30 days.";
+                    $mdDialog.hide();
+                    localStorage.setItem('firstLogin',true);
+                    $rootScope.btnContinue="Go to Home";
+                    vm.enableNextStep();
+                }
+                else{
+                    //--------------------load stripe payement detail window
+                    var stripeConfig = {
+                        publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
+                        title: 'DigIn',
+                        description: "Beyond BI",
+                        logo: 'img/small-logo.png',
+                        label: 'New Card'
+                    };
+                   
+                    var stripegateway = paymentGateway.setup('stripe').configure(stripeConfig);
+                    stripegateway.open(ev, function(token, args) {
+                        console.log(token);
+                        if(token!=null || token!="" || token!=undefined){ 
+                            vm.proceedPayment(token,plan);
+                        }
+                        else
+                        {
+                            displayError("Error while retriving token from stripe");
+                        }
+                    }); 
+                    //------------------
+                }
+                $mdDialog.hide();      
+            }               
         }
     });
 }
 
     //#initialize digin data set
-    vm.createDataSet = function (secToken) {
+    vm.createDataSet = function () {
             displayProgress('Initialised dataset...');
             $scope.data = {"db": "bigquery"}
 
@@ -159,19 +194,22 @@ $scope.getTenantToken=function(token,plan){
                 if (response.Success == true) {
                     //displaySuccess('Success...!');
                     //$mdDialog.hide();
-                    console.log(response.Message);
+                    return true;
                 }
                 else {  
                     //displayError('Data set creation fail');
                     //$mdDialog.hide();
                     console.log(response.Message);
+                    return false;
                 }
-
+                $mdDialog.hide();
             })
             .error(function (error) {
-                //displayError('Data set creation fail');
+                displayError('Data set creation fail');
                 //$mdDialog.hide();
                 console.log(error);
+                return false;
+                $mdDialog.hide();
             });
         };
 
@@ -228,13 +266,13 @@ $scope.getTenantToken=function(token,plan){
                 tenantcode=tenantcode.replace(/ /g, '');
                 $scope.tenant.name=tenantcode;
                
-				$http({
-					method: 'GET',
-					url: "/apis/usertenant/tenant/" + tenant.name + '.' + Digin_Domain,
-					headers: {
-						'Content-Type': 'application/json'
-					}
-				})
+                $http({
+                    method: 'GET',
+                    url: "/apis/usertenant/tenant/" + tenant.name + '.' + Digin_Domain,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
                 .success(function (response) {
                     console.log(response);
                     if(response.TenantID==null || response.TenantID==""){
@@ -383,40 +421,7 @@ $scope.getTenantToken=function(token,plan){
             //var res=decodeURIComponent(response);
             if (response.Success == true) {
                 $rootScope.createdTenantID=response.Data.TenantID;
-                
-                if(plan.id=="Free"){
-                    $rootScope.trial=true;
-                    $rootScope.btnMessage="Congratulations...!";
-                     $rootScope.btnMessage2="This trial version is valid only for 30 days.";
-                    $mdDialog.hide();
-                    localStorage.setItem('firstLogin',true);
-                    $rootScope.btnContinue="Go to Home";
-                    vm.enableNextStep();
-                }
-                else{
-                    //--------------------load stripe payement detail window
-                    var stripeConfig = {
-                        publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
-                        title: 'DigIn',
-                        description: "Beyond BI",
-                        logo: 'img/small-logo.png',
-                        label: 'New Card'
-                    };
-                   
-                    var stripegateway = paymentGateway.setup('stripe').configure(stripeConfig);
-                    stripegateway.open(ev, function(token, args) {
-                        console.log(token);
-                        if(token!=null || token!="" || token!=undefined){
-                           $scope.getTenantToken(token,plan);  
-
-                        }
-                        else
-                        {
-                            displayError("Error while retriving token from stripe");
-                        }
-                    }); 
-                    //------------------
-                }
+               $scope.getTenantToken(plan); 
             }
             else {  
                 $mdDialog.hide();

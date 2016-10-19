@@ -1734,6 +1734,21 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     element: '#settings',
                     intro: 'Configure the settings related to the system and users',
                     position: 'right'
+                }, {
+                    element: '#home',
+                    intro: 'Go to <strong>Home</strong> page'
+                }, {
+                    element: '#fullscreen',
+                    intro: 'Toggle Fullscreen'
+                }, {
+                    element: '#clearWidgets',
+                    intro: 'Clear widgets in the screen'
+                }, {
+                    element: '#save',
+                    intro: 'Save the Dashboard'
+                }, {
+                    element: '#notifications',
+                    intro: 'Checkout the latest notifications here'
                 }],
                 showStepNumbers: false,
                 exitOnOverlayClick: true,

@@ -1,3 +1,65 @@
+<style>
+	/* Dropdown Button */
+	.dropbtn {
+		background-color: #f9a525;
+		color: white;
+		padding: 4px;
+		border-radius: 100%;
+		font-size: 10px;
+		border: none;
+		cursor: pointer;
+		height: 22px;
+		width: 22px;
+		outline: none;
+	    padding-top: 6px;
+	}
+
+	/* The container <div> - needed to position the dropdown content */
+	.dropdown {
+		position: fixed;
+		display: inline-block;
+		z-index:600;
+		right: 32px;
+		top:14px;
+	}
+
+	/* Dropdown Content (Hidden by Default) */
+	.dropdown-content {
+		display: none;
+		position: absolute;
+		background-color: #f9f9f9;
+		min-width: 160px;
+		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+		z-index:600;
+		right: 0px;
+		cursor: pointer;
+		
+	}
+
+	/* Links inside the dropdown */
+	.dropdown-content a {
+		color: #3b6982;
+		padding: 12px 16px;
+		text-decoration: none;
+		display: block;
+		z-index:600;
+	}
+
+	/* Change color of dropdown links on hover */
+	.dropdown-content a:hover {background-color: #f1f1f1}
+
+	/* Show the dropdown menu on hover */
+	.dropdown:hover .dropdown-content {
+		display: block;
+		z-index:600;
+	}
+
+	/* Change the background color of the dropdown button when the dropdown content is shown */
+	.dropdown:hover .dropbtn {
+		/*background-color: #3e8e41;*/
+	}
+</style>
+
 <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="notifications" style="overflow-y:hidden;z-index:1501;">
 
         <md-toolbar style="min-height: 42px;height:42px;background:#02b5e2">
@@ -159,12 +221,20 @@
                                     <!-- <img src="styles/css/images/signup-user.png"/> -->
                                     <img src="{{profile_pic}}"/>
                                 </div>
-                                <div class="blut-user-setting" ng-click="onClickViewProfileSetting()" ng-mouseover="profileMouseHover()">
-                                    <div>
-                                        <i ng-hide="dropDownbtnStatus" class="ti-angle-down"></i>
-                                        <i ng-show="dropDownbtnStatus" class="ti-angle-up"></i>
-                                    </div>
-                                </div>
+								<div class="dropdown">
+									<button class="dropbtn"><i class="ti-angle-down"></i></button>
+									<div class="dropdown-content">
+									<a ng-click="navigate('switch tenant')")">Switch Tenant</a>
+									<!--a ng-click="navigate($event,'Invite User')">Invite user</a>
+									<a ng-click="navigate($event,'Profile Settings')">Profile Settings</a-->
+									<a ng-click="navigate('my account')">My Account</a>
+									<a ng-click="Introduce()">Help</a>
+									<a ng-click="navigate('Logout')">
+										<span flex="80">Logout</span>
+										<!--i class="ti-shift-right" flex></i-->
+									</a>
+								  </div>
+								</div>
                             </div>
                         </div>
                     </div>
@@ -173,24 +243,6 @@
                         <span ng-if="headerMenuToggle" class="ti-angle-up"></span>
                     </div>
                 </div>
-
-          
-     
-        <!-- user setting drop down -->
-        <div ng-show="dropDownbtnStatus" class="blut-user-drp-setting"  ng-mouseleave="profileMouseLeave()">
-            <div class="yellow-line"></div>
-            <ul class="menu">
-                <li ng-click="navigate('switch tenant')">Switch Tenant</li>
-                <!--li ng-click="navigate('invite')">Invite User</li-->
-                <!--li ng-click="profileDownMenu.clickProfileSetting()">profile settings</li-->
-				<li ng-click="navigate('my account')">My Account</li>
-                <li ng-click="Introduce()">Help</li><!--style="padding-bottom: 17px; cursor:not-allowed"-->
-                <li class="inline-block logout" ng-click="navigate('Logout')">Logout
-                    <i class="ti-shift-right"></i>
-                </li>
-            </ul>
-        </div>
-
 
         <!-- end searchBar -->
 

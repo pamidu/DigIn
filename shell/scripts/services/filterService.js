@@ -40,7 +40,7 @@ routerApp.service('filterService',function(){
         }
 	};
 
-    this.mapResult = function(cat, res, d, color, name) {
+    this.mapResult = function(cat, res, d, color, name, origName) {
         var serArr = [];
         var i = 0;
         for(c in res[0]){
@@ -49,6 +49,7 @@ routerApp.service('filterService',function(){
                     serArr.push({
                         temp: c,
                         name: name[i],
+                        origName: origName[i],
                         data: [],
                         color: color[i]
                     });

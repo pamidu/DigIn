@@ -172,7 +172,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
             } else {
                 $scope.otherdata = {
                     "file_type": "datasource",
-                    "folder_name": $scope.folderName
+                    "folder_name": $scope.folderName.toLowerCase()
                 };
 
             }
@@ -256,7 +256,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                     db: 'BigQuery',
                     SecurityToken: userInfo.SecurityToken,
                     filename: $scope.files[i].name,
-                    folder_name: $scope.folderName,
+                    folder_name: $scope.folderName.toLowerCase(),
                     folder_type: $scope.folder_type
 
                 }

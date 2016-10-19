@@ -9,8 +9,8 @@
 		require_once($_SERVER['DOCUMENT_ROOT'] . "/include/session.php");
 	 }
 	 else{
-	   require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/config.php");
-      require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/session.php");
+    	require_once($_SERVER['DOCUMENT_ROOT'] . "/digin_git/15/Digin/include/config.php");
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/digin_git/15//Digin/include/session.php");
 	 }
 
 	INTS();

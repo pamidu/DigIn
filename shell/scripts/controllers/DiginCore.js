@@ -562,13 +562,15 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 if (status) {
                     var color = [];
                     var name = [];
+                    var origName = [];
                     //Store the name and the color to apply to the chart after it is regenareted
                     for ( var i = 0; i < widget.widgetData.highchartsNG.series.length; i++) {
                         color.push(widget.widgetData.highchartsNG.series[i].color);
                         name.push(widget.widgetData.highchartsNG.series[i].name);
+                        origName.push(widget.widgetData.highchartsNG.series[i].origName);
                     }
                     filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
-                    var data = filterService.mapResult(requestArray[0],res,widget.widgetData.widData.drilled,color,name);
+                    var data = filterService.mapResult(requestArray[0],res,widget.widgetData.widData.drilled,color,name,origName);
                     widget.widgetData.syncState = true;
                     widget.widgetData.filteredState = true;
                     if ( data !== undefined ){

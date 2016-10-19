@@ -545,7 +545,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             }
 
             //if chart is configured for drilled down, get the highest level to apply filters
-            if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled){
+            if (typeof widget.widgetData.widData.drillConf != "undefined" && widget.widgetData.widData.drilled){
                 var chart = widget.widgetData.highchartsNG.getHighcharts();
                 if ( chart.options.customVar == widget.widgetData.widData.drillConf.highestLvl ) {
                     requestArray[0] = chart.options.customVar;                    
@@ -616,7 +616,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
         //clear filters
         $scope.clearFilter = function(widget) {
             //if chart is configured for drilled down, get the highest level to apply filters
-            if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled) {
+            if (typeof widget.widgetData.widData.drillConf != "undefined" && widget.widgetData.widData.drilled) {
                 var chart = widget.widgetData.highchartsNG.getHighcharts();
                 if ( chart.options.customVar == widget.widgetData.widData.drillConf.highestLvl ) {
                     widget.widgetData.filteredState = false;
@@ -664,7 +664,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 });
             } else if (typeof(widget.widgetData.commonSrc) != "undefined") {
                 // if chart is configured for drilled down, get the highest level to apply filters
-                if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled){
+                if (typeof widget.widgetData.widData.drillConf != "undefined" && widget.widgetData.widData.drilled){
                     var chart = widget.widgetData.highchartsNG.getHighcharts();
                     if ( chart.options.customVar != widget.widgetData.widData.drillConf.highestLvl ) {
                         notifications.toast('0', 'Please go to the highest level to sync the chart!');
@@ -934,7 +934,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
             }
 
-            if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled) {
+            if (typeof widget.widgetData.widData.drillConf != "undefined" && widget.widgetData.widData.drilled) {
                 var drillConf = widget.widgetData.widData.drillConf;
                 var client = $diginengine.getClient(drillConf.dataSrc);
                 widget.widgetData.highchartsNG.options['customVar'] = drillConf.highestLvl;

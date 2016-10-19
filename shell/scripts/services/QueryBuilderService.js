@@ -29,7 +29,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
     };
 
     var HIGHCHARTS = function() {
-        function mapResult(cat, res, d, color, name, cb){
+        function mapResult(cat, res, d, color, name, origName, cb){
             var serArr = [];
             var i = 0;
             for(c in res[0]){
@@ -38,6 +38,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                         serArr.push({
                             temp: c,
                             name: name[i],
+                            origName: origName[i],
                             data: [],
                             color: color[i]
                         });
@@ -100,6 +101,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
         this.sync = function(q, cl, widObj, cb) {            
             cl.getExecQuery(q, function(res, status, query){
                 var cat = "";
+                var drilled;
                 if(status){
                     filterService.filterAggData(res,widObj.commonSrc.src.filterFields);
                     for(c in res[0]){
@@ -111,11 +113,18 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                     if(cat != ""){
                         var color = [];
                         var name = [];
+                        var origName = [];
                         for ( var i = 0; i < widObj.highchartsNG.series.length; i++){
                             color.push(widObj.highchartsNG.series[i].color);
                             name.push(widObj.highchartsNG.series[i].name);
+                            origName.push(widObj.highchartsNG.series[i].origName);
                         }
-                        mapResult(cat, res, widObj.widData.drilled, color, name, function(data){
+                        if (widObj.widData.drillConf !== undefined){
+                            drilled = true;
+                        } else {
+                            drilled = false;
+                        }
+                        mapResult(cat, res, drilled, color, name, origName, function(data){
                             widObj.highchartsNG.series = data;
                         });
                     }else{

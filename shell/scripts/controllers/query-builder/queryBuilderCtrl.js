@@ -2390,6 +2390,7 @@ $scope.getFormattedDate = function (date) {
             var meaArr = $scope.sourceData.fMeaArr;
             var dataTypeFlag = true;
             $scope.eventHndler.isLoadingChart = true;
+            $scope.tooltip = "";
             meaArr.forEach(function(k) {
                 if (k.dataType == "TIMESTAMP" || k.dataType == "datetime") {
                     dataTypeFlag = false;
@@ -2446,6 +2447,16 @@ $scope.getFormattedDate = function (date) {
                                 'Median: ' + data[key].quartile_2 + '<br/>' +
                                 'Lower Quartile: ' + data[key].quartile_1 + '<br/>' +
                                 'Minimum: ' + data[key].min + '<br/>'
+
+                                // display lower innerfence if there are lower ouliers
+                                if ( data[key].min != data[key].l_w ) {
+                                    $scope.tooltip += 'Lower Inner Fence: ' + data[key].l_w + '<br/>';
+                                }
+
+                                // display upper innerfence if there are upper ouliers
+                                if ( data[key].min != data[key].l_w ) {
+                                    $scope.tooltip += 'Upper Inner Fence: ' + data[key].u_w + '<br/>';
+                                }
                             }
                         }
                         $scope.widget.widgetData.highchartsNG = {

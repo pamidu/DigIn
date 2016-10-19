@@ -121,9 +121,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
     {
         $scope.getToken = function (cb) {
             $http({method: 'GET',       
-                //http://proxy.auth.digin.io/GetSession/42739507b91e2be0296da3cd1b5b1c52/chamila47.digin.io
-                //url: '/auth/GetSession/'+decodeURIComponent($cookies.get('securityToken'))+'/'+$rootScope.createdTenantID,  //***for prod
-                url: Digin_Tenant+'GetSession/'+decodeURIComponent($cookies.get('securityToken'))+'/'+$rootScope.createdTenantID,  //***for live
+                 url: '/auth/GetSession/'+decodeURIComponent($cookies.get('securityToken'))+'/'+$rootScope.createdTenantID, 
                 headers: {'Securitytoken':decodeURIComponent($cookies.get('securityToken'))}
                 })
             .success(function (response) {
@@ -165,7 +163,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                         else {  
                             cb (false);
                         }
-                        $mdDialog.hide();
+                        //$mdDialog.hide();
                     })
                     .error(function (error) {
                         displayError('Data set creation fail');

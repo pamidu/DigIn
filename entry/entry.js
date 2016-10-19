@@ -69,7 +69,7 @@ routerApp
                 $scope.getUsageSummary = function (cb) {
                     $http({
                         method: 'GET',
-                        url: "/auth/tenant/GetTenants/" + SecurityToken,
+                        url:"http://"+Digin_Domain+ "/auth/tenant/GetTenants/" + SecurityToken,
                         headers: {'Content-Type': 'application/json'}
                     })
                     .success(function(data){
@@ -89,7 +89,7 @@ routerApp
                         }
                         else{
                             $http({method: 'GET', 
-                            url: '/auth/GetSession/'+SecurityToken+'/'+data[0].TenantID, 
+                            url: 'http://'+Digin_Domain+'/auth/GetSession/'+SecurityToken+'/'+data[0].TenantID, 
                             headers: {'Securitytoken':SecurityToken}
                             })
                             .success(function (response) {
@@ -152,7 +152,8 @@ routerApp
                         }
                         else if($scope.process=="logout"){
                             //#logout
-                            alert("Need to logout!");
+                            //alert("Need to logout!");
+                            $window.location = "/logout.php";
                         }
                         else if($scope.process=="login"){
                             //#loggin direct to shell

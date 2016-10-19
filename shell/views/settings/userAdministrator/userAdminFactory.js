@@ -1,4 +1,4 @@
-routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth', 'notifications', function($rootScope,$http, $v6urls, $auth,notifications) {
+routerApp.factory('userAdminFactory', ['$scope','$rootScope','$http', '$v6urls', '$auth', 'notifications','Digin_Engine_API ', function($scope,$rootScope,$http, $v6urls, $auth,notifications,Digin_Engine_API) {
 	var cache = {};
 	return {
        inviteUser: function(userEmail) {
@@ -108,6 +108,18 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 						console.log(response);
 						notifications.toast(0, "Falied to remove user");
 				 });
+		},getUsageDetail:function(){
+			$http.get(Digin_Engine_API + "get_usage_summary?SecurityToken=" + getCookie('securityToken'))
+	        .success(function(data) {
+	            console.log(data.Result);
+	            $rootScope.result = data.Result;
+	            $scope.UserID = JSON.parse(decodeURIComponent(getCookie('authData'))).UserID;
+	            $scope.domain = JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
+	            $scope.emaildid = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
+	            $rootScope.usageDetails = $scope.result.usage[0][$scope.domain][$scope.UserID];
+	        }).error(function() {
+	            console.log("error");
+	        });
 		}
 		
    }

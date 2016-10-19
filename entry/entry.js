@@ -63,7 +63,192 @@ routerApp
         function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant) {
 
 
+        
+            //#-***********************************************************************
+            $scope.checkUsage = function (SecurityToken,result) {    
+                $scope.getUsageSummary = function (cb) {
+                    $http({
+                        method: 'GET',
+                        url: "/auth/tenant/GetTenants/" + SecurityToken,
+                        headers: {'Content-Type': 'application/json'}
+                    })
+                    .success(function(data){
+                        if(data.length==0){
+                            //*This is a new user so, can't see usage details yet
+                            //*continue with user login 
+                            $scope.process="login";
+                            cb(true);
+                            return;
+                        }
+                        else if(data[0].TenantID==null || data[0].TenantID==""){
+                            //*This is a new user so, can't see usage details yet
+                            //*continue with user login 
+                            $scope.process="login";
+                            cb(true);
+                            return;
+                        }
+                        else{
+                            $http({method: 'GET', 
+                            url: '/auth/GetSession/'+SecurityToken+'/'+data[0].TenantID, 
+                            headers: {'Securitytoken':SecurityToken}
+                            })
+                            .success(function (response) {
+                                //#get usage summary------------------------------
+                                $http.get(Digin_Engine_API + "get_usage_summary?SecurityToken=" + SecurityToken)
+                                .success(function(data) {
+                                    //#if user blocked 
+                                     if(data.Result.is_blocked){
+                                     //#Do what will do if blocked
+                                            var confirm = $mdDialog.confirm()
+                                            .title('Update Account')
+                                            .textContent('Currently your account have been blocked, please update user account')
+                                            .ariaLabel('Lucky day')
+                                            //.targetEvent(ev)
+                                            .ok('Go to My Account')
+                                            .cancel('Exit');
+                                            $mdDialog.show(confirm).then(function() {
+                                                //*Go to My Accoun
+                                                //*If agreed to update direct myAccount 
+                                                $scope.process="myAccount";
+                                                cb(true);
+                                                return;
+                                                
+                                            }, function() {
+                                                //*Exit
+                                                //*if not going to update Exit system
+                                                $scope.process="logout";
+                                                cb(true);
+                                                return;
+                                            });     
+                                     }
+                                     //#if user not blocked
+                                     else{
+                                        //*continue with user login 
+                                        $scope.process="login";
+                                        cb(true);
+                                        return;
+                                     }
+                                }).error(function() {
+                                    console.log("error");
+                                    return;
+                                });
+                                //------------------------------------------------
+                            }).error(function (error) {
+                                console.log("error");
+                                return;
+                            });
+                        }
+                    }).error(function(error){
+                        console.log("error");
+                    });
+                }
 
+                $scope.getUsageSummary(function(data){
+                    if(data){
+                        if($scope.process=="myAccount"){
+                            //# go to my Account
+                            alert("Go to my account!");
+                            $window.location.href = "/s.php?securityToken=" + SecurityToken;
+                        }
+                        else if($scope.process=="logout"){
+                            //#logout
+                            alert("Need to logout!");
+                        }
+                        else if($scope.process=="login"){
+                            //#loggin direct to shell
+                            if(IsLocal==false) { 
+                                //#Added for live servers ------------------------------
+                                $window.location.href = "/s.php?securityToken=" + SecurityToken;
+                            }  
+                            else{
+                            //#Added for local host ------------------------------
+                                 document.cookie = "securityToken=" + SecurityToken + "; path=/";
+                                 document.cookie = "authData=" + encodeURIComponent(JSON.stringify(result.AuthData)) + "; path=/";
+                                 window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
+                            }
+                        }
+                        else
+                        {
+                            console.log("error");
+                        }
+                    }
+                });
+            };
+            //-***********************************************************************  
+        
+        
+        
+        
+        
+        
+        /*
+
+            //#get tenant token before user get login#//
+            $scope.checkUsage = function (SecurityToken) {
+                $http({
+                    method: 'GET',
+                    url: "/auth/tenant/GetTenants/" + SecurityToken,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .success(function(data){
+                    if(data[0].TenantID==null || data[0].TenantID==""){
+                        //*This is a new user so, can't see usage details yet
+                    }
+                    else{
+                        $http({method: 'GET', 
+                        url: '/auth/GetSession/'+SecurityToken+'/'+data[0].TenantID, 
+                        headers: {'Securitytoken':SecurityToken}
+                        })
+                        .success(function (response) {
+                            $scope.TenantSecToken=response.SecurityToken;  
+                            $scope.getUsageSummary(response.SecurityToken);      
+                        }).error(function (error) {
+                            console.log("error");
+                        });
+                    }
+                }).error(function(error){
+                    console.log("error");
+                });
+            }
+
+
+            //#get usage summary#//
+            $scope.getUsageSummary=function(SecurityToken){
+                $http.get(Digin_Engine_API + "get_usage_summary?SecurityToken=" + SecurityToken)
+                .success(function(data) {
+                    //#if user blocked 
+                     if(!data.Result.is_blocked){
+                     //#Do what will do if blocked
+                            var confirm = $mdDialog.confirm()
+                            .title('Update Account')
+                            .textContent('Currently your account have been blocked, please update user account')
+                            .ariaLabel('Lucky day')
+                            //.targetEvent(ev)
+                            .ok('Go to My Account')
+                            .cancel('Exit');
+                            $mdDialog.show(confirm).then(function() {
+                                //*Go to My Accoun
+                                //*If agreed to update direct myAccount 
+                                $scope.isContinue=true;
+                            }, function() {
+                                //*Exit
+                                //*if not going to update Exit system
+                                $scope.isContinue=false;
+                            });     
+                     }
+                     //#if user not blocked
+                     else{
+                        //*continue with user login 
+                     }
+                }).error(function() {
+                    console.log("error");
+                });
+            }
+            
+
+        */
 
             $scope.signindetails = {};
             $scope.isLoggedin = false;
@@ -162,66 +347,25 @@ routerApp
                 }).success(function (data) {
                     if (data.Success === true) {
                         
-                        //#Expire existing cookies
-                        /*document.cookie = 'authData=; Path=/;  Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                        document.cookie = 'securityToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                        document.cookie = 'tenantData=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';*/
+                        //#check whether user is blocked or not
+                        $scope.checkUsage(data.Data.SecurityToken,data.Data);
 
+                        
+                        /*
                         //#loggin direct to shell
                         if(IsLocal==false) { 
                             //#Added for live servers ------------------------------
                             $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
                         }  
                         else{
-                            //#Added for local host ------------------------------
+                        //#Added for local host ------------------------------
                              document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
                              document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
                              window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
                         }
+                        */
                         
                         
-                        
-                        /*
-                        var token=data.Data.SecurityToken;
-
-                        //#create Dataset
-                        $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + token + '&Domain=' + Digin_Domain)
-                        .success(function (result) {
-                            if(result.Is_Success==true){
-                                if(result.Custom_Message=="No user settings saved for given user and domain")
-                                {
-                                        //console.og(result.Result);
-                                        localStorage.setItem('initialLogin',true);
-                                        $scope.createDataSet(token);
-                                }
-                                else
-                                {
-                                    localStorage.setItem('initialLogin',false);   
-                                }
-                                //console.log(result.Result);
-
-                                //#Expire existing cookies
-                                document.cookie = 'authData=; Path=/;  Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                                document.cookie = 'securityToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                                document.cookie = 'tenantData=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-
-                                //#loggin direct to shell
-                                if(IsLocal==false) { 
-                                    //#Added for live servers ------------------------------
-                                    $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
-                                }  
-                                else{
-                                    //#Added for local host ------------------------------
-                                     document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
-                                     document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
-                                     window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
-                                }
-                            }
-                        })
-                        .error(function (error) {
-                            console.log(error);
-                        });*/
-
                     }
                     else {
                         $mdDialog.hide();

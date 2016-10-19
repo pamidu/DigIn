@@ -153,13 +153,13 @@
 																	<md-icon md-svg-src="ic_check_24px.svg"></md-icon>
 																</md-button>
 															  </center>
-															<md-card-content layout="column" layout-align="center center">
+															<md-card-content layout="column" layout-align="center center" style="height:125px;">
 															  <p layout="row">{{plan.numberOfUsers }} <span ng-if="plan.numberOfUsers == '1'">&nbspUser</span><span ng-if="plan.numberOfUsers != '1'">&nbspUsers</span></p>
 															  <p>{{plan.storage+plan.StorageStr}}</p>
 															  <p>{{plan.bandwidth+plan.BandwidthStr}}</p>
 															</md-card-content>
 															
-															<md-card-content layout="column" layout-align="center center" style="background:#e7faff">
+															<md-card-content layout="column" layout-align="center center" style="background:#e7faff; height:100px;" >
 															  <p>{{plan.perMonth+plan.currancy+plan.permonthStr}}</p>
 															  <p>{{plan.perYear+plan.currancy+plan.peryearStr}}  </p>
 															  <p>{{plan.Description}}</p>
@@ -184,9 +184,15 @@
                                         </div>
                                     </md-content>
                                     <md-step-actions layout="row">
-                                        <div flex>
+                                        <!-- flex>
                                             <md-button ng-click="vm.moveToPreviousStep()">PREVIOUS</md-button>
+                                        </div-->
+										
+										 <div  class="side-margins">
+                                            <md-button class="md-raised next-btn" ng-click="vm.moveToPreviousStep()">PREVIOUS</md-button>
                                         </div>
+										
+	
                                         <div flex layout="row" layout-align="end top">
                                             <!--md-button class="md-warn" ng-click="">CANCEL</md-button-->
 											
@@ -194,7 +200,10 @@
                                                 {{ vm.stepData[1].data.firsname && vm.stepData[1].data.lastname ? 'NEXT' : 'SKIP' }}
                                             </md-button-->
 											
-											<md-button class="md-raised md-primary" ng-click="vm.loadCardDetail($event)"  ng-show="vm.iscontinue">CONTINUE</md-button>	
+										<div  class="side-margins">
+											<md-button class="md-raised next-btn" ng-click="vm.loadCardDetail($event)"  ng-show="vm.iscontinue">CONTINUE</md-button>	
+                                        </div>
+											
                                    </md-step-actions>
                                 </form>
                             </md-step-body>
@@ -236,8 +245,9 @@
 										<md-content class="md-padding">
 											<div layout="column" layout-align="center center" style="min-height: 200px">
 												<h4>{{btnMessage2}}</h4>
-												<md-button class="md-primary md-raised" ng-click="vm.continueBtn()" text>{{btnContinue}}</md-button>
+												<md-button class="md-raised next-btn" ng-click="vm.continueBtn()" text>{{btnContinue}}</md-button>
 											</div>
+							
 										</md-content>
 										
 										<!--md-step-actions layout="row">

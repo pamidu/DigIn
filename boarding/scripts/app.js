@@ -120,8 +120,10 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
     $scope.getTenantToken=function(plan,ev)
     {
         $scope.getToken = function (cb) {
-            $http({method: 'GET', 
-                url: '/auth/GetSession/'+decodeURIComponent($cookies.get('securityToken'))+'/'+$rootScope.createdTenantID, 
+            $http({method: 'GET',       
+                //http://proxy.auth.digin.io/GetSession/42739507b91e2be0296da3cd1b5b1c52/chamila47.digin.io
+                //url: '/auth/GetSession/'+decodeURIComponent($cookies.get('securityToken'))+'/'+$rootScope.createdTenantID,  //***for prod
+                url: Digin_Tenant+'GetSession/'+decodeURIComponent($cookies.get('securityToken'))+'/'+$rootScope.createdTenantID,  //***for live
                 headers: {'Securitytoken':decodeURIComponent($cookies.get('securityToken'))}
                 })
             .success(function (response) {

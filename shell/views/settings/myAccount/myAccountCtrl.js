@@ -2510,6 +2510,4 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope', 
 
 
 
-
-
 }]);

@@ -2454,7 +2454,7 @@ $scope.getFormattedDate = function (date) {
                                 }
 
                                 // display upper innerfence if there are upper ouliers
-                                if ( data[key].min != data[key].l_w ) {
+                                if ( data[key].max != data[key].u_w ) {
                                     $scope.tooltip += 'Upper Inner Fence: ' + data[key].u_w + '<br/>';
                                 }
                             }

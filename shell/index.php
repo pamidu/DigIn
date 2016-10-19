@@ -9,8 +9,8 @@
 		require_once($_SERVER['DOCUMENT_ROOT'] . "/include/session.php");
 	 }
 	 else{
-	   require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/config.php");
-      require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/session.php");
+    	require_once($_SERVER['DOCUMENT_ROOT'] . "/digin_git/15/Digin/include/config.php");
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/digin_git/15//Digin/include/session.php");
 	 }
 
 	INTS();
@@ -423,7 +423,6 @@
 <script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/at/at-all.js"></script>
 <script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/az/az-all.js"></script>
 <script type="text/javascript" src="bower_components/google-map/angular-simple-logger.js"></script>
-<script type="text/javascript" src="scripts/vendor/indonesia.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-maps/2.3.3/angular-google-maps.min.js"></script>
 <!-- marker clusterer -->
 <!-- angular google maps -->

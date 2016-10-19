@@ -405,6 +405,13 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         data: {
             requireLogin: true
         }
+    }).state('home.sharedashboard', {
+        url: '/sharedashboard',
+        controller: 'sharedashboardgroupsCtrl',
+        templateUrl: "views/sharedashboard.html",
+        data: {
+            requireLogin: true
+        }
     });
     
 

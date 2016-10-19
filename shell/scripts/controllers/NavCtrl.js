@@ -1186,6 +1186,20 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     .then(function(answer) {
                     });
                     break;
+            case "share Dashboards":
+                if($rootScope.dashboard.compID != null)
+                    $state.go("home.sharedashboard");
+                else{
+                        ngToast.dismiss();
+                        ngToast.create({
+                            className: 'danger',
+                            content: 'Please open the Dashboards you wish to share..!',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
+                        });
+                }
+                break;
             default:
                 $state.go("home");
                 break;

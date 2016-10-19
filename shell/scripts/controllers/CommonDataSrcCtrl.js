@@ -3,10 +3,10 @@
  --- commonDataSrcInit
  --- commonSrcInit
  */
-routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav', '$log',
+routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '$mdSidenav', '$log',
     'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API',
     '$diginengine', 'ngToast', '$window', '$state', '$csContainer', 'Upload', '$timeout', 'Digin_Domain', '$diginurls',
-    function($scope, $controller, $mdSidenav, $log, CommonDataSrc,
+    function($scope, $filter, $controller, $mdSidenav, $log, CommonDataSrc,
         $mdDialog, $rootScope, $http, Digin_Engine_API,
          $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout, Digin_Domain, $diginurls) {
 
@@ -929,6 +929,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                     $scope.filterMenuStatus = true;
                 }
                 var query = "";
+                $scope.sourceUi.selectedAttribute = $filter('orderBy')($scope.sourceUi.selectedAttribute, 'name');
                 angular.forEach($scope.sourceUi.selectedAttribute,function(entry) {
                     if (!entry.isRemove){
                         if ( $scope.selectedAttributes.indexOf(entry.name) == -1 ) {
@@ -987,7 +988,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                 query = "SELECT " + name + " FROM " + $diginurls.getNamespace() + "." + table_name + " GROUP BY " + name;
                 $scope.client.getExecQuery(query, function(data, status) {
                     if (status){
-                        data.sort(function(a,b){return a[name] - b[name]});
                         var tempArray = [];
                         for (var res in data){
                             var keyValue = data[res];
@@ -1010,6 +1010,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             }
                         }
                         if (tempArray.length > 0){
+                            tempArray = $filter('orderBy')(tempArray, 'value');                            
                             $scope.$apply(function() {
                                 $scope.fieldObjects[i].valueArray = tempArray;
                             });

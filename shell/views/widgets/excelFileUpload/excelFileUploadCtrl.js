@@ -66,6 +66,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
             return;
 
         } else {
+
             //do not exceed into max step
             if ($scope.selectedStep >= $scope.maxStep) {
                 return;
@@ -77,8 +78,8 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
             $scope.selectedStep = $scope.selectedStep + 1;
             $scope.stepProgress = $scope.selectedStep;
         }
-
     }
+
     $scope.selectFile = function(folder) {
 
         $scope.folderName = folder.file;
@@ -116,6 +117,15 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
 
 
     $scope.submitCurrentStep = function submitCurrentStep(stepData, isSkip) {
+        // Validation for file name
+        if ($scope.selectedPath == "Folder" && uploadFlag == false && $scope.selectedStep == 1) {
+            if ($scope.folderName === undefined) {
+                notifications.toast('0','Please Enter a Valid File Name.');
+                $location.hash('report-top');
+                $anchorScroll();
+                return;
+            }
+        }
         $scope.currentStep = stepData.step - 1;
 
 
@@ -288,6 +298,9 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
             }
 
         });
+    };
+    $scope.route = function () {
+          $state.go('home.welcomeSearch');
     };
 
     // UPDATE PROGRESS BAR.

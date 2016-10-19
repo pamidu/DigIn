@@ -220,8 +220,8 @@
                             next
                         </span>
                         <span class="btn btn-block btn-default"
-                              ng-click="commonUi.onClickBack('2')">
-                                back
+                            ng-click="commonUi.onClickBack('2')">
+                            back
                         </span>
                 </div>
             </div>
@@ -366,7 +366,7 @@
     <md-content layout-padding style="overflow-x: hidden;max-height: 100%;overflow: hidden;" layout="row">
         <div flex="50" style="    overflow: scroll;max-height: 90vh;">
             <v-accordion id="accordionMenu" class="vAccordion--default" control="accordionA" multiple ng-hide="isFilterLoading" onexpand="commonUi.loadFilterParams(index,id)"> 
-                <v-pane class="v-pane" ng-repeat="row in fieldObjects | orderBy: 'name' " id= "{{ ::row.id }}" >
+                <v-pane class="v-pane" ng-repeat="row in fieldObjects" id= "{{ ::row.id }}" >
                     <v-pane-header>
                         <h5 class="font-weight-300 text-upper">{{ ::row.name }}</h5>
                     </v-pane-header>

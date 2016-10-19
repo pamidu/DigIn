@@ -90,6 +90,9 @@ input:disabled {
                 <md-step-body>
                     <form name="step1" ng-submit="submitCurrentStep(stepData[0])">
                         <md-card class="form-container">
+                            <div layout="row" layout-align="end end">
+                                <md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route()"></md-button>
+                            </div>                        
                             <div class="setting-card-header">
                                 <h2>Upload CSV File </h2>
                                 <div class="setting-img-wrap">
@@ -119,6 +122,9 @@ input:disabled {
                 <md-step-body>
                     <form name="step1" ng-submit="submitCurrentStep(stepData[0])">
                         <md-card class="form-container">
+                            <div layout="row" layout-align="end end">
+                                <md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route()"></md-button>
+                            </div>                          
                             <div class="setting-card-header">
                                 <h2>Folder Selection</h2>
                                 <div class="setting-img-wrap">
@@ -135,16 +141,17 @@ input:disabled {
                                 <div flex class="side-margins" style="padding-top: 30px;">
                                     <md-input-container class="md-block" flex-gt-sm="90">
                                         <span>Folder Name:</span>
-                                        <input required name="folderName" ng-model="folderName" ng-disabled="newCollection" aria-label="folder name">
+                                        <input required name="folderName" ng-model="folderName" ng-disabled="newCollection" aria-label="folder name" ng-pattern='/^\w+$/'>
                                         <div ng-messages="step1.folderName.$error">
                                             <div ng-message="required">This is required.</div>
+                                            <div ng-message="pattern">Invalid Folder Name.</div>
                                         </div>
                                     </md-input-container>
                                 </div>
                                
                                 <div flex class="side-margins" style="padding-top: 30px;">
                                 <md-content>
-                                    <md-radio-group  class="effect-radio-group">
+                                    <md-radio-group class="effect-radio-group">
                                         <md-radio-button ng-click="selectFile(folder)" ng-class="effect-btn" ng-repeat="folder in Folders" ng-value="folder"> {{folder.file}}  </md-radio-button>
                                     </md-radio-group>
                                     </md-content>
@@ -166,9 +173,11 @@ input:disabled {
                 <md-step-body>
                     <form name="step2" ng-submit="upload($event, stepData[1])">
                         <md-card class="form-container">
+                            <div layout="row" layout-align="end end">
+                                <md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route()"></md-button>
+                            </div>
                             <div class="setting-card-header">
                                 <h2>Upload File</h2>
-                               
                             </div>
                             <!--   <md-list flex>
                                     <md-list-item class="md-3-line" ng-repeat="file in vm.files" ng-click="null">

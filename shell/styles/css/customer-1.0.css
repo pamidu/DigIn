@@ -17,6 +17,11 @@ body
     display: none!important
 }
 
+
+md-option
+{
+	color: #212121 !important;
+}
 /*v accordian changes*/
 v-pane-header
 {
@@ -3163,8 +3168,7 @@ li:active {
 }
 
 .search-header {
-    font-weight: 600;
-    font-family: 'Ek Mukta', sans-serif !important;
+    font-family: 'Roboto' !important;
     text-transform: uppercase;
     position: relative;
     font-size: 25px;
@@ -4235,7 +4239,6 @@ close button
 
 .blut-search-right-wrapper {
     position: relative;
-    background: rgb(253, 252, 252);
     width: 100%;
     height: 42px;
     overflow: hidden;
@@ -4247,6 +4250,11 @@ close button
 .blut-header-icon {
     outline: none !important;
 	width: 40px;
+	background:white;
+	height: 40px;
+	padding: 10px;
+	border-radius: 3px;
+	
 }
 
 .blut-header-icon > i {
@@ -4367,7 +4375,7 @@ close button
     width: 167px;
     position: absolute;
     background: #f9a525;
-    bottom: 40px;
+    bottom: 44px;
 }
 
 .blut-user-drp-setting > .menu > li.logout {
@@ -4375,7 +4383,7 @@ close button
 }
 
 .blut-current-view {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-weight: 600;
     font-size: 19px;
     color: #aba8a5;
@@ -4443,6 +4451,7 @@ close button
     color: #02b5e2;
 	background:white;
     cursor: pointer;
+	border-radius: 3px;
 }
 
 .blut-left-menu.icon-report {
@@ -4450,19 +4459,20 @@ close button
 }
 
 .blut-search-toggele {
-    width: 35px;
+    width: 45px;
     height: 20px;
     background: #ffffff;
     color: #f9a525;
     text-align: center;
-    margin-left: 50%;
+    margin-left: calc(50% - 48px);
     padding-top: 1px;
     cursor: pointer;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     outline: none !important;
     position: absolute;
-    top: 42px;
+    top: 45px;
+    box-shadow: 0 1px 0px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
 }
 
 .blut-search-toggele.go-up {
@@ -4484,19 +4494,19 @@ close button
 
 .left-menu-toggle {
     width: 20px;
-    height: 35px;
+    height: 48px;
     background: #fff;
     text-align: center;
-    margin-top: 20%;
     cursor: pointer;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     outline: none !important;
     margin-left: 44px;
-    padding-top: 8px;
+    padding-top: 15px;
     color: #f9a525;
     position: absolute;
     top: 215px;
+	box-shadow: rgb(136, 136, 136) 2px 0px 3px -2px;
 }
 
 /*profile setting*/
@@ -4885,8 +4895,8 @@ i.icon-cancel:hover {
 
 .left-toggle-wrapper {
     background: #2795d8;
-    height: 43px;
-    width: 43px;
+    height: 45px;
+    width: 45px;
     display: inline-block;
 }
 

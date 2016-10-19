@@ -35,14 +35,14 @@
           content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com">
     <link rel="shortcut icon" href="styles/css/images/innerlogo.ico">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/> 
-    <link rel="stylesheet" href="bower_components/bootstrap/less/glyphicons.less"/>
-    <link rel="stylesheet" type="text/css" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css">
+    <!--link rel="stylesheet" href="bower_components/bootstrap/less/glyphicons.less"/>
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css"-->
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"> 
 
     <!-- <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css"> -->
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
     <!-- <link href="styles/css/material-wfont.css" rel="stylesheet">-->
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!--link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"-->
     <!--link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css"-->
     <link rel="stylesheet" type="text/css" href="styles/css/directive_library.css">
     <link rel="stylesheet" type="text/css" href="styles/css/pivot.css"/>
@@ -50,15 +50,13 @@
     <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
     <!-- <link rel="stylesheet" type="text/css" src="bower_components/mdchips/md-chips-select.css"/> -->
     
-    <!-- angular slider -->
-    <link rel="stylesheet" type="text/css" href="bower_components/angular-slider/rzslider.min.css">
     <link rel="stylesheet" type="text/css" href="styles/css/style.css">
     <link rel="stylesheet" type="text/css" href="styles/css/admin1.css">
     <link rel="stylesheet" type="text/css" href="styles/css/common-data-src.css">
     <!-- nv.d3.css commented for testing pursoses -->
     <!-- <link rel="stylesheet" href="styles/css/nv.d3.css"> -->
     <link rel="stylesheet" type="text/css" href="styles/css/accordion.css">
-    <link rel="stylesheet" type="text/css" href="styles/css/indicator.css">
+    <!--link rel="stylesheet" type="text/css" href="styles/css/indicator.css"-->
     <link rel="apple-touch-icon" href="../../assets/globals/img/icons/apple-touch-icon.png">
     <!-- <link rel="stylesheet" href="styles/css/DiginD3.css"/> -->
     <!-- event calendar -->
@@ -87,8 +85,7 @@
     <link rel="stylesheet" href="styles/css/widget-style.css" type='text/css'/>
     <link rel="stylesheet" href="bower_components/notification/ng-Toast/ngToast.min.css" type="text/css"/>
     <link rel="stylesheet" href="styles/css/hover.css" type='text/css'/>
-    <link rel="stylesheet" href="bower_components/angular-ui/angular-ui-select2/select2-bootstrap.min.css"
-          type='text/css'/>
+    <link rel="stylesheet" href="bower_components/angular-ui/angular-ui-select2/select2-bootstrap.min.css" type='text/css'/>
  
     <link rel="stylesheet" href="bower_components/tag-input/ng-tags-input.min.css"/>
     <link rel="stylesheet" href="styles/css/customer.css" type='text/css'/>

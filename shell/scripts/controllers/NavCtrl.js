@@ -1734,6 +1734,21 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     element: '#settings',
                     intro: 'Configure the settings related to the system and users',
                     position: 'right'
+                }, {
+                    element: '#home',
+                    intro: 'Go to <strong>Home</strong> page'
+                }, {
+                    element: '#fullscreen',
+                    intro: 'Toggle Fullscreen'
+                }, {
+                    element: '#clearWidgets',
+                    intro: 'Clear widgets in the screen'
+                }, {
+                    element: '#save',
+                    intro: 'Save the Dashboard'
+                }, {
+                    element: '#notifications',
+                    intro: 'Checkout the latest notifications here'
                 }],
                 showStepNumbers: false,
                 exitOnOverlayClick: true,
@@ -1844,7 +1859,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 headerMenuToggle: function (status) {
                     if (status) {
                         $('.main-headbar-slide').animate({
-                            top: '-43px'
+                            top: '-45px'
                         }, 300);
                         //  $('.blut-search-toggele').removeClass('go-up').addClass('go-down');
                         $('#content1').removeClass('content-m-top40').addClass('content-m-top0');

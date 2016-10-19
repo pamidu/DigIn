@@ -3163,8 +3163,7 @@ li:active {
 }
 
 .search-header {
-    font-weight: 600;
-    font-family: 'Ek Mukta', sans-serif !important;
+    font-family: 'Roboto' !important;
     text-transform: uppercase;
     position: relative;
     font-size: 25px;
@@ -4371,7 +4370,7 @@ close button
     width: 167px;
     position: absolute;
     background: #f9a525;
-    bottom: 40px;
+    bottom: 44px;
 }
 
 .blut-user-drp-setting > .menu > li.logout {

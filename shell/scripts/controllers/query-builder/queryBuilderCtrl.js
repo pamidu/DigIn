@@ -1291,7 +1291,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         colors: ['#EC784B'],
                         series: []
                     };
-                    $scope.$apply(function() {
+                    $scope.$apply ( function() {
                         $scope.highchartsNG.series = {};
                         $scope.xAxiscat = [];
                         $scope.highchartsNG.series = data;

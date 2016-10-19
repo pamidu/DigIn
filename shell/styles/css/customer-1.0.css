@@ -4247,6 +4247,11 @@ close button
 .blut-header-icon {
     outline: none !important;
 	width: 40px;
+	background:white;
+	height: 40px;
+	padding: 10px;
+	border-radius: 3px;
+	
 }
 
 .blut-header-icon > i {
@@ -4443,6 +4448,7 @@ close button
     color: #02b5e2;
 	background:white;
     cursor: pointer;
+	border-radius: 3px;
 }
 
 .blut-left-menu.icon-report {

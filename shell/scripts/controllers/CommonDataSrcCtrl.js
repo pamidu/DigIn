@@ -165,6 +165,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             var filesFlag = false;
                             var foldersFlag = false;
                             var flag;
+                            var files = [];
+                            var folders = [];
                             // if (user != userInfo || isBQInitial){
                             //     localStorage.setItem("BigQueryTables",null);
                             //     user = userInfo;
@@ -174,6 +176,16 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                             //     localStorage.getItem("BigQueryTables") == "undefined") {
                                 $scope.client.getTables(function(res, status) {
                                     if (typeof res === 'object' && status) {
+                                        files = res;
+                                        if (foldersFlag) {
+                                            angular.forEach(res,function(r) {
+                                                angular.forEach($scope.tables, function(table) {
+                                                    if (table.name == r) {
+                                                        res.splice(res.indexOf(r),1);
+                                                    }
+                                                });
+                                            });
+                                        }
                                         angular.forEach(res,function(r) {
                                             $scope.tables.push({
                                                 name: r,
@@ -190,7 +202,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                     if(!status) { //if status false
                                         filesFlag = true;
                                         if ( filesFlag && foldersFlag ) {
-                                            if ($scope.tables.length > 0){
+                                            if ($scope.tables.length > 0) {
                                                 flag = true;
                                             }
                                             callback($scope.tables, flag);
@@ -201,6 +213,16 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$controller', '$mdSidenav'
                                 });
                                 $scope.client.getFolders(function(res, status) {
                                     if (status) {
+                                        folders = res;
+                                        if (filesFlag) {
+                                            angular.forEach(res,function(r) {
+                                                angular.forEach($scope.tables,function(table) {
+                                                    if (table.name == r.file){
+                                                        $scope.tables.splice($scope.tables.indexOf(r),1);
+                                                    }
+                                                });
+                                            });
+                                        }
                                         angular.forEach(res,function(data){
                                             $scope.tables.push({
                                                 name: data.file,

@@ -26,7 +26,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
     $scope.configData = [];
     var untilDate = new Date();
     var secondDate = new Date();
-    secondDate.setDate(untilDate.getDate() - 30);
+    secondDate.setDate(untilDate.getDate() - 7);
     $scope.sinceDate = moment(secondDate).format('LL');
     $scope.untilDate = moment(untilDate).format('LL');
     $scope.defReqPool = [{method: 'setPageOverview'},
@@ -61,7 +61,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
             type: 'datetime',
             labels: {
                 format: '{value:%e. %b. %Y}'
-            }          
+            }
         },
         yAxis: {
             title: {
@@ -379,6 +379,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
                 }
                 $scope.sentimentRequest++;
                 if ($scope.sentimentStatus){
+                    $scope.sentimentConfigData.sort(function(a,b){return a[0] - b[0]});                    
                     $scope.sentimentGraphLoading = false;                        
                     var dataArray = [{
                         type: 'line',
@@ -517,7 +518,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
             $scope.totalEngagement = 0;
             var untilDate = new Date();
             var secondDate = new Date();
-            secondDate.setDate(untilDate.getDate() - 30);
+            secondDate.setDate(untilDate.getDate() - 7);
             $scope.sinceDate = moment(secondDate).format('LL');
             $scope.untilDate = moment(untilDate).format('LL');
         }
@@ -533,7 +534,7 @@ routerApp.controller('socialGraphCtrl', function ($scope, config, fbGraphService
         $scope.preloader = false;
         $scope.errorMessage = false;
         $scope.preloader = true;
-        $scope.getPageDetails(page, getBoundaryTimestamps(30, new Date()), $scope.defReqPool);
+        $scope.getPageDetails(page, getBoundaryTimestamps(7, new Date()), $scope.defReqPool);
     };
 
     $scope.changeTimeRange = function () {

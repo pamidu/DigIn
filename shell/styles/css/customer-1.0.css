@@ -425,6 +425,8 @@ v-pane-content
 }
 
 .alert-danger {
+    white-space: pre;
+    text-align: left;    
     background: #E53935 !important;
     width: 100%;
     color: #ffffff !important;
@@ -4572,7 +4574,7 @@ label {
 }
 
 .blut-edit-btn {
-    background: #3c8eb8;
+    background: #02b5e2;
     padding: 9px 0px 9px 0px;
     color: #ffffff;
     width: 190px;

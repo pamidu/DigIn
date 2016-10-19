@@ -98,6 +98,16 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 $scope.insertPreLoader = false;
                 $scope.preloader = false;              
 
+            } else if ($scope.selectedPath == "Folder" && uploadFlag == false) {
+                if ($scope.selectedStep > 0) $scope.selectedStep = $scope.selectedStep - 1;
+                $scope.files = [];
+                $scope.schema = [];
+                $scope.schemaCollection = [];
+                $scope.progressPercentage = 0;
+                $scope.uploadPreLoader = false;
+                $scope.insertPreLoader = false;
+                $scope.preloader = false;
+
             } else if ($scope.selectedStep > 0) {
                 $scope.selectedStep = $scope.selectedStep - 1;
             }
@@ -183,14 +193,14 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                         notifications.toast(1, "Schema retrieved  successfully");
                     } else {
                         uploadFlag = false;
-                        fireMsg('0', 'Error uploading file!');
+                        notifications.toast('0', 'Error uploading file!');
                         $scope.diginLogo = 'digin-logo-wrapper2';
                     }
                     $scope.uploadPreLoader = false;
                     $scope.preloader = false;
                 }, function (data) {
                     uploadFlag = false;
-                    fireMsg('0', 'Error uploading file!');
+                    notifications.toast('0', 'Error uploading file!');
                     $scope.uploadPreLoader = false;
                     $scope.preloader = false;
                     $scope.diginLogo = 'digin-logo-wrapper2';
@@ -207,7 +217,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
 
     $scope.UploadWithUpdate = function() {
         if ($scope.files.length <= 0) {
-            notifications.toast(0, "Please add a file");
+            notifications.toast(0, "Please add a file!");
             return;
         }
         $location.hash('report-top');
@@ -220,7 +230,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
         } else {
             if ($scope.isExist) {
                 $scope.folder_type = 'exist';
-                $scope.schema = [];
+                // $scope.schema = [];
             } else {
                 $scope.folder_type = 'new';
             }

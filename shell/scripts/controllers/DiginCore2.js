@@ -451,7 +451,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                             var dashboardDoc = {
                                 _id : id,
                                 dashboard : dashboard
-                            }                            
+                            }
                             db.put(dashboardDoc, function(err, response) {
                                 if (err) {
                                     return console.log(err);
@@ -460,12 +460,12 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                                     console.log("Document created Successfully");
                                     $rootScope.privateFun.getAllDashboards();
                                 }
-                            });                          
+                            });
                           console.log("not found error status is" + err.status);
                           //update the rootscope with the corrent document id of pouchdb
                           $rootScope.page_id = id;
                         }
-                       }                        
+                       }
                     else {
                             dashboardDoc = {
                                 dashboard : dashboard,
@@ -474,13 +474,13 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                             }
                             db.put(dashboardDoc, function(err, response) {
                                 if (err) {
-                                $rootScope.privateFun.getAllDashboards();                                    
+                                $rootScope.privateFun.getAllDashboards();
                                 return console.log(err);
                             } else {
                                 $rootScope.privateFun.getAllDashboards();
                                 console.log("Document updated Successfully");
                             }
-                        });   
+                        });
                         console.log(doc);
                     }
                 });

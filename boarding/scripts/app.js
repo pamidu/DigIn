@@ -120,8 +120,8 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
     $scope.getTenantToken=function(plan,ev)
     {
         $scope.getToken = function (cb) {
-            $http({method: 'GET', 
-                url: '/auth/GetSession/'+decodeURIComponent($cookies.get('securityToken'))+'/'+$rootScope.createdTenantID, 
+            $http({method: 'GET',       
+                 url: '/auth/GetSession/'+decodeURIComponent($cookies.get('securityToken'))+'/'+$rootScope.createdTenantID, 
                 headers: {'Securitytoken':decodeURIComponent($cookies.get('securityToken'))}
                 })
             .success(function (response) {
@@ -163,7 +163,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                         else {  
                             cb (false);
                         }
-                        $mdDialog.hide();
+                        //$mdDialog.hide();
                     })
                     .error(function (error) {
                         displayError('Data set creation fail');

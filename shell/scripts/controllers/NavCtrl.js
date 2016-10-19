@@ -1832,30 +1832,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         }, 1000);
         //update code damith
         //new ui changes
-        $scope.dropDownbtnStatus = false;
         $scope.searchLayerStatus = false;
         $scope.headerMenuToggle = false;
         $scope.leftMenuToggleState = true;
         var layoutManager = (function () {
             return {
-                //user setting toggele down
-                toggleDownSettingPanel: function (status) {
-                    if (status) {
-                        $scope.dropDownbtnStatus = false;
-                        $('#profileDropDown').animate({
-                            opacity: 0,
-                            zIndex: '0',
-                            top: '-100%'
-                        }, 300);
-                    } else {
-                        $scope.dropDownbtnStatus = true;
-                        $('#profileDropDown').animate({
-                            opacity: '1',
-                            top: '45px',
-                            zIndex: '1000'
-                        }, 300);
-                    }
-                },
                 headerMenuToggle: function (status) {
                     if (status) {
                         $('.main-headbar-slide').animate({
@@ -1906,42 +1887,17 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     }
                 },
                 closeHeaderMenu: function () {
-                    layoutManager.toggleDownSettingPanel($scope.dropDownbtnStatus);
                     layoutManager.headerMenuToggle($scope.headerMenuToggle);
                 }
             }
         })();
 
-        $scope.profileMouseHover = function () {
-            $scope.dropDownbtnStatus = true;
-        };
-
-        $scope.profileMouseLeave = function () {
-            $scope.dropDownbtnStatus = false;
-        };
-
-        $scope.onClickViewProfileSetting = function () {
-            if ($scope.dropDownbtnStatus) {
-                layoutManager.toggleDownSettingPanel($scope.dropDownbtnStatus);
-            } else {
-                layoutManager.toggleDownSettingPanel($scope.dropDownbtnStatus);
-            }
-            if ($scope.searchLayerStatus) {
-                layoutManager.toggleSearchLayer($scope.searchLayerStatus);
-            }
-            //if ($scope.leftMenuToggleState) {
-            //    layoutManager.leftMenuToggle($scope.leftMenuToggleState);
-            //}
-        }
 
         $scope.toggelDownSearch = function (status) {
             if ($scope.searchLayerStatus) {
                 layoutManager.toggleSearchLayer($scope.searchLayerStatus);
             } else {
                 layoutManager.toggleSearchLayer($scope.searchLayerStatus);
-            }
-            if ($scope.dropDownbtnStatus) {
-                layoutManager.toggleDownSettingPanel($scope.dropDownbtnStatus);
             }
 
         };

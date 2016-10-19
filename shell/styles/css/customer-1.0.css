@@ -4437,9 +4437,11 @@ close button
 }
 
 .blut-left-menu {
-    padding-top: 33px;
+    padding-top: 15px;
+	padding-bottom: 15px;
     font-size: 25px;
     color: #02b5e2;
+	background:white;
     cursor: pointer;
 }
 

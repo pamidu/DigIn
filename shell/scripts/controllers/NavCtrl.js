@@ -509,7 +509,17 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
             })
                 .success(function (response) {
-                    privateFun.getAllDashboards();
+                    db.get($rootScope.page_id, function (err, doc) {
+                        if (err) {
+                        }
+                        else {
+                            db.remove(doc)
+                            .catch(function (err) {
+                                //fail silently
+                            });                            
+                        }
+                    });
+                    privateFun.getAllDashboards();                    
                     ngToast.create({
                         className: 'success',
                         content: "Dashbord deleted successfully...!",
@@ -1186,6 +1196,20 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     .then(function(answer) {
                     });
                     break;
+            case "share Dashboards":
+                if($rootScope.dashboard.compID != null)
+                    $state.go("home.sharedashboard");
+                else{
+                        ngToast.dismiss();
+                        ngToast.create({
+                            className: 'danger',
+                            content: 'Please open the Dashboards you wish to share..!',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
+                        });
+                }
+                break;
             default:
                 $state.go("home");
                 break;
@@ -1684,6 +1708,43 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 console.log(targetElement);
             };
 
+			$scope.IntroOptions = {
+                 steps:[
+				{
+					element: '#addPage',
+					intro: "Create your dashboard with Add page, add many pages as you want and make them a storyboard",
+					position: 'right'
+				}, {
+                    element: '#reports',
+                    intro: 'Create your static, adhoc reports and publish them here',
+                    position: 'right'
+                }, {
+                    element: '#datasource',
+                    intro: 'Pick  your correct datasource and visualize them in various ways',
+                    position: 'right'
+                }, {
+                    element: '#addWidgets',
+                    intro: 'Create your customized widgets and add it to the dashboard',
+                    position: 'right'
+                }, {
+                    element: '#socialMedia',
+                    intro: 'Dig deep in to your social media pages',
+                    position: 'right'
+                }, {
+                    element: '#settings',
+                    intro: 'Configure the settings related to the system and users',
+                    position: 'right'
+                }],
+                showStepNumbers: false,
+                exitOnOverlayClick: true,
+                exitOnEsc: true,
+                nextLabel: '<strong>NEXT</strong>',
+                prevLabel: '<strong>PREVIOUS</strong>',
+                skipLabel: 'EXIT',
+                doneLabel: 'DONE'
+            };
+			
+			/*
             $scope.IntroOptions = {
                 steps: [{
                     element: document.querySelectorAll('.main-headbar')[0],
@@ -1749,7 +1810,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 prevLabel: '<strong>PREVIOUS</strong>',
                 skipLabel: 'EXIT',
                 doneLabel: 'DONE'
-            };
+            };*/
 
             $scope.ShouldAutoStart = true;
 

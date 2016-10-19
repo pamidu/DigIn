@@ -1859,7 +1859,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 headerMenuToggle: function (status) {
                     if (status) {
                         $('.main-headbar-slide').animate({
-                            top: '-43px'
+                            top: '-45px'
                         }, 300);
                         //  $('.blut-search-toggele').removeClass('go-up').addClass('go-down');
                         $('#content1').removeClass('content-m-top40').addClass('content-m-top0');

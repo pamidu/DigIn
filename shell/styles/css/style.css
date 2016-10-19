@@ -1397,44 +1397,6 @@ main {
     background-image: none !important;
 }
 
-.main-headbar-slide {
-    transform: translateY(0);
-    transition: transform .5s linear;
-    background-color: rgba(255, 255, 255, 0.95);
-    z-index: 1500;
-    height: 43px;
-    width: calc(100vw - 40px);
-    position: fixed;
-    top: -43px;
-    border-bottom: 1px solid #f4f4f4;
-    left: 44px;
-}
-
-.main-headbar-transparent {
-    visibility: visible;
-    transform: translateY(0);
-    transition: transform .5s linear;
-    background-color: transparent;
-    z-index: 1400;
-    height: 15px;
-    width: 100%;
-    position: absolute;
-    overflow: hidden;
-    top: 0px;
-    left: 0px;
-}
-
-.main-headbar-logo {
-    visibility: visible;
-    width: 50px;
-    background-color: rgb(226, 226, 226);
-    z-index: 1000;
-    height: 45px;
-    position: initial;
-    overflow: hidden;
-    /*box-shadow: 1px 1px 5px grey;*/
-}
-
 #mainHeadbar:hover > .main-headbar > .main-headbar-slide {
     transform: translateY(0);
     transition: transform .5s linear;

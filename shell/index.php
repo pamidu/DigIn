@@ -87,8 +87,7 @@
     <link rel="stylesheet" href="styles/css/widget-style.css" type='text/css'/>
     <link rel="stylesheet" href="bower_components/notification/ng-Toast/ngToast.min.css" type="text/css"/>
     <link rel="stylesheet" href="styles/css/hover.css" type='text/css'/>
-    <link rel="stylesheet" href="bower_components/angular-ui/angular-ui-select2/select2-bootstrap.min.css"
-          type='text/css'/>
+    <link rel="stylesheet" href="bower_components/angular-ui/angular-ui-select2/select2-bootstrap.min.css" type='text/css'/>
  
     <link rel="stylesheet" href="bower_components/tag-input/ng-tags-input.min.css"/>
     <link rel="stylesheet" href="styles/css/customer.css" type='text/css'/>

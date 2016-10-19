@@ -10188,17 +10188,57 @@ h6 {
 .nav-bar-border {
     position: relative;
     left: 0;
-    top: 43px;
-    width: 44px;
+    top: 45px;
+    width: 45px;
     height: calc(103vh);
     background: #fff;
     z-index: 1500;
-    border-right: 1px solid #f4f4f4;
+    box-shadow: rgb(136, 136, 136) 2px 0px 3px -2px
 }
 
 /*
 4.2 - Header
 */
+
+.main-headbar-slide {
+    transform: translateY(0);
+    transition: transform .5s linear;
+    background-color: rgba(255, 255, 255, 0.95);
+    z-index: 1500;
+    height: 45px;
+    width: calc(100vw - 40px);
+    position: fixed;
+    top: -45px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px 0px, rgba(0, 0, 0, 0.137255) 0px 1px 1px 0px, rgba(0, 0, 0, 0.117647) 0px 2px 1px -1px;
+    left: 45px;
+}
+
+.main-headbar-transparent {
+    visibility: visible;
+    transform: translateY(0);
+    transition: transform .5s linear;
+    background-color: transparent;
+    z-index: 1400;
+    height: 15px;
+    width: 100%;
+    position: absolute;
+    overflow: hidden;
+    top: 0px;
+    left: 0px;
+}
+
+.main-headbar-logo {
+    visibility: visible;
+    width: 50px;
+    background-color: rgb(226, 226, 226);
+    z-index: 1000;
+    height: 45px;
+    position: initial;
+    overflow: hidden;
+    /*box-shadow: 1px 1px 5px grey;*/
+}
+
+
 .page-header {
     display: block;
     position: relative;

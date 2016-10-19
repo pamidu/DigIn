@@ -313,7 +313,7 @@
 <script type="text/javascript" src="scripts/controllers/widgetCtrl.js"></script>
 <script type="application/javascript" src="scripts/controllers/CommonDataSrcCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/ExcelCtrl.js"></script>
-
+<script type="text/javascript" src="scripts/controllers/sharedashboardgroupsCtrl.js"></script>
 
 
 <!-- Material Icons -->

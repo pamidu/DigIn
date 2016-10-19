@@ -70,7 +70,7 @@
 							</div>
 							
 							<div style="padding:20px">
-								<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)" multiple>
+								<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)" multiple ng-show="isVisble">
 									<v-pane id="users" expanded="$first"> 
 										<v-pane-header id="Store-header" aria-controls="Store-content">
 											<h5 style="margin:0px;">Users</h5> 

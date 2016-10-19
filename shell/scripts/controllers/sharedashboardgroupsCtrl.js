@@ -1,14 +1,20 @@
-routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootScope', '$http', function( $scope, $mdDialog,$rootScope, $http ) {
+routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootScope', '$http','notifications','Digin_Engine_API', function( $scope, $mdDialog,$rootScope, $http,notifications,Digin_Engine_API ) {
 
     $scope.users =[];
     $scope.groups=[];
     $scope.selected = [];
     $scope.selectedgroups = [];
 
+    $scope.isVisble= false;
+
+
     
 
-    $http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects')
+    $http.get('/apis/usercommon/getSharableObjects')
        .then(function(result) {
+
+            $scope.isVisble= true;
+
             ////return result.data;
              for (var i = 0, len = result.data.length; i<len; ++i) {
                 if (result.data[i].Type == "User") {
@@ -89,13 +95,59 @@ routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootS
              //------------------------------------------------------------- 
             
         },function errorCallback(response) {
-            //notifications.toast(0, "Falied to get users");
+            notifications.toast(0, "Falied to get users");
      });    
 
-       $scope.getArray = function (){
-            alert($scope.selected);
-            $rootScope.dashboard;
-            alert($scope.selectedgroups);
+       $scope.getArray = function (){ 
+         
+            if($scope.selected.length > 0 || $scope.selectedgroups.length > 0){
+
+              var dashboardId = $rootScope.dashboard.compID;
+              var idArr =[];
+
+              //to get users
+              for(var i=0; i<$scope.selected.length; i++){
+                var user ={"is_user":true,"id":$scope.selected[i].UserID};
+                idArr.push(user);
+              }
+
+              //to get groups
+              for(var i=0; i<$scope.selectedgroups.length; i++){
+                var group ={"is_user":false,"id":$scope.selectedgroups[i].UserID};
+                idArr.push(group);
+              }
+
+              var shareObject  ={
+                "method":"component_internal",
+                "id":[dashboardId],
+                "other_data":idArr
+              };
+
+              console.log(JSON.stringify(shareObject));
+              var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
+              $http({
+                  method: 'POST',
+                  
+                  url: 'http://192.168.1.32:8080/'+'share_components',
+                  data: angular.fromJson(JSON.stringify(shareObject)),
+                  headers: {  
+                              'Content-Type': 'application/json',
+                              'SecurityToken':'c9721acea16473afca2a477560f340b6'
+                  }
+              })
+              .success(function(response){
+                 
+                notifications.toast(0, response.Custom_Message);
+
+              })
+              .error(function(error){  
+                notifications.toast(0, error.Custom_Message);
+               
+              }); 
+
+            }else{
+              notifications.toast(0, "You have not select any user or group to share");
+            }
        }
       
 

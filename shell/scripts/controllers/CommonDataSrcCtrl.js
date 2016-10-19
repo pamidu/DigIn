@@ -11,8 +11,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
          $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout, Digin_Domain, $diginurls) {
 
         $scope.datasources = [{
-            name: "DuoStore",
-            icon: "styles/icons/source/duo-store.svg",
+            name: "MSSQL",
+            icon: "styles/icons/source/mssql.svg",
             selected: false
         }, {
             name: "BigQuery",
@@ -22,9 +22,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
             name: "postgresql",
             icon: "styles/icons/source/api.svg",
             selected: false
-        },  {
-            name: "MSSQL",
-            icon: "styles/icons/source/mssql.svg",
+        }, {
+            name: "DuoStore",
+            icon: "styles/icons/source/duo-store.svg",
             selected: false
         }];
 

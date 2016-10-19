@@ -423,6 +423,7 @@
 <script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/at/at-all.js"></script>
 <script type="text/javascript"  src="http://code.highcharts.com/mapdata/countries/az/az-all.js"></script>
 <script type="text/javascript" src="bower_components/google-map/angular-simple-logger.js"></script>
+<script type="text/javascript" src="scripts/vendor/indonesia.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-maps/2.3.3/angular-google-maps.min.js"></script>
 <!-- marker clusterer -->
 <!-- angular google maps -->

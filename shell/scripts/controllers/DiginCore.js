@@ -1331,8 +1331,8 @@ routerApp.controller('ReportsDevCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportS
         }
     }
 ]);
-routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain','$state','$mdDialog',
-    function($scope, dynamicallyReportSrv, $localStorage, Digin_Engine_API, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain,$state,$mdDialog) {
+routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain','$state','$mdDialog','$window',
+    function($scope, dynamicallyReportSrv, $localStorage, Digin_Engine_API, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain,$state,$mdDialog,$window) {
 
 
         // update damith
@@ -1350,6 +1350,12 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
             var getSession = function() {
                 reqParameter.token = getCookie("securityToken");
             };
+            $scope.Download = function(){
+            $window.open('https://sourceforge.net/projects/pentaho/files/Report%20Designer/5.3/', '_blank');
+        };
+
+
+
 
             var startReportService = function() {
                 if (rptService == 0) {

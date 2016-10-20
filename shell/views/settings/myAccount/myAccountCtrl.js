@@ -1,5 +1,5 @@
 routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDialog, notifications, profile, $http, Upload,
-    Digin_Domain, Digin_Tenant, $location, Digin_Engine_API, $apps, ProfileService, paymentGateway, paymentGatewaySvc, $stateParams) {
+    Digin_Domain, Digin_Tenant, $location, Digin_Engine_API, $apps, ProfileService, paymentGateway, paymentGatewaySvc, $stateParams,userAdminFactory,$timeout) {
 
 
     var vm = this;
@@ -11,11 +11,17 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     //#Subscription START----------------------
 
+    //#Getcurrent Packge Details 
+    userAdminFactory.getPackageDetail(getCookie('securityToken'));
+
     //#Get customer detail#//
     paymentGatewaySvc.getCustomerInformations();
 
     //#Get customer status as active - true || false #//
     paymentGatewaySvc.checkSubscription();
+
+
+
 
 
     //#Get card information
@@ -93,10 +99,13 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         "data": []
     }];
 
+
+   
+
+
+
     //#get usage summary#//
     $scope.usageDetails = {};
-
-
     $http.get(Digin_Engine_API + "get_usage_summary?SecurityToken=" + getCookie('securityToken'))
         .success(function(data) {
             console.log(data.Result);
@@ -441,8 +450,13 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         });
     };
 
+
     vm.addCard = function(ev) {
         displayProgress("Request to add new card...")
+        
+        $timeout(function () {
+              $mdDialog.hide();
+        }, 4000);
 
         var stripeConfig = {
             publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
@@ -628,8 +642,6 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     //#load stripe payement detail window
     vm.processInitialPurchase = function(ev, plan) {
-
-
 
         var stripeConfig = {
             publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',

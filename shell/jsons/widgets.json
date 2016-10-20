@@ -142,9 +142,9 @@
             "icon": "styles/css/images/icons/youtube.svg",
             "type": "Social Media",
             "Description": "Likes, Clicks, Active Users, Pageviews",
-            "initTemplate": "views/InitConfigyoutube.html",
+            "initTemplate": "views/InitConfigYoutube.html",
             "initController": "YoutubeInit",
-            "widView": "views/Viewyoutube.html",
+            "widView": "views/ViewYoutube.html",
             "color": "#F44336",
             "sizeX": 4, "sizeY": 4, "row": 2, "col": 4
         }, {

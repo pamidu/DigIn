@@ -2210,7 +2210,7 @@ routerApp.controller('gnewsInit',['$scope', '$http', '$mdDialog', 'widgetID', '$
     $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
     $scope.entryArray = [];
 
-    $http.get('https://api.cognitive.microsoft.com/bing/v5.0/search/',{params: { q: $scope.gnewsrequest ,count:50 },headers: {'Ocp-Apim-Subscription-Key': '0c2e8372aeab41539540cc61edac0c3f'}})
+    $http.get('https://api.cognitive.microsoft.com/bing/v5.0/search/',{params: { q: $scope.gnewsrequest ,count:50 },headers: {'Ocp-Apim-Subscription-Key': 'fdbb8fadc9274427ae47261c985cec50'}})
     .success(function(data) {
              if(!angular.isUndefined(data.webPages)){
                      console.log("data from search",data.webPages.value)

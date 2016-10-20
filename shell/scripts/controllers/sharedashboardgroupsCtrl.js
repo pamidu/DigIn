@@ -1,4 +1,4 @@
-routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootScope', '$http','notifications','Digin_Engine_API', function( $scope, $mdDialog,$rootScope, $http,notifications,Digin_Engine_API ) {
+routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootScope', '$http','notifications','Digin_Engine_API','$state', function( $scope, $mdDialog,$rootScope, $http,notifications,Digin_Engine_API,$state ) {
 
     $scope.users =[];
     $scope.groups=[];
@@ -97,6 +97,10 @@ routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootS
         },function errorCallback(response) {
             notifications.toast(0, "Falied to get users");
      });    
+
+       $scope.closeReort = function(){
+        $state.go('home.welcomeSearch');
+       }
 
        $scope.getArray = function (){ 
          

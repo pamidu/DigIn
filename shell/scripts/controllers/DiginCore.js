@@ -1331,8 +1331,8 @@ routerApp.controller('ReportsDevCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportS
         }
     }
 ]);
-routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain','$state','$mdDialog','$window',
-    function($scope, dynamicallyReportSrv, $localStorage, Digin_Engine_API, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain,$state,$mdDialog,$window) {
+routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain','$state','$mdDialog','$window','$rootScope',
+    function($scope, dynamicallyReportSrv, $localStorage, Digin_Engine_API, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain,$state,$mdDialog,$window,$rootScope) {
 
 
         // update damith
@@ -1458,7 +1458,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
 
                         if(repid != null){
                               var confirm = $mdDialog.confirm()
-                                  .title('Delete Dashboard')
+                                  .title('Upload Report')
                                   .textContent('Do you want to overwrite the existing report?')
                                   .ariaLabel('Lucky day')
                                   .ok('yes')

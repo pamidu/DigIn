@@ -1,5 +1,6 @@
 routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth', 'notifications', function($rootScope,$http, $v6urls, $auth,notifications) {
 	var cache = {};
+	
 	return {
        inviteUser: function(userEmail) {
 			 notifications.startLoading("Inviting user, Please wait..");
@@ -108,6 +109,16 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 						console.log(response);
 						notifications.toast(0, "Falied to remove user");
 				 });
+		},getPackageDetail:function(SecurityToken){//#get package detail#//
+			    $http.get('http://192.168.2.61:8080/packages?SecurityToken=62229efc0ec2029844a4a01184814b5b')
+			    //$http.get('http://prod.digin.io:1929/packages?SecurityToken=62229efc0ec2029844a4a01184814b5b')
+			    //$http.get(Digin_Engine_API + "packages?SecurityToken=" + getCookie('securityToken'))
+		        .success(function(data) {
+		            console.log(data.Result);
+		            $rootScope.packageDetail=data.Result;
+		        }).error(function() {
+		            console.log("error");
+		        });
 		}
 		
    }

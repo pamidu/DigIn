@@ -1,5 +1,11 @@
-routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http){
+routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state){
 	var vm = this;
+	
+	//*Settings routing ---------------- 
+    var slide = false;
+    $scope.route = function (state) {
+		  $state.go('home.welcomeSearch');
+    };
 	
 	$scope.$parent.currentView = "User Administrator";
 	
@@ -148,8 +154,8 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 }])*/
 
 
-routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifications','userAdminFactory', 'group','index' ,function ($scope,$rootScope,$mdDialog,notifications,userAdminFactory,group,index){
-	
+routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifications','userAdminFactory', 'group','index','$state' ,function ($scope,$rootScope,$mdDialog,notifications,userAdminFactory,group,index,$state){
+	 
 	var vm = this;
 	var index = index;
 	vm.addOrEdit = "Add";
@@ -158,6 +164,13 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
     vm.allContacts = loadContacts();
     vm.contacts = [];
     vm.filterSelected = true;
+	
+	//*Settings routing ---------------- 
+    var slide = false;
+    $scope.route = function (state) {
+		  $state.go('home.welcomeSearch');
+    };
+	
 	
 	function getCatLetter(catName){
 		try{

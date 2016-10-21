@@ -1377,21 +1377,6 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                     $scope.reports = [];
                     getSession();
                     startReportService();
-                    // dynamicallyReportSrv.getAllReports(reqParameter).success(function(data) {
-                    //     console.log(data);
-                    //     if (data.Is_Success) {
-                    //         for (var i = 0; i < data.Result.length; i++) {
-                    //             console.log($scope.reports);
-                    //             $scope.reports.push({
-                    //                 splitName: data.Result[i],
-                    //                 path: '/dynamically-report-builder'
-                    //             });
-                                
-                    //         }
-                    //     }
-                    // }).error(function(respose) {
-                    //     console.error('error request getAllReports...');
-                    // });
                     dynamicallyReportSrv.getAllComponents(reqParameter).success(function(data) {
                         $rootScope.reports = [];
                         angular.forEach(data.Result, function(key) {
@@ -1423,15 +1408,6 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
         $scope.reports = [];
         $scope.preloader = false;
 
-        /* file upload */
-        /*$scope.$watch('files', function () {
-         $scope.upload($scope.files);
-         });
-         $scope.$watch('file', function () {
-         if ($scope.file != null) {
-         $scope.files = [$scope.file];
-         }
-         });*/
         $scope.log = '';
 
         $scope.upload = function(files) {

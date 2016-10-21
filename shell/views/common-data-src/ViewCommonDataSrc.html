@@ -6,7 +6,7 @@
 <!-- message
  <toast></toast> -->
 
-    <md-content class="overflow-none" layout="row">
+    <md-content layout="row">
         <div class="slider-r-tab">
             <ul class="list-panel icheck-inline">
                 <li class=""
@@ -39,10 +39,11 @@
                 </li>
             </ul>
             <div class="data-src-close" layout="row" layout-align="end center">
-                    <a ng-click="commonUi.onClickClose()" class="fnt-s-24">
-                        <i class="ti-close"></i>
-                    </a>
+                <md-button class="md-icon-button" ng-click="commonUi.onClickClose()" style="color:#black;">
+					<i class="ti-close"></i>
+				</md-button>
             </div>
+			
         </div>
 
 
@@ -51,19 +52,16 @@
     <!--
     Update damith
     UI Select Main Source -->
-    <md-content class="overflow-none animate-hide animated" layout="row"
-                ng-class="{fadeInRightBig: commonUi.selectedIndex==2,
-                fadeInLeft: commonUi.selectedIndex==1}"
-                ng-show="commonUi.selectedIndex=='1'">
+    <md-content class="overflow-none animate-hide animated" layout="row" ng-class="{fadeInRightBig: commonUi.selectedIndex==2, fadeInLeft: commonUi.selectedIndex==1}" ng-show="commonUi.selectedIndex=='1'">
         <div class="slider-r-source " ng-mousemove="initTabSource()">
             <!-- refresh all source -->
-            <div class="digni-cmds-header-btn">
+            <!--div class="digni-cmds-header-btn">
                 <i class="ti-reload"
                    ng-click="commonUi.onRefresh(3)"
                 ></i>
-            </div>
+            </div-->
 
-            <h3 class="graph-h2 font-weight-500 text-center p-t-b-30">
+            <h3 class="font-weight-500 text-center">
                 Data source builder (1/3)
                 <small class="text-color-grey-600">
                     what do you want to connect to?
@@ -71,45 +69,40 @@
             </h3>
             <div layout="row">
                 <!-- select data source -->
-                <div flex>
-                    <div class="digin-cmds-source">
-                        <div ng-repeat="source in datasources"
-                             class="source-wrap icheck-inline hvr-outline-in "
-                             ng-click="commonUi.onClickSelectedSrc(source,datasources, $event)">
-                            <img class="source-icon" ng-src="{{source.icon}}"
-                                 alt="{{source.name}}">
-                            <div class="source-wrap-footer">
-                                {{source.name}}
-                            </div>
-                            <div class="selectedSource"
-                                 ng-class="source.selected==true?'selectedSource':'displayNone'">
-                                <i class="fa fa-check-circle-o"></i>
-                            </div>
-                        </div>
-						<div class="source-wrap icheck-inline hvr-outline-in "
-                             ng-click="commonUi.openExcelFileUpload($event)">
-                            <img class="source-icon" ng-src="styles/icons/source/xlsx.svg"
-                                 alt="styles/icons/source/xlsx.svg">
-                            <div class="source-wrap-footer">
-                                Excel/CSV Upload
-                            </div>
-                            <div class="selectedSource"
-                                 ng-class="source.selected==true?'selectedSource':'displayNone'">
-                                <i class="fa fa-check-circle-o"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+             
+				<div flex class="digin-cmds-source">
+					<div ng-repeat="source in datasources"
+						 class="source-wrap icheck-inline hvr-outline-in "
+						 ng-click="commonUi.onClickSelectedSrc(source,datasources, $event)">
+						<img class="source-icon" ng-src="{{source.icon}}"
+							 alt="{{source.name}}">
+						<div class="source-wrap-footer">
+							{{source.name}}
+						</div>
+						<div class="selectedSource"
+							 ng-class="source.selected==true?'selectedSource':'displayNone'">
+							<i class="fa fa-check-circle-o"></i>
+						</div>
+					</div>
+					<div class="source-wrap icheck-inline hvr-outline-in "
+						 ng-click="commonUi.openExcelFileUpload($event)">
+						<img class="source-icon" ng-src="styles/icons/source/xlsx.svg"
+							 alt="styles/icons/source/xlsx.svg">
+						<div class="source-wrap-footer">
+							Excel/CSV Upload
+						</div>
+						<div class="selectedSource"
+							 ng-class="source.selected==true?'selectedSource':'displayNone'">
+							<i class="fa fa-check-circle-o"></i>
+						</div>
+					</div>
+				</div>
+               
             </div>
-            <div class="cmds-btn-footer m-top-10">
-                        <span class="btn btn-block btn-default btn-close"
-                              ng-click="commonUi.onClickNext('1')" ng-disabled="!sourceUi.selectedSource">
-                            next
-                        </span>                     
-                <!-- <span class="btn btn-block btn-default btn-close"
-                      ng-click="commonUi.onClickClose()">
-                            close
-                        </span> -->
+            <div layout="row" layout-align="space-between center">
+				<span flex></span>    
+				<span flex></span>   				
+				<md-button md-no-ink class="md-raised md-primary"  ng-click="commonUi.onClickNext('1')" ng-disabled="!sourceUi.selectedSource"><span style="text-transform:none;color:white">Next</span></md-button>
             </div>
         </div>
     </md-content>
@@ -120,7 +113,7 @@
                 fadeInLeft: commonUi.selectedIndex==1}"
                 ng-show="commonUi.selectedIndex=='2'">
         <div class="slider-r-source " ng-mousemove="initTabSource($event)">
-            <h3 class="graph-h2 font-weight-500 text-center p-t-b-30">
+            <h3 class="graph-h2 font-weight-500 text-center">
                 Data source builder (2/3)
                 <small class="text-color-grey-600">
                     what do you want to connect to?
@@ -212,7 +205,7 @@
                     </ui>
                 </div>
             </div>
-            <div class="cmds-btn-footer">
+            <!--div class="cmds-btn-footer">
                 <div class="cmds-btn-footer m-top-10">
                         <span class="btn btn-block btn-default btn-close"
                               ng-click="commonUi.onClickNext('2')" ng-disabled="!sourceUi.selectedNameSpace"
@@ -224,6 +217,11 @@
                             back
                         </span>
                 </div>
+            </div-->
+			 <div layout="row" layout-align="space-between center">
+				<md-button md-no-ink class="md-raised"  ng-click="commonUi.onClickBack('2')"><span style="text-transform:none;color:black">Back</span></md-button> 
+				<span flex></span>   				
+				<md-button md-no-ink class="md-raised md-primary"   ng-click="commonUi.onClickNext('2')" ng-disabled="!sourceUi.selectedNameSpace" ng-if="commonUi.isServiceError==false"><span style="text-transform:none;color:white">Next</span></md-button>
             </div>
         </div>
     </md-content>
@@ -234,7 +232,7 @@
                 fadeInLeft: commonUi.selectedIndex==3}"
                 ng-show="commonUi.selectedIndex=='3'">
         <div class="slider-r-source " ng-mousemove="initTabSource()">
-            <h3 class="graph-h2 font-weight-500 text-center p-t-15">
+            <h3 class="graph-h2 font-weight-500 text-center">
                 Data source builder (3/3)
                 <small class="text-color-grey-600">
                     what do you want to connect to?
@@ -328,21 +326,13 @@
                 </div>
             </div>
 
-            <div class="cmds-btn-footer" ng-show="sourceUi.selectedNameSpace!=''">
-                <div class="cmds-btn-footer m-top-10">
-                        <span ng-disabled="pendingColumns" class="btn btn-block btn-default"
-                              ng-click="commonUi.onSelectFilter()">                             
-                            Filter Data
-                        </span>                         
-                        <span ng-disabled="pendingColumns" class="btn btn-block btn-default btn-close"
-                              ng-click="commonUi.onSaveSource()">
-                            save
-                        </span>                       
-                        <span class="btn btn-block btn-default"
-                              ng-click="commonUi.onClickBack('3')">
-                                back
-                        </span>                       
-                </div>
+			<div layout="row" layout-align="center center" ng-show="sourceUi.selectedNameSpace!=''">
+				<md-button md-no-ink class="md-raised"  ng-click="commonUi.onSelectFilter()" flex><span style="text-transform:none;color:black">Filter</span></md-button> 
+            </div>
+			 <div layout="row" layout-align="space-between center"  ng-show="sourceUi.selectedNameSpace!=''">
+				<md-button md-no-ink class="md-raised"  ng-click="commonUi.onClickBack('3')"><span style="text-transform:none;color:black">Back</span></md-button> 
+				<span flex></span>   				
+				<md-button md-no-ink class="md-raised md-primary"   ng-click="commonUi.onSaveSource()"><span style="text-transform:none;color:white">Save</span></md-button>
             </div>
         </div>
 
@@ -350,16 +340,16 @@
 
 </md-sidenav>
 <!-- </div> -->
-<md-sidenav class="md-sidenav-right md-whiteframe-4dp md-sidenav-right slider-r-wrap" md-component-id="filterMenu" style= "min-width: 700px !important; width: 50vw !important;max-width: 700px !important; z-index: 500 !important;overflow: hidden;">
-    <md-toolbar class="md-theme-light">
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp md-sidenav-right slider-r-wrap" md-component-id="filterMenu" style= "min-width: 700px !important; width: 50vw !important;max-width: 700px !important; z-index: 1500 !important;overflow: hidden;">
+    <md-toolbar class="" style="background:white">
         <div layout="row" layout-align="canter center" style="height: 85px;">
-            <h1 class="md-toolbar-tools" style="width: 45%;color: #e0e0e0;">
+            <h1 class="md-toolbar-tools" style="width: 45%;color:black;font-family: Roboto;">
                 <i class="ti-filter" style="padding-right: 10px;"></i>
                 Select Filters
             </h1>
-            <a class="fnt-s-24" ng-click="commonUi.onCLickFilterClose()">
-                <i class="ti-close"></i>
-            </a>     
+            <md-button class="md-icon-button" ng-click="commonUi.onCLickFilterClose()" style="color:#black;">
+                <i class="ti-angle-right"></i>
+            </md-button>     
             <div></div>   
         </div>
     </md-toolbar>

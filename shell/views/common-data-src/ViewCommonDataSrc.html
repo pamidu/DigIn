@@ -39,10 +39,11 @@
                 </li>
             </ul>
             <div class="data-src-close" layout="row" layout-align="end center">
-                    <a ng-click="commonUi.onClickClose()" class="fnt-s-24">
-                        <i class="ti-close"></i>
-                    </a>
+                <md-button class="md-icon-button" ng-click="commonUi.onClickClose()" style="color:#black;">
+					<i class="ti-close"></i>
+				</md-button>
             </div>
+			
         </div>
 
 
@@ -340,15 +341,15 @@
 </md-sidenav>
 <!-- </div> -->
 <md-sidenav class="md-sidenav-right md-whiteframe-4dp md-sidenav-right slider-r-wrap" md-component-id="filterMenu" style= "min-width: 700px !important; width: 50vw !important;max-width: 700px !important; z-index: 1500 !important;overflow: hidden;">
-    <md-toolbar class="md-theme-light">
+    <md-toolbar class="" style="background:white">
         <div layout="row" layout-align="canter center" style="height: 85px;">
-            <h1 class="md-toolbar-tools" style="width: 45%;color:white;">
+            <h1 class="md-toolbar-tools" style="width: 45%;color:black;font-family: Roboto;">
                 <i class="ti-filter" style="padding-right: 10px;"></i>
                 Select Filters
             </h1>
-            <a class="fnt-s-24" ng-click="commonUi.onCLickFilterClose()">
-                <i class="ti-close"></i>
-            </a>     
+            <md-button class="md-icon-button" ng-click="commonUi.onCLickFilterClose()" style="color:#black;">
+                <i class="ti-angle-right"></i>
+            </md-button>     
             <div></div>   
         </div>
     </md-toolbar>

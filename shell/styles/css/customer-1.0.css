@@ -3456,7 +3456,6 @@ li:active {
     font-family: 'Roboto', sans-serif !important;
     font-weight: 400;
     color: #1f1a1a;
-    margin-left: 20px;
 }
 
 .box-shadow-none {
@@ -4743,7 +4742,7 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
 
 #pagingTabs md-tabs-content-wrapper
 {
-	height: calc(100vh - 86px);	
+	height: calc(100vh - 35px);	
 	position: relative;
 
 }

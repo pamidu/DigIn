@@ -5,12 +5,12 @@
 	//var_dump($_SERVER['DOCUMENT_ROOT']) ; exit();
 
 	 if ($_SERVER['DOCUMENT_ROOT']=="/var/www/html"){
-		require_once($_SERVER['DOCUMENT_ROOT'] . "/2016-10-20/include/config.php");
-		require_once($_SERVER['DOCUMENT_ROOT'] . "/2016-10-20/include/session.php");
+		require_once($_SERVER['DOCUMENT_ROOT'] . "/include/config.php");
+		require_once($_SERVER['DOCUMENT_ROOT'] . "/include/session.php");
 	 }
 	 else{
-    	require_once($_SERVER['DOCUMENT_ROOT'] . "/2016-10-20/Digin/include/config.php");
-        require_once($_SERVER['DOCUMENT_ROOT'] . "/2016-10-20/Digin/include/session.php");
+    	require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/config.php");
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/session.php");
 	 }
 
 	INTS();
@@ -235,6 +235,7 @@
 <script type="text/javascript" src="scripts/services/DynamicRealTimeVis.js"></script>
 <script type="text/javascript" src="scripts/services/ObjectStoreService.js"></script>
 <script type="application/javascript" src="scripts/services/CommonDataService.js"></script>
+<script type="application/javascript" src="scripts/services/fbGraphServices.js"></script>
 <script type="text/javascript" src="scripts/factories/socialMedia/twitterService.js"></script>
 <!-- services end -->
 
@@ -266,8 +267,10 @@
 <script type="text/javascript" src="scripts/directives/validNumber.js"></script>
 <script type="text/javascript" src="scripts/directives/directivelibrary.js"></script>
 
+<script type="text/javascript" src="scripts/services/ReportService.js"></script>
 <script type="text/javascript" src="bower_components/FileSaver/FileSaver.js"></script>
 <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphCtrl.js"></script>
+<script type="text/javascript" src="scripts/controllers/d3PluginCtrl.js"></script>
  
 <script src="https://code.highcharts.com/modules/funnel.js"></script>
 
@@ -295,6 +298,8 @@
 <script type="text/javascript" src="scripts/factories/d3Data.js"></script>
 <script type="text/javascript" src="scripts/factories/Dashboard.js"></script>
 <script type="text/javascript" src="scripts/factories/getTableDataFactories.js"></script>
+<script type="text/javascript" src="scripts/services/RealTimeService.js"></script>
+<script type="text/javascript" src="scripts/services/AnalyticsService.js"></script>
 <script type="text/javascript" src="scripts/vendor/indicator.js"></script>
 <script type="text/javascript" src="scripts/directives/indicatorWidget.js"></script>
 <script type="text/javascript" src="scripts/custom/fbInterface.js"></script>
@@ -354,6 +359,7 @@
 <script src="scripts/charts/smallMultiplesArea.js"></script>
 <script src="scripts/charts/bumpChart.js"></script>
 <script src="scripts/charts/sunBurst.js"></script>
+<script src="scripts/services/services.js"></script>
 <script type="text/javascript" src="scripts/controllers/controllers.js"></script>
 <script type="text/javascript" src="scripts/filters/filters.js"></script>
 <script type="text/javascript" src="scripts/directives/directives.js"></script>

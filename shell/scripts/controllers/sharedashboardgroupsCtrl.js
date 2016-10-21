@@ -132,16 +132,16 @@ routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootS
               $http({
                   method: 'POST',
                   
-                  url: 'http://192.168.1.32:8080/'+'share_components',
+                  url: Digin_Engine_API +'share_components',
                   data: angular.fromJson(JSON.stringify(shareObject)),
                   headers: {  
                               'Content-Type': 'application/json',
-                              'SecurityToken':'c9721acea16473afca2a477560f340b6'
+                              'SecurityToken': userInfo.SecurityToken
                   }
               })
               .success(function(response){
                  
-                notifications.toast(0, response.Custom_Message);
+                notifications.toast(1, response.Custom_Message);
 
               })
               .error(function(error){  

@@ -10186,7 +10186,7 @@ h6 {
 }
 
 .nav-bar-border {
-    position: relative;
+    position: fixed;
     left: 0;
     top: 45px;
     width: 45px;

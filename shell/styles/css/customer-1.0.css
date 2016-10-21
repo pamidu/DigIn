@@ -4743,7 +4743,7 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
 
 #pagingTabs md-tabs-content-wrapper
 {
-	height: calc(100vh - 86px);	
+	height: calc(100vh - 35px);	
 	position: relative;
 
 }

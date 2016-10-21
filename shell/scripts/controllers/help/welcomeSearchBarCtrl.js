@@ -67,6 +67,12 @@ routerApp.controller('welcomeSearchBarCtl', function ($scope, $rootScope, $http,
     }
 
     $scope.goDashboard = function (dashboard) {
+
+          $('.main-headbar-slide').animate({
+                            top: '-45px'
+            }, 300);
+            //  $('.blut-search-toggele').removeClass('go-up').addClass('go-down');
+            $('#content1').removeClass('content-m-top40').addClass('content-m-top0');
         console.log("dash item", dashboard);
 
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));

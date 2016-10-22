@@ -12,7 +12,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     //#Subscription START----------------------
 
     //#Getcurrent Packge Details 
-    userAdminFactory.getPackageDetail(getCookie('securityToken'));
+    userAdminFactory.getPackageDetail();
+	userAdminFactory.getPackageSummary();
 
     //#Get customer detail#//
     paymentGatewaySvc.getCustomerInformations();
@@ -20,8 +21,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     //#Get customer status as active - true || false #//
     paymentGatewaySvc.checkSubscription();
 
-
-
+    
+ 
 
 
     //#Get card information
@@ -359,6 +360,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     var vm = this;
     vm.companyPricePlans = [{
+		package_id:1002,
         id: "personal_space",
         name: "Personal Space",
         numberOfUsers: 1,
@@ -368,7 +370,11 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         perYear: 10,
         per: "/ User",
         Description: "desc",
+		price:10,
+		valStorage:10,
+		valData:100
     }, {
+		package_id:1003,
         id: "mini_team",
         name: "We Are A Mini Team",
         numberOfUsers: 5,
@@ -377,8 +383,12 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         perMonth: 8,
         perYear: 6.99,
         per: "/ User",
-        Description: "desc"
+        Description: "desc",
+		price:40,
+		valStorage:10,
+		valData:100
     }, {
+		package_id:1004,
         id: "world",
         name: "We Are the World",
         numberOfUsers: 10,
@@ -387,7 +397,10 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         perMonth: 6,
         perYear: 4.99,
         per: "/ User",
-        Description: "desc"
+        Description: "desc",
+		price:60,
+		valStorage:10,
+		valData:100
     }];
 
     /*
@@ -708,7 +721,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             if (response.statusText == "OK") {
                 if (response.data.status == true) {
                     //Success
-                    displaySuccess("Your package is upgraded successfully...");
+                    //displaySuccess("Your package is upgraded successfully...");
+					$scope.addPackage(plan); //*Insert data into digin servers
                 } else {
                     //fail
                     displayError(response.data.response);
@@ -723,6 +737,60 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     }
 
+
+	//#Add package to digin engine#//
+    $scope.addPackage = function(plan) {
+        $scope.detail=[{
+						"package_id":plan.package_id,
+						"package_name":plan.name,
+						"package_attribute": "users",
+						"package_value":plan.numberOfUsers,
+						"package_price":plan.price,
+						"is_default":true,
+						"is_new": true
+						},
+						{
+						"package_id":plan.package_id,
+						"package_name":plan.name,
+						"package_attribute": "storage",
+						"package_value":plan.valStorage,
+						"package_price":plan.price,
+						"is_default":true ,
+						"is_new":true
+						},
+						 {
+						"package_id":plan.package_id,
+						"package_name":plan.name,
+						"package_attribute": "data",
+						"package_value":plan.valData,
+						"package_price":plan.price,
+						"is_default":true ,
+						"is_new":true
+						 }]
+			
+        $http({
+            method: 'POST',
+            url: Digin_Engine_API + 'activate_packages/',
+            data: angular.toJson($scope.detail),
+            headers: {
+                'Content-Type': 'application/json',
+                'SecurityToken': getCookie('securityToken')
+            }
+        })
+        .success(function(response) {
+            userAdminFactory.getPackageDetail();
+			userAdminFactory.getPackageSummary();
+			displaySuccess("Your package is upgraded successfully...");
+			
+        })
+        .error(function(data) {
+            displayError("Fail to upgrade.");
+        });
+    }
+	
+	
+	
+	
     /*proceed with payement*/
     vm.purchasePackage = function purchasePackage(token, plan) {
         displayProgress('Payment processing...');
@@ -2209,7 +2277,26 @@ routerApp.directive('customOnChange', function() {
     };
 });
 
-routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$http', 'notifications', '$state', '$stateParams', function($scope, $rootScope, $mdDialog, $http, notifications, $state, $stateParams) {
+routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$http', 'notifications', '$state', '$stateParams','Digin_Engine_API','userAdminFactory', function($scope, $rootScope, $mdDialog, $http, notifications, $state, $stateParams,Digin_Engine_API,userAdminFactory) {
+
+	    //#common pre loader
+    var displayProgress = function(message) {
+        $mdDialog.show({
+            template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="row" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + '           <span>' + message + '</span>' + '       </div>' + '   </md-dialog-content>' + '</md-dialog>',
+            parent: angular.element(document.body),
+            clickOutsideToClose: false
+        });
+    };
+
+    //#common error message
+    var displayError = function(message) {
+        $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process fail !').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
+    };
+
+    //#common error message
+    var displaySuccess = function(message) {
+        $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Success !').textContent('' + message + '').ariaLabel('successfully completed.').ok('OK'));
+    };
 
     $scope.usersRate = 5;
     $scope.storageRate = 8;
@@ -2279,21 +2366,21 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                 "tag": "user",
                 "feature": "Additional users",
                 "quantity": parseInt($scope.users),
-                "amount": $scope.users * $scope.usersRate * 100,
+                "amount": $scope.users * $scope.usersRate,
                 "action": "add"
             }];
             var storage = [{
                 "tag": "storage",
                 "feature": "Additional storage",
                 "quantity": parseInt($scope.storage),
-                "amount": $scope.storage * $scope.storageRate * 100,
+                "amount": $scope.storage * $scope.storageRate,
                 "action": "add"
             }];
             var bandwidth = [{
-                "tag": "bandwidth",
-                "feature": "Additional bandwidth",
+                "tag": "data",
+                "feature": "Additional data",
                 "quantity": parseInt($scope.bandwidth),
-                "amount": $scope.bandwidth * $scope.bandwithRate * 100,
+                "amount": $scope.bandwidth * $scope.bandwithRate,
                 "action": "add"
             }];
 
@@ -2338,7 +2425,6 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
     //#Customize existing package
     $scope.customizePackage = function(pkgObj) {
 
-
         /*var pkgObj = {
               "plan" :  {
                           "features": [
@@ -2362,8 +2448,8 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
             if (response.statusText == "OK") {
                 if (response.data.status == true) {
                     //Success
+					$scope.ProceedUpdatePackageValidation();
                     $mdDialog.hide();
-                    notifications.toast("1", "AlaCartes added successfully.");
                     $scope.clearData();
                 } else {
                     //fail
@@ -2382,6 +2468,86 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
         })
     }
 
+
+	    $scope.ProceedUpdatePackageValidation = function() {
+        if (($scope.users == "" || $scope.users == undefined) && ($scope.storage == "" || $scope.storage == undefined) && ($scope.bandwidth == "" || $scope.bandwidth == undefined)) {
+            //notifications.toast("0", "You have not selected any alacarte to customize!");
+        } else {
+            displayProgress("Updating extra features...")
+			
+            var users = [{
+				"package_id":null,
+				"package_name":"additional",
+				"package_attribute": "users",
+				"package_value": $scope.users,
+				"package_price":$scope.users * $scope.usersRate,
+				"is_default":false,
+				"is_new": true
+				}];
+            var storage = [{
+				"package_id":null,
+				"package_name":"additional",
+				"package_attribute": "storage",
+				"package_value":$scope.storage,
+				"package_price":$scope.storage * $scope.storageRate,
+				"is_default":false ,
+				"is_new":true
+				}];
+            var bandwidth = [{
+				"package_id":null,
+				"package_name":"additional",
+				"package_attribute": "data",
+				"package_value":$scope.bandwidth,
+				"package_price": $scope.bandwidth * $scope.bandwithRate,
+				"is_default":false ,
+				"is_new":true
+				}];
+
+            var obj = [];
+            if (!$scope.users == "" || $scope.users == undefined || $scope.users == "0") {
+                obj.push(users[0]);
+            }
+            if (!$scope.storage == "" || $scope.storage == undefined || $scope.users == "0") {
+                obj.push(storage[0]);
+            }
+            if (!$scope.bandwidth == "" || $scope.bandwidth == undefined || $scope.users == "0") {
+                obj.push(bandwidth[0]);
+            }
+
+            var pkgObj = obj
+
+            $scope.updatePackage(pkgObj);
+        }
+    }
+	
+	
+	//#Update package*// 
+    $scope.updatePackage = function(pkgObj) {								
+        $http({
+            method: 'POST',
+            url: Digin_Engine_API + 'activate_packages/',
+            data: angular.toJson(pkgObj),
+            headers: {
+                'Content-Type': 'application/json',
+                'SecurityToken': getCookie('securityToken')
+            }
+        })
+        .success(function(response) {
+			//notifications.toast("1", "AlaCartes added successfully.");
+			displaySuccess("AlaCartes added successfully.");
+            $mdDialog.hide();
+			userAdminFactory.getPackageDetail();
+			userAdminFactory.getPackageSummary();
+        })
+        .error(function(data) {
+            $mdDialog.hide();
+        });
+		$mdDialog.hide();
+    }
+	
+	
+	
+	
 }])
 
 routerApp.directive('countdownn', ['Util', '$interval', function(Util, $interval) {
@@ -2562,7 +2728,114 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope', 
 
     }
 
-
-
-
 }]);
+
+
+routerApp.service('diginPackageSvc', ['$http', 'notifications', '$rootScope','Digin_Engine_API', function($http, notifications, $rootScope,Digin_Engine_API) {
+ /*
+    //#get package detail#//
+    this.getPackageDetail=function(){
+		var getDetail=function(cb){
+			$http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=" + getCookie('securityToken'))
+			.success(function(data) {
+				console.log(data.Result);
+				if($rootScope.PackageDetail>0){
+					$rootScope.PackageDetail=data.Result;
+					cb(true);
+				}
+				else{
+					cb(false);
+					$rootScope.extraUsers=0;
+					$rootScope.extraData=0;
+					$rootScope.extraStorage=0;
+					$rootScope.defaultUsers=0;
+					$rootScope.defaultData=0;
+					$rootScope.defaultStorage=0;
+				}
+				
+			}).error(function() {
+				console.log("error");
+				cb(false);
+			});
+		}
+		
+
+		var getDetail(function(data){
+			if(data){
+				for(i=0; i<=$rootScope.PackageDetail.length; i++)
+				{
+					if($rootScope.PackageDetail[i].package_name="UserDefine")
+					{
+						if($rootScope.PackageDetail[i].package_attribute=="users")	
+						{
+							$rootScope.extraUsers=$rootScope.PackageSummary[i].package_value_sum;
+						}
+						else if($rootScope.PackageDetail[i].package_attribute=="data"){
+							$rootScope.extraData=$rootScope.PackageSummary[i].package_value_sum;
+						}
+						else if($rootScope.PackageDetail[i].package_attribute=="storage"){
+							$rootScope.extraStorage=$rootScope.PackageSummary[i].package_value_sum;
+						}
+					}
+					else
+					{
+						if($rootScope.PackageDetail[i].package_attribute=="users")
+						{	
+							$rootScope.defaultUsers=$rootScope.PackageDetail[i].package_value_sum;
+						}
+						else if($rootScope.PackageDetail[i].package_attribute=="data"){
+							$rootScope.defaultData=$rootScope.PackageDetail[i].package_value_sum;
+						}
+						else if($rootScope.PackageDetail[i].package_attribute=="storage"){
+							$rootScope.defaultStorage=$rootScope.PackageDetail[i].package_value_sum;
+						}
+					}
+				}
+			}
+		});
+	}
+			 
+
+	 //#get package summary#//
+    this.getPackageSummary=function(){
+		var getSummary=function(cb){
+			$http.get(Digin_Engine_API + "get_packages?get_type=summary&SecurityToken=" + getCookie('securityToken'))
+			.success(function(data) {
+				console.log(data.Result);
+				$rootScope.PackageSummary=data.Result;
+				if($rootScope.PackageSummary.length>0){
+					data(true);
+				}
+				else{
+					$rootScope.totUsers=0;
+					$rootScope.totData=0;
+					$rootScope.totStorage=0;
+					data(false);
+				}
+			}).error(function() {
+				console.log("error");
+			});
+		}
+		 
+		 var getSummary(function(data){
+			 if(data){
+				 for(i=0; i<=$rootScope.PackageSummary.length; i++){
+					if($rootScope.PackageSummary[i].package_attribute=="users"){
+						$rootScope.totUsers=$rootScope.PackageSummary[i].package_value_sum;
+					}
+					else if($rootScope.PackageSummary[i].package_attribute=="data"){
+						$rootScope.totData=$rootScope.PackageSummary[i].package_value_sum;
+					}
+					else if($rootScope.PackageSummary[i].package_attribute=="storage"){
+						$rootScope.totStorage=$rootScope.PackageSummary[i].package_value_sum;
+					}
+				}
+			 }
+		 });
+		 
+    }
+	
+*/
+	
+}]);
+

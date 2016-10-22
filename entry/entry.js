@@ -63,7 +63,42 @@ routerApp
         function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant) {
 
 
+            //------------check subscriptions START-------------------------------
+            /*
+            $scope.checkSubscription = function() {
+                $scope.checkStatus = function (cb) {
+                    $http({
+                        //url : "http://staging.digin.io/include/duoapi/paymentgateway/checkSubscription",
+                        url: "/include/duoapi/paymentgateway/checkSubscription",
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(function(response) {
+                        //console.log(response)
+                        if (response.statusText == "OK") {
+                            $rootScope.custStatus = response.data.status;
+                            
+                            cb(true);
+                        }
+                    }, function(response) {
+                        console.log(response)
+                        cb(false);
+                    })
+                }
+
+                $scope.checkStatus(function(data){
+                    if(data){
+                        
+                    }
+                
+            }
+            */
+
+            //------------check subscriptions END-------------------------------------
+
         
+
             //#-***********************************************************************
             $scope.checkUsage = function (SecurityToken,result) {    
                 $scope.getUsageSummary = function (cb) {
@@ -348,6 +383,7 @@ routerApp
                 }).success(function (data) {
                     if (data.Success === true) {
                         
+
                         //#check whether user is blocked or not
                         $scope.checkUsage(data.Data.SecurityToken,data.Data);
 
@@ -447,7 +483,7 @@ routerApp
 
 
         $scope.isUserExist = function (email, cb) {
-            $http.get(Digin_Tenant+'/GetUser/' + email)
+            $http.get('/auth/GetUser/' + email)
                 .success(function (response) {
                     cb(true);
                 }).error(function (error) {

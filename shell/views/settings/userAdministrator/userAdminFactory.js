@@ -1,4 +1,4 @@
-routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth', 'notifications', function($rootScope,$http, $v6urls, $auth,notifications) {
+routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth', 'notifications','Digin_Engine_API', function($rootScope,$http, $v6urls, $auth,notifications,Digin_Engine_API) {
 	var cache = {};
 	
 	return {
@@ -101,15 +101,101 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 						return result.Message;
 					}
 					else
-					{
-						
-					}
+					{}
 
 				},function errorCallback(response) {
 						console.log(response);
 						notifications.toast(0, "Falied to remove user");
-				 });
-		},getPackageDetail:function(SecurityToken){//#get package detail#//
+				});
+		},getPackageDetail:function(){
+			
+					$rootScope.extraUsers=0;
+					$rootScope.extraData=0;
+					$rootScope.extraStorage=0;
+					$rootScope.defaultUsers=0;
+					$rootScope.defaultData=0;
+					$rootScope.defaultStorage=0;
+					$rootScope.expiryDate=new Date();   //{{expiryDate|date:'mm-dd-yy'}}
+					$rootScope.remainingDays=0;
+			
+			return $http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=" + getCookie('securityToken'))
+			.then (function(data) {
+				console.log(data.data.Result);
+				$rootScope.PackageDetail=data.data.Result;
+				if($rootScope.PackageDetail.length>0){
+							$rootScope.expiryDate=$rootScope.PackageDetail[0].expiry_datetime;
+							$rootScope.remainingDays=$rootScope.PackageDetail[0].remaining_days;
+							$rootScope.packagePrice=$rootScope.PackageDetail[0].package_price_sum;
+							$rootScope.packageName=$rootScope.PackageDetail[0].package_name;
+							
+					for(i=0; i<$rootScope.PackageDetail.length; i++)
+					{
+						if($rootScope.PackageDetail[i].package_name="UserDefine")
+						{
+							if($rootScope.PackageDetail[i].package_attribute=="users")	{
+								$rootScope.extraUsers=$rootScope.PackageDetail[i].package_value_sum;
+							}
+							else if($rootScope.PackageDetail[i].package_attribute=="data"){
+								$rootScope.extraData=$rootScope.PackageDetail[i].package_value_sum;
+							}
+							else if($rootScope.PackageDetail[i].package_attribute=="storage"){
+								$rootScope.extraStorage=$rootScope.PackageDetail[i].package_value_sum;
+							}	
+						}
+						else
+						{
+							if($rootScope.PackageDetail[i].package_attribute=="users"){	
+								$rootScope.defaultUsers=$rootScope.PackageDetail[i].package_value_sum;
+							}
+							else if($rootScope.PackageDetail[i].package_attribute=="data"){
+								$rootScope.defaultData=$rootScope.PackageDetail[i].package_value_sum;
+							}
+							else if($rootScope.PackageDetail[i].package_attribute=="storage"){
+								defaultStorage=$rootScope.PackageDetail[i].package_value_sum;
+							}
+							
+							$rootScope.expiryDate=$rootScope.PackageDetail[0].expiry_datetime;
+							$rootScope.remainingDays=$rootScope.PackageDetail[0].remaining_days;
+							$rootScope.packagePrice=$rootScope.PackageDetail[0].package_price_sum;
+							$rootScope.packageName=$rootScope.PackageDetail[0].package_name;
+						}
+					}
+				}	
+			},function errorCallback(error) {
+				console.log(error);
+			});	
+		},getPackageSummary:function(){
+					$rootScope.totUsers=0;
+					$rootScope.totData=0;
+					$rootScope.totStorage=0;
+					
+			return $http.get(Digin_Engine_API + "get_packages?get_type=summary&SecurityToken=" + getCookie('securityToken'))
+			.then (function(data){	
+				console.log(data.data.Result);
+				$rootScope.PackageSummary=data.data.Result;
+				if($rootScope.PackageSummary.length>0){
+					for(i=0; i<$rootScope.PackageSummary.length; i++){
+						if($rootScope.PackageSummary[i].package_attribute=="users"){
+							$rootScope.totUsers=$rootScope.PackageSummary[i].package_value_sum;
+						}
+						else if($rootScope.PackageSummary[i].package_attribute=="data"){
+							$rootScope.totData=$rootScope.PackageSummary[i].package_value_sum;
+						}
+						else if($rootScope.PackageSummary[i].package_attribute=="storage"){
+							$rootScope.totStorage=$rootScope.PackageSummary[i].package_value_sum;
+						}
+					}
+				}
+			},function errorCallback(response) {
+				console.log(response);
+				notifications.toast(0, "Falied to remove user");
+			});
+		}
+		
+	
+		
+	
+		/*,getPackageDetail:function(SecurityToken){//#get package detail#//
 			    $http.get('http://192.168.2.61:8080/packages?SecurityToken=62229efc0ec2029844a4a01184814b5b')
 			    //$http.get('http://prod.digin.io:1929/packages?SecurityToken=62229efc0ec2029844a4a01184814b5b')
 			    //$http.get(Digin_Engine_API + "packages?SecurityToken=" + getCookie('securityToken'))
@@ -119,7 +205,17 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 		        }).error(function() {
 		            console.log("error");
 		        });
-		}
+		},getTenantUsers: function() {
+               $http.get('/auth/tenant/GetUsers/' + JSON.parse(decodeURIComponent(getCookie('tenantData')))[0].TenantID, {
+					headers: {'Securitytoken': getCookie('securityToken')}
+				})
+			   .then(function(result) {
+					$rootScope.tenantUsers=result;
+				},function errorCallback(response) {
+					$rootScope.tenantUsers=[];
+				});	
+        }*/
+		
 		
    }
 }]);//END OF DiginServices

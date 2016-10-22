@@ -15,11 +15,12 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
 
     vm.companyPricePlans = [
         {
+			package_id:1001, //Use for digin service as package id, for numeric id
             id : "Free",
             name:"Free",
             sp:"Free",
             //currancy:"$",
-            numberOfUsers:"1",
+            numberOfUsers:1,
             storage: "",
             bandwidth: "",
             //perMonth: 0,
@@ -30,15 +31,18 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             //permonth:" / Per User (Monthly)",
             //peryear:" / Per User (Yearly)",
             Description: "30 days trial",
-            price:0
+            price:0,
+			valStorage:10,
+			valData:100
         },
         {
+			package_id:1002,
             id : "personal_space",
             name:"Personal Space",
             currancy:"$",
-            numberOfUsers:1,
-            storage: "10 GB",
-            bandwidth: "100 GB",
+            numberOfUsers:1003,
+            storage: "10 GB",  //only for display
+            bandwidth: "100 GB",//only for display
             StorageStr:" of Storage",
             BandwidthStr:" of Bandwidth)",
             perMonth: 10,
@@ -47,9 +51,12 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             permonthStr:" / Per User (Monthly)",
             peryearStr:" / Per User (Yearly)",
             Description: "",
-            price:10
+            price:10,
+			valStorage:10,
+			valData:100
         },
         {
+			package_id:1003,
             id : "mini_team",
             name:"We Are A Mini Team",
             currancy:"$",
@@ -64,9 +71,12 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             permonthStr:" / Per User (Monthly)",
             peryearStr:" / Per User (Yearly)",
             Description: "",
-            price:40
+            price:40,
+			valStorage:10,
+			valData:100
         },
-        {
+        {	
+			package_id:1004,
             id : "world",
             name:"We Are the World",
             currancy:"$",
@@ -81,7 +91,9 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             permonthStr:" / Per User (Monthly)",
             peryearStr:" / Per User (Yearly)",
             Description: "",
-            price:60
+            price:60,
+			valStorage:10,
+			valData:100
         }];
             
 
@@ -142,7 +154,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
 
     
 
-        //#initialize digin data set
+    //#initialize digin data set
     $scope.initializedDB=function(plan,ev){
         $scope.createDataSet = function (cb) {      
                 displayProgress('Initialising dataset...');
@@ -174,7 +186,11 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
 
         $scope.createDataSet(function(data){
             if(data){
+				
+				
+				
                 if(plan.id=="Free"){
+					vm.addPackage(plan, $scope.TenantSecToken);
                     $rootScope.trial=true;
                     $rootScope.btnMessage="Congratulations...!";
                     $rootScope.btnMessage2="This trial version is valid only for 30 days.";
@@ -213,8 +229,54 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         });
         
     }   
-        
-    
+         
+	//#Add package to digin engine#//
+    vm.addPackage = function(plan,SecurityToken) {
+        $scope.detail=[{
+						"package_id":plan.package_id,
+						"package_name":plan.name,
+						"package_attribute": "users",
+						"package_value":plan.numberOfUsers,
+						"package_price":plan.price,
+						"is_default":true,
+						"is_new": true
+						},
+						{
+						"package_id":plan.package_id,
+						"package_name":plan.name,
+						"package_attribute": "storage",
+						"package_value":plan.valStorage,
+						"package_price":plan.price,
+						"is_default":true ,
+						"is_new":true
+						},
+						 {
+						"package_id":plan.package_id,
+						"package_name":plan.name,
+						"package_attribute": "data",
+						"package_value":plan.valData,
+						"package_price":plan.price,
+						"is_default":true ,
+						"is_new":true
+						 }]
+			
+        $http({
+            method: 'POST',
+            url: Digin_Engine_API + 'activate_packages/',
+            data: angular.toJson($scope.detail),
+            headers: {
+                'Content-Type': 'application/json',
+                'SecurityToken': SecurityToken
+            }
+        })
+        .success(function(response) {
+            
+        })
+        .error(function(data) {
+            
+        });
+    }
+	
     vm.submitCurrentStep = function submitCurrentStep(tenant, isSkip) { 
     
         if($scope.tenant.name=="" || $scope.tenant.name==undefined){
@@ -475,6 +537,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                 console.log()
                     if(response.statusText=="OK"){
                         if(response.data.status==true){
+							vm.addPackage(plan, $scope.TenantSecToken);
                             $rootScope.btnMessage="Congratulations...!";
                             $rootScope.btnMessage2="Tenant creation completed successfully.";
                             localStorage.setItem('firstLogin',true);

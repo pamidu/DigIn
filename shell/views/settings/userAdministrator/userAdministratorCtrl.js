@@ -1,6 +1,10 @@
 routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state){
 	var vm = this;
 	
+	
+	
+	
+	
 	//*Settings routing ---------------- 
     var slide = false;
     $scope.route = function (state) {
@@ -9,31 +13,57 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	
 	$scope.$parent.currentView = "User Administrator";
 	
+	
+	//#Get number of tenant user
+	//userAdminFactory.getTenantUsers();
+	
 	userAdminFactory.getInvitedUsers(function(data) {});
+	
+	
+	
 	var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		
 	$scope.enterInviteUser = function(ev,searchText)
 	{
-		
 		if(reg.test(searchText) == true)
 		{		
-			var exist = checkIfExist(searchText)
-			console.log(exist);
-			if(exist == false)
+			var isUserlimitExceeded=checkUserLimit()   //*Check no of users belongs to package
+			if(exeed == false)
 			{
-				userAdminFactory.inviteUser(searchText).then(function(response) {
-					$rootScope.sharableUsers=[];
-					userAdminFactory.getInvitedUsers(function(data) {});
-					
-					console.log(response);
-					$scope.searchText = "";
-				});
+				var exist = checkIfExist(searchText)
+				console.log(exist);
+				if(exist == false)
+				{
+					userAdminFactory.inviteUser(searchText).then(function(response) {
+						$rootScope.sharableUsers=[];
+						userAdminFactory.getInvitedUsers(function(data) {});
+						
+						console.log(response);
+						$scope.searchText = "";
+					});
+				}
+			}	
+			else{
+				notifications.toast(0, 'You have already invited xxx no of users, your user limit is YY');
 			}
+				
 		}else{
 			notifications.toast(0, 'Enter a valid email');
-		}
-		
+		}	
 	}
+	
+	
+	function checkUserLimit(){
+		var exeed = false;
+		if($rootScope.sharableUsers.length <= 10)
+		{
+			exeed = false;
+		}else{
+			exeed = true;	
+		}
+		return exeed;
+	}
+	
 	
 	function checkIfExist(email){
 		var exist = false;

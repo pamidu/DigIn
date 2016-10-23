@@ -117,20 +117,16 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 					$rootScope.defaultStorage=0;
 					$rootScope.expiryDate=new Date();   //{{expiryDate|date:'mm-dd-yy'}}
 					$rootScope.remainingDays=0;
-			
+		
+		
 			return $http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=" + getCookie('securityToken'))
 			.then (function(data) {
 				console.log(data.data.Result);
 				$rootScope.PackageDetail=data.data.Result;
-				if($rootScope.PackageDetail.length>0){
-							$rootScope.expiryDate=$rootScope.PackageDetail[0].expiry_datetime;
-							$rootScope.remainingDays=$rootScope.PackageDetail[0].remaining_days;
-							$rootScope.packagePrice=$rootScope.PackageDetail[0].package_price_sum;
-							$rootScope.packageName=$rootScope.PackageDetail[0].package_name;
-							
+				if($rootScope.PackageDetail.length>0){			
 					for(i=0; i<$rootScope.PackageDetail.length; i++)
 					{
-						if($rootScope.PackageDetail[i].package_name="UserDefine")
+						if($rootScope.PackageDetail[i].package_name=="additional")
 						{
 							if($rootScope.PackageDetail[i].package_attribute=="users")	{
 								$rootScope.extraUsers=$rootScope.PackageDetail[i].package_value_sum;
@@ -151,13 +147,13 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 								$rootScope.defaultData=$rootScope.PackageDetail[i].package_value_sum;
 							}
 							else if($rootScope.PackageDetail[i].package_attribute=="storage"){
-								defaultStorage=$rootScope.PackageDetail[i].package_value_sum;
+								$rootScope.defaultStorage=$rootScope.PackageDetail[i].package_value_sum;
 							}
 							
-							$rootScope.expiryDate=$rootScope.PackageDetail[0].expiry_datetime;
-							$rootScope.remainingDays=$rootScope.PackageDetail[0].remaining_days;
-							$rootScope.packagePrice=$rootScope.PackageDetail[0].package_price_sum;
-							$rootScope.packageName=$rootScope.PackageDetail[0].package_name;
+							$rootScope.expiryDate=$rootScope.PackageDetail[i].expiry_datetime;
+							$rootScope.remainingDays=$rootScope.PackageDetail[i].remaining_days;
+							$rootScope.packagePrice=$rootScope.PackageDetail[i].package_price_sum;
+							$rootScope.packageName=$rootScope.PackageDetail[i].package_name;
 						}
 					}
 				}	
@@ -193,7 +189,7 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 		}
 		
 	
-		
+	
 	
 		/*,getPackageDetail:function(SecurityToken){//#get package detail#//
 			    $http.get('http://192.168.2.61:8080/packages?SecurityToken=62229efc0ec2029844a4a01184814b5b')

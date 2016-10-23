@@ -178,9 +178,9 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             for (var detail in $scope.monthlyData) {
                 $scope.chartXLabels.push(detail);
                 if ($scope.monthlyData.hasOwnProperty(detail)) {
-                    $scope.chartSeries[0].data.push($scope.monthlyData[detail].totalBytesBilled / 1024000);
-                    $scope.chartSeries[1].data.push($scope.monthlyData[detail].totalBytesProcessed / 1024000);
-                    $scope.chartSeries[2].data.push($scope.monthlyData[detail].download_bq / 1024000);
+                    $scope.chartSeries[0].data.push($scope.monthlyData[detail].totalBytesBilled / 1024);
+                    $scope.chartSeries[1].data.push($scope.monthlyData[detail].totalBytesProcessed / 1024);
+                    $scope.chartSeries[2].data.push($scope.monthlyData[detail].download_bq / 1024);
                 }
             }
             $scope.chartConfig = {
@@ -809,7 +809,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         .success(function(response) {
             userAdminFactory.getPackageDetail();
             userAdminFactory.getPackageSummary();
-			vm.getCardsList();
+			$scope.getCardsList();
             displaySuccess("Your package is upgraded successfully...");
             
         })

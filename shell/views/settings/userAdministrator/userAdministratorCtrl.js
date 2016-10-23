@@ -18,7 +18,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	//userAdminFactory.getTenantUsers();
 	
 	userAdminFactory.getInvitedUsers(function(data) {});
-	
+	userAdminFactory.getPackageSummary();
 	
 	
 	var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -27,7 +27,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	{
 		if(reg.test(searchText) == true)
 		{		
-			var isUserlimitExceeded=checkUserLimit()   //*Check no of users belongs to package
+			var exeed=checkUserLimit()   //*Check no of users belongs to package
 			if(exeed == false)
 			{
 				var exist = checkIfExist(searchText)
@@ -44,7 +44,9 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 				}
 			}	
 			else{
-				notifications.toast(0, 'You have already invited xxx no of users, your user limit is YY');
+				displayError('There are ' + $rootScope.sharableUsers.length + ' active users belongs to this tenant, user limit for this package is '+$rootScope.totUsers+'.');
+				//notifications.toast(0, 'There are ' + $rootScope.sharableUsers.length + 'active users in this tenant, user limit for this package is '+$rootScope.totUsers+'.');
+				
 			}
 				
 		}else{
@@ -53,9 +55,20 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	}
 	
 	
+	   //#common error message
+    var displayError = function(message) {
+        $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process fail !').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
+    };
+
+    //#common success message
+    var displaySuccess = function(message) {
+        $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Success !').textContent('' + message + '').ariaLabel('successfully completed.').ok('OK'));
+    };
+	
+	
 	function checkUserLimit(){
 		var exeed = false;
-		if($rootScope.sharableUsers.length <= 10)
+		if($rootScope.sharableUsers.length < $rootScope.totUsers)
 		{
 			exeed = false;
 		}else{

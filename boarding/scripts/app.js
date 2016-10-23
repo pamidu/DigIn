@@ -291,7 +291,9 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         else{
             
         }
-            
+           
+		displayProgress("Submitting data...");
+		   
         if(tenant=='Cancel')
         {
             $rootScope.createdTenantID="";
@@ -311,9 +313,11 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                     tenant.completed = true;
                     vm.enableNextStep();
                 }, 1000)
+				$mdDialog.hide();
             } else {
                 vm.showBusyText = false;
                 vm.enableNextStep();
+				$mdDialog.hide();
             }
            
             
@@ -332,7 +336,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                     url: "/apis/usertenant/tenant/" + tenant.name + '.' + Digin_Domain,
                     headers: {
                         'Content-Type': 'application/json'
-                    }
+                    } 
                 })
                 .success(function (response) {
                     console.log(response);
@@ -348,6 +352,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                             console.log('On before submit');
                             if (!tenant.completed && !isSkip) {
                                 //simulate $http
+								$mdDialog.hide();
                                 $timeout(function () {
                                     vm.showBusyText = false;
                                     console.log('On submit success');
@@ -357,17 +362,21 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                                     vm.enableNextStep();
                                 }, 1000)
                             } else {
+								$mdDialog.hide();
                                 vm.showBusyText = false;
                                 vm.enableNextStep();
                             }
+							
                     }
                     else
                     {
+						$mdDialog.hide();
                         displayError("This tenant name is already registered...");
                     }
                     
                     //displayError("This tenant name is already registered...");
                 }).error(function (error) {
+					$mdDialog.hide();
                     displayError(error.Message);
                 });
                 
@@ -399,6 +408,8 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                             */
                             //---------------------
             }
+			
+			$mdDialog.hide();
         
     }
 

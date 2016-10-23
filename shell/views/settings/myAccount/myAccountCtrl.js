@@ -8,7 +8,6 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     console.log(vm.selectedPage);
 
 
-
     //#Subscription START----------------------
 
     //#Getcurrent Packge Details 
@@ -21,37 +20,64 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     //#Get customer status as active - true || false #//
     paymentGatewaySvc.checkSubscription();
 
-    
+	$http({
+		//url : "http://staging.digin.io/include/duoapi/paymentgateway/getCardInformation",
+		url: "/include/duoapi/paymentgateway/getCardInformation",
+		method: "POST",
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	}).then(function(response) {
+		//console.log(response)
+		if (response.statusText == "OK") {
+			if (response.data.status == true) {
+				//Success
+				vm.getFormattedCardList(response.data.data);
+			} else {
+				//fail
+				//displayError(response.data);
+				vm.paymentCards = [];
+			}
+		}
+	}, function(response) {
+		//console.log(response)
+		vm.paymentCards = [];
+		//displayError("Error while upgrade the package...");
+		//$mdDialog.hide();
+	})
  
-
-
+ 
     //#Get card information
     vm.paymentCards = [];
-    $http({
-        //url : "http://staging.digin.io/include/duoapi/paymentgateway/getCardInformation",
-        url: "/include/duoapi/paymentgateway/getCardInformation",
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then(function(response) {
-        //console.log(response)
-        if (response.statusText == "OK") {
-            if (response.data.status == true) {
-                //Success
-                vm.getFormattedCardList(response.data.data);
-            } else {
-                //fail
-                //displayError(response.data);
-                vm.paymentCards = [];
-            }
-        }
-    }, function(response) {
-        //console.log(response)
-        vm.paymentCards = [];
-        //displayError("Error while upgrade the package...");
-        //$mdDialog.hide();
-    })
+	
+	$scope.getCardsList=function(){
+		$http({
+			//url : "http://staging.digin.io/include/duoapi/paymentgateway/getCardInformation",
+			url: "/include/duoapi/paymentgateway/getCardInformation",
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}).then(function(response) {
+			//console.log(response)
+			if (response.statusText == "OK") {
+				if (response.data.status == true) {
+					//Success
+					vm.getFormattedCardList(response.data.data);
+				} else {
+					//fail
+					//displayError(response.data);
+					vm.paymentCards = [];
+				}
+			}
+		}, function(response) {
+			//console.log(response)
+			vm.paymentCards = [];
+			//displayError("Error while upgrade the package...");
+			//$mdDialog.hide();
+		})
+	}
+		
 
 
     //#Add card formats
@@ -402,7 +428,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         valStorage:10,
         valData:100
     }];
-
+	
+	
     /*
     vm.paymentCards = [{
         id: "card_194OMZLEDsR3ar1xYbp3GCsG",
@@ -436,6 +463,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         default: false
     }];
 */
+
+
 
     vm.updatePackage = function(ev) {
         location.href = '#/home/addaLaCarte';
@@ -780,6 +809,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         .success(function(response) {
             userAdminFactory.getPackageDetail();
             userAdminFactory.getPackageSummary();
+			vm.getCardsList();
             displaySuccess("Your package is upgraded successfully...");
             
         })

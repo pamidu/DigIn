@@ -154,6 +154,7 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 							$rootScope.remainingDays=$rootScope.PackageDetail[i].remaining_days;
 							$rootScope.packagePrice=$rootScope.PackageDetail[i].package_price_sum;
 							$rootScope.packageName=$rootScope.PackageDetail[i].package_name;
+
 						}
 					}
 				}	

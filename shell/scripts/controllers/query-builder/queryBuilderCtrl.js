@@ -3533,7 +3533,6 @@ $scope.getFormattedDate = function (date) {
                                     if (status) {
                                         // filter only the selected fields from the result returned by the service
                                         console.log(JSON.stringify(res));
-                                        res = $filter('orderBy')(res, nextLevel);                                        
                                         filterService.filterAggData(res, $scope.sourceData.filterFields);
                                         angular.forEach($scope.highchartsNG.series,function(series) {
                                             if ( series.name == selectedSeries ) {

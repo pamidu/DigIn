@@ -736,10 +736,6 @@ ul.list-justified > li p {
     color: #777;
 }
 
-.last-icon {
-    border-right: 0px solid transparent !important;
-}
-
 .color-info {
     color: #619bf2;
 }

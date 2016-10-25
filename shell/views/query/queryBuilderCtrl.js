@@ -241,6 +241,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         }
                         break;
                     case '3':
+						console.log($scope.eventHndler.isTogglePanelFilter);
                         if ($scope.eventHndler.isTogglePanelFilter) {
                             $("#togglePanelFilter").hide(200);
                             $scope.eventHndler.isTogglePanelFilter = false;
@@ -888,6 +889,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         }
                         break;
                     case '3':
+					console.log("onClickSetting");
                         if (this.openSettingToggle[2].isChart) {
                             this.hideChartSettings();
                         } else {

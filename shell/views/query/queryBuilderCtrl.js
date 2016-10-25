@@ -241,7 +241,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         }
                         break;
                     case '3':
-						console.log($scope.eventHndler.isTogglePanelFilter);
                         if ($scope.eventHndler.isTogglePanelFilter) {
                             $("#togglePanelFilter").hide(200);
                             $scope.eventHndler.isTogglePanelFilter = false;
@@ -662,6 +661,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             message: '',
             isChartSelected: false,
             onToggleEvent: function(event) {
+				this.hideVisualizationType();
+				this.hideDataStructure();
+				this.hideChartSettings();
                 switch (event) {
                     case '1':
                         //event measures
@@ -847,6 +849,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 }, 1000);
             },
             onClickSetting: function(tabNo) {
+				this.hideDesignQuery();
+				privateFun.checkToggleOpen('1');
+				privateFun.checkToggleOpen('2');
+				privateFun.checkToggleOpen('3');
                 switch (tabNo) {
                     case '1':
                         //#chart setting
@@ -888,8 +894,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             }
                         }
                         break;
-                    case '3':
-					console.log("onClickSetting");
+                    case '3':					
                         if (this.openSettingToggle[2].isChart) {
                             this.hideChartSettings();
                         } else {

@@ -281,7 +281,7 @@
 <script type="text/javascript" src="scripts/controllers/sales-forecast/salesForecast.js"></script>
 <script type="text/javascript" src="scripts/controllers/setup/dashboardSetupCtrl.js"></script>
 <script type="text/javascript" src="scripts/factories/CommonSrcFact.js"></script>
-<script type="text/javascript" src="scripts/controllers/query-builder/queryBuilderCtrl.js"></script>
+<script type="text/javascript" src="views/query/queryBuilderCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/dynamically-report-builder/dynamicallyReportCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/help/welcomeSearchBarCtrl.js"></script>
 <script type="text/javascript" src="scripts/services/filterService.js"></script>

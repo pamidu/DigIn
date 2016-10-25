@@ -5210,3 +5210,7 @@ div.bigcheck {
     cursor: pointer;
     margin-top: 1px;
 }
+
+md-progress-linear.md-default-theme .md-bar, md-progress-linear .md-bar {
+    background-color: #026689;
+}

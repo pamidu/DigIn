@@ -190,9 +190,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
     $scope.recordedColors = {};
     $scope.initRequestLimit = {
-        value: 1000
+        value: 100
     };
-    $scope.requestLimits = [1000, 2000, 3000, 4000, 5000];
+    $scope.requestLimits = [100, 1000, 2000, 3000, 4000, 5000];
     $scope.chartType = 'bar';
     $scope.initHighchartObj = {
         options: {
@@ -1174,18 +1174,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         },
         selectCondition: function() {
             if ($scope.executeQryData.executeColumns.length <= 1) {
+                // If there is one category - no drill down
                 $scope.getAggregation();
             } else {
+                // If there is more than one category - drill down present
                 $scope.getDrilledAggregation();
-            //     if ($scope.executeQryData.executeMeasures.length >= 1) {
-            //         $scope.getDrilledAggregation();
-            //     } else {
-            //         $scope.executeQryData.executeMeasures.pop();
-            //         eval("$scope." + $scope.selectedChart.chartType + ".onGetGrpAggData()");
-            //         //alert("drilldown only supports single series");
-            //         privateFun.fireMessage('0', 'drilldown only supports single series');
-            //         $scope.isPendingRequest = false;
-            //     }
             }
         },
         selectAttribute: function(fieldName) {
@@ -1299,7 +1292,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         $scope.highchartsNG.xAxis = {};
                         $scope.highchartsNG.xAxis.categories = [];
                         $scope.highchartsNG.series.forEach(function(key) {
-                            if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
+                                key['turboThreshold'] = 0;
+                                key['cropThreshold'] = key.data.length;
                         });
                         $scope.highchartsNG.series.forEach(function(key) {
                             key.data.forEach(function(value) {
@@ -1329,8 +1323,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             }
         },
         removeCat: function() {
-            if ($scope.isDrilled) $scope.getDrilledAggregation();
-            else $scope.getAggregation();
+            // if ($scope.isDrilled) $scope.getDrilledAggregation();
+            // else $scope.getAggregation();
+            if ($scope.executeQryData.executeColumns.length <= 1) {
+                // If there is one category - no drill down
+                $scope.getAggregation();
+            } else {
+                // If there is more than one category - drill down present
+                $scope.getDrilledAggregation();
+            }            
         },
         onGetAggData: function(res) {
             $scope.isPendingRequest = false;
@@ -3302,7 +3303,6 @@ $scope.getFormattedDate = function (date) {
     };
     $scope.setMeasureData = function(res) {
 
-
         $scope.highchartsNG.series = [];
         $scope.serColor = "";
         for (var c in res) {
@@ -3316,15 +3316,6 @@ $scope.getFormattedDate = function (date) {
             }
         }
         $scope.eventHndler.isLoadingChart = false;
-
-
-
-
-
-
-
-
-
     };
     $scope.getGroupedAggregation = function(row) {
         if (row) $scope.selectedCat = row;
@@ -3357,7 +3348,8 @@ $scope.getFormattedDate = function (date) {
                             text: $scope.selectedCat
                         };
                         $scope.highchartsNG.series.forEach(function(key) {
-                            if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
+                            key['turboThreshold'] = key.data.length;
+                            key['cropThreshold'] = key.data.length;
                         });
                         $scope.eventHndler.isLoadingChart = false;
                         $scope.dataToBeBind.receivedQuery = query;
@@ -3477,6 +3469,10 @@ $scope.getFormattedDate = function (date) {
                             });
                         }
                     }
+                    $scope.highchartsNG.series.forEach(function(key) {
+                        key['turboThreshold'] = 0;
+                        key['cropThreshold'] = key.data.length;
+                    });
                     //assigning the highest level query
                     $scope.dataToBeBind.receivedQuery = query;
                     $scope.drillDownConfig = {
@@ -3546,7 +3542,8 @@ $scope.getFormattedDate = function (date) {
                                                     drillObj = {
                                                         name: serName,
                                                         data: [],
-                                                        origName: key
+                                                        origName: key,
+                                                        turboThreshold: 0
                                                     };
                                                 }
                                             }
@@ -3565,6 +3562,7 @@ $scope.getFormattedDate = function (date) {
                                                 });
                                             }
                                         });
+                                        drillObj['cropThreshold'] = drillObj.data.length;
                                         console.log(JSON.stringify(drillObj));
                                         $scope.dataToBeBind.receivedQuery = query;
                                         chart.addSeriesAsDrilldown(e.point, drillObj);

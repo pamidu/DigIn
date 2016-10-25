@@ -898,12 +898,12 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             page.widgets[i].widgetData.syncState = false;
                             //Clear the filter indication when the chart is re-set
                             page.widgets[i].widgetData.filteredState = false;
-                            filterService.clearFilters(page.widgets[i]);                                    
+                            filterService.clearFilters(page.widgets[i]);
                             if (page.widgets[i].widgetData.selectedChart.chartType != "d3hierarchy" && page.widgets[i].widgetData.selectedChart.chartType != "d3sunburst") {
                                 $qbuilder.sync(page.widgets[i].widgetData, function (data) {
                                 });
                             }
-                        }                        
+                        }
                     }
                 }
                 $scope.isPageSync = false;
@@ -1019,7 +1019,8 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                                 drillObj = {
                                                     name: serName,
                                                     data: [],
-                                                    origName: key
+                                                    origName: key,
+                                                    turboThreshold: 0
                                                 };
                                             }
                                         }
@@ -1039,7 +1040,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                             });
                                         }
                                     });
-
+                                    drillObj['cropThreshold'] = drillObj.data.length;
                                     chart.addSeriesAsDrilldown(e.point, drillObj);
 
                                 } else {

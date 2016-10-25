@@ -124,7 +124,8 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             maxSizeY: null, // maximum row height of an item
             saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
             draggable: {
-                enabled: true
+                enabled: true,
+				handle: '.digin-widget-toolbar'
             },
             resizable: {
                 enabled: true,

@@ -147,6 +147,8 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                     }
                     widObj.syncState = true;
                     cb(widObj);
+                }else{
+                    widObj.syncState = true;
                 }
             });
         }

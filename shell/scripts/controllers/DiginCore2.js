@@ -484,6 +484,8 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
         }
 
+
+
         $scope.saveDashboard = function() {      
 
             if($scope.dashboardName && $scope.refreshInterval ){
@@ -764,6 +766,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
                     })
                     .error(function(error){  
+
                         // Insert data into pouchDb
                         pouchDbServices.insertPouchDB(dashboardObject,null);                     
                         ngToast.create({

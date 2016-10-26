@@ -403,11 +403,10 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
 
 
-routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter', 'Digin_Domain', 'Digin_Engine_API', 'pouchDB', '$state',
+routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter', 'Digin_Domain', 'Digin_Engine_API',  '$state','pouchDbServices',
 
-    function($scope, $qbuilder, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter, Digin_Domain, Digin_Engine_API, pouchDB,$state) {
+    function($scope, $qbuilder, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter, Digin_Domain, Digin_Engine_API, $state,pouchDbServices) {
 
-        var db = new pouchDB('dashboard');
 
         $scope.close = function() {
 
@@ -430,72 +429,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
         $scope.isButtonDashBoardSave=true;
 
         //insert records into pouchdb
-        var insertPouchDB = function(dashboardObject){
-            
-                var dashboard = angular.fromJson(CircularJSON.stringify(dashboardObject));
-                console.log(dashboard,true);
-                
-                // set a new id to a new record to be inserted
-                if ( typeof($rootScope.page_id) == "undefined" || $rootScope.page_id == ""){
-                    var id = "temp" + Math.floor(Math.random() * 10000000);
-                }
-                else {
-                    var id = $rootScope.page_id;
-                }
-                
-
-                db.get( id , function(err, doc){
-                    if (err){
-                        if (err.status = '404') { // if the document does not exist
-                            //Inserting Document into pouchDB
-                            var dashboardDoc = {
-                                _id : id,
-                                dashboard : dashboard
-                            }
-                            db.put(dashboardDoc, function(err, response) {
-                                if (err) {
-                                    return console.log(err);
-                                    $rootScope.privateFun.getAllDashboards();
-                                } else {
-                                    console.log("Document created Successfully");
-                                    $rootScope.privateFun.getAllDashboards();
-                                }
-                            });
-                          console.log("not found error status is" + err.status);
-                          //update the rootscope with the corrent document id of pouchdb
-                          $rootScope.page_id = id;
-                        }
-                       }
-                    else {
-                            dashboardDoc = {
-                                dashboard : dashboard,
-                                _id : id,
-                                _rev : doc._rev
-                            }
-                            db.put(dashboardDoc, function(err, response) {
-                                if (err) {
-                                $rootScope.privateFun.getAllDashboards();
-                                return console.log(err);
-                            } else {
-                                $rootScope.privateFun.getAllDashboards();
-                                console.log("Document updated Successfully");
-                            }
-                        });
-                        console.log(doc);
-                    }
-                });
-
-
-                db.allDocs({
-                    include_docs: true,
-                    attachments: true
-                  }).catch(function (err) {
-                    console.log(err);
-                  }).then(function (data) {
-                    console.log(data);
-                  });  
-
-        }
+        //call the service here 
 
         $scope.mapChartData = function(chartType,i,j,data){
 
@@ -591,6 +525,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                             verticalPosition: 'top',
                             dismissOnClick: true
                     });
+
                     //get pages here
                     var pagesArray = [];
                     var dynamicPages = [];
@@ -811,8 +746,9 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                         $rootScope.dashboard.compName = $scope.dashboardName;
                         $rootScope.dashboard.compType = $scope.dashboardType;
                         $rootScope.dashboard.refreshInterval = $scope.refreshInterval;
+
                         // Insert data into pouchDb
-                        insertPouchDB(dashboardObject); 
+                        pouchDbServices.insertPouchDB(null,response.Result); 
                         $scope.isLoadingDashBoardSave = false;
                         $scope.isButtonDashBoardSave=true;
                         $mdDialog.hide();
@@ -826,11 +762,10 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
                          $state.go('home.welcomeSearch');
 
-
                     })
                     .error(function(error){  
                         // Insert data into pouchDb
-                        insertPouchDB(dashboardObject);                     
+                        pouchDbServices.insertPouchDB(dashboardObject,null);                     
                         ngToast.create({
                             className: 'danger',
                             content: 'Failed Saving Dashboard. Please Try Again!',

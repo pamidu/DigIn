@@ -66,78 +66,78 @@ routerApp.controller('welcomeSearchBarCtl', function ($scope, $rootScope, $http,
         $rootScope.currentView ="Reports || "+report;
     }
 
-    $scope.goDashboard = function (dashboard) {
+    // $scope.goDashboard = function (dashboard) {
 
-          $('.main-headbar-slide').animate({
-                            top: '-45px'
-            }, 300);
-            //  $('.blut-search-toggele').removeClass('go-up').addClass('go-down');
-            $('#content1').removeClass('content-m-top40').addClass('content-m-top0');
-        console.log("dash item", dashboard);
+    //       $('.main-headbar-slide').animate({
+    //                         top: '-45px'
+    //         }, 300);
+    //         //  $('.blut-search-toggele').removeClass('go-up').addClass('go-down');
+    //         $('#content1').removeClass('content-m-top40').addClass('content-m-top0');
+    //     console.log("dash item", dashboard);
 
-        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+    //     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
-        $http({
-            method: 'GET',
-            url: Digin_Engine_API + 'get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain
-        })
-            .success(function (data) {
-                if (data.Is_Success) {
-                    console.log("$scope.dashboardObject", $scope.dashboardObject);
-                    $rootScope.currentView = "Dashboards || "+dashboard.dashboardName;
-                    $rootScope.dashboard = data.Result;
-                    ngToast.create({
-                        className: 'success',
-                        content: data.Custom_Message,
-                        horizontalPosition: 'center',
-                        verticalPosition: 'top',
-                        dismissOnClick: true
-                    });
-                    $rootScope.selectedPageIndx = 0;
-                    $rootScope.selectedPage = 1;
+    //     $http({
+    //         method: 'GET',
+    //         url: Digin_Engine_API + 'get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain
+    //     })
+    //         .success(function (data) {
+    //             if (data.Is_Success) {
+    //                 console.log("$scope.dashboardObject", $scope.dashboardObject);
+    //                 $rootScope.currentView = "Dashboards || "+dashboard.dashboardName;
+    //                 $rootScope.dashboard = data.Result;
+    //                 ngToast.create({
+    //                     className: 'success',
+    //                     content: data.Custom_Message,
+    //                     horizontalPosition: 'center',
+    //                     verticalPosition: 'top',
+    //                     dismissOnClick: true
+    //                 });
+    //                 $rootScope.selectedPageIndx = 0;
+    //                 $rootScope.selectedPage = 1;
 
-                    var index = 0;
-                    for (var i = 0; i < $rootScope.dashboard.pages[index].widgets.length; i++) {
-                        $rootScope.dashboard.pages[index]["isSeen"] = true;
-                        var widget = $rootScope.dashboard.pages[index].widgets[i];
-                        console.log('syncing...');
-                        if (typeof(widget.widgetData.commonSrc) != "undefined") {
-                            widget.widgetData.syncState = false;
-                            if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
-                                //Clear the filter indication when the chart is re-set
-                                widget.widgetData.filteredState = false;
-                                filterService.clearFilters(widget);                                
-                                $qbuilder.sync(widget.widgetData, function (data) {
-                                    // if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
-                                    //     $qbuilder.widInit();
-                                    //widget.widgetData.syncState = true;
-                                });
-                            }
-                        }
-                    }
-                    $state.go('home.Dashboards');
-                }
-                else {
+    //                 var index = 0;
+    //                 for (var i = 0; i < $rootScope.dashboard.pages[index].widgets.length; i++) {
+    //                     $rootScope.dashboard.pages[index]["isSeen"] = true;
+    //                     var widget = $rootScope.dashboard.pages[index].widgets[i];
+    //                     console.log('syncing...');
+    //                     if (typeof(widget.widgetData.commonSrc) != "undefined") {
+    //                         widget.widgetData.syncState = false;
+    //                         if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
+    //                             //Clear the filter indication when the chart is re-set
+    //                             widget.widgetData.filteredState = false;
+    //                             filterService.clearFilters(widget);                                
+    //                             $qbuilder.sync(widget.widgetData, function (data) {
+    //                                 // if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
+    //                                 //     $qbuilder.widInit();
+    //                                 //widget.widgetData.syncState = true;
+    //                             });
+    //                         }
+    //                     }
+    //                 }
+    //                 $state.go('home.Dashboards');
+    //             }
+    //             else {
 
-                    ngToast.create({
-                        className: 'danger',
-                        content: data.Custom_Message,
-                        horizontalPosition: 'center',
-                        verticalPosition: 'top',
-                        dismissOnClick: true
-                    });
-                    $mdDialog.hide();
-                }
-            })
-            .error(function (error) {
-                ngToast.create({
-                    className: 'danger',
-                    content: 'Failed retrieving Dashboard Details. Please refresh page to load data!',
-                    horizontalPosition: 'center',
-                    verticalPosition: 'top',
-                    dismissOnClick: true
-                });
-            });
-    }
+    //                 ngToast.create({
+    //                     className: 'danger',
+    //                     content: data.Custom_Message,
+    //                     horizontalPosition: 'center',
+    //                     verticalPosition: 'top',
+    //                     dismissOnClick: true
+    //                 });
+    //                 $mdDialog.hide();
+    //             }
+    //         })
+    //         .error(function (error) {
+    //             ngToast.create({
+    //                 className: 'danger',
+    //                 content: 'Failed retrieving Dashboard Details. Please refresh page to load data!',
+    //                 horizontalPosition: 'center',
+    //                 verticalPosition: 'top',
+    //                 dismissOnClick: true
+    //             });
+    //         });
+    // }
 
 });

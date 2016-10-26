@@ -2,10 +2,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http', 'filterService',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen', '$interval', 'notifications',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen', '$interval', 'notifications', 'pouchDbServices',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
               $http, filterService, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen, $interval, notifications) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen, $interval, notifications, pouchDbServices) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -177,6 +177,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                         }
 
+                        $rootScope.page_id = "";
                         $rootScope.dashboard = [];
                         $rootScope.dashboard = {
 
@@ -566,7 +567,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
 
         }
-        $scope.goDashboard = function (dashboard) {
+        $rootScope.goDashboard = function (dashboard) {
 
             layoutManager.headerMenuToggle(true);
             $rootScope.currentView = "Dashboards || " + dashboard.dashboardName;
@@ -576,8 +577,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $rootScope.page_id = "";
             var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
-            if (typeof(dashboard.dashboardID) == "undefined") {
-                db.get(dashboard.pouchID, function (err, doc) {
+            if(typeof(dashboard.pouchID) != "undefined"){
+                   db.get(dashboard.pouchID, function (err, doc) {
                     if (err) {
                         ngToast.create({
                             className: 'danger',
@@ -588,7 +589,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         });
                     }
                     else {
-                        var dashboard = CircularJSON.parse(doc.dashboard);
+                        var dashboard = doc.dashboard;
                         $rootScope.dashboard = dashboard;
                         $rootScope.page_id = doc._id;
                         //deletions attribute is missing from dashboard
@@ -600,6 +601,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         };
                         $rootScope.selectedPageIndx = 0;
                         $rootScope.selectedPage = 1;
+
+                        for (var i = 0; i < $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.length; i++) {
+                            var widget = $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[i];
+                            if (typeof(widget.widgetData.commonSrc) != "undefined") {
+                                widget.widgetData.syncState = true;
+                            }
+                        }
+
+
                         ngToast.create({
                             className: 'success',
                             content: 'Retrieved dashboards from localStorage',
@@ -610,13 +620,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     }
                 });
                 $state.go('home.Dashboards');
-            }
-            else {
-                if (typeof(dashboard.pouchID) != "undefined") {
-                    $rootScope.page_id = dashboard.pouchID;
-                }
+            }else{
 
-                $http({
+               $http({
                     method: 'GET',
                     url: Digin_Engine_API + 'get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain
                 })
@@ -635,6 +641,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             };
                             $rootScope.selectedPageIndx = 0;
                             $rootScope.selectedPage = 1;
+
+                            //insert the new dashboard in to pouch DB
+                            pouchDbServices.insertPouchDB(data.Result,null); 
 
                             var index = 0;
                             console.log($rootScope.dashboard.pages[index].widgets);
@@ -683,10 +692,19 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         });
                         $mdDialog.hide()
                     });
+            
+
+
+
+
+
             }
+
+
             $(".overlay").removeClass("overlay-search active");
             $(".nav-search").removeClass("active");
             $(".search-layer").removeClass("activating active");
+
         }
         $scope.goAnalyzer = function (report) {
             $scope.showTabs(false);
@@ -699,6 +717,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 param: report
             });
         }
+
         $scope.savePentaho = function (ev, dashboard) {
             $mdDialog.show({
                 controller: 'savePentahoCtrl',
@@ -1043,6 +1062,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             switch (routeName) {
                 case "home":
                     $scope.goHomeDialog(ev);
+                    $rootScope.page_id = "";
                     break;
                 case "Add Page":
                     $rootScope.currentView = "Dashboard";

@@ -1110,8 +1110,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
                     var removePage = null;
                     $scope.close = function() {
-
-
                         removePage = true;
                         $mdDialog.hide(removePage);
                     }

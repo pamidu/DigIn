@@ -195,23 +195,29 @@
 
                         <div class="blut-header-icon" style="" ng-click="mainclose()" id="home">
                             <i class="icon-house-outline"></i>
+							<md-tooltip md-direction="bottom">Go To Home</md-tooltip>
                         </div>
 
                         <div class="blut-header-icon" ng-click="navigate('TV Mode')" id="fullscreen">
                             <i class="icon-full-size"></i>
+							<md-tooltip md-direction="bottom">Toggle Fullscreen</md-tooltip>
                         </div>
                         <div class="blut-header-icon" ng-click="navigate('Clear Widgets')" id="clearWidgets">
                             <i class="icon-broom"></i>
+							<md-tooltip md-direction="bottom">Clear Widgets</md-tooltip>
                         </div>
                         <div class="blut-header-icon" ng-click="navigate('Save')"  id="save">
                             <i class="ti-save"></i>
+							<md-tooltip md-direction="bottom">Save Dashboard</md-tooltip>
                         </div>
                         <div class="blut-header-icon" ng-click="navigate('share Dashboards')" style="margin-top: -3px;">
                             <i class="ti-share"></i>
+							<md-tooltip md-direction="bottom">Share Dashboard</md-tooltip>
                         </div>
                         <div class="blut-header-icon" ng-click="openNotifications()" style="width:45px;" id="notifications">
                             <ng-md-icon icon="notifications_none" style="fill:#02b5e2;cursor:pointer" class="widicons" size="26px"></ng-md-icon>
                             <div style="width:15px;height:15px;border-radius:16px;background:#02b5e2;color:white;margin-top:-34px;margin-left:16px;font-size:10px;font-weight:700;position:absolute"><div style="margin-left:4px;margin-top:1px;" ng-if="notifications.length <=9">{{notifications.length}}</div><div style="margin-left:1px;margin-top:3px;" ng-if="notifications.length > 9">{{notifications.length}}</div></div>
+							<md-tooltip md-direction="bottom">Notifications</md-tooltip>
                         </div>
 
 

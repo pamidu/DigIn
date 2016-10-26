@@ -633,12 +633,15 @@ v-pane-content
     border-radius: 50%;
     width: 30px;
     height: 30px;
-    padding: 4px;
+    padding: 1px 8px;
     top: 17px;
+	outline: none;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+	cursor: pointer;
 }
 
 .left-icon {
-    background: #01718D;
+    background: #02b5e2;
 }
 
 .left-icon-toggle {
@@ -646,7 +649,7 @@ v-pane-content
 }
 
 .toggle-icon > i {
-    font-size: 22px;
+    font-size: 15px;
     color: #ffffff;
     cursor: pointer;
 }
@@ -751,6 +754,11 @@ v-pane-content
 
 .last-icon {
     border-bottom: 3px solid #ECECEC;
+	outline: none;
+}
+
+.small-rotate-icon{
+	
 }
 
 .digin-gb-menu .right-menu {
@@ -5209,4 +5217,8 @@ div.bigcheck {
     box-shadow: 10px 10px 5px #888888;
     cursor: pointer;
     margin-top: 1px;
+}
+
+md-progress-linear.md-default-theme .md-bar, md-progress-linear .md-bar {
+    background-color: #026689;
 }

@@ -231,14 +231,11 @@
                     <div class="panel-header">
                         <h3 class="font-weight-300">
                             Filter
-                            <fieldset ng-disabled="isPendingRequest"
+                            <fieldset class="toggle-icon animated"ng-disabled="isPendingRequest"
                                       data-ng-style="isPendingRequest && {'cursor':'not-allowed'}"
-                                      class="toggle-icon animated "
                                       ng-class="eventHndler.isTogglePanelFilter==true?'left-icon-toggle':'left-icon'"
                                       ng-click="eventHndler.onToggleEvent('4')">
-                                <i class="" style="cursor:inherit;"
-                                   ng-class="eventHndler.isTogglePanelFilter==true?'ti-angle-left rotateOut':'ti-angle-right rotateIn'"
-                                ></i>
+                                <i class="small-rotate-icon" ng-class="eventHndler.isTogglePanelFilter==true?'ti-angle-left rotateOut':'ti-angle-right rotateIn'"></i>
 
                             </fieldset>                            
                         </h3>
@@ -430,41 +427,36 @@
             <div flex="10">
                 <div class="digin-gb-menu">
                     <div class="last-icon">
-                        <fieldset ng-disabled="isPendingRequest"
-                                  data-ng-style="isPendingRequest && {'cursor':'not-allowed'}" class="right-menu "
-                                  ng-click="eventHndler.onClickSetting('1')" style="cursor:inherit">
+                        <fieldset ng-disabled="isPendingRequest" data-ng-style="isPendingRequest && {'cursor':'not-allowed'}" class="right-menu "
+                                  ng-click="eventHndler.onClickSetting('1')" style="cursor:inherit;outline:none;">
                             <i class="ti-pie-chart hvr-pop "></i>
                         </fieldset>
+						<md-tooltip md-direction="left">Visualization Types</md-tooltip>
                     </div>
-
-<!--                     <div class="last-icon">
+                    <div class="last-icon"  ng-click="eventHndler.onClickSetting('3')">
                         <div class="right-menu">
-                          
+                            <i class="ti-settings hvr-pop"></i>
                         </div>
+						<md-tooltip md-direction="left">Chart Settings</md-tooltip>
                     </div>
- -->
-                    <div class="last-icon">
+                    <div class="last-icon" ng-click="eventHndler.onClickSetting('4')">
                         <div class="right-menu">
-                            <i class="ti-settings hvr-pop"
-                               ng-click="eventHndler.onClickSetting('3')"></i>
+                            <i class="ti-save hvr-pop"></i>
                         </div>
-                    </div>
-                    <div class="last-icon">
-                        <div class="right-menu">
-                            <i class="ti-save hvr-pop"
-                               ng-click="eventHndler.onClickSetting('4')"></i>
-                        </div>
-
+						<md-tooltip md-direction="left">Create Widget</md-tooltip>
                     </div>
                     <div class=" last-icon">
                         <div class="right-menu">
                             <i class="ti-eraser hvr-pop"></i>
                         </div>
+						<md-tooltip md-direction="left">Clear</md-tooltip>
                     </div>
-
-                    <div class="right-menu">
-                        <i class="ti-help-alt hvr-pop"></i>
-                    </div>
+					<div class=" last-icon">
+						<div class="right-menu">
+							<i class="ti-help-alt hvr-pop"></i>
+						</div>
+						<md-tooltip md-direction="left">Help</md-tooltip>
+					</div>
                 </div>
 
                 <!-- chart setting panle -->

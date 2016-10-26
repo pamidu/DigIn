@@ -403,7 +403,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
 
 
-routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter', 'Digin_Domain', 'Digin_Engine_API',  '$state','pouchDbServices',
+routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter', 'Digin_Domain', 'Digin_Engine_API','$state','pouchDbServices',
 
     function($scope, $qbuilder, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter, Digin_Domain, Digin_Engine_API, $state,pouchDbServices) {
 
@@ -483,8 +483,6 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                 }
 
         }
-
-
 
         $scope.saveDashboard = function() {      
 
@@ -728,12 +726,24 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                     //id fields are accepted close dialog
                     //$mdDialog.hide();
 
+
+                    var tempDashboardObj = angular.copy(dashboardObject);
+                        // map data to all charts
+                    for ( var i = 0; i < dynamicPages.length; i++){
+                        for ( var j = 0; j < dynamicPages[i].widgets.length; j++){
+                            if (dynamicPages[i].widgets[j].isChart){
+                                var chartType = $rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType;
+                                $scope.mapChartData(chartType,i,j,dynamicPages[i].widgets[j].data);
+                            }
+                        }
+                    }                    
+
                     var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
                     $http({
                         method: 'POST',
                         
                         url: Digin_Engine_API+'store_component',
-                        data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
+                        data: angular.fromJson(CircularJSON.stringify(tempDashboardObj)),
                         headers: {  
                                     'Content-Type': 'application/json',
                                     'SecurityToken':userInfo.SecurityToken
@@ -764,9 +774,9 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
                          $state.go('home.welcomeSearch');
 
-                    })
-                    .error(function(error){  
 
+                    })
+                    .error(function(error){                      
                         // Insert data into pouchDb
                         pouchDbServices.insertPouchDB(dashboardObject,null);                     
                         ngToast.create({
@@ -779,16 +789,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                         $scope.isLoadingDashBoardSave = false;
                         $scope.isButtonDashBoardSave=true;
                         $mdDialog.hide()
-                    });   
-                        // map data to all charts
-                    for ( var i = 0; i < dynamicPages.length; i++){
-                        for ( var j = 0; j < dynamicPages[i].widgets.length; j++){
-                            if (dynamicPages[i].widgets[j].isChart){
-                                var chartType = $rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType;
-                                $scope.mapChartData(chartType,i,j,dynamicPages[i].widgets[j].data);
-                            }
-                        }
-                    }                    
+                    });                 
                 }else{ // one of the fields not filled
                     ngToast.create({
                             className: 'danger',

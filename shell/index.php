@@ -240,6 +240,7 @@
 <!-- services end -->
 
 <script type="text/javascript" src="scripts/services/ShareWidgetService.js"></script>
+<script type="text/javascript" src="scripts/services/pouchDbServices.js"></script>
 
 <!--  directives start  -->
 <script type="application/javascript" src="scripts/directives/commonData.js"></script>

@@ -241,6 +241,7 @@
 
 <script type="text/javascript" src="scripts/services/ShareWidgetService.js"></script>
 <script type="text/javascript" src="scripts/services/pouchDbServices.js"></script>
+<script type="text/javascript" src="scripts/services/saveDashboardService.js"></script>
 
 <!--  directives start  -->
 <script type="application/javascript" src="scripts/directives/commonData.js"></script>
@@ -435,7 +436,6 @@
 <script src="bower_components/angular-google-plus/dist/angular-google-plus.min.js"></script>
 <!-- angular at-table -->
 <script src="bower_components/at-table/dist/angular-table.js"></script>
-<script src="scripts/vendor/markerclusterer.js"></script>
  
 <script type="text/javascript">
     google.load('search', '1');
@@ -456,20 +456,6 @@
     }
     script += '.js"><' + '/script>';
     document.write(script);
-</script>
-<script>
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-12846745-20']);
-    _gaq.push(['_trackPageview']);
-
-    (function () {
-        var ga = document.createElement('script');
-        ga.type = 'text/javascript';
-        ga.async = true;
-        ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(ga, s);
-    })();
 </script>
 <script>
     $(document).ready(function () {

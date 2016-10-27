@@ -403,9 +403,9 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
 
 
-routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter', 'Digin_Domain', 'Digin_Engine_API','$state','pouchDbServices',
+routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore', '$mdDialog', '$rootScope', 'ObjectStoreService', 'DashboardService', 'ngToast','$filter', 'Digin_Domain', 'Digin_Engine_API','$state','pouchDbServices', 'saveDashboardService',
 
-    function($scope, $qbuilder, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter, Digin_Domain, Digin_Engine_API, $state,pouchDbServices) {
+    function($scope, $qbuilder, $http, $objectstore, $mdDialog, $rootScope, ObjectStoreService, DashboardService, ngToast, $filter, Digin_Domain, Digin_Engine_API, $state, pouchDbServices, saveDashboardService) {
 
 
         $scope.close = function() {
@@ -484,9 +484,9 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
         }
 
-        $scope.saveDashboard = function() {      
+        $scope.saveDashboard = function() {
 
-            if($scope.dashboardName && $scope.refreshInterval ){
+            if($scope.dashboardName && $scope.refreshInterval ) {
 
                 var noDuplicate = true;
                 //to check weather the newpage is allready exist 
@@ -496,10 +496,10 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
                                 if($rootScope.dashboard.compID == null){
                                     noDuplicate = false;
-                                }  
+                                }
                                 else{
 
-                                    DashboardService.dashboards.forEach(function(key){ 
+                                    DashboardService.dashboards.forEach(function(key){
                                         if(key.dashboardName.toUpperCase() == $scope.dashboardName.toUpperCase() ){
 
                                             if(key.dashboardID != $rootScope.dashboard.compID)
@@ -509,12 +509,12 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                                     });
                                 }
                             }
-                       
+
                     });
                 }
 
                 if(noDuplicate){
-
+                    //saveDashboardService.saveDashboard(dashboardName,refreshInterval);
                     $scope.isLoadingDashBoardSave = true;
                     $scope.isButtonDashBoardSave=false;
                     //if dashboard name type refreshinterval should be assigned to proceed
@@ -726,24 +726,12 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                     //id fields are accepted close dialog
                     //$mdDialog.hide();
 
-
-                    var tempDashboardObj = angular.copy(dashboardObject);
-                        // map data to all charts
-                    for ( var i = 0; i < dynamicPages.length; i++){
-                        for ( var j = 0; j < dynamicPages[i].widgets.length; j++){
-                            if (dynamicPages[i].widgets[j].isChart){
-                                var chartType = $rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType;
-                                $scope.mapChartData(chartType,i,j,dynamicPages[i].widgets[j].data);
-                            }
-                        }
-                    }                    
-
                     var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
                     $http({
                         method: 'POST',
                         
                         url: Digin_Engine_API+'store_component',
-                        data: angular.fromJson(CircularJSON.stringify(tempDashboardObj)),
+                        data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
                         headers: {  
                                     'Content-Type': 'application/json',
                                     'SecurityToken':userInfo.SecurityToken
@@ -776,9 +764,9 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
 
                     })
-                    .error(function(error){                      
+                    .error(function(error){
                         // Insert data into pouchDb
-                        pouchDbServices.insertPouchDB(dashboardObject,null);                     
+                        pouchDbServices.insertPouchDB(dashboardObject,null);
                         ngToast.create({
                             className: 'danger',
                             content: 'Failed Saving Dashboard. Please Try Again!',
@@ -789,7 +777,16 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                         $scope.isLoadingDashBoardSave = false;
                         $scope.isButtonDashBoardSave=true;
                         $mdDialog.hide()
-                    });                 
+                    });
+                    // map data to all charts
+                    for ( var i = 0; i < dynamicPages.length; i++){
+                        for ( var j = 0; j < dynamicPages[i].widgets.length; j++){
+                            if (dynamicPages[i].widgets[j].isChart){
+                                var chartType = $rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType;
+                                $scope.mapChartData(chartType,i,j,dynamicPages[i].widgets[j].data);
+                            }
+                        }
+                    }
                 }else{ // one of the fields not filled
                     ngToast.create({
                             className: 'danger',

@@ -534,7 +534,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             var tempStr = "";
             var requestArray = [];
             var cat = "";
-
+            var limit;
             //map the selected filter fields
             filterArray = filterService.generateFilterParameters($scope.widgetFilters);
 
@@ -557,9 +557,8 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             } else{
                 requestArray[0] = widget.widgetData.commonSrc.att[0].filedName;                
             }
-
             widget.widgetData.syncState = false;
-            $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, function(res, status, query) {
+            $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, limit, function(res, status, query) {
                 if (status) {
                     var color = [];
                     var name = [];
@@ -965,6 +964,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 origName = "",
                                 serName = "",
                                 conStr = "";
+                                var limit;
                             // var cat = [];
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
@@ -998,7 +998,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
                             console.log(filterStr);
                             //aggregate method
-                            clientObj.getAggData(srcTbl, fields, function(res, status, query) {
+                            clientObj.getAggData(srcTbl, fields, limit, function(res, status, query) {
                                 filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
                                 angular.forEach( widget.widgetData.highchartsNG.series, function(series) {
                                     if ( series.name == selectedSeries ) {

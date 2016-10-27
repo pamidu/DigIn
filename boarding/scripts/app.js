@@ -15,7 +15,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
 
     vm.companyPricePlans = [
         {
-			package_id:1001, //Use for digin service as package id, for numeric id
+            package_id:1001, //Use for digin service as package id, for numeric id
             id : "Free",
             name:"Free",
             sp:"Free",
@@ -32,15 +32,15 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             //peryear:" / Per User (Yearly)",
             Description: "30 days trial",
             price:0,
-			valStorage:10,
-			valData:100
+            valStorage:10,
+            valData:100
         },
         {
-			package_id:1002,
+            package_id:1002,
             id : "personal_space",
             name:"Personal Space",
             currancy:"$",
-            numberOfUsers:1003,
+            numberOfUsers:1,
             storage: "10 GB",  //only for display
             bandwidth: "100 GB",//only for display
             StorageStr:" of Storage",
@@ -52,11 +52,11 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             peryearStr:" / Per User (Yearly)",
             Description: "",
             price:10,
-			valStorage:10,
-			valData:100
+            valStorage:10,
+            valData:100
         },
         {
-			package_id:1003,
+            package_id:1003,
             id : "mini_team",
             name:"We Are A Mini Team",
             currancy:"$",
@@ -72,11 +72,11 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             peryearStr:" / Per User (Yearly)",
             Description: "",
             price:40,
-			valStorage:10,
-			valData:100
+            valStorage:10,
+            valData:100
         },
-        {	
-			package_id:1004,
+        {   
+            package_id:1004,
             id : "world",
             name:"We Are the World",
             currancy:"$",
@@ -92,8 +92,8 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             peryearStr:" / Per User (Yearly)",
             Description: "",
             price:60,
-			valStorage:10,
-			valData:100
+            valStorage:10,
+            valData:100
         }];
             
 
@@ -186,11 +186,11 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
 
         $scope.createDataSet(function(data){
             if(data){
-				
-				
-				
+                
+                
+                
                 if(plan.id=="Free"){
-					vm.addPackage(plan, $scope.TenantSecToken);
+                    vm.addPackage(plan, $scope.TenantSecToken);
                     $rootScope.trial=true;
                     $rootScope.btnMessage="Congratulations...!";
                     $rootScope.btnMessage2="This trial version is valid only for 30 days.";
@@ -230,36 +230,36 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         
     }   
          
-	//#Add package to digin engine#//
+    //#Add package to digin engine#//
     vm.addPackage = function(plan,SecurityToken) {
         $scope.detail=[{
-						"package_id":plan.package_id,
-						"package_name":plan.name,
-						"package_attribute": "users",
-						"package_value":plan.numberOfUsers,
-						"package_price":plan.price,
-						"is_default":true,
-						"is_new": true
-						},
-						{
-						"package_id":plan.package_id,
-						"package_name":plan.name,
-						"package_attribute": "storage",
-						"package_value":plan.valStorage,
-						"package_price":plan.price,
-						"is_default":true ,
-						"is_new":true
-						},
-						 {
-						"package_id":plan.package_id,
-						"package_name":plan.name,
-						"package_attribute": "data",
-						"package_value":plan.valData,
-						"package_price":plan.price,
-						"is_default":true ,
-						"is_new":true
-						 }]
-			
+                        "package_id":plan.package_id,
+                        "package_name":plan.name,
+                        "package_attribute": "users",
+                        "package_value":plan.numberOfUsers,
+                        "package_price":plan.price,
+                        "is_default":true,
+                        "is_new": true
+                        },
+                        {
+                        "package_id":plan.package_id,
+                        "package_name":plan.name,
+                        "package_attribute": "storage",
+                        "package_value":plan.valStorage,
+                        "package_price":plan.price,
+                        "is_default":true ,
+                        "is_new":true
+                        },
+                         {
+                        "package_id":plan.package_id,
+                        "package_name":plan.name,
+                        "package_attribute": "data",
+                        "package_value":plan.valData,
+                        "package_price":plan.price,
+                        "is_default":true ,
+                        "is_new":true
+                         }]
+            
         $http({
             method: 'POST',
             url: Digin_Engine_API + 'activate_packages/',
@@ -276,7 +276,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             
         });
     }
-	
+    
     vm.submitCurrentStep = function submitCurrentStep(tenant, isSkip) { 
     
         if($scope.tenant.name=="" || $scope.tenant.name==undefined){
@@ -292,8 +292,8 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             
         }
            
-		displayProgress("Submitting data...");
-		   
+        displayProgress("Submitting data...");
+           
         if(tenant=='Cancel')
         {
             $rootScope.createdTenantID="";
@@ -313,11 +313,11 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                     tenant.completed = true;
                     vm.enableNextStep();
                 }, 1000)
-				$mdDialog.hide();
+                $mdDialog.hide();
             } else {
                 vm.showBusyText = false;
                 vm.enableNextStep();
-				$mdDialog.hide();
+                $mdDialog.hide();
             }
            
             
@@ -352,7 +352,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                             console.log('On before submit');
                             if (!tenant.completed && !isSkip) {
                                 //simulate $http
-								$mdDialog.hide();
+                                $mdDialog.hide();
                                 $timeout(function () {
                                     vm.showBusyText = false;
                                     console.log('On submit success');
@@ -362,21 +362,21 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                                     vm.enableNextStep();
                                 }, 1000)
                             } else {
-								$mdDialog.hide();
+                                $mdDialog.hide();
                                 vm.showBusyText = false;
                                 vm.enableNextStep();
                             }
-							
+                            
                     }
                     else
                     {
-						$mdDialog.hide();
+                        $mdDialog.hide();
                         displayError("This tenant name is already registered...");
                     }
                     
                     //displayError("This tenant name is already registered...");
                 }).error(function (error) {
-					$mdDialog.hide();
+                    $mdDialog.hide();
                     displayError(error.Message);
                 });
                 
@@ -408,8 +408,8 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                             */
                             //---------------------
             }
-			
-			$mdDialog.hide();
+            
+            $mdDialog.hide();
         
     }
 
@@ -516,7 +516,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             "token":token.id,
             "plan" : {
                 "attributes":  [
-                    {"tag":"Package","feature": plan.id,"amount": plan.numberOfUsers*plan.perMonth,"quantity":1,"action":"add"}
+                    {"tag":"Package","feature": plan.id,"amount": plan.price,"quantity":1,"action":"add"}
                 ],
                 "subscription": "month",
                 "quantity": 1 
@@ -548,7 +548,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                 console.log()
                     if(response.statusText=="OK"){
                         if(response.data.status==true){
-							vm.addPackage(plan, $scope.TenantSecToken);
+                            vm.addPackage(plan, $scope.TenantSecToken);
                             $rootScope.btnMessage="Congratulations...!";
                             $rootScope.btnMessage2="Tenant creation completed successfully.";
                             localStorage.setItem('firstLogin',true);

@@ -24,10 +24,16 @@
                         cb(data, status);
                     }, $diginurls.diginengine + "GetTables?dataSetName=" + getNamespace() + "&db=" + database);
                 },
-                getFolders: function(cb) {
+                getFolders: function(f_name,cb) {
+                    var url_string = "get_system_directories?folder_type=data_source_folder";
+                    if (f_name){
+                        url_string += "&folder_name="+f_name;
+                    } else{
+                        url_string += "&folder_name=";
+                    }
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "get_system_directories?folder_type=data_source_folder");
+                    }, $diginurls.diginengine + url_string);
                 },
                 getFields: function(tbl, cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
@@ -54,7 +60,7 @@
                     }
 
                 },
-                getAggData: function(tbl, aggObjArr, cb, gb, con) {
+                getAggData: function(tbl, aggObjArr, limit, cb, gb, con) {
                     var strField = "";
                     if (con !== undefined) {
                         con = con.replace(/&/g , "%26");                        
@@ -93,6 +99,7 @@
 
                     // if (gb) params += "&group_by={'" + gb + "':1}";
                     if (con) params += "&cons=" + con;
+                    if (limit) params += "&limit" + limit;
                     var reqUrl = $diginurls.diginengine + "aggregatefields?" + params;
                     var wData = {
                         rUrl: reqUrl,

@@ -1592,7 +1592,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     $scope.forecast = {
         onInit: function(recon) {
             $scope.highchartsNG = $scope.initHighchartObj;
-            $scope.prevChartSize = copy($scope.highchartsNG.size);
+            $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
             if ($scope.widget.widgetData.foreCastObj !== undefined) {
                 $scope.forecastObj.paramObj = $scope.widget.widgetData.foreCastObj;
                 $scope.maxDate = moment(new Date($scope.widget.widgetData.maxDate)).format('LL');

@@ -27,14 +27,13 @@
 
 
 
-
                         
                                
                                 <table class="container hero-subheader" border="0" cellpadding="0" cellspacing="0" width="80" style="width: 100%;">
                               
                                     <tr>
-                                        <td class="hero_title" style="text-align:center; font-size: 22px; font-weight:regular; padding: 5px 0 0 0; color:#545454;" align="center"><p><br>Your registration process has been completed.</p></td>
-                                    </tr>
+                                        <td class="hero_title" style="text-align:center; font-size: 22px; font-weight:regular; padding: 5px 0 0 0; color:#545454;" align="center"><p><br>Your account has been successfully created!</p></td>
+                                    </tr>																																	
 
                                     <tr>
                                     <td style="width:600px !important;" align="center">

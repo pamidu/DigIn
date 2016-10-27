@@ -93,7 +93,9 @@ routerApp
 
             //-----activated user - Signin-----------
             var activated = ($location.search()).activated;
-            var activatedemail= ($location.search()).id;
+            //var activatedemail= ($location.search()).id;
+			var activatedemail= Base64.decode(($location.search()).ox);
+			
             $scope.activated=false;
             if(activated==undefined){
                 $scope.activated=false;
@@ -174,6 +176,7 @@ routerApp
                 }).success(function (data) {
                     if (data.Success === true) {
                         
+						
 
                         //#check whether user is blocked or not
                         $scope.checkUsage(data.Data.SecurityToken,data.Data);
@@ -272,6 +275,7 @@ routerApp
         
 
             //#get trial expiry #//
+			
             $scope.checkTrialExpiry=function(SecurityToken){
                 $http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=" + getCookie('securityToken'))
                 .success(function(data) {
@@ -284,6 +288,7 @@ routerApp
                         }
                     }
                     else{
+						$scope.remainingDays=30;
                     }
                 })
                 .error(function() {
@@ -620,7 +625,7 @@ routerApp
                     if(response.Success){
                         console.log(response);
                         $mdDialog.hide();
-                        mainFun.fireMsg('1', "succussfully reset your password, please check your mail for new password.");
+                        mainFun.fireMsg('1', "Successfully reset your password, please check your mail.");
                         //displaySuccess('uccussfully reset your password, Please check your mail for new password...');
                         $scope.email='';
                         $state.go('signin');
@@ -654,7 +659,7 @@ routerApp
                                 if (data.Error == "true") {
                                     mainFun.fireMsg('0',data);
                                 } else {
-                                    mainFun.fireMsg('1',"Passoword Successfully Changed");
+                                    mainFun.fireMsg('1',"Password changed successfully.");
                                     window.location = "http://"+Digin_Domain+"/entry";
                                     
                                 }
@@ -867,6 +872,7 @@ routerApp
                         return re.test(email);
                     },
 
+					
 
                     acceptRequest:function(email,token){
                         $http.get('/apis/usertenant/tenant/request/accept/' + email + '/' + token, {

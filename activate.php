@@ -12,8 +12,8 @@ curl_close ($curl);
 	
 	if($status==true){
 			echo '{"success":true,"message":"Account ativated successfully."}';
-			//header("Location: http://www.digin.io");
-			header("Location:http://".$mainDomain."/entry/#/signin?activated=true&id=".$email);
+			//header("Location:http://".$mainDomain."/entry/#/signin?activated=true&id=".$email);
+			header("Location:http://".$mainDomain."/entry/#/signin?activated=true");
 
 		/*
 		$response = createDataSet($email);
@@ -26,7 +26,8 @@ curl_close ($curl);
 	}
 	else{
 		echo '{"success":false,"message":"Error occured"}';
-		header("Location: http://".$mainDomain."/entry/#/signin?activated=false&id=".$email);
+		//header("Location: http://".$mainDomain."/entry/#/signin?activated=false&id=".$email);
+		header("Location: http://".$mainDomain."/entry/#/signin?activated=false");
 	}
 
 	

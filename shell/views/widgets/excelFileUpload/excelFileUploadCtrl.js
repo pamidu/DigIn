@@ -1,4 +1,4 @@
-routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$http', 'notifications', '$mdSidenav', 'Digin_Domain', 'Upload', 'Digin_Engine_API', '$diginurls', '$diginengine', '$location', '$anchorScroll', function($scope, $mdDialog, $state, $http, notifications, $mdSidenav, Digin_Domain, Upload, Digin_Engine_API, $diginurls, $diginengine, $location, $anchorScroll) {
+routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$http', 'notifications', '$mdSidenav', 'Digin_Domain', 'Upload', 'Digin_Engine_API', '$diginurls', '$diginengine', '$location', '$anchorScroll', 'ngToast', function($scope, $mdDialog, $state, $http, notifications, $mdSidenav, Digin_Domain, Upload, Digin_Engine_API, $diginurls, $diginengine, $location, $anchorScroll, ngToast) {
 
 
     $scope.files = []; //Files imported array
@@ -189,8 +189,14 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
             });
         });
         if (duplicateflag) {
-            notifications.toast('0',"Cannot upload the same file again!");
-            return;
+            ngToast.create({
+                className: 'info',
+                content: 'Warning: You have selected a duplicate file!',
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                dismissOnClick: true,
+                timeout: 10000
+            });
         }
         if (files && files.length) {
             $scope.preloader = true;
@@ -232,6 +238,16 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                         $scope.schemaCollection.push($scope.schema);
                         uploadFlag = true;
                         notifications.toast(1, "Schema retrieved  successfully");
+                        if (duplicateflag) {
+                            ngToast.create({
+                                className: 'info',
+                                content: 'Warning: You have selected a duplicate file!',
+                                horizontalPosition: 'center',
+                                verticalPosition: 'top',
+                                dismissOnClick: true,
+                                timeout: 4000
+                            });
+                        }                        
                     } else {
                         uploadFlag = false;
                         notifications.toast('0', 'Error uploading file!');

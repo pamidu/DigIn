@@ -1,4 +1,4 @@
-routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth', 'notifications','Digin_Engine_API', function($rootScope,$http, $v6urls, $auth,notifications,Digin_Engine_API) {
+routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth', 'notifications','Digin_Engine_API','pouchDB', function($rootScope,$http, $v6urls, $auth,notifications,Digin_Engine_API,pouchDB) {
 	var cache = {};
 	
 	return {
@@ -108,6 +108,28 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 						notifications.toast(0, "Falied to remove user");
 				});
 		},getPackageDetail:function(){
+			$rootScope.expiryDate=new Date();   //{{expiryDate|date:'mm-dd-yy'}}
+			$rootScope.remainingDays=0;
+		
+			return $http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=" + getCookie('securityToken'))
+			.then (function(data) {
+				if(data.data.Result.length>0){			
+					for(i=0; i<data.data.Result.length; i++)
+					{
+						if(!data.data.Result[i].package_name=="additional")
+						{	
+							$rootScope.expiryDate=data.data.Result[i].expiry_datetime;
+							$rootScope.remainingDays=data.data.Result[i].remaining_days;
+							return;
+						}
+					}
+				}	
+			},function errorCallback(error) {
+				console.log(error);
+			});	
+		}
+		
+		/*getPackageDetail:function(){
 			
 					$rootScope.extraUsers=0;
 					$rootScope.extraData=0;
@@ -161,7 +183,7 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 			},function errorCallback(error) {
 				console.log(error);
 			});	
-		},getPackageSummary:function(){
+		}*/,getPackageSummary:function(){
 					$rootScope.totUsers=0;
 					$rootScope.totData=0;
 					$rootScope.totStorage=0;

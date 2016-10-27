@@ -1,4 +1,4 @@
-routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,Digin_Domain,pouchDB){
+routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,Digin_Domain,pouchDB,filterService,$qbuilder){
 
      var db = new pouchDB('dashboard');
 
@@ -13,8 +13,29 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                       .success(function (data) {
                           if (data.Is_Success) {
                               var dashboard = angular.fromJson(CircularJSON.stringify(data.Result));
-                              settoPouch(dashboard);
-                             
+                                var count=0;
+                                var index=0;
+                                for (var i = 0; i < dashboard.pages[index].widgets.length; i++) {
+                                    dashboard.pages[index]["isSeen"] = true;
+                                    var widget = dashboard.pages[index].widgets[i];
+                                    console.log('syncing...');
+                                    if (typeof(widget.widgetData.commonSrc) != "undefined") {
+                                        widget.widgetData.syncState = false;
+                                        //Clear the filter indication when the chart is re-set
+                                        widget.widgetData.filteredState = false;
+                                        filterService.clearFilters(widget);                                    
+                                        if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
+                                            $qbuilder.sync(widget.widgetData, function (data) {
+                                               count++;
+                                              if(dashboard.pages[0].widgets.length == count){
+                                                  dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
+                                                  settoPouch(dashboardJson);
+                                               }
+                                            });
+
+                                        }
+                                    }
+                                }
                           }
                            
                       })
@@ -25,7 +46,31 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
             }
             else if(dashboardId == null){
               var dashboard = angular.fromJson(CircularJSON.stringify(dashboardObject));
-              settoPouch(dashboard);
+                                var count=0;
+                                var index =0;
+                                for (var i = 0; i < dashboard.pages[index].widgets.length; i++) {
+                                    dashboard.pages[index]["isSeen"] = true;
+                                    var widget = dashboard.pages[index].widgets[i];
+                                    console.log('syncing...');
+                                    if (typeof(widget.widgetData.commonSrc) != "undefined") {
+                                        widget.widgetData.syncState = false;
+                                        //Clear the filter indication when the chart is re-set
+                                        widget.widgetData.filteredState = false;
+                                        filterService.clearFilters(widget);                                    
+                                        if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
+                                            $qbuilder.sync(widget.widgetData, function (data) {
+                                              count++;
+                                              if(dashboard.pages[0].widgets.length == count){
+                                                  dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
+                                                  settoPouch(dashboardJson);
+                                               }
+                                              
+                                            });
+
+                                        }
+                                    }
+                                }
+                           
             }
            
         }
@@ -82,15 +127,12 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                       }
                   });
 
-
-                  db.allDocs({
-                      include_docs: true,
-                      attachments: true
-                    }).catch(function (err) {
-                      console.log(err);
-                    }).then(function (data) {
-                      console.log(data);
-                    });
         }
+
+
+        this.pageSync = function(dashboard){
+            dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
+            settoPouch(dashboardJson);
+        };
 
 });

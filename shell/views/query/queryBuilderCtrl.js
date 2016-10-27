@@ -192,6 +192,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     $scope.initRequestLimit = {
         value: 100
     };
+    $scope.limit = 100;
     $scope.requestLimits = [100, 1000, 2000, 3000, 4000, 5000];
     $scope.chartType = 'bar';
     $scope.initHighchartObj = {
@@ -1157,6 +1158,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         setTimeout(function() {
             $scope.eventHndler.isMainLoading = false;
             $rootScope.selectedPageIndx = $rootScope.selectedPage - 1;
+            //check if dashboard should be explicitly saved
+            if ($rootScope.userSettings.components == true){
+
+            }
             $state.go('home.Dashboards');
         }, 1000);
     };
@@ -3294,7 +3299,7 @@ $scope.getFormattedDate = function (date) {
                     agg: key.condition
                 });
             });
-            $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res, status, query) {
+            $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, function(res, status, query) {
                 if (status) {
                     eval("$scope." + $scope.selectedChart.chartType + ".onGetAggData(res[0])");
                     $scope.dataToBeBind.receivedQuery = query;
@@ -3347,7 +3352,7 @@ $scope.getFormattedDate = function (date) {
                 });
             });
         }
-        $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res, status, query) {
+        $scope.client.getAggData($scope.sourceData.tbl, fieldArr,$scope.limit, function(res, status, query) {
             if (status) {
                 // filter only the selected fields from the result returned by the service
                 filterService.filterAggData(res, $scope.sourceData.filterFields);
@@ -3443,7 +3448,7 @@ $scope.getFormattedDate = function (date) {
                     }
                     if (res[i].level == 1) highestLevel = res[i].value;
                 }
-                $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res, status, query) {
+                $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, function(res, status, query) {
 
                     // filter only the selected fields from the result returned by the service
                     filterService.filterAggData(res, $scope.sourceData.filterFields);
@@ -3536,7 +3541,7 @@ $scope.getFormattedDate = function (date) {
                                 // Show the loading label
                                 chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
                                 //aggregate method
-                                clientObj.getAggData(srcTbl, fields, function(res, status, query) {
+                                clientObj.getAggData(srcTbl, fields, 100, function(res, status, query) {
                                     if (status) {
                                         // filter only the selected fields from the result returned by the service
                                         console.log(JSON.stringify(res));
@@ -3671,7 +3676,7 @@ $scope.getFormattedDate = function (date) {
 
                 function syncDrill(i, res) {
                     if (i < res.length) {
-                        $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res1, status, query) {
+                        $scope.client.getAggData($scope.sourceData.tbl, fieldArr,$scope.limit,  function(res1, status, query) {
                             if (status) {
 
                                 var serNameKey = "";
@@ -3700,7 +3705,7 @@ $scope.getFormattedDate = function (date) {
                                     if (j < res1.length) {
                                         var con = res[i].value + "='" + res1[j][res[i].value] + "'";
                                         var drillSerArr = [];
-                                        $scope.client.getAggData($scope.sourceData.tbl, fieldArr, function(res2, status, query) {
+                                        $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, function(res2, status, query) {
                                             if (status) {
                                                 var dserNameKey = "";
                                                 var dserValKey = "";

@@ -1,83 +1,280 @@
 routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDialog, notifications, profile, $http, Upload,
-    Digin_Domain, Digin_Tenant, $location, Digin_Engine_API, $apps, ProfileService, paymentGateway, paymentGatewaySvc, $stateParams,userAdminFactory,$timeout) {
+    Digin_Domain, Digin_Tenant, $location, Digin_Engine_API, $apps, ProfileService, paymentGateway, paymentGatewaySvc, $stateParams,userAdminFactory,$timeout,pouchDB) {
 
 
     var vm = this;
+
     $scope.$parent.currentView = "Settings";
     vm.selectedPage = $stateParams.pageNo;
     console.log(vm.selectedPage);
 
+    
+    var db = new PouchDB('packaging');
+
+    $scope.usersRate = 5;
+    $scope.storageRate = 8;
+    $scope.bandwithRate = 10;
+    
+    
 
     //#Subscription START----------------------
 
     //#Getcurrent Packge Details 
     userAdminFactory.getPackageDetail();
-    userAdminFactory.getPackageSummary();
+    //userAdminFactory.getPackageSummary();
 
     //#Get customer detail#//
-    paymentGatewaySvc.getCustomerInformations();
+    //paymentGatewaySvc.getCustomerInformations();
 
     //#Get customer status as active - true || false #//
-    paymentGatewaySvc.checkSubscription();
+    //paymentGatewaySvc.checkSubscription();
 
-	$http({
-		//url : "http://staging.digin.io/include/duoapi/paymentgateway/getCardInformation",
-		url: "/include/duoapi/paymentgateway/getCardInformation",
-		method: "POST",
-		headers: {
-			'Content-Type': 'application/json'
-		}
-	}).then(function(response) {
-		//console.log(response)
-		if (response.statusText == "OK") {
-			if (response.data.status == true) {
-				//Success
-				vm.getFormattedCardList(response.data.data);
-			} else {
-				//fail
-				//displayError(response.data);
-				vm.paymentCards = [];
-			}
-		}
-	}, function(response) {
-		//console.log(response)
-		vm.paymentCards = [];
-		//displayError("Error while upgrade the package...");
-		//$mdDialog.hide();
-	})
+    
+    //#Get customer detail#//
+    //paymentGatewaySvc.getCustomerInformations();
+
+    //#Get customer status as active - true || false #//
+    //paymentGatewaySvc.checkSubscription();
+    
+    //#----chk customer-------------------------------------------------------------
+    
+    $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/getCustomerInformations",
+            url: "/include/duoapi/paymentgateway/getCustomerInformations",
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response) {
+            //console.log(response)
+            if (response.statusText == "OK") {
+                if (response.data.status == true) {
+                    console.log(response)
+                    $rootScope.customer = response.data.response;
+                    
+                    var doc={
+                            "_id":"cusstatus",
+                            "name":"cusstatus",
+                            "status":response.data.status,
+                            "active":response.data.data[0].active
+                            }
+                    db.put(doc)
+                    
+                    
+                } else {
+                    $rootScope.customer = {};
+                }
+            }
+        }, function(response) {
+            //console.log(response)
+            notifications.toast("0", "Error occured while retriving the account detail.");
+        })
+    
+    
+    
+    
+    //-------------------------------------------------------------------------------
+    
+    
+    //#Check subscription ----------------------------------------------------------
+    //$scope.checkSubscription = function() {
+        var packagename="";
+        var packageprice=0;
+        var packageuser=0;
+        var packagedata=0;
+        var packagestorage=0;
+        var additionaluser=0;
+        var additionaldata=0;
+        var additionalstorage=0;
+    
+    
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/checkSubscription",
+            url: "/include/duoapi/paymentgateway/checkSubscription",
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response) {
+            //console.log(response)
+            if (response.statusText == "OK") {
+                $rootScope.custStatus = response.data.status;
+                
+                if(response.data.status){
+                    
+                    for(i=0; i<response.data.response[0].otherInfo.length; i++)
+                    {                   
+                        if(response.data.response[0].otherInfo[i].tag=="Package")
+                        {
+                            packagename=response.data.response[0].otherInfo[i].feature;
+                            packageprice=response.data.response[0].otherInfo[i].amount;
+                            if(packagename=="personal_space"){
+                                packagename='Personal Space';
+                                packageuser=1;
+                                packagedata=10;
+                                packagestorage=100;
+                            }
+                            else if(packagename=="mini_team"){
+                                packagename='We Are A Mini Team';
+                                packageuser=5;
+                                packagedata=10;
+                                packagestorage=100;
+                            }
+                            else if(packagename=="world"){                              
+                                packagename='We Are the World';
+                                packageuser=10;
+                                packagedata=10;
+                                packagestorage=100;
+                            }
+                            else{
+                                packagename='Free';
+                                packageuser=1;
+                                packagedata=10;
+                                packagestorage=100; 
+                            }                               
+                        }
+                        else
+                        {
+                            if(response.data.response[0].otherInfo[i].tag=="user")
+                            {
+                                if(response.data.response[0].otherInfo[i].action=="add")
+                                {
+                                    additionaluser=additionaluser+response.data.response[0].otherInfo[i].quantity;
+                                }
+                                if(response.data.response[0].otherInfo[i].action=="remove")
+                                {
+                                    additionaluser=additionaluser-response.data.response[0].otherInfo[i].quantity;
+                                }
+                                
+                            }
+                            if(response.data.response[0].otherInfo[i].tag=="data")
+                            {
+                                if(response.data.response[0].otherInfo[i].action=="add")
+                                {
+                                    additionaldata=additionaluser+response.data.response[0].otherInfo[i].quantity;
+                                }
+                                if(response.data.response[0].otherInfo[i].action=="remove")
+                                {
+                                    additionaldata=additionaluser-response.data.response[0].otherInfo[i].quantity;
+                                }
+                            }
+                            if(response.data.response[0].otherInfo[i].tag=="storage")
+                            {
+                                if(response.data.response[0].otherInfo[i].action=="add")
+                                {
+                                    additionalstorage=additionaluser+response.data.response[0].otherInfo[i].quantity;
+                                }
+                                if(response.data.response[0].otherInfo[i].action=="remove")
+                                {
+                                    additionalstorage=additionaluser-response.data.response[0].otherInfo[i].quantity;
+                                }
+                            }
+                            
+                        }   
+                    }           
+                }
+
+                
+                var doc={
+                        "_id":"packgedetail",
+                        "name":"packgedetail",
+                        "packagename":packagename,
+                        "packageprice":packageprice,
+                        "packageuser":packageuser,
+                        "packagedata":packagedata,
+                        "packagestorage":packagestorage,
+                        "additionaluser":additionaluser,
+                        "additionaldata":additionaldata,
+                        "additionalstorage":additionalstorage
+                        }
+                db.put(doc);
+                
+                var doc={
+                        "_id":"chkstatus",
+                        "name":"chkstatus",
+                        "status":response.data.status,
+                        "paystatus":response.data.response[0].status
+                        }
+                db.put(doc);
+                    
+            $scope.packageName=packagename;
+            $scope.packagePrice=packageprice;
+            $scope.defaultUsers=packageuser;
+            $scope.defaultData=packagedata;
+            $scope.defaultStorage=packagestorage;
+            $scope.extraUsers=additionaluser;
+            $scope.extraData=additionaldata;
+            $scope.extraStorage=additionalstorage;
+            
+            }   
+        }, function(response) {
+            console.log(response)
+            notifications.toast("0", "Error occured while retriving the account detail.");
+        })
+
+   // }
+//--------------------------------------------------------  
+    
+
+//----get card info------------------------------------------   
+    $http({
+        //url : "http://staging.digin.io/include/duoapi/paymentgateway/getCardInformation",
+        url: "/include/duoapi/paymentgateway/getCardInformation",
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(function(response) {
+        //console.log(response)
+        if (response.statusText == "OK") {
+            if (response.data.status == true) {
+                //Success
+                vm.getFormattedCardList(response.data.data);
+            } else {
+                //fail
+                //displayError(response.data);
+                vm.paymentCards = [];
+            }
+        }
+    }, function(response) {
+        //console.log(response)
+        vm.paymentCards = [];
+        //displayError("Error while upgrade the package...");
+        //$mdDialog.hide();
+    })
  
- 
+//------------------------------------------------
     //#Get card information
     vm.paymentCards = [];
-	
-	$scope.getCardsList=function(){
-		$http({
-			//url : "http://staging.digin.io/include/duoapi/paymentgateway/getCardInformation",
-			url: "/include/duoapi/paymentgateway/getCardInformation",
-			method: "POST",
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		}).then(function(response) {
-			//console.log(response)
-			if (response.statusText == "OK") {
-				if (response.data.status == true) {
-					//Success
-					vm.getFormattedCardList(response.data.data);
-				} else {
-					//fail
-					//displayError(response.data);
-					vm.paymentCards = [];
-				}
-			}
-		}, function(response) {
-			//console.log(response)
-			vm.paymentCards = [];
-			//displayError("Error while upgrade the package...");
-			//$mdDialog.hide();
-		})
-	}
-		
+    
+    $scope.getCardsList=function(){
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/getCardInformation",
+            url: "/include/duoapi/paymentgateway/getCardInformation",
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response) {
+            //console.log(response)
+            if (response.statusText == "OK") {
+                if (response.data.status == true) {
+                    //Success
+                    vm.getFormattedCardList(response.data.data);
+                } else {
+                    //fail
+                    //displayError(response.data);
+                    vm.paymentCards = [];
+                }
+            }
+        }, function(response) {
+            //console.log(response)
+            vm.paymentCards = [];
+            //displayError("Error while upgrade the package...");
+            //$mdDialog.hide();
+        })
+    }
+        
 
 
     //#Add card formats
@@ -126,11 +323,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         "data": []
     }];
 
-
-   
-
-
-
+  
     //#get usage summary#//
     $scope.usageDetails = {};
     $http.get(Digin_Engine_API + "get_usage_summary?SecurityToken=" + getCookie('securityToken'))
@@ -428,8 +621,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         valStorage:10,
         valData:100
     }];
-	
-	
+    
+    
     /*
     vm.paymentCards = [{
         id: "card_194OMZLEDsR3ar1xYbp3GCsG",
@@ -722,42 +915,103 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                     "quantity": 1 
                 }
             }*/
+            
+        var obj=[{"tag":"Package","feature": plan.id,"amount": plan.price,"quantity":1,"action":"add"}];
+        
+        db.get('packgedetail').then(function (doc_package) {
+          console.log(doc_package);
+          
+          if(doc_package.additionaluser>0){
+             var objUser= [{"tag":"user","feature": "Additional users","amount": $scope.usersRate*doc_package.additionaluser,"quantity":doc_package.additionaluser,"action":"add"}];
+             obj.push(objUser[0]);
+          }
+          else if(doc_package.additionaldata>0){
+             var objData= [{"tag":"data","feature": "Additional data","amount": $scope.dataRate*doc_package.additionaldata,"quantity":doc_package.additionaldata,"action":"add"}];
+             obj.push(objData[0]);
+          }
+          else if(doc_package.additionalstorage>0){
+             var objStorage= [{"tag":"sorage","feature": "Additional storage","amount": $scope.storageRate*doc_package.additionalstorage,"quantity":doc_package.additionalstorage,"action":"add"}];  
+             obj.push(objStorage[0]);
+          }
+          else{
+              
+          }
+          
+          
+                        var pkgObj = {
+                            "plan": {
+                                "attributes":obj,
+                                "subscription": "month",
+                                "quantity": 1
+                            }
+                        }
+        
+                /*var pkgObj = {
+                    "plan": {
+                        "attributes": [{
+                            "tag": "Package",
+                            "feature": plan.id,
+                            "amount": plan.price,
+                            "quantity": 1,
+                            "action": "add"
+                        }],
+                        "subscription": "month",
+                        "quantity": 1
+                    }
+                }*/
 
-        var pkgObj = {
-            "plan": {
-                "attributes": [{
-                    "tag": "Package",
-                    "feature": plan.id,
-                    "amount": plan.perMonth * plan.numberOfUsers,
-                    "quantity": 1,
-                    "action": "add"
-                }],
-                "subscription": "month",
-                "quantity": 1
-            }
-        }
-
-        $http({
-            //url : "http://staging.digin.io/include/duoapi/paymentgateway/upgradePackage",
-            url: "/include/duoapi/paymentgateway/upgradePackage",
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: pkgObj
-        }).then(function(response) {
-            //console.log(response)
-            if (response.statusText == "OK") {
-                if (response.data.status == true) {
-                    //Success
-                    //displaySuccess("Your package is upgraded successfully...");
-                    $scope.upgradePackageDigin(plan); //*Insert data into digin servers
-                } else {
-                    //fail
-                    displayError(response.data.response);
-                }
-            }
-            $mdDialog.hide();
+                $http({
+                    //url : "http://staging.digin.io/include/duoapi/paymentgateway/upgradePackage",
+                    url: "/include/duoapi/paymentgateway/upgradePackage",
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: pkgObj
+                }).then(function(response) {
+                    //console.log(response)
+                    if (response.statusText == "OK") {
+                        if (response.data.status == true) {
+                            //Success
+                            
+                            db.get('packgedetail').then(function (doc_package) {
+                              // update their age
+                              doc_package.packagename = plan.name;
+                              doc_package.packageprice = plan.price;
+                              doc_package.packageuser = plan.numberOfUsers;
+                              doc_package.packagedata = plan.valData;
+                              doc_package.packagestorage = plan.valStorage;
+                    
+                              $rootScope.packageName=packagename;
+                              $rootScope.packagePrice=packageprice;
+                              $rootScope.defaultUsers=packageuser;
+                              $rootScope.defaultData=packagedata;
+                              $rootScope.defaultStorage=packagestorage;       
+                             
+                              // put them back
+                              return db.put(doc_package);
+                            }).then(function () {
+                              // fetch mittens again
+                              //return db.get('mittens');
+                            }).then(function (doc) {
+                              //console.log(doc);
+                            });
+                                                
+                            $scope.upgradePackageDigin(plan); //*Insert data into digin servers 
+                            //displaySuccess("Your package is upgraded successfully...");
+                        } else {
+                            //fail
+                            displayError(response.data.response);
+                        }
+                    }
+                    $mdDialog.hide();
+          
+          
+          
+                }); 
+        
+        
+        
         }, function(response) {
             //console.log(response)
             displayError("Error while upgrade the package...");
@@ -808,10 +1062,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         })
         .success(function(response) {
             userAdminFactory.getPackageDetail();
-            userAdminFactory.getPackageSummary();
-			$scope.getCardsList();
-            displaySuccess("Your package is upgraded successfully...");
-            
+            //userAdminFactory.getPackageSummary();
+            //$scope.getCardsList();            
         })
         .error(function(data) {
             displayError("Fail to upgrade.");
@@ -860,7 +1112,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         })
         .success(function(response) {
             userAdminFactory.getPackageDetail();
-            userAdminFactory.getPackageSummary();
+            //userAdminFactory.getPackageSummary();
             displaySuccess("Your package is upgraded successfully...");
             
         })
@@ -903,8 +1155,36 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             console.log()
             if (response.statusText == "OK") {
                 if (response.data.status == true) {
+                    
+                    db.get('packgedetail').then(function (doc_package) {
+                    
+                        doc_package.packagename=plan.name,
+                        doc_package.packageprice=plan.price,
+                        doc_package.packageuser=plan.numberOfUsers,
+                        doc_package.packagedata=plan.valData,
+                        doc_package.packagestorage=plan.valStorage,
+                        
+                        
+                    $rootScope.packageName=plan.name;
+                    $rootScope.packagePrice=plan.price;
+                    $rootScope.defaultUsers=plan.numberOfUsers;
+                    $rootScope.defaultData=plan.valData;
+                    $rootScope.defaultStorage=plan.valStorage;
+                        
+                    return db.put(doc_package);
+                    
+                    
+                }).then(function () {
+                    
+                }).then(function (doc) {
+
+                });
+                    
+                    
                     $scope.addPackageDigin(plan); //*Insert data into digin servers
-                    //notifications.toast('1', 'Package upgraded successfully!');
+                    $scope.getCardsList();
+                    displaySuccess("Your package is upgraded successfully...");
+                    
                 } else {
                     notifications.toast('0', response.data.result);
                 }
@@ -2358,7 +2638,7 @@ routerApp.directive('customOnChange', function() {
     };
 });
 
-routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$http', 'notifications', '$state', '$stateParams','Digin_Engine_API','userAdminFactory', function($scope, $rootScope, $mdDialog, $http, notifications, $state, $stateParams,Digin_Engine_API,userAdminFactory) {
+routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$http', 'notifications', '$state', '$stateParams','Digin_Engine_API','userAdminFactory','pouchDB', function($scope, $rootScope, $mdDialog, $http, notifications, $state, $stateParams,Digin_Engine_API,userAdminFactory,pouchDB) {
 
         //#common pre loader
     var displayProgress = function(message) {
@@ -2615,12 +2895,27 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
         })
         .success(function(response) {
             //notifications.toast("1", "AlaCartes added successfully.");
+            
+            var db = new PouchDB('packaging');
+            db.get('packgedetail').then(function (doc_package) {
+                    
+                        doc_package.additionaluser=doc_package.additionaluser+$scope.users,
+                        doc_package.additionaldata=doc_package.additionaldata+$scope.bandwidth,
+                        doc_package.additionalstorage=doc_package.additionalstorage+$scope.storage,
+                        
+                    $rootScope.extraUsersUsers=plan.numberOfUsers;
+                    $rootScope.extraData=plan.valData;
+                    $rootScope.extraStorage=plan.valStorage;
+
+                    return db.put(doc_package);
+            
             displaySuccess("AlaCartes added successfully.");
             $mdDialog.hide();
-            userAdminFactory.getPackageDetail();
-            userAdminFactory.getPackageSummary();
+            //userAdminFactory.getPackageDetail();
+            //userAdminFactory.getPackageSummary();
         })
-        .error(function(data) {
+        
+        }).error(function(data) {
             $mdDialog.hide();
         });
         $mdDialog.hide();
@@ -2678,6 +2973,8 @@ routerApp.directive('countdownn', ['Util', '$interval', function(Util, $interval
 
 
 routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope', function($http, notifications, $rootScope) {
+
+    var db = new PouchDB('packaging');
 
     //#Stop subscription immediate
     this.stopSubscriptionImmediate = function() {
@@ -2763,7 +3060,7 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope', 
 
 
     //#get customer informations
-    this.getCustomerInformations = function() {
+   /* this.getCustomerInformations = function() {
         $http({
             //url : "http://staging.digin.io/include/duoapi/paymentgateway/getCustomerInformations",
             url: "/include/duoapi/paymentgateway/getCustomerInformations",
@@ -2777,6 +3074,16 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope', 
                 if (response.data.status == true) {
                     console.log(response)
                     $rootScope.customer = response.data.response;
+                    
+                    var doc={
+                            "_id":"cusstatus",
+                            "name":"cusstatus",
+                            "status":response.data.status,
+                            "active":response.data.data[0].active
+                            }
+                    db.put(doc)
+                    
+                    
                 } else {
                     $rootScope.customer = {};
                 }
@@ -2786,10 +3093,20 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope', 
             notifications.toast("0", "Error occured while retriving the account detail.");
         })
 
-    }
+    }*/
 
     //#Check subscription
-    this.checkSubscription = function() {
+    /*this.checkSubscription = function() {
+        var packagename="";
+        var packageprice=0;
+        var packageuser=0;
+        var packagedata=0;
+        var packagestorage=0;
+        var additionaluser=0;
+        var additionaldata=0;
+        var additionalstorage=0;
+    
+    
         $http({
             //url : "http://staging.digin.io/include/duoapi/paymentgateway/checkSubscription",
             url: "/include/duoapi/paymentgateway/checkSubscription",
@@ -2801,13 +3118,107 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope', 
             //console.log(response)
             if (response.statusText == "OK") {
                 $rootScope.custStatus = response.data.status;
-            }
+                
+                if(response.data.status){
+                    
+                    for(i=0; i<response.data.response[0].otherInfo.length; i++)
+                    {                   
+                        if(response.data.response[0].otherInfo[i].tag=="Package")
+                        {
+                            packagename=response.data.response[0].otherInfo[i].feature;
+                            packageprice=response.data.response[0].otherInfo[i].amount;
+                            if(packagename==""){
+                                packageuser=1;
+                                packagedata=10;
+                                packagestorage=100;
+                            }
+                            else if(packagename==""){
+                                packageuser=5;
+                                packagedata=10;
+                                packagestorage=100;
+                            }
+                            else if(packagename==""){
+                                packageuser=10;
+                                packagedata=10;
+                                packagestorage=100;
+                            }
+                            else{
+                                packageuser=0;
+                                packagedata=0;
+                                packagestorage=0;
+                            }                                                           
+                        }
+                        else
+                        {
+                            if(response.data.response[0].otherInfo[i].tag=="user")
+                            {
+                                if(response.data.response[0].otherInfo[i].action=="add")
+                                {
+                                    additionaluser=additionaluser+response.data.response[0].otherInfo[i].quantity;
+                                }
+                                if(response.data.response[0].otherInfo[i].action=="remove")
+                                {
+                                    additionaluser=additionaluser-response.data.response[0].otherInfo[i].quantity;
+                                }
+                                
+                            }
+                            if(response.data.response[0].otherInfo[i].tag=="data")
+                            {
+                                if(response.data.response[0].otherInfo[i].action=="add")
+                                {
+                                    additionaldata=additionaluser+response.data.response[0].otherInfo[i].quantity;
+                                }
+                                if(response.data.response[0].otherInfo[i].action=="remove")
+                                {
+                                    additionaldata=additionaluser-response.data.response[0].otherInfo[i].quantity;
+                                }
+                            }
+                            if(response.data.response[0].otherInfo[i].tag=="storage")
+                            {
+                                if(response.data.response[0].otherInfo[i].action=="add")
+                                {
+                                    additionalstorage=additionaluser+response.data.response[0].otherInfo[i].quantity;
+                                }
+                                if(response.data.response[0].otherInfo[i].action=="remove")
+                                {
+                                    additionalstorage=additionaluser-response.data.response[0].otherInfo[i].quantity;
+                                }
+                            }
+                            
+                        }   
+                    }
+            
+                }
+            
+                var doc={
+                        "_id":"packgedetail",
+                        "name":"packgedetail",
+                        "packagename":packagename,
+                        "packageprice":packageprice,
+                        "packageuser":packageuser,
+                        "packagedata":packagedata,
+                        "packagestorage":packagestorage,
+                        "additionaluser":additionaluser,
+                        "additionaldata":additionaldata,
+                        "additionalstorage":additionalstorage
+                        }
+                db.put(doc);
+                
+                var doc={
+                        "_id":"chkstatus",
+                        "name":"chkstatus",
+                        "status":response.data.status,
+                        "paystatus":response.data.response[0].status
+                        }
+                db.put(doc);
+            
+            }   
         }, function(response) {
             console.log(response)
             notifications.toast("0", "Error occured while retriving the account detail.");
         })
 
-    }
+    }*/
 
 }]);
 

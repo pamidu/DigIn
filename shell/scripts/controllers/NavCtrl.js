@@ -567,6 +567,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
 
         }
+        
         $rootScope.goDashboard = function (dashboard) {
 
             layoutManager.headerMenuToggle(true);
@@ -642,6 +643,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             $rootScope.selectedPageIndx = 0;
                             $rootScope.selectedPage = 1;
 
+
+                            //set deletioins
+                            data.Result["deletions"] = {
+                                "componentIDs": [],
+                                "pageIDs": [],
+                                "widgetIDs": []
+                            };
                             //insert the new dashboard in to pouch DB
                             pouchDbServices.insertPouchDB(data.Result,null); 
 

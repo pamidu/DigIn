@@ -159,6 +159,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                     $scope.client = $diginengine.getClient(src);
                     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
                     console.log(user != userInfo);
+                    var folder_name;
                     switch (src) {
                         case "BigQuery":
                             $scope.tables = [];
@@ -211,7 +212,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                         publicFun.fireMessage('0', 'Could not retrieve all the files!');
                                     }
                                 });
-                                $scope.client.getFolders(function(res, status) {
+                                $scope.client.getFolders(folder_name, function(res, status) {
                                     if (status) {
                                         folders = res;
                                         if (filesFlag) {
@@ -295,7 +296,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                             publicFun.fireMessage('0', 'Could not retrieve all the files!');
                                         }
                                     });
-                                    $scope.client.getFolders(function(res, status) {
+                                    $scope.client.getFolders(folder_name, function(res, status) {
                                         if (status) {
                                             angular.forEach(res,function(data){
                                                 $scope.tables.push({
@@ -366,7 +367,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                         publicFun.fireMessage('0', 'Could not retrieve all the files!');
                                     }
                                 });
-                                $scope.client.getFolders(function(res, status) {
+                                $scope.client.getFolders(folder_name,function(res, status) {
                                     if (status) {
                                         angular.forEach(res,function(data){
                                             $scope.tables.push({

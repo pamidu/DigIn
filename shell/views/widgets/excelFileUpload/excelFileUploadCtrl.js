@@ -11,8 +11,10 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     $scope.selectedPath;
     $scope.schemaCollection = [];
     $scope.progressPercentage = 0;
+    $scope.folderName;
+    $scope.uploadedFiles = [];
     $scope.client = $diginengine.getClient("BigQuery");
-    $scope.client.getFolders(function(res, status) {
+    $scope.client.getFolders($scope.folderName, function(res, status) {
 
         $scope.Folders = res;
 
@@ -66,6 +68,14 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
             return;
 
         } else {
+            if ($scope.selectedPath == "Folder" && uploadFlag == false && $scope.selectedStep == 1) {
+                $scope.uploadedFiles = [];
+                $scope.client.getFolders($scope.folderName, function(res, status) {
+                    if (status){
+                        $scope.uploadedFiles = res;
+                    }
+                });
+            }
 
             //do not exceed into max step
             if ($scope.selectedStep >= $scope.maxStep) {
@@ -160,7 +170,19 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
         var uploadFlag;
         var storeFlag;
+        var duplicateflag = false;
         $scope.schemaCollection = [];
+        angular.forEach($scope.uploadedFiles,function(file) {
+            angular.forEach($scope.files,function(f){
+                if (file == f.name){
+                    duplicateflag = true;
+                }
+            });
+        });
+        if (duplicateflag) {
+            notifications.toast('0',"Cannot upload the same file again!");
+            return;
+        }
         if (files && files.length) {
             $scope.preloader = true;
             $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';

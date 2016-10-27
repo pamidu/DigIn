@@ -68,7 +68,11 @@ if (isset($_GET['e']) && isset($_GET['o'])) {
 				{
 					//header("Location: ".$_SESSION['r']."?securityToken=".$_SESSION["securityToken"]);
 					//var_dump($_SESSION['r']."#/change?o=".$password); exit();
-					header("Location: ".$_SESSION['r']."#/change?o=".$password);
+					//header("Location: ".$_SESSION['r']."#/change?o=".$password);
+					
+					//header("Location: /entry?r=http://www.prod.digin.io/entry/#/change?o=".$password);
+					header("Location: /entry?r=http://www.".$mainDomain."/entry/#/change?o=".$password);
+					
 					session_unset('r');
 					exit();
 				}

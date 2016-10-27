@@ -2,18 +2,18 @@
 
 <?php 
 
-	//var_dump($_SERVER['DOCUMENT_ROOT']) ; exit();
+    //var_dump($_SERVER['DOCUMENT_ROOT']) ; exit();
 
-	 if ($_SERVER['DOCUMENT_ROOT']=="/var/www/html"){
-		require_once($_SERVER['DOCUMENT_ROOT'] . "/include/config.php");
-		require_once($_SERVER['DOCUMENT_ROOT'] . "/include/session.php");
-	 }
-	 else{
-    	require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/config.php");
+     if ($_SERVER['DOCUMENT_ROOT']=="/var/www/html"){
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/include/config.php");
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/include/session.php");
+     }
+     else{
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/config.php");
         require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/session.php");
-	 }
+     }
 
-	INTS();
+    INTS();
 
 ?>
 
@@ -92,7 +92,7 @@
     <link rel="stylesheet" href="bower_components/v-accordion/v-accordion.min.css" type='text/css'/>
     <link rel="stylesheet" href="styles/css/customer-1.0.css" type='text/css'/>
     <link rel="stylesheet" href="styles/css/socialMedFb.css" type="text/css"/>
-	<link rel="stylesheet" href="styles/css/md-steppers.css" type="text/css"/>
+    <link rel="stylesheet" href="styles/css/md-steppers.css" type="text/css"/>
     <link href='https://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
@@ -124,8 +124,8 @@
 </head>
 <body layout="column" ng-cloak>
 
-	<div ui-view layout="column" id="mainContainer" style="height: 100%">
-	</div>
+    <div ui-view layout="column" id="mainContainer" style="height: 100%">
+    </div>
 </body>
 <!--  new changes  -->
 <!-- search end -->

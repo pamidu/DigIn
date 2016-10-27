@@ -77,7 +77,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
     ];
 
-
+    $scope.otherChartConfig =[];
     $scope.mapType = '';
 
     $scope.getCountries = function() {
@@ -1379,10 +1379,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             $scope.chartType = 'Geographical Map';
 
         },
+
         changeType: function() {
             if ($scope.chartType == "Geographical Map") {
 
-
+                $scope.otherChartConfig =[]; 
                 if ($scope.executeQryData.executeMeasures.length < 1 || $scope.executeQryData.executeColumns < 1) {
                     privateFun.fireMessage('0', "Cannot generate " + $scope.chartType + "without minimum one category and series");
                     $scope.MapConfigObj = $scope.initMapConfigObj;
@@ -1427,6 +1428,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
 
                 }
+
                 var d = $scope.highchartsNG.series[0].data;
                 if ($scope.mapconfig.mapType == 'World') {
                     {
@@ -1453,9 +1455,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 d.forEach(function(e) {
                     e["name"] = e.name;
                     e.value = e.y;
-                    delete e.y;
+                 
                 });
-
+                 $scope.otherChartConfig  = copy($scope.highchartsNG); 
+                delete $scope.highchartsNG.series[0].turboThreshold;
                 delete $scope.highchartsNG.xAxis;
                 delete $scope.highchartsNG.yAxis;
                 delete $scope.highchartsNG.legend;
@@ -1568,7 +1571,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 width: 800,
                 height: 660
             };    
-
+            
+            delete $scope.highchartsNG.series[0].turboThreshold;
             $scope.highchartsNG.options.colorAxis.minColor = newValue.minColor;
             $scope.highchartsNG.options.colorAxis.maxColor = newValue.maxColor;
             $scope.highchartsNG.options.colorAxis.min = newValue.min;
@@ -1580,8 +1584,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     $scope.forecast = {
         onInit: function(recon) {
             $scope.highchartsNG = $scope.initHighchartObj;
-            $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
-            if ($scope.widget.widgetData.foreCastObj !== undefined) {
+            $scope.prevChartSize = copy($scope.highchartsNG.size);
+            if ($scope.widget.widgetData.foreCastObj !== undefined) angular.{
                 $scope.forecastObj.paramObj = $scope.widget.widgetData.foreCastObj;
                 $scope.maxDate = moment(new Date($scope.widget.widgetData.maxDate)).format('LL');
                 $scope.minDate = moment(new Date($scope.widget.widgetData.minDate)).format('LL');

@@ -5,12 +5,12 @@
 //     , 'ngToast', 'ngSanitize', 'ngMessages','ngAria']);
 
 var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'configuration'
-    , 'ngToast', 'ngSanitize', 'ngMessages','ngAria']);
+    , 'ngToast', 'ngSanitize', 'ngMessages','ngAria','pouchdb',]);
 
 
 routerApp
     .config(["$httpProvider", "$stateProvider", "$urlRouterProvider",
-        function ($httpProvider, $stateProvider, $urlRouterProvider) {
+        function ($httpProAvider, $stateProvider, $urlRouterProvider) {
 
             $urlRouterProvider.otherwise('/signin');
             $stateProvider
@@ -54,34 +54,191 @@ routerApp
                         requireLogin: false
                     }
                 })
-                
+                .state("registered", {
+                    url: "/registered",
+                    controller: "signup-ctrl",
+                    templateUrl: "completed.php",
+                    data: {
+                        requireLogin: false
+                    }
+                })
         }]);
 
 routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
-        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location','Digin_Tenant',
-        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant) {
+        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location','Digin_Tenant','pouchDB',
+        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant,pouchDB) {
+
+            var db = new PouchDB('login');
+				
+			var doc_login = {
+			  "_id": "login",
+			  "initialLogin": "true"
+			};
+			db.put(doc_login);
+		
+
+            $scope.signindetails = {};
+            $scope.isLoggedin = false;
+            $scope.activated=false;
+            $scope.activatedemail="";
+            localStorage.setItem('termsNconditions',false);
+
+            $scope.error = {
+                isUserName: false,
+                isPwd: false,
+                event: 0,
+                isLoading: false
+            };
+
+            //-----activated user - Signin-----------
+            var activated = ($location.search()).activated;
+            var activatedemail= ($location.search()).id;
+            $scope.activated=false;
+            if(activated==undefined){
+                $scope.activated=false;
+            }
+            else{
+                $scope.activated=true;
+            }
+            
+            $scope.activatedemail="";
+            if(activatedemail==undefined){
+                $scope.activatedemail="";
+            }
+            else{
+                $scope.activatedemail=activatedemail;
+            }
+            //------------------------------------
+
+            
+            $scope.signup = function () {
+                $scope.isLoggedin = false;
+                $state.go('signup');
+            };
+
+            $scope.onClickSignUp = function () {
+                $state.go('signup');
+                $scope.activated=false;
+            };
+
+            $scope.onClickSignIn = function () {
+                $state.go('signin');
+                $scope.activated=false;
+            };
+
+            $scope.onClickForgetPw = function () {
+                $state.go('password');
+            };
+
+            $scope.onClickChangePw = function () {
+                $state.go('change');
+            };
+
+            var mainFun = (function () {
+                return {
+                    fireMsg: function (msgType, content) {
+                        ngToast.dismiss();
+                        var _className;
+                        if (msgType == '0') {
+                            _className = 'danger';
+                        } else if (msgType == '1') {
+                            _className = 'success';
+                        }
+                        ngToast.create({
+                            className: _className,
+                            content: content,
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true,
+                            animation: 'slide',
+                            dismissOnClick: 'true',
+                            timeout: 50000
+                        });
+                    }
+                }
+            })();
+
+
+
+            //'Username password incorrect' User name or password incorrect, please try again. 
+            $scope.login = function () {
+
+                displayProgress();
+                $http({
+                    method: 'POST',
+                    url: 'http://'+Digin_Domain+'/apis/authorization/userauthorization/login',
+                    //url: '/apis/authorization/userauthorization/login',
+                    headers: {'Content-Type': 'application/json'},
+                    data: $scope.signindetails
+                }).success(function (data) {
+                    if (data.Success === true) {
+                        
+
+                        //#check whether user is blocked or not
+                        $scope.checkUsage(data.Data.SecurityToken,data.Data);
+
+                        
+                        /*
+                        //#loggin direct to shell
+                        if(IsLocal==false) { 
+                            //#Added for live servers ------------------------------
+                            $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
+                        }  
+                        else{
+                        //#Added for local host ------------------------------
+                             document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
+                             document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
+                             window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
+                        }
+                        */
+                        
+                        
+                    }
+                    else {
+                        $mdDialog.hide();
+                        if(data.Message=="Email Address is not varified."){
+                            mainFun.fireMsg('0', "This email address is not verified, please verify your email.");
+                        }else if(data.Message.slice(0,22) == "User account is locked")
+                        {
+                            mainFun.fireMsg('0', "Your account is locked, try again in 2 minutes.");
+                        }
+                        else if('Username password incorrect')
+                        {
+                            mainFun.fireMsg('0', "User name or password is incorrect, please try again.");
+                        }
+                        else{
+                            mainFun.fireMsg('0', data.Message);
+                        }
+                    }
+                }).error(function (data) {
+                    console.log(data);
+                    $mdDialog.hide();
+                    mainFun.fireMsg('0', data.Message);
+                });
+            };
+
+            
 
 
             //------------check subscriptions START-------------------------------
-            /*
-            $scope.checkSubscription = function() {
+  
+            $scope.checkSubscription = function(Securitytoken) {
                 $scope.checkStatus = function (cb) {
                     $http({
                         //url : "http://staging.digin.io/include/duoapi/paymentgateway/checkSubscription",
                         url: "/include/duoapi/paymentgateway/checkSubscription",
                         method: "POST",
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(function(response) {
+                        headers: {'Content-Type': 'application/json',
+                                  'securityToken':Securitytoken }
+                    })
+                    .success(function(response) {
                         //console.log(response)
                         if (response.statusText == "OK") {
-                            $rootScope.custStatus = response.data.status;
-                            
+                            $scope.custStatus = response.data.status;
                             cb(true);
                         }
-                    }, function(response) {
+                    }).error(function(error) {
                         console.log(response)
                         cb(false);
                     })
@@ -89,15 +246,54 @@ routerApp
 
                 $scope.checkStatus(function(data){
                     if(data){
-                        
+                        if(!$scope.custStatus){ //if trial, need to chk remaining days
+                            $scope.checkTrialExpiry(Securitytoken);
+                        }
+                        else{//proceed with usage detail to check blocking status
+
+                        }
+
                     }
+                })
                 
             }
-            */
+            
+
+
+   
+
+
+
+
+
 
             //------------check subscriptions END-------------------------------------
 
         
+
+            //#get trial expiry #//
+            $scope.checkTrialExpiry=function(SecurityToken){
+                $http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=" + getCookie('securityToken'))
+                .success(function(data) {
+                    $scope.PackageDetail=data.data.Result;
+                    if($scope.PackageDetail.length>0){ 
+                        for(i=0; i<$scope.PackageDetail.length; i++){
+                            if($scope.PackageDetail[i].package_name=="Free"){
+                                $scope.remainingDays=$scope.PackageDetail[i].remaining_days;
+                            }
+                        }
+                    }
+                    else{
+                    }
+                })
+                .error(function() {
+                    console.log("error");
+                });
+            }
+
+
+
+
 
             //#-***********************************************************************
             $scope.checkUsage = function (SecurityToken,result) {    
@@ -142,7 +338,7 @@ routerApp
                                             .ok('Go to My Account')
                                             .cancel('Exit');
                                             $mdDialog.show(confirm).then(function() {
-                                                //*Go to My Accoun
+                                                //*Go to My Account
                                                 //*If agreed to update direct myAccount 
                                                 $scope.process="myAccount";
                                                 cb(true);
@@ -284,150 +480,11 @@ routerApp
             }
             
 
-        */
-
-            $scope.signindetails = {};
-            $scope.isLoggedin = false;
-            $scope.activated=false;
-            $scope.activatedemail="";
-            localStorage.setItem('termsNconditions',false);
-
-            $scope.error = {
-                isUserName: false,
-                isPwd: false,
-                event: 0,
-                isLoading: false
-            };
-
-            //-----activated user - Signin-----------
-            var activated = ($location.search()).activated;
-            var activatedemail= ($location.search()).id;
-            $scope.activated=false;
-            if(activated==undefined){
-                $scope.activated=false;
-            }
-            else{
-                $scope.activated=true;
-            }
-            
-            $scope.activatedemail="";
-            if(activatedemail==undefined){
-                $scope.activatedemail="";
-            }
-            else{
-                $scope.activatedemail=activatedemail;
-            }
-            //------------------------------------
-
-            
-            $scope.signup = function () {
-                $scope.isLoggedin = false;
-                $state.go('signup');
-            };
-
-            $scope.onClickSignUp = function () {
-                $state.go('signup');
-                $scope.activated=false;
-            };
-
-            $scope.onClickSignIn = function () {
-                $state.go('signin');
-                $scope.activated=false;
-            };
-
-            $scope.onClickForgetPw = function () {
-                $state.go('password');
-            };
-
-            $scope.onClickChangePw = function () {
-                $state.go('change');
-            };
-
-            var mainFun = (function () {
-                return {
-                    fireMsg: function (msgType, content) {
-                        ngToast.dismiss();
-                        var _className;
-                        if (msgType == '0') {
-                            _className = 'danger';
-                        } else if (msgType == '1') {
-                            _className = 'success';
-                        }
-                        ngToast.create({
-                            className: _className,
-                            content: content,
-                            horizontalPosition: 'center',
-                            verticalPosition: 'top',
-                            dismissOnClick: true,
-                            animation: 'slide',
-                            dismissOnClick: 'true',
-                            timeout: 50000
-                        });
-                    }
-                }
-            })();
+        */   
 
 
-            //'Username password incorrect' User name or password incorrect, please try again. 
 
 
-            $scope.login = function () {
-
-                displayProgress();
-                $http({
-                    method: 'POST',
-                    url: 'http://'+Digin_Domain+'/apis/authorization/userauthorization/login',
-                    //url: '/apis/authorization/userauthorization/login',
-                    headers: {'Content-Type': 'application/json'},
-                    data: $scope.signindetails
-                }).success(function (data) {
-                    if (data.Success === true) {
-                        
-
-                        //#check whether user is blocked or not
-                        $scope.checkUsage(data.Data.SecurityToken,data.Data);
-
-                        
-                        /*
-                        //#loggin direct to shell
-                        if(IsLocal==false) { 
-                            //#Added for live servers ------------------------------
-                            $window.location.href = "/s.php?securityToken=" + data.Data.SecurityToken;
-                        }  
-                        else{
-                        //#Added for local host ------------------------------
-                             document.cookie = "securityToken=" + data.Data.SecurityToken + "; path=/";
-                             document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
-                             window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
-                        }
-                        */
-                        
-                        
-                    }
-                    else {
-                        $mdDialog.hide();
-                        if(data.Message=="Email Address is not varified."){
-                            mainFun.fireMsg('0', "This email address is not verified, please verify your email.");
-                        }else if(data.Message.slice(0,22) == "User account is locked")
-                        {
-                            mainFun.fireMsg('0', "Your account is locked, try again in 2 minutes.");
-                        }
-                        else if('Username password incorrect')
-                        {
-                            mainFun.fireMsg('0', "User name or password is incorrect, please try again.");
-                        }
-                        else{
-                            mainFun.fireMsg('0', data.Message);
-                        }
-                    }
-                }).error(function (data) {
-                    console.log(data);
-                    $mdDialog.hide();
-                    mainFun.fireMsg('0', data.Message);
-                });
-            };
-
-            
             /*$scope.createDataSet = function (secToken) {
                 //displayProgress('Processing, please wait...!');
                 $scope.data = {"db": "bigquery"}
@@ -482,15 +539,15 @@ routerApp
 
 
 
-        $scope.isUserExist = function (email, cb) {
-            $http.get('/auth/GetUser/' + email)
-                .success(function (response) {
-                    cb(true);
-                }).error(function (error) {
-                //alert("Fail !"); 
-                cb(false);
-            });
-        }
+            $scope.isUserExist = function (email, cb) {
+                $http.get('/auth/GetUser/' + email)
+                    .success(function (response) {
+                        cb(true);
+                    }).error(function (error) {
+                    //alert("Fail !"); 
+                    cb(false);
+                });
+            }
 
 
 
@@ -819,12 +876,15 @@ routerApp
                             if (response.Success === true) {
                                 $mdDialog.hide();
 
-                                mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
-                                //mainFun.dataClear();
 
+                                $state.go('registered');
+
+                                /*
+                                mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
                                 $timeout(function () {
                                        window.location = "http://"+Digin_Domain+"/entry";
                                 }, 5000);
+                                */
 
                                
                             }
@@ -879,14 +939,15 @@ routerApp
                                 }
                                 else{
                                     $mdDialog.hide();
+                                    $state.go('registered');    
+
+                                    /*
                                     mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
-                                    
                                     $timeout(function () {
                                        window.location = "http://"+Digin_Domain+"/entry";
                                     }, 5000);
+                                    */
                                     
-                                    //mainFun.dataClear();
-                                    //window.location = "http://"+Digin_Domain+"/entry";
 
                                 }
                             }

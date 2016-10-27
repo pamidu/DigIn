@@ -5,10 +5,10 @@
  */
 routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '$mdSidenav', '$log',
     'CommonDataSrc', '$mdDialog', '$rootScope', '$http', 'Digin_Engine_API',
-    '$diginengine', 'ngToast', '$window', '$state', '$csContainer', 'Upload', '$timeout', 'Digin_Domain', '$diginurls',
+    '$diginengine', 'ngToast', '$window', '$state', '$csContainer', 'Upload', '$timeout', 'Digin_Domain', '$diginurls', 'saveDashboardService',
     function($scope, $filter, $controller, $mdSidenav, $log, CommonDataSrc,
         $mdDialog, $rootScope, $http, Digin_Engine_API,
-         $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout, Digin_Domain, $diginurls) {
+         $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout, Digin_Domain, $diginurls, saveDashboardService) {
 
         $scope.datasources = [{
             name: "MSSQL",
@@ -122,6 +122,17 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
         var user = "";
         var isBQInitial = true;
         var isMSSQLInitial = true;
+
+        $scope.generateDashboardName = function() {
+            $rootScope.dashboard["compName"] = "temp_dashboard" + Math.floor(Math.random() * (100 - 10 + 1) + 10).toString();
+            var noDuplicate = saveDashboardService.checkDashboardName($rootScope.dashboard.compName);
+            if (noDuplicate) {
+                return;
+            } else {
+                $scope.generateDashboardName();
+            }
+        };
+
         //Update damith
         //UI version 1.0
         //select source tab
@@ -826,6 +837,28 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                         //  $('.blut-search-toggele').removeClass('go-up').addClass('go-down');
                         $('#content1').removeClass('content-m-top40').addClass('content-m-top0');
                         $scope.headerMenuToggle = false;
+                    // save the dashboard if it contains any widget
+                    var saveFlag = false;
+                    if ($rootScope.userSettings.components == "true") {
+                        if ($rootScope.dashboard.pages.length > 0){
+                            if ($rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.length > 0){
+                                angular.forEach($rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets,function(widget){
+                                    if (widget.widgetID.substr(0, 4) == "temp") {
+                                        saveFlag = true;
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    if(saveFlag){
+                        if ($rootScope.dashboard.compName === undefined || $rootScope.dashboard.compName === null || $rootScope.dashboard.compName == "") {
+                            $scope.generateDashboardName();
+                            console.log("new dashboard");
+                        } else {
+                            console.log("saved dashboard");
+                        }
+                        saveDashboardService.saveDashboard($rootScope.dashboard.compName,300,'designView',$scope);
+                    }
                 //if number of widgets are lesser than 6
                 var widgetLimit = 10;
                 if($rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.length < widgetLimit)

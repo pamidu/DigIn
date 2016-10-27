@@ -570,9 +570,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         
         $rootScope.goDashboard = function (dashboard) {
 
-            layoutManager.headerMenuToggle(true);
             $rootScope.currentView = "Dashboards || " + dashboard.dashboardName;
-            $scope.openSearchBar(); 
+            //$scope.openSearchBar(); 
             console.log($scope.dashboards);
             console.log("dash item", dashboard);
             $rootScope.page_id = "";
@@ -607,6 +606,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             var widget = $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[i];
                             if (typeof(widget.widgetData.commonSrc) != "undefined") {
                                 widget.widgetData.syncState = true;
+                                $scope.$apply();
                             }
                         }
 
@@ -666,6 +666,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                     filterService.clearFilters(widget);                                    
                                     if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
                                         $qbuilder.sync(widget.widgetData, function (data) {
+                                            widget.widgetData.syncState = true;
+                                            $scope.$apply();
                                         });
 
                                     }

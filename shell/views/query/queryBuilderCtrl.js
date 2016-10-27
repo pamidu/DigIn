@@ -1159,12 +1159,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             $scope.eventHndler.isMainLoading = false;
             $rootScope.selectedPageIndx = $rootScope.selectedPage - 1;
             //check if dashboard should be explicitly saved
-            if ($rootScope.userSettings.components == true){
-
-            }
-            $state.go('home.Dashboards');
+            $state.go('home.Dashboards');          
         }, 1000);
     };
+    
     //chart functions
     $scope.highCharts = {
         onInit: function(recon) {

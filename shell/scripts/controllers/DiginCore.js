@@ -60,27 +60,15 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             }
         });
 
-          
             $scope.updateRealtime = function(){
 
             $scope.temp = 1770697;
 
             $interval(function () {
                 //var ranId =$scope.random();
-                    var x =  Math.floor(Math.random() * 10) + 1;
-                    $scope.temp = $scope.temp + x;
-
-                    $scope.value = numberWithCommas($scope.temp);
-                    
-                    // $http.get('http://digin.io:1929/executeQuery?db=BigQuery&query=select%20sum(834770697%2Bsum(product_quantity))%20qty%20from%20digin_duosoftware_com.orders_RT&ranId='+ranId+'&SecurityToken=cc9ccbac6a952a498c5328c35d01d988')
-                    // .success(function(data) {
-                    //      //$scope.value = numberWithCommas(data.Result[0].qty);
-                         
-                    // })
-                    // .error(function(err) {
-                          
-                    // });  
-
+                var x =  Math.floor(Math.random() * 10) + 1;
+                $scope.temp = $scope.temp + x;
+                $scope.value = numberWithCommas($scope.temp);
             }, 3000);
 
         }
@@ -881,7 +869,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
         }
 
-
         $scope.d3chartBtnClick = function(widget) {
 
             var d3btnTemp = widget.d3chartBtn;
@@ -925,8 +912,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
         };
 
         $scope.widInit = function(widget) {
-
-
             widget.isD3chart = false;
             widget.d3chartBtn = false;
             switch (widget.widgetName) {

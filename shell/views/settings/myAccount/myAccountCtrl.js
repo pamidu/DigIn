@@ -28,7 +28,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     //#Get customer status as active - true || false #//
     //paymentGatewaySvc.checkSubscription();
-
+paymentGatewaySvc.checkSubscription();
     
     //#Get customer detail#//
     //paymentGatewaySvc.getCustomerInformations();
@@ -78,7 +78,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     
     //#Check subscription ----------------------------------------------------------
     //$scope.checkSubscription = function() {
-        var packagename="";
+      /*  var packagename="";
         var packageprice=0;
         var packageuser=0;
         var packagedata=0;
@@ -196,22 +196,24 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                         "paystatus":response.data.response[0].status
                         }
                 db.put(doc);
-                    
-            $scope.packageName=packagename;
-            $scope.packagePrice=packageprice;
-            $scope.defaultUsers=packageuser;
-            $scope.defaultData=packagedata;
-            $scope.defaultStorage=packagestorage;
-            $scope.extraUsers=additionaluser;
-            $scope.extraData=additionaldata;
-            $scope.extraStorage=additionalstorage;
+
+            
+            $rootScope.packageName=packagename;
+            $rootScope.packagePrice=packageprice;
+            $rootScope.defaultUsers=packageuser;
+            $rootScope.defaultData=packagedata;
+            $rootScope.defaultStorage=packagestorage;
+            $rootScope.extraUsers=additionaluser;
+            $rootScope.extraData=additionaldata;
+            $rootScope.extraStorage=additionalstorage;
+            
             
             }   
         }, function(response) {
             console.log(response)
             notifications.toast("0", "Error occured while retriving the account detail.");
         })
-
+*/
    // }
 //--------------------------------------------------------  
     
@@ -925,19 +927,15 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
              var objUser= [{"tag":"user","feature": "Additional users","amount": $scope.usersRate*doc_package.additionaluser,"quantity":doc_package.additionaluser,"action":"add"}];
              obj.push(objUser[0]);
           }
-          else if(doc_package.additionaldata>0){
+          if(doc_package.additionaldata>0){
              var objData= [{"tag":"data","feature": "Additional data","amount": $scope.dataRate*doc_package.additionaldata,"quantity":doc_package.additionaldata,"action":"add"}];
              obj.push(objData[0]);
           }
-          else if(doc_package.additionalstorage>0){
+          if(doc_package.additionalstorage>0){
              var objStorage= [{"tag":"sorage","feature": "Additional storage","amount": $scope.storageRate*doc_package.additionalstorage,"quantity":doc_package.additionalstorage,"action":"add"}];  
              obj.push(objStorage[0]);
           }
-          else{
-              
-          }
-          
-          
+         
                         var pkgObj = {
                             "plan": {
                                 "attributes":obj,
@@ -982,11 +980,11 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                               doc_package.packagedata = plan.valData;
                               doc_package.packagestorage = plan.valStorage;
                     
-                              $rootScope.packageName=packagename;
-                              $rootScope.packagePrice=packageprice;
-                              $rootScope.defaultUsers=packageuser;
-                              $rootScope.defaultData=packagedata;
-                              $rootScope.defaultStorage=packagestorage;       
+                              $rootScope.packageName=plan.name;
+                              $rootScope.packagePrice=plan.price;
+                              $rootScope.defaultUsers=plan.numberOfUsers;
+                              $rootScope.defaultData=plan.valData;
+                              $rootScope.defaultStorage=plan.valStorage;       
                              
                               // put them back
                               return db.put(doc_package);
@@ -1179,7 +1177,28 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                 }).then(function (doc) {
 
                 });
-                    
+                
+                //-----cust detail update
+                
+                            db.get('cusstatus').then(function (doc_cust) {
+                              // update their age
+                              doc_cust.status = true;
+                              doc_cust.active = 1;
+
+                              $rootScope.packageName=packagename;
+                              $rootScope.packagePrice=packageprice;
+                              $rootScope.defaultUsers=packageuser;
+                              $rootScope.defaultData=packagedata;
+                              $rootScope.defaultStorage=packagestorage;       
+                             
+                              // put them back
+                              return db.put(doc_cust);
+                            }).then(function () {
+
+                            }).then(function (doc) {
+                            });
+                
+                   //------------- 
                     
                     $scope.addPackageDigin(plan); //*Insert data into digin servers
                     $scope.getCardsList();
@@ -2840,8 +2859,8 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                 "package_id":null,
                 "package_name":"additional",
                 "package_attribute": "users",
-                "package_value": $scope.users,
-                "package_price":$scope.users * $scope.usersRate,
+                "package_value": parseInt($scope.users),
+                "package_price": parseInt($scope.users) * $scope.usersRate,
                 "is_default":false,
                 "is_new": true
                 }];
@@ -2849,8 +2868,8 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                 "package_id":null,
                 "package_name":"additional",
                 "package_attribute": "storage",
-                "package_value":$scope.storage,
-                "package_price":$scope.storage * $scope.storageRate,
+                "package_value":parseInt($scope.storage),
+                "package_price":parseInt($scope.storage) * $scope.storageRate,
                 "is_default":false ,
                 "is_new":true
                 }];
@@ -2858,32 +2877,33 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                 "package_id":null,
                 "package_name":"additional",
                 "package_attribute": "data",
-                "package_value":$scope.bandwidth,
-                "package_price": $scope.bandwidth * $scope.bandwithRate,
+                "package_value":parseInt($scope.bandwidth),
+                "package_price": parseInt($scope.bandwidth) * $scope.bandwithRate,
                 "is_default":false ,
                 "is_new":true
                 }];
 
             var obj = [];
-            if (!$scope.users == "" || $scope.users == undefined || $scope.users == "0") {
+            if (!$scope.users == "" || !$scope.users == undefined || !$scope.users == "0") {
                 obj.push(users[0]);
-            }
-            if (!$scope.storage == "" || $scope.storage == undefined || $scope.users == "0") {
+            }else{$scope.users =0;}
+            if (!$scope.storage == "" || !$scope.storage == undefined || !$scope.storage == "0") {
                 obj.push(storage[0]);
-            }
-            if (!$scope.bandwidth == "" || $scope.bandwidth == undefined || $scope.users == "0") {
+            }else{$scope.storage =0;}
+            if (!$scope.bandwidth == "" || !$scope.bandwidth == undefined || !$scope.bandwidth == "0") {
                 obj.push(bandwidth[0]);
-            }
+            }else{$scope.bandwidth =0;}
 
             var pkgObj = obj
 
-            $scope.updatePackage(pkgObj);
+            $scope.updatePackage(pkgObj,$scope.users,$scope.bandwidth,$scope.storage);
         }
     }
     
     
+    
     //#Update package*// 
-    $scope.updatePackage = function(pkgObj) {                               
+    $scope.updatePackage = function(pkgObj,user,data,storage) {                               
         $http({
             method: 'POST',
             url: Digin_Engine_API + 'activate_packages/',
@@ -2897,23 +2917,59 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
             //notifications.toast("1", "AlaCartes added successfully.");
             
             var db = new PouchDB('packaging');
-            db.get('packgedetail').then(function (doc_package) {
+           /* db.get('packgedetail').then(function (doc_package) {
                     
-                        doc_package.additionaluser=doc_package.additionaluser+$scope.users,
-                        doc_package.additionaldata=doc_package.additionaldata+$scope.bandwidth,
-                        doc_package.additionalstorage=doc_package.additionalstorage+$scope.storage,
+                        doc_package.additionaluser=parseInt(doc_package.additionaluser)+parseInt(user);
+                        doc_package.additionaldata=parseInt(doc_package.additionaldata)+parseInt(data);
+                        doc_package.additionalstorage=parseInt(doc_package.additionalstorage)+parseInt(storage);
                         
-                    $rootScope.extraUsersUsers=plan.numberOfUsers;
-                    $rootScope.extraData=plan.valData;
-                    $rootScope.extraStorage=plan.valStorage;
+                    $rootScope.extraUser=doc_package.additionaluser;
+                    $rootScope.extraData=doc_package.additionaldata;
+                    $rootScope.extraStorage=doc_package.additionalstorage;
 
                     return db.put(doc_package);
             
-            displaySuccess("AlaCartes added successfully.");
+            displaySuccess("AlaCartes added successfully."); 
             $mdDialog.hide();
             //userAdminFactory.getPackageDetail();
             //userAdminFactory.getPackageSummary();
-        })
+        })*/
+        
+        
+        //--------
+        db.get('packgedetail').then(function (doc_package) {
+                              // update their age
+                        doc_package.additionaluser=parseInt(doc_package.additionaluser)+parseInt(user);
+                        doc_package.additionaldata=parseInt(doc_package.additionaldata)+parseInt(data);
+                        doc_package.additionalstorage=parseInt(doc_package.additionalstorage)+parseInt(storage);
+                        
+                    $rootScope.extraUser=doc_package.additionaluser;
+                    $rootScope.extraData=doc_package.additionaldata;
+                    $rootScope.extraStorage=doc_package.additionalstorage;
+                             
+                             displaySuccess("AlaCartes added successfully."); 
+                                    $mdDialog.hide();
+                                    //userAdminFactory.getPackageDetail();
+                                    //userAdminFactory.getPackageSummary();
+                             
+                             
+                              // put them back
+                               return db.put(doc_package);
+                               
+                                     
+                               
+                               
+                            }).then(function () {
+                              // fetch mittens again
+                              //return db.get('mittens');
+                            }).then(function (doc) {
+                              //console.log(doc);
+                            });
+        
+
+        //-------------
+        
+        
         
         }).error(function(data) {
             $mdDialog.hide();
@@ -2972,7 +3028,7 @@ routerApp.directive('countdownn', ['Util', '$interval', function(Util, $interval
 }]);
 
 
-routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope', function($http, notifications, $rootScope) {
+routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','pouchDB', function($http, notifications, $rootScope,pouchDB) {
 
     var db = new PouchDB('packaging');
 
@@ -3220,6 +3276,158 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope', 
 
     }*/
 
+    this.checkSubscription = function() {
+        var db = new PouchDB('packaging');
+        var packagename="";
+        var packageprice=0;
+        var packageuser=0;
+        var packagedata=0;
+        var packagestorage=0;
+        var additionaluser=0;
+        var additionaldata=0;
+        var additionalstorage=0;
+    
+    
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/checkSubscription",
+            url: "/include/duoapi/paymentgateway/checkSubscription",
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response) {
+            //console.log(response)
+            if (response.statusText == "OK") {
+                $rootScope.custStatus = response.data.status;
+                
+                if(response.data.status){
+                    
+                    for(i=0; i<response.data.response[0].otherInfo.length; i++)
+                    {                   
+                        if(response.data.response[0].otherInfo[i].tag=="Package")
+                        {
+                            packagename=response.data.response[0].otherInfo[i].feature;
+                            packageprice=response.data.response[0].otherInfo[i].amount;
+                            if(packagename=="personal_space"){
+                                packagename='Personal Space';
+                                packageuser=1;
+                                packagedata=10;
+                                packagestorage=100;
+                            }
+                            else if(packagename=="mini_team"){
+                                packagename='We Are A Mini Team';
+                                packageuser=5;
+                                packagedata=10;
+                                packagestorage=100;
+                            }
+                            else if(packagename=="world"){                              
+                                packagename='We Are the World';
+                                packageuser=10;
+                                packagedata=10;
+                                packagestorage=100;
+                            }
+                            else{
+                                packagename='Free';
+                                packageuser=1;
+                                packagedata=10;
+                                packagestorage=100; 
+                            }                               
+                        }
+                        else
+                        {
+                            if(response.data.response[0].otherInfo[i].tag=="user")
+                            {
+                                if(response.data.response[0].otherInfo[i].action=="add")
+                                {
+                                    additionaluser=additionaluser+response.data.response[0].otherInfo[i].quantity;
+                                }
+                                if(response.data.response[0].otherInfo[i].action=="remove")
+                                {
+                                    additionaluser=additionaluser-response.data.response[0].otherInfo[i].quantity;
+                                }
+                                
+                            }
+                            if(response.data.response[0].otherInfo[i].tag=="data")
+                            {
+                                if(response.data.response[0].otherInfo[i].action=="add")
+                                {
+                                    additionaldata=additionaluser+response.data.response[0].otherInfo[i].quantity;
+                                }
+                                if(response.data.response[0].otherInfo[i].action=="remove")
+                                {
+                                    additionaldata=additionaluser-response.data.response[0].otherInfo[i].quantity;
+                                }
+                            }
+                            if(response.data.response[0].otherInfo[i].tag=="storage")
+                            {
+                                if(response.data.response[0].otherInfo[i].action=="add")
+                                {
+                                    additionalstorage=additionaluser+response.data.response[0].otherInfo[i].quantity;
+                                }
+                                if(response.data.response[0].otherInfo[i].action=="remove")
+                                {
+                                    additionalstorage=additionaluser-response.data.response[0].otherInfo[i].quantity;
+                                }
+                            }
+                            
+                        }   
+                    }           
+                }
+
+                
+                var doc={
+                        "_id":"packgedetail",
+                        "name":"packgedetail",
+                        "packagename":packagename,
+                        "packageprice":packageprice,
+                        "packageuser":packageuser,
+                        "packagedata":packagedata,
+                        "packagestorage":packagestorage,
+                        "additionaluser":additionaluser,
+                        "additionaldata":additionaldata,
+                        "additionalstorage":additionalstorage
+                        }
+                db.put(doc);
+                
+                var doc={
+                        "_id":"chkstatus",
+                        "name":"chkstatus",
+                        "status":response.data.status,
+                        "paystatus":response.data.response[0].status
+                        }
+                db.put(doc);
+               /*     
+            $scope.packageName=packagename;
+            $scope.packagePrice=packageprice;
+            $scope.defaultUsers=packageuser;
+            $scope.defaultData=packagedata;
+            $scope.defaultStorage=packagestorage;
+            $scope.extraUsers=additionaluser;
+            $scope.extraData=additionaldata;
+            $scope.extraStorage=additionalstorage;
+            */
+            
+            $rootScope.packageName=packagename;
+            $rootScope.packagePrice=packageprice;
+            $rootScope.defaultUsers=packageuser;
+            $rootScope.defaultData=packagedata;
+            $rootScope.defaultStorage=packagestorage;
+            $rootScope.extraUsers=additionaluser;
+            $rootScope.extraData=additionaldata;
+            $rootScope.extraStorage=additionalstorage;
+            
+            
+            }   
+        }, function(response) {
+            console.log(response)
+            notifications.toast("0", "Error occured while retriving the account detail.");
+        })
+ }
+    
+    
+    
+    
+    
 }]);
 
 
@@ -3328,6 +3536,12 @@ routerApp.service('diginPackageSvc', ['$http', 'notifications', '$rootScope','Di
     }
     
 */
+    
+    
+
+    
+    
+    
     
 }]);
 

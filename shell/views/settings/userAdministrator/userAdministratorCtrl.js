@@ -1,8 +1,148 @@
-routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state){
+routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state','pouchDB', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state,pouchDB){
 	var vm = this;
 	
 	
+	//
 	
+	// fetch packagedetail
+	var db = new PouchDB('packaging');
+	db.get('packgedetail').then(function (doc_package) {
+	  	  $rootScope.totUsers=doc_package.packageuser+doc_package.additionaluser;
+	});
+	
+
+	 
+	
+	
+	//#Remove user- start------------------------
+    //#common pre loader
+    var displayProgress = function(message) {
+        $mdDialog.show({
+            template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="row" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + '           <span>' + message + '</span>' + '       </div>' + '   </md-dialog-content>' + '</md-dialog>',
+            parent: angular.element(document.body),
+            clickOutsideToClose: false
+        });
+    };
+
+
+    //#Customize existing package
+    $scope.removeUserFromPackage = function() {
+		$scope.usersRate = 5;
+	
+        var pkgObj = {
+              "plan" :  {
+							"features": [{"tag":"user","feature": "Additional users","amount": 5,"quantity":1,"action":"remove"}]
+						}
+					}
+
+        $http({
+            //url : "http://staging.digin.io/include/duoapi/paymentgateway/customizePackage",
+            url: "/include/duoapi/paymentgateway/customizePackage",
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: pkgObj
+        }).then(function(response) {
+            console.log(response)
+            if (response.statusText == "OK") {
+                if (response.data.status == true) {
+                    //Success
+					
+					 $rootScope.totUsers=$rootScope.totUsers-1;
+					 $scope.updatePackage(); //digin service
+					 displaySuccess("User removed successfully."); 
+					 
+					/*
+					//-------- 
+						var db = new PouchDB('packaging');
+						db.get('packgedetail').then(function (doc_package) {
+											  // update their age
+									doc_package.additionaluser=doc_package.additionaluser-1;
+									 $rootScope.totUsers=$rootScope.totUsers-1;
+									$rootScope.extraUser=doc_package.additionaluser;
+									
+                             userAdminFactory.getInvitedUsers(function(data) {});
+							 
+							 displaySuccess("User removed successfully."); 
+							 
+									$mdDialog.hide();
+					
+                              // put them back
+							  
+							   $scope.updatePackage(); //digin service
+							  
+                               return db.put(doc_package);
+							   
+							   		 
+							   
+							   
+                            }).then(function () {
+                              // fetch mittens again
+                              //return db.get('mittens');
+                            }).then(function (doc) {
+                              //console.log(doc);
+                            });
+		
+
+		//-------------  
+		*/      
+                    $mdDialog.hide();
+
+                } else {
+                    //fail
+                    $mdDialog.hide();
+                    notifications.toast("0", "Failed to remove user.");
+
+                }
+            } else {
+
+            }
+        }, function(response) {
+            console.log(response)
+            $mdDialog.hide();
+            notifications.toast("0", "Error occured while customizing the package.");
+
+        })
+    }
+
+	
+    //#Update package in digin engine*// 
+    $scope.updatePackage = function() { 
+
+		  var pkgObj = [{
+"package_id":null,
+"package_name":"additional",
+"package_attribute": "users",
+"package_value":-1,
+"package_price":5,
+"is_default":false,
+"is_new": true
+}];
+	
+        $http({
+            method: 'POST',
+            url: Digin_Engine_API + 'activate_packages/',
+            data: angular.toJson(pkgObj),
+            headers: {
+                'Content-Type': 'application/json',
+                'SecurityToken': getCookie('securityToken')
+            }
+        })
+        .success(function(response) {
+            //notifications.toast("1", "AlaCartes added successfully.");
+            
+        }).error(function(data) {
+            $mdDialog.hide();
+        });
+        $mdDialog.hide();
+    }
+    
+    
+	
+	
+	
+	//#-----remove user end---------------------------------------------------------
 	
 	
 	//*Settings routing ---------------- 
@@ -18,7 +158,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	//userAdminFactory.getTenantUsers();
 	
 	userAdminFactory.getInvitedUsers(function(data) {});
-	userAdminFactory.getPackageSummary();
+	//userAdminFactory.getPackageSummary();
 	
 
 	
@@ -99,26 +239,37 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	
 	$scope.removeUser = function(ev, user)
 	{
-		 var confirm = $mdDialog.confirm()
-          .title('Remove User')
-          .textContent('Are you sure you want to remove this user?')
-          .ariaLabel('remove user')
-          .targetEvent(ev)
-          .ok('Please do it!')
-          .cancel('Cancel');
-		$mdDialog.show(confirm).then(function() {
-			//*send HTTP request and add the below call only if it succeeds
-			userAdminFactory.removeInvitedUser(user.Id);
+		if($rootScope.sharableUsers.length==1){
+			return;
+		}
+		
+				 var confirm = $mdDialog.confirm()
+				  .title('Remove User')
+				  .textContent('Are you sure you want to remove this user?')
+				  .ariaLabel('remove user')
+				  .targetEvent(ev)
+				  .ok('Please do it!')
+				  .cancel('Cancel');
+				$mdDialog.show(confirm).then(function() {
+					//*send HTTP request and add the below call only if it succeeds
+					
+					userAdminFactory.removeInvitedUser(user.Id);
+					
 
-				/*for (i=0; i<$rootScope.sharableUsers.length; i++){
-					if(user.Id==$rootScope.sharableUsers[i].Id){
-						$rootScope.sharableUsers.splice[i];
-					}
-				}*/
-				$rootScope.sharableUsers=[];
-				userAdminFactory.getInvitedUsers(function(data) {});
-				
-		});
+									//$rootScope.sharableUsers=[];
+						//userAdminFactory.getInvitedUsers(function(data) {});
+						
+						/*for (i=0; i<$rootScope.sharableUsers.length; i++){
+							if(user.Id==$rootScope.sharableUsers[i].Id){
+								$rootScope.sharableUsers.splice[i];
+							}
+						}*/
+						
+						$scope.removeUserFromPackage();
+						
+
+						
+				});
 	}
 	
 	$scope.getCatLetter=function(catName){

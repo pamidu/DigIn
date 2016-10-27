@@ -148,6 +148,7 @@
 					</div>
 				</div>
 				
+			
 				<md-divider></md-divider>
 				
 				<div layout-gt-sm="row" class="side-margins">
@@ -160,7 +161,7 @@
 					</md-input-container>
 					<div layout="column" layout-align="center center" flex>
 						<h3 class="alaCarte_h3">{{storage}} GB</h3>
-						<span>{{storageRate}}$ per/</span>
+						<span>{{storageRate}}$ per/GB</span>
 					</div>
 					<div layout="column" layout-align="center center" flex="20">
 						<h2 class="alaCarte_h3_color">{{storage*storageRate}}$</h2>
@@ -168,7 +169,7 @@
 				</div>
 				<md-divider></md-divider>
 				<div layout-gt-sm="row" class="side-margins">
-					<h2 class="alaCarte_color" flex>Bandwidth</h2>
+					<h2 class="alaCarte_color" flex>Data</h2>
 					<md-input-container flex>
 						<span>GB Transferred</span>
 						<!--md-slider class="md-primary" md-discrete ng-model="bandwidth" step="1" min="1" max="100" aria-label="bandwidth"></md-slider-->
@@ -176,7 +177,7 @@
 					</md-input-container>
 					<div layout="column" layout-align="center center" flex>
 						<h3 class="alaCarte_h3">{{bandwidth}} GB</h3>
-						<span>{{bandwithRate}}$ per/</span>
+						<span>{{bandwithRate}}$ per/GB</span>
 					</div>
 					<div layout="column" layout-align="center center" flex="20">
 						<h2 class="alaCarte_h3_color">{{bandwidth*bandwithRate}}$</h2>

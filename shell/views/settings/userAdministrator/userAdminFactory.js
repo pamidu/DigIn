@@ -19,6 +19,8 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 					notifications.finishLoading();
 			 });	
         }, getInvitedUsers: function(callback) {
+			$rootScope.sharableUsers=[];
+			$rootScope.sharableGroups=[];
 				//if(cache.invitedUsers)
 				//{
 				//	callback(cache.invitedUsers);
@@ -116,8 +118,9 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 				if(data.data.Result.length>0){			
 					for(i=0; i<data.data.Result.length; i++)
 					{
-						if(!data.data.Result[i].package_name=="additional")
-						{	
+						if(data.data.Result[i].package_name=="additional")
+						{}
+						else{
 							$rootScope.expiryDate=data.data.Result[i].expiry_datetime;
 							$rootScope.remainingDays=data.data.Result[i].remaining_days;
 							return;

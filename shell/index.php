@@ -5,12 +5,12 @@
     //var_dump($_SERVER['DOCUMENT_ROOT']) ; exit();
 
      if ($_SERVER['DOCUMENT_ROOT']=="/var/www/html"){
-        require_once($_SERVER['DOCUMENT_ROOT'] . "/2016-10-27/include/config.php");
-        require_once($_SERVER['DOCUMENT_ROOT'] . "/2016-10-27/include/session.php");
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/include/config.php");
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/include/session.php");
      }
      else{
-        require_once($_SERVER['DOCUMENT_ROOT'] . "/2016-10-27/Digin/include/config.php");
-        require_once($_SERVER['DOCUMENT_ROOT'] . "/2016-10-27/Digin/include/session.php");
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/config.php");
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/session.php");
      }
 
     INTS();

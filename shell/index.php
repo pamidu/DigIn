@@ -240,7 +240,6 @@
 <!-- services end -->
 
 <script type="text/javascript" src="scripts/services/ShareWidgetService.js"></script>
-<script type="text/javascript" src="scripts/services/pouchDbServices.js"></script>
 
 <!--  directives start  -->
 <script type="application/javascript" src="scripts/directives/commonData.js"></script>
@@ -435,7 +434,6 @@
 <script src="bower_components/angular-google-plus/dist/angular-google-plus.min.js"></script>
 <!-- angular at-table -->
 <script src="bower_components/at-table/dist/angular-table.js"></script>
-<script src="scripts/vendor/markerclusterer.js"></script>
  
 <script type="text/javascript">
     google.load('search', '1');
@@ -457,11 +455,10 @@
     script += '.js"><' + '/script>';
     document.write(script);
 </script>
- 
 <script>
     $(document).ready(function () {
         Layout.init();
-     
+        $('#pagePreLoader').show();
         $('#content1').css("visibility", "hidden");
         $('#getReport').css("visibility", "hidden");
     });

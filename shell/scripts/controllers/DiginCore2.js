@@ -177,6 +177,38 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                 $scope.originalList = newTableData;
 
             }
+            else if($rootScope.widget.widgetName == "forecast"){
+                $scope.fieldData = [];
+                $scope.fieldData[0] = "Date";
+                var forecast_field = $rootScope.widget.widgetData.foreCastObj.f_field;
+
+                for(var i=0;i<$rootScope.widget.widgetData.highchartsNG.series.length; i++ ){
+                    if(typeof $rootScope.widget.widgetData.highchartsNG.series[i].name != "undefined")
+                        nameOfFeild = $rootScope.widget.widgetData.highchartsNG.series[i].name +"_"+forecast_field;
+                    else
+                        nameOfFeild = forecast_field;
+                    $scope.fieldData[i+1] = nameOfFeild.replace(/\s+/g, '');
+                }
+                var newTableData = [];
+
+                for(var i=0; i<$rootScope.widget.widgetData.highchartsNG.xAxis.categories.length;i++ ){
+                    var newObject = {};
+                    newObject["id"] = i;
+
+                    newObject[$scope.fieldData[0]] = $rootScope.widget.widgetData.highchartsNG.xAxis.categories[i];
+
+                    for(var j = 1; j <$scope.fieldData.length;j++ ){
+                        if($rootScope.widget.widgetData.highchartsNG.series[j-1].data[i] == "" ||
+                           typeof $rootScope.widget.widgetData.highchartsNG.series[j-1].data[i] == "undefined" )
+                            newObject[$scope.fieldData[j]] = 0;
+                        else
+                            newObject[$scope.fieldData[j]] = $rootScope.widget.widgetData.highchartsNG.series[j-1].data[i];
+                    }
+                    newTableData.push(newObject);
+                }
+                $scope.tableData = newTableData;
+                $scope.originalList = newTableData;
+            }
             else if($rootScope.widget.widgetName == "bubble"){
                 $scope.fieldData = [];
                 var newTableData = [];

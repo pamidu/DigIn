@@ -800,7 +800,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             },
             onClickRmvCondition: function(condition, measure) {
                 //alert('record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
-                privateFun.fireMessage('0', 'record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
+                // privateFun.fireMessage('0', 'record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
                 $scope.isPendingRequest = false;
             },
             onClickFilter: function(filter, type) {
@@ -1333,12 +1333,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             }
         },
         removeMea: function(l) {
-            // if (l > 0) $scope.getAggregation();
-            // else {
-            //     //$scope.eventHndler.isLoadingChart = false;
-            //     $scope.executeQryData.executeColumns = [];
-            //     $scope.highchartsNG = $scope.selectedChart.initObj;
-            // }
             // if ($scope.isDrilled) $scope.getDrilledAggregation();
             // else $scope.getAggregation();
             if ($scope.executeQryData.executeColumns.length <= 1) {
@@ -3582,6 +3576,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                         drillObj['cropThreshold'] = drillObj.data.length;
                                         console.log(JSON.stringify(drillObj));
                                         $scope.dataToBeBind.receivedQuery = query;
+                                        $scope.$apply();
                                         chart.addSeriesAsDrilldown(e.point, drillObj);
                                     } else {
                                         alert('request failed due to :' + JSON.stringify(res));

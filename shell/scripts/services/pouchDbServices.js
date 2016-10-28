@@ -127,9 +127,7 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                           console.log(doc);
                       }
                   });
-
         }
-
 
         this.pageSync = function(dashboard){
             dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));

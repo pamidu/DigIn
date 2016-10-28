@@ -598,8 +598,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 view: 'views/query/chart-views/GeoMap.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/mapsettings.html'
-
-
             }
         ]
     };
@@ -1335,12 +1333,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             }
         },
         removeMea: function(l) {
-            if (l > 0) $scope.getAggregation();
-            else {
-                //$scope.eventHndler.isLoadingChart = false;
-                $scope.executeQryData.executeColumns = [];
-                $scope.highchartsNG = $scope.selectedChart.initObj;
-            }
+            // if (l > 0) $scope.getAggregation();
+            // else {
+            //     //$scope.eventHndler.isLoadingChart = false;
+            //     $scope.executeQryData.executeColumns = [];
+            //     $scope.highchartsNG = $scope.selectedChart.initObj;
+            // }
+            // if ($scope.isDrilled) $scope.getDrilledAggregation();
+            // else $scope.getAggregation();
+            if ($scope.executeQryData.executeColumns.length <= 1) {
+                // If there is one category - no drill down
+                $scope.getAggregation();
+            } else {
+                // If there is more than one category - drill down present
+                $scope.getDrilledAggregation();
+            }            
         },
         removeCat: function() {
             // if ($scope.isDrilled) $scope.getDrilledAggregation();
@@ -3640,6 +3647,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 }, highestLevel);
             } else {
                 privateFun.fireMessage('0', res);
+                $scope.isPendingRequest = false;
+                $scope.eventHndler.isLoadingChart = false;                
             }
         });
     };

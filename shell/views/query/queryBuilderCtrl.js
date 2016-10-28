@@ -598,6 +598,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 view: 'views/query/chart-views/GeoMap.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/mapsettings.html'
+
+
             }
         ]
     };
@@ -1157,6 +1159,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         setTimeout(function() {
             $scope.eventHndler.isMainLoading = false;
             $rootScope.selectedPageIndx = $rootScope.selectedPage - 1;
+            //check if dashboard should be explicitly saved
+            if ($rootScope.userSettings.components == true) {
+
+            }
             $state.go('home.Dashboards');
         }, 1000);
     };
@@ -1179,10 +1185,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             if (typeof $scope.highchartsNG === 'undefined') {
                 $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
                 $scope.highchartsNG.title.text = '';
-            } else if (typeof $scope.highchartsNG.series.xAxis === 'undefined') {
-                $scope.highchartsNG = $scope.otherChartConfig;
-                $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
-                $scope.highchartsNG.title.text = '';
+                if (typeof $scope.highchartsNG.xAxis === 'undefined') {
+                    $scope.highchartsNG = $scope.otherChartConfig;
+                    $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
+                    $scope.highchartsNG.title.text = '';
+
+                }
             } else {
                 $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
                 $scope.highchartsNG.title.text = '';
@@ -1333,13 +1341,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             }
         },
         removeMea: function(l) {
-            // if (l > 0) $scope.getAggregation();
-            // else {
-            //     //$scope.eventHndler.isLoadingChart = false;
-            //     $scope.executeQryData.executeColumns = [];
-            //     $scope.highchartsNG = $scope.selectedChart.initObj;
-            // }
-            // if ($scope.isDrilled) $scope.getDrilledAggregation();
+                      // if ($scope.isDrilled) $scope.getDrilledAggregation();
             // else $scope.getAggregation();
             if ($scope.executeQryData.executeColumns.length <= 1) {
                 // If there is one category - no drill down
@@ -1347,8 +1349,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             } else {
                 // If there is more than one category - drill down present
                 $scope.getDrilledAggregation();
-            }            
-        },
+            }        },
         removeCat: function() {
             // if ($scope.isDrilled) $scope.getDrilledAggregation();
             // else $scope.getAggregation();
@@ -1599,7 +1600,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     $scope.forecast = {
         onInit: function(recon) {
             $scope.highchartsNG = $scope.initHighchartObj;
-            $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
+            $scope.prevChartSize = copy($scope.highchartsNG.size);
             if ($scope.widget.widgetData.foreCastObj !== undefined) {
                 $scope.forecastObj.paramObj = $scope.widget.widgetData.foreCastObj;
                 $scope.maxDate = moment(new Date($scope.widget.widgetData.maxDate)).format('LL');
@@ -1923,7 +1924,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             text: ''
                         },
                         tooltip: {
-                            pointFormat: '<b> <span style = "color : {series.color}" >  ● </span> {series.name}: {point.y:,.0f} </b>',
+                            pointFormat: '<b> <span style = "color : {series.color}" >  ? </span> {series.name}: {point.y:,.0f} </b>',
                             useHTML: true
                         }
                     },
@@ -2369,7 +2370,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             text: ''
                         },
                         tooltip: {
-                            pointFormat: '<b> <span style = "color : {series.color}" >  ● </span> {series.name}: {point.y:,.0f} </b>',
+                            pointFormat: '<b> <span style = "color : {series.color}" >  ? </span> {series.name}: {point.y:,.0f} </b>',
                             useHTML: true
                         }
                     },
@@ -3647,8 +3648,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 }, highestLevel);
             } else {
                 privateFun.fireMessage('0', res);
-                $scope.isPendingRequest = false;
-                $scope.eventHndler.isLoadingChart = false;                
             }
         });
     };

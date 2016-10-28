@@ -598,6 +598,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 view: 'views/query/chart-views/GeoMap.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/mapsettings.html'
+
+
             }
         ]
     };
@@ -1157,6 +1159,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         setTimeout(function() {
             $scope.eventHndler.isMainLoading = false;
             $rootScope.selectedPageIndx = $rootScope.selectedPage - 1;
+            //check if dashboard should be explicitly saved
+            if ($rootScope.userSettings.components == true) {
+
+            }
             $state.go('home.Dashboards');
         }, 1000);
     };
@@ -1179,10 +1185,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             if (typeof $scope.highchartsNG === 'undefined') {
                 $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
                 $scope.highchartsNG.title.text = '';
-            } else if (typeof $scope.highchartsNG.series.xAxis === 'undefined') {
-                $scope.highchartsNG = $scope.otherChartConfig;
-                $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
-                $scope.highchartsNG.title.text = '';
+                if (typeof $scope.highchartsNG.xAxis === 'undefined') {
+                    $scope.highchartsNG = $scope.otherChartConfig;
+                    $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
+                    $scope.highchartsNG.title.text = '';
+
+                }
             } else {
                 $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
                 $scope.highchartsNG.title.text = '';
@@ -1341,7 +1349,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             } else {
                 // If there is more than one category - drill down present
                 $scope.getDrilledAggregation();
-            }            
+            }        
         },
         removeCat: function() {
             // if ($scope.isDrilled) $scope.getDrilledAggregation();
@@ -1917,7 +1925,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             text: ''
                         },
                         tooltip: {
-                            pointFormat: '<b> <span style = "color : {series.color}" >  ● </span> {series.name}: {point.y:,.0f} </b>',
                             useHTML: true
                         }
                     },
@@ -2363,7 +2370,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             text: ''
                         },
                         tooltip: {
-                            pointFormat: '<b> <span style = "color : {series.color}" >  ● </span> {series.name}: {point.y:,.0f} </b>',
+                            pointFormat: '<b> <span style = "color : {series.color}" >  ? </span> {series.name}: {point.y:,.0f} </b>',
                             useHTML: true
                         }
                     },

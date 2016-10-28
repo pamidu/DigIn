@@ -3278,6 +3278,7 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
 
     this.checkSubscription = function() {
         var db = new PouchDB('packaging');
+        var db = new PouchDB('cusstatus');
         var packagename="";
         var packageprice=0;
         var packageuser=0;
@@ -3286,6 +3287,7 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
         var additionaluser=0;
         var additionaldata=0;
         var additionalstorage=0;
+        var paystatus="";
     
     
         $http({
@@ -3301,79 +3303,85 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
                 $rootScope.custStatus = response.data.status;
                 
                 if(response.data.status){
-                    
-                    for(i=0; i<response.data.response[0].otherInfo.length; i++)
-                    {                   
-                        if(response.data.response[0].otherInfo[i].tag=="Package")
-                        {
-                            packagename=response.data.response[0].otherInfo[i].feature;
-                            packageprice=response.data.response[0].otherInfo[i].amount;
-                            if(packagename=="personal_space"){
-                                packagename='Personal Space';
-                                packageuser=1;
-                                packagedata=10;
-                                packagestorage=100;
+                    paystatus=response.data.response[0].status;
+                        for(i=0; i<response.data.response[0].otherInfo.length; i++)
+                        {                   
+                            if(response.data.response[0].otherInfo[i].tag=="Package")
+                            {
+                                packagename=response.data.response[0].otherInfo[i].feature;
+                                packageprice=response.data.response[0].otherInfo[i].amount;
+                                if(packagename=="personal_space"){
+                                    packagename='Personal Space';
+                                    packageuser=1;
+                                    packagedata=10;
+                                    packagestorage=100;
+                                }
+                                else if(packagename=="mini_team"){
+                                    packagename='We Are A Mini Team';
+                                    packageuser=5;
+                                    packagedata=10;
+                                    packagestorage=100;
+                                }
+                                else if(packagename=="world"){                              
+                                    packagename='We Are the World';
+                                    packageuser=10;
+                                    packagedata=10;
+                                    packagestorage=100;
+                                }
+                                else{
+                                    packagename='Free';
+                                    packageuser=1;
+                                    packagedata=10;
+                                    packagestorage=100; 
+                                }                               
                             }
-                            else if(packagename=="mini_team"){
-                                packagename='We Are A Mini Team';
-                                packageuser=5;
-                                packagedata=10;
-                                packagestorage=100;
-                            }
-                            else if(packagename=="world"){                              
-                                packagename='We Are the World';
-                                packageuser=10;
-                                packagedata=10;
-                                packagestorage=100;
-                            }
-                            else{
+                            else
+                            {
+                                if(response.data.response[0].otherInfo[i].tag=="user")
+                                {
+                                    if(response.data.response[0].otherInfo[i].action=="add")
+                                    {
+                                        additionaluser=additionaluser+response.data.response[0].otherInfo[i].quantity;
+                                    }
+                                    if(response.data.response[0].otherInfo[i].action=="remove")
+                                    {
+                                        additionaluser=additionaluser-response.data.response[0].otherInfo[i].quantity;
+                                    }
+                                    
+                                }
+                                if(response.data.response[0].otherInfo[i].tag=="data")
+                                {
+                                    if(response.data.response[0].otherInfo[i].action=="add")
+                                    {
+                                        additionaldata=additionaluser+response.data.response[0].otherInfo[i].quantity;
+                                    }
+                                    if(response.data.response[0].otherInfo[i].action=="remove")
+                                    {
+                                        additionaldata=additionaluser-response.data.response[0].otherInfo[i].quantity;
+                                    }
+                                }
+                                if(response.data.response[0].otherInfo[i].tag=="storage")
+                                {
+                                    if(response.data.response[0].otherInfo[i].action=="add")
+                                    {
+                                        additionalstorage=additionaluser+response.data.response[0].otherInfo[i].quantity;
+                                    }
+                                    if(response.data.response[0].otherInfo[i].action=="remove")
+                                    {
+                                        additionalstorage=additionaluser-response.data.response[0].otherInfo[i].quantity;
+                                    }
+                                }
+                                
+                        }   
+                        }           
+                }
+                else{
                                 packagename='Free';
                                 packageuser=1;
                                 packagedata=10;
                                 packagestorage=100; 
-                            }                               
-                        }
-                        else
-                        {
-                            if(response.data.response[0].otherInfo[i].tag=="user")
-                            {
-                                if(response.data.response[0].otherInfo[i].action=="add")
-                                {
-                                    additionaluser=additionaluser+response.data.response[0].otherInfo[i].quantity;
-                                }
-                                if(response.data.response[0].otherInfo[i].action=="remove")
-                                {
-                                    additionaluser=additionaluser-response.data.response[0].otherInfo[i].quantity;
-                                }
-                                
-                            }
-                            if(response.data.response[0].otherInfo[i].tag=="data")
-                            {
-                                if(response.data.response[0].otherInfo[i].action=="add")
-                                {
-                                    additionaldata=additionaluser+response.data.response[0].otherInfo[i].quantity;
-                                }
-                                if(response.data.response[0].otherInfo[i].action=="remove")
-                                {
-                                    additionaldata=additionaluser-response.data.response[0].otherInfo[i].quantity;
-                                }
-                            }
-                            if(response.data.response[0].otherInfo[i].tag=="storage")
-                            {
-                                if(response.data.response[0].otherInfo[i].action=="add")
-                                {
-                                    additionalstorage=additionaluser+response.data.response[0].otherInfo[i].quantity;
-                                }
-                                if(response.data.response[0].otherInfo[i].action=="remove")
-                                {
-                                    additionalstorage=additionaluser-response.data.response[0].otherInfo[i].quantity;
-                                }
-                            }
-                            
-                        }   
-                    }           
+                                paystatus="Free";
                 }
-
                 
                 var doc={
                         "_id":"packgedetail",
@@ -3389,11 +3397,13 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
                         }
                 db.put(doc);
                 
+                
+                
                 var doc={
                         "_id":"chkstatus",
                         "name":"chkstatus",
                         "status":response.data.status,
-                        "paystatus":response.data.response[0].status
+                        "paystatus":paystatus
                         }
                 db.put(doc);
                /*     

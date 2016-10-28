@@ -70,13 +70,13 @@ routerApp
         function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant,pouchDB) {
 
             var db = new PouchDB('login');
-				
-			var doc_login = {
-			  "_id": "login",
-			  "initialLogin": "true"
-			};
-			db.put(doc_login);
-		
+                
+            var doc_login = {
+              "_id": "login",
+              "initialLogin": "true"
+            };
+            db.put(doc_login);
+        
 
             $scope.signindetails = {};
             $scope.isLoggedin = false;
@@ -94,8 +94,8 @@ routerApp
             //-----activated user - Signin-----------
             var activated = ($location.search()).activated;
             //var activatedemail= ($location.search()).id;
-			var activatedemail= Base64.decode(($location.search()).ox);
-			
+            //var activatedemail= Base64.decode(($location.search()).ox);
+            
             $scope.activated=false;
             if(activated==undefined){
                 $scope.activated=false;
@@ -104,13 +104,13 @@ routerApp
                 $scope.activated=true;
             }
             
-            $scope.activatedemail="";
+           /* $scope.activatedemail="";
             if(activatedemail==undefined){
                 $scope.activatedemail="";
             }
             else{
                 $scope.activatedemail=activatedemail;
-            }
+            }*/
             //------------------------------------
 
             
@@ -176,7 +176,7 @@ routerApp
                 }).success(function (data) {
                     if (data.Success === true) {
                         
-						
+                        
 
                         //#check whether user is blocked or not
                         $scope.checkUsage(data.Data.SecurityToken,data.Data);
@@ -275,7 +275,7 @@ routerApp
         
 
             //#get trial expiry #//
-			
+            
             $scope.checkTrialExpiry=function(SecurityToken){
                 $http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=" + getCookie('securityToken'))
                 .success(function(data) {
@@ -288,7 +288,7 @@ routerApp
                         }
                     }
                     else{
-						$scope.remainingDays=30;
+                        $scope.remainingDays=30;
                     }
                 })
                 .error(function() {
@@ -872,7 +872,7 @@ routerApp
                         return re.test(email);
                     },
 
-					
+                    
 
                     acceptRequest:function(email,token){
                         $http.get('/apis/usertenant/tenant/request/accept/' + email + '/' + token, {

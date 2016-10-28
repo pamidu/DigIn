@@ -1015,22 +1015,23 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                             }
                                         }
                                     }
-
-                                    res.forEach(function(key) {
-                                        if (!isLastLevel) {
-                                            drillObj.data.push({
-                                                name: key[nextLevel],
-                                                y: parseFloat(key[drillObj.origName]),
-                                                drilldown: true
-                                            });
-                                        } else {
-                                            drillObj.data.push({
-                                                name: key[nextLevel],
-                                                y: parseFloat(key[drillObj.origName])
-                                            });
-                                        }
-                                    });
-                                    drillObj['cropThreshold'] = drillObj.data.length;
+                                    if (res.length > 0 ) {
+                                        res.forEach(function(key) {
+                                            if (!isLastLevel) {
+                                                drillObj.data.push({
+                                                    name: key[nextLevel],
+                                                    y: parseFloat(key[drillObj.origName]),
+                                                    drilldown: true
+                                                });
+                                            } else {
+                                                drillObj.data.push({
+                                                    name: key[nextLevel],
+                                                    y: parseFloat(key[drillObj.origName])
+                                                });
+                                            }
+                                        });
+                                        drillObj['cropThreshold'] = drillObj.data.length;
+                                    }
                                     chart.addSeriesAsDrilldown(e.point, drillObj);
 
                                 } else {

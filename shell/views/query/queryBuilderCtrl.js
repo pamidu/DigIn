@@ -3524,8 +3524,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                     isLastLevel = false,
                                     selectedSeries = e.point.series.name,
                                     origName = "",
-                                    serName = ""
-                                conStr = "";
+                                    serName = "";
+                                    conStr = "";
                                 // var cat = [];
                                 for (i = 0; i < drillOrdArr.length; i++) {
                                     if (drillOrdArr[i].name == highestLvl) {
@@ -3546,7 +3546,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                 clientObj.getAggData(srcTbl, fields, 100, function(res, status, query) {
                                     if (status) {
                                         // filter only the selected fields from the result returned by the service
-                                        console.log(JSON.stringify(res));
                                         filterService.filterAggData(res, $scope.sourceData.filterFields);
                                         angular.forEach($scope.highchartsNG.series, function(series) {
                                             if (series.name == selectedSeries) {
@@ -3566,21 +3565,23 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                                 }
                                             }
                                         }
-                                        res.forEach(function(key) {
-                                            if (!isLastLevel) {
-                                                drillObj.data.push({
-                                                    name: key[nextLevel],
-                                                    y: parseFloat(key[drillObj.origName]),
-                                                    drilldown: true
-                                                });
-                                            } else {
-                                                drillObj.data.push({
-                                                    name: key[nextLevel],
-                                                    y: parseFloat(key[drillObj.origName])
-                                                });
-                                            }
-                                        });
-                                        drillObj['cropThreshold'] = drillObj.data.length;
+                                        if (res.length > 0) {
+                                            res.forEach(function(key) {
+                                                if (!isLastLevel) {
+                                                    drillObj.data.push({
+                                                        name: key[nextLevel],
+                                                        y: parseFloat(key[drillObj.origName]),
+                                                        drilldown: true
+                                                    });
+                                                } else {
+                                                    drillObj.data.push({
+                                                        name: key[nextLevel],
+                                                        y: parseFloat(key[drillObj.origName])
+                                                    });
+                                                }
+                                            });
+                                            drillObj['cropThreshold'] = drillObj.data.length;                                            
+                                        }
                                         console.log(JSON.stringify(drillObj));
                                         $scope.dataToBeBind.receivedQuery = query;
                                         $scope.$apply();

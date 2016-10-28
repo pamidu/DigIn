@@ -986,6 +986,8 @@ paymentGatewaySvc.checkSubscription();
                               $rootScope.defaultData=plan.valData;
                               $rootScope.defaultStorage=plan.valStorage;       
                              
+                             
+                             
                               // put them back
                               return db.put(doc_package);
                             }).then(function () {
@@ -1169,7 +1171,7 @@ paymentGatewaySvc.checkSubscription();
                     $rootScope.defaultData=plan.valData;
                     $rootScope.defaultStorage=plan.valStorage;
                         
-                    return db.put(doc_package);
+                    db.put(doc_package);
                     
                     
                 }).then(function () {
@@ -1192,7 +1194,7 @@ paymentGatewaySvc.checkSubscription();
                               $rootScope.defaultStorage=packagestorage;       
                              
                               // put them back
-                              return db.put(doc_cust);
+                              db.put(doc_cust);
                             }).then(function () {
 
                             }).then(function (doc) {
@@ -1201,6 +1203,7 @@ paymentGatewaySvc.checkSubscription();
                    //------------- 
                     
                     $scope.addPackageDigin(plan); //*Insert data into digin servers
+                    paymentGatewaySvc.checkSubscription();
                     $scope.getCardsList();
                     displaySuccess("Your package is upgraded successfully...");
                     
@@ -2896,7 +2899,7 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
 
             var pkgObj = obj
 
-            $scope.updatePackage(pkgObj,$scope.users,$scope.bandwidth,$scope.storage);
+            $scope.updatePackage(pkgObj,parseInt($scope.users),parseInt($scope.bandwidth),parseInt($scope.storage));
         }
     }
     
@@ -2916,32 +2919,13 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
         .success(function(response) {
             //notifications.toast("1", "AlaCartes added successfully.");
             
-            var db = new PouchDB('packaging');
-           /* db.get('packgedetail').then(function (doc_package) {
-                    
-                        doc_package.additionaluser=parseInt(doc_package.additionaluser)+parseInt(user);
-                        doc_package.additionaldata=parseInt(doc_package.additionaldata)+parseInt(data);
-                        doc_package.additionalstorage=parseInt(doc_package.additionalstorage)+parseInt(storage);
-                        
-                    $rootScope.extraUser=doc_package.additionaluser;
-                    $rootScope.extraData=doc_package.additionaldata;
-                    $rootScope.extraStorage=doc_package.additionalstorage;
-
-                    return db.put(doc_package);
-            
-            displaySuccess("AlaCartes added successfully."); 
-            $mdDialog.hide();
-            //userAdminFactory.getPackageDetail();
-            //userAdminFactory.getPackageSummary();
-        })*/
-        
-        
-        //--------
-        db.get('packgedetail').then(function (doc_package) {
-                              // update their age
-                        doc_package.additionaluser=parseInt(doc_package.additionaluser)+parseInt(user);
-                        doc_package.additionaldata=parseInt(doc_package.additionaldata)+parseInt(data);
-                        doc_package.additionalstorage=parseInt(doc_package.additionalstorage)+parseInt(storage);
+           
+           var db = new PouchDB('packaging');
+           db.get('packgedetail').then(function (doc_package) {
+                              // update
+                                         doc_package.additionaluser=parseInt(doc_package.additionaluser)+user;
+                        doc_package.additionaldata=parseInt(doc_package.additionaldata)+data;
+                        doc_package.additionalstorage=parseInt(doc_package.additionalstorage)+storage;
                         
                     $rootScope.extraUser=doc_package.additionaluser;
                     $rootScope.extraData=doc_package.additionaldata;
@@ -2949,28 +2933,18 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                              
                              displaySuccess("AlaCartes added successfully."); 
                                     $mdDialog.hide();
-                                    //userAdminFactory.getPackageDetail();
-                                    //userAdminFactory.getPackageSummary();
-                             
-                             
+
+
                               // put them back
                                return db.put(doc_package);
-                               
-                                     
-                               
-                               
+
                             }).then(function () {
                               // fetch mittens again
                               //return db.get('mittens');
                             }).then(function (doc) {
                               //console.log(doc);
                             });
-        
-
-        //-------------
-        
-        
-        
+                            
         }).error(function(data) {
             $mdDialog.hide();
         });
@@ -3278,7 +3252,6 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
 
     this.checkSubscription = function() {
         var db = new PouchDB('packaging');
-        var db = new PouchDB('cusstatus');
         var packagename="";
         var packageprice=0;
         var packageuser=0;

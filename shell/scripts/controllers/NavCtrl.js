@@ -611,13 +611,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         }
 
 
-                        ngToast.create({
-                            className: 'success',
-                            content: 'Retrieved dashboards from localStorage',
-                            horizontalPosition: 'center',
-                            verticalPosition: 'top',
-                            dismissOnClick: true
-                        });
+                        // ngToast.create({
+                        //     className: 'success',
+                        //     content: 'Retrieved dashboards from localStorage',
+                        //     horizontalPosition: 'center',
+                        //     verticalPosition: 'top',
+                        //     dismissOnClick: true
+                        // });
                     }
                 });
                 $state.go('home.Dashboards');

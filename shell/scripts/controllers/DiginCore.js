@@ -887,9 +887,9 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             //Clear the filter indication when the chart is re-set
                             page.widgets[i].widgetData.filteredState = false;
                             filterService.clearFilters(page.widgets[i]);
+                            count++;
                             if (page.widgets[i].widgetData.selectedChart.chartType != "d3hierarchy" && page.widgets[i].widgetData.selectedChart.chartType != "d3sunburst") {
                                 $qbuilder.sync(page.widgets[i].widgetData, function (data) {
-                                    count++;
                                     if(page.widgets.length == count){
                                         pouchDbServices.pageSync($rootScope.dashboard);
                                     }
@@ -949,7 +949,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 origName = "",
                                 serName = "",
                                 conStr = "";
-                                var limit;
+                            var limit;
                             // var cat = [];
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
@@ -981,7 +981,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 filterStr = conStr;
                             }
 
-                            console.log(filterStr);
                             //aggregate method
                             clientObj.getAggData(srcTbl, fields, limit, function(res, status, query) {
                                 filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
@@ -1038,7 +1037,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                     alert('request failed due to :' + JSON.stringify(res));
                                     e.preventDefault();
                                 }
-                                console.log(JSON.stringify(res));
                                 widget.widgetData.highchartsNG.xAxis["title"] = {
                                     text: nextLevel
                                 };

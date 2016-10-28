@@ -802,7 +802,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             },
             onClickRmvCondition: function(condition, measure) {
                 //alert('record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
-                privateFun.fireMessage('0', 'record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
+                // privateFun.fireMessage('0', 'record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
                 $scope.isPendingRequest = false;
             },
             onClickFilter: function(filter, type) {
@@ -1159,6 +1159,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         setTimeout(function() {
             $scope.eventHndler.isMainLoading = false;
             $rootScope.selectedPageIndx = $rootScope.selectedPage - 1;
+            //check if dashboard should be explicitly saved
+            if ($rootScope.userSettings.components == true) {
+
+            }
             $state.go('home.Dashboards');
         }, 1000);
     };
@@ -1181,10 +1185,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             if (typeof $scope.highchartsNG === 'undefined') {
                 $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
                 $scope.highchartsNG.title.text = '';
-            } else if (typeof $scope.highchartsNG.series.xAxis === 'undefined') {
-                $scope.highchartsNG = $scope.otherChartConfig;
-                $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
-                $scope.highchartsNG.title.text = '';
+                if (typeof $scope.highchartsNG.xAxis === 'undefined') {
+                    $scope.highchartsNG = $scope.otherChartConfig;
+                    $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
+                    $scope.highchartsNG.title.text = '';
+
+                }
             } else {
                 $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
                 $scope.highchartsNG.title.text = '';
@@ -1335,12 +1341,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             }
         },
         removeMea: function(l) {
-            if (l > 0) $scope.getAggregation();
-            else {
-                //$scope.eventHndler.isLoadingChart = false;
-                $scope.executeQryData.executeColumns = [];
-                $scope.highchartsNG = $scope.selectedChart.initObj;
-            }
+            // if ($scope.isDrilled) $scope.getDrilledAggregation();
+            // else $scope.getAggregation();
+            if ($scope.executeQryData.executeColumns.length <= 1) {
+                // If there is one category - no drill down
+                $scope.getAggregation();
+            } else {
+                // If there is more than one category - drill down present
+                $scope.getDrilledAggregation();
+            }        
         },
         removeCat: function() {
             // if ($scope.isDrilled) $scope.getDrilledAggregation();
@@ -1916,7 +1925,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             text: ''
                         },
                         tooltip: {
-                            pointFormat: '<b> <span style = "color : {series.color}" >  ● </span> {series.name}: {point.y:,.0f} </b>',
                             useHTML: true
                         }
                     },
@@ -2362,7 +2370,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             text: ''
                         },
                         tooltip: {
-                            pointFormat: '<b> <span style = "color : {series.color}" >  ● </span> {series.name}: {point.y:,.0f} </b>',
+                            pointFormat: '<b> <span style = "color : {series.color}" >  ? </span> {series.name}: {point.y:,.0f} </b>',
                             useHTML: true
                         }
                     },
@@ -3575,6 +3583,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                         drillObj['cropThreshold'] = drillObj.data.length;
                                         console.log(JSON.stringify(drillObj));
                                         $scope.dataToBeBind.receivedQuery = query;
+                                        $scope.$apply();
                                         chart.addSeriesAsDrilldown(e.point, drillObj);
                                     } else {
                                         alert('request failed due to :' + JSON.stringify(res));
@@ -3640,6 +3649,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 }, highestLevel);
             } else {
                 privateFun.fireMessage('0', res);
+                $scope.isPendingRequest = false;
+                $scope.eventHndler.isLoadingChart = false;                
             }
         });
     };

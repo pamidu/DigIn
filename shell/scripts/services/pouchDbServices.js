@@ -24,10 +24,10 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                         widget.widgetData.syncState = false;
                                         //Clear the filter indication when the chart is re-set
                                         widget.widgetData.filteredState = false;
-                                        filterService.clearFilters(widget);                                    
+                                        filterService.clearFilters(widget); 
+                                        count++;
                                         if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
                                             $qbuilder.sync(widget.widgetData, function (data) {
-                                               count++;
                                               if(dashboard.pages[0].widgets.length == count){
                                                   dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
                                                   settoPouch(dashboardJson);
@@ -57,10 +57,10 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                         widget.widgetData.syncState = false;
                                         //Clear the filter indication when the chart is re-set
                                         widget.widgetData.filteredState = false;
-                                        filterService.clearFilters(widget);                                    
+                                        filterService.clearFilters(widget); 
+                                        count++;
                                         if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
                                             $qbuilder.sync(widget.widgetData, function (data) {
-                                              count++;
                                               if(dashboard.pages[0].widgets.length == count){
                                                   dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
                                                   settoPouch(dashboardJson);
@@ -127,9 +127,7 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                           console.log(doc);
                       }
                   });
-
         }
-
 
         this.pageSync = function(dashboard){
             dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));

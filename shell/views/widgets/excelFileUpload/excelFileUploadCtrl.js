@@ -172,32 +172,54 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     }
 
 
+    $scope.validate = function(files) {
+        if ($scope.selectedPath == "Folder") {
+            var duplicateflag = false;
+            angular.forEach(files,function(file) {
+                angular.forEach($scope.uploadedFiles,function(f){
+                    if (file.name == f){
+                        duplicateflag = true;
+                    }
+                });
+            });
+            if (duplicateflag) {
+                $scope.showCOnfirmBox(files,$scope);
+            } else {
+                $scope.upload(files);
+            }
+        } else {
+            $scope.upload(files);
+        }
+    }
+
+    $scope.showCOnfirmBox = function(files, scope) {
+        $mdDialog.show({
+            controller: function confirmUpload($scope, $mdDialog) {
+                $scope.confirm = function () {
+                    $mdDialog.cancel();
+                    scope.upload(files);
+                };
+                $scope.cancel = function () {
+                    $mdDialog.cancel();
+                    scope.files = [];
+                    scope.progressPercentage = 0;
+                    scope.uploadPreLoader = false;
+                    scope.preloader = false;                    
+                    return;
+                };
+            },
+            templateUrl: 'views/widgets/excelFileUpload/excelUploadConfirm.html',
+            parent: angular.element(document.body)
+        });
+    }
+
     $scope.upload = function(files) {
-        console.log(files);
         $scope.files = files;
         $scope.progressPercentage = 0;
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
         var uploadFlag;
         var storeFlag;
-        var duplicateflag = false;
         $scope.schemaCollection = [];
-        angular.forEach($scope.uploadedFiles,function(file) {
-            angular.forEach($scope.files,function(f){
-                if (file == f.name){
-                    duplicateflag = true;
-                }
-            });
-        });
-        if (duplicateflag) {
-            ngToast.create({
-                className: 'info',
-                content: 'Warning: You have selected a duplicate file!',
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-                dismissOnClick: true,
-                timeout: 10000
-            });
-        }
         if (files && files.length) {
             $scope.preloader = true;
             $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
@@ -238,16 +260,6 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                         $scope.schemaCollection.push($scope.schema);
                         uploadFlag = true;
                         notifications.toast(1, "Schema retrieved  successfully");
-                        if (duplicateflag) {
-                            ngToast.create({
-                                className: 'info',
-                                content: 'Warning: You have selected a duplicate file!',
-                                horizontalPosition: 'center',
-                                verticalPosition: 'top',
-                                dismissOnClick: true,
-                                timeout: 4000
-                            });
-                        }                        
                     } else {
                         uploadFlag = false;
                         notifications.toast('0', 'Error uploading file!');

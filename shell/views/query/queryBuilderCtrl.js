@@ -1341,6 +1341,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             }
         },
         removeMea: function(l) {
+            
             // if ($scope.isDrilled) $scope.getDrilledAggregation();
             // else $scope.getAggregation();
             if ($scope.executeQryData.executeColumns.length <= 1) {
@@ -1349,6 +1350,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             } else {
                 // If there is more than one category - drill down present
                 $scope.getDrilledAggregation();
+           
             }
         },
         removeCat: function() {
@@ -1601,6 +1603,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     $scope.forecast = {
         onInit: function(recon) {
             $scope.highchartsNG = $scope.initHighchartObj;
+          
             $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
             if ($scope.widget.widgetData.foreCastObj !== undefined) {
                 $scope.forecastObj.paramObj = $scope.widget.widgetData.foreCastObj;
@@ -3543,6 +3546,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                     isLastLevel = false,
                                     selectedSeries = e.point.series.name,
                                     origName = "",
+                               
                                     serName = "";
                                 conStr = "";
                                 // var cat = [];

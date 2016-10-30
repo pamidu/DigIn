@@ -887,13 +887,15 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             //Clear the filter indication when the chart is re-set
                             page.widgets[i].widgetData.filteredState = false;
                             filterService.clearFilters(page.widgets[i]);
-                            count++;
                             if (page.widgets[i].widgetData.selectedChart.chartType != "d3hierarchy" && page.widgets[i].widgetData.selectedChart.chartType != "d3sunburst") {
                                 $qbuilder.sync(page.widgets[i].widgetData, function (data) {
+                                    count++;
                                     if(page.widgets.length == count){
                                         pouchDbServices.pageSync($rootScope.dashboard);
                                     }
                                 });
+                            }else{
+                                count++;
                             }
                         }
                     }
@@ -949,7 +951,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 origName = "",
                                 serName = "",
                                 conStr = "";
-                                var limit;
+                            var limit;
                             // var cat = [];
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
@@ -981,7 +983,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 filterStr = conStr;
                             }
 
-                            console.log(filterStr);
                             //aggregate method
                             clientObj.getAggData(srcTbl, fields, limit, function(res, status, query) {
                                 filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
@@ -1016,29 +1017,29 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                             }
                                         }
                                     }
-
-                                    res.forEach(function(key) {
-                                        if (!isLastLevel) {
-                                            drillObj.data.push({
-                                                name: key[nextLevel],
-                                                y: parseFloat(key[drillObj.origName]),
-                                                drilldown: true
-                                            });
-                                        } else {
-                                            drillObj.data.push({
-                                                name: key[nextLevel],
-                                                y: parseFloat(key[drillObj.origName])
-                                            });
-                                        }
-                                    });
-                                    drillObj['cropThreshold'] = drillObj.data.length;
+                                    if (res.length > 0 ) {
+                                        res.forEach(function(key) {
+                                            if (!isLastLevel) {
+                                                drillObj.data.push({
+                                                    name: key[nextLevel],
+                                                    y: parseFloat(key[drillObj.origName]),
+                                                    drilldown: true
+                                                });
+                                            } else {
+                                                drillObj.data.push({
+                                                    name: key[nextLevel],
+                                                    y: parseFloat(key[drillObj.origName])
+                                                });
+                                            }
+                                        });
+                                        drillObj['cropThreshold'] = drillObj.data.length;
+                                    }
                                     chart.addSeriesAsDrilldown(e.point, drillObj);
 
                                 } else {
                                     alert('request failed due to :' + JSON.stringify(res));
                                     e.preventDefault();
                                 }
-                                console.log(JSON.stringify(res));
                                 widget.widgetData.highchartsNG.xAxis["title"] = {
                                     text: nextLevel
                                 };

@@ -2,7 +2,7 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
 
      var db = new pouchDB('dashboard');
 
-     this.insertPouchDB = function(dashboardObject,dashboardId){
+     this.insertPouchDB = function(dashboardObject,dashboardId,cb){
 
           if(dashboardObject == null){
               var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
@@ -13,7 +13,7 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                       .success(function (data) {
                           if (data.Is_Success) {
                               var dashboard = angular.fromJson(CircularJSON.stringify(data.Result));
-                              $rootScope.dashboard = dashboard;
+                              
                                 var count=0;
                                 var index=0;
                                 for (var i = 0; i < dashboard.pages[index].widgets.length; i++) {
@@ -25,15 +25,18 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                         //Clear the filter indication when the chart is re-set
                                         widget.widgetData.filteredState = false;
                                         filterService.clearFilters(widget); 
-                                        count++;
                                         if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
                                             $qbuilder.sync(widget.widgetData, function (data) {
+                                              count++;
                                               if(dashboard.pages[0].widgets.length == count){
                                                   dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
-                                                  settoPouch(dashboardJson);
+                                                  settoPouch(dashboardJson,cb);
+                                                  $rootScope.dashboard = dashboard;
                                                }
                                             });
 
+                                        }else{
+                                          count++;
                                         }
                                     }
                                 }
@@ -58,16 +61,18 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                         //Clear the filter indication when the chart is re-set
                                         widget.widgetData.filteredState = false;
                                         filterService.clearFilters(widget); 
-                                        count++;
                                         if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
                                             $qbuilder.sync(widget.widgetData, function (data) {
+                                              count++;
                                               if(dashboard.pages[0].widgets.length == count){
                                                   dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
-                                                  settoPouch(dashboardJson);
+                                                  settoPouch(dashboardJson,cb);
                                                }
                                               
                                             });
 
+                                        }else{
+                                          count++;
                                         }
                                     }
                                 }
@@ -78,7 +83,7 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
 
 
 
-        var settoPouch = function(dashboard){
+        var settoPouch = function(dashboard,cb){
              // set a new id to a new record to be inserted
               if ( typeof($rootScope.page_id) == "undefined" || $rootScope.page_id == ""){
                   var id = "temp" + Math.floor(Math.random() * 10000000);
@@ -99,9 +104,13 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                   if (err) {
                                       return console.log(err);
                                       $rootScope.privateFun.getAllDashboards();
+                                      
                                   } else {
                                       console.log("Document created Successfully");
                                       $rootScope.privateFun.getAllDashboards();
+                                       if(typeof cb != "undefined"){
+                                        cb();
+                                      }
                                   }
                               });
                             console.log("not found error status is" + err.status);
@@ -122,6 +131,9 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                               } else {
                                   $rootScope.privateFun.getAllDashboards();
                                   console.log("Document updated Successfully");
+                                   if(typeof cb != "undefined"){
+                                        cb();
+                                      }
                               }
                           });
                           console.log(doc);
@@ -131,9 +143,9 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
         }
 
 
-        this.pageSync = function(dashboard){
+        this.pageSync = function(dashboard,cb){
             dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
-            settoPouch(dashboardJson);
+            settoPouch(dashboardJson,cb);
         };
 
 });

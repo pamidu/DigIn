@@ -802,7 +802,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             },
             onClickRmvCondition: function(condition, measure) {
                 //alert('record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
-                privateFun.fireMessage('0', 'record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
+                // privateFun.fireMessage('0', 'record delete function...' + JSON.stringify(condition) + " " + JSON.stringify(measure));
                 $scope.isPendingRequest = false;
             },
             onClickFilter: function(filter, type) {
@@ -1341,7 +1341,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             }
         },
         removeMea: function(l) {
-                      // if ($scope.isDrilled) $scope.getDrilledAggregation();
+            // if ($scope.isDrilled) $scope.getDrilledAggregation();
             // else $scope.getAggregation();
             if ($scope.executeQryData.executeColumns.length <= 1) {
                 // If there is one category - no drill down
@@ -1349,7 +1349,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             } else {
                 // If there is more than one category - drill down present
                 $scope.getDrilledAggregation();
-            }        },
+            }
+        },
         removeCat: function() {
             // if ($scope.isDrilled) $scope.getDrilledAggregation();
             // else $scope.getAggregation();
@@ -1600,7 +1601,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     $scope.forecast = {
         onInit: function(recon) {
             $scope.highchartsNG = $scope.initHighchartObj;
-            $scope.prevChartSize = copy($scope.highchartsNG.size);
+            $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
             if ($scope.widget.widgetData.foreCastObj !== undefined) {
                 $scope.forecastObj.paramObj = $scope.widget.widgetData.foreCastObj;
                 $scope.maxDate = moment(new Date($scope.widget.widgetData.maxDate)).format('LL');
@@ -1924,7 +1925,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             text: ''
                         },
                         tooltip: {
-                            pointFormat: '<b> <span style = "color : {series.color}" >  ? </span> {series.name}: {point.y:,.0f} </b>',
                             useHTML: true
                         }
                     },
@@ -3359,11 +3359,30 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 // filter only the selected fields from the result returned by the service
                 filterService.filterAggData(res, $scope.sourceData.filterFields);
                 $scope.mapResult($scope.selectedCat, res, function(data) {
+
                     $scope.highchartsNG.series = data;
                     if ($scope.chartType != 'Geographical Map') {
+                        if ($scope.selectedCat.toUpperCase() == "DATE") {
+                            $scope.highchartsNG.series[0].data.forEach(function(key) {
+                                    key["x"] = key["name"];
+                                    delete key["name"];
+                                    key["x"] = parseInt(key["x"]);
+                                }),
+                                $scope.highchartsNG.xAxis = {
+                                    dateTimeLabelFormats: {
+                                        day: '%e  %b %Y'
+                                    },
+                                    type: 'datetime',
+                                    labels: {
+                                        format: '{value:%e. %b.}'
+                                    }
+                                }
 
+
+                        }
                         $scope.highchartsNG.xAxis["title"] = {
                             text: $scope.selectedCat
+
                         };
                         $scope.highchartsNG.series.forEach(function(key) {
                             key['turboThreshold'] = key.data.length;
@@ -3524,7 +3543,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                     isLastLevel = false,
                                     selectedSeries = e.point.series.name,
                                     origName = "",
-                                    serName = ""
+                                    serName = "";
                                 conStr = "";
                                 // var cat = [];
                                 for (i = 0; i < drillOrdArr.length; i++) {
@@ -3546,7 +3565,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                 clientObj.getAggData(srcTbl, fields, 100, function(res, status, query) {
                                     if (status) {
                                         // filter only the selected fields from the result returned by the service
-                                        console.log(JSON.stringify(res));
                                         filterService.filterAggData(res, $scope.sourceData.filterFields);
                                         angular.forEach($scope.highchartsNG.series, function(series) {
                                             if (series.name == selectedSeries) {
@@ -3566,23 +3584,26 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                                 }
                                             }
                                         }
-                                        res.forEach(function(key) {
-                                            if (!isLastLevel) {
-                                                drillObj.data.push({
-                                                    name: key[nextLevel],
-                                                    y: parseFloat(key[drillObj.origName]),
-                                                    drilldown: true
-                                                });
-                                            } else {
-                                                drillObj.data.push({
-                                                    name: key[nextLevel],
-                                                    y: parseFloat(key[drillObj.origName])
-                                                });
-                                            }
-                                        });
-                                        drillObj['cropThreshold'] = drillObj.data.length;
+                                        if (res.length > 0) {
+                                            res.forEach(function(key) {
+                                                if (!isLastLevel) {
+                                                    drillObj.data.push({
+                                                        name: key[nextLevel],
+                                                        y: parseFloat(key[drillObj.origName]),
+                                                        drilldown: true
+                                                    });
+                                                } else {
+                                                    drillObj.data.push({
+                                                        name: key[nextLevel],
+                                                        y: parseFloat(key[drillObj.origName])
+                                                    });
+                                                }
+                                            });
+                                            drillObj['cropThreshold'] = drillObj.data.length;
+                                        }
                                         console.log(JSON.stringify(drillObj));
                                         $scope.dataToBeBind.receivedQuery = query;
+                                        $scope.$apply();
                                         chart.addSeriesAsDrilldown(e.point, drillObj);
                                     } else {
                                         alert('request failed due to :' + JSON.stringify(res));
@@ -3648,6 +3669,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 }, highestLevel);
             } else {
                 privateFun.fireMessage('0', res);
+                $scope.isPendingRequest = false;
+                $scope.eventHndler.isLoadingChart = false;
             }
         });
     };

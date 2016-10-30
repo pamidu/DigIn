@@ -42,7 +42,7 @@ routerApp.directive('linearChart', function() {
                 d3.select(divid).selectAll("*").remove();
 
                 svg = d3.select(divid)
-                    .append("svg").attr("viewBox", "0 0  490 490")
+                    .append("svg").attr("viewBox", "0 0  400 400")
                     .attr("width", '100%')
                     .attr("height", '100%');
 

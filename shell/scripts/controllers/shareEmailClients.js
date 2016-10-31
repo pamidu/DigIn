@@ -1,6 +1,15 @@
-routerApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','ShareWidgetService',function ($scope,$mdDialog,widget,ShareWidgetService) {
+routerApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','DashboardName','ShareWidgetService',function ($scope,$mdDialog,widget,DashboardName,ShareWidgetService) {
 
     $scope.widget = widget;
+    $scope.DashboardName = DashboardName;
+    $scope.widgetName="";
+
+    if(typeof $scope.widget.widgetData.widName != "undefined")
+        $scope.widgetName=$scope.widget.widgetData.widName;
+    else
+        $scope.widgetName=$scope.widget.widgetName;
+
+
      $scope.shareOptions = [{
         provider: "Gmail",
         icon: "styles/css/images/icons/gmail.svg"
@@ -23,39 +32,45 @@ routerApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','ShareW
         $mdDialog.hide();
     };
 
-    
-
     $scope.openeMailClent = function(provider) {
         var widget =$scope.widget;
         var URL = ShareWidgetService.getShareWidgetURL(widget,$scope.getreturnEmail,provider);
   
     };
 
-
    $scope.getreturnEmail = function(URL,provider){
 
+
+    var emailSubject = 'DigIn - '+$scope.DashboardName+' : '+$scope.widgetName+'';
+    var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+    var sender = userInfo.Email;
+    var emailBody = 'Hi,%0D%0A%0D%0ACheck Out '+$scope.DashboardName+' : '+$scope.widgetName+' shared by '+sender+'.%0D%0A%0D%0ABrought to you by DigIn.io(link to '+URL+')%0D%0A%0D%0ARegards,%0D%0A%0D%0ADigIn Team.';
+      
       if(provider=="Other"){
             $mdDialog.show({
                 controller: 'localEmailClient',
                 templateUrl: 'views/loginEmail.html',
                 resolve: {},
                 locals: {
-                    URL: URL
+                    URL: URL,
+                    DashboardName:$scope.DashboardName,
+                    widgetName:$scope.widgetName
+
                 }
             })
         }else if(provider=="Gmail"){
 
             //First open up the authentication dialog
             https://mail.google.com/mail/?to=inbox@example.com&bcc=admin@example.com&subject=Hey#compose
-            window.open('https://mail.google.com/mail/?view=cm&fs=1&to=&su=Digin shared a link with u ....&body='+URL+'&bcc=','_blank');
+            window.open('https://mail.google.com/mail/?view=cm&fs=1&to=&su='+emailSubject+'&body='+emailBody+'&bcc=','_blank');
             
         }
         else if(provider=="Yahoo"){
-            window.open('http://compose.mail.yahoo.com/?to=&subject=Digin shared a link with u ....&body='+URL+'','_blank');
+            window.open('http://compose.mail.yahoo.com/?to=&subject='+emailSubject+'&body='+emailBody+'','_blank');
 
         }
         else if(provider=="outlook"){
-            window.location.href ='mailto:?subject=Digin shared a link with u ....&body='+URL+'';
+            window.location.href ='mailto:?subject='+emailSubject+'&body='+emailBody+'';
 
         }
 
@@ -64,13 +79,16 @@ routerApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','ShareW
   
 }]);
 
-routerApp.controller('localEmailClient', ['$scope','$mdDialog','URL','$http','ngToast',function ($scope,$mdDialog,URL,$http,ngToast) {
+routerApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardName','widgetName','$http','ngToast',function ($scope,$mdDialog,URL,DashboardName,widgetName,$http,ngToast) {
 
-    $scope.emailBody=URL,
-    $scope.emailSubject="Digin shared a link with u ....",
+    var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+    var sender = userInfo.Email;
+    $scope.emailBody='Check Out '+DashboardName+' : '+widgetName+' shared by '+sender+'.<br><br>Brought to you by DigIn.io(link to '+URL+')<br><br>Regards,<br><br>DigIn Team.';
+    $scope.emailSubject='DigIn - '+DashboardName+' : '+widgetName+'';
     $scope.emailTo;
     $scope.emailCc;
     var isCClistOk = true;
+    
     $scope.sendEmail=function () {
 
             if(typeof $scope.emailCc != "undefined")
@@ -88,12 +106,13 @@ routerApp.controller('localEmailClient', ['$scope','$mdDialog','URL','$http','ng
                 "Namespace": "com.duosoftware.com",
                 "TemplateID": "T_Email_GENERAL",
                 "DefaultParams": {
+                    
                     "@@CNAME@@": "",
                     "@@TITLE@@": "",
                     "@@MESSAGE@@": $scope.emailBody,
                     "@@CNAME@@": "",
                     "@@APPLICATION@@":"",
-                    "@@FOOTER@@": "Copyright DigIn 2016",
+                    "@@FOOTER@@": "",
                     "@@LOGO@@": ""
                 },
                 "CustomParams": {
@@ -101,8 +120,8 @@ routerApp.controller('localEmailClient', ['$scope','$mdDialog','URL','$http','ng
                     "@@TITLE@@": "",
                     "@@MESSAGE@@": "",
                     "@@CNAME@@": "",
-                    "@@APPLICATION@@": "Digin.io",
-                    "@@FOOTER@@": "Copyright DigIn 2016",
+                    "@@APPLICATION@@": "",
+                    "@@FOOTER@@": "",
                     "@@LOGO@@": ""
                 }
             };

@@ -1,6 +1,7 @@
-routerApp.controller('shareCtrl', ['Socialshare', '$scope', '$mdDialog', 'widget', 'ShareWidgetService', function(Socialshare, $scope, $mdDialog, widget, ShareWidgetService) {
+routerApp.controller('shareCtrl', ['Socialshare', '$scope', '$mdDialog', 'widget','DashboardName', 'ShareWidgetService', function(Socialshare, $scope, $mdDialog, widget,DashboardName, ShareWidgetService) {
 
     $scope.widget = widget;
+    $scope.DashboardName = DashboardName;
     $scope.shareOptions = [{
         provider: "facebook",
         icon: "styles/css/images/icons/facebook.svg"
@@ -30,7 +31,8 @@ routerApp.controller('shareCtrl', ['Socialshare', '$scope', '$mdDialog', 'widget
                 templateUrl: 'views/shareEmailClients.html',
                 resolve: {},
                 locals: {
-                    widget: widget
+                    widget: widget,
+                    DashboardName: DashboardName
                 }
             })
         } else {

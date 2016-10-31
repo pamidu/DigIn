@@ -629,15 +629,22 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             });
         };
         $scope.shareWidget = function(ev, widget){
-            $mdDialog.show({
-                controller: 'shareCtrl',
-                templateUrl: 'views/dashboard-share.html',
-                clickOutsideToClose: true,
-                resolve: {},
-                locals: {
-                    widget: widget
-                }
-            });
+            var dashboardName = $rootScope.dashboard.compName;
+            if(typeof dashboardName != "undefined"){
+                $mdDialog.show({
+                    controller: 'shareCtrl',
+                    templateUrl: 'views/dashboard-share.html',
+                    clickOutsideToClose: true,
+                    resolve: {},
+                    locals: {
+                        widget: widget,
+                        DashboardName:dashboardName
+                    }
+                });
+            }else{
+                notifications.toast('0', 'Please save the dashboard before proceed');
+            }
+        
         }
 
         /*Summary:

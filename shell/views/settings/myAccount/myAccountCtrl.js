@@ -21,7 +21,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     //#Getcurrent Packge Details 
     userAdminFactory.getPackageDetail();
-    userAdminFactory.getTenant(window.location.hostname);
+    //userAdminFactory.getTenant(window.location.hostname);
     //userAdminFactory.getPackageSummary();
 
     //#Get customer detail#//
@@ -51,8 +51,9 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             if (response.statusText == "OK") {
                 if (response.data.status == true) {
                     console.log(response)
-                    $rootScope.customer = response.data.response;
-                    
+                    $rootScope.custStatus = response.data.status;
+                    $rootScope.custActive=response.data.data[0].active;
+
                     var doc={
                             "_id":"cusstatus",
                             "name":"cusstatus",
@@ -63,7 +64,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                     
                     
                 } else {
-                    $rootScope.customer = {};
+                    $rootScope.custStatus = response.data.response;
+                    $rootScope.custActive=0;
                 }
             }
         }, function(response) {
@@ -72,8 +74,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         })
     
     
-    
-    
+   
     //-------------------------------------------------------------------------------
     
     
@@ -1491,12 +1492,24 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             zip: $rootScope.profile_Det.ZipCode
         };
 
-        $scope.name = $rootScope.profile_Det.Name;
-        //$scope.company = $rootScope.profile_Det.Company;
-        
-        $scope.company = $rootScope.company;
-        
+        $scope.name = $rootScope.profile_Det.Name;  
     }
+    
+    
+        $http({
+            url: '/auth/tenant/GetTenant/' + window.location.hostname,
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response) {
+            $scope.company=result.data.OtherData.CompanyName;
+        }, function(response) {
+            notifications.toast("0", "Error occured while retriving the account detail.");
+        })
+    
+    
+
 
     $scope.closeWindow = function() {
         $state.go('home.welcomeSearch');

@@ -213,7 +213,7 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 				notifications.toast(0, "Falied to remove user");
 			});
 			
-		},getTenant: function(tenantId) {
+		}/*,getTenant: function(tenantId) {
              return $http.get('/auth/tenant/GetTenant/' + tenantId, {
 					headers: {'Securitytoken': getCookie('securityToken')}
 				})
@@ -222,11 +222,7 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 				},function errorCallback(response) {
 					
 			 });	
-        }
-		
-	
-	
-		/*,getPackageDetail:function(SecurityToken){//#get package detail#//
+        },getPackageDetail:function(SecurityToken){//#get package detail#//
 			    $http.get('http://192.168.2.61:8080/packages?SecurityToken=62229efc0ec2029844a4a01184814b5b')
 			    //$http.get('http://prod.digin.io:1929/packages?SecurityToken=62229efc0ec2029844a4a01184814b5b')
 			    //$http.get(Digin_Engine_API + "packages?SecurityToken=" + getCookie('securityToken'))

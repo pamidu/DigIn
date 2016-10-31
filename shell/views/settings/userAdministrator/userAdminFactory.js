@@ -212,9 +212,18 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 				console.log(response);
 				notifications.toast(0, "Falied to remove user");
 			});
-		}
+			
+		},getTenant: function(tenantId) {
+             return $http.get('/auth/tenant/GetTenant/' + tenantId, {
+					headers: {'Securitytoken': getCookie('securityToken')}
+				})
+			   .then(function(result) {
+					$rootScope.company=result.data.OtherData.CompanyName;
+				},function errorCallback(response) {
+					
+			 });	
+        }
 		
-	
 	
 	
 		/*,getPackageDetail:function(SecurityToken){//#get package detail#//

@@ -230,35 +230,18 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         
     }   
          
+         
     //#Add package to digin engine#//
     vm.addPackage = function(plan,SecurityToken) {
         $scope.detail=[{
                         "package_id":plan.package_id,
                         "package_name":plan.name,
                         "package_attribute": "users",
-                        "package_value":plan.numberOfUsers,
-                        "package_price":plan.price,
+                        "package_value":0,
+                        "package_price":0,
                         "is_default":true,
                         "is_new": true
-                        },
-                        {
-                        "package_id":plan.package_id,
-                        "package_name":plan.name,
-                        "package_attribute": "storage",
-                        "package_value":plan.valStorage,
-                        "package_price":plan.price,
-                        "is_default":true ,
-                        "is_new":true
-                        },
-                         {
-                        "package_id":plan.package_id,
-                        "package_name":plan.name,
-                        "package_attribute": "data",
-                        "package_value":plan.valData,
-                        "package_price":plan.price,
-                        "is_default":true ,
-                        "is_new":true
-                         }]
+                        }];
             
         $http({
             method: 'POST',

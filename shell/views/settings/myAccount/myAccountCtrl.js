@@ -21,6 +21,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     //#Getcurrent Packge Details 
     userAdminFactory.getPackageDetail();
+    userAdminFactory.getTenant(window.location.hostname);
     //userAdminFactory.getPackageSummary();
 
     //#Get customer detail#//
@@ -28,7 +29,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     //#Get customer status as active - true || false #//
     //paymentGatewaySvc.checkSubscription();
-paymentGatewaySvc.checkSubscription();
+    paymentGatewaySvc.checkSubscription();
     
     //#Get customer detail#//
     //paymentGatewaySvc.getCustomerInformations();
@@ -1026,30 +1027,12 @@ paymentGatewaySvc.checkSubscription();
         $scope.detail=[{
                         "package_id":plan.package_id,
                         "package_name":plan.name,
-                        "package_attribute": "users",
-                        "package_value":plan.numberOfUsers,
-                        "package_price":plan.price,
+                        "package_attribute": "",
+                        "package_value":0,
+                        "package_price":0,
                         "is_default":true,
                         "is_new": true
-                        },
-                        {
-                        "package_id":plan.package_id,
-                        "package_name":plan.name,
-                        "package_attribute": "storage",
-                        "package_value":plan.valStorage,
-                        "package_price":plan.price,
-                        "is_default":true ,
-                        "is_new":true
-                        },
-                         {
-                        "package_id":plan.package_id,
-                        "package_name":plan.name,
-                        "package_attribute": "data",
-                        "package_value":plan.valData,
-                        "package_price":plan.price,
-                        "is_default":true ,
-                        "is_new":true
-                         }]
+                        }]
             
         $http({
             method: 'POST',
@@ -1076,30 +1059,12 @@ paymentGatewaySvc.checkSubscription();
         $scope.detail=[{
                         "package_id":plan.package_id,
                         "package_name":plan.name,
-                        "package_attribute": "users",
-                        "package_value":plan.numberOfUsers,
-                        "package_price":plan.price,
+                        "package_attribute": "",
+                        "package_value":0,
+                        "package_price":0,
                         "is_default":true,
                         "is_new": false
-                        },
-                        {
-                        "package_id":plan.package_id,
-                        "package_name":plan.name,
-                        "package_attribute": "storage",
-                        "package_value":plan.valStorage,
-                        "package_price":plan.price,
-                        "is_default":true ,
-                        "is_new":false
-                        },
-                         {
-                        "package_id":plan.package_id,
-                        "package_name":plan.name,
-                        "package_attribute": "data",
-                        "package_value":plan.valData,
-                        "package_price":plan.price,
-                        "is_default":true ,
-                        "is_new":false
-                         }]
+                        }];
             
         $http({
             method: 'POST',
@@ -1527,7 +1492,10 @@ paymentGatewaySvc.checkSubscription();
         };
 
         $scope.name = $rootScope.profile_Det.Name;
-        $scope.company = $rootScope.profile_Det.Company;
+        //$scope.company = $rootScope.profile_Det.Company;
+        
+        $scope.company = $rootScope.company;
+        
     }
 
     $scope.closeWindow = function() {

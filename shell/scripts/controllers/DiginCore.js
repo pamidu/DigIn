@@ -894,15 +894,13 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             //Clear the filter indication when the chart is re-set
                             page.widgets[i].widgetData.filteredState = false;
                             filterService.clearFilters(page.widgets[i]);
+                            count++;
                             if (page.widgets[i].widgetData.selectedChart.chartType != "d3hierarchy" && page.widgets[i].widgetData.selectedChart.chartType != "d3sunburst") {
                                 $qbuilder.sync(page.widgets[i].widgetData, function (data) {
-                                    count++;
                                     if(page.widgets.length == count){
                                         pouchDbServices.pageSync($rootScope.dashboard);
                                     }
                                 });
-                            }else{
-                                count++;
                             }
                         }
                     }

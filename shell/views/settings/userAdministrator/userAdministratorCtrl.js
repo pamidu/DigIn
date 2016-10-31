@@ -111,14 +111,14 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
     $scope.updatePackage = function() { 
 
 		  var pkgObj = [{
-"package_id":null,
-"package_name":"additional",
-"package_attribute": "users",
-"package_value":-1,
-"package_price":5,
-"is_default":false,
-"is_new": true
-}];
+				"package_id":null,
+				"package_name":"additional",
+				"package_attribute": "users",
+				"package_value":-1,
+				"package_price":5,
+				"is_default":false,
+				"is_new": true
+				}];
 	
         $http({
             method: 'POST',
@@ -254,21 +254,13 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 					//*send HTTP request and add the below call only if it succeeds
 					
 					userAdminFactory.removeInvitedUser(user.Id);
+
+						 
+						//$scope.removeUserFromPackage();	
+						$rootScope.sharableUsers=[];
+						userAdminFactory.getInvitedUsers(function(data) {});						
+						displaySuccess("User removed successfully."); 
 					
-
-									//$rootScope.sharableUsers=[];
-						//userAdminFactory.getInvitedUsers(function(data) {});
-						
-						/*for (i=0; i<$rootScope.sharableUsers.length; i++){
-							if(user.Id==$rootScope.sharableUsers[i].Id){
-								$rootScope.sharableUsers.splice[i];
-							}
-						}*/
-						
-						$scope.removeUserFromPackage();
-						
-
-						
 				});
 	}
 	

@@ -168,12 +168,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             method: "Additive",
             model: "triple exponential smoothing",
             mod: "triple_exp",
-            alpha: 0.716,
-            beta: 0.029,
-            gamma: 0.993,
-            a: 0.716,
-            b: 0.029,
-            g: 0.993,
+            alpha: "",
+            beta: "",
+            gamma: "",
+            a: "",
+            b: "",
+            g: "",
             fcast_days: 12,
             tbl: $scope.sourceData.tbl,
             date_field: "",
@@ -1614,6 +1614,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 $scope.visualDate.enddate = $scope.widget.widgetData.Vend;
                 $scope.useFiltering.status = $scope.widget.widgetData.isVisual;
                 $scope.VisualDatesOk = $scope.widget.widgetData.VisualDatesOk;
+                $scope.useAlpahaBetaGamma.status = $scope.widget.widgetData.useAlpahaBetaGamma;
             }
             delete $scope.highchartsNG.size;
         },
@@ -1649,6 +1650,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             widget.widgetData.Vend = $scope.visualDate.enddate;
             widget.widgetData.isVisual = $scope.useFiltering.status;
             widget.widgetData.VisualDatesOk = $scope.VisualDatesOk;
+            widget.widgetData.useAlpahaBetaGamma = $scope.useAlpahaBetaGamma.status;
             widget.widgetData.initCtrl = "elasticInit";
             widget.widgetName = "forecast";
             $scope.saveChart(widget);
@@ -1810,6 +1812,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     $scope.forecastObj.paramObj.len_season = data.len_season;
                 }
 
+                // set alpha,beeta, gamma values returned from the service 
+                $scope.forecastObj.paramObj.alpha = data.alpha.toFixed(3);
+                $scope.forecastObj.paramObj.a = data.alpha.toFixed(3);
+
+                $scope.forecastObj.paramObj.beta = data.beta.toFixed(3);
+                $scope.forecastObj.paramObj.b = data.beta.toFixed(3);
+
+                $scope.forecastObj.paramObj.gamma = data.gamma.toFixed(3);
+                $scope.forecastObj.paramObj.g = data.gamma.toFixed(3);
 
                 if (fObj.forecastAtt == "") {
 
@@ -2075,6 +2086,24 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         status: false,
     }
     $scope.VisualDatesOk = false;
+    $scope.useAlpahaBetaGamma={
+        status: false,
+    }
+
+    $scope.setAlpahaBetaGamma = function(){
+        if(!$scope.useAlpahaBetaGamma.status){
+
+            $scope.forecastObj.paramObj.alpha = "";
+            $scope.forecastObj.paramObj.a = "";
+
+            $scope.forecastObj.paramObj.beta = "";
+            $scope.forecastObj.paramObj.b = "";
+
+            $scope.forecastObj.paramObj.gamma = "";
+            $scope.forecastObj.paramObj.g = "";
+        };
+    }
+
     $scope.$watch("visualDate", function(newValue, oldValue) {
 
         if (newValue !== oldValue) {
@@ -2224,6 +2253,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             $scope.forecastObj.paramObj.fcast_days = 12;
         }
 
+
+
         $scope.widget.widgetData.highchartsNG = {};
         $scope.widget.widgetData.highchartsNG = {
             title: {
@@ -2245,6 +2276,16 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
                 $scope.forecastObj.paramObj.enddate = moment(new Date(data.max_date)).format('LL');
                 $scope.forecastObj.paramObj.startdate = moment(new Date(data.min_date)).format('LL');
+
+                // set alpha,beeta, gamma values returned from the service 
+                $scope.forecastObj.paramObj.alpha = data.alpha.toFixed(3);
+                $scope.forecastObj.paramObj.a = data.alpha.toFixed(3);
+
+                $scope.forecastObj.paramObj.beta = data.beta.toFixed(3);
+                $scope.forecastObj.paramObj.b = data.beta.toFixed(3);
+
+                $scope.forecastObj.paramObj.gamma = data.gamma.toFixed(3);
+                $scope.forecastObj.paramObj.g = data.gamma.toFixed(3);
 
 
                 // to check wether service has returned any warnings

@@ -21,6 +21,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     //#Getcurrent Packge Details 
     userAdminFactory.getPackageDetail();
+    //userAdminFactory.getTenant(window.location.hostname);
     //userAdminFactory.getPackageSummary();
 
     //#Get customer detail#//
@@ -28,7 +29,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     //#Get customer status as active - true || false #//
     //paymentGatewaySvc.checkSubscription();
-paymentGatewaySvc.checkSubscription();
+    paymentGatewaySvc.checkSubscription();
     
     //#Get customer detail#//
     //paymentGatewaySvc.getCustomerInformations();
@@ -50,8 +51,9 @@ paymentGatewaySvc.checkSubscription();
             if (response.statusText == "OK") {
                 if (response.data.status == true) {
                     console.log(response)
-                    $rootScope.customer = response.data.response;
-                    
+                    $rootScope.custStatus = response.data.status;
+                    $rootScope.custActive=response.data.data[0].active;
+
                     var doc={
                             "_id":"cusstatus",
                             "name":"cusstatus",
@@ -62,7 +64,8 @@ paymentGatewaySvc.checkSubscription();
                     
                     
                 } else {
-                    $rootScope.customer = {};
+                    $rootScope.custStatus = response.data.response;
+                    $rootScope.custActive=0;
                 }
             }
         }, function(response) {
@@ -71,8 +74,7 @@ paymentGatewaySvc.checkSubscription();
         })
     
     
-    
-    
+   
     //-------------------------------------------------------------------------------
     
     
@@ -1026,30 +1028,12 @@ paymentGatewaySvc.checkSubscription();
         $scope.detail=[{
                         "package_id":plan.package_id,
                         "package_name":plan.name,
-                        "package_attribute": "users",
-                        "package_value":plan.numberOfUsers,
-                        "package_price":plan.price,
+                        "package_attribute": "",
+                        "package_value":0,
+                        "package_price":0,
                         "is_default":true,
                         "is_new": true
-                        },
-                        {
-                        "package_id":plan.package_id,
-                        "package_name":plan.name,
-                        "package_attribute": "storage",
-                        "package_value":plan.valStorage,
-                        "package_price":plan.price,
-                        "is_default":true ,
-                        "is_new":true
-                        },
-                         {
-                        "package_id":plan.package_id,
-                        "package_name":plan.name,
-                        "package_attribute": "data",
-                        "package_value":plan.valData,
-                        "package_price":plan.price,
-                        "is_default":true ,
-                        "is_new":true
-                         }]
+                        }]
             
         $http({
             method: 'POST',
@@ -1076,30 +1060,12 @@ paymentGatewaySvc.checkSubscription();
         $scope.detail=[{
                         "package_id":plan.package_id,
                         "package_name":plan.name,
-                        "package_attribute": "users",
-                        "package_value":plan.numberOfUsers,
-                        "package_price":plan.price,
+                        "package_attribute": "",
+                        "package_value":0,
+                        "package_price":0,
                         "is_default":true,
                         "is_new": false
-                        },
-                        {
-                        "package_id":plan.package_id,
-                        "package_name":plan.name,
-                        "package_attribute": "storage",
-                        "package_value":plan.valStorage,
-                        "package_price":plan.price,
-                        "is_default":true ,
-                        "is_new":false
-                        },
-                         {
-                        "package_id":plan.package_id,
-                        "package_name":plan.name,
-                        "package_attribute": "data",
-                        "package_value":plan.valData,
-                        "package_price":plan.price,
-                        "is_default":true ,
-                        "is_new":false
-                         }]
+                        }];
             
         $http({
             method: 'POST',
@@ -1526,9 +1492,24 @@ paymentGatewaySvc.checkSubscription();
             zip: $rootScope.profile_Det.ZipCode
         };
 
-        $scope.name = $rootScope.profile_Det.Name;
-        $scope.company = $rootScope.profile_Det.Company;
+        $scope.name = $rootScope.profile_Det.Name;  
     }
+    
+    
+        $http({
+            url: '/auth/tenant/GetTenant/' + window.location.hostname,
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response) {
+            $scope.company=result.data.OtherData.CompanyName;
+        }, function(response) {
+            notifications.toast("0", "Error occured while retriving the account detail.");
+        })
+    
+    
+
 
     $scope.closeWindow = function() {
         $state.go('home.welcomeSearch');

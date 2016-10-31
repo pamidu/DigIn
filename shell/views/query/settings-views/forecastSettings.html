@@ -32,16 +32,20 @@
         <input ng-model="forecastObj.paramObj.len_season" ng-disabled="forecastObj.paramObj.model == 'double exponential smoothing'">
     </md-input-container>
     <md-input-container>
+        <label style="font-weight: bolder;color: #01718d;"> Use smoothing parameters </label>
+        <md-checkbox ng-model="useAlpahaBetaGamma.status" aria-label=""  ng-change ="setAlpahaBetaGamma()" style="position: relative;left: 180px;">
+    </md-input-container>
+    <md-input-container>
         <label> Alpha </label>
-        <input ng-model="forecastObj.paramObj.alpha" ng-blur = "setValue('alpha')">
+        <input ng-model="forecastObj.paramObj.alpha" ng-blur = "setValue('alpha')" ng-disabled="!useAlpahaBetaGamma.status">
     </md-input-container>
     <md-input-container>
         <label> Beta </label>
-        <input ng-model="forecastObj.paramObj.beta" ng-blur = "setValue('beta')">
+        <input ng-model="forecastObj.paramObj.beta" ng-blur = "setValue('beta')" ng-disabled="!useAlpahaBetaGamma.status">
     </md-input-container>
     <md-input-container>
         <label> Gamma </label>
-        <input ng-model="forecastObj.paramObj.gamma" ng-blur = "setValue('gamma')">
+        <input ng-model="forecastObj.paramObj.gamma" ng-blur = "setValue('gamma')" ng-disabled="!useAlpahaBetaGamma.status">
     </md-input-container> 
     <br>
     <md-container>

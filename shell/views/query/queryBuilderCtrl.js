@@ -3412,24 +3412,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
                     $scope.highchartsNG.series = data;
                     if ($scope.chartType != 'Geographical Map') {
-                        if ($scope.selectedCat.toUpperCase() == "DATE") {
-                            $scope.highchartsNG.series[0].data.forEach(function(key) {
-                                    key["x"] = key["name"];
-                                    delete key["name"];
-                                    key["x"] = parseInt(key["x"]);
-                                }),
-                                $scope.highchartsNG.xAxis = {
-                                    dateTimeLabelFormats: {
-                                        day: '%e  %b %Y'
-                                    },
-                                    type: 'datetime',
-                                    labels: {
-                                        format: '{value:%e. %b.}'
-                                    }
-                                }
-
-
-                        }
+                        
                         $scope.highchartsNG.xAxis["title"] = {
                             text: $scope.selectedCat
 

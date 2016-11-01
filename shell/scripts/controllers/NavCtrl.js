@@ -163,8 +163,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         saveExplicit : false,
                         dashboardId : null
                     };
+                    data.Result.components = JSON.stringify(data.Result.components);
                 }
-                data.Result.components = JSON.stringify(data.Result.components);
                 $rootScope.userSettings = data.Result;
                 ProfileService.UserDataArr.BannerPicture = 'http://' + Digin_Domain + data.Result.dp_path;
 

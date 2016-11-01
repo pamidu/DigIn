@@ -1129,6 +1129,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         widget.widgetData.dataCtrl = "widgetSettingsDataCtrl";
         widget.widgetData.dataView = "views/ViewData.html";
         widget.widgetData["selectedChart"] = $scope.selectedChart;
+        if (($scope.executeQryData.executeColumns.length <= 1)) {
+            widget.widgetData.widData.drilled = false;
+        }else{
+            $scope.dataToBeBind.receivedQuery = $scope.drillDownQuery;
+            widget.widgetData.widData.drilled = true;
+        }
         widget.widgetData["commonSrc"] = {
             src: $scope.sourceData,
             mea: $scope.executeQryData.executeMeasures,
@@ -3526,6 +3532,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     }
                     if (res[i].level == 1) highestLevel = res[i].value;
                 }
+                $scope.executeQryData.executeColumns = [];
+                for(var i = 0; i < res.length;i++){
+                    $scope.executeQryData.executeColumns.push({
+                        filedName: res[i].value
+                    });
+                }
                 $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, function(res, status, query) {
 
                     // filter only the selected fields from the result returned by the service
@@ -3569,6 +3581,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     });
                     //assigning the highest level query
                     $scope.dataToBeBind.receivedQuery = query;
+                    $scope.drillDownQuery = query;
                     $scope.drillDownConfig = {
                         dataSrc: $scope.sourceData.src,
                         clientObj: $scope.client,

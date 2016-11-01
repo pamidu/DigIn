@@ -222,7 +222,7 @@ input:disabled {
                                         <tr ng-repeat="val in schema track by $index">
                                         <td> {{val.name}} </td>
                                         <td>
-                                            <md-select ng-model="val.type">
+                                            <md-select ng-model="val.type" ng-disabled="isExist">
                                                 <md-option ng-repeat="type in fieldTypeObj" value="{{type}}">
                                                     {{type}}
                                                 </md-option>

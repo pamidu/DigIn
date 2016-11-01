@@ -3307,22 +3307,22 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
                                 {
                                     if(response.data.response[0].otherInfo[i].action=="add")
                                     {
-                                        additionaldata=additionaluser+response.data.response[0].otherInfo[i].quantity;
+                                        additionaldata=additionaldata+response.data.response[0].otherInfo[i].quantity;
                                     }
                                     if(response.data.response[0].otherInfo[i].action=="remove")
                                     {
-                                        additionaldata=additionaluser-response.data.response[0].otherInfo[i].quantity;
+                                        additionaldata=additionaldata-response.data.response[0].otherInfo[i].quantity;
                                     }
                                 }
-                                if(response.data.response[0].otherInfo[i].tag=="storage")
+                                if(response.data.response[0].otherInfo[i].tag=="sorage")
                                 {
                                     if(response.data.response[0].otherInfo[i].action=="add")
                                     {
-                                        additionalstorage=additionaluser+response.data.response[0].otherInfo[i].quantity;
+                                        additionalstorage=additionalstorage+response.data.response[0].otherInfo[i].quantity;
                                     }
                                     if(response.data.response[0].otherInfo[i].action=="remove")
                                     {
-                                        additionalstorage=additionaluser-response.data.response[0].otherInfo[i].quantity;
+                                        additionalstorage=additionalstorage-response.data.response[0].otherInfo[i].quantity;
                                     }
                                 }
                                 

@@ -605,9 +605,11 @@ routerApp
                     .success(function(response){
                         if(response.Error){
                             $mdDialog.hide();
-                            mainFun.fireMsg('0', '</strong>Invalid email address/ this email address not exist.');
-                            //displayError('Invalid email address/ this email address not exist...');
-                            
+                            mainFun.fireMsg('0', '</strong>Invalid email address/ this email address not exist.');                          
+                        }
+                        else if(response.Active==false){
+                            $mdDialog.hide();
+                            mainFun.fireMsg('0', '</strong>This account is not yet verified.');
                         }
                         else{
                             $scope.sendMail();
@@ -652,6 +654,9 @@ routerApp
                     mainFun.fireMsg('0','Error occurred while changing the password');
                 }
                 else{
+                    
+                    //document.cookie = "securityToken=" + ($location.search()).x + "; path=/";                 
+                    //document.cookie = "authData="+ encodeURIComponent("SecurityToken="+($location.search()).x+"Domain=pio.prod.digin.io") + "; path=/";           
                     if ($scope.newPassword === $scope.confirmNewPassword) {
                         $http.get('/auth/ChangePassword/' + oid + '/' + encodeURIComponent($scope.newPassword))
                             .success(function (data) {
@@ -660,8 +665,7 @@ routerApp
                                     mainFun.fireMsg('0',data);
                                 } else {
                                     mainFun.fireMsg('1',"Password changed successfully.");
-                                    window.location = "http://"+Digin_Domain+"/entry";
-                                    
+                                    $window.location = "/logout.php";
                                 }
 
                             }).error(function () {
@@ -675,6 +679,7 @@ routerApp
             }
 
 
+    
 
 
 

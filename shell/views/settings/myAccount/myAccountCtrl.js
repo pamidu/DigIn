@@ -1502,7 +1502,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(function(response) {
+        }).then(function(result) {
             $scope.company=result.data.OtherData.CompanyName;
         }, function(response) {
             notifications.toast("0", "Error occured while retriving the account detail.");
@@ -2666,6 +2666,10 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
     $scope.storageRate = 8;
     $scope.bandwithRate = 10;
 
+    $scope.users=$rootScope.extraUsers;
+    $scope.storage=$rootScope.extraStorage;
+    $scope.bandwidth=$rootScope.extraData;
+
     if ($scope.users == "" || $scope.users == undefined) {
         $scope.users = 0;
     }
@@ -2726,38 +2730,158 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
 
             displayProgress("Processing...")
 
-            var users = [{
-                "tag": "user",
-                "feature": "Additional users",
-                "quantity": parseInt($scope.users),
-                "amount": $scope.users * $scope.usersRate,
-                "action": "add"
-            }];
-            var storage = [{
-                "tag": "storage",
-                "feature": "Additional storage",
-                "quantity": parseInt($scope.storage),
-                "amount": $scope.storage * $scope.storageRate,
-                "action": "add"
-            }];
-            var bandwidth = [{
-                "tag": "data",
-                "feature": "Additional data",
-                "quantity": parseInt($scope.bandwidth),
-                "amount": $scope.bandwidth * $scope.bandwithRate,
-                "action": "add"
-            }];
 
             var obj = [];
-            if (!$scope.users == "" || $scope.users == undefined || $scope.users == "0") {
+            var objDigin=[];
+
+            //compare users
+            if(parseInt($scope.users)>parseInt($rootScope.extraUsers)){ //add
+                var users = [{
+                    "tag": "user",
+                    "feature": "Additional users",
+                    "quantity": parseInt($scope.users)-parseInt($rootScope.extraUsers),
+                    "amount": (parseInt($scope.users)-parseInt($rootScope.extraUsers)) * $scope.usersRate,
+                    "action": "add"
+                }];
+
+                var usersDigin = [{
+                    "package_id":null,
+                    "package_name":"additional",
+                    "package_attribute": "users",
+                    "package_value": parseInt($scope.users)-parseInt($rootScope.extraUsers),
+                    "package_price": (parseInt($scope.users)-parseInt($rootScope.extraUsers)) * $scope.usersRate,
+                    "is_default":false,
+                    "is_new": true
+                }];
+
                 obj.push(users[0]);
+                objDigin.push(usersDigin[0]);
             }
-            if (!$scope.storage == "" || $scope.storage == undefined || $scope.users == "0") {
+            else if(parseInt($scope.users)<parseInt($rootScope.extraUsers)){ //remove
+                var users = [{
+                    "tag": "user",
+                    "feature": "Additional users",
+                    "quantity": parseInt($rootScope.extraUsers)-parseInt($scope.users),
+                    "amount": (parseInt($rootScope.extraUsers)-parseInt($scope.users)) * $scope.usersRate,
+                    "action": "remove"
+                }];
+
+                var usersDigin = [{
+                    "package_id":null,
+                    "package_name":"additional",
+                    "package_attribute": "users",
+                    "package_value": parseInt($scope.users)-parseInt($rootScope.extraUsers),
+                    "package_price": (parseInt($scope.users)-parseInt($rootScope.extraUsers)) * $scope.usersRate,
+                    "is_default":false,
+                    "is_new": true
+                }];
+
+                obj.push(users[0]);
+                objDigin.push(usersDigin[0]);
+            }
+            else{//nothing
+
+            }
+
+            //compare data
+            if(parseInt($scope.bandwidth)>parseInt($rootScope.extraData)){ //add
+                var data = [{
+                    "tag": "data",
+                    "feature": "Additional data",
+                    "quantity": parseInt($scope.bandwidth)-parseInt($rootScope.extraData),
+                    "amount": (parseInt($scope.bandwidth)-parseInt($rootScope.extraData)) * $scope.bandwithRate,
+                    "action": "add"
+                }];
+
+                var dataDigin = [{
+                    "package_id":null,
+                    "package_name":"additional",
+                    "package_attribute": "data",
+                    "package_value":parseInt($scope.bandwidth)-parseInt($rootScope.extraData),
+                    "package_price": (parseInt($scope.bandwidth)-parseInt($rootScope.extraData)) * $scope.bandwithRate,
+                    "is_default":false ,
+                    "is_new":true
+                }];
+
+                obj.push(data[0]);
+                objDigin.push(dataDigin[0]);
+            }
+            else if(parseInt($scope.bandwidth)<parseInt($rootScope.extraData)){ //remove
+                var data = [{
+                    "tag": "data",
+                    "feature": "Additional data",
+                    "quantity": parseInt($rootScope.extraData)-parseInt($scope.bandwidth),
+                    "amount": (-parseInt($rootScope.extraData)-parseInt($scope.bandwidth)) * $scope.bandwithRate,
+                    "action": "remove"
+                }];
+
+                var dataDigin = [{
+                    "package_id":null,
+                    "package_name":"additional",
+                    "package_attribute": "data",
+                    "package_value":parseInt($scope.bandwidth)-parseInt($rootScope.extraData),
+                    "package_price": (parseInt($scope.bandwidth)-parseInt($rootScope.extraData)) * $scope.bandwithRate,
+                    "is_default":false ,
+                    "is_new":true
+                }];
+
+                obj.push(data[0]);
+                objDigin.push(dataDigin[0]);
+            }
+            else{//nothing
+
+            }
+
+            //compare storage
+            if(parseInt($scope.storage)>parseInt($rootScope.extraStorage)){ //add
+                var storage = [{
+                    "tag": "storage",
+                    "feature": "Additional storage",
+                    "quantity": parseInt($scope.storage)-parseInt($rootScope.extraStorage),
+                    "amount": (parseInt($scope.storage)-parseInt($rootScope.extraStorage)) * $scope.storageRate,
+                    "action": "add"
+                }];
+
+                var storageDigin = [{
+                    "package_id":null,
+                    "package_name":"additional",
+                    "package_attribute": "storage",
+                    "package_value":parseInt($scope.storage)-parseInt($rootScope.extraStorage),
+                    "package_price":(parseInt($scope.storage)-parseInt($rootScope.extraStorage)) * $scope.storageRate,
+                    "is_default":false ,
+                    "is_new":true
+                }];
+
                 obj.push(storage[0]);
+                objDigin.push(storageDigin[0]);
             }
-            if (!$scope.bandwidth == "" || $scope.bandwidth == undefined || $scope.users == "0") {
-                obj.push(bandwidth[0]);
+            else if(parseInt($scope.storage)<parseInt($rootScope.extraStorage)){ //remove
+                var storage = [{
+                    "tag": "storage",
+                    "feature": "Additional storage",
+                    "quantity": parseInt($rootScope.extraStorage)-parseInt($scope.storage),
+                    "amount": (parseInt($rootScope.extraStorage)-parseInt($scope.storage)) * $scope.storageRate,
+                    "action": "remove"
+                }];
+
+                var storageDigin = [{
+                    "package_id":null,
+                    "package_name":"additional",
+                    "package_attribute": "storage",
+                    "package_value":parseInt($scope.storage)-parseInt($rootScope.extraStorage),
+                    "package_price":(parseInt($scope.storage)-parseInt($rootScope.extraStorage)) * $scope.storageRate,
+                    "is_default":false ,
+                    "is_new":true
+                }];
+
+                obj.push(storage[0]);
+                objDigin.push(storageDigin[0]);
             }
+            else{//nothing
+
+            }
+
+
 
             var pkgObj = {
                 "plan": {
@@ -2765,7 +2889,7 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                 }
             }
 
-            $scope.customizePackage(pkgObj);
+            $scope.customizePackage(pkgObj,objDigin);
         }
     }
 
@@ -2787,7 +2911,7 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
 
 
     //#Customize existing package
-    $scope.customizePackage = function(pkgObj) {
+    $scope.customizePackage = function(pkgObj,objDigin) {
 
         /*var pkgObj = {
               "plan" :  {
@@ -2812,9 +2936,9 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
             if (response.statusText == "OK") {
                 if (response.data.status == true) {
                     //Success
-                    $scope.ProceedUpdatePackageValidation();
+                    $scope.updatePackageDigin(objDigin);
                     $mdDialog.hide();
-                    $scope.clearData();
+                    //$scope.clearData();
                 } else {
                     //fail
                     $mdDialog.hide();
@@ -2833,61 +2957,13 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
     }
 
 
-        $scope.ProceedUpdatePackageValidation = function() {
-        if (($scope.users == "" || $scope.users == undefined) && ($scope.storage == "" || $scope.storage == undefined) && ($scope.bandwidth == "" || $scope.bandwidth == undefined)) {
-            //notifications.toast("0", "You have not selected any alacarte to customize!");
-        } else {
-            displayProgress("Updating extra features...")
-            
-            var users = [{
-                "package_id":null,
-                "package_name":"additional",
-                "package_attribute": "users",
-                "package_value": parseInt($scope.users),
-                "package_price": parseInt($scope.users) * $scope.usersRate,
-                "is_default":false,
-                "is_new": true
-                }];
-            var storage = [{
-                "package_id":null,
-                "package_name":"additional",
-                "package_attribute": "storage",
-                "package_value":parseInt($scope.storage),
-                "package_price":parseInt($scope.storage) * $scope.storageRate,
-                "is_default":false ,
-                "is_new":true
-                }];
-            var bandwidth = [{
-                "package_id":null,
-                "package_name":"additional",
-                "package_attribute": "data",
-                "package_value":parseInt($scope.bandwidth),
-                "package_price": parseInt($scope.bandwidth) * $scope.bandwithRate,
-                "is_default":false ,
-                "is_new":true
-                }];
-
-            var obj = [];
-            if (!$scope.users == "" || !$scope.users == undefined || !$scope.users == "0") {
-                obj.push(users[0]);
-            }else{$scope.users =0;}
-            if (!$scope.storage == "" || !$scope.storage == undefined || !$scope.storage == "0") {
-                obj.push(storage[0]);
-            }else{$scope.storage =0;}
-            if (!$scope.bandwidth == "" || !$scope.bandwidth == undefined || !$scope.bandwidth == "0") {
-                obj.push(bandwidth[0]);
-            }else{$scope.bandwidth =0;}
-
-            var pkgObj = obj
-
-            $scope.updatePackage(pkgObj,parseInt($scope.users),parseInt($scope.bandwidth),parseInt($scope.storage));
-        }
-    }
     
     
-    
-    //#Update package*// 
-    $scope.updatePackage = function(pkgObj,user,data,storage) {                               
+    //#Update package-Digin*// 
+    $scope.updatePackageDigin = function(pkgObj) {  
+
+        displayProgress("Updating extra features...")  
+
         $http({
             method: 'POST',
             url: Digin_Engine_API + 'activate_packages/',
@@ -2900,17 +2976,19 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
         .success(function(response) {
             //notifications.toast("1", "AlaCartes added successfully.");
             
+                    $rootScope.extraUser=parseInt($scope.users);
+                    $rootScope.extraData=parseInt($scope.bandwidth);
+                    $rootScope.extraStorage=parseInt($scope.storage);
+
            
            var db = new PouchDB('packaging');
            db.get('packgedetail').then(function (doc_package) {
                               // update
-                                         doc_package.additionaluser=parseInt(doc_package.additionaluser)+user;
-                        doc_package.additionaldata=parseInt(doc_package.additionaldata)+data;
-                        doc_package.additionalstorage=parseInt(doc_package.additionalstorage)+storage;
+                        doc_package.additionaluser=parseInt($scope.users);
+                        doc_package.additionaldata=parseInt($scope.bandwidth);
+                        doc_package.additionalstorage=parseInt($scope.storage);
                         
-                    $rootScope.extraUser=doc_package.additionaluser;
-                    $rootScope.extraData=doc_package.additionaldata;
-                    $rootScope.extraStorage=doc_package.additionalstorage;
+
                              
                              displaySuccess("AlaCartes added successfully."); 
                                     $mdDialog.hide();
@@ -3314,7 +3392,7 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
                                         additionaldata=additionaldata-response.data.response[0].otherInfo[i].quantity;
                                     }
                                 }
-                                if(response.data.response[0].otherInfo[i].tag=="sorage")
+                                if(response.data.response[0].otherInfo[i].tag=="storage")
                                 {
                                     if(response.data.response[0].otherInfo[i].action=="add")
                                     {

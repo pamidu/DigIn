@@ -148,7 +148,8 @@
                                                            name="password"
                                                            required
                                                            ng-model="signUpUsr.pwd"
-
+                                                           ng-keyup="signUpUsr.cnfrPwd=''" 
+                                                           ng-focus="signUpUsr.cnfrPwd=''" 
                                                            placeholder="password">
                                                 </div>
                                                 <div ng-show="frmDiginSignUp.password.$invalid && !frmDiginSignUp.password.$pristine"

@@ -716,8 +716,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                     filterService.clearFilters(widget);                                    
                                     if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
                                         $qbuilder.sync(widget.widgetData, function (data) {
-                                            widget.widgetData.syncState = true;
-                                            $scope.$apply();
+                                            $scope.$apply(function(){
+                                                widget.widgetData.syncState = true;
+                                            });
                                         });
                                     }
                                 }

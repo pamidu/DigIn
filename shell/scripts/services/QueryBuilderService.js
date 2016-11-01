@@ -119,11 +119,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                             name.push(widObj.highchartsNG.series[i].name);
                             origName.push(widObj.highchartsNG.series[i].origName);
                         }
-                        if (widObj.widData.drillConf !== undefined){
-                            drilled = true;
-                        } else {
-                            drilled = false;
-                        }
+                        drilled = widObj.widData.drilled;
                         mapResult(cat, res, drilled, color, name, origName, function(data){
                             widObj.highchartsNG.series = data;
                         });

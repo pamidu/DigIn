@@ -558,6 +558,11 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         origName.push(widget.widgetData.highchartsNG.series[i].origName);
                     }
                     filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
+                    if (widget.widgetData.commonSrc.att.length <=1){
+                       widget.widgetData.widData.drilled = false;
+                    } else {
+                        widget.widgetData.widData.drilled = true;
+                    }
                     var data = filterService.mapResult(requestArray[0],res,widget.widgetData.widData.drilled,color,name,origName);
                     widget.widgetData.syncState = true;
                     widget.widgetData.filteredState = true;

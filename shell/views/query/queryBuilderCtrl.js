@@ -1129,6 +1129,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         widget.widgetData.dataCtrl = "widgetSettingsDataCtrl";
         widget.widgetData.dataView = "views/ViewData.html";
         widget.widgetData["selectedChart"] = $scope.selectedChart;
+        if (($scope.executeQryData.executeColumns.length <= 1)) {
+            widget.widgetData.widData.drilled = false;
+        }else{
+            $scope.dataToBeBind.receivedQuery = $scope.drillDownQuery;
+            widget.widgetData.widData.drilled = true;
+        }
         widget.widgetData["commonSrc"] = {
             src: $scope.sourceData,
             mea: $scope.executeQryData.executeMeasures,
@@ -1340,8 +1346,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 })
             }
         },
-        removeMea: function(l) {
-            
+        removeMea: function(l) {          
             // if ($scope.isDrilled) $scope.getDrilledAggregation();
             // else $scope.getAggregation();
             if ($scope.executeQryData.executeColumns.length <= 1) {
@@ -3209,6 +3214,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         if (typeof $scope.highchartsNG["init"] == "undefined" || !$scope.highchartsNG.init) {
             $scope.highchartsNG["init"] = false;
             $scope.highchartsNG = {};
+            if ($scope.executeQryData.executeColumns.length == 0 && $scope.executeQryData.executeMeasures.length == 0){
+                $scope.dataToBeBind.receivedQuery = "";
+                $scope.isPendingRequest = false;
+                $scope.eventHndler.isLoadingChart = false;
+                $scope.highchartsNG = $scope.initHighchartObj;                
+                return;
+            }        
             if ($scope.chartType != 'Geographical Map') {
                 $scope.highchartsNG = {
                     options: {
@@ -3482,6 +3494,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         var drillOrderArr = [];
         $scope.eventHndler.isLoadingChart = true;
         $scope.highchartsNG.series = [];
+        if ($scope.executeQryData.executeColumns.length == 0 && $scope.executeQryData.executeMeasures.length == 0) {
+            $scope.dataToBeBind.receivedQuery = "";
+            $scope.isPendingRequest = false;
+            $scope.eventHndler.isLoadingChart = false;
+            $scope.highchartsNG = $scope.initHighchartObj;
+            return;
+        }
         $scope.highchartsNG['drilldown'] = {
             series: []
         };
@@ -3512,6 +3531,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         });
                     }
                     if (res[i].level == 1) highestLevel = res[i].value;
+                }
+                $scope.executeQryData.executeColumns = [];
+                for(var i = 0; i < res.length;i++){
+                    $scope.executeQryData.executeColumns.push({
+                        filedName: res[i].value
+                    });
                 }
                 $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, function(res, status, query) {
 
@@ -3556,6 +3581,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     });
                     //assigning the highest level query
                     $scope.dataToBeBind.receivedQuery = query;
+                    $scope.drillDownQuery = query;
                     $scope.drillDownConfig = {
                         dataSrc: $scope.sourceData.src,
                         clientObj: $scope.client,

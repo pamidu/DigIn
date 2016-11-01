@@ -96,8 +96,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.showTabs(true);
 
         var refreshDashboard = function() {
-            var count = 0;
             $scope.interval = $interval(function() {
+                var count = 0;
                 if ($state.current.name == "home.Dashboards") {
                     if ($rootScope.dashboard !== undefined) {
                         if ($rootScope.dashboard.refreshInterval !== undefined || $rootScope.dashboard.refreshInterval !== null) {
@@ -112,7 +112,26 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                         widget.widgetData.filteredState = false;
                                         filterService.clearFilters(widget);
                                         $qbuilder.sync(widget.widgetData, function (data) {
-                                            $scope.$apply();
+                                            if (count == $rootScope.dashboard.pages[index].widgets.length) {
+                                                notifications.toast('1','Refreshed Dashboard!');
+                                                // save dashboard to pouch db
+                                                var tempDashboard = angular.copy($rootScope.dashboard);
+                                                angular.forEach(tempDashboard.pages,function(page){
+                                                    //remove if the page is temporary
+                                                    if (page.pageID.substr(0,4) == "temp"){
+                                                        tempDashboard.pages.splice(tempDashboard.pages.indexOf(page), 1);
+                                                    }
+                                                    if (tempDashboard.pages.indexOf(page) > 0){
+                                                        //remove temporary widgets in each page
+                                                        angular.forEach(page.widgets,function(widget){
+                                                            if (widget.widgetID.substr(0, 4) == "temp"){
+                                                                page.widgets.splice(page.widgets.indexOf(widget), 1);
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                                pouchDbServices.pageSync(tempDashboard);
+                                            }
                                         });
                                     }
                                 }
@@ -120,7 +139,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         }
                     }
                 }
-                console.log(new Date());
             },$rootScope.refreshInterval);
         }
 
@@ -140,6 +158,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                 $rootScope.image ='http://' + Digin_Domain +  data.Result.logo_path;
                 $rootScope.profile_pic = data.Result.dp_path;
+                if (data.Result.components==null || data.Result.components=="true" || data.Result.components=="false"){
+                    data.Result.components = {
+                        saveExplicit : false,
+                        dashboardId : null
+                    };
+                    data.Result.components = JSON.stringify(data.Result.components);
+                }
                 $rootScope.userSettings = data.Result;
                 ProfileService.UserDataArr.BannerPicture = 'http://' + Digin_Domain + data.Result.dp_path;
 
@@ -691,8 +716,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                     filterService.clearFilters(widget);                                    
                                     if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
                                         $qbuilder.sync(widget.widgetData, function (data) {
-                                            widget.widgetData.syncState = true;
-                                            $scope.$apply();
+                                            $scope.$apply(function(){
+                                                widget.widgetData.syncState = true;
+                                            });
                                         });
                                     }
                                 }

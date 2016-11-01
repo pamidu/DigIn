@@ -30,7 +30,7 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                               count++;
                                               if(dashboard.pages[0].widgets.length == count){
                                                   dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
-                                                  settoPouch(dashboardJson,cb);
+                                                  settoPouch(dashboardJson,true,cb);
                                                   $rootScope.dashboard = dashboard;
                                                }
                                             });
@@ -66,7 +66,7 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                               count++;
                                               if(dashboard.pages[0].widgets.length == count){
                                                   dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
-                                                  settoPouch(dashboardJson,cb);
+                                                  settoPouch(dashboardJson,true,cb);
                                                }
                                               
                                             });
@@ -82,8 +82,9 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
         }
 
 
-
-        var settoPouch = function(dashboard,cb){
+        //dashboard - dashboard object
+        //flag - whether to call the getAllDashboards method or not
+        var settoPouch = function(dashboard,flag,cb){
              // set a new id to a new record to be inserted
               if ( typeof($rootScope.page_id) == "undefined" || $rootScope.page_id == ""){
                   var id = "temp" + Math.floor(Math.random() * 10000000);
@@ -103,11 +104,15 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                               db.put(dashboardDoc, function(err, response) {
                                   if (err) {
                                       return console.log(err);
-                                      $rootScope.privateFun.getAllDashboards();
+                                      if (flag){
+                                        $rootScope.privateFun.getAllDashboards();
+                                      }
                                       
                                   } else {
                                       console.log("Document created Successfully");
-                                      $rootScope.privateFun.getAllDashboards();
+                                      if (flag){
+                                        $rootScope.privateFun.getAllDashboards();
+                                      }
                                        if(typeof cb != "undefined"){
                                         cb();
                                       }
@@ -126,10 +131,14 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                               }
                               db.put(dashboardDoc, function(err, response) {
                                   if (err) {
-                                  $rootScope.privateFun.getAllDashboards();
+                                    if (flag){
+                                      $rootScope.privateFun.getAllDashboards();
+                                    }
                                   return console.log(err);
                               } else {
-                                  $rootScope.privateFun.getAllDashboards();
+                                    if (flag){
+                                      $rootScope.privateFun.getAllDashboards();
+                                    }
                                   console.log("Document updated Successfully");
                                    if(typeof cb != "undefined"){
                                         cb();
@@ -145,7 +154,7 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
 
         this.pageSync = function(dashboard,cb){
             dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
-            settoPouch(dashboardJson,cb);
+            settoPouch(dashboardJson,false,cb);
         };
 
 });

@@ -4287,7 +4287,16 @@ close button
 .blut-login-user > p {
     margin: 0px;
     margin-top: 10px;
-    padding-right: 6px
+    padding-right: 6px;
+	width: 200px;
+    text-align: right;
+	text-overflow: ellipsis;
+    /* max-width: 150px; */
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
 }
 
 .blut-login-user > .login-img {

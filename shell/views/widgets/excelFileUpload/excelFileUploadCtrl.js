@@ -8,7 +8,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     $scope.uploadPreLoader = false;
     $scope.insertPreLoader = false;
     $scope.isExist = false;
-    $scope.selectedPath;
+    $scope.selectedPath ="File";
     $scope.schemaCollection = [];
     $scope.progressPercentage = 0;
     $scope.folderName;
@@ -70,6 +70,12 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
         } else {
             if ($scope.selectedPath == "Folder" && uploadFlag == false && $scope.selectedStep == 1) {
                 $scope.uploadedFiles = [];
+                $scope.isExist = false;
+                angular.forEach($scope.Folders,function(folder){
+                    if (folder.file == $scope.folderName){
+                        $scope.isExist = true;
+                    }
+                })
                 $scope.client.getFolders($scope.folderName, function(res, status) {
                     if (status){
                         $scope.uploadedFiles = res;
@@ -107,7 +113,8 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 $scope.progressPercentage = 0;
                 $scope.uploadPreLoader = false;
                 $scope.insertPreLoader = false;
-                $scope.preloader = false;              
+                $scope.preloader = false;
+                $scope.isExist = false;
 
             } else if ($scope.selectedPath == "Folder" && uploadFlag == false) {
                 if ($scope.selectedStep > 0) $scope.selectedStep = $scope.selectedStep - 1;
@@ -127,6 +134,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 $scope.uploadPreLoader = false;
                 $scope.insertPreLoader = false;
                 $scope.preloader = false;
+                $scope.isExist = false;
 
             } else if ($scope.selectedStep > 0) {
                 $scope.selectedStep = $scope.selectedStep - 1;

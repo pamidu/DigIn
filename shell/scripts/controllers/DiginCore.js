@@ -558,6 +558,11 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         origName.push(widget.widgetData.highchartsNG.series[i].origName);
                     }
                     filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
+                    if (widget.widgetData.commonSrc.att.length <=1){
+                       widget.widgetData.widData.drilled = false;
+                    } else {
+                        widget.widgetData.widData.drilled = true;
+                    }
                     var data = filterService.mapResult(requestArray[0],res,widget.widgetData.widData.drilled,color,name,origName);
                     widget.widgetData.syncState = true;
                     widget.widgetData.filteredState = true;
@@ -629,15 +634,22 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             });
         };
         $scope.shareWidget = function(ev, widget){
-            $mdDialog.show({
-                controller: 'shareCtrl',
-                templateUrl: 'views/dashboard-share.html',
-                clickOutsideToClose: true,
-                resolve: {},
-                locals: {
-                    widget: widget
-                }
-            });
+            var dashboardName = $rootScope.dashboard.compName;
+            if(typeof dashboardName != "undefined"){
+                $mdDialog.show({
+                    controller: 'shareCtrl',
+                    templateUrl: 'views/dashboard-share.html',
+                    clickOutsideToClose: true,
+                    resolve: {},
+                    locals: {
+                        widget: widget,
+                        DashboardName:dashboardName
+                    }
+                });
+            }else{
+                notifications.toast('0', 'Please save the dashboard before proceed');
+            }
+        
         }
 
         /*Summary:
@@ -887,15 +899,13 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             //Clear the filter indication when the chart is re-set
                             page.widgets[i].widgetData.filteredState = false;
                             filterService.clearFilters(page.widgets[i]);
+                            count++;
                             if (page.widgets[i].widgetData.selectedChart.chartType != "d3hierarchy" && page.widgets[i].widgetData.selectedChart.chartType != "d3sunburst") {
                                 $qbuilder.sync(page.widgets[i].widgetData, function (data) {
-                                    count++;
                                     if(page.widgets.length == count){
                                         pouchDbServices.pageSync($rootScope.dashboard);
                                     }
                                 });
-                            }else{
-                                count++;
                             }
                         }
                     }

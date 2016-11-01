@@ -17,6 +17,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 		$rootScope.sharableGroups = [];
         $scope.firstName = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;  
         var db = new pouchDB('dashboard');
+        var interval;
         $scope.adjustUI = function () {
 
             if ($scope.headerbarPinned) {
@@ -94,6 +95,54 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //initially hiding the tabs
         $scope.showTabs(true);
 
+        var refreshDashboard = function() {
+            $scope.interval = $interval(function() {
+                var count = 0;
+                if ($state.current.name == "home.Dashboards") {
+                    if ($rootScope.dashboard !== undefined) {
+                        if ($rootScope.dashboard.refreshInterval !== undefined || $rootScope.dashboard.refreshInterval !== null) {
+                            //sync chart widgets
+                            var index = $rootScope.selectedPageIndx;
+                            if ($rootScope.dashboard.pages[index]["isSeen"]) {
+                                for (var i = 0; i < $rootScope.dashboard.pages[index].widgets.length; i++) {
+                                    count++;
+                                    var widget = $rootScope.dashboard.pages[index].widgets[i];
+                                    if (typeof(widget.widgetData.commonSrc) != "undefined") {
+                                        //Clear the filter indication when the chart is re-set
+                                        widget.widgetData.filteredState = false;
+                                        filterService.clearFilters(widget);
+                                        $qbuilder.sync(widget.widgetData, function (data) {
+                                            if (count == $rootScope.dashboard.pages[index].widgets.length) {
+                                                notifications.toast('1','Refreshed Dashboard!');
+                                                // save dashboard to pouch db
+                                                var tempDashboard = angular.copy($rootScope.dashboard);
+                                                angular.forEach(tempDashboard.pages,function(page){
+                                                    //remove if the page is temporary
+                                                    if (page.pageID.substr(0,4) == "temp"){
+                                                        tempDashboard.pages.splice(tempDashboard.pages.indexOf(page), 1);
+                                                    }
+                                                    if (tempDashboard.pages.indexOf(page) > 0){
+                                                        //remove temporary widgets in each page
+                                                        angular.forEach(page.widgets,function(widget){
+                                                            if (widget.widgetID.substr(0, 4) == "temp"){
+                                                                page.widgets.splice(page.widgets.indexOf(widget), 1);
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                                pouchDbServices.pageSync(tempDashboard);
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },$rootScope.refreshInterval);
+        }
+
+        refreshDashboard();
 
         //#set initial logo as Digin logo
         $scope.imageUrl = "styles/css/images/DiginLogo.png";
@@ -109,6 +158,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                 $rootScope.image ='http://' + Digin_Domain +  data.Result.logo_path;
                 $rootScope.profile_pic = data.Result.dp_path;
+                if (data.Result.components==null || data.Result.components=="true" || data.Result.components=="false"){
+                    data.Result.components = {
+                        saveExplicit : false,
+                        dashboardId : null
+                    };
+                    data.Result.components = JSON.stringify(data.Result.components);
+                }
                 $rootScope.userSettings = data.Result;
                 ProfileService.UserDataArr.BannerPicture = 'http://' + Digin_Domain + data.Result.dp_path;
 
@@ -571,7 +627,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $rootScope.goDashboard = function (dashboard) {
 
             $rootScope.currentView = "Dashboards || " + dashboard.dashboardName;
-            //$scope.openSearchBar(); 
+            //$scope.openSearchBar();
             console.log($scope.dashboards);
             console.log("dash item", dashboard);
             $rootScope.page_id = "";
@@ -609,15 +665,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 $scope.$apply();
                             }
                         }
-
-
-                        // ngToast.create({
-                        //     className: 'success',
-                        //     content: 'Retrieved dashboards from localStorage',
-                        //     horizontalPosition: 'center',
-                        //     verticalPosition: 'top',
-                        //     dismissOnClick: true
-                        // });
+                        $interval.cancel($scope.interval);
+                        $scope.interval = undefined;
+                        $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval * 1000;
+                        refreshDashboard();
                     }
                 });
                 $state.go('home.Dashboards');
@@ -654,7 +705,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             pouchDbServices.insertPouchDB(data.Result,null); 
 
                             var index = 0;
-                            console.log($rootScope.dashboard.pages[index].widgets);
                             for (var i = 0; i < $rootScope.dashboard.pages[index].widgets.length; i++) {
                                 $rootScope.dashboard.pages[index]["isSeen"] = true;
                                 var widget = $rootScope.dashboard.pages[index].widgets[i];
@@ -669,12 +719,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                             widget.widgetData.syncState = true;
                                             $scope.$apply();
                                         });
-
                                     }
                                 }
                             }
-                            
-
+                            $interval.cancel($scope.interval);
+                            $scope.interval = undefined;
+                            $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval * 1000;
+                            refreshDashboard();
                             $state.go('home.Dashboards');
                             //$rootScope.currentView = dashboard.dashboardName;
                         }

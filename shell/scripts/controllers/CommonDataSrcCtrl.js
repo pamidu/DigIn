@@ -839,7 +839,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                         $scope.headerMenuToggle = false;
                     // save the dashboard if it contains any widget
                     var saveFlag = false;
-                    if ($rootScope.userSettings.components == "true") {
+                    var components = JSON.parse($rootScope.userSettings.components);
+                    if (components.saveExplicit) {
                         if ($rootScope.dashboard.pages.length > 0){
                             if ($rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.length > 0){
                                 angular.forEach($rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets,function(widget){

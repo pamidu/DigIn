@@ -41,16 +41,12 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
             $scope.cacheLifetime=$rootScope.userSettings.cache_lifetime;
             $scope.noOfWidget=$rootScope.userSettings.widget_limit;
             $scope.reqLimit=$rootScope.userSettings.query_limit;
-            if ($rootScope.userSettings.components == "true"){
+            var userSettingsTemp = JSON.parse($rootScope.userSettings.components);
+            if (userSettingsTemp.saveExplicit) {
                 $scope.components=true;
-            }
-            else if ($rootScope.userSettings.components == "false"){
+            } else {
                 $scope.components=false;
             }
-            else{
-                $scope.components=false;
-            }
-
     }
     
     
@@ -84,7 +80,9 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
         var dp_name="";
         var logo_name="";
         var components; var userRole; var cacheLifetime; var widgetLimit; var themeConfig; var queryLimit;
-        if($scope.components==undefined) {components="false";} else {components=$scope.components.toString();}
+        components = JSON.parse($rootScope.userSettings.components);
+        components.saveExplicit = $scope.components;
+        components = JSON.stringify(components);
         if($rootScope.userSettings.user_role==undefined) {userRole="";} else {userRole=$rootScope.userSettings.user_role}
         if($scope.cacheLifetime==undefined) {cacheLifetime=0;} else {cacheLifetime=parseInt($scope.cacheLifetime)}
         if($scope.noOfWidget==undefined) {widgetLimit=6;} else {widgetLimit=parseInt($scope.noOfWidget)}

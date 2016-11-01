@@ -1340,8 +1340,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 })
             }
         },
-        removeMea: function(l) {
-            
+        removeMea: function(l) {          
             // if ($scope.isDrilled) $scope.getDrilledAggregation();
             // else $scope.getAggregation();
             if ($scope.executeQryData.executeColumns.length <= 1) {
@@ -3209,6 +3208,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         if (typeof $scope.highchartsNG["init"] == "undefined" || !$scope.highchartsNG.init) {
             $scope.highchartsNG["init"] = false;
             $scope.highchartsNG = {};
+            if ($scope.executeQryData.executeColumns.length == 0 && $scope.executeQryData.executeMeasures.length == 0){
+                $scope.dataToBeBind.receivedQuery = "";
+                $scope.isPendingRequest = false;
+                $scope.eventHndler.isLoadingChart = false;
+                $scope.highchartsNG = $scope.initHighchartObj;                
+                return;
+            }        
             if ($scope.chartType != 'Geographical Map') {
                 $scope.highchartsNG = {
                     options: {
@@ -3482,6 +3488,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         var drillOrderArr = [];
         $scope.eventHndler.isLoadingChart = true;
         $scope.highchartsNG.series = [];
+        if ($scope.executeQryData.executeColumns.length == 0 && $scope.executeQryData.executeMeasures.length == 0) {
+            $scope.dataToBeBind.receivedQuery = "";
+            $scope.isPendingRequest = false;
+            $scope.eventHndler.isLoadingChart = false;
+            $scope.highchartsNG = $scope.initHighchartObj;
+            return;
+        }
         $scope.highchartsNG['drilldown'] = {
             series: []
         };

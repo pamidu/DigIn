@@ -532,7 +532,7 @@ p {
                                     </div>
                                     <div ng-if='usageDetails.storage_bq !== undefined' layout="column" flex>
                                         <text style="font-weight:700;color:grey;font-size:15px">STORAGE</text>
-                                        <text style="font-size:30px">{{usageDetails.storage_bq/1024 | number:0}} MB</text>
+                                        <text style="font-size:30px">{{usageDetails.storage_bq/1048576 | number:0}} MB</text>
                                     </div>
                                     <div ng-if='usageDetails.storage_bq === undefined'  layout="column" flex>
                                         <text style="font-weight:700;color:grey;font-size:15px">STORAGE</text>
@@ -546,7 +546,7 @@ p {
                                     </div>
                                     <div ng-if='usageDetails.download_bq !== undefined' layout="column" flex>
                                         <text style="font-weight:700;color:grey;font-size:15px">DATA USAGE</text>
-                                        <text style="font-size:30px">{{usageDetails.download_bq/1024 | number:0}} MB </text>
+                                        <text style="font-size:30px">{{usageDetails.download_bq/1048576 | number:0}} MB </text>
                                     </div>
                                      <div ng-if='usageDetails.download_bq === undefined' layout="column" flex>
                                         <text style="font-weight:700;color:grey;font-size:15px">DATA USAGE</text>

@@ -23,6 +23,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     userAdminFactory.getPackageDetail();
     //userAdminFactory.getTenant(window.location.hostname);
     //userAdminFactory.getPackageSummary();
+    
+    
 
     //#Get customer detail#//
     //paymentGatewaySvc.getCustomerInformations();
@@ -2643,6 +2645,9 @@ routerApp.directive('customOnChange', function() {
 
 routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$http', 'notifications', '$state', '$stateParams','Digin_Engine_API','userAdminFactory','pouchDB', function($scope, $rootScope, $mdDialog, $http, notifications, $state, $stateParams,Digin_Engine_API,userAdminFactory,pouchDB) {
 
+    userAdminFactory.getInvitedUsers();
+
+
         //#common pre loader
     var displayProgress = function(message) {
         $mdDialog.show({
@@ -2696,25 +2701,32 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
 
     //#Customise package add alacartes#//
     $scope.submit = function(ev) {
-        var confirm = $mdDialog.confirm()
-            .title('Customize Package')
-            .textContent('Do you want to proceed with payment?')
-            .ariaLabel('Lucky day')
-            .targetEvent(ev)
-            .ok('Yes')
-            .cancel('No');
+        if($rootScope.sharableUsers.length>(parseInt($rootScope.defaultUsers)+parseInt($scope.users))){
+            displayError('There are '+ $rootScope.sharableUsers.length+' active users, Please remove user before update alacarte.');
+            $scope.users=$rootScope.extraUsers;
+        }
+        else{
+            var confirm = $mdDialog.confirm()
+                .title('Customize Package')
+                .textContent('Do you want to proceed with payment?')
+                .ariaLabel('Lucky day')
+                .targetEvent(ev)
+                .ok('Yes')
+                .cancel('No');
 
-        $mdDialog.show(confirm).then(function() {
-            //Yes
-            if ($rootScope.custStatus == true) {
-                $scope.ProceedCustomizedValidation();
-            } else {
-                //notifications.toast('0','This customer is not active customer or currently have not been subsctibed any package.');
-                displayError('This customer is not active customer or currently have not been subsctibed any package.');
-            }
-        }, function() {
-            //No
-        });
+            $mdDialog.show(confirm).then(function() {
+                //Yes
+                if ($rootScope.custStatus == true) {
+                    $scope.ProceedCustomizedValidation();
+                } else {
+                    //notifications.toast('0','This customer is not active customer or currently have not been subsctibed any package.');
+                    displayError('This customer is not active customer or currently have not been subsctibed any package.');
+                }
+            }, function() {
+                //No
+            });
+        }
+            
     };
 
     //#common error message
@@ -2942,7 +2954,7 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                 } else {
                     //fail
                     $mdDialog.hide();
-                    notifications.toast("0", "Failed to add alaCartes.");
+                    notifications.toast("0", "Failed to update alaCartes.");
 
                 }
             } else {
@@ -2990,7 +3002,7 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                         
 
                              
-                             displaySuccess("AlaCartes added successfully."); 
+                             displaySuccess("AlaCartes updated successfully."); 
                                     $mdDialog.hide();
 
 

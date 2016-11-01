@@ -2413,7 +2413,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             text: ''
                         },
                         tooltip: {
-                            pointFormat: '<b> <span style = "color : {series.color}" >  ? </span> {series.name}: {point.y:,.0f} </b>',
+                            pointFormat: '<b> <span style = "color : {series.color}" >  </span> {series.name}: {point.y:,.0f} </b>',
                             useHTML: true
                         }
                     },

@@ -3601,6 +3601,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                 conStr = "";
                                 var level;
                                 var tempArray = [];
+                                var isDate;
                                 // var cat = [];
                                 for (i = 0; i < drillOrdArr.length; i++) {
                                     if (drillOrdArr[i].name == highestLvl) {
@@ -3610,12 +3611,31 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                         if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
                                     }
                                 }
+                                //get the selected point of each level
                                 for(var c = 0; c<level;c++){
                                     tempArrStr = "";
+                                    isDate = false;
+                                    angular.forEach($scope.sourceData.fAttArr,function(key){
+                                        if (key.name == drillOrdArr[c].name){
+                                            if (key.dataType !== undefined){
+                                                if (key.dataType == 'DATE' || key.dataType == 'Date'){
+                                                    isDate = true;
+                                                }
+                                            }
+                                        }
+                                    });                                    
                                     if (typeof drillOrdArr[c].clickedPoint == 'number') {
-                                        tempArrStr = drillOrdArr[c].name + " = " + drillOrdArr[c].clickedPoint;
+                                        if (isDate){
+                                            tempArrStr = 'Date('+drillOrdArr[c].name + ") = " + drillOrdArr[c].clickedPoint;
+                                        }else{
+                                            tempArrStr = drillOrdArr[c].name + " = " + drillOrdArr[c].clickedPoint;
+                                        }
                                     } else {
-                                        tempArrStr = drillOrdArr[c].name + " = '" + drillOrdArr[c].clickedPoint + "'";
+                                        if (isDate){
+                                            tempArrStr = 'Date('+drillOrdArr[c].name + ") = '" + drillOrdArr[c].clickedPoint + "'";
+                                        }else{
+                                            tempArrStr = drillOrdArr[c].name + " = '" + drillOrdArr[c].clickedPoint + "'";
+                                        }
                                     }
                                     tempArray.push(tempArrStr);
                                 }
@@ -3670,7 +3690,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                         $scope.$apply();
                                         chart.addSeriesAsDrilldown(e.point, drillObj);
                                     } else {
-                                        alert('request failed due to :' + JSON.stringify(res));
+                                        privateFun.fireMessage('0','request failed due to :' + JSON.stringify(res));
                                         e.preventDefault();
                                     }
 

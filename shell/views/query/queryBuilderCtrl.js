@@ -1817,15 +1817,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     $scope.forecastObj.paramObj.len_season = data.len_season;
                 }
 
-                // set alpha,beeta, gamma values returned from the service 
-                $scope.forecastObj.paramObj.alpha = data.alpha.toFixed(3);
-                $scope.forecastObj.paramObj.a = data.alpha.toFixed(3);
-
-                $scope.forecastObj.paramObj.beta = data.beta.toFixed(3);
-                $scope.forecastObj.paramObj.b = data.beta.toFixed(3);
-
-                $scope.forecastObj.paramObj.gamma = data.gamma.toFixed(3);
-                $scope.forecastObj.paramObj.g = data.gamma.toFixed(3);
+                // set alpha,beeta, gamma values returned from the service
+                if(data.alpha != ""){
+                    $scope.forecastObj.paramObj.alpha = data.alpha.toFixed(3);
+                    $scope.forecastObj.paramObj.a = data.alpha.toFixed(3);
+                } 
+                
+                if(data.beta != ""){
+                    $scope.forecastObj.paramObj.beta = data.beta.toFixed(3);
+                    $scope.forecastObj.paramObj.b = data.beta.toFixed(3);
+                }
+                
+                if(data.gamma != ""){
+                    $scope.forecastObj.paramObj.gamma = data.gamma.toFixed(3);
+                    $scope.forecastObj.paramObj.g = data.gamma.toFixed(3); 
+                }
 
                 if (fObj.forecastAtt == "") {
 
@@ -2282,15 +2288,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 $scope.forecastObj.paramObj.enddate = moment(new Date(data.max_date)).format('LL');
                 $scope.forecastObj.paramObj.startdate = moment(new Date(data.min_date)).format('LL');
 
-                // set alpha,beeta, gamma values returned from the service 
-                $scope.forecastObj.paramObj.alpha = data.alpha.toFixed(3);
-                $scope.forecastObj.paramObj.a = data.alpha.toFixed(3);
-
-                $scope.forecastObj.paramObj.beta = data.beta.toFixed(3);
-                $scope.forecastObj.paramObj.b = data.beta.toFixed(3);
-
-                $scope.forecastObj.paramObj.gamma = data.gamma.toFixed(3);
-                $scope.forecastObj.paramObj.g = data.gamma.toFixed(3);
+                 // set alpha,beeta, gamma values returned from the service
+                if(data.alpha != ""){
+                    $scope.forecastObj.paramObj.alpha = data.alpha.toFixed(3);
+                    $scope.forecastObj.paramObj.a = data.alpha.toFixed(3);
+                } 
+                
+                if(data.beta != ""){
+                    $scope.forecastObj.paramObj.beta = data.beta.toFixed(3);
+                    $scope.forecastObj.paramObj.b = data.beta.toFixed(3);
+                }
+                
+                if(data.gamma != ""){
+                    $scope.forecastObj.paramObj.gamma = data.gamma.toFixed(3);
+                    $scope.forecastObj.paramObj.g = data.gamma.toFixed(3); 
+                }
 
 
                 // to check wether service has returned any warnings

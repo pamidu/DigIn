@@ -683,21 +683,20 @@ p {
                                                     <span style="color:white;font-size:12px;">{{plan.per}}</span>
                                                 </div>
                                              
-                                                <md-button class="md-fab md-mini" ng-show="plan.isSelected == true" aria-label="Comment" style="background:#f9a525;position:absolute;margin-top: -10px;margin-left: 50px;" >
+                                                <!--md-button class="md-fab md-mini" ng-show="plan.isSelected" style="background:#f9a525;position:absolute;margin-top: -10px;margin-left: 50px;" >
                                                 <md-icon md-svg-src="ic_check_24px.svg"></md-icon>
-                                                </md-button>
+                                                </md-button-->
                                             
-                                        
                                             </center>
-                                            <md-card-content layout="column" layout-align="center center">
+                                            <md-card-content layout="column" layout-align="center center" style="height:125px;>
                                                 <p layout="row">{{plan.numberOfUsers }} <span ng-if="plan.numberOfUsers == '1'">&nbspUser</span><span ng-if="plan.numberOfUsers != '1'">&nbspUsers</span></p>
                                                 <p>{{plan.storage}} of Storage</p>
                                                 <p>{{plan.bandwidth}} of Bandwidth</p>
                                             </md-card-content>
-                                            <md-card-content layout="column" layout-align="center center" style="background:#e7faff">
+                                            <md-card-content layout="column" layout-align="center center" style="background:#e7faff; height:100px;">
                                                 <p>${{plan.perMonth}} / Per User (Monthly)</p>
                                                 <p>${{plan.perYear}} / Per User (Yearly) </p>
-                                                <md-button class="md-raised" ng-show="true" ng-click="vm.upgradeConfirmation($event,plan)" aria-label="Comment" style="background:#f9a525; color: white;">
+                                                <md-button class="md-raised" ng-show="plan.isSelected" ng-click="vm.upgradeConfirmation($event,plan)" aria-label="Comment" style="background:#f9a525; color: white;">
                                                     <span>Upgrade now!</span>
                                                 </md-button>
                                             </md-card-content>
@@ -764,7 +763,7 @@ p {
                                                     
                                                     </center>
                                                     
-                            
+                           
                                                     
                                                 </md-card>
                                             </div>

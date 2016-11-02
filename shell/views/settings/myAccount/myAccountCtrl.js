@@ -15,7 +15,6 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     $scope.storageRate = 8;
     $scope.bandwithRate = 10;
     
-    
 
     //#Subscription START----------------------
 
@@ -220,8 +219,12 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 */
    // }
 //--------------------------------------------------------  
-    
 
+
+    
+    
+    
+    
 //----get card info------------------------------------------   
     $http({
         //url : "http://staging.digin.io/include/duoapi/paymentgateway/getCardInformation",
@@ -629,6 +632,80 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     }];
     
     
+        
+//#Check subscription ----------------------------------------------------------
+        var packagename="";       
+        $http({
+            url: "/include/duoapi/paymentgateway/checkSubscription",
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response) {
+            if (response.statusText == "OK") {
+                $rootScope.custStatus = response.data.status;
+                
+                if(response.data.status){ 
+                    for(i=0; i<response.data.response[0].otherInfo.length; i++)
+                    {                   
+                        if(response.data.response[0].otherInfo[i].tag=="Package")
+                        {
+                            if(response.data.response[0].otherInfo[i].feature=="personal_space"){
+                                packagename='Personal Space';
+                            }
+                            else if(response.data.response[0].otherInfo[i].feature=="mini_team"){
+                                packagename='We Are A Mini Team';
+                               
+                            }
+                            else if(response.data.response[0].otherInfo[i].feature=="world"){                              
+                                packagename='We Are the World';                              
+                            }
+                            else{
+                                packagename='Free'; 
+                            }                               
+                        }
+                        else
+                        { }   
+                    }           
+                }else{
+                    packagename='Free'; 
+                }
+       
+            $rootScope.packageName=packagename;
+            $scope.showExistingPckge();
+        
+            }   
+        }, function(response) {
+            //console.log(response)
+            //notifications.toast("0", "Error occured while retriving the account detail.");
+        })
+    
+    $scope.showExistingPckge = function() {
+        if($rootScope.packageName=="Personal Space"){
+            vm.companyPricePlans[0].isSelected = false;
+            vm.companyPricePlans[1].isSelected = true;
+            vm.companyPricePlans[2].isSelected = true;
+        }
+        else if($rootScope.packageName=="We Are A Mini Team"){
+            vm.companyPricePlans[0].isSelected = true;
+            vm.companyPricePlans[1].isSelected = false;
+            vm.companyPricePlans[2].isSelected = true;
+        }
+        else if($rootScope.packageName=="We Are the World"){
+            vm.companyPricePlans[0].isSelected = true;
+            vm.companyPricePlans[1].isSelected = true;
+            vm.companyPricePlans[2].isSelected = false;
+        }
+        else{
+            vm.companyPricePlans[0].isSelected = true;
+            vm.companyPricePlans[1].isSelected = true;
+            vm.companyPricePlans[2].isSelected = true;
+        }
+    }
+
+    
+    
+
     /*
     vm.paymentCards = [{
         id: "card_194OMZLEDsR3ar1xYbp3GCsG",
@@ -757,7 +834,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     vm.makeDefault = function(ev, cardId) {
         var confirm = $mdDialog.confirm()
             .title('Change default card')
-            .textContent('Do you cant to set this card as default card?')
+            .textContent('Do you want to set this card as default card?')
             .ariaLabel('Lucky day')
             .targetEvent(ev)
             .ok('Yes')
@@ -869,11 +946,14 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             //#for exist customer's package will upgrade
             if ($rootScope.custStatus == true) {
                 vm.upgradePackage(plan);
+
             }
             //#for non existing customers package cannot be upgraded and initial package need to be purchage
             else {
                 vm.processInitialPurchase(ev, plan);
             }
+            
+            $scope.showExistingPckge();
 
         }, function() {
             //No
@@ -990,7 +1070,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                               $rootScope.defaultData=plan.valData;
                               $rootScope.defaultStorage=plan.valStorage;       
                              
-                             
+                             $scope.showExistingPckge();
                              
                               // put them back
                               return db.put(doc_package);
@@ -1124,6 +1204,14 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             if (response.statusText == "OK") {
                 if (response.data.status == true) {
                     
+                    $rootScope.packageName=plan.name;
+                    $rootScope.packagePrice=plan.price;
+                    $rootScope.defaultUsers=plan.numberOfUsers;
+                    $rootScope.defaultData=plan.valData;
+                    $rootScope.defaultStorage=plan.valStorage;
+                    
+                    $scope.showExistingPckge();
+                    
                     db.get('packgedetail').then(function (doc_package) {
                     
                         doc_package.packagename=plan.name,
@@ -1131,13 +1219,6 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                         doc_package.packageuser=plan.numberOfUsers,
                         doc_package.packagedata=plan.valData,
                         doc_package.packagestorage=plan.valStorage,
-                        
-                        
-                    $rootScope.packageName=plan.name;
-                    $rootScope.packagePrice=plan.price;
-                    $rootScope.defaultUsers=plan.numberOfUsers;
-                    $rootScope.defaultData=plan.valData;
-                    $rootScope.defaultStorage=plan.valStorage;
                         
                     db.put(doc_package);
                     
@@ -2720,7 +2801,7 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                     $scope.ProceedCustomizedValidation();
                 } else {
                     //notifications.toast('0','This customer is not active customer or currently have not been subsctibed any package.');
-                    displayError('This customer is not active customer or currently have not been subsctibed any package.');
+                    displayError('For free package user will not allow to add any extra features.');
                 }
             }, function() {
                 //No

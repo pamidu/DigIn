@@ -98,10 +98,11 @@ routerApp.service('saveDashboardService',function($rootScope,$http,Digin_Engine_
       $rootScope.dashboard.refreshInterval = refreshInterval;
       // Insert data into pouchDb
       pouchDbServices.insertPouchDB(null,response.Result,function(){
-          if (type == 'dashboard'){
-            setState(true,scope);
-          }
+         
       }); 
+      if (type == 'dashboard'){
+           setState(true,scope);
+      }
       ngToast.create({
         className: 'success',
         content: 'Dashboard Saved Successful',

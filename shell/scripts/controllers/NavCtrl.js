@@ -101,7 +101,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                         filterService.clearFilters(widget);
                                         $qbuilder.sync(widget.widgetData, function (data) {
                                             if (count == $rootScope.dashboard.pages[index].widgets.length) {
-                                                notifications.toast('1','Refreshed Dashboard!');
                                                 // save dashboard to pouch db
                                                 var tempDashboard = angular.copy($rootScope.dashboard);
                                                 angular.forEach(tempDashboard.pages,function(page){

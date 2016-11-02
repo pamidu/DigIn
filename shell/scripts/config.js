@@ -17,7 +17,7 @@
 
     //#for loggin process
     .constant('IsLocal', true)
-    .constant('Local_Shell_Path', 'http://localhost:8081/2016-11-2.1/DigIn/shell')
+    .constant('Local_Shell_Path', 'http://localhost:8080/DigIn/shell')
     .constant('report_Widget_Iframe', 'http://prod.digin.io/Reports/HourlyCallSummery_HBL/HourlyCallSummery_HBL.pdf')
 
 

@@ -210,7 +210,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         //close open pages and go to home
         $scope.mainclose = function (ev) {
-
+            setTimeout(function(){ $mdDialog.hide(); }, 3000);
             $mdDialog.show({
 
                 controller: function goHomeCtrl($scope, $mdDialog) {
@@ -1772,7 +1772,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
 
         $scope.clearAllWidgets = function (ev) {
-
+            setTimeout(function(){  $mdDialog.hide(); }, 3000);
             $mdDialog.show({
                 controller: function clearWidgetsCtrl($scope, $mdDialog) {
                     $scope.clear = function () {

@@ -893,7 +893,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             if (!page.isSeen) {
                 var count=0;
                 for (var i = 0; i < page.widgets.length; i++) {
-                    if (typeof page.widgets[i].widgetData.commonSrc != 'undefined') {
+                   
                         if (typeof(page.widgets[i].widgetData.commonSrc) != "undefined") {
                             page.widgets[i].widgetData.syncState = false;
                             //Clear the filter indication when the chart is re-set
@@ -907,8 +907,14 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                     }
                                 });
                             }
+                        }else{
+                          count++;
+                          if(page.widgets.length == count){
+                              pouchDbServices.pageSync($rootScope.dashboard);
+                              
+                           }
                         }
-                    }
+                    
                 }
                 $scope.isPageSync = false;
                 for (var j = 0; j < $rootScope.dashboard.pages.length; j++) {

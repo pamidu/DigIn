@@ -3325,6 +3325,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             minColor: $scope.mapconfig.minColor,
                             maxColor: $scope.mapconfig.maxColor
 
+                        },
+                        title: {
+                            text: ''
                         }
                     };
                     $scope.highchartsNG.options.exporting = {
@@ -3340,7 +3343,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         }
                     };
                     $scope.highchartsNG.chartType = 'map';
-                    $scope.highchartsNG.title.text = '';
+                    
 
                 }
 
@@ -3451,6 +3454,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
                             }
 
+
+                        }
+                        else
+                        {
+                            maplibrary =  Highcharts.maps['custom/world'];
 
                         }
                         d.forEach(function(e) {

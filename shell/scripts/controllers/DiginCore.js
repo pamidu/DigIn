@@ -960,13 +960,17 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 filterStr = "",
                                 origName = "",
                                 serName = "",
+                                tempArrStr = "",
                                 conStr = "";
                             var limit;
+                            var level;
+                            var tempArray = [];
                             // var cat = [];
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
                                     nextLevel = drillOrdArr[i].nextLevel;
                                     drillOrdArr[i].clickedPoint = clickedPoint;
+                                    level = drillOrdArr[i].level;
                                     if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
                                 }
                             }
@@ -974,25 +978,30 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             // Show the loading label
                             chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
 
-                            // get the filter parameters
-                            if ( typeof clickedPoint == 'number') {
-                                conStr = highestLvl + " = " + clickedPoint;
-                            } else {
-                                conStr = highestLvl + " = '" + clickedPoint + "'";
-                            }
+                            // get the filter parameters              
                             if (widget.widgetData.filteredState) {
                                 filterArray = filterService.generateFilterParameters(widget.widgetData.commonSrc.filter);
                                 if (filterArray.length > 0) {
                                     filterStr = filterArray.join( ' And ');
-                                    filterStr += ' And ' + conStr;
-                                } else {
-                                    filterStr = conStr;
                                 }
                             }
-                            else {
-                                filterStr = conStr;
+                            for(var c = 0; c<level;c++){
+                                tempArrStr = "";
+                                if (typeof drillOrdArr[c].clickedPoint == 'number') {
+                                    tempArrStr = drillOrdArr[c].name + " = " + drillOrdArr[c].clickedPoint;
+                                } else {
+                                    tempArrStr = drillOrdArr[c].name + " = '" + drillOrdArr[c].clickedPoint + "'";
+                                }
+                                tempArray.push(tempArrStr);
                             }
-
+                            if (tempArray.length > 0){
+                                var tempStr = tempArray.join( ' And ');
+                                if (filterStr != ""){
+                                    filterStr = filterStr + ' And ' + tempStr;
+                                } else {
+                                    filterStr += tempStr;
+                                }
+                            }
                             //aggregate method
                             clientObj.getAggData(srcTbl, fields, limit, function(res, status, query) {
                                 filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);

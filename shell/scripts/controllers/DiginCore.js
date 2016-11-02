@@ -965,6 +965,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             var limit;
                             var level;
                             var tempArray = [];
+                            var isDate;
                             // var cat = [];
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
@@ -987,10 +988,28 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             }
                             for(var c = 0; c<level;c++){
                                 tempArrStr = "";
+                                isDate = false;
+                                angular.forEach(widget.widgetData.commonSrc.src.fAttArr,function(key){
+                                    if (key.name == drillOrdArr[c].name){
+                                        if (key.dataType !== undefined){
+                                            if (key.dataType == 'DATE' || key.dataType == 'Date'){
+                                                isDate = true;
+                                            }
+                                        }
+                                    }
+                                });
                                 if (typeof drillOrdArr[c].clickedPoint == 'number') {
-                                    tempArrStr = drillOrdArr[c].name + " = " + drillOrdArr[c].clickedPoint;
+                                    if (isDate){
+                                        tempArrStr = 'Date('+drillOrdArr[c].name + ") = " + drillOrdArr[c].clickedPoint;
+                                    }else{
+                                        tempArrStr = drillOrdArr[c].name + " = " + drillOrdArr[c].clickedPoint;
+                                    }
                                 } else {
-                                    tempArrStr = drillOrdArr[c].name + " = '" + drillOrdArr[c].clickedPoint + "'";
+                                    if(isDate){
+                                        tempArrStr = 'Date('+drillOrdArr[c].name + ") = '" + drillOrdArr[c].clickedPoint + "'";
+                                    }else{
+                                        tempArrStr = drillOrdArr[c].name + " = '" + drillOrdArr[c].clickedPoint + "'";
+                                    }
                                 }
                                 tempArray.push(tempArrStr);
                             }
@@ -1056,7 +1075,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                     chart.addSeriesAsDrilldown(e.point, drillObj);
 
                                 } else {
-                                    alert('request failed due to :' + JSON.stringify(res));
+                                    notifications.toast('0','request failed due to :' + JSON.stringify(res));
                                     e.preventDefault();
                                 }
                                 widget.widgetData.highchartsNG.xAxis["title"] = {

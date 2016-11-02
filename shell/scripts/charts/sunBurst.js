@@ -14,8 +14,8 @@ routerApp.directive('sunburstChart', function() {
             });
             
             scope.drawSunburstSummary = function(rootData,divID){
-                var width = 500,
-                        height = 500,
+                var width = 300,
+                        height = 290,
                         radius = Math.min(width, height) / 2;
 
                     var x = d3.scale.linear()
@@ -30,7 +30,7 @@ routerApp.directive('sunburstChart', function() {
                     d3.select(divid).selectAll("*").remove();
                     
                     svg = d3.select(divid)
-                        .append("svg").attr("viewBox", "0 0  500 600")
+                        .append("svg").attr("viewBox", "0 0  300  300")
                         .attr("width", '100%')
                         .attr("height", '100%')
                         .append("g")

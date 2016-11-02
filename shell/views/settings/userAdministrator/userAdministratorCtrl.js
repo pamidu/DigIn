@@ -185,15 +185,14 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 				}
 			}	
 			else{
-				displayError('There are ' + $rootScope.sharableUsers.length + ' active users belongs to this tenant, user limit for this package is '+$rootScope.totUsers+'.');
-				//notifications.toast(0, 'There are ' + $rootScope.sharableUsers.length + 'active users in this tenant, user limit for this package is '+$rootScope.totUsers+'.');
-				
-			}
-				
+				displayError('User limit for this package has been exceeded.');	
+			}		
 		}else{
 			notifications.toast(0, 'Enter a valid email');
 		}	
 	}
+	
+	
 	
 	
 	   //#common error message

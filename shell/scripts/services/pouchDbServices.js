@@ -13,7 +13,6 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                       .success(function (data) {
                           if (data.Is_Success) {
                               var dashboard = angular.fromJson(CircularJSON.stringify(data.Result));
-                              
                                 var count=0;
                                 var index=0;
                                 for (var i = 0; i < dashboard.pages[index].widgets.length; i++) {

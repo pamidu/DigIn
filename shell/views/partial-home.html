@@ -120,6 +120,10 @@
 
 				<ul class="dashboard-wrap" ng-repeat="dashboard in dashboards | filter : SearchText">
 					{{x}}
+                     <!-- <md-radio-group ng-model="data.defaultDashboard" ng-change="setDefaultDashboard($event,dashboard)">
+                        <md-radio-button value="{{dashboard.dashboardID}}" class="md-primary" style="float: left;">
+                        </md-radio-button>
+                    </md-radio-group> -->
 					<li class="pull-left dashboard-name">{{dashboard.dashboardName}}</li>
 					<li class="pull-right view-more-btn" ng-click="goDashboard(dashboard)">view</li>
 					<li class="pull-right delete-btn" ng-click="deleteDashBoard(dashboard,$event)">delete</li>

@@ -839,6 +839,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                         $scope.headerMenuToggle = false;
                     // save the dashboard if it contains any widget
                     var saveFlag = false;
+                    var refreshInterval = '0';
                     var components = JSON.parse($rootScope.userSettings.components);
                     if (components.saveExplicit) {
                         if ($rootScope.dashboard.pages.length > 0){
@@ -858,7 +859,10 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                         } else {
                             console.log("saved dashboard");
                         }
-                        saveDashboardService.saveDashboard($rootScope.dashboard.compName,300,'designView',$scope);
+                        if ($rootScope.dashboard.refreshInterval !== undefined){
+                            refreshInterval = $rootScope.dashboard.refreshInterval.toString();
+                        }
+                        saveDashboardService.saveDashboard($rootScope.dashboard.compName,refreshInterval,'designView',$scope);
                     }
                 //if number of widgets are lesser than 6
                 var widgetLimit = 10;

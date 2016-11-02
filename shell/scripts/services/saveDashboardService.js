@@ -1,4 +1,4 @@
-routerApp.service('saveDashboardService',function($rootScope,$http,Digin_Engine_API,Digin_Domain,ngToast,pouchDbServices,$state,DashboardService,$mdDialog) {
+routerApp.service('saveDashboardService',function($rootScope,$http,Digin_Engine_API,Digin_Domain,ngToast,pouchDbServices,$state,DashboardService,$mdDialog,$interval) {
 
   this.saveDashboard = function(dashboardName,refreshInterval,type,scope) {
     var pagesArray = [];
@@ -96,7 +96,18 @@ routerApp.service('saveDashboardService',function($rootScope,$http,Digin_Engine_
       $rootScope.dashboard.compName = dashboardName;
       $rootScope.dashboard.compType = 'dashboard';
       $rootScope.dashboard.refreshInterval = refreshInterval;
+      $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval;
       // Insert data into pouchDb
+      if ($rootScope.dashboard.refreshInterval == '0'){
+        $interval.cancel($rootScope.interval);
+        $rootScope.interval = undefined;
+        $rootScope.refreshInterval == undefined;
+      } else {
+        $interval.cancel($rootScope.interval);
+        $rootScope.interval = undefined;
+        $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval * 1000;
+        $rootScope.refreshDashboard();
+      }
       pouchDbServices.insertPouchDB(null,response.Result,function(){
          
       }); 

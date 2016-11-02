@@ -213,7 +213,17 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 				notifications.toast(0, "Falied to remove user");
 			});
 			
-		}/*,getTenant: function(tenantId) {
+		},getUserLevel: function() {
+			   //$http.get('http://chamila103.prod.digin.io/auth/tenant/Autherized/chamila103.prod.digin.io',{
+               $http.get('/auth/tenant/Autherized/' + JSON.parse(decodeURIComponent(getCookie('tenantData')))[0].TenantID, {
+					headers: {'Securitytoken': getCookie('securityToken')}
+				})
+			   .then(function(result) {
+					$rootScope.userLevel=result.data.SecurityLevel;
+				},function errorCallback(response) {
+					$rootScope.userLevel="";
+				});	
+        }/*,getTenant: function(tenantId) {
              return $http.get('/auth/tenant/GetTenant/' + tenantId, {
 					headers: {'Securitytoken': getCookie('securityToken')}
 				})

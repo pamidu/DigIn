@@ -101,7 +101,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                         filterService.clearFilters(widget);
                                         $qbuilder.sync(widget.widgetData, function (data) {
                                             if (count == $rootScope.dashboard.pages[index].widgets.length) {
-                                                notifications.toast('1','Refreshed Dashboard!');
                                                 // save dashboard to pouch db
                                                 var tempDashboard = angular.copy($rootScope.dashboard);
                                                 angular.forEach(tempDashboard.pages,function(page){
@@ -214,7 +213,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         //close open pages and go to home
         $scope.mainclose = function (ev) {
-
+            setTimeout(function(){ $mdDialog.hide(); }, 3000);
             $mdDialog.show({
 
                 controller: function goHomeCtrl($scope, $mdDialog) {
@@ -1815,7 +1814,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
 
         $scope.clearAllWidgets = function (ev) {
-
+            setTimeout(function(){  $mdDialog.hide(); }, 3000);
             $mdDialog.show({
                 controller: function clearWidgetsCtrl($scope, $mdDialog) {
                     $scope.clear = function () {

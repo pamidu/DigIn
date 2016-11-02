@@ -605,7 +605,7 @@ routerApp
                     .success(function(response){
                         if(response.Error){
                             $mdDialog.hide();
-                            mainFun.fireMsg('0', '</strong>Invalid email address/ this email address not exist.');                          
+                            mainFun.fireMsg('0', '</strong>Invalid email address or this email address not exist.');                          
                         }
                         else if(response.Active==false){
                             $mdDialog.hide();

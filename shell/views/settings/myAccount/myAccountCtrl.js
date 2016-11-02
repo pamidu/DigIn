@@ -2482,6 +2482,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         code: "AX",
         name: "Åland Islands"
     }];
+	
+	$scope.ledgers = [{date:"23rd November 1992", amount:"3000", package: "We are the world"},{date:"25th November 1992", amount:"2000", package: "We are a mini team"}];
 
 });
 

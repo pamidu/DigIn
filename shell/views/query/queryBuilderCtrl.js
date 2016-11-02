@@ -3596,21 +3596,31 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                     isLastLevel = false,
                                     selectedSeries = e.point.series.name,
                                     origName = "",
-                               
+                                    tempArrStr = "",
                                     serName = "";
                                 conStr = "";
+                                var level;
+                                var tempArray = [];
                                 // var cat = [];
                                 for (i = 0; i < drillOrdArr.length; i++) {
                                     if (drillOrdArr[i].name == highestLvl) {
                                         nextLevel = drillOrdArr[i].nextLevel;
                                         drillOrdArr[i].clickedPoint = clickedPoint;
+                                        level = drillOrdArr[i].level;
                                         if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
                                     }
                                 }
-                                if (typeof clickedPoint == 'number') {
-                                    conStr = highestLvl + " = " + clickedPoint;
-                                } else {
-                                    conStr = highestLvl + " = '" + clickedPoint + "'";
+                                for(var c = 0; c<level;c++){
+                                    tempArrStr = "";
+                                    if (typeof drillOrdArr[c].clickedPoint == 'number') {
+                                        tempArrStr = drillOrdArr[c].name + " = " + drillOrdArr[c].clickedPoint;
+                                    } else {
+                                        tempArrStr = drillOrdArr[c].name + " = '" + drillOrdArr[c].clickedPoint + "'";
+                                    }
+                                    tempArray.push(tempArrStr);
+                                }
+                                if (tempArray.length > 0 ){
+                                    conStr = tempArray.join( ' And ');
                                 }
                                 chart.options.lang.drillUpText = "Back to " + highestLvl;
                                 // Show the loading label

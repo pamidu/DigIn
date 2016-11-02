@@ -1,3 +1,4 @@
+
  angular.module('configuration', [])
     .constant('Digin_Engine_API', 'http://prod.digin.io:1929/')
     //.constant('Digin_Engine_API', 'http://digin.io:1929/')
@@ -18,7 +19,6 @@
     .constant('IsLocal', true)
     .constant('Local_Shell_Path', 'http://localhost:8080/DigIn/shell')
     .constant('report_Widget_Iframe', 'http://prod.digin.io/Reports/HourlyCallSummery_HBL/HourlyCallSummery_HBL.pdf')
-  
 
 
 

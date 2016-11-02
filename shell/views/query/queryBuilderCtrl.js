@@ -3359,6 +3359,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             });
             $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, function(res, status, query) {
                 if (status) {
+                    if ($scope.executeQryData.executeColumns.length == 0 && $scope.executeQryData.executeMeasures.length == 0){
+                        $scope.dataToBeBind.receivedQuery = "";
+                        $scope.isPendingRequest = false;
+                        $scope.eventHndler.isLoadingChart = false;
+                        $scope.highchartsNG = $scope.initHighchartObj;
+                        return;
+                    }
                     eval("$scope." + $scope.selectedChart.chartType + ".onGetAggData(res[0])");
                     $scope.dataToBeBind.receivedQuery = query;
                     $scope.$apply();
@@ -3498,6 +3505,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             catArr.push('"' + key.filedName + '"');
         });
         $scope.client.getHighestLevel($scope.sourceData.tbl, catArr.toString(), function(res, status) {
+            if ($scope.executeQryData.executeColumns.length == 0 && $scope.executeQryData.executeMeasures.length == 0){
+                $scope.dataToBeBind.receivedQuery = "";
+                $scope.isPendingRequest = false;
+                $scope.eventHndler.isLoadingChart = false;
+                $scope.highchartsNG = $scope.initHighchartObj;
+                return;
+            }            
             if (status) {
                 var highestLevel = "";
                 for (i = 0; i < res.length; i++) {

@@ -22,9 +22,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     userAdminFactory.getPackageDetail();
     //userAdminFactory.getTenant(window.location.hostname);
     //userAdminFactory.getPackageSummary();
+     userAdminFactory.getUserLevel();
     
-    
-
     //#Get customer detail#//
     //paymentGatewaySvc.getCustomerInformations();
 
@@ -743,29 +742,38 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
 
     vm.updatePackage = function(ev) {
-        location.href = '#/home/addaLaCarte';
+        if(!$rootScope.userLevel=='admin'){
+           displayError('You are not permitted to do this opertion, allowed only for administrator'); 
+        }else{
+            location.href = '#/home/addaLaCarte';
+        }   
     }
 
 
     vm.deactivateAccount = function(ev) {
-        var confirm = $mdDialog.confirm()
-            .title('Account Deactivation')
-            .textContent('Are you sure you want to deactivate this account?')
-            .ariaLabel('Lucky day')
-            .targetEvent(ev)
-            .ok('Yes')
-            .cancel('No');
+        if(!$rootScope.userLevel=='admin'){
+           displayError('You are not permitted to do this opertion, allowed only for administrator'); 
+        }else{
+            var confirm = $mdDialog.confirm()
+                .title('Account Deactivation')
+                .textContent('Are you sure you want to deactivate this account?')
+                .ariaLabel('Lucky day')
+                .targetEvent(ev)
+                .ok('Yes')
+                .cancel('No');
 
-        $mdDialog.show(confirm).then(function() {
-            //Yes
-            if ($rootScope.custStatus == true) {
-                paymentGatewaySvc.stopSubscriptionImmediate();
-            } else {
-                displayError("This customer is already deactivated or have not been subscribed to any package.");
-            }
-        }, function() {
-            //No
-        });
+            $mdDialog.show(confirm).then(function() {
+                //Yes
+                if ($rootScope.custStatus == true) {
+                    paymentGatewaySvc.stopSubscriptionImmediate();
+                } else {
+                    displayError("This customer is already deactivated or have not been subscribed to any package.");
+                }
+            }, function() {
+                //No
+            });
+        }
+            
     };
 
 
@@ -933,31 +941,37 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
 
     vm.upgradeConfirmation = function(ev, plan) {
-        var confirm = $mdDialog.confirm()
-            .title('Upgrade Account')
-            .textContent('Do you want to proceed with package upgration process?')
-            .ariaLabel('Lucky day')
-            .targetEvent(ev)
-            .ok('Yes')
-            .cancel('No');
+        if(!$rootScope.userLevel=='admin'){
+           displayError('You are not permitted to do this opertion, allowed only for administrator'); 
+        }
+        else{
+            var confirm = $mdDialog.confirm()
+                .title('Upgrade Account')
+                .textContent('Do you want to proceed with package upgration process?')
+                .ariaLabel('Lucky day')
+                .targetEvent(ev)
+                .ok('Yes')
+                .cancel('No');
 
-        $mdDialog.show(confirm).then(function() {
-            //Yes
-            //#for exist customer's package will upgrade
-            if ($rootScope.custStatus == true) {
-                vm.upgradePackage(plan);
+            $mdDialog.show(confirm).then(function() {
+                //Yes
+                //#for exist customer's package will upgrade
+                if ($rootScope.custStatus == true) {
+                    vm.upgradePackage(plan);
 
-            }
-            //#for non existing customers package cannot be upgraded and initial package need to be purchage
-            else {
-                vm.processInitialPurchase(ev, plan);
-            }
+                }
+                //#for non existing customers package cannot be upgraded and initial package need to be purchage
+                else {
+                    vm.processInitialPurchase(ev, plan);
+                }
+                
+                $scope.showExistingPckge();
+
+            }, function() {
+                //No
+            });
+        }
             
-            $scope.showExistingPckge();
-
-        }, function() {
-            //No
-        });
     };
 
 
@@ -2482,8 +2496,6 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         code: "AX",
         name: "Åland Islands"
     }];
-	
-	$scope.ledgers = [{date:"23rd November 1992", amount:"3000", package: "We are the world"},{date:"25th November 1992", amount:"2000", package: "We are a mini team"}];
 
 });
 
@@ -2784,6 +2796,9 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
 
     //#Customise package add alacartes#//
     $scope.submit = function(ev) {
+        /*if(!$rootScope.userLevel=='admin'){
+           displayError('You are not permitted to do this opertion, allowed only for administrator'); 
+        }*/
         if($rootScope.sharableUsers.length>(parseInt($rootScope.defaultUsers)+parseInt($scope.users))){
             displayError('There are '+ $rootScope.sharableUsers.length+' active users, Please remove user before update alacarte.');
             $scope.users=$rootScope.extraUsers;
@@ -3018,6 +3033,7 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                         }
               }*/
 
+              
         $http({
             //url : "http://staging.digin.io/include/duoapi/paymentgateway/customizePackage",
             url: "/include/duoapi/paymentgateway/customizePackage",
@@ -3037,7 +3053,13 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                 } else {
                     //fail
                     $mdDialog.hide();
-                    notifications.toast("0", "Failed to update alaCartes.");
+                    
+                    if(response.data.response=='Cannot charge a customer that has no active card'){
+                        notifications.toast("0", "Please update your card detail.");
+                    }else{
+                        notifications.toast("0", "Failed to update alaCartes.");
+                    }
+                    
 
                 }
             } else {

@@ -37,6 +37,13 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                         }else{
                                           count++;
                                         }
+                                    }else{
+                                      count++;
+                                      if(dashboard.pages[0].widgets.length == count){
+                                          dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
+                                          settoPouch(dashboardJson,true,cb);
+                                          $rootScope.dashboard = dashboard;
+                                       }
                                     }
                                 }
                           }
@@ -73,7 +80,15 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                         }else{
                                           count++;
                                         }
+                                    }else{
+                                      count++;
+                                      if(dashboard.pages[0].widgets.length == count){
+                                          dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
+                                          settoPouch(dashboardJson,true,cb);
+                                          $rootScope.dashboard = dashboard;
+                                       }
                                     }
+                                
                                 }
                            
             }

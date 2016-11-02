@@ -80,18 +80,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             //fireMsg('0', '<strong>Error : </strong>Please try again...!');
         });
 
-        //#get user settings 
-        
-        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
-        $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
-            
-        .success(function (data) {
-                ProfileService.widget_limit = data.Result.widget_limit;  
-        })
-        .error(function (data) {        
-        });    
-
-
         //initially hiding the tabs
         $scope.showTabs(true);
 
@@ -166,6 +154,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
                 $rootScope.userSettings = data.Result;
                 ProfileService.UserDataArr.BannerPicture = 'http://' + Digin_Domain + data.Result.dp_path;
+                ProfileService.widget_limit = data.Result.widget_limit;
 
 
                 if (data.Result.logo_path == undefined) {
@@ -181,6 +170,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.getURL();
                 $scope.imageUrl = $rootScope.image;
                 $scope.profile_picURL = $rootScope.profile_pic;
+
+                //if user has a default dashboard open it 
+
+                var obj = JSON.parse($rootScope.userSettings.components);
+                if(obj.dashboardId != null){
+                    //$scope.getDashboard(obj.dashboardId);
+                    $rootScope.data.defaultDashboard=obj.dashboardId;
+                }
             })
             .error(function (data) {
                 $scope.imageUrl = "styles/css/images/DiginLogo.png";
@@ -622,6 +619,108 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
 
         }
+
+        //-------------- setup default dashboard ---------
+        $rootScope.data = {
+          defaultDashboard : '',
+        };
+
+
+
+        $scope.setDefaultDashboard = function(ev,dashboard) {
+           //alert($rootScope.data.defaultDashboard);
+
+           var confirm = $mdDialog.confirm()
+          .title('Would you like to set a default dashboard?')
+          .textContent('Would you like to set '+dashboard.dashboardName+' as your default dashboard??')
+          .ariaLabel('')
+          .targetEvent(ev)
+          .ok('Yes')
+          .cancel('No');
+
+            $mdDialog.show(confirm).then(function() {
+
+              //set the user settings object
+               //#chk undefined values
+            var dp_name="";
+            var logo_name="";
+            var components; var userRole; var cacheLifetime; var widgetLimit; var themeConfig; var queryLimit;
+
+            if($rootScope.userSettings.components==undefined){components=0;}  else {components=$rootScope.userSettings.components}
+            if($rootScope.userSettings.user_role==undefined)  {userRole="";}  else {userRole=$rootScope.userSettings.user_role}
+            if($rootScope.userSettings.cache_lifetime==undefined){cacheLifetime=0;}else{cacheLifetime=$rootScope.userSettings.cache_lifetime}
+            if($rootScope.userSettings.widget_limit==undefined){widgetLimit=0;}else {widgetLimit=$rootScope.userSettings.widget_limit}
+            if($rootScope.userSettings.query_limit==undefined){queryLimit=0;} else{queryLimit=$rootScope.userSettings.query_limit}
+            if($rootScope.userSettings.dp_path==undefined) {dp_name="";}else{dp_name=$rootScope.userSettings.dp_path.split("/").pop();}
+            if($rootScope.userSettings.logo_path==undefined){logo_name="";} else{logo_name=$rootScope.userSettings.logo_path.split("/").pop();}
+            if($rootScope.userSettings.theme_config==undefined){themeConfig="";} else{themeConfig=$rootScope.userSettings.theme_config} 
+
+            var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+
+            var obj = JSON.parse($rootScope.userSettings.components);
+            var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+
+            var components ={
+                "saveExplicit" : obj.saveExplicit,
+                "dashboardId"  : dashboard.dashboardID
+            };
+
+            var userSettings = {
+                "email": userInfo.Email,
+                "components": JSON.stringify(components),
+                "user_role":userRole,
+                "cache_lifetime":cacheLifetime,
+                "widget_limit": widgetLimit,
+                "query_limit": queryLimit,
+                "logo_name": logo_name,
+                "dp_name" : dp_name,
+                "theme_config": themeConfig
+            } 
+              //send request to set the default dashboard 
+               
+              
+              $http({
+                    method: 'POST',
+                    url: Digin_Engine_API + 'store_user_settings/',
+                    data: angular.toJson(userSettings),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'SecurityToken': userInfo.SecurityToken
+                        //'Domain': Digin_Domain
+                    }
+                })
+                .success(function (response) {
+                    //alert("Success...!");
+                    ngToast.create({
+                                className: 'success',
+                                content: "you have successfully set up a default dashboard",
+                                horizontalPosition: 'center',
+                                verticalPosition: 'top',
+                                dismissOnClick: true
+                    });
+
+                    var obj = JSON.parse($rootScope.userSettings.components);
+                    var components ={
+                        "saveExplicit" : obj.saveExplicit,
+                        "dashboardId"  : dashboard.dashboardID
+                    };
+                    $rootScope.userSettings.components=JSON.stringify(components);
+                    $rootScope.data.defaultDashboard=dashboard.dashboardID;
+                    
+                })
+                .error(function (error) {
+                });
+
+
+            }, function() {
+                //if there is no defalt dashboard already set make it null, if not take it from rootscope and set it 
+                    var obj = JSON.parse($rootScope.userSettings.components);
+                    $rootScope.data.defaultDashboard=obj.dashboardId;
+             
+            });
+
+        };
+        //-------------------------------------------------
         
         $rootScope.goDashboard = function (dashboard) {
 
@@ -672,10 +771,20 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 });
                 $state.go('home.Dashboards');
             }else{
+                 $scope.getDashboard(dashboard.dashboardID);
+            }
 
-               $http({
+
+            $(".overlay").removeClass("overlay-search active");
+            $(".nav-search").removeClass("active");
+            $(".search-layer").removeClass("activating active");
+
+        }
+
+    $scope.getDashboard = function(dashboardID){
+             $http({
                     method: 'GET',
-                    url: Digin_Engine_API + 'get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain
+                    url: Digin_Engine_API + 'get_component_by_comp_id?comp_id=' + dashboardID + '&SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain
                 })
                     .success(function (data) {
 
@@ -715,9 +824,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                     filterService.clearFilters(widget);                                    
                                     if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
                                         $qbuilder.sync(widget.widgetData, function (data) {
-                                            $scope.$apply(function(){
-                                                widget.widgetData.syncState = true;
-                                            });
+                                            widget.widgetData.syncState = true;
+                                            $scope.$apply();
                                         });
                                     }
                                 }
@@ -753,20 +861,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         });
                         $mdDialog.hide()
                     });
-            
-
-
-
-
-
-            }
-
-
-            $(".overlay").removeClass("overlay-search active");
-            $(".nav-search").removeClass("active");
-            $(".search-layer").removeClass("activating active");
-
         }
+
+
         $scope.goAnalyzer = function (report) {
             $scope.showTabs(false);
             //closing the overlay

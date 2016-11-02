@@ -1029,7 +1029,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                         origName = series.origName;
                                         serName = series.name;
                                     }
-                                });                                
+                                });
                                 widget.widgetData.widData.drillConf.currentLevel++;
                                 switch (widget.widgetData.widData.drillConf.currentLevel) {
                                     case 2:

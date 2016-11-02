@@ -3220,7 +3220,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 $scope.eventHndler.isLoadingChart = false;
                 $scope.highchartsNG = $scope.initHighchartObj;                
                 return;
-            }        
+            }
             if ($scope.chartType != 'Geographical Map') {
                 $scope.highchartsNG = {
                     options: {

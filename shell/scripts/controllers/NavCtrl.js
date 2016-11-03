@@ -83,8 +83,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //initially hiding the tabs
         $scope.showTabs(true);
 
-        var refreshDashboard = function() {
-            $scope.interval = $interval(function() {
+        $rootScope.refreshDashboard = function() {
+            $rootScope.interval = $interval(function() {
                 var count = 0;
                 if ($state.current.name == "home.Dashboards") {
                     if ($rootScope.dashboard !== undefined) {
@@ -101,7 +101,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                         filterService.clearFilters(widget);
                                         $qbuilder.sync(widget.widgetData, function (data) {
                                             if (count == $rootScope.dashboard.pages[index].widgets.length) {
-                                                notifications.toast('1','Refreshed Dashboard!');
                                                 // save dashboard to pouch db
                                                 var tempDashboard = angular.copy($rootScope.dashboard);
                                                 angular.forEach(tempDashboard.pages,function(page){
@@ -129,9 +128,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
             },$rootScope.refreshInterval);
         }
-
-        refreshDashboard();
-
         //#set initial logo as Digin logo
         $scope.imageUrl = "styles/css/images/DiginLogo.png";
         $rootScope.myCroppedImage = "styles/css/images/signup-user.png";
@@ -214,7 +210,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         //close open pages and go to home
         $scope.mainclose = function (ev) {
-
+            setTimeout(function(){ $mdDialog.hide(); }, 3000);
             $mdDialog.show({
 
                 controller: function goHomeCtrl($scope, $mdDialog) {
@@ -764,10 +760,17 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 $scope.$apply();
                             }
                         }
-                        $interval.cancel($scope.interval);
-                        $scope.interval = undefined;
-                        $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval * 1000;
-                        refreshDashboard();
+                        if ($rootScope.dashboard.refreshInterval == '0') {
+                            $interval.cancel($rootScope.interval);
+                            $rootScope.interval = undefined;
+                            $rootScope.refreshInterval == undefined;
+
+                        } else {
+                            $interval.cancel($rootScope.interval);
+                            $rootScope.interval = undefined;
+                            $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval * 1000;
+                            $rootScope.refreshDashboard();                            
+                        }
                     }
                 });
                 $state.go('home.Dashboards');
@@ -831,10 +834,17 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                     }
                                 }
                             }
-                            $interval.cancel($scope.interval);
-                            $scope.interval = undefined;
-                            $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval * 1000;
-                            refreshDashboard();
+                            if ($rootScope.dashboard.refreshInterval == '0') {
+                                $interval.cancel($rootScope.interval);
+                                $rootScope.interval = undefined;
+                                $rootScope.refreshInterval == undefined;
+
+                            } else {
+                                $interval.cancel($rootScope.interval);
+                                $rootScope.interval = undefined;
+                                $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval * 1000;
+                                $rootScope.refreshDashboard();                            
+                            }
                             $state.go('home.Dashboards');
                             //$rootScope.currentView = dashboard.dashboardName;
                         }
@@ -1668,61 +1678,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 '<p style="font-size:large">Dashboard Details</p>' +
                 '</div>' +
                 '<div layout="row" flex layout-wrap>' +
-                '<md-input-container flex="50">' +
-                '<label>Name</label>' +
-                '<input ng-model="dashboardName" name="dashboardName">' +
-                '</md-input-container>' +
-                '<md-input-container flex="50">' +
-                '<label>Type</label>' +
-                '<md-select ng-model="dashboardType" name="dashboardType">' +
-                '<md-option value="SYSTEM" ng-selected>SYSTEM</md-option>' +
-                '<md-option value="TYPE1">TYPE1</md-option>' +
-                '<md-option value="TYPE2">TYPE2</md-option>' +
-                '<md-option value="TYPE3">TYPE3</md-option>' +
-                '</md-select>' +
-                '</md-input-container>' +
-                '<md-input-container flex="50">' +
-                '<label>Refresh Interval</label>' +
-                '<md-select ng-model="refreshInterval" name="refreshInterval">' +
-                '<md-option value="30" ng-selected>30 Seconds</md-option>' +
-                '<md-option value="60">1 minute</md-option>' +
-                '<md-option value="120">2 minutes</md-option>' +
-                '<md-option value="300">5 minutes</md-option>' +
-                '</md-select>' +
-                '</md-input-container>' +
-                '</div>' +
-                '<div class="md-actions" layout="row">' +
-                '<span flex></span>' +
-                '<div class="dashbord-save-loader" ng-if="isLoadingDashBoardSave">' +
-                '<svg class="circular-loader" height="50" width="50">' +
-                '<circle class="path" cx="25" cy="25.2" r="19.9"' +
-                'fill="none" stroke-width="6" stroke-miterlimit="10"/>' +
-                '</svg>' +
-                '</div>' +
-                '<md-button class="btn-dialog b-r-0" ng-if="isButtonDashBoardSave" ng-click="saveDashboard()">' +
-                'Save' +
-                '</md-button>' +
-                '<md-button class="btn-dialog b-r-0" ng-click="close()">' +
-                'Cancel' +
-                '</md-button>' +
-                '</div>' +
-                '</md-content>' +
-                '</md-dialog>',
-                template: '<md-dialog plumb-item class="dialog-1 b-r-0" ng-init="initialize()">' +
-                '<md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">' +
-                '<div layout="row" layout-align="center center" class="digin-logo-wrapper2">' +
-                '<img ng-src="styles/css/images/DiginLogo.png" class="digin-image">' +
-                '</div>' +
-                '<div class="dialog-title">SAVE DASHBOARD</div>' +
-                '<md-button class="buttonMinwidth38 b-r-0" ng-click="close();">' +
-                '<ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>' +
-                '</md-button>' +
-                '</md-toolbar>' +
-                '<md-content class="dialog-content-1" layout-padding>' +
-                '<div layout="row" layout-align="start start">' +
-                '<p style="font-size:large">Dashboard Details</p>' +
-                '</div>' +
-                '<div layout="row" flex layout-wrap>' +
                 '<md-input-container flex="100">' +
                 '<label>Name</label>' +
                 '<input ng-model="dashboardName" name="dashboardName">' +
@@ -1734,6 +1689,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 '<md-option value="60">1 minute</md-option>' +
                 '<md-option value="120">2 minutes</md-option>' +
                 '<md-option value="300">5 minutes</md-option>' +
+                '<md-option value="3600">60 minutes</md-option>' +
+                '<md-option value="0">No Refresh</md-option>' +
                 '</md-select>' +
                 '</md-input-container>' +
                 '</div>' +
@@ -1815,7 +1772,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
 
         $scope.clearAllWidgets = function (ev) {
-
+            setTimeout(function(){  $mdDialog.hide(); }, 3000);
             $mdDialog.show({
                 controller: function clearWidgetsCtrl($scope, $mdDialog) {
                     $scope.clear = function () {

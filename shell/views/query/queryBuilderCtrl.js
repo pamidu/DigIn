@@ -1817,15 +1817,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     $scope.forecastObj.paramObj.len_season = data.len_season;
                 }
 
-                // set alpha,beeta, gamma values returned from the service 
-                $scope.forecastObj.paramObj.alpha = data.alpha.toFixed(3);
-                $scope.forecastObj.paramObj.a = data.alpha.toFixed(3);
-
-                $scope.forecastObj.paramObj.beta = data.beta.toFixed(3);
-                $scope.forecastObj.paramObj.b = data.beta.toFixed(3);
-
-                $scope.forecastObj.paramObj.gamma = data.gamma.toFixed(3);
-                $scope.forecastObj.paramObj.g = data.gamma.toFixed(3);
+                // set alpha,beeta, gamma values returned from the service
+                if(data.alpha != ""){
+                    $scope.forecastObj.paramObj.alpha = data.alpha.toFixed(3);
+                    $scope.forecastObj.paramObj.a = data.alpha.toFixed(3);
+                } 
+                
+                if(data.beta != ""){
+                    $scope.forecastObj.paramObj.beta = data.beta.toFixed(3);
+                    $scope.forecastObj.paramObj.b = data.beta.toFixed(3);
+                }
+                
+                if(data.gamma != ""){
+                    $scope.forecastObj.paramObj.gamma = data.gamma.toFixed(3);
+                    $scope.forecastObj.paramObj.g = data.gamma.toFixed(3); 
+                }
 
                 if (fObj.forecastAtt == "") {
 
@@ -2282,15 +2288,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 $scope.forecastObj.paramObj.enddate = moment(new Date(data.max_date)).format('LL');
                 $scope.forecastObj.paramObj.startdate = moment(new Date(data.min_date)).format('LL');
 
-                // set alpha,beeta, gamma values returned from the service 
-                $scope.forecastObj.paramObj.alpha = data.alpha.toFixed(3);
-                $scope.forecastObj.paramObj.a = data.alpha.toFixed(3);
-
-                $scope.forecastObj.paramObj.beta = data.beta.toFixed(3);
-                $scope.forecastObj.paramObj.b = data.beta.toFixed(3);
-
-                $scope.forecastObj.paramObj.gamma = data.gamma.toFixed(3);
-                $scope.forecastObj.paramObj.g = data.gamma.toFixed(3);
+                 // set alpha,beeta, gamma values returned from the service
+                if(data.alpha != ""){
+                    $scope.forecastObj.paramObj.alpha = data.alpha.toFixed(3);
+                    $scope.forecastObj.paramObj.a = data.alpha.toFixed(3);
+                } 
+                
+                if(data.beta != ""){
+                    $scope.forecastObj.paramObj.beta = data.beta.toFixed(3);
+                    $scope.forecastObj.paramObj.b = data.beta.toFixed(3);
+                }
+                
+                if(data.gamma != ""){
+                    $scope.forecastObj.paramObj.gamma = data.gamma.toFixed(3);
+                    $scope.forecastObj.paramObj.g = data.gamma.toFixed(3); 
+                }
 
 
                 // to check wether service has returned any warnings
@@ -3220,7 +3232,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 $scope.eventHndler.isLoadingChart = false;
                 $scope.highchartsNG = $scope.initHighchartObj;                
                 return;
-            }        
+            }
             if ($scope.chartType != 'Geographical Map') {
                 $scope.highchartsNG = {
                     options: {
@@ -3325,6 +3337,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             minColor: $scope.mapconfig.minColor,
                             maxColor: $scope.mapconfig.maxColor
 
+                        },
+                        title: {
+                            text: ''
                         }
                     };
                     $scope.highchartsNG.options.exporting = {
@@ -3340,7 +3355,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         }
                     };
                     $scope.highchartsNG.chartType = 'map';
-                    $scope.highchartsNG.title.text = '';
+                    
 
                 }
 
@@ -3359,6 +3374,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             });
             $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, function(res, status, query) {
                 if (status) {
+                    if ($scope.executeQryData.executeColumns.length == 0 && $scope.executeQryData.executeMeasures.length == 0){
+                        $scope.dataToBeBind.receivedQuery = "";
+                        $scope.isPendingRequest = false;
+                        $scope.eventHndler.isLoadingChart = false;
+                        $scope.highchartsNG = $scope.initHighchartObj;
+                        return;
+                    }
                     eval("$scope." + $scope.selectedChart.chartType + ".onGetAggData(res[0])");
                     $scope.dataToBeBind.receivedQuery = query;
                     $scope.$apply();
@@ -3446,6 +3468,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
 
 
                         }
+                        else
+                        {
+                            maplibrary =  Highcharts.maps['custom/world'];
+
+                        }
                         d.forEach(function(e) {
                             e["name"] = e.name;
                             e.value = e.y;
@@ -3498,6 +3525,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             catArr.push('"' + key.filedName + '"');
         });
         $scope.client.getHighestLevel($scope.sourceData.tbl, catArr.toString(), function(res, status) {
+            if ($scope.executeQryData.executeColumns.length == 0 && $scope.executeQryData.executeMeasures.length == 0){
+                $scope.dataToBeBind.receivedQuery = "";
+                $scope.isPendingRequest = false;
+                $scope.eventHndler.isLoadingChart = false;
+                $scope.highchartsNG = $scope.initHighchartObj;
+                return;
+            }            
             if (status) {
                 var highestLevel = "";
                 for (i = 0; i < res.length; i++) {

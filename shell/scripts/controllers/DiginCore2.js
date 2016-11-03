@@ -453,7 +453,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
                 $scope.dashboardName = $rootScope.dashboard.compName;
                 $scope.dashboardType = $rootScope.dashboard.compType;
-                $scope.refreshInterval = $rootScope.dashboard.refreshInterval;
+                $scope.refreshInterval = $rootScope.dashboard.refreshInterval.toString();
              }
         }
          

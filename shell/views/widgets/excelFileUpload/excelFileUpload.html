@@ -223,7 +223,8 @@ input:disabled {
                                         <tr ng-repeat="val in schema track by $index">
                                         <td> {{val.name}} </td>
                                         <td>
-                                            <md-select ng-model="val.type" ng-disabled="isExist">
+                                            <md-select ng-model="val.type" 
+                                            ng-disabled="isExist || showBusyText || preloader || insertPreLoader || uploadPreLoader">
                                                 <md-option ng-repeat="type in fieldTypeObj" value="{{type}}">
                                                     {{type}}
                                                 </md-option>
@@ -234,7 +235,10 @@ input:disabled {
                             </table>
                             </div>
                             <div flex layout="row" layout-align="space-between center" class="side-margins">
-                                <md-button ng-click="moveToPreviousStep()" class="md-raised next-btn">Previous</md-button>
+                                <md-button ng-click="moveToPreviousStep()" class="md-raised next-btn" 
+                                ng-disabled="showBusyText || preloader || insertPreLoader || uploadPreLoader">
+                                Previous
+                                </md-button>
                                 <svg class="circular-loader" height="50" width="50" ng-show="uploadPreLoader">
                                     <circle class="path" cx="25" cy="25.2" r="19.9" fill="none" stroke-width="6" stroke-miterlimit="10" />
                                 </svg>

@@ -149,9 +149,10 @@ input:disabled {
                                     </md-input-container>
                                 </div>
                                
-                                <div flex class="side-margins" style="padding-top: 30px;">
+                                <div flex class="side-margins" 
+                                style="padding-top: 30px;overflow-x: scroll;max-height: 200px;">
                                 <md-content>
-                                    <md-radio-group class="effect-radio-group">
+                                    <md-radio-group class="effect-radio-group" ng-model="selectedFolder">
                                         <md-radio-button ng-click="selectFile(folder)" ng-class="effect-btn" ng-repeat="folder in Folders" ng-value="folder"> {{folder.file}}  </md-radio-button>
                                     </md-radio-group>
                                     </md-content>

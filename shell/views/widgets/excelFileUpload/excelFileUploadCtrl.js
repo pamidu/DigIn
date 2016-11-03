@@ -13,12 +13,8 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     $scope.progressPercentage = 0;
     $scope.folderName;
     $scope.uploadedFiles = [];
+    $scope.selectedFolder = "";
     $scope.client = $diginengine.getClient("BigQuery");
-    $scope.client.getFolders($scope.folderName, function(res, status) {
-
-        $scope.Folders = res;
-
-    });
     $scope.fieldTypeObj = ["STRING","BYTES","INTEGER","FLOAT","BOOLEAN","RECORD","TIMESTAMP","DATE","TIME","DATETIME"];
 
     //start of page one Folder name configuring
@@ -68,21 +64,6 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
             return;
 
         } else {
-            if ($scope.selectedPath == "Folder" && uploadFlag == false && $scope.selectedStep == 1) {
-                $scope.uploadedFiles = [];
-                $scope.isExist = false;
-                angular.forEach($scope.Folders,function(folder){
-                    if (folder.file == $scope.folderName){
-                        $scope.isExist = true;
-                    }
-                })
-                $scope.client.getFolders($scope.folderName, function(res, status) {
-                    if (status){
-                        $scope.uploadedFiles = res;
-                    }
-                });
-            }
-
             //do not exceed into max step
             if ($scope.selectedStep >= $scope.maxStep) {
                 return;
@@ -96,8 +77,27 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
         }
     }
 
-    $scope.selectFile = function(folder) {
+    //auto select the folder name
+    $scope.$watch("folderName",function(newValue, oldValue){
+        var existStatus = false;
+        if (newValue != oldValue){
+            for(var i=0;i<$scope.Folders.length;i++){
+                if (newValue == $scope.Folders[i].file){
+                    existStatus = true;
+                    break;
+                }
+            }
+            if(existStatus){
+                $scope.selectFile($scope.Folders[i]);
+            } else{
+                $scope.selectedFolder = "";
+                $scope.isExist = false;                
+            }
+        }
+    });
 
+    $scope.selectFile = function(folder) {
+        $scope.selectedFolder = folder;
         $scope.folderName = folder.file;
         $scope.isExist = true;
     }
@@ -115,6 +115,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 $scope.insertPreLoader = false;
                 $scope.preloader = false;
                 $scope.isExist = false;
+                $scope.selectedFolder = "";
 
             } else if ($scope.selectedPath == "Folder" && uploadFlag == false) {
                 if ($scope.selectedStep > 0) $scope.selectedStep = $scope.selectedStep - 1;
@@ -123,9 +124,15 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                     var temp = $scope.folderName;
                     $scope.folderName = undefined;
                     $scope.client.getFolders($scope.folderName, function(res, status) {
-                        $scope.Folders = res;
+                        if(status){
+                            $scope.folderName = "";
+                            $scope.Folders = res;
+                            $scope.folderName = temp;
+                        }else{
+                            $scope.folderName = "";
+                            $scope.folderName = temp;
+                        }
                     });
-                    $scope.folderName = temp;
                 }
                 $scope.files = [];
                 $scope.schema = [];
@@ -135,6 +142,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 $scope.insertPreLoader = false;
                 $scope.preloader = false;
                 $scope.isExist = false;
+                $scope.selectedFolder = "";
 
             } else if ($scope.selectedStep > 0) {
                 $scope.selectedStep = $scope.selectedStep - 1;
@@ -155,52 +163,91 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
         }
         $scope.currentStep = stepData.step - 1;
 
-
         $scope.showBusyText = true;
-        var req = {
-            method: "POST",
-            url: "views/widgets/excelFileUpload/test.php",
-            headers: {
-                "Content-Type": "application/json"
-                    //"SecurityKey" : $auth.getSecurityToken()
-            },
-            data: $scope.files
-        };
-        $http(req).then(function(data) {
 
-                stepData.completed = true;
-                $scope.showBusyText = false;
-                stepData.data.completed = true;
-                $scope.enableNextStep();
-            },
-            function(data) {
-                notifications.toast(0, "Error Occured");
+        //based on the selected level, call the necessary method
+        if($scope.selectedPath == "File" && uploadFlag == false){
+            $scope.client.getTables(function(res, status) {
+                if(status){
+                    $scope.uploadedFiles = [];
+                    $scope.uploadedFiles = res;
+                    stepData.completed = true;
+                    $scope.showBusyText = false;
+                    stepData.data.completed = true;
+                    $scope.enableNextStep();
+                }else{
+                    stepData.completed = true;
+                    $scope.showBusyText = false;
+                    stepData.data.completed = true;                    
+                    $scope.enableNextStep();
+                }
             });
-
+        } else if($scope.selectedPath == "Folder" && uploadFlag == false && $scope.selectedStep == 0){
+            $scope.client.getFolders($scope.folderName, function(res, status) {
+                if(status){
+                    $scope.Folders = res;
+                    stepData.completed = true;
+                    $scope.showBusyText = false;
+                    stepData.data.completed = true;                    
+                    $scope.enableNextStep();
+                }else{
+                    stepData.completed = true;
+                    $scope.showBusyText = false;
+                    stepData.data.completed = true;                    
+                    $scope.enableNextStep();
+                }
+            });
+        } else if($scope.selectedPath == "Folder" && uploadFlag == false && $scope.selectedStep == 1){
+            $scope.uploadedFiles = [];
+            $scope.isExist = false;
+            angular.forEach($scope.Folders,function(folder){
+                if (folder.file == $scope.folderName){
+                    $scope.isExist = true;
+                }
+            })
+            $scope.client.getFolders($scope.folderName, function(res, status) {
+                if (status){
+                    $scope.uploadedFiles = res;
+                    stepData.completed = true;
+                    $scope.showBusyText = false;
+                    stepData.data.completed = true;                    
+                    $scope.enableNextStep();
+                } else {
+                    stepData.completed = true;
+                    $scope.showBusyText = false;
+                    stepData.data.completed = true;                    
+                    $scope.enableNextStep();
+                }
+            });
+        }
     }
 
 
     $scope.validate = function(files) {
-        if ($scope.selectedPath == "Folder") {
-            var duplicateflag = false;
-            angular.forEach(files,function(file) {
-                angular.forEach($scope.uploadedFiles,function(f){
-                    if (file.name == f){
-                        duplicateflag = true;
-                    }
-                });
-            });
-            if (duplicateflag) {
-                $scope.showCOnfirmBox(files,$scope);
-            } else {
-                $scope.upload(files);
+        var duplicateflag = false;
+        var fileName;
+        angular.forEach(files,function(file) {
+            if($scope.selectedPath == "File") {
+                fileName = file.name.replace(/\.[^/.]+$/, ""); //remove the extension
+                fileName = fileName.replace(/ /g,"_"); //replace space with underscore
+                fileName = fileName.replace(/[^a-zA-Z_0-9]/g,'').toLowerCase(); //remove special characters
+            } else{
+                fileName = file.name;
             }
+            angular.forEach($scope.uploadedFiles,function(f){
+                if (fileName == f){
+                    duplicateflag = true;
+                }
+            });
+        });
+        if (duplicateflag) {
+            $scope.showConfirmBox(files,$scope);
         } else {
             $scope.upload(files);
         }
     }
 
-    $scope.showCOnfirmBox = function(files, scope) {
+    $scope.showConfirmBox = function(files, scope) {
         $mdDialog.show({
             controller: function confirmUpload($scope, $mdDialog) {
                 $scope.confirm = function () {

@@ -2,7 +2,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	var vm = this;
 	
 	
-	//
+	userAdminFactory.getUserLevel();
 	
 	// fetch packagedetail
 	var db = new PouchDB('packaging');
@@ -166,30 +166,36 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 		
 	$scope.enterInviteUser = function(ev,searchText)
 	{
-		if(reg.test(searchText) == true)
-		{		
-			var exeed=checkUserLimit()   //*Check no of users belongs to package
-			if(exeed == false)
-			{
-				var exist = checkIfExist(searchText)
-				console.log(exist);
-				if(exist == false)
+		if($rootScope.userLevel=='user'){
+           displayError('You are not permitted to do this operation, allowed only for administrator'); 
+        }
+		else{
+			if(reg.test(searchText) == true)
+			{		
+				var exeed=checkUserLimit()   //*Check no of users belongs to package
+				if(exeed == false)
 				{
-					userAdminFactory.inviteUser(searchText).then(function(response) {
-						$rootScope.sharableUsers=[];
-						userAdminFactory.getInvitedUsers(function(data) {});
-						
-						console.log(response);
-						$scope.searchText = "";
-					});
-				}
-			}	
-			else{
-				displayError('User limit for this package has been exceeded.');	
-			}		
-		}else{
-			notifications.toast(0, 'Enter a valid email');
-		}	
+					var exist = checkIfExist(searchText)
+					console.log(exist);
+					if(exist == false)
+					{
+						userAdminFactory.inviteUser(searchText).then(function(response) {
+							$rootScope.sharableUsers=[];
+							userAdminFactory.getInvitedUsers(function(data) {});
+							
+							console.log(response);
+							$scope.searchText = "";
+						});
+					}
+				}	
+				else{
+					displayError('User limit for this package has been exceeded.');	
+				}		
+			}else{
+				notifications.toast(0, 'Enter a valid email');
+			}
+		}
+				
 	}
 	
 	
@@ -238,9 +244,15 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	
 	$scope.removeUser = function(ev, user)
 	{
-		if($rootScope.sharableUsers.length==1){
-			return;
-		}
+		
+		if($rootScope.userLevel=='user'){
+           displayError('You are not permitted to do this operation, allowed only for administrator'); 
+		   return;
+        }
+		else{
+			if($rootScope.sharableUsers.length==1){
+					return;
+				}
 		
 				 var confirm = $mdDialog.confirm()
 				  .title('Remove User')
@@ -261,6 +273,8 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 						displaySuccess("User removed successfully."); 
 					
 				});
+		}
+				
 	}
 	
 	$scope.getCatLetter=function(catName){
@@ -277,31 +291,36 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	
 	vm.addGroup = function(ev, group, index)
 	{
-		if(!group)
-		{
-			var group = {};
-			var index = "";
-		}
-		
-		$mdDialog.show({
-			  controller: "addGroupCtrl as vm",
-			  templateUrl: 'views/settings/userAdministrator/addGroup.html',
-			  parent: angular.element(document.body),
-			  targetEvent: ev,
-			  clickOutsideToClose:true,
-			  locals: {group: group, index: index}
-		})
-		.then(function(answer) {
-			if(answer)
+		 if($rootScope.userLevel=='user'){
+           displayError('You are not permitted to do this operation, allowed only for administrator'); 
+        }else{
+			if(!group)
 			{
-				if(index)
-				{
-					$scope.groups[index] = answer.group;
-				}else{
-					$scope.groups.push(answer.group);
-				}
+				var group = {};
+				var index = "";
 			}
-		})
+			
+			$mdDialog.show({
+				  controller: "addGroupCtrl as vm",
+				  templateUrl: 'views/settings/userAdministrator/addGroup.html',
+				  parent: angular.element(document.body),
+				  targetEvent: ev,
+				  clickOutsideToClose:true,
+				  locals: {group: group, index: index}
+			})
+			.then(function(answer) {
+				if(answer)
+				{
+					if(index)
+					{
+						$scope.groups[index] = answer.group;
+					}else{
+						$scope.groups.push(answer.group);
+					}
+				}
+			})
+		}
+			
 	}
 	
 	$scope.addUser = function(ev,group)
@@ -420,19 +439,17 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 		}
 		return contacts;
     }
-	
-	
+
 	
 	vm.isValidGroupName=function(){
         for (var i = 0; i < $rootScope.sharableGroups.length; i++) {
             var groupName=$rootScope.sharableGroups[i].Name;
-                if(vm.group.groupname==groupName){
+                if(vm.group.groupname.toLowerCase()==groupName.toLowerCase()){
                     return false;
                 }
         }
         return true;
     };
-	
 	
 	
 	//Finally add the group and close the Dialog

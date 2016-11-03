@@ -739,20 +739,23 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     }];
 */
 
-
-
     vm.updatePackage = function(ev) {
-        if(!$rootScope.userLevel=='admin'){
-           displayError('You are not permitted to do this opertion, allowed only for administrator'); 
-        }else{
+        if($rootScope.userLevel=='user'){
+           displayError('You are not permitted to do this operation, allowed only for administrator'); 
+        }
+        else if ($rootScope.packageName=="Free"){
+            displayError('You have subscribed only for Free package.'); 
+        }
+        else{
             location.href = '#/home/addaLaCarte';
         }   
     }
-
+    
+    
 
     vm.deactivateAccount = function(ev) {
-        if(!$rootScope.userLevel=='admin'){
-           displayError('You are not permitted to do this opertion, allowed only for administrator'); 
+        if($rootScope.userLevel=='user'){
+           displayError('You are not permitted to do this operation, allowed only for administrator'); 
         }else{
             var confirm = $mdDialog.confirm()
                 .title('Account Deactivation')
@@ -941,8 +944,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
 
     vm.upgradeConfirmation = function(ev, plan) {
-        if(!$rootScope.userLevel=='admin'){
-           displayError('You are not permitted to do this opertion, allowed only for administrator'); 
+        if($rootScope.userLevel=='user'){
+           displayError('You are not permitted to do this operation, allowed only for administrator'); 
         }
         else{
             var confirm = $mdDialog.confirm()

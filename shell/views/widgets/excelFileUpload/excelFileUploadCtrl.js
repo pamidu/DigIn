@@ -183,6 +183,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 }
             });
         } else if($scope.selectedPath == "Folder" && uploadFlag == false && $scope.selectedStep == 0){
+            $scope.folderName = undefined;
             $scope.client.getFolders($scope.folderName, function(res, status) {
                 if(status){
                     $scope.Folders = res;

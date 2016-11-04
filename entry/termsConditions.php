@@ -38,8 +38,8 @@
 			
 
 			<div align="center">
-			    <md-button ng-click="clickAgreed()" class="md-raised md-primary">I AGREED</md-button>
-			    <md-button ng-click="clickNotAgreed()" class="md-raised md-primary">I DO NOT AGREED</md-button>
+			    <md-button ng-click="clickAgreed()" class="md-raised md-primary">I AGREE</md-button>
+			    <md-button ng-click="clickNotAgreed()" class="md-raised md-primary">I DO NOT AGREE</md-button>
 			</div>
 
 			

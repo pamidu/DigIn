@@ -684,16 +684,28 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             vm.companyPricePlans[0].isSelected = false;
             vm.companyPricePlans[1].isSelected = true;
             vm.companyPricePlans[2].isSelected = true;
+            
+            vm.companyPricePlans[0].iscurrent = true;
+            vm.companyPricePlans[1].iscurrent = false;
+            vm.companyPricePlans[2].iscurrent = false;
         }
         else if($rootScope.packageName=="We Are A Mini Team"){
-            vm.companyPricePlans[0].isSelected = true;
+            vm.companyPricePlans[0].isSelected = false;
             vm.companyPricePlans[1].isSelected = false;
             vm.companyPricePlans[2].isSelected = true;
+            
+            vm.companyPricePlans[0].iscurrent = false;
+            vm.companyPricePlans[1].iscurrent = true;
+            vm.companyPricePlans[2].iscurrent = false
         }
         else if($rootScope.packageName=="We Are the World"){
-            vm.companyPricePlans[0].isSelected = true;
-            vm.companyPricePlans[1].isSelected = true;
+            vm.companyPricePlans[0].isSelected = false;
+            vm.companyPricePlans[1].isSelected = false;
             vm.companyPricePlans[2].isSelected = false;
+            
+            vm.companyPricePlans[0].iscurrent = false;
+            vm.companyPricePlans[1].iscurrent = false;
+            vm.companyPricePlans[2].iscurrent = true
         }
         else{
             vm.companyPricePlans[0].isSelected = true;
@@ -701,7 +713,6 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             vm.companyPricePlans[2].isSelected = true;
         }
     }
-
     
     
 
@@ -1593,9 +1604,10 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         };
 
         $scope.name = $rootScope.profile_Det.Name;  
+        $scope.company=$rootScope.TenantName;
     }
     
-    
+    /*
         $http({
             url: '/auth/tenant/GetTenant/' + window.location.hostname,
             method: "GET",
@@ -1607,7 +1619,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         }, function(response) {
             notifications.toast("0", "Error occured while retriving the account detail.");
         })
-    
+    */
     
 
 

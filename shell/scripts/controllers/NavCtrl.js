@@ -63,6 +63,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             .success(function (data) {
                 console.log(data);
                 $rootScope.TenantID = data[0].TenantID;
+                $rootScope.TenantName = data[0].Name;
             }).error(function () {
             //alert("Oops! There was a problem retrieving the groups");
         });

@@ -64,7 +64,7 @@
                                         </br>
                                         <div class="txt-box-login"
                                              ng-class="{error:error.isUserName,'':!error.isUserName}">
-                                            <label>User name</label>
+                                            <label>Username</label>
                                             <div>
                                                 <input type="text"
                                                        required

@@ -415,14 +415,14 @@ p {
                                         <label>Email </label>
                                         <input type="text" id="txtEmail" ng-model="user.email" ng-disabled="editModeOn" class="form-control" readonly>
                                     </div>
-                                    <div flex="40" style="padding-left: 5px;">
+                                     <div flex="40" style="padding-left: 5px;">
                                         <label>Contact No </label>
-                                        <input type="text" id="txtContactNo" name="txtContactNo" ng-model="user.contactNo" ng-disabled="editModeOn" class="form-control" valid-number ng-required="true" ng-trim="true">
-                                        <div ng-messages="frmProfile.txtContactNo.$error" role="alert">
+                                        <input type="text" id="txtContactNo" name="txtContactNo" ng-model="user.contactNo" ng-disabled="editModeOn" class="form-control" valid-number  ng-trim="true">
+                                        <!--div ng-messages="frmProfile.txtContactNo.$error" role="alert">
                                             <div ng-message="required" style="color:red">
                                                 Contact number is required.
                                             </div>
-                                        </div>
+                                        </div-->                            
                                     </div>
                                 </div>
                                 <!-- address details -->
@@ -683,9 +683,9 @@ p {
                                                     <span style="color:white;font-size:12px;">{{plan.per}}</span>
                                                 </div>
                                              
-                                                <!--md-button class="md-fab md-mini" ng-show="plan.isSelected" style="background:#f9a525;position:absolute;margin-top: -10px;margin-left: 50px;" >
-                                                <md-icon md-svg-src="ic_check_24px.svg"></md-icon>
-                                                </md-button-->
+                                                <md-button class="md-fab md-mini" aria-label="Comment" style="background:#f9a525;position:absolute;margin-top: -10px;margin-left: 50px;" ng-show="plan.iscurrent" ng-disabled="true">
+                                                    <md-icon md-svg-src="views/settings/myAccount/ic_check_24px.svg"></md-icon>
+                                                </md-button>
                                             
                                             </center>
                                             <md-card-content layout="column" layout-align="center center" style="height:125px;>

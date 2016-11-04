@@ -43,35 +43,35 @@
 										<div layout-gt-sm="column" class="side-margins">
 
 										  <md-input-container class="md-block" flex-gt-sm>
-											<span>Tenant Name</span>
+											<span>Company name</span>
 											<input  name="tenantName" ng-model="tenant.name"  ng-pattern="/[a-zA-Z0-9]/"  ng-required="true"/>
 											<div ng-messages="step1.tenantName.$error" role="alert">
 												<div ng-message="required">
-													Tenant name is required.
+													Comapy name is required.
 												</div>
 												<div ng-message="pattern">
-													Tenant name cannot contain only special characotors.
+													Company name cannot contain only special characotors.
 												</div>
 											</div>
 										  </md-input-container>
 										  
-										  <md-input-container class="md-block" flex-gt-sm>
+										  <!--md-input-container class="md-block" flex-gt-sm>
 											<span>Company Name</span>
 											<input required name="companyName" ng-model="tenant.company">
 											<div ng-messages="step1.companyName.$error">
 											  <div ng-message="required">Company name is required.</div>
 											</div>
-										  </md-input-container>
+										  </md-input-container-->
 										  
 										  <md-input-container class="md-block" flex-gt-sm>
-											<span>Company Address</span>
+											<span>Company address</span>
 											<input required name="companyAddress" ng-model="tenant.address">
 											<div ng-messages="step1.companyAddress.$error">
 											  <div ng-message="required">Address is required.</div>
 											</div>
 										  </md-input-container>
 										  
-										  <md-input-container class="md-block" flex-gt-sm>
+										  <!--md-input-container class="md-block" flex-gt-sm>
 												<span>Business Model</span>
 												<md-select ng-model="tenant.businessModel" >
 													<md-optgroup label="Select business model">
@@ -80,44 +80,11 @@
 														<md-option  value="Corporation" flex >Corporation</md-option>
 													</md-optgroup>
 												</md-select>
-											</md-input-container>
+											</md-input-container-->
 										  
-
 										</div>
-										<!--div layout-gt-sm="row" class="side-margins">
-											<section-title></section-title>
-											<md-input-container class="md-block" flex-gt-sm>
-												<span>Business Model</span>
-												<md-select ng-model="tenant.businessModel">
-													<md-optgroup label="Select business model">
-														<md-option  value="Developer" flex >IT</md-option>
-													</md-optgroup>
-												</md-select>
-											</md-input-container>
-											<md-input-container class="md-block" flex-gt-sm>
-												<span>Access Level</span>
-												<md-select ng-model="tenant.accessLevel">
-													<md-optgroup label="Select Tenant Type">
-														<md-option  value="public" flex >Public</md-option>
-														<md-option  value="private" flex >Private</md-option>
-													</md-optgroup>
-												</md-select>
-											</md-input-container>
-										</div-->
 										
-										<!--div layout-gt-sm="row" class="side-margins">
-
-											<md-input-container class="md-block" flex-gt-sm>
-												<span>Business Model</span>
-												<md-select ng-model="tenant.businessModel">
-													<md-optgroup label="Select Tenant Type">
-													 <md-option ng-value="model.value" ng-repeat="model in businessModels">{{model.name}}</md-option>
-													</md-optgroup>
-												</md-select>
-											</md-input-container>
-										  <md-input-container class="md-block" flex-gt-sm>
-											</md-input-container>
-										</div-->
+										
 										 <div flex layout="row" layout-align="end top"  class="side-margins">
                                             <!--md-button class="md-warn">CANCEL</md-button-->
                                             <md-button type="submit" ng-disabled="vm.showBusyText" class="md-raised next-btn">NEXT</md-button>

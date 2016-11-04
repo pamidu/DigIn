@@ -460,8 +460,7 @@
                 </div>
 
                 <!-- chart setting panle -->
-                <div class="digin-bq-chart-rw1 p-15 p-t"
-                     id="toggleSettingPanel">
+                <div class="digin-bq-chart-rw1 p-15 p-t" id="toggleSettingPanel">
                     <div class="header">
                         <h4 class="font-weight-300 p-20">
                             Visualization type
@@ -475,19 +474,18 @@
                     </div>
                     <div class="chart-config-wrap-rw1 animated fadeIn">
                         <ul>
-                            <li class="hvr-border-fade" ng-repeat="chart in commonData.chartTypes"
-                                ng-click="eventHndler.onClickSelectedChart(commonData.chartTypes,chart)">
+                            <li class="hvr-border-fade" ng-repeat="chart in commonData.chartTypes" ng-click="eventHndler.onClickSelectedChart(commonData.chartTypes,chart)" ng-mouseover="changeTip(chart.tooltip)">
                                 <p ng-class="chart.name=='bar'?'custom-chart-rotate-icon':'custom-chart-icon'">
                                     <i class="{{chart.icon}}"></i>
                                 </p>
                                 <small>{{chart.name}}</small>
-                                <div class="selectedChart"
-                                    ng-class="chart.selected==true?'selectedChart':'displayNone'">
+                                <div class="selectedChart" ng-class="chart.selected==true?'selectedChart':'displayNone'">
                                     <i class="fa fa-check-circle-o"></i>
                                 </div>
                             </li>
                         </ul>
                     </div>
+					<div layout="row" ng-show="tooltip"><b>Tip:</b>&nbsp {{tooltip}}</div>
                 </div>
 
                 <!-- organize Data Structure -->

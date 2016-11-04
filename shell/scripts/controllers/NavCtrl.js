@@ -140,41 +140,45 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
             .success(function (data) {
-
-                $rootScope.image ='http://' + Digin_Domain +  data.Result.logo_path;
-                $rootScope.profile_pic = data.Result.dp_path;
-                if (data.Result.components==null || data.Result.components=="true" || data.Result.components=="false"){
-                    data.Result.components = {
-                        saveExplicit : false,
-                        dashboardId : null
-                    };
-                    data.Result.components = JSON.stringify(data.Result.components);
+                if(data.Custom_Message=="No user settings saved for given user and domain")   {
+                     $scope.callUserInitialize();
                 }
-                $rootScope.userSettings = data.Result;
-                ProfileService.UserDataArr.BannerPicture = 'http://' + Digin_Domain + data.Result.dp_path;
-                ProfileService.widget_limit = data.Result.widget_limit;
+                else{
+                    $rootScope.image ='http://' + Digin_Domain +  data.Result.logo_path;
+                    $rootScope.profile_pic = data.Result.dp_path;
+                    if (data.Result.components==null || data.Result.components=="true" || data.Result.components=="false"){
+                        data.Result.components = {
+                            saveExplicit : false,
+                            dashboardId : null
+                        };
+                        data.Result.components = JSON.stringify(data.Result.components);
+                    }
+                    $rootScope.userSettings = data.Result;
+                    ProfileService.UserDataArr.BannerPicture = 'http://' + Digin_Domain + data.Result.dp_path;
+                    ProfileService.widget_limit = data.Result.widget_limit;
 
 
-                if (data.Result.logo_path == undefined) {
-                    $rootScope.image = "styles/css/images/DiginLogo.png";
-                    $rootScope.myCroppedImage = "styles/css/images/setting/user100x100.png";
-                    $rootScope.profile_pic = "styles/css/images/setting/user100x100.png";
-                }
-                else {
-                    $rootScope.image = 'http://' + Digin_Domain  + data.Result.logo_path;
-                    $rootScope.profile_pic = 'http://' + Digin_Domain + data.Result.dp_path;
-                }
+                    if (data.Result.logo_path == undefined) {
+                        $rootScope.image = "styles/css/images/DiginLogo.png";
+                        $rootScope.myCroppedImage = "styles/css/images/setting/user100x100.png";
+                        $rootScope.profile_pic = "styles/css/images/setting/user100x100.png";
+                    }
+                    else {
+                        $rootScope.image = 'http://' + Digin_Domain  + data.Result.logo_path;
+                        $rootScope.profile_pic = 'http://' + Digin_Domain + data.Result.dp_path;
+                    }
 
-                $scope.getURL();
-                $scope.imageUrl = $rootScope.image;
-                $scope.profile_picURL = $rootScope.profile_pic;
+                    $scope.getURL();
+                    $scope.imageUrl = $rootScope.image;
+                    $scope.profile_picURL = $rootScope.profile_pic;
 
-                //if user has a default dashboard open it 
+                    //if user has a default dashboard open it 
 
-                var obj = JSON.parse($rootScope.userSettings.components);
-                if(obj.dashboardId != null){
-                    //$scope.getDashboard(obj.dashboardId);
-                    $rootScope.data.defaultDashboard=obj.dashboardId;
+                    var obj = JSON.parse($rootScope.userSettings.components);
+                    if(obj.dashboardId != null){
+                        //$scope.getDashboard(obj.dashboardId);
+                        $rootScope.data.defaultDashboard=obj.dashboardId;
+                    }
                 }
             })
             .error(function (data) {
@@ -182,6 +186,75 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $scope.profile_pic = "styles/css/images/setting/user100x100.png";
                 $scope.getURL();
             });
+
+
+            $scope.callUserInitialize=function(){
+                $scope.data = {"db": "bigquery"}
+                    $http({
+                        method: 'POST',
+                        url: Digin_Engine_API+'set_init_user_settings',
+                        data: angular.toJson($scope.data),
+                        headers: {
+                            'SecurityToken': userInfo.SecurityToken
+                        }
+                    })
+                    .success(function (response) {
+                        $scope.callUserSettings();
+                    })
+                    .error(function (error) {
+                            
+                    });
+            }
+
+
+            $scope.callUserSettings=function(){
+                $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
+                .success(function (data) {
+
+                    $rootScope.image ='http://' + Digin_Domain +  data.Result.logo_path;
+                    $rootScope.profile_pic = data.Result.dp_path;
+                    if (data.Result.components==null || data.Result.components=="true" || data.Result.components=="false"){
+                        data.Result.components = {
+                            saveExplicit : false,
+                            dashboardId : null
+                        };
+                        data.Result.components = JSON.stringify(data.Result.components);
+                    }
+                    $rootScope.userSettings = data.Result;
+                    ProfileService.UserDataArr.BannerPicture = 'http://' + Digin_Domain + data.Result.dp_path;
+                    ProfileService.widget_limit = data.Result.widget_limit;
+
+
+                    if (data.Result.logo_path == undefined) {
+                        $rootScope.image = "styles/css/images/DiginLogo.png";
+                        $rootScope.myCroppedImage = "styles/css/images/setting/user100x100.png";
+                        $rootScope.profile_pic = "styles/css/images/setting/user100x100.png";
+                    }
+                    else {
+                        $rootScope.image = 'http://' + Digin_Domain  + data.Result.logo_path;
+                        $rootScope.profile_pic = 'http://' + Digin_Domain + data.Result.dp_path;
+                    }
+
+                    $scope.getURL();
+                    $scope.imageUrl = $rootScope.image;
+                    $scope.profile_picURL = $rootScope.profile_pic;
+
+                    //if user has a default dashboard open it 
+
+                    var obj = JSON.parse($rootScope.userSettings.components);
+                    if(obj.dashboardId != null){
+                        //$scope.getDashboard(obj.dashboardId);
+                        $rootScope.data.defaultDashboard=obj.dashboardId;
+                    }
+                })
+                .error(function (data) {
+                    $scope.imageUrl = "styles/css/images/DiginLogo.png";
+                    $scope.profile_pic = "styles/css/images/setting/user100x100.png";
+                    $scope.getURL();
+                });
+            }
+
+
 
 
         //value for jquery of search panel overlay
@@ -2203,7 +2276,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 }])
 
 
-
+/*
 routerApp.controller('inviteUserCtrl',['$scope','$mdDialog','$http','Digin_Tenant','ngToast','$rootScope', function ($scope,$mdDialog,$http,Digin_Tenant,ngToast,$rootScope) {
 
     $scope.cancel = function() {
@@ -2351,4 +2424,4 @@ routerApp.controller('inviteUserCtrl',['$scope','$mdDialog','$http','Digin_Tenan
 
 
 
-}])
+}])*/

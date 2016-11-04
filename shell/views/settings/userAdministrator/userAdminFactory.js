@@ -31,12 +31,13 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 							////return result.data;
 							 for (var i = 0, len = result.data.length; i<len; ++i) {
 								if (result.data[i].Type == "User") {
-									if(result.data[i].Id==$rootScope.profile_Det.Email){
+									$rootScope.sharableUsers.push(result.data[i]);
+									/*if(result.data[i].Id==$rootScope.profile_Det.Email){
 										
 									}
 									else{
 										$rootScope.sharableUsers.push(result.data[i]);
-									}
+									}*/
 								}else if (result.data[i].Type == "Group") {
 									$rootScope.sharableGroups.push(result.data[i]);
 								}

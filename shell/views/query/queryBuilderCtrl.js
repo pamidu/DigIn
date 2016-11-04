@@ -406,7 +406,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/highchartsSettings.html',
+				tooltip: "A pie chart is a circular chart divided into <br> sectors which is proportional to the quantity it represents"
             }, {
                 id: 'ct02',
                 icon: 'ti-bar-chart-alt',
@@ -416,7 +417,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/highchartsSettings.html',
+				tooltip: "A bar chart is exactly the same as a column chart only the x-axis and y-axis are switched"
             }, {
                 id: 'ct03',
                 icon: 'fa fa-line-chart',
@@ -427,7 +429,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/highchartsSettings.html',
+				tooltip: "A column chart displays data as vertical bars"
             }, {
                 id: 'ct03',
                 icon: 'ti-gallery',
@@ -437,7 +440,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/highchartsSettings.html',
+				tooltip: "A line chart is represented by a series of datapoints connected with a straight line. Line charts are most often used to visualize data that changes over time"
             }, {
                 id: 'ct05',
                 icon: ' chart-diginSmooth_line',
@@ -447,7 +451,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/highchartsSettings.html',
+				tooltip: ""
             }, {
                 id: 'ct06',
                 icon: 'fa fa-area-chart',
@@ -457,7 +462,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/highchartsSettings.html',
+				tooltip: "The area chart functions the same way as a line chart only it fills the area between the line and the threshold, which is 0 by default"
             }, {
                 id: 'ct07',
                 icon: 'chart-diginsmooth_area',
@@ -467,7 +473,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/highchartsSettings.html',
+				tooltip: "The areaspline chart is the same as area, only the line is a spline instead of straight lines"
             }, {
                 id: 'ct08',
                 icon: 'chart-diginscatter',
@@ -477,7 +484,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/highchartsSettings.html',
+				tooltip: "A scatter chart draw a single point for each point of data in a series without connecting them"
             }, {
                 id: 'ct9',
                 icon: 'chart-diginhierarchy-chart',
@@ -487,7 +495,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'd3hierarchy',
                 view: 'views/query/chart-views/hierarchySummary.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/highchartsSettings.html',
+				tooltip: "A decomposition of a graph is a collection of edge-disjoint subgraphs of such that every edge of belongs to exactly one"
             }, {
                 id: 'ct10',
                 icon: 'chart-diginsunburst-chart',
@@ -497,7 +506,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'd3sunburst',
                 view: 'views/query/chart-views/sunburst.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/highchartsSettings.html',
+				tooltip: "A sunburst is similar to the treemap, except it uses a radial layout. The root node of the tree is at the center, with leaves on the circumference"
             },
             // {
             //     id: 'ct12',
@@ -527,7 +537,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     scalePosition: "back",
                     color: 'black'
                 },
-                settingsView: 'views/query/settings-views/metricSettings.html'
+                settingsView: 'views/query/settings-views/metricSettings.html',
+				tooltip: ""
             }, {
                 id: 'ct15',
                 icon: 'fa fa-tasks',
@@ -537,7 +548,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'boxplot',
                 view: 'views/query/chart-views/BoxPlot.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/highchartsSettings.html',
+				tooltip: "A box plot is a convenient way of depicting groups of data through their five-number summaries: the smallest observation (sample minimum), lower quartile (Q1), median (Q2), upper quartile (Q3), and largest observation (sample maximum)"
             }, {
                 id: 'ct16',
                 icon: 'fa fa-bar-chart',
@@ -547,7 +559,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'histogram',
                 view: 'views/query/chart-views/Histogram.html',
                 initObj: {},
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/highchartsSettings.html',
+				tooltip: ""
             }, {
                 id: 'ct17',
                 icon: 'fa fa-circle',
@@ -557,7 +570,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'bubble',
                 view: 'views/query/chart-views/bubble.html',
                 initObj: {},
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/highchartsSettings.html',
+				tooltip: ""
             }, {
                 id: 'ct18',
                 icon: 'fa fa-line-chart',
@@ -567,7 +581,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'forecast',
                 view: 'views/query/chart-views/forecast.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/forecastSettings.html'
+                settingsView: 'views/query/settings-views/forecastSettings.html',
+				tooltip: ""
             }, {
                 id: 'ct19',
                 icon: 'fa fa-filter',
@@ -577,7 +592,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/highchartsSettings.html',
+				tooltip: "Funnel charts are a type of chart often used to visualize stages in a sales project, where the top are the initial stages with the most clients. The funnel narrows as more clients drop off"
             }, {
                 id: 'ct20',
                 icon: 'fa fa-caret-up',
@@ -587,7 +603,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'highCharts',
                 view: 'views/query/chart-views/highcharts.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html'
+                settingsView: 'views/query/settings-views/highchartsSettings.html',
+				tooltip: ""
             }, {
                 id: 'ct21',
                 icon: 'fa fa-globe',
@@ -597,12 +614,18 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'map',
                 view: 'views/query/chart-views/GeoMap.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/mapsettings.html'
+                settingsView: 'views/query/settings-views/mapsettings.html',
+				tooltip: "A visualization to plot analyse the data on the gographical map"
 
 
             }
         ]
     };
+	
+	$scope.changeTip = function(tip)
+	{
+		$scope.tooltip = tip;
+	}
     $scope.commonData.filters = [];
     //mapping measures array
     if ($scope.sourceData.fMeaArr.length > 0) {

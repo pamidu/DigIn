@@ -51,21 +51,22 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 				//}
 		
 		   }, getAllGroups: function(callback) {
-				if(cache.allGroups)
+				/*if(cache.allGroups)
 				{
 					callback(cache.allGroups);
-				}else{
+				}else{*/
 					 //return the promise directly.
 					 return $http.get('/apis/usercommon/getAllGroups')
 					   .then(function(result) {
 							//return result.data;
+							cache = {};
 							cache.allGroups = result.data;
 							callback(cache.allGroups)
 							
 						},function errorCallback(response) {
 							notifications.toast(0, "Falied to get all groups");
 					 });	
-				}
+				//}
 		
 		   }, addUserGroup: function(userGroup) {
 				//notifications.startLoading("Adding User Group, Please wait..");
@@ -90,6 +91,25 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 						notifications.finishLoading();
 				});	
 		
+		}, addUserToGroup: function(userGroup) {
+				var req = {
+					method: "POST",
+					url: "/apis/usercommon/addUserToGroup",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					data: userGroup
+				}
+				 return $http(req)
+					.then(function(result){
+						console.log(result);
+						return result.data;						
+						
+					},function errorCallback(response) {
+						notifications.toast(0, "Falied to add group");
+						notifications.finishLoading();
+				});	
+		
 		},removeUserGroup: function(groupId) {
 			 return $http.get('/apis/usercommon/removeUserGroup/'+groupId) //jsons/everything.json
 			   .then(function(result) {
@@ -99,7 +119,29 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 						console.log(response);
 						notifications.toast(0, "Falied to remove user");
 				 });
-        },removeInvitedUser:function(email){
+        },removeUserFromGroup:function(groupId, user){
+			 var UsrDtl = {
+                "groupId": groupId,
+                "users": user
+            }
+			var req = {
+					method: "POST",
+					url: "/apis/usercommon/removeUserFromGroup",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					data: UsrDtl
+				}
+				 return $http(req)
+					.then(function(result){
+						console.log(result);
+						return result.data;						
+						
+					},function errorCallback(response) {
+						notifications.toast(0, "Falied");
+						notifications.finishLoading();
+				});	
+		},removeInvitedUser:function(email){
 			
 			//http://hxllnisqyomailinfo.staging.digin.io/auth/tenant/RemoveUser/juafbeblvexc@dropmail.me
 			return $http.get('/auth/tenant/RemoveUser/'+email)
@@ -220,8 +262,9 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 			});
 			
 		},getUserLevel: function() {	
-			   $http.get('http://chamila103.prod.digin.io/auth/tenant/Autherized/chamila103.prod.digin.io',{
+			   //$http.get('http://chamila103.prod.digin.io/auth/tenant/Autherized/chamila103.prod.digin.io',{
                //$http.get(baseUrl+'/auth/tenant/Autherized/' + JSON.parse(decodeURIComponent(getCookie('tenantData')))[0].TenantID, {
+               	$http.get('/auth/tenant/Autherized/' + $rootScope.TenantID, {
 					headers: {'Securitytoken': getCookie('securityToken')}
 				})
 			   .then(function(result) {

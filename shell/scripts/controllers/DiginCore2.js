@@ -250,6 +250,8 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
             }
             else if($rootScope.widget.widgetName == "boxplot"){
+                var chart = $rootScope.widget.widgetData.highchartsNG.getHighcharts();
+                console.log(chart);
                 $scope.fieldData = ["label","value"];
                 var newTableData = [];
 
@@ -368,7 +370,6 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
         }
 
         $scope.updateFilteredList = function(search) {
-            $scope.originalList.forEach( o => delete o.id )
             $scope.tableData = $filter("filter")($scope.originalList, search);
         };
 

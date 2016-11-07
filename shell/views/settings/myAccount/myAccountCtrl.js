@@ -2512,6 +2512,42 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         name: "Åland Islands"
     }];
 
+    // $scope.startDate = moment(new Date()).format('LL');
+    // $scope.endDate = moment(new Date()).format('LL');
+    $scope.ledgers = [];
+    //----------- Payment Hostory Start ---------------------------
+    $scope.getPaymentHistory = function(){
+        $scope.ledgers = [];
+        //Date validations
+        if($scope.startDate === undefined || $scope.startDate == "" || $scope.endDate === undefined || $scope.endDate == "" )
+        {
+            notifications.toast('0','Please select a date range!');
+            return;
+        }
+        if ( $scope.startDate > $scope.endDate)
+        {
+            notifications.toast('0','Please select a valid date range!');
+            return;
+        }
+
+        // $http.get('http://192.168.2.61:8080/get_packages?get_type=detail&SecurityToken=4ea0b4e5351ebb4df4fdf3cefe298106&start_date=2016-10-15%2000:00:00&end_date=2016-11-15%2000:00:00')
+        $http.get(Digin_Engine_API + 'get_packages?get_type=detail&SecurityToken=' + getCookie('securityToken') + '&start_date=' + $scope.startDate + ' 00:00:00' + '&end_date=' + $scope.endDate + ' 23:59:59')
+            .success(function(data) {
+                if(data.Is_Success){
+                    if(data.Result.length>0){
+                        angular.forEach(data.Result,function(res){
+                            res.created_datetime = res.created_datetime.replace('T',' ');
+                        })
+                    }
+                    $scope.ledgers = data.Result;
+                } else{
+                    notifications.toast('0','Error occurred')
+                }
+            }).error(function(){
+                notifications.toast('0','Error occurred')
+            });
+    };
+
 });
 
 routerApp.controller('changePasswordCtrl', ['$scope', '$mdDialog', '$http', 'notifications', function($scope, $mdDialog, $http, notifications) {
@@ -3166,7 +3202,28 @@ routerApp.directive('countdownn', ['Util', '$interval', function(Util, $interval
             }, 1000);
         }
     };
-}]).factory('Util', [function() {
+}]).directive('datepicker', function () {
+    return {
+        restrict: "A",
+        require: "ngModel",
+        link: function (scope, elem, attrs, ngModelCtrl) {
+            var updateModel = function (dateText) {
+                scope.$apply(function () {
+                    ngModelCtrl.$setViewValue(dateText);
+                });
+            };
+            var options = {
+                dateFormat: 'yy-mm-d',
+                changeMonth: true,
+                changeYear: true,
+                onSelect: function (dateText) {
+                    updateModel(dateText);
+                }
+            };
+            elem.datepicker(options);
+        }
+    }
+}).factory('Util', [function() {
     return {
         dhms: function(t) {
             var days, hours, minutes, seconds;

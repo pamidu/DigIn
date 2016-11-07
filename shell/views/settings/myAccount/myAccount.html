@@ -804,20 +804,38 @@ p {
                                     <img src="views/settings/userAdministrator/groups.png"/>
                                 </div>
                             </div>
+                            <div flex layout="row">                            
+                                <p flex="35">
+                                    <label> From Date: </label>
+                                    <input type="text" class="form-control" datepicker
+                                            ng-model="startDate"/>
+                                </p>
+                                <p flex="35">
+                                    <label> To Date: </label>
+                                    <input type="text" class="form-control" datepicker
+                                            ng-model="endDate"/>
+                                </p>
+                                <p ng-click="getPaymentHistory()" type="button" class="blut-edit-btn" flex="20" 
+                                    style="margin-top: 28px;">
+                                    Get Payment Details
+                                </p>                                
+                            </div>
                             <md-list ng-cloak style="max-height:400px;overflow-y:scroll">
                                 <md-list-item>
                                         <div layout="row" flex>
-                                            <p style="font-size:16px;font-weight:700"  flex="40"> Date </p>
+                                            <p style="font-size:16px;font-weight:700"  flex="25"> Date </p>
                                             <p style="font-size:16px;font-weight:700" flex> Amount</p>
-                                            <p style="font-size:16px;font-weight:700" flex> Package Name </p>
+                                            <p style="font-size:16px;font-weight:700" flex="25"> Package Name </p>
+                                            <p style="font-size:16px;font-weight:700" flex> Atrribute </p>
                                         </div>
                                     <md-divider></md-divider>
                                 </md-list-item>
                                 <md-list-item ng-repeat="ledger in ledgers">
                                     <div layout="row" flex>
-                                        <p style="color:#717171"  flex="40"> {{ ledger.date }} </p>
-                                        <p style="color:#717171" flex> {{ ledger.amount}} </p>
-                                        <p style="color:#717171" flex> {{ ledger.package}} </p>
+                                        <p style="color:#717171" flex="25"> {{ ledger.created_datetime }} </p>
+                                        <p style="color:#717171" flex> {{ ledger.package_price_sum}} </p>
+                                        <p style="color:#717171" flex="25"> {{ ledger.package_name}} </p>
+                                        <p style="color:#717171" flex> {{ ledger.package_attribute}} </p>
                                     </div>
                                 <md-divider ng-show="!$last"></md-divider>
                                 </md-list-item>

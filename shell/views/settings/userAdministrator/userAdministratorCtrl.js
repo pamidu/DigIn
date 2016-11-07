@@ -475,8 +475,9 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 			}
 	
 		
-			for (i = 0, len = vm.contacts.length; i<len; ++i){
-				var add=true;
+			for (i = 0, len = vm.contacts.length; i<len; ++i){			
+				vm.group.users.push({Name:vm.contacts[i].Name, Id:vm.contacts[i].Id});				
+				/*var add=true;
 				for(j=0; j<vm.group.users.length; j++){
 					if(vm.contacts[i].Id==vm.group.users[j].Id){
 						add=false;
@@ -484,10 +485,13 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 				}				
 				if(add==true)	{
 					vm.group.users.push({Name:vm.contacts[i].Name, Id:vm.contacts[i].Id});
-				}
+				}*/
 			}
+			
+			userAdminFactory.removeUserFromPackage(vm.group.groupId,vm.group.users).then(function(result) {
 				
-				
+			})
+	
 			userAdminFactory.addUserToGroup(vm.group).then(function(result) {
 				if(result.IsSuccess == true)
 				{

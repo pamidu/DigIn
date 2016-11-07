@@ -3794,6 +3794,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             })
                             this.heightPrev = this.chartHeight;
                             this.widthPrev = this.chartWidth;
+                            if (this.drillUpButton !== undefined) this.drillUpButton = this.drillUpButton.destroy();
                             this.setSize(800, 600, false);
                         },
                         afterPrint: function() {
@@ -3801,6 +3802,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                 text: null
                             })
                             this.setSize(this.widthPrev, this.heightPrev, true);
+                            if (this.drilldownLevels.length != 0) this.showDrillUpButton();
                         }
                     };
                     $scope.$apply(function() {

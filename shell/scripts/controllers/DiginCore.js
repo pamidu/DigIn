@@ -1127,13 +1127,15 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         })
                         this.heightPrev = this.chartHeight;
                         this.widthPrev = this.chartWidth;
+                        if (this.drillUpButton !== undefined) this.drillUpButton = this.drillUpButton.destroy();
                         this.setSize(800,600, false);
                     },
-                        afterPrint: function() {
-                            this.setTitle({
-                                text: null
-                            })
-                            this.setSize(this.widthPrev,this.heightPrev, true);                                       
+                    afterPrint: function() {
+                        this.setTitle({
+                            text: null
+                        })
+                        this.setSize(this.widthPrev,this.heightPrev, true);
+                        if (this.drilldownLevels.length != 0) this.showDrillUpButton();
                     }                      
                 }
             }

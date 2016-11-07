@@ -106,23 +106,14 @@ routerApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardN
                 "Namespace": "com.duosoftware.com",
                 "TemplateID": "T_Email_GENERAL",
                 "DefaultParams": {
-                    
-                    "@@CNAME@@": "",
-                    "@@TITLE@@": "",
-                    "@@MESSAGE@@": $scope.emailBody,
-                    "@@CNAME@@": "",
-                    "@@APPLICATION@@":"",
-                    "@@FOOTER@@": "",
-                    "@@LOGO@@": ""
+                    "@@dashboardName@@": DashboardName+' : '+widgetName,
+                    "@@fromMail@@": sender,
+                    "@@URL@@": URL,
                 },
                 "CustomParams": {
-                    "@@CNAME@@": "",
-                    "@@TITLE@@": "",
-                    "@@MESSAGE@@": "",
-                    "@@CNAME@@": "",
-                    "@@APPLICATION@@": "",
-                    "@@FOOTER@@": "",
-                    "@@LOGO@@": ""
+                    "@@dashboardName@@": DashboardName+' : '+widgetName,
+                    "@@fromMail@@": sender,
+                    "@@URL@@": URL,
                 }
             };
 

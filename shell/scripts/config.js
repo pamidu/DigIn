@@ -1,9 +1,9 @@
 
  angular.module('configuration', [])
-    .constant('Digin_Engine_API', 'http://prod.digin.io:1929/')
+    .constant('Digin_Engine_API', 'http://104.155.218.35:1929/')
     //.constant('Digin_Engine_API', 'http://digin.io:1929/')
     .constant('Digin_Engine_API_Namespace', 'Demo')
-    .constant('Digin_Tomcat_Base', 'http://prod.digin.io:9897/')
+    .constant('Digin_Tomcat_Base', 'http://104.155.218.35:9897/')
     .constant('Digin_Domain', 'prod.digin.io')
     .constant('DevStudio', false)
     .constant('RealTime','http://prod.report.digin.io:5601/app/kibana')

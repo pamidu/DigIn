@@ -1930,7 +1930,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         name: "Cuba"
     }, {
         code: "CW",
-        name: "Curaçao"
+        name: "CuraÃ§ao"
     }, {
         code: "CY",
         name: "Cyprus"
@@ -1939,7 +1939,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         name: "Czech Republic"
     }, {
         code: "CI",
-        name: "Côte D'Ivoire"
+        name: "CÃ´te D'Ivoire"
     }, {
         code: "DK",
         name: "Denmark"
@@ -2311,10 +2311,10 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         name: "Rwanda"
     }, {
         code: "RE",
-        name: "Réunion"
+        name: "RÃ©union"
     }, {
         code: "BL",
-        name: "Saint Barthélemy"
+        name: "Saint BarthÃ©lemy"
     }, {
         code: "SH",
         name: "Saint Helena"
@@ -2413,7 +2413,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         name: "Syria"
     }, {
         code: "ST",
-        name: "São Tomé and Príncipe"
+        name: "SÃ£o TomÃ© and PrÃ­ncipe"
     }, {
         code: "TW",
         name: "Taiwan"
@@ -2509,7 +2509,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         name: "Zimbabwe"
     }, {
         code: "AX",
-        name: "Åland Islands"
+        name: "Ã…land Islands"
     }];
 
     // $scope.startDate = moment(new Date()).format('LL');
@@ -2533,7 +2533,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         }
 
         // $http.get('http://192.168.2.61:8080/get_packages?get_type=detail&SecurityToken=4ea0b4e5351ebb4df4fdf3cefe298106&start_date=2016-10-15%2000:00:00&end_date=2016-11-15%2000:00:00')
-        $http.get(Digin_Engine_API + 'get_packages?get_type=detail&SecurityToken=' + getCookie('securityToken') + '&start_date=' + $scope.startDate + ' 00:00:00' + '&end_date=' + $scope.endDate + ' 23:59:59')
+        $http.get(Digin_Engine_API + 'get_packages?get_type=ledger&SecurityToken=' + getCookie('securityToken') + '&start_date=' + $scope.startDate + ' 00:00:00' + '&end_date=' + $scope.endDate + ' 23:59:59')
             .success(function(data) {
                 if(data.Is_Success){
                     if(data.Result.length>0){

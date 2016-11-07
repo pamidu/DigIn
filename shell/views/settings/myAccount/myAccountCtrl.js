@@ -2517,14 +2517,16 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     $scope.ledgers = [];
     //----------- Payment Hostory Start ---------------------------
     $scope.getPaymentHistory = function(){
-        $scope.ledgers = [];
+        $scope.ledgers = [];        
         //Date validations
         if($scope.startDate === undefined || $scope.startDate == "" || $scope.endDate === undefined || $scope.endDate == "" )
         {
             notifications.toast('0','Please select a date range!');
             return;
         }
-        if ( $scope.startDate > $scope.endDate)
+        var startDate = moment($scope.startDate);
+        var endDate = moment($scope.endDate);        
+        if ( startDate > endDate)
         {
             notifications.toast('0','Please select a valid date range!');
             return;

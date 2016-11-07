@@ -24,7 +24,8 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
         });
     };
 
-
+	
+  /*
     //#Customize existing package
     $scope.removeUserFromPackage = function() {
 		$scope.usersRate = 5;
@@ -52,41 +53,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 					 $rootScope.totUsers=$rootScope.totUsers-1;
 					 $scope.updatePackage(); //digin service
 					 displaySuccess("User removed successfully."); 
-					 
-					/*
-					//-------- 
-						var db = new PouchDB('packaging');
-						db.get('packgedetail').then(function (doc_package) {
-											  // update their age
-									doc_package.additionaluser=doc_package.additionaluser-1;
-									 $rootScope.totUsers=$rootScope.totUsers-1;
-									$rootScope.extraUser=doc_package.additionaluser;
-									
-                             userAdminFactory.getInvitedUsers(function(data) {});
-							 
-							 displaySuccess("User removed successfully."); 
-							 
-									$mdDialog.hide();
-					
-                              // put them back
-							  
-							   $scope.updatePackage(); //digin service
-							  
-                               return db.put(doc_package);
-							   
-							   		 
-							   
-							   
-                            }).then(function () {
-                              // fetch mittens again
-                              //return db.get('mittens');
-                            }).then(function (doc) {
-                              //console.log(doc);
-                            });
-		
-
-		//-------------  
-		*/      
+					     
                     $mdDialog.hide();
 
                 } else {
@@ -107,8 +74,8 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
     }
 
 	
-    //#Update package in digin engine*// 
-    $scope.updatePackage = function() { 
+    //#Update package in digin engine 
+  $scope.updatePackage = function() { 
 
 		  var pkgObj = [{
 				"package_id":null,
@@ -137,11 +104,8 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
         });
         $mdDialog.hide();
     }
-    
-    
-	
-	
-	
+    */
+   
 	//#-----remove user end---------------------------------------------------------
 	
 	
@@ -277,8 +241,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 						displaySuccess("User removed successfully."); 
 					
 				});
-		}
-				
+		}				
 	}
 	
 	$scope.getCatLetter=function(catName){
@@ -346,12 +309,18 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 		  notifications.toast(1, "'"+group.groupname +"' Deleted");
 		  
 		  userAdminFactory.removeUserGroup(group.groupId).then(function(data) {
+			  
+					$rootScope.sharableUsers=[];
+					userAdminFactory.getInvitedUsers(function(data) {});
+					
 				$scope.groups.splice(index, 1); 
 			});
 		});
 	}
 
 }])
+
+
 
 /*DiginApp.controller('addGroupCtrl',[ '$scope','$mdDialog', function ($scope,$mdDialog){
 	
@@ -455,34 +424,77 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
         return true;
     };
 	
-	
-	//Finally add the group and close the Dialog
-	$scope.submit = function()
+	$scope.AddGroup = function()
 	{
-		if(vm.isValidGroupName()==false){
-            notifications.toast('0', 'This user group is already created.');
-            return;
-        };
+		if(vm.contacts.length != 0)
+			{
+				vm.submitted = true;
+				vm.group.users = [];
+				if(!vm.group.groupId)
+				{
+					vm.group.groupId = "-999";
+					vm.group.parentId = "";
+				}
+
+				for (i = 0, len = vm.contacts.length; i<len; ++i){
+					vm.group.users.push({Name:vm.contacts[i].Name, Id:vm.contacts[i].Id});
+				}
+							
+				userAdminFactory.addUserGroup(vm.group).then(function(result) {
+						
+					if(result.IsSuccess == true)
+					{
+						$rootScope.sharableUsers=[];
+						userAdminFactory.getInvitedUsers(function(data) {});
+						
+						notifications.toast(1, "Group Added");
+						vm.group.groupId = result.Data[0].ID;
+						$mdDialog.hide({group:vm.group, index:index});
+					}else{
+						notifications.toast(0, result.Message);
+					}
+					vm.submitted = false;
+				})
+				
+			}else{
+				notifications.toast(0, "Please add members to the group");
+			}
+	}	
 		
 		
+	$scope.UpdateGroup = function()
+	{	
 		if(vm.contacts.length != 0)
 		{
 			vm.submitted = true;
-			vm.group.users = [];
+			//vm.group.users = [];
 			if(!vm.group.groupId)
 			{
 				vm.group.groupId = "-999";
 				vm.group.parentId = "";
 			}
-
+	
+		
 			for (i = 0, len = vm.contacts.length; i<len; ++i){
-				vm.group.users.push({Name:vm.contacts[i].Name, Id:vm.contacts[i].Id});
+				var add=true;
+				for(j=0; j<vm.group.users.length; j++){
+					if(vm.contacts[i].Id==vm.group.users[j].Id){
+						add=false;
+					}
+				}				
+				if(add==true)	{
+					vm.group.users.push({Name:vm.contacts[i].Name, Id:vm.contacts[i].Id});
+				}
 			}
-						
-			userAdminFactory.addUserGroup(vm.group).then(function(result) {
+				
+				
+			userAdminFactory.addUserToGroup(vm.group).then(function(result) {
 				if(result.IsSuccess == true)
 				{
-					notifications.toast(1, "Group Added");
+					$rootScope.sharableUsers=[];
+					userAdminFactory.getInvitedUsers(function(data) {});
+					
+					notifications.toast(1, "User group updated successfully.");
 					vm.group.groupId = result.Data[0].ID;
 					$mdDialog.hide({group:vm.group, index:index});
 				}else{
@@ -496,6 +508,24 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 		}
 			
 	}
+	
+	
+	//Finally add the group and close the Dialog
+	$scope.submit = function()
+	{
+		if(vm.isValidGroupName()==false){
+			$scope.UpdateGroup();
+            //notifications.toast('0', 'This user group is already created.');
+            //return;
+        }
+		else{
+			$scope.AddGroup();
+		}
+	}
+	
+	
+	
+	
 	
 	vm.close = function()
 	{

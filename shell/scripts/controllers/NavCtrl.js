@@ -2,10 +2,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http', 'filterService',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen', '$interval', 'notifications', 'pouchDbServices',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen', '$interval', 'notifications', 'pouchDbServices','IsLocal',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
               $http, filterService, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen, $interval, notifications, pouchDbServices) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen, $interval, notifications, pouchDbServices,IsLocal) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -16,7 +16,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 		$rootScope.sharableUsers = [];
 		$rootScope.sharableGroups = [];
         $scope.firstName = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;  
-        var db = new pouchDB('dashboard');
         var interval;
         $scope.adjustUI = function () {
 
@@ -48,12 +47,18 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
 
-        //#Added by Chamila
+
+         //#Added by Chamila
         //#to get session detail for logged user
         $http.get('/auth/GetSession/' + getCookie('securityToken') + '/Nil')
             .success(function (data) {
                 console.log(data);
                 $rootScope.SessionDetail = data;
+                var pouchdbName = data.UserID + data.Domain;
+                console.log(pouchdbName);
+         
+                $rootScope.db  = new pouchDB(pouchdbName);
+                $scope.getSearchPanelDetails(); 
             }).error(function () {
             //alert("Oops! There was a problem retrieving the groups");
         });
@@ -63,12 +68,18 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             .success(function (data) {
                 console.log(data);
                 $rootScope.TenantID = data[0].TenantID;
-                $rootScope.TenantName = data[0].Name;
             }).error(function () {
             //alert("Oops! There was a problem retrieving the groups");
         });
 
-
+        $scope.checkIslocal = function(){
+            if(IsLocal == true){
+                $rootScope.db  = new pouchDB("Dashboards");
+                $scope.getSearchPanelDetails(); 
+            }
+        }
+        
+            
         //#get user profile       
         var baseUrl = "http://" + window.location.hostname;
         //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
@@ -803,6 +814,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
             if(typeof(dashboard.pouchID) != "undefined"){
+                   var db = $rootScope.db;
                    db.get(dashboard.pouchID, function (err, doc) {
                     if (err) {
                         ngToast.create({
@@ -1040,6 +1052,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             
                           
                             //fetch all saved dashboards from pouchdb
+                            var db = $rootScope.db;
                             db.allDocs({
                                 include_docs: true,
                                 attachments: true

@@ -1330,21 +1330,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $scope.showAddSocialAnalysis(ev);
                     break;
                 case "Add Widgets":
-                    if (pageWidgetCount < widgetLimit) {
-                        $rootScope.currentView = "Dashboard";
-                        $scope.showAddNewWidgets(ev);
-                        $state.go("home.Dashboards");
-                    }
-                    else {//give message widget limit exceeded
-                        ngToast.dismiss();
-                        ngToast.create({
-                            className: 'danger',
-                            content: 'maximum widget limit exceeded',
-                            horizontalPosition: 'center',
-                            verticalPosition: 'top',
-                            dismissOnClick: true
-                        });
-                    }
+                    $rootScope.currentView = "Dashboard";
+                    $scope.showAddNewWidgets(ev);
+                    $state.go("home.Dashboards");
                     break;
                 case "Reports":
                     $scope.showReports(ev);

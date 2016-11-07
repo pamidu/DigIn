@@ -44,7 +44,7 @@ routerApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','Dashbo
     var emailSubject = 'DigIn - '+$scope.DashboardName+' : '+$scope.widgetName+'';
     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
     var sender = userInfo.Email;
-    var emailBody = 'Hi,%0D%0A%0D%0ACheck Out '+$scope.DashboardName+' : '+$scope.widgetName+' shared by '+sender+'.%0D%0A%0D%0ABrought to you by DigIn.io(link to '+URL+')%0D%0A%0D%0ARegards,%0D%0A%0D%0ADigIn Team.';
+    var emailBody = 'Hi,%0D%0A%0D%0ACheck Out '+$scope.DashboardName+' : '+$scope.widgetName+' shared by '+sender+'.%0D%0A%0D%0APowered by DigIn.io(link to '+URL+')%0D%0A%0D%0ARegards,%0D%0A%0D%0ADigIn Team.';
       
       if(provider=="Other"){
             $mdDialog.show({
@@ -83,7 +83,7 @@ routerApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardN
 
     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
     var sender = userInfo.Email;
-    $scope.emailBody='Check Out '+DashboardName+' : '+widgetName+' shared by '+sender+'.<br><br>Brought to you by DigIn.io(link to '+URL+')<br><br>Regards,<br><br>DigIn Team.';
+    $scope.emailBody='Check Out '+DashboardName+' : '+widgetName+' shared by '+sender+'.<br><br>powered by DigIn.io(link to '+URL+')<br><br>Regards,<br><br>DigIn Team.';
     $scope.emailSubject='DigIn - '+DashboardName+' : '+widgetName+'';
     $scope.emailTo;
     $scope.emailCc;

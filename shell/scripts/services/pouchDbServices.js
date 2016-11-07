@@ -1,6 +1,5 @@
 routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,Digin_Domain,pouchDB,filterService,$qbuilder){
 
-     var db = new pouchDB('dashboard');
 
      this.insertPouchDB = function(dashboardObject,dashboardId,cb){
 
@@ -99,6 +98,8 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
         //dashboard - dashboard object
         //flag - whether to call the getAllDashboards method or not
         var settoPouch = function(dashboard,flag,cb){
+
+            var db = $rootScope.db;
              // set a new id to a new record to be inserted
               if ( typeof($rootScope.page_id) == "undefined" || $rootScope.page_id == ""){
                   var id = "temp" + Math.floor(Math.random() * 10000000);
@@ -106,7 +107,7 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
               else {
                   var id = $rootScope.page_id;
               }
-  
+                
                 db.get( id , function(err, doc){
                       if (err){
                           if (err.status = '404') { // if the document does not exist

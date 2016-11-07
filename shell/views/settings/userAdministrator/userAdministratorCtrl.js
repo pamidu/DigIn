@@ -244,6 +244,10 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	
 	$scope.removeUser = function(ev, user)
 	{
+		if(user.Id==JSON.parse(decodeURIComponent(getCookie('authData'))).Username){
+			return;
+		}
+		
 		
 		if($rootScope.userLevel=='user'){
            displayError('You are not permitted to do this operation, allowed only for administrator'); 
@@ -266,10 +270,10 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 					
 					userAdminFactory.removeInvitedUser(user.Id);
 
-						 
-						//$scope.removeUserFromPackage();	
-						$rootScope.sharableUsers=[];
-						userAdminFactory.getInvitedUsers(function(data) {});						
+							$rootScope.sharableUsers=[];
+							userAdminFactory.getInvitedUsers(function(data) {});
+							
+						
 						displaySuccess("User removed successfully."); 
 					
 				});

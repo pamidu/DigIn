@@ -265,9 +265,9 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         if($scope.tenant.name=="" || $scope.tenant.name==undefined){
             return;
         }
-        else if($scope.tenant.company=="" || $scope.tenant.company==undefined){
+        /*else if($scope.tenant.company=="" || $scope.tenant.company==undefined){
             return;
-        }
+        }*/
         else if($scope.tenant.address=="" || $scope.tenant.address==undefined){
             return;
         }
@@ -450,13 +450,13 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             "Name": companyDetail.name,
             "Shell": "",
             "Statistic": {
-                "CompanyName": companyDetail.company,
+                "CompanyName": companyDetail.name,
                 "CompanyAddress": companyDetail.address,
                 "Plan": plan.id
             },
             "Private": true,
             "OtherData": {
-                "CompanyName": companyDetail.company,
+                "CompanyName": companyDetail.name,
                 "SampleAttributs": "Values",
                 "catagory": companyDetail.businessModel
             }

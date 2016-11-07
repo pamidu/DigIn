@@ -14,11 +14,13 @@ routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootS
        .then(function(result) {
 
             $scope.isVisble= true;
-
+            var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+            var CurUser = userInfo.Email;
             ////return result.data;
              for (var i = 0, len = result.data.length; i<len; ++i) {
                 if (result.data[i].Type == "User") {
-                    $scope.users.push(result.data[i]);
+                  if(CurUser != result.data[i].Id)
+                      $scope.users.push(result.data[i]);
                 }else if (result.data[i].Type == "Group") {
                     $scope.groups.push(result.data[i]);
                 }

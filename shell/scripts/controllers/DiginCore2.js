@@ -368,6 +368,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
         }
 
         $scope.updateFilteredList = function(search) {
+            $scope.originalList.forEach( o => delete o.id )
             $scope.tableData = $filter("filter")($scope.originalList, search);
         };
 

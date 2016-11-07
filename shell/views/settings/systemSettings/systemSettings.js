@@ -64,10 +64,10 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
                 notifications.toast('0', 'Invalid cache lifetime settings.');
                 return;
             }
-            else if ($scope.noOfWidget == undefined) {
+            /*else if ($scope.noOfWidget == undefined) {
                 notifications.toast('0', 'Invalid widgets settings!');
                 return;
-            }
+            }*/
             else if ($scope.reqLimit == undefined) {
                 notifications.toast('0', 'Invalid request limit settings.');
                 return;

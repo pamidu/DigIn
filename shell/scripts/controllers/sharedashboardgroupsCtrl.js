@@ -143,7 +143,12 @@ routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootS
               })
               .success(function(response){
                  
-                notifications.toast(1, response.Custom_Message);
+                  if(response.Is_Success == false){
+                     notifications.toast(0, response.Custom_Message);
+                }
+                else{
+                    notifications.toast(0, response.Custom_Message);
+                }
 
               })
               .error(function(error){  

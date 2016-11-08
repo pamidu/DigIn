@@ -1144,3 +1144,4 @@ routerApp.controller('hierarchySummaryCtrl', ['$scope', '$mdDialog', '$rootScope
 
     }
 ]);
+

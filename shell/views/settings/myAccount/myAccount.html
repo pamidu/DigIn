@@ -371,7 +371,7 @@ p {
                                 <h5>Profile Settings</h5>
                                 <div class="setting-img-wrap">
                                     <!-- <img src="styles/css/images/signup-user.png" style="cursor:pointer;    width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()">
-             
+             -->
                                     <img src="{{profile_pic}}" class="img-circle" style="cursor:pointer;    width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()" ng-disabled="editModeOn">
                                     <!-- <div ng-show="selectProfile">  
                                         <div align="center">
@@ -415,7 +415,7 @@ p {
                                         <label>Email </label>
                                         <input type="text" id="txtEmail" ng-model="user.email" ng-disabled="editModeOn" class="form-control" readonly>
                                     </div>
-                                     <div flex="40" style="padding-left: 5px;">
+                                    <div flex="40" style="padding-left: 5px;">
                                         <label>Contact No </label>
                                         <input type="text" id="txtContactNo" name="txtContactNo" ng-model="user.contactNo" ng-disabled="editModeOn" class="form-control" valid-number  ng-trim="true">
                                         <!--div ng-messages="frmProfile.txtContactNo.$error" role="alert">
@@ -700,7 +700,7 @@ p {
                                                     <span>Upgrade now!</span>
                                                 </md-button>
                                             </md-card-content>
-                                            <!--md-card-content layout="column" layout-align="start start">
+                                            <!--md-card-content layout="column" layout-align="start start" >
                                   <b style="margin-bottom:10px;">Advanced Options:</b>
                                   <div layout="row" layout-align="space-between center" style="width:100%"> <span flex>Option 1</span><md-checkbox class="checkbox" ng-model="data.cb1" aria-label="Checkbox 1"></md-checkbox></div>
                                 </md-card-content-->
@@ -846,6 +846,6 @@ p {
                     </div>
                 </div>
             </md-tab-body>
-        </md-tab>
+        </md-tab>       
     </md-tabs>
 </footer>

@@ -65,7 +65,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
         // ====== angular-table configuration ========
         $scope.config = {
-            itemsPerPage: 7,
+            itemsPerPage: 10,
             fillLastPage: false
         }
         $scope.eventHndler = {
@@ -252,39 +252,37 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
             else if($rootScope.widget.widgetName == "boxplot"){
                 var chart = $rootScope.widget.widgetData.highchartsNG.getHighcharts();
                 console.log(chart);
-                $scope.fieldData = ["label","value"];
+                $scope.fieldData = ["Experiment","Maximum" , "Minimum" ,"Q1" , "Q2" , "Q3" ];
+                // $scope.fieldData = ["label","value"];
+                var min,max;
+                var data_boxplot = $rootScope.widget.widgetData.highchartsNG.series[0].data;
+                var outlier = $rootScope.widget.widgetData.highchartsNG.series[1].data;
+                var categories = $rootScope.widget.widgetData.highchartsNG.xAxis.categories;
                 var newTableData = [];
+                for(var i = 0; i < data_boxplot.length; i++){
+                    var newObject = {};
+                    newObject["id"] = i;
+                    newObject["Experiment"] = categories[i];
+                    min = data_boxplot[i][0];
+                    newObject["Q1"] = data_boxplot[i][1];
+                    newObject["Q2"] = data_boxplot[i][2];
+                    newObject["Q3"] = data_boxplot[i][3];                   
+                    max = data_boxplot[i][4];
 
-                var newObject = {};
-                newObject["id"]=1;
-                newObject["label"]="Maximum";
-                newObject["value"] = $rootScope.widget.widgetData.highchartsNG.series[0].data[0][4];
-                newTableData.push(newObject);
-
-                var newObject = {};
-                newObject["id"]=2;
-                newObject["label"]="Upper_quartile";
-                newObject["value"] = $rootScope.widget.widgetData.highchartsNG.series[0].data[0][3];
-                newTableData.push(newObject);
-
-                var newObject = {};
-                newObject["id"]=3;
-                newObject["label"]="Median";
-                newObject["value"] =$rootScope.widget.widgetData.highchartsNG.series[0].data[0][2];
-                newTableData.push(newObject);
-
-                var newObject = {};
-                newObject["id"]=4;
-                newObject["label"]="Lower_quartile";
-                newObject["value"] =$rootScope.widget.widgetData.highchartsNG.series[0].data[0][1];
-                newTableData.push(newObject);
-
-                var newObject = {};
-                newObject["id"]=5;
-                newObject["label"] ="Minimum";
-                newObject["value"] =$rootScope.widget.widgetData.highchartsNG.series[0].data[0][0];            
-                newTableData.push(newObject);
-
+                    for(var j=0; j<outlier.length; j++){
+                        if(outlier[j][0] == i){
+                            if ( outlier[j][1] < min ){
+                                min = outlier[j][1];
+                            }
+                            if ( outlier[j][1] > max ){
+                                max = outlier[j][1];
+                            }
+                        }
+                    }
+                    newObject["Minimum"] = min;
+                    newObject["Maximum"] = max;
+                    newTableData.push(newObject);
+                }
                 $scope.tableData = newTableData;
                 $scope.originalList = newTableData;
             }
@@ -324,7 +322,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
                     var data = $scope.serObj[$scope.serObj.length-1].data;
 
                     var newTableData = [];
-                    for(var i = 0; i < data.length; i++){                
+                    for(var i = 0; i < data.length; i++){
                         var newObject = {};
                         newObject["id"] = i;
                         for(var j = 0; j < $scope.fieldData.length; j++){
@@ -370,7 +368,9 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
         }
 
         $scope.updateFilteredList = function(search) {
-            $scope.tableData = $filter("filter")($scope.originalList, search);
+              $scope.filtered = angular.copy($scope.originalList);
+               $scope.filtered.forEach( o => delete o.id )
+              $scope.tableData = $filter("filter")($scope.filtered, search);
         };
 
         $scope.downloadPDF = function(ev){

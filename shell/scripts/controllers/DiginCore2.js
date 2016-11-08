@@ -65,7 +65,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
         // ====== angular-table configuration ========
         $scope.config = {
-            itemsPerPage: 7,
+            itemsPerPage: 10,
             fillLastPage: false
         }
         $scope.eventHndler = {
@@ -370,7 +370,9 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
         }
 
         $scope.updateFilteredList = function(search) {
-            $scope.tableData = $filter("filter")($scope.originalList, search);
+              $scope.filtered = angular.copy($scope.originalList);
+               $scope.filtered.forEach( o => delete o.id )
+              $scope.tableData = $filter("filter")($scope.filtered, search);
         };
 
         $scope.downloadPDF = function(ev){

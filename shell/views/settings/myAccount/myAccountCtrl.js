@@ -2512,10 +2512,11 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         name: "Ã…land Islands"
     }];
 
-    // $scope.startDate = moment(new Date()).format('LL');
-    // $scope.endDate = moment(new Date()).format('LL');
+
+
+    //----------- Payment History Starts ---------------------------
+
     $scope.ledgers = [];
-    //----------- Payment Hostory Start ---------------------------
     $scope.getPaymentHistory = function(){
         $scope.ledgers = [];        
         //Date validations
@@ -2532,7 +2533,6 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             return;
         }
 
-        // $http.get('http://192.168.2.61:8080/get_packages?get_type=detail&SecurityToken=4ea0b4e5351ebb4df4fdf3cefe298106&start_date=2016-10-15%2000:00:00&end_date=2016-11-15%2000:00:00')
         $http.get(Digin_Engine_API + 'get_packages?get_type=ledger&SecurityToken=' + getCookie('securityToken') + '&start_date=' + $scope.startDate + ' 00:00:00' + '&end_date=' + $scope.endDate + ' 23:59:59')
             .success(function(data) {
                 if(data.Is_Success){
@@ -2549,6 +2549,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                 notifications.toast('0','Error occurred')
             });
     };
+    
+    //----------Payment History Ends---------------------------
 
 });
 

@@ -61,7 +61,7 @@ routerApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','Dashbo
         }else if(provider=="Gmail"){
 
             //First open up the authentication dialog
-            https://mail.google.com/mail/?to=inbox@example.com&bcc=admin@example.com&subject=Hey#compose
+            //https://mail.google.com/mail/?to=inbox@example.com&bcc=admin@example.com&subject=Hey#compose
             window.open('https://mail.google.com/mail/?view=cm&fs=1&to=&su='+emailSubject+'&body='+emailBody+'&bcc=','_blank');
             
         }

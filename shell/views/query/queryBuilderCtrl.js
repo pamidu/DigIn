@@ -2543,21 +2543,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                     $scope.dataOutliers.push([i, k]);
                                 });
                                 i++;
-                                $scope.tooltip = 'Maximum: ' + data[key].max + '<br/>' +
-                                    'Upper Quartile: ' + data[key].quartile_3 + '<br/>' +
-                                    'Median: ' + data[key].quartile_2 + '<br/>' +
-                                    'Lower Quartile: ' + data[key].quartile_1 + '<br/>' +
-                                    'Minimum: ' + data[key].min + '<br/>'
-
-                                // display lower innerfence if there are lower ouliers
-                                if (data[key].min != data[key].l_w) {
-                                    $scope.tooltip += 'Lower Inner Fence: ' + data[key].l_w + '<br/>';
-                                }
-
-                                // display upper innerfence if there are upper ouliers
-                                if (data[key].max != data[key].u_w) {
-                                    $scope.tooltip += 'Upper Inner Fence: ' + data[key].u_w + '<br/>';
-                                }
                             }
                         }
                         $scope.widget.widgetData.highchartsNG = {
@@ -2584,6 +2569,37 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                         }
                                     }
                                 },
+                                tooltip: {
+                                    formatter: function() {
+                                        if(this.series.name == 'Observations') {
+                                            var c = this.point.category;
+                                            var min = this.point.low;
+                                            var max = this.point.high;
+                                            $.each(this.series.chart.series[1].data,function(i,d) {
+                                              //do something
+                                              if(c == d.category){
+                                                if(d.y < min){
+                                                  min = d.y;
+                                                }
+                                                if(d.y > max){
+                                                    max = d.y;
+                                                }
+                                              }
+                                            })
+                                            var s = '<b>' +  this.point.category + '</b> <br>' + 
+                                                    "maximum: " + max + '<br>' +
+                                                    "Upper Quartile: " + this.point.q1 + '<br>' +
+                                                    "Median: " + this.point.median + '<br>' +
+                                                    "Lower Quartile: " + this.point.q3 + '<br>' +
+                                                    " minimum: " + min;
+                                            return s;
+                                        } else {
+                                            var s =  '<b>' +  this.point.category + '</b> <br>' + 
+                                                    "Outlier </br> Observation: " + this.point.y;
+                                            return s;
+                                        }
+                                    }
+                                },                                
                                 exporting: {
                                     sourceWidth: 600,
                                     sourceHeight: 400,
@@ -2623,11 +2639,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                 }
                             },
                             series: [{
-                                data: $scope.observationsData,
-                                tooltip: {
-                                    headerFormat: '<em>Experiment No {point.key}</em><br/>',
-                                    pointFormat: $scope.tooltip
-                                }
+                                name: 'Observations',
+                                data: $scope.observationsData
                             }, {
                                 name: 'Outlier',
                                 color: Highcharts.getOptions().colors[0],
@@ -2637,9 +2650,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                     fillColor: 'white',
                                     lineWidth: 1,
                                     lineColor: Highcharts.getOptions().colors[0]
-                                },
-                                tooltip: {
-                                    pointFormat: 'Observation: {point.y}'
                                 }
                             }]
                         };

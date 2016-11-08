@@ -1,6 +1,10 @@
 routerApp.service('saveDashboardService',function($rootScope,$http,Digin_Engine_API,Digin_Domain,ngToast,pouchDbServices,$state,DashboardService,$mdDialog,$interval) {
 
+this.IsSavingINprogress = false;
+var localThis = this;
+
   this.saveDashboard = function(dashboardName,refreshInterval,type,scope) {
+    localThis.IsSavingINprogress =true;
     var pagesArray = [];
     var dynamicPages = [];
     var pageObject;
@@ -109,14 +113,14 @@ routerApp.service('saveDashboardService',function($rootScope,$http,Digin_Engine_
         $rootScope.refreshDashboard();
       }
       pouchDbServices.insertPouchDB(null,response.Result,function(){
-         
+         localThis.IsSavingINprogress = false;
       }); 
       if (type == 'dashboard'){
            setState(true,scope);
       }
       ngToast.create({
         className: 'success',
-        content: 'Dashboard Saved Successful',
+        content: 'Dashboard Saved Successfully',
         horizontalPosition: 'center',
         verticalPosition: 'top',
         dismissOnClick: true

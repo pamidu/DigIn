@@ -1679,6 +1679,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             widget.widgetData.isVisual = $scope.useFiltering.status;
             widget.widgetData.VisualDatesOk = $scope.VisualDatesOk;
             widget.widgetData.useAlpahaBetaGamma = $scope.useAlpahaBetaGamma.status;
+
+            
+
             widget.widgetData.initCtrl = "elasticInit";
             widget.widgetName = "forecast";
             $scope.saveChart(widget);
@@ -1817,7 +1820,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         };
         $scope.eventHndler.isLoadingChart = true;
 
-        $scope.client.getForcast($scope.forecastObj.paramObj, function(data, status, fObj) {
+        if(typeof $scope.widget.widgetData.namespace == "undefined"){
+            var authdata=JSON.parse(decodeURIComponent(getCookie('authData')));        
+            var namespace = authdata.Email.replace('@', '_');
+            var namespace = authdata.Email.replace(/[@.]/g, '_');
+
+            $scope.widget.widgetData.namespace = namespace;
+        }
+
+        $scope.client.getForcast($scope.forecastObj.paramObj,$scope.widget.widgetData, function(data, status, fObj) {
 
             if (status) {
                 var forcastArr = [];
@@ -2296,7 +2307,17 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             }
         };
         $scope.eventHndler.isLoadingChart = true;
-        $scope.client.getForcast(fObj, function(data, status, fObj) {
+
+        if(typeof $scope.widget.widgetData.namespace == "undefined"){
+            var authdata=JSON.parse(decodeURIComponent(getCookie('authData')));        
+            var namespace = authdata.Email.replace('@', '_');
+            var namespace = authdata.Email.replace(/[@.]/g, '_');
+
+            $scope.widget.widgetData.namespace = namespace;
+        }
+        
+
+        $scope.client.getForcast(fObj,$scope.widget.widgetData, function(data, status, fObj) {
             if (status) {
                 var forcastArr = [];
                 var serArr = [];

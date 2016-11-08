@@ -1,4 +1,3 @@
-
  angular.module('configuration', [])
     .constant('Digin_Engine_API', 'http://104.155.218.35:1929/')
     //.constant('Digin_Engine_API', 'http://digin.io:1929/')

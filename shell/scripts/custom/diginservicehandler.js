@@ -8,7 +8,7 @@
     }
 
     function getNamespace() {
-          var authdata=JSON.parse(decodeURIComponent(getCookie('authData')));        
+        var authdata=JSON.parse(decodeURIComponent(getCookie('authData')));        
         var namespace = authdata.Email.replace('@', '_');
         var namespace = authdata.Email.replace(/[@.]/g, '_');
         return namespace;
@@ -151,7 +151,7 @@
                     }, query);
                 },
 
-                getForcast: function(fObj, cb, gb) {
+                getForcast: function(fObj,widget, cb, gb) {
 
 
                     function formattedDate(date) {
@@ -190,7 +190,7 @@
                         "&beta=" + fObj.b +
                         "&gamma=" + fObj.g +
                         "&n_predict=" + fObj.fcast_days +
-                        "&table=[" + getNamespace() + "." + fObj.tbl + 
+                        "&table=[" + widget.namespace + "." + fObj.tbl + 
                         "]&date_field=" + fObj.date_field +
                         "&f_field=" + fObj.f_field +
                         "&period=" + fObj.interval +

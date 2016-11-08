@@ -65,7 +65,7 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
 
         // ====== angular-table configuration ========
         $scope.config = {
-            itemsPerPage: 7,
+            itemsPerPage: 10,
             fillLastPage: false
         }
         $scope.eventHndler = {
@@ -368,7 +368,9 @@ routerApp.controller('widgetSettingsDataCtrl',['$scope', '$http', '$mdDialog', '
         }
 
         $scope.updateFilteredList = function(search) {
-            $scope.tableData = $filter("filter")($scope.originalList, search);
+              $scope.filtered = angular.copy($scope.originalList);
+               $scope.filtered.forEach( o => delete o.id )
+              $scope.tableData = $filter("filter")($scope.filtered, search);
         };
 
         $scope.downloadPDF = function(ev){
@@ -465,46 +467,57 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
         $scope.saveDashboard = function() {
 
+        if(saveDashboardService.IsSavingINprogress == false){
 
-            if($scope.dashboardName && $scope.refreshInterval ) {
+                if($scope.dashboardName && $scope.refreshInterval ) {
 
-                var noDuplicate = true;
-                //to check weather the newpage is allready exist
-                noDuplicate = saveDashboardService.checkDashboardName($scope.dashboardName);
+                    var noDuplicate = true;
+                    //to check weather the newpage is allready exist
+                    noDuplicate = saveDashboardService.checkDashboardName($scope.dashboardName);
 
-                if(noDuplicate){
-                    $scope.isLoadingDashBoardSave = true;
-                    $scope.isButtonDashBoardSave=false;
-                    //if dashboard name type refreshinterval should be assigned to proceed
-                    ngToast.create({
-                            className: 'info',
-                            content: 'Saving Dashboard...',
-                            horizontalPosition: 'center',
-                            verticalPosition: 'top',
-                            dismissOnClick: true
-                    });
-                    //save dashboard
-                    saveDashboardService.saveDashboard($scope.dashboardName,$scope.refreshInterval,'dashboard',$scope);
-
-
-                }else{ // one of the fields not filled
-                    ngToast.create({
-                            className: 'danger',
-                            content: 'You can not duplicate the name..',
-                            horizontalPosition: 'center',
-                            verticalPosition: 'top',
-                            dismissOnClick: true
+                    if(noDuplicate){
+                        $scope.isLoadingDashBoardSave = true;
+                        $scope.isButtonDashBoardSave=false;
+                        //if dashboard name type refreshinterval should be assigned to proceed
+                        ngToast.create({
+                                className: 'info',
+                                content: 'Saving Dashboard...',
+                                horizontalPosition: 'center',
+                                verticalPosition: 'top',
+                                dismissOnClick: true
                         });
+                        //save dashboard
+                        saveDashboardService.saveDashboard($scope.dashboardName,$scope.refreshInterval,'dashboard',$scope);
+
+
+                    }else{ // one of the fields not filled
+                        ngToast.create({
+                                className: 'danger',
+                                content: 'You can not duplicate the name',
+                                horizontalPosition: 'center',
+                                verticalPosition: 'top',
+                                dismissOnClick: true
+                            });
+                    }
+                }
+                else{
+                    ngToast.create({
+                                className: 'danger',
+                                content: 'Please fill all the fields and try again!',
+                                horizontalPosition: 'center',
+                                verticalPosition: 'top',
+                                dismissOnClick: true
+                            });
                 }
             }
             else{
                 ngToast.create({
-                            className: 'danger',
-                            content: 'Please fill all the fields and try again!',
-                            horizontalPosition: 'center',
-                            verticalPosition: 'top',
-                            dismissOnClick: true
-                        });
+                    className: 'danger',
+                    content: 'Dashboard saving in progress, please try again later!',
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                    dismissOnClick: true
+                });
             }
         }
     }

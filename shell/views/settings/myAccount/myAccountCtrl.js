@@ -1646,10 +1646,10 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
         if ($scope.name == "" || $scope.name == undefined) {
             notifications.toast('0', 'Invalid user name.');
-        } else if ($scope.company == "" || $scope.company == undefined) {
-            notifications.toast('0', 'Invalid company name.');
-        } else if ($scope.user.contactNo == "" || $scope.user.contactNo == undefined) {
-            notifications.toast('0', 'Contact number can not be a blank.');
+        // } else if ($scope.company == "" || $scope.company == undefined) {
+        //     notifications.toast('0', 'Invalid company name.');
+        // } else if ($scope.user.contactNo == "" || $scope.user.contactNo == undefined) {
+        //     notifications.toast('0', 'Contact number can not be a blank.');
         } else if (!$scope.validname) {
             notifications.toast('0', 'Invalid user name.');
         } else if (!$scope.validcompany) {
@@ -2533,6 +2533,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             return;
         }
 
+        // $http.get('http://192.168.2.61:8080/get_packages?get_type=detail&SecurityToken=4ea0b4e5351ebb4df4fdf3cefe298106&start_date=2016-10-15%2000:00:00&end_date=2016-11-15%2000:00:00')
         $http.get(Digin_Engine_API + 'get_packages?get_type=ledger&SecurityToken=' + getCookie('securityToken') + '&start_date=' + $scope.startDate + ' 00:00:00' + '&end_date=' + $scope.endDate + ' 23:59:59')
             .success(function(data) {
                 if(data.Is_Success){

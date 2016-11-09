@@ -402,12 +402,12 @@ p {
                                     </div>
                                     <div flex style="padding-left: 5px;">
                                         <label>Company </label>
-                                        <input type="text" id="txtCompany" name="txtCompany" ng-model="company" ng-disabled="editModeOn" class="form-control" ng-pattern="/^[a-zA-Z0-9]/" ng-required="true" ng-trim="false">
-                                        <div ng-messages="frmProfile.txtCompany.$error" role="alert">
+                                        <input type="text" id="txtCompany" name="txtCompany" ng-model="company" ng-disabled="editModeOn" class="form-control" ng-pattern="/^[a-zA-Z0-9]/" ng-trim="false">
+<!--                                         <div ng-messages="frmProfile.txtCompany.$error" role="alert">
                                             <div ng-message="required" style="color:red">
                                                 Company name is required.
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div layout="row" style="padding:0px 10px 0px 10px">
@@ -834,11 +834,15 @@ p {
                                         <p style="color:#717171" flex="25"> {{ ledger.created_datetime }} </p>
                                         <p style="color:#717171" flex> {{ ledger.package_price}} </p>
                                         <p style="color:#717171" flex="25"> {{ ledger.package_name}} </p>
-                                        <p style="color:#717171" flex layout="column"> 
-                                            <span>10 User</span>
-                                            <span>20 GB Storage</span>
-                                            <span>5 GB of Data</span>
-                                        </p>
+                                        <p style="color:#717171" flex> {{ ledger.package_attribute}} </p>
+<!--                                         <p style="color:#717171" flex layout="column">
+                                            <span ng-repeat="record in ledger.details">
+                                                {{record.package_value}}
+                                            </span>
+                                            <span ng-if=" {{record.package_attribute == 'data'}} ">GB Data</span>
+                                            <span ng-if="record.package_attribute == 'users' ">Users</span>
+                                            <span ng-if="record.package_attribute == 'storage' ">GB Storage</span>
+                                        </p> -->
                                     </div>
                                 <md-divider ng-show="!$last"></md-divider>
                                 </md-list-item>

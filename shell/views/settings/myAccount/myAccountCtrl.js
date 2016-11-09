@@ -2532,17 +2532,21 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             notifications.toast('0','Please select a valid date range!');
             return;
         }
-
-        // $http.get('http://192.168.2.61:8080/get_packages?get_type=detail&SecurityToken=4ea0b4e5351ebb4df4fdf3cefe298106&start_date=2016-10-15%2000:00:00&end_date=2016-11-15%2000:00:00')
+        // $http.get('http://192.168.2.61:8080/get_packages?get_type=ledger&SecurityToken=4ea0b4e5351ebb4df4fdf3cefe298106&start_date=2016-10-15%2000:00:00&end_date=2016-11-15%2000:00:00')
         $http.get(Digin_Engine_API + 'get_packages?get_type=ledger&SecurityToken=' + getCookie('securityToken') + '&start_date=' + $scope.startDate + ' 00:00:00' + '&end_date=' + $scope.endDate + ' 23:59:59')
             .success(function(data) {
                 if(data.Is_Success){
+                    var newObj = {};
                     if(data.Result.length>0){
                         angular.forEach(data.Result,function(res){
-                            res.created_datetime = res.created_datetime.replace('T',' ');
+                            newObj = {};
+                            newObj["created_datetime"] = res.created_datetime.replace('T',' ');
+                            newObj["package_price"] = res.package_Details[0].package_price;
+                            newObj["package_name"] = res.package_Details[0].package_name;
+                            newObj["details"] = res.package_Details;
+                            $scope.ledgers.push(newObj);
                         })
                     }
-                    $scope.ledgers = data.Result;
                 } else{
                     notifications.toast('0','Error occurred')
                 }
@@ -2550,7 +2554,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                 notifications.toast('0','Error occurred')
             });
     };
-    
+
     //----------Payment History Ends---------------------------
 
 });

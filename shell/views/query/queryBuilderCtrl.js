@@ -1041,10 +1041,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 }
                 // CHART VALIDATIONS
                 // allow to select only one measure for sunburst
-                if (($scope.chartType == "sunburst" || $scope.chartType == "hierarchy") && $scope.commonData.measures.length > 1) {
-                    privateFun.fireMessage('0', "Cannot generate " + $scope.chartType + " chart with more than one measure");
-                    return;
-                }
+                // if (($scope.chartType == "sunburst" || $scope.chartType == "hierarchy") && $scope.commonData.measures.length > 1) {
+                //     privateFun.fireMessage('0', "Cannot generate " + $scope.chartType + " chart with more than one measure");
+                //     return;
+                // }
 
                 if ($scope.chartType == "forecast") {
                     if ($scope.sourceData.fAttArr.length == 1 && $scope.sourceData.fMeaArr.length == 1) {

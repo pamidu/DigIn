@@ -188,7 +188,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                     var obj = JSON.parse($rootScope.userSettings.components);
                     if(obj.dashboardId != null){
-                        //$scope.getDashboard(obj.dashboardId);
+                        $scope.getDashboard(obj.dashboardId);
                         $rootScope.data.defaultDashboard=obj.dashboardId;
                     }
                 }
@@ -255,7 +255,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                     var obj = JSON.parse($rootScope.userSettings.components);
                     if(obj.dashboardId != null){
-                        //$scope.getDashboard(obj.dashboardId);
+                        $scope.getDashboard(obj.dashboardId);
                         $rootScope.data.defaultDashboard=obj.dashboardId;
                     }
                 })
@@ -714,8 +714,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
            //alert($rootScope.data.defaultDashboard);
 
            var confirm = $mdDialog.confirm()
-          .title('Would you like to set a default dashboard?')
-          .textContent('Would you like to set '+dashboard.dashboardName+' as your default dashboard??')
+          .title('Set a default dashboard')
+          .textContent('Would you like to set '+dashboard.dashboardName+' as your default dashboard?')
           .ariaLabel('')
           .targetEvent(ev)
           .ok('Yes')

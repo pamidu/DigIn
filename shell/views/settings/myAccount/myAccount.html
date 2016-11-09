@@ -816,15 +816,18 @@ p {
                                             ng-model="endDate"/>
                                 </p>
                                 <p ng-click="getPaymentHistory()" type="button" class="blut-edit-btn" flex="20" 
-                                    style="margin-top: 28px;">
+                                    style="margin-top: 28px;" ng-hide="paymentLoading">
                                     Get Payment Details
-                                </p>                                
+                                </p> 
+                                <p style="margin-top: 28px;" flex="20" layout="row" layout-align="center center" ng-show="paymentLoading">
+                                    <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+                                </p>
                             </div>
                             <md-list ng-cloak style="max-height:400px;overflow-y:scroll">
                                 <md-list-item>
                                         <div layout="row" flex>
                                             <p style="font-size:16px;font-weight:700"  flex="25"> Date </p>
-                                            <p style="font-size:16px;font-weight:700" flex> Amount</p>
+                                            <p style="font-size:16px;font-weight:700" flex> Amount(USD)</p>
                                             <p style="font-size:16px;font-weight:700" flex="25"> Package Name </p>
                                             <p style="font-size:16px;font-weight:700" flex> Atrribute </p>
                                         </div>

@@ -495,7 +495,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'd3hierarchy',
                 view: 'views/query/chart-views/hierarchySummary.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html',
+                settingsView: 'views/query/settings-views/hierarchySetings.html',
 				tooltip: "A decomposition of a graph is a collection of edge-disjoint subgraphs of such that every edge of belongs to exactly one"
             }, {
                 id: 'ct10',
@@ -506,7 +506,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 chartType: 'd3sunburst',
                 view: 'views/query/chart-views/sunburst.html',
                 initObj: $scope.initHighchartObj,
-                settingsView: 'views/query/settings-views/highchartsSettings.html',
+                settingsView: 'views/query/settings-views/hierarchySetings.html',
 				tooltip: "A sunburst is similar to the treemap, except it uses a radial layout. The root node of the tree is at the center, with leaves on the circumference"
             },
             // {
@@ -787,8 +787,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         condition: row.name
                     };
                     executeQryData.executeMeasures.push(obj);
-                    //for pivot summary
-                    //$scope.pivotSummaryField1.push(obj);
                     eval("$scope." + $scope.selectedChart.chartType + ".selectCondition()");
                 }
             },
@@ -814,7 +812,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 }
                 if (!isFoundCnd) {
                     var seriesArr = $scope.executeQryData.executeMeasures;
-                    if (seriesArr.length > 0 || $scope.chartType == "pie") {
+                    if (seriesArr.length > 0 || $scope.chartType == "pie" || $scope.chartType == "hierarchy" || $scope.chartType == "sunburst" ) {
                         eval("$scope." + $scope.selectedChart.chartType + ".selectAttribute(column.filedName)");
                     } else {
                         //alert("First select atleast one measure");
@@ -1040,12 +1038,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         break;
                 }
                 // CHART VALIDATIONS
-                // allow to select only one measure for sunburst
-                // if (($scope.chartType == "sunburst" || $scope.chartType == "hierarchy") && $scope.commonData.measures.length > 1) {
-                //     privateFun.fireMessage('0', "Cannot generate " + $scope.chartType + " chart with more than one measure");
-                //     return;
-                // }
-
                 if ($scope.chartType == "forecast") {
                     if ($scope.sourceData.fAttArr.length == 1 && $scope.sourceData.fMeaArr.length == 1) {
                         if (!($scope.sourceData.fAttArr[0].dataType == "TIMESTAMP" || $scope.sourceData.fAttArr[0].dataType == "datetime" || $scope.sourceData.fAttArr[0].dataType == "DATE")) {
@@ -3010,48 +3002,95 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             $scope.saveChart(widget);
         }
     };
+    $scope.generateHierarchy = function() {
+        //Validations to generate hierarchy chart
+        if ($scope.executeQryData.executeMeasures.length == 0 ) {
+            privateFun.fireMessage('0','Please Select an aggregate measure to generate hierarchy chart ');
+            return;
+        } else if ( $scope.executeQryData.executeMeasures.length > 1 ) {
+            privateFun.fireMessage('0','Please Select only one aggregate measure to generate hierarchy chart ');
+            return;
+        }
+        $scope.eventHndler.isLoadingChart = true;
+        var fieldArray = [];
+        for (var i = 0; i < $scope.executeQryData.executeColumns.length; i++) {
+            fieldArray.push("'" + $scope.executeQryData.executeColumns[i].filedName + "'");
+        }
+
+        //get highest level
+        $scope.client.getHighestLevel($scope.sourceData.tbl, fieldArray.toString(), function(data, status) {
+            var hObj = {};
+            var id = "";
+            if (status) {
+                data.forEach(function(entry) {
+                    hObj[entry.value] = entry.level;
+                });
+                var database = $scope.sourceData.src;
+                var tbl = $scope.sourceData.tbl;
+                var measure = $scope.executeQryData.executeMeasures[0].filedName;
+                var aggData = $scope.executeQryData.executeMeasures[0].condition;
+                if (database == "BigQuery") { 
+                    var query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=[" + 
+                    $diginurls.getNamespace() + "." + tbl + "] &measure=" + measure + "&agg=" + aggData + "&id=19&db=" + database;
+                } else {
+                    var query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=" + 
+                    tbl + "&measure=" + measure + "&agg=" + aggData + "&db=" + database;
+                }
+                $scope.client.getHierarchicalSummary(query, function(data, status) {
+                    $scope.TochartData = angular.copy(data);
+                    if (status) {
+                        if ($scope.chartType == "hierarchy"){
+                            id = "tempH" + Math.floor(Math.random() * (100 - 10 + 1) + 10).toString()
+                        } else if ($scope.chartType == "sunburst"){
+                            id = "tempSB" + Math.floor(Math.random() * (100 - 10 + 1) + 10).toString()
+                        }
+                        var res = {
+                            data: data,
+                            attribute: measure,
+                            id: id
+                        };
+                        $scope.hierarData = res;
+                        $scope.eventHndler.isLoadingChart = false;
+                    } else {
+                        $scope.eventHndler.isLoadingChart = false;
+                    }
+                });
+                $scope.dataToBeBind.receivedQuery = query;
+            } else {
+                $scope.eventHndler.isLoadingChart = false;
+            }
+        });
+    };
+
     $scope.d3hierarchy = {
         onInit: function(recon) {
             $scope.hierarData = $scope.widget.widgetData.widData;
             $scope.TochartData = $scope.widget.widgetData.TochartData;
         },
+        selectCondition: function() {
+            $scope.isPendingRequest = false;
+            if($scope.executeQryData.executeMeasures.length>1) {
+                privateFun.fireMessage('0','Please Select only one aggregate measure to generate hierarchy chart ');
+            }
+        },
+        selectAttribute : function(fieldName) {
+            $scope.isPendingRequest = false;
+            if ($scope.executeQryData.executeColumns.length == 0) {
+                $scope.executeQryData.executeColumns = [{
+                    filedName: fieldName
+                }];
+            } else if ($scope.executeQryData.executeColumns.length >= 1) {
+                $scope.executeQryData.executeColumns.push({
+                    filedName: fieldName
+                });
+            }            
+        },
+        removeMea: function(l) {
+        },
+        removeCat: function() {
+        },
         changeType: function() {
-            $scope.eventHndler.isLoadingChart = true;
-            var fieldArray = [];
-            for (var i = 0; i < $scope.commonData.measures.length; i++) {
-                fieldArray.push("'" + $scope.commonData.measures[i].filedName + "'");
-            }
-            for (var i = 0; i < $scope.commonData.columns.length; i++) {
-                fieldArray.push("'" + $scope.commonData.columns[i].filedName + "'");
-            }
-            //get highest level
-            $scope.client.getHighestLevel($scope.sourceData.tbl, fieldArray.toString(), function(data, status) {
-                var hObj = {};
-                if (status) {
-                    data.forEach(function(entry) {
-                        hObj[entry.value] = entry.level;
-                    });
-                    var database = $scope.sourceData.src;
-                    var tbl = $scope.sourceData.tbl;
-                    if (database == "BigQuery") {
-                        var query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=[" + $diginurls.getNamespace() + "." + tbl + "]&id=19&db=" + database;
-                    } else {
-                        var query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=" + tbl + "&db=" + database;
-                    }
-                    $scope.client.getHierarchicalSummary(query, function(data, status) {
-                        $scope.TochartData = angular.copy(data);
-                        if (status) {
-                            var res = {
-                                data: data,
-                                id: "tempH" + Math.floor(Math.random() * (100 - 10 + 1) + 10).toString()
-                            };
-                            $scope.hierarData = res;
-                            $scope.eventHndler.isLoadingChart = false;
-                        } else {}
-                    });
-                    $scope.dataToBeBind.receivedQuery = query;
-                } else {}
-            });
+
         },
         saveWidget: function(widget) {
             widget.widgetData.widView = "views/ViewHnbData.html";
@@ -3070,46 +3109,29 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             $scope.TochartData = $scope.widget.widgetData.TochartData;
             $scope.$apply;
         },
+        selectCondition: function() {
+            $scope.isPendingRequest = false;
+            if($scope.executeQryData.executeMeasures.length>1) {
+                privateFun.fireMessage('0','Please Select only one aggregate measure to generate hierarchy chart ');
+            }
+        },
+        selectAttribute : function(fieldName) {
+            $scope.isPendingRequest = false;
+            if ($scope.executeQryData.executeColumns.length == 0) {
+                $scope.executeQryData.executeColumns = [{
+                    filedName: fieldName
+                }];
+            } else if ($scope.executeQryData.executeColumns.length >= 1) {
+                $scope.executeQryData.executeColumns.push({
+                    filedName: fieldName
+                });
+            }            
+        },
+        removeMea: function(l) {
+        },
+        removeCat: function() {
+        },  
         changeType: function() {
-            $scope.eventHndler.isLoadingChart = true;
-            $scope.fieldArray = [];
-            for (var i = 0; i < $scope.commonData.measures.length; i++) {
-                $scope.fieldArray.push("'" + $scope.commonData.measures[i].filedName + "'");
-            }
-            for (var i = 0; i < $scope.commonData.columns.length; i++) {
-                $scope.fieldArray.push("'" + $scope.commonData.columns[i].filedName + "'");
-            }
-            //get highest level
-            $scope.client.getHighestLevel($scope.sourceData.tbl, $scope.fieldArray.toString(), function(data, status) {
-                var hObj = {};
-                if (status) {
-                    data.forEach(function(entry) {
-                        hObj[entry.value] = entry.level;
-                    });
-                    var database = $scope.sourceData.src;
-                    var tbl = $scope.sourceData.tbl;
-                    var limVal = 1000;
-                    if (database == "BigQuery") {
-                        var query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=[" + $diginurls.getNamespace() + "." + tbl + "]&id=19&db=" + database + "&limit=" + limVal;
-                    } else {
-                        var query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=" + tbl + "&db=" + database + "&limit=" + limVal;
-                    }
-                    $scope.client.getHierarchicalSummary(query, function(data, status) {
-                        $scope.eventHndler.isLoadingChart = false;
-                        $scope.TochartData = angular.copy(data);
-                        if (status) {
-                            var res = {
-                                data: data,
-                                id: "tempSB" + Math.floor(Math.random() * (100 - 10 + 1) + 10).toString()
-                            };
-                            $scope.hierarData = res;
-                            $scope.query = query;
-                            $scope.eventHndler.isLoadingChart = false;
-                        } else {}
-                    });
-                    $scope.dataToBeBind.receivedQuery = query;
-                } else {}
-            });
         },
         saveWidget: function(widget) {
             widget.widgetData.widView = "views/ViewHnbMonth.html";
@@ -3220,7 +3242,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         },
         selectAttribute: function(fieldName) {
             //$scope.getGroupedAggregation(fieldName);
-            // alert("grouping in metric is not supported");
+            //alert("grouping in metric is not supported");
             privateFun.fireMessage('0', 'grouping in metric is not supported');
             $scope.isPendingRequest = false;
         },
@@ -3665,9 +3687,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         level3Query: null,
                         currentLevel: 1
                     };
-                    $scope.highchartsNG.xAxis["title"] = {
-                        text: highestLevel
-                    };
+                    if ( $scope.highchartsNG.xAxis !== undefined){
+                        $scope.highchartsNG.xAxis["title"] = {
+                            text: highestLevel
+                        };
+                    }
                     $scope.highchartsNG.options['customVar'] = highestLevel;
                     $scope.highchartsNG.options.chart['events'] = {
                         drilldown: function(e) {

@@ -2515,10 +2515,10 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
 
     //----------- Payment History Starts ---------------------------
-
+    $scope.paymentLoading = false;
     $scope.ledgers = [];
     $scope.getPaymentHistory = function(){
-        $scope.ledgers = [];        
+        $scope.ledgers = [];
         //Date validations
         if($scope.startDate === undefined || $scope.startDate == "" || $scope.endDate === undefined || $scope.endDate == "" )
         {
@@ -2532,10 +2532,11 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             notifications.toast('0','Please select a valid date range!');
             return;
         }
+        $scope.paymentLoading = true;
         // $http.get('http://192.168.2.61:8080/get_packages?get_type=ledger&SecurityToken=4ea0b4e5351ebb4df4fdf3cefe298106&start_date=2016-10-15%2000:00:00&end_date=2016-11-15%2000:00:00')
         $http.get(Digin_Engine_API + 'get_packages?get_type=ledger&SecurityToken=' + getCookie('securityToken') + '&start_date=' + $scope.startDate + ' 00:00:00' + '&end_date=' + $scope.endDate + ' 23:59:59')
             .success(function(data) {
-                if(data.Is_Success){
+                if(data.Is_Success) {
                     var newObj = {};
                     if(data.Result.length>0){
                         angular.forEach(data.Result,function(res){
@@ -2547,11 +2548,13 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                             $scope.ledgers.push(newObj);
                         })
                     }
-                } else{
+                } else {
                     notifications.toast('0','Error occurred')
                 }
+                $scope.paymentLoading = false;
             }).error(function(){
                 notifications.toast('0','Error occurred')
+                $scope.paymentLoading = false;
             });
     };
 

@@ -119,11 +119,17 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 						console.log(response);
 						notifications.toast(0, "Falied to remove user");
 				 });
-        },removeUserFromGroup:function(groupId, user){
-			 var UsrDtl = {
+        },removeUserFromGroup:function(group){
+			var groupId=0;
+			var users=[]
+			groupId=group.groupId;
+			users=group.users
+			
+			var UsrDtl = {
                 "groupId": groupId,
-                "users": user
-            }
+                "users":users
+				}
+						
 			var req = {
 					method: "POST",
 					url: "/apis/usercommon/removeUserFromGroup",
@@ -140,7 +146,10 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 					},function errorCallback(response) {
 						notifications.toast(0, "Falied");
 						notifications.finishLoading();
-				});	
+				});
+			
+			
+			 	
 		},removeInvitedUser:function(email){
 			
 			//http://hxllnisqyomailinfo.staging.digin.io/auth/tenant/RemoveUser/juafbeblvexc@dropmail.me
@@ -261,10 +270,11 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 				notifications.toast(0, "Falied to remove user");
 			});
 			
-		},getUserLevel: function() {	
+		},getUserLevel: function() {
+				var baseUrl = "http://" + window.location.hostname;
 			   //$http.get('http://chamila103.prod.digin.io/auth/tenant/Autherized/chamila103.prod.digin.io',{
                //$http.get(baseUrl+'/auth/tenant/Autherized/' + JSON.parse(decodeURIComponent(getCookie('tenantData')))[0].TenantID, {
-               	$http.get('/auth/tenant/Autherized/' + $rootScope.TenantID, {
+				$http.get('/auth/tenant/Autherized/' + $rootScope.TenantID, {
 					headers: {'Securitytoken': getCookie('securityToken')}
 				})
 			   .then(function(result) {

@@ -402,12 +402,12 @@ p {
                                     </div>
                                     <div flex style="padding-left: 5px;">
                                         <label>Company </label>
-                                        <input type="text" id="txtCompany" name="txtCompany" ng-model="company" ng-disabled="editModeOn" class="form-control" ng-pattern="/^[a-zA-Z0-9]/" ng-required="true" ng-trim="false">
-                                        <div ng-messages="frmProfile.txtCompany.$error" role="alert">
+                                        <input type="text" id="txtCompany" name="txtCompany" ng-model="company" ng-disabled="editModeOn" class="form-control" ng-pattern="/^[a-zA-Z0-9]/" ng-trim="false">
+<!--                                         <div ng-messages="frmProfile.txtCompany.$error" role="alert">
                                             <div ng-message="required" style="color:red">
                                                 Company name is required.
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div layout="row" style="padding:0px 10px 0px 10px">
@@ -619,7 +619,6 @@ p {
                                                         <span class="align-left"> {{extraUsers}} User</span>
                                                         <span class="align-left"> {{extraStorage}} GB Storage</span>
                                                         <span class="align-left"> {{extraData}} GB of Data</span>
-
                                                     </div>
                                                 </center>
                                             </md-card>
@@ -795,7 +794,8 @@ p {
                     <div class="setting-wrap" style="max-width:960px;margin:0 auto;padding-bottom:10px; margin-top: 20px;box-shadow:0 1px 5px 0 rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.12)">
                         <form name="editForm"  md-theme="default" ng-submit="submit()">
                             <div layout="row" layout-align="end end">
-                                <md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="back" ng-click="route('welcome')"></md-button>
+                                <md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="back" 
+                                ng-click="closeWindow()"></md-button>
                             </div>
                                 
                             <div class="setting-card-header">
@@ -835,13 +835,18 @@ p {
                                         <p style="color:#717171" flex="25"> {{ ledger.created_datetime }} </p>
                                         <p style="color:#717171" flex> {{ ledger.package_price}} </p>
                                         <p style="color:#717171" flex="25"> {{ ledger.package_name}} </p>
-                                        <p style="color:#717171" flex> {{ ledger.package_attribute}} </p>
+                                        <p style="color:#717171" flex layout="column">
+                                            <span ng-repeat="record in ledger.details">
+                                                {{record.package_value}}
+                                                <span ng-if="record.package_attribute === 'data' ">GB Data</span>
+                                                <span ng-if="record.package_attribute === 'users' ">Users</span>
+                                                <span ng-if="record.package_attribute === 'storage' ">GB Storage</span>
+                                            </span>
+                                        </p>
                                     </div>
                                 <md-divider ng-show="!$last"></md-divider>
                                 </md-list-item>
-                            
                             </md-list>
-                                
                         </form>
                     </div>
                 </div>

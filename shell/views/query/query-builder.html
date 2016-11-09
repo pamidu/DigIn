@@ -90,7 +90,7 @@
                 -->
             </div>
             <!-- measures -->
-            <div flex="20" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType =='map' || selectedChart.chartType == 'metric' ">
+            <div flex="20" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType =='map' || selectedChart.chartType == 'metric' || selectedChart.chartType =='d3hierarchy' || selectedChart.chartType =='d3sunburst' ">
                 <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
@@ -283,7 +283,7 @@
                 </div>
 
                 <div ng-disabled="!isDrilled" class="digin-gb-row"
-                     ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric'">
+                     ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric' ">
                     <div class="panel-header inline-panel-header p-b-0">
                         <h3 class="font-weight-300">
                             custom query design

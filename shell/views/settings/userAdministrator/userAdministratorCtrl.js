@@ -474,38 +474,37 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 				vm.group.parentId = "";
 			}
 	
-		
-			for (i = 0, len = vm.contacts.length; i<len; ++i){			
+	
+			/*for (i = 0, len = vm.contacts.length; i<len; ++i){			
 				vm.group.users.push({Name:vm.contacts[i].Name, Id:vm.contacts[i].Id});				
-				/*var add=true;
-				for(j=0; j<vm.group.users.length; j++){
-					if(vm.contacts[i].Id==vm.group.users[j].Id){
-						add=false;
-					}
-				}				
-				if(add==true)	{
-					vm.group.users.push({Name:vm.contacts[i].Name, Id:vm.contacts[i].Id});
-				}*/
-			}
+			}*/
 			
-			userAdminFactory.removeUserFromPackage(vm.group.groupId,vm.group.users).then(function(result) {
+			
+			userAdminFactory.removeUserFromGroup(vm.group).then(function(result) {
+				//console.log("removed..");
+					userAdminFactory.addUserToGroup(vm.group).then(function(result) {
+						if(result.IsSuccess == true)
+						{
+							$rootScope.sharableUsers=[];
+							userAdminFactory.getInvitedUsers(function(data) {});
+							
+							notifications.toast(1, "User group updated successfully.");
+							vm.group.groupId = result.Data[0].ID;
+							$mdDialog.hide({group:vm.group, index:index});
+						}else{
+							notifications.toast(0, result.Message);
+						}
+						vm.submitted = false;
+					})
+					
+					vm.group.users=[];
+					for (i = 0, len = vm.contacts.length; i<len; ++i){			
+						vm.group.users.push({Name:vm.contacts[i].Name, Id:vm.contacts[i].Id});				
+					}
 				
 			})
 	
-			userAdminFactory.addUserToGroup(vm.group).then(function(result) {
-				if(result.IsSuccess == true)
-				{
-					$rootScope.sharableUsers=[];
-					userAdminFactory.getInvitedUsers(function(data) {});
-					
-					notifications.toast(1, "User group updated successfully.");
-					vm.group.groupId = result.Data[0].ID;
-					$mdDialog.hide({group:vm.group, index:index});
-				}else{
-					notifications.toast(0, result.Message);
-				}
-				vm.submitted = false;
-			})
+			
 			
 		}else{
 			notifications.toast(0, "Please add members to the group");

@@ -9,11 +9,11 @@ routerApp.directive('sunburstChart', function() {
 
             scope.$watch('chartData', function(newValue, oldValue) {
                 if (newValue){
-                    scope.drawSunburstSummary(newValue.data,newValue.id,newValue.attribute);
+                    scope.drawSunburstSummary(newValue.data,newValue.id,newValue.attribute,newValue.dec);
                 }
             });
 
-            scope.drawSunburstSummary = function(rootData,divID,attribute){
+            scope.drawSunburstSummary = function(rootData,divID,attribute,decimal){
                 var width = 300,
                         height = 290,
                         radius = Math.min(width, height) / 2;
@@ -92,7 +92,7 @@ routerApp.directive('sunburstChart', function() {
                                 .duration(200)
                                 .style("opacity", .9);
                             var sizeStr = "";
-                            if (typeof d.size != 'undefined') sizeStr = "<br/> <b>" + attribute + ":"  + d.size + "</b>";
+                            if (typeof d.size != 'undefined') sizeStr = "<br/> <b>" + attribute + ":"  + d.size.toFixed(decimal) + "</b>";
                             div.html(d.name + sizeStr)
                                 .style("left", 100 + "px")
                                 .style("top", 300 + "px");
@@ -222,7 +222,7 @@ routerApp.directive('sunburstChart', function() {
             };
             
             if(typeof scope.chartData != "undefined"){
-                scope.drawSunburstSummary(scope.chartData.data, scope.chartData.id);
+                scope.drawSunburstSummary(scope.chartData.data, scope.chartData.id, scope.chartData.attribute, scope.chartData.dec);
             }
             
 

@@ -18,6 +18,3 @@
     .constant('IsLocal', true)
     .constant('Local_Shell_Path', 'http://localhost:8081/DigIn/shell')
     .constant('report_Widget_Iframe', 'http://prod.digin.io/Reports/HourlyCallSummery_HBL/HourlyCallSummery_HBL.pdf')
-
-
-

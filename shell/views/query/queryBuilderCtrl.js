@@ -494,7 +494,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 selected: false,
                 chartType: 'd3hierarchy',
                 view: 'views/query/chart-views/hierarchySummary.html',
-                initObj: $scope.initHighchartObj,
+                initObj: {
+                    dec : 0
+                },
                 settingsView: 'views/query/settings-views/hierarchySetings.html',
 				tooltip: "A decomposition of a graph is a collection of edge-disjoint subgraphs of such that every edge of belongs to exactly one"
             }, {
@@ -505,7 +507,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 selected: false,
                 chartType: 'd3sunburst',
                 view: 'views/query/chart-views/sunburst.html',
-                initObj: $scope.initHighchartObj,
+                initObj: {
+                    dec : 0
+                },
                 settingsView: 'views/query/settings-views/hierarchySetings.html',
 				tooltip: "A sunburst is similar to the treemap, except it uses a radial layout. The root node of the tree is at the center, with leaves on the circumference"
             },
@@ -1204,14 +1208,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         },
         changeType: function() {
             if (typeof $scope.highchartsNG === 'undefined') {
+                $scope.highchartsNG = $scope.initHighchartObj;
                 $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
                 $scope.highchartsNG.title.text = '';
-                if (typeof $scope.highchartsNG.xAxis === 'undefined') {
-                    $scope.highchartsNG = $scope.otherChartConfig;
-                    $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
-                    $scope.highchartsNG.title.text = '';
-
-                }
             } else {
                 $scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
                 $scope.highchartsNG.title.text = '';
@@ -3002,6 +3001,22 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             $scope.saveChart(widget);
         }
     };
+
+    $scope.changeHierarchyDecimal = function() 
+    {
+        if ( $scope.hierarData !== undefined) {
+            if ( $scope.hierarData.data.length != 0 ) {
+                var tempData = {
+                    data: $scope.hierarData.data,
+                    attribute: $scope.hierarData.attribute,
+                    id: $scope.hierarData.id,
+                    dec: $scope.selectedChart.initObj.dec
+                }
+                $scope.hierarData = tempData;
+            }
+        }
+    };
+
     $scope.generateHierarchy = function() {
         //Validations to generate hierarchy chart
         if ($scope.executeQryData.executeMeasures.length == 0 ) {
@@ -3009,6 +3024,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             return;
         } else if ( $scope.executeQryData.executeMeasures.length > 1 ) {
             privateFun.fireMessage('0','Please Select only one aggregate measure to generate hierarchy chart ');
+            return;
+        } else if ( $scope.executeQryData.executeColumns.length == 0 ) {
+            privateFun.fireMessage('0','Please Select a category to generate hierarchy chart ');
             return;
         }
         $scope.eventHndler.isLoadingChart = true;
@@ -3020,7 +3038,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         //get highest level
         $scope.client.getHighestLevel($scope.sourceData.tbl, fieldArray.toString(), function(data, status) {
             var hObj = {};
-            var id = "";
+            var id;
             if (status) {
                 data.forEach(function(entry) {
                     hObj[entry.value] = entry.level;
@@ -3039,15 +3057,16 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 $scope.client.getHierarchicalSummary(query, function(data, status) {
                     $scope.TochartData = angular.copy(data);
                     if (status) {
-                        if ($scope.chartType == "hierarchy"){
+                        if ($scope.selectedChart.chartType == "d3hierarchy"){
                             id = "tempH" + Math.floor(Math.random() * (100 - 10 + 1) + 10).toString()
-                        } else if ($scope.chartType == "sunburst"){
+                        } else if ($scope.selectedChart.chartType == "d3sunburst"){
                             id = "tempSB" + Math.floor(Math.random() * (100 - 10 + 1) + 10).toString()
                         }
                         var res = {
                             data: data,
                             attribute: measure,
-                            id: id
+                            id: id,
+                            dec: $scope.selectedChart.initObj.dec
                         };
                         $scope.hierarData = res;
                         $scope.eventHndler.isLoadingChart = false;

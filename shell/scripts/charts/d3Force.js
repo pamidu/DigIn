@@ -21,11 +21,11 @@ routerApp.directive('linearChart', function() {
 
             scope.$watch('chartData', function(newValue, oldValue) {
                 if (newValue) {
-                    scope.drawHierarchicalSummary(newValue.data,newValue.id,newValue.attribute);
+                    scope.drawHierarchicalSummary(newValue.data,newValue.id,newValue.attribute,newValue.dec);
                 }
             });
 
-            scope.drawHierarchicalSummary = function(rootData,divID,attribute) {
+            scope.drawHierarchicalSummary = function(rootData,divID,attribute,decimal) {
                 var width = 400,
                     height = 320,
                     root;
@@ -102,7 +102,7 @@ routerApp.directive('linearChart', function() {
                     nodeEnter.append("text")
                         .attr("dy", ".25em")
                         .text(function(d) {
-                            return attribute + ", " + d.name + ": " + d.size;
+                            return attribute + ", " + d.name + ": " + d.size.toFixed(decimal);
                         });
 
                     node.select("circle")

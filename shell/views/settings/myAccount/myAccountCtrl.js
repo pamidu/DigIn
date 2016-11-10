@@ -2547,6 +2547,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                             newObj["details"] = res.package_Details;
                             $scope.ledgers.push(newObj);
                         })
+                    } else {
+                        notifications.toast('0','No records in the selected period of time')
                     }
                 } else {
                     notifications.toast('0','Error occurred')
